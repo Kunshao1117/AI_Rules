@@ -38,6 +38,7 @@ trigger: always_on
 **CRITICAL CONSTRAINT**: The `<details>` blocks MUST adaptively position themselves immediately AFTER any IDE-native internal thought blocks, but strictly BEFORE invoking ANY external tools (e.g. `<call:...>`). Phase 0, 1, and 2 content MUST be 100% Traditional Chinese. 
 
 **[Default] Semantic Decode Block:**
+
 ```html
 > <details>
 > <summary>🧠 跨語系思維解析 (點擊展開)</summary>
@@ -55,27 +56,37 @@ trigger: always_on
 > </details>
 
 <br>
+
 ```
 
 **[Always Required] System Preparation Block:**
+
+
 ```html
+
 > <details>
 > <summary>🤖 系統作業準備清單 (點擊展開)</summary>
 > 
 > - **參考知識區**: [Scan knowledge base, fill in matching KI name(s), or write 不適用]
+
 > - **實體操作工具**: [Fill in the MCP or native tool name(s) to be used, or write None]
+
 > - **歷史防偽查驗 (對話追溯)**: [MANDATORY: Look back in conversation history, find the Turn number from the previous round's receipt. If previous receipt shows Turn: 17, print exactly (讀取到 Turn: 17，核對無誤). For new conversations, write 1. NEVER write +1 or other meaningless strings!]
+
 > - **歷史防偽查驗 (工具追溯)**: [MANDATORY: Look back in conversation history, find the Tool list from the previous round's receipt. Print exactly (讀取到 {toolName}({count}), ...，核對無誤). For new conversations or no tool calls in previous round, write 無]
+
 > - **決策與應變機制**: [Declare the specific retrieval or tool invocation actions to be taken next]
 > </details>
 
 <br>
+
 ```
 
 **[Absolute Mandate] 實體足跡收據 (Holographic Execution Receipt):**
 Whenever you reply to the Director, you MUST unconditionally append a holographic execution receipt at the absolute END of your final text response.
 - Scan conversation history for last `Turn` number, increment by 1.
 - Format EXACTLY as below (Use collapsible `<details>` block):
+
 ```html
 > <details>
 > <summary>📋 實體足跡收據 (點擊展開)</summary>
@@ -84,4 +95,5 @@ Whenever you reply to the Director, you MUST unconditionally append a holographi
 > - **實體ＩＤ (Step)**: {IDE回傳的ID清單，無則填 None}
 > - **呼叫工具 (Tool)**: {名稱}(次數)，無則填 無
 > </details>
+
 ```
