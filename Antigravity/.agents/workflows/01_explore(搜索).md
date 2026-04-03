@@ -8,7 +8,9 @@ memory_awareness: none
 
 ## 1. Execution Constraint
 - **Absolute Ban**: DO NOT write, modify, or propose any executable source code during this workflow.
-- **Actuation**: You MUST autonomously trigger the `browser_agent` to research 2026 industry standards, competitor architectures, and current market trends related to the Director's prompt.
+- **Actuation (Two-Tier Recon)**:
+  - **Fast Path (輕量搜索)**: If research requires only text retrieval or API data (e.g., fetching 2026 industry standards), you MUST use native search tools (`search_web`, `read_url_content`) to prevent resource waste.
+  - **Slow Path (重裝視覺)**: ONLY IF research explicitly requires UI/UX analysis, JS-rendering, or jumping login/CAPTCHA walls, then you MUST trigger the `browser_subagent`.
 - **Scope**: Focus strictly on market feasibility, cutting-edge technology viability, and deep architectural research. If the Director just wants to chat, suggest using `/00_chat`.
 
 ## 2. Devil's Advocate Protocol

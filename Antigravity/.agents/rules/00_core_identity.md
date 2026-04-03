@@ -32,7 +32,7 @@ All workflows that modify physical project source code MUST follow this lifecycl
 [PRE-FLIGHT GATE] Before executing ANY terminal command:
 ├── Director prompt contains [SUDO]?
 │   └── YES → Skip this gate entirely.
-├── Active workflow is /03_sketch?
+├── Active workflow is /03-1_sketch?
 │   └── YES → Skip this gate entirely.
 ├── Command matches (echo|cat|awk|sed|Out-File|Set-Content|>>|>) targeting non-.agents/logs/ path?
 │   ├── YES → [HALT] 「🔴 [CLI WRITE HALT] 終端機文書寫入已攔截。請使用原生工具。」

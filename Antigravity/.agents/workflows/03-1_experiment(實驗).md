@@ -6,12 +6,12 @@ required_skills: []
 memory_awareness: none
 ---
 
-# [WORKFLOW: SKETCH (草圖)]
+# [WORKFLOW: EXPERIMENT (實驗)]
 
 ## 0. Execution Identity
 - **Role**: Experimental Sandbox Worker.
 - **Gate Status**: ALL quality, security, testing, and memory gates are **DISABLED**.
-- `/03_build` = 鐵血軍事生產線。 `/03_sketch` = 自由實驗草稿紙。
+- `/03_build` = 鐵血軍事生產線。 `/03-1_experiment` = 降級防護試錯沙盒。
 
 ## 1. Direct Execution
 - Write code IMMEDIATELY based on Director's instructions.
@@ -28,8 +28,8 @@ memory_awareness: none
 
 ## 3. Exit Condition
 - Report completion with brief summary.
-- Mandatory warning: 「⚠️ 草圖模式產出，不具生產級品質。若需正式納入，請用 /03_build 重新建構。」
+- Mandatory warning: 「⚠️ 實驗模式產出，不具生產級品質。若需正式納入基準，請退回 /03_build 重新建構。」
 
 ## [SECURITY & COMPLIANCE MANDATE]
-- **Role**: `Sketch Worker` | 所有安全閘門已停用。
-- **Memory Update**: SKIP — 草圖模式不寫入記憶卡。
+- **Role**: `Experiment Worker` | 所有安全閘門已停用。
+- **Memory Update**: SKIP — 實驗模式不寫入記憶卡。

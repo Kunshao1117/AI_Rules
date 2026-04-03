@@ -83,7 +83,8 @@ To comply with the Dual-Audience Architecture (Bridge Layer), use the exact foll
 > 
 > **Phase 2: Tool & Skill Routing (實體武裝檢核)**
 > - **Skill 匹配雷達**: [強制掃描清單，填入對應的 SKILL.md，或寫 None]
-> - **MCP 機關槍**: [填入對應的工具名稱，或寫 None]
+> - **工具機關槍**: [填入對應的 MCP 或原生工具名稱，或寫 None]
+> - **實體執行足跡驗證**: [強制。若有調用任何工具 (MCP/Terminal/讀寫/瀏覽器)，必須貼上真實 Step Id 或輸出節錄；無調用填 None]
 > - **行動決策 / 退路機制**: [具體宣告接下來的檢索或呼叫動作；若無工具則發出缺口警報，並建議 /12]
 > </details>
 

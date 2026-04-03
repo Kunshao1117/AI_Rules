@@ -70,8 +70,9 @@ Trigger?
 ---
 name: {skill-name}
 description: >
-  {English description}.
+  [{Domain|Quality|Workflow}] {English description}.
   Use when: {中文觸發條件描述}。
+  ⚠️ DO NOT use when: {排他性與負向觸發條件描述}。
 metadata:
   author: antigravity
   version: "1.0"

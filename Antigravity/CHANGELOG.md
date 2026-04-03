@@ -4,6 +4,19 @@
 
 ---
 
+## [V6.0.3 第二代高精度技能路由與工作流分流] - 2026-04-04
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Skill Routing Precision v2（第二代精準路由機制）**：為消除大語言模型在 `Phase 2` 的摘要配對模糊與工具規避幻覺，建立雙重精度鎖。於 `skill-factory` 規範中強制導入 `[領域]` / `[品質]` 類別標籤與 `DO NOT use when:` 排他性防護；並於 `cross-lingual-guard` 模板中新設「全域實體執行足跡驗證」，強制要求提供原生的 `Step Id`，實體阻斷未調用先猜測的規避行為。
+- **Two-Tier Recon System（工作流雙軌偵蒐機制）**：最佳化 `/01_explore` 探索工作流。取消無腦啟動 `browser_subagent` 的舊規，改為「預設使用輕量 API (Fast Path) 爬取文本，僅遇反爬或需互動渲染時升級為視覺代理人 (Slow Path)」，巨幅壓縮探勘成本與等待時間。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Sandbox Prototyping Renaming（沙盒正名與定位）**：將 `/03_sketch` 工作流正式更名為 `/03-1_experiment(實驗)`，在語系與命名規則上收編為 `/03_build` 建構體系下的附屬子分支。明確區分「正規生產線」與「降級防護試錯沙盒」的架構階層，消除文字上的設計誤解。
+
+---
+
 ## [V6.0.2 跨語系實體映射與文件同步防線] - 2026-04-04
 
 ### 【新增商業能力】 (Business Capabilities Added)
