@@ -21,11 +21,11 @@ Output ONLY when a check FAILS — use the halt message format.
 │   └── FAIL → 「🟡 [GATE WARN] 記憶卡過載，建議拆分。」
 ├── Check 6: Skill Distillation — reusable pattern detected?
 │   └── If yes → RECOMMEND /12_skill_forge (non-blocking).
-├── Check 7: Documentation Sync — framework docs may need update?
-│   ├── Read _system memory → ## Documentation Files list.
-│   ├── No list defined? → Skip silently.
-│   └── List exists + ≥ 5 framework files modified this session?
-│       → 「🟡 [DOC REMIND] 本次修改 {N} 支框架檔案。建議檢查系統文件是否需同步。」
-│       Non-blocking. Continue.
+├── Check 7: Documentation Sync — public/framework docs may need update?
+│   ├── Did code modifications alter public interfaces, architecture, or workflows?
+│   ├── YES → Check related `README.md`, `/docs`, or framework rule files for staleness.
+│   │   ├── Docs outdated? → 「🔴 [GATE FAIL] 公共文件需同步更新。」
+│   │   └── Docs synced? → Pass.
+│   └── NO → Skip silently.
 └── ALL PASS → Proceed silently. Zero output.
 ```

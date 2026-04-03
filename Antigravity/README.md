@@ -1,6 +1,6 @@
 # Antigravity — AI 代理人治理框架
 
-> **版本**: v6.0.0 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
+> **版本**: v6.0.2 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
 
 Antigravity 是一套**零接觸自動部署**的 AI 編碼代理人治理框架。它為 AI 助手提供統一的工作流程、持久記憶系統與標準作業規範，讓 AI 在任何專案中都能像一個有紀律、有記憶的工程團隊來運作。
 
@@ -100,7 +100,7 @@ graph TB
 |------|------|----------|
 | `AGENTS.md` | 哨兵檔 — 存在即代表專案已初始化 | Always On |
 | `00_core_identity.md` | 核心身份 — 代理人分工、生命週期、語言溝通 | Always On |
-| `01_cross_lingual_guard.md` | 跨語系防護 — 冷啟動強制讀檔、暖快取記憶輸出、安全觸發器 | Always On |
+| `01_cross_lingual_guard.md` | 跨語系防護 — 冷啟動強制讀檔、實體武裝檢核 (Phase 2)、安全觸發器 | Always On |
 | `03_memory_skill_contract.md` | 記憶與技能合約 — 記憶卡操作、技能載入、衍生技能系統 | Model Decision |
 | `02_code_quality_security.md` | 品質與安全合約 — 機密隔離、驗證器鐵律、橫切品質約束 | Model Decision |
 
@@ -117,8 +117,9 @@ graph TB
 
 **`01_cross_lingual_guard.md`** — Always On（每次對話必載）
 6. **跨語系思維紀律** — 三層快取策略（冷啟動強制讀檔 / 暖快取記憶輸出 / 漂移防護）
-7. **安全觸發器** — 高風險場景強制透明輸出
-8. **模板即透明機制** — 永遠輸出 `<details>` 供總監審閱，不依賴 AI 自評信心
+7. **實體武裝檢核 (Phase 2)** — 強制映射實體操作工具或技能，杜絕零樣本幻覺盲猜
+8. **安全觸發器** — 高風險場景強制透明輸出
+9. **模板即透明機制** — 永遠輸出 `<details>` 供總監審閱，不依賴 AI 自評信心
 
 **`03_memory_skill_contract.md`** — Model Decision（AI 判斷需要時載入）
 7. **專案記憶系統** — `.agents/memory/` 記憶卡的讀寫規範，含 `[EXIT HOLD GATE]` 離場條件鎖
@@ -201,7 +202,7 @@ graph LR
 
 | 閘門 | 功能 |
 |------|------|
-| `_completion_gate.md` | 靜默化完成閘門（7 項檢查）：記憶同步、歸卡驗證、檔案歸屬、語言合規、粒度、技能萃取、文件同步 |
+| `_completion_gate.md` | 靜默化完成閘門（7 項檢查）：記憶同步、歸卡驗證、檔案歸屬、語言合規、粒度、技能萃取、文件同步 (🔴 紅燈硬閘) |
 | `_security_footer.md` | 角色鎖定閘門（`[ROLE LOCK GATE]`）、瀏覽器閘門、安全合規聲明 |
 
 ---
@@ -223,7 +224,7 @@ graph LR
 | | `security-sre` | 零信任驗證、機密隔離、日誌標準 | 英文指令（擴展 §11） | — |
 | | `ui-ux-standards` | 介面設計、工程術語隔離 | 英文指令（擴展 §11） | — |
 | **測試與品質保障** | `test-patterns` | 單元測試決策樹、異常場景清單、契約驗證 | 英文指令 | — |
-| | `impact-test-strategy` | 變更影響分析、測試範圍決策、回歸防護 | 英文指令 | — |
+| | `impact-test-strategy` | 變更影響分析 (含公共文件)、測試範圍決策、回歸防護 | 英文指令 | — |
 | | `test-automation-strategy` | DOM 互動規範、自動修復 | 英文指令 | — |
 | | `browser-testing` | E2E 視覺測試 | 並行雙語 | — |
 | | `a11y-testing` | 無障礙掃描、WCAG 驗證、修復建議 | 英文指令（中文註解） | a11y |

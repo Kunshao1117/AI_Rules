@@ -4,13 +4,26 @@
 
 ---
 
-## [V5.7.1 全域版本控制邊界定錨] - 2026-04-04
+## [V6.0.2 跨語系實體映射與文件同步防線] - 2026-04-04
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Phase 2 Tool & Skill Routing（實體武裝檢核）**：在跨語系語意解碼 (`cross-lingual-guard`) 中強行插入 Phase 2 檢查，徹底消除大語言模型的「零樣本惰性 (Zero-Shot Laziness)」。現在系統在收到中文指令解析意圖後，必須先低頭映射具體的 `SKILL.md` 或 `MCP` 工具；若無對應工具則觸發能力缺口警報，杜絕憑空瞎猜的行為。
+- **Doc-Sync Guard（文件同步防腐防線）**：為解決系統外層文件（如 README, /docs）容易發生程式碼推進但文件過期的問題，將原先結案閘門 (`_completion_gate`) 中無約束力的黃燈提醒，升級為強制阻擋的紅色硬閘門。同時將「公共關聯文件」強勢納入影響力分析策略 (`impact-test-strategy`) 中，全面消滅「文件腐敗」的死角。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Deploy Engine Core Spill Prevention（部署引擎核心記憶防外洩）**：修復 `Deploy-Antigravity.ps1` 在 Fresh 模式下因暴力執行 `Copy-Item -Recurse`，導致母體專案私有的 `memory/` 與 `project_skills/` 意外污染新專案環境的高危漏洞。改用「源頭過濾 (Source Filtering)」進行降維複製，並於腳本後半段補齊空目錄生成的動態結構 (Scaffolding)，達成 100% 潔淨的架構初始化。
+
+---
+
+## [V6.0.1 全域版本控制邊界定錨] - 2026-04-04
 
 ### 【新增商業能力】 (Business Capabilities Added)
 
 - **Global Commit Boundary（全域版本控制範圍鎖定）**：新增 `_system` 全域系統記憶卡。強制將未來所有 Git 版本控制操作的根目錄定錨為外部 `D:\AI_Rules` 目錄。確保未來所有的推送動作皆預設涵蓋外部資料夾，達成零手動碰觸（Zero-Touch）自動備份的安全防線。
 
-## [V5.7.0 三位一體防護全面注入與框架清理] - 2026-04-03
+## [V6.0.0 三位一體防護全面注入與框架清理] - 2026-04-03
 
 ### 【新增商業能力】 (Business Capabilities Added)
 

@@ -61,6 +61,11 @@ Output this block verbatim after native thought. No tool call needed for warm ca
 > - **Layer 2 (意圖)**: [填寫總監意圖]
 > - **Layer 3 (情緒)**: [填寫語氣與情緒]
 > - **Layer 4 (隱含)**: [填寫隱含假設]
+>
+> **Phase 2: Tool & Skill Routing (實體武裝檢核)**
+> - **Skill 匹配雷達**: [強制掃描清單，填入對應的 SKILL.md，或寫 None]
+> - **MCP 機關槍**: [填入對應的工具名稱，或寫 None]
+> - **行動決策 / 退路機制**: [具體宣告接下來的檢索或呼叫動作；若無工具則發出缺口警報，並建議 /12]
 > </details>
 
 <br>

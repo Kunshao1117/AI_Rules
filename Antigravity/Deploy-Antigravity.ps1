@@ -475,8 +475,23 @@ if (Test-Path $existingProject) {
     Write-Host "[*] 已備份衍生技能到暫存目錄..."
 }
 
-# 複製整個 .agents 生態系統
-Copy-Item -Path $sourceDir -Destination $Target -Recurse -Force
+# 複製 .agents 生態系統 (在源頭直接阻斷特定目錄與連結的複製)
+New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
+Get-ChildItem -Path $sourceDir | Where-Object { $_.Name -notin @("memory", "project_skills") } | ForEach-Object {
+    $srcItem = $_
+    $destPath = Join-Path -Path $targetDir -ChildPath $srcItem.Name
+    
+    if ($srcItem.Name -eq "skills" -and $srcItem.PSIsContainer) {
+        # 進入 skills 目錄內，專門排除 _memory 與 _project 這兩個連結
+        New-Item -ItemType Directory -Force -Path $destPath | Out-Null
+        Get-ChildItem -Path $srcItem.FullName | Where-Object { $_.Name -notin @("_memory", "_project") } | ForEach-Object {
+            Copy-Item -Path $_.FullName -Destination $destPath -Recurse -Force
+        }
+    } else {
+        # 其他正常資料夾 (如 rules, workflows) 直接複製
+        Copy-Item -Path $srcItem.FullName -Destination $targetDir -Recurse -Force
+    }
+}
 
 # ── 還原受保護目錄 ──
 if (Test-Path $tmpMemory)  {

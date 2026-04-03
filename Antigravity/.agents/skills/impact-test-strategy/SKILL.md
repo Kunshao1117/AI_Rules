@@ -37,7 +37,9 @@ Source module identified?
 │   └── These modules may break if the source module's interface changes
 ├── List all modules that the source module DEPENDS ON
 │   └── Changes here should NOT affect dependents (unless interface changed)
-└── Result: Affected module list + dependency direction
+├── List all outward-facing documentation files related to this module's public interface (e.g., README.md, docs/)
+│   └── Documentation must be marked as an affected target if the module's behavior changes.
+└── Result: Affected module list + dependency direction + affected documentation
 ```
 
 ### Step 3: Risk Classification (風險分級)
@@ -57,6 +59,7 @@ Include in `implementation_plan.md`:
 - 所屬模組：{module name}
 - 風險等級：🔴/🟡/🟢
 - 受影響模組：{list of affected modules}
+- 關聯文件：{documentation files that require sync}
 - 建議測試範圍：{see § 2}
 ```
 
