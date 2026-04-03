@@ -25,12 +25,19 @@ If you are reading this file via Cold Start:
     └── Proceed normally, this self-check does not apply.
 ```
 
-## 1. Activation Scope
+## 1. Activation Scope (面板啟動判定樹)
 
 ```
-Chinese input received?
-├── Trivial (≤5 chars: 繼續/GO/好/對/確認) → Skip all phases
-└── Non-trivial → Phase 0
+每次收到總監輸入時，嚴格依據以下條件決定「單框或雙框」的輸出模式：
+├── Condition A (單框查核模式): 
+│   符合以下任一條件，代表無須進行語意解碼：
+│   1. 單句字元長度 ≤ 5 (例如 `GO`, `繼續`, `好的`)
+│   2. 輸入為純工作流陣列，背後未附帶任何後續中文指示 (例如純粹的 `@[/03_build]`)
+│   └── Action: 僅輸出單框 `🤖 系統作業準備清單`，直接展示前次足跡與預備動作。嚴禁輸出語意分析框，節省 Token。
+│
+└── Condition B (雙框完整模式):
+    不符合 Condition A 的所有狀況。
+    └── Action: 必須輸出雙框。先印出 `🧠 跨語系思維解析` 破解弦外之音，緊接著印出 `🤖 系統作業準備清單`。
 ```
 
 ## 2. Phase 0: Workflow Context Awareness
@@ -65,7 +72,9 @@ Workflow command present? (Matches `/[0-9]{2}_[a-zA-Z_]+` or `@[/.*]`)
 3. **Chinese-Only Content (純中文內容)**: Phase 0 and Phase 1 content MUST be 100% Traditional Chinese. English is STRICTLY FORBIDDEN inside the `<details>` block.
 4. **English Reasoning Delegation (英文推理委託)**: ALL English logical analysis, planning, and step decomposition MUST occur exclusively inside the IDE's native hidden thought block (`> Thought for Xs`). Do NOT output ANY English reasoning in the `<details>` block or anywhere in the user-facing text layer.
 
-To comply with the Dual-Audience Architecture (Bridge Layer), use the exact following hybrid formatting:
+To comply with the Dual-Audience Architecture (Bridge Layer), use the exact following hybrid formatting according to the Activation Scope:
+
+**[Condition B Only] Semantic Decode Block:**
 ```html
 > <details>
 > <summary>🧠 跨語系思維解析 (點擊展開)</summary>
@@ -80,16 +89,23 @@ To comply with the Dual-Audience Architecture (Bridge Layer), use the exact foll
 > - **Layer 2 (意圖)**: [填寫總監意圖的繁體中文描述]
 > - **Layer 3 (情緒)**: [填寫語氣與情緒的繁體中文描述]
 > - **Layer 4 (隱含)**: [填寫隱含假設的繁體中文描述]
-> 
-> **Phase 2: Tool & Skill Routing (實體武裝檢核)**
-> - **Skill 匹配雷達**: [強制掃描清單，填入對應的 SKILL.md，或寫 None]
-> - **工具機關槍**: [填入對應的 MCP 或原生工具名稱，或寫 None]
-> - **實體執行足跡驗證**: [強制。若有調用任何工具 (MCP/Terminal/讀寫/瀏覽器)，必須貼上真實 Step Id 或輸出節錄；無調用填 None]
-> - **行動決策 / 退路機制**: [具體宣告接下來的檢索或呼叫動作；若無工具則發出缺口警報，並建議 /12]
 > </details>
 
 <br>
+```
 
+**[Always Required] System Preparation Block:**
+```html
+> <details>
+> <summary>🤖 系統作業準備清單 (點擊展開)</summary>
+> 
+> - **參考知識區**: [強制掃描清單，填入對應的 SKILL.md，或寫 不適用]
+> - **實體操作工具**: [填入對應的 MCP 或原生工具名稱，或寫 None]
+> - **歷史防偽查驗 (歷史 Turn 追溯)**: [強制作為：往前回顧對話歷史，找出上一回合 AI 回覆最底部的 Turn 數字。若上一回合為 Turn: 17，此處必須精準印出 (讀取到 Turn: 17，核對無誤)。若為新對話則填寫 None。嚴禁填寫 +1 等無意義字串！]
+> - **決策與應變機制**: [具體宣告接下來的宣告或呼叫動作]
+> </details>
+
+<br>
 ```
 Do not perform this analysis mentally.
 
@@ -154,7 +170,7 @@ ALL English reasoning MUST occur inside the IDE's native thought block.
 └── After native thought completes → Map conclusions to Traditional Chinese output per Core Mandate §5
 ```
 
-## 5. Phase 2: Confidence-Gated Echo
+## 6. Confidence-Gated Echo
 
 ```
 Self-assess confidence in interpretation:
@@ -177,6 +193,29 @@ Override self-assessed confidence to LOW when ANY condition matches:
 ├── Complex conditional: 如果...就.../除非...否則.../只要...但是...
 ├── Multiple possible interpretations exist for a key phrase
 └── Director previously corrected a similar interpretation in this session
+```
+
+## 7. Execution Receipt Mandate (實體足跡收據與時序鐵律)
+
+```
+Whenever you reply to the Director, you MUST unconditionally append a holographic execution receipt at the absolute END of your final text response.
+├── Step 1 (Read Past): Scan the conversation history for your last outputted receipt. Extract its `Turn` number (e.g., `Turn: 17`). If none exists, start at 1.
+├── Step 2 (Calculate): Add 1 to the past Turn number. (e.g., `17 + 1 = 18`). DO NOT output '+1' literally. You MUST output the calculated integer!
+├── Format: Format as a multi-line markdown list for readability.
+```markdown
+**【實體足跡收據】**
+- **對話次序 (Turn)**: {計算後的絕對數字}
+- **實體ＩＤ (Step)**: {IDE回傳的ID清單}
+- **呼叫工具 (Tool)**: {名稱}(次數)
+```
+├── Example:
+```markdown
+**【實體足跡收據】**
+- **對話次序 (Turn)**: 18
+- **實體ＩＤ (Step)**: 345, 346
+- **呼叫工具 (Tool)**: multi_replace_file_content(x1)
+```
+└── Absolute Ban: Even if you used NO tools, you MUST still output the receipt with `實體ＩＤ: None` and `呼叫工具: 無`. The Turn sequence must NEVER be broken!
 ```
 
 ## Gotchas

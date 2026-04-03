@@ -17,15 +17,26 @@ memory_awareness: full
 - **Framework Documentation Sync**:
 
 ```
-[DOC SYNC GATE] Before proceeding to § 3:
-├── Were .agents/rules/, .agents/workflows/, or .agents/skills/ files modified?
-│   ├── NO  → Skip silently.
-│   └── YES → Read _system memory → ## Documentation Files list.
-│       ├── No list defined? → Skip silently.
-│       └── List exists → For each listed file:
-│           ├── File updated this session? → OK.
-│           └── File NOT updated? → 「🟡 [DOC WARN] {filename} 可能需要同步更新。」
-│               (Non-blocking. Log reminder and continue.)
+[DOC-SYNC CACHE-HEALING GATE] Before proceeding to § 3:
+├── 1. Cache Invalidation Check
+│   ├── Read `git diff --name-only`. Are there any `*.md` files modified that are NOT in `_system` -> `## Documentation Files`?
+│   │   ├── YES (Cache Miss) → **[CACHE INVALIDATED]**
+│   │   │   1. Scan workspace for all `*.md` (exclude `.agents/`, `node_modules/`).
+│   │   │   2. Ask Director: "發現記憶卡外的新文件遭修改，請確認哪些需納入後續同步防護名單？"
+│   │   │   3. Update `_system/SKILL.md` -> `## Documentation Files` with Director's choice.
+│   │   └── NO (Cache Hit) → Proceed to evaluation.
+├── 2. Sync Evaluation Phase
+│   ├── Were core framework, rules, or logic files modified?
+│   │   ├── NO  → Skip silently.
+│   │   └── YES → Read `_system` memory → `## Documentation Files`
+│   │       ├── List empty/missing? → [HALT] 拒絕備份，請先於記憶卡定義防護名單！
+│   │       └── For each listed file:
+│   │           ├── Updated this session? → OK.
+│   │           └── NOT updated? → [INTERACTIVE HALT] 暫停推進，並向總監拋出防呆救援對話：
+│   │               「🔴 攔截備份：發現官方受保護文檔 {filename} 未同步。是否需要我依據本次修改的脈絡，自動為您補寫更新此文件？(Y/N/Ignore)」
+│   │               ├── 若 Y → AI 自動閱讀上下文重寫該文件。完成後不需中斷，直接帶著修改後的文件接續後續備份提報流程 (§4 ~ §5)。
+│   │               ├── 若 Ignore → 總監裁定無須更新，直接跳過此閘門接續備份提報。
+│   │               └── 若 N → 退回等候總監親自處置。
 └── Gate cleared → Proceed to § 3.
 ```
 - **Record Mandate**: Extract the business value of the changes. Overwrite `CHANGELOG.md` natively in **Traditional Chinese (繁體中文)** summarizing what was improved natively.

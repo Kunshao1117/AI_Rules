@@ -4,6 +4,32 @@
 
 ---
 
+## [V6.0.5 跨語系防衛面板解耦與時序算術] - 2026-04-04
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Dynamic Panel Routing（動態單雙面板分流）**：將 `cross-lingual-guard` 的跨語系判斷與防偽查核獨立解耦為兩個獨立區塊（🧠 語意解碼框與 🤖 系統作業框）。透過字元長度判定樹（≤5 字元或純工作流指令），自動切換單雙框輸出模式。大幅降低了接收短指令時不必要的 Token 消耗與語意幻覺風險。
+- **Turn Counter Auto-Arithmetic（對話時序自動運算）**：強制啟動全域時空鋼印。在 🤖 面板強制讀取「前次印出的 Turn 紀錄」，並於本次結尾收據執行「Turn + 1」算術。徹底消滅舊版依賴 AI 盲目印出無意義 `+1` 字串的防偽破口，確保每一回合對話的時序皆能精準對位。
+- **Multi-line Holographic Receipt（多行全息收據）**：全面升級對話極末端的防偽腳印。廢止壅擠的單行字串，改用易讀性極高的直列式 Markdown 清單，讓人類總監在審計對話紀錄時的視覺掃描效率最大化。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Interactive Healing Gate（互動式文檔自癒閘門）**：解決 `/09_commit_log` 中 `DOC-SYNC` 閘門發生 Cache Miss 時直接 `[HALT]` 卡死備份流程的生硬設計。升級為 `[INTERACTIVE HALT]` 詢問機制（Y/N/Ignore），並允許總監授權 AI 根據當前修改脈絡，就地重寫尚未同步的官方文件，實現零阻力的流水線自動修復。
+
+
+## [V6.0.4 實體足跡頭尾解耦防線 (Decoupled Trust Chain)] - 2026-04-04
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Execution Footprint Decoupling（實體足跡頭尾解耦）**：為解決大語言模型串流生成導致的「預測未來」時空悖論，徹底重構 `cross-lingual-guard`。放棄在開場要求 AI 宣告未執行的工具，改為「對話尾部出示防偽收據 (Execution Receipt Mandate)」。確保意圖審核與火力查核在物理空間上明確分離。
+- **Blockchain-Style Verification（區塊鏈式前次足跡驗證）**：在對話開場意圖面板中，新增 `前次實體執行足跡查核` 欄位。強制系統回頭讀取「上一次對話」的最末端收據。若上一次操作發生幻覺，本次開場將自動現出 `None` 原形。此 Trust Chain 完美實現零成本全域防偽查核。
+
+### 【架構決策】 (Architectural Decisions)
+
+- **信任鏈哲學 (Trust Chain Philosophy)**：摒棄「強迫預言」的舊思維（因為強迫 AI 發誓反而是引發捏造的溫床），改走「事後 100% 物理追溯」的區塊鏈機制。每個對話節點的 Head 核查上一輪的 Hash（收據），Tail 提供最新的 Hash，形成自證清白的實體連鎖防線。
+
+---
+
 ## [V6.0.3 第二代高精度技能路由與工作流分流] - 2026-04-04
 
 ### 【新增商業能力】 (Business Capabilities Added)
