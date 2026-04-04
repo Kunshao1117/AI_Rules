@@ -4,6 +4,23 @@
 
 ---
 
+## [V6.0.8 工作流健檢交叉比對與掃描式文件同步] - 2026-04-04
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Audit Workflow Reference Fix（健檢工作流引用修正）**：08 健檢流程的分批策略引用了不存在的 `code-audit` §4（實為 §3），CLI 掃描模板的步驟數描述（Five-step）與實際 7 步模板不符，以及 CLI 委派 SOP 的 Cwd 措辭與工作流不一致。合計修正 5 項精度問題，確保 21 個關聯檔案間的交叉引用率達到 100%。
+- **Ghost Skill Reference Purge（幽靈技能引用清除）**：`cross-lingual-guard` 是 always_on 規則（自動注入每次對話），卻被 7 個工作流錯誤登記為 `required_skills`，且技能索引也虛假登記。此幽靈引用會導致 08 健檢 Phase F 對所有工作流誤報「技能綁定斷裂」。從全部 7 個工作流（02/03/04/05/09/10/12）和技能索引中完全清除。
+- **Snyk Scan Degradation Path（掃描降級路徑）**：CLI 掃描任務的 Snyk 步驟 2-3 缺乏認證失敗時的 fallback 機制。新增降級指引——步驟 2 若 Snyk 未認證則跳過並注記，步驟 3 改用 `npm audit --json` 替代。
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Scan-Based Doc Sync Gate（掃描式文件同步閘門）**：09 備份紀錄工作流的舊版文件同步閘門依賴靜態「防護名單」（存放於系統記憶卡），觸發條件模糊且前置設定門檻高，導致 AI 實際執行時直接跳過。重新設計為「腳本掃描 → AI 判斷 → 總監決策」的三段式命令閘門。新建 `Invoke-DocScan.ps1` 掃描腳本，自動掃描專案內所有 `.md` 文件（排除框架/依賴/建構產出/CHANGELOG），AI 讀取掃描結果後逐一判斷文件是否因本次修改而過時，向總監報告並等待決策後才行動。
+- **Repository Hygiene Gate（倉庫衛生檢查閘門）**：09 備份紀錄工作流新增 §1.5，在任何 Git 操作前執行 `git ls-files -ic --exclude-standard` 偵測「已被 .gitignore 排除但仍被 Git 追蹤」的殘留檔案。發現殘留時向總監報告並提供 `git rm --cached` 清理選項，確保備份倉庫乾淨。
+
+### 【架構決策】 (Architectural Decisions)
+
+- **Rule vs Skill Boundary Clarification（規則與技能的邊界釐清）**：透過 cross-lingual-guard 幽靈引用的發現，明確定義了 Antigravity 框架中「規則」與「技能」的邊界——Always On 規則由 IDE 自動注入，不應出現在 `required_skills` 中；技能是按需載入的操作手冊，需要物理存在的 SKILL.md 檔案。此原則消除了未來新增 Always On 規則時重蹈覆轍的風險。
+
 ## [V6.0.7 健檢工作流旗艦級重構與設計缺口修復] - 2026-04-04
 
 ### 【新增商業能力】 (Business Capabilities Added)

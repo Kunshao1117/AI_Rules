@@ -1,6 +1,6 @@
 ---
 description: Ultimate "rewind button" that uses 'git log' and explicit visual diff checks to safely revert the project to a prior stable state.
-required_skills: [memory-ops, cross-lingual-guard]
+required_skills: [memory-ops]
 memory_awareness: full
 ---
 

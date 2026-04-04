@@ -1,6 +1,6 @@
 ---
 description: Executes targeted bug fixes with a strict minimal-impact policy. Requires explicit visual diff authorization.
-required_skills: [memory-ops, security-sre, test-patterns, impact-test-strategy, cross-lingual-guard, trunk-ops]
+required_skills: [memory-ops, security-sre, test-patterns, impact-test-strategy, trunk-ops]
 memory_awareness: full
 ---
 

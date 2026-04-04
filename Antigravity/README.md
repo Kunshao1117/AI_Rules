@@ -1,6 +1,6 @@
 # Antigravity — AI 代理人治理框架
 
-> **版本**: v6.0.5 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
+> **版本**: v6.0.8 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
 
 Antigravity 是一套**零接觸自動部署**的 AI 編碼代理人治理框架。它為 AI 助手提供統一的工作流程、持久記憶系統與標準作業規範，讓 AI 在任何專案中都能像一個有紀律、有記憶的工程團隊來運作。
 
@@ -194,7 +194,7 @@ graph LR
 | 06 | 測試 | 瀏覽器自動化視覺測試（靜默化輸出） | Reader |
 | 07 | 除錯 | 堆疊追蹤分析、錯誤翻譯 | Reader |
 | 08 | 專案健檢 | 全方位健康審計（含陣列遍歷強制） | Writer/SRE |
-| 09 | 備份紀錄 | 記憶快照 + Git 提交（含文件同步閘門） | Writer/SRE |
+| 09 | 備份紀錄 | 記憶快照 + Git 提交（含倉庫狀態檢查閘門） | Writer/SRE |
 | 10 | 還原 | 安全回滾到先前穩定版本 | Writer/SRE |
 | 11 | 交接 | 產出交接文件給下一個 AI 對話（含前置檢查） | Reader/Memory |
 
@@ -345,7 +345,8 @@ Antigravity/
     │   ├── browser-testing/      ← 瀏覽器測試流程
     │   └── ... (25 套)
     ├── scripts/                  ← 框架工具腳本（隨部署攜帶，不進版控）
-    │   └── Measure-SkillQuality.ps1  ← 技能品質掃描
+    │   ├── Measure-SkillQuality.ps1  ← 技能品質掃描
+    │   └── Invoke-DocScan.ps1        ← 倉庫狀態掃描（衛生+文件）
     ├── memory/                   ← 專案記憶（專案特有，升級時受保護）
     │   └── (由 AI 執行 /02 架構 初始化)
     ├── project_skills/           ← 專案衍生技能（專案特有，升級時受保護）

@@ -1,6 +1,6 @@
 ---
 description: Consolidates memory snapshotting, changelog recording, and interactive Git commit/push actions.
-required_skills: [memory-ops, cross-lingual-guard]
+required_skills: [memory-ops]
 memory_awareness: full
 ---
 
@@ -11,34 +11,38 @@ memory_awareness: full
 ## 1. Zero-Touch Version Control Constraint
 - You MUST operate the local Git repository entirely. DO NOT ask the Director to run terminal commands.
 
+## 1.5 Repository Status Check（倉庫狀態檢查）
+
+```
+[REPO STATUS GATE] Before proceeding to § 2:
+├── Run: pwsh .agents/scripts/Invoke-DocScan.ps1 -ProjectRoot {project_root} -AgentsDir {agents_dir}
+├── Read {agents_dir}/logs/doc_scan.md
+├── Part A: Hygiene（殘留追蹤偵測）
+│   ├── No stale tracked files → Clean.
+│   └── Stale tracked files found →
+│       Output: 「發現以下檔案已被 .gitignore 排除但仍被倉庫追蹤：
+│         {file list}
+│        是否移除追蹤？(Y/N)」
+│       ├── Y → Run: git rm --cached {files} → Include in this commit.
+│       └── N → Skip.
+├── Part B: Documentation（專案文件清單）
+│   ├── 0 documents → Skip.
+│   └── N documents →
+│       Output (直接呈報掃描清單，不做判斷):
+│         「本次修改涉及以下專案文件：
+│           {掃描到的文件清單，含最後修改日期}
+│          請選擇需要更新的編號（如 1,2），或輸入 Skip 跳過。」
+│       ├── Skip → Proceed.
+│       └── Selected numbers →
+│           AI reads selected documents + session conversation context,
+│           then auto-generates updated content based on this session's changes.
+│           → Proceed.
+└── Gate cleared → Proceed to § 2.
+```
+
 ## 2. Integrated Snapshot & Record Generation
 - Analyze Uncommitted Diffs: Parse `git status` and `git diff`.
 - **Memory Snapshot Mandate**: Verify all affected memory cards have been updated by the preceding workflow. If not, update them now based on the uncommitted diffs. Ensure each card's `status` and `## Tracked Files` reflect the commit point.
-- **Framework Documentation Sync**:
-
-```
-[DOC-SYNC CACHE-HEALING GATE] Before proceeding to § 3:
-├── 1. Cache Invalidation Check
-│   ├── Read `git diff --name-only`. Are there any `*.md` files modified that are NOT in `_system` -> `## Documentation Files`?
-│   │   ├── YES (Cache Miss) → **[CACHE INVALIDATED]**
-│   │   │   1. Scan workspace for all `*.md` (exclude `.agents/`, `node_modules/`).
-│   │   │   2. Ask Director: "發現記憶卡外的新文件遭修改，請確認哪些需納入後續同步防護名單？"
-│   │   │   3. Update `_system/SKILL.md` -> `## Documentation Files` with Director's choice.
-│   │   └── NO (Cache Hit) → Proceed to evaluation.
-├── 2. Sync Evaluation Phase
-│   ├── Were core framework, rules, or logic files modified?
-│   │   ├── NO  → Skip silently.
-│   │   └── YES → Read `_system` memory → `## Documentation Files`
-│   │       ├── List empty/missing? → [HALT] 拒絕備份，請先於記憶卡定義防護名單！
-│   │       └── For each listed file:
-│   │           ├── Updated this session? → OK.
-│   │           └── NOT updated? → [INTERACTIVE HALT] 暫停推進，並向總監拋出防呆救援對話：
-│   │               「🔴 攔截備份：發現官方受保護文檔 {filename} 未同步。是否需要我依據本次修改的脈絡，自動為您補寫更新此文件？(Y/N/Ignore)」
-│   │               ├── 若 Y → AI 自動閱讀上下文重寫該文件。完成後不需中斷，直接帶著修改後的文件接續後續備份提報流程 (§4 ~ §5)。
-│   │               ├── 若 Ignore → 總監裁定無須更新，直接跳過此閘門接續備份提報。
-│   │               └── 若 N → 退回等候總監親自處置。
-└── Gate cleared → Proceed to § 3.
-```
 - **Record Mandate**: Extract the business value of the changes. Overwrite `CHANGELOG.md` natively in **Traditional Chinese (繁體中文)** summarizing what was improved natively.
 
 ## 3. Staleness Detection (過時偵測)

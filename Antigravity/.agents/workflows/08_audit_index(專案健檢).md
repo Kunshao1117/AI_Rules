@@ -138,7 +138,7 @@ These analyses CANNOT be done by tools — they require understanding of archite
 依 `audit-engine` 技能 §3 執行測試覆蓋缺口分析四步驟。
 將未覆蓋率與前五名高風險函式寫入最終報告【測試覆蓋缺口】區塊。
 
-> **Batch Strategy**: If the project has more than 5 module memory cards, follow the `code-audit` skill §4 batch procedures.
+> **Batch Strategy**: If the project has more than 5 module memory cards, follow the `code-audit` skill §3 batch procedures.
 
 #### H. Accessibility Audit（無障礙審計 — 僅前端專案）
 

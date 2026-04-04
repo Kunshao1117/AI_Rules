@@ -1,6 +1,6 @@
 ---
 description: Creates new project-specific skills by distilling reusable patterns from audit findings, debugging methodologies, or Director directives.
-required_skills: [skill-factory, memory-ops, cross-lingual-guard]
+required_skills: [skill-factory, memory-ops]
 memory_awareness: full
 skill_generation: true
 ---

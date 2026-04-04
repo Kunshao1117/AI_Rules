@@ -1,6 +1,6 @@
 ---
 description: Writes physical source code based on approved blueprints. Enforces automated testing and browser UI verification.
-required_skills: [memory-ops, security-sre, code-quality, test-patterns, cross-lingual-guard, trunk-ops]
+required_skills: [memory-ops, security-sre, code-quality, test-patterns, trunk-ops]
 memory_awareness: full
 ---
 
