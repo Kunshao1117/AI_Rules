@@ -15,7 +15,7 @@ metadata:
 
 ## Trigger Conditions (觸發條件)
 
-- `/08_audit` Phase D: Performance assessment
+- `/08_audit` §5: Performance assessment (report output stage)
 - Pre-deployment performance gate
 - Director requests performance report
 

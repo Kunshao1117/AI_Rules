@@ -4,6 +4,25 @@
 
 ---
 
+## [V6.0.7 健檢工作流旗艦級重構與設計缺口修復] - 2026-04-04
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Audit Engine Core Skill（語義推理引擎技能）**：新增框架核心技能 `audit-engine`，將原本堆疊在工作流中的詳細安全架構審查（S1-S5）、API 三層比對、測試覆蓋缺口分析等語義推理邏輯，下沉至獨立技能中。實現「工具與推理分離」的架構設計，工作流瘦身約 17%。
+- **Automated Health Scan Script（自動化健檢掃描腳本）**：新增 `Invoke-HealthAudit.ps1` PowerShell 腳本，封裝硬編碼憑證 grep 掃描和 Lighthouse 效能掃描兩個工具層模組，由 CLI 子代理自動執行，實現客觀工具掃描與 AI 主觀推理的物理隔離。
+- **Accessibility Audit Gate（無障礙審計閘門）**：在健檢工作流新增 Phase H 無障礙審計，與 `a11y-testing` 技能整合。僅在記憶卡包含前端頁面模組時觸發，Critical 違規標記為紅燈。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Scan Overlap Elimination（掃描重疊消除）**：發現腳本的 lint 模組（ESLint/TypeScript/npm audit/TODO）與 CLI 掃描任務提示的 7 步驟嚴重重疊，且 CLI 版本使用更強的 Snyk 工具。刪除腳本 lint 模組，讓 CLI 統一負責品質掃描，腳本僅保留 security + performance 兩個獨有模組。
+- **Security Review Timing Fix（安全架構審查時序修正）**：修正 §1.5 安全架構審查在原始碼尚未讀取前就觸發的設計錯誤。將其移至 §3.5 原始碼分析階段末尾（Phase S），確保 AI 在讀完所有後端 handler 原始碼後才執行 S1-S5 判斷。
+- **CLI Task Logic Restructure（CLI 任務邏輯重整）**：修正 Step 1 的 CLI 委派描述，從模糊的「先跑腳本再做任務」改為嚴格遵循 `cli-delegation-sop.md` 檔案傳令模式的五步驟流程（構建任務檔案→啟動 CLI→發送任務→棄管→等待），消除 AI 誤解為「分兩次啟動 CLI」的風險。
+
+### 【架構決策】 (Architectural Decisions)
+
+- **Tool-Reasoning Separation（工具推理分離原則）**：健檢流程明確劃分為三個執行層——CLI 子代理負責客觀工具掃描（ESLint/Snyk/grep）、`audit-engine` 技能負責 AI 語義推理（安全架構/API 比對/測試覆蓋）、`Invoke-HealthAudit.ps1` 腳本負責填補 CLI 無法覆蓋的工具缺口（硬編碼憑證/Lighthouse）。三者互不重疊、各司其職。
+- **Execution Order Correctness（執行順序正確性）**：安全架構審查（S1-S5）需要「已讀取後端原始碼」作為前提條件。在完整讀取全部 12 個關聯技能後，確認其正確位置應在 §3.5 模組關聯圖和函式存活驗證完成之後，而非工作流開頭。
+
 ## [V6.0.6 跨語系守衛精煉與雙受眾原則貫徹] - 2026-04-04
 
 ### 【體驗優化】 (UX Improvement)

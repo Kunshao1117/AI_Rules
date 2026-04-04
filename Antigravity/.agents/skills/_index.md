@@ -29,3 +29,4 @@
 | live docs, framework query, Context7, API docs                               | 即時文件、框架查詢、Context7、API 文件           | context7-docs            | context7           |
 | cross-lingual, Chinese semantic, intent decoding, echo-back, confidence gate | 跨語系、中文語意、意圖解碼、回聲確認、信心閘門   | cross-lingual-guard      | —                  |
 | CI test quality, flaky test, test framework, trunk uploads                    | CI 測試品質、不穩定測試、測試框架偵測、測試上傳   | trunk-ops                | trunk              |
+| health audit, security scan, API integrity, test coverage gap, audit engine   | 健檢引擎、安全架構審查、API 完整性、測試覆蓋缺口   | audit-engine             | —                  |

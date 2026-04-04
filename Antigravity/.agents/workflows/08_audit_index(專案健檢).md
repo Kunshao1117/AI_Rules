@@ -1,6 +1,6 @@
 ---
-description: Full-spectrum project health audit — workspace security, memory skill integrity, source code logic, API integration, performance, and maintainability.
-required_skills: [memory-ops, tech-stack-protocol, delegation-strategy, code-audit, test-patterns, a11y-testing, trunk-ops]
+description: Full-spectrum project health audit — workspace security, security architecture, memory skill integrity, source code logic, test coverage, API integration, performance, and maintainability.
+required_skills: [memory-ops, tech-stack-protocol, delegation-strategy, code-audit, audit-engine, code-quality, security-sre, impact-test-strategy, performance-audit, test-patterns, a11y-testing, trunk-ops]
 memory_awareness: full
 ---
 
@@ -11,6 +11,8 @@ memory_awareness: full
 ## 1. Global Workspace Security Scan
 - Scan `package.json`, `requirements.txt`, or equivalent for deprecated packages/CVEs.
 - Scan for hardcoded API keys, orphaned files, and unused dependencies.
+
+
 
 ## 2. Memory Skill System Initialization Check
 - Resolve two independent paths and store as variables for the entire workflow:
@@ -65,31 +67,36 @@ memory_awareness: full
 
 > **Execution Condition**: This section ONLY executes when memory cards contain non-empty `## Tracked Files`. If the project is a pure framework/ruleset (e.g., Antigravity itself), output: 「本專案無應用程式原始碼，跳過深度審計。」 and skip to §4.
 
-### Step 1: CLI Tool Scan (CLI 工具掃描 — 委派)
+### Step 1: CLI Tool Scan (CLI 工具掃描 — 無條件強制委派)
 
-Follow the `code-audit` skill §1 procedures:
+> [!IMPORTANT]
+> **[無條件強制委派 CLI — 零例外]**
+> 必須無條件啟動 CLI 子代理執行工具掃描。不得以任何理由跳過。跳過此步驟視為流程安全違規。
 
-1. Read `.agents/memory/_system/SKILL.md` to determine the tech stack.
-2. Read all active memory cards' `## Tracked Files` to compile the full file paths list.
-3. Construct the CLI task prompt:
-   - Load `delegation-strategy` skill's `references/cli-prompt-skeleton.md` as骨架
-   - Load `code-audit` skill's `references/scan-task-prompt.md` 填入掃描任務區塊
-   - Load `code-audit` skill's `references/scan-report-template.md` 填入輸出格式
-   - Fill variables: `{project_root}`, `{agents_dir}`, `{file_paths_list}`, `{memory_skill_list}`
-4. **Write to file** (檔案傳令): `write_to_file` → `{agents_dir}/logs/cli_task.md`
-5. Execute the **operate-then-abandon** pattern:
-   - `run_command`: `gemini` (start CLI in interactive mode, Cwd = workspace root)
-   - `send_command_input`: `請讀取 {agents_dir}/logs/cli_task.md 並執行其中定義的任務`
-   - `send_command_input`: Send `\n` (Enter key, as a **separate** call)
-   - **Abandon**: Do NOT read further terminal output.
-6. Inform the Director: 「CLI 掃描已啟動，CLI 會詢問 MCP 工具執行權限，請選擇 "Allow all server tools for this session"。掃描完成後請通知我繼續。」
-7. **Wait** for the Director to confirm the scan is complete before proceeding.
+依 `delegation-strategy` 技能 `references/cli-delegation-sop.md` 檔案傳令模式執行：
+
+1. **構建任務檔案**：依 `code-audit` 技能 §1 程序，讀取 `references/scan-task-prompt.md` 構建任務描述，並在任務描述中額外加入以下腳本命令：
+   ```powershell
+   pwsh .agents/scripts/Invoke-HealthAudit.ps1 -ProjectRoot {project_root} -AgentsDir {agents_dir} -Module all
+   ```
+   寫入 `{agents_dir}/logs/cli_task.md`。
+2. **啟動 CLI**：`run_command: gemini`（Cwd = workspace root）
+3. **發送任務**：`send_command_input: 請讀取 {agents_dir}/logs/cli_task.md 並執行其中定義的任務`
+4. **棄管**：Do NOT read further terminal output.
+5. 通知總監：「CLI 掃描已啟動，請選擇 "Allow all server tools for this session"。完成後請通知我繼續。」
+
+**等待總監確認掃描完成再進行下一步。**
+
+CLI 執行完成後輸出：
+- `.agents/logs/scan_report.md` — code-audit 掃描報告
+- `.agents/logs/audit_security_scan.md` — 硬編碼憑證掃描
+- `.agents/logs/audit_perf.md` — 效能掃描
 
 ### Step 2: Read Scan Report (讀取掃描報告)
 
-1. `view_file` on `{agents_dir}/logs/scan_report.md`.
-2. Parse the report following the format defined in `code-audit` skill §2.
-3. Extract key metrics: error/warning counts, critical vulnerabilities, top violated rules.
+1. `view_file` on `{agents_dir}/logs/scan_report.md` — 依 `code-audit` 技能 §2 解析（ESLint/Snyk/TypeScript/TODO/環境變數/Trunk）。
+2. `view_file` on `{agents_dir}/logs/audit_security_scan.md` — 硬編碼憑證 / 環境變數一致性。
+3. 萃取關鍵數據：錯誤/警告數、CVE 清單、最常違反規則。
 
 ### Step 3: AI Cross-Boundary Analysis (AI 跨邊界架構分析)
 
@@ -102,10 +109,9 @@ These analyses CANNOT be done by tools — they require understanding of archite
 - Detect circular dependencies.
 
 #### C. API Integration Check（API 串接完整性）
-- From `.agents/memory/_system/SKILL.md`, extract all known API routes/endpoints.
-- Scan frontend source files for all fetch/axios/API invocations.
-- Match each frontend call to a backend route — flag unmatched calls (broken endpoint).
-- Flag backend routes that are never called from any frontend (Dead API).
+
+依 `audit-engine` 技能 §2 執行三層強制比對（端點存在性 / Dead API / Schema 欄位一致性）。
+將比對結果寫入最終報告【前後端串接缺口】區塊。
 
 #### E. Dead Code / Orphan Detection（死碼與孤立檔案偵測）
 - Using the dependency graph from (B), identify source files NOT imported by any other module.
@@ -127,7 +133,29 @@ These analyses CANNOT be done by tools — they require understanding of archite
 - **Model vs API Response**: Compare database model/schema field definitions with API response structures. Flag mismatches.
 - **Migration Integrity**: If migration files exist, verify they correspond to current model definitions.
 
+#### K. Test Coverage Gap Analysis（測試覆蓋缺口分析）
+
+依 `audit-engine` 技能 §3 執行測試覆蓋缺口分析四步驟。
+將未覆蓋率與前五名高風險函式寫入最終報告【測試覆蓋缺口】區塊。
+
 > **Batch Strategy**: If the project has more than 5 module memory cards, follow the `code-audit` skill §4 batch procedures.
+
+#### H. Accessibility Audit（無障礙審計 — 僅前端專案）
+
+```
+[A11Y GATE] 觸發判斷：
+├── 記憶卡中是否包含前端頁面模組？
+│   ├── 否 → 「本專案無前端頁面，無障礙審計跳過。」
+│   └── 是 → 依 `a11y-testing` 技能 §1 掃描流程執行
+└── Critical 違規 = 🔴 紅燈 | Serious = 🟡 黃燈 | Moderate/Minor = 仅紀錄
+```
+
+#### S. Security Architecture Review（後端安全架構審查）
+
+> **前提**: 此時已完成 B/E/F 分析，所有後端原始碼已讀取完畢。
+
+依 `audit-engine` 技能 §1 執行 S1–S5 五項強制核查。每項輸出 PASS / FAIL + 詳情 / N/A。
+將結果寫入最終報告的【安全架構審查】區塊。
 
 ## 4. Migration Protocol (Legacy Fallback)
 When initializing memory cards for an old project:
@@ -151,12 +179,30 @@ You MUST halt and output a Traffic Light Health Report and Memory Status EXACTLY
  - 📝 型別檢查: 錯誤 {N}（若有執行）
  - 🏷️ 代辦標記: TODO {N} / FIXME {N} / HACK {N}
  - 🔑 環境變數: {不一致項目數}
+【安全架構審查】:（S1-S5 核查結果）
+ - 🔐 API 輸入驗證: <PASS/FAIL — 缺失端點列表>
+ - 🔑 憑證隔離: <PASS/FAIL — 硬編碼位置>
+ - 🛡️ 存取控制: <PASS/FAIL — 未守衛路由>
+ - 🚨 錯誤隔離: <PASS/FAIL — 洩漏位置>
+ - 📋 日誌標準: <PASS/FAIL — 違規模組>
 【AI 架構分析】:（主腦直接分析）
  - 🔗 模組關聯異常: <哪些模組的實際依賴關係跟記憶記錄的不一致>
- - 🔌 前後端串接缺口: <前端呼叫了不存在的後端功能 / 後端有功能但前端沒用到>
+ - 🔌 前後端串接缺口: <端點不存在 / Dead API / Schema 欄位不符>
  - 🗑️ 疑似沒有在用的檔案: <沒有被任何其他檔案引用的孤立檔案>
  - 📋 記憶同步: <記憶記錄的功能跟實際程式碼對不上的模組>
  - 💾 資料層: <資料庫欄位跟 API 回傳的內容不一致 / 資料庫版本升級紀錄缺漏>
+ - 🧪 測試覆蓋缺口: 未覆蓋率 {N}% <{燈號}> / 最高風險未覆蓋函式: <前 5 名>
+ - ♿ 無障礙審計: <Critical {N} / Serious {N}，或「無前端，跳過」>
+【效能審查】:
+依 `performance-audit` 技能 §1 執行 Lighthouse 掃描：
+```
+[PERFORMANCE GATE] 觸發判斷：
+├── 記憶卡中是否包含前端頁面模組？
+│   ├── 否 → 「本專案無前端頁面，效能審查跳過。」
+│   └── 是 → 讀取 audit_perf.md 報告並從 §1 分數判定燈號
+└── 將結果寫入報告【效能狀況】欄位
+```
+ - 🌐 效能狀況: <分數與燈號，或「無前端，跳過」>
 【下一步建議】: <給總監的繁體中文簡短建議>
 
 ## COMPLETION GATE（完成閘門 — 不可略過）
