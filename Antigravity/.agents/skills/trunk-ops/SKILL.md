@@ -15,6 +15,10 @@ metadata:
 
 # Trunk Ops — CI Test Quality Recipes
 
+> [!EXECUTION BOUNDARY]
+> **主腦專屬 (Direct Execution Only)**
+> 此技能與 `mcp_trunk_*` 工具僅限主腦 (Master Agent/IDE) 於本機直連執行，嚴禁委派給 CLI 或其他終端子代理人。
+
 ## Recipe 1: Test Framework Detection（測試框架偵測）
 
 1. `detect-frameworks` — Scan codebase to identify test frameworks

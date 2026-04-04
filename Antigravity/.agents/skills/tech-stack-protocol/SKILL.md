@@ -43,8 +43,22 @@ Project state?
 ## 2. Locked State (鎖定狀態)
 
 Once `_system` SKILL.md is generated:
-- **Absolute Freeze**: Do NOT introduce new core frameworks, languages, or ORM replacements
-- Exception: Director explicitly commands `/02_blueprint` architectural pivot
+
+```
+[STACK FREEZE GATE] Before ANY new dependency introduction:
+├── [SUDO] detected? → Allow. Log warning.
+├── Active workflow is /03-1_experiment? → Allow. Sandbox exemption.
+├── Is this a core framework, language, or ORM replacement?
+│   ├── NO (utility packages, dev tools, minor libs) → Proceed silently.
+│   └── YES →
+│       [HALT] 「🔴 [STACK HALT] 偵測到核心技術堆疊變更。需 /02_blueprint 授權。」
+│       DO NOT proceed. DO NOT install. Stop current task.
+└── Gate cleared.
+```
+
+> Core stack = runtime framework (Next.js, Django), language (TypeScript→Python), ORM/DB driver (Prisma→Drizzle), primary CSS approach (Tailwind→Vanilla).
+> Utility packages (lodash, dayjs, zod) are NOT core stack.
+
 
 ## 3. Self-Mutation Protocol (自體突變)
 

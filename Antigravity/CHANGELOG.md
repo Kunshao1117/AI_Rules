@@ -4,6 +4,16 @@
 
 ---
 
+## [V6.0.9 Trunk MCP 架構權限收回與主腦直連] - 2026-04-05
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Master Agent Direct Execution（主腦直連最高權限）**：針對 Trunk 這類封閉且重度依存 MCP 授權流的工具，確立「主腦獨佔直連」架構。將原先由 CLI 代理盲目觸發的 `trunk-ops` 掃描，升格為專案健檢工作流中的「主腦專屬步驟」，大幅減少了認證隔離引發的系統中斷與溝通斷層。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **CLI Delegation Loop Fix（CLI 委派死鎖切斷）**：修復了 `code-audit` CLI 提示詞中，硬性要求終端子代理執行 Trunk MCP 從而撞上 401 Unauthorized 防火牆的嚴重 Bug。透過在技能模組設置 `[EXECUTION BOUNDARY]` 邊界限制，並剝奪 CLI 提示詞中的無效指令，達成了 100% 的職責分工防護。
+
 ## [V6.0.8 工作流健檢交叉比對與掃描式文件同步] - 2026-04-04
 
 ### 【技術債消除】 (Technical Debt Removed)

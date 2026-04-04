@@ -52,3 +52,23 @@
 無 🔴 但有 🟡 → 總評 🟡（警告）
 全部 🟢 → 總評 🟢（合格）
 ```
+
+### 7. 風格交叉驗證
+- **前提**: `metadata.style` 欄位已宣告
+- **規則**:
+  ```
+  metadata.style 已宣告？
+  ├── 未宣告 → 🔴 缺少風格欄位
+  ├── imperative → 內文含 ≥1 code fence gate?
+  │   ├── YES → 🟢
+  │   └── NO  → 🔴 宣告命令式但無閘門
+  ├── guided → 內文含 code fence gate?
+  │   ├── NO  → 🟢
+  │   └── YES → 🔴 宣告引導式但含閘門
+  └── hybrid → 內文含 code fence gate?
+      ├── YES → 🟢
+      └── NO  → 🟡 宣告混合型但無閘門
+  ```
+- **判定**: 依上述決策樹
+- **修正**: 調整 `metadata.style` 宣告或增減閘門以符合宣告
+

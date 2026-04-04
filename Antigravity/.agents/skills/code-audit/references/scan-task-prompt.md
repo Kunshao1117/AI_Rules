@@ -38,9 +38,7 @@ gateway__call_tool 呼叫 eslint__lint-files，傳入檔案路徑：
 ### 6. 環境變數一致性
 讀取 .env.example，搜尋 process.env 引用，比對差異。
 
-### 7. Trunk 測試穩定度掃描（僅限包含自動化測試之專案）
-如果專案具備測試框架，請直接呼叫原生工具 `mcp_trunk_detect-frameworks`。
-分析專案是否有不穩定測試 (Flaky Tests)，並彙整 Trunk 的建議狀態。
+
 ```
 
 > **Tech Stack Adaptation**: Python 專案改用 `pylint`/`mypy`/`pip-audit`。

@@ -1,6 +1,6 @@
 # Antigravity — AI 代理人治理框架
 
-> **版本**: v6.0.8 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
+> **版本**: v6.0.9 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
 
 Antigravity 是一套**零接觸自動部署**的 AI 編碼代理人治理框架。它為 AI 助手提供統一的工作流程、持久記憶系統與標準作業規範，讓 AI 在任何專案中都能像一個有紀律、有記憶的工程團隊來運作。
 
@@ -232,6 +232,7 @@ graph LR
 | | `code-diagnosis` | 大範圍原始碼故障調查 | 英文指令（中文註解） | — |
 | **MCP 操作食譜** | `cloudflare-ops` | KV/D1/R2/Workers/容器管理 | 英文指令（中文註解） | cloudflare-* |
 | | `github-ops` | 倉庫管理、Issue/PR 操作 | 英文指令（中文註解） | github |
+| | `trunk-ops` | CI 測試框架偵測與修復 (主腦直連限定) | 英文指令（中文註解） | trunk |
 | | `supabase-ops` | 資料庫管理、SQL 操作、遷移驗證 | 英文指令（中文註解） | supabase |
 | | `sentry-ops` | 錯誤追蹤與效能監控 | 英文指令（中文註解） | sentry |
 | **輔助工具** | `structured-reasoning` | 架構決策深度推理 | 並行雙語 | sequentialthinking |

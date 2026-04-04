@@ -58,6 +58,21 @@ npm install -g lighthouse
 | TTFB | Time to First Byte | ≤ 800ms | > 1800ms |
 | INP | Interaction to Next Paint | ≤ 200ms | > 500ms |
 
+### Score → Traffic Light Gate (分數→燈號判定閘門)
+
+```
+[PERFORMANCE SCORE GATE] Lighthouse score → Traffic Light:
+├── ALL four categories ≥ 90 → 🟢 Green
+├── ANY category 50–89   → 🟡 Yellow
+├── ANY category < 50    → 🔴 Red
+└── Key Metrics breach?
+    ├── ANY metric exceeds「需改善」threshold → append 🟡 per metric
+    └── ALL metrics within「良好閾值」→ No additional flag
+```
+
+> This gate is referenced by `/08_audit_index` §5【效能審查】for deterministic traffic light assignment.
+> （此閘門被健檢工作流引用，用於確定性的燈號判定）
+
 ## Recipe 2: Browser Navigation Metrics (瀏覽器導航效能測量)
 
 Use Playwright MCP for real browser performance measurement:

@@ -94,9 +94,14 @@ CLI 執行完成後輸出：
 
 ### Step 2: Read Scan Report (讀取掃描報告)
 
-1. `view_file` on `{agents_dir}/logs/scan_report.md` — 依 `code-audit` 技能 §2 解析（ESLint/Snyk/TypeScript/TODO/環境變數/Trunk）。
+1. `view_file` on `{agents_dir}/logs/scan_report.md` — 依 `code-audit` 技能 §2 解析（ESLint/Snyk/TypeScript/TODO/環境變數）。
 2. `view_file` on `{agents_dir}/logs/audit_security_scan.md` — 硬編碼憑證 / 環境變數一致性。
 3. 萃取關鍵數據：錯誤/警告數、CVE 清單、最常違反規則。
+
+### Step 2.5: Trunk 測試穩定度掃描 (主腦直連)
+
+1. 如果專案具備測試框架，由主腦 (Master Agent) 直接呼叫原生工具 `mcp_trunk_detect-frameworks` 取代 CLI 子代理。
+2. 分析專案是否有不穩定測試 (Flaky Tests)，並彙整 Trunk 的建議狀態。
 
 ### Step 3: AI Cross-Boundary Analysis (AI 跨邊界架構分析)
 
@@ -199,7 +204,7 @@ You MUST halt and output a Traffic Light Health Report and Memory Status EXACTLY
 [PERFORMANCE GATE] 觸發判斷：
 ├── 記憶卡中是否包含前端頁面模組？
 │   ├── 否 → 「本專案無前端頁面，效能審查跳過。」
-│   └── 是 → 讀取 audit_perf.md 報告並從 §1 分數判定燈號
+│   └── 是 → 讀取 audit_perf.md 報告並依 §1「分數→燈號判定閘門」套用燈號
 └── 將結果寫入報告【效能狀況】欄位
 ```
  - 🌐 效能狀況: <分數與燈號，或「無前端，跳過」>

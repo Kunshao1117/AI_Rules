@@ -45,6 +45,9 @@ $ForbiddenPatterns = @(
 $RequiredFrontmatter = @('name', 'description', 'metadata')
 $RequiredMetadata = @('author', 'version', 'origin')
 
+# ─── 闘門偵測模式 (Gate Detection) ───
+$GatePattern = '\[(\w+\s+)?GATE\]'  # 匹配 [XXXX GATE] 格式的 code fence 閘門
+
 # ─── 掃描函式 ───
 function Measure-SingleSkill {
     param([string]$SkillDir)
@@ -128,6 +131,35 @@ function Measure-SingleSkill {
         $l3Status = if ($hasInlineRef) { '🟢' } else { '🟡' }
     }
 
+    # 風格交叉驗證
+    $styleStatus = '—'
+    $styleValue = ''
+    # 僅從 YAML frontmatter 區塊中提取 style（避免誤抓 body 中的模板範例）
+    if ($fmMatch.Success) {
+        $fmContent = $fmMatch.Groups[1].Value
+        $fmStyleMatch = [regex]::Match($fmContent, '(?m)^\s+style:\s*(\S+)')
+        if ($fmStyleMatch.Success) {
+            $styleValue = $fmStyleMatch.Groups[1].Value.Trim()
+        }
+    }
+    $hasGate = $content -match $GatePattern
+    if ($styleValue) {
+        switch ($styleValue) {
+            'imperative' {
+                $styleStatus = if ($hasGate) { '🟢' } else { '🔴' }  # 命令式必須有閘門
+            }
+            'guided' {
+                $styleStatus = if (-not $hasGate) { '🟢' } else { '🔴' }  # 引導式禁止閘門
+            }
+            'hybrid' {
+                $styleStatus = if ($hasGate) { '🟢' } else { '🟡' }  # 混合型應有閘門
+            }
+            default {
+                $styleStatus = '🔴'  # 無效的 style 值
+            }
+        }
+    }
+
     return [PSCustomObject]@{
         Name             = $skillName
         Lines            = $lineCount
@@ -141,19 +173,23 @@ function Measure-SingleSkill {
         CompatStatus     = $compatStatus
         L3Status         = $l3Status
         HasRefs          = $hasRefs
+        StyleValue       = $styleValue
+        StyleStatus      = $styleStatus
         OverallStatus    = if (
             $lineStatus -eq '🟢' -and
             $tokenStatus -eq '🟢' -and
             $forbiddenStatus -eq '🟢' -and
             $frontmatterStatus -eq '🟢' -and
             $compatStatus -eq '🟢' -and
-            ($l3Status -ne '🟡')
+            ($l3Status -ne '🟡') -and
+            ($styleStatus -ne '🔴')
         ) { '🟢' } elseif (
             $lineStatus -eq '🔴' -or
             $tokenStatus -eq '🔴' -or
             $forbiddenStatus -eq '🔴' -or
             $frontmatterStatus -eq '🔴' -or
-            $compatStatus -eq '🔴'
+            $compatStatus -eq '🔴' -or
+            $styleStatus -eq '🔴'
         ) { '🔴' } else { '🟡' }
     }
 }
@@ -201,12 +237,13 @@ Write-Host "🟢 合格：$passCount  🟡 警告：$warnCount  🔴 不合格�
 Write-Host ""
 
 # 詳細表
-$headerFmt = "{0,-30} {1,6} {2,3} {3,7} {4,3} {5,4} {6,4} {7,4} {8,3} {9,4}"
-Write-Host ($headerFmt -f '技能名稱', '行數', ' ', 'Token', ' ', '禁詞', 'FM', 'IO', 'L3', '總評')
-Write-Host ('-' * 80)
+$headerFmt = "{0,-30} {1,6} {2,3} {3,7} {4,3} {5,4} {6,4} {7,4} {8,3} {9,8} {10,3} {11,4}"
+Write-Host ($headerFmt -f '技能名稱', '行數', ' ', 'Token', ' ', '禁詞', 'FM', 'IO', 'L3', '風格', ' ', '總評')
+Write-Host ('-' * 90)
 
 foreach ($r in $results | Sort-Object Name) {
-    $line = $headerFmt -f $r.Name, $r.Lines, $r.LineStatus, $r.Tokens, $r.TokenStatus, $r.ForbiddenStatus, $r.FrontmatterStatus, $r.CompatStatus, $r.L3Status, $r.OverallStatus
+    $styleDisplay = if ($r.StyleValue) { $r.StyleValue.Substring(0, [math]::Min(8, $r.StyleValue.Length)) } else { '—' }
+    $line = $headerFmt -f $r.Name, $r.Lines, $r.LineStatus, $r.Tokens, $r.TokenStatus, $r.ForbiddenStatus, $r.FrontmatterStatus, $r.CompatStatus, $r.L3Status, $styleDisplay, $r.StyleStatus, $r.OverallStatus
     Write-Host $line
 
     # 細節
@@ -215,6 +252,15 @@ foreach ($r in $results | Sort-Object Name) {
     }
     if ($r.MissingFields.Count -gt 0) {
         Write-Host "  ⚠ 缺少欄位：$($r.MissingFields -join ', ')" -ForegroundColor Yellow
+    }
+    if ($r.StyleStatus -eq '🔴' -and $r.StyleValue) {
+        if ($r.StyleValue -eq 'imperative') {
+            Write-Host "  ⚠ 風格不符：宣告命令式但無閘門" -ForegroundColor Yellow
+        } elseif ($r.StyleValue -eq 'guided') {
+            Write-Host "  ⚠ 風格不符：宣告引導式但含閘門" -ForegroundColor Yellow
+        } else {
+            Write-Host "  ⚠ 風格不符：無效的 style 值 '$($r.StyleValue)'" -ForegroundColor Yellow
+        }
     }
 }
 

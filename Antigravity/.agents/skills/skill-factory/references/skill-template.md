@@ -14,6 +14,7 @@ metadata:
   author: antigravity
   version: "1.0"
   origin: project
+  style: imperative|guided|hybrid
   memory_awareness: none|read|full
   tool_scope: ["{category1}", "{category2}"]
 ---

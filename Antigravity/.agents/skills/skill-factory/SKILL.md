@@ -42,10 +42,27 @@ Trigger?
    - Framework core skills NEVER use a hyphenated project-code prefix — collision is impossible by design
 3. Define scope — what it covers and what it does NOT cover
 
+### Step 1.5: Style Determination (風格判定)
+
+```
+[STYLE GATE] Determine instruction style for the new skill:
+├── Consequence severity: wrong judgment → security breach / data corruption / memory pollution?
+│   └── YES → 🔴 Imperative
+├── Deterministic output: must produce precise PASS/FAIL?
+│   └── YES → 🔴 Imperative
+├── Cross-module consistency: must execute identically across all modules?
+│   └── YES → 🔴 Imperative
+├── Flow control node: sits at workflow decision point, result affects branching?
+│   └── YES → 🟡 Hybrid (gate at decision node + guided procedure)
+└── None of above → 🟢 Guided
+```
+
+Record the result in `metadata.style` field.
+
 ### Step 2: Write SKILL.md
 1. Read references/skill-template.md → 取得標準模板
-2. Read references/skill-style-guide.md → 取得書寫風格規範
-3. Frontmatter MUST include `metadata.origin: project`
+2. Read references/skill-style-guide.md → 取得書寫風格規範（含 §6 風格密度對照表）
+3. Frontmatter MUST include `metadata.origin: project` and `metadata.style` from Step 1.5
 4. `description` MUST include English + Chinese keywords for IDE trigger matching
 
 ### Step 3: Create Directory Structure
@@ -77,6 +94,7 @@ metadata:
   author: antigravity
   version: "1.0"
   origin: project
+  style: imperative|guided|hybrid
   memory_awareness: none|read|full
   tool_scope: ["{scope}"]
 ---
@@ -107,6 +125,16 @@ Every sentence in SKILL.md:
     └── Rewrite: narrative openings → decision trees
 ```
 
+### §4.55 Style Enforcement Rules (風格落地指引)
+
+Read references/skill-style-guide.md §6 for the full density matrix. Summary:
+
+| Style | Requirements |
+|-------|-------------|
+| 🔴 `imperative` | ≥1 code fence gate + HALT mechanism + `[SUDO]` override path |
+| 🟡 `hybrid` | Code fence gate ONLY at decision nodes, guided procedure elsewhere |
+| 🟢 `guided` | Recipes + gotchas + interpretation. Code fence gates FORBIDDEN |
+
 ### §4.6 Token Budget (Token 預算約束)
 
 | Constraint | Limit |
@@ -119,13 +147,17 @@ Every sentence in SKILL.md:
 
 ```
 [INHERITANCE GATE] For EVERY generated project skill:
-├── Generated SKILL.md contains at least one [SILENT GATE] block?
-│   ├── YES → Proceed.
-│   └── NO  → Auto-inject Override & Sandbox Detection template (from code-quality § 0).
-├── Generated SKILL.md mentions [SUDO] override path?
-│   ├── YES → Proceed.
-│   └── NO  → Auto-inject [SUDO] bypass clause.
-└── This ensures ALL offspring skills carry the Trinity Paradigm DNA.
+├── metadata.style = imperative or hybrid?
+│   ├── YES → SKILL.md contains at least one [SILENT GATE] block?
+│   │   ├── YES → Proceed.
+│   │   └── NO  → Auto-inject Override & Sandbox Detection template (from code-quality § 0).
+│   └── NO (guided) → Skip gate injection. Proceed.
+├── metadata.style = imperative or hybrid?
+│   ├── YES → SKILL.md mentions [SUDO] override path?
+│   │   ├── YES → Proceed.
+│   │   └── NO  → Auto-inject [SUDO] bypass clause.
+│   └── NO (guided) → Skip. Proceed.
+└── Gate cleared.
 ```
 
 ### §4.7 agentskills.io Compatibility
