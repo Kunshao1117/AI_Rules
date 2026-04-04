@@ -1,10 +1,11 @@
 ---
 name: ui-ux-standards
 description: >
-  UI/UX design manifesto: engineering jargon isolation, multi-language strategy,
+  [Quality] UI/UX design manifesto: engineering jargon isolation, multi-language strategy,
   human-readable error handling, and intent-driven interface design.
   Use when: 建構或修改前端 UI 元件、設計錯誤訊息、
   或任何涉及 UI/UX/介面/錯誤訊息/i18n/多語系/前端元件 的任務。
+  DO NOT use when: 純後端 API 開發（用 security-sre）、不涉及使用者介面的場景。
 metadata:
   author: antigravity
   version: "5.1"
@@ -35,10 +36,10 @@ UI component target audience?
 
 All actions and statuses must be translated into the user's intent:
 
-| ❌ Engineering Jargon | ✅ User Intent |
-|----------------------|----------------|
-| User Entity Created | Account created successfully |
-| Authorization Pending | Awaiting approval |
+| ❌ Engineering Jargon          | ✅ User Intent                               |
+| ------------------------------ | -------------------------------------------- |
+| User Entity Created            | Account created successfully                 |
+| Authorization Pending          | Awaiting approval                            |
 | Failed to fetch data (Timeout) | Connection unstable. Please try again later. |
 
 ## 2. Multi-Language & Localization Strategy (多語系與在地化策略)
@@ -50,12 +51,12 @@ All actions and statuses must be translated into the user's intent:
 
 When a backend service throws a technical exception, the UI MUST intercept it and display a non-threatening, actionable message in the target language:
 
-| Technical Exception | English | Traditional Chinese |
-|--------------------|---------|-------------------|
-| `500 Internal Server Error` | Something went wrong. Please try again. | 系統暫時無法處理，請稍後再試。 |
-| `Failed to fetch (Timeout)` | Connection unstable. Please try again later. | 目前連線不穩定，請稍後再試。 |
-| `Invalid JWT Token` | For your security, please log in again. | 為了您的安全，請重新登入。 |
-| `Database Deadlock` | We're processing your request. Please wait. | 正在處理您的請求，請稍候。 |
+| Technical Exception         | English                                      | Traditional Chinese            |
+| --------------------------- | -------------------------------------------- | ------------------------------ |
+| `500 Internal Server Error` | Something went wrong. Please try again.      | 系統暫時無法處理，請稍後再試。 |
+| `Failed to fetch (Timeout)` | Connection unstable. Please try again later. | 目前連線不穩定，請稍後再試。   |
+| `Invalid JWT Token`         | For your security, please log in again.      | 為了您的安全，請重新登入。     |
+| `Database Deadlock`         | We're processing your request. Please wait.  | 正在處理您的請求，請稍候。     |
 
 ## 4. Intent-Driven UI & Graceful States (意圖驅動與優雅狀態)
 

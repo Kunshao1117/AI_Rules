@@ -4,6 +4,24 @@
 
 ---
 
+## [V6.1.0 技能精準度三段式調校與 PowerShell 版本強制] - 2026-04-05
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Skill Precision Tri-Section Architecture（三段式技能觸發結構）**：全部 27 個技能的觸發條件統一為「`[Domain]` 分類標籤 + `Use when` 正向觸發 + `⚠️ DO NOT use when` 負向排除」的三段式結構。Agent 在面對多個可能匹配的技能時，能透過排除條件快速收斂至正確的技能，減少上下文浪費與誤載入。
+- **PowerShell 7 Enforcement Gate（PowerShell 7 版本強制閘門）**：在核心規則終端機前置閘門中新增 `powershell` 指令攔截節點，禁止 Agent 呼叫舊版 PowerShell 5.1。所有框架腳本同步加入版本自動升級閘門——當被舊版 PowerShell 執行時，自動偵測 `pwsh` 並以 PowerShell 7 重新執行自身，無需人工介入。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Trigger Overlap Resolution（觸發重疊消除）**：識別並修復三組嚴重的技能觸發重疊——瀏覽器測試三角（`browser-testing` / `test-automation-strategy` / `delegation-strategy`）、GitHub PR 操作（`github-ops` / `pr-review-ops`）、健檢工作流分工（`audit-engine` / `code-audit`）。每組透過互斥的排除條件實現職責明確劃分。
+- **Over-Broad Trigger Narrowing（過廣觸發條件縮窄）**：三個高頻觸發技能（`code-quality`、`security-sre`、`impact-test-strategy`）的觸發條件從模糊的「任何涉及 X」縮窄為精確的場景描述，避免每次寫程式碼都觸發的 Token 浪費。
+- **Skill Factory Template Enforcement（技能工廠模板三段式強制）**：`skill-factory` 的 Frontmatter 模板和品質檢查清單同步更新，未來新建的技能將自動遵守三段式結構，並在品質掃描中驗證 `DO NOT use when` 的存在性。
+
+### 【架構決策】 (Architectural Decisions)
+
+- **Negative Exclusion over Positive Matching（負向排除優於正向匹配）**：經 6 階段結構化推理分析（Sequential Thinking），選擇「在 description 中加入 `DO NOT use when` 排除條件」作為精準度提升的核心策略。相較於「建立技能優先級序」或「改變目錄結構」，此方案最輕量（僅改 description 文字）、向後相容（IDE 匹配機制不變）、且立即生效（Agent 讀到即可判斷）。
+- **Dual-Layer PowerShell Defense（雙層 PowerShell 防線）**：規則層（Agent 行為攔截）+ 腳本層（自我版本偵測）的縱深防禦，確保即使 Agent 犯錯也不會導致腳本在不兼容環境下崩潰。
+
 ## [V6.0.9 Trunk MCP 架構權限收回與主腦直連] - 2026-04-05
 
 ### 【新增商業能力】 (Business Capabilities Added)

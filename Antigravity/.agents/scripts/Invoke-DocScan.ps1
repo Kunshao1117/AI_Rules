@@ -45,7 +45,7 @@ try {
 } catch { }
 
 if ($staleTracked.Count -gt 0) {
-    $report += "## ⚠️ 殘留追蹤（已被 .gitignore 排除但仍在倉庫中）`n`n"
+    $report += "## 殘留追蹤（已被 .gitignore 排除但仍在倉庫中）`n`n"
     foreach ($f in $staleTracked) {
         $report += "- ``$f```n"
     }

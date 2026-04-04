@@ -1,8 +1,9 @@
 ---
 name: audit-engine
 description: >
-  Full-spectrum health audit reasoning engine — semantic analysis for /08_audit_index.
-  Use when: 執行 /08_audit_index 健檢工作流的四大語義推理審查步驟（安全架構/API分析/測試覆蓋/架構分析）。
+  [Audit] Health audit semantic reasoning engine — AI-driven analysis for /08_audit_index §2 (S1–S5, API, test coverage, architecture).
+  Use when: 執行 /08_audit_index 的語義推理審查（安全架構 S1–S5 / 前後端串接比對 / 測試覆蓋缺口 / 架構分析）。
+  DO NOT use when: 執行 ESLint/npm audit 等工具掃描（用 code-audit）、非 /08_audit_index 工作流、修復或重構場景。
 metadata:
   author: antigravity
   version: "1.0"
@@ -112,6 +113,7 @@ Invoked exclusively by `/08_audit_index`. Not applicable to build, fix, or refac
 > **Prerequisite**: Memory card traversal complete (Phase B/E/F from §3 of the workflow).
 
 Consolidates output from workflow §3.5 items B, E, F:
+
 - **Module Relation Anomalies**: Actual import graph vs memory card Relations mismatch
 - **Orphan File List**: Files not imported by any module (excluding known entry points)
 - **Missing Key Functions**: Functions recorded in memory card Key Decisions no longer found via `grep_search`

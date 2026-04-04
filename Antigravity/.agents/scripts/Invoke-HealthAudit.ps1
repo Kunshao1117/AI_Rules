@@ -14,6 +14,17 @@ param(
     [string]$Module = "all"         # 要執行的掃描模組
 )
 
+# ─── PowerShell 7 版本閘門 ───
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    $pwshCmd = Get-Command pwsh -ErrorAction SilentlyContinue
+    if ($pwshCmd) {
+        & pwsh -File $MyInvocation.MyCommand.Path @PSBoundParameters
+        exit $LASTEXITCODE
+    }
+    Write-Error "[HALT] 此腳本需要 PowerShell 7+。請安裝 pwsh 或使用 pwsh 執行。"
+    exit 1
+}
+
 $ErrorActionPreference = "Continue"
 $timestamp = Get-Date -Format "yyyy-MM-ddTHH:mm:ss+08:00"
 
@@ -63,7 +74,7 @@ function Invoke-SecurityModule {
                 $matches = Select-String -Path "src/**/*" -Pattern $pattern -Recurse 2>$null
                 if ($matches) {
                     $hardcodeFound = $true
-                    Append-Section "⚠️ 疑似硬編碼憑證（請人工確認）：" $outputFile
+                    Append-Section "疑似硬編碼憑證（請人工確認）：" $outputFile
                     $matches | ForEach-Object { Append-Section "  - $($_.Filename):$($_.LineNumber)" $outputFile }
                 }
             }
@@ -90,7 +101,7 @@ function Invoke-SecurityModule {
                 }
             }
         } else {
-            Append-Section "⚠️ 未找到 .env.example 檔案" $outputFile
+            Append-Section "未找到 .env.example 檔案" $outputFile
         }
 
     } finally {
@@ -121,13 +132,13 @@ function Invoke-PerformanceModule {
         # 確認 dev server 可啟動
         $packageJson = Get-Content "package.json" | ConvertFrom-Json
         if (-not $packageJson.scripts.dev) {
-            Append-Section "⚠️ package.json 未定義 dev script，無法啟動開發伺服器，效能掃描跳過。" $outputFile
+            Append-Section "package.json 未定義 dev script，無法啟動開發伺服器，效能掃描跳過。" $outputFile
             return
         }
 
         # Lighthouse 掃描核心頁面
         Append-Section "## Lighthouse 效能掃描" $outputFile
-        Append-Section "⚠️ 請確認開發伺服器已在 http://localhost:3000 啟動，再讀取此報告。" $outputFile
+        Append-Section "請確認開發伺服器已在 http://localhost:3000 啟動，再讀取此報告。" $outputFile
         Append-Section "`n執行命令（請在啟動 dev server 後手動執行）：" $outputFile
         Append-Section "``````powershell" $outputFile
         Append-Section "npx lighthouse http://localhost:3000 --output=json --output-path=$logsDir/lighthouse-home.json --chrome-flags=`"--headless`"" $outputFile

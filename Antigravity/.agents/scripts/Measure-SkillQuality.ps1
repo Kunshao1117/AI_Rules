@@ -19,6 +19,16 @@ param(
 )
 
 # ─── 初始化 ───
+# ─── PowerShell 7 版本閘門 ───
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    $pwshCmd = Get-Command pwsh -ErrorAction SilentlyContinue
+    if ($pwshCmd) {
+        & pwsh -File $MyInvocation.MyCommand.Path @PSBoundParameters
+        exit $LASTEXITCODE
+    }
+    Write-Error "[HALT] 此腳本需要 PowerShell 7+。請安裝 pwsh 或使用 pwsh 執行。"
+    exit 1
+}
 $ErrorActionPreference = 'Stop'
 # 強制 UTF-8 編碼（避免 Emoji 字元在 Big5/ANSI 環境下導致解析器崩潰）
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8

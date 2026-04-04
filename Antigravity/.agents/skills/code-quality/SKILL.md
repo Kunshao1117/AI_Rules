@@ -1,10 +1,9 @@
 ---
 name: code-quality
 description: >
-  Imperative code quality enforcement via Silent Exception gates.
-  Enforces SOLID, dynamic line thresholds, and modular refactoring with hard-halt mechanisms.
-  Use when: 建構新程式碼、重構既有程式碼、
-  或任何涉及 SOLID/閾值/行數/refactor/程式碼品質 的任務。
+  [Quality] Imperative code quality enforcement via Silent Exception gates: SOLID, dynamic line thresholds, modular refactoring.
+  Use when: 建構新原始碼檔案、執行 /05_refactor 重構、或檔案行數可能超過閾值 的場景。
+  DO NOT use when: 純討論/研究/讀取程式碼、修改設定檔或樣式文字、/03-1_experiment 沙盒模式。
 metadata:
   author: antigravity
   version: "6.0"
@@ -41,11 +40,11 @@ metadata:
 
 ## 2. Dynamic File Thresholds (動態檔案閾值)
 
-| File Type | Max Lines | Examples |
-|-----------|-----------|----------|
-| Utils / Services | 200 lines | `auth-service.ts`, `utils.ts` |
-| Components / Pages | 500 lines | `PostsPage.tsx`, `Editor.tsx` |
-| Routes / DI Configs | No limit | `routes.ts`, `payload.config.ts` |
+| File Type           | Max Lines | Examples                         |
+| ------------------- | --------- | -------------------------------- |
+| Utils / Services    | 200 lines | `auth-service.ts`, `utils.ts`    |
+| Components / Pages  | 500 lines | `PostsPage.tsx`, `Editor.tsx`    |
+| Routes / DI Configs | No limit  | `routes.ts`, `payload.config.ts` |
 
 ## 3. Threshold Enforcement Gate (閾值強制閘門)
 
@@ -63,6 +62,7 @@ metadata:
 ```
 
 ## Constraints
+
 - This skill operates SILENTLY. Do NOT output confirmation when checks pass.
 - Output ONLY when a violation is detected (Exception-Halt pattern).
 - [SUDO] and /03_sketch bypass ALL gates.

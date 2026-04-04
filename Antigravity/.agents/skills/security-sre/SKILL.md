@@ -1,9 +1,9 @@
 ---
 name: security-sre
 description: >
-  Zero-trust validation, credential isolation procedures, and physical error handling/logging standards.
-  Use when: 建構後端 API、處理資料庫寫入、設計認證流程、
-  或任何涉及 安全/驗證/Zod/密碼/環境變數/error handling 的任務。
+  [Quality] Zero-trust validation, credential isolation, and structured logging standards.
+  Use when: 建構或修改後端 API 端點、設計認證/授權流程、處理機敏資訊（密碼/API key/環境變數）的場景。
+  DO NOT use when: 純前端 UI 開發（用 ui-ux-standards）、讀取或審查程式碼而不寫入、/03-1_experiment 沙盒模式。
 metadata:
   author: antigravity
   version: "5.2"
@@ -33,7 +33,7 @@ metadata:
   const CreatePostSchema = z.object({
     title: z.string().min(1).max(200),
     content: z.string().min(1),
-    status: z.enum(['draft', 'published']),
+    status: z.enum(["draft", "published"]),
   });
   ```
 
@@ -79,30 +79,30 @@ All backend log entries MUST use JSON structured format:
 
 ### Required Fields (必填欄位)
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `timestamp` | ISO 8601 (+08:00) | When the event occurred（事件發生時間） |
-| `level` | enum | `error` / `warn` / `info` / `debug`（日誌等級） |
-| `module` | string | Which module generated this log（產生日誌的模組） |
-| `message` | string | Human-readable description（人類可讀的描述） |
+| Field       | Type              | Description                                       |
+| ----------- | ----------------- | ------------------------------------------------- |
+| `timestamp` | ISO 8601 (+08:00) | When the event occurred（事件發生時間）           |
+| `level`     | enum              | `error` / `warn` / `info` / `debug`（日誌等級）   |
+| `module`    | string            | Which module generated this log（產生日誌的模組） |
+| `message`   | string            | Human-readable description（人類可讀的描述）      |
 
 ### Optional Fields (選填欄位)
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `traceId` | string | Distributed trace ID for cross-service correlation（分散式追蹤 ID） |
-| `details` | object | Additional context-specific data（額外上下文資料） |
-| `userId` | string | Requesting user ID, if applicable（請求的使用者 ID） |
-| `statusCode` | number | HTTP status code, if applicable（HTTP 狀態碼） |
+| Field        | Type   | Description                                                         |
+| ------------ | ------ | ------------------------------------------------------------------- |
+| `traceId`    | string | Distributed trace ID for cross-service correlation（分散式追蹤 ID） |
+| `details`    | object | Additional context-specific data（額外上下文資料）                  |
+| `userId`     | string | Requesting user ID, if applicable（請求的使用者 ID）                |
+| `statusCode` | number | HTTP status code, if applicable（HTTP 狀態碼）                      |
 
 ### Log Level Guidelines (日誌等級指引)
 
-| Level | When to Use |
-|-------|------------|
-| `error` | Operation failed, requires attention |
-| `warn` | Succeeded but unexpected conditions |
-| `info` | Important business events (login, resource creation) |
-| `debug` | Diagnostic info — suppress in production |
+| Level   | When to Use                                          |
+| ------- | ---------------------------------------------------- |
+| `error` | Operation failed, requires attention                 |
+| `warn`  | Succeeded but unexpected conditions                  |
+| `info`  | Important business events (login, resource creation) |
+| `debug` | Diagnostic info — suppress in production             |
 
 ### AI Log Query Templates (AI 日誌查詢模板)
 

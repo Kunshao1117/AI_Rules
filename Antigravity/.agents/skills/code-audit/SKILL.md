@@ -1,9 +1,9 @@
 ---
 name: code-audit
 description: >
-  CLI-delegated code scanning procedures, scan report format, and cross-boundary analysis patterns.
-  Use when: 執行 /08_audit 深度審計、需要 ESLint/安全 工具掃描、
-  或任何涉及 程式碼品質掃描/安全漏洞掃描/工具報告解讀 的場景。
+  [Audit] CLI-delegated code scanning procedures: ESLint, npm audit, TypeScript check, TODO markers.
+  Use when: 執行 ESLint 品質掃描/npm audit 安全掃描/TypeScript 型別檢查/環境變數一致性檢查 的場景。
+  DO NOT use when: 執行 /08_audit 的語義推理分析（用 audit-engine）、單次修復或重構（用 /04_fix 或 /05_refactor）。
 metadata:
   author: antigravity
   version: "5.1"
@@ -32,6 +32,7 @@ Multi-step scan, execute in order (see `references/scan-task-prompt.md` for full
 
 After CLI scan completes, Master Agent supplements with AI-exclusive analysis（主腦補充 AI 專屬分析）.
 In `/08_audit`, these items are decomposed into `audit-engine` §1–§4 + workflow §3.5 steps B/C/E/F/J — do NOT re-execute here（在 /08 健檢中，以下項目由 `audit-engine` 和工作流步驟細分承接，不需重複執行）:
+
 - **Module Relationship** — Compare import dependency graph against memory card relation declarations（比對依賴圖與記憶卡關聯宣告）
 - **API Integration** — Match frontend fetch calls against backend route definitions（前後端串接比對）
 - **Dead Code** — Files not imported by any module, excluding entry points（未被引用的檔案）

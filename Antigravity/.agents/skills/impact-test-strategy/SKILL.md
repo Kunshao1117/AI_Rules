@@ -1,9 +1,9 @@
 ---
 name: impact-test-strategy
 description: >
-  Change impact analysis, test scope orchestration, and regression test generation.
-  Use when: 修改程式碼前需要評估影響範圍、決定測試範圍、
-  或修復 bug 後需要產生回歸測試的場景。
+  [Testing] Change impact analysis, test scope orchestration, and regression test generation.
+  Use when: 跨模組修改（變更影響 2+ 模組）、核心工具/共用服務重構、或 /04_fix 修復後需產生回歸測試 的場景。
+  DO NOT use when: 單一模組內的局部修改、僅樣式/文字調整、設定檔變更。
 metadata:
   author: antigravity
   version: "5.2"
@@ -44,17 +44,19 @@ Source module identified?
 
 ### Step 3: Risk Classification (風險分級)
 
-| Risk Level | Criteria | Examples |
-|-----------|----------|---------|
-| 🔴 High | File is imported by 3+ modules, OR is a core utility/shared service | `utils.ts`, `auth-service.ts`, shared hooks |
-| 🟡 Medium | File is internal to a module but affects module's public interface | Module's main export, API route handler |
-| 🟢 Low | File is a leaf component used by only one parent | Single-use UI component, isolated helper |
+| Risk Level | Criteria                                                            | Examples                                    |
+| ---------- | ------------------------------------------------------------------- | ------------------------------------------- |
+| 🔴 High    | File is imported by 3+ modules, OR is a core utility/shared service | `utils.ts`, `auth-service.ts`, shared hooks |
+| 🟡 Medium  | File is internal to a module but affects module's public interface  | Module's main export, API route handler     |
+| 🟢 Low     | File is a leaf component used by only one parent                    | Single-use UI component, isolated helper    |
 
 ### Step 4: Output Impact Report (輸出影響報告)
 
 Include in `implementation_plan.md`:
+
 ```markdown
 【影響分析】
+
 - 修改檔案：{file path}
 - 所屬模組：{module name}
 - 風險等級：🔴/🟡/🟢
@@ -99,6 +101,7 @@ After `/04_fix` bug fix, generate a regression test:
 ### Step 1: Analyze the Fix Diff (分析修復差異)
 
 From the code diff, extract:
+
 - **Root cause pattern**: Bug type
 - **Trigger condition**: Input/state that caused the bug
 - **Expected behavior**: Correct behavior
