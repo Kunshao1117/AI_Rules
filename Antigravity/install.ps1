@@ -17,10 +17,10 @@
 
 .EXAMPLE
     # 一鍵安裝到當前目錄
-    & ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1'))) -Target "D:\MyProject"
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f -Target "D:\MyProject"; Remove-Item $f
 
     # 升級現有安裝
-    & ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1'))) -Target "D:\MyProject" -Mode Upgrade
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f -Target "D:\MyProject" -Mode Upgrade; Remove-Item $f
 #>
 param (
     [Parameter(Mandatory = $true)]
