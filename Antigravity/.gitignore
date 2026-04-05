@@ -6,3 +6,4 @@ BLACK/
 .cartridge/
 .agents/memory
 .agents/logs/
+.git_backup/
