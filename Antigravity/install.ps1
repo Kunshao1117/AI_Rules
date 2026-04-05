@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Antigravity 框架遠端安裝啟動器
 
@@ -35,6 +35,8 @@ param (
 )
 
 # PowerShell 5.1+ 相容模式（建議 PS 7.x，但 PS 5.1 可直接執行）
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 $repoOwner = "Kunshao1117"
 $repoName  = "AI_Rules"
 $zipUrl    = "https://github.com/$repoOwner/$repoName/archive/refs/heads/$Branch.zip"
