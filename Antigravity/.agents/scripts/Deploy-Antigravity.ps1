@@ -7,10 +7,12 @@ param (
     [string]$Mode = "Fresh"
 )
 
-$sourceDir = Join-Path -Path $PSScriptRoot -ChildPath ".agents"
+# 腳本從 .agents/scripts/ 執行，往上兩層取得框架根目錄 (Antigravity/)
+$frameworkRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+$sourceDir = Join-Path -Path $frameworkRoot -ChildPath ".agents"
 $targetDir = Join-Path -Path $Target -ChildPath ".agents"
 
-$sourceVersion = (Get-Content -Path (Join-Path -Path $PSScriptRoot -ChildPath "VERSION") -ErrorAction SilentlyContinue | Select-Object -First 1)
+$sourceVersion = (Get-Content -Path (Join-Path -Path $frameworkRoot -ChildPath "VERSION") -ErrorAction SilentlyContinue | Select-Object -First 1)
 if (-not $sourceVersion) { $sourceVersion = "unknown" }
 Write-Host "[>] Antigravity 佈署引擎 v$sourceVersion"
 Write-Host "[*] 目標專案: $Target"
@@ -326,7 +328,7 @@ if ($Mode -eq "Upgrade") {
     $stats = Write-UpgradeReport -Report $report
 
     # 顯示更新說明
-    $notesPath = Join-Path -Path $PSScriptRoot -ChildPath "RELEASE_NOTES.md"
+    $notesPath = Join-Path -Path $frameworkRoot -ChildPath "RELEASE_NOTES.md"
     $releaseNotes = Get-ReleaseNotes -NotesPath $notesPath -FromVersion $targetVersion -ToVersion $sourceVersion
     if ($releaseNotes.Count -gt 0) {
         Write-Host ""

@@ -6,7 +6,24 @@ Antigravity 是一套**零接觸自動部署**的 AI 編碼代理人治理框架
 
 ---
 
-## 目錄
+## 🚀 快速安裝（終端機一行指令）
+
+> 需要 **PowerShell 7+**（`pwsh`）與網路連線。倉庫為 Public，無需 GitHub 帳號。
+
+```powershell
+# 🆕 全新安裝到指定專案目錄
+& ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/install.ps1'))) -Target "D:\你的專案路徑"
+```
+
+```powershell
+# ⬆️ 升級現有安裝
+& ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/install.ps1'))) -Target "D:\你的專案路徑" -Mode Upgrade
+```
+
+> **原理**：啟動器從 GitHub 下載 ZIP（走 CDN，無 API 速率限制），解壓後執行部署腳本，完成後自動清理暫存。
+
+---
+
 
 - [核心設計理念](#核心設計理念)
 - [系統架構總覽](#系統架構總覽)
