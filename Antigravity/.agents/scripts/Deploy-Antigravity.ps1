@@ -519,7 +519,7 @@ if (-Not (Test-Path -Path $memoryDir)) {
 $skillsDir = Join-Path -Path $targetDir -ChildPath "skills"
 $symlinkPath = Join-Path -Path $skillsDir -ChildPath "_memory"
 if (-Not (Test-Path -Path $symlinkPath)) {
-    New-Item -ItemType SymbolicLink -Path $symlinkPath -Target $memoryDir | Out-Null
+    New-Item -ItemType Junction -Path $symlinkPath -Target $memoryDir | Out-Null
 }
 Write-Host "[v] 記憶目錄已建立，符號連結已設定。"
 
@@ -542,7 +542,7 @@ if (-Not (Test-Path -Path $projectIndexFile)) {
 # 建立符號連結 skills/_project → project_skills/
 $projectSymlink = Join-Path -Path $skillsDir -ChildPath "_project"
 if (-Not (Test-Path -Path $projectSymlink)) {
-    New-Item -ItemType SymbolicLink -Path $projectSymlink -Target $projectSkillDir | Out-Null
+    New-Item -ItemType Junction -Path $projectSymlink -Target $projectSkillDir | Out-Null
 }
 Write-Host "[v] 專案衍生技能目錄已建立，符號連結已設定。"
 Write-Host "[v] 專案記憶系統已就緒，可執行 /02_blueprint 初始化。"

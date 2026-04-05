@@ -34,18 +34,7 @@ param (
     [string]$Branch = "main"
 )
 
-# ── PowerShell 版本強制 ──
-if ($PSVersionTable.PSVersion.Major -lt 7) {
-    $pwsh = Get-Command pwsh -ErrorAction SilentlyContinue
-    if ($pwsh) {
-        Write-Host "[*] 偵測到舊版 PowerShell，切換至 PowerShell 7..."
-        & pwsh -NoProfile -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/$Branch/install.ps1'))) -Target '$Target' -Mode '$Mode' -Branch '$Branch'"
-        exit
-    } else {
-        Write-Warning "[!] 建議使用 PowerShell 7 (pwsh) 執行此腳本以獲得最佳效果。"
-    }
-}
-
+# PowerShell 5.1+ 相容模式（建議 PS 7.x，但 PS 5.1 可直接執行）
 $repoOwner = "Kunshao1117"
 $repoName  = "AI_Rules"
 $zipUrl    = "https://github.com/$repoOwner/$repoName/archive/refs/heads/$Branch.zip"
