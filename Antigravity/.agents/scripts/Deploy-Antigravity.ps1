@@ -1,4 +1,4 @@
-param (
+﻿param (
     [Parameter(Mandatory = $true)]
     [string]$Target,
 
@@ -592,5 +592,6 @@ if (Test-Path -Path $gitignorePath) {
 Write-Host "-----------------------------------------------"
 Write-Host "[OK] 佈署完成！Antigravity v$sourceVersion 防護罩已啟動。"
 Write-Host "-----------------------------------------------"
+
 
 

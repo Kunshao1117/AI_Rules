@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Antigravity 框架遠端安裝啟動器
 
@@ -75,4 +75,5 @@ try {
     if (Test-Path $tempZip) { Remove-Item $tempZip -Force -ErrorAction SilentlyContinue }
     if (Test-Path $tempDir)  { Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue }
 }
+
 
