@@ -4,6 +4,27 @@
 
 ---
 
+## [V6.2.0 建構管線雙階段化、探勘升級、規則模組化完成] - 2026-04-06
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Build Pipeline Two-Stage Architecture（建構管線雙階段架構）**：將原先的單體 `/03_build` 工作流拆分為嚴格解耦的兩個階段。`03_build(建構計畫)` 負責記憶載入、Diff 規劃與授權閘門等待，`03-2_build_execute(建構執行)` 負責實體寫入、記憶歸卡與測試串聯。強制消除「規劃與執行在同一步驟完成」所帶來的 AI 幻覺風險。
+- **New File Mandatory Archiving Gate（新建檔案強制歸卡閘門）**：`03-2_build_execute` 引入 `[MEM ARCHIVE GATE]`。任何新建的原始碼檔案，必須在提交前完成「定位現有記憶卡 → 追加追蹤」或「建立新記憶卡」的歸卡程序；無法解決則觸發 HALT，從根源消滅「新模組建立但沒有記憶的孤兒問題」。
+- **Modified File Memory Sync Gate（修改檔案記憶同步閘門）**：`03-2_build_execute` 引入 `[MEM UPDATE GATE]`。每次修改原始碼後，強制同步對應記憶卡的 Key Decisions、Known Issues 與時間戳；無法解決則 HALT，確保記憶系統永不落後於程式碼狀態。
+- **Dual-State Devil's Advocate Protocol（探勘工作流雙狀態魔鬼代言人）**：`/01_explore` 挑戰協議升級為雙狀態分流。「狀態 A：純資訊搜索」產出來源偏差 / 時效性 / 搜索盲點三段分析；「狀態 B：深度研究分析」產出含風險描述 → 可能情境 → 量化影響估算的致命風險三元結構。精確匹配「查資料」與「研議構想」兩種不同深度的請求。
+- **Exploration Report Quality Floor（探勘報告品質底線）**：輸出報告加入正文 800 字下限、表格優先（禁止純文字比較）、量化優先（禁止模糊形容詞）三項強制規範，消滅空洞的探勘報告。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Rule System Modularization Complete（規則系統模組化完成）**：完成 00–05 規則系統的六模組重構。新建 `04_forbidden_vocab.md`（按需載入禁用詞彙規範）與 `05_project_skill_contract.md`（衍生技能合約），並同步 `03_memory_skill_contract.md` 的 YAML description，移除已遷移的衍生技能描述，實現真正的單一職責。
+- **Framework Sentinel Sync（框架哨兵文件同步）**：`AGENTS.md` 哨兵文件的工作流數量描述與實際目錄嚴重脫節（14 個 / 含 03_sketch）導致 AI 依賴錯誤基準產生工作流隱形問題。更新為正確的 17 個，並明確列出三個雙階段系列（建構/修復/提交），`09-1` / `09-2` 不再被視為「輔助片段」。
+- **Logs Directory Version Control Exclusion（日誌目錄版控排除）**：將 `.agents/logs/` 加入 `.gitignore`，暫存日誌輸出不再污染版控歷史。
+
+### 【架構決策】 (Architectural Decisions)
+
+- **Gate Isolation Over Monolithic Step（閘門隔離優於單體步驟）**：建構工作流的兩階段拆分體現「閘門前後徹底物理隔離」的設計哲學——規劃期禁止任何磁碟寫入，執行期必須完成記憶歸卡才能繼續下一步。此設計讓每個閘門都成為不可繞過的強制檢查點，而非可跳過的「建議」。
+- **Sandbox Concept Integration（沙盒概念整合）**：`03-1_experiment` 的沙盒快速路徑概念整合進 `03_build(建構計畫)` 的 `[MODE GATE]`，避免兩個相似工作流分裂帶來的使用混淆，同時保留 `03-1_experiment` 作為明確的獨立入口。
+
 ## [V6.1.0 技能精準度三段式調校與 PowerShell 版本強制] - 2026-04-05
 
 ### 【新增商業能力】 (Business Capabilities Added)

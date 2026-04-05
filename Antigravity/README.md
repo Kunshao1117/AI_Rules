@@ -1,6 +1,6 @@
 # Antigravity — AI 代理人治理框架
 
-> **版本**: v6.1.0 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
+> **版本**: v6.2.0 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
 
 Antigravity 是一套**零接觸自動部署**的 AI 編碼代理人治理框架。它為 AI 助手提供統一的工作流程、持久記憶系統與標準作業規範，讓 AI 在任何專案中都能像一個有紀律、有記憶的工程團隊來運作。
 
@@ -66,7 +66,7 @@ graph TB
 
 ### 部署引擎
 
-**檔案**: `Deploy-Antigravity.ps1`
+**檔案**: `.agents/scripts/Deploy-Antigravity.ps1`
 
 負責將整套 `.agents/` 生態系統移植到任何目標專案。
 
@@ -101,8 +101,10 @@ graph TB
 | `AGENTS.md` | 哨兵檔 — 存在即代表專案已初始化 | Always On |
 | `00_core_identity.md` | 核心身份 — 代理人分工、生命週期、語言溝通 | Always On |
 | `01_cross_lingual_guard.md` | 跨語系防護 — 冷啟動強制讀檔、實體武裝檢核 (Phase 2)、安全觸發器 | Always On |
-| `03_memory_skill_contract.md` | 記憶與技能合約 — 記憶卡操作、技能載入、衍生技能系統 | Model Decision |
 | `02_code_quality_security.md` | 品質與安全合約 — 機密隔離、驗證器鐵律、橫切品質約束 | Model Decision |
+| `03_memory_skill_contract.md` | 記憶與技能合約 — 記憶卡操作、技能載入、新建歸卡閘門 | Model Decision |
+| `04_forbidden_vocab.md` | 禁用詞彙規範 — 面向總監輸出的商業層級詞彙對照 | Model Decision |
+| `05_project_skill_contract.md` | 衍生技能合約 — 衍生技能建立、生命週期、鍛造流程 | Model Decision |
 
 #### 分層治理架構
 
@@ -112,7 +114,7 @@ graph TB
 1. **專職化分工** — 主代理人直接執行，子代理人只能唯讀分析
 2. **多代理人視圖透明度** — 子代理人的修改必須回傳主代理人在介面呈現
 3. **生命週期強制** — 規劃 → 驗證閘門 → 執行 → 記憶更新
-4. **禁止終端機文書處理** — 靜默閘門式攔截（`[PRE-FLIGHT GATE]`），支援 `[SUDO]` 覆寫與 `/03_sketch` 豁免
+4. **禁止終端機文書處理** — 靜默閘門式攔截（`[PRE-FLIGHT GATE]`），支援 `[SUDO]` 覆寫與 `/03-1_experiment` 豁免
 5. **繁體中文特化** — 三層語言架構（指令層、介面層、橋接層）
 
 **`01_cross_lingual_guard.md`** — Always On（每次對話必載）
@@ -122,15 +124,14 @@ graph TB
 9. **模板即透明機制** — 永遠輸出 `<details>` 供總監審閱，不依賴 AI 自評信心
 
 **`03_memory_skill_contract.md`** — Model Decision（AI 判斷需要時載入）
-7. **專案記憶系統** — `.agents/memory/` 記憶卡的讀寫規範，含 `[EXIT HOLD GATE]` 離場條件鎖
-8. **專案衍生技能系統** — 衍生技能的建立與保護規範
-9. **受控串聯** — `// turbo` 自動銜接機制
-10. **技能系統契約** — 按需載入、漸進式揭露、三目錄架構
+1. **專案記憶系統** — `.agents/memory/` 記憶卡的讀寫規範，含 `[EXIT HOLD GATE]` 離場條件鎖（含新建檔案歸卡分支）
+2. **受控串聯** — `// turbo` 自動銜接機制
+3. **技能系統契約** — 按需載入、漸進式揭露、三目錄架構（衍生技能詳見 `05_project_skill_contract.md`）
 
 **`02_code_quality_security.md`** — Model Decision（寫程式碼時載入）
-11. **機密隔離** — `[SEC SILENT GATE]` 靜默掃描，支援 `[SUDO]` 與 `/03_sketch` 豁免
-12. **驗證器鐵律** — `[LINTER GATE]` 最多 3 次自動修復，超限硬性中斷
-13. **橫切品質約束** — 安全/品質/介面/測試的核心原則
+1. **機密隔離** — `[SEC SILENT GATE]` 靜默掃描，支援 `[SUDO]` 與 `/03-1_experiment` 豁免
+2. **驗證器鐵律** — `[LINTER GATE]` 最多 3 次自動修復，超限硬性中斷
+3. **橫切品質約束** — 安全/品質/介面/測試的核心原則
 
 #### 雙受眾語言設計（§7 詳解）
 
@@ -154,7 +155,7 @@ graph TB
 
 **目錄**: `.agents/workflows/`
 
-13 道工作流程涵蓋軟體開發的完整生命週期：
+17 道工作流程涵蓋軟體開發的完整生命週期：
 
 ```mermaid
 graph LR
@@ -185,18 +186,22 @@ graph LR
 | 編號 | 指令名稱 | 功能 | 角色權限 |
 |------|---------|------|---------|
 | 00 | 討論 | 純對話、腦力激盪、程式碼問答 | Reader |
-| 01 | 探索 | 新商業點子可行性研究（含網路調查） | Reader |
+| 01 | 探索 | 可行性研究，雙狀態魔鬼代言人（純搜索 / 深度分析） | Reader |
 | 02 | 架構 | 需求轉化為技術藍圖與記憶系統初始化 | Writer/SRE |
-| 03 | 建構 | 依藍圖寫實體程式碼（嚴禁 SUDO 破窗） | Worker |
-| 03s | 草圖 | 🆕 沙盒實驗（所有閘門停用） | Sketch Worker |
-| 04 | 修復 | 最小影響範圍的 Bug 修復（含斷路器） | Worker |
+| 03 | 建構計畫 | Stage 1：記憶載入 → Diff 規劃 → 等待 GO（含沙盒快速路徑） | Writer/SRE |
+| 03-1 | 實驗 | 沙盒快速實驗（所有閘門停用） | Experiment Worker |
+| 03-2 | 建構執行 | Stage 2：實體寫入 → 新建歸卡 → 記憶更新 → 單元測試 | Writer/SRE |
+| 04-1 | 修復計畫 | Bug 診斷 → 產出修復計畫（唯讀，等待 GO） | Reader |
+| 04-2 | 修復執行 | 實體修復 → 記憶更新 → 回歸測試 | Writer/SRE |
 | 05 | 重構 | 不改功能的結構優化（含狀態保全閘門） | Worker |
 | 06 | 測試 | 瀏覽器自動化視覺測試（靜默化輸出） | Reader |
 | 07 | 除錯 | 堆疊追蹤分析、錯誤翻譯 | Reader |
 | 08 | 專案健檢 | 全方位健康審計（含陣列遍歷強制） | Writer/SRE |
-| 09 | 備份紀錄 | 記憶快照 + Git 提交（含倉庫狀態檢查閘門） | Writer/SRE |
+| 09-1 | 紀錄掃描 | 倉庫衛生 + 記憶過期偵測（唯讀掃描） | Reader |
+| 09-2 | 授權備份 | 文件更新 + Git 提交 + 遠端推播 | Writer/SRE |
 | 10 | 還原 | 安全回滾到先前穩定版本 | Writer/SRE |
 | 11 | 交接 | 產出交接文件給下一個 AI 對話（含前置檢查） | Reader/Memory |
+| 12 | 技能鍛造 | 從工作實踐中提煉可複用技能 | Worker |
 
 #### 共用閘門
 
@@ -321,7 +326,7 @@ graph TD
 
 ```
 Antigravity/
-├── Deploy-Antigravity.ps1        ← 部署引擎（Fresh / Upgrade 雙模式）
+├── .agents/scripts/Deploy-Antigravity.ps1 ← 部署引擎（Fresh / Upgrade 雙模式）
 ├── VERSION                       ← 框架版本號
 ├── RELEASE_NOTES.md              ← 版本更新摘要
 ├── CHANGELOG.md                  ← 商業價值決策紀錄
@@ -332,10 +337,12 @@ Antigravity/
     │   ├── AGENTS.md             ← 哨兵檔（存在 = 已初始化）
     │   ├── 00_core_identity.md   ← 核心身份（Always On）
     │   ├── 01_cross_lingual_guard.md ← 跨語系防護（Always On）
-    │   ├── 01_memory_skill_contract.md  ← 記憶與技能合約（Model Decision）
-    │   └── 02_code_quality_security.md  ← 品質與安全合約（Model Decision）
-    ├── workflows/                ← 12 道生命週期工作流程
-    │   ├── 00_chat ~ 11_handoff  ← 主要工作流程
+    │   ├── 02_code_quality_security.md  ← 品質與安全合約（Model Decision）
+    │   ├── 03_memory_skill_contract.md  ← 記憶與技能合約（Model Decision）
+    │   ├── 04_forbidden_vocab.md        ← 禁用詞彙規範（Model Decision）
+    │   └── 05_project_skill_contract.md ← 衍生技能合約（Model Decision）
+    ├── workflows/                ← 17 道生命週期工作流程
+    │   ├── 00_chat ~ 12_skill_forge ← 主要工作流程（含雙階段建構/修復/提交系列）
     │   ├── _completion_gate.md   ← 共用完成閘門
     │   └── _security_footer.md   ← 共用安全閘門
     ├── skills/                   ← 操作型技能（框架提供，升級時可覆寫）

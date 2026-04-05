@@ -27,29 +27,33 @@ Task complexity?
 
 ## Procedure (操作流程)
 
-### Step 1: Initialize (初始化)
+### 0. PRECONDITION (前置強制約束)
 
-Call `sequentialthinking` with:
+[CONSTRAINT] YOU ARE FORBIDDEN FROM SIMULATING THOUGHTS IN PLAIN TEXT.
+[CONSTRAINT] YOU MUST INVOKE THE PHYSICAL MCP TOOL.
 
-- `totalThoughts`: 5-15 (estimate by complexity)
+### 1. INITIALIZATION (強制初始化)
+
+[EXECUTE_TOOL] mcp:sequentialthinking
+[PARAMETERS_REQUIRED]
+- `totalThoughts`: Evaluate complexity, set between 5-15.
 - `thoughtNumber`: 1
 - `nextThoughtNeeded`: true
 
-### Step 2: Iterate (迭代推理)
+[ASSERT] DO NOT GENERATE ANY OTHER TEXT RESPONSE IN THIS TURN. ONLY INVOKE THE TOOL.
 
-| Action                | Parameters                                               |
-| --------------------- | -------------------------------------------------------- |
-| Linear progression    | Increment `thoughtNumber`, set `nextThoughtNeeded: true` |
-| Revise earlier step   | Set `isRevision: true` + `revisesThought: N`             |
-| Branch to alternative | Set `branchFromThought: N` + `branchId`                  |
-| Extend analysis       | Increase `totalThoughts`                                 |
+### 2. ITERATION (迴圈強制執行)
 
-### Step 3: Conclude (結論)
+[EXECUTE_TOOL_LOOP] mcp:sequentialthinking
+[ACTION] Increment `thoughtNumber`.
+[ASSERT] IF MORE THOUGHTS NEEDED: `nextThoughtNeeded`: true
+[ASSERT] IF BRANCHING/REVISING: Apply `isRevision` or `branchFromThought` flags.
 
-Set `nextThoughtNeeded: false` ONLY when:
+### 3. CONCLUSION (強制收網)
 
-- Hypothesis generated AND verified
-- Analysis synthesized into actionable output
+[FINAL_TOOL_CALL_ASSERT]
+[ASSERT] Hypothesis VERIFIED -> set `nextThoughtNeeded`: false.
+[MANDATORY_OUTPUT] Wait for tool signal. ONLY AFTER TOOL COMPLETION, present final actionable recommendation to Director.
 
 ## Constraints (約束)
 

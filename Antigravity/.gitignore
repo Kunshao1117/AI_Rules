@@ -5,3 +5,4 @@ BLACK/
 .vscode/
 .cartridge/
 .agents/memory
+.agents/logs/

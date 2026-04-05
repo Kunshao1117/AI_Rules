@@ -51,7 +51,7 @@ memory_awareness: full
 
 ## [SECURITY & COMPLIANCE MANDATE]
 
-> Inherits: `.agents/workflows/_security_footer.md` (Browser Gate)
+> Inherits: `.agents/workflows/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Worker` | 權限依安全閘門矩陣。
+- **Role**: `Worker` | Permissions based on the security gate matrix。
 - **Memory Update**: After refactoring, update affected memory cards' `## Tracked Files` (if files moved/renamed), `## Key Decisions` (if interfaces changed), and frontmatter.

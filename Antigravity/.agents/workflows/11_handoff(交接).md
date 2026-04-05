@@ -91,6 +91,6 @@ Generate a Markdown Artifact named `handoff_prompt.md` in **Traditional Chinese 
 
 ## [SECURITY & COMPLIANCE MANDATE]
 
-> Inherits: `.agents/workflows/_security_footer.md` (Browser Gate)
+> Inherits: `.agents/workflows/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Reader/Memory` | 權限依安全閘門矩陣。
+- **Role**: `Reader/Memory` | Permissions based on the security gate matrix。

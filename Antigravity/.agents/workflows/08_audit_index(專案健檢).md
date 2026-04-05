@@ -1,6 +1,20 @@
 ---
 description: Full-spectrum project health audit — workspace security, security architecture, memory skill integrity, source code logic, test coverage, API integration, performance, and maintainability.
-required_skills: [memory-ops, tech-stack-protocol, delegation-strategy, code-audit, audit-engine, code-quality, security-sre, impact-test-strategy, performance-audit, test-patterns, a11y-testing, trunk-ops]
+required_skills:
+  [
+    memory-ops,
+    tech-stack-protocol,
+    delegation-strategy,
+    code-audit,
+    audit-engine,
+    code-quality,
+    security-sre,
+    impact-test-strategy,
+    performance-audit,
+    test-patterns,
+    a11y-testing,
+    trunk-ops,
+  ]
 memory_awareness: full
 ---
 
@@ -9,12 +23,12 @@ memory_awareness: full
 > **Required Skills**: 見 YAML `required_skills` 欄位。
 
 ## 1. Global Workspace Security Scan
+
 - Scan `package.json`, `requirements.txt`, or equivalent for deprecated packages/CVEs.
 - Scan for hardcoded API keys, orphaned files, and unused dependencies.
 
-
-
 ## 2. Memory Skill System Initialization Check
+
 - Resolve two independent paths and store as variables for the entire workflow:
   - `workspace_root` = the IDE workspace directory (contains `.agents/` and `.gemini/`). CLI starts here.
   - `project_root` = the source code root (contains `package.json` / `src/`). May be `workspace_root` itself or a subdirectory.
@@ -88,6 +102,7 @@ memory_awareness: full
 **等待總監確認掃描完成再進行下一步。**
 
 CLI 執行完成後輸出：
+
 - `.agents/logs/scan_report.md` — code-audit 掃描報告
 - `.agents/logs/audit_security_scan.md` — 硬編碼憑證掃描
 - `.agents/logs/audit_perf.md` — 效能掃描
@@ -108,6 +123,7 @@ CLI 執行完成後輸出：
 These analyses CANNOT be done by tools — they require understanding of architectural context and cross-referencing with module memory:
 
 #### B. Module Relationship Audit（模組關聯性驗證）
+
 - Read each source file's import/require/from statements.
 - Build an actual dependency graph.
 - Cross-compare with memory card `## Relations` — flag inconsistencies.
@@ -119,22 +135,27 @@ These analyses CANNOT be done by tools — they require understanding of archite
 將比對結果寫入最終報告【前後端串接缺口】區塊。
 
 #### E. Dead Code / Orphan Detection（死碼與孤立檔案偵測）
+
 - Using the dependency graph from (B), identify source files NOT imported by any other module.
 - Exclude known entry points (main, index, app, layout, page).
 - Flag remaining files as orphan candidates.
 
 #### F. Key Function Survival Check（關鍵函式存活驗證）
+
 - For each memory card's `## Key Decisions` that reference specific functions, use `grep_search` against the corresponding tracked files.
 - Confirm each function/class still exists and its name is unchanged.
 - If mismatched → flag skill as needing update.
 
 // turbo
+
 #### G. Skill Quality Scan（技能品質掃描）
+
 - Run `.agents/scripts/Measure-SkillQuality.ps1` against all skills directories (framework + project + memory)
 - Include results in health report under【技能品質】section
 - Flag 🔴 items as requiring immediate attention
 
 #### J. Data Layer Consistency（資料層一致性）— conditional on DB in tech_stack
+
 - **Model vs API Response**: Compare database model/schema field definitions with API response structures. Flag mismatches.
 - **Migration Integrity**: If migration files exist, verify they correspond to current model definitions.
 
@@ -163,43 +184,48 @@ These analyses CANNOT be done by tools — they require understanding of archite
 將結果寫入最終報告的【安全架構審查】區塊。
 
 ## 4. Migration Protocol (Legacy Fallback)
+
 When initializing memory cards for an old project:
+
 - Detect `project_root`. If legacy `.agents/cartridges/` directory exists, create corresponding memory cards from their contents.
 - Ensure old legacy cartridge directories are archived to `.agents/memory/_archived/`.
 
 ## 5. Traditional Chinese Output Mandate (Strictly zh-TW)
+
 You MUST halt and output a Traffic Light Health Report and Memory Status EXACTLY matching this Traditional Chinese structure:
 
 【健檢與測繪完畢】: 模組記憶系統已對齊 (System Updated).
 【資安狀況 (Traffic Light)】:
- - 🔴 紅燈 (Critical): <如果有，列出>
- - 🟡 黃燈 (Warning): <如果有，列出>
- - 🟢 綠燈 (Healthy): <如果有，列出>
-【記憶狀態】:
- - 📦 新增: <本次新建的模組記憶>
- - ♻️ 更新: <本次更新或去腐敗的模組記憶>
-【工具掃描摘要】:（取自 CLI 掃描報告）
- - 🧹 ESLint: 錯誤 {N} / 警告 {M} / 最常違反: {top 3 rules}
- - 🛡️ 依賴安全 (npm/yarn audit): 🔴嚴重 {N} 🟠高危 {N} 🟡中等 {N} 🟢低 {N} / 最嚴重: {top vulnerability}
- - 📝 型別檢查: 錯誤 {N}（若有執行）
- - 🏷️ 代辦標記: TODO {N} / FIXME {N} / HACK {N}
- - 🔑 環境變數: {不一致項目數}
-【安全架構審查】:（S1-S5 核查結果）
- - 🔐 API 輸入驗證: <PASS/FAIL — 缺失端點列表>
- - 🔑 憑證隔離: <PASS/FAIL — 硬編碼位置>
- - 🛡️ 存取控制: <PASS/FAIL — 未守衛路由>
- - 🚨 錯誤隔離: <PASS/FAIL — 洩漏位置>
- - 📋 日誌標準: <PASS/FAIL — 違規模組>
-【AI 架構分析】:（主腦直接分析）
- - 🔗 模組關聯異常: <哪些模組的實際依賴關係跟記憶記錄的不一致>
- - 🔌 前後端串接缺口: <端點不存在 / Dead API / Schema 欄位不符>
- - 🗑️ 疑似沒有在用的檔案: <沒有被任何其他檔案引用的孤立檔案>
- - 📋 記憶同步: <記憶記錄的功能跟實際程式碼對不上的模組>
- - 💾 資料層: <資料庫欄位跟 API 回傳的內容不一致 / 資料庫版本升級紀錄缺漏>
- - 🧪 測試覆蓋缺口: 未覆蓋率 {N}% <{燈號}> / 最高風險未覆蓋函式: <前 5 名>
- - ♿ 無障礙審計: <Critical {N} / Serious {N}，或「無前端，跳過」>
-【效能審查】:
-依 `performance-audit` 技能 §1 執行 Lighthouse 掃描：
+
+- 🔴 紅燈 (Critical): <如果有，列出>
+- 🟡 黃燈 (Warning): <如果有，列出>
+- 🟢 綠燈 (Healthy): <如果有，列出>
+  【記憶狀態】:
+- 📦 新增: <本次新建的模組記憶>
+- ♻️ 更新: <本次更新或去腐敗的模組記憶>
+  【工具掃描摘要】:（取自 CLI 掃描報告）
+- 🧹 ESLint: 錯誤 {N} / 警告 {M} / 最常違反: {top 3 rules}
+- 🛡️ 依賴安全 (npm/yarn audit): 🔴嚴重 {N} 🟠高危 {N} 🟡中等 {N} 🟢低 {N} / 最嚴重: {top vulnerability}
+- 📝 型別檢查: 錯誤 {N}（若有執行）
+- 🏷️ 代辦標記: TODO {N} / FIXME {N} / HACK {N}
+- 🔑 環境變數: {不一致項目數}
+  【安全架構審查】:（S1-S5 核查結果）
+- 🔐 API 輸入驗證: <PASS/FAIL — 缺失端點列表>
+- 🔑 憑證隔離: <PASS/FAIL — 硬編碼位置>
+- 🛡️ 存取控制: <PASS/FAIL — 未守衛路由>
+- 🚨 錯誤隔離: <PASS/FAIL — 洩漏位置>
+- 📋 日誌標準: <PASS/FAIL — 違規模組>
+  【AI 架構分析】:（主腦直接分析）
+- 🔗 模組關聯異常: <哪些模組的實際依賴關係跟記憶記錄的不一致>
+- 🔌 前後端串接缺口: <端點不存在 / Dead API / Schema 欄位不符>
+- 🗑️ 疑似沒有在用的檔案: <沒有被任何其他檔案引用的孤立檔案>
+- 📋 記憶同步: <記憶記錄的功能跟實際程式碼對不上的模組>
+- 💾 資料層: <資料庫欄位跟 API 回傳的內容不一致 / 資料庫版本升級紀錄缺漏>
+- 🧪 測試覆蓋缺口: 未覆蓋率 {N}% <{燈號}> / 最高風險未覆蓋函式: <前 5 名>
+- ♿ 無障礙審計: <Critical {N} / Serious {N}，或「無前端，跳過」>
+  【效能審查】:
+  依 `performance-audit` 技能 §1 執行 Lighthouse 掃描：
+
 ```
 [PERFORMANCE GATE] 觸發判斷：
 ├── 記憶卡中是否包含前端頁面模組？
@@ -207,13 +233,18 @@ You MUST halt and output a Traffic Light Health Report and Memory Status EXACTLY
 │   └── 是 → 讀取 audit_perf.md 報告並依 §1「分數→燈號判定閘門」套用燈號
 └── 將結果寫入報告【效能狀況】欄位
 ```
- - 🌐 效能狀況: <分數與燈號，或「無前端，跳過」>
-【下一步建議】: <給總監的繁體中文簡短建議>
+
+- 🌐 效能狀況: <分數與燈號，或「無前端，跳過」>
+  【下一步建議】: <給總監的繁體中文簡短建議>
 
 ## COMPLETION GATE（完成閘門 — 不可略過）
+
 > Inherits: `.agents/workflows/_completion_gate.md`
+
 - Execute all checks defined in the shared Completion Gate.
 
 ## [SECURITY & COMPLIANCE MANDATE]
-> Inherits: `.agents/workflows/_security_footer.md` (Browser Gate)
-- **Role**: `Reader/Memory` | 權限依安全閘門矩陣。記憶寫入限於 `.agents/memory/` 與 `.agents/logs/`。
+
+> Inherits: `.agents/workflows/_security_footer.md` (Role Lock Gate)
+
+- **Role**: `Reader/Memory` | Permissions based on the security gate matrix。記憶寫入限於 `.agents/memory/` 與 `.agents/logs/`。

@@ -61,20 +61,7 @@ All workflows that modify physical project source code MUST follow this lifecycl
   - **Forbidden**: `FileName.tsx — add/remove $codeIdentifier` (e.g., SlashCommandPlugin.tsx — 移除 $isHeadingNode)
   - The Agent MUST infer the business-level module name and action from the file content and diff context. This is an AI responsibility, NOT a Director maintenance burden.
   - File paths MAY still appear in the Instruction Layer (AI-internal plans) and in clickable `[file](file:///path)` links, but the surrounding description text MUST use business language.
-- **Forbidden Vocabulary Mapping (禁用詞彙對照表)**:
-
-  | ❌ Raw Code Identifier | ✅ Business Description |
-  | ---------------------- | ----------------------- |
-  | `memory/*/SKILL.md`    | 模組記憶                |
-  | `Tracked Files`        | 追蹤的檔案清單          |
-  | `Key Decisions`        | 歷史決策紀錄            |
-  | `Module Lessons`       | 模組教訓                |
-  | `Known Issues`         | 已知問題                |
-  | `staleness`            | 記憶過期指數            |
-  | `memory-ops`           | 記憶操作指引            |
-  | `project_skills/`      | 專案衍生技能            |
-  | `skill-factory`        | 技能工廠                |
-  | `_project`             | 衍生技能連結            |
+- **Forbidden Vocabulary Enforcement**: See `04_forbidden_vocab.md` (on-demand). Load when: generating Director-facing outputs, writing implementation plans, or reviewing change descriptions.
 
 - **Design-First Principle**: Do NOT write in engineering language and then translate. Design Director-facing output in the Director's language FROM THE START.
 - **Cross-Lingual Reasoning Discipline (跨語系思維紀律)**: FIRST non-trivial Chinese input in a NEW conversation → MUST trigger Cold Start (`view_file` on SKILL.md FIRST). See `01_cross_lingual_guard.md` (always_on) for the PRE-RESPONSE GATE and full protocol.

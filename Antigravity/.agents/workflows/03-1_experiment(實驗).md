@@ -1,5 +1,5 @@
 ---
-description: >
+description: 
   Sandbox prototyping workflow. ALL quality, security, testing, and memory gates DISABLED.
   Use for rapid dirty-code experiments, API spike tests, and creative exploration.
 required_skills: []

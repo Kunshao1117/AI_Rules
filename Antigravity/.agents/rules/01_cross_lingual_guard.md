@@ -32,7 +32,7 @@ ABSOLUTE MANDATE: Regardless of mode, a collapsible `【實體足跡收據】` b
 
 1. **Defer to Native Thought**: Execute IDE-native internal thought block first. All English reasoning MUST occur inside the IDE's native thought. Do NOT output ANY English reasoning in the user-facing text layer.
 2. **Output Embedded Templates** (below). The templates ARE the transparency mechanism — the Director reviews them and corrects if needed. Do NOT self-assess confidence or gate on echo-back.
-3. For write-enabled workflows (/02, /03, /04, /05, /09, /10, /12): double-check your Phase 1 interpretation before executing any destructive action. Override self-assessed confidence to LOW if complex inputs (negations, >80 chars, abstractions) are present.
+3. For any workflow whose `[SECURITY & COMPLIANCE MANDATE]` section declares a write-capable role (i.e., `Writer/SRE`, `SRE`, or `Worker` — see the Role Permission Matrix in `_security_footer.md`): double-check your Phase 1 interpretation before executing any destructive action. Override self-assessed confidence to LOW if complex inputs (negations, >80 chars, abstractions) are present.
 
 ## Embedded Output Templates & Receipt Mandate (全息內核模板)
 
