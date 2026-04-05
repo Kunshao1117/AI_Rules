@@ -17,10 +17,10 @@
 
 .EXAMPLE
     # 一鍵安裝到當前目錄
-    & ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/install.ps1'))) -Target "D:\MyProject"
+    & ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1'))) -Target "D:\MyProject"
 
     # 升級現有安裝
-    & ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/install.ps1'))) -Target "D:\MyProject" -Mode Upgrade
+    & ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1'))) -Target "D:\MyProject" -Mode Upgrade
 #>
 param (
     [Parameter(Mandatory = $true)]
