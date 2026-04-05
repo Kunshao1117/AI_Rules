@@ -8,7 +8,7 @@ Antigravity 是一套**零接觸自動部署**的 AI 編碼代理人治理框架
 
 ## 🚀 快速安裝（終端機一行指令）
 
-> 需要 **PowerShell 7+**（`pwsh`）與網路連線。倉庫為 Public，無需 GitHub 帳號。
+> 支援 **PowerShell 5.1+** 原生環境。倉庫為 Public，無需 GitHub 帳號。
 
 ```powershell
 # 🆕 全新安裝到指定專案目錄
