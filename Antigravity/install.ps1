@@ -60,7 +60,7 @@ try {
     Expand-Archive -Path $tempZip -DestinationPath $tempDir -Force
 
     # ── 步驟 3：執行部署腳本 ──
-    $deployScript = Join-Path $tempDir "$repoName-$Branch" "Antigravity" ".agents" "scripts" "Deploy-Antigravity.ps1"
+    $deployScript = Join-Path $tempDir "$repoName-$Branch\Antigravity\.agents\scripts\Deploy-Antigravity.ps1"
 
     if (-Not (Test-Path $deployScript)) {
         Write-Host "[X] 錯誤：找不到部署腳本，請確認分支名稱正確。"
