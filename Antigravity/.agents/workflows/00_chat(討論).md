@@ -1,5 +1,5 @@
 ---
-description: Triggered by the Director for pure conversation, brainstorming, and code Q&A without heavy web research or generating complex artifacts.
+description: 由總監觸發，用於純對話、腦力激盪與程式碼問答，不涉及深度網路研究或複雜 Artifact 生成。
 required_skills: []
 memory_awareness: none
 ---

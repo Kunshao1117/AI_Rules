@@ -1,5 +1,5 @@
 ---
-description: Triggered by the Director to explore a new business idea. Conducts web research, acts as Devil's Advocate, and outputs a feasibility Artifact.
+description: 由總監觸發，探索新商業想法或技術方向。執行網路研究、扮演魔鬼代言人，產出可行性 Artifact。
 required_skills: []
 memory_awareness: none
 ---

@@ -1,7 +1,5 @@
 ---
-description: 
-  Sandbox prototyping workflow. ALL quality, security, testing, and memory gates DISABLED.
-  Use for rapid dirty-code experiments, API spike tests, and creative exploration.
+description: 沙盒原型快速實驗模式。所有品質、安全性、測試與記憶卡閘門全部停用。適用於快速髒碼實驗、API Spike 測試與創意探索。
 required_skills: []
 memory_awareness: none
 ---

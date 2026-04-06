@@ -1,5 +1,5 @@
 ---
-description: Shared silent completion gate for all Writer/Worker workflows.
+description: 所有 Writer/Worker 工作流共用的靜默完成閘門。
 ---
 
 <!-- Shared Completion Gate for all Writer/Worker workflows -->

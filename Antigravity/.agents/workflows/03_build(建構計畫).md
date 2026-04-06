@@ -1,7 +1,5 @@
 ---
-description: >
-  Stage 1 of 2 — Load memory, generate implementation plan, and await Director approval.
-  Supports Sandbox Mode for rapid prototyping (bypasses gate). Upon GO, chain to /03-2_build_execute.
+description: 第一階段（共 2 階段）— 載入記憶、生成實作計畫、等待總監核准。支援沙盒模式（快速原型，繞過審查）。核准 GO 後，自動串連 /03-2_build_execute。
 required_skills: [memory-ops, tech-stack-protocol]
 memory_awareness: read
 ---

@@ -1,5 +1,5 @@
 ---
-description: Full-spectrum project health audit — workspace security, security architecture, memory skill integrity, source code logic, test coverage, API integration, performance, and maintainability.
+description: 全光譜專案健檢 — 工作空間安全、安全架構、記憶技能完整性、原始碼邏輯、測試覆蓋、API 串接、效能與可維護性。
 required_skills:
   [
     memory-ops,

@@ -1,5 +1,5 @@
 ---
-description: Stage 2 of 2 — Authorized physical execution of the approved fix. Writes to disk, updates memory cards, runs regression tests. Requires explicit Director GO from 04-1.
+description: 第二階段（共 2 階段）— 授權實體執行已核准的修復。寫入磁碟、更新記憶卡、執行回歸測試。需 /04-1_fix_plan 的明確 GO 授權。
 required_skills:
   [memory-ops, security-sre, test-patterns, impact-test-strategy, trunk-ops]
 memory_awareness: full

@@ -4,7 +4,20 @@
 
 ---
 
+## [V6.2.1 工作流路由語意精準化] - 2026-04-07
+
+### 【體驗優化】 (UX Improvement)
+
+- **Workflow Description Full Localization（工作流路由描述全面繁中化）**：將全部 19 個工作流的 YAML `description` 欄位，從英文全面轉換為繁體中文。當總監以繁中輸入指令時，AI 在意圖解碼後匹配工作流描述的過程中，不再需要語言翻譯層，直接在同語義空間完成路由判定，提升工作流觸發的精準度。技術標識詞（GO、Stage、路徑等機器信號詞）保留英文，確保 AI 自我核對執行階段時的錨點不受影響。同時將多行 description 格式整合為單行，簡化 YAML frontmatter 結構。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **`.git_backup/` 殘留追蹤清理（版控衛生修復）**：移除遺留在 Git 索引中但已被 `.gitignore` 排除的 311 個 `.git_backup/` 物件追蹤記錄。此殘留源自先前的部署腳本備份機制，已無實際用途。
+
+---
+
 ## [V6.2.0 建構管線雙階段化、探勘升級、規則模組化完成] - 2026-04-06
+
 
 ### 【新增商業能力】 (Business Capabilities Added)
 

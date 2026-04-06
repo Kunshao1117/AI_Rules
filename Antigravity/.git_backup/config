@@ -1,7 +1,0 @@
-[core]
-	repositoryformatversion = 0
-	filemode = false
-	bare = false
-	logallrefupdates = true
-	ignorecase = true
-	hooksPath = C:\\Users\\homeb\\AppData\\Local\\trunk\\repos\\ab16e18fa55f3805aa1185414ccaa568\\git-hooks

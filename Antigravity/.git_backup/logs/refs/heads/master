@@ -1,5 +1,0 @@
-0000000000000000000000000000000000000000 38c7d010a3426ab6f074da9a416ed4b92db56066 Kunshao1117 <homeby1117@gmail.com> 1775141168 +0800	commit (initial): 首次建檔
-38c7d010a3426ab6f074da9a416ed4b92db56066 f6aa01c280dae7b7971fc32325dac40fd0d69a1e Kunshao1117 <homeby1117@gmail.com> 1775182615 +0800	commit: feat: v5.6.0 框架架構防護強化 — 跨語系防護獨立化與六項安全修補
-f6aa01c280dae7b7971fc32325dac40fd0d69a1e 4b0ffb1860947cad6240d6a33b2966fc67f1c6d8 Kunshao1117 <homeby1117@gmail.com> 1775203896 +0800	commit: feat: v5.7.0 三位一體防護全面注入與框架清理 — 新增 trunk-ops 技能、草圖工作流程、BLACK 備份清除
-4b0ffb1860947cad6240d6a33b2966fc67f1c6d8 f56621621dcd6f375c53164b821f7b00253c17af Kunshao1117 <homeby1117@gmail.com> 1775206382 +0800	commit: fix: 修復框架健檢識別的 7 項文件不一致與 legacy 殘留
-f56621621dcd6f375c53164b821f7b00253c17af 20eb2d05c2a5115df206d02bbf4f6038c59fea4e Kunshao1117 <homeby1117@gmail.com> 1775234102 +0800	commit: feat: 新增 _system 全域推播範圍記憶卡

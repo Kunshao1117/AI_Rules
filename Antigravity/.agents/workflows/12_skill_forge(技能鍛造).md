@@ -1,5 +1,5 @@
 ---
-description: Creates new project-specific skills by distilling reusable patterns from audit findings, debugging methodologies, or Director directives.
+description: 從健檢發現、除錯方法論或總監指令中萃取可重用模式，建立新的專案衍生技能。
 required_skills: [skill-factory, memory-ops]
 memory_awareness: full
 skill_generation: true

@@ -1,5 +1,5 @@
 ---
-description: Analyzes stack traces and logs. Translates technical failures into plain-text business impact.
+description: 分析堆疊追蹤與日誌，將技術性故障翻譯為白話的商業影響說明。
 required_skills: [memory-ops, delegation-strategy, code-diagnosis]
 memory_awareness: read
 ---

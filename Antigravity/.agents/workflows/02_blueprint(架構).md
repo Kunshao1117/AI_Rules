@@ -1,5 +1,5 @@
 ---
-description: Converts business requirements into strict software architecture, ER diagrams, and API routes. Generates dual-track memory.
+description: 將商業需求轉化為嚴謹的軟體架構、ER 圖與 API 路由。同步建立雙軌記憶系統。
 required_skills: [memory-ops, tech-stack-protocol]
 memory_awareness: full
 ---

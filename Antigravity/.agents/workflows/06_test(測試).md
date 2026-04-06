@@ -1,5 +1,5 @@
 ---
-description: Actuates the Browser Agent to perform visual and functional tests on the UI without Director intervention.
+description: 啟動瀏覽器代理，在無需總監介入的情況下對 UI 執行視覺與功能性測試。
 required_skills:
   [test-automation-strategy, browser-testing, a11y-testing, trunk-ops]
 memory_awareness: read

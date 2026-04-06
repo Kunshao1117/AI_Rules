@@ -1,5 +1,5 @@
 ---
-description: 純前置掃描與狀態盤點，列出各項結果
+description: 單純前置掃描與狀態盤點，列出各項結果
 ---
 
 # [WORKFLOW: COMMIT SCAN (紀錄掃描)]

@@ -1,5 +1,5 @@
 ---
-description: Generates a structured handoff prompt for the next AI conversation by scanning all memory skills and summarizing the current session's work.
+description: 掃描所有記憶技能，彙整當前對話成果，為下一個 AI 對話產出結構化的交接提示詞。
 required_skills: [memory-ops]
 memory_awareness: full
 ---

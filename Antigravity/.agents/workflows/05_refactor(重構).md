@@ -1,5 +1,5 @@
 ---
-description: Restructures code for performance/cleanliness without altering business logic. Enforces pre- and post-refactor automated testing.
+description: 在不改變商業邏輯的前提下重構程式碼，提升效能與整潔度。強制執行重構前後的自動化測試基線比對。
 required_skills: [memory-ops, code-quality, test-patterns, impact-test-strategy]
 memory_awareness: full
 ---

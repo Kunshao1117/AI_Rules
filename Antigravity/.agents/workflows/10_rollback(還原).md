@@ -1,5 +1,5 @@
 ---
-description: Ultimate "rewind button" that uses 'git log' and explicit visual diff checks to safely revert the project to a prior stable state.
+description: 終極「時光回溯」按鈕 — 使用 git log 與明確的視覺差異比對，安全地將專案還原至先前的穩定狀態。
 required_skills: [memory-ops]
 memory_awareness: full
 ---

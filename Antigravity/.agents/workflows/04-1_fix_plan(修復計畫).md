@@ -1,5 +1,5 @@
 ---
-description: Stage 1 of 2 — Diagnose the bug, analyze impact, and generate a fully Traditional-Chinese implementation plan for Director review. DOES NOT write to disk.
+description: 第一階段（共 2 階段）— 診斷缺陷、分析影響範圍，產出全繁中的實作計畫供總監審閱。不寫入磁碟。
 required_skills: [memory-ops, impact-test-strategy]
 memory_awareness: full
 ---
