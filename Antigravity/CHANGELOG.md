@@ -4,6 +4,18 @@
 
 ---
 
+## [V6.2.2 部署腳本孤兒清除功能與記憶操作技能精煉] - 2026-04-10
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Orphan Cleanup Automation（部署升級孤兒自動清除）**：`Deploy-Antigravity.ps1` 升級模式新增 `-RemoveOrphans` 開關參數。啟用時自動刪除源碼倉庫已移除但目標專案仍殘留的孤兒檔案，並清理因刪除而產生的空目錄。未帶參數時維持原有行為並新增友善提示文案，引導使用者知曉此功能的存在。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Memory Ops Skill Refinement（記憶操作技能精煉）**：`memory-ops/SKILL.md` 與 `03_memory_skill_contract.md` 同步精煉，移除冗餘描述並統一記憶架構相關定義的引用來源，確保記憶系統操作指引的一致性與精簡度。
+
+---
+
 ## [V6.2.1 工作流路由語意精準化] - 2026-04-07
 
 ### 【體驗優化】 (UX Improvement)
