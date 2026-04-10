@@ -4,6 +4,14 @@
 
 ---
 
+## [V6.2.3 框架版本修正] - 2026-04-10
+
+### 【狀態變更】 (State Changed)
+
+- **Version Alignment（版本號對齊）**：修正 `.agents/VERSION` 框架指標版本，確保其對齊至 `6.2.0`。
+
+---
+
 ## [V6.2.2 部署腳本孤兒清除功能與記憶操作技能精煉] - 2026-04-10
 
 ### 【新增商業能力】 (Business Capabilities Added)
