@@ -4,6 +4,30 @@
 
 ---
 
+## [V6.3.0 框架自治強化 — 記憶推播 / 技能閘門 / HALT 防護] - 2026-04-11
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Memory Push Mechanism（記憶主動推播機制）**：新建 `06_memory_push.md` 規範，將記憶系統從被動 Pull 模型（AI 需主動查詢才知道有什麼記憶）轉換為主動 Push 模型（對話啟動即自動探測）。定義三路徑結構性探測流程：`_map` 存在時讀取導航索引、`_map` 不在但非空時讀取 `_system` 並提示初始化、清單為空時以純對話模式繼續。搭配 `01_cross_lingual_guard.md` 的 Turn=1 前向承諾行實現雙層可靠觸發，消除「先有雞還是先有蛋」的冷啟動悖論。
+- **Navigation Memory Card（地圖導航記憶卡）**：新建 `memory/_map/SKILL.md`，作為 Push 機制的讀取目標。僅列 Layer 1 父卡名稱與一句話範圍描述，體積精簡（兩欄表格）、Token 成本固定且低。子卡不進索引（由各父卡的 `## Relations` 管理），Scale 問題從根源解決。
+- **Workflow Skill Loading Gate（工作流強制技能預載閘門）**：14 個工作流全面嵌入 `[LOAD SKILL]` 逐步閘門（共 35 處），將技能載入從「AI 語義猜測」替換為「結構性強制讀取」。技能在被需要的步驟前才載入（非開頭全丟），路徑寫死消滅推理步驟。YAML `required_skills` 欄位降級為審計索引（供 `/08_audit Phase F` 驗證一致性），不再作為啟動指令。
+- **Skill Forge Obligation（技能鍛造義務更新條款）**：`/12_skill_forge` 新增 Step 6 義務更新條款——新建技能後必須宣告「應加入哪些工作流的 `[LOAD SKILL]` 閘門」，並即刻執行更新，從根源防堵新技能遺漏。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **PLANNING GATE（原始碼寫入前置防護）**：`00_core_identity.md` §3 Lifecycle Protocol 後新增結構性閘門——偵測到即將寫入原始碼時，若 `implementation_plan.md` 未建立或未經 `notify_user` 送審，觸發 HALT 並輸出紅字中斷訊息。設計理由：跳過此閘門等於總監失去架構審閱權，退版成本高，屬不可逆損傷節點。
+- **Completion Gate HALT Upgrade（完成閘門硬性中斷升級）**：`_completion_gate.md` 的 Check 1–3（記憶卡同步、歸卡驗證、檔案歸屬）從軟性 FAIL 警告升級為強制 HALT——記憶卡未同步即禁止結案。此升級確保跨對話的記憶連續性不再依賴 AI 自律，而是被結構性強制。
+- **Required Skills Redundancy Purge（冗餘技能說明行清除）**：移除全部工作流中殘留的 `> Required Skills: 見 YAML...` 說明行，消除假性啟動（AI 讀到即認為「已知」但從未深度讀取）。
+- **Turn=1 Instruction Positioning Fix（Turn=1 承諾行位置修正）**：將 `01_cross_lingual_guard.md` 中的 Turn=1 記憶啟動指令從 HTML `<details>` 模板內部移到模板區塊外面，使其成為獨立的行為命令而非被當成模板樣板文字輸出。
+
+### 【架構決策】 (Architectural Decisions)
+
+- **Push over Pull（推播優於拉取）**：經三輪深度討論確認，記憶系統的架構缺口不在記憶卡本身（95% 已完成），而在「對話啟動時沒人告訴 AI 去看」的冷啟動悖論。選擇在獨立規範中定義 Push 邏輯，而非放入 AGENTS.md（哨兵語義不應承擔行為命令）。
+- **Inline Gate over Header Gate（逐步閘門優於開頭閘門）**：拒絕「工作流開頭全部丟出技能清單」的設計，選擇在每個需要技能的步驟前插入獨立閘門。理由：開頭載入全部技能會消耗不必要的 Token（某些步驟可能被跳過），且 AI 讀完就忘的風險更高。
+- **HALT Selectivity（HALT 選擇性升級）**：只升級兩個不可逆損傷節點（實作計畫必先 + 完成閘門必執行），拒絕大量使用 HALT（加太多 = 注意力稀釋）。跨語系面板未升級（面板沒出現不會造成程式碼損壞），記憶卡兩步驟流程未升級（已被完成閘門 HALT 涵蓋）。
+
+---
+
 ## [V6.2.3 框架版本修正] - 2026-04-10
 
 ### 【狀態變更】 (State Changed)

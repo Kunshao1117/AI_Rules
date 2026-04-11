@@ -1,6 +1,6 @@
 # Antigravity — AI 代理人治理框架
 
-> **版本**: v6.2.0 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
+> **版本**: v6.3.0 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
 
 Antigravity 是一套**零接觸自動部署**的 AI 編碼代理人治理框架。它為 AI 助手提供統一的工作流程、持久記憶系統與標準作業規範，讓 AI 在任何專案中都能像一個有紀律、有記憶的工程團隊來運作。
 
@@ -122,6 +122,7 @@ graph TB
 | `03_memory_skill_contract.md` | 記憶與技能合約 — 記憶卡操作、技能載入、新建歸卡閘門 | Model Decision |
 | `04_forbidden_vocab.md` | 禁用詞彙規範 — 面向總監輸出的商業層級詞彙對照 | Model Decision |
 | `05_project_skill_contract.md` | 衍生技能合約 — 衍生技能建立、生命週期、鍛造流程 | Model Decision |
+| `06_memory_push.md` | 記憶主動推播 — 對話啟動時三路徑探測、Pull→Push 模型轉換 | Model Decision |
 
 #### 分層治理架構
 
@@ -357,7 +358,8 @@ Antigravity/
     │   ├── 02_code_quality_security.md  ← 品質與安全合約（Model Decision）
     │   ├── 03_memory_skill_contract.md  ← 記憶與技能合約（Model Decision）
     │   ├── 04_forbidden_vocab.md        ← 禁用詞彙規範（Model Decision）
-    │   └── 05_project_skill_contract.md ← 衍生技能合約（Model Decision）
+    │   ├── 05_project_skill_contract.md ← 衍生技能合約（Model Decision）
+    │   └── 06_memory_push.md            ← 記憶主動推播（Model Decision）
     ├── workflows/                ← 17 道生命週期工作流程
     │   ├── 00_chat ~ 12_skill_forge ← 主要工作流程（含雙階段建構/修復/提交系列）
     │   ├── _completion_gate.md   ← 共用完成閘門

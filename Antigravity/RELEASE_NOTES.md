@@ -1,4 +1,12 @@
 # Antigravity 更新說明
+## v6.3.0 — 2026-04-11
+
+- **記憶主動推播機制（D7）**：新建 `06_memory_push.md` 規範，定義對話啟動時的三路徑結構性探測流程（`_map` 存在 → 讀導航索引 / `_map` 不在但非空 → 讀 `_system` / 清單為空 → 純對話）。搭配 `01_cross_lingual_guard.md` 的 Turn=1 前向承諾行，實現「對話啟動即自動推送記憶」的 Push 模型。
+- **地圖導航記憶卡（D8）**：新建 `memory/_map/SKILL.md`，作為 D7 Push 的讀取目標。僅列 Layer 1 父卡名稱與一句話範圍，體積精簡、成本固定。
+- **工作流強制技能閘門（D1）**：14 個工作流全面嵌入 `[LOAD SKILL]` 逐步閘門（共 35 處），技能在需要的步驟前才深度讀取。YAML `required_skills` 降為審計索引。`/12_skill_forge` 新增義務更新條款，新技能建立後必須宣告應加入哪些工作流閘門。
+- **核心規範 HALT 防護（D9）**：升級兩個不可逆損傷節點自動中止機制：(1) `00_core_identity.md` 新增 PLANNING GATE，實作計畫未送審即禁止原始碼寫入；(2) `_completion_gate.md` 的 Check 1–3 從軟性警告升級為強制 HALT，記憶卡未同步即禁止結案。
+- **規則系統擴充**：00–05 → 00–06（新增 `06_memory_push.md`，Model Decision）。
+
 ## v6.2.0 — 2026-04-06
 
 - **建構管線雙階段拆分**：`03_build` 重構為 `03_build(建構計畫)`（Stage 1：規劃/閘門/等待 GO）與 `03-2_build_execute(建構執行)`（Stage 2：實體寫入/歸卡/記憶更新/測試串聯）。`03-1_experiment` 的沙盒概念整合進 Stage 1 快速路徑。
