@@ -410,12 +410,7 @@ if ($Mode -eq "Upgrade") {
         Write-Host "[v] 已建立 memory/ 目錄。"
     }
 
-    # 2. 確保目錄連結存在
-    $symlinkPath = Join-Path -Path (Join-Path -Path $targetDir -ChildPath "skills") -ChildPath "_memory"
-    if (-Not (Test-Path -Path $symlinkPath)) {
-        New-Item -ItemType Junction -Path $symlinkPath -Target $tgtMemory | Out-Null
-        Write-Host "[v] 已建立目錄連結: skills/_memory → memory/"
-    }
+    # (依總監指示，取消建立 skills/_memory 目錄連結)
 
     # 2b. 確保 project_skills/ 目錄存在
     $tgtProject = Join-Path -Path $targetDir -ChildPath "project_skills"
@@ -424,12 +419,7 @@ if ($Mode -eq "Upgrade") {
         Write-Host "[v] 已建立 project_skills/ 目錄。"
     }
 
-    # 2c. 確保 _project 目錄連結存在
-    $projectSymlink = Join-Path -Path (Join-Path -Path $targetDir -ChildPath "skills") -ChildPath "_project"
-    if (-Not (Test-Path -Path $projectSymlink)) {
-        New-Item -ItemType Junction -Path $projectSymlink -Target $tgtProject | Out-Null
-        Write-Host "[v] 已建立目錄連結: skills/_project → project_skills/"
-    }
+    # (依總監指示，取消建立 skills/_project 目錄連結)
 
     # ---- 階段 C.5: 衍生技能命名空間連結 Backfill ----
     Write-Host "[*] 掃描並補建衍生技能命名空間連結..."
@@ -569,13 +559,8 @@ if (-Not (Test-Path -Path $memoryDir)) {
     New-Item -ItemType Directory -Force -Path $memoryDir | Out-Null
 }
 
-# 建立符號連結 skills/_memory → memory/
 $skillsDir = Join-Path -Path $targetDir -ChildPath "skills"
-$symlinkPath = Join-Path -Path $skillsDir -ChildPath "_memory"
-if (-Not (Test-Path -Path $symlinkPath)) {
-    New-Item -ItemType Junction -Path $symlinkPath -Target $memoryDir | Out-Null
-}
-Write-Host "[v] 記憶目錄已建立，符號連結已設定。"
+Write-Host "[v] 記憶庫架構已配置。"
 
 # 建立專案衍生技能目錄
 $projectSkillDir = Join-Path -Path $targetDir -ChildPath "project_skills"
@@ -593,12 +578,7 @@ if (-Not (Test-Path -Path $projectIndexFile)) {
 "@
     Set-Content -Path $projectIndexFile -Value $indexTemplate -Encoding UTF8
 }
-# 建立符號連結 skills/_project → project_skills/
-$projectSymlink = Join-Path -Path $skillsDir -ChildPath "_project"
-if (-Not (Test-Path -Path $projectSymlink)) {
-    New-Item -ItemType Junction -Path $projectSymlink -Target $projectSkillDir | Out-Null
-}
-Write-Host "[v] 專案衍生技能目錄已建立，符號連結已設定。"
+Write-Host "[v] 專案衍生技能基礎目錄已建立。"
 Write-Host "[v] 專案記憶系統已就緒，可執行 /02_blueprint 初始化。"
 
 # 衍生技能命名空間連結 Backfill（Fresh 模式還原衍生技能後補建）
