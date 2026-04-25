@@ -101,7 +101,7 @@ function Get-UpgradeReport {
         if (-Not (Test-Path -Path $srcPath)) { continue }
 
         Get-ChildItem -Path $srcPath -File -Recurse | ForEach-Object {
-            $rel = $_.FullName.Substring($SourceRoot.Length + 1).Replace("\", "/")
+            $rel = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/').Replace("\", "/")
             $tgtFile = Join-Path -Path $TargetRoot -ChildPath $rel
             $results += Compare-AgentFile -SourcePath $_.FullName -TargetPath $tgtFile -RelativePath $rel
         }
@@ -112,10 +112,10 @@ function Get-UpgradeReport {
     if (Test-Path -Path $srcSkills) {
         Get-ChildItem -Path $srcSkills -File -Recurse | Where-Object {
             # 排除受保護的符號連結目錄下的所有檔案
-            $relPath = $_.FullName.Substring($srcSkills.Length + 1)
+            $relPath = $_.FullName.Substring($srcSkills.Length).TrimStart('\', '/')
             -not ($relPath -match "^_memory[\\/]") -and -not ($relPath -match "^_project[\\/]")
         } | ForEach-Object {
-            $rel = $_.FullName.Substring($SourceRoot.Length + 1).Replace("\", "/")
+            $rel = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/').Replace("\", "/")
             $tgtFile = Join-Path -Path $TargetRoot -ChildPath $rel
             $results += Compare-AgentFile -SourcePath $_.FullName -TargetPath $tgtFile -RelativePath $rel
         }
@@ -127,7 +127,7 @@ function Get-UpgradeReport {
         if (-Not (Test-Path -Path $tgtPath)) { continue }
 
         Get-ChildItem -Path $tgtPath -File -Recurse | ForEach-Object {
-            $rel = $_.FullName.Substring($TargetRoot.Length + 1).Replace("\", "/")
+            $rel = $_.FullName.Substring($TargetRoot.Length).TrimStart('\', '/').Replace("\", "/")
             $srcFile = Join-Path -Path $SourceRoot -ChildPath $rel
             if (-Not (Test-Path -Path $srcFile)) {
                 $results += [PSCustomObject]@{ Status = "ORPHAN"; Path = $rel }
@@ -139,10 +139,10 @@ function Get-UpgradeReport {
     $tgtSkills = Join-Path -Path $TargetRoot -ChildPath "skills"
     if (Test-Path -Path $tgtSkills) {
         Get-ChildItem -Path $tgtSkills -File -Recurse | Where-Object {
-            $relPath = $_.FullName.Substring($tgtSkills.Length + 1)
+            $relPath = $_.FullName.Substring($tgtSkills.Length).TrimStart('\', '/')
             -not ($relPath -match "^_memory[\\/]") -and -not ($relPath -match "^mem-") -and -not ($relPath -match "^_project[\\/]") -and -not ($relPath -match "^project-")
         } | ForEach-Object {
-            $rel = $_.FullName.Substring($TargetRoot.Length + 1).Replace("\", "/")
+            $rel = $_.FullName.Substring($TargetRoot.Length).TrimStart('\', '/').Replace("\", "/")
             $srcFile = Join-Path -Path $SourceRoot -ChildPath $rel
             if (-Not (Test-Path -Path $srcFile)) {
                 $results += [PSCustomObject]@{ Status = "ORPHAN"; Path = $rel }
@@ -154,7 +154,7 @@ function Get-UpgradeReport {
     $tgtMemory = Join-Path -Path $TargetRoot -ChildPath "memory"
     if (Test-Path -Path $tgtMemory) {
         Get-ChildItem -Path $tgtMemory -Directory -Recurse | Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") } | ForEach-Object {
-            $rel = $_.FullName.Substring($tgtMemory.Length + 1).Replace("\", "/")
+            $rel = $_.FullName.Substring($tgtMemory.Length).TrimStart('\', '/').Replace("\", "/")
             $results += [PSCustomObject]@{ Status = "KEEP"; Path = "memory/$rel/" }
         }
     }
@@ -163,7 +163,7 @@ function Get-UpgradeReport {
     $tgtProject = Join-Path -Path $TargetRoot -ChildPath "project_skills"
     if (Test-Path -Path $tgtProject) {
         Get-ChildItem -Path $tgtProject -Directory -Recurse | Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") } | ForEach-Object {
-            $rel = $_.FullName.Substring($tgtProject.Length + 1).Replace("\", "/")
+            $rel = $_.FullName.Substring($tgtProject.Length).TrimStart('\', '/').Replace("\", "/")
             $results += [PSCustomObject]@{ Status = "KEEP"; Path = "project_skills/$rel/" }
         }
     }
@@ -171,7 +171,7 @@ function Get-UpgradeReport {
     # 過渡相容：掃描舊版 skills/mem-*（含巢狀，等待遷移）
     if (Test-Path -Path $tgtSkills) {
         Get-ChildItem -Path $tgtSkills -Directory -Recurse | Where-Object { $_.Name -like "mem-*" } | ForEach-Object {
-            $rel = $_.FullName.Substring($tgtSkills.Length + 1).Replace("\", "/")
+            $rel = $_.FullName.Substring($tgtSkills.Length).TrimStart('\', '/').Replace("\", "/")
             $results += [PSCustomObject]@{ Status = "MIGRATE"; Path = "skills/$rel/" }
         }
     }
