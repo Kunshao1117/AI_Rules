@@ -30,6 +30,28 @@ if (-Not (Test-Path -Path $Target)) {
 # 共用函式
 # ============================================================
 
+function Invoke-ProjectSkillBackfill {
+    <#
+    .SYNOPSIS 掃描 project_skills/，自動補建缺少的 skills/project-* 命名空間符號連結（冪等）
+    #>
+    param ([string]$AgentsRoot)
+    $skillsDir = Join-Path $AgentsRoot 'skills'
+    $projDir   = Join-Path $AgentsRoot 'project_skills'
+    if (-not (Test-Path $projDir)) { return }
+    $count = 0
+    Get-ChildItem $projDir -Directory | ForEach-Object {
+        $linkPath = Join-Path $skillsDir "project-$($_.Name)"
+        if (-not (Test-Path $linkPath)) {
+            New-Item -ItemType SymbolicLink -Path $linkPath -Target $_.FullName | Out-Null
+            Write-Host "[v] [Backfill] project-$($_.Name) 符號連結已建立"
+            $count++
+        }
+    }
+    if ($count -eq 0) {
+        Write-Host "[OK] 衍生技能符號連結皆為最新，無需補建。"
+    }
+}
+
 function Compare-AgentFile {
     <# 
     .SYNOPSIS 比對單一檔案：先看修改時間，再比 SHA256
@@ -113,12 +135,12 @@ function Get-UpgradeReport {
         }
     }
 
-    # 檢查 skills/ 中的孤兒（排除 _memory、_project 符號連結）
+    # 檢查 skills/ 中的孤兒（排除 _memory、_project 符號連結、project-* 命名空間連結）
     $tgtSkills = Join-Path -Path $TargetRoot -ChildPath "skills"
     if (Test-Path -Path $tgtSkills) {
         Get-ChildItem -Path $tgtSkills -File -Recurse | Where-Object {
             $relPath = $_.FullName.Substring($tgtSkills.Length + 1)
-            -not ($relPath -match "^_memory[\\/]") -and -not ($relPath -match "^mem-") -and -not ($relPath -match "^_project[\\/]")
+            -not ($relPath -match "^_memory[\\/]") -and -not ($relPath -match "^mem-") -and -not ($relPath -match "^_project[\\/]") -and -not ($relPath -match "^project-")
         } | ForEach-Object {
             $rel = $_.FullName.Substring($TargetRoot.Length + 1).Replace("\", "/")
             $srcFile = Join-Path -Path $SourceRoot -ChildPath $rel
@@ -409,6 +431,10 @@ if ($Mode -eq "Upgrade") {
         Write-Host "[v] 已建立目錄連結: skills/_project → project_skills/"
     }
 
+    # ---- 階段 C.5: 衍生技能命名空間連結 Backfill ----
+    Write-Host "[*] 掃描並補建衍生技能命名空間連結..."
+    Invoke-ProjectSkillBackfill -AgentsRoot $targetDir
+
     # 3. 命名合規掃描：修正殘留的 mem-* 目錄名稱（由深到淺）
     if (Test-Path -Path $tgtMemory) {
         $renamedCount = 0
@@ -575,6 +601,10 @@ if (-Not (Test-Path -Path $projectSymlink)) {
 Write-Host "[v] 專案衍生技能目錄已建立，符號連結已設定。"
 Write-Host "[v] 專案記憶系統已就緒，可執行 /02_blueprint 初始化。"
 
+# 衍生技能命名空間連結 Backfill（Fresh 模式還原衍生技能後補建）
+Write-Host "[*] 掃描並補建衍生技能命名空間連結..."
+Invoke-ProjectSkillBackfill -AgentsRoot $targetDir
+
 # 清理：移除舊版 cartridges 目錄
 $cartridgeDir = Join-Path -Path $targetDir -ChildPath "cartridges"
 if (Test-Path -Path $cartridgeDir) {
@@ -585,15 +615,16 @@ if (Test-Path -Path $cartridgeDir) {
 # 驗證部署
 if (Test-Path -Path $skillsDir) {
     $totalSkills = (Get-ChildItem -Path $skillsDir -Directory | Where-Object { 
-        ($_.Name -ne "_memory") -and ($_.Name -ne "_project") -and (Test-Path (Join-Path $_.FullName "SKILL.md")) 
+        ($_.Name -ne "_memory") -and ($_.Name -ne "_project") -and ($_.Name -notlike "project-*") -and (Test-Path (Join-Path $_.FullName "SKILL.md")) 
     }).Count
+    $linkedSkills = (Get-ChildItem -Path $skillsDir -Directory | Where-Object { $_.Name -like "project-*" }).Count
     $memCards = if (Test-Path -Path $memoryDir) {
         (Get-ChildItem -Path $memoryDir -Directory -Recurse | Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") }).Count
     } else { 0 }
     $projectSkills = if (Test-Path -Path $projectSkillDir) {
         (Get-ChildItem -Path $projectSkillDir -Directory -Recurse | Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") }).Count
     } else { 0 }
-    Write-Host "[v] 技能系統已部署: $totalSkills 個核心技能 + $projectSkills 個專案衍生技能 + $memCards 個專案記憶。"
+    Write-Host "[v] 技能系統已部署: $totalSkills 個核心技能 + $projectSkills 個專案衍生技能（$linkedSkills 個已掛載符號連結）+ $memCards 個專案記憶。"
 } else {
     Write-Host "[!] 警告: 部署的 .agents 資料夾中找不到技能目錄。"
 }

@@ -19,6 +19,29 @@ This workflow is triggered by one of the following:
 > [LOAD SKILL] §2 設計前，必須讀取：
 > `view_file .agents/skills/skill-factory/SKILL.md`
 
+## 0.5 Backfill Gate（現有技能補齊閘門）
+
+每次進入此工作流時，先執行以下冪等腳本，掃描 `project_skills/` 下所有子目錄，對缺少對應符號連結的技能自動補建（已存在則略過）：
+
+```powershell
+$agentsRoot = Join-Path $workspace '.agents'
+$skillsDir  = Join-Path $agentsRoot 'skills'
+$projDir    = Join-Path $agentsRoot 'project_skills'
+
+if (Test-Path $projDir) {
+    Get-ChildItem $projDir -Directory | ForEach-Object {
+        $linkPath = Join-Path $skillsDir "project-$($_.Name)"
+        if (-not (Test-Path $linkPath)) {
+            New-Item -ItemType SymbolicLink -Path $linkPath -Target $_.FullName | Out-Null
+            Write-Host "[v] [Backfill] project-$($_.Name) 符號連結已補建"
+        }
+    }
+    Write-Host "[OK] Backfill 完成。"
+}
+```
+
+其中 `$workspace` 為當前 Workspace 根目錄（由主腦帶入）。
+
 ## 2. Skill Design Planning
 
 - You MUST call `task_boundary` to enter `PLANNING` mode.
@@ -76,7 +99,21 @@ Upon approval:
 // turbo
 
 - Run `.agents/scripts/Measure-SkillQuality.ps1 -Target {skill-path}` — ALL items MUST be 🟢. If any 🔴 → fix and re-scan.
-- Confirm the symlink `.agents/skills/_project` correctly resolves to the new skill's parent directory.
+- Execute symlink registration for IDE zero-touch discovery:
+  ```powershell
+  $agentsRoot = Join-Path $workspace '.agents'
+  $skillsDir  = Join-Path $agentsRoot 'skills'
+  $linkPath   = Join-Path $skillsDir  "project-${skillName}"
+  $targetPath = Join-Path $agentsRoot "project_skills\${skillName}"
+  if (-not (Test-Path $linkPath)) {
+      New-Item -ItemType SymbolicLink -Path $linkPath -Target $targetPath | Out-Null
+      Write-Host "[v] 符號連結已建立：project-${skillName}"
+  } else {
+      Write-Host "[OK] 符號連結已存在，略過：project-${skillName}"
+  }
+  ```
+  其中 `$skillName` 為本次鍛造的技能名稱。
+- Verify: `Test-Path (Join-Path $skillsDir "project-${skillName}\SKILL.md")` 回傳 `True` → 感知驗證通過。
 
 ## COMPLETION GATE（完成閘門 — 不可略過）
 

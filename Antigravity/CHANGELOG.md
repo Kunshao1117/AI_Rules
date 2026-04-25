@@ -4,6 +4,18 @@
 
 ---
 
+## [V6.3.1 衍生技能符號連結自動化閉環與掃描機制修補] - 2026-04-25
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Symlink Automation Loop（衍生技能符號連結自動化閉環）**：為解決 IDE 掃描引擎僅具備「單層深度感知」且跳過 `_project/` 隱藏目錄的盲區問題，實作了衍生技能符號連結的自動化閉環機制。強制將所有專案衍生技能以 `skills/project-XXX` 的符號連結形式「平攤」掛載。
+- **Auto Backfill Gate（工作流與部署自動補齊）**：於 `/12_skill_forge` 工作流新增 `§0.5 Backfill Gate`，每次觸發時自動掃描並補建本機缺失的符號連結。部署引擎 (`Deploy-Antigravity.ps1`) 的 Fresh 與 Upgrade 模式亦同步注入 `Invoke-ProjectSkillBackfill` 共用函式，保障透過 Git 拉取核心更新後本地環境的一致性。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Orphan Cleanup False Positive Fix（孤兒掃描誤判修復）**：修復 `Deploy-Antigravity.ps1` 在 Upgrade 模式執行 `-RemoveOrphans` 時，因未排除 `project-*` 規則導致誤刪 Backfill 所建符號連結的高危漏洞。
+- **Validation Statistics Fix（驗證統計基準修復）**：修正 Fresh 模式部署報告中核心技能數量的統計邏輯，將符號連結從核心技能數中剔除並獨立展示，恢復統計精準度。
+
 ## [V6.3.0 框架自治強化 — 記憶推播 / 技能閘門 / HALT 防護] - 2026-04-11
 
 ### 【新增商業能力】 (Business Capabilities Added)
