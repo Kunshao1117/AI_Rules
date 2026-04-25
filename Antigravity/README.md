@@ -1,6 +1,6 @@
 # Antigravity — AI 代理人治理框架
 
-> **版本**: v6.3.0 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
+> **版本**: v7.0.0 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
 
 Antigravity 是一套**零接觸自動部署**的 AI 編碼代理人治理框架。它為 AI 助手提供統一的工作流程、持久記憶系統與標準作業規範，讓 AI 在任何專案中都能像一個有紀律、有記憶的工程團隊來運作。
 
@@ -270,7 +270,7 @@ graph LR
 
 ### 專案記憶系統
 
-**目錄**: `.agents/memory/`（透過 `skills/_memory` 符號連結讓 IDE 自動發現）
+**目錄**: `.agents/memory/`
 
 解決 AI「每次開新對話就失憶」的核心問題。
 
@@ -366,8 +366,7 @@ Antigravity/
     │   └── _security_footer.md   ← 共用安全閘門
     ├── skills/                   ← 操作型技能（框架提供，升級時可覆寫）
     │   ├── _index.md             ← 核心技能路由表
-    │   ├── _memory -> ../memory  ← 符號連結（IDE 自動發現記憶卡）
-    │   ├── _project -> ../project_skills ← 符號連結（IDE 自動發現衍生技能）
+    │   ├── project-xxx -> ../project_skills/xxx ← 專案衍生技能符號連結（IDE 平攤掃描區）
     │   ├── memory-ops/           ← 記憶操作指引
     │   ├── browser-testing/      ← 瀏覽器測試流程
     │   └── ... (25 套)
