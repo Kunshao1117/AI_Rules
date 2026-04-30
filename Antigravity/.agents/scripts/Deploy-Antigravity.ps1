@@ -616,18 +616,21 @@ $versionFile = Join-Path -Path $targetDir -ChildPath "VERSION"
 Set-Content -Path $versionFile -Value $sourceVersion -NoNewline
 Write-Host "[v] 版本 v$sourceVersion 已寫入。"
 
-# Git 排除：確保腳本工具目錄不進版控
+# Git 排除：確保腳本工具與日誌目錄不進版控
 $gitignorePath = Join-Path -Path $Target -ChildPath ".gitignore"
-$excludeLine = ".agents/scripts/"
-if (Test-Path -Path $gitignorePath) {
-    $giContent = Get-Content -Path $gitignorePath -Raw
-    if ($giContent -notmatch [regex]::Escape($excludeLine)) {
-        Add-Content -Path $gitignorePath -Value "`n# Antigravity 框架工具腳本（自動產生）`n$excludeLine"
-        Write-Host "[v] 已追加 .gitignore 排除: $excludeLine"
+$excludeLines = @(".agents/scripts/", ".agents/logs/")
+
+if (-Not (Test-Path -Path $gitignorePath)) {
+    Set-Content -Path $gitignorePath -Value "# Antigravity 框架自動排除項目"
+    Write-Host "[v] 已建立 .gitignore"
+}
+
+$giContent = Get-Content -Path $gitignorePath -Raw
+foreach ($line in $excludeLines) {
+    if ($giContent -notmatch [regex]::Escape($line)) {
+        Add-Content -Path $gitignorePath -Value $line
+        Write-Host "[v] 已追加 .gitignore 排除: $line"
     }
-} else {
-    Set-Content -Path $gitignorePath -Value "# Antigravity 框架工具腳本`n$excludeLine"
-    Write-Host "[v] 已建立 .gitignore 並排除: $excludeLine"
 }
 
 Write-Host "-----------------------------------------------"
