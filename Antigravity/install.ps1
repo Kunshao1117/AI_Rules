@@ -31,7 +31,10 @@ param (
     [string]$Mode = "Fresh",
 
     [Parameter(Mandatory = $false)]
-    [string]$Branch = "main"
+    [string]$Branch = "main",
+
+    [Parameter(Mandatory = $false)]
+    [switch]$RemoveOrphans
 )
 
 # PowerShell 5.1+ 相容模式（建議 PS 7.x，但 PS 5.1 可直接執行）
@@ -70,7 +73,11 @@ try {
     }
 
     Write-Host "[3/3] 正在部署至目標專案..."
-    & $deployScript -Target $Target -Mode $Mode
+    if ($RemoveOrphans) {
+        & $deployScript -Target $Target -Mode $Mode -RemoveOrphans
+    } else {
+        & $deployScript -Target $Target -Mode $Mode
+    }
 
 } finally {
     # ── 清理暫存檔案 ──
