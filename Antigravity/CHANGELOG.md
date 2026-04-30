@@ -4,6 +4,18 @@
 
 ---
 
+## [V7.0.1 工作流決策樹重構與交接提示詞優化] - 2026-04-30
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Decision Tree Overstep Fix（決策樹越權漏洞修復）**：修復 `/12_skill_forge` 工作流中 Verification Gate 因使用樹狀決策語法（`├──`, `└──`）導致 AI 傾向內部模擬而跳過總監審閱的漏洞。全面改寫為嚴謹的 IF-THEN-ELSE 命令式條件句，強迫 AI 確實執行結構驗證。
+- **Obsolete Workflow Purge（過時工作流圖譜清理）**：從 `README.md` 的架構圖與權限矩陣中徹底移除已廢棄的 `/05_refactor` 與 `/10_rollback` 工作流，確保官方文件對齊實際運作的 17 個工作流。
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Artifact-Based Handoff（Artifact 化交接提示詞）**：擴充 `/11_handoff` 交接工作流內容，新增「環境異動（npm i 提醒）」與「WIP 待辦清單」區塊，並將交接產出升級為豐富的 Artifact 格式。確保跨對話傳承時，新 AI 代理人能精確接手未完成的除錯路徑與環境設定。
+- **Export Directory Isolation（匯出目錄隔離）**：將 `antigravity_export/` 加入全域 `.gitignore`，為框架日後的打包匯出功能建立安全的版控隔離區。
+- **MCP Guardrails Documentation（MCP 防護規範文件化）**：於 `README.md` 正式編入 `07_mcp_guardrails.md` 的文件說明，確立外部工具修改的 Human-In-The-Loop (HITL) 防線。
 ## [V7.0.0 衍生技能自動化閉環與架構大清理] - 2026-04-25
 
 ### 【新增商業能力】 (Business Capabilities Added)

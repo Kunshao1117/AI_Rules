@@ -123,6 +123,7 @@ graph TB
 | `04_forbidden_vocab.md` | 禁用詞彙規範 — 面向總監輸出的商業層級詞彙對照 | Model Decision |
 | `05_project_skill_contract.md` | 衍生技能合約 — 衍生技能建立、生命週期、鍛造流程 | Model Decision |
 | `06_memory_push.md` | 記憶主動推播 — 對話啟動時三路徑探測、Pull→Push 模型轉換 | Model Decision |
+| `07_mcp_guardrails.md` | MCP 外部工具防護 — 高風險狀態修改的 HITL 攔截 | Model Decision |
 
 #### 分層治理架構
 
@@ -188,7 +189,6 @@ graph LR
     
     subgraph "維護階段"
         W04["04 修復"]
-        W05["05 重構"]
         W06["06 測試"]
         W07["07 除錯"]
     end
@@ -196,7 +196,6 @@ graph LR
     subgraph "治理階段"
         W08["08 專案健檢"]
         W09["09 備份紀錄"]
-        W10["10 還原"]
         W11["11 交接"]
     end
 ```
@@ -211,13 +210,11 @@ graph LR
 | 03-2 | 建構執行 | Stage 2：實體寫入 → 新建歸卡 → 記憶更新 → 單元測試 | Writer/SRE |
 | 04-1 | 修復計畫 | Bug 診斷 → 產出修復計畫（唯讀，等待 GO） | Reader |
 | 04-2 | 修復執行 | 實體修復 → 記憶更新 → 回歸測試 | Writer/SRE |
-| 05 | 重構 | 不改功能的結構優化（含狀態保全閘門） | Worker |
 | 06 | 測試 | 瀏覽器自動化視覺測試（靜默化輸出） | Reader |
 | 07 | 除錯 | 堆疊追蹤分析、錯誤翻譯 | Reader |
 | 08 | 專案健檢 | 全方位健康審計（含陣列遍歷強制） | Writer/SRE |
 | 09-1 | 紀錄掃描 | 倉庫衛生 + 記憶過期偵測（唯讀掃描） | Reader |
 | 09-2 | 授權備份 | 文件更新 + Git 提交 + 遠端推播 | Writer/SRE |
-| 10 | 還原 | 安全回滾到先前穩定版本 | Writer/SRE |
 | 11 | 交接 | 產出交接文件給下一個 AI 對話（含前置檢查） | Reader/Memory |
 | 12 | 技能鍛造 | 從工作實踐中提煉可複用技能 | Worker |
 
@@ -359,7 +356,8 @@ Antigravity/
     │   ├── 03_memory_skill_contract.md  ← 記憶與技能合約（Model Decision）
     │   ├── 04_forbidden_vocab.md        ← 禁用詞彙規範（Model Decision）
     │   ├── 05_project_skill_contract.md ← 衍生技能合約（Model Decision）
-    │   └── 06_memory_push.md            ← 記憶主動推播（Model Decision）
+    │   ├── 06_memory_push.md            ← 記憶主動推播（Model Decision）
+    │   └── 07_mcp_guardrails.md         ← MCP 外部工具防護（Model Decision）
     ├── workflows/                ← 17 道生命週期工作流程
     │   ├── 00_chat ~ 12_skill_forge ← 主要工作流程（含雙階段建構/修復/提交系列）
     │   ├── _completion_gate.md   ← 共用完成閘門

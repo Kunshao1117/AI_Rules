@@ -16,9 +16,6 @@ This workflow is triggered by one of the following:
 - `/08_audit` Phase G recommends a new skill based on pattern detection（健檢偵測到跨模組重複模式）
 - `/04_fix` or `/07_debug` recommends distilling a methodology（修復/除錯後發現可萃取方法論）
 
-> [LOAD SKILL] §2 設計前，必須讀取：
-> `view_file .agents/skills/skill-factory/SKILL.md`
-
 ## 0.5 Backfill Gate（現有技能補齊閘門）
 
 每次進入此工作流時，先執行以下冪等腳本，掃描 `project_skills/` 下所有子目錄，對缺少對應符號連結的技能自動補建（已存在則略過）：
@@ -41,6 +38,9 @@ if (Test-Path $projDir) {
 ```
 
 其中 `$workspace` 為當前 Workspace 根目錄（由主腦帶入）。
+
+> [LOAD SKILL] §2 設計前，必須讀取：
+> `view_file .agents/skills/skill-factory/SKILL.md`
 
 ## 2. Skill Design Planning
 
@@ -81,20 +81,16 @@ Upon approval:
 
 ## 5. Verification
 
-```
 [FORGE VALIDATION GATE] Post-generation structural check:
-├── [SUDO] detected? → Skip structural validation.
-├── Read back generated SKILL.md.
-├── Validate YAML frontmatter parseable?
-│   └── NO → Auto-regenerate frontmatter. (Max 2 retries)
-├── Validate body sections match § 4 order?
-│   └── NO → Auto-reorder. (Max 2 retries)
-├── Validate generated skill INHERITS Trinity Pattern?
-│   ├── Contains [SILENT GATE] or equivalent? → OK.
-│   └── Missing → Inject Silent Gate template into generated skill.
-│       「This ensures all offspring skills carry the Trinity DNA.」
-└── ALL valid → Proceed to quality scan.
-```
+- IF ([SUDO] detected in Director prompt): Skip structural validation.
+- ELSE:
+  - Read back the generated SKILL.md.
+  - IF (YAML frontmatter is NOT parseable): Auto-regenerate frontmatter. (Max 2 retries).
+  - IF (Body sections do NOT match §4 order): Auto-reorder. (Max 2 retries).
+  - IF (Generated skill does NOT contain [SILENT GATE] or equivalent):
+    - Inject Silent Gate template into the generated skill.
+    - Warn: 「This ensures all offspring skills carry the Trinity DNA.」
+- Proceed to quality scan.
 
 // turbo
 

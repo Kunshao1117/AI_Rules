@@ -512,43 +512,45 @@ $tmpProject      = Join-Path $env:TEMP "ag_backup_project_$(Get-Random)"
 $existingMemory  = Join-Path $targetDir "memory"
 $existingProject = Join-Path $targetDir "project_skills"
 
-if (Test-Path $existingMemory)  {
-    Copy-Item $existingMemory  $tmpMemory  -Recurse -Force
-    Write-Host "[*] 已備份記憶卡到暫存目錄..."
-}
-if (Test-Path $existingProject) {
-    Copy-Item $existingProject $tmpProject -Recurse -Force
-    Write-Host "[*] 已備份衍生技能到暫存目錄..."
-}
-
-# 複製 .agents 生態系統 (在源頭直接阻斷特定目錄與連結的複製)
-New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
-Get-ChildItem -Path $sourceDir | Where-Object { $_.Name -notin @("memory", "project_skills") } | ForEach-Object {
-    $srcItem = $_
-    $destPath = Join-Path -Path $targetDir -ChildPath $srcItem.Name
-    
-    if ($srcItem.Name -eq "skills" -and $srcItem.PSIsContainer) {
-        # 進入 skills 目錄內，專門排除 _memory 與 _project 這兩個連結
-        New-Item -ItemType Directory -Force -Path $destPath | Out-Null
-        Get-ChildItem -Path $srcItem.FullName | Where-Object { $_.Name -notin @("_memory", "_project") } | ForEach-Object {
-            Copy-Item -Path $_.FullName -Destination $destPath -Recurse -Force
-        }
-    } else {
-        # 其他正常資料夾 (如 rules, workflows) 直接複製
-        Copy-Item -Path $srcItem.FullName -Destination $targetDir -Recurse -Force
+try {
+    if (Test-Path $existingMemory)  {
+        Copy-Item $existingMemory  $tmpMemory  -Recurse -Force
+        Write-Host "[*] 已備份記憶卡到暫存目錄..."
     }
-}
+    if (Test-Path $existingProject) {
+        Copy-Item $existingProject $tmpProject -Recurse -Force
+        Write-Host "[*] 已備份衍生技能到暫存目錄..."
+    }
 
-# ── 還原受保護目錄 ──
-if (Test-Path $tmpMemory)  {
-    Copy-Item $tmpMemory  $existingMemory  -Recurse -Force
-    Remove-Item $tmpMemory  -Recurse -Force
-    Write-Host "[v] 專案記憶卡已完整保留並還原。"
-}
-if (Test-Path $tmpProject) {
-    Copy-Item $tmpProject $existingProject -Recurse -Force
-    Remove-Item $tmpProject -Recurse -Force
-    Write-Host "[v] 專案衍生技能已完整保留並還原。"
+    # 複製 .agents 生態系統 (在源頭直接阻斷特定目錄與連結的複製)
+    New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
+    Get-ChildItem -Path $sourceDir | Where-Object { $_.Name -notin @("memory", "project_skills") } | ForEach-Object {
+        $srcItem = $_
+        $destPath = Join-Path -Path $targetDir -ChildPath $srcItem.Name
+        
+        if ($srcItem.Name -eq "skills" -and $srcItem.PSIsContainer) {
+            # 進入 skills 目錄內，專門排除 _memory 與 _project 這兩個連結
+            New-Item -ItemType Directory -Force -Path $destPath | Out-Null
+            Get-ChildItem -Path $srcItem.FullName | Where-Object { $_.Name -notin @("_memory", "_project") } | ForEach-Object {
+                Copy-Item -Path $_.FullName -Destination $destPath -Recurse -Force
+            }
+        } else {
+            # 其他正常資料夾 (如 rules, workflows) 直接複製
+            Copy-Item -Path $srcItem.FullName -Destination $targetDir -Recurse -Force
+        }
+    }
+} finally {
+    # ── 還原受保護目錄 ──
+    if (Test-Path $tmpMemory)  {
+        Copy-Item $tmpMemory  $existingMemory  -Recurse -Force
+        Remove-Item $tmpMemory  -Recurse -Force
+        Write-Host "[v] 專案記憶卡已完整保留並還原。"
+    }
+    if (Test-Path $tmpProject) {
+        Copy-Item $tmpProject $existingProject -Recurse -Force
+        Remove-Item $tmpProject -Recurse -Force
+        Write-Host "[v] 專案衍生技能已完整保留並還原。"
+    }
 }
 
 Write-Host "[v] 核心傳輸完成，正在初始化架構..."
