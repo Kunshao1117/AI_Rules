@@ -4,6 +4,27 @@
 
 ---
 
+## [V7.1.0 架構安全升級 — 斷路器 / 理由日誌 / 崩潰復原] - 2026-04-30
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Circuit Breaker Gate（代理迴圈斷路器）**：完成閘門新增 Check 0 斷路器機制。同一工具連續失敗超過 3 次後強制中止並上呈總監，防止代理無限重試導致 Token 浪費與幻覺迴圈。按工具分別計數（瀏覽器失敗不影響 CLI 額度），且僅暫時性錯誤計入重試次數。
+- **Justification Block Mandate（高風險操作理由日誌）**：外部工具防護欄擴充——任何破壞性 MCP 操作前，代理必須輸出三欄理由日誌（操作理由 / 影響範圍 / 回滾方案），符合 EU AI Act 2026 年 8 月的可解釋性強制要求。
+- **Tool-Level Permission Matrix（工具級權限矩陣）**：外部工具防護欄新增 §2，將高頻 MCP 工具從伺服器級粗放管控提升至工具級細粒度分級（🔴 HIGH / 🟡 MEDIUM / 🟢 LOW），未列出的工具回落至 §1 讀寫二分法。
+- **Crash Recovery Checkpoint（崩潰復原檢查點偵測）**：記憶推播機制新增前置步驟——新對話啟動時自動偵測上次未完成的 checkpoint.json 存檔點。偵測到中斷則提示總監決定是否繼續，防止跨對話的工作進度遺失。
+- **Context Health Indicator（上下文健康指標）**：全息收據模板新增第 4 欄三色燈號（🟢 ≤10 Turn / 🟡 11-15 Turn / 🔴 >15 Turn），主動預警上下文腐化風險並建議執行交接。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Structured Error Triage（結構化錯誤分類）**：瀏覽器測試技能的自動仲裁閘門從 Pass/Fail 二分法升級為三分類錯誤處理（暫時性 → 重試 / 語意性 → 重新規劃 / 基礎設施 → 上呈總監），與斷路器機制聯動確保錯誤回應策略精確匹配。
+
+### 【架構決策】 (Architectural Decisions)
+
+- **Per-Tool Circuit Breaker（按工具分別計數）**：經業界對標驗證（Google Blog / Maxim AI / LangGraph），選擇按工具而非全局計數斷路器，避免單一工具故障拖累整體工作流。此設計與業界 2026 年推薦的「每工具斷路器」模式完全對齊。
+- **Turn-Based Context Health（回合數代理指標）**：在無法精確計量 Token 的純 Markdown 規則環境中，選擇對話回合數作為上下文健康的粗略代理指標。門檻 10/15 對應約 50%/80% 的上下文使用量估算，與業界分層警告模式對齊。
+
+---
+
 ## [V7.0.1 工作流決策樹重構與交接提示詞優化] - 2026-04-30
 
 ### 【技術債消除】 (Technical Debt Removed)

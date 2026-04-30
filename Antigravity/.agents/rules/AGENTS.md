@@ -10,7 +10,7 @@ The full bootstrapping protocol (Zero-Touch Environment Check, Silent Deployment
 
 ## Framework Components
 
-- **Rules**: Core mandate and bootstrapper sentinel (00–07; 00/01 always-on, 02–07 on-demand)
+- **Rules**: Core mandate and bootstrapper sentinel (00–07; 00/01 always-on, 02–07 on-demand). 07 includes tool-level permission matrix.
 - **Workflows**: 17 lifecycle workflows + 2 shared gates
   - 建構系列：`03_build(建構計畫)` / `03-1_experiment` / `03-2_build_execute`
   - 修復系列：`04-1_fix_plan` / `04-2_fix_execute`
