@@ -28,43 +28,21 @@
 
 ## Embedded Output Templates (全息內核模板)
 
-**CRITICAL CONSTRAINT**: `<details>` blocks MUST appear AFTER internal thought but strictly BEFORE invoking ANY tools.
+**CRITICAL CONSTRAINT**: Panel blockquotes MUST appear AFTER internal thought but strictly BEFORE invoking ANY tools.
 
 **[Default] Semantic Decode Block:**
 
 ```
-<details>
-<summary>🧠 跨語系思維解析 (點擊展開)</summary>
-
-**Phase 0: Workflow Context Awareness**
-- **Trigger**: [觸發來源，繁體中文]
-- **Role**: [當前代理人角色，繁體中文]
-- **Scope Constraints**: [當前限制與範圍邊界，繁體中文]
-
-**Phase 1: 4-Layer Intent Decode**
-- **Layer 1 (字面)**: [字面意義解碼，繁體中文]
-- **Layer 2 (意圖)**: [總監意圖解碼，繁體中文]
-- **Layer 3 (情緒)**: [語氣與情緒解碼，繁體中文]
-- **Layer 4 (隱含)**: [隱含假設解碼，繁體中文]
-
-</details>
-<br />
+> 🧠 **跨語系思維解析**
+> P0｜觸發: [觸發來源，繁體中文] · 角色: [當前代理人角色，繁體中文] · 範圍: [當前限制與範圍邊界，繁體中文]
+> P1｜字面: [字面意義解碼，繁體中文] · 意圖: [總監意圖解碼，繁體中文] · 情緒: [語氣與情緒解碼，繁體中文] · 隱含: [隱含假設解碼，繁體中文]
 ```
 
 **[Always Required] System Preparation Block:**
 
 ```
-<details>
-<summary>🤖 系統作業準備清單 (點擊展開)</summary>
-
-- **參考知識區**: [掃描知識庫，填入匹配的技能名稱，或填「不適用」]
-- **實體操作工具**: [填入將使用的 MCP 或原生工具名稱，或填「None」]
-- **歷史防偽查驗 (對話追溯)**: [查看對話歷史，找到上一輪收據的 Turn 號碼。首次對話填「1」。禁止填寫「+1」等無意義字串]
-- **歷史防偽查驗 (工具追溯)**: [查看上一輪收據的工具列表，逐一核對。首次對話或上輪無工具呼叫填「無」]
-- **決策與應變機制**: [聲明下一步將採取的具體工具呼叫或檢索行動]
-
-</details>
-<br />
+> 🤖 **系統作業準備清單**
+> 知識: [技能名稱或「不適用」] · 工具: [MCP 或原生工具名稱或「None」] · Turn: N · 查驗(對話): [上輪 Turn 號碼，首次填「1」] · 查驗(工具): [上輪工具列表，首次填「無」] · 決策: [下一步具體行動]
 ```
 
 **[Turn=1 記憶啟動指令]**: 首次回應（Turn=1）時，「決策與應變機制」欄位 MUST 包含「執行記憶啟動探測（讀取 MEMORY.md → 三路徑判斷）」的明確聲明。面板輸出完畢後，立即執行：讀取 `~/.claude/projects/<project>/memory/MEMORY.md` → 三路徑判斷：
@@ -76,12 +54,5 @@
 每次回應的最末端 MUST 附加：
 
 ```
-<details>
-<summary>📋 實體足跡收據 (點擊展開)</summary>
-
-- **對話次序 (Turn)**: {從對話歷史計算的絕對數字}
-- **呼叫工具 (Tool)**: {名稱}(次數)，無則填「無」
-- **上下文健康 (Context)**: {🟢 正常 | 🟡 留意 (>10 Turn) | 🔴 建議交接 (>20 Turn)}
-
-</details>
+> 📋 Turn: {從對話歷史計算的絕對數字} · Tool: {名稱(次數)，無則填「無」} · Context: {🟢 正常 | 🟡 留意 (>10 Turn) | 🔴 建議交接 (>20 Turn)}
 ```

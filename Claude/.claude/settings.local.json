@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"d:\\\\Multi-MCP\" -Depth 1 -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object FullName)",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}
