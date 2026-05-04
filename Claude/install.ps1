@@ -101,26 +101,10 @@ Get-ChildItem $srcDotClaude -Recurse -File | ForEach-Object {
     if ($result -ne "SKIP") { Write-Ok ".claude\$rel [$result]" }
 }
 
-# ─── 3. Deploy .agents/skills/ ─────────────────────────────────────────────────
-Write-Step "部署操作型知識庫 .agents/skills/..."
-$srcSkills = Join-Path $SourceRoot ".agents\skills"
-$dstSkills = Join-Path $Target ".agents\skills"
-
-if (Test-Path $srcSkills) {
-    Get-ChildItem $srcSkills -Recurse -File | ForEach-Object {
-        $rel = $_.FullName.Substring($srcSkills.Length + 1)
-        $dst = Join-Path $dstSkills $rel
-        $result = Deploy-File $_.FullName $dst $isUpgrade
-        $key = if ($result -eq "SKIP") { "Skip" } elseif ($result -eq "UPDATE") { "Update" } else { "Copy" }
-        $stats[$key]++
-        if ($result -ne "SKIP") { Write-Ok ".agents\skills\$rel [$result]" }
-    }
-}
-
-# ─── 4. Create protected directories (Fresh only) ───────────────────────────────
+# ─── 3. Create protected directories (Fresh only) ───────────────────────────────
 if (-not $isUpgrade) {
     Write-Step "建立受保護目錄（執行期建立）..."
-    @(".agents\memory", ".agents\project_skills", ".agents\logs") | ForEach-Object {
+    @(".claude\agents\memory", ".claude\agents\project_skills", ".claude\agents\logs") | ForEach-Object {
         $dir = Join-Path $Target $_
         if (-not (Test-Path $dir)) {
             New-Item -ItemType Directory -Path $dir -Force | Out-Null
@@ -132,9 +116,9 @@ if (-not $isUpgrade) {
     $gitignore = Join-Path $Target ".gitignore"
     if (Test-Path $gitignore) {
         $content = Get-Content $gitignore -Raw
-        if ($content -notmatch "\.agents/logs/") {
-            Add-Content $gitignore "`n# Antigravity — 暫存日誌（不進版控）`n.agents/logs/"
-            Write-Ok ".gitignore 已新增 .agents/logs/ 排除規則"
+        if ($content -notmatch "\.claude/agents/logs/") {
+            Add-Content $gitignore "`n# Antigravity — 暫存日誌（不進版控）`n.claude/agents/logs/"
+            Write-Ok ".gitignore 已新增 .claude/agents/logs/ 排除規則"
         }
     }
 }
@@ -142,7 +126,7 @@ if (-not $isUpgrade) {
 # ─── 5. Orphan scan (Upgrade only) ─────────────────────────────────────────────
 if ($isUpgrade -and $RemoveOrphans) {
     Write-Step "掃描孤兒檔案..."
-    $protectedDirs = @(".agents\memory", ".agents\project_skills", ".agents\logs")
+    $protectedDirs = @(".claude\agents\memory", ".claude\agents\project_skills", ".claude\agents\logs")
 
     Get-ChildItem (Join-Path $Target ".claude") -Recurse -File | ForEach-Object {
         $rel = $_.FullName.Substring((Join-Path $Target ".claude").Length + 1)

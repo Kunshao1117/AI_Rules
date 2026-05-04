@@ -33,8 +33,8 @@ Remove-Item $f
 | **主規則** | `<project>/CLAUDE.md` | 核心治理規則（@import 模組化） |
 | **詳細規則** | `<project>/.claude/rules/` | 6 個模組化規則文件 |
 | **工作流技能** | `<project>/.claude/skills/` | 4 個 slash command 工作流 |
-| **操作型知識庫** | `<project>/.agents/skills/` | 按需讀取的程序指引 |
-| **專案記憶** | `<project>/.agents/memory/` | 程式碼架構知識卡（升級時受保護）|
+| **操作型知識庫** | `<project>/.claude/agents/skills/` | 按需讀取的程序指引 |
+| **專案記憶** | `<project>/.claude/agents/memory/` | 程式碼架構知識卡（升級時受保護）|
 
 ---
 
@@ -53,13 +53,13 @@ Remove-Item $f
 
 | 功能 | Antigravity (Gemini) | Claude Edition |
 |---|---|---|
-| 主規則載入 | `.agents/rules/` (IDE 自動) | `CLAUDE.md` @import |
+| 主規則載入 | `.claude/agents/rules/` (IDE 自動) | `CLAUDE.md` @import |
 | 計畫模式 | `task_boundary` | `EnterPlanMode` |
 | 檔案寫入 | `write_to_file` | `Write`/`Edit` 工具 |
 | 子代理人 | `browser_subagent` / Gemini CLI | `Agent` 工具 |
 | 記憶啟動 | `memory_list()` | 讀取 MEMORY.md 索引 |
 | 任務追蹤 | `.gemini` scratchpad | `TodoWrite` |
-| 工作流觸發 | `.agents/workflows/` | `.claude/skills/` |
+| 工作流觸發 | `.claude/agents/workflows/` | `.claude/skills/` |
 
 ---
 
@@ -81,7 +81,7 @@ Claude/
 │       ├── fix/SKILL.md
 │       ├── commit/SKILL.md
 │       └── explore/SKILL.md
-├── .agents/
+├── .claude/agents/
 │   └── skills/                  ← 操作型知識庫（按需讀取）
 │       └── _index.md
 ├── install.ps1

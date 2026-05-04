@@ -23,16 +23,16 @@ invocation: user
 
 ### 1. Memory Recall (記憶載入)
 
-> [LOAD SKILL] Read `.agents/skills/memory-ops/SKILL.md` before proceeding.
+> [LOAD SKILL] Read `.claude/agents/skills/memory-ops/SKILL.md` before proceeding.
 
 - Check MEMORY.md index for cards relevant to target module.
-- Load relevant `.agents/memory/*/SKILL.md` — understand architecture, tracked files, decisions, known issues.
+- Load relevant `.claude/agents/memory/*/SKILL.md` — understand architecture, tracked files, decisions, known issues.
 - Check `## Relations` for cross-module dependencies.
 - Check `## Applicable Skills` for required operational skills.
 
 ### 2. Context Acquisition (情境讀取)
 
-> [LOAD SKILL] Read `.agents/skills/code-quality/SKILL.md` and `.agents/skills/security-sre/SKILL.md`.
+> [LOAD SKILL] Read `.claude/agents/skills/code-quality/SKILL.md` and `.claude/agents/skills/security-sre/SKILL.md`.
 
 - Read relevant source files using `Read` tool (from memory card's Tracked Files).
 - Check tech stack version via `package.json` or equivalent. Use `WebSearch` to ground framework docs.
@@ -68,9 +68,9 @@ invocation: user
 
 ### 6. Memory Archive (記憶歸卡)
 
-> [LOAD SKILL] Re-confirm `.agents/skills/memory-ops/SKILL.md` is loaded.
+> [LOAD SKILL] Re-confirm `.claude/agents/skills/memory-ops/SKILL.md` is loaded.
 
-- **[NEW] files**: Find or create matching `.agents/memory/` card. Record file under `## Tracked Files`.
+- **[NEW] files**: Find or create matching `.claude/agents/memory/` card. Record file under `## Tracked Files`.
 - **[MODIFY] files**: Update corresponding memory card's `## Key Decisions` and `## Known Issues`.
 - Apply `[EXIT HOLD GATE]` before reporting completion.
 

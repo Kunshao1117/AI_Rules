@@ -30,7 +30,7 @@
 
 **雙層架構**：
 - `~/.claude/projects/<project>/memory/` — Claude Code 原生記憶體（用戶偏好、回饋、專案背景）
-- `.agents/memory/` — 專案記憶卡（程式碼架構知識、模組決策）
+- `.claude/agents/memory/` — 專案記憶卡（程式碼架構知識、模組決策）
 
 Turn=1 時：讀取 MEMORY.md 索引 → 三路徑判斷（map / system / 純對話）。
 
@@ -44,8 +44,8 @@ Turn=1 時：讀取 MEMORY.md 索引 → 三路徑判斷（map / system / 純對
 - `/commit` — 授權備份（掃描 → GO → 推送）
 - `/explore` — 可行性研究與魔鬼代言人分析
 
-**`.agents/skills/`** — 操作型知識庫（按需讀取，非 slash command）：
-- 完整清單見 `.agents/skills/_index.md`
+**`.claude/agents/skills/`** — 操作型知識庫（按需讀取，非 slash command）：
+- 完整清單見 `.claude/agents/skills/_index.md`
 
 ---
 

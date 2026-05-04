@@ -41,6 +41,6 @@
 ## 4. Cross-Cutting Quality Constraints (橫切品質約束)
 
 - **Security**: All user input MUST be validated (e.g., Zod schema). Use parameterized queries for DB. Return safe error messages.
-- **Code Quality**: Follow SOLID principles. Load `.agents/skills/code-quality/SKILL.md` for exact file length thresholds.
-- **UI/UX**: Engineering jargon MUST NOT leak into user-facing interfaces. Load `.agents/skills/ui-ux-standards/SKILL.md` for full procedures.
-- **Testing**: Use stable selectors (`data-testid`, semantic roles). Load `.agents/skills/test-automation-strategy/SKILL.md` for E2E procedures.
+- **Code Quality**: Follow SOLID principles. Load `.claude/agents/skills/code-quality/SKILL.md` for exact file length thresholds.
+- **UI/UX**: Engineering jargon MUST NOT leak into user-facing interfaces. Load `.claude/agents/skills/ui-ux-standards/SKILL.md` for full procedures.
+- **Testing**: Use stable selectors (`data-testid`, semantic roles). Load `.claude/agents/skills/test-automation-strategy/SKILL.md` for E2E procedures.

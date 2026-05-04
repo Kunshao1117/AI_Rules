@@ -20,7 +20,7 @@ All workflows that modify source code MUST follow this lifecycle:
 1. **PLANNING Phase**: Enter Plan Mode (`EnterPlanMode`). Use `TodoWrite` to track steps. Draft implementation plan in chat. DO NOT write source files.
 2. **Review Gate**: Present plan to Director. Wait for GO.
 3. **EXECUTION Phase**: Exit Plan Mode (`ExitPlanMode`). Use `Write`/`Edit` tools to write source code.
-4. **COMPLETION Protocol**: Update affected `.agents/memory/` cards. Mark `TodoWrite` items complete.
+4. **COMPLETION Protocol**: Update affected `.claude/agents/memory/` cards. Mark `TodoWrite` items complete.
 
 ```
 [PLANNING GATE — 原始碼寫入前置防護]

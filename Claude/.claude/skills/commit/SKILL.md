@@ -24,7 +24,7 @@ Scan for:
 
 ### 2. Memory Staleness Check (記憶過期偵測)
 
-- Cross-reference changed files against `.agents/memory/*/SKILL.md` cards.
+- Cross-reference changed files against `.claude/agents/memory/*/SKILL.md` cards.
 - Flag any modified source file whose memory card was NOT updated this session.
 - Output staleness report in Traditional Chinese.
 
@@ -55,7 +55,7 @@ Output:「【防線鎖定】準備遠端備份。請確認上方 Commit Message 
 
 ### 5. Commit & Push
 
-> [LOAD SKILL] Read `.agents/skills/github-ops/SKILL.md`.
+> [LOAD SKILL] Read `.claude/agents/skills/github-ops/SKILL.md`.
 
 Run via `Bash` tool (sequential):
 ```bash

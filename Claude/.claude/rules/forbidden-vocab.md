@@ -17,7 +17,7 @@
 | `project_skills/` | 專案衍生技能 |
 | `skill-factory` | 技能工廠 |
 | `.claude/skills/` | 工作流技能 |
-| `.agents/skills/` | 操作型知識庫 |
+| `.claude/agents/skills/` | 操作型知識庫 |
 
 ## Enforcement Rule
 
