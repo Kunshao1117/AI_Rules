@@ -4,6 +4,20 @@
 
 ---
 
+## [V7.1.1 雙 AI 系統記憶架構整合與 Claude 版升級] - 2026-05-05
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Dual-AI Unified Memory Architecture（雙 AI 共用記憶系統）**：解決了 Claude Code 與 Antigravity 因路徑定義分歧導致的記憶庫分裂問題。全框架統一指向 `.agents/memory/` 為唯一記憶庫來源，確保雙系統協作時的上下文一致性。
+- **Claude Edition Turn=1 Startup Protocol（啟動同步協議）**：為 Claude 版引入 Turn=1 啟動探測機制，強制要求在新對話開始時呼叫 `memory_list` 進行狀態同步，防止冷啟動記憶遺失。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Root Installation Script Optimization（根目錄部署腳本優化）**：修復部署腳本中的隔離與孤兒清除邏輯，並完全重寫 `README.md`，提供清晰的雙版本架構與共用記憶系統指引。
+- **Claude Edition Memory Configuration Fix（Claude 版記憶路徑修復）**：全面廢棄舊版 `.claude/agents/memory/` 錯誤路徑，並將 Claude Edition 版本號推進至 v1.1.0。
+
+---
+
 ## [V7.1.0 架構安全升級 — 斷路器 / 理由日誌 / 崩潰復原] - 2026-04-30
 
 ### 【新增商業能力】 (Business Capabilities Added)

@@ -1,2 +1,5 @@
 cartridge_index.json
-/.claude
+.vscode/
+/.agents/
+/.claude/
+antigravity_export/

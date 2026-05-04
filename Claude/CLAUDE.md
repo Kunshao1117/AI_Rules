@@ -1,4 +1,4 @@
-# [ANTIGRAVITY — CLAUDE CODE EDITION v1.0.0]
+# [ANTIGRAVITY — CLAUDE CODE EDITION v1.1.0]
 
 > 本框架為 Antigravity 治理框架的 Claude Code 專用版本。
 > 所有規則已針對 Claude Code 原生工具（Write/Edit/Agent/TodoWrite/Plan Mode）改寫。
@@ -28,11 +28,12 @@
 
 ## Memory System (記憶體系統)
 
-**雙層架構**：
-- `~/.claude/projects/<project>/memory/` — Claude Code 原生記憶體（用戶偏好、回饋、專案背景）
-- `.claude/agents/memory/` — 專案記憶卡（程式碼架構知識、模組決策）
+**單軌共用架構（雙 AI 共用）**：
+- `.agents/memory/` — 唯一記憶庫。Antigravity（Gemini）與 Claude Code 共用此位置。
+- 透過 `cartridge-system` MCP 操作（`memory_list` / `memory_read` / `memory_commit`）。
 
-Turn=1 時：讀取 MEMORY.md 索引 → 三路徑判斷（map / system / 純對話）。
+**Turn=1 啟動協議**：呼叫 `cartridge-system__memory_list` 探測記憶庫 → 三路徑判斷（詳見 `memory-contract.md` §0）。
+
 
 ---
 

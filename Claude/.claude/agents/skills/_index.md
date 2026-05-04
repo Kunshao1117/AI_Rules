@@ -7,7 +7,7 @@
 
 | Skill | Path | Use When |
 |---|---|---|
-| memory-ops | `.claude/agents/skills/memory-ops/SKILL.md` | 讀寫專案記憶卡（.claude/agents/memory/）時 |
+| memory-ops | `.claude/agents/skills/memory-ops/SKILL.md` | 讀寫專案記憶卡（.agents/memory/，透過 cartridge-system MCP）時 |
 | tech-stack-protocol | `.claude/agents/skills/tech-stack-protocol/SKILL.md` | 初次進入專案、確認技術堆疊版本時 |
 | delegation-strategy | `.claude/agents/skills/delegation-strategy/SKILL.md` | 決定是否委派子代理人時 |
 
@@ -47,6 +47,17 @@
 | code-audit | `.claude/agents/skills/code-audit/SKILL.md` | 程式碼品質與安全掃描時 |
 | performance-audit | `.claude/agents/skills/performance-audit/SKILL.md` | Lighthouse 效能掃描時 |
 
+## GitNexus Operations (代碼知識圖譜)
+
+| Skill | Path | Use When |
+|---|---|---|
+| gitnexus-guide | `.claude/agents/skills/gitnexus-guide/SKILL.md` | 了解 GitNexus 工具清單與知識圖譜用法時 |
+| gitnexus-cli | `.claude/agents/skills/gitnexus-cli/SKILL.md` | 執行 GitNexus CLI（index/analyze/wiki）時 |
+| gitnexus-exploring | `.claude/agents/skills/gitnexus-exploring/SKILL.md` | 探索代碼架構、執行流程、理解陌生模組時 |
+| gitnexus-debugging | `.claude/agents/skills/gitnexus-debugging/SKILL.md` | 偵錯、追蹤錯誤來源時 |
+| gitnexus-impact-analysis | `.claude/agents/skills/gitnexus-impact-analysis/SKILL.md` | 評估變更安全性、找出依賴鏈時 |
+| gitnexus-refactoring | `.claude/agents/skills/gitnexus-refactoring/SKILL.md` | 安全重構（改名、抽取、移動代碼）時 |
+
 ## Utilities (輔助工具)
 
 | Skill | Path | Use When |
@@ -55,7 +66,15 @@
 | excel-ops | `.claude/agents/skills/excel-ops/SKILL.md` | 匯出稽核報告或資料分析時 |
 | stitch-design | `.claude/agents/skills/stitch-design/SKILL.md` | UI 設計稿生成時 |
 
+## Memory & Data (記憶與資料擴充)
+
+| Skill | Path | Use When |
+|---|---|---|
+| memory-arch | `.claude/agents/skills/memory-arch/SKILL.md` | 決定記憶卡層級架構、拆分過大記憶卡時 |
+| supabase | `.claude/agents/skills/supabase/SKILL.md` | 涉及 Supabase 完整功能（Auth、Storage、Realtime）時 |
+| supabase-postgres-best-practices | `.claude/agents/skills/supabase-postgres-best-practices/SKILL.md` | 撰寫或優化 Postgres 查詢、Schema 設計時 |
+
 ---
 
-> **Note**: 上表技能大部分尚待從 Antigravity/ 移植並調整工具語法。
-> 移植優先順序：memory-ops → github-ops → code-quality → security-sre → impact-test-strategy
+> **Note**: 操作型知識庫已同步至 36 個完整技能。
+> 可直接按需讀取 `.claude/agents/skills/{skill-name}/SKILL.md` 進行操作。

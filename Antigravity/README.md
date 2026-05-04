@@ -63,7 +63,7 @@ graph TB
     subgraph ".agents/ 生態系統"
         RULES["rules/<br/>治理規則（憲法）"]
         WF["workflows/<br/>12 道工作流程"]
-        SKILLS["skills/<br/>25 套操作型技能"]
+        SKILLS["skills/<br/>36 套操作型技能"]
         MEM["memory/<br/>專案記憶技能"]
         LOGS["logs/<br/>暫存日誌"]
     end
@@ -262,6 +262,17 @@ graph LR
 | | `pr-review-ops` | PR 自動審查與合併決策 | 英文指令（中文註解） | github |
 | | `performance-audit` | Lighthouse 效能掃描與 Web Vitals 測量 | 英文指令（中文註解） | playwright |
 | | `context7-docs` | 即時框架文件查詢 | 英文指令（中文註解） | context7 |
+| **代碼知識圖譜** | `gitnexus-guide` | GitNexus 工具清單與知識圖譜用法 | 英文指令（中文註解） | gitnexus |
+| | `gitnexus-cli` | 索引倉庫、分析代碼庫、生成 Wiki | 英文指令（中文註解） | gitnexus |
+| | `gitnexus-exploring` | 探索代碼架構、執行流程、理解陌生模組 | 英文指令（中文註解） | gitnexus |
+| | `gitnexus-debugging` | 偵錯、追蹤錯誤來源 | 英文指令（中文註解） | gitnexus |
+| | `gitnexus-impact-analysis` | 評估變更安全性、找出依賴鏈 | 英文指令（中文註解） | gitnexus |
+| | `gitnexus-refactoring` | 安全重構（改名、抽取、移動代碼） | 英文指令（中文註解） | gitnexus |
+| **記憶與架構** | `memory-arch` | 記憶卡架構拓樸、層級拆分規則 | 英文指令 | cartridge-system |
+| | `skill-factory` | 從工作實踐中提煉可複用衍生技能 | 英文指令 | — |
+| | `audit-engine` | 健檢語義推理引擎（S1–S5 安全架構） | 英文指令（中文註解） | — |
+| **資料庫專精** | `supabase` | Supabase 完整功能整合指引 | 英文指令 | supabase |
+| | `supabase-postgres-best-practices` | Postgres 效能最佳化與索引設計 | 英文指令 | supabase |
 
 ---
 
@@ -367,10 +378,12 @@ Antigravity/
     │   ├── project-xxx -> ../project_skills/xxx ← 專案衍生技能符號連結（IDE 平攤掃描區）
     │   ├── memory-ops/           ← 記憶操作指引
     │   ├── browser-testing/      ← 瀏覽器測試流程
-    │   └── ... (25 套)
+    │   └── ... (36 套)
     ├── scripts/                  ← 框架工具腳本（隨部署攜帶，不進版控）
+    │   ├── Deploy-Antigravity.ps1    ← 部署引擎（Fresh / Upgrade 雙模式）
     │   ├── Measure-SkillQuality.ps1  ← 技能品質掃描
-    │   └── Invoke-DocScan.ps1        ← 倉庫狀態掃描（衛生+文件）
+    │   ├── Invoke-DocScan.ps1        ← 倉庫狀態掃描（衛生+文件）
+    │   └── Invoke-HealthAudit.ps1    ← 基礎設施健檢掃描
     ├── memory/                   ← 專案記憶（專案特有，升級時受保護）
     │   └── (由 AI 執行 /02 架構 初始化)
     ├── project_skills/           ← 專案衍生技能（專案特有，升級時受保護）

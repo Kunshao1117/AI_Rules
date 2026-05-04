@@ -1,0 +1,440 @@
+{
+  "version": 1,
+  "lastScanned": "2026-05-04T22:47:58+08:00",
+  "cartridges": {
+    "_map": {
+      "skillPath": ".agents\\memory\\_map\\SKILL.md",
+      "description": "框架導航索引卡。記錄所有 Layer 1 父記憶卡的模組名稱與範圍摘要， 供對話啟動時的 D7 Push 機制快速載入，讓 AI 在不深讀各模組卡的情況下知道「哪裡有什麼」。 Use when: D7 三路徑探測的第一條路徑（_map 在清單中）。\n",
+      "trackedFiles": [
+        "d:\\AI_Rules\\Antigravity\\.agents\\memory\\_map\\SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-05-05T00:59:25+08:00",
+      "pendingChanges": [],
+      "depth": 1,
+      "parent": null
+    },
+    "_system": {
+      "skillPath": ".agents\\memory\\_system\\SKILL.md",
+      "description": "全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。",
+      "trackedFiles": [
+        "d:\\AI_Rules\\Antigravity\\.agents\\memory\\_system\\SKILL.md",
+        "d:\\AI_Rules\\Antigravity\\.agents\\rules\\07_mcp_guardrails.md"
+      ],
+      "staleness": 20,
+      "lastUpdated": "2026-04-30T14:26:27+08:00",
+      "pendingChanges": [],
+      "depth": 1,
+      "parent": null
+    }
+  },
+  "fileMap": {
+    "d:\\AI_Rules\\Antigravity\\.agents\\memory\\_system\\SKILL.md": [
+      "_system"
+    ],
+    "d:\\AI_Rules\\Antigravity\\.agents\\rules\\07_mcp_guardrails.md": [
+      "_system"
+    ],
+    "d:\\AI_Rules\\Antigravity\\.agents\\memory\\_map\\SKILL.md": [
+      "_map"
+    ]
+  },
+  "untrackedFiles": [
+    {
+      "filePath": "Claude/CLAUDE.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/README.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/install.ps1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/VERSION",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.markdownlint.yaml",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/RELEASE_NOTES.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/VERSION",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/README.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/install.ps1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/CHANGELOG.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.vscode/settings.json",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/settings.local.json",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.gitignore",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/.gitignore",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/configs/.markdownlint.yaml",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/configs/.yamllint.yaml",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/fix/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/commit/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/explore/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/build/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/rules/memory-contract.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/rules/mcp-guardrails.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/rules/forbidden-vocab.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/rules/cross-lingual-guard.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/rules/core-identity.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/agents/skills/_index.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/trunk.yaml",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/rules/code-quality.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/checkov-LEKAi",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/checkov.bat",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/checkov-t551Y",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/markdownlint-4F0U0",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/markdownlint-DAr5a",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/markdownlint-GXnbb",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/markdownlint-BAuuL",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/markdownlint-AhuvT",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/prettier-6lrKh",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/prettier-cwXJg",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/prettier-CTGim",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/markdownlint.bat",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{DDF571F2-BE98-426D-8288-1A9A39C3FDA2}.2.ver0x0000000000000002.db",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{DDF571F2-BE98-426D-8288-1A9A39C3FDA2}.2.ver0x0000000000000001.db",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{6AF0698E-D558-4F6E-9B3C-3716689AF493}.2.ver0x0000000000000002.db",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{6AF0698E-D558-4F6E-9B3C-3716689AF493}.2.ver0x0000000000000001.db",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{39926F93-E09C-4696-9EA0-EA22197FC03D}.2.ver0x0000000000000001.db",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/cversions.2.db",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/trufflehog.bat",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/trufflehog-tVPYU",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/trufflehog-nHgf5",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/trufflehog-LZh1E",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/trufflehog-f2UYk",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/trufflehog-96Umg",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/prettier.bat",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/prettier-SkeCD",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/prettier-EYBQ1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/markdownlint-veyQe",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/markdownlint-R3VEs",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/markdownlint-PiHMm",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/markdownlint-OUDlX",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/markdownlint-HwKb2",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/yamllint.bat",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.trunk/tools/trunk",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T22:49:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.vscode",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T23:49:01+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.vscode/settings.json",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T23:49:01+08:00",
+      "lastEvent": "change"
+    },
+    {
+      "filePath": "Claude/.cartridge",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T23:54:01+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.gitignore",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-04T23:55:43+08:00",
+      "lastEvent": "add"
+    }
+  ]
+}
