@@ -96,7 +96,8 @@ Get-ChildItem $srcDotClaude -Recurse -File | ForEach-Object {
     $rel = $_.FullName.Substring($srcDotClaude.Length + 1)
     $dst = Join-Path $dstDotClaude $rel
     $result = Deploy-File $_.FullName $dst $isUpgrade
-    $stats[$result == "SKIP" ? "Skip" : ($result == "UPDATE" ? "Update" : "Copy")]++
+    $key = if ($result -eq "SKIP") { "Skip" } elseif ($result -eq "UPDATE") { "Update" } else { "Copy" }
+    $stats[$key]++
     if ($result -ne "SKIP") { Write-Ok ".claude\$rel [$result]" }
 }
 
@@ -110,7 +111,8 @@ if (Test-Path $srcSkills) {
         $rel = $_.FullName.Substring($srcSkills.Length + 1)
         $dst = Join-Path $dstSkills $rel
         $result = Deploy-File $_.FullName $dst $isUpgrade
-        $stats[$result == "SKIP" ? "Skip" : ($result == "UPDATE" ? "Update" : "Copy")]++
+        $key = if ($result -eq "SKIP") { "Skip" } elseif ($result -eq "UPDATE") { "Update" } else { "Copy" }
+        $stats[$key]++
         if ($result -ne "SKIP") { Write-Ok ".agents\skills\$rel [$result]" }
     }
 }
@@ -141,8 +143,6 @@ if (-not $isUpgrade) {
 if ($isUpgrade -and $RemoveOrphans) {
     Write-Step "掃描孤兒檔案..."
     $protectedDirs = @(".agents\memory", ".agents\project_skills", ".agents\logs")
-    $srcFiles = (Get-ChildItem (Join-Path $SourceRoot ".claude") -Recurse -File) +
-                (Get-ChildItem (Join-Path $SourceRoot ".agents\skills") -Recurse -File -ErrorAction SilentlyContinue)
 
     Get-ChildItem (Join-Path $Target ".claude") -Recurse -File | ForEach-Object {
         $rel = $_.FullName.Substring((Join-Path $Target ".claude").Length + 1)
