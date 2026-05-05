@@ -147,7 +147,7 @@ graph TB
 9. **模板即透明機制** — 永遠輸出 `<details>` 供總監審閱，不依賴 AI 自評信心
 
 **`03_memory_skill_contract.md`** — Model Decision（AI 判斷需要時載入）
-1. **專案記憶系統** — `.agents/memory/` 記憶卡的讀寫規範，含 `[EXIT HOLD GATE]` 離場條件鎖（含新建檔案歸卡分支）
+1. **專案記憶系統** — `.agents/memory/` 記憶卡的讀寫規範，含 `[EXIT HOLD GATE]` 離場條件鎖（含新建檔案歸卡分支）；v4.0 新增幽靈偵測警告（非阻塞）與全幽靈卡匣汰除建議
 2. **受控串聯** — `// turbo` 自動銜接機制
 3. **技能系統契約** — 按需載入、漸進式揭露、三目錄架構（衍生技能詳見 `05_project_skill_contract.md`）
 
@@ -241,7 +241,7 @@ graph LR
 
 | 類別 | 技能 | 用途 | 語言風格 | 對接 MCP |
 |------|------|------|----------|----------|
-| **核心操作** | `memory-ops` | 記憶卡讀寫操作指引（含 MCP 備援降級路徑） | 英文指令 | cartridge-system *(可選)* |
+| **核心操作** | `memory-ops` | 記憶卡讀寫操作指引（含 MCP 備援降級路徑）；v4.0 新增幽靈感知、Step 4.5 幽靈清理、間接過期感知 | 英文指令 | cartridge-system *(可選)* |
 | **生命週期** | `tech-stack-protocol` | 技術堆疊偵測與鎖定 | 英文指令 | — |
 | | `delegation-strategy` | 任務委派管道選擇 | 英文指令 | — |
 | **品質約束** | `code-quality` | SOLID 原則、動態行數閾值 | 英文指令（擴展 §11） | — |
@@ -330,6 +330,7 @@ graph TD
 - 單張記憶卡追蹤不超過 **8 個檔案**
 - 超過時系統主動提示拆分建議
 - 一張記憶卡 = 一個獨立變更單元
+- **v4.0**：`memory_list` 回傳 `ghostFilesCount` 自動標記幽靈檔案；`indirectStaleness` 追蹤上游依賴過期；`memory_deps()` 查詢卡匣依賴圖
 
 #### 更新模式
 

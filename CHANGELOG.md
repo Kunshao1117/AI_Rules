@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-06] v4.0 Memory Architecture
+
+### feat(memory): 治理架構升級 (幽靈偵測與依賴傳播)
+- **幽靈檔案偵測 (Ghost Detection)**: 於 `memory-ops` 技能新增 `ghostFilesCount` 處理邏輯。當模組內追蹤檔案已在磁碟刪除時，自動清除殘留路徑；並新增全幽靈卡匣自動汰除建議。此邏輯同步實裝至 Antigravity (`03_memory_skill_contract.md`) 與 Claude (`memory-contract.md`) 版的退出閘門。
+- **依賴感知傳播 (Dependency Propagation)**: 於 `memory-ops` 新增 `indirectStaleness` 上游依賴過期感知機制，並在 `memory-arch` 加入 `dependencies` 評估步驟；同步更新 `memory-template.md` 支援依賴關係宣告。
+- **跨平台對等**: 持續落實 D06 原則，同步完成 Antigravity 與 Claude Edition 雙引擎的記憶操作技能與系統合約的 v4.0 升級。
+- **文件更新**: 升級三份 `README.md`，納入記憶系統的幽靈檔案偵測與依賴傳播機制說明。
+
 ## [2026-05-05] Antigravity v8.0.0 / Claude Edition v1.2.0
 
 ### feat(deploy): 雙引擎部署腳本全面繁中本土化與功能對等升級

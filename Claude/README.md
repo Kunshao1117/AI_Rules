@@ -138,6 +138,7 @@ graph TB
 1. **Turn=1 啟動探測** — 每次新對話強制呼叫 `memory_list` 同步記憶狀態
 2. **單軌共用記憶庫** — 絕對路徑 `.agents/memory/`，禁止使用 `.claude/agents/memory/`
 3. **Exit Hold Gate** — 修改原始碼後，記憶卡未更新則禁止結案
+4. **v4.0 幽靈偵測** — 離場閘門新增非阻塞幽靈警告；全幽靈卡匣自動提議汰除
 
 #### 雙受眾語言設計
 
@@ -280,6 +281,7 @@ graph TD
 - 單張記憶卡追蹤不超過 **8 個檔案**
 - 支援最多 **4 層**深度的父子巢狀結構
 - 超過時系統主動提示拆分（load `memory-arch` skill）
+- **v4.0**：`memory_list` 回傳 `ghostFilesCount` 標記幽靈檔案；`indirectStaleness` 追蹤上游依賴過期；新建卡匣時應評估 `dependencies` 欄位宣告
 
 #### 更新模式
 

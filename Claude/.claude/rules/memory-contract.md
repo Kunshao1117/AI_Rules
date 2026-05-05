@@ -37,6 +37,10 @@
 │   └── YES → Check: did memory-ops fire for ALL affected cards?
 │       ├── YES → Release hold. Proceed.
 │       └── NO  → [HALT]「🔴 [MEM HALT] 記憶卡尚未更新。請先執行記憶歸卡。」
+├── [v4.0] Ghost File Check (non-blocking warning)
+│   └── Call memory_list, scan for modules where ghostFilesCount > 0
+│       ├── Found → Output: 「⚠️ [GHOST WARN] {模組名} 存在 {N} 個幽靈檔案（已追蹤但磁碟不存在）。建議下次對話優先處理。」
+│       └── None → Pass silently
 └── Hold released → Proceed to completion.
 ```
 
@@ -61,3 +65,7 @@
 
 - Before writing to any memory card, scrub: PII, absolute system paths with usernames, secret tokens/API keys.
 - If a module is deleted from codebase, physically delete its `.agents/memory/` card. No abandoned cards.
+
+- **All-Ghost Cartridge Detection (v4.0)**: If `memory_list` shows a cartridge where `ghostFilesCount` equals
+  `trackedFilesCount` (every tracked file is a ghost), proactively propose retiring the card to the Director —
+  all files it tracks no longer exist on disk.

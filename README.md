@@ -195,6 +195,8 @@ graph TD
 | **寫入後立即歸卡** | `write_to_file` → `memory_commit`（二步流程不可跳過） |
 | **無並發寫入問題** | 同一時間只有一個 AI 在執行任務 |
 | **禁止假設歷史** | 每次新對話必須重新讀取，不可依賴上次對話的記憶內容 |
+| **幽靈偵測 (v4.0)** | `memory_list` 回傳 `ghostFilesCount`，自動標記已追蹤但磁碟不存在的檔案 |
+| **依賴過期傳播 (v4.0)** | `memory_list` 回傳 `indirectStaleness`，上游卡匣過期時自動通知下游；`memory_deps()` 可查詢卡匣依賴圖 |
 
 ---
 
@@ -204,7 +206,7 @@ graph TD
 
 | MCP 伺服器 | 用途 | 對應技能 |
 |-----------|------|---------|
-| **cartridge-system** | 記憶卡讀寫引擎（核心） | `memory-ops`, `memory-arch` |
+| **cartridge-system** | 記憶卡讀寫引擎（核心）；v4.0 新增幽靈偵測、依賴圖與過期傳播 | `memory-ops`, `memory-arch` |
 | **github** | 版控：倉庫管理、Issue/PR 操作 | `github-ops`, `pr-review-ops` |
 | **gitnexus** | 代碼知識圖譜：索引、探索、重構分析 | `gitnexus-*` (6 個) |
 | **cloudflare-bindings** | KV / D1 / R2 資源管理 | `cloudflare-ops` |
