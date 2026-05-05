@@ -1,3 +1,4 @@
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Antigravity 框架遠端安裝啟動器
@@ -14,6 +15,9 @@
 
 .PARAMETER Branch
     要下載的 GitHub 分支。預設 main。
+
+.PARAMETER RemoveOrphans
+    是否移除目標中已不存在於源碼的孤兒檔案（僅 Upgrade 模式有效）
 
 .EXAMPLE
     # 一鍵安裝到當前目錄

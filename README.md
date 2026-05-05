@@ -57,8 +57,8 @@
 
 | 版本 | 目標平台 | 當前版號 | 規則數 | 工作流 | 操作型技能 | 詳細文件 |
 |------|---------|---------|--------|--------|-----------|---------|
-| **Antigravity** | Gemini（IDE 插件 + CLI） | v7.0.0 | 9 | 17 | 36 | [Antigravity/README.md](Antigravity/README.md) |
-| **Claude Edition** | Claude Code（VS Code 插件） | v1.1.0 | 6 | 12 | 36 | [Claude/README.md](Claude/README.md) |
+| **Antigravity** | Gemini（IDE 插件 + CLI） | v8.0.0 | 9 | 17 | 36 | [Antigravity/README.md](Antigravity/README.md) |
+| **Claude Edition** | Claude Code（VS Code 插件） | v1.2.0 | 6 | 12 | 36 | [Claude/README.md](Claude/README.md) |
 
 兩個版本的**操作型技能完全同步**（36 個），共享相同的 MCP 工具鏈（cartridge-system、github、gitnexus 等）。
 
@@ -90,9 +90,9 @@ graph TB
         CL["Claude/<br/>Claude Code 版源碼"]
     end
 
-    subgraph "部署層"
-        AGD["Deploy-Antigravity.ps1<br/>Fresh / Upgrade 雙模式"]
-        CLD["Deploy-Claude.ps1<br/>Fresh / Upgrade 雙模式"]
+    subgraph "部署層（全繁中行內說明）"
+        AGD["Deploy-Antigravity.ps1<br/>Fresh / Upgrade 雙模式<br/>622 行 · 全繁中註解"]
+        CLD["Deploy-Claude.ps1<br/>Fresh / Upgrade 雙模式<br/>480 行 · 全繁中註解"]
     end
 
     subgraph "專案 A (.agents/ + .claude/ 共存)"
@@ -230,7 +230,7 @@ AI_Rules/                              ← 母機根目錄
 ├── .gitignore                         ← 版控忽略規則
 │
 ├── Antigravity/                       ← Gemini 版框架源碼
-│   ├── VERSION                        ← v7.0.0
+│   ├── VERSION                        ← v8.0.0
 │   ├── README.md                      ← Gemini 版詳細文件
 │   ├── CHANGELOG.md                   ← 商業價值決策紀錄（完整歷史）
 │   ├── RELEASE_NOTES.md               ← 版本更新摘要（升級時自動展示）
@@ -255,7 +255,7 @@ AI_Rules/                              ← 母機根目錄
 │       └── logs/                      ← 暫存日誌（不進版控）
 │
 ├── Claude/                            ← Claude Code 版框架源碼
-│   ├── VERSION                        ← v1.1.0
+│   ├── VERSION                        ← v1.2.0
 │   ├── CLAUDE.md                      ← 主規則入口（@import 模組化）
 │   ├── README.md                      ← Claude 版詳細文件
 │   ├── install.ps1                    ← 一鍵安裝啟動器
@@ -323,17 +323,23 @@ sequenceDiagram
 
 | 模式 | 適用時機 | 行為細節 |
 |------|---------|---------|
-| **Fresh** | 全新專案，尚未安裝 | 完整複製 → 清除示範記憶卡 → 建立空目錄 → 寫入版本檔 |
-| **Upgrade** | 已安裝，需更新框架 | SHA256 逐檔比對 → 彩色差異報告 → 顯示版本說明 → 確認後套用 |
+| **Fresh** | 全新專案，尚未安裝 | D06 安全網備份記憶 → 完整複製框架 → 建立基礎設施目錄 → 寫入版本檔 → 還原記憶 |
+| **Upgrade** | 已安裝，需更新框架 | SHA256 逐檔比對 → 彩色差異報告 → 顯示 CHANGELOG 更新說明 → 確認閘門 → 套用變更 |
 
 ### 安全防護機制
 
 | 防護層 | 說明 |
 |--------|------|
+| **D06 安全防線** | Fresh 模式下 `try/finally` 備份記憶卡，部署中斷也不會損失資料 |
 | **記憶卡永久保護** | `memory/` 和 `project_skills/` 升級時絕對不覆蓋 |
-| **主規則保護** | Claude 版的 `CLAUDE.md` 在升級時保留現有版本 |
+| **確認閘門** | Upgrade 模式下產出分類顏色差異報告，需使用者確認才套用 |
 | **孤兒檔案偵測** | 自動偵測源碼已刪除但目標仍存在的殘留檔案 |
 | **孤兒清除選項** | 加入 `-RemoveOrphans` 參數可自動清除，預設僅標記 |
+| **衍生技能自動補建** | 每次部署自動掃描 `project_skills/`，補建缺少的符號連結 |
+
+### 部署腳本可讀性
+
+兩個部署引擎均配備**完整的繁體中文行內說明**，涵蓋參數定義、函式邏輯、效能最佳化原因（時間戳優先比對）、安全防線設計（D06）及各階段流程說明。適合非英語使用者直接閱讀和維護。
 
 ---
 
@@ -345,8 +351,8 @@ sequenceDiagram
 
 | 版本 | 狀態 | 版號 | 更新週期 |
 |------|------|------|---------|
-| **Antigravity** | 成熟期 | v7.0.0 | 維護性更新為主，重大功能隨 Gemini IDE 演進 |
-| **Claude Edition** | 成長期 | v1.1.0 | 跟隨 Claude Code 插件能力快速迭代 |
+| **Antigravity** | 成熟期 | v8.0.0 | 維護性更新為主，重大功能隨 Gemini IDE 演進 |
+| **Claude Edition** | 成長期 | v1.2.0 | 跟隨 Claude Code 插件能力快速迭代 |
 
 ### 操作型技能同步原則
 

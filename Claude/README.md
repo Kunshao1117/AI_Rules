@@ -1,6 +1,6 @@
 # Antigravity — Claude Code Edition
 
-> **版本**: v1.1.0 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell) + Claude Code
+> **版本**: v1.2.0 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell) + Claude Code
 
 Antigravity Claude Edition 是 Antigravity AI 治理框架的 **Claude Code 專用版本**。
 所有規則、工作流與技能已針對 Claude Code 原生工具（Write / Edit / Agent / TodoWrite / Plan Mode）完整改寫，與 Antigravity Gemini 版共享同一套設計哲學，並透過 `.agents/memory/` 共用記憶庫實現雙 AI 無縫協作。
@@ -88,23 +88,26 @@ graph TB
 
 ### 部署引擎
 
-**檔案**: `.claude/scripts/Deploy-Claude.ps1`
+**檔案**: `.claude/scripts/Deploy-Claude.ps1`（480 行，全繁中行內說明）
 
-負責將整套 `.claude/` 生態系統移植到任何目標專案。
+負責將整套 `.claude/` 生態系統移植到任何目標專案。所有 PowerShell 程式碼均配備完整的繁體中文行內說明，與 Antigravity 版完全對等，適合非英語使用者直接閱讀和維護。
 
 #### 兩種部署模式
 
 | 模式 | 觸發條件 | 行為 |
 |------|---------|------|
-| **Fresh** | 專案無 `.claude/` 目錄 | 完整複製 → 建立受保護目錄 → 寫入版本檔 |
-| **Upgrade** | 專案已有 `.claude/` 目錄 | SHA256 逐檔差異比對 → 彩色報告 → 確認後套用 |
+| **Fresh** | 專案無 `.claude/` 目錄 | D06 安全網備份記憶 → 完整複製框架 → 建立基礎設施目錄 → 寫入版本檔 → 還原記憶 |
+| **Upgrade** | 專案已有 `.claude/` 目錄 | SHA256 逐檔差異比對 → 彩色報告 → CHANGELOG 更新說明 → 確認閘門 → 套用變更 |
 
 #### 安全防護
 
-- `agents/` 頂層目錄受保護，升級時不會刪除（官方子代理人槽位）
-- `.agents/memory/` 在升級時永遠受保護
-- 偵測孤兒檔案並標記提醒，加入 `-RemoveOrphans` 可自動清除
-- `try/finally` 安全網確保部署中斷時不損壞目標專案
+| 防護機制 | 說明 |
+|----------|---------|
+| **D06 安全防線** | Fresh 模式下以 `try/finally` 備份記憶卡到暫存目錄，部署中斷也不會損失資料 |
+| **記憶卡保護** | `.agents/memory/` 和 `.agents/project_skills/` 在升級時絕對不覆蓋 |
+| **確認閘門** | Upgrade 模式產出分類顏色差異報告，需使用者確認才套用 |
+| **孤兒偵測** | 偵測源碼已刪除但目標仍存在的殘留檔案，加入 `-RemoveOrphans` 可自動清除 |
+| **衍生技能補建** | 每次部署自動掃描 `project_skills/`，補建缺少的符號連結 |
 
 ---
 
@@ -356,7 +359,7 @@ Claude/
     │   └── ...                  ← 其餘 27 個技能
     ├── agents/                  ← 官方子代理人槽位（保留）
     └── scripts/
-        ├── Deploy-Claude.ps1        ← 部署引擎（try/finally + 彩色差異報告 + VERSION）
+        ├── Deploy-Claude.ps1        ← 部署引擎（try/finally D06 安全網 + 彩色差異報告 + 確認閘門 + 全繁中註解）
         ├── Invoke-DocScan.ps1       ← 倉庫衛生掃描（輸出 .agents/logs/doc_scan.md）
         ├── Invoke-HealthAudit.ps1   ← 安全健檢（憑證掃描 + 效能指引）
         └── Measure-SkillQuality.ps1 ← 技能品質掃描（行數/Token/Frontmatter）

@@ -14,10 +14,10 @@ user-invocable: true
 
 ### 0. Memory Recall (記憶載入)
 
-> [LOAD SKILL] Read `.claude/agents/skills/memory-ops/SKILL.md` before proceeding.
+> [LOAD SKILL] Read `.agents/skills/memory-ops/SKILL.md` before proceeding.
 
 - Check MEMORY.md index for cards relevant to the bug's module.
-- Load relevant `.claude/agents/memory/*/SKILL.md`. Check `## Known Issues` (bug may be documented) and `## Relations` for cascade impact.
+- Load relevant `.agents/memory/*/SKILL.md`. Check `## Known Issues` (bug may be documented) and `## Relations` for cascade impact.
 
 ### 1. Current State Constraint
 
@@ -26,7 +26,7 @@ user-invocable: true
 
 ### 1.5. Impact Analysis (影響分析)
 
-> [LOAD SKILL] Read `.claude/agents/skills/impact-test-strategy/SKILL.md`.
+> [LOAD SKILL] Read `.agents/skills/impact-test-strategy/SKILL.md`.
 
 1. Map target file(s) to owning module(s) via memory cards.
 2. Identify affected modules through `## Relations`.
@@ -68,16 +68,16 @@ user-invocable: true
 
 ### 6. Regression Test (回歸測試)
 
-> [LOAD SKILL] Re-confirm `.claude/agents/skills/impact-test-strategy/SKILL.md` is loaded.
+> [LOAD SKILL] Re-confirm `.agents/skills/impact-test-strategy/SKILL.md` is loaded.
 
 - Run tests scoped to affected modules via `Bash` tool. Apply `[LINTER GATE]`.
 - Verify the original bug is resolved AND no regression introduced.
 
 ### 7. Memory Update (記憶更新)
 
-> [LOAD SKILL] Re-confirm `.claude/agents/skills/memory-ops/SKILL.md` is loaded.
+> [LOAD SKILL] Re-confirm `.agents/skills/memory-ops/SKILL.md` is loaded.
 
-- Update `.claude/agents/memory/` cards for all modified files: record fix in `## Key Decisions`, remove resolved item from `## Known Issues`.
+- Update `.agents/memory/` cards for all modified files: record fix in `## Key Decisions`, remove resolved item from `## Known Issues`.
 - Apply `[EXIT HOLD GATE]` before reporting completion.
 - Report completion in Traditional Chinese with business-level summary.
 

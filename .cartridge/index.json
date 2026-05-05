@@ -1,34 +1,27 @@
 {
   "version": 1,
-  "lastScanned": "2026-05-05T14:25:35+08:00",
+  "lastScanned": "2026-05-05T22:17:06+08:00",
   "cartridges": {
     "claude-edition-rules": {
       "skillPath": ".agents\\memory\\claude-edition-rules\\SKILL.md",
-      "description": "Claude Edition 框架規範層記憶卡。追蹤 Claude Code 插件版本的核心規範文件與技能索引。 記錄記憶卡系統架構決策、雙 AI 共用記憶庫設計、以及規範層演進歷程。 Use when: 修改 Claude/.claude/rules/ 或 Claude/.claude/agents/skills/_index.md 時。\n",
+      "description": "Claude Edition 框架規範層記憶卡。追蹤 Claude Code 插件版本的核心規範文件、技能索引與佈署腳本。 記錄記憶卡系統架構決策、雙 AI 共用記憶庫設計、目錄結構對齊歷程，以及雙引擎功能對等演進歷程。 Use when: 修改 Claude/.claude/rules/ 或 Claude/.claude/skills/_index.md 或 Claude/.claude/scripts/ 時。\n",
       "trackedFiles": [
-        "d:\\AI_Rules\\Claude\\CLAUDE.md",
+        "d:\\AI_Rules\\Claude\\.claude\\CLAUDE.md",
         "d:\\AI_Rules\\Claude\\.claude\\rules\\memory-contract.md",
         "d:\\AI_Rules\\Claude\\.claude\\rules\\core-identity.md",
         "d:\\AI_Rules\\Claude\\.claude\\rules\\code-quality.md",
         "d:\\AI_Rules\\Claude\\.claude\\rules\\cross-lingual-guard.md",
         "d:\\AI_Rules\\Claude\\.claude\\rules\\forbidden-vocab.md",
         "d:\\AI_Rules\\Claude\\.claude\\rules\\mcp-guardrails.md",
-        "d:\\AI_Rules\\Claude\\.claude\\agents\\skills\\_index.md"
+        "d:\\AI_Rules\\Claude\\.claude\\skills\\_index.md",
+        "d:\\AI_Rules\\Claude\\.claude\\scripts\\Deploy-Claude.ps1",
+        "d:\\AI_Rules\\Claude\\.claude\\scripts\\Invoke-DocScan.ps1",
+        "d:\\AI_Rules\\Claude\\.claude\\scripts\\Invoke-HealthAudit.ps1",
+        "d:\\AI_Rules\\Claude\\.claude\\scripts\\Measure-SkillQuality.ps1"
       ],
-      "staleness": 30,
-      "lastUpdated": "2026-05-05T00:59:01+08:00",
-      "pendingChanges": [
-        {
-          "filePath": "d:\\AI_Rules\\Claude\\CLAUDE.md",
-          "eventType": "change",
-          "timestamp": "2026-05-05T14:25:35+08:00"
-        },
-        {
-          "filePath": "d:\\AI_Rules\\Claude\\.claude\\agents\\skills\\_index.md",
-          "eventType": "unlink",
-          "timestamp": "2026-05-05T14:25:35+08:00"
-        }
-      ],
+      "staleness": 0,
+      "lastUpdated": "2026-05-05T14:56:28+08:00",
+      "pendingChanges": [],
       "depth": 1,
       "parent": null
     },
@@ -51,26 +44,15 @@
         "d:\\AI_Rules\\Antigravity\\.agents\\memory\\_system\\SKILL.md",
         "d:\\AI_Rules\\Antigravity\\.agents\\rules\\07_mcp_guardrails.md"
       ],
-      "staleness": 20,
-      "lastUpdated": "2026-04-30T14:26:27+08:00",
-      "pendingChanges": [
-        {
-          "filePath": "d:\\AI_Rules\\Antigravity\\.agents\\memory\\_system\\SKILL.md",
-          "eventType": "change",
-          "timestamp": "2026-05-05T14:25:35+08:00"
-        },
-        {
-          "filePath": "d:\\AI_Rules\\Antigravity\\.agents\\rules\\07_mcp_guardrails.md",
-          "eventType": "change",
-          "timestamp": "2026-05-05T14:25:35+08:00"
-        }
-      ],
+      "staleness": 0,
+      "lastUpdated": "2026-05-05T14:56:28+08:00",
+      "pendingChanges": [],
       "depth": 1,
       "parent": null
     }
   },
   "fileMap": {
-    "d:\\AI_Rules\\Claude\\CLAUDE.md": [
+    "d:\\AI_Rules\\Claude\\.claude\\CLAUDE.md": [
       "claude-edition-rules"
     ],
     "d:\\AI_Rules\\Claude\\.claude\\rules\\memory-contract.md": [
@@ -91,7 +73,19 @@
     "d:\\AI_Rules\\Claude\\.claude\\rules\\mcp-guardrails.md": [
       "claude-edition-rules"
     ],
-    "d:\\AI_Rules\\Claude\\.claude\\agents\\skills\\_index.md": [
+    "d:\\AI_Rules\\Claude\\.claude\\skills\\_index.md": [
+      "claude-edition-rules"
+    ],
+    "d:\\AI_Rules\\Claude\\.claude\\scripts\\Deploy-Claude.ps1": [
+      "claude-edition-rules"
+    ],
+    "d:\\AI_Rules\\Claude\\.claude\\scripts\\Invoke-DocScan.ps1": [
+      "claude-edition-rules"
+    ],
+    "d:\\AI_Rules\\Claude\\.claude\\scripts\\Invoke-HealthAudit.ps1": [
+      "claude-edition-rules"
+    ],
+    "d:\\AI_Rules\\Claude\\.claude\\scripts\\Measure-SkillQuality.ps1": [
       "claude-edition-rules"
     ],
     "d:\\AI_Rules\\Antigravity\\.agents\\memory\\_map\\SKILL.md": [
@@ -108,1724 +102,1712 @@
     {
       "filePath": "README.md",
       "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/install.ps1",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/README.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/CHANGELOG.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/VERSION",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/logs/doc_scan.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/VERSION",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/scripts/Measure-SkillQuality.ps1",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/scripts/Invoke-HealthAudit.ps1",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/scripts/Invoke-DocScan.ps1",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/scripts/Deploy-Antigravity.ps1",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/VERSION",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/RELEASE_NOTES.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/README.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/install.ps1",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.gitignore",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.gitignore",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/rules/06_memory_push.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/rules/05_project_skill_contract.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/rules/04_forbidden_vocab.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/rules/03_memory_skill_contract.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/rules/02_code_quality_security.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/rules/01_cross_lingual_guard.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/rules/00_core_identity.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/rules/07_mcp_guardrails.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/rules/AGENTS.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/audit-engine/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/excel-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/_index.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/sentry-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/03-1_experiment(實驗).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/03-2_build_execute(建構執行).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/stitch-design/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/06_test(測試).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/trunk-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/04-2_fix_execute(修復執行).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/04-1_fix_plan(修復計畫).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/03_build(建構計畫).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/07_debug(除錯).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/_security_footer.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/_completion_gate.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/test-patterns/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/ui-ux-standards/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/12_skill_forge(技能鍛造).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/11_handoff(交接).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/09-1_commit_scan(紀錄掃描).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/08-3_audit_report(健檢總結).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/08-2_audit_logic(深度邏輯).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/08-1_audit_infra(基礎盤點).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/test-patterns/references/utility-test-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/test-patterns/references/hook-test-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/test-patterns/references/api-route-test-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/tech-stack-protocol/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/structured-reasoning/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase/references/skill-feedback.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase/assets/feedback-issue-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/skill-factory/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/security-sre/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/conn-idle-timeout.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/advanced-jsonb-indexing.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/advanced-full-text-search.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/pr-review-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/data-batch-inserts.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/conn-prepared-statements.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/conn-pooling.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/skill-factory/references/skill-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/conn-limits.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/skill-factory/references/skill-style-guide.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/skill-factory/references/skill-quality-checklist.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/lock-deadlock-prevention.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/lock-advisory.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/performance-audit/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/data-upsert.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/data-pagination.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/data-n-plus-one.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/monitor-vacuum-analyze.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/monitor-pg-stat-statements.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/monitor-explain-analyze.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/lock-skip-locked.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/lock-short-transactions.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/schema-constraints.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/query-partial-indexes.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/query-missing-indexes.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/memory-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/schema-data-types.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/query-index-types.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/query-covering-indexes.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/schema-foreign-key-indexes.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/query-composite-indexes.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/02_blueprint(架構).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/maps-assist/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/schema-partitioning.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/schema-lowercase-identifiers.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/memory-ops/references/memory-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/01_explore(搜索).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/_sections.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/gitnexus-refactoring/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/_contributing.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/security-rls-performance.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/security-rls-basics.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/memory-arch/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/security-privileges.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/schema-primary-keys.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/_template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/impact-test-strategy/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/settings.local.json",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/_index.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/ui-ux-standards/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/test-patterns/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/test-automation-strategy/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/test-patterns/references/utility-test-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/test-patterns/references/hook-test-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/test-patterns/references/api-route-test-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/tech-stack-protocol/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/trunk-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase/references/skill-feedback.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase/assets/feedback-issue-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/stitch-design/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/structured-reasoning/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/gitnexus-guide/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/impact-test-strategy/references/regression-test-examples.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/lock-advisory.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/lock-deadlock-prevention.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/security-sre/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/skill-factory/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/data-upsert.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/lock-skip-locked.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/lock-short-transactions.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/data-pagination.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/data-n-plus-one.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/sentry-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/conn-prepared-statements.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/data-batch-inserts.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/conn-pooling.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/monitor-explain-analyze.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/conn-limits.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/conn-idle-timeout.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/advanced-jsonb-indexing.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/advanced-full-text-search.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/query-missing-indexes.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/query-index-types.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/query-covering-indexes.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/query-partial-indexes.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/schema-constraints.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/query-composite-indexes.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/monitor-vacuum-analyze.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/skill-factory/references/skill-quality-checklist.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/monitor-pg-stat-statements.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/schema-partitioning.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/schema-lowercase-identifiers.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/pr-review-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/schema-foreign-key-indexes.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/skill-factory/references/skill-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/schema-primary-keys.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/skill-factory/references/skill-style-guide.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/performance-audit/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/schema-data-types.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/security-privileges.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/_contributing.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/security-rls-performance.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/security-rls-basics.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/memory-arch/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/_template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/_sections.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/maps-assist/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/impact-test-strategy/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/gitnexus-refactoring/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/gitnexus-impact-analysis/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/gitnexus-guide/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/impact-test-strategy/references/regression-test-examples.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/gitnexus-debugging/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/gitnexus-exploring/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/memory-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/excel-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/github-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/delegation-strategy/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/memory-ops/references/memory-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/gitnexus-cli/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/context7-docs/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/test-automation-strategy/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/cloudflare-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/code-diagnosis/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/code-quality/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/gitnexus-impact-analysis/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/delegation-strategy/references/cli-delegation-sop.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/delegation-strategy/references/cli-prompt-skeleton.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/delegation-strategy/references/cli-capability-matrix.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/code-audit/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/browser-testing/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/code-diagnosis/references/diagnosis-task-prompt.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/code-diagnosis/references/diagnosis-report-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/a11y-testing/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/audit-engine/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/workflows/00_chat(討論).md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/code-audit/references/scan-report-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/code-audit/references/tool-command-reference.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/code-audit/references/scan-task-prompt.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/rules/core-identity.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/rules/forbidden-vocab.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/gitnexus-debugging/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/rules/cross-lingual-guard.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/gitnexus-exploring/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/rules/code-quality.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/scripts/Deploy-Claude.ps1",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/rules/mcp-guardrails.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/rules/memory-contract.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/.gitignore",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/commands/02_blueprint(架構)/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/commands/03-1_experiment/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/code-diagnosis/references/diagnosis-task-prompt.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/code-diagnosis/references/diagnosis-report-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/commands/07_debug/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/code-diagnosis/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/code-quality/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/commands/11_handoff(交接)/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/commands/09_commit(紀錄)/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/context7-docs/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/delegation-strategy/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/commands/08_audit(除錯)/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/commands/12_skill_forge(技能鍛造)/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/github-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/gitnexus-cli/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/commands/03_build(建構)/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/commands/00_chat(討論)/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/cloudflare-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/code-audit/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/delegation-strategy/references/cli-capability-matrix.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/browser-testing/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/delegation-strategy/references/cli-delegation-sop.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/commands/04_fix(修復)/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/delegation-strategy/references/cli-prompt-skeleton.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/a11y-testing/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/code-audit/references/tool-command-reference.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/code-audit/references/scan-task-prompt.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.agents/skills/code-audit/references/scan-report-template.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/skills/supabase-ops/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/commands/01_explore(搜索)/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/commands/06_test(測試)/SKILL.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/configs/.yamllint.yaml",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/configs/.markdownlint.yaml",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{DDF571F2-BE98-426D-8288-1A9A39C3FDA2}.2.ver0x0000000000000001.db",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{DDF571F2-BE98-426D-8288-1A9A39C3FDA2}.2.ver0x0000000000000002.db",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{6AF0698E-D558-4F6E-9B3C-3716689AF493}.2.ver0x0000000000000002.db",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{6AF0698E-D558-4F6E-9B3C-3716689AF493}.2.ver0x0000000000000001.db",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{39926F93-E09C-4696-9EA0-EA22197FC03D}.2.ver0x0000000000000001.db",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/cversions.2.db",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/trunk.yaml",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/yamllint.bat",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/trunk",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/trufflehog.bat",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/trufflehog-tVPYU",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/trufflehog-nHgf5",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/trufflehog-LZh1E",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/trufflehog-f2UYk",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/trufflehog-96Umg",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/prettier.bat",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/prettier-SkeCD",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/prettier-EYBQ1",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/prettier-cwXJg",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/prettier-CTGim",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/prettier-6lrKh",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/markdownlint.bat",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/markdownlint-veyQe",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/markdownlint-R3VEs",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/markdownlint-PiHMm",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/markdownlint-OUDlX",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/markdownlint-HwKb2",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/markdownlint-GXnbb",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/markdownlint-DAr5a",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/markdownlint-BAuuL",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/markdownlint-AhuvT",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/markdownlint-4F0U0",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/checkov.bat",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/checkov-t551Y",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Antigravity/.trunk/tools/checkov-LEKAi",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:25:39+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "CLAUDE.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:35:40+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/CLAUDE.md",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:39:18+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/scripts/Invoke-DocScan.ps1",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:52:54+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/scripts/Invoke-HealthAudit.ps1",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:53:25+08:00",
-      "lastEvent": "add"
-    },
-    {
-      "filePath": "Claude/.claude/scripts/Measure-SkillQuality.ps1",
-      "suggestedOwner": null,
-      "detectedAt": "2026-05-05T14:54:11+08:00",
+      "detectedAt": "2026-05-05T22:17:09+08:00",
       "lastEvent": "add"
     },
     {
       "filePath": "CHANGELOG.md",
       "suggestedOwner": null,
-      "detectedAt": "2026-05-05T15:04:35+08:00",
+      "detectedAt": "2026-05-05T22:17:09+08:00",
       "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/CHANGELOG.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/install.ps1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.gitignore",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/VERSION",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/RELEASE_NOTES.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/README.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/VERSION",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/README.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/install.ps1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/scripts/Deploy-Antigravity.ps1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/scripts/Invoke-DocScan.ps1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/VERSION",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/scripts/Measure-SkillQuality.ps1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/scripts/Invoke-HealthAudit.ps1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/00_chat(討論).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/03-2_build_execute(建構執行).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/03-1_experiment(實驗).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/02_blueprint(架構).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/code-audit/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/01_explore(搜索).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/cloudflare-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/03_build(建構計畫).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/08-2_audit_logic(深度邏輯).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/_completion_gate.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/12_skill_forge(技能鍛造).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/11_handoff(交接).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/09-1_commit_scan(紀錄掃描).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/_security_footer.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/delegation-strategy/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/delegation-strategy/references/cli-delegation-sop.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/delegation-strategy/references/cli-prompt-skeleton.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/delegation-strategy/references/cli-capability-matrix.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/08-3_audit_report(健檢總結).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/08-1_audit_infra(基礎盤點).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/code-audit/references/tool-command-reference.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/07_debug(除錯).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/code-audit/references/scan-task-prompt.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/06_test(測試).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/context7-docs/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/code-audit/references/scan-report-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/04-2_fix_execute(修復執行).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/workflows/04-1_fix_plan(修復計畫).md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/code-diagnosis/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/code-quality/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/code-diagnosis/references/diagnosis-report-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/code-diagnosis/references/diagnosis-task-prompt.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/browser-testing/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/audit-engine/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/a11y-testing/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/settings.local.json",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/gitnexus-exploring/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/structured-reasoning/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/stitch-design/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/_index.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/tech-stack-protocol/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase/assets/feedback-issue-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase/references/skill-feedback.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/scripts/Deploy-Claude.ps1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/scripts/Measure-SkillQuality.ps1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/scripts/Invoke-HealthAudit.ps1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/scripts/Invoke-DocScan.ps1",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/test-patterns/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/trunk-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/gitnexus-guide/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/sentry-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/skill-factory/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/test-patterns/references/utility-test-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/test-patterns/references/hook-test-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/test-patterns/references/api-route-test-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/01_explore(搜索)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/12_skill_forge(技能鍛造)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/ui-ux-standards/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/security-sre/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/pr-review-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/skill-factory/references/skill-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/skill-factory/references/skill-style-guide.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/test-automation-strategy/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/skill-factory/references/skill-quality-checklist.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/08_audit(除錯)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/11_handoff(交接)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/advanced-full-text-search.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/performance-audit/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/09_commit(紀錄)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/advanced-jsonb-indexing.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/conn-limits.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/conn-idle-timeout.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/lock-advisory.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/lock-skip-locked.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/monitor-explain-analyze.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/impact-test-strategy/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/monitor-pg-stat-statements.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/lock-short-transactions.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/lock-deadlock-prevention.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/maps-assist/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/07_debug/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/data-upsert.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/data-pagination.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/data-n-plus-one.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/memory-arch/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/data-batch-inserts.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/conn-prepared-statements.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/conn-pooling.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/query-composite-indexes.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/monitor-vacuum-analyze.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/query-covering-indexes.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/query-partial-indexes.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/schema-data-types.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/schema-partitioning.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/schema-lowercase-identifiers.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/gitnexus-refactoring/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/security-rls-performance.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/security-rls-basics.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/_template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/memory-ops/references/memory-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/skill-factory/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/_index.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/memory-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/github-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/excel-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/skill-factory/references/skill-quality-checklist.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/test-automation-strategy/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/ui-ux-standards/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/skill-factory/references/skill-style-guide.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/tech-stack-protocol/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/memory-ops/references/memory-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/skill-factory/references/skill-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/gitnexus-debugging/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/test-patterns/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/stitch-design/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/trunk-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/structured-reasoning/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/security-sre/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/pr-review-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/gitnexus-cli/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/03_build(建構)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/test-patterns/references/hook-test-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase/references/skill-feedback.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase/assets/feedback-issue-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/test-patterns/references/api-route-test-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/advanced-full-text-search.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/sentry-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/advanced-jsonb-indexing.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/impact-test-strategy/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/maps-assist/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/test-patterns/references/utility-test-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/_sections.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/_contributing.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/security-privileges.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/memory-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/conn-idle-timeout.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/schema-primary-keys.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/impact-test-strategy/references/regression-test-examples.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/schema-foreign-key-indexes.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/04_fix(修復)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/06_test(測試)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/schema-constraints.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/query-missing-indexes.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/supabase-postgres-best-practices/references/query-index-types.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/gitnexus-refactoring/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/conn-prepared-statements.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/conn-pooling.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/conn-limits.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/02_blueprint(架構)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/03-1_experiment/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/impact-test-strategy/references/regression-test-examples.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/gitnexus-exploring/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/gitnexus-guide/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/gitnexus-impact-analysis/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/data-batch-inserts.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/audit-engine/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/a11y-testing/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/data-n-plus-one.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/lock-advisory.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/data-upsert.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/data-pagination.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/rules/memory-contract.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/rules/mcp-guardrails.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/gitnexus-cli/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/00_chat(討論)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/lock-deadlock-prevention.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/rules/forbidden-vocab.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/excel-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/context7-docs/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/rules/cross-lingual-guard.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/rules/core-identity.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/performance-audit/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/monitor-explain-analyze.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/lock-skip-locked.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/github-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/code-diagnosis/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/lock-short-transactions.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/code-quality/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/gitnexus-debugging/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/delegation-strategy/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/rules/code-quality.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/monitor-pg-stat-statements.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/CLAUDE.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/monitor-vacuum-analyze.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/code-audit/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/query-covering-indexes.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/query-composite-indexes.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/cloudflare-ops/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/query-missing-indexes.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/query-index-types.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/rules/00_core_identity.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/schema-lowercase-identifiers.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/browser-testing/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/delegation-strategy/references/cli-delegation-sop.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/code-diagnosis/references/diagnosis-task-prompt.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/schema-foreign-key-indexes.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/delegation-strategy/references/cli-prompt-skeleton.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/schema-partitioning.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/delegation-strategy/references/cli-capability-matrix.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/code-diagnosis/references/diagnosis-report-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/schema-data-types.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/schema-constraints.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/query-partial-indexes.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/security-privileges.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/rules/02_code_quality_security.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/schema-primary-keys.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/rules/01_cross_lingual_guard.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.gitignore",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/rules/03_memory_skill_contract.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/security-rls-basics.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/rules/06_memory_push.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/_template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/rules/07_mcp_guardrails.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/code-audit/references/tool-command-reference.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/_sections.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/rules/05_project_skill_contract.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/code-audit/references/scan-task-prompt.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/_contributing.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/rules/04_forbidden_vocab.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/supabase-postgres-best-practices/references/security-rls-performance.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/skills/code-audit/references/scan-report-template.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/rules/AGENTS.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/memory-arch/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/logs/doc_scan.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Antigravity/.agents/skills/gitnexus-impact-analysis/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:17:09+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/07_debug(除錯)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:39:18+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/08_audit(健檢)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:39:22+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/03-1_experiment(實驗)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:35+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/00_chat(討論)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/00_chat(討論)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/01_explore(搜索)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/01_explore(搜索)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/02_blueprint(架構)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/02_blueprint(架構)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/03-1_experiment(實驗)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/03-1_experiment(實驗)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/03_build(建構)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/03_build(建構)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/04_fix(修復)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/04_fix(修復)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/06_test(測試)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/06_test(測試)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/07_debug(除錯)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/07_debug(除錯)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/08_audit(健檢)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/08_audit(健檢)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/09_commit(紀錄)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/09_commit(紀錄)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/11_handoff(交接)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/11_handoff(交接)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/12_skill_forge(技能鍛造)",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "commands/12_skill_forge(技能鍛造)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T22:44:46+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/_shared",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T23:00:12+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/_shared/_completion_gate.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T23:00:12+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/_shared/_security_footer.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T23:00:29+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/08_audit(健檢)/08-1_infra",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T23:00:54+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/08_audit(健檢)/08-1_infra/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T23:00:54+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/08_audit(健檢)/08-2_logic",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T23:01:18+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/08_audit(健檢)/08-2_logic/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T23:01:18+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/08_audit(健檢)/08-3_report",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T23:01:41+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/08_audit(健檢)/08-3_report/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T23:01:41+08:00",
+      "lastEvent": "add"
+    },
+    {
+      "filePath": "Claude/.claude/commands/08_audit(健檢)/SKILL.md",
+      "suggestedOwner": null,
+      "detectedAt": "2026-05-05T23:02:04+08:00",
+      "lastEvent": "change"
     }
   ]
 }
