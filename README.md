@@ -260,15 +260,18 @@ AI_Rules/                              ← 母機根目錄
 │   ├── README.md                      ← Claude 版詳細文件
 │   ├── install.ps1                    ← 一鍵安裝啟動器
 │   └── .claude/                       ← Claude Code 原生配置結構
+│       ├── CLAUDE.md                  ← 主規則入口（@import 模組化）
 │       ├── rules/                     ← 6 個模組化規則
 │       │   ├── core-identity.md       ← 核心身份（Always On）
 │       │   ├── cross-lingual-guard.md ← 跨語系防護（Always On）
 │       │   └── *.md                   ← 條件載入規則（4 個）
-│       ├── skills/                    ← 12 個 slash command 工作流
-│       ├── agents/
-│       │   └── skills/                ← 36 套操作型技能（與 Gemini 版同步）
+│       ├── commands/                  ← 12 道 Slash Command 工作流
+│       ├── skills/                    ← 36 套操作型技能（與 Gemini 版同步）
 │       └── scripts/
-│           └── Deploy-Claude.ps1      ← 部署引擎
+│           ├── Deploy-Claude.ps1      ← 部署引擎（try/finally + 彩色差異報告）
+│           ├── Invoke-DocScan.ps1     ← 倉庫狀態掃描
+│           ├── Invoke-HealthAudit.ps1 ← 基礎設施健檢
+│           └── Measure-SkillQuality.ps1 ← 技能品質掃描
 │
 ├── .agents/                           ← 母機自身的治理生態（不推送至遠端）
 │   └── memory/                        ← 母機記憶卡
@@ -350,7 +353,7 @@ sequenceDiagram
 36 套操作型技能在兩個版本之間保持同步，確保兩個 AI 擁有相同的操作知識：
 
 ```
-Antigravity/.agents/skills/     Claude/.claude/agents/skills/
+Antigravity/.agents/skills/     Claude/.claude/skills/
 ├── memory-ops/              ←→  ├── memory-ops/
 ├── code-quality/            ←→  ├── code-quality/
 ├── github-ops/              ←→  ├── github-ops/

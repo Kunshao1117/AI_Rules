@@ -65,8 +65,8 @@ graph TB
     subgraph ".claude/ 生態系統"
         CLAUDE["CLAUDE.md<br/>主規則入口 (@import)"]
         RULES[".claude/rules/<br/>6 個模組化規則"]
-        WF[".claude/skills/<br/>12 道 Slash Command 工作流"]
-        ASKILLS[".claude/agents/skills/<br/>36 套操作型技能"]
+        WF[".claude/commands/<br/>12 道 Slash Command 工作流"]
+        SKILLS[".claude/skills/<br/>36 套操作型技能"]
     end
 
     subgraph "雙 AI 共用層"
@@ -74,11 +74,11 @@ graph TB
         CART["cartridge-system MCP<br/>記憶卡讀寫引擎"]
     end
 
-    DEPLOY -->|"Fresh / Upgrade 模式"| .claude/
-    CLAUDE -->|"@import"| RULES
+    DEPLOY --> |"Fresh / Upgrade 模式"| .claude/
+    CLAUDE --> |"@import"| RULES
     RULES --> WF
-    WF --> ASKILLS
-    ASKILLS -.->|"memory_read"| CART
+    WF --> SKILLS
+    SKILLS -.->|"memory_read"| CART
     CART <-->|"統一記憶庫"| MEM
 ```
 
@@ -101,9 +101,10 @@ graph TB
 
 #### 安全防護
 
-- `CLAUDE.md` 在升級模式下**不會被覆蓋**（保護專案自訂的主規則）
+- `agents/` 頂層目錄受保護，升級時不會刪除（官方子代理人槽位）
 - `.agents/memory/` 在升級時永遠受保護
 - 偵測孤兒檔案並標記提醒，加入 `-RemoveOrphans` 可自動清除
+- `try/finally` 安全網確保部署中斷時不損壞目標專案
 
 ---
 
@@ -149,7 +150,7 @@ graph TB
 
 ### 工作流清單
 
-**目錄**: `.claude/skills/`（Claude Code 原生 Slash Commands）
+**目錄**: `.claude/commands/`（Claude Code 原生 Slash Commands）
 
 ```mermaid
 graph LR
@@ -195,7 +196,7 @@ graph LR
 
 ### 技能系統
 
-**目錄**: `.claude/agents/skills/`
+**目錄**: `.claude/skills/`
 
 技能是**按需載入的知識手冊**。Claude Code 在對話開始時僅注入技能名稱與描述（見 `_index.md`），完整內容在需要時才讀取，實現漸進式揭露。
 
@@ -298,7 +299,7 @@ graph TD
 | **工作流觸發** | `.agents/workflows/` (IDE 注入) | `.claude/skills/` (Slash Command) |
 | **記憶啟動** | D7 Push 三路徑探測 | Turn=1 啟動探測協議 |
 | **記憶存放** | `.agents/memory/` | `.agents/memory/`（**共用**） |
-| **操作型技能** | `.agents/skills/` (36 個) | `.claude/agents/skills/` (36 個) |
+| **操作型技能** | `.agents/skills/` (36 個) | `.claude/skills/` (36 個) |
 | **規則數量** | 9 個（含 AGENTS.md 哨兵） | 6 個模組（@import） |
 | **工作流數量** | 17 道 | 12 道 |
 
@@ -319,12 +320,12 @@ graph TD
 
 ```
 Claude/
-├── CLAUDE.md                    ← 主規則（@import 模組化，< 200 行）
 ├── VERSION                      ← 框架版本號
 ├── install.ps1                  ← 一鍵安裝啟動器
 ├── README.md                    ← 本文件
 │
 └── .claude/
+    ├── CLAUDE.md                ← 主規則入口（@import 模組化，< 200 行）
     ├── rules/                   ← 詳細規則（被 CLAUDE.md @import）
     │   ├── core-identity.md     ← 核心身份（Always On）
     │   ├── cross-lingual-guard.md ← 跨語系防護（Always On）
@@ -332,28 +333,33 @@ Claude/
     │   ├── memory-contract.md   ← 記憶操作規範（條件載入）
     │   ├── forbidden-vocab.md   ← 禁用詞彙規範（條件載入）
     │   └── mcp-guardrails.md    ← MCP 外部工具防護（條件載入）
-    ├── skills/                  ← Slash Command 工作流（12 道）
-    │   ├── 00_chat(討論)/       ← 純對話
-    │   ├── 01_explore(搜索)/    ← 可行性研究
-    │   ├── 02_blueprint(架構)/  ← 架構設計
-    │   ├── 03_build(建構)/      ← 兩階段建構
-    │   ├── 03-1_experiment/     ← 沙盒實驗
-    │   ├── 04_fix(修復)/        ← 兩階段修復
-    │   ├── 06_test(測試)/       ← 視覺測試
-    │   ├── 07_debug/            ← 除錯分析
-    │   ├── 08_audit(除錯)/      ← 健康審計
-    │   ├── 09_commit(紀錄)/     ← 備份紀錄
-    │   ├── 11_handoff(交接)/    ← 對話交接
-    │   └── 12_skill_forge(技能鍛造)/ ← 技能鍛造
-    └── agents/
-        └── skills/              ← 操作型知識庫（36 個，按需讀取）
-            ├── _index.md        ← 技能索引
-            ├── memory-ops/      ← 記憶卡操作
-            ├── memory-arch/     ← 記憶架構拓樸
-            ├── code-quality/    ← 程式碼品質
-            ├── github-ops/      ← GitHub 操作
-            ├── gitnexus-*/      ← 代碼知識圖譜（6 個）
-            └── ...              ← 其餘 27 個技能
+    ├── commands/                ← Slash Command 工作流（12 道）
+    │   ├── 00_chat(討論)/
+    │   ├── 01_explore(搜索)/
+    │   ├── 02_blueprint(架構)/
+    │   ├── 03_build(建構)/
+    │   ├── 03-1_experiment/
+    │   ├── 04_fix(修復)/
+    │   ├── 06_test(測試)/
+    │   ├── 07_debug/
+    │   ├── 08_audit(除錯)/
+    │   ├── 09_commit(紀錄)/
+    │   ├── 11_handoff(交接)/
+    │   └── 12_skill_forge(技能鍛造)/
+    ├── skills/                  ← 操作型知識庫（36 個，按需讀取）
+    │   ├── _index.md            ← 技能索引
+    │   ├── memory-ops/
+    │   ├── memory-arch/
+    │   ├── code-quality/
+    │   ├── github-ops/
+    │   ├── gitnexus-*/          ← 代碼知識圖譜（6 個）
+    │   └── ...                  ← 其餘 27 個技能
+    ├── agents/                  ← 官方子代理人槽位（保留）
+    └── scripts/
+        ├── Deploy-Claude.ps1        ← 部署引擎（try/finally + 彩色差異報告 + VERSION）
+        ├── Invoke-DocScan.ps1       ← 倉庫衛生掃描（輸出 .agents/logs/doc_scan.md）
+        ├── Invoke-HealthAudit.ps1   ← 安全健檢（憑證掃描 + 效能指引）
+        └── Measure-SkillQuality.ps1 ← 技能品質掃描（行數/Token/Frontmatter）
 
 .agents/memory/                  ← 專案記憶（與 Gemini 版共用，升級時受保護）
     └── (由 AI 執行 /02_blueprint 初始化)

@@ -39,14 +39,14 @@
 
 ## Skill System (技能系統)
 
-**`.claude/skills/`** — 工作流觸發器（使用者以 `/skill-name` 呼叫）：
+**`.claude/commands/`** — 斜線指令觸發器（使用者以 `/command-name` 呼叫）：
 - `/build` — 兩階段建構（計畫 → GO → 執行）
 - `/fix` — 兩階段修復（診斷 → GO → 執行）
 - `/commit` — 授權備份（掃描 → GO → 推送）
 - `/explore` — 可行性研究與魔鬼代言人分析
 
-**`.claude/agents/skills/`** — 操作型知識庫（按需讀取，非 slash command）：
-- 完整清單見 `.claude/agents/skills/_index.md`
+**`.claude/skills/`** — 操作型知識庫（按需讀取，非 slash command）：
+- 完整清單見 `.claude/skills/_index.md`
 
 ---
 
