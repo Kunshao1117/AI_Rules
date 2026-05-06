@@ -334,6 +334,18 @@ if ($isUpgrade) {
         foreach ($noteLine in $releaseNotes) { Write-Host "  $noteLine" }
     }
 
+    # ---- CLAUDE.md 保護區段暫存 ----
+    # 偵測 CLAUDE.md 是否存在由 /05_condense 寫入的 PROJECT IDENTITY 保護區段
+    $claudeMdPath = Join-Path $dstDotClaude "CLAUDE.md"
+    $savedIdentity = $null
+    if (Test-Path $claudeMdPath) {
+        $claudeContent = Get-Content $claudeMdPath -Raw
+        if ($claudeContent -match '(?s)(## \[PROJECT IDENTITY[^\r\n]*\r?\n.*?<!-- /PROJECT_IDENTITY_END -->)') {
+            $savedIdentity = $Matches[1]
+            Write-Step "偵測到 PROJECT IDENTITY 保護區段，升級後將自動還原。"
+        }
+    }
+
     # 確認閘門
     $applied = 0
     if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
@@ -372,6 +384,15 @@ if ($isUpgrade) {
             Write-Ok "孤兒檔案清除完成。"
         } else {
             Write-Warn "$($stats.Orphan) 個孤兒檔案（源碼已刪除但目標仍存在），加入 -RemoveOrphans 可自動清除。"
+        }
+    }
+
+    # ---- CLAUDE.md 保護區段還原 ----
+    if ($savedIdentity -and (Test-Path $claudeMdPath)) {
+        $newClaudeContent = Get-Content $claudeMdPath -Raw
+        if ($newClaudeContent -notmatch '## \[PROJECT IDENTITY') {
+            Add-Content -Path $claudeMdPath -Value "`n$savedIdentity"
+            Write-Ok "PROJECT IDENTITY 保護區段已還原。"
         }
     }
 

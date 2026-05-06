@@ -57,7 +57,7 @@
 
 | 版本 | 目標平台 | 當前版號 | 規則數 | 工作流 | 操作型技能 | 詳細文件 |
 |------|---------|---------|--------|--------|-----------|---------|
-| **Antigravity** | Gemini（IDE 插件 + CLI） | v8.0.0 | 9 | 17 | 36 | [Antigravity/README.md](Antigravity/README.md) |
+| **Antigravity** | Gemini（IDE 插件 + CLI） | v8.1.0 | 9 | 18 | 36 | [Antigravity/README.md](Antigravity/README.md) |
 | **Claude Edition** | Claude Code（VS Code 插件） | v1.2.0 | 6 | 12 | 36 | [Claude/README.md](Claude/README.md) |
 
 兩個版本的**操作型技能完全同步**（36 個），共享相同的 MCP 工具鏈（cartridge-system、github、gitnexus 等）。
@@ -243,7 +243,7 @@ AI_Rules/                              ← 母機根目錄
 │       │   ├── 00_core_identity.md    ← 核心身份（Always On）
 │       │   ├── 01_cross_lingual_guard.md ← 跨語系防護（Always On）
 │       │   └── 02~07_*.md             ← 條件載入規則
-│       ├── workflows/                 ← 17 道工作流程 + 2 個共用閘門
+│       ├── workflows/                 ← 18 道工作流程 + 2 個共用閘門
 │       ├── skills/                    ← 36 套操作型技能
 │       │   ├── _index.md              ← 核心技能路由表
 │       │   └── ...                    ← 各技能目錄

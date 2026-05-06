@@ -43,8 +43,15 @@
 **`.claude/commands/`** — 斜線指令觸發器（使用者以 `/command-name` 呼叫）：
 - `/build` — 兩階段建構（計畫 → GO → 執行）
 - `/fix` — 兩階段修復（診斷 → GO → 執行）
+- `/condense` — 專案濃縮初始化（掃描 → 萃取 → 審閱 → 寫入）
 - `/commit` — 授權備份（掃描 → GO → 推送）
 - `/explore` — 可行性研究與魔鬼代言人分析
+
+<!-- PROJECT IDENTITY 保護區段格式定義：
+     由 /05_condense 工作流生成，升級時由部署腳本保留。
+     起始標記：## [PROJECT IDENTITY — /05_condense 生成，升級時保留]
+     結束標記：<!-- /PROJECT_IDENTITY_END -- >
+     部署腳本識別這兩個標記之間的內容，升級時不覆蓋。 -->
 
 **`.claude/skills/`** — 操作型知識庫（按需讀取，非 slash command）：
 - 完整清單見 `.claude/skills/_index.md`

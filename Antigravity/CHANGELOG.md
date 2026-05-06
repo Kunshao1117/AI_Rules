@@ -4,6 +4,21 @@
 
 ---
 
+## [V8.1.0 專案濃縮初始化工作流與跨框架保護區段] - 2026-05-06
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Condense Workflow — 專案自動萃取初始化（/05_condense）**：參考 Claude Code `/init` 指令的設計概念，為 Antigravity 雙框架建立全新的「濃縮」工作流。AI 主動掃描代碼庫的目錄結構、技術堆疊與設定檔，自動萃取 6 大維度（專案身份/工作模式/技術堆疊/總監角色/部署環境/MCP 工具鏈），並以雙路徑冗余設計寫入持久化上下文。此後每次新對話，AI 無需總監重複說明即可正確認識專案。
+- **Dual-Path Redundancy Architecture（雙路徑冗余注入架構）**：濃縮工作流的輸出以兩層冗余覆蓋不同失效場景——Path A 將 5 行輕量摘要寫入 AGENTS.md/CLAUDE.md 保護區段（永遠注入，覆蓋 MCP 失效時），Path B 將完整 6 維度上下文寫入 `_system` 記憶卡（覆蓋保護區段空間受限時）。
+- **Project Identity Protection Gate（部署升級保護區段機制）**：`Deploy-Antigravity.ps1` 與 `Deploy-Claude.ps1` 的 Upgrade 模式新增保護區段暫存-還原邏輯。透過 `## [PROJECT IDENTITY` 起始標記與 `<!-- /PROJECT_IDENTITY_END -->` 結束標記，升級時自動識別並保留由 `/05_condense` 寫入的專案身份內容，確保框架升級不覆蓋專案記憶。
+
+### 【架構決策】 (Architectural Decisions)
+
+- **AGENTS.md 保護區段 vs CLAUDE.md 保護區段（跨框架差異設計）**：Antigravity 版將保護區段寫入 `.agents/rules/AGENTS.md`（Gemini IDE 永遠注入的哨兵檔），Claude Edition 則寫入 `.claude/CLAUDE.md`（Claude Code 原生自動讀取）。兩框架的輸出位置不同但邏輯完全平行，各自利用其平台最接近「永遠注入」的原生機制。
+- **掃描-萃取-審閱-寫入四階段閘門設計**：工作流強制在寫入前經過總監審閱閘門（MANDATORY HALT），展示即將寫入的雙份內容供確認，避免 AI 萃取偏差直接寫入錯誤的專案身份。
+
+---
+
 ## [V7.1.2 雙版本架構同等化與原生工具安全防護] - 2026-05-06
 
 ### 【新增商業能力】 (Business Capabilities Added)
