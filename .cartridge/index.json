@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastScanned": "2026-05-06T20:29:56+08:00",
+  "lastScanned": "2026-05-07T05:17:14+08:00",
   "cartridges": {
     "claude-edition-rules": {
       "skillPath": ".agents\\memory\\claude-edition-rules\\SKILL.md",
@@ -31,55 +31,9 @@
         "Claude/.claude/commands/02_blueprint(架構)/SKILL.md",
         "Antigravity/install.ps1"
       ],
-      "staleness": 90,
-      "lastUpdated": "2026-05-06T09:00:39+08:00",
-      "pendingChanges": [
-        {
-          "filePath": "Claude/.claude/CLAUDE.md",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        },
-        {
-          "filePath": "Claude/.claude/rules/memory-contract.md",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        },
-        {
-          "filePath": "Claude/.claude/rules/core-identity.md",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        },
-        {
-          "filePath": "Claude/.claude/scripts/Deploy-Claude.ps1",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        },
-        {
-          "filePath": "Claude/.claude/scripts/Invoke-HealthAudit.ps1",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        },
-        {
-          "filePath": "Claude/.claude/scripts/Measure-SkillQuality.ps1",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        },
-        {
-          "filePath": "Claude/.claude/commands/_shared/_completion_gate.md",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        },
-        {
-          "filePath": "Claude/.claude/commands/_shared/_security_footer.md",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        },
-        {
-          "filePath": "Antigravity/install.ps1",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        }
-      ],
+      "staleness": 0,
+      "lastUpdated": "2026-05-06T20:31:47+08:00",
+      "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
       "indirectStaleness": 0,
@@ -138,29 +92,8 @@
         "Antigravity/.vscode/settings.json"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-05-06T20:28:47+08:00",
-      "pendingChanges": [
-        {
-          "filePath": "Antigravity/.gitignore",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        },
-        {
-          "filePath": "Antigravity/.agents/memory/\\_map/SKILL.md",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        },
-        {
-          "filePath": "Antigravity/.agents/memory/\\_system/SKILL.md",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        },
-        {
-          "filePath": "Antigravity/.agents/workflows/05_condense(濃縮).md",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        }
-      ],
+      "lastUpdated": "2026-05-06T20:30:25+08:00",
+      "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
       "indirectStaleness": 0,
@@ -261,9 +194,15 @@
         "Antigravity/.agents/skills/trunk-ops/SKILL.md",
         "Antigravity/.agents/skills/ui-ux-standards/SKILL.md"
       ],
-      "staleness": 0,
+      "staleness": 11,
       "lastUpdated": "2026-05-06T20:04:20+08:00",
-      "pendingChanges": [],
+      "pendingChanges": [
+        {
+          "filePath": "Antigravity/.agents/skills/memory-ops/SKILL.md",
+          "eventType": "change",
+          "timestamp": "2026-05-08T10:17:50+08:00"
+        }
+      ],
       "ghostFiles": [],
       "dependencies": [],
       "indirectStaleness": 0,
@@ -430,15 +369,9 @@
       "trackedFiles": [
         "Antigravity/.agents/memory/_map/SKILL.md"
       ],
-      "staleness": 10,
-      "lastUpdated": "2026-05-05T00:59:25+08:00",
-      "pendingChanges": [
-        {
-          "filePath": "Antigravity/.agents/memory/_map/SKILL.md",
-          "eventType": "change",
-          "timestamp": "2026-05-06T20:27:18+08:00"
-        }
-      ],
+      "staleness": 0,
+      "lastUpdated": "2026-05-06T20:30:16+08:00",
+      "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
       "indirectStaleness": 0,
