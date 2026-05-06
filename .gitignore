@@ -1,6 +1,7 @@
-cartridge_index.json
+.cartridge/
 .vscode/
 /.agents/
 /.claude/
 antigravity_export/
 /CLAUDE.md
+.cartridge/index.json

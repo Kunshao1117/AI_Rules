@@ -29,8 +29,8 @@ $SourceRoot    = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 # $srcDotClaude — 框架源碼中的 .claude/ 目錄（包含 commands/skills/rules 等）
 $srcDotClaude  = Join-Path $SourceRoot ".claude"
 
-# 動態讀取版本號（從 .claude/VERSION 檔案取得，例如 "1.2.0"）
-$versionFile = Join-Path $srcDotClaude "VERSION"
+# 動態讀取版本號（從 Claude/VERSION 框架根目錄取得，例如 "1.2.0"）
+$versionFile = Join-Path $SourceRoot "VERSION"
 $FrameworkVersion = if (Test-Path $versionFile) { (Get-Content $versionFile -Raw).Trim() } else { "unknown" }
 
 # ─── 輔助輸出函式 ──────────────────────────────────────────────────────────────
@@ -479,10 +479,16 @@ try {
         Write-Ok "衍生技能已完整保留並還原。"
     }
 
+    # 統計已部署的檔案數量（commands / skills / rules）
+    $cmdCount   = @(Get-ChildItem (Join-Path $dstDotClaude "commands") -File -Recurse -ErrorAction SilentlyContinue).Count
+    $skillCount = @(Get-ChildItem (Join-Path $dstDotClaude "skills")   -File -Recurse -ErrorAction SilentlyContinue).Count
+    $ruleCount  = @(Get-ChildItem (Join-Path $dstDotClaude "rules")    -File -Recurse -ErrorAction SilentlyContinue).Count
+
     Write-Host ""
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Magenta
     Write-Host "  Antigravity Claude Edition v$FrameworkVersion 框架已部署完成。" -ForegroundColor Green
     Write-Host "  目標專案現在已具備 Claude Code 治理能力。" -ForegroundColor Green
+    Write-Host "  指令: $cmdCount | 技能: $skillCount | 規範: $ruleCount" -ForegroundColor Cyan
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Magenta
     Write-Host ""
 }
