@@ -1,44 +1,62 @@
-# Antigravity — AI 代理人治理框架
+# Antigravity — AI 代理人治理框架（Gemini 版）
 
-> **版本**: v8.0.0 | **語言**: 繁體中文 (zh-TW) | **平台**: Windows (PowerShell)
+> **讓 AI 編碼助手不再失憶、不再無紀律** — 零接觸自動部署的治理框架，為 Gemini IDE 提供工作流程、持久記憶系統與標準作業規範。
 
-Antigravity 是一套**零接觸自動部署**的 AI 編碼代理人治理框架。它為 AI 助手提供統一的工作流程、持久記憶系統與標準作業規範，讓 AI 在任何專案中都能像一個有紀律、有記憶的工程團隊來運作。
+[![version](https://img.shields.io/badge/version-v8.0.0-blue)](#版本管理)
+[![platform](https://img.shields.io/badge/platform-Windows-lightgrey)](#)
+[![license](https://img.shields.io/badge/license-MIT-green)](#)
 
 ---
 
-## 🚀 快速安裝（終端機一行指令）
+## 📌 這解決什麼問題？
+
+AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
+
+1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → 透過 `.agents/memory/` 記憶卡系統持久保存
+2. **無紀律執行** — 寫碼前不規劃、寫完不測試 → 19 道生命週期工作流強制四拍子節奏
+3. **角色權限模糊** — 子代理人隨意改檔案 → 角色分層（讀取者/工作者/寫入者），子代理人只能唯讀
+4. **知識碎片化** — 技能散落各處，Token 暴增 → 36 套按需載入的操作型技能，不用時零開銷
+5. **語言不友善** — 工程術語充斥 → 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
+6. **框架升級斷裂** — 升級怕覆蓋記憶 → D06 安全網 + SHA256 差異比對 + 記憶卡永久保護
+7. **工具碎片化** — MCP 工具散亂 → 14 個 MCP 伺服器統一由 Multi-MCP Gateway 提供
+
+---
+
+## 🚀 快速安裝
 
 > 支援 **PowerShell 5.1+** 原生環境。倉庫為 Public，無需 GitHub 帳號。
 
 ```powershell
-# 🆕 全新安裝到指定專案目錄
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f -Target "D:\你的專案路徑"; Remove-Item $f
+# 🆕 全新安裝（在 IDE 終端機直接執行，自動安裝到當前目錄）
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f; Remove-Item $f
 ```
 
 ```powershell
 # ⬆️ 升級現有安裝
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f -Target "D:\你的專案路徑" -Mode Upgrade; Remove-Item $f
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f -Mode Upgrade; Remove-Item $f
 ```
 
+> 💡 **跨目錄安裝**：加上 `-Target "D:\你的專案路徑"` 即可安裝到其他位置。
+>
 > **原理**：啟動器從 GitHub 下載 ZIP（走 CDN，無 API 速率限制），解壓後執行部署腳本，完成後自動清理暫存。
 
 ---
 
 
-- [核心設計理念](#核心設計理念)
-- [系統架構總覽](#系統架構總覽)
-- [模組詳解](#模組詳解)
-  - [部署引擎](#部署引擎)
-  - [規則系統](#規則系統)
-  - [工作流程管線](#工作流程管線)
-  - [技能系統](#技能系統)
-  - [專案記憶系統](#專案記憶系統)
-- [版本管理](#版本管理)
-- [專案結構](#專案結構)
+- [核心設計理念](#-核心設計理念)
+- [系統架構總覽](#-系統架構總覽)
+- [模組詳解](#-模組詳解)
+  - [部署引擎](#-部署引擎)
+  - [規則系統](#-規則系統)
+  - [工作流程管線](#-工作流程管線)
+  - [技能系統](#-技能系統)
+  - [專案記憶系統](#-專案記憶系統)
+- [版本管理](#-版本管理)
+- [專案結構](#-專案結構)
 
 ---
 
-## 核心設計理念
+## 🧠 核心設計理念
 
 | 原則 | 說明 |
 |------|------|
@@ -51,7 +69,7 @@ Antigravity 是一套**零接觸自動部署**的 AI 編碼代理人治理框架
 
 ---
 
-## 系統架構總覽
+## 🏗️ 系統架構總覽
 
 ```mermaid
 graph TB
@@ -79,9 +97,9 @@ graph TB
 
 ---
 
-## 模組詳解
+## 📦 模組詳解
 
-### 部署引擎
+### ⚙️ 部署引擎
 
 **檔案**: `.agents/scripts/Deploy-Antigravity.ps1`（622 行，全繁中行內說明）
 
@@ -113,7 +131,7 @@ graph TB
 
 ---
 
-### 規則系統
+### 📜 規則系統
 
 **目錄**: `.agents/rules/`
 
@@ -174,7 +192,7 @@ graph TB
 
 ---
 
-### 工作流程管線
+### 🔄 工作流程管線
 
 **目錄**: `.agents/workflows/`
 
@@ -231,7 +249,7 @@ graph LR
 
 ---
 
-### 技能系統
+### 🎯 技能系統
 
 **目錄**: `.agents/skills/`
 
@@ -280,7 +298,7 @@ graph LR
 
 ---
 
-### 專案記憶系統
+### 🧠 專案記憶系統
 
 **目錄**: `.agents/memory/`
 
@@ -341,7 +359,7 @@ graph TD
 
 ---
 
-## 版本管理
+## 📋 版本管理
 
 | 檔案 | 用途 |
 |------|------|
@@ -353,7 +371,7 @@ graph TD
 
 ---
 
-## 專案結構
+## 📂 專案結構
 
 ```
 Antigravity/

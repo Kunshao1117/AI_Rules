@@ -8,7 +8,7 @@
     下載走 ZIP 封存路徑，不使用 GitHub API，無速率限制問題。
 
 .PARAMETER Target
-    目標專案目錄（必填）。預設為當前工作目錄。
+    目標專案目錄（可選）。未指定時自動使用當前工作目錄。
 
 .PARAMETER Mode
     部署模式：Fresh（全新安裝）或 Upgrade（升級現有安裝）。預設 Fresh。
@@ -20,15 +20,19 @@
     是否移除目標中已不存在於源碼的孤兒檔案（僅 Upgrade 模式有效）
 
 .EXAMPLE
-    # 一鍵安裝到當前目錄
+    # 在 IDE 終端機直接安裝（自動使用當前目錄）
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f; Remove-Item $f
+
+    # 指定其他目錄安裝
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f -Target "D:\MyProject"; Remove-Item $f
 
-    # 升級現有安裝
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f -Target "D:\MyProject" -Mode Upgrade; Remove-Item $f
+    # 升級現有安裝（同樣支援省略 -Target）
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f -Mode Upgrade; Remove-Item $f
 #>
 param (
-    [Parameter(Mandatory = $true)]
-    [string]$Target,
+    # 目標專案目錄 — 未指定時自動使用當前工作目錄（$PWD）
+    [Parameter(Mandatory = $false)]
+    [string]$Target = $PWD.Path,
 
     [Parameter(Mandatory = $false)]
     [ValidateSet("Fresh", "Upgrade")]

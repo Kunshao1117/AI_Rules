@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [2026-05-06] v4.0 Memory Architecture
 
+### docs: README 全面重構與設計語感升級
+- **母機總覽文件 (README.md)**: 導入問題導向敘事（說明 AI 失憶與無紀律痛點），加入 Badge 徽章系統（版號/平台/授權）與 Emoji 標題層次，將目錄移至安裝說明之前，全面對齊 `cartridge_system` 的專業開源文件標準，同時保留所有架構與技術細節。
+
+### feat(deploy): 安裝指令體驗優化
+- **免手動指定目錄**: 調整 `Antigravity/install.ps1` 與 `Claude/install.ps1` 的 `-Target` 參數為可選項，預設值改為 `$PWD.Path`。使總監能在 IDE 終端機直接複製並執行指令，實現當前目錄自動安裝，大幅簡化操作流程並向下相容舊有指令。
+
 ### feat(memory): 治理架構升級 (幽靈偵測與依賴傳播)
 - **幽靈檔案偵測 (Ghost Detection)**: 於 `memory-ops` 技能新增 `ghostFilesCount` 處理邏輯。當模組內追蹤檔案已在磁碟刪除時，自動清除殘留路徑；並新增全幽靈卡匣自動汰除建議。此邏輯同步實裝至 Antigravity (`03_memory_skill_contract.md`) 與 Claude (`memory-contract.md`) 版的退出閘門。
 - **依賴感知傳播 (Dependency Propagation)**: 於 `memory-ops` 新增 `indirectStaleness` 上游依賴過期感知機制，並在 `memory-arch` 加入 `dependencies` 評估步驟；同步更新 `memory-template.md` 支援依賴關係宣告。
