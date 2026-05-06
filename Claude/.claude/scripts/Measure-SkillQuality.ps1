@@ -104,6 +104,7 @@ if ($Target) {
     $agentsRoot = Split-Path $SkillsRoot -Parent
     $scanDirs = @($SkillsRoot)
     $memDir = Join-Path $agentsRoot 'memory'; if (Test-Path $memDir) { $scanDirs += $memDir }
+    $projDir = Join-Path $agentsRoot 'project_skills'; if (Test-Path $projDir) { $scanDirs += $projDir }
     foreach ($sd in $scanDirs) {
         Get-ChildItem -Path $sd -Directory | Where-Object { $_.Name -notmatch '^_' } |
             ForEach-Object { $r = Measure-SingleSkill $_.FullName; if ($r) { $results += $r } }

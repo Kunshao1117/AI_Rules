@@ -33,3 +33,20 @@
 
 - **Role**: `<Reader | Reader/Memory | Writer/SRE>` | 依上方矩陣執行權限管控。
 ```
+
+## Turbo Safety Gate（破壞性命令攔截閘門）
+
+無論 TodoWrite 步驟是否標記為自動進行，只要 Bash 指令包含以下任一模式，
+MUST 輸出 Justification Block 並等待總監明確授權：
+
+| 危險模式 | 風險說明 |
+|---------|---------|
+| `reset --hard` | 不可逆版本回滾，永久丟失提交 |
+| `Remove-Item -Recurse` | 遞迴刪除目錄，無法復原 |
+| `rm -rf` | Unix 遞迴強制刪除 |
+| `DROP TABLE` / `DROP DATABASE` | 資料庫物理刪除 |
+| `git clean -fd` | 未追蹤檔案永久清除 |
+| `Format-Volume` | 磁碟格式化 |
+
+這些命令無論在何種情境下，MUST 中止執行並等待總監輸入 [SUDO] 或明確同意。
+[SUDO] 明確覆寫時方可豁免。

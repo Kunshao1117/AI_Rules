@@ -23,6 +23,7 @@
 | 生成總監面向輸出、撰寫實作計畫時 | `@.claude/rules/forbidden-vocab.md` |
 | 涉及模組記憶讀寫、技能載入時 | `@.claude/rules/memory-contract.md` |
 | 呼叫高風險 MCP 工具時 | `@.claude/rules/mcp-guardrails.md` |
+| 建立或修改衍生技能（.agents/project_skills/）、執行 /12_skill_forge 時 | `@.claude/rules/project-skill-contract.md` |
 
 ---
 

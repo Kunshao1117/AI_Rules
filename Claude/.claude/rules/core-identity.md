@@ -32,7 +32,24 @@ All workflows that modify source code MUST follow this lifecycle:
 └── 兩項均已完成 → 繼續執行。
 ```
 
-## 4. Language & Communication (繁體中文特化)
+## 4. Native Tools Mandate（原生工具強制）
+
+```
+[PRE-FLIGHT GATE] 執行任何 Bash 終端機指令前：
+├── Director prompt 含 [SUDO]？→ 跳過整個閘門
+├── 指令以 `powershell`（不分大小寫）開頭？
+│   └── YES → [HALT]「🔴 [PWSH HALT] 禁止使用舊版 PowerShell 5.1。請改用 pwsh。」
+│             自動將 powershell 替換為 pwsh 後重試
+├── 指令符合 (echo|cat|awk|sed|Out-File|Set-Content|>>|>) 且目標路徑不在 .agents/logs/？
+│   └── YES → [HALT]「🔴 [CLI WRITE HALT] 終端機文書寫入已攔截。請使用原生 Write/Edit 工具。」
+│             停止當前任務
+└── 全數通過 → 靜默執行
+```
+
+- 終端機保留用途：執行腳本、啟動伺服器、執行建構/測試
+- 日誌豁免：在 .agents/logs/ 目錄內寫入為合法操作（CLI 子代理人專用）
+
+## 5. Language & Communication (繁體中文特化)
 
 - **Traditional Chinese Mandate**: ALL docstrings, inline comments, README, and Director communications MUST be in Traditional Chinese (zh-TW).
 - **Subagent Localization**: All delegate task descriptions in `Agent` tool calls MUST be 100% Traditional Chinese.

@@ -2,6 +2,32 @@
 
 ## 0. Turn=1 Startup Protocol (對話啟動探測 — 每次新對話必執行)
 
+### 前置步驟：崩潰復原檢查點偵測
+
+```
+[CHECKPOINT GATE] 對話啟動時，三路徑探測前執行：
+├── 檢查 .agents/logs/checkpoint.json 是否存在
+│   ├── 存在且 status = "in_progress"
+│   │   └── 輸出：「⚠️ 偵測到上次對話未完成存檔點：
+│   │           工作流: {workflow}，階段: {phase}，時間: {timestamp}。
+│   │           是否從此處繼續？（輸入 GO 繼續 / SKIP 忽略）」
+│   │           HALT — 等待總監決定
+│   ├── 存在且 status = "completed"
+│   │   └── 靜默刪除（Bash rm .agents/logs/checkpoint.json），繼續三路徑探測
+│   └── 不存在 → 直接進入三路徑探測
+
+Checkpoint 格式規範（寫入時參考）：
+{
+  "session_id": "uuid",
+  "workflow": "/03_build",
+  "phase": "EXECUTION",
+  "status": "in_progress",
+  "timestamp": "YYYY-MM-DDTHH:mm:ss+08:00",
+  "last_completed_step": "Step N 描述",
+  "pending_steps": ["Step N+1", "Step N+2"]
+}
+```
+
 ```
 新對話 Turn=1：
 ├── 呼叫 cartridge-system__memory_list(projectRoot)

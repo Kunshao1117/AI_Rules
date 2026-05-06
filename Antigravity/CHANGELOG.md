@@ -4,6 +4,18 @@
 
 ---
 
+## [V7.1.2 雙版本架構同等化與原生工具安全防護] - 2026-05-06
+
+### 【新增商業能力】 (Business Capabilities Added)
+
+- **Dual-Sync Architectural Parity（雙版本架構同等化）**：全面統整 Antigravity 與 Claude Edition 的基礎建設與安全防護。Claude 版正式植入 `PRE-FLIGHT GATE` 原生工具強制作業規範與 `Turbo Safety Gate` 破壞性指令攔截機制，將兩個獨立 AI 環境的治理標準與安全閘門推進至完全對等。
+- **Checkpoint & Completion Gate Upgrade（崩潰復原與結案閘門強化）**：Claude Edition 結案閘門補齊技能蒸餾建議 (Check 6) 與文件同步強制查核 (Check 7)，並於對話啟動時補入 `[CHECKPOINT GATE]` 崩潰復原偵測，實現與 Antigravity 版無縫接軌的工作流標準。
+- **Audit Workflow Centralization（健檢入口單一化）**：Antigravity 新增 `/08_audit(健檢).md` 總控入口，支援階段性健檢分派，與 Claude 的結構設計完成雙向對齊。
+
+### 【技術債消除】 (Technical Debt Removed)
+
+- **Audit & Scan Engine Enhancements（稽核與掃描引擎除錯）**：修復 `Invoke-HealthAudit.ps1` 中的 PowerShell Linter 解析誤判，將硬編碼正則運算式的引號替換為雙引號；全面替換未核可動詞 `Append-Section` 為 `Add-ReportSection`。並擴充 `Measure-SkillQuality.ps1` 掃描範圍，將專案特有技能目錄 `project_skills` 納入品質掃描對象。
+
 ## [V7.1.1 雙 AI 系統記憶架構整合與 Claude 版升級] - 2026-05-05
 
 ### 【新增商業能力】 (Business Capabilities Added)
