@@ -361,6 +361,23 @@ if ($isUpgrade) {
         Write-Ok "所有 .claude/ 檔案均已是最新版本，無需更新。"
     }
 
+    # ---- CLAUDE.md 保護區段還原（必須在孤兒清除之前執行）----
+    # 設計理由：孤兒清除中途若崩潰，已套用的更新無法回滾；
+    #           先還原 identity，確保即使後續出錯，保護區段仍完整。
+    # 注意：使用 WriteAllText 強制 UTF-8 無 BOM，避免 PS 5.1 Add-Content
+    #       預設 ANSI 編碼導致中文亂碼，讓下次升級正則匹配失敗。
+    if ($savedIdentity -and (Test-Path $claudeMdPath)) {
+        $newClaudeContent = Get-Content $claudeMdPath -Raw
+        if ($newClaudeContent -notmatch '## \[PROJECT IDENTITY') {
+            # 強制 UTF-8 無 BOM 寫入
+            $restored = $newClaudeContent.TrimEnd() + "`n`n" + $savedIdentity
+            [System.IO.File]::WriteAllText($claudeMdPath, $restored, [System.Text.Encoding]::UTF8)
+            Write-Ok "PROJECT IDENTITY 保護區段已還原（UTF-8）。"
+        } else {
+            Write-Step "PROJECT IDENTITY 保護區段已存在於更新後的檔案，跳過還原。"
+        }
+    }
+
     # 孤兒檔案處理：如果有孤兒且使用者有加 -RemoveOrphans 參數，就實際刪除
     if ($stats.Orphan -gt 0) {
         if ($RemoveOrphans) {
@@ -384,15 +401,6 @@ if ($isUpgrade) {
             Write-Ok "孤兒檔案清除完成。"
         } else {
             Write-Warn "$($stats.Orphan) 個孤兒檔案（源碼已刪除但目標仍存在），加入 -RemoveOrphans 可自動清除。"
-        }
-    }
-
-    # ---- CLAUDE.md 保護區段還原 ----
-    if ($savedIdentity -and (Test-Path $claudeMdPath)) {
-        $newClaudeContent = Get-Content $claudeMdPath -Raw
-        if ($newClaudeContent -notmatch '## \[PROJECT IDENTITY') {
-            Add-Content -Path $claudeMdPath -Value "`n$savedIdentity"
-            Write-Ok "PROJECT IDENTITY 保護區段已還原。"
         }
     }
 

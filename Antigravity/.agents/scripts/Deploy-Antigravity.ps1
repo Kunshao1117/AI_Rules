@@ -428,13 +428,21 @@ if ($Mode -eq "Upgrade") {
 
     # ---- 階段 A-1: AGENTS.md 保護區段還原 ----
     # 如果之前暫存了 PROJECT IDENTITY 區段，追加回更新後的 AGENTS.md
+    # 注意：必須使用 WriteAllText 強制 UTF-8 無 BOM，避免 PS 5.1 Add-Content 預設 ANSI
+    #       編碼導致中文字段亂碼，讓下次升級的正則匹配失敗而無法保護。
     if ($savedIdentity -and (Test-Path $agentsMdPath)) {
         $newContent = Get-Content $agentsMdPath -Raw
         # 確認更新後的檔案不包含保護區段（正常情況下不會，因為源碼 AGENTS.md 沒有）
         if ($newContent -notmatch '## \[PROJECT IDENTITY') {
-            Add-Content -Path $agentsMdPath -Value "`n$savedIdentity"
-            Write-Host "[v] PROJECT IDENTITY 保護區段已還原。"
+            # 強制 UTF-8 無 BOM 寫入，避免 PS 5.1 下的 Add-Content 編碼陷阱
+            $restored = $newContent.TrimEnd() + "`n`n" + $savedIdentity
+            [System.IO.File]::WriteAllText($agentsMdPath, $restored, [System.Text.Encoding]::UTF8)
+            Write-Host "[v] PROJECT IDENTITY 保護區段已還原（UTF-8）。"
+        } else {
+            Write-Host "[*] PROJECT IDENTITY 保護區段已存在於更新後的檔案，跳過還原。"
         }
+    } elseif (-not $savedIdentity) {
+        # 無保護區段屬正常狀態（尚未執行 /05_condense），不顯示警告
     }
 
     # ---- 階段 B: 基礎設施確保（不受確認閘門影響，每次升級都會執行）----
