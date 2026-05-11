@@ -73,26 +73,31 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 
 ```mermaid
 graph TB
-    subgraph "Antigravity 源碼倉庫"
-        DEPLOY["Deploy-Antigravity.ps1<br/>部署引擎"]
-        VERSION["VERSION / RELEASE_NOTES.md<br/>版本追蹤"]
+    subgraph "AI_Rules 母機倉庫"
+        SRC["Antigravity/<br/>Gemini 版源碼"]
+        SH["Shared/skills/<br/>36 套共用技能"]
     end
 
-    subgraph ".agents/ 生態系統"
-        RULES["rules/<br/>治理規則（憲法）"]
-        WF["workflows/<br/>12 道工作流程"]
+    subgraph "統一部署引擎"
+        DEPLOY["Scripts/Deploy.ps1<br/>-Platform Antigravity"]
+    end
+
+    subgraph ".agents/ 生態系統（部署後）"
+        RULES["rules/<br/>9 個治理規則"]
+        WF["workflows/<br/>約 15 道工作流程"]
         SKILLS["skills/<br/>36 套操作型技能"]
-        MEM["memory/<br/>專案記憶技能"]
-        LOGS["logs/<br/>暫存日誌"]
+        MEM["memory/<br/>專案記憶（三 AI 共用）"]
+        PROJ["project_skills/<br/>衍生技能（升級保護）"]
     end
 
-    DEPLOY -->|"Fresh 模式"| .agents/
-    DEPLOY -->|"Upgrade 模式<br/>SHA256 差異比對"| .agents/
-
+    SRC -->|"install.ps1"| DEPLOY
+    SH -->|"Sync-SharedSkills"| DEPLOY
+    DEPLOY -->|"Fresh / Upgrade"| RULES
+    DEPLOY -->|"Fresh / Upgrade"| WF
+    DEPLOY -->|"Fresh / Upgrade 注入"| SKILLS
     RULES --> WF
     WF --> SKILLS
-    WF --> MEM
-    SKILLS -.->|"MCP 工具"| MEM
+    SKILLS -.->|"cartridge-system"| MEM
 ```
 
 ---
@@ -101,9 +106,9 @@ graph TB
 
 ### ⚙️ 部署引擎
 
-**檔案**: `.agents/scripts/Deploy-Antigravity.ps1`（622 行，全繁中行內說明）
+**腳本**: `Scripts/Deploy.ps1 -Platform Antigravity`（統一部署引擎，核心邏輯位於 `Scripts/modules/Platform-Antigravity.psm1`）
 
-負責將整套 `.agents/` 生態系統移植到任何目標專案。所有 PowerShell 程式碼均配備完整的繁體中文行內說明，適合非英語使用者直接閱讀和維護。
+負責將整套 `.agents/` 生態系統移植到任何目標專案。所有 PowerShell 程式碼均配備完整的繁體中文行內說明，三個平台部署能力完全對等，適合非英語使用者直接閱讀和維護。
 
 #### 兩種部署模式
 
@@ -196,7 +201,7 @@ graph TB
 
 **目錄**: `.agents/workflows/`
 
-17 道工作流程涵蓋軟體開發的完整生命週期：
+15 道工作流程涵蓋軟體開發的完整生命週期：
 
 ```mermaid
 graph LR
@@ -375,12 +380,13 @@ graph TD
 
 ```
 Antigravity/
-├── .agents/scripts/Deploy-Antigravity.ps1 ← 部署引擎（Fresh / Upgrade 雙模式）
 ├── VERSION                       ← 框架版本號
 ├── RELEASE_NOTES.md              ← 版本更新摘要
 ├── CHANGELOG.md                  ← 商業價值決策紀錄
 ├── README.md                     ← 本文件
-│
+├── install.ps1                   ← 一鍵安裝啟動器（呼叫 Scripts/Deploy.ps1）
+├── global/
+│   └── GEMINI.md                 ← 全局觸發器版控（→ ~/.gemini/GEMINI.md）
 └── .agents/                      ← 可移植的 AI 治理生態系統
     ├── rules/                    ← 治理規則（分層啟動）
     │   ├── AGENTS.md             ← 哨兵檔（存在 = 已初始化）
@@ -392,24 +398,18 @@ Antigravity/
     │   ├── 05_project_skill_contract.md ← 衍生技能合約（Model Decision）
     │   ├── 06_memory_push.md            ← 記憶主動推播（Model Decision）
     │   └── 07_mcp_guardrails.md         ← MCP 外部工具防護（Model Decision）
-    ├── workflows/                ← 17 道生命週期工作流程
+    ├── workflows/                ← 約 15 道生命週期工作流程
     │   ├── 00_chat ~ 12_skill_forge ← 主要工作流程（含雙階段建構/修復/提交系列）
     │   ├── _completion_gate.md   ← 共用完成閘門
     │   └── _security_footer.md   ← 共用安全閘門
-    ├── skills/                   ← 操作型技能（框架提供，升級時可覆寫）
+    ├── skills/                   ← 36 套操作型技能（部署時從 Shared/ 注入）
     │   ├── _index.md             ← 核心技能路由表
-    │   ├── project-xxx -> ../project_skills/xxx ← 專案衍生技能符號連結（IDE 平攤掃描區）
+    │   ├── project-xxx -> ../project_skills/xxx ← 專案衍生技能符號連結
     │   ├── memory-ops/           ← 記憶操作指引
-    │   ├── browser-testing/      ← 瀏覽器測試流程
     │   └── ... (36 套)
-    ├── scripts/                  ← 框架工具腳本（隨部署攜帶，不進版控）
-    │   ├── Deploy-Antigravity.ps1    ← 部署引擎（Fresh / Upgrade 雙模式）
-    │   ├── Measure-SkillQuality.ps1  ← 技能品質掃描
-    │   ├── Invoke-DocScan.ps1        ← 倉庫狀態掃描（衛生+文件）
-    │   └── Invoke-HealthAudit.ps1    ← 基礎設施健檢掃描
     ├── memory/                   ← 專案記憶（專案特有，升級時受保護）
     │   └── (由 AI 執行 /02 架構 初始化)
     ├── project_skills/           ← 專案衍生技能（專案特有，升級時受保護）
     │   └── _index.md             ← 專案衍生技能路由表
-    └── logs/                     ← 暫存日誌
+    └── logs/                     ← 暫存日誌（不進版控）
 ```

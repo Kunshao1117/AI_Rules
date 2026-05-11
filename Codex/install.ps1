@@ -1,10 +1,9 @@
-#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Antigravity 框架遠端安裝啟動器
+    Antigravity Codex Edition — 遠端安裝啟動器
 
 .DESCRIPTION
-    從 GitHub 下載並部署 Antigravity AI 代理人治理框架到指定專案目錄。
+    從 GitHub 下載並部署 Antigravity Codex Edition 框架到指定專案目錄。
     下載走 ZIP 封存路徑，不使用 GitHub API，無速率限制問題。
 
 .PARAMETER Target
@@ -17,20 +16,19 @@
     要下載的 GitHub 分支。預設 main。
 
 .PARAMETER RemoveOrphans
-    是否移除目標中已不存在於源碼的孤兒檔案（僅 Upgrade 模式有效）
+    是否移除目標中已不存在於源碼的孤兒檔案（僅 Upgrade 模式）
 
 .EXAMPLE
     # 在 IDE 終端機直接安裝（自動使用當前目錄）
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f; Remove-Item $f
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_codex_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1' -OutFile $f; & $f; Remove-Item $f
 
     # 指定其他目錄安裝
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f -Target "D:\MyProject"; Remove-Item $f
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_codex_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1' -OutFile $f; & $f -Target "D:\MyProject"; Remove-Item $f
 
-    # 升級現有安裝（同樣支援省略 -Target）
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f -Mode Upgrade; Remove-Item $f
+    # 升級現有安裝
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_codex_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1' -OutFile $f; & $f -Mode Upgrade; Remove-Item $f
 #>
 param (
-    # 目標專案目錄 — 未指定時自動使用當前工作目錄（$PWD）
     [Parameter(Mandatory = $false)]
     [string]$Target = $PWD.Path,
 
@@ -45,34 +43,31 @@ param (
     [switch]$RemoveOrphans
 )
 
-# PowerShell 5.1+ 相容模式（建議 PS 7.x，但 PS 5.1 可直接執行）
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 $repoOwner = "Kunshao1117"
 $repoName  = "AI_Rules"
 $zipUrl    = "https://github.com/$repoOwner/$repoName/archive/refs/heads/$Branch.zip"
 
-$tempZip = Join-Path $env:TEMP "antigravity_$(Get-Random).zip"
-$tempDir = Join-Path $env:TEMP "antigravity_$(Get-Random)"
+$tempZip = Join-Path $env:TEMP "codex_edition_$(Get-Random).zip"
+$tempDir = Join-Path $env:TEMP "codex_edition_$(Get-Random)"
 
 try {
     Write-Host ""
-    Write-Host "[>] Antigravity 框架安裝程式"
+    Write-Host "[>] Antigravity Codex Edition 框架安裝程式"
     Write-Host "[*] 目標專案 : $Target"
     Write-Host "[*] 模式     : $Mode"
     Write-Host "[*] 分支     : $Branch"
     Write-Host ""
 
-    # ── 步驟 1：下載 ZIP（走 CDN，無 API 速率限制）──
     Write-Host "[1/3] 正在從 GitHub 下載框架..."
     Invoke-WebRequest -Uri $zipUrl -OutFile $tempZip -UseBasicParsing
     Write-Host "      下載完成：$('{0:N1}' -f ((Get-Item $tempZip).Length / 1MB)) MB"
 
-    # ── 步驟 2：解壓縮 ──
     Write-Host "[2/3] 正在解壓縮..."
     Expand-Archive -Path $tempZip -DestinationPath $tempDir -Force
 
-    # ── 步驟 3：執行統一部署腳本 ──
+    # 統一部署腳本入口
     $deployScript = Join-Path $tempDir "$repoName-$Branch\Scripts\Deploy.ps1"
 
     if (-Not (Test-Path $deployScript)) {
@@ -82,15 +77,12 @@ try {
 
     Write-Host "[3/3] 正在部署至目標專案..."
     if ($RemoveOrphans) {
-        & $deployScript -Platform Antigravity -Mode $Mode -Target $Target -RemoveOrphans
+        & $deployScript -Platform Codex -Mode $Mode -Target $Target -RemoveOrphans
     } else {
-        & $deployScript -Platform Antigravity -Mode $Mode -Target $Target
+        & $deployScript -Platform Codex -Mode $Mode -Target $Target
     }
 
 } finally {
-    # ── 清理暫存檔案 ──
     if (Test-Path $tempZip) { Remove-Item $tempZip -Force -ErrorAction SilentlyContinue }
-    if (Test-Path $tempDir)  { Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue }
+    if (Test-Path $tempDir) { Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue }
 }
-
-

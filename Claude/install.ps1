@@ -71,8 +71,8 @@ try {
     Write-Host "[2/3] 正在解壓縮..."
     Expand-Archive -Path $tempZip -DestinationPath $tempDir -Force
 
-    # ── 步驟 3：執行部署腳本 ──
-    $deployScript = Join-Path $tempDir "$repoName-$Branch\Claude\.claude\scripts\Deploy-Claude.ps1"
+    # ── 步驟 3：執行統一部署腳本 ──
+    $deployScript = Join-Path $tempDir "$repoName-$Branch\Scripts\Deploy.ps1"
 
     if (-Not (Test-Path $deployScript)) {
         Write-Host "[X] 錯誤：找不到部署腳本，請確認分支名稱正確。"
@@ -81,9 +81,9 @@ try {
 
     Write-Host "[3/3] 正在部署至目標專案..."
     if ($RemoveOrphans) {
-        & $deployScript -Target $Target -Mode $Mode -RemoveOrphans
+        & $deployScript -Platform Claude -Mode $Mode -Target $Target -RemoveOrphans
     } else {
-        & $deployScript -Target $Target -Mode $Mode
+        & $deployScript -Platform Claude -Mode $Mode -Target $Target
     }
 
 } finally {

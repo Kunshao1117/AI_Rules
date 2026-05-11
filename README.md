@@ -4,6 +4,7 @@
 
 [![Antigravity](https://img.shields.io/badge/Antigravity-v8.0.0-blue)](Antigravity/README.md)
 [![Claude Edition](https://img.shields.io/badge/Claude_Edition-v1.2.0-purple)](Claude/README.md)
+[![Codex Edition](https://img.shields.io/badge/Codex_Edition-v0.1.0-orange)](Codex/README.md)
 [![platform](https://img.shields.io/badge/platform-Windows-lightgrey)](#)
 [![license](https://img.shields.io/badge/license-MIT-green)](#授權與聲明)
 
@@ -65,9 +66,21 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\cc_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Claude/install.ps1' -OutFile $f; & $f -Mode Upgrade; Remove-Item $f
 ```
 
+### OpenAI Codex（Codex Edition）
+
+```powershell
+# 🆕 全新安裝（在 IDE 終端機直接執行，自動安裝到當前目錄）
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_codex_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1' -OutFile $f; & $f; Remove-Item $f
+```
+
+```powershell
+# ⬆️ 升級現有安裝
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_codex_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1' -OutFile $f; & $f -Mode Upgrade; Remove-Item $f
+```
+
 > 💡 **跨目錄安裝**：加上 `-Target "D:\你的專案路徑"` 即可安裝到其他位置。
 >
-> 兩個版本可以安裝到**同一個專案**中共存。Gemini 使用 `.agents/`，Claude Code 使用 `.claude/`，互不衝突，並透過 `.agents/memory/` 共用記憶庫。
+> 三個版本可以安裝到**同一個專案**中共存。Gemini 使用 `.agents/`，Claude Code 使用 `.claude/`，Codex 使用 `.codex/`，互不衝突，並透過 `.agents/memory/` 共用記憶庫。
 
 ---
 
@@ -77,8 +90,9 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 |------|---------|---------|--------|--------|-----------|---------| 
 | **Antigravity** | Gemini（IDE 插件 + CLI） | v8.0.0 | 9 | 18 | 36 | [Antigravity/README.md](Antigravity/README.md) |
 | **Claude Edition** | Claude Code（VS Code 插件） | v1.2.0 | 6 | 12 | 36 | [Claude/README.md](Claude/README.md) |
+| **Codex Edition** | OpenAI Codex（agentskills.io 標準）| v0.1.0 | 1 | 14 | 36 | [Codex/README.md](Codex/README.md) |
 
-兩個版本的**操作型技能完全同步**（36 個），共享相同的 MCP 工具鏈（cartridge-system、github、gitnexus 等）。
+三個版本的**操作型技能均源自 `Shared/skills/`**（唯一真實來源，36 個），共享相同的 MCP 工具鏈（cartridge-system、github、gitnexus 等）。
 
 ---
 
@@ -106,17 +120,18 @@ graph TB
     subgraph "AI_Rules 母機倉庫"
         AG["Antigravity/<br/>Gemini 版源碼"]
         CL["Claude/<br/>Claude Code 版源碼"]
+        CX["Codex/<br/>OpenAI Codex 版源碼"]
     end
 
-    subgraph "部署層（全繁中行內說明）"
-        AGD["Deploy-Antigravity.ps1<br/>Fresh / Upgrade 雙模式<br/>622 行 · 全繁中註解"]
-        CLD["Deploy-Claude.ps1<br/>Fresh / Upgrade 雙模式<br/>480 行 · 全繁中註解"]
+    subgraph "統一部署引擎"
+        DEPLOY["Scripts/Deploy.ps1<br/>-Platform {Antigravity|Claude|Codex}<br/>Fresh / Upgrade / Audit / Sync"]
     end
 
-    subgraph "專案 A (.agents/ + .claude/ 共存)"
+    subgraph "目標專案（三版本可共存）"
         AGE[".agents/<br/>rules / workflows / skills"]
-        CLE[".claude/<br/>rules / skills / agents/skills"]
-        MEM[".agents/memory/<br/>雙 AI 共用記憶庫"]
+        CLE[".claude/<br/>rules / commands / skills"]
+        CXE[".codex/ + .agents/skills/<br/>治理規則 + 技能（50 套）"]
+        MEM[".agents/memory/<br/>三 AI 共用記憶庫"]
     end
 
     subgraph "MCP 工具鏈"
@@ -126,12 +141,15 @@ graph TB
         OTHER["cloudflare / supabase<br/>/ sentry / excel ..."]
     end
 
-    AG -->|"install.ps1"| AGD
-    CL -->|"install.ps1"| CLD
-    AGD -->|"部署到專案"| AGE
-    CLD -->|"部署到專案"| CLE
+    AG -->|"install.ps1"| DEPLOY
+    CL -->|"install.ps1"| DEPLOY
+    CX -->|"install.ps1"| DEPLOY
+    DEPLOY -->|"-Platform Antigravity"| AGE
+    DEPLOY -->|"-Platform Claude"| CLE
+    DEPLOY -->|"-Platform Codex"| CXE
     AGE <-->|"memory_list / read / commit"| CART
     CLE <-->|"memory_list / read / commit"| CART
+    CXE <-->|"memory_list / read / commit"| CART
     CART <-->|"統一記憶庫"| MEM
     AGE -.->|"呼叫"| GH
     AGE -.->|"呼叫"| GN
@@ -139,17 +157,18 @@ graph TB
     CLE -.->|"呼叫"| OTHER
 ```
 
-### 兩版本的核心差異
+### 三版本的核心差異
 
-| 執行層面 | Antigravity (Gemini) | Claude Edition |
-|---------|---------------------|----------------|
-| **規則載入** | IDE 自動注入 `.agents/rules/` | `CLAUDE.md` @import 按需拉入 |
-| **工作流觸發** | IDE 注入 `.agents/workflows/` | `.claude/skills/` Slash Command |
-| **計畫模式** | `task_boundary` 呼叫 | Claude Code 原生 Plan Mode |
-| **子代理人** | `browser_subagent` / Gemini CLI | `Agent` 工具 |
-| **任務追蹤** | `.gemini` scratchpad Artifact | `TodoWrite` 清單 |
-| **記憶啟動** | D7 Push 三路徑探測 | Turn=1 啟動探測協議 |
-| **記憶存放** | `.agents/memory/` | `.agents/memory/`（**共用**） |
+| 執行層面 | Antigravity (Gemini) | Claude Edition | Codex Edition |
+|---------|---------------------|----------------|---------------|
+| **規則載入** | IDE 自動注入 `.agents/rules/` | `CLAUDE.md` @import 按需拉入 | `.codex/AGENTS.md` 單一規則檔 |
+| **工作流觸發** | IDE 注入 `.agents/workflows/` | `.claude/commands/` Slash Command | `.agents/skills/` `$skill-name` |
+| **計畫模式** | `task_boundary` 呼叫 | Claude Code 原生 Plan Mode | 文字描述「進入規劃階段」 |
+| **子代理人** | `browser_subagent` / Gemini CLI | `Agent` 工具 | N/A（平台原生） |
+| **任務追蹤** | `.gemini` scratchpad Artifact | `TodoWrite` 清單 | 對話中維護任務清單 |
+| **記憶啟動** | D7 Push 三路徑探測 | Turn=1 啟動探測協議 | Turn=1 cartridge-system 探測 |
+| **記憶存放** | `.agents/memory/` | `.agents/memory/`（**共用**） | `.agents/memory/`（**三者共用**） |
+| **技能總數** | 36 套 | 36 套 | **50 套**（36 共用 + 14 工作流） |
 
 ---
 
@@ -249,12 +268,27 @@ AI_Rules/                              ← 母機根目錄
 ├── README.md                          ← 本文件（母機總覽）
 ├── .gitignore                         ← 版控忽略規則
 │
+├── Shared/                            ← 36 套操作型技能唯一真實來源
+│   └── skills/                        ← 部署時注入各平台（Antigravity/Claude/Codex）
+│
+├── Scripts/                           ← 統一部署引擎（取代各平台分散腳本）
+│   ├── Deploy.ps1                     ← 主入口（選單模式 + 參數模式）
+│   └── modules/
+│       ├── Core.psm1                  ← 共用工具（SHA256 比對、彩色報告、確認閘門）
+│       ├── Skills-Sync.psm1           ← 技能注入（Shared/ → 各平台）
+│       ├── Platform-Antigravity.psm1  ← Antigravity 部署邏輯
+│       ├── Platform-Claude.psm1       ← Claude Edition 部署邏輯
+│       ├── Platform-Codex.psm1        ← Codex Edition 部署邏輯
+│       └── Audit.psm1                 ← 整合 DocScan / HealthAudit / SkillQuality
+│
 ├── Antigravity/                       ← Gemini 版框架源碼
 │   ├── VERSION                        ← v8.0.0
 │   ├── README.md                      ← Gemini 版詳細文件
 │   ├── CHANGELOG.md                   ← 商業價值決策紀錄（完整歷史）
 │   ├── RELEASE_NOTES.md               ← 版本更新摘要（升級時自動展示）
-│   ├── install.ps1                    ← 一鍵安裝啟動器
+│   ├── install.ps1                    ← 一鍵安裝啟動器（呼叫 Scripts/Deploy.ps1）
+│   ├── global/
+│   │   └── GEMINI.md                  ← 全局觸發器版控（→ ~/.gemini/GEMINI.md）
 │   └── .agents/                       ← 可移植的 AI 治理生態系統
 │       ├── rules/                     ← 9 個治理規則（分層啟動）
 │       │   ├── AGENTS.md              ← 哨兵檔（存在 = 已初始化）
@@ -262,36 +296,36 @@ AI_Rules/                              ← 母機根目錄
 │       │   ├── 01_cross_lingual_guard.md ← 跨語系防護（Always On）
 │       │   └── 02~07_*.md             ← 條件載入規則
 │       ├── workflows/                 ← 18 道工作流程 + 2 個共用閘門
-│       ├── skills/                    ← 36 套操作型技能
-│       │   ├── _index.md              ← 核心技能路由表
-│       │   └── ...                    ← 各技能目錄
-│       ├── scripts/                   ← 4 個框架工具腳本
-│       │   ├── Deploy-Antigravity.ps1 ← 部署引擎
-│       │   ├── Measure-SkillQuality.ps1 ← 技能品質掃描
-│       │   ├── Invoke-DocScan.ps1     ← 倉庫狀態掃描
-│       │   └── Invoke-HealthAudit.ps1 ← 基礎設施健檢
+│       ├── skills/                    ← 36 套操作型技能（部署時從 Shared/ 注入）
 │       ├── memory/                    ← 專案記憶（部署後由 AI 初始化）
 │       ├── project_skills/            ← 專案衍生技能（專案特有，受保護）
 │       └── logs/                      ← 暫存日誌（不進版控）
 │
 ├── Claude/                            ← Claude Code 版框架源碼
 │   ├── VERSION                        ← v1.2.0
-│   ├── CLAUDE.md                      ← 主規則入口（@import 模組化）
 │   ├── README.md                      ← Claude 版詳細文件
-│   ├── install.ps1                    ← 一鍵安裝啟動器
+│   ├── install.ps1                    ← 一鍵安裝啟動器（呼叫 Scripts/Deploy.ps1）
+│   ├── global/
+│   │   └── CLAUDE.md                  ← 全局觸發器版控（→ ~/.claude/CLAUDE.md）
 │   └── .claude/                       ← Claude Code 原生配置結構
 │       ├── CLAUDE.md                  ← 主規則入口（@import 模組化）
 │       ├── rules/                     ← 6 個模組化規則
 │       │   ├── core-identity.md       ← 核心身份（Always On）
 │       │   ├── cross-lingual-guard.md ← 跨語系防護（Always On）
 │       │   └── *.md                   ← 條件載入規則（4 個）
-│       ├── commands/                  ← 12 道 Slash Command 工作流
-│       ├── skills/                    ← 36 套操作型技能（與 Gemini 版同步）
-│       └── scripts/
-│           ├── Deploy-Claude.ps1      ← 部署引擎（try/finally + 彩色差異報告）
-│           ├── Invoke-DocScan.ps1     ← 倉庫狀態掃描
-│           ├── Invoke-HealthAudit.ps1 ← 基礎設施健檢
-│           └── Measure-SkillQuality.ps1 ← 技能品質掃描
+│       ├── commands/                  ← 14 道 Slash Command 工作流
+│       └── skills/                    ← 36 套操作型技能（部署時從 Shared/ 注入）
+│
+├── Codex/                             ← OpenAI Codex 版框架源碼
+│   ├── VERSION                        ← v0.1.0
+│   ├── README.md                      ← Codex 版詳細文件
+│   ├── install.ps1                    ← 一鍵安裝啟動器（呼叫 Scripts/Deploy.ps1）
+│   ├── global/
+│   │   └── AGENTS.md                  ← 全局觸發器版控（→ ~/.codex/AGENTS.md）
+│   ├── .codex/
+│   │   └── AGENTS.md                  ← 專案層治理規則（哨兵檔）
+│   └── .agents/
+│       └── workflow-skills/           ← 14 套工作流技能（部署時合併至 .agents/skills/）
 │
 ├── .agents/                           ← 母機自身的治理生態（不推送至遠端）
 │   └── memory/                        ← 母機記憶卡
@@ -332,7 +366,7 @@ sequenceDiagram
     PS->>GH: 下載 ZIP (無 API 速率限制)
     GH-->>PS: 返回壓縮包
     PS->>PS: 解壓縮到 TEMP
-    PS->>DS: 執行 Deploy-*.ps1
+    PS->>DS: 執行 Scripts/Deploy.ps1 -Platform {AG|Claude|Codex}
     DS->>P: Fresh: 完整複製框架
     DS->>P: Upgrade: SHA256 差異比對後套用
     DS->>PS: 清理 TEMP 暫存
@@ -373,21 +407,26 @@ sequenceDiagram
 |------|------|------|---------| 
 | **Antigravity** | 成熟期 | v8.0.0 | 維護性更新為主，重大功能隨 Gemini IDE 演進 |
 | **Claude Edition** | 成長期 | v1.2.0 | 跟隨 Claude Code 插件能力快速迭代 |
+| **Codex Edition** | 初始期 | v0.1.0 | agentskills.io 平台標準對齊，技能與 Shared/ 同源更新 |
 
 ### 操作型技能同步原則
 
-36 套操作型技能在兩個版本之間保持同步，確保兩個 AI 擁有相同的操作知識：
+36 套操作型技能存放於 `Shared/skills/`（唯一真實來源），部署時由 `Scripts/modules/Skills-Sync.psm1` 注入各平台：
 
 ```
-Antigravity/.agents/skills/     Claude/.claude/skills/
-├── memory-ops/              ←→  ├── memory-ops/
-├── code-quality/            ←→  ├── code-quality/
-├── github-ops/              ←→  ├── github-ops/
-├── gitnexus-*/              ←→  ├── gitnexus-*/
-└── ...（36 套）             ←→  └── ...（36 套）
+Shared/skills/                       ← 唯一真實來源
+├── memory-ops/
+├── code-quality/
+├── github-ops/
+├── gitnexus-*/
+└── ...（36 套）
+
+        ↓ 部署時自動注入
+
+Antigravity/.agents/skills/   Claude/.claude/skills/   Codex（.agents/skills/）
 ```
 
-當其中一個版本的技能更新時，應同步複製到另一個版本，維持知識一致性。
+更新技能時只需修改 `Shared/skills/` 中的 `SKILL.md`，下次部署（Upgrade 或 Sync 模式）時三個平台自動同步。
 
 ### 母機記憶卡
 
