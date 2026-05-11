@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastScanned": "2026-05-11T23:42:30+08:00",
+  "lastScanned": "2026-05-11T23:43:21+08:00",
   "cartridges": {
     "claude-edition-rules": {
       "skillPath": ".agents\\memory\\claude-edition-rules\\SKILL.md",
@@ -34,40 +34,9 @@
         "Antigravity/install.ps1",
         "Claude/install.ps1"
       ],
-      "staleness": 60,
+      "staleness": 0,
       "lastUpdated": "2026-05-11T21:10:00+08:00",
-      "pendingChanges": [
-        {
-          "filePath": "Scripts/modules/Core.psm1",
-          "eventType": "change",
-          "timestamp": "2026-05-11T16:10:28+08:00"
-        },
-        {
-          "filePath": "Scripts/modules/Platform-Claude.psm1",
-          "eventType": "change",
-          "timestamp": "2026-05-11T16:12:44+08:00"
-        },
-        {
-          "filePath": "Scripts/modules/Audit.psm1",
-          "eventType": "change",
-          "timestamp": "2026-05-11T16:13:14+08:00"
-        },
-        {
-          "filePath": "Scripts/modules/Platform-Antigravity.psm1",
-          "eventType": "change",
-          "timestamp": "2026-05-11T16:13:19+08:00"
-        },
-        {
-          "filePath": "Scripts/modules/Platform-Codex.psm1",
-          "eventType": "change",
-          "timestamp": "2026-05-11T16:13:36+08:00"
-        },
-        {
-          "filePath": "Scripts/modules/Skills-Sync.psm1",
-          "eventType": "change",
-          "timestamp": "2026-05-11T20:20:52+08:00"
-        }
-      ],
+      "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
       "indirectStaleness": 0,
@@ -119,23 +88,10 @@
         "Antigravity/.agents/workflows/12_skill_forge(技能鍛造).md",
         "Antigravity/.cartridge/index.json"
       ],
-      "staleness": 30,
+      "staleness": 0,
       "lastUpdated": "2026-05-11T21:10:00+08:00",
-      "pendingChanges": [
-        {
-          "filePath": "Antigravity/CHANGELOG.md",
-          "eventType": "unlink",
-          "timestamp": "2026-05-11T15:52:00+08:00"
-        },
-        {
-          "filePath": "Antigravity/README.md",
-          "eventType": "change",
-          "timestamp": "2026-05-11T20:43:33+08:00"
-        }
-      ],
-      "ghostFiles": [
-        "Antigravity/CHANGELOG.md"
-      ],
+      "pendingChanges": [],
+      "ghostFiles": [],
       "dependencies": [],
       "indirectStaleness": 0,
       "depth": 1,
@@ -179,15 +135,9 @@
         "Claude/.claude/rules/memory-contract.md",
         "Claude/.claude/rules/project-skill-contract.md"
       ],
-      "staleness": 10,
+      "staleness": 0,
       "lastUpdated": "2026-05-11T21:10:00+08:00",
-      "pendingChanges": [
-        {
-          "filePath": "Claude/README.md",
-          "eventType": "change",
-          "timestamp": "2026-05-11T20:44:20+08:00"
-        }
-      ],
+      "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
       "indirectStaleness": 0,
@@ -222,15 +172,9 @@
         "Codex/.agents/workflow-skills/_shared/_completion_gate.md",
         "Codex/.agents/workflow-skills/_shared/_security_footer.md"
       ],
-      "staleness": 10,
+      "staleness": 0,
       "lastUpdated": "2026-05-11T21:10:00+08:00",
-      "pendingChanges": [
-        {
-          "filePath": "Codex/README.md",
-          "eventType": "change",
-          "timestamp": "2026-05-11T20:42:44+08:00"
-        }
-      ],
+      "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
       "indirectStaleness": 0,
@@ -347,15 +291,9 @@
         "Shared/skills/trunk-ops/SKILL.md",
         "Shared/skills/ui-ux-standards/SKILL.md"
       ],
-      "staleness": 10,
+      "staleness": 0,
       "lastUpdated": "2026-05-11T21:10:00+08:00",
-      "pendingChanges": [
-        {
-          "filePath": "Scripts/modules/Skills-Sync.psm1",
-          "eventType": "change",
-          "timestamp": "2026-05-11T20:20:52+08:00"
-        }
-      ],
+      "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
       "indirectStaleness": 0,
@@ -371,13 +309,18 @@
         "README.md",
         "CHANGELOG.md"
       ],
-      "staleness": 10,
+      "staleness": 25,
       "lastUpdated": "2026-05-06T20:26:20+08:00",
       "pendingChanges": [
         {
           "filePath": "README.md",
           "eventType": "change",
-          "timestamp": "2026-05-11T15:52:00+08:00"
+          "timestamp": "2026-05-11T23:43:21+08:00"
+        },
+        {
+          "filePath": "CHANGELOG.md",
+          "eventType": "change",
+          "timestamp": "2026-05-11T23:48:12+08:00"
         }
       ],
       "ghostFiles": [],
