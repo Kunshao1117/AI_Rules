@@ -1,0 +1,9 @@
+.trunk/
+%SystemDrive%
+.markdownlint.yaml
+BLACK/
+.vscode/
+.cartridge/
+.agents/logs/
+.git_backup/
+antigravity_export/

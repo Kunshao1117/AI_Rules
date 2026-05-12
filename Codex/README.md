@@ -14,7 +14,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → Turn=1 即探測 `.agents/memory/` 記憶庫
 2. **技能孤島** — 每個 Codex 專案各自維護技能 → 36 套共用操作型技能一次部署，統一真實來源
-3. **工作流缺失** — Codex 原生無內建工作流程 → 14 套工作流技能整合至 `.agents/skills/`，無縫觸發
+3. **工作流缺失** — Codex 原生無內建工作流程 → 16 套工作流技能整合至 `.agents/skills/`，無縫觸發
 4. **記憶庫與 Gemini/Claude 分裂** — 三個 AI 各記各的 → `.agents/memory/` 統一記憶庫，三 AI 共用
 5. **治理規則模板缺失** → `.codex/AGENTS.md` 提供包含閘門、記憶協議、工作流的完整治理規範
 6. **框架升級風險** — 升級怕覆蓋設定 → D06 安全網 + SHA256 差異比對 + PROJECT IDENTITY 保護
@@ -48,7 +48,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 - [模組詳解](#-模組詳解)
   - [部署引擎](#-部署引擎)
   - [治理規則系統](#-治理規則系統)
-  - [技能系統（50 套）](#-技能系統50-套)
+  - [技能系統（52 套）](#-技能系統52-套)
   - [專案記憶系統](#-專案記憶系統)
 - [與其他版本對比](#-與其他版本對比)
 - [版本管理](#-版本管理)
@@ -73,7 +73,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 
 ```mermaid
 graph TB
-    subgraph "AI_Rules 母機倉庫"
+    subgraph "AI_Rules 框架核心庫"
         SRC["Codex/<br/>.codex/ + .agents/workflow-skills/"]
         SH["Shared/skills/<br/>36 套共用技能"]
     end
@@ -84,7 +84,7 @@ graph TB
 
     subgraph "目標專案（部署後）"
         CODEX[".codex/AGENTS.md<br/>治理規則"]
-        SKILLS[".agents/skills/<br/>50 套（36 共用 + 14 工作流）"]
+        SKILLS[".agents/skills/<br/>52 套（36 共用 + 16 工作流）"]
         MEM[".agents/memory/<br/>三 AI 共用記憶庫"]
         PROJ[".agents/project_skills/<br/>衍生技能（升級保護）"]
     end
@@ -105,21 +105,21 @@ graph TB
 
 **腳本**: `Scripts/Deploy.ps1 -Platform Codex`（統一部署引擎，核心邏輯位於 `Scripts/modules/Platform-Codex.psm1`）
 
-負責將 `.codex/` 治理規則與 50 套技能部署到目標專案。所有 PowerShell 程式碼均配備完整的繁體中文行內說明，三個平台部署能力完全對等。
+負責將 `.codex/` 治理規則與 52 套技能部署到目標專案。所有 PowerShell 程式碼均配備完整的繁體中文行內說明，三個平台部署能力完全對等。
 
 #### 兩種部署模式
 
 | 模式 | 觸發條件 | 行為 |
 |------|---------|------|
-| **Fresh** | 專案無 `.codex/` 目錄 | D06 安全網備份記憶 → 部署 `.codex/` 治理規則 → 注入 36 套共用技能 → 合併 14 套工作流技能 → 建立基礎設施 → 寫入版本檔 → 還原記憶 |
+| **Fresh** | 專案無 `.codex/` 目錄 | D06 安全網備份記憶 → 部署 `.codex/` 治理規則 → 注入 36 套共用技能 → 合併 16 套工作流技能 → 建立基礎設施 → 寫入版本檔 → 還原記憶 |
 | **Upgrade** | 專案已有 `.codex/` 目錄 | 掃描 `.codex/` 差異 → 彩色報告 → 顯示 CHANGELOG → 確認閘門 → 套用 `.codex/` 變更 → 差異注入技能更新 |
 
 #### 技能部署兩步驟
 
 ```
 Step 1: Shared/skills/ → .agents/skills/    （36 套共用技能）
-Step 2: workflow-skills/ → .agents/skills/  （14 套工作流技能）
-合計部署：50 套技能
+Step 2: workflow-skills/ → .agents/skills/  （16 套工作流技能）
+合計部署：52 套技能
 ```
 
 #### 安全防護
@@ -153,7 +153,7 @@ Codex Edition 採用單一規則檔設計，所有治理規範集中於 `AGENTS.
 
 ---
 
-### 🎯 技能系統（50 套）
+### 🎯 技能系統（52 套）
 
 **目錄**: `.agents/skills/`（部署後）
 
@@ -167,22 +167,25 @@ Codex Edition 採用單一規則檔設計，所有治理規範集中於 `AGENTS.
 
 | 技能目錄 | 觸發方式 | 功能 |
 |---------|---------|------|
-| `00_chat/` | `$00_chat` | 純對話、腦力激盪、程式碼問答 |
-| `01_explore/` | `$01_explore` | 可行性研究：網路研究 + 魔鬼代言人分析 |
-| `02_blueprint/` | `$02_blueprint` | 需求轉化為技術藍圖，同步初始化記憶系統 |
-| `03_build/` | `$03_build` | 兩階段建構：計畫 → GO → 實體寫入 → 記憶歸卡 |
-| `03-1_experiment/` | `$03-1_experiment` | 沙盒快速實驗（所有閘門停用） |
-| `04_fix/` | `$04_fix` | 兩階段修復：診斷 → GO → 實體修復 → 記憶更新 |
-| `05_condense/` | `$05_condense` | 專案濃縮初始化（掃描 → 萃取 → 審閱 → 寫入） |
-| `06_test/` | `$06_test` | 瀏覽器自動化視覺與功能測試 |
-| `07_debug/` | `$07_debug` | 堆疊追蹤分析、錯誤翻譯為商業語言 |
-| `08_audit/` | `$08_audit` | 全方位專案健康審計（三階段子技能） |
-| `09_commit/` | `$09_commit` | 授權備份：掃描 → CHANGELOG 更新 → GO → git commit + push |
-| `11_handoff/` | `$11_handoff` | 掃描記憶卡，產出結構化交接文件 |
-| `12_skill_forge/` | `$12_skill_forge` | 從工作實踐中提煉可複用技能 |
+| `00-chat-聊天/` | `$00-chat-聊天` | 純對話、腦力激盪、程式碼問答 |
+| `01-explore-探索/` | `$01-explore-探索` | 可行性研究：網路研究 + 魔鬼代言人分析 |
+| `02-blueprint-架構/` | `$02-blueprint-架構` | 需求轉化為技術藍圖，同步初始化記憶系統 |
+| `03-build-建構/` | `$03-build-建構` | 兩階段建構：計畫 → GO → 實體寫入 → 記憶歸卡 |
+| `03-1-experiment-實驗/` | `$03-1-experiment-實驗` | 沙盒快速實驗（所有閘門停用） |
+| `04-fix-修復/` | `$04-fix-修復` | 兩階段修復：診斷 → GO → 實體修復 → 記憶更新 |
+| `05-condense-濃縮/` | `$05-condense-濃縮` | 專案濃縮初始化（掃描 → 萃取 → 審閱 → 寫入） |
+| `06-test-測試/` | `$06-test-測試` | 瀏覽器自動化視覺與功能測試 |
+| `07-debug-除錯/` | `$07-debug-除錯` | 堆疊追蹤分析、錯誤翻譯為商業語言 |
+| `08-audit-健檢/` | `$08-audit-健檢` | 全方位專案健康審計（協調三個子技能） |
+| `08-1-infra-基礎盤點/` | `$08-1-infra-基礎盤點` | 基礎設施掃描（ESLint、套件安全、型別檢查） |
+| `08-2-logic-深度邏輯/` | `$08-2-logic-深度邏輯` | 語義邏輯審查（安全架構、API 串接比對） |
+| `08-3-report-健檢總結/` | `$08-3-report-健檢總結` | 健檢報告生成 |
+| `09-commit-紀錄總結/` | `$09-commit-紀錄總結` | 授權備份：掃描 → CHANGELOG 更新 → GO → git commit + push |
+| `11-handoff-交接/` | `$11-handoff-交接` | 掃描記憶卡，產出結構化交接文件 |
+| `12-skill-forge-技能鍛造/` | `$12-skill-forge-技能鍛造` | 從工作實踐中提煉可複用技能 |
 | `_shared/` | — | 共用閘門（完成閘門 + 安全閘門） |
 
-> **注意**：`08_audit/` 包含三個子技能：`08-1_infra/`（基礎設施掃描）、`08-2_logic/`（語義邏輯審查）、`08-3_report/`（報告生成）。
+> **注意**：`08-1-infra-基礎盤點/`、`08-2-logic-深度邏輯/`、`08-3-report-健檢總結/` 為 `08-audit-健檢` 的三個執行階段，與其並列部署（扁平結構）。
 
 ---
 
@@ -230,8 +233,8 @@ graph TD
 | **任務追蹤** | scratchpad Artifact | `TodoWrite` 清單 | 對話中維護任務清單 |
 | **記憶啟動** | D7 Push 三路徑探測 | Turn=1 啟動探測協議 | Turn=1 cartridge-system 探測 |
 | **記憶位置** | `.agents/memory/` | `.agents/memory/`（共用） | `.agents/memory/`（**三者共用**） |
-| **技能來源** | Shared/ 36 套 | Shared/ 36 套 | Shared/ 36 套 + workflow-skills/ 14 套 |
-| **技能總數** | 36 套 | 36 套 | **50 套** |
+| **技能來源** | Shared/ 36 套 | Shared/ 36 套 | Shared/ 36 套 + workflow-skills/ 16 套 |
+| **技能總數** | 36 套 | 36 套 | **52 套** |
 
 ---
 
@@ -240,7 +243,6 @@ graph TD
 | 檔案 | 用途 |
 |------|------|
 | `VERSION` | 單行版本號（例如 `0.1.0`） |
-| `CHANGELOG.md` | 完整的版本更新紀錄（升級時 Upgrade 模式自動顯示最新條目） |
 
 升級時部署引擎採用 **SHA256 差異比對**策略，確保只更新真正有變化的檔案。`.codex/AGENTS.md` 中的 `## [PROJECT IDENTITY]` 區段在升級時永遠受到保護，不會被框架版本覆蓋。
 
@@ -251,29 +253,30 @@ graph TD
 ```
 目標專案/
 ├── .codex/
-│   └── AGENTS.md                  ← Codex 治理規則（哨兵檔 + 完整治理規範）
-│                                     ↑ 包含 PROJECT IDENTITY 保護區段（使用者自訂，升級保留）
+│   ├── AGENTS.md                  ← Codex 治理規則（哨兵檔 + 完整治理規範）
+│   │                                 ↑ 包含 PROJECT IDENTITY 保護區段（使用者自訂，升級保留）
+│   └── config.toml                ← 專案層 Codex 設定（project_doc_fallback_filenames）
 └── .agents/
-    ├── skills/                    ← 50 套技能（36 共用 + 14 工作流）
+    ├── skills/                    ← 52 套技能（36 共用 + 16 工作流，扁平結構）
     │   ├── _index.md              ← 技能路由表
     │   ├── memory-ops/            ← 記憶操作指引
     │   ├── code-quality/          ← 品質約束
-    │   ├── 00_chat/               ← 工作流技能（對話）
-    │   ├── 03_build/              ← 工作流技能（建構）
-    │   ├── 08_audit/              ← 工作流技能（健檢，含 3 子技能）
-    │   │   ├── 08-1_infra/
-    │   │   ├── 08-2_logic/
-    │   │   └── 08-3_report/
-    │   └── ...（共 50 套）
+    │   ├── 00-chat-聊天/          ← 工作流技能（對話）
+    │   ├── 03-build-建構/         ← 工作流技能（建構）
+    │   ├── 08-audit-健檢/         ← 工作流技能（健檢主技能）
+    │   ├── 08-1-infra-基礎盤點/   ← 健檢子技能（基礎設施）
+    │   ├── 08-2-logic-深度邏輯/   ← 健檢子技能（邏輯審查）
+    │   ├── 08-3-report-健檢總結/  ← 健檢子技能（報告）
+    │   └── ...（共 52 套）
     ├── memory/                    ← 專案記憶卡（跨平台共用，升級受保護）
-    │   └── (由 AI 執行 $02_blueprint 初始化)
+    │   └── (由 AI 執行 $02-blueprint-架構 初始化)
     ├── project_skills/            ← 衍生技能（專案特有，升級受保護）
     │   └── _index.md
     ├── logs/                      ← 暫存日誌（不進版控）
     └── VERSION                    ← 框架版本號
 ```
 
-### Codex 源碼結構（母機倉庫）
+### Codex 源碼結構（框架核心庫）
 
 ```
 Codex/
@@ -281,28 +284,30 @@ Codex/
 ├── install.ps1                    ← 一鍵安裝啟動器（呼叫 Scripts/Deploy.ps1）
 ├── README.md                      ← 本文件
 ├── global/
-│   └── AGENTS.md                  ← 全局觸發器版控（→ ~/.codex/AGENTS.md）
+│   ├── AGENTS.md                  ← 全局觸發器版控（→ ~/.codex/AGENTS.md）
+│   └── config.toml                ← 全局 Codex 設定版控（→ ~/.codex/config.toml）
 ├── .codex/
-│   └── AGENTS.md                  ← 專案層治理規則源碼
+│   ├── AGENTS.md                  ← 專案層治理規則源碼（哨兵檔）
+│   └── config.toml                ← 專案層 Codex 設定（project_doc_fallback_filenames）
 └── .agents/
-    └── workflow-skills/           ← 14 套工作流技能源碼
+    └── workflow-skills/           ← 16 套工作流技能源碼（扁平結構）
         ├── _shared/
         │   ├── _completion_gate.md
         │   └── _security_footer.md
-        ├── 00_chat/
-        ├── 01_explore/
-        ├── 02_blueprint/
-        ├── 03_build/
-        ├── 03-1_experiment/
-        ├── 04_fix/
-        ├── 05_condense/
-        ├── 06_test/
-        ├── 07_debug/
-        ├── 08_audit/
-        │   ├── 08-1_infra/
-        │   ├── 08-2_logic/
-        │   └── 08-3_report/
-        ├── 09_commit/
-        ├── 11_handoff/
-        └── 12_skill_forge/
+        ├── 00-chat-聊天/
+        ├── 01-explore-探索/
+        ├── 02-blueprint-架構/
+        ├── 03-build-建構/
+        ├── 03-1-experiment-實驗/
+        ├── 04-fix-修復/
+        ├── 05-condense-濃縮/
+        ├── 06-test-測試/
+        ├── 07-debug-除錯/
+        ├── 08-audit-健檢/
+        ├── 08-1-infra-基礎盤點/
+        ├── 08-2-logic-深度邏輯/
+        ├── 08-3-report-健檢總結/
+        ├── 09-commit-紀錄總結/
+        ├── 11-handoff-交接/
+        └── 12-skill-forge-技能鍛造/
 ```

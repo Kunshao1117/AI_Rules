@@ -96,6 +96,23 @@ function Invoke-GlobalInstall {
         Write-Ok "Codex → $codexDst"
     } else { Write-Warn "Codex/global/AGENTS.md 不存在，跳過。" }
 
+    # Codex: ~/.codex/config.toml (project_doc_fallback_filenames bridge)
+    $codexConfigSrc = Join-Path $CodexRoot "global\config.toml"
+    $codexConfigDst = Join-Path $env:USERPROFILE ".codex\config.toml"
+    New-Item -ItemType Directory -Force -Path (Split-Path $codexConfigDst -Parent) | Out-Null
+    if (-not (Test-Path $codexConfigDst)) {
+        if (Test-Path $codexConfigSrc) { Copy-Item $codexConfigSrc $codexConfigDst -Force }
+        Write-Ok "Codex config.toml → $codexConfigDst (created)"
+    } else {
+        $existing = Get-Content $codexConfigDst -Raw -ErrorAction SilentlyContinue
+        if ($existing -notmatch '\.codex/AGENTS\.md') {
+            Add-Content $codexConfigDst "`n# Antigravity Codex Edition bridge`nproject_doc_fallback_filenames = [`".codex/AGENTS.md`"]"
+            Write-Ok "Codex config.toml → $codexConfigDst (fallback entry appended)"
+        } else {
+            Write-Ok "Codex config.toml already contains fallback entry, skipped."
+        }
+    }
+
     Write-Banner "全局觸發器安裝完成" "Green"
 }
 

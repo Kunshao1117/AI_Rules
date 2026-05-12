@@ -46,12 +46,16 @@ Remove-Item $f
 
 The Upgrade mode compares all framework files against source (SHA256 diff), reports changes, and applies updates. Project memory (`.agents/memory/`) and project skills (`.agents/project_skills/`) are **protected and will NOT be overwritten**.
 
-## 4. Skill System (技能系統)
+## 4. Project Governance Bridge
 
-**`.agents/skills/`** — 操作型知識庫（Codex 原生掃描路徑）：
-- 36 套共用操作技能（Shared/skills/ 注入）
-- 工作流技能（workflow-skills/ 合併）
-- 技能格式符合 agentskills.io 開放標準
+This machine should have `project_doc_fallback_filenames` configured in
+`~/.codex/config.toml` or `.codex/config.toml`, enabling Codex to natively
+discover and load `.codex/AGENTS.md` as the primary project governance file.
+
+**Fallback (if config.toml is not set):**
+If `.codex/AGENTS.md` exists in the current project root, read it now and
+treat it as the sole governance document for this session.
+The rules in this global file apply only as a bootstrap mechanism.
 
 ## 5. Post-Deployment
 

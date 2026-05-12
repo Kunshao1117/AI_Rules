@@ -1,0 +1,4 @@
+# Antigravity Codex Edition — Global Codex configuration
+# Enables native discovery of .codex/AGENTS.md across all projects on this machine.
+# Installed via: Deploy.ps1 -Action Global
+project_doc_fallback_filenames = [".codex/AGENTS.md"]

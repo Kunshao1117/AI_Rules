@@ -42,6 +42,7 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 
 ---
 
+## 📖 目錄
 
 - [核心設計理念](#-核心設計理念)
 - [系統架構總覽](#-系統架構總覽)
@@ -73,7 +74,7 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 
 ```mermaid
 graph TB
-    subgraph "AI_Rules 母機倉庫"
+    subgraph "AI_Rules 框架核心庫"
         SRC["Antigravity/<br/>Gemini 版源碼"]
         SH["Shared/skills/<br/>36 套共用技能"]
     end
@@ -84,7 +85,7 @@ graph TB
 
     subgraph ".agents/ 生態系統（部署後）"
         RULES["rules/<br/>9 個治理規則"]
-        WF["workflows/<br/>約 15 道工作流程"]
+        WF["workflows/<br/>約 16 道工作流程"]
         SKILLS["skills/<br/>36 套操作型技能"]
         MEM["memory/<br/>專案記憶（三 AI 共用）"]
         PROJ["project_skills/<br/>衍生技能（升級保護）"]
@@ -201,7 +202,7 @@ graph TB
 
 **目錄**: `.agents/workflows/`
 
-15 道工作流程涵蓋軟體開發的完整生命週期：
+16 道工作流程涵蓋軟體開發的完整生命週期：
 
 ```mermaid
 graph LR
@@ -235,6 +236,7 @@ graph LR
 | 03 | 建構計畫 | Stage 1：記憶載入 → Diff 規劃 → 等待 GO（含沙盒快速路徑） | Writer/SRE |
 | 03-1 | 實驗 | 沙盒快速實驗（所有閘門停用） | Experiment Worker |
 | 03-2 | 建構執行 | Stage 2：實體寫入 → 新建歸卡 → 記憶更新 → 單元測試 | Writer/SRE |
+| 05 | 濃縮 | 專案濃縮初始化（掃描 → 萃取 → 審閱 → 寫入） | Writer/SRE |
 | 04-1 | 修復計畫 | Bug 診斷 → 產出修復計畫（唯讀，等待 GO） | Reader |
 | 04-2 | 修復執行 | 實體修復 → 記憶更新 → 回歸測試 | Writer/SRE |
 | 06 | 測試 | 瀏覽器自動化視覺測試（靜默化輸出） | Reader |
@@ -398,7 +400,7 @@ Antigravity/
     │   ├── 05_project_skill_contract.md ← 衍生技能合約（Model Decision）
     │   ├── 06_memory_push.md            ← 記憶主動推播（Model Decision）
     │   └── 07_mcp_guardrails.md         ← MCP 外部工具防護（Model Decision）
-    ├── workflows/                ← 約 15 道生命週期工作流程
+    ├── workflows/                ← 約 16 道生命週期工作流程
     │   ├── 00_chat ~ 12_skill_forge ← 主要工作流程（含雙階段建構/修復/提交系列）
     │   ├── _completion_gate.md   ← 共用完成閘門
     │   └── _security_footer.md   ← 共用安全閘門

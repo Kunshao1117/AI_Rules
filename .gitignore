@@ -5,3 +5,5 @@
 antigravity_export/
 /CLAUDE.md
 .cartridge/index.json
+.agents/logs/
+.codex/
