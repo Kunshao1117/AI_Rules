@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-13] 部署引擎安裝缺陷修復
+
+### fix
+- **記憶備份還原機制 (D17)** — 修正 `Core.psm1` 的 `Copy-Item` 語意缺陷（加 `\*`），防止每次 Fresh 安裝在 `.agents/memory/` 產生嵌套垃圾目錄（影響三個平台）
+- **Codex 治理規則部署 (D17)** — 修正根 `.gitignore` 誤以全域規則排除 `Codex/.codex/` 源碼，使 AGENTS.md 等治理規則可被 git 追蹤並出現在 GitHub ZIP 封存
+- **部署終端機輸出精簡 (D17)** — 三平台（Antigravity/Claude/Codex）技能注入函式回傳值統一以 `$null` 吸收（共 7 處），消除終端機孤立數字噪音
+
+### chore
+- **記憶庫衛生維護** — 清理前次安裝遺留的嵌套備份垃圾目錄（`ag_backup_memory_774906873`），並同步更新兩張受影響的記憶卡（`_system`、`claude-edition-rules`）
+
 ## [2026-05-13] 全域規則安全閘門與遠端一鍵管理機制
 
 ### feat

@@ -373,12 +373,12 @@ function Restore-ProtectedDirs {
     $memDir  = Join-Path $AgentsRoot "memory"
     $projDir = Join-Path $AgentsRoot "project_skills"
     if ($Backup.Memory -and (Test-Path $Backup.Memory)) {
-        Copy-Item $Backup.Memory $memDir -Recurse -Force
+        Copy-Item "$($Backup.Memory)\*" $memDir -Recurse -Force
         Remove-Item $Backup.Memory -Recurse -Force -ErrorAction SilentlyContinue
         Write-Ok "共用記憶卡已完整保留並還原。"
     }
     if ($Backup.Project -and (Test-Path $Backup.Project)) {
-        Copy-Item $Backup.Project $projDir -Recurse -Force
+        Copy-Item "$($Backup.Project)\*" $projDir -Recurse -Force
         Remove-Item $Backup.Project -Recurse -Force -ErrorAction SilentlyContinue
         Write-Ok "衍生技能已完整保留並還原。"
     }

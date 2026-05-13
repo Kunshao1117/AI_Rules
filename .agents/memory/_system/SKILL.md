@@ -2,19 +2,11 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-13T16:21:55+08:00'
-staleness: 10
-status: stale
+last_updated: '2026-05-13T19:40:00+08:00'
+staleness: 0
+status: current
 ---
-<!-- CARTRIDGE_SYSTEM_WARNING_START -->
 
-> [!CAUTION]
-> 🟠 **系統強制攔截**：此記憶已過期失真！
-> 追蹤檔案異動：`CHANGELOG.md`（2026-05-13T16:25:30+08:00）
-> AI 嚴禁基於此記憶施工，必須優先閱讀最新原始碼並更新此記憶卡。
-> staleness: 10 | threshold: 🟠 顯著過期
-
-<!-- CARTRIDGE_SYSTEM_WARNING_END -->
 # 專案系統記憶 (\_system)
 
 ## 專案身份與工作模式
@@ -51,6 +43,7 @@ status: stale
 - **D14: 倉庫殘留清理與文檔同步 (2026-05-12)**: 透過 09-1 紀錄掃描工作流，移除了已被 `.gitignore` 排除卻仍殘留於倉庫的追蹤檔案（如 `.cartridge/index.json`），並同步更新各框架核心庫的 README.md 說明。
 - **D15: 全域規則更新安全閘門 (2026-05-13)**: 為解決全域觸發器（~/.gemini/GEMINI.md 等）更新時可能覆寫使用者自定義設定的問題，引入「SHA256 比對 + 安全暫存區 (global_stage)」機制。當偵測到衝突時，系統不強制覆寫，而是將最新規則產出至專案目錄供手動合併，實現「智能同步」與「零損害部署」的平衡。
 - **D16: 管理機制遠端一鍵指令化 (2026-05-13)**: 遵循「README 即控制台」的原始設計理念，廢棄本地捷徑腳本，轉而強化遠端啟動器 `install.ps1` 支援 `-Mode Menu`。使用者只需從 GitHub 複製單行指令即可啟動完整管理選單，保持專案根目錄純淨並實現「零依賴維護」。
+- **D17: 部署腳本三項缺陷修復 (2026-05-13)**: (1) `Core.psm1` `Restore-ProtectedDirs` 的 `Copy-Item` 改為 `"$($Backup.*)\*"` 語意，防止備份目錄被嵌套複製進記憶目錄；(2) 根 `.gitignore` 加入 `!Codex/.codex/` 例外，確保 Codex 框架源碼可被 git 追蹤並出現在 GitHub ZIP；(3) 三個平台模組（Antigravity/Claude/Codex）的 `Sync-SharedSkills` 與 `Merge-WorkflowSkills` 回傳值統一以 `$null =` 吸收，消除終端機輸出噪音。
 
 ## Known Issues
 

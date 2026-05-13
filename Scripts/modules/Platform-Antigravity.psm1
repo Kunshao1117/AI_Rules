@@ -62,7 +62,7 @@ function Invoke-AgFresh {
         # 技能注入：從 Shared/ 注入 36 套共用技能
         Write-Step "注入共用技能（Shared/skills/）..."
         $targetSkillsPath = Join-Path $targetDir "skills"
-        Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
+        $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
                           -TargetSkillsPath $targetSkillsPath `
                           -Mode Full
 
@@ -197,7 +197,7 @@ function Invoke-AgUpgrade {
     # 技能差異注入
     Write-Step "同步技能差異（Shared/skills/）..."
     $targetSkillsPath = Join-Path $targetDir "skills"
-    Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
+    $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
                       -TargetSkillsPath $targetSkillsPath `
                       -Mode Diff
 

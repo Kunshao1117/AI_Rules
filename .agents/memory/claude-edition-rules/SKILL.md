@@ -5,9 +5,9 @@ description: >
   AI 共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改 Claude/.claude/rules/ 或
   Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-13T16:21:55+08:00'
+last_updated: '2026-05-13T19:35:00+08:00'
 staleness: 0
-status: healthy
+status: current
 metadata:
   author: antigravity
   version: '1.0'
@@ -17,7 +17,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 
 # Claude Edition 框架規範層
 
@@ -81,6 +80,7 @@ metadata:
 
 - **D14: PSScriptAnalyzer 合規動詞重命名 (2026-05-11)**: 修復 3 個 PowerShell 未授權動詞警告。(1) `Core.psm1`：`Ensure-BaseInfrastructure` → `Initialize-AgentInfrastructure`（L328），`Ensure-Gitignore` → `Set-GitignoreEntries`（L418）；(2) `Audit.psm1`：`Append-Section`（巢狀函式）→ `Add-ReportSection`（12 個內部呼叫點全數替換）；(3) 三個平台模組（`Platform-Antigravity.psm1`、`Platform-Claude.psm1`、`Platform-Codex.psm1`）中的呼叫點同步重命名。`Export-ModuleMember -Function *` 萬用字元導出保持不變（PSScriptAnalyzer 不警告此項，重構需完整依賴圖分析，列為待觀察設計盲點）。
 - **D15: 部署腳本與版控衛生維護 (2026-05-12)**: 更新 `Scripts/Deploy.ps1` 與倉庫配置，移除 `.cartridge/index.json` 殘留追蹤，確保各平台部署流程乾淨無痛。
+- **D16: 部署引擎三項缺陷修復 (2026-05-13)**: (1) `Core.psm1` `Restore-ProtectedDirs` 的 `Copy-Item` 改為 `\*` 語意，修復之前發現但未修的 D05 Module Lesson 問題在 `Restore-ProtectedDirs` 的遺留；(2) 根 `.gitignore` 加入 `!Codex/.codex/` 例外，確保 Codex 框架源碼可被 git 追蹤；(3) 三個平台模組的 `Sync-SharedSkills` 與 `Merge-WorkflowSkills`（Fresh + Upgrade 共 7 處）一律以 `$null = ` 吸收回傳值，消除終端機輸出噪音。
 
 ## Known Issues
 

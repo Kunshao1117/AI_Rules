@@ -8,3 +8,4 @@ antigravity_export/
 .cartridge/index.json
 .agents/logs/
 .codex/
+!Codex/.codex/

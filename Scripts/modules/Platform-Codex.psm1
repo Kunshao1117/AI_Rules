@@ -69,14 +69,14 @@ function Invoke-CodexFresh {
         # 技能注入（兩步驟）：
         # Step 1: 注入 36 套共用技能（Shared/skills/ → .agents/skills/）
         Write-Step "注入共用技能（Shared/skills/ → .agents/skills/）..."
-        Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
+        $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
                           -TargetSkillsPath $targetSkillsPath `
                           -Mode Full
 
         # Step 2: 合併工作流技能（.agents/workflow-skills/ → .agents/skills/）
         Write-Step "合併工作流技能（workflow-skills/ → .agents/skills/）..."
         if (Test-Path $srcWorkflowSkills) {
-            Merge-WorkflowSkills -WorkflowSkillsPath $srcWorkflowSkills `
+            $null = Merge-WorkflowSkills -WorkflowSkillsPath $srcWorkflowSkills `
                                   -TargetSkillsPath $targetSkillsPath
         } else {
             Write-Warn "workflow-skills/ 不存在，跳過工作流技能合併。"
@@ -213,7 +213,7 @@ function Invoke-CodexUpgrade {
 
     # 技能差異注入（兩步驟）
     Write-Step "同步共用技能差異（Shared/skills/ → .agents/skills/）..."
-    Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
+    $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
                       -TargetSkillsPath $targetSkillsPath `
                       -Mode Diff
 
@@ -221,7 +221,7 @@ function Invoke-CodexUpgrade {
     $srcWorkflowSkills = Join-Path $FrameworkRoot ".agents\workflow-skills"
     if (Test-Path $srcWorkflowSkills) {
         Write-Step "同步工作流技能差異（workflow-skills/ → .agents/skills/）..."
-        Merge-WorkflowSkills -WorkflowSkillsPath $srcWorkflowSkills `
+        $null = Merge-WorkflowSkills -WorkflowSkillsPath $srcWorkflowSkills `
                               -TargetSkillsPath $targetSkillsPath
     }
 
