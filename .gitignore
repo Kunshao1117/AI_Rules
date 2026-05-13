@@ -1,6 +1,7 @@
 .cartridge/
 .vscode/
-/.agents/
+/.agents/*
+!/.agents/memory/
 /.claude/
 antigravity_export/
 /CLAUDE.md

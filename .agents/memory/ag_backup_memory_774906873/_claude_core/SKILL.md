@@ -1,0 +1,73 @@
+---
+name: _claude_core
+description: Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼）。
+scopePath: Claude/
+last_updated: '2026-05-11T21:10:00+08:00'
+staleness: 0
+status: fresh
+metadata:
+  author: antigravity
+  version: '1.0'
+  origin: framework
+  memory_awareness: full
+  tool_scope:
+    - 'filesystem:write'
+    - 'mcp:cartridge-system'
+---
+
+# _claude_core 收容卡匣
+
+## Tracked Files
+
+- Claude/.gitignore
+- Claude/install.ps1
+- Claude/README.md
+- Claude/VERSION
+- Claude/global/CLAUDE.md
+- Claude/.cartridge/index.json
+- Claude/.claude/CLAUDE.md
+- Claude/.claude/settings.local.json
+- Claude/.claude/commands/00_chat(討論)/SKILL.md
+- Claude/.claude/commands/01_explore(搜索)/SKILL.md
+- Claude/.claude/commands/02_blueprint(架構)/SKILL.md
+- Claude/.claude/commands/03-1_experiment(實驗)/SKILL.md
+- Claude/.claude/commands/03_build(建構)/SKILL.md
+- Claude/.claude/commands/04_fix(修復)/SKILL.md
+- Claude/.claude/commands/05_condense（濃縮）/SKILL.md
+- Claude/.claude/commands/06_test(測試)/SKILL.md
+- Claude/.claude/commands/07_debug(除錯)/SKILL.md
+- Claude/.claude/commands/08_audit(健檢)/SKILL.md
+- Claude/.claude/commands/08_audit(健檢)/08-1_infra/SKILL.md
+- Claude/.claude/commands/08_audit(健檢)/08-2_logic/SKILL.md
+- Claude/.claude/commands/08_audit(健檢)/08-3_report/SKILL.md
+- Claude/.claude/commands/09_commit(紀錄)/SKILL.md
+- Claude/.claude/commands/11_handoff(交接)/SKILL.md
+- Claude/.claude/commands/12_skill_forge(技能鍛造)/SKILL.md
+- Claude/.claude/commands/_shared/_completion_gate.md
+- Claude/.claude/commands/_shared/_security_footer.md
+- Claude/.claude/rules/code-quality.md
+- Claude/.claude/rules/core-identity.md
+- Claude/.claude/rules/cross-lingual-guard.md
+- Claude/.claude/rules/forbidden-vocab.md
+- Claude/.claude/rules/mcp-guardrails.md
+- Claude/.claude/rules/memory-contract.md
+- Claude/.claude/rules/project-skill-contract.md
+
+## Key Decisions
+
+- **架構特例授權 (D13)**: 作為框架原始碼收容庫，豁免 8 檔案上限，以避免記憶體系過度破碎。
+- **統一腳本引擎遷移 (2026-05-11)**: 廢除 `Claude/.claude/scripts/`（含 Deploy-Claude.ps1、Invoke-DocScan.ps1、Invoke-HealthAudit.ps1、Measure-SkillQuality.ps1），邏輯遷入 `Scripts/modules/`（Platform-Claude.psm1 + Audit.psm1）。`install.ps1` 改呼叫 `Scripts/Deploy.ps1 -Platform Claude`。
+- **全局觸發器版控 (2026-05-11)**: 新增 `Claude/global/CLAUDE.md`，版控 `~/.claude/CLAUDE.md` 的內容，由 `Scripts/Deploy.ps1 -Action Global` 同步。
+- **README.md 全面更新 (2026-05-11)**: 完成 Claude Edition README 五項修訂：(1) 架構圖從 `Deploy-Claude.ps1` 改為 `Scripts/Deploy.ps1 -Platform Claude`，規則數 6→7，指令數 12→13，補入 `Shared/skills/` 節點；(2) 部署段落改指統一引擎；(3) 工作流表格補入 `/05_condense` 列；(4) 目錄結構移除已廢除的 `.claude/scripts/`（4 支腳本），補入 `global/CLAUDE.md`、第 7 條規則（`project-skill-contract.md`）、`05_condense` 和 `_shared` 指令；(5) 修正 `08_audit(除錯)` 錯字為 `08_audit(健檢)`，比較表規則數改 7 個模組，工作流數改 13 道。
+
+## Known Issues
+
+- 無
+
+## Module Lessons
+
+- 無
+
+## Applicable Skills
+
+- 無
