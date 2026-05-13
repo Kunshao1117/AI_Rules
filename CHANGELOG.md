@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-13] 全域規則安全閘門與遠端一鍵管理機制
+
+### feat
+- **全域規則安全閘門 (D15)**: 實作基於 SHA256 雜湊比對的規則更新機制。當偵測到使用者全域設定（如 `~/.gemini/GEMINI.md`）與框架最新版本有衝突時，系統將不強制覆寫，而是將最新規則產出至專案內的 `.agents/global_stage/` 安全暫存區，確保自動化更新不破壞個人化配置。
+- **管理機制遠端一鍵指令化 (D16)**: 強化 `Antigravity/install.ps1` 支援 `-Mode Menu` 遠端引導模式。現在總監只需從 GitHub README 複製一段單行指令貼上，即可直接啟動完整的互動式管理控制台，實現「README 即控制台」的零依賴維護體驗。
+- **框架控制台 (Deploy.ps1) 升級**: 優化選單入口，將全域規則安裝升級為「全域規則安全閘門」，並加入對應的 SHA256 比對引擎（Core.psm1）。
+
+### chore
+- **README.md 控制台文檔化**: 於根目錄 README.md 加入「框架控制台與日常維護」區段，正式定義一鍵管理指令與選單功能解說。
+- **記憶卡架構同步與幽靈收編**: 完成全平台記憶卡過期指數 (Staleness) 清零。收編 Codex 版共用閘門與 `.gitignore` 等未歸屬檔案至 `_codex_core` 記憶卡。
+
 ## [2026-05-12] 框架文檔與工作流目錄合規修正
 
 ### feat

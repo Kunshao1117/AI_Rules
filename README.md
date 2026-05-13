@@ -84,6 +84,23 @@ AI 編碼助手天生有幾個致命弱點，Antigravity Governance Suite 逐一
 
 ---
 
+## 🎮 框架控制台與日常維護
+
+當您需要執行日常維護任務（如更新全域規則或專案健檢）時，只需複製以下指令並在終端機貼上，即可啟動**互動式管理控制台**：
+
+```powershell
+# 🚀 從 README 啟動框架管理控制台 (選單模式)
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $f="$env:TEMP\ag_install.ps1"; irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1' -OutFile $f; & $f -Mode Menu; Remove-Item $f
+```
+
+啟動後，您可以選擇：
+- **`[G] Global`**：安裝或更新全域規則安全閘門（~/.gemini/GEMINI.md 等）。
+- **`[A] Audit`**：執行全光譜專案健檢，確保記憶卡、技能與代碼同步。
+- **`[U] Upgrade`**：差異比對並無損升級框架檔案。
+- **`[S] Sync`**：僅同步 `Shared/skills/` 下的操作型技能。
+
+---
+
 ## 📦 框架版本總覽
 
 | 版本 | 目標平台 | 當前版號 | 規則數 | 工作流 | 操作型技能 | 詳細文件 |

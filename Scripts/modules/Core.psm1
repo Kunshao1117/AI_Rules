@@ -80,6 +80,69 @@ function Compare-FrameworkFile {
 }
 
 # ══════════════════════════════════════════════════════════
+# 全域規則安全比對 (User Profile vs Framework Repo)
+# ══════════════════════════════════════════════════════════
+
+function Compare-GlobalRule {
+    <#
+    .SYNOPSIS
+        比對全域規則（如 ~/.gemini/GEMINI.md）並在衝突時產出暫存檔。
+    .PARAMETER SourcePath
+        框架源碼中的全域規則路徑
+    .PARAMETER TargetPath
+        使用者環境中的全域規則路徑 (User Profile)
+    .PARAMETER StageDir
+        專案內的暫存目錄 (.agents/global_stage)
+    #>
+    param(
+        [string]$SourcePath,
+        [string]$TargetPath,
+        [string]$StageDir
+    )
+
+    $fileName = Split-Path $SourcePath -Leaf
+    
+    # 若目標不存在：直接安裝（全新環境）
+    if (-Not (Test-Path $TargetPath)) {
+        New-Item -ItemType Directory -Force -Path (Split-Path $TargetPath -Parent) | Out-Null
+        Copy-Item $SourcePath $TargetPath -Force
+        Write-Ok "已自動安裝全域規則: $TargetPath"
+        return "INSTALLED"
+    }
+
+    # 計算雜湊
+    $srcHash = (Get-FileHash $SourcePath -Algorithm SHA256).Hash
+    $tgtHash = (Get-FileHash $TargetPath -Algorithm SHA256).Hash
+
+    # 若完全相同：跳過
+    if ($srcHash -eq $tgtHash) {
+        Write-Step "全域規則已是最新: $fileName"
+        return "SAME"
+    }
+
+    # 若內容不同：執行暫存 (Staging)
+    if (-Not (Test-Path $StageDir)) { New-Item -ItemType Directory -Force -Path $StageDir | Out-Null }
+    
+    $stagedFile = Join-Path $StageDir "${fileName}_LATEST.md"
+    $reportFile = Join-Path $StageDir "${fileName}_UPDATE_REQUIRED.txt"
+    
+    Copy-Item $SourcePath $stagedFile -Force
+    
+    $timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+    $reportContent = @"
+[偵測到更新] $fileName
+時間: $timestamp
+說明: 您位於 $TargetPath 的規則與框架最新版本有差異。
+行為: 為保護您的自定義設定，我們不自動覆寫。
+操作: 請手動比對並更新。最新版範例已存放於此目錄。
+"@
+    Set-Content -Path $reportFile -Value $reportContent -Encoding UTF8
+
+    Write-Warn "全域規則有更新 (衝突)！已將最新版暫存至: .agents/global_stage/$fileName"
+    return "STAGED"
+}
+
+# ══════════════════════════════════════════════════════════
 # 通用差異掃描（可設定掃描目錄與保護目錄）
 # ══════════════════════════════════════════════════════════
 

@@ -67,53 +67,50 @@ Import-Module (Join-Path $ModulesDir "Audit.psm1")           -Force
 # ══════════════════════════════════════════════════════════
 
 function Invoke-GlobalInstall {
-    Write-Banner "安裝/更新全局觸發器" "Cyan"
+    Write-Banner "安裝/更新全域規則安全閘門" "Cyan"
+    
+    $stageDir = Join-Path $Target ".agents\global_stage"
 
     # Antigravity: ~/.gemini/GEMINI.md
     $geminiSrc = Join-Path $AgRoot "global\GEMINI.md"
     $geminiDst = Join-Path $env:USERPROFILE ".gemini\GEMINI.md"
     if (Test-Path $geminiSrc) {
-        New-Item -ItemType Directory -Force -Path (Split-Path $geminiDst -Parent) | Out-Null
-        Copy-Item $geminiSrc $geminiDst -Force
-        Write-Ok "Antigravity → $geminiDst"
-    } else { Write-Warn "Antigravity/global/GEMINI.md 不存在，跳過。" }
+        Compare-GlobalRule -SourcePath $geminiSrc -TargetPath $geminiDst -StageDir $stageDir
+    }
 
     # Claude: ~/.claude/CLAUDE.md
     $claudeSrc = Join-Path $ClaudeRoot "global\CLAUDE.md"
     $claudeDst = Join-Path $env:USERPROFILE ".claude\CLAUDE.md"
     if (Test-Path $claudeSrc) {
-        New-Item -ItemType Directory -Force -Path (Split-Path $claudeDst -Parent) | Out-Null
-        Copy-Item $claudeSrc $claudeDst -Force
-        Write-Ok "Claude Edition → $claudeDst"
-    } else { Write-Warn "Claude/global/CLAUDE.md 不存在，跳過。" }
+        Compare-GlobalRule -SourcePath $claudeSrc -TargetPath $claudeDst -StageDir $stageDir
+    }
 
     # Codex: ~/.codex/AGENTS.md
     $codexSrc = Join-Path $CodexRoot "global\AGENTS.md"
     $codexDst = Join-Path $env:USERPROFILE ".codex\AGENTS.md"
     if (Test-Path $codexSrc) {
-        New-Item -ItemType Directory -Force -Path (Split-Path $codexDst -Parent) | Out-Null
-        Copy-Item $codexSrc $codexDst -Force
-        Write-Ok "Codex → $codexDst"
-    } else { Write-Warn "Codex/global/AGENTS.md 不存在，跳過。" }
+        Compare-GlobalRule -SourcePath $codexSrc -TargetPath $codexDst -StageDir $stageDir
+    }
 
-    # Codex: ~/.codex/config.toml (project_doc_fallback_filenames bridge)
+    # Codex: ~/.codex/config.toml
     $codexConfigSrc = Join-Path $CodexRoot "global\config.toml"
     $codexConfigDst = Join-Path $env:USERPROFILE ".codex\config.toml"
-    New-Item -ItemType Directory -Force -Path (Split-Path $codexConfigDst -Parent) | Out-Null
-    if (-not (Test-Path $codexConfigDst)) {
-        if (Test-Path $codexConfigSrc) { Copy-Item $codexConfigSrc $codexConfigDst -Force }
-        Write-Ok "Codex config.toml → $codexConfigDst (created)"
-    } else {
-        $existing = Get-Content $codexConfigDst -Raw -ErrorAction SilentlyContinue
-        if ($existing -notmatch '\.codex/AGENTS\.md') {
-            Add-Content $codexConfigDst "`n# Antigravity Codex Edition bridge`nproject_doc_fallback_filenames = [`".codex/AGENTS.md`"]"
-            Write-Ok "Codex config.toml → $codexConfigDst (fallback entry appended)"
+    if (Test-Path $codexConfigSrc) {
+        # config.toml 採特殊合併邏輯，暫不進入通用比對
+        New-Item -ItemType Directory -Force -Path (Split-Path $codexConfigDst -Parent) | Out-Null
+        if (-not (Test-Path $codexConfigDst)) {
+            Copy-Item $codexConfigSrc $codexConfigDst -Force
+            Write-Ok "Codex config.toml → $codexConfigDst (created)"
         } else {
-            Write-Ok "Codex config.toml already contains fallback entry, skipped."
+            $existing = Get-Content $codexConfigDst -Raw -ErrorAction SilentlyContinue
+            if ($existing -notmatch '\.codex/AGENTS\.md') {
+                Add-Content $codexConfigDst "`n# Antigravity Codex Edition bridge`nproject_doc_fallback_filenames = [`".codex/AGENTS.md`"]"
+                Write-Ok "Codex config.toml → $codexConfigDst (fallback entry appended)"
+            }
         }
     }
 
-    Write-Banner "全局觸發器安裝完成" "Green"
+    Write-Banner "全域規則處理完成" "Green"
 }
 
 # ══════════════════════════════════════════════════════════

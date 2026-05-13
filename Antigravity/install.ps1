@@ -81,7 +81,11 @@ try {
     }
 
     Write-Host "[3/3] 正在部署至目標專案..."
-    if ($RemoveOrphans) {
+    
+    if ($Mode -eq "Menu") {
+        # 啟動選單模式（不帶其餘參數，讓 Deploy.ps1 進入互動模式）
+        & $deployScript -Target $Target
+    } elseif ($RemoveOrphans) {
         & $deployScript -Platform Antigravity -Mode $Mode -Target $Target -RemoveOrphans
     } else {
         & $deployScript -Platform Antigravity -Mode $Mode -Target $Target
