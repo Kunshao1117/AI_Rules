@@ -114,7 +114,7 @@ Invoked exclusively by `/08_audit_index`. Not applicable to build, fix, or refac
 
 Consolidates output from workflow §3.5 items B, E, F:
 
-- **Module Relation Anomalies**: Actual import graph vs memory card Relations mismatch
+- **Module Relation Anomalies**: Check whether memory card `## Relations` navigation is missing, stale, or dead-linked. Do not use `Relations` to build staleness propagation graphs.
 - **Orphan File List**: Files not imported by any module (excluding known entry points)
 - **Missing Key Functions**: Functions recorded in memory card Key Decisions no longer found via `grep_search`
 

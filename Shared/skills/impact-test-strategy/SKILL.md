@@ -32,7 +32,7 @@ Modified file identified?
 
 ```
 Source module identified?
-├── Read the source module's ## Relations section
+├── Read the source module's ## Relations section for navigation/testing context
 ├── List all modules that DEPEND ON the source module
 │   └── These modules may break if the source module's interface changes
 ├── List all modules that the source module DEPENDS ON
@@ -138,7 +138,8 @@ What type of bug was fixed?
 
 ## Constraints (限制與邊界)
 
-- Primary data source: memory card `## Relations` section
+- Primary testing-context source: memory card `## Relations` section
+- `## Relations` is navigation context only. It does not equal frontmatter `dependencies` and must not be used for indirect staleness propagation.
 - No memory cards → fall back to `grep_search` for import/require analysis
 - This skill determines WHICH tests to run — does NOT execute them
 - Test execution: via terminal `run_command`

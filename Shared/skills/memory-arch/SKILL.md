@@ -25,11 +25,33 @@ New module identified by /02_blueprint or /08_audit?
 │   ⇒ body: Tracked Files, Key Decisions, Known Issues, Module Lessons, Relations, Applicable Skills
 ├── Step 3.5: Dependency Assessment (v4.0)
 │   ⇒ Check whether this module's source files import files owned by other memory cards
-│   ⇒ If yes, add a `dependencies` field to the frontmatter listing those card names
-│   ⇒ The plugin will auto-populate on next scan, but manual declaration accelerates initial awareness
+│   ⇒ If yes, add a `dependencies` field only for those upstream cards
+│   ⇒ Also add dependencies for direct technical decision coupling when upstream staleness requires review
+│   ⇒ Record the dependency reason in ## Key Decisions or ## Known Issues
 └── Step 4: Call memory_commit(moduleName, projectRoot)
     ⇒ Registers card in index + validates structure
 ```
+
+### Dependency Semantics (依賴語義)
+
+`dependencies` is a system-level staleness propagation field. Use it only when an upstream card becoming stale means this card must be reviewed too.
+
+Allowed cases:
+
+- This card's tracked source files import or consume source files owned by another memory card.
+- This card's key technical decisions directly depend on decisions recorded in another card.
+- Upstream staleness should trigger review of this card.
+
+Forbidden cases:
+
+- Parent card or child card relationships by default（父子卡預設不是 dependencies）
+- Directory nesting or scope containment only
+- Navigation-only links
+- Recommended reading
+- Applicable Skills
+- Same-domain sibling cards without a real engineering dependency
+
+Use `## Relations` for navigation. Use `## Applicable Skills` for operational guidance.
 
 ### Nesting Decision Tree (層級判斷決策樹)
 
@@ -46,6 +68,8 @@ Create new memory card?
     ├── Does modifying the child typically require referencing the parent's shared decisions?
     └── Are there 3+ modules under the same domain that can be independently tracked?
 ```
+
+Directory nesting is topology and navigation, not dependency. A child card MUST NOT depend on its parent merely because it is stored under the parent's directory. Represent parent/child navigation in `## Relations` unless staleness propagation is truly required.
 
 ## 2. Tree Structure (樹狀結構規則)
 
@@ -82,6 +106,16 @@ Need to access a nested card (layer 3–4)?
 └── No manual path construction needed
 ```
 
+Nested cards should list parent/child context in `## Relations`, for example:
+
+```markdown
+## Relations
+- api（parent card: shared API architecture decisions）
+- api.auth.oauth（child card: OAuth-specific decisions）
+```
+
+Do not mirror these navigation links into frontmatter `dependencies` unless the Dependency Write Gate in `memory-ops` passes.
+
 ### Granularity Rule (粒度規則)
 
 - Maximum **8 tracked files** per card
@@ -100,6 +134,7 @@ Need to split a memory card?
 ├── Step 3: Execute after Director approves
 │   ├── Promote the original card to parent (retain shared decisions + scopePath)
 │   ├── Create child card subdirectories under parent (each with scopePath + specific decisions)
+│   ├── Add parent/child navigation under ## Relations
 │   └── write_to_file to update parent SKILL.md (trim to shared portions only)
 ├── Step 4: Plugin auto scan + refresh
 │   ⇒ Index and file watchers update automatically
@@ -108,6 +143,8 @@ Need to split a memory card?
 └── Step 6: Call memory_commit for the parent card
     ⇒ Parent card's trimmed content must also be committed
 ```
+
+Splitting a card does not automatically create `dependencies` between the parent and children. Add frontmatter dependencies only when source imports or decision coupling require indirect staleness propagation.
 
 ## 4. Static Container Cards (靜態收容卡匣)
 

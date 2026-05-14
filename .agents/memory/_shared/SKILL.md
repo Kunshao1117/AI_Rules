@@ -5,8 +5,8 @@ description: >
   Antigravity、Claude、Codex 三個平台。 Use when: 修改任何操作型技能時。
 scopePath: Shared/
 last_updated: '2026-05-11T21:10:00+08:00'
-staleness: 0
-status: fresh
+staleness: 62
+status: stale
 metadata:
   author: antigravity
   version: '1.0'
@@ -16,6 +16,15 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+<!-- CARTRIDGE_SYSTEM_WARNING_START -->
+
+> [!CAUTION]
+> 🔴 **系統強制攔截**：此記憶已過期失真！
+> 追蹤檔案異動：`Shared/skills/memory-ops/references/memory-template.md`、`Shared/skills/memory-ops/SKILL.md`、`Shared/skills/memory-arch/SKILL.md`、`Shared/skills/code-audit/SKILL.md`、`Shared/skills/audit-engine/SKILL.md`、`Shared/skills/impact-test-strategy/SKILL.md`（2026-05-14T15:35:07+08:00）
+> AI 嚴禁基於此記憶施工，必須優先閱讀最新原始碼並更新此記憶卡。
+> staleness: 62 | threshold: 🔴 嚴重過期
+
+<!-- CARTRIDGE_SYSTEM_WARNING_END -->
 
 # _shared 共用技能庫
 

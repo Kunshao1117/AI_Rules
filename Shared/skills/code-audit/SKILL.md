@@ -33,7 +33,7 @@ Multi-step scan, execute in order (see `references/scan-task-prompt.md` for full
 After CLI scan completes, Master Agent supplements with AI-exclusive analysis（主腦補充 AI 專屬分析）.
 In `/08_audit`, these items are decomposed into `audit-engine` §1–§4 + workflow §3.5 steps B/C/E/F/J — do NOT re-execute here（在 /08 健檢中，以下項目由 `audit-engine` 和工作流步驟細分承接，不需重複執行）:
 
-- **Module Relationship** — Compare import dependency graph against memory card relation declarations（比對依賴圖與記憶卡關聯宣告）
+- **Module Relationship** — Compare actual import/dependency graph against memory card `dependencies`; separately check `## Relations` as navigation declarations only（Relations 是導覽脈絡，不是過期傳播依賴）
 - **API Integration** — Match frontend fetch calls against backend route definitions（前後端串接比對）
 - **Dead Code** — Files not imported by any module, excluding entry points（未被引用的檔案）
 - **Key Function Survival** — Verify that key decision functions in memory cards still exist（關鍵函式存活驗證）

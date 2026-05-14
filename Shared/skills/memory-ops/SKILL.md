@@ -94,6 +94,23 @@ After modifying source files tracked by a memory skill, you **MUST** update the 
 > If `indirectStaleness > 0`, an upstream dependency cartridge has gone stale.
 > Call `memory_deps(moduleName)` to inspect upstream cartridges and confirm whether upstream changes
 > affect this module's Key Decisions or Known Issues before deciding to update.
+>
+> **Field Semantics Boundary**: Cartridge System analyzes local memory card data only. It reads frontmatter
+> `dependencies` to build dependency graphs, indirect staleness propagation, cycle detection, and
+> `memory_deps` output. It does **not** define whether a relationship should be a dependency; that is a
+> memory-writing responsibility governed by this skill（欄位語義由規範層定義，不由工具層代判）.
+
+### Dependency Write Gate (dependencies 寫入閘門)
+
+Before adding any frontmatter `dependencies` entry, ask:
+
+> If this upstream card becomes stale, must this card be reviewed too?
+
+- If **yes**, the upstream card may be added to `dependencies`, and the reason MUST be documented in `## Key Decisions` or `## Known Issues`.
+- If the answer is only "these cards should be read together", write it under `## Relations`.
+- If the item is an operational recommendation, write it under `## Applicable Skills`.
+- Parent/child memory card relationships default to `## Relations`; do not add them to `dependencies` unless staleness propagation is truly required.
+- Do not add `dependencies` merely to make context look more complete.
 
 ```
 Need to update memory?
