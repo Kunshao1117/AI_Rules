@@ -13,8 +13,8 @@
 Claude Code 原生的 CLAUDE.md + Plan Mode 已經很強，但 Antigravity 在其之上解決了這些問題：
 
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → Turn=1 即即探測 `.agents/memory/` 記憶庫
-2. **無治理框架** — 沒有統一的工作流程與品質閘門 → 12 道 Slash Command 工作流強制生命週期
-3. **多 AI 記憶分裂** — Gemini、Claude Code、Codex 各記各的 → `.agents/memory/` 統一記憶庫，三 AI 共用
+2. **無治理框架** — 沒有統一的工作流程與品質閘門 → 14 道 Slash Command 工作流強制生命週期
+3. **多 AI 記憶分裂** — Gemini、Claude Code、Codex 各記各的 → `.agents/memory/` 統一記憶庫，三平台共用
 4. **技能重複維護** — 兩個 AI 的技能各自維護 → 36 套操作型技能與 Gemini 版完全同步
 5. **CLAUDE.md 膨脹** — 規則全寫在一個檔案中 → @import 模組化，CLAUDE.md 保持 < 200 行
 6. **語言不友善** — 工程術語充斥 → 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
@@ -88,11 +88,11 @@ graph TB
     subgraph ".claude/ 生態系統（部署後）"
         CLAUDE["CLAUDE.md<br/>主規則入口 (@import)"]
         RULES[".claude/rules/<br/>7 個模組化規則"]
-        WF[".claude/commands/<br/>13 道 Slash Command 工作流"]
+        WF[".claude/commands/<br/>14 道 Slash Command 工作流"]
         SKILLS[".claude/skills/<br/>36 套操作型技能"]
     end
 
-    subgraph "三 AI 共用層"
+    subgraph "三平台共用層"
         MEM[".agents/memory/<br/>跨 AI 共用記憶庫"]
         CART["cartridge-system MCP<br/>記憶卡讀寫引擎"]
     end
@@ -220,7 +220,8 @@ graph LR
 | `/06_test` | 瀏覽器自動化視覺與功能測試 | Reader |
 | `/07_debug` | 堆疊追蹤分析、錯誤翻譯為商業語言 | Reader |
 | `/08_audit` | 全方位專案健康審計 | Writer/SRE |
-| `/09_commit` | 授權備份：掃描 → CHANGELOG 更新 → GO → git commit + push | Writer/SRE |
+| `/09_commit` | 授權備份：掃描 → CHANGELOG 草稿 → GO → 更新 CHANGELOG + 明確清單 commit/push | Writer/SRE |
+| `/10_routine` | automation-safe 例行巡檢：技能品質、文件數字、記憶過期、MCP 設定健康 | Reader |
 | `/11_handoff` | 掃描記憶卡，產出結構化交接文件 | Reader/Memory |
 | `/12_skill_forge` | 從工作實踐中提煉可複用技能 | Worker |
 
@@ -275,7 +276,7 @@ graph LR
 
 ### 🧠 專案記憶系統
 
-**目錄**: `.agents/memory/`（與 Antigravity Gemini 版**共用**）
+**目錄**: `.agents/memory/`（與 Antigravity Gemini 版及 Codex Edition **三平台共用**）
 
 解決 AI「每次開新對話就失憶」的核心問題。
 
@@ -331,12 +332,12 @@ graph TD
 | **檔案寫入** | `write_to_file` / `replace_file_content` | `Write` / `Edit` 工具 |
 | **子代理人** | `browser_subagent` / Gemini CLI | `Agent` 工具 |
 | **任務追蹤** | `.gemini` scratchpad Artifact | `TodoWrite` 清單 |
-| **工作流觸發** | `.agents/workflows/` (IDE 注入) | `.claude/skills/` (Slash Command) |
+| **工作流觸發** | `.agents/workflows/` (IDE 注入) | `.claude/commands/` (Slash Command) |
 | **記憶啟動** | D7 Push 三路徑探測 | Turn=1 啟動探測協議 |
 | **記憶存放** | `.agents/memory/` | `.agents/memory/`（**共用**） |
 | **操作型技能** | `.agents/skills/` (36 個) | `.claude/skills/` (36 個) |
 | **規則數量** | 9 個（含 AGENTS.md 哨兵） | 7 個模組（@import） |
-| **工作流數量** | 約 16 道 | 13 道 |
+| **工作流數量** | 20 個檔案 | 14 道 |
 
 ---
 
@@ -370,7 +371,7 @@ Claude/
     │   ├── forbidden-vocab.md   ← 禁用詞彙規範（條件載入）
     │   ├── mcp-guardrails.md    ← MCP 外部工具防護（條件載入）
     │   └── project-skill-contract.md ← 衍生技能合約（條件載入）
-    ├── commands/                ← Slash Command 工作流（13 道）
+    ├── commands/                ← Slash Command 工作流（14 道）
     │   ├── 00_chat(討論)/
     │   ├── 01_explore(搜索)/
     │   ├── 02_blueprint(架構)/
@@ -382,6 +383,7 @@ Claude/
     │   ├── 07_debug(除錯)/
     │   ├── 08_audit(健檢)/
     │   ├── 09_commit(紀錄)/
+    │   ├── 10_routine(巡檢)/
     │   ├── 11_handoff(交接)/
     │   ├── 12_skill_forge(技能鍛造)/
     │   └── _shared/             ← 共用閘門（完成閘門 + 安全閘門）

@@ -8,11 +8,18 @@ metadata:
   author: antigravity
   version: "1.1"
   origin: framework
+  kind: operational
   memory_awareness: none
   tool_scope: ["filesystem:write", "mcp:cartridge-system"]
 ---
 
 # Memory Architecture (記憶卡架構與拓樸)
+
+## HITL Boundary
+
+- Read-only memory topology inspection may proceed silently.
+- Creating, splitting, moving, or rewriting memory cards, and any `memory_commit` call, requires Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Discovery of memory tool schemas is not permission to execute mutating memory tools.
 
 ## 1. Creating New Memory (建立新記憶)
 

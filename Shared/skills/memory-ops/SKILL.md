@@ -9,11 +9,20 @@ metadata:
   author: antigravity
   version: "2.2"
   origin: framework
+  kind: operational
   memory_awareness: full
   tool_scope: ["filesystem:write", "mcp:cartridge-system"]
 ---
 
 # Memory Skill Operations (記憶技能操作指引)
+
+Read references/memory-template.md when creating or upgrading a memory card schema.
+
+## HITL Boundary
+
+- Read-only memory listing, dependency checks, staleness inspection, and schema discovery may proceed silently.
+- Writing memory card files, replacing card content, repairing indexes, or calling `memory_commit` requires Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Discovery of memory tool schemas is not permission to execute mutating memory tools.
 
 ## 1. Core Mandate (支配規則)
 

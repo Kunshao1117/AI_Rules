@@ -8,6 +8,7 @@ metadata:
   author: antigravity
   version: "5.1"
   origin: framework
+  kind: operational
   memory_awareness: none
   mcp_servers: [google-maps]
   tool_scope: ["mcp:google-maps"]

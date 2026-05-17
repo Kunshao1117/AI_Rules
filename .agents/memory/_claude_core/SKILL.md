@@ -2,9 +2,9 @@
 name: _claude_core
 description: Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Claude/
-last_updated: '2026-05-17T19:53:47+08:00'
+last_updated: '2026-05-17T21:56:00+08:00'
 staleness: 0
-status: stable
+status: active
 metadata:
   author: antigravity
   version: '1.0'
@@ -14,7 +14,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core 收容卡匣
 
 ## Tracked Files
@@ -41,6 +40,7 @@ metadata:
 - Claude/.claude/commands/08_audit(健檢)/08-2_logic/SKILL.md
 - Claude/.claude/commands/08_audit(健檢)/08-3_report/SKILL.md
 - Claude/.claude/commands/09_commit(紀錄)/SKILL.md
+- Claude/.claude/commands/10_routine(巡檢)/SKILL.md
 - Claude/.claude/commands/11_handoff(交接)/SKILL.md
 - Claude/.claude/commands/12_skill_forge(技能鍛造)/SKILL.md
 - Claude/.claude/commands/_shared/_completion_gate.md
@@ -58,10 +58,12 @@ metadata:
 - **架構特例授權 (D13)**: 作為框架原始碼收容庫，豁免 8 檔案上限，以避免記憶體系過度破碎。
 - **統一腳本引擎遷移 (2026-05-11)**: 廢除 `Claude/.claude/scripts/`（含 Deploy-Claude.ps1、Invoke-DocScan.ps1、Invoke-HealthAudit.ps1、Measure-SkillQuality.ps1），邏輯遷入 `Scripts/modules/`（Platform-Claude.psm1 + Audit.psm1）。`install.ps1` 改呼叫 `Scripts/Deploy.ps1 -Platform Claude`。
 - **全局觸發器版控 (2026-05-11)**: 新增 `Claude/global/CLAUDE.md`，版控 `~/.claude/CLAUDE.md` 的內容，由 `Scripts/Deploy.ps1 -Action Global` 同步。
-- **README.md 全面更新 (2026-05-11)**: 完成 Claude Edition README 五項修訂：(1) 架構圖從 `Deploy-Claude.ps1` 改為 `Scripts/Deploy.ps1 -Platform Claude`，規則數 6→7，指令數 12→13，補入 `Shared/skills/` 節點；(2) 部署段落改指統一引擎；(3) 工作流表格補入 `/05_condense` 列；(4) 目錄結構移除已廢除的 `.claude/scripts/`（4 支腳本），補入 `global/CLAUDE.md`、第 7 條規則（`project-skill-contract.md`）、`05_condense` 和 `_shared` 指令；(5) 修正 `08_audit(除錯)` 錯字為 `08_audit(健檢)`，比較表規則數改 7 個模組，工作流數改 13 道。
+- **README.md 全面更新 (2026-05-11)**: 完成 Claude Edition README 五項修訂：(1) 架構圖從 `Deploy-Claude.ps1` 改為 `Scripts/Deploy.ps1 -Platform Claude`，規則數 6→7，補入 `Shared/skills/` 節點；(2) 部署段落改指統一引擎；(3) 工作流表格補入 `/05_condense` 列；(4) 目錄結構移除已廢除的 `.claude/scripts/`（4 支腳本），補入 `global/CLAUDE.md`、第 7 條規則（`project-skill-contract.md`）、`05_condense` 和 `_shared` 指令；(5) 修正 `08_audit(除錯)` 錯字為 `08_audit(健檢)`。
 - **文檔與殘留狀態同步 (2026-05-12)**: 更新 Claude Edition README 說明並移除不必要的殘留檔追蹤，保持版控乾淨。
 - **Gateway 規範同步 (2026-05-17)**: `mcp-guardrails.md` 新增 Gateway 執行合約，`memory-contract.md` 補入 cartridge-system 顯式 `workspace` / `projectRoot` 規則與 `memory_commit` 高風險邊界；README 同步說明唯讀治理工具與歸卡工具分級。
 - **公開安裝入口相容性升級 (2026-05-17)**: Claude README、全域 CLAUDE bootstrapper 與 `Claude/install.ps1` 改用 UTF-8 raw bytes 下載與 BOM 暫存寫入策略；installer 補入 `#Requires -Version 5.1` 並保存為 UTF-8 with BOM。
+- **Claude平台代理治理升級 (2026-05-17)**: `.claude/CLAUDE.md` 補入 MCP prompts/resources、Agent 工具、automation-safe 與 opt-in MCP profile 治理語義；`.claude/commands/` 新增 `10_routine(巡檢)`，現行 Slash Command 工作流為 14 道。
+- **Claude 基底治理語義修復 (2026-05-17)**: `global/CLAUDE.md` 改為 governed install/upgrade；`09_commit` 在 GO 前只產生 CHANGELOG 草稿，GO 後才寫入 CHANGELOG 並用明確檔案清單 commit/push；Claude 技能路徑統一為 `.claude/skills/`。
 
 ## Known Issues
 
@@ -70,7 +72,8 @@ metadata:
 ## Module Lessons
 
 - **Claude 規則需同步 Gateway 語意**：Claude 版雖以 @import 載入規則，但 MCP/Gateway 約束必須與 Antigravity/Codex 對等，避免同一記憶庫在不同 AI 下有不同安全邊界。
-- **Claude 全域 bootstrapper 也屬公開入口**：除了 README，`Claude/global/CLAUDE.md` 內的自動安裝程式碼也必須採用相同相容下載策略，否則新機器仍會在 Windows PowerShell 5.1 中文環境踩到編碼錯誤。
+- **Claude 全域 bootstrapper 也屬公開入口**：除了 README，`Claude/global/CLAUDE.md` 內的受治理安裝命令也必須採用相同相容下載策略，且必須等待 `GO INSTALL` / `GO UPGRADE`。
+- **Claude MCP prompt/resource 不等於授權寫入**：即使 Claude 能將 MCP prompts/resources 曝露為命令與上下文，框架仍以 `human_gate` 和 `[MCP HITL GATE]` 控制寫入型工具。
 
 ## Applicable Skills
 

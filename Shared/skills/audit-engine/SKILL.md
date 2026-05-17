@@ -8,6 +8,7 @@ metadata:
   author: antigravity
   version: "1.0"
   origin: framework
+  kind: operational
   memory_awareness: read
   tool_scope: ["filesystem:read"]
 ---

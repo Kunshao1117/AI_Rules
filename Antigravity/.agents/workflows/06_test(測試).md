@@ -3,6 +3,18 @@ description: 啟動瀏覽器代理，在無需總監介入的情況下對 UI 執
 required_skills:
   [test-automation-strategy, browser-testing, a11y-testing, trunk-ops]
 memory_awareness: read
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: test
+  role: worker
+  memory_awareness: read
+  tool_scope: ["browser:test", "terminal:test", "subagent:read"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # [WORKFLOW: TEST (測試)]
@@ -22,7 +34,7 @@ memory_awareness: read
 
 [TEST OUTPUT GATE] 根據結果執行單一路徑：
 - IF (全部通過): 印出「✅ E2E 測試全數通過 ({pass_count}/{total_count})」並產出含截圖的 walkthrough。
-- IF (包含失敗): 印出「🔴 [TEST FAIL] {test_name}: {error_summary}」，並記錄至記憶卡 ## Known Issues，自動串聯 /04_fix。
+- IF (包含失敗): 印出「🔴 [TEST FAIL] {test_name}: {error_summary}」，輸出失敗報告與建議的 `/04-1_fix_plan` 啟動指令。DO NOT write memory cards. DO NOT invoke writable fix workflows automatically.
 - CONSTRAINT: 錯誤訊息最多 5 行。不輸出冗長日誌。
 
 ## 2.5 Accessibility Scan (無障礙掃描 — 新增步驟)
@@ -32,7 +44,7 @@ memory_awareness: read
 
 - After visual testing, execute `a11y-testing` skill § 1 Scan Flow on each tested page.
 - Include accessibility scan results in the walkthrough artifact.
-- If critical a11y violations found → document and trigger `/04_fix` for remediation.
+- If critical a11y violations found → document the violation and recommend `/04-1_fix_plan` for remediation. DO NOT invoke a writable fix workflow automatically.
 
 ## 3. 測試授權與自動判斷
 
@@ -48,11 +60,11 @@ memory_awareness: read
 
 ### 情境 B：測試失敗 (Failed)
 
-- **Automatic Failure Logging**: If the test fails or produces unexpected UI behavior, you MUST document the failure symptom into the affected module's memory card `## Known Issues` before doing anything else.
-- **Autonomous Fixing Loop**: You MUST NOT wait for the Director to ask for a fix. You MUST autonomously invoke the `/04_fix` workflow to investigate and resolve the issue. Output: `[系統通報] 偵測到測試失敗，錯誤已寫入模組記憶。正在自動串聯 /04_fix 進行修復。`
+- **Failure Report Only**: If the test fails or produces unexpected UI behavior, output a concise failure report with affected routes/components, screenshots, reproduction steps, and suggested `/04-1_fix_plan` prompt.
+- **No Writable Follow-up**: DO NOT write memory cards, source files, or logs from this workflow. DO NOT autonomously invoke `/04_fix` or any writable remediation workflow. Output: `[系統通報] 偵測到測試失敗，已產出失敗報告與修復建議。若要修復，請總監啟動 /04-1_fix_plan。`
 
 ## [SECURITY & COMPLIANCE MANDATE]
 
 > Inherits: `.agents/workflows/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Reader/Memory` | Permissions based on the security gate matrix。記憶寫入限於記錄測試失敗。
+- **Role**: `Reader` | Permissions based on the security gate matrix。測試失敗只能回報，不得寫入記憶卡或自動啟動可寫修復。

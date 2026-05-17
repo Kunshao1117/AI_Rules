@@ -2,6 +2,18 @@
 description: 掃描所有記憶技能，彙整當前對話成果，為下一個 AI 對話產出結構化的交接提示詞。
 required_skills: [memory-ops]
 memory_awareness: full
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: handoff
+  role: analyst
+  memory_awareness: full
+  tool_scope: ["filesystem:read", "mcp:read"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # [WORKFLOW: HANDOFF (交接)]

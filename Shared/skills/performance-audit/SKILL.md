@@ -8,11 +8,18 @@ metadata:
   author: antigravity
   version: "5.3"
   origin: framework
+  kind: operational
   memory_awareness: none
   tool_scope: ["terminal", "mcp:playwright"]
 ---
 
 # Performance Audit — Web Vitals Recipes
+
+## HITL Boundary
+
+- Running read-only performance scans with existing local tools or `npx` may proceed silently.
+- Installing global tooling, writing report artifacts into the project, changing CI/deployment settings, or uploading performance data requires Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Discovery of browser or MCP tool schemas is not permission to execute mutating tools.
 
 ## Trigger Conditions (觸發條件)
 
@@ -25,8 +32,8 @@ metadata:
 ### Prerequisites (前置條件)
 
 ```
-npm install -g lighthouse
-# 或 npx lighthouse（免安裝）
+npx lighthouse
+# 若要 npm install -g lighthouse，需先通過 HITL Boundary
 ```
 
 ### Execution (執行)

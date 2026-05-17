@@ -4,6 +4,18 @@ description: "[Phase 3/3] 全光譜健康報告彙整。執行效能審查，並
 trigger: manual
 required_skills:
   - performance-audit
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: audit
+  role: analyst
+  memory_awareness: read
+  tool_scope: ["filesystem:read", "terminal:read"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # [08-3_audit_report] Traffic Light Health Report Generation

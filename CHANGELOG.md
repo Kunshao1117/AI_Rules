@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-17] 基底治理語義修復
+
+### fix
+- **Governed global bootstrap** — 三平台全域觸發器不再未授權自動下載執行；未初始化等待 `GO INSTALL`，升級等待 `GO UPGRADE`。
+- **Workflow 權限語義對齊** — Antigravity audit logic 改為 `filesystem:write:logs`，測試 workflow 僅輸出失敗報告，commit workflow 在 GO 後才寫 CHANGELOG、stage 明確清單、commit、push。
+- **MCP HITL 邊界補強** — 高風險 Shared skills 補入標準 HITL/GO 邊界，明確區分 schema discovery 與 mutating execution。
+- **Governance Semantics audit** — `Deploy.ps1 -Action Audit` 新增語義紅黃燈，掃描舊路徑、自動安裝、blanket staging、automation-safe 變異與 MCP HITL 缺口；紅燈 exit 1，黃燈只報告。
+
+## [2026-05-17] 三平台代理治理升級
+
+### feat
+- **平台能力矩陣** — 新增 `Shared/platform-capability-matrix.md`，以 `native` / `adapter` / `manual` 對齊 Antigravity、Claude Edition、Codex Edition 的 Skills、commands、AGENTS/CLAUDE/GEMINI 載入、MCP、subagents、automation 與權限模型。
+- **Workflow metadata v2** — 三平台 workflow / command frontmatter 補齊 `kind`、`platforms`、`lifecycle_phase`、`role`、`memory_awareness`、`tool_scope`、`human_gate`、`automation_safe`。
+- **例行巡檢工作流** — 新增 `10-routine-巡檢` / `10_routine(巡檢)`，作為 automation-safe 唯讀巡檢入口；任何寫入、安裝、記憶歸卡、commit、push 仍需 GO。
+- **MCP opt-in profiles** — 新增 `Shared/mcp-profiles/` 設定片段，明確不在升級流程中自動安裝外部 MCP server 或改動全域工具設定。
+
+### fix
+- **技能品質審計相容性** — `Measure-SkillQuality` 改以 `metadata.kind` 和實際目錄判斷 workflow，不再用英文 slug 規則誤判中文 Codex workflow。
+- **平台代理治理巡檢** — `Deploy.ps1 -Action Audit` 新增能力矩陣、workflow metadata、MCP profile、文件數字與記憶卡漂移檢查。
+- **文件數字漂移** — 同步更新 Shared 36、Codex workflow 17、Claude commands 14、Antigravity workflow files 20、Codex total skills 53 等公開數字。
+
 ## [2026-05-17] 公開安裝入口相容性升級
 
 ### fix
@@ -51,11 +72,11 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-12] 框架文檔與工作流目錄合規修正
 
 ### feat
-- **工作流目錄標準化**: 將 16 套工作流技能目錄由舊式的括號格式（如 `00_chat(討論)`）全面重命名為符合標準的破折號格式（如 `00-chat-聊天`），解決路徑特殊字元可能引發的解析問題。
+- **工作流目錄標準化**: 將 17 套工作流技能目錄由舊式的括號格式（如 `00_chat(討論)`）全面重命名為符合標準的破折號格式（如 `00-chat-聊天`），解決路徑特殊字元可能引發的解析問題。
 - **Codex 橋接設定支援**: 部署腳本（Deploy.ps1）新增對 Codex Edition 的 `config.toml` 回退橋接支援（`project_doc_fallback_filenames`），使原生工具能精確定位治理哨兵檔。
 
 ### chore
-- **跨平台技術文件精確對齊**: 徹底審查並修正四份 README.md（根目錄、Codex、Antigravity、Claude Edition）。統一架構圖中的指令路徑，移除不存在的 CHANGELOG 引用，更正總技能數為 52 套，並強化「三平台架構」的用語一致性。
+- **跨平台技術文件精確對齊**: 徹底審查並修正四份 README.md（根目錄、Codex、Antigravity、Claude Edition）。統一架構圖中的指令路徑，移除不存在的 CHANGELOG 引用，更正總技能數為 53 套，並強化「三平台架構」的用語一致性。
 - **倉庫衛生與記憶卡清理**: 執行 09-1 狀態掃描，移除 `.cartridge/index.json`、`.codex/AGENTS.md` 等不再追蹤的殘留檔案，並同步更新 5 張核心記憶卡，確保框架處於健康狀態。
 
 ## [2026-05-11] 統一部署引擎 + Codex Edition v0.1.0
@@ -63,7 +84,7 @@ All notable changes to this project will be documented in this file.
 ### feat
 - **三平台統一部署引擎（D12）**: 廢除各平台分散部署腳本（8 支），建立 `Scripts/` 統一引擎（6 模組，減少 40% 代碼量）。`Scripts/Deploy.ps1` 支援選單模式與參數模式兩用。
 - **操作型技能單一真實來源（D12）**: 36 套操作型技能從各平台目錄統一遷移至 `Shared/skills/`，部署時由 `Skills-Sync.psm1` 自動注入三個平台，消除多份副本維護問題。
-- **Codex Edition v0.1.0（D12）**: 新增第三個平台適配層（OpenAI Codex / agentskills.io），含 14 套工作流技能、`.codex/AGENTS.md` 哨兵治理規則，共支援 50 套技能。
+- **Codex Edition v0.1.0（D12）**: 新增第三個平台適配層（OpenAI Codex / agentskills.io），含首批 Codex 工作流技能、`.codex/AGENTS.md` 哨兵治理規則；現行框架共支援 53 套技能。
 - **三平台全局觸發器版控（D12）**: 新增 `Antigravity/global/`、`Claude/global/`、`Codex/global/` 目錄，版控各平台全局觸發器，由 `-Action Global` 同步。
 
 ### fix
@@ -108,7 +129,7 @@ All notable changes to this project will be documented in this file.
 
 ### chore: 版本號升級
 - Antigravity: v7.0.0 → v8.0.0
-- Claude Edition: v1.1.0 → v1.2.0
+- Claude Edition: v1.2.0 → v1.2.0
 
 ## [Unreleased]
 

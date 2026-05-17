@@ -2,6 +2,18 @@
 description: 將商業需求轉化為嚴謹的軟體架構、ER 圖與 API 路由。同步建立雙軌記憶系統。
 required_skills: [memory-ops, tech-stack-protocol]
 memory_awareness: full
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: blueprint
+  role: planner
+  memory_awareness: full
+  tool_scope: ["filesystem:read", "terminal:read", "mcp:cartridge-system"]
+  human_gate: "GO required before memory writes"
+  automation_safe: false
 ---
 
 # [WORKFLOW: BLUEPRINT (架構)]

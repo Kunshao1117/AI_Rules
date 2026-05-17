@@ -9,12 +9,19 @@ metadata:
   author: antigravity
   version: "5.1"
   origin: framework
+  kind: operational
   memory_awareness: none
   mcp_servers: [github]
   tool_scope: ["mcp:github"]
 ---
 
 # GitHub Ops — Version Control Recipes
+
+## HITL Boundary
+
+- Read-only tools (`list`, `get`, `search`, `query`, status/health checks) may proceed silently.
+- State-mutating tools (`create`, `update`, `write`, `delete`, `deploy`, `push`, `apply`, `reset`, `resolve`) require Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Discovery of tool schemas is not permission to execute mutating tools.
 
 ## Recipe 1: Code Search & Reading
 

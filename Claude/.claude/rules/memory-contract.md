@@ -77,7 +77,7 @@ Checkpoint 格式規範（寫入時參考）：
 - **Timestamp**: ALL timestamps MUST use ISO 8601 Taiwan timezone: `YYYY-MM-DDTHH:mm:ss+08:00`. UTC (`Z`) is FORBIDDEN.
 - **Before modifying files**: Check if the file appears in any memory card's `## Tracked Files`. If yes, read that card first.
 - **Sanitization**: NEVER write PII, absolute user paths (`C:\Users\username\`), or secret tokens into memory cards.
-- **Load procedures**: Read `.claude/agents/skills/memory-ops/SKILL.md` for card write format and commit procedures.
+- **Load procedures**: Read `.claude/skills/memory-ops/SKILL.md` for card write format and commit procedures.
 - **MCP Tool Chain**: `cartridge-system__memory_list` → `cartridge-system__memory_read` → `write_to_file` → `cartridge-system__memory_commit`
 - **Gateway Path Discipline**: When cartridge-system is reached through Multi-MCP Gateway, use `gateway__call_tool` with explicit `workspace`; also pass `projectRoot` in downstream arguments. Discovery tools (`gateway__search_tools`, `gateway__list_server_tools`) are schema-only.
 - **Commit Risk Boundary**: `cartridge-system__memory_commit` writes files and index metadata. It is forbidden in discussion, planning, testing, or read-only audit phases; call it only after the target memory card has already been updated.
@@ -85,9 +85,9 @@ Checkpoint 格式規範（寫入時參考）：
 ## 4. Skill System (技能系統契約)
 
 - **`.claude/skills/`**: Claude Code native skills — user-invoked (`/skill-name`) or Claude-auto-invoked. These are workflow triggers.
-- **`.claude/agents/skills/`**: Operational knowledge library — read by Master Agent on demand. These are procedural guides (not slash commands).
+- **`.claude/skills/`**: Operational knowledge library — read by Master Agent on demand. These are procedural guides (not slash commands).
 - **Progressive Disclosure**: Only skill names/descriptions are known at session start. Full content is read only when needed.
-- **Skill Binding**: When a workflow declares `required_skills`, read those `.claude/agents/skills/*/SKILL.md` files before proceeding.
+- **Skill Binding**: When a workflow declares `required_skills`, read those `.claude/skills/*/SKILL.md` files before proceeding.
 
 ## 5. Memory Sanitization & Deletion (記憶淨化)
 

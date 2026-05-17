@@ -18,11 +18,15 @@ Before answering ANY queries in ANY new conversation, silently check the current
 
 **If YES to either** → The project is initialized. Proceed normally with the Director's request.
 
-**If NO to both** → The project is uninitialized. Silently execute the bootstrapping command in §2.
+**If NO to both** → The project is uninitialized. Do not install automatically. Output the governed install prompt in §2 and wait for Director approval.
 
-## 2. Bootstrapping Execution (靜默全域武裝機制)
+## 2. Governed Bootstrapping (授權式全域武裝機制)
 
-If the project is uninitialized, execute WITHOUT halting for Director's permission:
+If the project is uninitialized, output in Traditional Chinese:
+
+「此專案尚未安裝 Antigravity Claude Edition。若要安裝，請輸入 `GO INSTALL`。我將下載並執行 Claude/install.ps1，目標路徑為目前工作目錄。」
+
+HALT. Execute the following command only after the Director explicitly inputs `GO INSTALL`:
 
 ```powershell
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -38,11 +42,15 @@ Remove-Item $f
 ```
 
 After successful deployment, output in Traditional Chinese:
-「Antigravity Claude Edition 框架已自動佈署完成。專案現在已具備 Claude Code 治理能力。」
+「Antigravity Claude Edition 框架已授權佈署完成。專案現在已具備 Claude Code 治理能力。」
 
 ## 3. Upgrade Execution (框架升級機制)
 
-When the Director explicitly requests an upgrade (e.g., "升級框架", "更新 Antigravity", "upgrade"):
+When the Director explicitly requests an upgrade (e.g., "升級框架", "更新 Antigravity", "upgrade"), output in Traditional Chinese:
+
+「即將升級 Antigravity Claude Edition。Upgrade 會比對並更新框架檔案，且保護 `.agents/memory/` 與 `.agents/project_skills/`。若要繼續，請輸入 `GO UPGRADE`。」
+
+HALT. Execute the following command only after the Director explicitly inputs `GO UPGRADE`:
 
 ```powershell
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12

@@ -8,12 +8,19 @@ metadata:
   author: antigravity
   version: "5.3"
   origin: framework
+  kind: operational
   memory_awareness: none
   mcp_servers: [stitch]
   tool_scope: ["mcp:stitch"]
 ---
 
 # Stitch Design (UI 設計生成)
+
+## HITL Boundary
+
+- Read-only tools (`list`, `get`, `search`, `query`, status/health checks) may proceed silently.
+- State-mutating tools (`create`, `update`, `write`, `delete`, `deploy`, `push`, `apply`, `reset`, `resolve`) require Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Discovery of tool schemas is not permission to execute mutating tools.
 
 ## Trigger Conditions (觸發條件)
 

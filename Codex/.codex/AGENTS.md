@@ -53,11 +53,35 @@ Before writing any source file:
 
 **`.agents/skills/`** — Codex native scan path (agentskills.io open standard):
 - 36 shared operational skills (injected from `Shared/skills/`)
-- 16 workflow skills (merged from `workflow-skills/`)
+- 17 workflow skills (merged from `workflow-skills/`)
+- Workflow `SKILL.md` files MUST carry governance metadata v2: `kind`, `platforms`, `lifecycle_phase`, `role`, `memory_awareness`, `tool_scope`, `human_gate`, and `automation_safe`.
 
 **Workflow Skill Activation:**
 - **Semantic trigger**: Describe the task intent; Codex matches the appropriate workflow skill via its `description` field automatically.
 - **Explicit trigger**: Use `$<skill-name>` syntax, e.g. `$03-build-建構` / `$04-fix-修復` / `$09-commit-紀錄總結`.
+- **Automation-safe trigger**: `$10-routine-巡檢` may be invoked by Codex Automations because it is read-only. Any proposed write still stops at GO.
+
+---
+
+## Platform Agent Governance
+
+The source of truth for cross-platform capability semantics is `Shared/platform-capability-matrix.md`.
+
+Codex-specific governance:
+- **Subagents**: Native Codex subagents are allowed for bounded, read-only exploration or verification. The main agent remains accountable for integration and must not delegate urgent blocking work.
+- **Automations**: Only workflow skills with `metadata.automation_safe: true` may be scheduled. In this framework, routine inspection is read-only; writes, installs, commits, pushes, and memory mutations require GO.
+- **Permissions**: Respect the active Codex sandbox and approval model. Framework gates are stricter than permissive local settings when source writes, external state, or credentials are involved.
+- **MCP config**: Do not install external MCP servers automatically. Use `Shared/mcp-profiles/` as opt-in snippets only.
+
+---
+
+## MCP Governance
+
+- MCP resources and prompts are allowed as read-only context.
+- Gateway discovery (`gateway__search_tools`, `gateway__list_server_tools`) is schema-only.
+- Real downstream execution through Gateway MUST use `gateway__call_tool` with explicit `workspace`.
+- cartridge-system downstream arguments MUST include `projectRoot`.
+- Any MCP tool that mutates files, memory, cloud resources, PRs, commits, or deployments MUST stop at `[MCP HITL GATE]` unless the Director has granted GO.
 
 ---
 

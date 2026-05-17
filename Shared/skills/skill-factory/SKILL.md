@@ -9,6 +9,7 @@ metadata:
   author: antigravity
   version: "5.1"
   origin: framework
+  kind: operational
   memory_awareness: full
   tool_scope: ["filesystem:write"]
 ---

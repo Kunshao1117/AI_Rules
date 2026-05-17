@@ -2,6 +2,18 @@
 description: 由總監觸發，探索新商業想法或技術方向。執行網路研究、扮演魔鬼代言人，產出可行性 Artifact。
 required_skills: []
 memory_awareness: none
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: explore
+  role: analyst
+  memory_awareness: none
+  tool_scope: ["web:read", "filesystem:read"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # [WORKFLOW: EXPLORE (搜索)]

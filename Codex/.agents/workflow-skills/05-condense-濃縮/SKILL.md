@@ -1,6 +1,18 @@
 ---
 name: "05-condense-濃縮"
 description: "專案濃縮初始化 — 自動掃描代碼庫，萃取專案身份與工作模式，寫入永久上下文。參考 Codex /init 設計。"
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["codex"]
+  lifecycle_phase: condense
+  role: writer
+  memory_awareness: full
+  tool_scope: ["filesystem:read", "filesystem:write", "mcp:cartridge-system"]
+  human_gate: "Director invocation required"
+  automation_safe: false
 ---
 
 # source-command-05-condense-skill

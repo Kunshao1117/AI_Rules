@@ -2,6 +2,18 @@
 description: 第一階段（共 2 階段）— 診斷缺陷、分析影響範圍，產出全繁中的實作計畫供總監審閱。不寫入磁碟。
 required_skills: [memory-ops, impact-test-strategy]
 memory_awareness: full
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: fix
+  role: planner
+  memory_awareness: full
+  tool_scope: ["filesystem:read", "terminal:read"]
+  human_gate: "GO required before writes"
+  automation_safe: false
 ---
 
 # [WORKFLOW: FIX PLAN (修復計畫)]

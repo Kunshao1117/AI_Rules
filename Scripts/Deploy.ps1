@@ -12,7 +12,7 @@
 .PARAMETER Target
     目標專案絕對路徑（Fresh/Upgrade 必填，預設為當前目錄）
 .PARAMETER Action
-    特殊動作：Global（安裝/更新全局觸發器）
+    特殊動作：Global（安裝/更新全局觸發器）/ Audit（三平台代理治理巡檢）
 .PARAMETER RemoveOrphans
     Upgrade 模式：是否自動清除孤兒檔案
 .EXAMPLE
@@ -25,6 +25,7 @@
     .\Deploy.ps1 -Platform Codex -Mode Fresh -Target "D:\MyProject"
     .\Deploy.ps1 -Platform All -Mode Sync
     .\Deploy.ps1 -Action Global
+    .\Deploy.ps1 -Action Audit
 #>
 param(
     [ValidateSet("Antigravity", "Claude", "Codex", "All")]
@@ -35,7 +36,7 @@ param(
 
     [string]$Target = $PWD.Path,
 
-    [ValidateSet("Global")]
+    [ValidateSet("Global", "Audit")]
     [string]$Action,
 
     [switch]$RemoveOrphans
@@ -232,6 +233,14 @@ function Show-Menu {
 
 if ($Action -eq "Global") {
     Invoke-GlobalInstall
+    exit 0
+}
+
+if ($Action -eq "Audit") {
+    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot
+    if (-not $audit.Passed) {
+        exit 1
+    }
     exit 0
 }
 

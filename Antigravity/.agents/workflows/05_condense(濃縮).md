@@ -1,5 +1,17 @@
 ---
 description: 專案濃縮初始化 — 自動掃描代碼庫，萃取專案身份與工作模式，寫入永久上下文
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: condense
+  role: writer
+  memory_awareness: full
+  tool_scope: ["filesystem:read", "filesystem:write", "mcp:cartridge-system"]
+  human_gate: "Director invocation required"
+  automation_safe: false
 ---
 
 ## 0. Precondition Check（前置條件確認）

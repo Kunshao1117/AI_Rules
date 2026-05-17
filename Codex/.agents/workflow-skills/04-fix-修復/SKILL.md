@@ -1,6 +1,18 @@
 ---
 name: "04-fix-修復"
 description: "兩階段修復工作流。第一階段：診斷缺陷、分析影響範圍，產出全繁中實作計畫供總監審閱（唯讀）。第二階段：實體修復、記憶更新、回歸測試。"
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["codex"]
+  lifecycle_phase: fix
+  role: writer
+  memory_awareness: full
+  tool_scope: ["filesystem:write", "terminal:test", "mcp:cartridge-system"]
+  human_gate: "GO required before writes"
+  automation_safe: false
 ---
 
 # source-command-04-fix-skill

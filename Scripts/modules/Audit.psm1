@@ -249,7 +249,16 @@ function Measure-SkillQuality {
         'This skill extends', 'this is because', 'the purpose is', 'the reason is'
     )
     $RequiredFrontmatter = @('name', 'description', 'metadata')
-    $RequiredMetadata    = @('author', 'version', 'origin')
+    $RequiredMetadata    = @('author', 'version', 'origin', 'kind')
+    $RequiredWorkflowMetadata = @(
+        'platforms',
+        'lifecycle_phase',
+        'role',
+        'memory_awareness',
+        'tool_scope',
+        'human_gate',
+        'automation_safe'
+    )
     $GatePattern         = '\[(\w+\s+)?GATE\]'
 
     function Measure-SingleSkill {
@@ -279,6 +288,13 @@ function Measure-SkillQuality {
         }
         $forbiddenStatus = if ($foundForbidden.Count -eq 0) { '🟢' } else { '🔴' }
 
+        $fmMatch = [regex]::Match($content, '(?ms)\A---\s*\n(.*?)\n---')
+        $fmContent = if ($fmMatch.Success) { $fmMatch.Groups[1].Value } else { '' }
+        $metadataKind = 'operational'
+        $kindMatch = [regex]::Match($fmContent, '(?m)^\s+kind:\s*["'']?([^"''\r\n]+)["'']?\s*$')
+        if ($kindMatch.Success) { $metadataKind = $kindMatch.Groups[1].Value.Trim() }
+        $isWorkflow = ($metadataKind -eq 'workflow') -or ($SkillDir -match '[\\/]workflow-skills[\\/]') -or ($SkillDir -match '[\\/]commands[\\/]')
+
         $frontmatterOk = $true; $missingFields = @()
         foreach ($f in $RequiredFrontmatter) {
             if ($content -notmatch "(?m)^${f}:") { $frontmatterOk = $false; $missingFields += $f }
@@ -286,10 +302,21 @@ function Measure-SkillQuality {
         foreach ($f in $RequiredMetadata) {
             if ($content -notmatch "(?m)^\s+${f}:") { $frontmatterOk = $false; $missingFields += "metadata.$f" }
         }
+        if ($isWorkflow) {
+            foreach ($f in $RequiredWorkflowMetadata) {
+                if ($content -notmatch "(?m)^\s+${f}:") {
+                    $frontmatterOk = $false
+                    $missingFields += "metadata.$f"
+                }
+            }
+        }
         $frontmatterStatus = if ($frontmatterOk) { '🟢' } else { '🔴' }
 
-        $nameOk  = ($skillName -match '^[a-z0-9]([a-z0-9-]*[a-z0-9])?$') -and ($skillName.Length -le 64)
-        $fmMatch = [regex]::Match($content, '(?ms)\A---\s*\n(.*?)\n---')
+        $nameOk = if ($isWorkflow) {
+            ($skillName.Length -le 96) -and ($skillName -notmatch '[\\/]') -and ($skillName.Trim().Length -gt 0)
+        } else {
+            ($skillName -match '^[a-z0-9]([a-z0-9-]*[a-z0-9])?$') -and ($skillName.Length -le 64)
+        }
         $descLen = 0
         if ($fmMatch.Success) {
             $fm = $fmMatch.Groups[1].Value
@@ -334,6 +361,7 @@ function Measure-SkillQuality {
             L3Status          = $l3Status
             StyleValue        = $styleValue
             StyleStatus       = $styleStatus
+            Kind              = if ($isWorkflow) { 'workflow' } else { 'operational' }
             OverallStatus     = if (
                 $lineStatus -eq '🟢' -and $tokenStatus -eq '🟢' -and $forbiddenStatus -eq '🟢' -and
                 $frontmatterStatus -eq '🟢' -and $compatStatus -eq '🟢' -and
@@ -396,4 +424,525 @@ function Measure-SkillQuality {
     return $results
 }
 
-Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality
+# ══════════════════════════════════════════════════════════
+# Invoke-PlatformGovernanceAudit — 平台代理治理層巡檢
+# ══════════════════════════════════════════════════════════
+
+function Get-FrontmatterBlock {
+    param([string]$Path)
+    if (-not (Test-Path $Path)) { return '' }
+    $content = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+    $match = [regex]::Match($content, '(?ms)\A---\s*\r?\n(.*?)\r?\n---')
+    if ($match.Success) { return $match.Groups[1].Value }
+    return ''
+}
+
+function Test-FrontmatterField {
+    param(
+        [string]$Frontmatter,
+        [string]$Field
+    )
+    return $Frontmatter -match "(?m)^\s+$([regex]::Escape($Field)):"
+}
+
+function Get-AuditRelativePath {
+    param(
+        [string]$RepoRoot,
+        [string]$Path
+    )
+
+    $root = (Resolve-Path $RepoRoot).Path
+    $full = (Resolve-Path -LiteralPath $Path).Path
+    return $full.Substring($root.Length).TrimStart('\', '/')
+}
+
+function Get-GovernanceScanFiles {
+    param([string]$RepoRoot = ".")
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $files = @()
+    $explicit = @(
+        'README.md',
+        'CHANGELOG.md',
+        'Antigravity\README.md',
+        'Claude\README.md',
+        'Codex\README.md',
+        'Shared\platform-capability-matrix.md',
+        'Shared\mcp-profiles\README.md',
+        'Codex\.codex\AGENTS.md',
+        'Claude\.claude\CLAUDE.md',
+        'Antigravity\.agents\rules\AGENTS.md'
+    )
+
+    foreach ($rel in $explicit) {
+        $path = Join-Path $RepoRoot $rel
+        if (Test-Path -LiteralPath $path) { $files += (Resolve-Path -LiteralPath $path).Path }
+    }
+
+    $scanRoots = @(
+        'Codex\global',
+        'Codex\.agents\workflow-skills',
+        'Claude\global',
+        'Claude\.claude\commands',
+        'Claude\.claude\rules',
+        'Antigravity\global',
+        'Antigravity\.agents\workflows',
+        'Antigravity\.agents\rules',
+        '.agents\memory'
+    )
+
+    foreach ($relRoot in $scanRoots) {
+        $root = Join-Path $RepoRoot $relRoot
+        if (Test-Path -LiteralPath $root) {
+            $files += (Get-ChildItem -LiteralPath $root -Filter '*.md' -Recurse -File -ErrorAction SilentlyContinue).FullName
+        }
+    }
+
+    return $files | Sort-Object -Unique
+}
+
+function Get-WorkflowAuditTargets {
+    param([string]$RepoRoot = ".")
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $targets = @()
+    $codexRoot = Join-Path $RepoRoot 'Codex\.agents\workflow-skills'
+    if (Test-Path -LiteralPath $codexRoot) {
+        Get-ChildItem -LiteralPath $codexRoot -Directory -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -notmatch '^_' } |
+            ForEach-Object {
+                $path = Join-Path $_.FullName 'SKILL.md'
+                if (Test-Path -LiteralPath $path) {
+                    $targets += [PSCustomObject]@{ Platform = 'Codex'; Name = $_.Name; Path = $path }
+                }
+            }
+    }
+
+    $claudeRoot = Join-Path $RepoRoot 'Claude\.claude\commands'
+    if (Test-Path -LiteralPath $claudeRoot) {
+        Get-ChildItem -LiteralPath $claudeRoot -Directory -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -notmatch '^_' } |
+            ForEach-Object {
+                $path = Join-Path $_.FullName 'SKILL.md'
+                if (Test-Path -LiteralPath $path) {
+                    $targets += [PSCustomObject]@{ Platform = 'Claude'; Name = $_.Name; Path = $path }
+                }
+            }
+    }
+
+    $agRoot = Join-Path $RepoRoot 'Antigravity\.agents\workflows'
+    if (Test-Path -LiteralPath $agRoot) {
+        Get-ChildItem -LiteralPath $agRoot -Filter '*.md' -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -notmatch '^_' } |
+            ForEach-Object {
+                $targets += [PSCustomObject]@{ Platform = 'Antigravity'; Name = $_.Name; Path = $_.FullName }
+            }
+    }
+
+    return $targets
+}
+
+function Get-AuditMetadataValue {
+    param(
+        [string]$Frontmatter,
+        [string]$Field
+    )
+
+    $match = [regex]::Match($Frontmatter, "(?m)^\s+$([regex]::Escape($Field)):\s*(.+?)\s*$")
+    if ($match.Success) { return $match.Groups[1].Value.Trim().Trim('"', "'") }
+    return ''
+}
+
+function Test-AuditLineIsNegative {
+    param([string]$Line)
+
+    return $Line -match '(?i)\b(DO NOT|DON''T|NEVER|FORBID|FORBIDDEN|PROHIBIT|MUST NOT|CANNOT|WITHOUT)\b|禁止|不得|不可|不應|不允許|不會|不安裝|不修改|非自動|只輸出|僅輸出|建議|草稿|proposed|recommend'
+}
+
+function Measure-WorkflowMetadata {
+    <#
+    .SYNOPSIS
+        檢查三平台 workflow / command metadata v2 完整度。
+    .PARAMETER RepoRoot
+        AI_Rules 倉庫根目錄
+    #>
+    param([string]$RepoRoot = ".")
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $required = @(
+        'author',
+        'version',
+        'origin',
+        'kind',
+        'platforms',
+        'lifecycle_phase',
+        'role',
+        'memory_awareness',
+        'tool_scope',
+        'human_gate',
+        'automation_safe'
+    )
+
+    $targets = @(
+        [PSCustomObject]@{
+            Platform = 'Codex'
+            Root     = Join-Path $RepoRoot 'Codex\.agents\workflow-skills'
+            Kind     = 'DirectorySkill'
+        },
+        [PSCustomObject]@{
+            Platform = 'Claude'
+            Root     = Join-Path $RepoRoot 'Claude\.claude\commands'
+            Kind     = 'DirectorySkill'
+        },
+        [PSCustomObject]@{
+            Platform = 'Antigravity'
+            Root     = Join-Path $RepoRoot 'Antigravity\.agents\workflows'
+            Kind     = 'WorkflowFile'
+        }
+    )
+
+    $results = @()
+    foreach ($target in $targets) {
+        if (-not (Test-Path $target.Root)) { continue }
+        $items = if ($target.Kind -eq 'WorkflowFile') {
+            Get-ChildItem -LiteralPath $target.Root -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' }
+        } else {
+            Get-ChildItem -LiteralPath $target.Root -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' }
+        }
+
+        foreach ($item in $items) {
+            $file = if ($target.Kind -eq 'WorkflowFile') { $item.FullName } else { Join-Path $item.FullName 'SKILL.md' }
+            $fm = Get-FrontmatterBlock -Path $file
+            $missing = @()
+            foreach ($field in $required) {
+                if (-not (Test-FrontmatterField -Frontmatter $fm -Field $field)) { $missing += "metadata.$field" }
+            }
+            $automationSafe = $fm -match '(?m)^\s+automation_safe:\s*true\s*$'
+            $results += [PSCustomObject]@{
+                Platform       = $target.Platform
+                Name           = $item.Name
+                MissingFields  = $missing
+                AutomationSafe = $automationSafe
+                Status         = if ($missing.Count -eq 0) { '🟢' } else { '🔴' }
+            }
+        }
+    }
+
+    $passCount = ($results | Where-Object { $_.Status -eq '🟢' }).Count
+    $failCount = ($results | Where-Object { $_.Status -eq '🔴' }).Count
+    $safeCount = ($results | Where-Object { $_.AutomationSafe }).Count
+
+    Write-Host ""
+    Write-Host "📊 Workflow Metadata v2"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "掃描 workflow/command：$($results.Count)"
+    Write-Host "🟢 完整：$passCount  🔴 缺漏：$failCount  automation-safe：$safeCount"
+
+    foreach ($r in $results | Sort-Object Platform, Name) {
+        $safeText = if ($r.AutomationSafe) { 'safe' } else { 'manual' }
+        Write-Host ("{0,-12} {1,-38} {2} {3}" -f $r.Platform, $r.Name, $r.Status, $safeText)
+        if ($r.MissingFields.Count -gt 0) {
+            Write-Host "  ⚠ 缺少欄位：$($r.MissingFields -join ', ')" -ForegroundColor Yellow
+        }
+    }
+
+    return $results
+}
+
+function Measure-DocsConsistency {
+    <#
+    .SYNOPSIS
+        檢查文件與記憶卡中的平台數、技能數與舊詞殘留。
+    .PARAMETER RepoRoot
+        AI_Rules 倉庫根目錄
+    #>
+    param([string]$RepoRoot = ".")
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $counts = [PSCustomObject]@{
+        SharedSkills          = (Get-ChildItem -LiteralPath (Join-Path $RepoRoot 'Shared\skills') -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' }).Count
+        CodexWorkflowSkills   = (Get-ChildItem -LiteralPath (Join-Path $RepoRoot 'Codex\.agents\workflow-skills') -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' }).Count
+        ClaudeCommands        = (Get-ChildItem -LiteralPath (Join-Path $RepoRoot 'Claude\.claude\commands') -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' }).Count
+        AntigravityWorkflows  = (Get-ChildItem -LiteralPath (Join-Path $RepoRoot 'Antigravity\.agents\workflows') -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' }).Count
+    }
+
+    $patterns = @(
+        ('14' + ' 套'),
+        ('雙' + ' AI'),
+        ('\.Codex' + '/agents'),
+        ('\.Codex' + '/commands'),
+        ('\.claude/agents' + '/skills'),
+        ('v1' + '\.1\.0')
+    )
+
+    $scanFiles = Get-GovernanceScanFiles -RepoRoot $RepoRoot
+
+    $hits = @()
+    foreach ($file in $scanFiles) {
+        foreach ($pattern in $patterns) {
+            $found = Select-String -LiteralPath $file -Pattern $pattern -CaseSensitive -ErrorAction SilentlyContinue
+            foreach ($f in $found) {
+                $hits += [PSCustomObject]@{
+                    File    = $f.Path.Substring($RepoRoot.Length).TrimStart('\', '/')
+                    Line    = $f.LineNumber
+                    Pattern = $pattern
+                    Text    = $f.Line.Trim()
+                }
+            }
+        }
+    }
+
+    Write-Host ""
+    Write-Host "📊 文件與記憶卡一致性"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "Shared skills：$($counts.SharedSkills)"
+    Write-Host "Codex workflow skills：$($counts.CodexWorkflowSkills)"
+    Write-Host "Claude commands：$($counts.ClaudeCommands)"
+    Write-Host "Antigravity workflow files：$($counts.AntigravityWorkflows)"
+    Write-Host "舊詞殘留：$($hits.Count)"
+    foreach ($hit in $hits) {
+        Write-Host "  ⚠ $($hit.File):$($hit.Line) [$($hit.Pattern)] $($hit.Text)" -ForegroundColor Yellow
+    }
+
+    return [PSCustomObject]@{
+        Counts = $counts
+        StaleHits = $hits
+    }
+}
+
+function Measure-PlatformCapability {
+    <#
+    .SYNOPSIS
+        檢查能力矩陣與 MCP opt-in profile 是否存在。
+    .PARAMETER RepoRoot
+        AI_Rules 倉庫根目錄
+    #>
+    param([string]$RepoRoot = ".")
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $matrixPath = Join-Path $RepoRoot 'Shared\platform-capability-matrix.md'
+    $mcpProfilePath = Join-Path $RepoRoot 'Shared\mcp-profiles\README.md'
+
+    $matrixOk = (Test-Path $matrixPath) -and ((Get-Content -LiteralPath $matrixPath -Raw -Encoding UTF8) -match 'native' -and (Get-Content -LiteralPath $matrixPath -Raw -Encoding UTF8) -match 'adapter' -and (Get-Content -LiteralPath $matrixPath -Raw -Encoding UTF8) -match 'manual')
+    $mcpProfileOk = (Test-Path $mcpProfilePath) -and ((Get-Content -LiteralPath $mcpProfilePath -Raw -Encoding UTF8) -match 'Opt-in')
+
+    Write-Host ""
+    Write-Host "📊 平台能力與 MCP profile"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host ("能力矩陣：{0}" -f ($(if ($matrixOk) { '🟢' } else { '🔴' })))
+    Write-Host ("MCP opt-in snippets：{0}" -f ($(if ($mcpProfileOk) { '🟢' } else { '🔴' })))
+
+    return [PSCustomObject]@{
+        CapabilityMatrix = $matrixOk
+        McpProfiles      = $mcpProfileOk
+    }
+}
+
+function Measure-GovernanceSemantics {
+    <#
+    .SYNOPSIS
+        檢查治理語義：GO gate、舊路徑、自動安裝、automation-safe mutation、MCP HITL 邊界。
+    .PARAMETER RepoRoot
+        AI_Rules 倉庫根目錄
+    #>
+    param([string]$RepoRoot = ".")
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $results = New-Object System.Collections.ArrayList
+
+    function Add-GovernanceFinding {
+        param(
+            [string]$Severity,
+            [string]$File,
+            [int]$Line,
+            [string]$Reason,
+            [string]$Text
+        )
+
+        $null = $results.Add([PSCustomObject]@{
+            Severity = $Severity
+            File     = $File
+            Line     = $Line
+            Reason   = $Reason
+            Text     = $Text
+        })
+    }
+
+    $globalPatterns = @(
+        [PSCustomObject]@{ Pattern = ('WITHOUT' + ' halting'); Reason = 'global bootstrap 不可未授權自動下載執行' },
+        [PSCustomObject]@{ Pattern = '\.Codex/(agents|commands)'; Reason = 'Codex 舊路徑殘留' },
+        [PSCustomObject]@{ Pattern = ('\.claude/agents' + '/skills'); Reason = 'Claude 舊技能路徑殘留' },
+        [PSCustomObject]@{ Pattern = ('雙' + ' AI'); Reason = '舊雙平台概念殘留，需改為三平台或多平台代理' },
+        [PSCustomObject]@{ Pattern = 'v1\.1\.0'; Reason = '舊版本描述殘留' },
+        [PSCustomObject]@{ Pattern = 'git\s+add\s+\.|git\s+add\s+-A'; Reason = 'commit workflow 不可使用 blanket staging' }
+    )
+
+    foreach ($file in (Get-GovernanceScanFiles -RepoRoot $RepoRoot)) {
+        $lines = Get-Content -LiteralPath $file -Encoding UTF8
+        for ($i = 0; $i -lt $lines.Count; $i++) {
+            foreach ($pattern in $globalPatterns) {
+                if ($lines[$i] -cmatch $pattern.Pattern) {
+                    Add-GovernanceFinding -Severity 'Red' `
+                        -File (Get-AuditRelativePath -RepoRoot $RepoRoot -Path $file) `
+                        -Line ($i + 1) `
+                        -Reason $pattern.Reason `
+                        -Text $lines[$i].Trim()
+                }
+            }
+        }
+    }
+
+    $mutationPattern = '(?i)(\bwrite_to_file\b|\breplace_file_content\b|\bmemory_commit\b|\bgit\s+add\b|\bgit\s+commit\b|\bgit\s+push\b|\bdeploy\b|\binstall\b|\bdelete\b|\bremove-item\b|\bnew-item\b|\bset-content\b|\badd-content\b|\bout-file\b|\bcreate_[a-z0-9_]+\b|\bupdate_[a-z0-9_]+\b|\bpush_files\b|\bapply_migration\b|\bmerge_branch\b|\breset_branch\b|\bdelete_branch\b|\bresolve\b)'
+    foreach ($target in (Get-WorkflowAuditTargets -RepoRoot $RepoRoot)) {
+        $content = Get-Content -LiteralPath $target.Path -Raw -Encoding UTF8
+        $lines = Get-Content -LiteralPath $target.Path -Encoding UTF8
+        $fm = Get-FrontmatterBlock -Path $target.Path
+        $lifecycle = Get-AuditMetadataValue -Frontmatter $fm -Field 'lifecycle_phase'
+        $toolScope = Get-AuditMetadataValue -Frontmatter $fm -Field 'tool_scope'
+        $humanGate = Get-AuditMetadataValue -Frontmatter $fm -Field 'human_gate'
+        $automationSafe = $fm -match '(?m)^\s+automation_safe:\s*true\s*$'
+        $isExperiment = $lifecycle -eq 'experiment'
+        $hasWriteScope = $toolScope -match 'write|git:write'
+        $logsOnlyScope = $toolScope -match 'filesystem:write:logs'
+        $noHumanGate = $humanGate -match '^(none|false|no)$'
+
+        if ($isExperiment) {
+            if ($automationSafe) {
+                Add-GovernanceFinding -Severity 'Red' `
+                    -File (Get-AuditRelativePath -RepoRoot $RepoRoot -Path $target.Path) `
+                    -Line 1 `
+                    -Reason 'experiment workflow 可保留沙盒可寫例外，但不可標為 automation_safe' `
+                    -Text $target.Name
+            }
+            continue
+        }
+
+        for ($i = 0; $i -lt $lines.Count; $i++) {
+            $line = $lines[$i]
+            if ($line -notmatch $mutationPattern) { continue }
+            if (Test-AuditLineIsNegative -Line $line) { continue }
+
+            $rel = Get-AuditRelativePath -RepoRoot $RepoRoot -Path $target.Path
+            if ($automationSafe) {
+                Add-GovernanceFinding -Severity 'Red' `
+                    -File $rel `
+                    -Line ($i + 1) `
+                    -Reason 'automation-safe workflow 不可包含可執行變異指令' `
+                    -Text $line.Trim()
+                continue
+            }
+
+            if ($logsOnlyScope -and ($line -match '(?i)(write_to_file|replace_file_content|set-content|add-content|out-file|write)') -and ($line -notmatch '\.agents/logs')) {
+                Add-GovernanceFinding -Severity 'Red' `
+                    -File $rel `
+                    -Line ($i + 1) `
+                    -Reason 'filesystem:write:logs 只能寫入 .agents/logs/ 中繼報告' `
+                    -Text $line.Trim()
+                continue
+            }
+
+            if ((-not $hasWriteScope) -and $noHumanGate) {
+                Add-GovernanceFinding -Severity 'Red' `
+                    -File $rel `
+                    -Line ($i + 1) `
+                    -Reason 'metadata 宣告 read-scope 且無 human gate，但正文包含變異操作' `
+                    -Text $line.Trim()
+            }
+        }
+
+        if (($content -match 'CHANGELOG\.md') -and ($content -match 'git\s+commit|git\s+push') -and ($humanGate -notmatch 'changelog write')) {
+            Add-GovernanceFinding -Severity 'Yellow' `
+                -File (Get-AuditRelativePath -RepoRoot $RepoRoot -Path $target.Path) `
+                -Line 1 `
+                -Reason 'commit workflow 應明示 GO gate 同時涵蓋 changelog write、commit、push' `
+                -Text $target.Name
+        }
+    }
+
+    $sharedSkillsRoot = Join-Path $RepoRoot 'Shared\skills'
+    if (Test-Path -LiteralPath $sharedSkillsRoot) {
+        Get-ChildItem -LiteralPath $sharedSkillsRoot -Filter 'SKILL.md' -Recurse -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.FullName -match '[\\/]Shared[\\/]skills[\\/][^\\/]+[\\/]SKILL\.md$' } |
+            ForEach-Object {
+                $content = Get-Content -LiteralPath $_.FullName -Raw -Encoding UTF8
+                $isMcpSkill = $content -match '(?m)^\s*mcp_servers:\s*|mcp:[a-zA-Z0-9_-]+'
+                $hasMutationTool = $content -match '(?i)`[^`\r\n]*(create|update|write|delete|deploy|push|apply|reset|merge|memory_commit|resolve_issue|resolve-issue)[a-z0-9_-]*[^`\r\n]*`'
+                $hasHitl = ($content -match '## HITL Boundary') -and ($content -match '\[MCP HITL GATE\]')
+                if ($isMcpSkill -and $hasMutationTool -and (-not $hasHitl)) {
+                    Add-GovernanceFinding -Severity 'Yellow' `
+                        -File (Get-AuditRelativePath -RepoRoot $RepoRoot -Path $_.FullName) `
+                        -Line 1 `
+                        -Reason 'MCP 高風險操作技能缺少標準 HITL/GO 邊界' `
+                        -Text $_.Directory.Name
+                }
+            }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 Governance Semantics"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
+    foreach ($finding in $results | Sort-Object Severity, File, Line) {
+        $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+        Write-Host ("  {0} {1}:{2} — {3}" -f $finding.Severity, $finding.File, $finding.Line, $finding.Reason) -ForegroundColor $color
+        if ($finding.Text) {
+            Write-Host ("      {0}" -f $finding.Text) -ForegroundColor DarkGray
+        }
+    }
+
+    return [PSCustomObject]@{
+        Results     = @($results.ToArray())
+        RedCount    = $redCount
+        YellowCount = $yellowCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
+function Invoke-PlatformGovernanceAudit {
+    <#
+    .SYNOPSIS
+        執行三平台代理治理巡檢：能力矩陣、workflow metadata、MCP profile、文件數字與記憶漂移。
+    .PARAMETER RepoRoot
+        AI_Rules 倉庫根目錄
+    #>
+    param([string]$RepoRoot = ".")
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+    $OutputEncoding = [System.Text.Encoding]::UTF8
+
+    Write-Host ""
+    Write-Host "🧭 三平台代理治理巡檢"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "RepoRoot：$RepoRoot"
+
+    $capability = Measure-PlatformCapability -RepoRoot $RepoRoot
+    $metadata = Measure-WorkflowMetadata -RepoRoot $RepoRoot
+    $docs = Measure-DocsConsistency -RepoRoot $RepoRoot
+    $semantics = Measure-GovernanceSemantics -RepoRoot $RepoRoot
+
+    $metadataFail = ($metadata | Where-Object { $_.Status -eq '🔴' }).Count
+    $docStale = $docs.StaleHits.Count
+    $ok = $capability.CapabilityMatrix -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($docStale -eq 0) -and ($semantics.RedCount -eq 0)
+
+    Write-Host ""
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    if ($ok) {
+        Write-Host "✅ 平台代理治理巡檢通過"
+    } else {
+        Write-Host "⚠️ 平台代理治理巡檢有待處理項目" -ForegroundColor Yellow
+    }
+
+    return [PSCustomObject]@{
+        Capability = $capability
+        Metadata   = $metadata
+        Docs       = $docs
+        Semantics  = $semantics
+        Passed     = $ok
+    }
+}
+
+Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-GovernanceSemantics, Invoke-PlatformGovernanceAudit

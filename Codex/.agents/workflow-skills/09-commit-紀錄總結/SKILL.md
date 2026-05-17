@@ -1,6 +1,18 @@
 ---
 name: "09-commit-紀錄總結"
 description: "兩階段授權備份工作流。第一階段：掃描倉庫衛生、偵測記憶過期、產出 Commit Message 草稿，含條件分岔衛生閘門。第二階段：收到 GO 後提交並推送，同步更新 CHANGELOG.md。"
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["codex"]
+  lifecycle_phase: commit
+  role: sre
+  memory_awareness: read
+  tool_scope: ["filesystem:write", "git:write", "terminal:read"]
+  human_gate: "GO required before changelog write, commit, or push"
+  automation_safe: false
 ---
 
 # source-command-09-commit-skill
@@ -46,6 +58,7 @@ Scan for:
 ### 3. Commit Message Draft (提交訊息草稿)
 
 - Analyze diffs to determine change type and business impact.
+- Draft a `CHANGELOG.md` entry in Traditional Chinese. DO NOT write it before GO.
 - Draft Conventional Commit message in Traditional Chinese:
   ```
   feat(模組名稱): 商業行為描述
@@ -55,7 +68,7 @@ Scan for:
 
   Co-Authored-By: Codex Sonnet 4.6 <noreply@anthropic.com>
   ```
-- Output draft + staleness report to Director.
+- Output commit draft, approved file list, CHANGELOG draft, and staleness report to Director.
 
 ### 4. Authorization Gate (授權閘門)
 
@@ -68,22 +81,9 @@ Output:「【防線鎖定】準備遠端備份。請確認上方 Commit Message 
 
 > Begins only after Director inputs GO.
 
-### 5. Commit & Push
+### 5. CHANGELOG Update (CHANGELOG 更新)
 
-> [LOAD SKILL] Read `.agents/skills/github-ops/SKILL.md`.
-
-Run via `Bash` tool (sequential):
-```bash
-git add <specific files — NOT git add -A>
-git commit -m "<approved message>"
-git push
-```
-
-[MCP HITL GATE] applies: `git push` is 🟡 MEDIUM risk. Output Justification Block before executing.
-
-### 5a. CHANGELOG Update (CHANGELOG 更新)
-
-- 維護倉庫根目錄的 `CHANGELOG.md`（Keep a Changelog 格式）
+- Only after GO, write the approved entry to repository root `CHANGELOG.md`（Keep a Changelog 格式）.
 - 格式：`## [YYYY-MM-DD]` 下分 `### feat` / `### fix` / `### chore` 三類
 - **強制商業語言**：禁止裸露識別符（函式名、變數名），必須用功能模組名稱描述行為
 - 範例條目：
@@ -95,7 +95,20 @@ git push
   - 路徑修正 — 修復修復工作流與備份工作流中的記憶卡路徑錯誤
   ```
 
-### 6. Completion
+### 6. Commit & Push
+
+> [LOAD SKILL] Read `.agents/skills/github-ops/SKILL.md`.
+
+Run via `Bash` tool (sequential):
+```bash
+git add <approved file list including CHANGELOG.md>
+git commit -m "<approved message>"
+git push
+```
+
+[MCP HITL GATE] applies: `git push` is 🟡 MEDIUM risk. Output Justification Block before executing.
+
+### 7. Completion
 
 - Confirm push succeeded. Report branch name and commit hash.
 - Output completion summary in Traditional Chinese.
@@ -104,5 +117,5 @@ git push
 
 ## [SECURITY & COMPLIANCE]
 - **Stage 1 Role**: Reader — no source file modifications.
-- **Stage 2 Role**: Writer/SRE — git operations only, no source file edits.
+- **Stage 2 Role**: Writer/SRE — CHANGELOG write + approved git operations only, no unrelated source file edits.
 - **Memory**: read — check staleness only, no card writes in this workflow.

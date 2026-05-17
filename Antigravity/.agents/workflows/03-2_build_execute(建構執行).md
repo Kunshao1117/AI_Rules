@@ -2,6 +2,18 @@
 description: 第二階段（共 2 階段）— 授權實體執行已核准的建構計畫。寫入磁碟、歸檔新檔案記憶卡、更新受影響記憶卡、執行測試。需 /03_build 的明確 GO 授權。
 required_skills: [memory-ops, security-sre, code-quality, test-patterns, trunk-ops]
 memory_awareness: full
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: build
+  role: writer
+  memory_awareness: full
+  tool_scope: ["filesystem:write", "terminal:test", "mcp:cartridge-system"]
+  human_gate: "GO required before writes"
+  automation_safe: false
 ---
 
 # [WORKFLOW: BUILD — EXECUTE (建構執行)]

@@ -9,6 +9,7 @@ metadata:
   author: antigravity
   version: "5.3"
   origin: framework
+  kind: operational
   memory_awareness: none
   mcp_servers:
     [cloudflare-bindings, cloudflare-containers, cloudflare-observability]
@@ -23,6 +24,12 @@ metadata:
 # Cloudflare Ops — Cloud Service Recipes
 
 > This skill spans three MCP servers: bindings（資源管理）, containers, observability（日誌）。
+
+## HITL Boundary
+
+- Read-only tools (`list`, `get`, `search`, `query`, status/health checks) may proceed silently.
+- State-mutating tools (`create`, `update`, `write`, `delete`, `deploy`, `push`, `apply`, `reset`, `resolve`) require Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Discovery of tool schemas is not permission to execute mutating tools.
 
 ## Recipe 1: Account Initialization
 

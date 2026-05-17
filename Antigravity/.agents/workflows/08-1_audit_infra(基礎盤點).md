@@ -5,6 +5,18 @@ trigger: manual
 required_skills:
   - memory-ops
   - tech-stack-protocol
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: audit
+  role: analyst
+  memory_awareness: read
+  tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # [08-1_audit_infra] Infrastructure & Memory System Audit

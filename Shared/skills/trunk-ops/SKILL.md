@@ -9,6 +9,7 @@ metadata:
   author: antigravity
   version: "1.0"
   origin: framework
+  kind: operational
   memory_awareness: none
   mcp_servers: [trunk]
   tool_scope: ["mcp:trunk"]
@@ -19,6 +20,12 @@ metadata:
 > [!EXECUTION BOUNDARY]
 > **主腦專屬 (Direct Execution Only)**
 > 此技能與 `mcp_trunk_*` 工具僅限主腦 (Master Agent/IDE) 於本機直連執行，嚴禁委派給 CLI 或其他終端子代理人。
+
+## HITL Boundary
+
+- Read-only framework detection and flaky-test recommendations may proceed silently.
+- Installing upload tooling, modifying CI configuration, applying generated fixes, or changing remote Trunk settings requires Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Discovery of Trunk tool schemas is not permission to execute mutating tools.
 
 ## Recipe 1: Test Framework Detection（測試框架偵測）
 

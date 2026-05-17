@@ -4,6 +4,18 @@ description: 掃描所有記憶卡，彙整當前對話成果，為下一個 AI 
 required_skills: [memory-ops]
 memory_awareness: full
 user-invocable: true
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["claude"]
+  lifecycle_phase: handoff
+  role: analyst
+  memory_awareness: full
+  tool_scope: ["filesystem:read", "mcp:read"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # [SKILL: /11_handoff — 交接提示詞]

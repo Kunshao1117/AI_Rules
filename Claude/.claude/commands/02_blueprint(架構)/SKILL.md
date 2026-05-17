@@ -1,9 +1,21 @@
 ---
 name: 02_blueprint
-description: 商業需求轉化為軟體架構 — 技術堆疊探勘、ER 圖、API 路由設計、記憶卡初始化（支援升級模式與雙 AI 並存架構宣告）
+description: 商業需求轉化為軟體架構 — 技術堆疊探勘、ER 圖、API 路由設計、記憶卡初始化（支援升級模式與三平台代理治理架構宣告）
 required_skills: [memory-ops, tech-stack-protocol, memory-arch]
 memory_awareness: full
 user-invocable: true
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["claude"]
+  lifecycle_phase: blueprint
+  role: planner
+  memory_awareness: full
+  tool_scope: ["filesystem:read", "terminal:read", "mcp:cartridge-system"]
+  human_gate: "GO required before memory writes"
+  automation_safe: false
 ---
 
 # [SKILL: /02_blueprint — 架構藍圖]
@@ -27,12 +39,12 @@ user-invocable: true
 - Use `WebSearch` to ground latest stable docs for detected frameworks.
 - Lock tech stack into `.agents/memory/_system/SKILL.md`.
 
-**雙 AI 並存架構宣告：**
+**三平台代理治理架構宣告：**
 ```
 [DUAL AI GATE]
 ├── 同時偵測到 `.agents/` 目錄（Antigravity）AND `.claude/` 目錄（Claude Edition）？
-│   └── YES → 在藍圖中宣告雙 AI 並存架構：
-│             「本專案採用雙 AI 引擎並存架構：
+│   └── YES → 在藍圖中宣告三平台代理治理架構：
+│             「本專案採用三平台代理治理架構：
 │              - Antigravity（Gemini IDE）負責 .agents/ 生態系統
 │              - Claude Edition（VS Code 擴充）負責 .claude/ 工作流
 │              - 共用記憶庫位於 .agents/memory/（D01 設計決策）」
@@ -66,7 +78,7 @@ user-invocable: true
   2. 【系統架構圖】— Mermaid ER/flow diagrams
   3. 【API 路由規劃】— Route map table
   4. 【模組拆分與記憶卡對照】— Module → memory card mapping
-  5. 【雙 AI 並存架構說明】— 若適用
+  5. 【三平台代理治理架構說明】— 若適用
   6. 【開放問題】— Design decisions requiring Director input
 
 - Output:「[架構藍圖] 已產出。請總監審閱後，執行 /03_build 進入建構階段。」

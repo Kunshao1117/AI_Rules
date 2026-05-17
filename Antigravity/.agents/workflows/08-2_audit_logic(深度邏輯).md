@@ -9,13 +9,25 @@ required_skills:
   - security-sre
   - impact-test-strategy
   - test-patterns
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: audit
+  role: analyst
+  memory_awareness: read
+  tool_scope: ["filesystem:read", "filesystem:write:logs", "terminal:read", "mcp:read"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # [08-2_audit_logic] Deep Source Code & Architecture Audit
 
 **[SECURITY & COMPLIANCE MANDATE]**
 - Role: Master Agent
-- Operating Constraint: READ-ONLY analysis. DO NOT modify project source code.
+- Operating Constraint: READ-ONLY analysis for source files and memory cards. The only permitted write target is `.agents/logs/audit_logic_results.md`.
 - State Passing: You MUST write your findings into `.agents/logs/audit_logic_results.md` for Phase 3 to read.
 
 ## 1. CLI Tool Scan Delegation
@@ -62,7 +74,7 @@ required_skills:
 **Directive**: You MUST compile ALL findings from Section 2 and Section 3 and write them to the intermediary log file.
 1. Target File: `.agents/logs/audit_logic_results.md`
 2. Structure: Markdown format with clear sections for `API Gaps`, `Security S1-S5`, `Dead Code`, and `A11Y Issues`.
-3. Action: Use `write_to_file` to physically save this log.
+3. Action: Use native file write only for `.agents/logs/audit_logic_results.md`. DO NOT modify source files, configuration files, dependency files, or memory cards.
 
 ## 5. Interface Layer (Output Mandate)
 

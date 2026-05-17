@@ -24,10 +24,10 @@ metadata:
 | 模組名稱 | 一句話範圍 |
 |---------|-----------|
 | _system | 全域技術堆疊、Git 推播根目錄規範、工作流設計哲學 |
-| claude-edition-rules | Claude Code 插件框架規範層、三 AI 共用記憶庫架構決策、統一腳本引擎設計 |
+| claude-edition-rules | Claude Code 插件框架規範層、三平台共用記憶庫架構決策、統一腳本引擎設計 |
 | _ag_core | Antigravity 框架核心規則與工作流收容卡匣（框架原始碼） |
 | _claude_core | Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼） |
-| _shared | Shared/skills/ 技能共用庫（36 套操作型技能唯一真實來源） |
+| _shared | Shared/ 共用治理資產（能力矩陣、MCP snippets、36 套操作型技能唯一真實來源） |
 | _codex_core | Codex Edition 框架核心規則與工作流收容卡匣（v0.1.0，OpenAI Codex 適配層） |
 
 > **維護規則**：新增或刪除 Layer 1 父記憶卡時，必須同步更新本表格。

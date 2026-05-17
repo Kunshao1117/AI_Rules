@@ -1,6 +1,6 @@
 # Antigravity — AI 代理人治理框架（Gemini 版）
 
-> **讓 AI 編碼助手不再失憶、不再無紀律** — 零接觸自動部署的治理框架，為 Gemini IDE 提供工作流程、持久記憶系統與標準作業規範。
+> **讓 AI 編碼助手不再失憶、不再無紀律** — 受治理部署的治理框架，為 Gemini IDE 提供工作流程、持久記憶系統與標準作業規範。
 
 [![version](https://img.shields.io/badge/version-v8.0.0-blue)](#版本管理)
 [![platform](https://img.shields.io/badge/platform-Windows-lightgrey)](#)
@@ -13,7 +13,7 @@
 AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → 透過 `.agents/memory/` 記憶卡系統持久保存
-2. **無紀律執行** — 寫碼前不規劃、寫完不測試 → 19 道生命週期工作流強制四拍子節奏
+2. **無紀律執行** — 寫碼前不規劃、寫完不測試 → 20 個工作流檔案強制四拍子節奏
 3. **角色權限模糊** — 子代理人隨意改檔案 → 角色分層（讀取者/工作者/寫入者），子代理人只能唯讀
 4. **知識碎片化** — 技能散落各處，Token 暴增 → 36 套按需載入的操作型技能，不用時零開銷
 5. **語言不友善** — 工程術語充斥 → 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
@@ -65,7 +65,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 
 | 原則 | 說明 |
 |------|------|
-| **零接觸部署** | AI 進入未初始化專案時，自動靜默部署整套框架，無需人工介入 |
+| **受治理安裝** | 使用者可手動貼上一行指令安裝；全域 GEMINI bootstrapper 只輸出安裝/升級命令並等待 `GO INSTALL` / `GO UPGRADE` |
 | **跨對話持久記憶** | 透過 `.agents/memory/` 記憶卡，AI 在新對話中也能回憶過去的架構決策與教訓 |
 | **按需載入** | 技能僅在需要時載入，減少 AI 的認知負擔和 Token 消耗 |
 | **繁體中文特化** | 三層語言架構：指令層（英文）、介面層（繁體中文）、橋接層（雙語） |
@@ -89,9 +89,9 @@ graph TB
 
     subgraph ".agents/ 生態系統（部署後）"
         RULES["rules/<br/>9 個治理規則"]
-        WF["workflows/<br/>約 16 道工作流程"]
+        WF["workflows/<br/>20 個工作流檔案"]
         SKILLS["skills/<br/>36 套操作型技能"]
-        MEM["memory/<br/>專案記憶（三 AI 共用）"]
+        MEM["memory/<br/>專案記憶（三平台共用）"]
         PROJ["project_skills/<br/>衍生技能（升級保護）"]
     end
 
@@ -206,7 +206,7 @@ graph TB
 
 **目錄**: `.agents/workflows/`
 
-16 道工作流程涵蓋軟體開發的完整生命週期：
+20 個工作流檔案涵蓋軟體開發的完整生命週期：
 
 ```mermaid
 graph LR
@@ -248,6 +248,7 @@ graph LR
 | 08 | 專案健檢 | 全方位健康審計（含陣列遍歷強制） | Writer/SRE |
 | 09-1 | 紀錄掃描 | 倉庫衛生 + 記憶過期偵測（唯讀掃描） | Reader |
 | 09-2 | 授權備份 | 文件更新 + Git 提交 + 遠端推播 | Writer/SRE |
+| 10 | 巡檢 | automation-safe 例行巡檢：技能品質、文件數字、記憶過期、MCP 設定健康 | Reader |
 | 11 | 交接 | 產出交接文件給下一個 AI 對話（含前置檢查） | Reader/Memory |
 | 12 | 技能鍛造 | 從工作實踐中提煉可複用技能 | Worker |
 
@@ -406,8 +407,8 @@ Antigravity/
     │   ├── 05_project_skill_contract.md ← 衍生技能合約（Model Decision）
     │   ├── 06_memory_push.md            ← 記憶主動推播（Model Decision）
     │   └── 07_mcp_guardrails.md         ← MCP 外部工具防護（Model Decision）
-    ├── workflows/                ← 約 16 道生命週期工作流程
-    │   ├── 00_chat ~ 12_skill_forge ← 主要工作流程（含雙階段建構/修復/提交系列）
+    ├── workflows/                ← 20 個工作流檔案
+    │   ├── 00_chat ~ 12_skill_forge ← 主要工作流程（含建構/修復/提交分階段與例行巡檢）
     │   ├── _completion_gate.md   ← 共用完成閘門
     │   └── _security_footer.md   ← 共用安全閘門
     ├── skills/                   ← 36 套操作型技能（部署時從 Shared/ 注入）

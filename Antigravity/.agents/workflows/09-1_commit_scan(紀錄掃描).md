@@ -1,5 +1,17 @@
 ---
 description: 單純前置掃描與狀態盤點，列出各項結果
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: commit
+  role: analyst
+  memory_awareness: read
+  tool_scope: ["filesystem:read", "git:read", "terminal:read"]
+  human_gate: "GO required before commit or push"
+  automation_safe: false
 ---
 
 # [WORKFLOW: COMMIT SCAN (紀錄掃描)]

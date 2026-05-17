@@ -9,6 +9,7 @@ metadata:
   author: antigravity
   version: "5.2"
   origin: framework
+  kind: operational
   memory_awareness: none
   mcp_servers: [a11y]
   tool_scope: ["mcp:a11y", "browser"]

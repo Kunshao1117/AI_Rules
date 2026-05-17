@@ -1,6 +1,18 @@
 ---
 name: "01-explore-探索"
 description: "由總監觸發，探索新商業想法或技術方向。執行網路研究、扮演魔鬼代言人，產出可行性報告 Artifact。禁止撰寫可執行原始碼。"
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["codex"]
+  lifecycle_phase: explore
+  role: analyst
+  memory_awareness: none
+  tool_scope: ["web:read", "filesystem:read"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # source-command-01-explore-skill

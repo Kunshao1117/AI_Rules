@@ -8,12 +8,19 @@ metadata:
   author: antigravity
   version: "5.1"
   origin: framework
+  kind: operational
   memory_awareness: none
   mcp_servers: [playwright, a11y]
   tool_scope: ["filesystem:read", "browser", "mcp:playwright", "mcp:a11y"]
 ---
 
 # Browser Testing (瀏覽器測試)
+
+## HITL Boundary
+
+- Read-only browser inspection, screenshots, accessibility checks, and test result reporting may proceed silently.
+- Applying browser-subagent proposed code changes, writing files, updating memory, installing packages, pushing commits, or modifying external services requires Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Discovery of browser or MCP tool schemas is not permission to execute mutating tools.
 
 ## Trigger Conditions (觸發條件)
 
@@ -50,8 +57,8 @@ When spawning `browser_subagent`:
 After delegation produces code changes:
 （委派產出程式碼變更後）
 
-1. Master Agent applies proposed changes via Proxy Write
-   （主代理透過代理寫入套用變更）
+1. Master Agent may apply proposed changes via Proxy Write only when the governing workflow is already in a writable phase and Director `GO` has been granted.
+   （主代理只有在可寫階段且已取得 GO 時，才能透過代理寫入套用變更）
 2. Run automated tests if project has them
    （如有自動測試則執行）
 3. **Auto-Pass**: Linter + Tests pass 100% → bypass human review and proceed

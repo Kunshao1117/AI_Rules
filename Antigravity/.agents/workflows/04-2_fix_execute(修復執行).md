@@ -3,6 +3,18 @@ description: 第二階段（共 2 階段）— 授權實體執行已核准的修
 required_skills:
   [memory-ops, security-sre, test-patterns, impact-test-strategy, trunk-ops]
 memory_awareness: full
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: fix
+  role: writer
+  memory_awareness: full
+  tool_scope: ["filesystem:write", "terminal:test", "mcp:cartridge-system"]
+  human_gate: "GO required before writes"
+  automation_safe: false
 ---
 
 # [WORKFLOW: FIX EXECUTE (修復執行)]

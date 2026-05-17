@@ -1,5 +1,17 @@
 ---
 description: 打包日誌與進行遠端推播
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: commit
+  role: sre
+  memory_awareness: read
+  tool_scope: ["filesystem:write", "git:write", "terminal:read"]
+  human_gate: "GO required before changelog write, commit, or push"
+  automation_safe: false
 ---
 
 # [WORKFLOW: COMMIT EXECUTE (授權備份)]
@@ -7,7 +19,7 @@ description: 打包日誌與進行遠端推播
 ## 1. SNAPSHOT_AND_RECORD
 
 [EXECUTE] Parse uncommitted diffs via `git diff`.
-[EXECUTE] Write `CHANGELOG.md` natively in Traditional Chinese based on changes.
+[EXECUTE] Draft a `CHANGELOG.md` entry in Traditional Chinese based on changes. DO NOT write it before GO.
 [CONSTRAINT] DO NOT modify memory card staleness. The scan phase is structurally isolated.
 
 ## 2. PRE_COMMIT_BUFFER
@@ -17,7 +29,7 @@ description: 打包日誌與進行遠端推播
 ## 3. AUTHORIZATION_GATE
 
 [IF-THEN-HALT]
-- 印出擬定的 Commit Message 與變更紀錄。
+- 印出擬定的 Commit Message、明確檔案清單與 CHANGELOG 草稿。
 - Print: "【防線鎖定】準備遠端備份。請輸入 GO 核准備份或要求修改註解。"
 - HALT: SUSPEND GENERATION IMMEDIATELY. Require Director input exactly `GO` to proceed.
 
@@ -27,7 +39,8 @@ description: 打包日誌與進行遠端推播
 > `view_file .agents/skills/github-ops/SKILL.md`
 
 [EXECUTE ONLY UPON GO]
-Run: `git add .`
+Run: write the approved CHANGELOG entry to `CHANGELOG.md`.
+Run: `git add <approved file list including CHANGELOG.md>`
 Run: `git commit -m "{Message}"`
 Run: `git push`
 
@@ -36,7 +49,8 @@ Run: `git push`
 - 維護倉庫根目錄的 `CHANGELOG.md`（Keep a Changelog 格式）
 - 格式：`## [YYYY-MM-DD]` 下分 `### feat` / `### fix` / `### chore` 三類
 - **強制商業語言**：禁止裸露識別符（函式名、變數名），必須用功能模組名稱描述行為
-- 使用 `write_to_file` 或 `replace_file_content` 更新 CHANGELOG.md
+- 只有收到 GO 後才可使用 `write_to_file` 或 `replace_file_content` 更新 CHANGELOG.md
+- 禁止 blanket staging；只能 stage 授權清單內的明確檔案。
 
 範例條目格式：
 ```markdown
@@ -54,4 +68,4 @@ Run: `git push`
 ## [SECURITY & COMPLIANCE MANDATE]
 > Inherits: `.agents/workflows/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Writer/SRE` | 寫入與推送權限
+- **Role**: `Writer/SRE` | CHANGELOG 寫入與授權清單 git 操作權限，不得修改其他來源檔案

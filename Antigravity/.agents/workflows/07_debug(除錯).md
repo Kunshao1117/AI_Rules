@@ -2,6 +2,18 @@
 description: 分析堆疊追蹤與日誌，將技術性故障翻譯為白話的商業影響說明。
 required_skills: [memory-ops, delegation-strategy, code-diagnosis]
 memory_awareness: read
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: debug
+  role: analyst
+  memory_awareness: read
+  tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # [WORKFLOW: DEBUG (除錯)]

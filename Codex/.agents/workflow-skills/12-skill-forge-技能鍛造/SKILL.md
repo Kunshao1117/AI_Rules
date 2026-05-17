@@ -1,6 +1,18 @@
 ---
 name: "12-skill-forge-技能鍛造"
 description: "從健檢發現、除錯方法論或總監指令中萃取可重用模式，建立新的專案衍生技能"
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["codex"]
+  lifecycle_phase: skill-forge
+  role: writer
+  memory_awareness: full
+  tool_scope: ["filesystem:write", "mcp:cartridge-system"]
+  human_gate: "GO required before writes"
+  automation_safe: false
 ---
 
 # source-command-12-skill-forge-skill
@@ -26,7 +38,7 @@ Use this skill when the user asks to run the migrated source command `12_skill_f
 
 ```
 [BACKFILL GATE]
-├── 掃描現有工作流（.Codex/commands/*/SKILL.md）中是否存在重複的操作步驟
+├── 掃描現有工作流（.agents/skills/*/SKILL.md）中是否存在重複的操作步驟
 ├── 若發現可萃取為技能的模式（出現 2+ 次的操作序列）：
 │   └── 列出候選模式，提示總監：「發現可萃取模式 {N} 個，是否一併建立技能？」
 │       ├── YES → 將候選模式加入本次鍛造清單
@@ -78,7 +90,7 @@ user-invocable: false  # 操作型知識庫預設不出現在 / 選單
 
 - 寫入技能至 `.agents/project_skills/<name>/SKILL.md`。
 - 更新 `.agents/project_skills/_index.md` 路由表。
-- 更新 `.Codex/agents/skills/_index.md`（若適用）。
+- 更新 `.agents/skills/_index.md`（若適用）。
 - Report to Director:
   > `[技能鍛造完成] 新技能 <name> 已建立於 .agents/project_skills/<name>/。`
 
@@ -86,7 +98,7 @@ user-invocable: false  # 操作型知識庫預設不出現在 / 選單
 
 ## [SECURITY & COMPLIANCE MANDATE]
 
-> Inherits: `.Codex/commands/_shared/_security_footer.md` (Role Lock Gate)
+> Inherits: `.agents/skills/_shared/_security_footer.md` (Role Lock Gate)
 
 - **Role**: `Writer/SRE` — 僅允許寫入 `.agents/project_skills/` 目錄。
 - **Memory**: full — 更新技能索引。

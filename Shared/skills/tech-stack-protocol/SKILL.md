@@ -10,11 +10,18 @@ metadata:
   author: antigravity
   version: "5.1"
   origin: framework
+  kind: operational
   memory_awareness: full
   tool_scope: ["filesystem:read", "mcp:cartridge-system"]
 ---
 
 # Dynamic Tech Stack Protocol — Full Operating Protocol
+
+## HITL Boundary
+
+- Read-only tech stack discovery, dependency inspection, and MCP schema discovery may proceed silently.
+- Writing `_system` memory, changing dependency files, installing packages, changing MCP config, or calling `memory_commit` requires Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Discovery of memory or MCP tool schemas is not permission to execute mutating tools.
 
 ## 1. Project Exploration (探勘狀態)
 

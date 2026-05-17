@@ -1,6 +1,18 @@
 ---
 name: "00-chat-聊天"
 description: "純對話討論模式 — 腦力激盪、程式碼問答、概念釐清，不涉及深度研究或 Artifact 生成。"
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["codex"]
+  lifecycle_phase: chat
+  role: reader
+  memory_awareness: none
+  tool_scope: ["conversation"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # source-command-00-chat-skill

@@ -2,6 +2,18 @@
 description: 全光譜健檢入口 — 支援完整三階段（08-1→08-2→08-3）或單獨觸發任一階段
 required_skills: [memory-ops, code-audit, audit-engine]
 memory_awareness: full
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: audit
+  role: analyst
+  memory_awareness: full
+  tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # [WORKFLOW: 08_audit — 全光譜健檢入口]

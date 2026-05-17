@@ -2,6 +2,18 @@
 description: 由總監觸發，用於純對話、腦力激盪與程式碼問答，不涉及深度網路研究或複雜 Artifact 生成。
 required_skills: []
 memory_awareness: none
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: chat
+  role: reader
+  memory_awareness: none
+  tool_scope: ["conversation"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # [WORKFLOW: CHAT (討論)]

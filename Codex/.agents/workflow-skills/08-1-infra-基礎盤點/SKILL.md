@@ -1,6 +1,18 @@
 ---
 name: "08-1-infra-基礎盤點"
 description: "健檢第一階段：系統基礎盤點 — 依賴安全掃描、記憶卡拓樸驗證、技能覆蓋率、目錄衛生檢查"
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["codex"]
+  lifecycle_phase: audit
+  role: analyst
+  memory_awareness: read
+  tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # source-command-08-audit-08-1-infra-skill
@@ -40,12 +52,12 @@ npx tsc --noEmit 2>&1
 ## 1.3 Skill Coverage Check (技能覆蓋率)
 
 - 掃描 `.agents/skills/` 目錄，列出所有可用技能。
-- 比對 `.Codex/commands/*/SKILL.md` 的 `required_skills` 欄位。
+- 比對 `.agents/skills/*/SKILL.md` 的 `required_skills` 欄位。
 - 標記有工作流引用但實際不存在的技能（斷鏈技能）。
 
 ## 1.4 Directory Hygiene (.Codex/ 目錄衛生)
 
-- 掃描 `.Codex/commands/` 目錄，確認每個子目錄均有 `SKILL.md`。
+- 掃描 `.agents/workflow-skills/` 目錄，確認每個子目錄均有 `SKILL.md`。
 - 掃描 `.agents/memory/` 目錄，確認格式符合 V5 架構（含 frontmatter）。
 - 偵測 `.agents/project_skills/` 中無對應符號連結的衍生技能。
 
@@ -66,6 +78,6 @@ npx tsc --noEmit 2>&1
 
 ## [SECURITY & COMPLIANCE MANDATE]
 
-> Inherits: `.Codex/commands/_shared/_security_footer.md` (Role Lock Gate)
+> Inherits: `.agents/skills/_shared/_security_footer.md` (Role Lock Gate)
 
 - **Role**: `Reader/Memory` | 唯讀掃描 + memory_list 呼叫，不修改任何原始碼。

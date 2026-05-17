@@ -9,6 +9,7 @@ metadata:
   author: antigravity
   version: "5.3"
   origin: framework
+  kind: operational
   memory_awareness: none
   mcp_servers: [context7]
   tool_scope: ["mcp:context7"]

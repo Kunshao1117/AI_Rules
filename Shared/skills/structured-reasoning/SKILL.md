@@ -8,6 +8,7 @@ metadata:
   author: antigravity
   version: "5.1"
   origin: framework
+  kind: operational
   memory_awareness: none
   mcp_servers: [sequentialthinking]
   tool_scope: ["mcp:sequentialthinking"]

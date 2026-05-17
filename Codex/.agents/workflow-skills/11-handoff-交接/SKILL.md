@@ -1,6 +1,18 @@
 ---
 name: "11-handoff-交接"
 description: "掃描所有記憶卡，彙整當前對話成果，為下一個 AI 對話產出結構化交接提示詞（通用語言，支援 Antigravity 與 Codex Edition）"
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["codex"]
+  lifecycle_phase: handoff
+  role: analyst
+  memory_awareness: full
+  tool_scope: ["filesystem:read", "mcp:read"]
+  human_gate: "none"
+  automation_safe: false
 ---
 
 # source-command-11-handoff-skill

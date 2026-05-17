@@ -2,6 +2,18 @@
 description: 第一階段（共 2 階段）— 載入記憶、生成實作計畫、等待總監核准。支援沙盒模式（快速原型，繞過審查）。核准 GO 後，自動串連 /03-2_build_execute。
 required_skills: [memory-ops, tech-stack-protocol]
 memory_awareness: read
+metadata:
+  author: antigravity
+  version: "2.0"
+  origin: framework
+  kind: workflow
+  platforms: ["gemini"]
+  lifecycle_phase: build
+  role: planner
+  memory_awareness: read
+  tool_scope: ["filesystem:read", "terminal:read"]
+  human_gate: "GO required before writes"
+  automation_safe: false
 ---
 
 # [WORKFLOW: BUILD — PLAN (建構計畫)]

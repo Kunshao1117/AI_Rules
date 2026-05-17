@@ -14,8 +14,8 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → Turn=1 即探測 `.agents/memory/` 記憶庫
 2. **技能孤島** — 每個 Codex 專案各自維護技能 → 36 套共用操作型技能一次部署，統一真實來源
-3. **工作流缺失** — Codex 原生無內建工作流程 → 16 套工作流技能整合至 `.agents/skills/`，無縫觸發
-4. **記憶庫與 Gemini/Claude 分裂** — 三個 AI 各記各的 → `.agents/memory/` 統一記憶庫，三 AI 共用
+3. **工作流缺失** — Codex 原生無內建工作流程 → 17 套工作流技能整合至 `.agents/skills/`，無縫觸發
+4. **記憶庫與 Gemini/Claude 分裂** — 三個 AI 各記各的 → `.agents/memory/` 統一記憶庫，三平台共用
 5. **治理規則模板缺失** → `.codex/AGENTS.md` 提供包含閘門、記憶協議、工作流的完整治理規範
 6. **框架升級風險** — 升級怕覆蓋設定 → D06 安全網 + SHA256 差異比對 + PROJECT IDENTITY 保護
 
@@ -48,7 +48,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 - [模組詳解](#-模組詳解)
   - [部署引擎](#-部署引擎)
   - [治理規則系統](#-治理規則系統)
-  - [技能系統（52 套）](#-技能系統52-套)
+  - [技能系統（53 套）](#-技能系統53-套)
   - [專案記憶系統](#-專案記憶系統)
 - [與其他版本對比](#-與其他版本對比)
 - [版本管理](#-版本管理)
@@ -62,7 +62,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 |------|------|
 | **零接觸部署** | 執行一行安裝指令即完成整套治理生態部署，無需人工逐一設定 |
 | **技能原生整合** | 工作流技能與共用技能合併至 `.agents/skills/`，符合 agentskills.io 標準路徑 |
-| **三 AI 共用記憶** | `.agents/memory/` 為唯一記憶庫，Codex / Gemini / Claude Code 三者共用 |
+| **三平台共用記憶** | `.agents/memory/` 為唯一記憶庫，Codex / Gemini / Claude Code 三者共用 |
 | **輕量治理規則** | 所有治理規範收錄於單一 `.codex/AGENTS.md`，無需多檔案載入機制 |
 | **技能即工作流** | Codex 透過技能觸發 `$skill-name`，工作流與操作型技能統一在同一目錄 |
 | **升級保護** | PROJECT IDENTITY 保護機制：升級後自動還原使用者自訂的專案身份區段 |
@@ -84,8 +84,8 @@ graph TB
 
     subgraph "目標專案（部署後）"
         CODEX[".codex/AGENTS.md<br/>治理規則"]
-        SKILLS[".agents/skills/<br/>52 套（36 共用 + 16 工作流）"]
-        MEM[".agents/memory/<br/>三 AI 共用記憶庫"]
+        SKILLS[".agents/skills/<br/>53 套（36 共用 + 17 工作流）"]
+        MEM[".agents/memory/<br/>三平台共用記憶庫"]
         PROJ[".agents/project_skills/<br/>衍生技能（升級保護）"]
     end
 
@@ -105,21 +105,21 @@ graph TB
 
 **腳本**: `Scripts/Deploy.ps1 -Platform Codex`（統一部署引擎，核心邏輯位於 `Scripts/modules/Platform-Codex.psm1`）
 
-負責將 `.codex/` 治理規則與 52 套技能部署到目標專案。所有 PowerShell 程式碼均配備完整的繁體中文行內說明，三個平台部署能力完全對等。
+負責將 `.codex/` 治理規則與 53 套技能部署到目標專案。所有 PowerShell 程式碼均配備完整的繁體中文行內說明，三個平台部署能力完全對等。
 
 #### 兩種部署模式
 
 | 模式 | 觸發條件 | 行為 |
 |------|---------|------|
-| **Fresh** | 專案無 `.codex/` 目錄 | D06 安全網備份記憶 → 部署 `.codex/` 治理規則 → 注入 36 套共用技能 → 合併 16 套工作流技能 → 建立基礎設施 → 寫入版本檔 → 還原記憶 |
+| **Fresh** | 專案無 `.codex/` 目錄 | D06 安全網備份記憶 → 部署 `.codex/` 治理規則 → 注入 36 套共用技能 → 合併 17 套工作流技能 → 建立基礎設施 → 寫入版本檔 → 還原記憶 |
 | **Upgrade** | 專案已有 `.codex/` 目錄 | 掃描 `.codex/` 差異 → 彩色報告 → 顯示 CHANGELOG → 確認閘門 → 套用 `.codex/` 變更 → 差異注入技能更新 |
 
 #### 技能部署兩步驟
 
 ```
 Step 1: Shared/skills/ → .agents/skills/    （36 套共用技能）
-Step 2: workflow-skills/ → .agents/skills/  （16 套工作流技能）
-合計部署：52 套技能
+Step 2: workflow-skills/ → .agents/skills/  （17 套工作流技能）
+合計部署：53 套技能
 ```
 
 #### 安全防護
@@ -153,7 +153,7 @@ Codex Edition 採用單一規則檔設計，所有治理規範集中於 `AGENTS.
 
 ---
 
-### 🎯 技能系統（52 套）
+### 🎯 技能系統（53 套）
 
 **目錄**: `.agents/skills/`（部署後）
 
@@ -163,7 +163,7 @@ Codex Edition 採用單一規則檔設計，所有治理規範集中於 `AGENTS.
 
 與 Antigravity 和 Claude Edition 完全同步，涵蓋記憶操作、品質約束、測試策略、MCP 操作食譜、代碼知識圖譜等完整分類。詳見 [Antigravity/README.md](../Antigravity/README.md) 的技能表格。
 
-#### 工作流技能（14 套）—— 源自 `Codex/.agents/workflow-skills/`
+#### 工作流技能（17 套）—— 源自 `Codex/.agents/workflow-skills/`
 
 | 技能目錄 | 觸發方式 | 功能 |
 |---------|---------|------|
@@ -180,7 +180,8 @@ Codex Edition 採用單一規則檔設計，所有治理規範集中於 `AGENTS.
 | `08-1-infra-基礎盤點/` | `$08-1-infra-基礎盤點` | 基礎設施掃描（ESLint、套件安全、型別檢查） |
 | `08-2-logic-深度邏輯/` | `$08-2-logic-深度邏輯` | 語義邏輯審查（安全架構、API 串接比對） |
 | `08-3-report-健檢總結/` | `$08-3-report-健檢總結` | 健檢報告生成 |
-| `09-commit-紀錄總結/` | `$09-commit-紀錄總結` | 授權備份：掃描 → CHANGELOG 更新 → GO → git commit + push |
+| `09-commit-紀錄總結/` | `$09-commit-紀錄總結` | 授權備份：掃描 → CHANGELOG 草稿 → GO → 更新 CHANGELOG + 明確清單 commit/push |
+| `10-routine-巡檢/` | `$10-routine-巡檢` | automation-safe 例行巡檢：技能品質、文件數字、記憶過期、MCP 設定健康 |
 | `11-handoff-交接/` | `$11-handoff-交接` | 掃描記憶卡，產出結構化交接文件 |
 | `12-skill-forge-技能鍛造/` | `$12-skill-forge-技能鍛造` | 從工作實踐中提煉可複用技能 |
 | `_shared/` | — | 共用閘門（完成閘門 + 安全閘門） |
@@ -231,12 +232,12 @@ graph TD
 | **規則載入** | `.agents/rules/` 9 個（IDE 注入） | `CLAUDE.md` @import 6 個模組 | `.codex/AGENTS.md` 單一規則檔 |
 | **工作流觸發** | `.agents/workflows/` IDE 注入 | `.claude/commands/` Slash Command | `.agents/skills/` `$skill-name` |
 | **計畫模式** | `task_boundary` 呼叫 | Claude Code 原生 Plan Mode | 文字描述「進入規劃階段」 |
-| **子代理人** | `browser_subagent` / Gemini CLI | `Agent` 工具 | N/A（平台原生） |
+| **子代理人** | `browser_subagent` / Gemini CLI | `Agent` 工具 | Codex subagents（唯讀優先，主代理整合） |
 | **任務追蹤** | scratchpad Artifact | `TodoWrite` 清單 | 對話中維護任務清單 |
 | **記憶啟動** | D7 Push 三路徑探測 | Turn=1 啟動探測協議 | Turn=1 cartridge-system 探測 |
 | **記憶位置** | `.agents/memory/` | `.agents/memory/`（共用） | `.agents/memory/`（**三者共用**） |
-| **技能來源** | Shared/ 36 套 | Shared/ 36 套 | Shared/ 36 套 + workflow-skills/ 16 套 |
-| **技能總數** | 36 套 | 36 套 | **52 套** |
+| **技能來源** | Shared/ 36 套 | Shared/ 36 套 | Shared/ 36 套 + workflow-skills/ 17 套 |
+| **技能總數** | 36 套 | 36 套 | **53 套** |
 
 ---
 
@@ -259,7 +260,7 @@ graph TD
 │   │                                 ↑ 包含 PROJECT IDENTITY 保護區段（使用者自訂，升級保留）
 │   └── config.toml                ← 專案層 Codex 設定（project_doc_fallback_filenames）
 └── .agents/
-    ├── skills/                    ← 52 套技能（36 共用 + 16 工作流，扁平結構）
+    ├── skills/                    ← 53 套技能（36 共用 + 17 工作流，扁平結構）
     │   ├── _index.md              ← 技能路由表
     │   ├── memory-ops/            ← 記憶操作指引
     │   ├── code-quality/          ← 品質約束
@@ -269,7 +270,8 @@ graph TD
     │   ├── 08-1-infra-基礎盤點/   ← 健檢子技能（基礎設施）
     │   ├── 08-2-logic-深度邏輯/   ← 健檢子技能（邏輯審查）
     │   ├── 08-3-report-健檢總結/  ← 健檢子技能（報告）
-    │   └── ...（共 52 套）
+    │   ├── 10-routine-巡檢/       ← automation-safe 例行巡檢
+    │   └── ...（共 53 套）
     ├── memory/                    ← 專案記憶卡（跨平台共用，升級受保護）
     │   └── (由 AI 執行 $02-blueprint-架構 初始化)
     ├── project_skills/            ← 衍生技能（專案特有，升級受保護）
@@ -292,7 +294,7 @@ Codex/
 │   ├── AGENTS.md                  ← 專案層治理規則源碼（哨兵檔）
 │   └── config.toml                ← 專案層 Codex 設定（project_doc_fallback_filenames）
 └── .agents/
-    └── workflow-skills/           ← 16 套工作流技能源碼（扁平結構）
+    └── workflow-skills/           ← 17 套工作流技能源碼（扁平結構）
         ├── _shared/
         │   ├── _completion_gate.md
         │   └── _security_footer.md
