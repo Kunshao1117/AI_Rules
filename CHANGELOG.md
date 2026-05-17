@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 
 ### docs
 - **CMD 相容入口** — 根 README 新增 `cmd.exe` wrapper 指令，讓非 PowerShell 終端也能啟動 Antigravity 管理控制台。
+- **通用 Shell 管理控制台入口** — 管理控制台 wrapper 改為 `-EncodedCommand`，避免使用者在 PowerShell 中貼上 CMD 範例時，外層 Shell 提前展開 `$` 變數造成 ParserError。
 
 ## [2026-05-17] Antigravity 遠端管理控制台啟動修復
 

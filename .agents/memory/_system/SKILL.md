@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-17T19:53:40+08:00'
+last_updated: '2026-05-17T20:12:34+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -55,7 +55,7 @@ metadata:
 - **D17: 部署腳本三項缺陷修復 (2026-05-13)**: (1) `Core.psm1` `Restore-ProtectedDirs` 的 `Copy-Item` 改為 `"$($Backup.*)\*"` 語意，防止備份目錄被嵌套複製進記憶目錄；(2) 根 `.gitignore` 加入 `!Codex/.codex/` 例外，確保 Codex 框架源碼可被 git 追蹤並出現在 GitHub ZIP；(3) 三個平台模組（Antigravity/Claude/Codex）的 `Sync-SharedSkills` 與 `Merge-WorkflowSkills` 回傳值統一以 `$null =` 吸收，消除終端機輸出噪音。
 - **D18: Gateway 顯式路徑與工具分級 (2026-05-17)**: Multi-MCP Gateway 成為下游 MCP 的統一真實執行入口。探索工具只查 schema；真實呼叫必須使用 `gateway__call_tool` 並顯式帶 `workspace`。cartridge-system 下游參數必須同步帶 `projectRoot`，避免依賴全域 workspace 狀態；`memory_commit` 歸類為會寫檔的高風險歸卡工具。
 - **D19: Antigravity 遠端管理控制台啟動修復 (2026-05-17)**: `Antigravity/install.ps1` 的 `Mode` 參數驗證補入 `Menu`，恢復 README 公開的一鍵管理控制台指令；同步於 CHANGELOG 記錄此回歸修復。
-- **D20: 公開安裝入口相容性升級 (2026-05-17)**: 公開 README 指令改為 raw bytes 下載、UTF-8 解碼、UTF-8 BOM 暫存寫入後再執行，避免 Windows PowerShell 5.1 中文環境將遠端腳本誤判為 ANSI/Big5；部署腳本本體統一保存為 UTF-8 with BOM，並新增 CMD wrapper 入口。
+- **D20: 公開安裝入口相容性升級 (2026-05-17)**: 公開 README 指令改為 raw bytes 下載、UTF-8 解碼、UTF-8 BOM 暫存寫入後再執行，避免 Windows PowerShell 5.1 中文環境將遠端腳本誤判為 ANSI/Big5；部署腳本本體統一保存為 UTF-8 with BOM，管理控制台通用 wrapper 改用 `powershell.exe -EncodedCommand`，避免外層 Shell 提前展開 `$` 變數。
 
 ## Known Issues
 
@@ -71,6 +71,7 @@ metadata:
 - **D06: Fresh 模式的雙保險 (Memory Survival Guarantee)**: 在設計覆寫式或備份與還原的腳本時，若執行過程中遭遇例外（如命令錯誤或人為中止），所有已經移至暫存區的記憶檔案將面臨物理遺失的風險。**強制規範**：所有涉及重要核心組件備份的還原運算，必須完全建立於 `try/finally` 安全網內，確保邏輯崩潰時，`finally` 區塊能無條件順利執行資產還原。
 - **D07: Gateway schema 探索不等於工具測試**: `gateway__search_tools` / `gateway__list_server_tools` 只能確認工具名稱與參數結構；要宣稱下游 MCP 已實測，必須透過 `gateway__call_tool` 執行。
 - **D08: 公開 PowerShell 腳本需防 UTF-8 無 BOM 陷阱**: 含中文註解或輸出的 `.ps1` 若以 UTF-8 無 BOM 從 GitHub raw 下載，Windows PowerShell 5.1 可能用系統 ANSI code page 解析並造成字串截斷；公開入口必須強制 UTF-8 BOM 暫存寫入。
+- **D09: 巢狀 PowerShell 指令避免裸 `$` 變數**: 若文件提供 `powershell.exe -Command "..."` 形式的 wrapper，使用者在 PowerShell 外層貼上時會先展開內層 `$wc`、`$bytes`、`$text` 等變數，導致第二層 PowerShell 收到壞語法；跨 Shell 公開入口應使用 `-EncodedCommand` 或明確分流。
 
 ## Documentation Files
 
