@@ -32,11 +32,27 @@ npm run package
 
 ## 設定
 
-若延伸模組無法自動找到 AI_Rules repo，請設定：
+延伸模組會依序尋找 AI_Rules 來源：
+
+1. 明確設定的 `aiRules.repoRoot`。
+2. 目前開啟的 workspace 若本身就是 AI_Rules repo。
+3. VS Code 全域儲存目錄中的 AI_Rules 管理快取。
+
+在其他專案第一次使用時，若尚未建立管理快取，延伸模組會詢問是否從 `aiRules.repoUrl` clone 一份 AI_Rules repo。之後會用該 repo 執行管理腳本，並把目前開啟的專案作為治理目標。
+
+若要固定使用已存在的本機 AI_Rules repo，請設定：
 
 ```json
 {
   "aiRules.repoRoot": "D:\\AI_Rules"
+}
+```
+
+若要改用 fork 或內部鏡像來源，請設定：
+
+```json
+{
+  "aiRules.repoUrl": "https://github.com/Kunshao1117/AI_Rules.git"
 }
 ```
 

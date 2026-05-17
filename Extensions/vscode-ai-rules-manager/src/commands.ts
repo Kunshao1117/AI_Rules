@@ -49,7 +49,7 @@ async function run(
     status.setBusy(`AI Rules: ${label}`);
     panel.setStatus(`${label}執行中...`);
     const output = await runner.run(action, options);
-    if (/偵測到遠端更新|Yellow|規則與 source 不同|待授權|有差異/.test(output)) {
+    if (needsAttention(output)) {
       status.setWarning("AI Rules: 需要處理");
       panel.setStatus(`${label}完成：需要處理`);
     } else {
@@ -67,4 +67,16 @@ async function run(
 async function confirm(message: string): Promise<boolean> {
   const answer = await vscode.window.showWarningMessage(message, { modal: true }, "確認執行");
   return answer === "確認執行";
+}
+
+function needsAttention(output: string): boolean {
+  return /狀態：偵測到遠端更新/.test(output)
+    || hasPositiveCounter(output, "Yellow")
+    || hasPositiveCounter(output, "Red")
+    || /規則與 source 不同|待授權|有差異/.test(output);
+}
+
+function hasPositiveCounter(output: string, label: "Yellow" | "Red"): boolean {
+  const match = output.match(new RegExp(`${label}[：:]\\s*(\\d+)`));
+  return match ? Number.parseInt(match[1], 10) > 0 : false;
 }

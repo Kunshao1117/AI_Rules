@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-18T00:46:02+08:00'
+last_updated: '2026-05-18T01:33:49+08:00'
 staleness: 0
 status: stable
 metadata:

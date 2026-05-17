@@ -2,10 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2026-05-18] VS Code 管理器相容性修復
+## [2026-05-18] VS Code 管理器相容性與跨專案支援
+
+### feat
+- **VS Code 管理入口強化** — 支援跨專案自動建立 AI_Rules 管理快取，讓一般專案也能直接使用側邊欄治理操作。
+- **VS Code 插件產品圖** — 新增 Marketplace / VSIX 顯示用產品圖，並保留 Activity Bar 專用圖示。
 
 ### fix
 - **Windows PowerShell 5.1 相容** — 管理器後端腳本固定為 UTF-8 with BOM，避免 VS Code extension 預設 `powershell.exe` 解析中文輸出時失敗。
+- **VS Code 狀態判斷修正** — 避免把「無更新」或零值健康檢查結果誤判為需要處理。
 
 ## [2026-05-17] 總監可讀輸出契約
 

@@ -2,7 +2,7 @@
 name: _vscode_extension
 description: AI_Rules VS Code 延伸模組與按鈕式管理入口。追蹤側邊欄 UI、命令註冊、PowerShell 腳本橋接與 VSIX 打包設定。
 scopePath: Extensions/vscode-ai-rules-manager
-last_updated: '2026-05-18T00:30:33+08:00'
+last_updated: '2026-05-18T01:28:24+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -25,6 +25,7 @@ metadata:
 - Extensions/vscode-ai-rules-manager/.vscodeignore
 - Extensions/vscode-ai-rules-manager/README.md
 - Extensions/vscode-ai-rules-manager/resources/ai-rules.svg
+- Extensions/vscode-ai-rules-manager/resources/icon.png
 - Extensions/vscode-ai-rules-manager/src/extension.ts
 - Extensions/vscode-ai-rules-manager/src/panel.ts
 - Extensions/vscode-ai-rules-manager/src/commands.ts
@@ -40,6 +41,9 @@ metadata:
 - **Webview 指令白名單 (2026-05-17)**: 側邊欄只接受 6 個已註冊的 `aiRules.*` 命令，避免 Webview message 直接觸發任意 VS Code command。
 - **孤兒清理保護 (2026-05-17)**: `CleanupOrphans` 只刪除差異報告列出的孤兒檔案；實際刪除前由 `Core.psm1` 驗證路徑仍在目標根目錄內，且跳過 `.agents/memory/` 與 `.agents/project_skills/`。
 - **Windows PowerShell 5.1 腳本編碼相容 (2026-05-18)**: `Scripts/AI-RulesManager.ps1` 必須保存為 UTF-8 with BOM，因 VS Code extension 預設以 `powershell.exe` 執行；若改成 UTF-8 無 BOM，含中文與框線輸出的腳本會在 Windows PowerShell 5.1 被誤解碼並造成 ParserError。
+- **狀態判斷必須精準比對 (2026-05-18)**: extension 不可用寬鬆關鍵字判斷治理狀態；`未偵測到遠端更新` 與 `Yellow：0` / `Red：0` 都是 OK 狀態，只有遠端更新完整狀態行或紅黃燈數量大於 0 才顯示需要處理。
+- **跨專案來源使用 Git managed clone (2026-05-18)**: extension 不應要求每個專案都包含 `Scripts/AI-RulesManager.ps1`，也不應硬編碼 `D:\AI_Rules`；解析順序為明確 `aiRules.repoRoot`、目前 workspace AI_Rules repo、最後是 VS Code 全域儲存中的 AI_Rules managed clone。managed clone 第一次建立必須經使用者確認，來源由 `aiRules.repoUrl` 決定。
+- **Marketplace 產品圖與 Activity Bar 圖示分離 (2026-05-18)**: `resources/icon.png` 作為 VS Code extension manifest 的產品圖，`resources/ai-rules.svg` 繼續作為 Activity Bar 單色圖示，避免 marketplace 視覺資產與側邊欄 glyph 混用。
 
 ## Known Issues
 
@@ -48,9 +52,12 @@ metadata:
 
 ## Module Lessons
 
-- **延伸模組不應內建框架副本**：AI_Rules repo 仍是唯一真實來源；extension 只尋找 workspace 或設定中的 repo root，然後呼叫 repo 內腳本。
+- **延伸模組不應內建框架副本**：AI_Rules repo 仍是唯一真實來源；extension 可使用 workspace、明確設定或 Git managed clone 找到 repo root，然後呼叫 repo 內腳本。
 - **PowerShell bridge 是公共介面**：VS Code extension、手動 CLI、未來其他平台入口都應呼叫 `AI-RulesManager.ps1`，不要各自重寫治理流程。
 - **D01: VS Code bridge 腳本需固定 BOM**：只要 extension 預設仍支援 Windows PowerShell 5.1，含非 ASCII 輸出的 `.ps1` 應以 UTF-8 with BOM 保存，不能只用 PowerShell 7 成功作為驗收標準。
+- **D02: UI 狀態不可只靠片段字串**：若 CLI 輸出包含否定句或零值計數，extension 必須判斷完整語意或數值，避免把健康狀態誤標為需要處理。
+- **D03: 跨專案使用需分離來源與目標**：`RepoRoot` 代表 AI_Rules 框架來源，可由 Git managed clone 提供；`Target` 代表目前開啟的專案，兩者不可混用或用本機硬編碼路徑替代。
+- **D04: VS Code manifest 圖示需使用獨立產品圖**：`package.json` 的 `icon` 欄位應指向方形 PNG 產品圖；Activity Bar 仍使用 SVG glyph，兩者服務不同尺寸與呈現場景。
 
 ## Relations
 
