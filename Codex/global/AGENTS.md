@@ -23,8 +23,13 @@ If the project is uninitialized, execute WITHOUT halting for Director's permissi
 
 ```powershell
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$u = 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1'
 $f = "$env:TEMP\ag_codex_install.ps1"
-irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1' -OutFile $f
+$wc = New-Object Net.WebClient
+$bytes = $wc.DownloadData($u)
+$text = [Text.Encoding]::UTF8.GetString($bytes)
+$text = $text.TrimStart([char]0xFEFF)
+[IO.File]::WriteAllText($f, $text, (New-Object Text.UTF8Encoding $true))
 & $f -Target (Get-Location).Path
 Remove-Item $f
 ```
@@ -38,8 +43,13 @@ When the Director explicitly requests an upgrade (e.g., "升級框架", "更新�
 
 ```powershell
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$u = 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1'
 $f = "$env:TEMP\ag_codex_install.ps1"
-irm 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1' -OutFile $f
+$wc = New-Object Net.WebClient
+$bytes = $wc.DownloadData($u)
+$text = [Text.Encoding]::UTF8.GetString($bytes)
+$text = $text.TrimStart([char]0xFEFF)
+[IO.File]::WriteAllText($f, $text, (New-Object Text.UTF8Encoding $true))
 & $f -Target (Get-Location).Path -Mode Upgrade
 Remove-Item $f
 ```

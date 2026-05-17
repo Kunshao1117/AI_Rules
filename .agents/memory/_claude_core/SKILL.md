@@ -2,7 +2,7 @@
 name: _claude_core
 description: Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Claude/
-last_updated: '2026-05-17T17:50:19+08:00'
+last_updated: '2026-05-17T19:53:47+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -61,6 +61,7 @@ metadata:
 - **README.md 全面更新 (2026-05-11)**: 完成 Claude Edition README 五項修訂：(1) 架構圖從 `Deploy-Claude.ps1` 改為 `Scripts/Deploy.ps1 -Platform Claude`，規則數 6→7，指令數 12→13，補入 `Shared/skills/` 節點；(2) 部署段落改指統一引擎；(3) 工作流表格補入 `/05_condense` 列；(4) 目錄結構移除已廢除的 `.claude/scripts/`（4 支腳本），補入 `global/CLAUDE.md`、第 7 條規則（`project-skill-contract.md`）、`05_condense` 和 `_shared` 指令；(5) 修正 `08_audit(除錯)` 錯字為 `08_audit(健檢)`，比較表規則數改 7 個模組，工作流數改 13 道。
 - **文檔與殘留狀態同步 (2026-05-12)**: 更新 Claude Edition README 說明並移除不必要的殘留檔追蹤，保持版控乾淨。
 - **Gateway 規範同步 (2026-05-17)**: `mcp-guardrails.md` 新增 Gateway 執行合約，`memory-contract.md` 補入 cartridge-system 顯式 `workspace` / `projectRoot` 規則與 `memory_commit` 高風險邊界；README 同步說明唯讀治理工具與歸卡工具分級。
+- **公開安裝入口相容性升級 (2026-05-17)**: Claude README、全域 CLAUDE bootstrapper 與 `Claude/install.ps1` 改用 UTF-8 raw bytes 下載與 BOM 暫存寫入策略；installer 補入 `#Requires -Version 5.1` 並保存為 UTF-8 with BOM。
 
 ## Known Issues
 
@@ -69,6 +70,7 @@ metadata:
 ## Module Lessons
 
 - **Claude 規則需同步 Gateway 語意**：Claude 版雖以 @import 載入規則，但 MCP/Gateway 約束必須與 Antigravity/Codex 對等，避免同一記憶庫在不同 AI 下有不同安全邊界。
+- **Claude 全域 bootstrapper 也屬公開入口**：除了 README，`Claude/global/CLAUDE.md` 內的自動安裝程式碼也必須採用相同相容下載策略，否則新機器仍會在 Windows PowerShell 5.1 中文環境踩到編碼錯誤。
 
 ## Applicable Skills
 

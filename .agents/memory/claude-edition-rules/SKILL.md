@@ -5,7 +5,7 @@ description: >
   AI 共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改 Claude/.claude/rules/ 或
   Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-17T19:15:50+08:00'
+last_updated: '2026-05-17T19:53:58+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -83,6 +83,7 @@ metadata:
 - **D16: 部署引擎三項缺陷修復 (2026-05-13)**: (1) `Core.psm1` `Restore-ProtectedDirs` 的 `Copy-Item` 改為 `\*` 語意，修復之前發現但未修的 D05 Module Lesson 問題在 `Restore-ProtectedDirs` 的遺留；(2) 根 `.gitignore` 加入 `!Codex/.codex/` 例外，確保 Codex 框架源碼可被 git 追蹤；(3) 三個平台模組的 `Sync-SharedSkills` 與 `Merge-WorkflowSkills`（Fresh + Upgrade 共 7 處）一律以 `$null = ` 吸收回傳值，消除終端機輸出噪音。
 - **D17: Gateway 與記憶工具規範對等 (2026-05-17)**: Claude 規則層同步 Antigravity/Codex 的 Gateway 合約，要求真實下游 MCP 呼叫使用 `gateway__call_tool` 並顯式帶 `workspace`，cartridge-system 參數顯式帶 `projectRoot`；`memory_commit` 歸為高風險寫入工具。
 - **D18: Antigravity 遠端管理控制台啟動修復 (2026-05-17)**: `Antigravity/install.ps1` 的 `Mode` 參數驗證補入 `Menu`，恢復 README 公開的一鍵管理控制台指令；Claude 規則層無需額外行為變更，但需記錄雙引擎共用啟動器追蹤檔的回歸修復。
+- **D19: 公開安裝入口相容性升級 (2026-05-17)**: 統一部署引擎與三平台啟動器保存為 UTF-8 with BOM；README 與全域 bootstrapper 改為 UTF-8 raw bytes 下載後 BOM 暫存寫入，確保 Claude/Antigravity/Codex 共用部署腳本在 Windows PowerShell 5.1 中文環境可解析。
 
 ## Known Issues
 
@@ -99,6 +100,7 @@ metadata:
 - **D06: SymbolicLink 在 Windows 需要 Developer Mode**: `New-Item -ItemType SymbolicLink` 在無 Developer Mode 的標準 Windows 環境靜默失敗。降級方案：先嘗試 SymbolicLink，失敗後 `Test-Path` 驗證，再嘗試 Junction（目錄連結，不需要特殊權限）。
 - **D07: Gateway schema 探索不等於下游執行**: `gateway__search_tools` / `gateway__list_server_tools` 只能確認 schema；要驗證 cartridge-system、GitHub、Sentry 等下游 MCP，必須透過 `gateway__call_tool`。
 - **D08: Installer 文件化模式必須納入 ValidateSet**: 啟動器內部即使有分支，若 PowerShell `ValidateSet` 未列入該模式，遠端單行指令仍會在參數綁定階段失敗。
+- **D09: 統一部署引擎編碼是跨平台公共契約**: `Scripts/Deploy.ps1` 與 modules 被三平台 installer 共同載入，若其中任一檔含中文但不是 UTF-8 BOM，舊版 Windows PowerShell 仍可能在 import 階段失敗。
 
 ## Relations
 

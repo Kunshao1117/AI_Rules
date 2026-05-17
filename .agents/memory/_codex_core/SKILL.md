@@ -4,7 +4,7 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.0）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-17T17:50:19+08:00'
+last_updated: '2026-05-17T19:53:50+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -64,6 +64,7 @@ metadata:
 - **文檔與殘留狀態同步 (2026-05-12)**: 移除 `.codex/AGENTS.md` 與其他無效檔案的 git 追蹤，完成 README.md 與框架整體的同步與修正。
 - **未歸屬檔案歸卡 (2026-05-13)**: 將 `Codex/.gitignore` 及 `_shared` 共用閘門腳本 (`_completion_gate.md`, `_security_footer.md`) 納入 `_codex_core` 追蹤清單，消除幽靈檔案。
 - **Gateway 規範同步 (2026-05-17)**: `.codex/AGENTS.md` 補入 Multi-MCP Gateway 顯式路徑規則，要求下游 MCP 真實呼叫使用 `gateway__call_tool`，cartridge-system 參數帶 `projectRoot`；README 同步標示唯讀治理工具與 `memory_commit` 高風險歸卡邊界。
+- **公開安裝入口相容性升級 (2026-05-17)**: Codex README、全域 AGENTS bootstrapper 與 `Codex/install.ps1` 改用 UTF-8 raw bytes 下載與 BOM 暫存寫入策略；installer 補入 `#Requires -Version 5.1` 並保存為 UTF-8 with BOM。
 
 
 ## Known Issues
@@ -76,6 +77,7 @@ metadata:
 - **工作流技能觸發方式**: Codex 工作流技能支援語意觸發（描述意圖）與精確觸發（`$<skill-name>`）。精確觸發使用完整技能名稱，例如 `$03-build-建構`。
 - **config.toml 不覆寫保護**: `Deploy.ps1 -Action Global` 對 `~/.codex/config.toml` 採用補入策略而非覆寫，避免損毀使用者現有設定。
 - **Codex 單檔規則需寫入工具分級**: Codex 無 @import，Gateway 與記憶卡風險邊界必須直接寫在 `.codex/AGENTS.md`，否則下游 Codex 專案不會取得完整 MCP 操作規範。
+- **Codex 全域 bootstrapper 必須可被舊版 PowerShell 解析**: `Codex/global/AGENTS.md` 會在新專案冷啟動時執行遠端 installer，因此下載流程不能依賴 `irm` alias 或 UTF-8 無 BOM 暫存檔。
 
 ## Relations
 

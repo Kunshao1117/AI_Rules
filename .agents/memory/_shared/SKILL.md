@@ -4,7 +4,7 @@ description: >
   Shared/skills/ 技能共用庫記憶卡。追蹤 36 套操作型技能的唯一真實來源目錄。 部署時由 Skills-Sync.psm1 注入
   Antigravity、Claude、Codex 三個平台。 Use when: 修改任何操作型技能時。
 scopePath: Shared/
-last_updated: '2026-05-17T17:49:52+08:00'
+last_updated: '2026-05-17T19:53:54+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -121,6 +121,7 @@ metadata:
 - **Merge-WorkflowSkills 嵌套 Bug 修復 (2026-05-11)**: `Scripts/modules/Skills-Sync.psm1` 中 `Merge-WorkflowSkills` 函式的目錄複製邏輯修復。原始碼 `Copy-Item $sourceDir $existingDir -Recurse -Force` 在目標目錄已存在時將來源複製「進入」目標，造成 `03_build/03_build/SKILL.md` 嵌套結構（Fresh 安裝正確，第二次 Upgrade 後損壞）。修正後改為 `Copy-Item (Join-Path $_.FullName "*") $destDir -Recurse -Force`，複製目錄內容而非目錄本身。
 - **記憶卡依賴語義補強 (2026-05-14)**: `memory-ops`、`memory-arch`、`code-audit`、`audit-engine`、`impact-test-strategy` 已明確區分 frontmatter `dependencies`、`## Relations`、`## Applicable Skills`。`dependencies` 僅代表會觸發依賴圖、間接過期傳播、循環偵測與 `memory_deps` 的系統級依賴；父子卡、導覽關係、建議閱讀與技能建議應寫入 `Relations` 或 `Applicable Skills`，不得為補足脈絡而濫加 dependencies。
 - **Gateway 工具呼叫語義補強 (2026-05-17)**: `memory-ops` 補入 Multi-MCP Gateway 合約，規定探索工具僅查 schema，真實下游 MCP 執行必須使用 `gateway__call_tool`，且 cartridge-system 呼叫需同時顯式提供 `workspace` 與 `projectRoot`。`memory-arch` 同步標明 `memory_commit` 靜態收容特權仍只限歸卡階段；`code-audit` Gateway 對照表同步補上「探索不等於執行」警語。
+- **公開安裝入口相容性升級 (2026-05-17)**: `Scripts/modules/Skills-Sync.psm1` 隨統一部署引擎保存為 UTF-8 with BOM，避免三平台部署時在 Windows PowerShell 5.1 中文環境 import 共用技能同步模組失敗。
 
 ## Known Issues
 
@@ -131,6 +132,7 @@ metadata:
 - **修改技能只需改 Shared/ 一處**：不需要手動同步到各平台。執行 `Scripts/Deploy.ps1 -Platform All -Action Sync` 或各平台 Upgrade 部署時自動注入。
 - **dependencies 寫入前必問過期傳播問題**：若上游卡過期時本卡不需要重檢，該關係應放在 `## Relations`；若只是操作建議，應放在 `## Applicable Skills`。
 - **memory_commit 是高風險歸卡工具**：討論、規劃、盤點、讀取測試階段不得呼叫；只有在 SKILL.md 已更新且進入歸卡階段時才能呼叫。
+- **共用同步模組也需要編碼相容**：即使 README 指令已做 BOM 暫存，`Scripts/modules/*.psm1` 仍會在解壓後被 PowerShell import；含中文輸出的模組必須以 UTF-8 with BOM 保存。
 
 ## Relations
 

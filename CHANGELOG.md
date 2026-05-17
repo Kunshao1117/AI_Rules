@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-17] 公開安裝入口相容性升級
+
+### fix
+- **Windows PowerShell 5.1 中文環境相容** — 公開安裝指令改為下載 raw bytes、以 UTF-8 解碼並用 UTF-8 BOM 寫入暫存腳本，避免舊版 PowerShell 將中文腳本誤判為 ANSI/Big5。
+- **部署腳本編碼標準化** — 三平台遠端啟動器與統一部署引擎腳本統一保存為 UTF-8 with BOM，提升 PowerShell 5.1 與 PowerShell 7 解析穩定性。
+
+### docs
+- **CMD 相容入口** — 根 README 新增 `cmd.exe` wrapper 指令，讓非 PowerShell 終端也能啟動 Antigravity 管理控制台。
+
 ## [2026-05-17] Antigravity 遠端管理控制台啟動修復
 
 ### fix

@@ -2,7 +2,7 @@
 name: _ag_core
 description: Antigravity 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Antigravity/
-last_updated: '2026-05-17T19:14:07+08:00'
+last_updated: '2026-05-17T19:53:44+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -73,6 +73,7 @@ metadata:
 - **遠端一鍵管理機制 (2026-05-13)**: 強化 `Antigravity/install.ps1` 支援 `-Mode Menu`，允許使用者透過 README 上的單行指令直接啟動框架管理控制台，廢除本地捷徑 `manage.ps1` 的依賴。
 - **Gateway 規範同步 (2026-05-17)**: `07_mcp_guardrails.md` 新增 Gateway 執行合約，明確要求真實下游 MCP 執行使用 `gateway__call_tool` 且顯式帶 `workspace`；`03_memory_skill_contract.md` 補入 cartridge-system 的 `projectRoot` 路徑紀律與 `memory_commit` 高風險邊界；README 同步改寫 Gateway + cartridge-system 模型。
 - **`-Mode Menu` 參數驗證修復 (2026-05-17)**: `Antigravity/install.ps1` 的 `ValidateSet` 補入 `Menu`，讓 README 遠端管理控制台指令能進入既有選單分支，而不再被 PowerShell 參數驗證提前拒絕。
+- **公開安裝入口相容性升級 (2026-05-17)**: Antigravity README 與全域 GEMINI bootstrapper 改用 UTF-8 raw bytes 下載與 BOM 暫存寫入流程；`Antigravity/install.ps1` 保存為 UTF-8 with BOM，並提供 CMD wrapper 啟動管理控制台。
 
 ## Known Issues
 
@@ -82,6 +83,7 @@ metadata:
 
 - **Gateway 探索與執行必須分層**：schema 搜尋只能作為前置確認，不能宣稱下游工具已執行；真實測試與治理檢查必須走 Gateway call tool 入口。
 - **PowerShell ValidateSet 必須與文件化模式同步**：若 README 或記憶決策宣告支援某個遠端啟動模式，installer 的參數驗證清單必須同步更新，否則內部分支即使存在也不可達。
+- **遠端 installer 需要雙層編碼防護**：公開指令要把下載內容轉成 UTF-8 BOM 暫存檔；源碼中的 `.ps1` / `.psm1` 也要保存成 UTF-8 with BOM，才能同時照顧 raw 下載與直接本機執行。
 
 ## Applicable Skills
 
