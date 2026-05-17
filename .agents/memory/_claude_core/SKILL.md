@@ -2,7 +2,7 @@
 name: _claude_core
 description: Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Claude/
-last_updated: '2026-05-18T00:41:36+08:00'
+last_updated: '2026-05-18T03:06:07+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -63,9 +63,11 @@ metadata:
 - **文檔與殘留狀態同步 (2026-05-12)**: 更新 Claude Edition README 說明並移除不必要的殘留檔追蹤，保持版控乾淨。
 - **Gateway 規範同步 (2026-05-17)**: `mcp-guardrails.md` 新增 Gateway 執行合約，`memory-contract.md` 補入 cartridge-system 顯式 `workspace` / `projectRoot` 規則與 `memory_commit` 高風險邊界；README 同步說明唯讀治理工具與歸卡工具分級。
 - **公開安裝入口相容性升級 (2026-05-17)**: Claude README、全域 CLAUDE bootstrapper 與 `Claude/install.ps1` 改用 UTF-8 raw bytes 下載與 BOM 暫存寫入策略；installer 補入 `#Requires -Version 5.1` 並保存為 UTF-8 with BOM。
-- **Claude平台代理治理升級 (2026-05-17)**: `.claude/CLAUDE.md` 補入 MCP prompts/resources、Agent 工具、automation-safe 與 opt-in MCP profile 治理語義；`.claude/commands/` 新增 `10_routine(巡檢)`，現行 Slash Command 工作流為 14 道。
+- **Claude平台代理治理升級 (2026-05-17, 2026-05-18 修正)**: `.claude/CLAUDE.md` 補入 MCP prompts/resources、Agent 工具、automation-safe 與 opt-in MCP profile 治理語義；`.claude/commands/` 新增 `10_routine(巡檢)`，並將 `08_audit` 三個階段子命令納入遞迴掃描，現行 Slash Command 入口為 17 道。
 - **Claude 基底治理語義修復 (2026-05-17)**: `global/CLAUDE.md` 改為 governed install/upgrade；`09_commit` 在 GO 前只產生 CHANGELOG 草稿，GO 後才寫入 CHANGELOG 並用明確檔案清單 commit/push；Claude 技能路徑統一為 `.claude/skills/`。
 - **Claude 總監可讀輸出契約 (2026-05-18)**: `core-identity.md` 新增 Director-facing 表格契約，要求對話、計畫、報告與完成摘要先用「功能/目的、相關檔案、白話說明、寫入/風險」呈現，再補技術細節。
+- **Claude Slash Command 契約明示 (2026-05-18)**: 17 個 `.claude/commands/**/SKILL.md` 全部直接加入總監可讀輸出契約，確保 Slash Command 觸發時不只依賴 `core-identity.md`。
+- **Claude Edition v1.2.2 (2026-05-18)**: patch bump 用於分類式專案同步；Auto 只有在 `.claude/CLAUDE.md`、`.claude/commands` 或 `.claude/rules` 存在時才同步 Claude，`.claude/skills/project-*` 仍由 `.agents/project_skills/` backfill 產生。
 
 ## Known Issues
 
@@ -77,6 +79,9 @@ metadata:
 - **Claude 全域 bootstrapper 也屬公開入口**：除了 README，`Claude/global/CLAUDE.md` 內的受治理安裝命令也必須採用相同相容下載策略，且必須等待 `GO INSTALL` / `GO UPGRADE`。
 - **Claude MCP prompt/resource 不等於授權寫入**：即使 Claude 能將 MCP prompts/resources 曝露為命令與上下文，框架仍以 `human_gate` 和 `[MCP HITL GATE]` 控制寫入型工具。
 - **D04: Claude 與 Antigravity 的 Director-facing 契約需對等**：核心身份規則若新增總監輸出格式，兩平台記憶卡都要同步記錄，避免 commit 前只剩單平台 stale。
+- **D05: Slash Command 入口要可獨立審計**：Claude 的 `@import` 核心規則不能取代 command 本身的輸出契約，否則跨平台覆蓋率無法用檔案內容直接驗證。
+- **D06: 巢狀 Slash Command 也要 metadata v2**：`08_audit(健檢)/08-1_infra`、`08-2_logic`、`08-3_report` 不可因 `user-invocable: false` 被排除；Doctor 必須遞迴掃描並要求 metadata v2 完整。
+- **D07: Claude project skill discovery 入口要獨立檢查**：Claude 使用 `.claude/skills/` 作為技能掃描入口，因此 project skill 連結治理不能只檢查 `.agents/skills/`。
 
 ## Applicable Skills
 

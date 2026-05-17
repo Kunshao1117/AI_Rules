@@ -2,7 +2,7 @@
 
 > **讓 AI 編碼助手不再失憶、不再無紀律** — 針對 Claude Code 原生工具（Write / Edit / Agent / Plan Mode）完整改寫的治理框架，與 Gemini 版共享同一套設計哲學與記憶庫。
 
-[![version](https://img.shields.io/badge/version-v1.2.0-purple)](#版本管理)
+[![version](https://img.shields.io/badge/version-v1.2.2-purple)](#版本管理)
 [![platform](https://img.shields.io/badge/platform-Windows-lightgrey)](#)
 [![license](https://img.shields.io/badge/license-MIT-green)](#)
 
@@ -13,7 +13,7 @@
 Claude Code 原生的 CLAUDE.md + Plan Mode 已經很強，但 Antigravity 在其之上解決了這些問題：
 
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → Turn=1 即即探測 `.agents/memory/` 記憶庫
-2. **無治理框架** — 沒有統一的工作流程與品質閘門 → 14 道 Slash Command 工作流強制生命週期
+2. **無治理框架** — 沒有統一的工作流程與品質閘門 → 17 道 Slash Command 入口強制生命週期
 3. **多 AI 記憶分裂** — Gemini、Claude Code、Codex 各記各的 → `.agents/memory/` 統一記憶庫，三平台共用
 4. **技能重複維護** — 兩個 AI 的技能各自維護 → 36 套操作型技能與 Gemini 版完全同步
 5. **CLAUDE.md 膨脹** — 規則全寫在一個檔案中 → @import 模組化，CLAUDE.md 保持 < 200 行
@@ -88,7 +88,7 @@ graph TB
     subgraph ".claude/ 生態系統（部署後）"
         CLAUDE["CLAUDE.md<br/>主規則入口 (@import)"]
         RULES[".claude/rules/<br/>7 個模組化規則"]
-        WF[".claude/commands/<br/>14 道 Slash Command 工作流"]
+        WF[".claude/commands/<br/>17 道 Slash Command 入口"]
         SKILLS[".claude/skills/<br/>36 套操作型技能"]
     end
 
@@ -337,7 +337,7 @@ graph TD
 | **記憶存放** | `.agents/memory/` | `.agents/memory/`（**共用**） |
 | **操作型技能** | `.agents/skills/` (36 個) | `.claude/skills/` (36 個) |
 | **規則數量** | 9 個（含 AGENTS.md 哨兵） | 7 個模組（@import） |
-| **工作流數量** | 20 個檔案 | 14 道 |
+| **工作流數量** | 20 個檔案 | 17 道 |
 
 ---
 
@@ -371,7 +371,7 @@ Claude/
     │   ├── forbidden-vocab.md   ← 禁用詞彙規範（條件載入）
     │   ├── mcp-guardrails.md    ← MCP 外部工具防護（條件載入）
     │   └── project-skill-contract.md ← 衍生技能合約（條件載入）
-    ├── commands/                ← Slash Command 工作流（14 道）
+    ├── commands/                ← Slash Command 入口（17 道）
     │   ├── 00_chat(討論)/
     │   ├── 01_explore(搜索)/
     │   ├── 02_blueprint(架構)/

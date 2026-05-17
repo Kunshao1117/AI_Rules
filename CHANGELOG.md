@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-18] 分類式專案規則同步與相容性修復
+
+### feat
+- **Platform-aware project sync** — VS Code 管理器的專案同步改為「同步已安裝平台規則」，並新增 Codex / Claude / Antigravity 單平台同步入口。
+- **Auto detection for installed platforms** — `SyncProjectRules` 新增 `-ProjectPlatform Auto|Codex|Claude|Antigravity`，Auto 只同步目前專案實際安裝的平台。
+
+### fix
+- **Codex version anchor isolation** — Codex live 版本錨點改為 `.codex/VERSION`，不再覆寫 Antigravity 使用的 `.agents/VERSION`。
+- **Single-platform compatibility** — 未安裝平台只回報 Yellow，不自動建立 `.codex`、`.claude` 或 Antigravity rules/workflows。
+
+### chore
+- **Patch versions** — Antigravity `8.0.2`、Claude Edition `1.2.2`、Codex Edition `0.1.2`、AI Rules Manager VSIX `0.1.2`。
+
+## [2026-05-18] Project skill 連結治理與版本更新
+
+### feat
+- **Project skill link governance** — Doctor 現在同時檢查 `.agents/skills/project-*` 與 `.claude/skills/project-*`，可抓出缺連結、壞連結、連到錯誤目標與實體目錄混入。
+- **Project skill backfill repair** — `SyncProjectRules -Apply` 會補建或修復 discovery 連結，保留 `.agents/project_skills/` 作為唯一原檔區。
+
+### chore
+- **Patch versions** — Antigravity `8.0.1`、Claude Edition `1.2.1`、Codex Edition `0.1.1`、AI Rules Manager VSIX `0.1.1`。
+
+## [2026-05-18] 三平台總監可讀治理修復
+
+### feat
+- **Workflow output contract coverage** — 三平台所有 workflow / command / workflow skill 皆明示總監可讀輸出契約，要求先用「功能/目的、相關檔案、白話說明、寫入/風險」表格，再補 `補充技術細節`。
+- **Director output contract audit** — `Doctor` 新增輸出契約覆蓋率檢查，直接掃 source workflow、Codex live workflow 與目前專案 `.codex/AGENTS.md`。
+- **Project rules sync** — VS Code 管理器新增「同步目前專案規則」，與「同步使用者層規則」分開處理，避免把全域 bootstrap 同步誤認為專案治理同步。
+
+### fix
+- **Codex live governance drift** — 將目前專案 `.codex/AGENTS.md` 對齊 `Codex/.codex/AGENTS.md`，確保 Codex 實際載入總監可讀輸出契約。
+- **Project skill link hygiene** — 健康檢查新增 project skill 連結檢查，並清理本機已失效的 `project-ag_backup_project_443698824` 符號連結。
+
 ## [2026-05-18] VS Code 管理器相容性與跨專案支援
 
 ### feat

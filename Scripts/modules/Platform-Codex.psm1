@@ -92,10 +92,10 @@ function Invoke-CodexFresh {
         Write-Step "掃描並補建衍生技能命名空間連結..."
         Invoke-ProjectSkillBackfill -AgentsRoot $agentsRoot
 
-        # 寫入版本號（在 .agents/ 下）
-        $versionFile = Join-Path $agentsRoot "VERSION"
+        # 寫入 Codex 專屬版本號，避免與 Antigravity 共用 .agents/VERSION。
+        $versionFile = Join-Path $dstDotCodex "VERSION"
         Set-Content $versionFile $version -NoNewline
-        Write-Ok ".agents\VERSION → $version"
+        Write-Ok ".codex\VERSION → $version"
 
     } finally {
         Restore-ProtectedDirs -Backup $backup -AgentsRoot $agentsRoot
@@ -152,7 +152,10 @@ function Invoke-CodexUpgrade {
         return
     }
 
-    $targetVersion = Get-VersionContent -Path (Join-Path $agentsRoot "VERSION")
+    $targetVersion = Get-VersionContent -Path (Join-Path $dstDotCodex "VERSION")
+    if ($targetVersion -eq "unknown") {
+        $targetVersion = Get-VersionContent -Path (Join-Path $agentsRoot "VERSION")
+    }
     Write-Banner "Codex Upgrade v$targetVersion → v$version | 目標: $Target" "DarkCyan"
 
     # 掃描 .codex/ 差異
@@ -232,10 +235,10 @@ function Invoke-CodexUpgrade {
     Write-Step "掃描並補建衍生技能命名空間連結..."
     Invoke-ProjectSkillBackfill -AgentsRoot $agentsRoot
 
-    # 版本更新
-    $versionFile = Join-Path $agentsRoot "VERSION"
+    # 版本更新：Codex 專屬版本錨點在 .codex/，.agents/VERSION 保留給 Antigravity。
+    $versionFile = Join-Path $dstDotCodex "VERSION"
     Set-Content $versionFile $version -NoNewline
-    Write-Ok ".agents\VERSION → $version"
+    Write-Ok ".codex\VERSION → $version"
 
     Write-Banner "升級完成 — Codex v$version（更新 $applied 個 .codex/ 檔案）" "Green"
 }

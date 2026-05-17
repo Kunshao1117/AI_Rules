@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-17T23:49:58+08:00'
+last_updated: '2026-05-18T03:06:07+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -90,6 +90,9 @@ metadata:
 - **D22: VS Code 管理器治理後端 (2026-05-17)**: `Deploy.ps1 -Action Global` 改成 dry-run 預設，只有 `-Apply` 才寫入使用者層全域規則；`Core.psm1` 寫入前建立備份；`Audit.psm1` 新增 Runtime Global Drift；`Scripts/AI-RulesManager.ps1` 成為 VS Code extension 的按鈕式後端。
 - **D23: 孤兒清理安全邊界 (2026-05-17)**: `Core.psm1` 的 `Remove-OrphanFiles` 新增目標根目錄驗證與 `ProtectedDirs` 跳過機制；Antigravity 升級與 VS Code 清理孤兒檔案時傳入 `memory` / `project_skills`，確保清理程序不碰專案記憶或專案技能。
 - **D24: Claude 總監可讀輸出契約 (2026-05-17)**: `Claude/.claude/rules/core-identity.md` 對齊三平台總監可讀輸出契約，所有面向總監的計畫、報告與完成摘要必須先用功能表格呈現，再補技術細節。
+- **D25: Claude command 輸出契約覆蓋 (2026-05-18)**: 所有 `Claude/.claude/commands/**/SKILL.md` 直接明示總監可讀表格與 `補充技術細節` 隔離規範，避免只靠核心規則導致 Slash Command 實際輸出不一致。
+- **D26: Claude 巢狀 command 納入 Doctor (2026-05-18)**: `Audit.psm1` 的 Workflow Metadata、Governance Semantics 與文件一致性改用 `Claude/.claude/commands/**/SKILL.md` 遞迴口徑；`08_audit` 三個階段子命令已補齊 metadata v2。
+- **D27: Project skill 連結治理 (2026-05-18)**: `Core.psm1` backfill 可修復 `.agents/skills/project-*` 與 `.claude/skills/project-*` 的壞 reparse point；`Audit.psm1` 將實體 `project-*` 或連到 `.agents/project_skills/` 外部的情況列為 Red。
 
 ## Known Issues
 
@@ -108,12 +111,14 @@ metadata:
 - **D08: Installer 文件化模式必須納入 ValidateSet**: 啟動器內部即使有分支，若 PowerShell `ValidateSet` 未列入該模式，遠端單行指令仍會在參數綁定階段失敗。
 - **D09: 統一部署引擎編碼是跨平台公共契約**: `Scripts/Deploy.ps1` 與 modules 被三平台 installer 共同載入，若其中任一檔含中文但不是 UTF-8 BOM，舊版 Windows PowerShell 仍可能在 import 階段失敗。
 - **D10: Audit 必須看語義而非只看格式**: metadata 全綠不代表治理安全；審計器需要同步掃描正文是否違反 tool_scope、human_gate、automation_safe 與 MCP HITL 邊界。
+- **D11: 輸出契約也屬語義審計**: workflow metadata 完整不代表面向總監的輸出可讀；Doctor 必須直接掃 workflow 內容是否具備表格契約與技術細節隔離。
+- **D12: project skill discovery entry 不能是實體目錄**: `.agents/project_skills/` 是唯一原檔區，discovery 目錄只允許 SymbolicLink 或 Junction；自動修復不得覆寫實體目錄。
 
 ## Relations
 
 - 對齊來源：`Antigravity/.agents/memory/_system/`（全域設計哲學）
 - 部署引擎：`Scripts/modules/`（Platform-Claude.psm1 + Audit.psm1）
-- 工作流庫：`Claude/.claude/commands/`（14 道 Slash Command 工作流 + _shared 共用閘門）
+- 工作流庫：`Claude/.claude/commands/`（17 道 Slash Command 入口，含 `08_audit` 三個階段子命令 + _shared 共用閘門）
 
 ## Applicable Skills
 

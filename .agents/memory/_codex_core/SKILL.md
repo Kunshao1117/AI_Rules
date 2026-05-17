@@ -1,10 +1,10 @@
 ---
 name: _codex_core
 description: >
-  Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.0）。 追蹤 OpenAI Codex
+  Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.2）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-17T23:49:45+08:00'
+last_updated: '2026-05-18T03:06:07+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -29,6 +29,7 @@ metadata:
 - Codex/global/config.toml
 - Codex/.codex/AGENTS.md
 - Codex/.codex/config.toml
+- Codex/.codex/VERSION
 - Codex/.gitignore
 - Codex/.agents/workflow-skills/_shared/_completion_gate.md
 - Codex/.agents/workflow-skills/_shared/_security_footer.md
@@ -70,6 +71,10 @@ metadata:
 - **Codex 基底治理語義修復 (2026-05-17)**: `global/AGENTS.md` 改為 governed install/upgrade；`09-commit-紀錄總結` 在 GO 前只輸出 CHANGELOG 草稿，GO 後才寫入 CHANGELOG 並用明確清單 stage/commit/push；舊大寫 Codex agents/commands 路徑語義由 Audit 紅燈攔截。
 - **VS Code 延伸模組方向釐清 (2026-05-17)**: 使用者所稱插件是 VS Code extension，而非 Codex plugin；根 README 已改以 `Extensions/vscode-ai-rules-manager/` 說明點選式管理入口，Codex plugin marketplace 不作為本版實作方向。
 - **Codex 總監可讀輸出契約 (2026-05-17)**: `.codex/AGENTS.md` 與 Codex `03-build-建構` / `04-fix-修復` 工作流要求所有面向總監的計畫、報告與完成摘要先用功能表格呈現，再補技術細節。
+- **Codex 全工作流契約覆蓋 (2026-05-18)**: 17 個 `Codex/.agents/workflow-skills/*/SKILL.md` 全部直接加入總監可讀輸出契約，並同步到 live `.agents/skills/`，避免 `$00-chat-聊天` 等非建構/修復工作流漏用白話表格。
+- **Codex project rules sync (2026-05-18)**: `AI-RulesManager.ps1 -Action SyncProjectRules -ProjectPlatform Codex` 同步 `.codex/`、Shared skills、Codex workflow skills 與 `.agents/skills/project-*`；Auto 模式只在偵測到 `.codex/AGENTS.md` 或 `.codex/config.toml` 時執行 Codex 同步。
+- **Codex workflow metadata 縮排修復 (2026-05-18)**: `03-build-建構` 與 `04-fix-修復` 的 `automation_safe: false` 必須位於 `metadata` 底下；若少縮排，Doctor 會視為缺少 `metadata.automation_safe`。
+- **Codex Edition v0.1.2 (2026-05-18)**: patch bump 用於分類式專案同步與版本錨點隔離；Codex live 版本寫入 `.codex/VERSION`，不再覆寫 Antigravity 使用的 `.agents/VERSION`。
 
 
 ## Known Issues
@@ -86,6 +91,10 @@ metadata:
 - **根 README 範例會影響 Codex 冷啟動認知**: `_codex_core` 追蹤根 README，公共管理控制台範例若暴露 Shell 專用語法，Codex 使用者也會複製；跨 Shell 範例應優先使用不含裸 `$` 變數展開風險的形式。
 - **Codex automation-safe 僅限唯讀**: `metadata.automation_safe: true` 不代表可寫檔；Codex Automations 只能觸發 routine 類巡檢，任何修正仍需停在 GO gate。
 - **不要把 VS Code extension 誤寫成 Codex plugin**: 本專案的按鈕式管理器是給 VS Code Activity Bar / Sidebar 使用；Codex 仍只透過 `.codex/AGENTS.md`、skills 與 scripts 參與治理。
+- **Codex source 與 live project 要分開檢查**: `git pull` 或全域規則同步不會更新被 `.gitignore` 排除的 live `.codex/` / `.agents/skills/`；Doctor 必須同時檢查 source 與 target。
+- **Metadata 縮排是治理語義的一部分**: YAML front matter 看似有欄位不代表 Doctor 會認為該欄位在 `metadata` 內；直接讀檔時需檢查縮排層級，不只搜尋欄位名稱。
+- **Project skill backfill 只修 reparse point**: 壞掉或缺少的 `project-*` 連結可由 `SyncProjectRules -Apply` 修復；若同名項目是實體目錄/檔案，必須停下由人處理。
+- **Codex 不擁有 `.agents/VERSION`**: Codex 會使用 `.agents/skills` 與 `.agents/memory`，但版本錨點必須在 `.codex/VERSION`；`.agents/VERSION` 只能代表 Antigravity。
 
 ## Relations
 

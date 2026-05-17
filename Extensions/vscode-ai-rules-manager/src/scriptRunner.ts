@@ -12,11 +12,15 @@ export type ManagerAction =
   | "Apply"
   | "Doctor"
   | "SyncGlobal"
+  | "SyncProjectRules"
   | "CleanupOrphans";
+
+export type ProjectPlatform = "Auto" | "Codex" | "Claude" | "Antigravity";
 
 export interface RunOptions {
   apply?: boolean;
   removeOrphans?: boolean;
+  projectPlatform?: ProjectPlatform;
   whatIf?: boolean;
 }
 
@@ -48,6 +52,7 @@ export class ScriptRunner {
 
     if (options.apply) args.push("-Apply");
     if (options.removeOrphans) args.push("-RemoveOrphans");
+    if (options.projectPlatform) args.push("-ProjectPlatform", options.projectPlatform);
     if (options.whatIf) args.push("-WhatIf");
 
     this.output.show(true);

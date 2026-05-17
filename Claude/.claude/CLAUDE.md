@@ -1,4 +1,4 @@
-# [ANTIGRAVITY — CLAUDE CODE EDITION v1.2.0]
+# [ANTIGRAVITY — CLAUDE CODE EDITION v1.2.2]
 
 > 本框架為 Antigravity 治理框架的 Claude Code 專用版本。
 > 所有規則已針對 Claude Code 原生工具（Write/Edit/Agent/TodoWrite/Plan Mode）改寫。

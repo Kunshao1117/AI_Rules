@@ -9,6 +9,10 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
     "aiRules.applyUpdate",
     "aiRules.doctor",
     "aiRules.syncGlobalRules",
+    "aiRules.syncProjectRules",
+    "aiRules.syncProjectRulesCodex",
+    "aiRules.syncProjectRulesClaude",
+    "aiRules.syncProjectRulesAntigravity",
     "aiRules.cleanupOrphans"
   ]);
 
@@ -36,13 +40,37 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
 
   private getHtml(): string {
     const nonce = crypto.randomBytes(16).toString("base64");
-    const buttons = [
-      ["aiRules.checkUpdate", "檢查更新", "讀取 Git 與全域規則狀態"],
-      ["aiRules.planUpdate", "查看更新內容", "用白話列出更新影響"],
-      ["aiRules.applyUpdate", "套用更新", "確認後更新 AI_Rules repo"],
-      ["aiRules.doctor", "健康檢查", "執行治理巡檢"],
-      ["aiRules.syncGlobalRules", "同步全域規則", "確認後更新使用者層規則"],
-      ["aiRules.cleanupOrphans", "清理孤兒檔案", "先預覽，確認後清理"]
+    const sections = [
+      {
+        title: "更新與健檢",
+        buttons: [
+          ["aiRules.checkUpdate", "檢查更新", "讀取 Git 與全域規則狀態"],
+          ["aiRules.planUpdate", "查看更新內容", "用白話列出更新影響"],
+          ["aiRules.applyUpdate", "套用更新", "確認後更新 AI_Rules repo"],
+          ["aiRules.doctor", "健康檢查", "執行治理巡檢"]
+        ]
+      },
+      {
+        title: "規則同步",
+        buttons: [
+          ["aiRules.syncGlobalRules", "同步使用者層規則", "只更新 ~/.codex、~/.claude、~/.gemini"],
+          ["aiRules.syncProjectRules", "同步已安裝平台規則", "自動偵測並更新目前專案已使用的平台"]
+        ]
+      },
+      {
+        title: "單平台同步",
+        buttons: [
+          ["aiRules.syncProjectRulesCodex", "同步 Codex", "更新 .codex 與 Codex 工作流技能"],
+          ["aiRules.syncProjectRulesClaude", "同步 Claude", "更新 .claude rules / commands / skills"],
+          ["aiRules.syncProjectRulesAntigravity", "同步 Antigravity", "更新 .agents rules / workflows / skills"]
+        ]
+      },
+      {
+        title: "維護",
+        buttons: [
+          ["aiRules.cleanupOrphans", "清理孤兒檔案", "先預覽，確認後清理"]
+        ]
+      }
     ];
 
     return `<!DOCTYPE html>
@@ -55,6 +83,7 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
     body { font-family: var(--vscode-font-family); padding: 12px; color: var(--vscode-foreground); }
     h2 { font-size: 15px; margin: 0 0 12px; }
     .status { border: 1px solid var(--vscode-panel-border); padding: 8px; margin-bottom: 12px; }
+    .section-title { font-size: 11px; font-weight: 700; opacity: 0.72; margin: 14px 0 4px; text-transform: uppercase; }
     button { width: 100%; text-align: left; padding: 9px 10px; margin: 5px 0; border: 1px solid var(--vscode-button-border, transparent); background: var(--vscode-button-secondaryBackground); color: var(--vscode-button-secondaryForeground); cursor: pointer; }
     button:hover { background: var(--vscode-button-secondaryHoverBackground); }
     .title { display: block; font-weight: 600; }
@@ -64,7 +93,7 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
 <body>
   <h2>AI Rules</h2>
   <div id="status" class="status">尚未執行檢查</div>
-  ${buttons.map(([command, title, desc]) => `<button data-command="${command}"><span class="title">${title}</span><span class="desc">${desc}</span></button>`).join("")}
+  ${sections.map((section) => `<div class="section-title">${section.title}</div>${section.buttons.map(([command, title, desc]) => `<button data-command="${command}"><span class="title">${title}</span><span class="desc">${desc}</span></button>`).join("")}`).join("")}
   <script nonce="${nonce}">
     const vscode = acquireVsCodeApi();
     document.querySelectorAll("button[data-command]").forEach((button) => {

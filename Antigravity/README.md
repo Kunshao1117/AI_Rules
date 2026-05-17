@@ -2,7 +2,7 @@
 
 > **讓 AI 編碼助手不再失憶、不再無紀律** — 受治理部署的治理框架，為 Gemini IDE 提供工作流程、持久記憶系統與標準作業規範。
 
-[![version](https://img.shields.io/badge/version-v8.0.0-blue)](#版本管理)
+[![version](https://img.shields.io/badge/version-v8.0.2-blue)](#版本管理)
 [![platform](https://img.shields.io/badge/platform-Windows-lightgrey)](#)
 [![license](https://img.shields.io/badge/license-MIT-green)](#)
 

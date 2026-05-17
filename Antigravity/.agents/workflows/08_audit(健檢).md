@@ -16,6 +16,15 @@ metadata:
   automation_safe: false
 ---
 
+
+## Director-Readable Output Contract（總監可讀輸出契約）
+
+All Director-facing conversations, implementation plans, reports, and completion summaries MUST start with this table before any technical details:
+
+| 功能/目的 | 相關檔案 | 白話說明 | 寫入/風險 |
+|---|---|---|---|
+
+Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. Do not describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
 # [WORKFLOW: 08_audit — 全光譜健檢入口]
 
 > 本工作流為三階段健檢的入口控制器，不包含實際掃描邏輯。

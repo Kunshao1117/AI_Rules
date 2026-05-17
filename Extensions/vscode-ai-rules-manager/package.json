@@ -3,7 +3,7 @@
   "displayName": "AI Rules Manager",
   "description": "Point-and-click VS Code manager for AI_Rules governance checks, updates, global rules, and orphan cleanup.",
   "icon": "resources/icon.png",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "publisher": "kunshao",
   "license": "MIT",
   "repository": {
@@ -24,6 +24,10 @@
     "onCommand:aiRules.applyUpdate",
     "onCommand:aiRules.doctor",
     "onCommand:aiRules.syncGlobalRules",
+    "onCommand:aiRules.syncProjectRules",
+    "onCommand:aiRules.syncProjectRulesCodex",
+    "onCommand:aiRules.syncProjectRulesClaude",
+    "onCommand:aiRules.syncProjectRulesAntigravity",
     "onCommand:aiRules.cleanupOrphans"
   ],
   "contributes": {
@@ -66,7 +70,23 @@
       },
       {
         "command": "aiRules.syncGlobalRules",
-        "title": "AI Rules: 同步全域規則"
+        "title": "AI Rules: 同步使用者層規則"
+      },
+      {
+        "command": "aiRules.syncProjectRules",
+        "title": "AI Rules: 同步已安裝平台規則"
+      },
+      {
+        "command": "aiRules.syncProjectRulesCodex",
+        "title": "AI Rules: 同步 Codex 專案規則"
+      },
+      {
+        "command": "aiRules.syncProjectRulesClaude",
+        "title": "AI Rules: 同步 Claude 專案規則"
+      },
+      {
+        "command": "aiRules.syncProjectRulesAntigravity",
+        "title": "AI Rules: 同步 Antigravity 專案規則"
       },
       {
         "command": "aiRules.cleanupOrphans",

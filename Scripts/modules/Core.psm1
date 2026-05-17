@@ -430,24 +430,101 @@ function Invoke-ProjectSkillBackfill {
     if (-not $SkillsDir) { $SkillsDir = Join-Path $AgentsRoot "skills" }
     $projDir   = Join-Path $AgentsRoot "project_skills"
     if (-not (Test-Path $projDir)) { return }
+
+    New-Item -ItemType Directory -Force -Path $SkillsDir | Out-Null
+
+    function Get-BackfillLinkTarget {
+        param($Item)
+        $target = $null
+        if ($Item -and ($Item.PSObject.Properties.Name -contains "Target")) {
+            $target = $Item.Target
+        } elseif ($Item -and ($Item.PSObject.Properties.Name -contains "LinkTarget")) {
+            $target = $Item.LinkTarget
+        }
+        if ($target -is [array]) { $target = $target[0] }
+        if ($target) { return [string]$target }
+        return ""
+    }
+
+    function Test-BackfillPathEquals {
+        param(
+            [string]$Left,
+            [string]$Right
+        )
+        if (-not $Left -or -not $Right) { return $false }
+        try {
+            $leftFull = (Resolve-Path -LiteralPath $Left -ErrorAction Stop).Path
+        } catch {
+            $leftFull = [System.IO.Path]::GetFullPath($Left)
+        }
+        try {
+            $rightFull = (Resolve-Path -LiteralPath $Right -ErrorAction Stop).Path
+        } catch {
+            $rightFull = [System.IO.Path]::GetFullPath($Right)
+        }
+        return [string]::Equals($leftFull.TrimEnd('\', '/'), $rightFull.TrimEnd('\', '/'), [System.StringComparison]::OrdinalIgnoreCase)
+    }
+
+    function New-ProjectSkillNamespaceLink {
+        param(
+            [string]$LinkPath,
+            [string]$TargetPath,
+            [string]$SkillName
+        )
+
+        New-Item -ItemType SymbolicLink -Path $LinkPath -Target $TargetPath -ErrorAction SilentlyContinue | Out-Null
+        if (-not (Test-Path -LiteralPath (Join-Path $LinkPath "SKILL.md"))) {
+            # 降級：Junction 不需要 Developer Mode 或管理員
+            New-Item -ItemType Junction -Path $LinkPath -Target $TargetPath -ErrorAction SilentlyContinue | Out-Null
+        }
+
+        if (Test-Path -LiteralPath (Join-Path $LinkPath "SKILL.md")) {
+            Write-Ok "衍生技能連結已建立: project-$SkillName"
+            return $true
+        }
+
+        Write-Warn "無法建立連結（需 Developer Mode 或管理員）: project-$SkillName"
+        return $false
+    }
+
     $count = 0
-    Get-ChildItem $projDir -Directory -ErrorAction SilentlyContinue | ForEach-Object {
-        $linkPath = Join-Path $SkillsDir "project-$($_.Name)"
-        if (-not (Test-Path $linkPath)) {
-            New-Item -ItemType SymbolicLink -Path $linkPath -Target $_.FullName -ErrorAction SilentlyContinue | Out-Null
-            if (-not (Test-Path $linkPath)) {
-                # 降級：Junction 不需要 Developer Mode 或管理員
-                New-Item -ItemType Junction -Path $linkPath -Target $_.FullName -ErrorAction SilentlyContinue | Out-Null
+    $blocked = 0
+    $projectSkills = @(Get-ChildItem $projDir -Directory -ErrorAction SilentlyContinue | Where-Object {
+        ($_.Name -notmatch '^_') -and (Test-Path -LiteralPath (Join-Path $_.FullName "SKILL.md"))
+    })
+
+    foreach ($skill in $projectSkills) {
+        $linkPath = Join-Path $SkillsDir "project-$($skill.Name)"
+        $linkItem = Get-Item -LiteralPath $linkPath -Force -ErrorAction SilentlyContinue
+
+        if ($linkItem) {
+            $isReparsePoint = [bool]($linkItem.Attributes -band [IO.FileAttributes]::ReparsePoint)
+            if (-not $isReparsePoint) {
+                Write-Warn "衍生技能 discovery entry 不是符號連結/Junction，已跳過避免覆寫: project-$($skill.Name)"
+                $blocked++
+                continue
             }
-            if (Test-Path $linkPath) {
-                Write-Ok "衍生技能連結已建立: project-$($_.Name)"
+
+            $target = Get-BackfillLinkTarget -Item $linkItem
+            $targetSkill = if ($target) { Join-Path $target "SKILL.md" } else { "" }
+            $isValidTarget = (Test-BackfillPathEquals -Left $target -Right $skill.FullName) -and (Test-Path -LiteralPath $targetSkill)
+            if ($isValidTarget) {
+                continue
+            }
+
+            Remove-Item -LiteralPath $linkPath -Force -ErrorAction SilentlyContinue
+        }
+
+        if (-not (Test-Path -LiteralPath $linkPath)) {
+            if (New-ProjectSkillNamespaceLink -LinkPath $linkPath -TargetPath $skill.FullName -SkillName $skill.Name) {
                 $count++
-            } else {
-                Write-Warn "無法建立連結（需 Developer Mode 或管理員）: project-$($_.Name)"
             }
         }
     }
-    if ($count -eq 0) { Write-Step "衍生技能命名空間連結已是最新，無需補建。" }
+
+    if (($count -eq 0) -and ($blocked -eq 0)) { Write-Step "衍生技能命名空間連結已是最新，無需補建。" }
+    if ($blocked -gt 0) { Write-Warn "有 $blocked 個 project-* discovery entry 不是連結，需手動處理。" }
+    return $count
 }
 
 # ══════════════════════════════════════════════════════════

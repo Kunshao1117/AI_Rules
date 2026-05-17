@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-18T01:33:49+08:00'
+last_updated: '2026-05-18T03:09:00+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -19,7 +19,7 @@ metadata:
 
 ## 專案身份與工作模式
 
-- **專案身份**：AI_Rules 是 Antigravity（Gemini v8.0.0）、Claude Edition（v1.2.0）與 Codex Edition（v0.1.0）的三平台 AI 治理框架核心庫，負責統一管理規則、工作流、技能、MCP/Automation 治理與部署引擎。
+- **專案身份**：AI_Rules 是 Antigravity（Gemini v8.0.2）、Claude Edition（v1.2.2）與 Codex Edition（v0.1.2）的三平台 AI 治理框架核心庫，負責統一管理規則、工作流、技能、MCP/Automation 治理與部署引擎。
 - **工作模式**：框架維護與跨版本同步開發，包含規則升級、工作流新增、技能同步、部署腳本改良，以及記憶卡系統的架構迭代。
 - **技術堆疊**：PowerShell 統一部署引擎（Scripts/Deploy.ps1 + Scripts/modules/*.psm1）+ VS Code 延伸模組（TypeScript）+ Markdown / SKILL.md 治理規範 + cartridge-system MCP（記憶卡讀寫）+ Multi-MCP Gateway；語言：PowerShell + Markdown + TypeScript。
 - **總監角色**：繁體中文操作者（Director），具備框架架構決策權，非工程背景友善，以商業語言溝通，透過 Gemini IDE、Claude Code 與 OpenAI Codex 三平台協作。
@@ -66,6 +66,10 @@ metadata:
 - **D24: 受保護孤兒清理 (2026-05-17)**: `Remove-OrphanFiles` 必須先驗證候選路徑位於目標根目錄內，並跳過受保護目錄。Antigravity / VS Code CleanupOrphans 的 protected dirs 至少包含 `memory` 與 `project_skills`，避免清理程序碰到專案記憶或專案技能。
 - **D25: 總監可讀輸出契約 (2026-05-17)**: 所有面向總監的對話、計畫、報告與完成摘要必須先用「功能/目的、相關檔案、白話說明、寫入/風險」表格呈現；技術細節只能放在後續「補充技術細節」段落，避免以檔名、metadata、schema 或 CLI 參數作為第一層說明。
 - **D26: VS Code 管理腳本 5.1 編碼相容 (2026-05-18)**: `Scripts/AI-RulesManager.ps1` 是 extension 與 CLI 共用的治理橋接入口，必須保存為 UTF-8 with BOM；不得因 `pwsh` 可解析就改回 UTF-8 無 BOM，否則 Windows PowerShell 5.1 會在含中文/框線輸出時誤解碼並造成 ParserError。
+- **D27: 總監輸出契約進入 Doctor (2026-05-18)**: `Audit.psm1` 新增 Director Output Contract 與 Project Skill Links 檢查，直接掃三平台 workflow、Codex live workflow、目前專案 `.codex/AGENTS.md` 與 project skill 連結；VS Code 管理器同步區分「使用者層規則」與「目前專案規則」。
+- **D28: Doctor 掃描口徑必須遞迴一致 (2026-05-18)**: Workflow Metadata、Governance Semantics、Director Output Contract 與文件一致性統一把 Claude `commands/**/SKILL.md` 視為 17 個 command 入口；避免只掃頂層 14 個 command 而漏掉 `08_audit` 三個階段子命令。
+- **D29: Project skill discovery 連結治理 (2026-05-18)**: `.agents/project_skills/<name>/SKILL.md` 是 project skill 唯一原檔；`.agents/skills/project-*` 與 `.claude/skills/project-*` 僅作 discovery 連結。Doctor 必須檢查缺連結、壞連結、連錯目標與實體目錄混入；`SyncProjectRules -Apply` 可修復 reparse point，但不得覆寫實體 `project-*`。
+- **D30: 分類式專案規則同步 (2026-05-18)**: VS Code 管理器與 `AI-RulesManager.ps1` 的專案同步改為 `Auto|Codex|Claude|Antigravity` 分類；Auto 只同步已安裝平台，未安裝平台只回報 Yellow，不自動建立目錄。Codex live 版本錨點改為 `.codex/VERSION`，`.agents/VERSION` 保留給 Antigravity。
 
 ## Known Issues
 
@@ -85,6 +89,8 @@ metadata:
 - **D10: 全域 bootstrap 不是安裝授權**: 全域規則只能偵測專案是否初始化；下載遠端 installer、寫檔、升級框架都必須等 `GO INSTALL` / `GO UPGRADE`，避免把錯誤基底規則自動標準化到新專案。
 - **D11: 本地公共 `.ps1` 也要驗證 5.1**: repo 內被 VS Code extension 或一鍵入口呼叫的 `.ps1` 若包含非 ASCII，驗收必須同時跑 Windows PowerShell 5.1 與 PowerShell 7，避免只在 `pwsh` 通過但在 extension 預設路徑失敗。
 - **D12: CHANGELOG 也會觸發系統記憶同步**: `_system` 追蹤根變更紀錄；即使只是提交流程補寫變更紀錄，也要在提交前確認系統記憶內容已涵蓋該決策並重新歸卡。
+- **D13: 直接讀檔優先於腳本信任**: Doctor 全綠前仍需抽查實際 `SKILL.md` / `AGENTS.md` 內容；本次直接讀檔發現 Codex `03-build` / `04-fix` 的 `automation_safe` 縮排錯誤，以及 Claude `08_audit` 子命令未被舊掃描口徑納入。
+- **D14: Project skill 原檔不可混入 discovery 目錄**: `project-*` 若是實體目錄代表隔離設計失效，應由 Doctor 報 Red，不能由 backfill 自動刪除或覆寫。
 
 ## Documentation Files
 

@@ -262,7 +262,7 @@ if ($Action -eq "Global") {
 }
 
 if ($Action -eq "Audit") {
-    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
+    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target
     if (-not $audit.Passed) {
         exit 1
     }

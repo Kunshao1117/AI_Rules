@@ -8,7 +8,7 @@
     orphan deletion, -RemoveOrphans.
 #>
 param(
-    [ValidateSet("Check", "Plan", "Apply", "Doctor", "SyncGlobal", "CleanupOrphans")]
+    [ValidateSet("Check", "Plan", "Apply", "Doctor", "SyncGlobal", "SyncProjectRules", "CleanupOrphans")]
     [string]$Action = "Check",
 
     [string]$RepoRoot,
@@ -20,6 +20,9 @@ param(
     [switch]$Apply,
 
     [switch]$RemoveOrphans,
+
+    [ValidateSet("Auto", "Codex", "Claude", "Antigravity")]
+    [string]$ProjectPlatform = "Auto",
 
     [switch]$WhatIf
 )
@@ -36,6 +39,7 @@ $ModulesDir = Join-Path $RepoRoot "Scripts\modules"
 
 Import-Module (Join-Path $ModulesDir "Core.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Audit.psm1") -Force
+Import-Module (Join-Path $ModulesDir "Skills-Sync.psm1") -Force
 
 function Write-ManagerHeader {
     param([string]$Title)
@@ -117,24 +121,343 @@ function Invoke-ApplyUpdate {
         exit 2
     }
     git -C $RepoRoot pull --ff-only
-    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
+    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target
     if (-not $audit.Passed) { exit 1 }
 }
 
 function Invoke-Doctor {
     Write-ManagerHeader "健康檢查"
-    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
-    if (-not $audit.Passed) { exit 1 }
+    $null = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target
 }
 
 function Invoke-SyncGlobal {
-    Write-ManagerHeader "同步全域規則"
+    Write-ManagerHeader "同步使用者層規則"
     $deploy = Join-Path $RepoRoot "Scripts\Deploy.ps1"
     if ($Apply) {
         & $deploy -Action Global -ProfileRoot $ProfileRoot -Apply
     } else {
         & $deploy -Action Global -ProfileRoot $ProfileRoot
     }
+}
+
+function Test-ProjectPlatformInstalled {
+    param(
+        [string]$TargetRoot,
+        [ValidateSet("Codex", "Claude", "Antigravity")]
+        [string]$Platform
+    )
+
+    switch ($Platform) {
+        "Codex" {
+            return (Test-Path -LiteralPath (Join-Path $TargetRoot ".codex\AGENTS.md")) -or
+                (Test-Path -LiteralPath (Join-Path $TargetRoot ".codex\config.toml"))
+        }
+        "Claude" {
+            return (Test-Path -LiteralPath (Join-Path $TargetRoot ".claude\CLAUDE.md")) -or
+                (Test-Path -LiteralPath (Join-Path $TargetRoot ".claude\commands")) -or
+                (Test-Path -LiteralPath (Join-Path $TargetRoot ".claude\rules"))
+        }
+        "Antigravity" {
+            return (Test-Path -LiteralPath (Join-Path $TargetRoot ".agents\rules")) -or
+                (Test-Path -LiteralPath (Join-Path $TargetRoot ".agents\workflows"))
+        }
+    }
+}
+
+function Get-InstalledProjectPlatforms {
+    param([string]$TargetRoot)
+
+    $platforms = @()
+    foreach ($platform in @("Antigravity", "Claude", "Codex")) {
+        if (Test-ProjectPlatformInstalled -TargetRoot $TargetRoot -Platform $platform) {
+            $platforms += $platform
+        }
+    }
+    return $platforms
+}
+
+function Write-ProjectSyncNoInstallWarning {
+    param(
+        [string]$TargetRoot,
+        [string]$Platform
+    )
+
+    Write-Host ""
+    Write-Host "📊 Project Platform Selection"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：0  🟡 Yellow：1"
+    Write-Warn "目前專案未安裝 $Platform，專案規則同步不會自動建立未使用的平台。"
+    Write-Step "Target：$TargetRoot"
+}
+
+function Get-SharedSkillDiffs {
+    param(
+        [string]$SharedSkillsRoot,
+        [string]$TargetSkillsPath
+    )
+
+    $diffs = @()
+    if (-not (Test-Path -LiteralPath $SharedSkillsRoot)) { return $diffs }
+
+    Get-ChildItem -LiteralPath $SharedSkillsRoot -Recurse -File -ErrorAction SilentlyContinue |
+        Where-Object {
+            $relPath = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
+            -not ($relPath -match '^_memory[\\\/]') -and
+            -not ($relPath -match '^_project[\\\/]') -and
+            -not ($relPath -match '^project-')
+        } |
+        ForEach-Object {
+            $rel = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
+            $targetFile = Join-Path $TargetSkillsPath $rel
+            $diff = Compare-FrameworkFile -SourcePath $_.FullName -TargetPath $targetFile -RelativePath $rel
+            if ($diff.Status -in @("NEW", "CHANGED")) { $diffs += $diff }
+        }
+
+    return $diffs
+}
+
+function Get-CodexWorkflowDiffs {
+    param(
+        [string]$WorkflowSkillsPath,
+        [string]$TargetSkillsPath
+    )
+
+    $diffs = @()
+    if (-not (Test-Path -LiteralPath $WorkflowSkillsPath)) { return $diffs }
+
+    Get-ChildItem -LiteralPath $WorkflowSkillsPath -Recurse -File -ErrorAction SilentlyContinue |
+        ForEach-Object {
+            $rel = $_.FullName.Substring($WorkflowSkillsPath.Length).TrimStart('\', '/')
+            $targetFile = Join-Path $TargetSkillsPath $rel
+            $diff = Compare-FrameworkFile -SourcePath $_.FullName -TargetPath $targetFile -RelativePath $rel
+            if ($diff.Status -in @("NEW", "CHANGED")) { $diffs += $diff }
+        }
+
+    return $diffs
+}
+
+function Write-DiffSummary {
+    param(
+        [string]$Title,
+        [array]$Diffs
+    )
+
+    Write-Host ""
+    Write-Host "📊 $Title"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "NEW/CHANGED：$(@($Diffs).Count)"
+    foreach ($diff in @($Diffs) | Select-Object -First 40) {
+        Write-Host ("  [{0}] {1}" -f $diff.Status, $diff.Path) -ForegroundColor Yellow
+    }
+}
+
+function Set-ProjectVersionFile {
+    param(
+        [string]$Path,
+        [string]$Version,
+        [switch]$Apply
+    )
+
+    $current = Get-VersionContent -Path $Path
+    if (-not $Apply) {
+        if ($current -eq $Version) {
+            Write-Step "版本錨點已是最新: $Path ($Version)"
+        } else {
+            Write-Warn "版本錨點待更新: $Path ($current → $Version)"
+        }
+        return
+    }
+
+    $parent = Split-Path $Path -Parent
+    if (-not (Test-Path -LiteralPath $parent)) { New-Item -ItemType Directory -Force -Path $parent | Out-Null }
+    Set-Content -LiteralPath $Path -Value $Version -NoNewline -Encoding UTF8
+    Write-Ok "版本錨點已更新: $Path → $Version"
+}
+
+function Sync-ProjectSkillLinks {
+    param(
+        [string]$TargetRoot,
+        [string[]]$Platforms
+    )
+
+    $agentsRoot = Join-Path $TargetRoot ".agents"
+    if (-not (Test-Path -LiteralPath (Join-Path $agentsRoot "project_skills"))) { return }
+
+    Write-Host ""
+    Write-Host "📊 Project Skill Links"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+    if ($Platforms -contains "Antigravity" -or $Platforms -contains "Codex") {
+        $null = Invoke-ProjectSkillBackfill -AgentsRoot $agentsRoot -SkillsDir (Join-Path $agentsRoot "skills")
+    }
+    if ($Platforms -contains "Claude") {
+        $claudeRoot = Join-Path $TargetRoot ".claude"
+        if (Test-Path -LiteralPath $claudeRoot) {
+            $null = Invoke-ProjectSkillBackfill -AgentsRoot $agentsRoot -SkillsDir (Join-Path $claudeRoot "skills")
+        }
+    }
+}
+
+function Invoke-SyncAntigravityProjectRules {
+    param(
+        [string]$ProjectRoot,
+        [string]$SharedSkillsRoot,
+        [switch]$Apply
+    )
+
+    $sourceRoot = Join-Path $RepoRoot "Antigravity\.agents"
+    $agTargetRoot = Join-Path $ProjectRoot ".agents"
+    $version = Get-VersionContent -Path (Join-Path $RepoRoot "Antigravity\VERSION")
+    $report = @(Get-UpgradeReport `
+        -SourceRoot $sourceRoot `
+        -TargetRoot $agTargetRoot `
+        -ScanDirs @("rules", "workflows") `
+        -ProtectedDirs @("memory", "project_skills") `
+        -ExcludeFiles @())
+
+    $stats = Write-UpgradeReport -Report $report -CategoryMap ([ordered]@{
+        "治理規範 (.agents/rules)" = { $_.Path -like "rules/*" -or $_.Path -like "rules\*" }
+        "工作流程 (.agents/workflows)" = { $_.Path -like "workflows/*" -or $_.Path -like "workflows\*" }
+        "專案記憶 — 受保護" = { $_.Path -like "memory/*" -or $_.Path -like "memory\*" }
+        "專案技能 — 受保護" = { $_.Path -like "project_skills/*" -or $_.Path -like "project_skills\*" }
+    }) -Platform "Antigravity"
+
+    $targetSkillsPath = Join-Path $agTargetRoot "skills"
+    $skillDiffs = @(Get-SharedSkillDiffs -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath)
+    Write-DiffSummary -Title "Antigravity Shared Skills" -Diffs $skillDiffs
+    Set-ProjectVersionFile -Path (Join-Path $agTargetRoot "VERSION") -Version $version -Apply:$Apply
+
+    if (-not $Apply) { return }
+
+    if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
+        $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $agTargetRoot
+    }
+    $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
+}
+
+function Invoke-SyncClaudeProjectRules {
+    param(
+        [string]$ProjectRoot,
+        [string]$SharedSkillsRoot,
+        [switch]$Apply
+    )
+
+    $sourceRoot = Join-Path $RepoRoot "Claude\.claude"
+    $claudeTargetRoot = Join-Path $ProjectRoot ".claude"
+    $version = Get-VersionContent -Path (Join-Path $RepoRoot "Claude\VERSION")
+    $report = @(Get-UpgradeReport `
+        -SourceRoot $sourceRoot `
+        -TargetRoot $claudeTargetRoot `
+        -ScanDirs @("commands", "rules") `
+        -ProtectedDirs @() `
+        -ExcludeFiles @("settings.local.json"))
+
+    $stats = Write-UpgradeReport -Report $report -CategoryMap ([ordered]@{
+        "工作流指令 (.claude/commands)" = { $_.Path -like "commands/*" -or $_.Path -like "commands\*" }
+        "治理規範 (.claude/rules)" = { $_.Path -like "rules/*" -or $_.Path -like "rules\*" }
+    }) -Platform "Claude"
+
+    $targetSkillsPath = Join-Path $claudeTargetRoot "skills"
+    $skillDiffs = @(Get-SharedSkillDiffs -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath)
+    Write-DiffSummary -Title "Claude Shared Skills" -Diffs $skillDiffs
+    Set-ProjectVersionFile -Path (Join-Path $claudeTargetRoot "VERSION") -Version $version -Apply:$Apply
+
+    if (-not $Apply) { return }
+
+    if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
+        $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $claudeTargetRoot
+    }
+    $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
+}
+
+function Invoke-SyncCodexProjectRules {
+    param(
+        [string]$ProjectRoot,
+        [string]$SharedSkillsRoot,
+        [switch]$Apply
+    )
+
+    $sourceRoot = Join-Path $RepoRoot "Codex\.codex"
+    $codexTargetRoot = Join-Path $ProjectRoot ".codex"
+    $workflowSkillsRoot = Join-Path $RepoRoot "Codex\.agents\workflow-skills"
+    $agentsRoot = Join-Path $ProjectRoot ".agents"
+    $targetSkillsPath = Join-Path $agentsRoot "skills"
+    $version = Get-VersionContent -Path (Join-Path $RepoRoot "Codex\VERSION")
+
+    $report = @(Get-UpgradeReport `
+        -SourceRoot $sourceRoot `
+        -TargetRoot $codexTargetRoot `
+        -ScanDirs @(".") `
+        -ProtectedDirs @() `
+        -ExcludeFiles @())
+    $stats = Write-UpgradeReport -Report $report -CategoryMap ([ordered]@{
+        "治理規則 (.codex/)" = { $true }
+    }) -Platform "Codex"
+
+    $skillDiffs = @(Get-SharedSkillDiffs -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath)
+    Write-DiffSummary -Title "Codex Shared Skills" -Diffs $skillDiffs
+    $workflowDiffs = @(Get-CodexWorkflowDiffs -WorkflowSkillsPath $workflowSkillsRoot -TargetSkillsPath $targetSkillsPath)
+    Write-DiffSummary -Title "Codex Workflow Skills" -Diffs $workflowDiffs
+    Set-ProjectVersionFile -Path (Join-Path $codexTargetRoot "VERSION") -Version $version -Apply:$Apply
+
+    if (-not $Apply) { return }
+
+    if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
+        $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $codexTargetRoot
+    }
+    $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
+    if (Test-Path -LiteralPath $workflowSkillsRoot) {
+        $null = Merge-WorkflowSkills -WorkflowSkillsPath $workflowSkillsRoot -TargetSkillsPath $targetSkillsPath
+    }
+}
+
+function Invoke-SyncProjectRules {
+    Write-ManagerHeader "同步專案平台規則"
+    $targetRoot = (Resolve-Path $Target).Path
+    $sharedSkillsRoot = Join-Path $RepoRoot "Shared\skills"
+
+    Write-Host "RepoRoot：$RepoRoot"
+    Write-Host "Target：$targetRoot"
+    Write-Host "範圍：$ProjectPlatform"
+
+    Write-Host ""
+    Write-Host "📊 Project Platform Selection"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    $installed = @(Get-InstalledProjectPlatforms -TargetRoot $targetRoot)
+    Write-Host "已安裝平台：$(if ($installed.Count -gt 0) { $installed -join ', ' } else { '無' })"
+
+    $selected = @()
+    if ($ProjectPlatform -eq "Auto") {
+        $selected = $installed
+    } elseif (Test-ProjectPlatformInstalled -TargetRoot $targetRoot -Platform $ProjectPlatform) {
+        $selected = @($ProjectPlatform)
+    } else {
+        Write-ProjectSyncNoInstallWarning -TargetRoot $targetRoot -Platform $ProjectPlatform
+        return
+    }
+
+    if ($selected.Count -eq 0) {
+        Write-ProjectSyncNoInstallWarning -TargetRoot $targetRoot -Platform "任何支援平台"
+        return
+    }
+    Write-Host "同步平台：$($selected -join ', ')"
+
+    foreach ($platform in $selected) {
+        switch ($platform) {
+            "Antigravity" { Invoke-SyncAntigravityProjectRules -ProjectRoot $targetRoot -SharedSkillsRoot $sharedSkillsRoot -Apply:$Apply }
+            "Claude"      { Invoke-SyncClaudeProjectRules -ProjectRoot $targetRoot -SharedSkillsRoot $sharedSkillsRoot -Apply:$Apply }
+            "Codex"       { Invoke-SyncCodexProjectRules -ProjectRoot $targetRoot -SharedSkillsRoot $sharedSkillsRoot -Apply:$Apply }
+        }
+    }
+
+    if (-not $Apply) {
+        Write-Host ""
+        Write-Host "Dry-run：未指定 -Apply，不會寫入目前專案規則。" -ForegroundColor Yellow
+        return
+    }
+
+    Sync-ProjectSkillLinks -TargetRoot $targetRoot -Platforms $selected
+    Write-Ok "目前專案規則同步完成：$($selected -join ', ')"
 }
 
 function Get-OrphanReports {
@@ -219,5 +542,6 @@ switch ($Action) {
     "Apply"          { Invoke-ApplyUpdate }
     "Doctor"         { Invoke-Doctor }
     "SyncGlobal"     { Invoke-SyncGlobal }
+    "SyncProjectRules" { Invoke-SyncProjectRules }
     "CleanupOrphans" { Invoke-CleanupOrphans }
 }

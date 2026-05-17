@@ -520,13 +520,11 @@ function Get-WorkflowAuditTargets {
 
     $claudeRoot = Join-Path $RepoRoot 'Claude\.claude\commands'
     if (Test-Path -LiteralPath $claudeRoot) {
-        Get-ChildItem -LiteralPath $claudeRoot -Directory -ErrorAction SilentlyContinue |
-            Where-Object { $_.Name -notmatch '^_' } |
+        Get-ChildItem -LiteralPath $claudeRoot -Filter 'SKILL.md' -File -Recurse -ErrorAction SilentlyContinue |
+            Where-Object { $_.FullName -notmatch '[\\/]_' } |
             ForEach-Object {
-                $path = Join-Path $_.FullName 'SKILL.md'
-                if (Test-Path -LiteralPath $path) {
-                    $targets += [PSCustomObject]@{ Platform = 'Claude'; Name = $_.Name; Path = $path }
-                }
+                $name = $_.Directory.FullName.Substring($claudeRoot.Length).TrimStart('\', '/')
+                $targets += [PSCustomObject]@{ Platform = 'Claude'; Name = $name; Path = $_.FullName }
             }
     }
 
@@ -537,6 +535,46 @@ function Get-WorkflowAuditTargets {
             ForEach-Object {
                 $targets += [PSCustomObject]@{ Platform = 'Antigravity'; Name = $_.Name; Path = $_.FullName }
             }
+    }
+
+    return $targets
+}
+
+function Get-DirectorOutputContractTargets {
+    param(
+        [string]$RepoRoot = ".",
+        [string]$TargetRoot = "."
+    )
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
+    $targets = @()
+
+    $agRoot = Join-Path $RepoRoot 'Antigravity\.agents\workflows'
+    if (Test-Path -LiteralPath $agRoot) {
+        Get-ChildItem -LiteralPath $agRoot -Filter '*.md' -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -notmatch '^_' } |
+            ForEach-Object { $targets += [PSCustomObject]@{ Platform = 'Antigravity'; Scope = 'source'; Path = $_.FullName } }
+    }
+
+    $claudeRoot = Join-Path $RepoRoot 'Claude\.claude\commands'
+    if (Test-Path -LiteralPath $claudeRoot) {
+        Get-ChildItem -LiteralPath $claudeRoot -Filter 'SKILL.md' -Recurse -File -ErrorAction SilentlyContinue |
+            ForEach-Object { $targets += [PSCustomObject]@{ Platform = 'Claude'; Scope = 'source'; Path = $_.FullName } }
+    }
+
+    $codexRoot = Join-Path $RepoRoot 'Codex\.agents\workflow-skills'
+    if (Test-Path -LiteralPath $codexRoot) {
+        Get-ChildItem -LiteralPath $codexRoot -Filter 'SKILL.md' -Recurse -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.FullName -notmatch '[\\/]_shared[\\/]' } |
+            ForEach-Object { $targets += [PSCustomObject]@{ Platform = 'Codex'; Scope = 'source'; Path = $_.FullName } }
+    }
+
+    $liveSkillsRoot = Join-Path $TargetRoot '.agents\skills'
+    if (Test-Path -LiteralPath $liveSkillsRoot) {
+        Get-ChildItem -LiteralPath $liveSkillsRoot -Filter 'SKILL.md' -Recurse -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Directory.Name -match '^(0[0-9]|1[0-2])[-_]' } |
+            ForEach-Object { $targets += [PSCustomObject]@{ Platform = 'Codex'; Scope = 'target'; Path = $_.FullName } }
     }
 
     return $targets
@@ -592,7 +630,7 @@ function Measure-WorkflowMetadata {
         [PSCustomObject]@{
             Platform = 'Claude'
             Root     = Join-Path $RepoRoot 'Claude\.claude\commands'
-            Kind     = 'DirectorySkill'
+            Kind     = 'RecursiveSkill'
         },
         [PSCustomObject]@{
             Platform = 'Antigravity'
@@ -606,12 +644,20 @@ function Measure-WorkflowMetadata {
         if (-not (Test-Path $target.Root)) { continue }
         $items = if ($target.Kind -eq 'WorkflowFile') {
             Get-ChildItem -LiteralPath $target.Root -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' }
+        } elseif ($target.Kind -eq 'RecursiveSkill') {
+            Get-ChildItem -LiteralPath $target.Root -Filter 'SKILL.md' -File -Recurse -ErrorAction SilentlyContinue |
+                Where-Object { $_.FullName -notmatch '[\\/]_' }
         } else {
             Get-ChildItem -LiteralPath $target.Root -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' }
         }
 
         foreach ($item in $items) {
-            $file = if ($target.Kind -eq 'WorkflowFile') { $item.FullName } else { Join-Path $item.FullName 'SKILL.md' }
+            $file = if ($target.Kind -eq 'WorkflowFile' -or $target.Kind -eq 'RecursiveSkill') { $item.FullName } else { Join-Path $item.FullName 'SKILL.md' }
+            $name = if ($target.Kind -eq 'RecursiveSkill') {
+                $item.Directory.FullName.Substring($target.Root.Length).TrimStart('\', '/')
+            } else {
+                $item.Name
+            }
             $fm = Get-FrontmatterBlock -Path $file
             $missing = @()
             foreach ($field in $required) {
@@ -620,7 +666,7 @@ function Measure-WorkflowMetadata {
             $automationSafe = $fm -match '(?m)^\s+automation_safe:\s*true\s*$'
             $results += [PSCustomObject]@{
                 Platform       = $target.Platform
-                Name           = $item.Name
+                Name           = $name
                 MissingFields  = $missing
                 AutomationSafe = $automationSafe
                 Status         = if ($missing.Count -eq 0) { '🟢' } else { '🔴' }
@@ -662,7 +708,7 @@ function Measure-DocsConsistency {
     $counts = [PSCustomObject]@{
         SharedSkills          = (Get-ChildItem -LiteralPath (Join-Path $RepoRoot 'Shared\skills') -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' }).Count
         CodexWorkflowSkills   = (Get-ChildItem -LiteralPath (Join-Path $RepoRoot 'Codex\.agents\workflow-skills') -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' }).Count
-        ClaudeCommands        = (Get-ChildItem -LiteralPath (Join-Path $RepoRoot 'Claude\.claude\commands') -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' }).Count
+        ClaudeCommands        = (Get-ChildItem -LiteralPath (Join-Path $RepoRoot 'Claude\.claude\commands') -Filter 'SKILL.md' -File -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch '[\\/]_' }).Count
         AntigravityWorkflows  = (Get-ChildItem -LiteralPath (Join-Path $RepoRoot 'Antigravity\.agents\workflows') -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' }).Count
     }
 
@@ -749,10 +795,12 @@ function Measure-RuntimeGlobalDrift {
     #>
     param(
         [string]$RepoRoot = ".",
-        [string]$ProfileRoot = $env:USERPROFILE
+        [string]$ProfileRoot = $env:USERPROFILE,
+        [string]$TargetRoot = "."
     )
 
     $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
     if (-not $ProfileRoot) { $ProfileRoot = $env:USERPROFILE }
 
     $targets = @(
@@ -1019,6 +1067,295 @@ function Measure-GovernanceSemantics {
     }
 }
 
+function Measure-DirectorOutputContract {
+    <#
+    .SYNOPSIS
+        檢查面向總監的輸出契約是否覆蓋三平台 workflow 與目前專案 Codex 規則。
+    #>
+    param(
+        [string]$RepoRoot = ".",
+        [string]$TargetRoot = "."
+    )
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
+    $results = New-Object System.Collections.ArrayList
+    $tablePattern = '功能/目的\s*\|\s*相關檔案\s*\|\s*白話說明\s*\|\s*寫入/風險'
+
+    function Get-DirectorDisplayPath {
+        param([string]$Path)
+
+        $full = $Path
+        if (Test-Path -LiteralPath $Path) {
+            $full = (Resolve-Path -LiteralPath $Path).Path
+        }
+
+        if ($full.StartsWith($RepoRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+            return $full.Substring($RepoRoot.Length).TrimStart('\', '/')
+        }
+        if ($full.StartsWith($TargetRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+            return ("target:{0}" -f $full.Substring($TargetRoot.Length).TrimStart('\', '/'))
+        }
+        return $full
+    }
+
+    function Add-DirectorFinding {
+        param(
+            [string]$Severity,
+            [string]$File,
+            [string]$Reason
+        )
+
+        $null = $results.Add([PSCustomObject]@{
+            Severity = $Severity
+            File     = $File
+            Reason   = $Reason
+        })
+    }
+
+    foreach ($target in (Get-DirectorOutputContractTargets -RepoRoot $RepoRoot -TargetRoot $TargetRoot)) {
+        $content = Get-Content -LiteralPath $target.Path -Raw -Encoding UTF8
+        $missing = @()
+        if ($content -notmatch $tablePattern) { $missing += '白話表格' }
+        if ($content -notmatch '補充技術細節') { $missing += '補充技術細節' }
+        if ($missing.Count -gt 0) {
+            Add-DirectorFinding -Severity 'Red' `
+                -File (Get-DirectorDisplayPath -Path $target.Path) `
+                -Reason ("{0}/{1} 缺少總監可讀輸出契約：{2}" -f $target.Platform, $target.Scope, ($missing -join ', '))
+        }
+    }
+
+    $sourceCodexAgents = Join-Path $RepoRoot 'Codex\.codex\AGENTS.md'
+    $targetCodexAgents = Join-Path $TargetRoot '.codex\AGENTS.md'
+    if (Test-Path -LiteralPath $sourceCodexAgents) {
+        if (-not (Test-Path -LiteralPath $targetCodexAgents)) {
+            Add-DirectorFinding -Severity 'Red' `
+                -File (Get-DirectorDisplayPath -Path $targetCodexAgents) `
+                -Reason '目前專案缺少 .codex/AGENTS.md，Codex 無法載入專案治理規則'
+        } else {
+            $sourceContent = Get-Content -LiteralPath $sourceCodexAgents -Raw -Encoding UTF8
+            $targetContent = Get-Content -LiteralPath $targetCodexAgents -Raw -Encoding UTF8
+            $requiredMarkers = @(
+                'Director-Readable Output Contract',
+                '功能/目的 | 相關檔案 | 白話說明 | 寫入/風險',
+                '補充技術細節'
+            )
+            foreach ($marker in $requiredMarkers) {
+                if (($sourceContent -match [regex]::Escape($marker)) -and ($targetContent -notmatch [regex]::Escape($marker))) {
+                    Add-DirectorFinding -Severity 'Red' `
+                        -File (Get-DirectorDisplayPath -Path $targetCodexAgents) `
+                        -Reason "目前專案 .codex/AGENTS.md 與 source 漂移，缺少：$marker"
+                }
+            }
+
+            $sourceHash = (Get-FileHash -LiteralPath $sourceCodexAgents -Algorithm SHA256).Hash
+            $targetHash = (Get-FileHash -LiteralPath $targetCodexAgents -Algorithm SHA256).Hash
+            if ($sourceHash -ne $targetHash -and $targetContent -match $tablePattern -and $targetContent -match '補充技術細節') {
+                Add-DirectorFinding -Severity 'Yellow' `
+                    -File (Get-DirectorDisplayPath -Path $targetCodexAgents) `
+                    -Reason '目前專案 .codex/AGENTS.md 與 source 雜湊不同，請確認是否為 PROJECT IDENTITY 或本地客製'
+            }
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 Director Output Contract"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
+    foreach ($finding in $results | Sort-Object Severity, File, Reason) {
+        $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+        Write-Host ("  {0} {1} — {2}" -f $finding.Severity, $finding.File, $finding.Reason) -ForegroundColor $color
+    }
+
+    return [PSCustomObject]@{
+        Results     = @($results.ToArray())
+        RedCount    = $redCount
+        YellowCount = $yellowCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
+function Measure-ProjectSkillLinks {
+    <#
+    .SYNOPSIS
+        檢查 project skill 原檔與 discovery 連結是否維持隔離設計。
+    #>
+    param([string]$TargetRoot = ".")
+
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
+    $results = New-Object System.Collections.ArrayList
+    $projectSkillsRoot = Join-Path $TargetRoot '.agents\project_skills'
+    $projectSkills = @()
+
+    if (Test-Path -LiteralPath $projectSkillsRoot) {
+        $projectSkills = @(Get-ChildItem -LiteralPath $projectSkillsRoot -Directory -Force -ErrorAction SilentlyContinue |
+            Where-Object { ($_.Name -notmatch '^_') -and (Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md')) } |
+            ForEach-Object { [PSCustomObject]@{ Name = $_.Name; Path = $_.FullName } })
+    }
+
+    $discoveryRoots = @(
+        [PSCustomObject]@{ Name = '.agents/skills'; Path = (Join-Path $TargetRoot '.agents\skills') },
+        [PSCustomObject]@{ Name = '.claude/skills'; Path = (Join-Path $TargetRoot '.claude\skills') }
+    )
+
+    function Get-ProjectLinkTarget {
+        param($Item)
+        $target = $null
+        if ($Item -and ($Item.PSObject.Properties.Name -contains 'Target')) {
+            $target = $Item.Target
+        } elseif ($Item -and ($Item.PSObject.Properties.Name -contains 'LinkTarget')) {
+            $target = $Item.LinkTarget
+        }
+        if ($target -is [array]) { $target = $target[0] }
+        if ($target) { return [string]$target }
+        return ''
+    }
+
+    function Get-ProjectLinkFullPath {
+        param([string]$Path)
+        if (-not $Path) { return '' }
+        try {
+            return (Resolve-Path -LiteralPath $Path -ErrorAction Stop).Path.TrimEnd('\', '/')
+        } catch {
+            return [System.IO.Path]::GetFullPath($Path).TrimEnd('\', '/')
+        }
+    }
+
+    function Test-ProjectLinkPathEquals {
+        param(
+            [string]$Left,
+            [string]$Right
+        )
+        if (-not $Left -or -not $Right) { return $false }
+        return [string]::Equals((Get-ProjectLinkFullPath -Path $Left), (Get-ProjectLinkFullPath -Path $Right), [System.StringComparison]::OrdinalIgnoreCase)
+    }
+
+    function Test-ProjectLinkUnderRoot {
+        param(
+            [string]$Path,
+            [string]$Root
+        )
+        if (-not $Path -or -not $Root) { return $false }
+        $full = Get-ProjectLinkFullPath -Path $Path
+        $rootFull = Get-ProjectLinkFullPath -Path $Root
+        return $full.StartsWith($rootFull + '\', [System.StringComparison]::OrdinalIgnoreCase)
+    }
+
+    function Add-ProjectLinkFinding {
+        param(
+            [string]$Severity,
+            [string]$DiscoveryRoot,
+            [string]$Link,
+            [string]$ExpectedTarget,
+            [string]$Target,
+            [string]$Reason
+        )
+
+        $null = $results.Add([PSCustomObject]@{
+            Severity       = $Severity
+            DiscoveryRoot  = $DiscoveryRoot
+            Link           = $Link
+            ExpectedTarget = $ExpectedTarget
+            Target         = $Target
+            Reason         = $Reason
+        })
+    }
+
+    function Test-ProjectSkillEntry {
+        param(
+            [string]$DiscoveryRoot,
+            [string]$LinkPath,
+            $Entry,
+            [string]$ExpectedTarget = ''
+        )
+
+        if (-not $Entry) {
+            Add-ProjectLinkFinding -Severity 'Yellow' -DiscoveryRoot $DiscoveryRoot -Link $LinkPath -ExpectedTarget $ExpectedTarget -Target '' -Reason '缺少 project skill discovery 連結'
+            return
+        }
+
+        $isReparsePoint = [bool]($Entry.Attributes -band [IO.FileAttributes]::ReparsePoint)
+        if (-not $isReparsePoint) {
+            Add-ProjectLinkFinding -Severity 'Red' -DiscoveryRoot $DiscoveryRoot -Link $Entry.FullName -ExpectedTarget $ExpectedTarget -Target '' -Reason 'project-* 必須是 SymbolicLink 或 Junction，不可為實體目錄/檔案'
+            return
+        }
+
+        $target = Get-ProjectLinkTarget -Item $Entry
+        if (-not $target -or -not (Test-Path -LiteralPath $target)) {
+            Add-ProjectLinkFinding -Severity 'Yellow' -DiscoveryRoot $DiscoveryRoot -Link $Entry.FullName -ExpectedTarget $ExpectedTarget -Target $target -Reason 'project skill 連結目標不存在'
+            return
+        }
+
+        if (-not (Test-ProjectLinkUnderRoot -Path $target -Root $projectSkillsRoot)) {
+            Add-ProjectLinkFinding -Severity 'Red' -DiscoveryRoot $DiscoveryRoot -Link $Entry.FullName -ExpectedTarget $ExpectedTarget -Target $target -Reason 'project skill 連結目標不在 .agents/project_skills/ 內'
+            return
+        }
+
+        if ($ExpectedTarget -and -not (Test-ProjectLinkPathEquals -Left $target -Right $ExpectedTarget)) {
+            Add-ProjectLinkFinding -Severity 'Red' -DiscoveryRoot $DiscoveryRoot -Link $Entry.FullName -ExpectedTarget $ExpectedTarget -Target $target -Reason 'project skill 連結指向非對應原檔目錄'
+            return
+        }
+
+        if (-not (Test-Path -LiteralPath (Join-Path $target 'SKILL.md'))) {
+            Add-ProjectLinkFinding -Severity 'Yellow' -DiscoveryRoot $DiscoveryRoot -Link $Entry.FullName -ExpectedTarget $ExpectedTarget -Target $target -Reason 'project skill 目標缺少 SKILL.md'
+            return
+        }
+    }
+
+    $checkedLinks = @()
+    foreach ($root in $discoveryRoots) {
+        foreach ($projectSkill in $projectSkills) {
+            $linkPath = Join-Path $root.Path "project-$($projectSkill.Name)"
+            $checkedLinks += (Get-ProjectLinkFullPath -Path $linkPath).ToLowerInvariant()
+            $entry = Get-Item -LiteralPath $linkPath -Force -ErrorAction SilentlyContinue
+            Test-ProjectSkillEntry -DiscoveryRoot $root.Name -LinkPath $linkPath -Entry $entry -ExpectedTarget $projectSkill.Path
+        }
+
+        if (Test-Path -LiteralPath $root.Path) {
+            Get-ChildItem -LiteralPath $root.Path -Force -ErrorAction SilentlyContinue |
+                Where-Object { $_.Name -match '^project-' } |
+                ForEach-Object {
+                    $full = (Get-ProjectLinkFullPath -Path $_.FullName).ToLowerInvariant()
+                    if ($checkedLinks -notcontains $full) {
+                        $beforeCount = $results.Count
+                        Test-ProjectSkillEntry -DiscoveryRoot $root.Name -LinkPath $_.FullName -Entry $_
+                        if ($results.Count -eq $beforeCount) {
+                            Add-ProjectLinkFinding -Severity 'Yellow' -DiscoveryRoot $root.Name -Link $_.FullName -ExpectedTarget '' -Target (Get-ProjectLinkTarget -Item $_) -Reason '多餘 project skill discovery 連結，未對應有效 project skill 原檔'
+                        }
+                    }
+                }
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 Project Skill Links"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
+    foreach ($finding in $results | Sort-Object Severity, DiscoveryRoot, Link) {
+        $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+        Write-Host ("  {0} {1} {2} — {3}" -f $finding.Severity, $finding.DiscoveryRoot, $finding.Link, $finding.Reason) -ForegroundColor $color
+        if ($finding.ExpectedTarget) {
+            Write-Host ("      expected: {0}" -f $finding.ExpectedTarget) -ForegroundColor DarkGray
+        }
+        if ($finding.Target) {
+            Write-Host ("      target: {0}" -f $finding.Target) -ForegroundColor DarkGray
+        }
+    }
+
+    return [PSCustomObject]@{
+        Results     = @($results.ToArray())
+        RedCount    = $redCount
+        YellowCount = $yellowCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
 function Invoke-PlatformGovernanceAudit {
     <#
     .SYNOPSIS
@@ -1028,10 +1365,12 @@ function Invoke-PlatformGovernanceAudit {
     #>
     param(
         [string]$RepoRoot = ".",
-        [string]$ProfileRoot = $env:USERPROFILE
+        [string]$ProfileRoot = $env:USERPROFILE,
+        [string]$TargetRoot = "."
     )
 
     $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
     $OutputEncoding = [System.Text.Encoding]::UTF8
 
@@ -1039,20 +1378,25 @@ function Invoke-PlatformGovernanceAudit {
     Write-Host "🧭 三平台代理治理巡檢"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "RepoRoot：$RepoRoot"
+    Write-Host "TargetRoot：$TargetRoot"
 
     $capability = Measure-PlatformCapability -RepoRoot $RepoRoot
     $metadata = Measure-WorkflowMetadata -RepoRoot $RepoRoot
     $docs = Measure-DocsConsistency -RepoRoot $RepoRoot
     $runtime = Measure-RuntimeGlobalDrift -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
     $semantics = Measure-GovernanceSemantics -RepoRoot $RepoRoot
+    $directorOutput = Measure-DirectorOutputContract -RepoRoot $RepoRoot -TargetRoot $TargetRoot
+    $projectLinks = Measure-ProjectSkillLinks -TargetRoot $TargetRoot
 
     $metadataFail = ($metadata | Where-Object { $_.Status -eq '🔴' }).Count
     $docStale = $docs.StaleHits.Count
-    $ok = $capability.CapabilityMatrix -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($docStale -eq 0) -and ($runtime.RedCount -eq 0) -and ($semantics.RedCount -eq 0)
+    $redTotal = $runtime.RedCount + $semantics.RedCount + $directorOutput.RedCount + $projectLinks.RedCount
+    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount
+    $ok = $capability.CapabilityMatrix -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
     Write-Host ""
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    if ($ok) {
+    if ($ok -and ($yellowTotal -eq 0)) {
         Write-Host "✅ 平台代理治理巡檢通過"
     } else {
         Write-Host "⚠️ 平台代理治理巡檢有待處理項目" -ForegroundColor Yellow
@@ -1064,8 +1408,12 @@ function Invoke-PlatformGovernanceAudit {
         Docs       = $docs
         Runtime    = $runtime
         Semantics  = $semantics
+        DirectorOutput = $directorOutput
+        ProjectLinks = $projectLinks
+        RedCount   = $redTotal
+        YellowCount = $yellowTotal
         Passed     = $ok
     }
 }
 
-Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-GovernanceSemantics, Invoke-PlatformGovernanceAudit
+Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-GovernanceSemantics, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Invoke-PlatformGovernanceAudit

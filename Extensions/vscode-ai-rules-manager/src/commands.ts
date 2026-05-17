@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { AiRulesPanelProvider } from "./panel";
-import { ManagerAction, ScriptRunner } from "./scriptRunner";
+import { ManagerAction, ProjectPlatform, RunOptions, ScriptRunner } from "./scriptRunner";
 import { AiRulesStatus } from "./status";
 
 export function registerAiRulesCommands(
@@ -25,9 +25,25 @@ export function registerAiRulesCommands(
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncGlobalRules", async () => {
-    await run("同步全域規則預覽", "SyncGlobal", runner, status, panel);
-    const ok = await confirm("要寫入使用者層全域規則並備份舊檔嗎？");
-    if (ok) await run("同步全域規則", "SyncGlobal", runner, status, panel, { apply: true });
+    await run("同步使用者層規則預覽", "SyncGlobal", runner, status, panel);
+    const ok = await confirm("要寫入使用者層規則並備份舊檔嗎？這不會更新目前專案的 .codex/ 或 .agents/skills。");
+    if (ok) await run("同步使用者層規則", "SyncGlobal", runner, status, panel, { apply: true });
+  }));
+
+  context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncProjectRules", async () => {
+    await runProjectSync("同步已安裝平台規則", "Auto", runner, status, panel);
+  }));
+
+  context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncProjectRulesCodex", async () => {
+    await runProjectSync("同步 Codex 專案規則", "Codex", runner, status, panel);
+  }));
+
+  context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncProjectRulesClaude", async () => {
+    await runProjectSync("同步 Claude 專案規則", "Claude", runner, status, panel);
+  }));
+
+  context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncProjectRulesAntigravity", async () => {
+    await runProjectSync("同步 Antigravity 專案規則", "Antigravity", runner, status, panel);
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.cleanupOrphans", async () => {
@@ -43,7 +59,7 @@ async function run(
   runner: ScriptRunner,
   status: AiRulesStatus,
   panel: AiRulesPanelProvider,
-  options: { apply?: boolean; removeOrphans?: boolean } = {}
+  options: RunOptions = {}
 ): Promise<void> {
   try {
     status.setBusy(`AI Rules: ${label}`);
@@ -64,6 +80,18 @@ async function run(
   }
 }
 
+async function runProjectSync(
+  label: string,
+  projectPlatform: ProjectPlatform,
+  runner: ScriptRunner,
+  status: AiRulesStatus,
+  panel: AiRulesPanelProvider
+): Promise<void> {
+  await run(`${label}預覽`, "SyncProjectRules", runner, status, panel, { projectPlatform });
+  const ok = await confirm("要更新目前專案已安裝的對應平台規則嗎？未安裝平台不會被建立，memory / project_skills 不會被覆寫。");
+  if (ok) await run(label, "SyncProjectRules", runner, status, panel, { apply: true, projectPlatform });
+}
+
 async function confirm(message: string): Promise<boolean> {
   const answer = await vscode.window.showWarningMessage(message, { modal: true }, "確認執行");
   return answer === "確認執行";
@@ -77,6 +105,10 @@ function needsAttention(output: string): boolean {
 }
 
 function hasPositiveCounter(output: string, label: "Yellow" | "Red"): boolean {
-  const match = output.match(new RegExp(`${label}[：:]\\s*(\\d+)`));
-  return match ? Number.parseInt(match[1], 10) > 0 : false;
+  const pattern = new RegExp(`${label}[：:]\\s*(\\d+)`, "g");
+  let match: RegExpExecArray | null;
+  while ((match = pattern.exec(output)) !== null) {
+    if (Number.parseInt(match[1], 10) > 0) return true;
+  }
+  return false;
 }

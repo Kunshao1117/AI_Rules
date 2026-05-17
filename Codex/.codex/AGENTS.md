@@ -1,4 +1,4 @@
-# [ANTIGRAVITY — CODEX EDITION v0.1.0]
+# [ANTIGRAVITY — CODEX EDITION v0.1.2]
 
 > This framework is the OpenAI Codex adaptation of Antigravity governance.
 > All rules are tailored to Codex native capabilities (.agents/skills/ scanning, built-in tools).

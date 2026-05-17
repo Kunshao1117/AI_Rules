@@ -1,8 +1,8 @@
-# Antigravity Codex Edition v0.1.0
+# Antigravity Codex Edition v0.1.2
 
 > **讓 AI 編碼助手不再失憶、不再無紀律** — 針對 OpenAI Codex（agentskills.io）設計的 Antigravity 治理框架適配層，與 Gemini 版和 Claude Edition 共享同一套設計哲學與記憶庫。
 
-[![version](https://img.shields.io/badge/version-v0.1.0-orange)](#版本管理)
+[![version](https://img.shields.io/badge/version-v0.1.2-orange)](#版本管理)
 [![platform](https://img.shields.io/badge/platform-agentskills.io-lightgrey)](#)
 [![license](https://img.shields.io/badge/license-MIT-green)](#)
 
@@ -245,7 +245,8 @@ graph TD
 
 | 檔案 | 用途 |
 |------|------|
-| `VERSION` | 單行版本號（例如 `0.1.0`） |
+| `VERSION` | 單行版本號（例如 `0.1.2`） |
+| `.codex/VERSION` | 部署到專案後的 Codex live 版本錨點 |
 
 升級時部署引擎採用 **SHA256 差異比對**策略，確保只更新真正有變化的檔案。`.codex/AGENTS.md` 中的 `## [PROJECT IDENTITY]` 區段在升級時永遠受到保護，不會被框架版本覆蓋。
 
@@ -258,7 +259,8 @@ graph TD
 ├── .codex/
 │   ├── AGENTS.md                  ← Codex 治理規則（哨兵檔 + 完整治理規範）
 │   │                                 ↑ 包含 PROJECT IDENTITY 保護區段（使用者自訂，升級保留）
-│   └── config.toml                ← 專案層 Codex 設定（project_doc_fallback_filenames）
+│   ├── config.toml                ← 專案層 Codex 設定（project_doc_fallback_filenames）
+│   └── VERSION                    ← Codex live 版本錨點
 └── .agents/
     ├── skills/                    ← 53 套技能（36 共用 + 17 工作流，扁平結構）
     │   ├── _index.md              ← 技能路由表
@@ -276,15 +278,14 @@ graph TD
     │   └── (由 AI 執行 $02-blueprint-架構 初始化)
     ├── project_skills/            ← 衍生技能（專案特有，升級受保護）
     │   └── _index.md
-    ├── logs/                      ← 暫存日誌（不進版控）
-    └── VERSION                    ← 框架版本號
+    └── logs/                      ← 暫存日誌（不進版控）
 ```
 
 ### Codex 源碼結構（框架核心庫）
 
 ```
 Codex/
-├── VERSION                        ← v0.1.0
+├── VERSION                        ← v0.1.2
 ├── install.ps1                    ← 一鍵安裝啟動器（呼叫 Scripts/Deploy.ps1）
 ├── README.md                      ← 本文件
 ├── global/
@@ -292,7 +293,8 @@ Codex/
 │   └── config.toml                ← 全局 Codex 設定版控（→ ~/.codex/config.toml）
 ├── .codex/
 │   ├── AGENTS.md                  ← 專案層治理規則源碼（哨兵檔）
-│   └── config.toml                ← 專案層 Codex 設定（project_doc_fallback_filenames）
+│   ├── config.toml                ← 專案層 Codex 設定（project_doc_fallback_filenames）
+│   └── VERSION                    ← Codex live 版本錨點源碼
 └── .agents/
     └── workflow-skills/           ← 17 套工作流技能源碼（扁平結構）
         ├── _shared/
