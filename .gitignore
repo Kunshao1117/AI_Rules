@@ -2,6 +2,7 @@
 .vscode/
 /.agents/*
 !/.agents/memory/
+!/.agents/memory/**
 /.claude/
 antigravity_export/
 /CLAUDE.md
@@ -9,3 +10,6 @@ antigravity_export/
 .agents/logs/
 .codex/
 !Codex/.codex/
+Extensions/**/node_modules/
+Extensions/**/out/
+Extensions/**/*.vsix

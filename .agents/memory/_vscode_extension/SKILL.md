@@ -1,0 +1,64 @@
+---
+name: _vscode_extension
+description: AI_Rules VS Code 延伸模組與按鈕式管理入口。追蹤側邊欄 UI、命令註冊、PowerShell 腳本橋接與 VSIX 打包設定。
+scopePath: Extensions/vscode-ai-rules-manager
+last_updated: '2026-05-18T00:30:33+08:00'
+staleness: 0
+status: stable
+metadata:
+  author: antigravity
+  version: '1.0'
+  origin: framework
+  memory_awareness: full
+  tool_scope:
+    - 'filesystem:write'
+    - 'mcp:cartridge-system'
+---
+
+# _vscode_extension 收容卡匣
+
+## Tracked Files
+
+- Extensions/vscode-ai-rules-manager/package.json
+- Extensions/vscode-ai-rules-manager/package-lock.json
+- Extensions/vscode-ai-rules-manager/tsconfig.json
+- Extensions/vscode-ai-rules-manager/.vscodeignore
+- Extensions/vscode-ai-rules-manager/README.md
+- Extensions/vscode-ai-rules-manager/resources/ai-rules.svg
+- Extensions/vscode-ai-rules-manager/src/extension.ts
+- Extensions/vscode-ai-rules-manager/src/panel.ts
+- Extensions/vscode-ai-rules-manager/src/commands.ts
+- Extensions/vscode-ai-rules-manager/src/scriptRunner.ts
+- Extensions/vscode-ai-rules-manager/src/status.ts
+- Scripts/AI-RulesManager.ps1
+
+## Key Decisions
+
+- **VS Code extension 而非 Codex plugin (2026-05-17)**: 使用者所稱插件是 VS Code 延伸模組，因此第一版建立 `Extensions/vscode-ai-rules-manager/`，以 Activity Bar / Sidebar 按鈕提供操作入口，不使用 `.codex-plugin/plugin.json`。
+- **UI 與治理引擎分層 (2026-05-17)**: VS Code extension 僅負責按鈕、確認視窗、狀態列與 Output Channel；實際治理邏輯集中在 `Scripts/AI-RulesManager.ps1` 與既有 `Deploy.ps1` / modules，避免 UI 和治理規則分叉。
+- **寫入動作必須確認 (2026-05-17)**: 套用更新、同步全域規則、清理孤兒檔案都必須通過 VS Code 確認視窗後才帶 `-Apply` 或 `-RemoveOrphans` 執行；檢查更新、查看更新內容、健康檢查保持唯讀。
+- **Webview 指令白名單 (2026-05-17)**: 側邊欄只接受 6 個已註冊的 `aiRules.*` 命令，避免 Webview message 直接觸發任意 VS Code command。
+- **孤兒清理保護 (2026-05-17)**: `CleanupOrphans` 只刪除差異報告列出的孤兒檔案；實際刪除前由 `Core.psm1` 驗證路徑仍在目標根目錄內，且跳過 `.agents/memory/` 與 `.agents/project_skills/`。
+- **Windows PowerShell 5.1 腳本編碼相容 (2026-05-18)**: `Scripts/AI-RulesManager.ps1` 必須保存為 UTF-8 with BOM，因 VS Code extension 預設以 `powershell.exe` 執行；若改成 UTF-8 無 BOM，含中文與框線輸出的腳本會在 Windows PowerShell 5.1 被誤解碼並造成 ParserError。
+
+## Known Issues
+
+- 第一版以本機 VSIX 為目標，尚未建立 Marketplace 發布流程。
+- 尚未提供完整 Webview Dashboard；目前採側邊欄輕量按鈕。
+
+## Module Lessons
+
+- **延伸模組不應內建框架副本**：AI_Rules repo 仍是唯一真實來源；extension 只尋找 workspace 或設定中的 repo root，然後呼叫 repo 內腳本。
+- **PowerShell bridge 是公共介面**：VS Code extension、手動 CLI、未來其他平台入口都應呼叫 `AI-RulesManager.ps1`，不要各自重寫治理流程。
+- **D01: VS Code bridge 腳本需固定 BOM**：只要 extension 預設仍支援 Windows PowerShell 5.1，含非 ASCII 輸出的 `.ps1` 應以 UTF-8 with BOM 保存，不能只用 PowerShell 7 成功作為驗收標準。
+
+## Relations
+
+- 後端治理入口：`Scripts/AI-RulesManager.ps1`
+- 統一部署引擎：`Scripts/Deploy.ps1`
+- 全域規則同步：`Scripts/modules/Core.psm1`
+- runtime drift 巡檢：`Scripts/modules/Audit.psm1`
+
+## Applicable Skills
+
+- memory-ops（維護與更新本卡時）

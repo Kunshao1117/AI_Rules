@@ -1,0 +1,101 @@
+{
+  "name": "ai-rules-manager",
+  "displayName": "AI Rules Manager",
+  "description": "Point-and-click VS Code manager for AI_Rules governance checks, updates, global rules, and orphan cleanup.",
+  "version": "0.1.0",
+  "publisher": "kunshao",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kunshao1117/AI_Rules.git"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onView:aiRules.panel",
+    "onCommand:aiRules.checkUpdate",
+    "onCommand:aiRules.planUpdate",
+    "onCommand:aiRules.applyUpdate",
+    "onCommand:aiRules.doctor",
+    "onCommand:aiRules.syncGlobalRules",
+    "onCommand:aiRules.cleanupOrphans"
+  ],
+  "contributes": {
+    "configuration": {
+      "title": "AI Rules",
+      "properties": {
+        "aiRules.repoRoot": {
+          "type": "string",
+          "default": "",
+          "description": "AI_Rules repository root. Leave empty to auto-detect from the current workspace."
+        },
+        "aiRules.powerShellPath": {
+          "type": "string",
+          "default": "powershell.exe",
+          "description": "PowerShell executable used to run AI_Rules scripts."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "aiRules.checkUpdate",
+        "title": "AI Rules: 檢查更新"
+      },
+      {
+        "command": "aiRules.planUpdate",
+        "title": "AI Rules: 查看更新內容"
+      },
+      {
+        "command": "aiRules.applyUpdate",
+        "title": "AI Rules: 套用更新"
+      },
+      {
+        "command": "aiRules.doctor",
+        "title": "AI Rules: 健康檢查"
+      },
+      {
+        "command": "aiRules.syncGlobalRules",
+        "title": "AI Rules: 同步全域規則"
+      },
+      {
+        "command": "aiRules.cleanupOrphans",
+        "title": "AI Rules: 清理孤兒檔案"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "aiRules",
+          "title": "AI Rules",
+          "icon": "resources/ai-rules.svg"
+        }
+      ]
+    },
+    "views": {
+      "aiRules": [
+        {
+          "id": "aiRules.panel",
+          "name": "AI Rules",
+          "type": "webview"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^2.32.0",
+    "typescript": "^5.5.4"
+  }
+}

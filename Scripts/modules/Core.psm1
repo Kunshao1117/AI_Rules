@@ -86,27 +86,39 @@ function Compare-FrameworkFile {
 function Compare-GlobalRule {
     <#
     .SYNOPSIS
-        比對全域規則（如 ~/.gemini/GEMINI.md）並在衝突時產出暫存檔。
+        比對全域規則（如 ~/.gemini/GEMINI.md）。預設只報告差異，-Apply 才寫入。
     .PARAMETER SourcePath
         框架源碼中的全域規則路徑
     .PARAMETER TargetPath
         使用者環境中的全域規則路徑 (User Profile)
-    .PARAMETER StageDir
-        專案內的暫存目錄 (.agents/global_stage)
+    .PARAMETER Apply
+        實際寫入使用者層全域規則。未指定時只做 dry-run。
+    .PARAMETER BackupRoot
+        寫入前備份舊檔的目錄。
     #>
     param(
         [string]$SourcePath,
         [string]$TargetPath,
-        [string]$StageDir
+        [string]$StageDir,
+        [switch]$Apply,
+        [string]$BackupRoot
     )
 
     $fileName = Split-Path $SourcePath -Leaf
-    
-    # 若目標不存在：直接安裝（全新環境）
+
+    if (-not $BackupRoot) {
+        $BackupRoot = Join-Path (Split-Path $TargetPath -Parent) "backups"
+    }
+
+    # 若目標不存在：dry-run 只報告，-Apply 才建立
     if (-Not (Test-Path $TargetPath)) {
+        if (-not $Apply) {
+            Write-Warn "全域規則不存在，待授權建立: $TargetPath"
+            return "MISSING"
+        }
         New-Item -ItemType Directory -Force -Path (Split-Path $TargetPath -Parent) | Out-Null
         Copy-Item $SourcePath $TargetPath -Force
-        Write-Ok "已自動安裝全域規則: $TargetPath"
+        Write-Ok "已授權建立全域規則: $TargetPath"
         return "INSTALLED"
     }
 
@@ -120,26 +132,20 @@ function Compare-GlobalRule {
         return "SAME"
     }
 
-    # 若內容不同：執行暫存 (Staging)
-    if (-Not (Test-Path $StageDir)) { New-Item -ItemType Directory -Force -Path $StageDir | Out-Null }
-    
-    $stagedFile = Join-Path $StageDir "${fileName}_LATEST.md"
-    $reportFile = Join-Path $StageDir "${fileName}_UPDATE_REQUIRED.txt"
-    
-    Copy-Item $SourcePath $stagedFile -Force
-    
-    $timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
-    $reportContent = @"
-[偵測到更新] $fileName
-時間: $timestamp
-說明: 您位於 $TargetPath 的規則與框架最新版本有差異。
-行為: 為保護您的自定義設定，我們不自動覆寫。
-操作: 請手動比對並更新。最新版範例已存放於此目錄。
-"@
-    Set-Content -Path $reportFile -Value $reportContent -Encoding UTF8
+    if (-not $Apply) {
+        Write-Warn "全域規則有差異，dry-run 不覆寫: $TargetPath"
+        return "CHANGED"
+    }
 
-    Write-Warn "全域規則有更新 (衝突)！已將最新版暫存至: .agents/global_stage/$fileName"
-    return "STAGED"
+    New-Item -ItemType Directory -Force -Path $BackupRoot | Out-Null
+    $timestamp = (Get-Date).ToString("yyyyMMdd-HHmmss")
+    $backupFile = Join-Path $BackupRoot "$fileName.$timestamp.bak"
+    Copy-Item $TargetPath $backupFile -Force
+    Copy-Item $SourcePath $TargetPath -Force
+
+    Write-Ok "已授權更新全域規則: $TargetPath"
+    Write-Step "舊檔備份: $backupFile"
+    return "UPDATED"
 }
 
 # ══════════════════════════════════════════════════════════
@@ -451,24 +457,64 @@ function Invoke-ProjectSkillBackfill {
 function Remove-OrphanFiles {
     param(
         [array]$Report,
-        [string]$TargetRoot
+        [string]$TargetRoot,
+        [string[]]$ProtectedDirs = @()
     )
     $orphans = $Report | Where-Object { $_.Status -eq "ORPHAN" }
     if (-not $orphans -or @($orphans).Count -eq 0) { return }
+
+    $resolvedTargetRoot = (Resolve-Path -LiteralPath $TargetRoot).Path
+    $protectedRoots = @()
+    foreach ($dir in $ProtectedDirs) {
+        $candidate = Join-Path $resolvedTargetRoot $dir
+        if (Test-Path -LiteralPath $candidate) {
+            $protectedRoots += (Resolve-Path -LiteralPath $candidate).Path
+        }
+    }
+
+    function Test-IsUnderRoot {
+        param(
+            [string]$Path,
+            [string]$Root
+        )
+        $fullPath = [System.IO.Path]::GetFullPath($Path)
+        $fullRoot = [System.IO.Path]::GetFullPath($Root).TrimEnd('\', '/')
+        return $fullPath.Equals($fullRoot, [System.StringComparison]::OrdinalIgnoreCase) -or
+            $fullPath.StartsWith($fullRoot + [System.IO.Path]::DirectorySeparatorChar, [System.StringComparison]::OrdinalIgnoreCase) -or
+            $fullPath.StartsWith($fullRoot + [System.IO.Path]::AltDirectorySeparatorChar, [System.StringComparison]::OrdinalIgnoreCase)
+    }
+
+    function Test-IsProtectedPath {
+        param([string]$Path)
+        foreach ($root in $protectedRoots) {
+            if (Test-IsUnderRoot -Path $Path -Root $root) { return $true }
+        }
+        return $false
+    }
+
     Write-Step "正在清除 $(@($orphans).Count) 個孤兒檔案..."
     foreach ($item in $orphans) {
-        $path = Join-Path $TargetRoot $item.Path
-        if (Test-Path $path) {
-            Remove-Item $path -Force -ErrorAction SilentlyContinue
+        $path = [System.IO.Path]::GetFullPath((Join-Path $resolvedTargetRoot $item.Path))
+        if (-not (Test-IsUnderRoot -Path $path -Root $resolvedTargetRoot)) {
+            Write-Warn "略過超出目標根目錄的孤兒路徑: $($item.Path)"
+            continue
+        }
+        if (Test-IsProtectedPath -Path $path) {
+            Write-Warn "略過受保護目錄內的孤兒路徑: $($item.Path)"
+            continue
+        }
+        if (Test-Path -LiteralPath $path -PathType Leaf) {
+            Remove-Item -LiteralPath $path -Force -ErrorAction SilentlyContinue
             Write-Ok "已刪除孤兒: $($item.Path)"
         }
     }
     # 清理空資料夾
-    Get-ChildItem $TargetRoot -Directory -Recurse |
+    Get-ChildItem -LiteralPath $resolvedTargetRoot -Directory -Recurse |
         Sort-Object { $_.FullName.Length } -Descending |
         ForEach-Object {
-            if (@(Get-ChildItem $_.FullName -Force).Count -eq 0) {
-                Remove-Item $_.FullName -Force -ErrorAction SilentlyContinue
+            if ((-not (Test-IsProtectedPath -Path $_.FullName)) -and
+                (@(Get-ChildItem -LiteralPath $_.FullName -Force).Count -eq 0)) {
+                Remove-Item -LiteralPath $_.FullName -Force -ErrorAction SilentlyContinue
             }
         }
     Write-Ok "孤兒清除完成。"

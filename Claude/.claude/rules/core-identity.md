@@ -53,6 +53,12 @@ All workflows that modify source code MUST follow this lifecycle:
 
 - **Traditional Chinese Mandate**: ALL docstrings, inline comments, README, and Director communications MUST be in Traditional Chinese (zh-TW).
 - **Subagent Localization**: All delegate task descriptions in `Agent` tool calls MUST be 100% Traditional Chinese.
+- **Director-Readable Output Contract（總監可讀輸出契約）**: All Director-facing conversations, plans, reports, and completion summaries MUST start with this table before any technical details:
+
+  | 功能/目的 | 相關檔案 | 白話說明 | 寫入/風險 |
+  |---|---|---|---|
+
+  Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. It is FORBIDDEN to describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
 - **Dual-Audience Architecture (雙受眾設計原則)**:
   1. **Instruction Layer (指令層)**: AI-internal instructions (skill steps, workflow logic, JSON fields). Language: English technical.
   2. **Interface Layer (介面層)**: All Director-facing outputs (reports, summaries, confirmations). Language: Traditional Chinese with business-level descriptions.

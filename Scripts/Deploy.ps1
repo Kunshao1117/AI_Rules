@@ -15,6 +15,10 @@
     特殊動作：Global（安裝/更新全局觸發器）/ Audit（三平台代理治理巡檢）
 .PARAMETER RemoveOrphans
     Upgrade 模式：是否自動清除孤兒檔案
+.PARAMETER Apply
+    Global 動作：實際寫入使用者層全域規則；未指定時只報告差異
+.PARAMETER ProfileRoot
+    使用者層全域規則根目錄。預設為目前使用者 Profile，可用於 temp profile 測試
 .EXAMPLE
     # 選單模式
     .\Deploy.ps1
@@ -25,6 +29,7 @@
     .\Deploy.ps1 -Platform Codex -Mode Fresh -Target "D:\MyProject"
     .\Deploy.ps1 -Platform All -Mode Sync
     .\Deploy.ps1 -Action Global
+    .\Deploy.ps1 -Action Global -Apply
     .\Deploy.ps1 -Action Audit
 #>
 param(
@@ -39,7 +44,11 @@ param(
     [ValidateSet("Global", "Audit")]
     [string]$Action,
 
-    [switch]$RemoveOrphans
+    [switch]$RemoveOrphans,
+
+    [switch]$Apply,
+
+    [string]$ProfileRoot = $env:USERPROFILE
 )
 
 $ErrorActionPreference = "Stop"
@@ -68,45 +77,61 @@ Import-Module (Join-Path $ModulesDir "Audit.psm1")           -Force
 # ══════════════════════════════════════════════════════════
 
 function Invoke-GlobalInstall {
-    Write-Banner "安裝/更新全域規則安全閘門" "Cyan"
+    Write-Banner "全域規則安全閘門" "Cyan"
     
-    $stageDir = Join-Path $Target ".agents\global_stage"
+    $profile = if ($ProfileRoot) { $ProfileRoot } else { $env:USERPROFILE }
+    $backupRoot = Join-Path $profile ".ai_rules\global_backups"
+    $modeText = if ($Apply) { "Apply：會寫入使用者層規則並備份舊檔" } else { "Dry-run：只報告差異，不寫入" }
+    Write-Step $modeText
 
     # Antigravity: ~/.gemini/GEMINI.md
     $geminiSrc = Join-Path $AgRoot "global\GEMINI.md"
-    $geminiDst = Join-Path $env:USERPROFILE ".gemini\GEMINI.md"
+    $geminiDst = Join-Path $profile ".gemini\GEMINI.md"
     if (Test-Path $geminiSrc) {
-        Compare-GlobalRule -SourcePath $geminiSrc -TargetPath $geminiDst -StageDir $stageDir
+        Compare-GlobalRule -SourcePath $geminiSrc -TargetPath $geminiDst -Apply:$Apply -BackupRoot $backupRoot
     }
 
     # Claude: ~/.claude/CLAUDE.md
     $claudeSrc = Join-Path $ClaudeRoot "global\CLAUDE.md"
-    $claudeDst = Join-Path $env:USERPROFILE ".claude\CLAUDE.md"
+    $claudeDst = Join-Path $profile ".claude\CLAUDE.md"
     if (Test-Path $claudeSrc) {
-        Compare-GlobalRule -SourcePath $claudeSrc -TargetPath $claudeDst -StageDir $stageDir
+        Compare-GlobalRule -SourcePath $claudeSrc -TargetPath $claudeDst -Apply:$Apply -BackupRoot $backupRoot
     }
 
     # Codex: ~/.codex/AGENTS.md
     $codexSrc = Join-Path $CodexRoot "global\AGENTS.md"
-    $codexDst = Join-Path $env:USERPROFILE ".codex\AGENTS.md"
+    $codexDst = Join-Path $profile ".codex\AGENTS.md"
     if (Test-Path $codexSrc) {
-        Compare-GlobalRule -SourcePath $codexSrc -TargetPath $codexDst -StageDir $stageDir
+        Compare-GlobalRule -SourcePath $codexSrc -TargetPath $codexDst -Apply:$Apply -BackupRoot $backupRoot
     }
 
     # Codex: ~/.codex/config.toml
     $codexConfigSrc = Join-Path $CodexRoot "global\config.toml"
-    $codexConfigDst = Join-Path $env:USERPROFILE ".codex\config.toml"
+    $codexConfigDst = Join-Path $profile ".codex\config.toml"
     if (Test-Path $codexConfigSrc) {
-        # config.toml 採特殊合併邏輯，暫不進入通用比對
-        New-Item -ItemType Directory -Force -Path (Split-Path $codexConfigDst -Parent) | Out-Null
+        # config.toml 採特殊合併邏輯：dry-run 只報告，-Apply 才建立或補入
         if (-not (Test-Path $codexConfigDst)) {
-            Copy-Item $codexConfigSrc $codexConfigDst -Force
-            Write-Ok "Codex config.toml → $codexConfigDst (created)"
+            if ($Apply) {
+                New-Item -ItemType Directory -Force -Path (Split-Path $codexConfigDst -Parent) | Out-Null
+                Copy-Item $codexConfigSrc $codexConfigDst -Force
+                Write-Ok "Codex config.toml → $codexConfigDst (created)"
+            } else {
+                Write-Warn "Codex config.toml 不存在，待授權建立: $codexConfigDst"
+            }
         } else {
             $existing = Get-Content $codexConfigDst -Raw -ErrorAction SilentlyContinue
             if ($existing -notmatch '\.codex/AGENTS\.md') {
-                Add-Content $codexConfigDst "`n# Antigravity Codex Edition bridge`nproject_doc_fallback_filenames = [`".codex/AGENTS.md`"]"
-                Write-Ok "Codex config.toml → $codexConfigDst (fallback entry appended)"
+                if ($Apply) {
+                    New-Item -ItemType Directory -Force -Path $backupRoot | Out-Null
+                    $timestamp = (Get-Date).ToString("yyyyMMdd-HHmmss")
+                    Copy-Item $codexConfigDst (Join-Path $backupRoot "config.toml.$timestamp.bak") -Force
+                    Add-Content $codexConfigDst "`n# Antigravity Codex Edition bridge`nproject_doc_fallback_filenames = [`".codex/AGENTS.md`"]"
+                    Write-Ok "Codex config.toml → $codexConfigDst (fallback entry appended)"
+                } else {
+                    Write-Warn "Codex config.toml 缺少 .codex/AGENTS.md fallback，dry-run 不補入"
+                }
+            } else {
+                Write-Step "Codex config.toml fallback 已存在"
             }
         }
     }
@@ -237,7 +262,7 @@ if ($Action -eq "Global") {
 }
 
 if ($Action -eq "Audit") {
-    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot
+    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
     if (-not $audit.Passed) {
         exit 1
     }

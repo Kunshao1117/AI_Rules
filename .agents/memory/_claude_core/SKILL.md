@@ -2,9 +2,9 @@
 name: _claude_core
 description: Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Claude/
-last_updated: '2026-05-17T21:56:00+08:00'
+last_updated: '2026-05-18T00:41:36+08:00'
 staleness: 0
-status: active
+status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -14,6 +14,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core 收容卡匣
 
 ## Tracked Files
@@ -64,6 +65,7 @@ metadata:
 - **公開安裝入口相容性升級 (2026-05-17)**: Claude README、全域 CLAUDE bootstrapper 與 `Claude/install.ps1` 改用 UTF-8 raw bytes 下載與 BOM 暫存寫入策略；installer 補入 `#Requires -Version 5.1` 並保存為 UTF-8 with BOM。
 - **Claude平台代理治理升級 (2026-05-17)**: `.claude/CLAUDE.md` 補入 MCP prompts/resources、Agent 工具、automation-safe 與 opt-in MCP profile 治理語義；`.claude/commands/` 新增 `10_routine(巡檢)`，現行 Slash Command 工作流為 14 道。
 - **Claude 基底治理語義修復 (2026-05-17)**: `global/CLAUDE.md` 改為 governed install/upgrade；`09_commit` 在 GO 前只產生 CHANGELOG 草稿，GO 後才寫入 CHANGELOG 並用明確檔案清單 commit/push；Claude 技能路徑統一為 `.claude/skills/`。
+- **Claude 總監可讀輸出契約 (2026-05-18)**: `core-identity.md` 新增 Director-facing 表格契約，要求對話、計畫、報告與完成摘要先用「功能/目的、相關檔案、白話說明、寫入/風險」呈現，再補技術細節。
 
 ## Known Issues
 
@@ -74,6 +76,7 @@ metadata:
 - **Claude 規則需同步 Gateway 語意**：Claude 版雖以 @import 載入規則，但 MCP/Gateway 約束必須與 Antigravity/Codex 對等，避免同一記憶庫在不同 AI 下有不同安全邊界。
 - **Claude 全域 bootstrapper 也屬公開入口**：除了 README，`Claude/global/CLAUDE.md` 內的受治理安裝命令也必須採用相同相容下載策略，且必須等待 `GO INSTALL` / `GO UPGRADE`。
 - **Claude MCP prompt/resource 不等於授權寫入**：即使 Claude 能將 MCP prompts/resources 曝露為命令與上下文，框架仍以 `human_gate` 和 `[MCP HITL GATE]` 控制寫入型工具。
+- **D04: Claude 與 Antigravity 的 Director-facing 契約需對等**：核心身份規則若新增總監輸出格式，兩平台記憶卡都要同步記錄，避免 commit 前只剩單平台 stale。
 
 ## Applicable Skills
 

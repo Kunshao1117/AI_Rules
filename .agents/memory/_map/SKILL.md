@@ -4,7 +4,7 @@ description: >
   框架導航索引卡。記錄所有 Layer 1 父記憶卡的模組名稱與範圍摘要， 供對話啟動時的 D7 Push 機制快速載入，讓 AI
   在不深讀各模組卡的情況下知道「哪裡有什麼」。 Use when: D7 三路徑探測的第一條路徑（_map 在清單中）。
 scopePath: .agents/memory
-last_updated: '2026-05-11T16:03:12+08:00'
+last_updated: '2026-05-17T23:16:43+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -29,6 +29,7 @@ metadata:
 | _claude_core | Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼） |
 | _shared | Shared/ 共用治理資產（能力矩陣、MCP snippets、36 套操作型技能唯一真實來源） |
 | _codex_core | Codex Edition 框架核心規則與工作流收容卡匣（v0.1.0，OpenAI Codex 適配層） |
+| _vscode_extension | AI_Rules VS Code 延伸模組與按鈕式管理入口 |
 
 > **維護規則**：新增或刪除 Layer 1 父記憶卡時，必須同步更新本表格。
 > 子卡（Layer 2–4）不進本索引，由各父卡的 `## Relations` 管理。
@@ -59,6 +60,7 @@ metadata:
 - 導航目標：`_claude_core`（Claude 核心原始碼）
 - 導航目標：`_shared`（共用技能庫原始碼，Shared/skills/）
 - 導航目標：`_codex_core`（Codex Edition 核心原始碼）
+- 導航目標：`_vscode_extension`（VS Code 延伸模組與管理腳本）
 
 ## Applicable Skills
 

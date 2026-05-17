@@ -4,9 +4,9 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.0）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-17T21:56:00+08:00'
+last_updated: '2026-05-17T23:49:45+08:00'
 staleness: 0
-status: active
+status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -16,6 +16,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core 收容卡匣
 
 ## Tracked Files
@@ -67,6 +68,8 @@ metadata:
 - **公開安裝入口相容性升級 (2026-05-17)**: Codex README、全域 AGENTS bootstrapper 與 `Codex/install.ps1` 改用 UTF-8 raw bytes 下載與 BOM 暫存寫入策略；installer 補入 `#Requires -Version 5.1` 並保存為 UTF-8 with BOM；根 README 的管理控制台通用 wrapper 改用 `powershell.exe -EncodedCommand`，避免外層 Shell 展開 `$` 變數。
 - **Codex平台代理治理升級 (2026-05-17)**: `.codex/AGENTS.md` 補入 Codex subagents、Automations、MCP config 與 metadata v2 治理語義；`workflow-skills/` 增加 `10-routine-巡檢` 唯讀 automation-safe 工作流，Codex 部署後技能總數為 53（36 Shared + 17 workflow）。
 - **Codex 基底治理語義修復 (2026-05-17)**: `global/AGENTS.md` 改為 governed install/upgrade；`09-commit-紀錄總結` 在 GO 前只輸出 CHANGELOG 草稿，GO 後才寫入 CHANGELOG 並用明確清單 stage/commit/push；舊大寫 Codex agents/commands 路徑語義由 Audit 紅燈攔截。
+- **VS Code 延伸模組方向釐清 (2026-05-17)**: 使用者所稱插件是 VS Code extension，而非 Codex plugin；根 README 已改以 `Extensions/vscode-ai-rules-manager/` 說明點選式管理入口，Codex plugin marketplace 不作為本版實作方向。
+- **Codex 總監可讀輸出契約 (2026-05-17)**: `.codex/AGENTS.md` 與 Codex `03-build-建構` / `04-fix-修復` 工作流要求所有面向總監的計畫、報告與完成摘要先用功能表格呈現，再補技術細節。
 
 
 ## Known Issues
@@ -82,6 +85,7 @@ metadata:
 - **Codex 全域 bootstrapper 必須可被舊版 PowerShell 解析**: `Codex/global/AGENTS.md` 在新專案冷啟動時只輸出受治理命令；命令本身仍不能依賴 `irm` alias 或 UTF-8 無 BOM 暫存檔。
 - **根 README 範例會影響 Codex 冷啟動認知**: `_codex_core` 追蹤根 README，公共管理控制台範例若暴露 Shell 專用語法，Codex 使用者也會複製；跨 Shell 範例應優先使用不含裸 `$` 變數展開風險的形式。
 - **Codex automation-safe 僅限唯讀**: `metadata.automation_safe: true` 不代表可寫檔；Codex Automations 只能觸發 routine 類巡檢，任何修正仍需停在 GO gate。
+- **不要把 VS Code extension 誤寫成 Codex plugin**: 本專案的按鈕式管理器是給 VS Code Activity Bar / Sidebar 使用；Codex 仍只透過 `.codex/AGENTS.md`、skills 與 scripts 參與治理。
 
 ## Relations
 

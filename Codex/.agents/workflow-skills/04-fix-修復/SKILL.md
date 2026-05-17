@@ -56,6 +56,12 @@ Use this skill when the user asks to run the migrated source command `04_fix(修
 ### 3. Patch Plan Generation (修復計畫產出)
 
 - **Enter Plan Mode** (`EnterPlanMode`). Use `TodoWrite` to track fix steps.
+- Repair plans MUST start with the Director-readable table:
+
+  | 功能/目的 | 相關檔案 | 白話說明 | 寫入/風險 |
+  |---|---|---|---|
+
+- Technical details, root-cause mapping, before/after diffs, and exact file lists may only appear after `補充技術細節`.
 - Draft plan in chat with structure:
   1. 【故障根因白話文翻譯】
   2. 【影響分析】(Risk level + affected modules from §1.5)

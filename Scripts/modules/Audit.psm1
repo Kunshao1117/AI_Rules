@@ -738,6 +738,124 @@ function Measure-PlatformCapability {
     }
 }
 
+function Measure-RuntimeGlobalDrift {
+    <#
+    .SYNOPSIS
+        檢查使用者層全域規則是否與 repo source 同步。
+    .PARAMETER RepoRoot
+        AI_Rules 倉庫根目錄
+    .PARAMETER ProfileRoot
+        使用者層設定根目錄。預設 $env:USERPROFILE，可用於 temp profile 測試。
+    #>
+    param(
+        [string]$RepoRoot = ".",
+        [string]$ProfileRoot = $env:USERPROFILE
+    )
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    if (-not $ProfileRoot) { $ProfileRoot = $env:USERPROFILE }
+
+    $targets = @(
+        [PSCustomObject]@{
+            Platform = 'Antigravity'
+            Source   = Join-Path $RepoRoot 'Antigravity\global\GEMINI.md'
+            Runtime  = Join-Path $ProfileRoot '.gemini\GEMINI.md'
+        },
+        [PSCustomObject]@{
+            Platform = 'Claude'
+            Source   = Join-Path $RepoRoot 'Claude\global\CLAUDE.md'
+            Runtime  = Join-Path $ProfileRoot '.claude\CLAUDE.md'
+        },
+        [PSCustomObject]@{
+            Platform = 'Codex'
+            Source   = Join-Path $RepoRoot 'Codex\global\AGENTS.md'
+            Runtime  = Join-Path $ProfileRoot '.codex\AGENTS.md'
+        }
+    )
+
+    $dangerPattern = '(WITHOUT\s+halting|execute\s+WITHOUT|自動佈署|自動部署|\.Codex/(agents|commands)|\.claude/agents/skills|git\s+add\s+\.|git\s+add\s+-A)'
+    $results = @()
+
+    foreach ($target in $targets) {
+        if (-not (Test-Path -LiteralPath $target.Source)) {
+            $results += [PSCustomObject]@{
+                Platform = $target.Platform
+                Status   = '🔴'
+                Severity = 'Red'
+                Reason   = 'repo source 全域規則不存在'
+                Runtime  = $target.Runtime
+            }
+            continue
+        }
+
+        if (-not (Test-Path -LiteralPath $target.Runtime)) {
+            $results += [PSCustomObject]@{
+                Platform = $target.Platform
+                Status   = '🟡'
+                Severity = 'Yellow'
+                Reason   = '使用者層全域規則尚未安裝'
+                Runtime  = $target.Runtime
+            }
+            continue
+        }
+
+        $srcHash = (Get-FileHash -LiteralPath $target.Source -Algorithm SHA256).Hash
+        $runtimeHash = (Get-FileHash -LiteralPath $target.Runtime -Algorithm SHA256).Hash
+        if ($srcHash -eq $runtimeHash) {
+            $results += [PSCustomObject]@{
+                Platform = $target.Platform
+                Status   = '🟢'
+                Severity = 'Green'
+                Reason   = '已同步'
+                Runtime  = $target.Runtime
+            }
+            continue
+        }
+
+        $runtimeContent = Get-Content -LiteralPath $target.Runtime -Raw -Encoding UTF8
+        $hasDanger = $runtimeContent -match $dangerPattern
+        $reason = if ($hasDanger) {
+            '使用者層規則與 source 不同，且含舊版高風險語義'
+        } else {
+            '使用者層規則與 source 不同'
+        }
+
+        $results += [PSCustomObject]@{
+            Platform = $target.Platform
+            Status   = '🟡'
+            Severity = 'Yellow'
+            Reason   = $reason
+            Runtime  = $target.Runtime
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+    $greenCount = ($results | Where-Object { $_.Severity -eq 'Green' }).Count
+
+    Write-Host ""
+    Write-Host "📊 Runtime Global Drift"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🟢 Green：$greenCount  🟡 Yellow：$yellowCount  🔴 Red：$redCount"
+    foreach ($result in $results | Sort-Object Platform) {
+        $color = switch ($result.Severity) {
+            'Red' { 'Red' }
+            'Yellow' { 'Yellow' }
+            default { 'Green' }
+        }
+        Write-Host ("{0,-12} {1} {2}" -f $result.Platform, $result.Status, $result.Reason) -ForegroundColor $color
+        Write-Host ("  {0}" -f $result.Runtime) -ForegroundColor DarkGray
+    }
+
+    return [PSCustomObject]@{
+        Results     = $results
+        GreenCount  = $greenCount
+        YellowCount = $yellowCount
+        RedCount    = $redCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
 function Measure-GovernanceSemantics {
     <#
     .SYNOPSIS
@@ -908,7 +1026,10 @@ function Invoke-PlatformGovernanceAudit {
     .PARAMETER RepoRoot
         AI_Rules 倉庫根目錄
     #>
-    param([string]$RepoRoot = ".")
+    param(
+        [string]$RepoRoot = ".",
+        [string]$ProfileRoot = $env:USERPROFILE
+    )
 
     $RepoRoot = (Resolve-Path $RepoRoot).Path
     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -922,11 +1043,12 @@ function Invoke-PlatformGovernanceAudit {
     $capability = Measure-PlatformCapability -RepoRoot $RepoRoot
     $metadata = Measure-WorkflowMetadata -RepoRoot $RepoRoot
     $docs = Measure-DocsConsistency -RepoRoot $RepoRoot
+    $runtime = Measure-RuntimeGlobalDrift -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
     $semantics = Measure-GovernanceSemantics -RepoRoot $RepoRoot
 
     $metadataFail = ($metadata | Where-Object { $_.Status -eq '🔴' }).Count
     $docStale = $docs.StaleHits.Count
-    $ok = $capability.CapabilityMatrix -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($docStale -eq 0) -and ($semantics.RedCount -eq 0)
+    $ok = $capability.CapabilityMatrix -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($docStale -eq 0) -and ($runtime.RedCount -eq 0) -and ($semantics.RedCount -eq 0)
 
     Write-Host ""
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -940,9 +1062,10 @@ function Invoke-PlatformGovernanceAudit {
         Capability = $capability
         Metadata   = $metadata
         Docs       = $docs
+        Runtime    = $runtime
         Semantics  = $semantics
         Passed     = $ok
     }
 }
 
-Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-GovernanceSemantics, Invoke-PlatformGovernanceAudit
+Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-GovernanceSemantics, Invoke-PlatformGovernanceAudit

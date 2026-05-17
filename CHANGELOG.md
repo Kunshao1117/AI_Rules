@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-18] VS Code 管理器相容性修復
+
+### fix
+- **Windows PowerShell 5.1 相容** — 管理器後端腳本固定為 UTF-8 with BOM，避免 VS Code extension 預設 `powershell.exe` 解析中文輸出時失敗。
+
+## [2026-05-17] 總監可讀輸出契約
+
+### docs
+- **Director-readable output contract** — 三平台核心規則新增「總監可讀輸出契約」，要求對話、計畫、報告與完成摘要先用「功能/目的、相關檔案、白話說明、寫入/風險」表格呈現，再補技術細節。
+- **建構/修復計畫模板** — Codex `03-build-建構` 與 `04-fix-修復` 工作流要求計畫先列功能表格，避免以檔名、metadata、schema 或 CLI 參數作為第一層說明。
+
+## [2026-05-17] VS Code 延伸模組管理器
+
+### feat
+- **AI Rules Manager VS Code extension** — 新增 `Extensions/vscode-ai-rules-manager/`，提供左側側邊欄按鈕：檢查更新、查看更新內容、套用更新、健康檢查、同步全域規則、清理孤兒檔案。
+- **按鈕式治理後端** — 新增 `Scripts/AI-RulesManager.ps1`，作為 VS Code extension 與既有 PowerShell 治理引擎之間的穩定入口。
+- **Runtime drift 巡檢** — `Deploy.ps1 -Action Audit` 新增使用者層全域規則漂移報告，能指出 `~/.codex/AGENTS.md` 等 runtime 規則與 repo source 不一致。
+
+### fix
+- **Global dry-run/apply 分離** — `Deploy.ps1 -Action Global` 預設只報告差異；必須加 `-Apply` 才會寫入使用者層全域規則，且寫入前建立備份。
+- **VS Code 安全操作流** — 套用更新、同步全域規則、清理孤兒檔案都保留確認閘門；唯讀按鈕不修改檔案。
+
 ## [2026-05-17] 基底治理語義修復
 
 ### fix

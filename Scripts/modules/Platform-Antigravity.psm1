@@ -214,7 +214,7 @@ function Invoke-AgUpgrade {
     # 孤兒處理
     if ($stats.Orphan -gt 0) {
         if ($RemoveOrphans) {
-            Remove-OrphanFiles -Report $report -TargetRoot $targetDir
+            Remove-OrphanFiles -Report $report -TargetRoot $targetDir -ProtectedDirs @("memory", "project_skills")
         } else {
             Write-Warn "$($stats.Orphan) 個孤兒檔案。加入 -RemoveOrphans 可自動清除。"
         }

@@ -5,9 +5,9 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-17T21:56:00+08:00'
+last_updated: '2026-05-17T23:49:58+08:00'
 staleness: 0
-status: active
+status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -17,6 +17,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # Claude Edition 框架規範層
 
 ## Tracked Files
@@ -86,10 +87,13 @@ metadata:
 - **D19: 公開安裝入口相容性升級 (2026-05-17)**: 統一部署引擎與三平台啟動器保存為 UTF-8 with BOM；README 與全域 bootstrapper 改為 UTF-8 raw bytes 下載後 BOM 暫存寫入，確保 Claude/Antigravity/Codex 共用部署腳本在 Windows PowerShell 5.1 中文環境可解析。
 - **D20: Claude平台代理治理升級 (2026-05-17)**: `.claude/CLAUDE.md` 對齊三平台代理能力矩陣，明確 Claude MCP prompts/resources 可作為 Slash Command 與上下文來源，但寫入型 tool 仍需 GO；所有 command `SKILL.md` 補齊 metadata v2，新增 `10_routine(巡檢)` 唯讀例行巡檢。
 - **D21: 基底治理語義修復 (2026-05-17)**: 統一部署引擎的 `Audit.psm1` 新增 Governance Semantics；三平台 global bootstrapper 等待 `GO INSTALL` / `GO UPGRADE`；commit workflow 統一為 GO 前草稿、GO 後 CHANGELOG 寫入與明確檔案清單 commit/push；紅燈讓 `Deploy.ps1 -Action Audit` exit 1。
+- **D22: VS Code 管理器治理後端 (2026-05-17)**: `Deploy.ps1 -Action Global` 改成 dry-run 預設，只有 `-Apply` 才寫入使用者層全域規則；`Core.psm1` 寫入前建立備份；`Audit.psm1` 新增 Runtime Global Drift；`Scripts/AI-RulesManager.ps1` 成為 VS Code extension 的按鈕式後端。
+- **D23: 孤兒清理安全邊界 (2026-05-17)**: `Core.psm1` 的 `Remove-OrphanFiles` 新增目標根目錄驗證與 `ProtectedDirs` 跳過機制；Antigravity 升級與 VS Code 清理孤兒檔案時傳入 `memory` / `project_skills`，確保清理程序不碰專案記憶或專案技能。
+- **D24: Claude 總監可讀輸出契約 (2026-05-17)**: `Claude/.claude/rules/core-identity.md` 對齊三平台總監可讀輸出契約，所有面向總監的計畫、報告與完成摘要必須先用功能表格呈現，再補技術細節。
 
 ## Known Issues
 
-- **Skill 孤兒累積（設計盲點）**: `Sync-SharedSkills -Mode Diff` 只新增/更新，不刪除。`Shared/skills/` 刪除的技能會永久殘留於已部署的下游專案。目前無自動清理機制，需手動執行 `-RemoveOrphans` 或重新 Fresh 部署。
+- **Skill 孤兒累積（設計盲點）**: `Sync-SharedSkills -Mode Diff` 只新增/更新，不刪除。`Shared/skills/` 刪除的技能可能殘留於已部署的下游專案；清理必須透過 Upgrade `-RemoveOrphans` 或 VS Code `清理孤兒檔案` 按鈕的預覽/確認流程，不可自動靜默刪除。
 - **CI/CD 非互動式環境**: `Invoke-ConfirmGate` 使用 `Read-Host`，在無 TTY 的自動化環境（GitHub Actions 等）會永久 hang。若需 CI 整合，建議加入 `-Force` 或 `-NonInteractive` 開關（尚未實作）。
 
 ## Module Lessons

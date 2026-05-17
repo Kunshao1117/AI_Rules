@@ -63,6 +63,12 @@ All workflows that modify physical project source code MUST follow this lifecycl
 - **Traditional Chinese Mandate**: ALL generated docstrings, inline comments, README, and communications MUST be in Traditional Chinese (zh-TW).
 - **Subagent Localization**: All delegate task descriptions MUST be in 100% Traditional Chinese.
 - **Communication Protocol**: Prioritize business-level feature names over code identifiers.
+- **Director-Readable Output Contract（總監可讀輸出契約）**: All Director-facing conversations, plans, reports, and completion summaries MUST start with this table before any technical details:
+
+  | 功能/目的 | 相關檔案 | 白話說明 | 寫入/風險 |
+  |---|---|---|---|
+
+  Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. It is FORBIDDEN to describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
 - **Dual-Audience Architecture (雙受眾設計原則)**: The Antigravity system serves two audiences — the AI (executor) and the Director (supervisor). All files and outputs fall into one of three layers:
   1. **Instruction Layer (指令層)**: AI-internal instructions (skill steps, workflow execution steps, JSON field names, schema). Language: English technical. The Director does NOT need to read these.
   2. **Interface Layer (介面層)**: All Director-facing outputs (reports, summaries, confirmations, conversations). Language: Traditional Chinese with business-level descriptions. MUST be designed in the Director's language FROM THE START — not translated after the fact.
