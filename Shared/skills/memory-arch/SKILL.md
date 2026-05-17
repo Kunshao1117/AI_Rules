@@ -29,7 +29,7 @@ New module identified by /02_blueprint or /08_audit?
 │   ⇒ Also add dependencies for direct technical decision coupling when upstream staleness requires review
 │   ⇒ Record the dependency reason in ## Key Decisions or ## Known Issues
 └── Step 4: Call memory_commit(moduleName, projectRoot)
-    ⇒ Registers card in index + validates structure
+    ⇒ Registers card in index + validates structure. When routed through Gateway, use `gateway__call_tool` with explicit `workspace` and `projectRoot`.
 ```
 
 ### Dependency Semantics (依賴語義)
@@ -158,3 +158,4 @@ Splitting a card does not automatically create `dependencies` between the parent
 這類帶底線的收容卡匣若因鎖定檔或靜態資源更新而產生卡匣過期警報（Staleness > 0），AI 具有特權：
 - **跳過繁瑣檢視**：在確認該異動無視野安全風險後，可合法略過 `memory-ops` 原有之 6 步檢索流程。
 - **單步核銷**：直接發動 `memory_commit` 單步歸卡以快速核銷警報。
+- **風險邊界**：此特權只適用於已確認無視野安全風險的靜態收容卡匣歸卡階段；`memory_commit` 仍是會寫檔的高風險工具，不得在討論、規劃或唯讀盤點階段呼叫。

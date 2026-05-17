@@ -5,6 +5,15 @@ description: 外部工具操作防護欄。在呼叫高風險的 MCP 工具（�
 
 # [ANTIGRAVITY MCP GUARDRAILS]
 
+## 0. Gateway Execution Contract (Gateway 執行合約)
+
+When tools are provided through Multi-MCP Gateway:
+
+- `gateway__search_tools` and `gateway__list_server_tools` are discovery-only. Use them to find tool names and input schemas.
+- Real downstream MCP execution MUST use `gateway__call_tool`; do not claim a downstream MCP tool was tested by schema search, CLI replacement, or handler-level simulation.
+- Every `gateway__call_tool` call MUST include an explicit `workspace` absolute path. For cartridge-system tools, `arguments.projectRoot` MUST also be explicit.
+- Do not rely on Gateway global workspace state. Do not guess argument names; inspect the schema first.
+
 ## 1. MCP Human-In-The-Loop Gate (高風險外部工具攔截)
 
 ```
@@ -36,9 +45,13 @@ When a tool is NOT listed, fall back to §1 READ/WRITE classification.
 | `supabase.execute_sql` (non-SELECT) | 🔴 HIGH | Director approval + Justification Block |
 | `supabase.apply_migration` | 🔴 HIGH | Director approval + Justification Block |
 | `supabase.deploy_edge_function` | 🔴 HIGH | Director approval + Justification Block |
+| `cartridge-system__memory_commit` | 🔴 HIGH | Only after SKILL.md has been written and memory commit phase is active |
 | `github.create_or_update_file` | 🟡 MEDIUM | Justification Block (auto-logged) |
 | `github.push_files` | 🟡 MEDIUM | Justification Block (auto-logged) |
 | `cloudflare.container_*` (mutating) | 🟡 MEDIUM | Justification Block (auto-logged) |
+| `gateway__search_tools` / `gateway__list_server_tools` | 🟢 LOW | Auto-proceed |
+| `cartridge-system__memory_list` / `memory_read` / `memory_status` / `memory_deps` | 🟢 LOW | Auto-proceed |
+| `cartridge-system__workspace_brief` / `memory_audit` / `commit_preflight` | 🟢 LOW | Auto-proceed |
 | `supabase.execute_sql` (SELECT only) | 🟢 LOW | Auto-proceed |
 | `supabase.list_tables` | 🟢 LOW | Auto-proceed |
 | `supabase.search_docs` | 🟢 LOW | Auto-proceed |

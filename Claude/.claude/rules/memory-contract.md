@@ -79,6 +79,8 @@ Checkpoint 格式規範（寫入時參考）：
 - **Sanitization**: NEVER write PII, absolute user paths (`C:\Users\username\`), or secret tokens into memory cards.
 - **Load procedures**: Read `.claude/agents/skills/memory-ops/SKILL.md` for card write format and commit procedures.
 - **MCP Tool Chain**: `cartridge-system__memory_list` → `cartridge-system__memory_read` → `write_to_file` → `cartridge-system__memory_commit`
+- **Gateway Path Discipline**: When cartridge-system is reached through Multi-MCP Gateway, use `gateway__call_tool` with explicit `workspace`; also pass `projectRoot` in downstream arguments. Discovery tools (`gateway__search_tools`, `gateway__list_server_tools`) are schema-only.
+- **Commit Risk Boundary**: `cartridge-system__memory_commit` writes files and index metadata. It is forbidden in discussion, planning, testing, or read-only audit phases; call it only after the target memory card has already been updated.
 
 ## 4. Skill System (技能系統契約)
 

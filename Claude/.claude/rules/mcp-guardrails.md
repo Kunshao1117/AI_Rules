@@ -2,6 +2,15 @@
 
 > Apply when: calling state-mutating MCP tools (database ops, cloud deployment, code push).
 
+## 0. Gateway Execution Contract (Gateway 執行合約)
+
+When tools are provided through Multi-MCP Gateway:
+
+- `gateway__search_tools` and `gateway__list_server_tools` are discovery-only. Use them to find tool names and input schemas.
+- Real downstream MCP execution MUST use `gateway__call_tool`; do not claim a downstream MCP tool was tested by schema search, CLI replacement, or handler-level simulation.
+- Every `gateway__call_tool` call MUST include an explicit `workspace` absolute path. For cartridge-system tools, `arguments.projectRoot` MUST also be explicit.
+- Do not rely on Gateway global workspace state. Do not guess argument names; inspect the schema first.
+
 ## 1. MCP Human-In-The-Loop Gate (高風險外部工具攔截)
 
 ```
@@ -28,8 +37,12 @@
 | `mcp__claude_ai_Supabase__apply_migration` | 🔴 HIGH | Director approval + Justification |
 | `mcp__claude_ai_Supabase__deploy_edge_function` | 🔴 HIGH | Director approval + Justification |
 | `mcp__claude_ai_Vercel__deploy_to_vercel` | 🔴 HIGH | Director approval + Justification |
+| `cartridge-system__memory_commit` | 🔴 HIGH | Only after SKILL.md has been written and memory commit phase is active |
 | Bash `git push` | 🟡 MEDIUM | Justification Block (auto-logged) |
 | Bash `git commit` | 🟡 MEDIUM | Justification Block (auto-logged) |
+| `gateway__search_tools` / `gateway__list_server_tools` | 🟢 LOW | Auto-proceed |
+| `cartridge-system__memory_list` / `memory_read` / `memory_status` / `memory_deps` | 🟢 LOW | Auto-proceed |
+| `cartridge-system__workspace_brief` / `memory_audit` / `commit_preflight` | 🟢 LOW | Auto-proceed |
 | `mcp__claude_ai_Supabase__execute_sql` (SELECT only) | 🟢 LOW | Auto-proceed |
 | `mcp__claude_ai_Supabase__list_*` / `get_*` | 🟢 LOW | Auto-proceed |
 | `mcp__claude_ai_Vercel__get_*` / `list_*` | 🟢 LOW | Auto-proceed |

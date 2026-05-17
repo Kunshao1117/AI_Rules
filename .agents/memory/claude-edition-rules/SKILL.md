@@ -5,9 +5,9 @@ description: >
   AI 共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改 Claude/.claude/rules/ 或
   Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-13T19:35:00+08:00'
+last_updated: '2026-05-17T19:15:50+08:00'
 staleness: 0
-status: current
+status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -81,6 +81,8 @@ metadata:
 - **D14: PSScriptAnalyzer 合規動詞重命名 (2026-05-11)**: 修復 3 個 PowerShell 未授權動詞警告。(1) `Core.psm1`：`Ensure-BaseInfrastructure` → `Initialize-AgentInfrastructure`（L328），`Ensure-Gitignore` → `Set-GitignoreEntries`（L418）；(2) `Audit.psm1`：`Append-Section`（巢狀函式）→ `Add-ReportSection`（12 個內部呼叫點全數替換）；(3) 三個平台模組（`Platform-Antigravity.psm1`、`Platform-Claude.psm1`、`Platform-Codex.psm1`）中的呼叫點同步重命名。`Export-ModuleMember -Function *` 萬用字元導出保持不變（PSScriptAnalyzer 不警告此項，重構需完整依賴圖分析，列為待觀察設計盲點）。
 - **D15: 部署腳本與版控衛生維護 (2026-05-12)**: 更新 `Scripts/Deploy.ps1` 與倉庫配置，移除 `.cartridge/index.json` 殘留追蹤，確保各平台部署流程乾淨無痛。
 - **D16: 部署引擎三項缺陷修復 (2026-05-13)**: (1) `Core.psm1` `Restore-ProtectedDirs` 的 `Copy-Item` 改為 `\*` 語意，修復之前發現但未修的 D05 Module Lesson 問題在 `Restore-ProtectedDirs` 的遺留；(2) 根 `.gitignore` 加入 `!Codex/.codex/` 例外，確保 Codex 框架源碼可被 git 追蹤；(3) 三個平台模組的 `Sync-SharedSkills` 與 `Merge-WorkflowSkills`（Fresh + Upgrade 共 7 處）一律以 `$null = ` 吸收回傳值，消除終端機輸出噪音。
+- **D17: Gateway 與記憶工具規範對等 (2026-05-17)**: Claude 規則層同步 Antigravity/Codex 的 Gateway 合約，要求真實下游 MCP 呼叫使用 `gateway__call_tool` 並顯式帶 `workspace`，cartridge-system 參數顯式帶 `projectRoot`；`memory_commit` 歸為高風險寫入工具。
+- **D18: Antigravity 遠端管理控制台啟動修復 (2026-05-17)**: `Antigravity/install.ps1` 的 `Mode` 參數驗證補入 `Menu`，恢復 README 公開的一鍵管理控制台指令；Claude 規則層無需額外行為變更，但需記錄雙引擎共用啟動器追蹤檔的回歸修復。
 
 ## Known Issues
 
@@ -95,6 +97,8 @@ metadata:
 - **D04: Fresh 模式記憶卡遺失風險（D06 原則觸發場景）**: 部署腳本若直接覆寫整個 `.claude/` 目錄而未備份 `.agents/memory/`，在 Fresh 模式中途失敗時將導致記憶卡物理遺失。解法：所有備份與還原操作必須建立於 `try/finally` 安全網內。
 - **D05: Copy-Item Recurse 嵌套陷阱**: `Copy-Item $sourceDir $existingDir -Recurse -Force` 在目標目錄已存在時，PowerShell 將 source 複製「進入」目標（而非合併），產生嵌套結構。正確做法：`Copy-Item (Join-Path $sourceDir "*") $existingDir -Recurse -Force`（複製內容，不複製目錄本身）。
 - **D06: SymbolicLink 在 Windows 需要 Developer Mode**: `New-Item -ItemType SymbolicLink` 在無 Developer Mode 的標準 Windows 環境靜默失敗。降級方案：先嘗試 SymbolicLink，失敗後 `Test-Path` 驗證，再嘗試 Junction（目錄連結，不需要特殊權限）。
+- **D07: Gateway schema 探索不等於下游執行**: `gateway__search_tools` / `gateway__list_server_tools` 只能確認 schema；要驗證 cartridge-system、GitHub、Sentry 等下游 MCP，必須透過 `gateway__call_tool`。
+- **D08: Installer 文件化模式必須納入 ValidateSet**: 啟動器內部即使有分支，若 PowerShell `ValidateSet` 未列入該模式，遠端單行指令仍會在參數綁定階段失敗。
 
 ## Relations
 

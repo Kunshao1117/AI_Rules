@@ -144,7 +144,7 @@ Codex Edition 採用單一規則檔設計，所有治理規範集中於 `AGENTS.
 | 區段 | 內容 |
 |------|------|
 | **Core Identity** | 代理人分工、生命週期骨幹、語言溝通規範 |
-| **Memory System** | Turn=1 啟動探測、`.agents/memory/` 路徑規範、三路徑判斷 |
+| **Memory System** | Turn=1 啟動探測、`.agents/memory/` 路徑規範、三路徑判斷、Gateway 顯式路徑 |
 | **Skill Protocol** | 技能觸發方式（`$skill-name`）、按需載入原則、工作流清單 |
 | **Gate Summary** | 所有治理閘門速覽（PLANNING / SEC / LINTER / EXIT HOLD / MCP HITL） |
 | **PROJECT IDENTITY** | 使用者自訂的專案身份區段（升級保護，永遠不被覆蓋） |
@@ -217,6 +217,8 @@ graph TD
 | **每張卡 ≤ 8 個追蹤檔案** | 超過時主動提示拆分（load `$memory-arch`） |
 | **最多 4 層深度** | 超過則觸發記憶架構重組 |
 | **二步提交流程** | `write_to_file` → `memory_commit`（不可跳過） |
+| **Gateway 顯式路徑** | 透過 Multi-MCP Gateway 呼叫 cartridge-system 時，每次 `gateway__call_tool` 都帶 `workspace`，下游參數也帶 `projectRoot` |
+| **讀寫工具分級** | `workspace_brief` / `memory_audit` / `commit_preflight` 是唯讀診斷；`memory_commit` 會寫檔，只能在歸卡階段呼叫 |
 | **幽靈偵測 (v4.0)** | `memory_list` 回傳 `ghostFilesCount`，自動標記磁碟不存在的追蹤檔案 |
 | **依賴過期傳播 (v4.0)** | `indirectStaleness` 追蹤上游卡匣過期，自動通知下游 |
 

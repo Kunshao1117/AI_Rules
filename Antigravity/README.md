@@ -18,7 +18,7 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 4. **知識碎片化** — 技能散落各處，Token 暴增 → 36 套按需載入的操作型技能，不用時零開銷
 5. **語言不友善** — 工程術語充斥 → 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
 6. **框架升級斷裂** — 升級怕覆蓋記憶 → D06 安全網 + SHA256 差異比對 + 記憶卡永久保護
-7. **工具碎片化** — MCP 工具散亂 → 14 個 MCP 伺服器統一由 Multi-MCP Gateway 提供
+7. **工具碎片化** — MCP 工具散亂 → 透過 Multi-MCP Gateway 統一探索 schema，並用 `gateway__call_tool` 真實呼叫下游工具
 
 ---
 
@@ -98,7 +98,7 @@ graph TB
     DEPLOY -->|"Fresh / Upgrade 注入"| SKILLS
     RULES --> WF
     WF --> SKILLS
-    SKILLS -.->|"cartridge-system"| MEM
+    SKILLS -.->|"Gateway: workspace + projectRoot"| MEM
 ```
 
 ---
@@ -266,7 +266,7 @@ graph LR
 
 | 類別 | 技能 | 用途 | 語言風格 | 對接 MCP |
 |------|------|------|----------|----------|
-| **核心操作** | `memory-ops` | 記憶卡讀寫操作指引（含 MCP 備援降級路徑）；v4.0 新增幽靈感知、Step 4.5 幽靈清理、間接過期感知 | 英文指令 | cartridge-system *(可選)* |
+| **核心操作** | `memory-ops` | 記憶卡讀寫操作指引；補入 Gateway 顯式路徑、唯讀治理工具與 `memory_commit` 高風險邊界 | 英文指令 | Gateway → cartridge-system |
 | **生命週期** | `tech-stack-protocol` | 技術堆疊偵測與鎖定 | 英文指令 | — |
 | | `delegation-strategy` | 任務委派管道選擇 | 英文指令 | — |
 | **品質約束** | `code-quality` | SOLID 原則、動態行數閾值 | 英文指令（擴展 §11） | — |
@@ -355,13 +355,15 @@ graph TD
 - 單張記憶卡追蹤不超過 **8 個檔案**
 - 超過時系統主動提示拆分建議
 - 一張記憶卡 = 一個獨立變更單元
+- 透過 Multi-MCP Gateway 呼叫 cartridge-system 時，每次真實呼叫都必須顯式帶 `workspace`，下游參數必須帶 `projectRoot`
+- `workspace_brief`、`memory_audit`、`commit_preflight` 是唯讀診斷工具；`memory_commit` 會寫入檔案與索引，只能在歸卡階段呼叫
 - **v4.0**：`memory_list` 回傳 `ghostFilesCount` 自動標記幽靈檔案；`indirectStaleness` 追蹤上游依賴過期；`memory_deps()` 查詢卡匣依賴圖
 
 #### 更新模式
 
 | 模式 | 適用場景 |
 |------|---------|
-| `write_to_file` + `memory_commit` | ✅ 推薦：原生工具寫入完整內容 + MCP 工具歸卡（含 `[SIGNATURE GATE]` 簽章驗證） |
+| `write_to_file` + `memory_commit` | ✅ 推薦：原生工具寫入完整內容後，於歸卡階段呼叫高風險寫入工具同步後設資料 |
 | `replace`（備援） | 結構性修改，傳入完整內容整張替換 |
 
 ---

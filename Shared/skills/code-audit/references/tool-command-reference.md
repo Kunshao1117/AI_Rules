@@ -4,6 +4,8 @@
 
 ## MCP 工具（透過 Gateway）
 
+> Gateway 探索工具只查 schema；真實執行下游 MCP 時必須使用 `gateway__call_tool`，並顯式帶入目前專案的 `workspace`。不要用工具表中的下游名稱宣稱已完成真實呼叫。
+
 | Tool | Gateway Call | Purpose |
 |------|-------------|---------|
 | ESLint | `eslint__lint-files` | 程式碼品質掃描 |

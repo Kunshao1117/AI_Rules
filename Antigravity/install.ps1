@@ -11,7 +11,7 @@
     目標專案目錄（可選）。未指定時自動使用當前工作目錄。
 
 .PARAMETER Mode
-    部署模式：Fresh（全新安裝）或 Upgrade（升級現有安裝）。預設 Fresh。
+    部署模式：Fresh（全新安裝）、Upgrade（升級現有安裝）或 Menu（互動式管理控制台）。預設 Fresh。
 
 .PARAMETER Branch
     要下載的 GitHub 分支。預設 main。
@@ -35,7 +35,7 @@ param (
     [string]$Target = $PWD.Path,
 
     [Parameter(Mandatory = $false)]
-    [ValidateSet("Fresh", "Upgrade")]
+    [ValidateSet("Fresh", "Upgrade", "Menu")]
     [string]$Mode = "Fresh",
 
     [Parameter(Mandatory = $false)]
@@ -96,5 +96,4 @@ try {
     if (Test-Path $tempZip) { Remove-Item $tempZip -Force -ErrorAction SilentlyContinue }
     if (Test-Path $tempDir)  { Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue }
 }
-
 

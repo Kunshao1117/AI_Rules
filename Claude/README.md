@@ -103,7 +103,7 @@ graph TB
     CLAUDE -->|"@import"| RULES
     RULES --> WF
     WF --> SKILLS
-    SKILLS -.->|"memory_read"| CART
+    SKILLS -.->|"Gateway: workspace + projectRoot"| CART
     CART <-->|"統一記憶庫"| MEM
 ```
 
@@ -164,7 +164,8 @@ graph TB
 1. **Turn=1 啟動探測** — 每次新對話強制呼叫 `memory_list` 同步記憶狀態
 2. **單軌共用記憶庫** — 絕對路徑 `.agents/memory/`，禁止使用 `.claude/agents/memory/`
 3. **Exit Hold Gate** — 修改原始碼後，記憶卡未更新則禁止結案
-4. **v4.0 幽靈偵測** — 離場閘門新增非阻塞幽靈警告；全幽靈卡匣自動提議汰除
+4. **Gateway 顯式路徑** — 透過 Multi-MCP Gateway 呼叫 cartridge-system 時，每次 `gateway__call_tool` 都帶 `workspace`，下游參數也帶 `projectRoot`
+5. **v4.0 幽靈偵測** — 離場閘門新增非阻塞幽靈警告；全幽靈卡匣自動提議汰除
 
 #### 雙受眾語言設計
 
@@ -233,7 +234,7 @@ graph LR
 
 | 類別 | 技能 | 用途 | 對接 MCP |
 |------|------|------|----------|
-| **記憶與架構** | `memory-ops` | 記憶卡讀寫操作指引 | cartridge-system |
+| **記憶與架構** | `memory-ops` | 記憶卡讀寫操作指引；含 Gateway 顯式路徑、唯讀治理工具與 `memory_commit` 高風險邊界 | Gateway → cartridge-system |
 | | `memory-arch` | 記憶卡架構拓樸、層級拆分規則 | cartridge-system |
 | | `skill-factory` | 從工作實踐中提煉可複用衍生技能 | — |
 | | `audit-engine` | 健檢語義推理引擎（S1–S5 安全架構） | — |
@@ -308,13 +309,15 @@ graph TD
 - 單張記憶卡追蹤不超過 **8 個檔案**
 - 支援最多 **4 層**深度的父子巢狀結構
 - 超過時系統主動提示拆分（load `memory-arch` skill）
+- `workspace_brief`、`memory_audit`、`commit_preflight` 是唯讀診斷工具；`memory_commit` 會寫入檔案與索引，只能在歸卡階段呼叫
+- 透過 Gateway 呼叫 cartridge-system 時，每次真實呼叫都必須顯式帶 `workspace` 與 `projectRoot`
 - **v4.0**：`memory_list` 回傳 `ghostFilesCount` 標記幽靈檔案；`indirectStaleness` 追蹤上游依賴過期；新建卡匣時應評估 `dependencies` 欄位宣告
 
 #### 更新模式
 
 | 模式 | 適用場景 |
 |------|---------|
-| `Write` + `memory_commit` | ✅ 推薦：原生工具寫入完整內容 + MCP 歸卡 |
+| `Write` + `memory_commit` | ✅ 推薦：原生工具寫入完整內容後，於歸卡階段呼叫高風險寫入工具同步後設資料 |
 | `replace`（備援） | MCP 不可用時的降級路徑 |
 
 ---

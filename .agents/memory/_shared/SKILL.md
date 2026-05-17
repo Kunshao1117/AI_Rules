@@ -4,9 +4,9 @@ description: >
   Shared/skills/ 技能共用庫記憶卡。追蹤 36 套操作型技能的唯一真實來源目錄。 部署時由 Skills-Sync.psm1 注入
   Antigravity、Claude、Codex 三個平台。 Use when: 修改任何操作型技能時。
 scopePath: Shared/
-last_updated: '2026-05-11T21:10:00+08:00'
-staleness: 62
-status: stale
+last_updated: '2026-05-17T17:49:52+08:00'
+staleness: 0
+status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -16,15 +16,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-<!-- CARTRIDGE_SYSTEM_WARNING_START -->
-
-> [!CAUTION]
-> 🔴 **系統強制攔截**：此記憶已過期失真！
-> 追蹤檔案異動：`Shared/skills/memory-ops/references/memory-template.md`、`Shared/skills/memory-ops/SKILL.md`、`Shared/skills/memory-arch/SKILL.md`、`Shared/skills/code-audit/SKILL.md`、`Shared/skills/audit-engine/SKILL.md`、`Shared/skills/impact-test-strategy/SKILL.md`（2026-05-14T15:35:07+08:00）
-> AI 嚴禁基於此記憶施工，必須優先閱讀最新原始碼並更新此記憶卡。
-> staleness: 62 | threshold: 🔴 嚴重過期
-
-<!-- CARTRIDGE_SYSTEM_WARNING_END -->
 
 # _shared 共用技能庫
 
@@ -128,6 +119,8 @@ metadata:
 - **注入機制設計 (2026-05-11)**: `Scripts/modules/Skills-Sync.psm1` 提供兩個函式：(1) `Sync-SharedSkills`（Full/Diff 兩種模式，Full 複製全部，Diff 只複製新增/變更）；(2) `Merge-WorkflowSkills`（Codex 專用，合併 workflow-skills 至 .agents/skills/）。
 - **各平台技能路徑**: Antigravity → `.agents/skills/`；Claude → `.claude/skills/`；Codex → `.agents/skills/`（與 AG 相同，agentskills.io 開放標準）。
 - **Merge-WorkflowSkills 嵌套 Bug 修復 (2026-05-11)**: `Scripts/modules/Skills-Sync.psm1` 中 `Merge-WorkflowSkills` 函式的目錄複製邏輯修復。原始碼 `Copy-Item $sourceDir $existingDir -Recurse -Force` 在目標目錄已存在時將來源複製「進入」目標，造成 `03_build/03_build/SKILL.md` 嵌套結構（Fresh 安裝正確，第二次 Upgrade 後損壞）。修正後改為 `Copy-Item (Join-Path $_.FullName "*") $destDir -Recurse -Force`，複製目錄內容而非目錄本身。
+- **記憶卡依賴語義補強 (2026-05-14)**: `memory-ops`、`memory-arch`、`code-audit`、`audit-engine`、`impact-test-strategy` 已明確區分 frontmatter `dependencies`、`## Relations`、`## Applicable Skills`。`dependencies` 僅代表會觸發依賴圖、間接過期傳播、循環偵測與 `memory_deps` 的系統級依賴；父子卡、導覽關係、建議閱讀與技能建議應寫入 `Relations` 或 `Applicable Skills`，不得為補足脈絡而濫加 dependencies。
+- **Gateway 工具呼叫語義補強 (2026-05-17)**: `memory-ops` 補入 Multi-MCP Gateway 合約，規定探索工具僅查 schema，真實下游 MCP 執行必須使用 `gateway__call_tool`，且 cartridge-system 呼叫需同時顯式提供 `workspace` 與 `projectRoot`。`memory-arch` 同步標明 `memory_commit` 靜態收容特權仍只限歸卡階段；`code-audit` Gateway 對照表同步補上「探索不等於執行」警語。
 
 ## Known Issues
 
@@ -136,6 +129,8 @@ metadata:
 ## Module Lessons
 
 - **修改技能只需改 Shared/ 一處**：不需要手動同步到各平台。執行 `Scripts/Deploy.ps1 -Platform All -Action Sync` 或各平台 Upgrade 部署時自動注入。
+- **dependencies 寫入前必問過期傳播問題**：若上游卡過期時本卡不需要重檢，該關係應放在 `## Relations`；若只是操作建議，應放在 `## Applicable Skills`。
+- **memory_commit 是高風險歸卡工具**：討論、規劃、盤點、讀取測試階段不得呼叫；只有在 SKILL.md 已更新且進入歸卡階段時才能呼叫。
 
 ## Relations
 

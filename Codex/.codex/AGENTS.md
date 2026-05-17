@@ -39,6 +39,8 @@ Before writing any source file:
 **Shared memory store**: `.agents/memory/`
 - Shared across all three platforms: Antigravity (Gemini), Claude Edition, and Codex.
 - Accessed via `cartridge-system` MCP.
+- When routed through Multi-MCP Gateway, real downstream calls MUST use `gateway__call_tool` with explicit `workspace`; cartridge-system arguments MUST also include explicit `projectRoot`.
+- Gateway discovery tools (`gateway__search_tools`, `gateway__list_server_tools`) only inspect names and schemas. They do not execute downstream MCP tools.
 
 **Turn=1 startup protocol**: Call `cartridge-system__memory_list` → three-path decision:
 - `_map` entry found → load map index
@@ -96,3 +98,7 @@ Before writing any source file:
 │   └── YES → Corresponding memory card MUST be updated. Not updated → HALT.
 └── Clear → Allow completion.
 ```
+
+`cartridge-system__memory_commit` is a state-mutating tool. It is forbidden during discussion, planning, testing, or read-only audit phases; call it only after the target `SKILL.md` has already been updated and the workflow is explicitly in the memory commit phase.
+
+Read-only governance tools may be used for diagnosis before edits: `workspace_brief`, `memory_audit`, `commit_preflight`, `memory_list`, `memory_status`, `memory_read`, and `memory_deps`. `commit_preflight` returning blocked because of dirty files is a governance signal, not a tool failure.

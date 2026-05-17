@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-17] Antigravity 遠端管理控制台啟動修復
+
+### fix
+- **`-Mode Menu` 參數驗證修復** — 修正 `Antigravity/install.ps1` 的 `ValidateSet` 未包含 `Menu`，導致 README 管理控制台指令在進入部署邏輯前即被 PowerShell 拒絕的問題。
+
+## [2026-05-17] Gateway 與記憶卡工具規範同步
+
+### feat
+- **Gateway 真實呼叫合約** — 三平台規範明確區分 Gateway schema 探索與下游 MCP 真實執行；真實呼叫必須透過 `gateway__call_tool`，並顯式帶入 `workspace`。
+- **cartridge-system 路徑紀律** — 記憶卡工具規範要求下游參數同步帶入 `projectRoot`，避免依賴 Gateway 全域 workspace 狀態。
+- **記憶治理工具分級** — 將 `workspace_brief`、`memory_audit`、`commit_preflight` 納入唯讀診斷工具；將 `memory_commit` 明確列為會寫檔的高風險歸卡工具。
+
+### docs
+- **三平台文件同步** — 更新根 README、Antigravity、Claude Edition、Codex Edition 與 Codex/Claude 規範，改用「Gateway 統一入口 + cartridge-system 下游工具」模型描述記憶卡操作。
+
 ## [2026-05-13] 部署引擎安裝缺陷修復
 
 ### fix

@@ -2,9 +2,17 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-13T19:40:00+08:00'
+last_updated: '2026-05-17T19:14:48+08:00'
 staleness: 0
-status: current
+status: stable
+metadata:
+  author: antigravity
+  version: '1.0'
+  origin: framework
+  memory_awareness: full
+  tool_scope:
+    - 'filesystem:write'
+    - 'mcp:cartridge-system'
 ---
 
 # 專案系統記憶 (\_system)
@@ -24,6 +32,7 @@ status: current
 - Antigravity/.agents/rules/07_mcp_guardrails.md
 - README.md
 - CHANGELOG.md
+- CLAUDE.md
 - Scripts/Deploy.ps1
 - Scripts/modules/Core.psm1
 
@@ -44,6 +53,8 @@ status: current
 - **D15: 全域規則更新安全閘門 (2026-05-13)**: 為解決全域觸發器（~/.gemini/GEMINI.md 等）更新時可能覆寫使用者自定義設定的問題，引入「SHA256 比對 + 安全暫存區 (global_stage)」機制。當偵測到衝突時，系統不強制覆寫，而是將最新規則產出至專案目錄供手動合併，實現「智能同步」與「零損害部署」的平衡。
 - **D16: 管理機制遠端一鍵指令化 (2026-05-13)**: 遵循「README 即控制台」的原始設計理念，廢棄本地捷徑腳本，轉而強化遠端啟動器 `install.ps1` 支援 `-Mode Menu`。使用者只需從 GitHub 複製單行指令即可啟動完整管理選單，保持專案根目錄純淨並實現「零依賴維護」。
 - **D17: 部署腳本三項缺陷修復 (2026-05-13)**: (1) `Core.psm1` `Restore-ProtectedDirs` 的 `Copy-Item` 改為 `"$($Backup.*)\*"` 語意，防止備份目錄被嵌套複製進記憶目錄；(2) 根 `.gitignore` 加入 `!Codex/.codex/` 例外，確保 Codex 框架源碼可被 git 追蹤並出現在 GitHub ZIP；(3) 三個平台模組（Antigravity/Claude/Codex）的 `Sync-SharedSkills` 與 `Merge-WorkflowSkills` 回傳值統一以 `$null =` 吸收，消除終端機輸出噪音。
+- **D18: Gateway 顯式路徑與工具分級 (2026-05-17)**: Multi-MCP Gateway 成為下游 MCP 的統一真實執行入口。探索工具只查 schema；真實呼叫必須使用 `gateway__call_tool` 並顯式帶 `workspace`。cartridge-system 下游參數必須同步帶 `projectRoot`，避免依賴全域 workspace 狀態；`memory_commit` 歸類為會寫檔的高風險歸卡工具。
+- **D19: Antigravity 遠端管理控制台啟動修復 (2026-05-17)**: `Antigravity/install.ps1` 的 `Mode` 參數驗證補入 `Menu`，恢復 README 公開的一鍵管理控制台指令；同步於 CHANGELOG 記錄此回歸修復。
 
 ## Known Issues
 
@@ -57,6 +68,7 @@ status: current
 - **D04: 冷啟動悖論與內核防禦 (Core Rules Integration)**: 高頻且具強制性的防偽機制（如跨語系雙面板、全息實體足跡收據），絕對不可僅以外部插件（SKILL）形式存在。因 AI 甦醒受捷徑惰性驅使時，極易捨棄額外的檔案調用（讀取外掛）導致防禦機制斷鏈。解決方案是廢棄該次級技能目錄，將防護格式實體硬寫入 `01_cross_lingual_guard.md` 等規則層，使其成為 AI 甦醒即啟用的內核反射。
 - **D05: 工作流決策樹越權漏洞 (Decision Tree vs Imperative Steps)**: 當工作流中使用決策樹語法（`├──`、`└──`、`→`）描述需要與總監互動的閘門時，AI 會傾向於「在內部模擬走完整棵樹」來節省對話回合數，從而自行做出本應由總監決定的判斷。**凡是需要總監輸入的決策點，都必須使用命令式步驟搭配 `[MANDATORY HALT]` 標記**，明確禁止 AI 模擬選擇。（實際案例：`09_commit_log` §1.5 Part B 的文件更新閘門被 AI 自行跳過→待修復）
 - **D06: Fresh 模式的雙保險 (Memory Survival Guarantee)**: 在設計覆寫式或備份與還原的腳本時，若執行過程中遭遇例外（如命令錯誤或人為中止），所有已經移至暫存區的記憶檔案將面臨物理遺失的風險。**強制規範**：所有涉及重要核心組件備份的還原運算，必須完全建立於 `try/finally` 安全網內，確保邏輯崩潰時，`finally` 區塊能無條件順利執行資產還原。
+- **D07: Gateway schema 探索不等於工具測試**: `gateway__search_tools` / `gateway__list_server_tools` 只能確認工具名稱與參數結構；要宣稱下游 MCP 已實測，必須透過 `gateway__call_tool` 執行。
 
 ## Documentation Files
 

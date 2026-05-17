@@ -4,9 +4,9 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.0）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-13T16:21:55+08:00'
+last_updated: '2026-05-17T17:50:19+08:00'
 staleness: 0
-status: healthy
+status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -16,7 +16,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 
 # _codex_core 收容卡匣
 
@@ -64,6 +63,7 @@ metadata:
 - **跨平台 README 精準度全面修正 (2026-05-13)**: 徹底審查並修正四份 README（根目錄、Codex、Antigravity、Claude）。核心修正：(1) 工作流技能表格從舊括號格式（`00_chat/`）完全重寫為新破折號中文格式（`00-chat-聊天/`）含正確觸發語法（`$00-chat-聊天`）；(2) 技能總數更正為 52 套（36 共用 + 16 工作流）；(3) 08-audit 扁平結構補入三個子目錄（08-1/08-2/08-3）；(4) 新增兩個 config.toml 至源碼結構圖；(5) 移除不存在的 CHANGELOG.md；(6) Antigravity 工作流表格補入 05_condense，計數 15→16；(7) Claude README 補入 project-skill-contract.md 規則條目，修正「雙 AI」→「三平台」，腳本名稱更新至統一引擎語法。
 - **文檔與殘留狀態同步 (2026-05-12)**: 移除 `.codex/AGENTS.md` 與其他無效檔案的 git 追蹤，完成 README.md 與框架整體的同步與修正。
 - **未歸屬檔案歸卡 (2026-05-13)**: 將 `Codex/.gitignore` 及 `_shared` 共用閘門腳本 (`_completion_gate.md`, `_security_footer.md`) 納入 `_codex_core` 追蹤清單，消除幽靈檔案。
+- **Gateway 規範同步 (2026-05-17)**: `.codex/AGENTS.md` 補入 Multi-MCP Gateway 顯式路徑規則，要求下游 MCP 真實呼叫使用 `gateway__call_tool`，cartridge-system 參數帶 `projectRoot`；README 同步標示唯讀治理工具與 `memory_commit` 高風險歸卡邊界。
 
 
 ## Known Issues
@@ -75,6 +75,7 @@ metadata:
 - **Codex 無條件規則載入機制**: Codex 不支援 @import 語法，所有治理規則必須集中在 `.codex/AGENTS.md` 單一檔案。這是與 Claude 版設計的最大差異，核心規則需適度精簡以避免 Token 膨脹。
 - **工作流技能觸發方式**: Codex 工作流技能支援語意觸發（描述意圖）與精確觸發（`$<skill-name>`）。精確觸發使用完整技能名稱，例如 `$03-build-建構`。
 - **config.toml 不覆寫保護**: `Deploy.ps1 -Action Global` 對 `~/.codex/config.toml` 採用補入策略而非覆寫，避免損毀使用者現有設定。
+- **Codex 單檔規則需寫入工具分級**: Codex 無 @import，Gateway 與記憶卡風險邊界必須直接寫在 `.codex/AGENTS.md`，否則下游 Codex 專案不會取得完整 MCP 操作規範。
 
 ## Relations
 

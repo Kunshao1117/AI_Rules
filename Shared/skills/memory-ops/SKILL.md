@@ -17,12 +17,30 @@ metadata:
 
 ## 1. Core Mandate (支配規則)
 
+All cartridge-system MCP calls routed through Multi-MCP Gateway MUST use the real downstream execution entrypoint:
+
+```json
+{
+  "name": "cartridge-system__memory_list",
+  "workspace": "<absolute project root>",
+  "arguments": {
+    "projectRoot": "<absolute project root>"
+  }
+}
+```
+
+- `gateway__search_tools` and `gateway__list_server_tools` are discovery-only. They confirm tool names and schemas; they do not execute downstream MCP behavior.
+- Every `gateway__call_tool` invocation MUST include an explicit `workspace`. For cartridge-system tools, `arguments.projectRoot` MUST also be explicit. Do not rely on Gateway global workspace state.
+- Do not guess argument names. Confirm schema first; for example, `memory_deps` uses `moduleName`, not `module`.
+
 All memory card **writes and updates** MUST follow the **two-step flow**:
 
 1. Use native tools (`write_to_file` / `replace_file_content`) to write the full SKILL.md content
 2. Call `cartridge-system__memory_commit` to sync metadata (timezone, staleness, index)
 
 **Commit Obligation (歸卡義務)**: Skipping step 2 is FORBIDDEN. A memory card written without `memory_commit` is considered INCOMPLETE. The Completion Gate will reject the workflow.
+
+**High-Risk Tool Boundary**: `cartridge-system__memory_commit` writes files and updates index metadata. It is FORBIDDEN during discussion, planning, testing, or read-only audit phases. Call it only after the target `SKILL.md` has already been updated and the workflow is explicitly in the memory commit phase.
 
 > **Legacy**: `memory_update(mode: replace)` is still available as a fallback but NOT recommended.
 > **Deprecated**: `memory_update(mode: patch)` and `memory_update(mode: append)` are deprecated due to high error rates in Markdown merging.
@@ -40,6 +58,22 @@ Need to load memory?
 └── Single module context (pre-task loading)
     └── Call memory_read(moduleName) → returns full SKILL.md content
 ```
+
+### Read-Only Governance Tools (唯讀治理工具)
+
+Use these before deciding whether memory content must be edited:
+
+| Tool | Purpose | Write behavior |
+|------|---------|----------------|
+| `cartridge-system__workspace_brief` | High-level project identity, memory health, stale/ghost/untracked summary, and next recommended action | Read-only |
+| `cartridge-system__memory_audit` | Full memory system audit: legacy format, frontmatter, Tracked Files, index, dependency semantics, cycles | Read-only |
+| `cartridge-system__commit_preflight` | Pre-commit governance check: git dirty state, memory health, blockers, and suggested validation commands | Read-only |
+| `cartridge-system__memory_list` | Card inventory with health, ghost files, untracked files, dependency count, indirect staleness, split suggestions | Read-only |
+| `cartridge-system__memory_status` | Single-card stale/ghost/pending-change diagnosis | Read-only |
+| `cartridge-system__memory_read` | Full card content read | Read-only |
+| `cartridge-system__memory_deps` | Single-card dependency topology, dependents, cycles, and indirect staleness | Read-only |
+
+`commit_preflight` returning `blocked` because of dirty files is a governance signal, not a tool failure. Review the listed files and continue with the governed commit workflow.
 
 > **Ghost Awareness (v4.0)**: `memory_list` now returns a `ghostFilesCount` field per module.
 > If `ghostFilesCount > 0`, tracked files have been deleted from disk but remain registered in the cartridge.
