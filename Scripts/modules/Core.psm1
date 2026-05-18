@@ -607,17 +607,65 @@ function Set-GitignoreEntries {
         [string[]]$Lines
     )
     $gitignorePath = Join-Path $ProjectRoot ".gitignore"
+
+    $startMarker = "# AI_RULES_GITIGNORE_START"
+    $endMarker   = "# AI_RULES_GITIGNORE_END"
+    $newline     = [Environment]::NewLine
+    $managedBlock = @(
+        $startMarker,
+        "# [ACTIVE][AI_RULES_LOCAL] Local AI Rules runtime state",
+        ".cartridge/",
+        "",
+        "# [ACTIVE][AI_RULES_RUNTIME] Agent logs",
+        ".agents/logs/",
+        "",
+        "# [TRACKED][AI_RULES_MEMORY] .agents/memory/ is project knowledge and is not ignored by default.",
+        $endMarker
+    ) -join $newline
+
     if (-not (Test-Path $gitignorePath)) {
-        Set-Content $gitignorePath "# Antigravity 框架自動排除項目" -Encoding UTF8
+        Set-Content $gitignorePath "" -Encoding UTF8
         Write-Ok ".gitignore 已建立"
     }
+
     $content = Get-Content $gitignorePath -Raw
-    foreach ($line in $Lines) {
-        if ($content -notmatch [regex]::Escape($line)) {
-            Add-Content $gitignorePath "`n$line"
-            Write-Ok ".gitignore 已追加排除: $line"
+    if ($null -eq $content) { $content = "" }
+    $legacyLines = @(@(".agents/logs/", ".cartridge/") + @($Lines)) |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+        Select-Object -Unique
+    $filtered = New-Object System.Collections.Generic.List[string]
+    $insideManagedBlock = $false
+    $hasCompleteManagedBlock = $content.Contains($startMarker) -and $content.Contains($endMarker)
+
+    foreach ($line in ($content -split "\r?\n")) {
+        if ($hasCompleteManagedBlock -and $line -eq $startMarker) {
+            $insideManagedBlock = $true
+            continue
         }
+        if ($insideManagedBlock) {
+            if ($line -eq $endMarker) {
+                $insideManagedBlock = $false
+            }
+            continue
+        }
+        if ($legacyLines -contains $line) {
+            continue
+        }
+        $filtered.Add($line)
     }
+
+    while ($filtered.Count -gt 0 -and [string]::IsNullOrWhiteSpace($filtered[$filtered.Count - 1])) {
+        $filtered.RemoveAt($filtered.Count - 1)
+    }
+
+    if ($filtered.Count -gt 0) {
+        $newContent = ($filtered -join $newline) + ($newline * 2) + $managedBlock + $newline
+    } else {
+        $newContent = $managedBlock + $newline
+    }
+
+    Set-Content $gitignorePath $newContent -NoNewline -Encoding UTF8
+    Write-Ok ".gitignore AI Rules managed block 已同步"
 }
 
 Export-ModuleMember -Function *

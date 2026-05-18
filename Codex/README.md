@@ -1,8 +1,8 @@
-# Antigravity Codex Edition v0.1.2
+# Antigravity Codex Edition v0.1.3
 
 > **讓 AI 編碼助手不再失憶、不再無紀律** — 針對 OpenAI Codex（agentskills.io）設計的 Antigravity 治理框架適配層，與 Gemini 版和 Claude Edition 共享同一套設計哲學與記憶庫。
 
-[![version](https://img.shields.io/badge/version-v0.1.2-orange)](#版本管理)
+[![version](https://img.shields.io/badge/version-v0.1.3-orange)](#版本管理)
 [![platform](https://img.shields.io/badge/platform-agentskills.io-lightgrey)](#)
 [![license](https://img.shields.io/badge/license-MIT-green)](#)
 
@@ -65,6 +65,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 | **三平台共用記憶** | `.agents/memory/` 為唯一記憶庫，Codex / Gemini / Claude Code 三者共用 |
 | **輕量治理規則** | 所有治理規範收錄於單一 `.codex/AGENTS.md`，無需多檔案載入機制 |
 | **技能即工作流** | Codex 透過技能觸發 `$skill-name`，工作流與操作型技能統一在同一目錄 |
+| **子代理政策同源** | `Shared/policies/subagent-invocation.md` 轉譯為 Codex native subagents 的唯讀啟用邊界 |
 | **升級保護** | PROJECT IDENTITY 保護機制：升級後自動還原使用者自訂的專案身份區段 |
 
 ---
@@ -130,6 +131,7 @@ Step 2: workflow-skills/ → .agents/skills/  （17 套工作流技能）
 | **記憶卡保護** | `.agents/memory/` 和 `.agents/project_skills/` 在升級時絕對不覆蓋 |
 | **確認閘門** | Upgrade 模式產出分類顏色差異報告，需使用者確認才套用 |
 | **PROJECT IDENTITY 保護** | 升級時自動偵測 `.codex/AGENTS.md` 中使用者自訂的 `## [PROJECT IDENTITY]` 區段，升級後自動還原 |
+| **Shared policy drift** | Doctor 檢查 Codex 子代理 marker block 是否仍由 `Shared/policies/subagent-invocation.md` 生成 |
 | **孤兒偵測** | 加入 `-RemoveOrphans` 可自動清除源碼已刪除的殘留技能 |
 
 ---
@@ -232,7 +234,7 @@ graph TD
 | **規則載入** | `.agents/rules/` 9 個（IDE 注入） | `CLAUDE.md` @import 6 個模組 | `.codex/AGENTS.md` 單一規則檔 |
 | **工作流觸發** | `.agents/workflows/` IDE 注入 | `.claude/commands/` Slash Command | `.agents/skills/` `$skill-name` |
 | **計畫模式** | `task_boundary` 呼叫 | Claude Code 原生 Plan Mode | 文字描述「進入規劃階段」 |
-| **子代理人** | `browser_subagent` / Gemini CLI | `Agent` 工具 | Codex subagents（唯讀優先，主代理整合） |
+| **子代理人** | Shared policy → `browser_subagent` / Gemini CLI 唯讀 adapter | Shared policy → `Agent` 工具 | Shared policy → Codex native subagents |
 | **任務追蹤** | scratchpad Artifact | `TodoWrite` 清單 | 對話中維護任務清單 |
 | **記憶啟動** | D7 Push 三路徑探測 | Turn=1 啟動探測協議 | Turn=1 cartridge-system 探測 |
 | **記憶位置** | `.agents/memory/` | `.agents/memory/`（共用） | `.agents/memory/`（**三者共用**） |
@@ -245,7 +247,7 @@ graph TD
 
 | 檔案 | 用途 |
 |------|------|
-| `VERSION` | 單行版本號（例如 `0.1.2`） |
+| `VERSION` | 單行版本號（例如 `0.1.3`） |
 | `.codex/VERSION` | 部署到專案後的 Codex live 版本錨點 |
 
 升級時部署引擎採用 **SHA256 差異比對**策略，確保只更新真正有變化的檔案。`.codex/AGENTS.md` 中的 `## [PROJECT IDENTITY]` 區段在升級時永遠受到保護，不會被框架版本覆蓋。
@@ -285,7 +287,7 @@ graph TD
 
 ```
 Codex/
-├── VERSION                        ← v0.1.2
+├── VERSION                        ← v0.1.3
 ├── install.ps1                    ← 一鍵安裝啟動器（呼叫 Scripts/Deploy.ps1）
 ├── README.md                      ← 本文件
 ├── global/

@@ -1,15 +1,24 @@
-.cartridge/
-.vscode/
+# [ACTIVE][LOCAL] Editor and local runtime state
+**/.vscode/
+**/.cartridge/
+
+# [ACTIVE][GENERATED] Root live platform deployments
+/.codex/
+/.claude/
+/CLAUDE.md
+/antigravity_export/
+
+# [ACTIVE][GENERATED] Root Antigravity live deployment
 /.agents/*
+
+# [TRACKED][EXCEPTION] Shared memory cards are repository state
 !/.agents/memory/
 !/.agents/memory/**
-/.claude/
-antigravity_export/
-/CLAUDE.md
-.cartridge/index.json
-.agents/logs/
-.codex/
-!Codex/.codex/
-Extensions/**/node_modules/
-Extensions/**/out/
-Extensions/**/*.vsix
+
+# [ACTIVE][RUNTIME] Platform logs
+**/.agents/logs/
+
+# [ACTIVE][BUILD] VS Code extension dependencies and outputs
+/Extensions/**/node_modules/
+/Extensions/**/out/
+/Extensions/**/*.vsix

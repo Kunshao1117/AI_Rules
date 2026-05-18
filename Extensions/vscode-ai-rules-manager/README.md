@@ -1,6 +1,6 @@
 # AI Rules Manager for VS Code
 
-AI Rules Manager 是 AI_Rules 的 VS Code 側邊欄操作面板。第一版設計給本機安裝與小範圍分享使用，之後可再上架 Marketplace。
+AI Rules Manager 是 AI_Rules 的 VS Code 側邊欄操作面板。第一版設計給本機安裝與 GitHub Release asset 分享使用，之後可再上架 Marketplace。
 
 ## 功能
 
@@ -31,6 +31,17 @@ npm run package
 ```
 
 產出的 `.vsix` 可在 VS Code 的 Extensions 視窗中用 `Install from VSIX...` 安裝。
+
+## GitHub Release
+
+推送 tag `v0.1.3` 後，GitHub Actions 會自動執行：
+
+1. `npm ci`
+2. `npm run package`
+3. 建立 GitHub Release
+4. 將 `ai-rules-manager-0.1.3.vsix` 上傳到該 release 的 Assets
+
+若 tag 與 `package.json` 版本不一致，workflow 會失敗，不會建立或更新 Release。需要補跑時，可在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
 
 ## 設定
 

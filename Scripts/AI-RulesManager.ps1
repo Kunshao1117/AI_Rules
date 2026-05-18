@@ -308,6 +308,7 @@ function Invoke-SyncAntigravityProjectRules {
     $sourceRoot = Join-Path $RepoRoot "Antigravity\.agents"
     $agTargetRoot = Join-Path $ProjectRoot ".agents"
     $version = Get-VersionContent -Path (Join-Path $RepoRoot "Antigravity\VERSION")
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
     $report = @(Get-UpgradeReport `
         -SourceRoot $sourceRoot `
         -TargetRoot $agTargetRoot `
@@ -332,6 +333,10 @@ function Invoke-SyncAntigravityProjectRules {
     if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
         $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $agTargetRoot
     }
+    $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
+        -TargetPath (Join-Path $agTargetRoot "rules\00_core_identity.md") `
+        -Platform Antigravity `
+        -InsertBeforePattern '(?m)^## 2\. Agentic Swarm UI Visibility'
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
 }
 
@@ -345,6 +350,7 @@ function Invoke-SyncClaudeProjectRules {
     $sourceRoot = Join-Path $RepoRoot "Claude\.claude"
     $claudeTargetRoot = Join-Path $ProjectRoot ".claude"
     $version = Get-VersionContent -Path (Join-Path $RepoRoot "Claude\VERSION")
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
     $report = @(Get-UpgradeReport `
         -SourceRoot $sourceRoot `
         -TargetRoot $claudeTargetRoot `
@@ -367,6 +373,10 @@ function Invoke-SyncClaudeProjectRules {
     if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
         $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $claudeTargetRoot
     }
+    $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
+        -TargetPath (Join-Path $claudeTargetRoot "rules\core-identity.md") `
+        -Platform Claude `
+        -InsertBeforePattern '(?m)^## 2\. Multi-Agent Transparency'
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
 }
 
@@ -383,6 +393,7 @@ function Invoke-SyncCodexProjectRules {
     $agentsRoot = Join-Path $ProjectRoot ".agents"
     $targetSkillsPath = Join-Path $agentsRoot "skills"
     $version = Get-VersionContent -Path (Join-Path $RepoRoot "Codex\VERSION")
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
 
     $report = @(Get-UpgradeReport `
         -SourceRoot $sourceRoot `
@@ -405,6 +416,10 @@ function Invoke-SyncCodexProjectRules {
     if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
         $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $codexTargetRoot
     }
+    $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
+        -TargetPath (Join-Path $codexTargetRoot "AGENTS.md") `
+        -Platform Codex `
+        -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
     if (Test-Path -LiteralPath $workflowSkillsRoot) {
         $null = Merge-WorkflowSkills -WorkflowSkillsPath $workflowSkillsRoot -TargetSkillsPath $targetSkillsPath

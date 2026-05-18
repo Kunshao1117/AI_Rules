@@ -1,10 +1,10 @@
 ---
 name: _codex_core
 description: >
-  Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.2）。 追蹤 OpenAI Codex
+  Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.3）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-18T03:06:07+08:00'
+last_updated: '2026-05-18T23:01:37+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -75,6 +75,8 @@ metadata:
 - **Codex project rules sync (2026-05-18)**: `AI-RulesManager.ps1 -Action SyncProjectRules -ProjectPlatform Codex` 同步 `.codex/`、Shared skills、Codex workflow skills 與 `.agents/skills/project-*`；Auto 模式只在偵測到 `.codex/AGENTS.md` 或 `.codex/config.toml` 時執行 Codex 同步。
 - **Codex workflow metadata 縮排修復 (2026-05-18)**: `03-build-建構` 與 `04-fix-修復` 的 `automation_safe: false` 必須位於 `metadata` 底下；若少縮排，Doctor 會視為缺少 `metadata.automation_safe`。
 - **Codex Edition v0.1.2 (2026-05-18)**: patch bump 用於分類式專案同步與版本錨點隔離；Codex live 版本寫入 `.codex/VERSION`，不再覆寫 Antigravity 使用的 `.agents/VERSION`。
+- **Codex Edition v0.1.3 (2026-05-18)**: patch bump 用於接收 shared subagent policy marker；`.codex/AGENTS.md` 由 `Shared/policies/subagent-invocation.md` 注入 Codex native subagents 的唯讀啟用邊界，`.codex/VERSION` 同步更新。
+- **Codex `.gitignore` 模板整理 (2026-05-18)**: `Codex/.gitignore` 移除 `%SystemDrive%`、`BLACK/`、`.markdownlint.yaml` 等歷史殘留規則，改以狀態註解標示本機 AI runtime、agent logs、備份/匯出產物；`.agents/memory/` 明確不忽略，部署目標由 `AI_RULES_GITIGNORE` managed block 管理。
 
 
 ## Known Issues

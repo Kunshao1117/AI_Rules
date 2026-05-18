@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-18] VSIX Release 自動建立與附加
+
+### feat
+- **Release VSIX workflow** — 新增 GitHub Actions workflow，在推送 `v*` tag 後自動打包 AI Rules Manager VSIX、建立 GitHub Release 並上傳到 release assets。
+- **Release tag guard** — workflow 會檢查 tag 是否等於 VSIX 版本（例如 `v0.1.3`），避免版本名與插件包不一致。
+
+### chore
+- **AI Rules Manager v0.1.3** — VS Code extension manifest 與 lockfile 版本升級到 `0.1.3`，產物檔名為 `ai-rules-manager-0.1.3.vsix`。
+
+## [2026-05-18] `.gitignore` 策略整理與部署目標 managed block
+
+### chore
+- **Repository ignore cleanup** — 整理 root 與三平台 `.gitignore`，用狀態註解區分本機狀態、runtime logs、build artifacts 與追蹤例外。
+- **Platform template hygiene** — 三平台模板 `.gitignore` 移除歷史殘留規則，並明確標示 `.agents/memory/` 預設是專案知識庫、不忽略。
+
+### feat
+- **Managed target gitignore block** — `Set-GitignoreEntries` 改為寫入 `AI_RULES_GITIGNORE` marker block，Fresh/Upgrade 會集中管理 `.cartridge/` 與 `.agents/logs/`，並保留目標專案既有規則。
+
+### docs
+- **Deployment ignore policy** — 根 README 補充框架 repo 自身與部署目標專案的 `.gitignore` 差異。
+
+## [2026-05-18] 三平台共用子代理啟用政策
+
+### feat
+- **Shared subagent invocation policy** — 新增 `Shared/policies/subagent-invocation.md` 作為子代理啟用語義唯一來源，並轉譯到 Codex native subagents、Claude `Agent` tool 與 Antigravity browser / CLI adapter。
+- **Policy marker sync** — 部署與專案同步流程會把 Shared policy marker block 注入三平台核心規則，避免手動維護三份子代理政策。
+- **Subagent drift audit** — Doctor 新增 shared subagent policy drift 檢查，若三平台 marker block 與 Shared policy 不一致會回報治理紅黃燈。
+
+### docs
+- **Delegation channel model** — `delegation-strategy` 擴充為 direct / native subagent / browser subagent / CLI analytical subagent / MCP tool，並明確 MCP 是主代理工具，不是委派目標。
+- **三平台文件同步** — 更新根 README、三平台 README 與能力矩陣，說明子代理政策採共用語義與平台轉譯。
+
+### chore
+- **Patch versions** — Antigravity `8.0.3`、Claude Edition `1.2.3`、Codex Edition `0.1.3`。
+
 ## [2026-05-18] 分類式專案規則同步與相容性修復
 
 ### feat

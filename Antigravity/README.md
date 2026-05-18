@@ -2,7 +2,7 @@
 
 > **讓 AI 編碼助手不再失憶、不再無紀律** — 受治理部署的治理框架，為 Gemini IDE 提供工作流程、持久記憶系統與標準作業規範。
 
-[![version](https://img.shields.io/badge/version-v8.0.2-blue)](#版本管理)
+[![version](https://img.shields.io/badge/version-v8.0.3-blue)](#版本管理)
 [![platform](https://img.shields.io/badge/platform-Windows-lightgrey)](#)
 [![license](https://img.shields.io/badge/license-MIT-green)](#)
 
@@ -14,7 +14,7 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → 透過 `.agents/memory/` 記憶卡系統持久保存
 2. **無紀律執行** — 寫碼前不規劃、寫完不測試 → 20 個工作流檔案強制四拍子節奏
-3. **角色權限模糊** — 子代理人隨意改檔案 → 角色分層（讀取者/工作者/寫入者），子代理人只能唯讀
+3. **角色權限模糊** — 子代理人隨意改檔案 → 由 Shared policy 統一啟用條件，子代理人只能唯讀
 4. **知識碎片化** — 技能散落各處，Token 暴增 → 36 套按需載入的操作型技能，不用時零開銷
 5. **語言不友善** — 工程術語充斥 → 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
 6. **框架升級斷裂** — 升級怕覆蓋記憶 → D06 安全網 + SHA256 差異比對 + 記憶卡永久保護
@@ -69,7 +69,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 | **跨對話持久記憶** | 透過 `.agents/memory/` 記憶卡，AI 在新對話中也能回憶過去的架構決策與教訓 |
 | **按需載入** | 技能僅在需要時載入，減少 AI 的認知負擔和 Token 消耗 |
 | **繁體中文特化** | 三層語言架構：指令層（英文）、介面層（繁體中文）、橋接層（雙語） |
-| **最小權限治理** | 角色分層（讀取者 / 工作者 / 寫入者），子代理人只能唯讀 |
+| **最小權限治理** | 角色分層（讀取者 / 工作者 / 寫入者），子代理政策由 `Shared/policies/` 轉譯，且子代理只能唯讀 |
 | **三位一體治理** | 靜默異常中斷（閘門攔截時才中斷）+ 特權覆寫（`[SUDO]`）+ 雙軌沙盒（生產 / 草圖） |
 
 ---
@@ -136,6 +136,7 @@ graph TB
 | **D06 安全防線** | Fresh 模式下以 `try/finally` 備份記憶卡到暫存目錄，部署中斷也不會損失資料 |
 | **記憶卡保護** | `memory/` 和 `project_skills/` 在升級時絕對不覆蓋 |
 | **確認閘門** | Upgrade 模式產出分類顏色差異報告，需使用者確認才套用 |
+| **Shared policy drift** | Doctor 檢查子代理 marker block 是否仍由 `Shared/policies/subagent-invocation.md` 生成 |
 | **孤兒偵測** | 偵測源碼已刪除但目標仍存在的「孤兒檔案」，標記為 `ORPHAN` 提醒 |
 | **衍生技能補建** | 每次部署自動掃描 `project_skills/`，補建缺少的符號連結 |
 
@@ -162,7 +163,7 @@ graph TB
 底層規範依啟動模式分為三層：
 
 **`00_core_identity.md`** — Always On（每次對話必載）
-1. **專職化分工** — 主代理人直接執行，子代理人只能唯讀分析
+1. **專職化分工** — 主代理人直接執行，`Shared/policies/subagent-invocation.md` 轉譯出 browser / CLI adapter 的唯讀委派邊界
 2. **多代理人視圖透明度** — 子代理人的修改必須回傳主代理人在介面呈現
 3. **生命週期強制** — 規劃 → 驗證閘門 → 執行 → 記憶更新
 4. **禁止終端機文書處理** — 靜默閘門式攔截（`[PRE-FLIGHT GATE]`），支援 `[SUDO]` 覆寫與 `/03-1_experiment` 豁免

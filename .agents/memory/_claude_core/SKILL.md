@@ -2,7 +2,7 @@
 name: _claude_core
 description: Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Claude/
-last_updated: '2026-05-18T03:06:07+08:00'
+last_updated: '2026-05-18T22:35:15+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -68,6 +68,8 @@ metadata:
 - **Claude 總監可讀輸出契約 (2026-05-18)**: `core-identity.md` 新增 Director-facing 表格契約，要求對話、計畫、報告與完成摘要先用「功能/目的、相關檔案、白話說明、寫入/風險」呈現，再補技術細節。
 - **Claude Slash Command 契約明示 (2026-05-18)**: 17 個 `.claude/commands/**/SKILL.md` 全部直接加入總監可讀輸出契約，確保 Slash Command 觸發時不只依賴 `core-identity.md`。
 - **Claude Edition v1.2.2 (2026-05-18)**: patch bump 用於分類式專案同步；Auto 只有在 `.claude/CLAUDE.md`、`.claude/commands` 或 `.claude/rules` 存在時才同步 Claude，`.claude/skills/project-*` 仍由 `.agents/project_skills/` backfill 產生。
+- **Claude Edition v1.2.3 (2026-05-18)**: patch bump 用於接收 shared subagent policy marker；`core-identity.md` 由 `Shared/policies/subagent-invocation.md` 注入 Claude `Agent` tool 的唯讀啟用邊界，`CLAUDE.md` 版本同步更新。
+- **Claude `.gitignore` 模板整理 (2026-05-18)**: `Claude/.gitignore` 移除 `.agents/memory` 忽略規則與舊殘留項，改以狀態註解保留本機 runtime、agent logs、備份/匯出產物；三平台共用 `.agents/memory/` 預設進版控。
 
 ## Known Issues
 

@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-18T03:06:07+08:00'
+last_updated: '2026-05-18T22:36:28+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -93,6 +93,8 @@ metadata:
 - **D25: Claude command 輸出契約覆蓋 (2026-05-18)**: 所有 `Claude/.claude/commands/**/SKILL.md` 直接明示總監可讀表格與 `補充技術細節` 隔離規範，避免只靠核心規則導致 Slash Command 實際輸出不一致。
 - **D26: Claude 巢狀 command 納入 Doctor (2026-05-18)**: `Audit.psm1` 的 Workflow Metadata、Governance Semantics 與文件一致性改用 `Claude/.claude/commands/**/SKILL.md` 遞迴口徑；`08_audit` 三個階段子命令已補齊 metadata v2。
 - **D27: Project skill 連結治理 (2026-05-18)**: `Core.psm1` backfill 可修復 `.agents/skills/project-*` 與 `.claude/skills/project-*` 的壞 reparse point；`Audit.psm1` 將實體 `project-*` 或連到 `.agents/project_skills/` 外部的情況列為 Red。
+- **D28: Shared subagent policy sync (2026-05-18)**: `Skills-Sync.psm1` 新增 shared policy marker 同步函式，三個 `Platform-*.psm1`、`Deploy.ps1` 與 `AI-RulesManager.ps1` 會把 `Shared/policies/subagent-invocation.md` 的平台轉譯區塊注入核心規則；`Audit.psm1` 新增漂移檢查。
+- **D29: 目標專案 `.gitignore` managed block (2026-05-18)**: `Core.psm1` 的 `Set-GitignoreEntries` 從散落追加行改為維護 `AI_RULES_GITIGNORE` marker block；Fresh 與 Upgrade 都會同步 `.cartridge/`、`.agents/logs/`，並保留 `.agents/memory/` 作為預設追蹤的專案知識庫。
 
 ## Known Issues
 

@@ -39,6 +39,7 @@ function Invoke-CodexFresh {
     $agentsRoot      = Join-Path $Target ".agents"
     $targetSkillsPath = Join-Path $agentsRoot "skills"
     $version         = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
 
     Write-Banner "Codex v$version — Fresh 安裝 | 目標: $Target" "Magenta"
 
@@ -62,6 +63,12 @@ function Invoke-CodexFresh {
                 Copy-Item $_.FullName $dst -Force
             }
             Write-Ok ".codex/ 治理規則已部署"
+
+            Write-Step "注入共用子代理政策（Shared/policies/ → .codex/AGENTS.md）..."
+            $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
+                -TargetPath (Join-Path $dstDotCodex "AGENTS.md") `
+                -Platform Codex `
+                -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
         } else {
             Write-Warn ".codex/ 源碼不存在，跳過。"
         }
@@ -145,6 +152,7 @@ function Invoke-CodexUpgrade {
     $agentsRoot      = Join-Path $Target ".agents"
     $targetSkillsPath = Join-Path $agentsRoot "skills"
     $version         = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
 
     if (-Not (Test-Path $dstDotCodex)) {
         Write-Warn "目標尚未安裝 Codex，切換為 Fresh 模式。"
@@ -214,6 +222,12 @@ function Invoke-CodexUpgrade {
         }
     }
 
+    Write-Step "同步共用子代理政策（Shared/policies/ → .codex/AGENTS.md）..."
+    $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
+        -TargetPath $codexAgentsMdPath `
+        -Platform Codex `
+        -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
+
     # 技能差異注入（兩步驟）
     Write-Step "同步共用技能差異（Shared/skills/ → .agents/skills/）..."
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
@@ -230,6 +244,9 @@ function Invoke-CodexUpgrade {
 
     # 基礎設施確保
     Initialize-AgentInfrastructure -AgentsRoot $agentsRoot
+
+    # .gitignore 設定
+    Set-GitignoreEntries -ProjectRoot $Target -Lines @(".agents/logs/", ".cartridge/")
 
     # Backfill
     Write-Step "掃描並補建衍生技能命名空間連結..."

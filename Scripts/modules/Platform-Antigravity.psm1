@@ -37,6 +37,7 @@ function Invoke-AgFresh {
     $targetDir  = Join-Path $Target ".agents"
     $version    = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $agentsRoot = $targetDir
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
 
     Write-Banner "Antigravity v$version — Fresh 安裝 | 目標: $Target" "Magenta"
 
@@ -58,6 +59,12 @@ function Invoke-AgFresh {
         } | ForEach-Object {
             Copy-Item $_.FullName $targetDir -Recurse -Force
         }
+
+        Write-Step "注入共用子代理政策（Shared/policies/ → .agents/rules/00_core_identity.md）..."
+        $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
+            -TargetPath (Join-Path $targetDir "rules\00_core_identity.md") `
+            -Platform Antigravity `
+            -InsertBeforePattern '(?m)^## 2\. Agentic Swarm UI Visibility'
 
         # 技能注入：從 Shared/ 注入 36 套共用技能
         Write-Step "注入共用技能（Shared/skills/）..."
@@ -132,6 +139,7 @@ function Invoke-AgUpgrade {
     $sourceDir  = Join-Path $FrameworkRoot ".agents"
     $targetDir  = Join-Path $Target ".agents"
     $version    = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
 
     if (-Not (Test-Path $targetDir)) {
         Write-Warn "目標尚未安裝 Antigravity，切換為 Fresh 模式。"
@@ -211,6 +219,12 @@ function Invoke-AgUpgrade {
         }
     }
 
+    Write-Step "同步共用子代理政策（Shared/policies/ → .agents/rules/00_core_identity.md）..."
+    $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
+        -TargetPath (Join-Path $targetDir "rules\00_core_identity.md") `
+        -Platform Antigravity `
+        -InsertBeforePattern '(?m)^## 2\. Agentic Swarm UI Visibility'
+
     # 孤兒處理
     if ($stats.Orphan -gt 0) {
         if ($RemoveOrphans) {
@@ -222,6 +236,9 @@ function Invoke-AgUpgrade {
 
     # 基礎設施確保
     Initialize-AgentInfrastructure -AgentsRoot $targetDir
+
+    # .gitignore 設定
+    Set-GitignoreEntries -ProjectRoot $Target -Lines @(".agents/logs/", ".cartridge/")
 
     # Backfill
     Write-Step "掃描並補建衍生技能命名空間連結..."

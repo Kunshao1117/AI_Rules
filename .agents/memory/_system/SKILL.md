@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-18T03:09:00+08:00'
+last_updated: '2026-05-18T22:54:52+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -19,7 +19,7 @@ metadata:
 
 ## 專案身份與工作模式
 
-- **專案身份**：AI_Rules 是 Antigravity（Gemini v8.0.2）、Claude Edition（v1.2.2）與 Codex Edition（v0.1.2）的三平台 AI 治理框架核心庫，負責統一管理規則、工作流、技能、MCP/Automation 治理與部署引擎。
+- **專案身份**：AI_Rules 是 Antigravity（Gemini v8.0.3）、Claude Edition（v1.2.3）與 Codex Edition（v0.1.3）的三平台 AI 治理框架核心庫，負責統一管理規則、工作流、技能、MCP/Automation 治理與部署引擎。
 - **工作模式**：框架維護與跨版本同步開發，包含規則升級、工作流新增、技能同步、部署腳本改良，以及記憶卡系統的架構迭代。
 - **技術堆疊**：PowerShell 統一部署引擎（Scripts/Deploy.ps1 + Scripts/modules/*.psm1）+ VS Code 延伸模組（TypeScript）+ Markdown / SKILL.md 治理規範 + cartridge-system MCP（記憶卡讀寫）+ Multi-MCP Gateway；語言：PowerShell + Markdown + TypeScript。
 - **總監角色**：繁體中文操作者（Director），具備框架架構決策權，非工程背景友善，以商業語言溝通，透過 Gemini IDE、Claude Code 與 OpenAI Codex 三平台協作。
@@ -34,9 +34,11 @@ metadata:
 - README.md
 - CHANGELOG.md
 - Shared/platform-capability-matrix.md
+- Shared/policies/subagent-invocation.md
 - Shared/mcp-profiles/README.md
 - Scripts/Deploy.ps1
 - Scripts/AI-RulesManager.ps1
+- .github/workflows/release-vsix.yml
 - Scripts/modules/Core.psm1
 - Scripts/modules/Audit.psm1
 
@@ -70,6 +72,9 @@ metadata:
 - **D28: Doctor 掃描口徑必須遞迴一致 (2026-05-18)**: Workflow Metadata、Governance Semantics、Director Output Contract 與文件一致性統一把 Claude `commands/**/SKILL.md` 視為 17 個 command 入口；避免只掃頂層 14 個 command 而漏掉 `08_audit` 三個階段子命令。
 - **D29: Project skill discovery 連結治理 (2026-05-18)**: `.agents/project_skills/<name>/SKILL.md` 是 project skill 唯一原檔；`.agents/skills/project-*` 與 `.claude/skills/project-*` 僅作 discovery 連結。Doctor 必須檢查缺連結、壞連結、連錯目標與實體目錄混入；`SyncProjectRules -Apply` 可修復 reparse point，但不得覆寫實體 `project-*`。
 - **D30: 分類式專案規則同步 (2026-05-18)**: VS Code 管理器與 `AI-RulesManager.ps1` 的專案同步改為 `Auto|Codex|Claude|Antigravity` 分類；Auto 只同步已安裝平台，未安裝平台只回報 Yellow，不自動建立目錄。Codex live 版本錨點改為 `.codex/VERSION`，`.agents/VERSION` 保留給 Antigravity。
+- **D31: 子代理政策同源轉譯 (2026-05-18)**: 子代理啟用政策不再由工作流或單一平台持有，改由 `Shared/policies/subagent-invocation.md` 定義共用語義，再轉譯注入 Codex、Claude、Antigravity 核心規則；Doctor 以 shared policy drift 檢查三平台 marker block 是否一致。
+- **D32: `.gitignore` 雙層策略整理 (2026-05-18)**: 框架 repo root `.gitignore` 只處理本倉庫 live deployment、本機索引、logs 與 Extension build artifacts；三平台模板 `.gitignore` 移除歷史殘留規則。部署到一般專案時，`Set-GitignoreEntries` 以 `AI_RULES_GITIGNORE` marker block 管理 `.cartridge/` 與 `.agents/logs/`，且 `.agents/memory/` 預設視為專案知識庫進版控。
+- **D33: VSIX Release asset 自動化 (2026-05-18)**: VS Code extension 發布流程改為推送 `v*` tag 後由 GitHub Actions 自動打包 `.vsix`、建立 GitHub Release 並上傳 asset；tag 必須符合 `v<Extensions/vscode-ai-rules-manager/package.json version>`，避免 release 名稱與插件包版本分裂。`.vsix` 仍為發布成品，不進 git。
 
 ## Known Issues
 

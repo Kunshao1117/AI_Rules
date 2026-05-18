@@ -5,7 +5,7 @@ description: >
   Skills-Sync.psm1 注入 Antigravity、Claude、Codex 三個平台。 Use when: 修改 Shared/
   下任何共用技能或平台治理資產時。
 scopePath: Shared/
-last_updated: '2026-05-17T21:56:00+08:00'
+last_updated: '2026-05-18T19:45:00+08:00'
 staleness: 0
 status: active
 metadata:
@@ -22,6 +22,7 @@ metadata:
 ## Tracked Files
 
 - Shared/platform-capability-matrix.md
+- Shared/policies/subagent-invocation.md
 - Shared/mcp-profiles/README.md
 - Shared/skills/_index.md
 - Scripts/modules/Skills-Sync.psm1
@@ -127,6 +128,7 @@ metadata:
 - **平台代理治理資產建立 (2026-05-17)**: `Shared/platform-capability-matrix.md` 成為三平台能力矩陣唯一來源，以 `native` / `adapter` / `manual` 表示能力落點；`Shared/mcp-profiles/README.md` 只提供 opt-in snippets，不由 Fresh/Upgrade/Audit 自動安裝或修改外部 MCP 設定。
 - **Operational skill metadata v2 補齊 (2026-05-17)**: 36 套 Shared skills 全部補齊 `metadata.kind: operational`，GitNexus 與 Supabase 技能補齊缺漏的 `author/version/origin`，`Measure-SkillQuality` 紅燈清零。
 - **MCP HITL 邊界補強 (2026-05-17)**: GitHub、PR review、Supabase、Cloudflare、Excel、Stitch、Sentry、memory、browser、performance、tech-stack、Trunk 等會觸及寫入、部署、推送、安裝或記憶歸卡的 Shared skills 補入 HITL Boundary；schema discovery 不等於 mutating execution。
+- **共用子代理啟用政策 (2026-05-18)**: 新增 `Shared/policies/subagent-invocation.md` 作為三平台子代理啟用語義唯一來源；`Skills-Sync.psm1` 會將平台轉譯區塊注入各平台核心規則 marker，`delegation-strategy` 僅負責 direct/native/browser/CLI/MCP 管道選擇。
 
 ## Known Issues
 

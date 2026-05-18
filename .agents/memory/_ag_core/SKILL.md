@@ -2,7 +2,7 @@
 name: _ag_core
 description: Antigravity 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Antigravity/
-last_updated: '2026-05-18T03:06:07+08:00'
+last_updated: '2026-05-18T22:35:06+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -80,6 +80,8 @@ metadata:
 - **Antigravity 總監可讀輸出契約 (2026-05-18)**: `00_core_identity.md` 新增 Director-facing 表格契約，要求對話、計畫、報告與完成摘要先用「功能/目的、相關檔案、白話說明、寫入/風險」呈現，再補技術細節。
 - **Antigravity 工作流契約明示 (2026-05-18)**: 20 個 `.agents/workflows/` 檔案全部直接加入總監可讀輸出契約，避免只依賴核心規則造成 IDE 注入或工作流觸發時語氣不一致。
 - **Antigravity v8.0.2 (2026-05-18)**: patch bump 用於分類式專案同步；Auto 只有在 `.agents/rules` 或 `.agents/workflows` 存在時才同步 Antigravity，`.agents/VERSION` 僅代表 Antigravity。
+- **Antigravity v8.0.3 (2026-05-18)**: patch bump 用於接收 shared subagent policy marker；`00_core_identity.md` 由 `Shared/policies/subagent-invocation.md` 注入 browser / Gemini CLI adapter 的唯讀啟用邊界。
+- **Antigravity `.gitignore` 模板整理 (2026-05-18)**: `Antigravity/.gitignore` 移除無來源依據的歷史殘留規則，保留 `.vscode/`、`.cartridge/`、`.agents/logs/`、`.git_backup/`、`antigravity_export/`，並明確標示 `.agents/memory/` 預設進版控。
 
 ## Known Issues
 

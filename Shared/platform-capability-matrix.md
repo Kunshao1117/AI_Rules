@@ -19,10 +19,20 @@
 | 指令載入 | `native`：`.agents/rules/AGENTS.md` 與 IDE workflow 注入 | `native`：`.claude/CLAUDE.md` 與 `@import` 規則 | `native`：`.codex/AGENTS.md` 與 `Codex/global/config.toml` fallback |
 | MCP resources / prompts | `adapter`：以 Multi-MCP Gateway 統一探索與呼叫 | `native`：Claude MCP 支援 resources/prompts/commands 語義，框架用 Gateway 約束呼叫 | `native`：Codex MCP 設定與 tool approval，框架只提供 opt-in profile |
 | MCP transports | `adapter`：由 Gateway 封裝下游 stdio/http/SSE | `native`：Claude MCP profile 支援多 transport | `native`：Codex MCP profile 支援受控 server 設定 |
-| Subagents | `adapter`：IDE / browser subagent 工作流封裝 | `native`：Claude Code Agent 工具 | `native`：Codex subagents，框架要求唯讀優先與主代理整合 |
+| Subagents | `adapter`：Shared policy 轉譯為 `browser_subagent` / Gemini CLI 唯讀分析 adapter | `native`：Shared policy 轉譯為 Claude Code `Agent` 工具使用邊界 | `native`：Shared policy 轉譯為 Codex native subagents 使用邊界 |
 | Automation-safe workflow | `adapter`：metadata `automation_safe` + workflow gate | `adapter`：metadata `automation_safe` + Slash Command gate | `native`：Codex Automations 可觸發唯讀 workflow；寫入仍需 GO |
 | 權限 / 確認模型 | `adapter`：Role Lock Gate + `GO` / `[SUDO]` | `native` + `adapter`：Claude 權限提示與框架 `GO` gate | `native` + `adapter`：Codex approval/sandbox 設定與框架 `GO` gate |
 | 記憶系統 | `adapter`：`.agents/memory/` + cartridge-system | `adapter`：共用 `.agents/memory/` | `adapter`：共用 `.agents/memory/` |
+
+## Shared Subagent Invocation Policy
+
+子代理啟用語義以 `Shared/policies/subagent-invocation.md` 為唯一來源。三平台核心規則只保存由該檔生成的 marker block：
+
+- Codex：注入 `.codex/AGENTS.md`，對應 native subagents。
+- Claude：注入 `.claude/rules/core-identity.md`，對應 Claude `Agent` tool。
+- Antigravity：注入 `.agents/rules/00_core_identity.md`，對應 `browser_subagent` 與 Gemini CLI 唯讀分析 adapter。
+
+MCP 仍是主代理直接呼叫的工具，不是委派目標；任何會改檔、改記憶、commit/push、部署、安裝或改外部狀態的工具都必須停在 GO / HITL gate。
 
 ## Workflow `SKILL.md` v2 Metadata
 

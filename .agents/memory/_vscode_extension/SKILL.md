@@ -1,8 +1,10 @@
 ---
 name: _vscode_extension
-description: AI_Rules VS Code 延伸模組與按鈕式管理入口。追蹤側邊欄 UI、命令註冊、PowerShell 腳本橋接與 VSIX 打包設定。
+description: >-
+  AI_Rules VS Code 延伸模組與按鈕式管理入口。追蹤側邊欄 UI、命令註冊、PowerShell 腳本橋接、VSIX 打包設定與 Release
+  asset 自動化。
 scopePath: Extensions/vscode-ai-rules-manager
-last_updated: '2026-05-18T03:09:00+08:00'
+last_updated: '2026-05-18T22:54:41+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -31,6 +33,7 @@ metadata:
 - Extensions/vscode-ai-rules-manager/src/commands.ts
 - Extensions/vscode-ai-rules-manager/src/scriptRunner.ts
 - Extensions/vscode-ai-rules-manager/src/status.ts
+- .github/workflows/release-vsix.yml
 - Scripts/AI-RulesManager.ps1
 
 ## Key Decisions
@@ -47,10 +50,12 @@ metadata:
 - **使用者層與專案層同步分離 (2026-05-18)**: `syncGlobalRules` 只處理 `~/.codex` / `~/.claude` / `~/.gemini` 使用者層 bootstrap；`syncProjectRules` 處理目前 workspace 的已安裝平台規則，避免「全域同步成功」被誤解成專案治理也已同步。
 - **健康檢查顯示治理語義缺口 (2026-05-18)**: Doctor 必須檢查 Director Output Contract 與 Project Skill Links；Red 或 Yellow 都應在 extension 狀態中顯示為「需要處理」，不可只因全域規則 OK 就顯示全綠。
 - **AI Rules Manager v0.1.2 (2026-05-18)**: patch bump 用於分類式專案規則同步；`SyncProjectRules -ProjectPlatform Auto` 只同步已安裝平台，單平台同步未安裝時只回報 Yellow，VSIX 檔名同步為 `ai-rules-manager-0.1.2.vsix`。
+- **專案同步補入 shared subagent policy (2026-05-18)**: `AI-RulesManager.ps1 -Action SyncProjectRules` 在同步已安裝平台規則時，會一併套用 shared subagent policy marker，讓 VS Code 側邊欄的單平台同步不會漏掉三平台子代理治理區塊。
+- **AI Rules Manager v0.1.3 Release asset automation (2026-05-18)**: VSIX 版本升級到 `0.1.3`；新增 `.github/workflows/release-vsix.yml`，在推送 `v*` tag 後以 Node 20 打包 `ai-rules-manager-0.1.3.vsix`、自動建立 GitHub Release 並上傳 release asset。workflow 強制 tag 必須等於 `v<package.json version>`，並提供 `workflow_dispatch` 補跑入口。
 
 ## Known Issues
 
-- 第一版以本機 VSIX 為目標，尚未建立 Marketplace 發布流程。
+- 第一版以本機 VSIX 與 GitHub Release asset 為目標，尚未建立 Marketplace 發布流程。
 - 尚未提供完整 Webview Dashboard；目前採側邊欄輕量按鈕。
 
 ## Module Lessons

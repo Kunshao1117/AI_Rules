@@ -468,6 +468,7 @@ function Get-GovernanceScanFiles {
         'Claude\README.md',
         'Codex\README.md',
         'Shared\platform-capability-matrix.md',
+        'Shared\policies\subagent-invocation.md',
         'Shared\mcp-profiles\README.md',
         'Codex\.codex\AGENTS.md',
         'Claude\.claude\CLAUDE.md',
@@ -900,6 +901,145 @@ function Measure-RuntimeGlobalDrift {
         GreenCount  = $greenCount
         YellowCount = $yellowCount
         RedCount    = $redCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
+function Get-AuditSharedPolicyBlock {
+    param(
+        [string]$PolicyPath,
+        [string]$Platform
+    )
+
+    if (-not (Test-Path -LiteralPath $PolicyPath)) { return '' }
+
+    $content = Get-Content -LiteralPath $PolicyPath -Raw -Encoding UTF8
+    $platformKey = $Platform.ToUpperInvariant()
+    $pattern = "(?ms)<!--\s*SUBAGENT_POLICY:$platformKey`_START\s*-->\s*(.*?)\s*<!--\s*SUBAGENT_POLICY:$platformKey`_END\s*-->"
+    $match = [regex]::Match($content, $pattern)
+    if ($match.Success) { return $match.Groups[1].Value.Trim() }
+    return ''
+}
+
+function Get-AuditGeneratedSubagentPolicyBlock {
+    param([string]$Path)
+
+    if (-not (Test-Path -LiteralPath $Path)) { return '' }
+
+    $content = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+    $startMarker = '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->'
+    $endMarker = '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->'
+    $pattern = "(?ms)$([regex]::Escape($startMarker))\s*(.*?)\s*$([regex]::Escape($endMarker))"
+    $match = [regex]::Match($content, $pattern)
+    if ($match.Success) { return $match.Groups[1].Value.Trim() }
+    return ''
+}
+
+function Measure-SharedSubagentPolicyDrift {
+    <#
+    .SYNOPSIS
+        檢查 Shared/policies/subagent-invocation.md 與三平台核心規則 marker block 是否一致。
+    .PARAMETER RepoRoot
+        AI_Rules 倉庫根目錄。
+    .PARAMETER TargetRoot
+        目前專案根目錄；若已安裝平台規則，列為 Yellow drift 警告。
+    #>
+    param(
+        [string]$RepoRoot = ".",
+        [string]$TargetRoot = "."
+    )
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
+    $results = New-Object System.Collections.ArrayList
+    $policyPath = Join-Path $RepoRoot 'Shared\policies\subagent-invocation.md'
+
+    function Add-PolicyFinding {
+        param(
+            [string]$Severity,
+            [string]$Platform,
+            [string]$Scope,
+            [string]$File,
+            [string]$Reason
+        )
+
+        $null = $results.Add([PSCustomObject]@{
+            Severity = $Severity
+            Platform = $Platform
+            Scope    = $Scope
+            File     = $File
+            Reason   = $Reason
+        })
+    }
+
+    if (-not (Test-Path -LiteralPath $policyPath)) {
+        Add-PolicyFinding -Severity 'Red' -Platform 'Shared' -Scope 'source' -File 'Shared/policies/subagent-invocation.md' -Reason 'Shared 子代理政策來源不存在'
+    }
+
+    $sourceTargets = @(
+        [PSCustomObject]@{ Platform = 'Codex'; Path = Join-Path $RepoRoot 'Codex\.codex\AGENTS.md' },
+        [PSCustomObject]@{ Platform = 'Claude'; Path = Join-Path $RepoRoot 'Claude\.claude\rules\core-identity.md' },
+        [PSCustomObject]@{ Platform = 'Antigravity'; Path = Join-Path $RepoRoot 'Antigravity\.agents\rules\00_core_identity.md' }
+    )
+
+    $targetTargets = @(
+        [PSCustomObject]@{ Platform = 'Codex'; Path = Join-Path $TargetRoot '.codex\AGENTS.md' },
+        [PSCustomObject]@{ Platform = 'Claude'; Path = Join-Path $TargetRoot '.claude\rules\core-identity.md' },
+        [PSCustomObject]@{ Platform = 'Antigravity'; Path = Join-Path $TargetRoot '.agents\rules\00_core_identity.md' }
+    )
+
+    foreach ($target in $sourceTargets) {
+        $expected = Get-AuditSharedPolicyBlock -PolicyPath $policyPath -Platform $target.Platform
+        $rel = if (Test-Path -LiteralPath $target.Path) { Get-AuditRelativePath -RepoRoot $RepoRoot -Path $target.Path } else { $target.Path }
+        if (-not $expected) {
+            Add-PolicyFinding -Severity 'Red' -Platform $target.Platform -Scope 'source' -File $rel -Reason 'Shared policy 缺少此平台轉譯區塊'
+            continue
+        }
+        if (-not (Test-Path -LiteralPath $target.Path)) {
+            Add-PolicyFinding -Severity 'Red' -Platform $target.Platform -Scope 'source' -File $rel -Reason '平台核心規則來源檔不存在'
+            continue
+        }
+        $actual = Get-AuditGeneratedSubagentPolicyBlock -Path $target.Path
+        if (-not $actual) {
+            Add-PolicyFinding -Severity 'Red' -Platform $target.Platform -Scope 'source' -File $rel -Reason '平台核心規則缺少 shared subagent policy marker block'
+        } elseif ($actual -ne $expected) {
+            Add-PolicyFinding -Severity 'Red' -Platform $target.Platform -Scope 'source' -File $rel -Reason '平台核心規則 marker block 與 Shared policy 不一致'
+        }
+    }
+
+    foreach ($target in $targetTargets) {
+        if (-not (Test-Path -LiteralPath $target.Path)) { continue }
+        $expected = Get-AuditSharedPolicyBlock -PolicyPath $policyPath -Platform $target.Platform
+        if (-not $expected) { continue }
+        $actual = Get-AuditGeneratedSubagentPolicyBlock -Path $target.Path
+        $display = if ($target.Path.StartsWith($RepoRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+            Get-AuditRelativePath -RepoRoot $RepoRoot -Path $target.Path
+        } else {
+            "target:$($target.Path.Substring($TargetRoot.Length).TrimStart('\', '/'))"
+        }
+        if (-not $actual) {
+            Add-PolicyFinding -Severity 'Yellow' -Platform $target.Platform -Scope 'target' -File $display -Reason '目前專案核心規則缺少 shared subagent policy marker block'
+        } elseif ($actual -ne $expected) {
+            Add-PolicyFinding -Severity 'Yellow' -Platform $target.Platform -Scope 'target' -File $display -Reason '目前專案核心規則 marker block 與 Shared policy 不一致'
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 Shared Subagent Policy Drift"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
+    foreach ($finding in $results | Sort-Object Severity, Platform, Scope, File) {
+        $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+        Write-Host ("  {0} {1}/{2} {3} — {4}" -f $finding.Severity, $finding.Platform, $finding.Scope, $finding.File, $finding.Reason) -ForegroundColor $color
+    }
+
+    return [PSCustomObject]@{
+        Results     = @($results.ToArray())
+        RedCount    = $redCount
+        YellowCount = $yellowCount
         Passed      = ($redCount -eq 0)
     }
 }
@@ -1385,13 +1525,14 @@ function Invoke-PlatformGovernanceAudit {
     $docs = Measure-DocsConsistency -RepoRoot $RepoRoot
     $runtime = Measure-RuntimeGlobalDrift -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
     $semantics = Measure-GovernanceSemantics -RepoRoot $RepoRoot
+    $subagentPolicy = Measure-SharedSubagentPolicyDrift -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $directorOutput = Measure-DirectorOutputContract -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $projectLinks = Measure-ProjectSkillLinks -TargetRoot $TargetRoot
 
     $metadataFail = ($metadata | Where-Object { $_.Status -eq '🔴' }).Count
     $docStale = $docs.StaleHits.Count
-    $redTotal = $runtime.RedCount + $semantics.RedCount + $directorOutput.RedCount + $projectLinks.RedCount
-    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount
+    $redTotal = $runtime.RedCount + $semantics.RedCount + $subagentPolicy.RedCount + $directorOutput.RedCount + $projectLinks.RedCount
+    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $subagentPolicy.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount
     $ok = $capability.CapabilityMatrix -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
     Write-Host ""
@@ -1408,6 +1549,7 @@ function Invoke-PlatformGovernanceAudit {
         Docs       = $docs
         Runtime    = $runtime
         Semantics  = $semantics
+        SubagentPolicy = $subagentPolicy
         DirectorOutput = $directorOutput
         ProjectLinks = $projectLinks
         RedCount   = $redTotal
@@ -1416,4 +1558,4 @@ function Invoke-PlatformGovernanceAudit {
     }
 }
 
-Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-GovernanceSemantics, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Invoke-PlatformGovernanceAudit
+Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-GovernanceSemantics, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Invoke-PlatformGovernanceAudit

@@ -110,4 +110,110 @@ function Merge-WorkflowSkills {
     return $count
 }
 
-Export-ModuleMember -Function Sync-SharedSkills, Merge-WorkflowSkills
+function Get-SharedPolicyBlock {
+    <#
+    .SYNOPSIS
+        從 Shared/policies/ 讀取指定平台的政策轉譯區塊。
+    .PARAMETER PolicyPath
+        Shared/policies/subagent-invocation.md 的絕對路徑。
+    .PARAMETER Platform
+        目標平台：Codex / Claude / Antigravity。
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$PolicyPath,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("Codex", "Claude", "Antigravity")]
+        [string]$Platform
+    )
+
+    if (-not (Test-Path -LiteralPath $PolicyPath)) {
+        Write-Fail "Shared policy 不存在：$PolicyPath"
+        return ''
+    }
+
+    $content = Get-Content -LiteralPath $PolicyPath -Raw -Encoding UTF8
+    $platformKey = $Platform.ToUpperInvariant()
+    $pattern = "(?ms)<!--\s*SUBAGENT_POLICY:$platformKey`_START\s*-->\s*(.*?)\s*<!--\s*SUBAGENT_POLICY:$platformKey`_END\s*-->"
+    $match = [regex]::Match($content, $pattern)
+    if (-not $match.Success) {
+        Write-Fail "Shared policy 缺少平台區塊：$Platform"
+        return ''
+    }
+
+    return $match.Groups[1].Value.Trim()
+}
+
+function Sync-SharedPolicyBlock {
+    <#
+    .SYNOPSIS
+        將 Shared policy 的平台轉譯區塊同步到核心規則 marker block。
+    .PARAMETER PolicyPath
+        Shared/policies/subagent-invocation.md 的絕對路徑。
+    .PARAMETER TargetPath
+        要注入的核心規則檔案。
+    .PARAMETER Platform
+        目標平台：Codex / Claude / Antigravity。
+    .PARAMETER InsertBeforePattern
+        marker 不存在時，插入在第一個符合此 regex 的區塊前。
+    .PARAMETER InsertAfterPattern
+        marker 不存在且 InsertBeforePattern 未命中時，插入在第一個符合此 regex 的區塊後。
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$PolicyPath,
+
+        [Parameter(Mandatory = $true)]
+        [string]$TargetPath,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("Codex", "Claude", "Antigravity")]
+        [string]$Platform,
+
+        [string]$InsertBeforePattern = '',
+
+        [string]$InsertAfterPattern = ''
+    )
+
+    if (-not (Test-Path -LiteralPath $TargetPath)) {
+        Write-Warn "核心規則檔不存在，跳過 shared policy 注入：$TargetPath"
+        return 0
+    }
+
+    $policyBlock = Get-SharedPolicyBlock -PolicyPath $PolicyPath -Platform $Platform
+    if (-not $policyBlock) { return 0 }
+
+    $startMarker = '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->'
+    $endMarker = '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->'
+    $generated = "$startMarker`r`n$policyBlock`r`n$endMarker"
+    $content = Get-Content -LiteralPath $TargetPath -Raw -Encoding UTF8
+    $markerPattern = "(?ms)$([regex]::Escape($startMarker)).*?$([regex]::Escape($endMarker))"
+
+    if ([regex]::IsMatch($content, $markerPattern)) {
+        $newContent = [regex]::Replace($content, $markerPattern, [System.Text.RegularExpressions.MatchEvaluator]{ param($m) $generated }, 1)
+    } elseif ($InsertBeforePattern -and [regex]::IsMatch($content, $InsertBeforePattern)) {
+        $newContent = [regex]::Replace($content, $InsertBeforePattern, [System.Text.RegularExpressions.MatchEvaluator]{
+            param($m)
+            return "$generated`r`n`r`n$($m.Value)"
+        }, 1)
+    } elseif ($InsertAfterPattern -and [regex]::IsMatch($content, $InsertAfterPattern)) {
+        $newContent = [regex]::Replace($content, $InsertAfterPattern, [System.Text.RegularExpressions.MatchEvaluator]{
+            param($m)
+            return "$($m.Value)`r`n`r`n$generated"
+        }, 1)
+    } else {
+        $newContent = $content.TrimEnd() + "`r`n`r`n" + $generated + "`r`n"
+    }
+
+    if ($newContent -eq $content) {
+        Write-Step "Shared subagent policy 已同步：$TargetPath"
+        return 0
+    }
+
+    [System.IO.File]::WriteAllText($TargetPath, $newContent, (New-Object System.Text.UTF8Encoding $false))
+    Write-Ok "Shared subagent policy 已注入：$TargetPath"
+    return 1
+}
+
+Export-ModuleMember -Function Sync-SharedSkills, Merge-WorkflowSkills, Get-SharedPolicyBlock, Sync-SharedPolicyBlock

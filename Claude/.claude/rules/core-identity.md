@@ -3,9 +3,19 @@
 ## 1. Agent Specialization (專職化分工)
 
 - **Direct Execution Principle**: The Master Agent handles all tasks directly — from planning and architecture to code implementation — and communicates directly with the Director.
-  1. **Research/Analysis tasks**: Delegate to `Agent(subagent_type="Explore")` for read-only investigation, code diagnosis, web research. Explore subagents MUST NOT modify source files.
-  2. **UI/browser tasks**: Delegate to `Agent(subagent_type="general-purpose")` with browser tools for visual verification. Load `browser-testing` skill for procedures.
 - **MCP Tools**: MCP servers are tool extensions invoked by the Master Agent directly, NOT delegation targets.
+
+<!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->
+### Shared Subagent Invocation Policy (Claude Agent tool)
+
+This block is generated from `Shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
+
+- **Moderate auto-invocation**: Use the Claude `Agent` tool for bounded, parallel, read-only exploration when the task has independent branches such as broad file reading, documentation comparison, UI/browser verification, regression risk review, or compatibility checks. The Master Agent should continue non-overlapping work while Agents run.
+- **Do not invoke**: Do not use an Agent when the next main-thread step is blocked on that answer, when the task is vague, when it requires secrets or login state, or when it would duplicate the Master Agent's current work.
+- **Master-Agent accountability**: The Master Agent remains the only integrator and Director-facing owner. It must review Agent output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
+- **Read-only boundary**: Claude Agents may read, search, inspect browser state, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
+- **Required report format**: Every Claude Agent returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
+<!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->
 
 ## 2. Multi-Agent Transparency (多代理人視圖透明度)
 

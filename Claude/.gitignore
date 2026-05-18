@@ -1,10 +1,12 @@
-.trunk/
-%SystemDrive%
-.markdownlint.yaml
-BLACK/
+# [ACTIVE][LOCAL] Editor and local AI runtime state
 .vscode/
 .cartridge/
-.agents/memory
+
+# [ACTIVE][RUNTIME] Agent logs
 .agents/logs/
+
+# [ACTIVE][LOCAL] Local backup and export outputs
 .git_backup/
 antigravity_export/
+
+# [TRACKED][MEMORY] .agents/memory/ is project knowledge and is not ignored by default.

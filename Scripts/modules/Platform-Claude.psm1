@@ -37,6 +37,7 @@ function Invoke-ClaudeFresh {
     $dstDotClaude  = Join-Path $Target ".claude"
     $agentsRoot    = Join-Path $Target ".agents"
     $version       = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
 
     Write-Banner "Claude Edition v$version — Fresh 安裝 | 目標: $Target" "Magenta"
 
@@ -59,6 +60,12 @@ function Invoke-ClaudeFresh {
             if (-not (Test-Path $dstDir)) { New-Item -ItemType Directory $dstDir -Force | Out-Null }
             Copy-Item $_.FullName $dst -Force
         }
+
+        Write-Step "注入共用子代理政策（Shared/policies/ → .claude/rules/core-identity.md）..."
+        $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
+            -TargetPath (Join-Path $dstDotClaude "rules\core-identity.md") `
+            -Platform Claude `
+            -InsertBeforePattern '(?m)^## 2\. Multi-Agent Transparency'
 
         # 技能注入：從 Shared/ 注入 36 套共用技能到 .claude/skills/
         Write-Step "注入共用技能（Shared/skills/ → .claude/skills/）..."
@@ -129,6 +136,7 @@ function Invoke-ClaudeUpgrade {
     $dstDotClaude = Join-Path $Target ".claude"
     $agentsRoot   = Join-Path $Target ".agents"
     $version      = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
 
     if (-Not (Test-Path $dstDotClaude)) {
         Write-Warn "目標尚未安裝 Claude Edition，切換為 Fresh 模式。"
@@ -209,6 +217,12 @@ function Invoke-ClaudeUpgrade {
         }
     }
 
+    Write-Step "同步共用子代理政策（Shared/policies/ → .claude/rules/core-identity.md）..."
+    $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
+        -TargetPath (Join-Path $dstDotClaude "rules\core-identity.md") `
+        -Platform Claude `
+        -InsertBeforePattern '(?m)^## 2\. Multi-Agent Transparency'
+
     # 孤兒處理
     if ($stats.Orphan -gt 0) {
         if ($RemoveOrphans) {
@@ -220,6 +234,9 @@ function Invoke-ClaudeUpgrade {
 
     # 基礎設施確保
     Initialize-AgentInfrastructure -AgentsRoot $agentsRoot
+
+    # .gitignore 設定
+    Set-GitignoreEntries -ProjectRoot $Target -Lines @(".agents/logs/", ".cartridge/")
 
     # Backfill
     Write-Step "掃描並補建衍生技能命名空間連結..."

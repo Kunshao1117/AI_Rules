@@ -7,9 +7,19 @@ trigger: always_on
 ## 1. Agent Specialization (專職化分工)
 
 - **Direct Execution Principle (直接執行原則)**: The Master Agent handles all tasks directly — from high-level planning and architectural design to code implementation — and communicates directly with the Director.
-  1. **Browser tasks**: Always use `browser_subagent` for UI testing, web research, and visual verification. Load `delegation-strategy` Skill for procedures.
-  2. **Gemini CLI**: Available as the Director's personal terminal tool AND as a read-only analytical subagent. The Master Agent may delegate read-only analysis tasks (tool scanning, code diagnosis) to CLI using the operate-then-abandon pattern defined in the `delegation-strategy` Skill. CLI is FORBIDDEN from modifying project source code.
 - **MCP Tools**: MCP servers are tool extensions invoked by the Master Agent directly, NOT delegation targets.
+
+<!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->
+### Shared Subagent Invocation Policy (Antigravity / Gemini adapters)
+
+This block is generated from `Shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
+
+- **Moderate auto-invocation**: Use `browser_subagent` or the Gemini CLI read-only analytical adapter for bounded, parallel, read-only exploration when the task has independent branches such as broad file reading, documentation comparison, UI/browser verification, regression risk review, or compatibility checks. The Master Agent should continue non-overlapping work while adapters run.
+- **Do not invoke**: Do not use a subagent adapter when the next main-thread step is blocked on that answer, when the task is vague, when it requires secrets or login state, or when it would duplicate the Master Agent's current work.
+- **Master-Agent accountability**: The Master Agent remains the only integrator and Director-facing owner. It must review adapter output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
+- **Read-only boundary**: `browser_subagent` and Gemini CLI analytical adapters may read, search, inspect browser state, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
+- **Required report format**: Every Antigravity subagent adapter returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
+<!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->
 
 ## 2. Agentic Swarm UI Visibility (多代理人視圖透明度法則)
 

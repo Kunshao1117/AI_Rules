@@ -60,6 +60,7 @@ $OutputEncoding          = [System.Text.Encoding]::UTF8
 $RepoRoot         = Split-Path $PSScriptRoot -Parent
 $ModulesDir       = Join-Path $PSScriptRoot "modules"
 $SharedSkillsRoot = Join-Path $RepoRoot "Shared\skills"
+$SharedPolicyPath = Join-Path $RepoRoot "Shared\policies\subagent-invocation.md"
 $AgRoot           = Join-Path $RepoRoot "Antigravity"
 $ClaudeRoot       = Join-Path $RepoRoot "Claude"
 $CodexRoot        = Join-Path $RepoRoot "Codex"
@@ -155,7 +156,13 @@ function Invoke-PlatformDeploy {
             switch ($DeployMode) {
                 "Fresh"   { Invoke-AgFresh   -FrameworkRoot $AgRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot }
                 "Upgrade" { Invoke-AgUpgrade -FrameworkRoot $AgRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot -RemoveOrphans:$RemoveOrphans }
-                "Sync"    { Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".agents\skills") -Mode Diff }
+                "Sync"    {
+                    Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".agents\skills") -Mode Diff
+                    Sync-SharedPolicyBlock -PolicyPath $SharedPolicyPath `
+                        -TargetPath (Join-Path $TargetPath ".agents\rules\00_core_identity.md") `
+                        -Platform Antigravity `
+                        -InsertBeforePattern '(?m)^## 2\. Agentic Swarm UI Visibility'
+                }
                 "Audit"   {
                     Invoke-DocScan    -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Invoke-HealthAudit -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
@@ -167,7 +174,13 @@ function Invoke-PlatformDeploy {
             switch ($DeployMode) {
                 "Fresh"   { Invoke-ClaudeFresh   -FrameworkRoot $ClaudeRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot }
                 "Upgrade" { Invoke-ClaudeUpgrade -FrameworkRoot $ClaudeRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot -RemoveOrphans:$RemoveOrphans }
-                "Sync"    { Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".claude\skills") -Mode Diff }
+                "Sync"    {
+                    Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".claude\skills") -Mode Diff
+                    Sync-SharedPolicyBlock -PolicyPath $SharedPolicyPath `
+                        -TargetPath (Join-Path $TargetPath ".claude\rules\core-identity.md") `
+                        -Platform Claude `
+                        -InsertBeforePattern '(?m)^## 2\. Multi-Agent Transparency'
+                }
                 "Audit"   {
                     Invoke-DocScan    -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Invoke-HealthAudit -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
@@ -179,7 +192,13 @@ function Invoke-PlatformDeploy {
             switch ($DeployMode) {
                 "Fresh"   { Invoke-CodexFresh   -FrameworkRoot $CodexRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot }
                 "Upgrade" { Invoke-CodexUpgrade -FrameworkRoot $CodexRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot -RemoveOrphans:$RemoveOrphans }
-                "Sync"    { Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".agents\skills") -Mode Diff }
+                "Sync"    {
+                    Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".agents\skills") -Mode Diff
+                    Sync-SharedPolicyBlock -PolicyPath $SharedPolicyPath `
+                        -TargetPath (Join-Path $TargetPath ".codex\AGENTS.md") `
+                        -Platform Codex `
+                        -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
+                }
                 "Audit"   {
                     Invoke-DocScan    -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Invoke-HealthAudit -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
