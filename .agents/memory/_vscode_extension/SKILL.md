@@ -4,7 +4,7 @@ description: >-
   AI_Rules VS Code 延伸模組與按鈕式管理入口。追蹤側邊欄 UI、命令註冊、PowerShell 腳本橋接、VSIX 打包設定與 Release
   asset 自動化。
 scopePath: Extensions/vscode-ai-rules-manager
-last_updated: '2026-05-18T22:54:41+08:00'
+last_updated: '2026-05-19T06:05:45+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -52,6 +52,8 @@ metadata:
 - **AI Rules Manager v0.1.2 (2026-05-18)**: patch bump 用於分類式專案規則同步；`SyncProjectRules -ProjectPlatform Auto` 只同步已安裝平台，單平台同步未安裝時只回報 Yellow，VSIX 檔名同步為 `ai-rules-manager-0.1.2.vsix`。
 - **專案同步補入 shared subagent policy (2026-05-18)**: `AI-RulesManager.ps1 -Action SyncProjectRules` 在同步已安裝平台規則時，會一併套用 shared subagent policy marker，讓 VS Code 側邊欄的單平台同步不會漏掉三平台子代理治理區塊。
 - **AI Rules Manager v0.1.3 Release asset automation (2026-05-18)**: VSIX 版本升級到 `0.1.3`；新增 `.github/workflows/release-vsix.yml`，在推送 `v*` tag 後以 Node 20 打包 `ai-rules-manager-0.1.3.vsix`、自動建立 GitHub Release 並上傳 release asset。workflow 強制 tag 必須等於 `v<package.json version>`，並提供 `workflow_dispatch` 補跑入口。
+- **跨專案換行誤報修正 (2026-05-19)**: 管理器後端現在以規則文字內容判斷全域與專案同步狀態；當目前 AI_Rules workspace 使用 LF、Antigravity / VS Code 類 IDE managed clone 使用 CRLF 時，`Check`、`SyncGlobal`、`SyncProjectRules` 與 `Doctor` 不再因純換行差異顯示需要處理。
+- **AI Rules Manager v0.1.4 (2026-05-19)**: patch bump 用於封裝跨專案換行誤報修正；`package.json` 與 lockfile 升級到 `0.1.4`，release 文件與 VSIX 檔名同步為 `ai-rules-manager-0.1.4.vsix`。
 
 ## Known Issues
 
@@ -70,6 +72,8 @@ metadata:
 - **D06: Red/Yellow 狀態需掃所有計數**：Doctor 輸出有多個區塊時，前面的 `Yellow：0` / `Red：0` 不可遮住後面區塊的正數；extension 狀態判斷必須掃描所有 Red/Yellow counter。
 - **D07: project skill link 修復是專案同步的一部分**：使用者點「同步已安裝平台規則」或單平台同步時，應修復對應 discovery 連結；「健康檢查」只回報，不寫入。
 - **D08: 專案同步需依平台分類**：`.agents/skills` 可被 Codex 與 Antigravity 共用，不能只因 `.agents/` 存在就判定三平台都已安裝；Auto 同步必須檢查 `.codex/`、`.claude/`、`.agents/rules|workflows` 的實際入口。
+- **D09: managed clone 與 workspace repo 可能只有換行不同**：一般專案會透過 IDE globalStorage 內的 AI_Rules managed clone 執行後端腳本，AI_Rules repo 自身則使用 workspace root；兩份 source 的 Git commit 相同但 working tree 換行可能不同，狀態判斷必須用正規化文字內容而非原始 SHA256 單點決策。
+- **D10: 後端行為改變也要 bump VSIX**：即使 TypeScript UI 未變，只要 extension 按鈕呼叫的後端治理結果對使用者可見，應升級 patch 版本並重新打包，避免安裝包版本與實際行為修正脫節。
 
 ## Relations
 

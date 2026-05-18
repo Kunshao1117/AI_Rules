@@ -5,9 +5,9 @@ description: >
   Skills-Sync.psm1 注入 Antigravity、Claude、Codex 三個平台。 Use when: 修改 Shared/
   下任何共用技能或平台治理資產時。
 scopePath: Shared/
-last_updated: '2026-05-18T19:45:00+08:00'
+last_updated: '2026-05-19T06:27:08+08:00'
 staleness: 0
-status: active
+status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -17,6 +17,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared 共用技能庫
 
 ## Tracked Files
@@ -129,6 +130,7 @@ metadata:
 - **Operational skill metadata v2 補齊 (2026-05-17)**: 36 套 Shared skills 全部補齊 `metadata.kind: operational`，GitNexus 與 Supabase 技能補齊缺漏的 `author/version/origin`，`Measure-SkillQuality` 紅燈清零。
 - **MCP HITL 邊界補強 (2026-05-17)**: GitHub、PR review、Supabase、Cloudflare、Excel、Stitch、Sentry、memory、browser、performance、tech-stack、Trunk 等會觸及寫入、部署、推送、安裝或記憶歸卡的 Shared skills 補入 HITL Boundary；schema discovery 不等於 mutating execution。
 - **共用子代理啟用政策 (2026-05-18)**: 新增 `Shared/policies/subagent-invocation.md` 作為三平台子代理啟用語義唯一來源；`Skills-Sync.psm1` 會將平台轉譯區塊注入各平台核心規則 marker，`delegation-strategy` 僅負責 direct/native/browser/CLI/MCP 管道選擇。
+- **Shared policy 注入輔助函式 (2026-05-19)**: `Skills-Sync.psm1` 承擔 shared subagent policy 的讀取與 marker block 同步能力，提供平台區塊讀取、既有 marker 取代與缺 marker 時的插入策略；三平台部署與專案同步可共用同一套注入語義。
 
 ## Known Issues
 
@@ -142,6 +144,7 @@ metadata:
 - **共用同步模組也需要編碼相容**：即使 README 指令已做 BOM 暫存，`Scripts/modules/*.psm1` 仍會在解壓後被 PowerShell import；含中文輸出的模組必須以 UTF-8 with BOM 保存。
 - **平台治理資產屬於 Shared 而非單一平台**：能力矩陣與 MCP profile snippets 不應放進 Codex/Claude/Antigravity 任一子樹，避免三平台規格再次分叉。
 - **HITL Boundary 是操作型技能的公共介面**：任何 MCP skill 只要可能 create/update/write/delete/deploy/push/apply/reset/merge 或記憶歸卡，就必須明示 GO 與 `[MCP HITL GATE]`，不可只靠平台權限提示。
+- **Shared policy 注入應保持冪等**：同步核心規則時應優先取代既有 marker block；只有 marker 不存在時才依 before/after pattern 插入，避免每次升級重複追加同一段治理文字。
 
 ## Relations
 

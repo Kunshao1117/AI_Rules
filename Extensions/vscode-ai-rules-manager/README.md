@@ -34,12 +34,12 @@ npm run package
 
 ## GitHub Release
 
-推送 tag `v0.1.3` 後，GitHub Actions 會自動執行：
+推送 tag `v0.1.4` 後，GitHub Actions 會自動執行：
 
 1. `npm ci`
 2. `npm run package`
 3. 建立 GitHub Release
-4. 將 `ai-rules-manager-0.1.3.vsix` 上傳到該 release 的 Assets
+4. 將 `ai-rules-manager-0.1.4.vsix` 上傳到該 release 的 Assets
 
 若 tag 與 `package.json` 版本不一致，workflow 會失敗，不會建立或更新 Release。需要補跑時，可在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
 
@@ -49,9 +49,11 @@ npm run package
 
 1. 明確設定的 `aiRules.repoRoot`。
 2. 目前開啟的 workspace 若本身就是 AI_Rules repo。
-3. VS Code 全域儲存目錄中的 AI_Rules 管理快取。
+3. VS Code / Antigravity 類相容 IDE 全域儲存目錄中的 AI_Rules 管理快取。
 
 在其他專案第一次使用時，若尚未建立管理快取，延伸模組會詢問是否從 `aiRules.repoUrl` clone 一份 AI_Rules repo。之後會用該 repo 執行管理腳本，並把目前開啟的專案作為治理目標。
+
+不同 workspace 可能分別使用本機 AI_Rules repo 或 IDE globalStorage 內的管理快取；檢查更新與同步預覽會以規則文字內容為準，CRLF/LF 換行格式不同不會被視為全域規則漂移。
 
 若要固定使用已存在的本機 AI_Rules repo，請設定：
 

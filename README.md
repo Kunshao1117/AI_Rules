@@ -152,9 +152,11 @@ npm run package
 
 延伸模組只是操作面板；真正治理邏輯仍由 `Scripts/AI-RulesManager.ps1`、`Scripts/Deploy.ps1` 與 `Scripts/modules/*.psm1` 執行。
 
+在 Antigravity、VS Code 或相容 IDE 中，如果目前 workspace 不是 AI_Rules repo，延伸模組會使用該 IDE `globalStorage` 內的 AI_Rules 管理快取作為來源。使用者層規則檢查以文字內容為準；同一份規則只因 Git/Windows 將換行存成 LF 或 CRLF 時，不會被視為需要同步的漂移。
+
 ### GitHub Release 自動建立與附加 VSIX
 
-推送 tag `v0.1.3` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.3.vsix`，並附加到該 release 的 Assets。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
+推送 tag `v0.1.4` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.4.vsix`，並附加到該 release 的 Assets。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
 
 ---
 
@@ -492,7 +494,7 @@ sequenceDiagram
 | **Experiment 例外** | `03-1_experiment` 是刻意設計的沙盒例外，允許直接寫檔並停用品質/安全/測試/記憶閘門，但不可標為 automation-safe |
 | **孤兒檔案偵測** | 自動偵測源碼已刪除但目標仍存在的殘留檔案 |
 | **孤兒清除選項** | 加入 `-RemoveOrphans` 參數可自動清除，預設僅標記 |
-| **Runtime drift 巡檢** | 檢查使用者層 `~/.codex/AGENTS.md`、`~/.claude/CLAUDE.md`、`~/.gemini/GEMINI.md` 是否與 repo source 同步 |
+| **Runtime drift 巡檢** | 檢查使用者層 `~/.codex/AGENTS.md`、`~/.claude/CLAUDE.md`、`~/.gemini/GEMINI.md` 是否與 repo source 同步；文字規則以內容比對，CRLF/LF 換行差異不算漂移 |
 | **Shared policy drift 巡檢** | 檢查三平台核心規則中的子代理 marker block 是否與 `Shared/policies/subagent-invocation.md` 一致 |
 | **VS Code 管理器** | 將常用治理動作包成側邊欄按鈕；使用者層規則、已安裝平台規則與單平台規則分開同步，寫入、更新、清理都需確認 |
 | **分類式專案同步** | `SyncProjectRules` 預設只同步目前專案已安裝的平台；單平台同步遇到未安裝平台只回報 Yellow，不自動建立未使用平台 |

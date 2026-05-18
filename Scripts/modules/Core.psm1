@@ -47,7 +47,72 @@ function Get-VersionContent {
 }
 
 # ══════════════════════════════════════════════════════════
-# 單檔 SHA256 比對
+# 文字規則語意比對
+# ══════════════════════════════════════════════════════════
+
+function Test-TextRuleFile {
+    param([string]$Path)
+
+    if (-not $Path) { return $false }
+
+    $leaf = [System.IO.Path]::GetFileName($Path).ToLowerInvariant()
+    if ($leaf -in @(".editorconfig", ".gitattributes", ".gitignore")) {
+        return $true
+    }
+
+    $extension = [System.IO.Path]::GetExtension($Path).ToLowerInvariant()
+    return $extension -in @(
+        ".conf",
+        ".config",
+        ".ini",
+        ".json",
+        ".jsonc",
+        ".markdown",
+        ".md",
+        ".toml",
+        ".txt",
+        ".xml",
+        ".yaml",
+        ".yml"
+    )
+}
+
+function Get-NormalizedRuleText {
+    param([string]$Path)
+
+    $content = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+    return (($content -replace "`r`n", "`n") -replace "`r", "`n")
+}
+
+function Test-RuleTextEquivalent {
+    param(
+        [string]$SourcePath,
+        [string]$TargetPath
+    )
+
+    if (-not (Test-Path -LiteralPath $SourcePath) -or -not (Test-Path -LiteralPath $TargetPath)) {
+        return $false
+    }
+
+    $srcHash = (Get-FileHash -LiteralPath $SourcePath -Algorithm SHA256).Hash
+    $tgtHash = (Get-FileHash -LiteralPath $TargetPath -Algorithm SHA256).Hash
+    if ($srcHash -eq $tgtHash) {
+        return $true
+    }
+
+    if (-not (Test-TextRuleFile -Path $SourcePath) -or -not (Test-TextRuleFile -Path $TargetPath)) {
+        return $false
+    }
+
+    try {
+        return (Get-NormalizedRuleText -Path $SourcePath) -eq (Get-NormalizedRuleText -Path $TargetPath)
+    } catch {
+        return $false
+    }
+}
+
+# ══════════════════════════════════════════════════════════
+# 單檔規則比對
 # ══════════════════════════════════════════════════════════
 
 function Compare-FrameworkFile {
@@ -71,9 +136,7 @@ function Compare-FrameworkFile {
     if ($srcTime -eq $tgtTime) {
         return [PSCustomObject]@{ Status = "SAME"; Path = $RelativePath }
     }
-    $srcHash = (Get-FileHash $SourcePath -Algorithm SHA256).Hash
-    $tgtHash = (Get-FileHash $TargetPath -Algorithm SHA256).Hash
-    if ($srcHash -eq $tgtHash) {
+    if (Test-RuleTextEquivalent -SourcePath $SourcePath -TargetPath $TargetPath) {
         return [PSCustomObject]@{ Status = "SAME"; Path = $RelativePath }
     }
     return [PSCustomObject]@{ Status = "CHANGED"; Path = $RelativePath }
@@ -122,12 +185,8 @@ function Compare-GlobalRule {
         return "INSTALLED"
     }
 
-    # 計算雜湊
-    $srcHash = (Get-FileHash $SourcePath -Algorithm SHA256).Hash
-    $tgtHash = (Get-FileHash $TargetPath -Algorithm SHA256).Hash
-
-    # 若完全相同：跳過
-    if ($srcHash -eq $tgtHash) {
+    # 若內容相同（含 CRLF/LF 文字規則差異）：跳過
+    if (Test-RuleTextEquivalent -SourcePath $SourcePath -TargetPath $TargetPath) {
         Write-Step "全域規則已是最新: $fileName"
         return "SAME"
     }

@@ -4,7 +4,7 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.3）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-18T23:01:37+08:00'
+last_updated: '2026-05-19T06:07:20+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -77,6 +77,7 @@ metadata:
 - **Codex Edition v0.1.2 (2026-05-18)**: patch bump 用於分類式專案同步與版本錨點隔離；Codex live 版本寫入 `.codex/VERSION`，不再覆寫 Antigravity 使用的 `.agents/VERSION`。
 - **Codex Edition v0.1.3 (2026-05-18)**: patch bump 用於接收 shared subagent policy marker；`.codex/AGENTS.md` 由 `Shared/policies/subagent-invocation.md` 注入 Codex native subagents 的唯讀啟用邊界，`.codex/VERSION` 同步更新。
 - **Codex `.gitignore` 模板整理 (2026-05-18)**: `Codex/.gitignore` 移除 `%SystemDrive%`、`BLACK/`、`.markdownlint.yaml` 等歷史殘留規則，改以狀態註解標示本機 AI runtime、agent logs、備份/匯出產物；`.agents/memory/` 明確不忽略，部署目標由 `AI_RULES_GITIGNORE` managed block 管理。
+- **跨專案同步誤報文件同步 (2026-05-19)**: 根 README 補充 AI Rules Manager 在 Antigravity / VS Code 類 IDE 中的 managed clone 行為，並說明全域規則漂移以正規化後文字內容為準；Codex 使用者層 `~/.codex/AGENTS.md` 若只與 source 有 CRLF/LF 差異，不再視為需同步的規則漂移。後續因使用者可見同步行為已變更，README 的 VSIX release 範例同步升到 `v0.1.4` / `ai-rules-manager-0.1.4.vsix`，但 Codex Edition 本身仍維持 `v0.1.3`。
 
 
 ## Known Issues

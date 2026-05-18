@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-18T22:54:52+08:00'
+last_updated: '2026-05-19T06:05:46+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -75,6 +75,8 @@ metadata:
 - **D31: 子代理政策同源轉譯 (2026-05-18)**: 子代理啟用政策不再由工作流或單一平台持有，改由 `Shared/policies/subagent-invocation.md` 定義共用語義，再轉譯注入 Codex、Claude、Antigravity 核心規則；Doctor 以 shared policy drift 檢查三平台 marker block 是否一致。
 - **D32: `.gitignore` 雙層策略整理 (2026-05-18)**: 框架 repo root `.gitignore` 只處理本倉庫 live deployment、本機索引、logs 與 Extension build artifacts；三平台模板 `.gitignore` 移除歷史殘留規則。部署到一般專案時，`Set-GitignoreEntries` 以 `AI_RULES_GITIGNORE` marker block 管理 `.cartridge/` 與 `.agents/logs/`，且 `.agents/memory/` 預設視為專案知識庫進版控。
 - **D33: VSIX Release asset 自動化 (2026-05-18)**: VS Code extension 發布流程改為推送 `v*` tag 後由 GitHub Actions 自動打包 `.vsix`、建立 GitHub Release 並上傳 asset；tag 必須符合 `v<Extensions/vscode-ai-rules-manager/package.json version>`，避免 release 名稱與插件包版本分裂。`.vsix` 仍為發布成品，不進 git。
+- **D34: Runtime drift 以文字內容為準 (2026-05-19)**: `D:\AI_Rules` 與 Antigravity / VS Code 類 IDE 的 globalStorage managed clone 可能因 Git checkout 產生 LF/CRLF 差異；全域規則與專案規則同步的健康判斷改以正規化後文字內容為準，避免全機器共用的 `~/.codex`、`~/.claude`、`~/.gemini` 因換行格式在多專案間反覆被誤判為不同。
+- **D35: AI Rules Manager v0.1.4 版本對齊 (2026-05-19)**: 跨專案同步誤報修正會改變 extension 按鈕的使用者可見結果，因此 VSIX patch 版本升到 `0.1.4`；release workflow、README 與 CHANGELOG 的公開範例同步指向 `v0.1.4` / `ai-rules-manager-0.1.4.vsix`。
 
 ## Known Issues
 

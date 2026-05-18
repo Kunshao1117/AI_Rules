@@ -3,7 +3,7 @@
   "displayName": "AI Rules Manager",
   "description": "Point-and-click VS Code manager for AI_Rules governance checks, updates, global rules, and orphan cleanup.",
   "icon": "resources/icon.png",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publisher": "kunshao",
   "license": "MIT",
   "repository": {

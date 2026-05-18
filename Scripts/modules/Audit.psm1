@@ -822,7 +822,7 @@ function Measure-RuntimeGlobalDrift {
         }
     )
 
-    $dangerPattern = '(WITHOUT\s+halting|execute\s+WITHOUT|自動佈署|自動部署|\.Codex/(agents|commands)|\.claude/agents/skills|git\s+add\s+\.|git\s+add\s+-A)'
+    $dangerPattern = '(WITHOUT\s+halting|execute\s+WITHOUT|自動佈署|自動部署|\.Codex[\\/](agents|commands)[\\/]|\.claude[\\/]agents[\\/]skills[\\/]|git\s+add\s+\.|git\s+add\s+-A)'
     $results = @()
 
     foreach ($target in $targets) {
@@ -848,9 +848,7 @@ function Measure-RuntimeGlobalDrift {
             continue
         }
 
-        $srcHash = (Get-FileHash -LiteralPath $target.Source -Algorithm SHA256).Hash
-        $runtimeHash = (Get-FileHash -LiteralPath $target.Runtime -Algorithm SHA256).Hash
-        if ($srcHash -eq $runtimeHash) {
+        if (Test-RuleTextEquivalent -SourcePath $target.Source -TargetPath $target.Runtime) {
             $results += [PSCustomObject]@{
                 Platform = $target.Platform
                 Status   = '🟢'

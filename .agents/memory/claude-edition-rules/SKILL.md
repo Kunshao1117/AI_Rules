@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-18T22:36:28+08:00'
+last_updated: '2026-05-19T05:56:22+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -95,6 +95,7 @@ metadata:
 - **D27: Project skill 連結治理 (2026-05-18)**: `Core.psm1` backfill 可修復 `.agents/skills/project-*` 與 `.claude/skills/project-*` 的壞 reparse point；`Audit.psm1` 將實體 `project-*` 或連到 `.agents/project_skills/` 外部的情況列為 Red。
 - **D28: Shared subagent policy sync (2026-05-18)**: `Skills-Sync.psm1` 新增 shared policy marker 同步函式，三個 `Platform-*.psm1`、`Deploy.ps1` 與 `AI-RulesManager.ps1` 會把 `Shared/policies/subagent-invocation.md` 的平台轉譯區塊注入核心規則；`Audit.psm1` 新增漂移檢查。
 - **D29: 目標專案 `.gitignore` managed block (2026-05-18)**: `Core.psm1` 的 `Set-GitignoreEntries` 從散落追加行改為維護 `AI_RULES_GITIGNORE` marker block；Fresh 與 Upgrade 都會同步 `.cartridge/`、`.agents/logs/`，並保留 `.agents/memory/` 作為預設追蹤的專案知識庫。
+- **D30: 文字規則語意比對 (2026-05-19)**: `Core.psm1` 新增文字規則檔正規化比對，`Compare-FrameworkFile` 與 `Compare-GlobalRule` 在 SHA256 不同時會把 CRLF/LF 視為同一種換行；`Audit.psm1` 的 Runtime Global Drift 改用同一判斷，避免 `D:\AI_Rules` 與 IDE managed clone 只因 checkout 換行不同而互相觸發同步誤報。
 
 ## Known Issues
 

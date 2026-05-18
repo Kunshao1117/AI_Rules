@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-19] AI Rules Manager v0.1.4
+
+### chore
+- **AI Rules Manager v0.1.4** — extension manifest 與 lockfile 版本升級到 `0.1.4`，讓跨專案同步換行誤報修正對應到新的安裝包版本。
+- **VSIX package refresh** — 重新打包產物改為 `ai-rules-manager-0.1.4.vsix`，release 文件範例同步改用 `v0.1.4`。
+
+## [2026-05-19] 跨專案同步換行誤報修正
+
+### fix
+- **Runtime drift semantic compare** — 使用者層全域規則與 repo source 比對時，文字規則檔會先正規化 CRLF/LF 換行；內容相同不再顯示 Yellow。
+- **Project sync line-ending tolerance** — 專案規則與 shared skills 差異掃描沿用同一套文字語意比對，避免 `D:\AI_Rules` 與 IDE managed clone 只因 checkout 換行不同互相觸發同步提示。
+- **Legacy danger pattern narrowing** — 舊路徑高風險語義偵測不再把合法 `.codex/AGENTS.md` fallback 誤標為舊版 `.Codex/agents` 路徑。
+
+### docs
+- **Managed clone behavior** — README 與 AI Rules Manager 文件補充 Antigravity / VS Code 類 IDE 在非 AI_Rules workspace 會使用 globalStorage 管理快取，且全域規則漂移以文字內容判斷。
+
 ## [2026-05-18] VSIX Release 自動建立與附加
 
 ### feat
