@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-19T05:56:22+08:00'
+last_updated: '2026-05-19T17:28:18+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -96,6 +96,7 @@ metadata:
 - **D28: Shared subagent policy sync (2026-05-18)**: `Skills-Sync.psm1` 新增 shared policy marker 同步函式，三個 `Platform-*.psm1`、`Deploy.ps1` 與 `AI-RulesManager.ps1` 會把 `Shared/policies/subagent-invocation.md` 的平台轉譯區塊注入核心規則；`Audit.psm1` 新增漂移檢查。
 - **D29: 目標專案 `.gitignore` managed block (2026-05-18)**: `Core.psm1` 的 `Set-GitignoreEntries` 從散落追加行改為維護 `AI_RULES_GITIGNORE` marker block；Fresh 與 Upgrade 都會同步 `.cartridge/`、`.agents/logs/`，並保留 `.agents/memory/` 作為預設追蹤的專案知識庫。
 - **D30: 文字規則語意比對 (2026-05-19)**: `Core.psm1` 新增文字規則檔正規化比對，`Compare-FrameworkFile` 與 `Compare-GlobalRule` 在 SHA256 不同時會把 CRLF/LF 視為同一種換行；`Audit.psm1` 的 Runtime Global Drift 改用同一判斷，避免 `D:\AI_Rules` 與 IDE managed clone 只因 checkout 換行不同而互相觸發同步誤報。
+- **D31: PROJECT IDENTITY 受保護區塊比對 (2026-05-19)**: `Core.psm1` 支援排除並還原行首正式 `PROJECT IDENTITY` 區段，避免誤吃規則文件內的範例註解；並新增根層單檔掃描讓 Claude 專案同步涵蓋 `.claude/CLAUDE.md`。`AI-RulesManager.ps1 -Action SyncProjectRules` 只更新框架內容，`Audit.psm1` 的 `.codex/AGENTS.md` drift 檢查也忽略該專案身份區塊。
 
 ## Known Issues
 
@@ -114,6 +115,7 @@ metadata:
 - **D08: Installer 文件化模式必須納入 ValidateSet**: 啟動器內部即使有分支，若 PowerShell `ValidateSet` 未列入該模式，遠端單行指令仍會在參數綁定階段失敗。
 - **D09: 統一部署引擎編碼是跨平台公共契約**: `Scripts/Deploy.ps1` 與 modules 被三平台 installer 共同載入，若其中任一檔含中文但不是 UTF-8 BOM，舊版 Windows PowerShell 仍可能在 import 階段失敗。
 - **D10: Audit 必須看語義而非只看格式**: metadata 全綠不代表治理安全；審計器需要同步掃描正文是否違反 tool_scope、human_gate、automation_safe 與 MCP HITL 邊界。
+- **D13: 受保護專案資訊不可用雜湊判斷漂移**: `AGENTS.md` / `CLAUDE.md` 類核心規則檔可能帶有專案身份區塊；健康檢查應比較框架內容，而不是把專案資訊當作需要覆寫的漂移。
 - **D11: 輸出契約也屬語義審計**: workflow metadata 完整不代表面向總監的輸出可讀；Doctor 必須直接掃 workflow 內容是否具備表格契約與技術細節隔離。
 - **D12: project skill discovery entry 不能是實體目錄**: `.agents/project_skills/` 是唯一原檔區，discovery 目錄只允許 SymbolicLink 或 Junction；自動修復不得覆寫實體目錄。
 

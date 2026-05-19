@@ -77,17 +77,46 @@ function Test-TextRuleFile {
     )
 }
 
+function Get-ProjectIdentityPattern {
+    return '(?ms)^## \[PROJECT IDENTITY[^\r\n]*(?:\r\n|\n|\r).*?^<!--\s*/PROJECT_IDENTITY_END\s*-->\s*'
+}
+
+function Get-ProjectIdentityBlock {
+    param([string]$Text)
+
+    if (-not $Text) { return $null }
+
+    $match = [regex]::Match($Text, (Get-ProjectIdentityPattern))
+    if ($match.Success) { return $match.Value }
+    return $null
+}
+
+function Remove-ProjectIdentityBlockFromText {
+    param([string]$Text)
+
+    if (-not $Text) { return $Text }
+
+    return [regex]::Replace($Text, (Get-ProjectIdentityPattern), '')
+}
+
 function Get-NormalizedRuleText {
-    param([string]$Path)
+    param(
+        [string]$Path,
+        [switch]$ExcludeProjectIdentity
+    )
 
     $content = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+    if ($ExcludeProjectIdentity) {
+        $content = Remove-ProjectIdentityBlockFromText -Text $content
+    }
     return (($content -replace "`r`n", "`n") -replace "`r", "`n")
 }
 
 function Test-RuleTextEquivalent {
     param(
         [string]$SourcePath,
-        [string]$TargetPath
+        [string]$TargetPath,
+        [switch]$IgnoreProjectIdentity
     )
 
     if (-not (Test-Path -LiteralPath $SourcePath) -or -not (Test-Path -LiteralPath $TargetPath)) {
@@ -105,10 +134,37 @@ function Test-RuleTextEquivalent {
     }
 
     try {
-        return (Get-NormalizedRuleText -Path $SourcePath) -eq (Get-NormalizedRuleText -Path $TargetPath)
+        $sourceText = Get-NormalizedRuleText -Path $SourcePath -ExcludeProjectIdentity:$IgnoreProjectIdentity
+        $targetText = Get-NormalizedRuleText -Path $TargetPath -ExcludeProjectIdentity:$IgnoreProjectIdentity
+        return $sourceText.TrimEnd() -eq $targetText.TrimEnd()
     } catch {
         return $false
     }
+}
+
+function Restore-ProjectIdentityBlock {
+    param(
+        [string]$Path,
+        [string]$ProjectIdentityBlock
+    )
+
+    if (-not $ProjectIdentityBlock -or -not (Test-Path -LiteralPath $Path)) { return $false }
+
+    $content = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+    $pattern = Get-ProjectIdentityPattern
+    if ([regex]::IsMatch($content, $pattern)) {
+        $newContent = [regex]::Replace($content, $pattern, [System.Text.RegularExpressions.MatchEvaluator]{
+            param($m)
+            return $ProjectIdentityBlock
+        }, 1)
+    } else {
+        $newContent = $content.TrimEnd() + "`r`n`r`n" + $ProjectIdentityBlock.Trim() + "`r`n"
+    }
+
+    if ($newContent -eq $content) { return $false }
+
+    [System.IO.File]::WriteAllText($Path, $newContent, (New-Object System.Text.UTF8Encoding $false))
+    return $true
 }
 
 # ══════════════════════════════════════════════════════════
@@ -126,17 +182,18 @@ function Compare-FrameworkFile {
     param(
         [string]$SourcePath,
         [string]$TargetPath,
-        [string]$RelativePath
+        [string]$RelativePath,
+        [switch]$IgnoreProjectIdentity
     )
     if (-Not (Test-Path $TargetPath)) {
         return [PSCustomObject]@{ Status = "NEW"; Path = $RelativePath }
     }
     $srcTime = (Get-Item $SourcePath).LastWriteTime
     $tgtTime = (Get-Item $TargetPath).LastWriteTime
-    if ($srcTime -eq $tgtTime) {
+    if ($srcTime -eq $tgtTime -and -not $IgnoreProjectIdentity) {
         return [PSCustomObject]@{ Status = "SAME"; Path = $RelativePath }
     }
-    if (Test-RuleTextEquivalent -SourcePath $SourcePath -TargetPath $TargetPath) {
+    if (Test-RuleTextEquivalent -SourcePath $SourcePath -TargetPath $TargetPath -IgnoreProjectIdentity:$IgnoreProjectIdentity) {
         return [PSCustomObject]@{ Status = "SAME"; Path = $RelativePath }
     }
     return [PSCustomObject]@{ Status = "CHANGED"; Path = $RelativePath }
@@ -225,16 +282,30 @@ function Get-UpgradeReport {
         升級時不觸碰的受保護子目錄（顯示 KEEP）
     .PARAMETER ExcludeFiles
         要排除的特定檔案名稱（不加入報告）
+    .PARAMETER ScanFiles
+        要掃描的根層單檔相對路徑，例如 CLAUDE.md。
     #>
     param(
         [string]$SourceRoot,
         [string]$TargetRoot,
         [string[]]$ScanDirs       = @("rules", "workflows"),
         [string[]]$ProtectedDirs  = @("memory", "project_skills"),
-        [string[]]$ExcludeFiles   = @()
+        [string[]]$ExcludeFiles   = @(),
+        [string[]]$ScanFiles      = @(),
+        [switch]$PreserveProjectIdentity
     )
 
     $results = @()
+
+    # 根層單檔掃描：來源 → 目標
+    foreach ($file in $ScanFiles) {
+        $srcFile = Join-Path $SourceRoot $file
+        if (-Not (Test-Path -LiteralPath $srcFile)) { continue }
+        if ((Split-Path $file -Leaf) -in $ExcludeFiles) { continue }
+        $rel = $file.Replace("\", "/")
+        $tgtFile = Join-Path $TargetRoot $file
+        $results += Compare-FrameworkFile -SourcePath $srcFile -TargetPath $tgtFile -RelativePath $rel -IgnoreProjectIdentity:$PreserveProjectIdentity
+    }
 
     # 正向掃描：來源 → 目標
     foreach ($dir in $ScanDirs) {
@@ -245,7 +316,18 @@ function Get-UpgradeReport {
             if ($_.Name -in $ExcludeFiles) { return }
             $rel     = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/').Replace("\", "/")
             $tgtFile = Join-Path $TargetRoot $rel
-            $results += Compare-FrameworkFile -SourcePath $_.FullName -TargetPath $tgtFile -RelativePath $rel
+            $results += Compare-FrameworkFile -SourcePath $_.FullName -TargetPath $tgtFile -RelativePath $rel -IgnoreProjectIdentity:$PreserveProjectIdentity
+        }
+    }
+
+    # 根層單檔掃描：目標 → 來源（孤兒偵測）
+    foreach ($file in $ScanFiles) {
+        if ((Split-Path $file -Leaf) -in $ExcludeFiles) { continue }
+        $tgtFile = Join-Path $TargetRoot $file
+        if (-Not (Test-Path -LiteralPath $tgtFile)) { continue }
+        $srcFile = Join-Path $SourceRoot $file
+        if (-Not (Test-Path -LiteralPath $srcFile)) {
+            $results += [PSCustomObject]@{ Status = "ORPHAN"; Path = $file.Replace("\", "/") }
         }
     }
 
@@ -347,7 +429,8 @@ function Install-Upgrade {
     param(
         [array]$Report,
         [string]$SourceRoot,
-        [string]$TargetRoot
+        [string]$TargetRoot,
+        [switch]$PreserveProjectIdentity
     )
     $applied = 0
     foreach ($item in $Report) {
@@ -355,8 +438,15 @@ function Install-Upgrade {
         $srcFile = Join-Path $SourceRoot $item.Path
         $tgtFile = Join-Path $TargetRoot $item.Path
         $tgtDir  = Split-Path $tgtFile -Parent
+        $projectIdentity = $null
+        if ($PreserveProjectIdentity -and (Test-Path -LiteralPath $tgtFile)) {
+            $projectIdentity = Get-ProjectIdentityBlock -Text (Get-Content -LiteralPath $tgtFile -Raw -Encoding UTF8)
+        }
         if (-Not (Test-Path $tgtDir)) { New-Item -ItemType Directory $tgtDir -Force | Out-Null }
         Copy-Item $srcFile $tgtFile -Force
+        if ($projectIdentity) {
+            $null = Restore-ProjectIdentityBlock -Path $tgtFile -ProjectIdentityBlock $projectIdentity
+        }
         $verb = if ($item.Status -eq "NEW") { "已建立" } else { "已更新" }
         Write-Ok "${verb}: $($item.Path)"
         $applied++

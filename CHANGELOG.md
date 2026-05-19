@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-19] AI Rules Manager v0.1.5
+
+### fix
+- **Project identity preservation** — `SyncProjectRules` 同步三平台專案規則時，會保留 05 濃縮寫入的 `PROJECT IDENTITY` 區段，只更新框架管理內容。
+- **Project rules drift check** — 健康檢查比對 `.codex/AGENTS.md` 時會忽略 `PROJECT IDENTITY` 區段；真正框架內容不同仍會提示 Yellow。
+- **Codex condense path wording** — Codex 05 濃縮工作流的舊 `.Codex/AGENTS.md` 路徑修正為 `.codex/AGENTS.md`。
+
+### chore
+- **AI Rules Manager v0.1.5** — extension manifest 與 lockfile 版本升級到 `0.1.5`，重新打包產物改為 `ai-rules-manager-0.1.5.vsix`。
+
 ## [2026-05-19] Release 簡介自動化
 
 ### chore
@@ -19,7 +29,7 @@ All notable changes to this project will be documented in this file.
 ### fix
 - **Runtime drift semantic compare** — 使用者層全域規則與 repo source 比對時，文字規則檔會先正規化 CRLF/LF 換行；內容相同不再顯示 Yellow。
 - **Project sync line-ending tolerance** — 專案規則與 shared skills 差異掃描沿用同一套文字語意比對，避免 `D:\AI_Rules` 與 IDE managed clone 只因 checkout 換行不同互相觸發同步提示。
-- **Legacy danger pattern narrowing** — 舊路徑高風險語義偵測不再把合法 `.codex/AGENTS.md` fallback 誤標為舊版 `.Codex/agents` 路徑。
+- **Legacy danger pattern narrowing** — 舊路徑高風險語義偵測不再把合法 `.codex/AGENTS.md` fallback 誤標為歷史大寫 Codex agents 路徑。
 
 ### docs
 - **Managed clone behavior** — README 與 AI Rules Manager 文件補充 Antigravity / VS Code 類 IDE 在非 AI_Rules workspace 會使用 globalStorage 管理快取，且全域規則漂移以文字內容判斷。

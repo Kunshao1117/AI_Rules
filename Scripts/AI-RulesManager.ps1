@@ -314,7 +314,8 @@ function Invoke-SyncAntigravityProjectRules {
         -TargetRoot $agTargetRoot `
         -ScanDirs @("rules", "workflows") `
         -ProtectedDirs @("memory", "project_skills") `
-        -ExcludeFiles @())
+        -ExcludeFiles @() `
+        -PreserveProjectIdentity)
 
     $stats = Write-UpgradeReport -Report $report -CategoryMap ([ordered]@{
         "治理規範 (.agents/rules)" = { $_.Path -like "rules/*" -or $_.Path -like "rules\*" }
@@ -331,7 +332,7 @@ function Invoke-SyncAntigravityProjectRules {
     if (-not $Apply) { return }
 
     if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
-        $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $agTargetRoot
+        $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $agTargetRoot -PreserveProjectIdentity
     }
     $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
         -TargetPath (Join-Path $agTargetRoot "rules\00_core_identity.md") `
@@ -356,9 +357,12 @@ function Invoke-SyncClaudeProjectRules {
         -TargetRoot $claudeTargetRoot `
         -ScanDirs @("commands", "rules") `
         -ProtectedDirs @() `
-        -ExcludeFiles @("settings.local.json"))
+        -ExcludeFiles @("settings.local.json") `
+        -ScanFiles @("CLAUDE.md") `
+        -PreserveProjectIdentity)
 
     $stats = Write-UpgradeReport -Report $report -CategoryMap ([ordered]@{
+        "入口規則 (.claude/CLAUDE.md)" = { $_.Path -eq "CLAUDE.md" }
         "工作流指令 (.claude/commands)" = { $_.Path -like "commands/*" -or $_.Path -like "commands\*" }
         "治理規範 (.claude/rules)" = { $_.Path -like "rules/*" -or $_.Path -like "rules\*" }
     }) -Platform "Claude"
@@ -371,7 +375,7 @@ function Invoke-SyncClaudeProjectRules {
     if (-not $Apply) { return }
 
     if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
-        $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $claudeTargetRoot
+        $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $claudeTargetRoot -PreserveProjectIdentity
     }
     $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
         -TargetPath (Join-Path $claudeTargetRoot "rules\core-identity.md") `
@@ -400,7 +404,8 @@ function Invoke-SyncCodexProjectRules {
         -TargetRoot $codexTargetRoot `
         -ScanDirs @(".") `
         -ProtectedDirs @() `
-        -ExcludeFiles @())
+        -ExcludeFiles @() `
+        -PreserveProjectIdentity)
     $stats = Write-UpgradeReport -Report $report -CategoryMap ([ordered]@{
         "治理規則 (.codex/)" = { $true }
     }) -Platform "Codex"
@@ -414,7 +419,7 @@ function Invoke-SyncCodexProjectRules {
     if (-not $Apply) { return }
 
     if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
-        $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $codexTargetRoot
+        $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $codexTargetRoot -PreserveProjectIdentity
     }
     $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
         -TargetPath (Join-Path $codexTargetRoot "AGENTS.md") `

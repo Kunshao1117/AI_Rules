@@ -1286,12 +1286,14 @@ function Measure-DirectorOutputContract {
                 }
             }
 
-            $sourceHash = (Get-FileHash -LiteralPath $sourceCodexAgents -Algorithm SHA256).Hash
-            $targetHash = (Get-FileHash -LiteralPath $targetCodexAgents -Algorithm SHA256).Hash
-            if ($sourceHash -ne $targetHash -and $targetContent -match $tablePattern -and $targetContent -match '補充技術細節') {
+            $isEquivalent = Test-RuleTextEquivalent `
+                -SourcePath $sourceCodexAgents `
+                -TargetPath $targetCodexAgents `
+                -IgnoreProjectIdentity
+            if (-not $isEquivalent -and $targetContent -match $tablePattern -and $targetContent -match '補充技術細節') {
                 Add-DirectorFinding -Severity 'Yellow' `
                     -File (Get-DirectorDisplayPath -Path $targetCodexAgents) `
-                    -Reason '目前專案 .codex/AGENTS.md 與 source 雜湊不同，請確認是否為 PROJECT IDENTITY 或本地客製'
+                    -Reason '目前專案 .codex/AGENTS.md 與 source 框架內容不同，請確認是否為本地客製'
             }
         }
     }

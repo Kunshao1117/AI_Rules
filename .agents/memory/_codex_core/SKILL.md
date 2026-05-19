@@ -4,7 +4,7 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.3）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-19T15:00:25+08:00'
+last_updated: '2026-05-19T17:11:20+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -79,6 +79,7 @@ metadata:
 - **Codex `.gitignore` 模板整理 (2026-05-18)**: `Codex/.gitignore` 移除 `%SystemDrive%`、`BLACK/`、`.markdownlint.yaml` 等歷史殘留規則，改以狀態註解標示本機 AI runtime、agent logs、備份/匯出產物；`.agents/memory/` 明確不忽略，部署目標由 `AI_RULES_GITIGNORE` managed block 管理。
 - **跨專案同步誤報文件同步 (2026-05-19)**: 根 README 補充 AI Rules Manager 在 Antigravity / VS Code 類 IDE 中的 managed clone 行為，並說明全域規則漂移以正規化後文字內容為準；Codex 使用者層 `~/.codex/AGENTS.md` 若只與 source 有 CRLF/LF 差異，不再視為需同步的規則漂移。後續因使用者可見同步行為已變更，README 的 VSIX release 範例同步升到 `v0.1.4` / `ai-rules-manager-0.1.4.vsix`，但 Codex Edition 本身仍維持 `v0.1.3`。
 - **Release 簡介文件同步 (2026-05-19)**: 根 README 的 VSIX release 段落補充 workflow 會從 `CHANGELOG.md` 的 AI Rules Manager 版本段落產生 GitHub Release 簡介；此變更只影響插件發布說明，不改 Codex Edition 版本。
+- **Codex 05 濃縮路徑口徑修正 (2026-05-19)**: `05-condense-濃縮` 的 Path A 目標從舊 `.Codex/AGENTS.md` 修正為 `.codex/AGENTS.md`，相關技能載入路徑改為 `.agents/skills/*`；根 README 的 VSIX release 範例同步升到 `v0.1.5`。
 
 
 ## Known Issues
@@ -99,6 +100,7 @@ metadata:
 - **Metadata 縮排是治理語義的一部分**: YAML front matter 看似有欄位不代表 Doctor 會認為該欄位在 `metadata` 內；直接讀檔時需檢查縮排層級，不只搜尋欄位名稱。
 - **Project skill backfill 只修 reparse point**: 壞掉或缺少的 `project-*` 連結可由 `SyncProjectRules -Apply` 修復；若同名項目是實體目錄/檔案，必須停下由人處理。
 - **Codex 不擁有 `.agents/VERSION`**: Codex 會使用 `.agents/skills` 與 `.agents/memory`，但版本錨點必須在 `.codex/VERSION`；`.agents/VERSION` 只能代表 Antigravity。
+- **Codex 05 Path A 必須指向 `.codex/AGENTS.md`**: 舊 `.Codex/*` 口徑會讓新專案身份寫入錯誤位置，也會讓同步保護無法覆蓋實際載入檔。
 
 ## Relations
 

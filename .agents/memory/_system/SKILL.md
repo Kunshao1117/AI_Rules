@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-19T15:00:25+08:00'
+last_updated: '2026-05-19T17:25:53+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -78,6 +78,7 @@ metadata:
 - **D34: Runtime drift 以文字內容為準 (2026-05-19)**: `D:\AI_Rules` 與 Antigravity / VS Code 類 IDE 的 globalStorage managed clone 可能因 Git checkout 產生 LF/CRLF 差異；全域規則與專案規則同步的健康判斷改以正規化後文字內容為準，避免全機器共用的 `~/.codex`、`~/.claude`、`~/.gemini` 因換行格式在多專案間反覆被誤判為不同。
 - **D35: AI Rules Manager v0.1.4 版本對齊 (2026-05-19)**: 跨專案同步誤報修正會改變 extension 按鈕的使用者可見結果，因此 VSIX patch 版本升到 `0.1.4`；release workflow、README 與 CHANGELOG 的公開範例同步指向 `v0.1.4` / `ai-rules-manager-0.1.4.vsix`。
 - **D36: VSIX Release 簡介來源 (2026-05-19)**: Release workflow 改由 `CHANGELOG.md` 的 `AI Rules Manager v<version>` 段落產生 GitHub Release body；既有 release 補跑時會更新 title/body 並覆蓋同名 asset，避免 release 頁面只剩 Full Changelog。
+- **D37: 專案身份區塊同步保護 (2026-05-19)**: `PROJECT IDENTITY` 是 05 濃縮的專案資訊，不是框架模板差異；`Core.psm1` 的專案規則比對與套用會排除/還原行首正式區段，並支援根層單檔掃描以涵蓋 `.claude/CLAUDE.md`；`Audit.psm1` 的 `.codex/AGENTS.md` drift 也改看框架內容。
 
 ## Known Issues
 
@@ -99,6 +100,7 @@ metadata:
 - **D12: CHANGELOG 也會觸發系統記憶同步**: `_system` 追蹤根變更紀錄；即使只是提交流程補寫變更紀錄，也要在提交前確認系統記憶內容已涵蓋該決策並重新歸卡。
 - **D13: 直接讀檔優先於腳本信任**: Doctor 全綠前仍需抽查實際 `SKILL.md` / `AGENTS.md` 內容；本次直接讀檔發現 Codex `03-build` / `04-fix` 的 `automation_safe` 縮排錯誤，以及 Claude `08_audit` 子命令未被舊掃描口徑納入。
 - **D14: Project skill 原檔不可混入 discovery 目錄**: `project-*` 若是實體目錄代表隔離設計失效，應由 Doctor 報 Red，不能由 backfill 自動刪除或覆寫。
+- **D15: 框架模板差異與專案身份差異要分層**: 同一個核心規則檔可能同時承載框架規則與專案身份；同步工具必須只管理框架層，保留專案層。
 
 ## Documentation Files
 

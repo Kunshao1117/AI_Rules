@@ -38,16 +38,16 @@ Use this skill when the user asks to run the migrated source command `05_condens
 ## 0. Precondition Check（前置條件確認）
 
 [PRECONDITION GATE] Verify environment:
-- IF (`.Codex/AGENTS.md` does NOT exist):
+- IF (`.codex/AGENTS.md` does NOT exist):
   - [HALT] Output exactly: 「🔴 [CONDENSE HALT] 目標專案未安裝 Antigravity 框架。請先執行 install.ps1 部署。」
 - ELSE: Proceed to §1.
 
 ## 1. Scan（掃描階段）
 
 > [LOAD SKILL] Before executing §1, you MUST read:
-> 1. `.Codex/skills/memory-ops/SKILL.md`
-> 2. `.Codex/skills/memory-arch/SKILL.md`
-> 3. `.Codex/skills/tech-stack-protocol/SKILL.md`
+> 1. `.agents/skills/memory-ops/SKILL.md`
+> 2. `.agents/skills/memory-arch/SKILL.md`
+> 3. `.agents/skills/tech-stack-protocol/SKILL.md`
 
 Scan the project systematically using the following priority order:
 
@@ -88,7 +88,7 @@ DO NOT proceed until Director provides explicit GO approval.
 
 ### Path A: AGENTS.md 保護區段
 
-寫入 `.Codex/AGENTS.md`，在檔案末尾追加（或更新現有的）保護區段：
+寫入 `.codex/AGENTS.md`，在檔案末尾追加（或更新現有的）保護區段：
 
 ```markdown
 ## [PROJECT IDENTITY — /05_condense 生成，升級時保留]
