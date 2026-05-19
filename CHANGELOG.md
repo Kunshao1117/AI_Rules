@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-19] Release 簡介自動化
+
+### chore
+- **Release notes body** — VSIX release workflow 改為從 `CHANGELOG.md` 的 `AI Rules Manager v<version>` 段落產生 GitHub Release 簡介，不再只依賴 GitHub 的 Full Changelog。
+- **Existing release refresh** — workflow 重新執行時會更新既有 Release 簡介並覆蓋同名 VSIX asset，方便補跑發布。
+
 ## [2026-05-19] AI Rules Manager v0.1.4
 
 ### chore

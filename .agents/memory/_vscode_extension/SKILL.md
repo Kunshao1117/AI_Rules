@@ -4,7 +4,7 @@ description: >-
   AI_Rules VS Code 延伸模組與按鈕式管理入口。追蹤側邊欄 UI、命令註冊、PowerShell 腳本橋接、VSIX 打包設定與 Release
   asset 自動化。
 scopePath: Extensions/vscode-ai-rules-manager
-last_updated: '2026-05-19T06:05:45+08:00'
+last_updated: '2026-05-19T15:00:25+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -54,6 +54,7 @@ metadata:
 - **AI Rules Manager v0.1.3 Release asset automation (2026-05-18)**: VSIX 版本升級到 `0.1.3`；新增 `.github/workflows/release-vsix.yml`，在推送 `v*` tag 後以 Node 20 打包 `ai-rules-manager-0.1.3.vsix`、自動建立 GitHub Release 並上傳 release asset。workflow 強制 tag 必須等於 `v<package.json version>`，並提供 `workflow_dispatch` 補跑入口。
 - **跨專案換行誤報修正 (2026-05-19)**: 管理器後端現在以規則文字內容判斷全域與專案同步狀態；當目前 AI_Rules workspace 使用 LF、Antigravity / VS Code 類 IDE managed clone 使用 CRLF 時，`Check`、`SyncGlobal`、`SyncProjectRules` 與 `Doctor` 不再因純換行差異顯示需要處理。
 - **AI Rules Manager v0.1.4 (2026-05-19)**: patch bump 用於封裝跨專案換行誤報修正；`package.json` 與 lockfile 升級到 `0.1.4`，release 文件與 VSIX 檔名同步為 `ai-rules-manager-0.1.4.vsix`。
+- **Release notes 自動化 (2026-05-19)**: `.github/workflows/release-vsix.yml` 不再只依賴 GitHub `--generate-notes`；workflow 會從 `CHANGELOG.md` 的 `AI Rules Manager v<version>` 段落建立 Release 簡介，既有 Release 補跑時也會更新 body 並覆蓋同名 VSIX asset。
 
 ## Known Issues
 
@@ -74,6 +75,7 @@ metadata:
 - **D08: 專案同步需依平台分類**：`.agents/skills` 可被 Codex 與 Antigravity 共用，不能只因 `.agents/` 存在就判定三平台都已安裝；Auto 同步必須檢查 `.codex/`、`.claude/`、`.agents/rules|workflows` 的實際入口。
 - **D09: managed clone 與 workspace repo 可能只有換行不同**：一般專案會透過 IDE globalStorage 內的 AI_Rules managed clone 執行後端腳本，AI_Rules repo 自身則使用 workspace root；兩份 source 的 Git commit 相同但 working tree 換行可能不同，狀態判斷必須用正規化文字內容而非原始 SHA256 單點決策。
 - **D10: 後端行為改變也要 bump VSIX**：即使 TypeScript UI 未變，只要 extension 按鈕呼叫的後端治理結果對使用者可見，應升級 patch 版本並重新打包，避免安裝包版本與實際行為修正脫節。
+- **D11: Release 不能只靠 Full Changelog**：GitHub 自動 notes 可能只產生比較連結；插件發布 workflow 應明確寫入人可讀簡介，且簡介來源要跟 CHANGELOG 同步，避免 release 頁面缺少更新說明。
 
 ## Relations
 

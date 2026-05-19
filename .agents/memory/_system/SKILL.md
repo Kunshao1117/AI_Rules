@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-19T06:05:46+08:00'
+last_updated: '2026-05-19T15:00:25+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -77,6 +77,7 @@ metadata:
 - **D33: VSIX Release asset 自動化 (2026-05-18)**: VS Code extension 發布流程改為推送 `v*` tag 後由 GitHub Actions 自動打包 `.vsix`、建立 GitHub Release 並上傳 asset；tag 必須符合 `v<Extensions/vscode-ai-rules-manager/package.json version>`，避免 release 名稱與插件包版本分裂。`.vsix` 仍為發布成品，不進 git。
 - **D34: Runtime drift 以文字內容為準 (2026-05-19)**: `D:\AI_Rules` 與 Antigravity / VS Code 類 IDE 的 globalStorage managed clone 可能因 Git checkout 產生 LF/CRLF 差異；全域規則與專案規則同步的健康判斷改以正規化後文字內容為準，避免全機器共用的 `~/.codex`、`~/.claude`、`~/.gemini` 因換行格式在多專案間反覆被誤判為不同。
 - **D35: AI Rules Manager v0.1.4 版本對齊 (2026-05-19)**: 跨專案同步誤報修正會改變 extension 按鈕的使用者可見結果，因此 VSIX patch 版本升到 `0.1.4`；release workflow、README 與 CHANGELOG 的公開範例同步指向 `v0.1.4` / `ai-rules-manager-0.1.4.vsix`。
+- **D36: VSIX Release 簡介來源 (2026-05-19)**: Release workflow 改由 `CHANGELOG.md` 的 `AI Rules Manager v<version>` 段落產生 GitHub Release body；既有 release 補跑時會更新 title/body 並覆蓋同名 asset，避免 release 頁面只剩 Full Changelog。
 
 ## Known Issues
 
