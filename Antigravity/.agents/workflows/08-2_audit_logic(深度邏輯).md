@@ -1,6 +1,6 @@
 ---
 name: 08-2_audit_logic(深度邏輯)
-description: "[Phase 2/3] 深入原始碼與架構健檢。執行 CLI 掃描委派、API 串接比對、資料庫一致性驗證與 S1-S5 安全審查。"
+description: "Use when: 健檢第二階段、深度邏輯審查、安全架構、API 串接比對、測試覆蓋缺口與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08_audit。"
 trigger: manual
 required_skills:
   - delegation-strategy

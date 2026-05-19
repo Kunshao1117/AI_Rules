@@ -1,5 +1,5 @@
 ---
-description: 全光譜健檢入口 — 支援完整三階段（08-1→08-2→08-3）或單獨觸發任一階段
+description: "Use when: 全光譜專案健檢、audit、治理巡檢、基礎盤點、深度邏輯審查與健康報告。DO NOT use when: 只要單一測試或單一 bug 修復。"
 required_skills: [memory-ops, code-audit, audit-engine]
 memory_awareness: full
 metadata:

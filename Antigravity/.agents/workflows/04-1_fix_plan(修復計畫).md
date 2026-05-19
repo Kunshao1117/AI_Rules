@@ -1,5 +1,5 @@
 ---
-description: 第一階段（共 2 階段）— 診斷缺陷、分析影響範圍，產出全繁中的實作計畫供總監審閱。不寫入磁碟。
+description: "Use when: 修 bug、修復回歸、排除錯誤、診斷缺陷並產出修復計畫。DO NOT use when: 新功能建構、純除錯說明或已取得 GO 要執行修復。"
 required_skills: [memory-ops, impact-test-strategy]
 memory_awareness: full
 metadata:
@@ -25,6 +25,8 @@ All Director-facing conversations, implementation plans, reports, and completion
 |---|---|---|---|
 
 Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. Do not describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
+
+> [LOAD SKILL] If this fix touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before diagnosing release impact.
 # [WORKFLOW: FIX PLAN (修復計畫)]
 
 

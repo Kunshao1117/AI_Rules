@@ -1,6 +1,12 @@
 ---
 name: supabase
-description: "Use when doing ANY task involving Supabase. Triggers: Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client libraries and SSR integrations (supabase-js, @supabase/ssr) in Next.js, React, SvelteKit, Astro, Remix; auth issues (login, logout, sessions, JWT, cookies, getSession, getUser, getClaims, RLS); Supabase CLI or MCP server; schema changes, migrations, security audits, Postgres extensions (pg_graphql, pg_cron, pg_vector)."
+description: >
+  Supabase product and integration guidance. Use when: 任何 Supabase 任務、
+  Database/Auth/Edge Functions/Realtime/Storage/Vectors/Cron/Queues、
+  supabase-js、@supabase/ssr、登入登出/session/JWT/cookies/RLS、Supabase
+  CLI/MCP、schema changes、migrations、security audits、pg_graphql/pg_cron/
+  pg_vector。DO NOT use when: 只做一般 Postgres SQL/query/index/schema
+  效能最佳化且不需要 Supabase 產品語境（用 supabase-postgres-best-practices）。
 metadata:
   author: supabase
   version: "0.1.0"

@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-19T17:25:53+08:00'
+last_updated: '2026-05-19T19:25:00+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -14,7 +14,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # 專案系統記憶 (\_system)
 
 ## 專案身份與工作模式
@@ -34,6 +33,7 @@ metadata:
 - README.md
 - CHANGELOG.md
 - Shared/platform-capability-matrix.md
+- Shared/skill-governance.md
 - Shared/policies/subagent-invocation.md
 - Shared/mcp-profiles/README.md
 - Scripts/Deploy.ps1
@@ -79,6 +79,10 @@ metadata:
 - **D35: AI Rules Manager v0.1.4 版本對齊 (2026-05-19)**: 跨專案同步誤報修正會改變 extension 按鈕的使用者可見結果，因此 VSIX patch 版本升到 `0.1.4`；release workflow、README 與 CHANGELOG 的公開範例同步指向 `v0.1.4` / `ai-rules-manager-0.1.4.vsix`。
 - **D36: VSIX Release 簡介來源 (2026-05-19)**: Release workflow 改由 `CHANGELOG.md` 的 `AI Rules Manager v<version>` 段落產生 GitHub Release body；既有 release 補跑時會更新 title/body 並覆蓋同名 asset，避免 release 頁面只剩 Full Changelog。
 - **D37: 專案身份區塊同步保護 (2026-05-19)**: `PROJECT IDENTITY` 是 05 濃縮的專案資訊，不是框架模板差異；`Core.psm1` 的專案規則比對與套用會排除/還原行首正式區段，並支援根層單檔掃描以涵蓋 `.claude/CLAUDE.md`；`Audit.psm1` 的 `.codex/AGENTS.md` drift 也改看框架內容。
+- **D38: VSIX 更新提醒策略 (2026-05-19)**: GitHub Release asset 是下載來源，不是 Marketplace / Open VSX 原生自動更新；AI Rules Manager v0.1.6 採啟動時與手動按鈕查詢 GitHub latest release 的提醒策略，有新版只開啟 Release 頁面，不靜默安裝。
+- **D39: Skill 知識壓縮層治理 (2026-05-19)**: `Shared/skill-governance.md` 定義 Skill Placement / Trigger Contract；安全底線留在核心規則，workflow/command 做入口路由，Shared skills 放按需載入操作細節。Doctor 的 `Measure-SkillQuality` 會把 description 觸發品質納入黃燈，避免 Skill 格式正確但 AI 不會自動讀取。
+- **D40: 插件交付治理共用化 (2026-05-19)**: `plugin-release-governance` 成為第 37 套 Shared operational skill，負責插件升版、VSIX 打包、GitHub Release/tag/asset 與更新提醒流程；插件發布相關 workflow/command 入口只加載入閘門，不複製完整 playbook。
+- **D41: Skill 觸發可靠性治理 (2026-05-19)**: 三平台 workflow/command description 統一補成 `Use when` 口徑；Doctor 同時檢查 Shared operational skill 的中英觸發詞、負向邊界，以及 workflow 入口是否描述何時啟動。
 
 ## Known Issues
 
@@ -101,6 +105,8 @@ metadata:
 - **D13: 直接讀檔優先於腳本信任**: Doctor 全綠前仍需抽查實際 `SKILL.md` / `AGENTS.md` 內容；本次直接讀檔發現 Codex `03-build` / `04-fix` 的 `automation_safe` 縮排錯誤，以及 Claude `08_audit` 子命令未被舊掃描口徑納入。
 - **D14: Project skill 原檔不可混入 discovery 目錄**: `project-*` 若是實體目錄代表隔離設計失效，應由 Doctor 報 Red，不能由 backfill 自動刪除或覆寫。
 - **D15: 框架模板差異與專案身份差異要分層**: 同一個核心規則檔可能同時承載框架規則與專案身份；同步工具必須只管理框架層，保留專案層。
+- **D16: Skill 不能承擔 always-on 安全底線**: Skill 是按需載入的知識壓縮層，不是冷啟動安全規則；凡是 GO gate、禁止靜默安裝、禁止 blanket staging 等不可漏行為，仍必須存在於核心規則或 workflow 入口。
+- **D17: Workflow description 是路由介面**: workflow / command 的 `description` 不應只描述內部步驟，也要寫出總監會怎麼觸發；否則 AI 可能知道流程存在，卻不會在正確任務自動載入。
 
 ## Documentation Files
 

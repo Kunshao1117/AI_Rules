@@ -1,6 +1,6 @@
 ---
 name: 12_skill_forge
-description: 從健檢發現、除錯方法論或總監指令中萃取可重用模式，建立新的專案衍生技能
+description: "Use when: 技能鍛造、建立新專案技能、從健檢/除錯/總監指令萃取可重用方法論。DO NOT use when: 只要修改既有 Shared Skill 描述。"
 required_skills: [memory-ops]
 memory_awareness: full
 user-invocable: true
@@ -27,6 +27,8 @@ All Director-facing conversations, implementation plans, reports, and completion
 |---|---|---|---|
 
 Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. Do not describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
+
+> [LOAD SKILL] If the new or revised skill covers plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.claude/skills/plugin-release-governance/SKILL.md` before defining trigger language.
 # [SKILL: /12_skill_forge — 技能鍛造]
 
 ## 0. Source Gate (觸發來源判斷)

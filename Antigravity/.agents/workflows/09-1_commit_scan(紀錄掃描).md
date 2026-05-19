@@ -1,5 +1,5 @@
 ---
-description: 單純前置掃描與狀態盤點，列出各項結果
+description: "Use when: 提交前掃描、commit preflight、倉庫衛生、記憶過期、CHANGELOG 草稿與受治理備份計畫。DO NOT use when: 尚未完成實作或已取得 GO 要推送。"
 metadata:
   author: antigravity
   version: "2.0"
@@ -23,6 +23,8 @@ All Director-facing conversations, implementation plans, reports, and completion
 |---|---|---|---|
 
 Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. Do not describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
+
+> [LOAD SKILL] If staged or dirty files touch plugin / extension / VSIX / GitHub Release / package version / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before drafting commit and release steps.
 # [WORKFLOW: COMMIT SCAN (紀錄掃描)]
 
 ## 0. PRECONDITION

@@ -1,5 +1,5 @@
 ---
-description: 第一階段（共 2 階段）— 載入記憶、生成實作計畫、等待總監核准。支援沙盒模式（快速原型，繞過審查）。核准 GO 後，自動串連 /03-2_build_execute。
+description: "Use when: 正式建構計畫、新功能、工具建構或產品行為變更，需要先產生計畫並等待 GO。DO NOT use when: 純討論、沙盒實驗或已進入授權執行階段。"
 required_skills: [memory-ops, tech-stack-protocol]
 memory_awareness: read
 metadata:
@@ -25,6 +25,8 @@ All Director-facing conversations, implementation plans, reports, and completion
 |---|---|---|---|
 
 Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. Do not describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
+
+> [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before planning changes.
 # [WORKFLOW: BUILD — PLAN (建構計畫)]
 
 

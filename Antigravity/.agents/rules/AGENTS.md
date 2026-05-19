@@ -20,7 +20,7 @@ The full bootstrapping protocol (Zero-Touch Environment Check, Silent Deployment
   - 例行巡檢：`10_routine(巡檢)` — automation-safe read-only maintenance
   - 其他：00–02, 06–07, 11–12 各一個工作流
   - 共用閘門：`_completion_gate` / `_security_footer`
-- **Skills**: 36 shared operational skills + project memory cards
+- **Skills**: 37 shared operational skills + project memory cards
 - **Platform governance**: `Shared/platform-capability-matrix.md` defines native/adapter/manual capability levels. Workflow frontmatter MUST carry metadata v2 (`kind`, `platforms`, `lifecycle_phase`, `role`, `memory_awareness`, `tool_scope`, `human_gate`, `automation_safe`).
 - **MCP profile policy**: external MCP servers are opt-in only. Use `Shared/mcp-profiles/` snippets; never install or modify global MCP config during Fresh/Upgrade/Audit.
 

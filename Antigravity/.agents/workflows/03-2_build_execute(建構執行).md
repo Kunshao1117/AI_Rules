@@ -1,5 +1,5 @@
 ---
-description: 第二階段（共 2 階段）— 授權實體執行已核准的建構計畫。寫入磁碟、歸檔新檔案記憶卡、更新受影響記憶卡、執行測試。需 /03_build 的明確 GO 授權。
+description: "Use when: 已有 /03_build 核准 GO，要執行建構寫入、記憶歸卡與驗證測試。DO NOT use when: 尚未完成建構計畫或未取得 GO。"
 required_skills: [memory-ops, security-sre, code-quality, test-patterns, trunk-ops]
 memory_awareness: full
 metadata:

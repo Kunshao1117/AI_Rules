@@ -1,5 +1,5 @@
 ---
-description: 沙盒原型快速實驗模式。所有品質、安全性、測試與記憶卡閘門全部停用。適用於快速髒碼實驗、API Spike 測試與創意探索。
+description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，允許跳過正式品質與記憶閘門。DO NOT use when: 生產建構、正式修復或需提交發布。"
 required_skills: []
 memory_awareness: none
 metadata:

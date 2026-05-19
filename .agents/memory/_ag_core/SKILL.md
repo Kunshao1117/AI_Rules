@@ -2,7 +2,7 @@
 name: _ag_core
 description: Antigravity 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Antigravity/
-last_updated: '2026-05-18T22:35:06+08:00'
+last_updated: '2026-05-19T19:25:00+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -82,6 +82,8 @@ metadata:
 - **Antigravity v8.0.2 (2026-05-18)**: patch bump 用於分類式專案同步；Auto 只有在 `.agents/rules` 或 `.agents/workflows` 存在時才同步 Antigravity，`.agents/VERSION` 僅代表 Antigravity。
 - **Antigravity v8.0.3 (2026-05-18)**: patch bump 用於接收 shared subagent policy marker；`00_core_identity.md` 由 `Shared/policies/subagent-invocation.md` 注入 browser / Gemini CLI adapter 的唯讀啟用邊界。
 - **Antigravity `.gitignore` 模板整理 (2026-05-18)**: `Antigravity/.gitignore` 移除無來源依據的歷史殘留規則，保留 `.vscode/`、`.cartridge/`、`.agents/logs/`、`.git_backup/`、`antigravity_export/`，並明確標示 `.agents/memory/` 預設進版控。
+- **Antigravity Skill 觸發治理同步 (2026-05-19)**: Antigravity README 與 `.agents/rules/AGENTS.md` 的 Shared skill 數量同步到 37；`02/03/04-1/09-1/12` workflow 入口加入插件 / extension / VSIX / GitHub Release / version bump / tag / update reminder 情境的 `plugin-release-governance` 載入閘門。
+- **Antigravity workflow trigger descriptions (2026-05-19)**: 20 個 `.agents/workflows/*.md` 入口補齊 `Use when` 與負向邊界；分階段流程如 `03-2`、`04-2`、`09-2` 明確標示只在前階段 GO 後使用。
 
 ## Known Issues
 
@@ -97,6 +99,8 @@ metadata:
 - **logs-only write 不是一般寫入權限**：`filesystem:write:logs` 僅能寫 `.agents/logs/` 中繼報告，不能被解讀為可寫原始碼、設定檔或記憶卡。
 - **D06: Director-facing 契約屬核心身份規則**：只要核心身份規則新增面向總監的輸出格式，記憶卡必須同步記錄，否則提交前會被 staleness gate 攔截。
 - **D07: 工作流也要明示總監契約**：核心規則存在仍不足以保證每個平台的 workflow 都遵守；面向總監的輸出格式應同時寫入實際 workflow 入口，讓審計器能直接驗證。
+- **D08: 平台 workflow 只放載入閘門**：Antigravity workflow 是入口層，不應複製完整插件發布 playbook；共用細節放在 `Shared/skills/plugin-release-governance`，由部署同步注入 `.agents/skills/`。
+- **D09: 分階段 workflow 要寫清楚入口條件**：`03-2`、`04-2`、`09-2` 不是一般語意入口，description 必須標示已取得前階段 GO，避免 AI 直接跳到執行階段。
 
 ## Applicable Skills
 

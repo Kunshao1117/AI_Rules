@@ -1,5 +1,5 @@
 ---
-description: 啟動瀏覽器代理，在無需總監介入的情況下對 UI 執行視覺與功能性測試。
+description: "Use when: 執行 E2E、視覺測試、瀏覽器功能測試、回歸驗證或測試委派。DO NOT use when: 只需要單元測試設計或純程式碼審查。"
 required_skills:
   [test-automation-strategy, browser-testing, a11y-testing, trunk-ops]
 memory_awareness: read

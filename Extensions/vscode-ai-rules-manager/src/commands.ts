@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { ExtensionUpdateChecker } from "./extensionUpdate";
 import { AiRulesPanelProvider } from "./panel";
 import { ManagerAction, ProjectPlatform, RunOptions, ScriptRunner } from "./scriptRunner";
 import { AiRulesStatus } from "./status";
@@ -7,7 +8,8 @@ export function registerAiRulesCommands(
   context: vscode.ExtensionContext,
   runner: ScriptRunner,
   status: AiRulesStatus,
-  panel: AiRulesPanelProvider
+  panel: AiRulesPanelProvider,
+  updateChecker: ExtensionUpdateChecker
 ): void {
   const runReadOnly = (commandId: string, label: string, action: ManagerAction) => {
     context.subscriptions.push(vscode.commands.registerCommand(commandId, async () => {
@@ -16,6 +18,9 @@ export function registerAiRulesCommands(
   };
 
   runReadOnly("aiRules.checkUpdate", "檢查更新", "Check");
+  context.subscriptions.push(vscode.commands.registerCommand("aiRules.checkExtensionUpdate", async () => {
+    await updateChecker.checkForUpdates({ manual: true });
+  }));
   runReadOnly("aiRules.planUpdate", "查看更新內容", "Plan");
   runReadOnly("aiRules.doctor", "健康檢查", "Doctor");
 

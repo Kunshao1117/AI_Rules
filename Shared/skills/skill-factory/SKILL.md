@@ -4,7 +4,9 @@ description: >
   Skill generation SOP for creating new project-specific skills.
   Enforces format compliance, Director review gate, and project_skills/ isolation.
   Use when: 需要建立新的專案衍生技能、從健檢建議萃取技能、
-  或任何涉及 技能產生/自動繁衍/建立新技能 的場景。
+  或任何涉及 技能產生/自動繁衍/建立新技能/create skill/update skill 的場景。
+  DO NOT use when: 只是更新既有 Shared skill 的觸發描述或文件，不需要建立
+  project_skills/ 新技能。
 metadata:
   author: antigravity
   version: "5.1"

@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-19] AI Rules Manager v0.1.7
+
+### feat
+- **Skill governance contract** — 新增 Skill 放置與觸發契約，將核心規則、workflow / command、Shared Skill 與 memory 的職責分層，讓 Skill 成為三平台按需載入的知識壓縮層。
+- **Plugin release governance skill** — 新增 `plugin-release-governance`，集中管理插件升版、VSIX 打包、GitHub Release、tag、Release asset 與更新提醒的共用流程。
+- **Skill trigger quality audit** — Doctor 的技能品質檢查新增 description 觸發品質欄位，檢查 Shared Skill 中英觸發詞、負向邊界與 workflow 入口觸發語句，避免格式正確但 AI 不會自動讀取的 Skill 漏檢。
+- **Workflow trigger descriptions** — 三平台 00-12 workflow / command 入口統一補上 `Use when` 口徑，讓入口負責任務路由、Shared Skill 負責細節 playbook。
+
+### chore
+- **AI Rules Manager v0.1.7** — extension manifest 與 lockfile 版本升級到 `0.1.7`，重新打包產物改為 `ai-rules-manager-0.1.7.vsix`。
+
+## [2026-05-19] AI Rules Manager v0.1.6
+
+### feat
+- **GitHub Release update reminder** — 插件啟動時會檢查 GitHub latest release；若有較新的正式 `vX.Y.Z` 版本，提示操作者開啟 Release 下載 VSIX。
+- **Manual extension update check** — 側邊欄新增「檢查插件新版」按鈕，可手動確認目前安裝版本是否已是最新版。
+
+### chore
+- **AI Rules Manager v0.1.6** — extension manifest 與 lockfile 版本升級到 `0.1.6`，重新打包產物改為 `ai-rules-manager-0.1.6.vsix`。
+
 ## [2026-05-19] AI Rules Manager v0.1.5
 
 ### fix

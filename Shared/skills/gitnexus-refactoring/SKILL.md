@@ -1,6 +1,11 @@
 ---
 name: gitnexus-refactoring
-description: "Use when the user wants to rename, extract, split, move, or restructure code safely. Examples: \"Rename this function\", \"Extract this into a module\", \"Refactor this class\", \"Move this to a separate file\""
+description: >
+  GitNexus-guided safe refactoring. Use when: 安全重構、rename function、
+  extract module、split service、move file、refactor class、需要改名前後追蹤
+  呼叫鏈與依賴。DO NOT use when: 只想知道改動影響範圍（用
+  gitnexus-impact-analysis）、或只是理解程式碼結構（用
+  gitnexus-exploring）。
 metadata:
   author: gitnexus
   version: "0.1.0"

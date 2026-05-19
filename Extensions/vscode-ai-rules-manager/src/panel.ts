@@ -5,6 +5,7 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
   static readonly viewType = "aiRules.panel";
   private static readonly allowedCommands = new Set([
     "aiRules.checkUpdate",
+    "aiRules.checkExtensionUpdate",
     "aiRules.planUpdate",
     "aiRules.applyUpdate",
     "aiRules.doctor",
@@ -45,6 +46,7 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
         title: "更新與健檢",
         buttons: [
           ["aiRules.checkUpdate", "檢查更新", "讀取 Git 與全域規則狀態"],
+          ["aiRules.checkExtensionUpdate", "檢查插件新版", "查 GitHub Release 是否有新版安裝檔"],
           ["aiRules.planUpdate", "查看更新內容", "用白話列出更新影響"],
           ["aiRules.applyUpdate", "套用更新", "確認後更新 AI_Rules repo"],
           ["aiRules.doctor", "健康檢查", "執行治理巡檢"]

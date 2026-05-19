@@ -1,6 +1,6 @@
 ---
 name: 08-1_audit_infra(基礎盤點)
-description: "[Phase 1/3] 基礎設施與記憶拓樸盤點。執行依賴安全掃描、記憶卡對齊、死碼與孤兒檔案偵測。"
+description: "Use when: 健檢第一階段、基礎盤點、依賴安全掃描、記憶卡拓樸、技能覆蓋率與目錄衛生檢查。DO NOT use when: 要完整健檢入口，改用 08_audit。"
 trigger: manual
 required_skills:
   - memory-ops

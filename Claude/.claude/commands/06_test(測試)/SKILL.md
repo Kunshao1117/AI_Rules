@@ -1,6 +1,6 @@
 ---
 name: 06_test
-description: 委派子代理人執行 E2E 視覺與功能性測試，無需總監介入
+description: "Use when: 執行 E2E、視覺測試、瀏覽器功能測試、回歸驗證或測試委派。DO NOT use when: 只需要單元測試設計或純程式碼審查。"
 required_skills: [browser-testing, test-automation-strategy]
 memory_awareness: none
 user-invocable: true

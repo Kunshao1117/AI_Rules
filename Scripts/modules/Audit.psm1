@@ -261,6 +261,105 @@ function Measure-SkillQuality {
     )
     $GatePattern         = '\[(\w+\s+)?GATE\]'
 
+    function Get-FrontmatterFieldValue {
+        param(
+            [string]$Frontmatter,
+            [string]$FieldName
+        )
+
+        if (-not $Frontmatter) { return '' }
+
+        $lines = $Frontmatter -split "\r?\n"
+        for ($i = 0; $i -lt $lines.Count; $i++) {
+            $line = $lines[$i]
+            $match = [regex]::Match($line, "^(?<field>$([regex]::Escape($FieldName))):\s*(?<value>.*)$")
+            if (-not $match.Success) { continue }
+
+            $value = $match.Groups['value'].Value.Trim()
+            if ($value -match '^[>|]') {
+                $parts = New-Object System.Collections.Generic.List[string]
+                for ($j = $i + 1; $j -lt $lines.Count; $j++) {
+                    $next = $lines[$j]
+                    if ($next -match '^[A-Za-z0-9_-]+:\s*') { break }
+                    if ($next.Trim().Length -gt 0) { $parts.Add($next.Trim()) }
+                }
+                return (($parts.ToArray()) -join ' ').Trim()
+            }
+
+            return $value.Trim('"').Trim("'")
+        }
+
+        return ''
+    }
+
+    function Test-SkillTriggerQuality {
+        param(
+            [string]$SkillName,
+            [string]$Kind,
+            [string]$Description,
+            [string]$Content
+        )
+
+        $issues = New-Object System.Collections.Generic.List[string]
+        $desc = if ($Description) { $Description.Trim() } else { '' }
+
+        if ([string]::IsNullOrWhiteSpace($desc)) {
+            $issues.Add('description 空白或無法解析')
+        } elseif ($desc.Length -lt 40) {
+            $issues.Add('description 過短，可能不足以觸發自動載入')
+        }
+
+        if ($Kind -eq 'operational') {
+            if ($desc -notmatch '[\u4e00-\u9fff]') {
+                $issues.Add('operational skill description 缺少繁中觸發詞')
+            }
+            if ($desc -notmatch '[A-Za-z]') {
+                $issues.Add('operational skill description 缺少英文觸發詞')
+            }
+            if ($desc -notmatch '(?i)DO NOT use when|不要|不適用|非') {
+                $issues.Add('operational skill description 缺少負向邊界')
+            }
+        }
+
+        $bodyHasUseWhen = $Content -match '(?mi)^\s*(Use when|When to load this skill|## .*Trigger|## .*觸發|觸發條件)'
+        $descHasUseWhen = $desc -match '(?i)Use when|DO NOT use when|適用|需要|觸發|when'
+        if ($bodyHasUseWhen -and (-not $descHasUseWhen)) {
+            $issues.Add('觸發條件只出現在正文，未放入 frontmatter description')
+        }
+
+        $releaseSignal = ($SkillName -match '(?i)plugin|vsix') -or
+            ($Content -match '(?i)VSIX|update reminder|插件發布|插件.*Release|extension.*VSIX|自動更新|更新提醒')
+        if ($releaseSignal) {
+            $requiredGroups = @(
+                @('plugin', 'extension', '插件', '延伸模組'),
+                @('VSIX'),
+                @('Release', '發布'),
+                @('version', '版本'),
+                @('tag'),
+                @('update reminder', '自動更新', '更新提醒')
+            )
+            foreach ($group in $requiredGroups) {
+                $hasTerm = $false
+                foreach ($term in $group) {
+                    if ($desc -match [regex]::Escape($term)) { $hasTerm = $true; break }
+                }
+                if (-not $hasTerm) {
+                    $issues.Add("插件發布技能 description 缺少觸發詞：$($group[0])")
+                }
+            }
+        }
+
+        $workflowMarkers = 'Director-Readable Output Contract|Command Template|#\s*\[WORKFLOW:|#\s*\[SKILL:\s*/|lifecycle_phase:\s*(build|fix|commit|blueprint|audit|skill-forge)'
+        if (($Kind -eq 'operational') -and ($Content -match $workflowMarkers) -and ($SkillName -notmatch '^skill-factory$')) {
+            $issues.Add('operational skill 內容疑似混入 workflow 入口職責')
+        }
+
+        return [PSCustomObject]@{
+            Status = if ($issues.Count -eq 0) { '🟢' } else { '🟡' }
+            Issues = @($issues.ToArray())
+        }
+    }
+
     function Measure-SingleSkill {
         param([string]$SkillDir)
         $skillFile = Join-Path $SkillDir 'SKILL.md'
@@ -317,13 +416,15 @@ function Measure-SkillQuality {
         } else {
             ($skillName -match '^[a-z0-9]([a-z0-9-]*[a-z0-9])?$') -and ($skillName.Length -le 64)
         }
+        $description = ''
         $descLen = 0
         if ($fmMatch.Success) {
             $fm = $fmMatch.Groups[1].Value
-            $singleMatch = [regex]::Match($fm, '(?m)^description:\s*(.+)$')
-            if ($singleMatch.Success) { $descLen = $singleMatch.Groups[1].Value.Trim().Length }
+            $description = Get-FrontmatterFieldValue -Frontmatter $fm -FieldName 'description'
+            $descLen = $description.Length
         }
         $compatStatus = if ($nameOk -and $descLen -lt 1024) { '🟢' } else { '🔴' }
+        $triggerQuality = Test-SkillTriggerQuality -SkillName $skillName -Kind $metadataKind -Description $description -Content $content
 
         $l3Status = '—'
         if ($hasRefs) {
@@ -358,6 +459,8 @@ function Measure-SkillQuality {
             MissingFields     = $missingFields
             FrontmatterStatus = $frontmatterStatus
             CompatStatus      = $compatStatus
+            TriggerStatus     = $triggerQuality.Status
+            TriggerIssues     = $triggerQuality.Issues
             L3Status          = $l3Status
             StyleValue        = $styleValue
             StyleStatus       = $styleStatus
@@ -365,7 +468,7 @@ function Measure-SkillQuality {
             OverallStatus     = if (
                 $lineStatus -eq '🟢' -and $tokenStatus -eq '🟢' -and $forbiddenStatus -eq '🟢' -and
                 $frontmatterStatus -eq '🟢' -and $compatStatus -eq '🟢' -and
-                $l3Status -ne '🟡' -and $styleStatus -ne '🔴'
+                $triggerQuality.Status -eq '🟢' -and $l3Status -ne '🟡' -and $styleStatus -ne '🔴'
             ) { '🟢' } elseif (
                 $lineStatus -eq '🔴' -or $tokenStatus -eq '🔴' -or $forbiddenStatus -eq '🔴' -or
                 $frontmatterStatus -eq '🔴' -or $compatStatus -eq '🔴' -or $styleStatus -eq '🔴'
@@ -402,20 +505,23 @@ function Measure-SkillQuality {
     Write-Host "🟢 合格：$passCount  🟡 警告：$warnCount  🔴 不合格：$failCount"
     Write-Host ""
 
-    $fmt = "{0,-30} {1,6} {2,3} {3,7} {4,3} {5,4} {6,4} {7,4} {8,3} {9,8} {10,3} {11,4}"
-    Write-Host ($fmt -f '技能名稱', '行數', ' ', 'Token', ' ', '禁詞', 'FM', 'IO', 'L3', '風格', ' ', '總評')
-    Write-Host ('-' * 90)
+    $fmt = "{0,-30} {1,6} {2,3} {3,7} {4,3} {5,4} {6,4} {7,4} {8,4} {9,3} {10,8} {11,3} {12,4}"
+    Write-Host ($fmt -f '技能名稱', '行數', ' ', 'Token', ' ', '禁詞', 'FM', 'IO', '觸發', 'L3', '風格', ' ', '總評')
+    Write-Host ('-' * 98)
 
     foreach ($r in $results | Sort-Object Name) {
         $styleDisplay = if ($r.StyleValue) { $r.StyleValue.Substring(0, [math]::Min(8, $r.StyleValue.Length)) } else { '—' }
         Write-Host ($fmt -f $r.Name, $r.Lines, $r.LineStatus, $r.Tokens, $r.TokenStatus,
-            $r.ForbiddenStatus, $r.FrontmatterStatus, $r.CompatStatus, $r.L3Status,
+            $r.ForbiddenStatus, $r.FrontmatterStatus, $r.CompatStatus, $r.TriggerStatus, $r.L3Status,
             $styleDisplay, $r.StyleStatus, $r.OverallStatus)
         if ($r.ForbiddenWords.Count -gt 0) {
             Write-Host "  ⚠ 禁用詞：$($r.ForbiddenWords -join ', ')" -ForegroundColor Yellow
         }
         if ($r.MissingFields.Count -gt 0) {
             Write-Host "  ⚠ 缺少欄位：$($r.MissingFields -join ', ')" -ForegroundColor Yellow
+        }
+        if ($r.TriggerIssues.Count -gt 0) {
+            Write-Host "  ⚠ 觸發品質：$($r.TriggerIssues -join '；')" -ForegroundColor Yellow
         }
     }
     Write-Host ""
@@ -434,6 +540,37 @@ function Get-FrontmatterBlock {
     $content = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
     $match = [regex]::Match($content, '(?ms)\A---\s*\r?\n(.*?)\r?\n---')
     if ($match.Success) { return $match.Groups[1].Value }
+    return ''
+}
+
+function Get-AuditFrontmatterFieldValue {
+    param(
+        [string]$Frontmatter,
+        [string]$Field
+    )
+
+    if (-not $Frontmatter) { return '' }
+
+    $lines = $Frontmatter -split "\r?\n"
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        $line = $lines[$i]
+        $match = [regex]::Match($line, "^(?<field>\s*$([regex]::Escape($Field))):\s*(?<value>.*)$")
+        if (-not $match.Success) { continue }
+
+        $value = $match.Groups['value'].Value.Trim()
+        if ($value -match '^[>|]') {
+            $parts = New-Object System.Collections.Generic.List[string]
+            for ($j = $i + 1; $j -lt $lines.Count; $j++) {
+                $next = $lines[$j]
+                if ($next -match '^\S[^:]*:\s*') { break }
+                if ($next.Trim().Length -gt 0) { $parts.Add($next.Trim()) }
+            }
+            return (($parts.ToArray()) -join ' ').Trim()
+        }
+
+        return $value.Trim('"').Trim("'")
+    }
+
     return ''
 }
 
@@ -664,18 +801,40 @@ function Measure-WorkflowMetadata {
             foreach ($field in $required) {
                 if (-not (Test-FrontmatterField -Frontmatter $fm -Field $field)) { $missing += "metadata.$field" }
             }
+            $description = Get-AuditFrontmatterFieldValue -Frontmatter $fm -Field 'description'
+            $triggerIssues = New-Object System.Collections.Generic.List[string]
+            if ([string]::IsNullOrWhiteSpace($description)) {
+                $triggerIssues.Add('description 空白或無法解析')
+            } elseif ($description.Length -lt 40) {
+                $triggerIssues.Add('description 過短，可能不足以觸發自動載入')
+            }
+            if ($description -notmatch '(?i)Use when|需要|適用|觸發|when') {
+                $triggerIssues.Add('description 缺少 Use when 或等效觸發語句')
+            }
+            if ($description -notmatch '[\u4e00-\u9fff]') {
+                $triggerIssues.Add('description 缺少繁中任務語句')
+            }
             $automationSafe = $fm -match '(?m)^\s+automation_safe:\s*true\s*$'
+            $status = if ($missing.Count -gt 0) {
+                '🔴'
+            } elseif ($triggerIssues.Count -gt 0) {
+                '🟡'
+            } else {
+                '🟢'
+            }
             $results += [PSCustomObject]@{
                 Platform       = $target.Platform
                 Name           = $name
                 MissingFields  = $missing
+                TriggerIssues  = @($triggerIssues.ToArray())
                 AutomationSafe = $automationSafe
-                Status         = if ($missing.Count -eq 0) { '🟢' } else { '🔴' }
+                Status         = $status
             }
         }
     }
 
     $passCount = ($results | Where-Object { $_.Status -eq '🟢' }).Count
+    $warnCount = ($results | Where-Object { $_.Status -eq '🟡' }).Count
     $failCount = ($results | Where-Object { $_.Status -eq '🔴' }).Count
     $safeCount = ($results | Where-Object { $_.AutomationSafe }).Count
 
@@ -683,13 +842,16 @@ function Measure-WorkflowMetadata {
     Write-Host "📊 Workflow Metadata v2"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "掃描 workflow/command：$($results.Count)"
-    Write-Host "🟢 完整：$passCount  🔴 缺漏：$failCount  automation-safe：$safeCount"
+    Write-Host "🟢 完整：$passCount  🟡 觸發警告：$warnCount  🔴 缺漏：$failCount  automation-safe：$safeCount"
 
     foreach ($r in $results | Sort-Object Platform, Name) {
         $safeText = if ($r.AutomationSafe) { 'safe' } else { 'manual' }
         Write-Host ("{0,-12} {1,-38} {2} {3}" -f $r.Platform, $r.Name, $r.Status, $safeText)
         if ($r.MissingFields.Count -gt 0) {
             Write-Host "  ⚠ 缺少欄位：$($r.MissingFields -join ', ')" -ForegroundColor Yellow
+        }
+        if ($r.TriggerIssues.Count -gt 0) {
+            Write-Host "  ⚠ 觸發品質：$($r.TriggerIssues -join '；')" -ForegroundColor Yellow
         }
     }
 
@@ -1522,6 +1684,7 @@ function Invoke-PlatformGovernanceAudit {
 
     $capability = Measure-PlatformCapability -RepoRoot $RepoRoot
     $metadata = Measure-WorkflowMetadata -RepoRoot $RepoRoot
+    $skillQuality = Measure-SkillQuality -SkillsRoot (Join-Path $RepoRoot 'Shared\skills')
     $docs = Measure-DocsConsistency -RepoRoot $RepoRoot
     $runtime = Measure-RuntimeGlobalDrift -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
     $semantics = Measure-GovernanceSemantics -RepoRoot $RepoRoot
@@ -1530,10 +1693,15 @@ function Invoke-PlatformGovernanceAudit {
     $projectLinks = Measure-ProjectSkillLinks -TargetRoot $TargetRoot
 
     $metadataFail = ($metadata | Where-Object { $_.Status -eq '🔴' }).Count
+    $metadataYellow = ($metadata | Where-Object { $_.Status -eq '🟡' }).Count
+    $skillRed = ($skillQuality | Where-Object { $_.OverallStatus -eq '🔴' }).Count
+    $skillYellow = ($skillQuality | Where-Object { $_.OverallStatus -eq '🟡' }).Count
     $docStale = $docs.StaleHits.Count
     $redTotal = $runtime.RedCount + $semantics.RedCount + $subagentPolicy.RedCount + $directorOutput.RedCount + $projectLinks.RedCount
+    $redTotal += $skillRed
     $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $subagentPolicy.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount
-    $ok = $capability.CapabilityMatrix -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
+    $yellowTotal += $metadataYellow + $skillYellow
+    $ok = $capability.CapabilityMatrix -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
     Write-Host ""
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -1546,6 +1714,7 @@ function Invoke-PlatformGovernanceAudit {
     return [PSCustomObject]@{
         Capability = $capability
         Metadata   = $metadata
+        SkillQuality = $skillQuality
         Docs       = $docs
         Runtime    = $runtime
         Semantics  = $semantics

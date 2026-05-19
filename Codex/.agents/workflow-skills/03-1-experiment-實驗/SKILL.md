@@ -1,6 +1,6 @@
 ---
 name: "03-1-experiment-實驗"
-description: "沙盒快速實驗模式 — 所有品質、安全性、測試與記憶卡閘門停用。適用快速髒碼實驗與 API 原型測試。"
+description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，允許跳過正式品質與記憶閘門。DO NOT use when: 生產建構、正式修復或需提交發布。"
 metadata:
   author: antigravity
   version: "2.0"

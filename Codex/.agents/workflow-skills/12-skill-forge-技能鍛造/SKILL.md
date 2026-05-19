@@ -1,6 +1,6 @@
 ---
 name: "12-skill-forge-技能鍛造"
-description: "從健檢發現、除錯方法論或總監指令中萃取可重用模式，建立新的專案衍生技能"
+description: "Use when: 技能鍛造、建立新專案技能、從健檢/除錯/總監指令萃取可重用方法論。DO NOT use when: 只要修改既有 Shared Skill 描述。"
 metadata:
   author: antigravity
   version: "2.0"
@@ -24,6 +24,8 @@ All Director-facing conversations, implementation plans, reports, and completion
 |---|---|---|---|
 
 Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. Do not describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
+
+> [LOAD SKILL] If the new or revised skill covers plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before defining trigger language.
 # source-command-12-skill-forge-skill
 
 Use this skill when the user asks to run the migrated source command `12_skill_forge(技能鍛造)-SKILL`.

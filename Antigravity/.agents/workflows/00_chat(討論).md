@@ -1,5 +1,5 @@
 ---
-description: 由總監觸發，用於純對話、腦力激盪與程式碼問答，不涉及深度網路研究或複雜 Artifact 生成。
+description: "Use when: 純對話討論、腦力激盪、程式碼問答、概念釐清。DO NOT use when: 需要深度研究、建構、修復、測試、提交或產出正式 Artifact。"
 required_skills: []
 memory_awareness: none
 metadata:

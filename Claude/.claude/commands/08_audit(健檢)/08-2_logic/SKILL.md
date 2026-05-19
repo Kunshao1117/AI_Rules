@@ -1,6 +1,6 @@
 ---
 name: 08-2_logic
-description: 健檢第二階段：深度邏輯審查 — 安全架構五維審查、API 前後端串接比對、測試覆蓋缺口分析、死碼偵測
+description: "Use when: 健檢第二階段、深度邏輯審查、安全架構、API 串接比對、測試覆蓋缺口與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08-audit。"
 required_skills: [audit-engine, code-diagnosis]
 memory_awareness: full
 user-invocable: false

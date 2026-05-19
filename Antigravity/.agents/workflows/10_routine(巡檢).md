@@ -1,6 +1,6 @@
 ---
 name: 10_routine(巡檢)
-description: automation-safe 例行巡檢工作流。預設唯讀，定期檢查技能品質、文件數字、記憶過期與 MCP 設定健康；任何寫入仍需 GO。
+description: "Use when: automation-safe 例行巡檢、唯讀健康檢查、技能品質、文件數字、記憶過期與 MCP 設定健康。DO NOT use when: 需要直接修復或寫入檔案。"
 required_skills: [memory-ops, code-audit]
 memory_awareness: read
 metadata:

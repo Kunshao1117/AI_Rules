@@ -4,7 +4,7 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.3）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-19T17:11:20+08:00'
+last_updated: '2026-05-19T19:29:28+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -67,7 +67,7 @@ metadata:
 - **未歸屬檔案歸卡 (2026-05-13)**: 將 `Codex/.gitignore` 及 `_shared` 共用閘門腳本 (`_completion_gate.md`, `_security_footer.md`) 納入 `_codex_core` 追蹤清單，消除幽靈檔案。
 - **Gateway 規範同步 (2026-05-17)**: `.codex/AGENTS.md` 補入 Multi-MCP Gateway 顯式路徑規則，要求下游 MCP 真實呼叫使用 `gateway__call_tool`，cartridge-system 參數帶 `projectRoot`；README 同步標示唯讀治理工具與 `memory_commit` 高風險歸卡邊界。
 - **公開安裝入口相容性升級 (2026-05-17)**: Codex README、全域 AGENTS bootstrapper 與 `Codex/install.ps1` 改用 UTF-8 raw bytes 下載與 BOM 暫存寫入策略；installer 補入 `#Requires -Version 5.1` 並保存為 UTF-8 with BOM；根 README 的管理控制台通用 wrapper 改用 `powershell.exe -EncodedCommand`，避免外層 Shell 展開 `$` 變數。
-- **Codex平台代理治理升級 (2026-05-17)**: `.codex/AGENTS.md` 補入 Codex subagents、Automations、MCP config 與 metadata v2 治理語義；`workflow-skills/` 增加 `10-routine-巡檢` 唯讀 automation-safe 工作流，Codex 部署後技能總數為 53（36 Shared + 17 workflow）。
+- **Codex平台代理治理升級 (2026-05-17)**: `.codex/AGENTS.md` 補入 Codex subagents、Automations、MCP config 與 metadata v2 治理語義；`workflow-skills/` 增加 `10-routine-巡檢` 唯讀 automation-safe 工作流，Codex 部署後技能總數當時為 53（36 Shared + 17 workflow）。
 - **Codex 基底治理語義修復 (2026-05-17)**: `global/AGENTS.md` 改為 governed install/upgrade；`09-commit-紀錄總結` 在 GO 前只輸出 CHANGELOG 草稿，GO 後才寫入 CHANGELOG 並用明確清單 stage/commit/push；舊大寫 Codex agents/commands 路徑語義由 Audit 紅燈攔截。
 - **VS Code 延伸模組方向釐清 (2026-05-17)**: 使用者所稱插件是 VS Code extension，而非 Codex plugin；根 README 已改以 `Extensions/vscode-ai-rules-manager/` 說明點選式管理入口，Codex plugin marketplace 不作為本版實作方向。
 - **Codex 總監可讀輸出契約 (2026-05-17)**: `.codex/AGENTS.md` 與 Codex `03-build-建構` / `04-fix-修復` 工作流要求所有面向總監的計畫、報告與完成摘要先用功能表格呈現，再補技術細節。
@@ -80,6 +80,9 @@ metadata:
 - **跨專案同步誤報文件同步 (2026-05-19)**: 根 README 補充 AI Rules Manager 在 Antigravity / VS Code 類 IDE 中的 managed clone 行為，並說明全域規則漂移以正規化後文字內容為準；Codex 使用者層 `~/.codex/AGENTS.md` 若只與 source 有 CRLF/LF 差異，不再視為需同步的規則漂移。後續因使用者可見同步行為已變更，README 的 VSIX release 範例同步升到 `v0.1.4` / `ai-rules-manager-0.1.4.vsix`，但 Codex Edition 本身仍維持 `v0.1.3`。
 - **Release 簡介文件同步 (2026-05-19)**: 根 README 的 VSIX release 段落補充 workflow 會從 `CHANGELOG.md` 的 AI Rules Manager 版本段落產生 GitHub Release 簡介；此變更只影響插件發布說明，不改 Codex Edition 版本。
 - **Codex 05 濃縮路徑口徑修正 (2026-05-19)**: `05-condense-濃縮` 的 Path A 目標從舊 `.Codex/AGENTS.md` 修正為 `.codex/AGENTS.md`，相關技能載入路徑改為 `.agents/skills/*`；根 README 的 VSIX release 範例同步升到 `v0.1.5`。
+- **AI Rules Manager 更新提醒文件同步 (2026-05-19)**: 根 README 的 VS Code 延伸模組段落補充 VSIX 手動安裝不等於 Marketplace 原生自動更新，AI Rules Manager v0.1.6 會透過 GitHub Release 檢查提醒使用者下載新版安裝檔；release 範例同步升到 `v0.1.6`。
+- **Skill 觸發治理同步 (2026-05-19)**: Codex README 與 `.codex/AGENTS.md` 的 Shared skill 數量同步到 37；`02/03/04/09/12` workflow skills 加入插件 / extension / VSIX / GitHub Release / version bump / tag / update reminder 情境的 `plugin-release-governance` 載入閘門，Codex 部署後總技能數為 54（37 Shared + 17 workflow）。
+- **Codex workflow trigger descriptions (2026-05-19)**: 17 個 `Codex/.agents/workflow-skills/*/SKILL.md` 的 description 補齊 `Use when` 與負向邊界，讓 Codex 語意觸發能先把任務導向正確 workflow，再由 workflow 載入必要 Shared Skill。
 
 
 ## Known Issues
@@ -101,6 +104,8 @@ metadata:
 - **Project skill backfill 只修 reparse point**: 壞掉或缺少的 `project-*` 連結可由 `SyncProjectRules -Apply` 修復；若同名項目是實體目錄/檔案，必須停下由人處理。
 - **Codex 不擁有 `.agents/VERSION`**: Codex 會使用 `.agents/skills` 與 `.agents/memory`，但版本錨點必須在 `.codex/VERSION`；`.agents/VERSION` 只能代表 Antigravity。
 - **Codex 05 Path A 必須指向 `.codex/AGENTS.md`**: 舊 `.Codex/*` 口徑會讓新專案身份寫入錯誤位置，也會讓同步保護無法覆蓋實際載入檔。
+- **插件發布情境要明示載入共用技能**: Codex 會把 workflow skills 與 operational skills 放在同一個 `.agents/skills` 搜尋面，因此高風險插件發布流程必須在 workflow 入口補明確 load gate，不能只期待語意觸發。
+- **Codex workflow 描述要避免只寫內部階段**: 語意觸發主要看 `name` 與 `description`；若 description 只寫「第一階段/第二階段」而不寫使用者會說的任務語句，Codex 容易漏載 workflow。
 
 ## Relations
 

@@ -1,6 +1,6 @@
 ---
 name: "05-condense-濃縮"
-description: "專案濃縮初始化 — 自動掃描代碼庫，萃取專案身份與工作模式，寫入永久上下文。參考 Codex /init 設計。"
+description: "Use when: 專案濃縮初始化、萃取 PROJECT IDENTITY、掃描代碼庫並寫入永久上下文。DO NOT use when: 只要讀取既有記憶或一般架構說明。"
 metadata:
   author: antigravity
   version: "2.0"

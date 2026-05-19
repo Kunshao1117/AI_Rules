@@ -1,5 +1,5 @@
 ---
-description: 打包日誌與進行遠端推播
+description: "Use when: 已有 09-1 掃描與 GO，要執行 commit、push、tag 或 Release 同步。DO NOT use when: 只想查看狀態或尚未通過提交前掃描。"
 metadata:
   author: antigravity
   version: "2.0"

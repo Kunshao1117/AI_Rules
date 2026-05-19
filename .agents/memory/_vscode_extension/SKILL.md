@@ -4,7 +4,7 @@ description: >-
   AI_Rules VS Code 延伸模組與按鈕式管理入口。追蹤側邊欄 UI、命令註冊、PowerShell 腳本橋接、VSIX 打包設定與 Release
   asset 自動化。
 scopePath: Extensions/vscode-ai-rules-manager
-last_updated: '2026-05-19T17:13:24+08:00'
+last_updated: '2026-05-19T19:25:00+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -29,6 +29,7 @@ metadata:
 - Extensions/vscode-ai-rules-manager/resources/ai-rules.svg
 - Extensions/vscode-ai-rules-manager/resources/icon.png
 - Extensions/vscode-ai-rules-manager/src/extension.ts
+- Extensions/vscode-ai-rules-manager/src/extensionUpdate.ts
 - Extensions/vscode-ai-rules-manager/src/panel.ts
 - Extensions/vscode-ai-rules-manager/src/commands.ts
 - Extensions/vscode-ai-rules-manager/src/scriptRunner.ts
@@ -56,6 +57,9 @@ metadata:
 - **AI Rules Manager v0.1.4 (2026-05-19)**: patch bump 用於封裝跨專案換行誤報修正；`package.json` 與 lockfile 升級到 `0.1.4`，release 文件與 VSIX 檔名同步為 `ai-rules-manager-0.1.4.vsix`。
 - **Release notes 自動化 (2026-05-19)**: `.github/workflows/release-vsix.yml` 不再只依賴 GitHub `--generate-notes`；workflow 會從 `CHANGELOG.md` 的 `AI Rules Manager v<version>` 段落建立 Release 簡介，既有 Release 補跑時也會更新 body 並覆蓋同名 VSIX asset。
 - **AI Rules Manager v0.1.5 (2026-05-19)**: `SyncProjectRules` 會在三平台核心規則同步時保留 05 濃縮寫入的 `PROJECT IDENTITY` 區段，避免專案身份被框架更新覆蓋；Claude 同步補掃 `.claude/CLAUDE.md` 入口檔；`package.json` 與 lockfile 升級到 `0.1.5`，VSIX 檔名同步為 `ai-rules-manager-0.1.5.vsix`。
+- **AI Rules Manager v0.1.6 (2026-05-19)**: 新增 GitHub Release 更新提醒；插件啟動時背景檢查 latest release，側邊欄提供「檢查插件新版」手動入口，有新版時只提示開啟 Release 下載，不做靜默下載或安裝。`package.json` 與 lockfile 升級到 `0.1.6`，VSIX 檔名同步為 `ai-rules-manager-0.1.6.vsix`。
+- **AI Rules Manager v0.1.7 (2026-05-19)**: Skill 架構整理使 Doctor 多檢查 Skill description 觸發品質，屬於延伸模組「健康檢查」按鈕的可見行為變更；`package.json` 與 lockfile 升級到 `0.1.7`，VSIX 檔名同步為 `ai-rules-manager-0.1.7.vsix`。
+- **AI Rules Manager v0.1.7 trigger hardening (2026-05-19)**: 同版 v0.1.7 追加 Doctor 檢查 workflow 入口觸發描述與 Shared Skill 負向邊界；不再另升 patch，重新打包同名 0.1.7 VSIX 以包含完整 Skill 觸發治理。
 
 ## Known Issues
 
@@ -78,6 +82,9 @@ metadata:
 - **D10: 後端行為改變也要 bump VSIX**：即使 TypeScript UI 未變，只要 extension 按鈕呼叫的後端治理結果對使用者可見，應升級 patch 版本並重新打包，避免安裝包版本與實際行為修正脫節。
 - **D11: Release 不能只靠 Full Changelog**：GitHub 自動 notes 可能只產生比較連結；插件發布 workflow 應明確寫入人可讀簡介，且簡介來源要跟 CHANGELOG 同步，避免 release 頁面缺少更新說明。
 - **D12: 專案同步不可覆蓋專案身份**：`PROJECT IDENTITY` 是 05 濃縮產生的專案資訊，不屬於框架模板內容；同步預覽與套用都必須排除或還原該區段。
+- **D13: VSIX 發布需要更新提醒層**：GitHub Release asset 只是下載來源，不是 IDE 原生自動更新通道；在 Marketplace / Open VSX 前，extension 應以 latest release 檢查提醒使用者手動下載新版 VSIX。
+- **D14: Doctor 可見語義變更也要 bump VSIX**：即使 TypeScript UI 未變，只要延伸模組按鈕呼叫的 Doctor 後端新增紅黃燈判斷，操作者看到的健康狀態就可能改變，應升級 patch 版本並重新打包。
+- **D15: 同一未發布 patch 可合併治理補強**：若版本尚未 tag/release，後續 Doctor 規則補強可併入同一 patch 重新打包；若已發布，才需要再 bump 下一個 patch。
 
 ## Relations
 

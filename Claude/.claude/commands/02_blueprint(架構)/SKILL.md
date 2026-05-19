@@ -1,6 +1,6 @@
 ---
 name: 02_blueprint
-description: 商業需求轉化為軟體架構 — 技術堆疊探勘、ER 圖、API 路由設計、記憶卡初始化（支援升級模式與三平台代理治理架構宣告）
+description: "Use when: 架構設計、藍圖、技術堆疊探勘、ER 圖、API 路由設計、三平台代理治理架構宣告。DO NOT use when: 已有核准計畫要直接建構或修復。"
 required_skills: [memory-ops, tech-stack-protocol, memory-arch]
 memory_awareness: full
 user-invocable: true
@@ -27,6 +27,8 @@ All Director-facing conversations, implementation plans, reports, and completion
 |---|---|---|---|
 
 Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. Do not describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
+
+> [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.claude/skills/plugin-release-governance/SKILL.md` before architecture planning.
 # [SKILL: /02_blueprint — 架構藍圖]
 
 ## 1. Tech Stack Discovery (技術堆疊探勘)

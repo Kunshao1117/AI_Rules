@@ -1,5 +1,5 @@
 ---
-description: 掃描所有記憶技能，彙整當前對話成果，為下一個 AI 對話產出結構化的交接提示詞。
+description: "Use when: 交接、handoff、彙整目前對話成果、掃描記憶卡並產出下一個 AI 可接手的提示詞。DO NOT use when: 仍在實作或需要提交。"
 required_skills: [memory-ops]
 memory_awareness: full
 metadata:

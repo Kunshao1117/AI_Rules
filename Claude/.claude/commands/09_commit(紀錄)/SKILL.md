@@ -1,6 +1,6 @@
 ---
 name: 09_commit
-description: 兩階段授權備份工作流。第一階段：掃描倉庫衛生、偵測記憶過期、產出 Commit Message 草稿，含條件分岔衛生閘門。第二階段：收到 GO 後提交並推送，同步更新 CHANGELOG.md。
+description: "Use when: 提交、commit、push、版本紀錄、CHANGELOG、Release tag 前置掃描與受治理備份。DO NOT use when: 尚未完成實作或只想查看 git 狀態。"
 required_skills: [github-ops]
 memory_awareness: read
 user-invocable: true
@@ -27,6 +27,8 @@ All Director-facing conversations, implementation plans, reports, and completion
 |---|---|---|---|
 
 Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. Do not describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
+
+> [LOAD SKILL] If staged or dirty files touch plugin / extension / VSIX / GitHub Release / package version / tag / update reminder, read `.claude/skills/plugin-release-governance/SKILL.md` before drafting commit and release steps.
 # [SKILL: /commit — 授權備份]
 
 ---

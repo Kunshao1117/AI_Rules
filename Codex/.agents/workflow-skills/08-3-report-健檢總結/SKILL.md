@@ -1,6 +1,6 @@
 ---
 name: "08-3-report-健檢總結"
-description: "健檢第三階段：全光譜健康報告彙整 — 紅黃綠燈號儀表板（5 維度）、優先修復清單、行動建議"
+description: "Use when: 健檢第三階段、彙整健康報告、紅黃綠燈號、優先修復清單與行動建議。DO NOT use when: 尚未完成前兩階段健檢。"
 metadata:
   author: antigravity
   version: "2.0"

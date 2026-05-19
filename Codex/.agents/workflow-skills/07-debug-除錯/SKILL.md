@@ -1,6 +1,6 @@
 ---
 name: "07-debug-除錯"
-description: "分析堆疊追蹤與日誌，將技術性故障翻譯為白話的商業影響說明"
+description: "Use when: 除錯、分析 stack trace、閱讀日誌、定位錯誤來源並說明商業影響。DO NOT use when: 已決定要修改原始碼，改用修復工作流。"
 metadata:
   author: antigravity
   version: "2.0"

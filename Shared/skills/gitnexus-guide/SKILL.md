@@ -1,6 +1,11 @@
 ---
 name: gitnexus-guide
-description: "Use when the user asks about GitNexus itself — available tools, how to query the knowledge graph, MCP resources, graph schema, or workflow reference. Examples: \"What GitNexus tools are available?\", \"How do I use GitNexus?\""
+description: >
+  GitNexus tool and knowledge graph usage guide. Use when: 詢問 GitNexus
+  怎麼用、available tools、knowledge graph schema、MCP resources、query
+  syntax、workflow reference。DO NOT use when: 已經知道要 index repo
+  （用 gitnexus-cli）、探索程式碼（用 gitnexus-exploring）、或追蹤 bug
+  （用 gitnexus-debugging）。
 metadata:
   author: gitnexus
   version: "0.1.0"

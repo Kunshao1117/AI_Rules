@@ -18,6 +18,7 @@
 | error tracking, stack trace, performance monitoring                          | 錯誤追蹤、堆疊分析、效能監控                     | sentry-ops               | sentry             |
 | database, table, query, migration, edge function                             | 資料庫、查詢、遷移、Edge Function                | supabase-ops             | supabase           |
 | git, repository, issue, pull request, commit                                 | 版本控制、倉庫、Issue、PR                        | github-ops               | github             |
+| plugin release, extension, VSIX, GitHub Release, tag, update reminder         | 插件發布、延伸模組、VSIX、Release、版本、更新提醒 | plugin-release-governance | —                  |
 | KV, D1, R2, Workers, container, logs                                         | 雲端資源、容器、Workers、日誌                    | cloudflare-ops           | cloudflare-\*      |
 | skill generation, meta-skill, create skill, self-extend                      | 技能產生、自動繁衍、建立新技能                   | skill-factory            | —                  |
 | unit test, API contract, error scenario, mock strategy                       | 單元測試、契約測試、異常場景、Mock策略           | test-patterns            | —                  |

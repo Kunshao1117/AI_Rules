@@ -1,5 +1,5 @@
 ---
-description: 將商業需求轉化為嚴謹的軟體架構、ER 圖與 API 路由。同步建立雙軌記憶系統。
+description: "Use when: 架構設計、藍圖、技術堆疊探勘、ER 圖、API 路由設計、三平台代理治理架構宣告。DO NOT use when: 已有核准計畫要直接建構或修復。"
 required_skills: [memory-ops, tech-stack-protocol]
 memory_awareness: full
 metadata:
@@ -25,6 +25,8 @@ All Director-facing conversations, implementation plans, reports, and completion
 |---|---|---|---|
 
 Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. Do not describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
+
+> [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before architecture planning.
 # [WORKFLOW: BLUEPRINT (架構)]
 
 

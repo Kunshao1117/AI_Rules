@@ -1,6 +1,6 @@
 ---
 name: 01_explore
-description: 由總監觸發，探索新商業想法或技術方向。執行網路研究、扮演魔鬼代言人，產出可行性報告 Artifact。禁止撰寫可執行原始碼。
+description: "Use when: 探索新商業想法、技術方向、可行性研究、網路研究、魔鬼代言人分析。DO NOT use when: 需要直接寫程式、修 bug 或提交。"
 required_skills: []
 memory_awareness: none
 user-invocable: true

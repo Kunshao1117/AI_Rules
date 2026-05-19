@@ -1,6 +1,6 @@
 ---
 name: 08-1_infra
-description: 健檢第一階段：系統基礎盤點 — 依賴安全掃描、記憶卡拓樸驗證、技能覆蓋率、目錄衛生檢查
+description: "Use when: 健檢第一階段、基礎盤點、依賴安全掃描、記憶卡拓樸、技能覆蓋率與目錄衛生檢查。DO NOT use when: 要完整健檢入口，改用 08-audit。"
 required_skills: [memory-ops, code-audit]
 memory_awareness: full
 user-invocable: false

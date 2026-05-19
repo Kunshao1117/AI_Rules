@@ -4,7 +4,7 @@ description: >
   框架導航索引卡。記錄所有 Layer 1 父記憶卡的模組名稱與範圍摘要， 供對話啟動時的 D7 Push 機制快速載入，讓 AI
   在不深讀各模組卡的情況下知道「哪裡有什麼」。 Use when: D7 三路徑探測的第一條路徑（_map 在清單中）。
 scopePath: .agents/memory
-last_updated: '2026-05-18T19:45:00+08:00'
+last_updated: '2026-05-19T19:25:00+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -23,11 +23,11 @@ metadata:
 
 | 模組名稱 | 一句話範圍 |
 |---------|-----------|
-| _system | 全域技術堆疊、Git 推播根目錄規範、工作流設計哲學 |
+| _system | 全域技術堆疊、Git 推播根目錄規範、Skill 觸發治理與工作流設計哲學 |
 | claude-edition-rules | Claude Code 插件框架規範層、三平台共用記憶庫架構決策、統一腳本引擎設計 |
 | _ag_core | Antigravity 框架核心規則與工作流收容卡匣（框架原始碼） |
 | _claude_core | Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼） |
-| _shared | Shared/ 共用治理資產（能力矩陣、MCP snippets、子代理政策、36 套操作型技能唯一真實來源） |
+| _shared | Shared/ 共用治理資產（能力矩陣、MCP snippets、子代理政策、37 套操作型技能與觸發契約唯一真實來源） |
 | _codex_core | Codex Edition 框架核心規則與工作流收容卡匣（v0.1.3，OpenAI Codex 適配層） |
 | _vscode_extension | AI_Rules VS Code 延伸模組與按鈕式管理入口 |
 

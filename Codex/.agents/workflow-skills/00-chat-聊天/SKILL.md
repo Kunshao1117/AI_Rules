@@ -1,6 +1,6 @@
 ---
 name: "00-chat-聊天"
-description: "純對話討論模式 — 腦力激盪、程式碼問答、概念釐清，不涉及深度研究或 Artifact 生成。"
+description: "Use when: 純對話討論、腦力激盪、程式碼問答、概念釐清。DO NOT use when: 需要深度研究、建構、修復、測試、提交或產出正式 Artifact。"
 metadata:
   author: antigravity
   version: "2.0"

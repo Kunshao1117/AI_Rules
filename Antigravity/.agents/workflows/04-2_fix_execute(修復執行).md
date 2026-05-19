@@ -1,5 +1,5 @@
 ---
-description: 第二階段（共 2 階段）— 授權實體執行已核准的修復。寫入磁碟、更新記憶卡、執行回歸測試。需 /04-1_fix_plan 的明確 GO 授權。
+description: "Use when: 已有 /04-1_fix_plan 核准 GO，要執行修復寫入、記憶更新與回歸測試。DO NOT use when: 尚未完成修復計畫或未取得 GO。"
 required_skills:
   [memory-ops, security-sre, test-patterns, impact-test-strategy, trunk-ops]
 memory_awareness: full

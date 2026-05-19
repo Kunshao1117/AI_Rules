@@ -1,11 +1,11 @@
 ---
 name: _shared
 description: >
-  Shared/ 共用治理資產記憶卡。追蹤 36 套操作型技能唯一真實來源、三平台能力矩陣與 MCP opt-in profiles。 部署時由
+  Shared/ 共用治理資產記憶卡。追蹤 37 套操作型技能唯一真實來源、三平台能力矩陣與 MCP opt-in profiles。 部署時由
   Skills-Sync.psm1 注入 Antigravity、Claude、Codex 三個平台。 Use when: 修改 Shared/
   下任何共用技能或平台治理資產時。
 scopePath: Shared/
-last_updated: '2026-05-19T06:27:08+08:00'
+last_updated: '2026-05-19T19:29:28+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -23,6 +23,7 @@ metadata:
 ## Tracked Files
 
 - Shared/platform-capability-matrix.md
+- Shared/skill-governance.md
 - Shared/policies/subagent-invocation.md
 - Shared/mcp-profiles/README.md
 - Shared/skills/_index.md
@@ -59,6 +60,8 @@ metadata:
 - Shared/skills/memory-ops/SKILL.md
 - Shared/skills/memory-ops/references/memory-template.md
 - Shared/skills/performance-audit/SKILL.md
+- Shared/skills/plugin-release-governance/SKILL.md
+- Shared/skills/plugin-release-governance/references/vsix-release-playbook.md
 - Shared/skills/pr-review-ops/SKILL.md
 - Shared/skills/security-sre/SKILL.md
 - Shared/skills/sentry-ops/SKILL.md
@@ -131,6 +134,9 @@ metadata:
 - **MCP HITL 邊界補強 (2026-05-17)**: GitHub、PR review、Supabase、Cloudflare、Excel、Stitch、Sentry、memory、browser、performance、tech-stack、Trunk 等會觸及寫入、部署、推送、安裝或記憶歸卡的 Shared skills 補入 HITL Boundary；schema discovery 不等於 mutating execution。
 - **共用子代理啟用政策 (2026-05-18)**: 新增 `Shared/policies/subagent-invocation.md` 作為三平台子代理啟用語義唯一來源；`Skills-Sync.psm1` 會將平台轉譯區塊注入各平台核心規則 marker，`delegation-strategy` 僅負責 direct/native/browser/CLI/MCP 管道選擇。
 - **Shared policy 注入輔助函式 (2026-05-19)**: `Skills-Sync.psm1` 承擔 shared subagent policy 的讀取與 marker block 同步能力，提供平台區塊讀取、既有 marker 取代與缺 marker 時的插入策略；三平台部署與專案同步可共用同一套注入語義。
+- **Skill governance contract (2026-05-19)**: 新增 `Shared/skill-governance.md` 作為 Skill 放置與觸發契約，規定核心規則只保留 always-on 安全底線、workflow/command 只做入口路由、Shared skills 承載按需載入操作細節、memory 記錄專案事實。
+- **Plugin release governance skill (2026-05-19)**: 新增 `plugin-release-governance` 作為第 37 套 Shared operational skill，集中管理插件升版、VSIX 打包、GitHub Release/tag/asset 與 GitHub latest release 更新提醒；三平台 workflow/command 入口只加載入閘門，不複製完整 playbook。
+- **Skill trigger effectiveness hardening (2026-05-19)**: GitNexus、Supabase 與 skill-factory 等相鄰技能補齊繁中/英文觸發詞與 `DO NOT use when` 邊界；Doctor 的技能品質檢查升級為檢查 Shared operational skill 是否具備雙語觸發與負向邊界。
 
 ## Known Issues
 
@@ -145,6 +151,8 @@ metadata:
 - **平台治理資產屬於 Shared 而非單一平台**：能力矩陣與 MCP profile snippets 不應放進 Codex/Claude/Antigravity 任一子樹，避免三平台規格再次分叉。
 - **HITL Boundary 是操作型技能的公共介面**：任何 MCP skill 只要可能 create/update/write/delete/deploy/push/apply/reset/merge 或記憶歸卡，就必須明示 GO 與 `[MCP HITL GATE]`，不可只靠平台權限提示。
 - **Shared policy 注入應保持冪等**：同步核心規則時應優先取代既有 marker block；只有 marker 不存在時才依 before/after pattern 插入，避免每次升級重複追加同一段治理文字。
+- **Skill 觸發語句是公共介面**：Codex 只會在觸發前看到 `name` 與 `description`；若使用時機只寫在正文，AI 可能不會讀取該技能。高風險發布技能必須把插件、VSIX、Release、版本、tag、更新提醒等觸發詞寫入 frontmatter description。
+- **負向邊界可降低技能誤觸發**：相鄰技能不只要寫 `Use when`，也要寫 `DO NOT use when`，讓 AI 在 GitNexus、Supabase、記憶與測試等相似技能間能排除錯誤路由。
 
 ## Relations
 

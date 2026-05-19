@@ -1,6 +1,11 @@
 ---
 name: gitnexus-debugging
-description: "Use when the user is debugging a bug, tracing an error, or asking why something fails. Examples: \"Why is X failing?\", \"Where does this error come from?\", \"Trace this bug\""
+description: >
+  GitNexus-assisted debugging and error tracing. Use when: 追蹤錯誤來源、
+  trace this bug、why is X failing、where does this error come from、endpoint
+  returns 500、需要找出呼叫鏈與故障路徑。DO NOT use when: 只是探索架構
+  或程式碼怎麼運作（用 gitnexus-exploring）、或只需要重建 GitNexus 索引
+  （用 gitnexus-cli）。
 metadata:
   author: gitnexus
   version: "0.1.0"

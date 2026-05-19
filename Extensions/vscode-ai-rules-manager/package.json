@@ -3,7 +3,7 @@
   "displayName": "AI Rules Manager",
   "description": "Point-and-click VS Code manager for AI_Rules governance checks, updates, global rules, and orphan cleanup.",
   "icon": "resources/icon.png",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "publisher": "kunshao",
   "license": "MIT",
   "repository": {
@@ -20,6 +20,7 @@
   "activationEvents": [
     "onView:aiRules.panel",
     "onCommand:aiRules.checkUpdate",
+    "onCommand:aiRules.checkExtensionUpdate",
     "onCommand:aiRules.planUpdate",
     "onCommand:aiRules.applyUpdate",
     "onCommand:aiRules.doctor",
@@ -55,6 +56,10 @@
       {
         "command": "aiRules.checkUpdate",
         "title": "AI Rules: 檢查更新"
+      },
+      {
+        "command": "aiRules.checkExtensionUpdate",
+        "title": "AI Rules: 檢查插件新版"
       },
       {
         "command": "aiRules.planUpdate",

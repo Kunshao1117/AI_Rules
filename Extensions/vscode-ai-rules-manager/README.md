@@ -1,13 +1,14 @@
 # AI Rules Manager for VS Code
 
-AI Rules Manager 是 AI_Rules 的 VS Code 側邊欄操作面板。第一版設計給本機安裝與 GitHub Release asset 分享使用，之後可再上架 Marketplace。
+AI Rules Manager 是 AI_Rules 的 VS Code 側邊欄操作面板。第一版設計給本機安裝與 GitHub Release asset 分享使用，之後可再上架 Marketplace。手動安裝 VSIX 不會取得 Marketplace 原生自動更新，因此延伸模組會查 GitHub Release 並提醒是否有新版安裝檔。
 
 ## 功能
 
 - 檢查更新：讀取 Git 與全域規則狀態。
+- 檢查插件新版：查 GitHub Release 是否有新版 VSIX 可下載。
 - 查看更新內容：用白話列出更新影響。
 - 套用更新：確認後才執行 `git pull --ff-only`。
-- 健康檢查：呼叫 AI_Rules 治理巡檢，包含專案規則、工作流輸出契約與 project skill 缺連結/壞連結。
+- 健康檢查：呼叫 AI_Rules 治理巡檢，包含專案規則、工作流輸出契約、Shared Skill 中英觸發詞、workflow 入口觸發品質與 project skill 缺連結/壞連結。
 - 同步使用者層規則：先預覽，確認後才寫入 `~/.codex`、`~/.claude`、`~/.gemini`。
 - 同步已安裝平台規則：先偵測目前 workspace 已安裝的平台，確認後才同步對應規則、技能與 project skill discovery 連結。
 - 單平台同步：可分別同步 Codex、Claude 或 Antigravity；未安裝的平台只回報 Yellow，不自動建立。
@@ -34,13 +35,13 @@ npm run package
 
 ## GitHub Release
 
-推送 tag `v0.1.5` 後，GitHub Actions 會自動執行：
+推送 tag `v0.1.7` 後，GitHub Actions 會自動執行：
 
 1. `npm ci`
 2. `npm run package`
 3. 建立 GitHub Release
 4. 從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介
-5. 將 `ai-rules-manager-0.1.5.vsix` 上傳到該 release 的 Assets
+5. 將 `ai-rules-manager-0.1.7.vsix` 上傳到該 release 的 Assets
 
 若 tag 與 `package.json` 版本不一致，workflow 會失敗，不會建立或更新 Release。需要補跑時，可在 GitHub Actions 頁面手動執行 workflow 並輸入 tag；若 Release 已存在，workflow 會更新簡介並覆蓋同名 VSIX asset。
 

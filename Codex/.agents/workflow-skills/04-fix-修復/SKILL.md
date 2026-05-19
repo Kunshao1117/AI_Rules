@@ -1,6 +1,6 @@
 ---
 name: "04-fix-修復"
-description: "兩階段修復工作流。第一階段：診斷缺陷、分析影響範圍，產出全繁中實作計畫供總監審閱（唯讀）。第二階段：實體修復、記憶更新、回歸測試。"
+description: "Use when: 修 bug、修復回歸、排除錯誤、診斷缺陷並執行正式修復。流程包含診斷、GO、寫入、記憶更新與回歸測試。DO NOT use when: 新功能建構或純除錯說明。"
 metadata:
   author: antigravity
   version: "2.0"
@@ -24,6 +24,8 @@ All Director-facing conversations, implementation plans, reports, and completion
 |---|---|---|---|
 
 Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. Do not describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
+
+> [LOAD SKILL] If this fix touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before diagnosing release impact.
 # source-command-04-fix-skill
 
 Use this skill when the user asks to run the migrated source command `04_fix(修復)-SKILL`.

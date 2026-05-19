@@ -1,6 +1,6 @@
 ---
 name: 08-3_audit_report(健檢總結)
-description: "[Phase 3/3] 全光譜健康報告彙整。執行效能審查，並產出最終的紅黃綠燈號決策面板。"
+description: "Use when: 健檢第三階段、彙整健康報告、紅黃綠燈號、優先修復清單與行動建議。DO NOT use when: 尚未完成前兩階段健檢。"
 trigger: manual
 required_skills:
   - performance-audit

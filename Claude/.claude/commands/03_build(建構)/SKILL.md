@@ -1,6 +1,6 @@
 ---
 name: 03_build
-description: 兩階段建構工作流。第一階段：載入記憶、生成實作計畫、等待總監核准 GO。第二階段：實體寫入、記憶歸卡、驗證測試。
+description: "Use when: 正式建構功能、實作已核准計畫、新增工具或產品行為變更。流程包含計畫、GO、寫入、記憶歸卡與驗證。DO NOT use when: 純討論或沙盒實驗。"
 required_skills: [memory-ops, tech-stack-protocol, code-quality, security-sre]
 memory_awareness: full
 user-invocable: true
@@ -27,6 +27,8 @@ All Director-facing conversations, implementation plans, reports, and completion
 |---|---|---|---|
 
 Technical details may only appear after a `補充技術細節` section. File names may appear, but each file name MUST be paired with a plain-language purpose. Do not describe changes only with function names, variable names, metadata, schema fields, or CLI parameters.
+
+> [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.claude/skills/plugin-release-governance/SKILL.md` before planning changes.
 # [SKILL: /build — 建構計畫與執行]
 
 ## 0. Execution Mode Check (執行模式識別)
