@@ -4,7 +4,7 @@ description: >-
   AI_Rules VS Code 延伸模組與按鈕式管理入口。追蹤側邊欄 UI、命令註冊、PowerShell 腳本橋接、VSIX 打包設定與 Release
   asset 自動化。
 scopePath: Extensions/vscode-ai-rules-manager
-last_updated: '2026-05-19T19:25:00+08:00'
+last_updated: '2026-05-19T19:56:51+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -25,6 +25,7 @@ metadata:
 - Extensions/vscode-ai-rules-manager/package-lock.json
 - Extensions/vscode-ai-rules-manager/tsconfig.json
 - Extensions/vscode-ai-rules-manager/.vscodeignore
+- Extensions/vscode-ai-rules-manager/LICENSE
 - Extensions/vscode-ai-rules-manager/README.md
 - Extensions/vscode-ai-rules-manager/resources/ai-rules.svg
 - Extensions/vscode-ai-rules-manager/resources/icon.png
@@ -60,6 +61,9 @@ metadata:
 - **AI Rules Manager v0.1.6 (2026-05-19)**: 新增 GitHub Release 更新提醒；插件啟動時背景檢查 latest release，側邊欄提供「檢查插件新版」手動入口，有新版時只提示開啟 Release 下載，不做靜默下載或安裝。`package.json` 與 lockfile 升級到 `0.1.6`，VSIX 檔名同步為 `ai-rules-manager-0.1.6.vsix`。
 - **AI Rules Manager v0.1.7 (2026-05-19)**: Skill 架構整理使 Doctor 多檢查 Skill description 觸發品質，屬於延伸模組「健康檢查」按鈕的可見行為變更；`package.json` 與 lockfile 升級到 `0.1.7`，VSIX 檔名同步為 `ai-rules-manager-0.1.7.vsix`。
 - **AI Rules Manager v0.1.7 trigger hardening (2026-05-19)**: 同版 v0.1.7 追加 Doctor 檢查 workflow 入口觸發描述與 Shared Skill 負向邊界；不再另升 patch，重新打包同名 0.1.7 VSIX 以包含完整 Skill 觸發治理。
+- **VSIX Release Node 24 pipeline (2026-05-19)**: Release workflow 改用 `actions/checkout@v6`、`actions/setup-node@v6` 與 Node 24 建置，提前避開 GitHub Actions Node 20 淘汰；本次只維護發布管線，不升級 extension 版本。
+- **VSIX LICENSE packaging (2026-05-19)**: extension package 內補入 MIT `LICENSE`，讓 `vsce package` 不再出現缺少 LICENSE 的警告；repo root 也補同版授權檔對齊 README badge。
+- **Update reminder silent startup (2026-05-19)**: 更新提醒維持既有行為：啟動自動檢查若沒有新版或 GitHub API 失敗，只寫入 Output Channel；只有新版才跳通知。側邊欄手動「檢查插件新版」則必須回報已是最新版或錯誤。
 
 ## Known Issues
 
@@ -85,6 +89,8 @@ metadata:
 - **D13: VSIX 發布需要更新提醒層**：GitHub Release asset 只是下載來源，不是 IDE 原生自動更新通道；在 Marketplace / Open VSX 前，extension 應以 latest release 檢查提醒使用者手動下載新版 VSIX。
 - **D14: Doctor 可見語義變更也要 bump VSIX**：即使 TypeScript UI 未變，只要延伸模組按鈕呼叫的 Doctor 後端新增紅黃燈判斷，操作者看到的健康狀態就可能改變，應升級 patch 版本並重新打包。
 - **D15: 同一未發布 patch 可合併治理補強**：若版本尚未 tag/release，後續 Doctor 規則補強可併入同一 patch 重新打包；若已發布，才需要再 bump 下一個 patch。
+- **D16: 發布管線維護不必自動 bump VSIX**：只要沒有改 extension 功能或操作者可見後端結果，GitHub Actions / LICENSE 這類發布基礎設施修正可不升 patch；下一個正式版本 tag 會自然使用新版 pipeline。
+- **D17: 自動更新檢查不可產生無更新提示**：啟動時的背景檢查是低干擾提醒機制，不應在「沒有新版」時彈窗；需要完整狀態回饋時，操作者應使用手動檢查按鈕。
 
 ## Relations
 

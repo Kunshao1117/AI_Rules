@@ -5,7 +5,7 @@ description: >
   Skills-Sync.psm1 注入 Antigravity、Claude、Codex 三個平台。 Use when: 修改 Shared/
   下任何共用技能或平台治理資產時。
 scopePath: Shared/
-last_updated: '2026-05-19T19:29:28+08:00'
+last_updated: '2026-05-19T19:56:56+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -137,6 +137,8 @@ metadata:
 - **Skill governance contract (2026-05-19)**: 新增 `Shared/skill-governance.md` 作為 Skill 放置與觸發契約，規定核心規則只保留 always-on 安全底線、workflow/command 只做入口路由、Shared skills 承載按需載入操作細節、memory 記錄專案事實。
 - **Plugin release governance skill (2026-05-19)**: 新增 `plugin-release-governance` 作為第 37 套 Shared operational skill，集中管理插件升版、VSIX 打包、GitHub Release/tag/asset 與 GitHub latest release 更新提醒；三平台 workflow/command 入口只加載入閘門，不複製完整 playbook。
 - **Skill trigger effectiveness hardening (2026-05-19)**: GitNexus、Supabase 與 skill-factory 等相鄰技能補齊繁中/英文觸發詞與 `DO NOT use when` 邊界；Doctor 的技能品質檢查升級為檢查 Shared operational skill 是否具備雙語觸發與負向邊界。
+- **VSIX release playbook Node 24 guard (2026-05-19)**: `plugin-release-governance` 的 VSIX playbook 將 Node 24-compatible GitHub Actions、Node 24 打包與 LICENSE presence 納入發布檢查，避免每次插件發布重複漏看 GitHub Actions 淘汰訊號。
+- **Update reminder acceptance split (2026-05-19)**: `plugin-release-governance` 的 VSIX playbook 明確拆分自動與手動更新提醒驗收：自動啟動檢查無新版時保持靜默，手動檢查才回報已是最新版或錯誤。
 
 ## Known Issues
 
@@ -153,6 +155,8 @@ metadata:
 - **Shared policy 注入應保持冪等**：同步核心規則時應優先取代既有 marker block；只有 marker 不存在時才依 before/after pattern 插入，避免每次升級重複追加同一段治理文字。
 - **Skill 觸發語句是公共介面**：Codex 只會在觸發前看到 `name` 與 `description`；若使用時機只寫在正文，AI 可能不會讀取該技能。高風險發布技能必須把插件、VSIX、Release、版本、tag、更新提醒等觸發詞寫入 frontmatter description。
 - **負向邊界可降低技能誤觸發**：相鄰技能不只要寫 `Use when`，也要寫 `DO NOT use when`，讓 AI 在 GitNexus、Supabase、記憶與測試等相似技能間能排除錯誤路由。
+- **插件發布 playbook 要追蹤平台淘汰訊號**：VSIX 發布治理不只檢查版本與 tag，也要檢查 CI runtime 與 package metadata；GitHub Actions Node 20 淘汰、缺 LICENSE 這類警告應在下一次發布前先修。
+- **更新提醒要分清背景與手動**：背景檢查只負責在有新版時提醒，不能把「已是最新版」當成啟動通知；手動檢查才需要完整回饋，避免 IDE 每次啟動造成干擾。
 
 ## Relations
 

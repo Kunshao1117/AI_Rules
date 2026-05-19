@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-19T19:25:00+08:00'
+last_updated: '2026-05-19T19:56:44+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -14,6 +14,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # 專案系統記憶 (\_system)
 
 ## 專案身份與工作模式
@@ -22,7 +23,7 @@ metadata:
 - **工作模式**：框架維護與跨版本同步開發，包含規則升級、工作流新增、技能同步、部署腳本改良，以及記憶卡系統的架構迭代。
 - **技術堆疊**：PowerShell 統一部署引擎（Scripts/Deploy.ps1 + Scripts/modules/*.psm1）+ VS Code 延伸模組（TypeScript）+ Markdown / SKILL.md 治理規範 + cartridge-system MCP（記憶卡讀寫）+ Multi-MCP Gateway；語言：PowerShell + Markdown + TypeScript。
 - **總監角色**：繁體中文操作者（Director），具備框架架構決策權，非工程背景友善，以商業語言溝通，透過 Gemini IDE、Claude Code 與 OpenAI Codex 三平台協作。
-- **部署環境**：Windows 平台（pwsh），GitHub 遠端倉庫（https://github.com/Kunshao1117/AI_Rules.git），根目錄 `D:\AI_Rules` 為唯一推播基準點；無 CI/CD 自動化流水線。
+- **部署環境**：Windows 平台（pwsh），GitHub 遠端倉庫（https://github.com/Kunshao1117/AI_Rules.git），根目錄 `D:\AI_Rules` 為唯一推播基準點；GitHub Actions 僅用於 VSIX Release asset 自動打包與上傳。
 - **MCP 工具鏈**：cartridge-system（記憶卡核心）、github（版控）、gitnexus（代碼知識圖譜）、cloudflare-bindings/containers/observability、supabase、sentry、excel、a11y、context7、stitch、sequentialthinking、playwright，透過 Multi-MCP Gateway 統一接入。
 
 ## Tracked Files
@@ -31,6 +32,7 @@ metadata:
 - Antigravity/.agents/rules/00_core_identity.md
 - Antigravity/.agents/rules/07_mcp_guardrails.md
 - README.md
+- LICENSE
 - CHANGELOG.md
 - Shared/platform-capability-matrix.md
 - Shared/skill-governance.md
@@ -83,6 +85,8 @@ metadata:
 - **D39: Skill 知識壓縮層治理 (2026-05-19)**: `Shared/skill-governance.md` 定義 Skill Placement / Trigger Contract；安全底線留在核心規則，workflow/command 做入口路由，Shared skills 放按需載入操作細節。Doctor 的 `Measure-SkillQuality` 會把 description 觸發品質納入黃燈，避免 Skill 格式正確但 AI 不會自動讀取。
 - **D40: 插件交付治理共用化 (2026-05-19)**: `plugin-release-governance` 成為第 37 套 Shared operational skill，負責插件升版、VSIX 打包、GitHub Release/tag/asset 與更新提醒流程；插件發布相關 workflow/command 入口只加載入閘門，不複製完整 playbook。
 - **D41: Skill 觸發可靠性治理 (2026-05-19)**: 三平台 workflow/command description 統一補成 `Use when` 口徑；Doctor 同時檢查 Shared operational skill 的中英觸發詞、負向邊界，以及 workflow 入口是否描述何時啟動。
+- **D42: VSIX Release Node 24 路線 (2026-05-19)**: `.github/workflows/release-vsix.yml` 改用支援 Node 24 runtime 的官方 GitHub Actions，並以 Node 24 打包 VSIX；這是發布基礎設施維護，不代表 AI Rules Manager 功能版本升級。
+- **D43: 插件更新提醒靜默合約 (2026-05-19)**: AI Rules Manager 啟動自動檢查 GitHub latest release 時，只有新版才通知操作者；沒有新版或暫時無法檢查時只寫入 Output Channel。手動「檢查插件新版」才回報已是最新版或錯誤。
 
 ## Known Issues
 

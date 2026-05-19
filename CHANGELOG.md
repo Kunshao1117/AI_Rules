@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-19] VSIX Release Pipeline Node 24 Migration
+
+### chore
+- **Release workflow Node 24 migration** — VSIX Release workflow 升級為 Node 24 建置路線，改用支援 Node 24 runtime 的 GitHub 官方 actions，避免 Node 20 淘汰影響自動發布。
+- **VSIX license packaging** — 補齊 repo 與 AI Rules Manager extension package 的 MIT 授權檔，讓 VSIX 打包不再出現缺少 LICENSE 的警告。
+- **Update reminder silence contract** — 文件與插件發布 playbook 明確規定啟動自動檢查只在有新版時通知；沒有新版或暫時無法檢查時只寫入 Output Channel，手動檢查才回報完整狀態。
+
 ## [2026-05-19] AI Rules Manager v0.1.7
 
 ### feat

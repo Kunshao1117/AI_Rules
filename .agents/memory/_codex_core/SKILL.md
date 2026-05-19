@@ -4,7 +4,7 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.3）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-19T19:29:28+08:00'
+last_updated: '2026-05-19T19:57:01+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -83,6 +83,8 @@ metadata:
 - **AI Rules Manager 更新提醒文件同步 (2026-05-19)**: 根 README 的 VS Code 延伸模組段落補充 VSIX 手動安裝不等於 Marketplace 原生自動更新，AI Rules Manager v0.1.6 會透過 GitHub Release 檢查提醒使用者下載新版安裝檔；release 範例同步升到 `v0.1.6`。
 - **Skill 觸發治理同步 (2026-05-19)**: Codex README 與 `.codex/AGENTS.md` 的 Shared skill 數量同步到 37；`02/03/04/09/12` workflow skills 加入插件 / extension / VSIX / GitHub Release / version bump / tag / update reminder 情境的 `plugin-release-governance` 載入閘門，Codex 部署後總技能數為 54（37 Shared + 17 workflow）。
 - **Codex workflow trigger descriptions (2026-05-19)**: 17 個 `Codex/.agents/workflow-skills/*/SKILL.md` 的 description 補齊 `Use when` 與負向邊界，讓 Codex 語意觸發能先把任務導向正確 workflow，再由 workflow 載入必要 Shared Skill。
+- **VSIX Release Node 24 文件同步 (2026-05-19)**: 根 README 的 GitHub Release 自動建立段落補充 VSIX workflow 使用 Node 24 與 Node 24-compatible 官方 actions；此變更只影響發布管線說明，不改 Codex Edition 版本。
+- **插件更新提醒文件同步 (2026-05-19)**: 根 README 補明 AI Rules Manager 啟動自動檢查只有在 GitHub Release 有新版時通知；沒有新版或暫時無法檢查時只寫入 Output Channel，手動按鈕才回報完整狀態。
 
 
 ## Known Issues

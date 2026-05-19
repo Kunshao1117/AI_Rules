@@ -114,7 +114,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 
 ## 🧩 VS Code 延伸模組
 
-AI_Rules 也提供本機 VS Code 延伸模組管理器，適合不想記 PowerShell 指令的日常維護場景。第一版以 `.vsix` 本機安裝與 GitHub Release asset 分享為主；未來可再上架 Marketplace。手動安裝 VSIX 不等於 Marketplace 原生自動更新，因此延伸模組會查 GitHub Release 並提醒是否有新版安裝檔可下載。
+AI_Rules 也提供本機 VS Code 延伸模組管理器，適合不想記 PowerShell 指令的日常維護場景。第一版以 `.vsix` 本機安裝與 GitHub Release asset 分享為主；未來可再上架 Marketplace。手動安裝 VSIX 不等於 Marketplace 原生自動更新，因此延伸模組啟動時會查 GitHub Release；只有發現新版安裝檔時才通知，沒有新版或暫時無法連線時只寫入 Output Channel，不打擾操作者。
 
 ### 使用者會看到什麼
 
@@ -123,7 +123,7 @@ AI_Rules 也提供本機 VS Code 延伸模組管理器，適合不想記 PowerSh
 | 按鈕 | 行為 |
 |------|------|
 | **檢查更新** | 讀取 Git 狀態與三平台全域規則漂移，不修改檔案 |
-| **檢查插件新版** | 查詢 GitHub Release；若有新版 VSIX，提示開啟下載頁 |
+| **檢查插件新版** | 手動查詢 GitHub Release；有新版時提示開啟下載頁，沒有新版時也明確回報已是最新版 |
 | **查看更新內容** | 用白話整理更新影響與建議動作 |
 | **套用更新** | 顯示確認視窗後才執行 `git pull --ff-only` 與治理巡檢 |
 | **健康檢查** | 執行治理巡檢，包含全域規則、專案規則、工作流輸出契約與 project skill 缺連結/壞連結 |
@@ -157,7 +157,7 @@ npm run package
 
 ### GitHub Release 自動建立與附加 VSIX
 
-推送 tag `v0.1.7` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.7.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
+推送 tag `v0.1.7` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.7.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
 
 ---
 

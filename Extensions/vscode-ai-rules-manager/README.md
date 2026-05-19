@@ -1,11 +1,11 @@
 # AI Rules Manager for VS Code
 
-AI Rules Manager 是 AI_Rules 的 VS Code 側邊欄操作面板。第一版設計給本機安裝與 GitHub Release asset 分享使用，之後可再上架 Marketplace。手動安裝 VSIX 不會取得 Marketplace 原生自動更新，因此延伸模組會查 GitHub Release 並提醒是否有新版安裝檔。
+AI Rules Manager 是 AI_Rules 的 VS Code 側邊欄操作面板。第一版設計給本機安裝與 GitHub Release asset 分享使用，之後可再上架 Marketplace。手動安裝 VSIX 不會取得 Marketplace 原生自動更新，因此延伸模組啟動時會查 GitHub Release；只有發現新版安裝檔時才通知，沒有新版或暫時無法連線時只寫入 Output Channel，不打擾操作者。
 
 ## 功能
 
 - 檢查更新：讀取 Git 與全域規則狀態。
-- 檢查插件新版：查 GitHub Release 是否有新版 VSIX 可下載。
+- 檢查插件新版：手動查 GitHub Release 是否有新版 VSIX 可下載；沒有新版時也會明確回報已是最新版。
 - 查看更新內容：用白話列出更新影響。
 - 套用更新：確認後才執行 `git pull --ff-only`。
 - 健康檢查：呼叫 AI_Rules 治理巡檢，包含專案規則、工作流輸出契約、Shared Skill 中英觸發詞、workflow 入口觸發品質與 project skill 缺連結/壞連結。
@@ -43,7 +43,7 @@ npm run package
 4. 從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介
 5. 將 `ai-rules-manager-0.1.7.vsix` 上傳到該 release 的 Assets
 
-若 tag 與 `package.json` 版本不一致，workflow 會失敗，不會建立或更新 Release。需要補跑時，可在 GitHub Actions 頁面手動執行 workflow 並輸入 tag；若 Release 已存在，workflow 會更新簡介並覆蓋同名 VSIX asset。
+Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 GitHub Actions。若 tag 與 `package.json` 版本不一致，workflow 會失敗，不會建立或更新 Release。需要補跑時，可在 GitHub Actions 頁面手動執行 workflow 並輸入 tag；若 Release 已存在，workflow 會更新簡介並覆蓋同名 VSIX asset。
 
 ## 設定
 
