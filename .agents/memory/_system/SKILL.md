@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-22T01:55:31+08:00'
+last_updated: '2026-05-22T02:18:34+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -89,6 +89,7 @@ metadata:
 - **D43: 插件更新提醒靜默合約 (2026-05-19)**: AI Rules Manager 啟動自動檢查 GitHub latest release 時，只有新版才通知操作者；沒有新版或暫時無法檢查時只寫入 Output Channel。手動「檢查插件新版」才回報已是最新版或錯誤。
 - **D44: 三平台子代理治理建構 (2026-05-22)**: 子代理治理正式收斂為「Shared 共用語義 + 平台 adapter」。Shared 層只定義 Delegation Gate、evidence branch、唯讀邊界、主代理整合責任與固定證據包格式；Antigravity / Gemini、Claude Code、Codex 各自在平台入口轉譯成對應子代理或插件能力。Doctor 新增 Subagent Vocabulary Drift，避免 Shared 技能硬寫平台工具名，也避免 Codex workflow 混入 Claude 舊式 Agent subagent_type 語彙。
 - **D45: Subagent vocabulary Red gate (2026-05-22)**: 04-fix 將 Shared 未標註平台子代理工具名從 Doctor Yellow 提升為 Red；Shared 主體不得硬編平台狀態檔、子代理工具名或 CLI 工具函式名，合法平台語彙只能出現在明確標示的 adapter / 平台轉譯區塊。
+- **D46: Doctor PS5.1 Join-Path 相容修復 (2026-05-22)**: `Measure-SubagentVocabularyDrift` 的 Codex 掃描根目錄改用具名參數與括號包覆的 `Join-Path`，避免 VS Code extension / Windows PowerShell 5.1 將多個路徑誤綁成 `ChildPath` 陣列而中斷平台治理巡檢。
 
 ## Known Issues
 
@@ -115,6 +116,7 @@ metadata:
 - **D17: Workflow description 是路由介面**: workflow / command 的 `description` 不應只描述內部步驟，也要寫出總監會怎麼觸發；否則 AI 可能知道流程存在，卻不會在正確任務自動載入。
 - **D18: 子代理是證據分支，不是第二個交付主代理**: 三平台可以用不同的 subagent / plugin / browser 能力蒐證，但 GO、memory、commit、push、部署與 mutating MCP 永遠留在主代理整合，Shared 規範不得把任一廠商工具名當成共用語義。
 - **D19: Shared vocabulary drift 必須阻斷**: 若 Shared 主體硬寫平台工具名，代表共用語義已被污染；Doctor 應回 Red，而不是只提示 Yellow。
+- **D20: Doctor 模組要兼容 extension 的 Windows PowerShell 5.1 host**: 即使 `pwsh` 與互動 shell 可通過，VS Code extension 仍可能走 Windows PowerShell 5.1；`Audit.psm1` 新增語法時必須用保守、具名參數寫法並同時驗證兩個 host。
 
 ## Documentation Files
 

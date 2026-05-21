@@ -1294,8 +1294,8 @@ function Measure-SubagentVocabularyDrift {
     }
 
     $codexRoots = @(
-        Join-Path $RepoRoot 'Codex\.agents\workflow-skills',
-        Join-Path $RepoRoot '.agents\skills'
+        (Join-Path -Path $RepoRoot -ChildPath 'Codex\.agents\workflow-skills')
+        (Join-Path -Path $RepoRoot -ChildPath '.agents\skills')
     )
     foreach ($root in $codexRoots) {
         if (-not (Test-Path -LiteralPath $root)) { continue }
