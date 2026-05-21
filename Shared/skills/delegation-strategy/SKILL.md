@@ -1,12 +1,13 @@
 ---
 name: delegation-strategy
 description: >
-  [Infra] Channel selection decision tree for task delegation (direct / native subagent / browser subagent / CLI analytical subagent / MCP tool).
-  Use when: 需要決定任務該走哪個管道（主腦直接處理/原生子代理/瀏覽器代理/CLI 分析代理/MCP 工具）、或首次設計委派架構 的場景。
+  [Infra] Vendor-neutral Delegation Gate and channel selection decision tree
+  for direct handling / evidence branch / browser branch / CLI branch / MCP direct.
+  Use when: 需要決定任務該由主腦直接處理、交給唯讀證據分支、瀏覽器證據分支、CLI 分析分支，或由主腦直接呼叫 MCP 工具的場景。
   DO NOT use when: 已確定管道為瀏覽器且需要執行測試（用 browser-testing）、已確定管道為 CLI 且需要掃描（用 code-audit）。
 metadata:
   author: antigravity
-  version: "5.2"
+  version: "6.0"
   origin: framework
   kind: operational
   memory_awareness: none
@@ -15,49 +16,79 @@ metadata:
 
 # Delegation Strategy (委派策略)
 
-## 1. Channel Selection Matrix (管道選擇矩陣)
+## 1. Delegation Gate (委派閘門)
 
 Evaluate in this order:
 
-1. **Simple or blocking task?** → Use **direct** handling by the Master Agent
-2. **Parallel read-only branch?** → Use **native subagent** when the platform provides one
-3. **Browser/UI verification?** → Use **browser subagent**. Load `browser-testing` Skill
-4. **Large CLI-only analysis?** → Use **CLI analytical subagent**. Load `code-audit` or `code-diagnosis`
-5. **Real-time tool access?** (Maps, docs, database, cloud, design) → Use **MCP tool** directly from the Master Agent
-6. **None of above?** → Master Agent handles directly
+1. **Simple or blocking task?** -> `direct`
+2. **Independent read-only investigation?** -> `evidence branch`
+3. **Browser/UI verification?** -> `browser branch`; load `browser-testing`
+4. **Large CLI-only analysis?** -> `CLI branch`; load `code-audit` or `code-diagnosis`
+5. **Real-time tool access?** (Maps, docs, database, cloud, design) -> `MCP direct`
+6. **None of above?** -> `direct`
 
-> **Hot-Path Exclusion**: CLI is NOT for tasks needing immediate feedback on code just written. Use `run_command` directly.
+> **Hot-Path Exclusion**: CLI branch is NOT for tasks needing immediate feedback on code just written. Use the main agent's terminal tool directly.
 
-> **Shared Policy Source**: 子代理啟用條件與唯讀邊界以 `Shared/policies/subagent-invocation.md` 為唯一來源；本技能只負責選擇管道。
+> **Shared Policy Source**: 子代理啟用條件與唯讀邊界以 `Shared/policies/subagent-invocation.md` 為唯一來源；本技能只負責管道選擇與平台中立任務包格式。
 
-| Channel                  | Context             | Speed  | Output         |
-| ------------------------ | ------------------- | ------ | -------------- |
-| direct                   | Main thread         | Fast   | Integrated work |
-| native subagent          | Isolated reasoning  | Medium | Structured report |
-| browser subagent         | Isolated DOM/browser | Slow   | Browser report |
-| CLI analytical subagent  | Isolated CLI        | Medium | File or text report |
-| MCP tool                 | Main-thread tool    | Fast   | Tool response |
+| Channel | Context | Speed | Output |
+|---|---|---|---|
+| direct | Main thread | Fast | Integrated work |
+| evidence branch | Isolated read-only reasoning | Medium | Evidence packet |
+| browser branch | Isolated DOM/browser observation | Slow | Browser evidence packet |
+| CLI branch | Isolated CLI analysis | Medium | File or text report |
+| MCP direct | Main-thread tool | Fast | Tool response |
 
-## 2. Subagent Auto-Invocation Boundary (子代理自動啟用邊界)
+## 2. Evidence Branch Boundary (證據分支邊界)
 
-Use a subagent when all are true:
+Use an evidence branch when all are true:
 
 1. The branch is read-only and independently bounded
 2. The Master Agent can continue non-overlapping work
-3. The result is useful as evidence, risk review, or verification
+3. The result is useful as evidence, risk review, compatibility review, or verification
 4. The task can be reported with the fixed format: `發現 / 證據 / 風險 / 建議 / 是否阻塞`
 
-Do not use a subagent when the next main-thread action is blocked on that answer, the task needs secrets/login state, or the branch would modify source files, memory cards, git state, deployments, issues, pull requests, cloud resources, or mutating MCP state.
+Do not use an evidence branch when the next main-thread action is blocked on that answer, the task needs secrets/login state, or the branch would modify source files, memory cards, git state, deployments, issues, pull requests, cloud resources, or mutating MCP state.
 
-## 3. CLI Role Boundary (CLI 角色邊界)
+## 3. Platform Adapter Mapping (平台轉譯)
 
-CLI analytical subagent = **read-only analytical subagent**. Three absolute constraints:
+Shared skills MUST describe the branch intent, not a vendor-specific tool name. The active platform maps that intent:
+
+| Platform | Evidence branch mapping |
+|---|---|
+| Antigravity / Gemini | Gemini CLI subagents, `@`-directed specialists, browser-capable agents, or Antigravity plugin adapters |
+| Claude Edition | Claude Code built-in/custom/plugin subagents via description-driven delegation, `@agent`, or governed `Agent(...)` permissions |
+| Codex Edition | Codex native subagents only when the Director explicitly asks, a workflow gate requires it, or `.codex/agents/*.toml` custom agents are intentionally configured |
+
+## 4. Evidence Packet Contract (證據包契約)
+
+Every delegated branch prompt must include:
+
+- Role: what the branch is responsible for
+- Read scope: paths, URLs, logs, or UI flows it may inspect
+- Forbidden actions: no source writes, memory writes, git operations, deployments, installs, mutating MCP, or external state changes
+- Stop condition: when to return
+- Return format:
+
+```text
+發現:
+證據:
+風險:
+建議:
+是否阻塞:
+```
+
+The Master Agent must review and integrate the packet. Evidence branches cannot decide GO, memory_commit, commit, push, release, deployment, or mutating MCP actions.
+
+## 5. CLI Role Boundary (CLI 角色邊界)
+
+CLI branch = read-only analytical branch. Three absolute constraints:
 
 1. **Read-Only Source Code** — FORBIDDEN from modifying project source code
 2. **Report-Only Write** — Can only write to `.agents/logs/` directory
 3. **Self-Context via Memory** — CLI reads memory cards for context
 
-## 4. CLI Delegation Details (委派細節)
+## 6. CLI Delegation Details (委派細節)
 
 > Full CLI delegation flow, prompt skeletons, and capability matrix in `references/` subdirectory:
 >
@@ -65,26 +96,27 @@ CLI analytical subagent = **read-only analytical subagent**. Three absolute cons
 > - `references/cli-prompt-skeleton.md` — Universal prompt skeleton
 > - `references/cli-capability-matrix.md` — Available tools and known limitations
 
-## 5. Deadlock Breaker (死鎖熔斷)
+## 7. Deadlock Breaker (死鎖熔斷)
 
-If validation loop fails **3 consecutive times**: Break → `notify_user` → Wait for Director.
+If validation loop fails **3 consecutive times**: Break -> notify Director -> Wait for Director.
 
 ### Counter Persistence (計數器持久化)
 
-Do NOT rely on conversational memory for failure counting. Use a state file:
+Do NOT rely on conversational memory for failure counting. Use a workflow-provided transient attempt counter. Shared skills do not name or create platform-specific state files.
 
-```
+```text
 On each validation failure:
-├── Read `.gemini/validation_state.json` (create if missing: { "attempts": 0 })
+├── Read the adapter-provided transient validation state (create if missing: { "attempts": 0 })
 ├── Increment attempts
-├── Write back to `.gemini/validation_state.json`
-└── If attempts >= 3 → Break → notify_user → Reset file to { "attempts": 0 }
+├── Persist attempts only through a workflow-authorized state mechanism
+├── If no authorized state target exists, report the failure count to the Master Agent
+└── If attempts >= 3 -> Break -> notify Director -> Reset file to { "attempts": 0 }
 
 On validation success:
-└── Delete or reset `.gemini/validation_state.json` to { "attempts": 0 }
+└── Delete or reset the adapter-provided transient validation state to { "attempts": 0 }
 ```
 
-## 6. Constraints (約束)
+## 8. Constraints (約束)
 
-- MCP servers are **tool extensions**, NOT delegation targets. They are invoked by the Master Agent, not assigned work like a subagent.
-- Adding/removing MCP follows `tech-stack-protocol` §4 governance
+- MCP servers are tool extensions, NOT delegation targets. They are invoked by the Master Agent, not assigned work like an evidence branch.
+- Adding/removing MCP follows `tech-stack-protocol` §4 governance.

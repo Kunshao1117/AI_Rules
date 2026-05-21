@@ -2,7 +2,7 @@
 name: _claude_core
 description: Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Claude/
-last_updated: '2026-05-19T19:25:00+08:00'
+last_updated: '2026-05-22T01:36:35+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -14,6 +14,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core 收容卡匣
 
 ## Tracked Files
@@ -71,6 +72,7 @@ metadata:
 - **Claude `.gitignore` 模板整理 (2026-05-18)**: `Claude/.gitignore` 移除 `.agents/memory` 忽略規則與舊殘留項，改以狀態註解保留本機 runtime、agent logs、備份/匯出產物；三平台共用 `.agents/memory/` 預設進版控。
 - **Claude Skill 觸發治理同步 (2026-05-19)**: Claude README 的 Shared skill 數量同步到 37；`02/03/04/09/12` Slash Command 入口加入插件 / extension / VSIX / GitHub Release / version bump / tag / update reminder 情境的 `plugin-release-governance` 載入閘門，實際共用細節由 `.claude/skills/` 注入的 Shared skill 承載。
 - **Claude command trigger descriptions (2026-05-19)**: 17 個 `.claude/commands/**/SKILL.md` description 補齊 `Use when` 與負向邊界，讓 Slash Command 入口可同時支援明確指令與語意路由。
+- **Claude Delegation Gate adapter (2026-05-22)**: `01_explore`、`06_test`、`07_debug`、`08_audit` command 入口改為只引用 Shared Delegation Gate，Claude adapter 再轉譯為 description-driven subagent、`@agent` 或受控 `Agent(...)`。command 入口不複製 Shared 規則，只保留平台轉譯提醒與唯讀 evidence branch 邊界。
 
 ## Known Issues
 
@@ -87,6 +89,7 @@ metadata:
 - **D07: Claude project skill discovery 入口要獨立檢查**：Claude 使用 `.claude/skills/` 作為技能掃描入口，因此 project skill 連結治理不能只檢查 `.agents/skills/`。
 - **D08: Slash Command 不複製共用 playbook**：Claude command 只負責任務入口與載入閘門；插件發布、VSIX、Release、版本與更新提醒的細節應放在 `Shared/skills/plugin-release-governance`，避免與 Antigravity/Codex 分叉。
 - **D09: Slash Command description 也是觸發契約**：即使 Claude 可用明確 slash command，description 仍要寫真實任務語句與排除條件，方便跨平台同步與 Doctor 自動審計。
+- **D10: Claude subagents 只回證據包**：Claude 可用內建、自訂或 plugin subagents，但框架語義仍要求 `發現 / 證據 / 風險 / 建議 / 是否阻塞`，且不得把 GO、memory、commit、push、部署或 mutating MCP 交給分支代理。
 
 ## Applicable Skills
 

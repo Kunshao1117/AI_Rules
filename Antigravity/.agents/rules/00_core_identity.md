@@ -14,11 +14,12 @@ trigger: always_on
 
 This block is generated from `Shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
 
-- **Moderate auto-invocation**: Use `browser_subagent` or the Gemini CLI read-only analytical adapter for bounded, parallel, read-only exploration when the task has independent branches such as broad file reading, documentation comparison, UI/browser verification, regression risk review, or compatibility checks. The Master Agent should continue non-overlapping work while adapters run.
-- **Do not invoke**: Do not use a subagent adapter when the next main-thread step is blocked on that answer, when the task is vague, when it requires secrets or login state, or when it would duplicate the Master Agent's current work.
-- **Master-Agent accountability**: The Master Agent remains the only integrator and Director-facing owner. It must review adapter output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
-- **Read-only boundary**: `browser_subagent` and Gemini CLI analytical adapters may read, search, inspect browser state, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
-- **Required report format**: Every Antigravity subagent adapter returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
+- **Delegation Gate**: Evaluate whether the task has an isolated read-only evidence branch before broad research, testing, debugging, audit work, or post-change verification.
+- **Invocation rule**: Antigravity / Gemini may map evidence branches to Gemini CLI subagents, `@`-directed specialists, browser-capable agents, or Antigravity plugin adapters when the branch is bounded and read-only.
+- **Do not invoke**: Do not use an Antigravity / Gemini adapter when the next main-thread step is blocked on that answer, when the task is vague, when it requires secrets or login state, or when it would duplicate the Master Agent's current work.
+- **Master-Agent accountability**: The Master Agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
+- **Read-only boundary**: Antigravity / Gemini evidence branches may read, search, inspect browser state, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
+- **Required report format**: Every Antigravity / Gemini evidence branch returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
 <!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->
 
 ## 2. Agentic Swarm UI Visibility (多代理人視圖透明度法則)

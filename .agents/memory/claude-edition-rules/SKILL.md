@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-19T19:25:00+08:00'
+last_updated: '2026-05-22T01:55:37+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -17,6 +17,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # Claude Edition 框架規範層
 
 ## Tracked Files
@@ -98,6 +99,8 @@ metadata:
 - **D31: PROJECT IDENTITY 受保護區塊比對 (2026-05-19)**: `Core.psm1` 支援排除並還原行首正式 `PROJECT IDENTITY` 區段，避免誤吃規則文件內的範例註解；並新增根層單檔掃描讓 Claude 專案同步涵蓋 `.claude/CLAUDE.md`。`AI-RulesManager.ps1 -Action SyncProjectRules` 只更新框架內容，`Audit.psm1` 的 `.codex/AGENTS.md` drift 檢查也忽略該專案身份區塊。
 - **D32: Skill 觸發品質審計 (2026-05-19)**: `Audit.psm1` 的 `Measure-SkillQuality` 新增 frontmatter description 解析與 TriggerStatus；description 過短、觸發條件只寫正文、插件發布技能缺少 VSIX/Release/version/tag/update reminder 等詞會顯示 Yellow，並納入平台治理巡檢總結。
 - **D33: Workflow trigger quality 審計 (2026-05-19)**: `Audit.psm1` 的 `Measure-WorkflowMetadata` 進一步把三平台 workflow/command description 的觸發品質納入 Yellow；入口必須有 `Use when` 或等效觸發語句與繁中任務語意。
+- **D34: Subagent vocabulary drift 審計 (2026-05-22)**: `Audit.psm1` 新增 `Measure-SubagentVocabularyDrift` 並納入 `Invoke-PlatformGovernanceAudit` 統計；Shared 技能若殘留未標註平台的子代理工具名會報 Red，Codex workflow 若殘留 Claude 舊式 Agent subagent_type 語彙會報 Red，既有 shared policy marker drift 檢查維持不變。
+- **D35: Shared 子代理語彙 Red gate 硬化 (2026-05-22)**: `Measure-SubagentVocabularyDrift` 擴充 `@agent`、native subagent、Gemini CLI subagent、browser-capable agent、Agent call 與獨立 subagent_type 等模式；明確 adapter / 平台轉譯章節豁免，避免合法平台轉譯說明誤報。
 
 ## Known Issues
 
@@ -121,6 +124,8 @@ metadata:
 - **D13: 受保護專案資訊不可用雜湊判斷漂移**: `AGENTS.md` / `CLAUDE.md` 類核心規則檔可能帶有專案身份區塊；健康檢查應比較框架內容，而不是把專案資訊當作需要覆寫的漂移。
 - **D11: 輸出契約也屬語義審計**: workflow metadata 完整不代表面向總監的輸出可讀；Doctor 必須直接掃 workflow 內容是否具備表格契約與技術細節隔離。
 - **D12: project skill discovery entry 不能是實體目錄**: `.agents/project_skills/` 是唯一原檔區，discovery 目錄只允許 SymbolicLink 或 Junction；自動修復不得覆寫實體目錄。
+- **D16: Doctor 要同時檢查 policy sync 與 vocabulary drift**: marker block 一致只代表平台核心規則有同步，不能保證 workflow / Shared skill 沒有混入其他廠商的工具語彙；語彙漂移應獨立列入平台治理總結。
+- **D17: Shared vocabulary drift 必須是阻斷級**: 若 Shared 主體硬寫平台工具名，代表共用語義已被污染；Doctor 應回 Red，而不是只提示 Yellow。
 
 ## Relations
 

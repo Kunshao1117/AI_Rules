@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-22] 三平台子代理治理建構
+
+### feat
+- **Delegation Gate semantic core** — `Shared/policies/subagent-invocation.md` 改為 vendor-neutral 的 Delegation Gate / evidence branch 模型，Shared 層只描述委派判斷、唯讀邊界、主代理整合責任與固定證據包格式。
+- **Platform adapter translation** — Antigravity / Gemini、Claude Code、Codex 三平台入口改為各自轉譯 Shared 語義，不再把任一平台的子代理工具名硬寫成共用規則。
+- **Subagent vocabulary drift audit** — Doctor 新增語彙漂移檢查，Shared 技能中的未標註平台工具名會以 Red 阻斷，並攔截 Codex workflow 殘留的 Claude 舊式 Agent subagent_type 語法。
+- **Shared vocabulary hardening** — `delegation-strategy` 與 CLI prompt skeleton 移除平台專屬狀態檔與硬編工具名，browser Auto-Pass 明確不得略過 Director GO / HITL gate。
+
+### docs
+- **Common semantics plus adapters** — 根 README、三平台 README、能力矩陣與 memory cards 同步說明「共用語義 + 平台 adapter」模型，取代舊的一刀切同源說法。
+
 ## [2026-05-19] VSIX Release Pipeline Node 24 Migration
 
 ### chore

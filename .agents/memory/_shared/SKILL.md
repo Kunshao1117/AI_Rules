@@ -5,7 +5,7 @@ description: >
   Skills-Sync.psm1 注入 Antigravity、Claude、Codex 三個平台。 Use when: 修改 Shared/
   下任何共用技能或平台治理資產時。
 scopePath: Shared/
-last_updated: '2026-05-19T19:56:56+08:00'
+last_updated: '2026-05-22T01:57:42+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -132,8 +132,10 @@ metadata:
 - **平台代理治理資產建立 (2026-05-17)**: `Shared/platform-capability-matrix.md` 成為三平台能力矩陣唯一來源，以 `native` / `adapter` / `manual` 表示能力落點；`Shared/mcp-profiles/README.md` 只提供 opt-in snippets，不由 Fresh/Upgrade/Audit 自動安裝或修改外部 MCP 設定。
 - **Operational skill metadata v2 補齊 (2026-05-17)**: 36 套 Shared skills 全部補齊 `metadata.kind: operational`，GitNexus 與 Supabase 技能補齊缺漏的 `author/version/origin`，`Measure-SkillQuality` 紅燈清零。
 - **MCP HITL 邊界補強 (2026-05-17)**: GitHub、PR review、Supabase、Cloudflare、Excel、Stitch、Sentry、memory、browser、performance、tech-stack、Trunk 等會觸及寫入、部署、推送、安裝或記憶歸卡的 Shared skills 補入 HITL Boundary；schema discovery 不等於 mutating execution。
-- **共用子代理啟用政策 (2026-05-18)**: 新增 `Shared/policies/subagent-invocation.md` 作為三平台子代理啟用語義唯一來源；`Skills-Sync.psm1` 會將平台轉譯區塊注入各平台核心規則 marker，`delegation-strategy` 僅負責 direct/native/browser/CLI/MCP 管道選擇。
+- **共用子代理啟用政策 (2026-05-18)**: 新增 `Shared/policies/subagent-invocation.md` 作為三平台子代理啟用語義唯一來源；`Skills-Sync.psm1` 會將平台轉譯區塊注入各平台核心規則 marker，後續由 2026-05-22 的 Delegation Gate 模型收斂為 direct / evidence branch / browser branch / CLI branch / MCP direct。
 - **Shared policy 注入輔助函式 (2026-05-19)**: `Skills-Sync.psm1` 承擔 shared subagent policy 的讀取與 marker block 同步能力，提供平台區塊讀取、既有 marker 取代與缺 marker 時的插入策略；三平台部署與專案同步可共用同一套注入語義。
+- **Delegation Gate 語義核心 (2026-05-22)**: `Shared/policies/subagent-invocation.md` 改為 vendor-neutral 的 Delegation Gate / evidence branch 契約；`delegation-strategy` 改為 direct、evidence branch、browser branch、CLI branch、MCP direct 的決策引擎；`browser-testing` 與 `test-automation-strategy` 改稱 browser evidence branch，由平台 adapter 決定實際工具。
+- **Shared 語彙漂移硬化 (2026-05-22)**: `delegation-strategy` 移除平台專屬 transient state path，CLI prompt skeleton 與 CLI capability matrix 改用抽象讀檔、搜尋、唯讀 shell 讀取與報告寫入能力，`browser-testing` 明確 Auto-Pass 不得略過 Director GO / HITL gate；`audit-engine` 也移除會誤觸平台工具掃描的 `Agent` 字樣。Shared 主體只能描述治理語義，實際工具名由平台 adapter 注入。
 - **Skill governance contract (2026-05-19)**: 新增 `Shared/skill-governance.md` 作為 Skill 放置與觸發契約，規定核心規則只保留 always-on 安全底線、workflow/command 只做入口路由、Shared skills 承載按需載入操作細節、memory 記錄專案事實。
 - **Plugin release governance skill (2026-05-19)**: 新增 `plugin-release-governance` 作為第 37 套 Shared operational skill，集中管理插件升版、VSIX 打包、GitHub Release/tag/asset 與 GitHub latest release 更新提醒；三平台 workflow/command 入口只加載入閘門，不複製完整 playbook。
 - **Skill trigger effectiveness hardening (2026-05-19)**: GitNexus、Supabase 與 skill-factory 等相鄰技能補齊繁中/英文觸發詞與 `DO NOT use when` 邊界；Doctor 的技能品質檢查升級為檢查 Shared operational skill 是否具備雙語觸發與負向邊界。
@@ -157,6 +159,8 @@ metadata:
 - **負向邊界可降低技能誤觸發**：相鄰技能不只要寫 `Use when`，也要寫 `DO NOT use when`，讓 AI 在 GitNexus、Supabase、記憶與測試等相似技能間能排除錯誤路由。
 - **插件發布 playbook 要追蹤平台淘汰訊號**：VSIX 發布治理不只檢查版本與 tag，也要檢查 CI runtime 與 package metadata；GitHub Actions Node 20 淘汰、缺 LICENSE 這類警告應在下一次發布前先修。
 - **更新提醒要分清背景與手動**：背景檢查只負責在有新版時提醒，不能把「已是最新版」當成啟動通知；手動檢查才需要完整回饋，避免 IDE 每次啟動造成干擾。
+- **Shared 技能只能描述治理語義**：共用層允許說 Delegation Gate、evidence branch、browser branch、CLI branch、MCP direct；平台專用子代理、browser、CLI 或 Agent 工具名只能放在明確標註的平台 adapter 區塊或平台入口。
+- **Shared 主體禁止硬編平台狀態檔與工具名**：若需要保存重試狀態或執行 CLI 分支，Shared skill 只能說 adapter-provided transient state / 平台核准能力；不得在共用層直接寫特定平台路徑或工具函式名。
 
 ## Relations
 

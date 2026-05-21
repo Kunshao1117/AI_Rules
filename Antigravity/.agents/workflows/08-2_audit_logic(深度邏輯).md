@@ -36,15 +36,15 @@ Technical details may only appear after a `補充技術細節` section. File nam
 
 **[SECURITY & COMPLIANCE MANDATE]**
 - Role: Master Agent
-- Operating Constraint: READ-ONLY analysis for source files and memory cards. The only permitted write target is `.agents/logs/audit_logic_results.md`.
-- State Passing: You MUST write your findings into `.agents/logs/audit_logic_results.md` for Phase 3 to read.
+- Operating Constraint: READ-ONLY analysis for source files and memory cards. CLI evidence branches return evidence only and must not write project files.
+- State Passing: The Master workflow is the only actor permitted to write `.agents/logs/audit_logic_results.md` as an intermediary Phase 3 report.
 
-## 1. CLI Tool Scan Delegation
+## 1. CLI Evidence Branch Tool Scan
 
-**Directive**: Delegate static code scanning to the CLI Subagent.
+**Directive**: Use the Delegation Gate to request a read-only CLI evidence branch for static code scanning. The branch returns an evidence packet; it does not write the intermediary audit log.
 1. Formulate the scan request.
 2. Output the exact Traditional Chinese delegation string for the Director to execute:
-   `@[CLI] 請讀取 .agents/skills/code-audit/SKILL.md 並執行其中定義的任務。請掃描專案的 ESLint 警告、TypeScript 型別錯誤與 npm audit 狀態。`
+   `@[CLI] 請讀取 .agents/skills/delegation-strategy/SKILL.md 與 .agents/skills/code-audit/SKILL.md，並以唯讀 CLI evidence branch 執行掃描。請回報 ESLint 警告、TypeScript 型別錯誤與 npm audit 狀態。`
 3. **[HALT]** Wait for the Director to run the CLI and confirm completion. DO NOT proceed to Step 2 until the CLI report is ready.
 
 ## 2. Scan Report Parsing
@@ -83,7 +83,7 @@ Technical details may only appear after a `補充技術細節` section. File nam
 **Directive**: You MUST compile ALL findings from Section 2 and Section 3 and write them to the intermediary log file.
 1. Target File: `.agents/logs/audit_logic_results.md`
 2. Structure: Markdown format with clear sections for `API Gaps`, `Security S1-S5`, `Dead Code`, and `A11Y Issues`.
-3. Action: Use native file write only for `.agents/logs/audit_logic_results.md`. DO NOT modify source files, configuration files, dependency files, or memory cards.
+3. Master workflow action: Use native file write only for `.agents/logs/audit_logic_results.md`. DO NOT delegate this write to an evidence branch. DO NOT modify source files, configuration files, dependency files, or memory cards.
 
 ## 5. Interface Layer (Output Mandate)
 

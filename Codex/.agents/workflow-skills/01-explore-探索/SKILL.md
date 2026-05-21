@@ -40,7 +40,8 @@ Use this skill when the user asks to run the migrated source command `01_explore
 - IF (research requires only text/data retrieval):
   - [FAST PATH] Use `WebSearch` + `WebFetch` tools directly.
 - IF (research requires UI/UX analysis or JS-rendered pages):
-  - [SLOW PATH] Delegate to `Agent(subagent_type="general-purpose")` with browser access.
+  - [SLOW PATH] Run the Delegation Gate from `delegation-strategy`.
+  - Codex adapter: request a browser evidence branch only when the Director explicitly asks for subagents or this workflow gate requires one; otherwise use available main-thread web/browser tools.
 
 ## 2. Devil's Advocate Protocol (魔鬼代言人協議)
 

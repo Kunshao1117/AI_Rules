@@ -85,11 +85,12 @@ Codex-specific governance:
 
 This block is generated from `Shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
 
-- **Moderate auto-invocation**: Use Codex native subagents for bounded, parallel, read-only exploration when the task has independent branches such as broad file reading, documentation comparison, UI/browser verification, regression risk review, or compatibility checks. The main agent should continue non-overlapping work while subagents run.
-- **Do not invoke**: Do not use a subagent when the next main-thread step is blocked on that answer, when the task is vague, when it requires secrets or login state, or when it would duplicate the main agent's current work.
-- **Main-agent accountability**: The main Codex agent remains the only integrator and Director-facing owner. It must review subagent output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
-- **Read-only boundary**: Codex subagents may read, search, inspect browser state, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
-- **Required report format**: Every Codex subagent returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
+- **Delegation Gate**: Evaluate whether the task has an isolated read-only evidence branch before broad research, testing, debugging, audit work, or post-change verification.
+- **Invocation rule**: Codex spawns native subagents only when the Director explicitly asks for subagents, when a workflow gate explicitly requires a Codex evidence branch, or when project-scoped `.codex/agents/*.toml` custom agents are intentionally configured for that workflow.
+- **Do not invoke**: Do not use a Codex subagent when the next main-thread step is blocked on that answer, when the task is vague, when it requires secrets or login state, or when it would duplicate the main agent's current work.
+- **Main-agent accountability**: The main Codex agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
+- **Read-only boundary**: Codex evidence branches may read, search, inspect browser state when available, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
+- **Required report format**: Every Codex evidence branch returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
 <!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->
 - **Automations**: Only workflow skills with `metadata.automation_safe: true` may be scheduled. In this framework, routine inspection is read-only; writes, installs, commits, pushes, and memory mutations require GO.
 - **Permissions**: Respect the active Codex sandbox and approval model. Framework gates are stricter than permissive local settings when source writes, external state, or credentials are involved.

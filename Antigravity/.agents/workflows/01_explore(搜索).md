@@ -34,8 +34,8 @@ Technical details may only appear after a `補充技術細節` section. File nam
 - IF (research requires only text retrieval or API data):
   - [FAST PATH] MUST use native search tools (`search_web`, `read_url_content`) to prevent resource waste.
 - IF (research explicitly requires UI/UX analysis, JS-rendering, or jumping login/CAPTCHA walls):
-  - [SLOW PATH] MUST trigger `browser_subagent`.
-  - [LOAD SKILL] Before executing browser_subagent, you MUST read:
+  - [SLOW PATH] MUST request a browser evidence branch through the Antigravity / Gemini adapter.
+  - [LOAD SKILL] Before requesting browser evidence, you MUST read:
     `view_file .agents/skills/browser-testing/SKILL.md`
 
 - **Scope**: Focus strictly on market feasibility, cutting-edge technology viability, and deep architectural research. If the Director just wants to chat, suggest using `/00_chat`.

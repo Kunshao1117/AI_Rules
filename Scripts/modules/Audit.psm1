@@ -1204,6 +1204,136 @@ function Measure-SharedSubagentPolicyDrift {
     }
 }
 
+function Measure-SubagentVocabularyDrift {
+    <#
+    .SYNOPSIS
+        檢查三平台子代理語彙是否混用：Shared 技能不得硬寫平台專用工具名，Codex workflow 不得使用 Claude 舊式 Agent(subagent_type) 語法。
+    .PARAMETER RepoRoot
+        AI_Rules 倉庫根目錄。
+    #>
+    param([string]$RepoRoot = ".")
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $results = New-Object System.Collections.ArrayList
+
+    function Add-SubagentVocabularyFinding {
+        param(
+            [string]$Severity,
+            [string]$Scope,
+            [string]$File,
+            [int]$Line,
+            [string]$Reason,
+            [string]$Text
+        )
+
+        $null = $results.Add([PSCustomObject]@{
+            Severity = $Severity
+            Scope    = $Scope
+            File     = $File
+            Line     = $Line
+            Reason   = $Reason
+            Text     = $Text
+        })
+    }
+
+    $sharedForbiddenPatterns = @(
+        'Agent\s*\(',
+        '\bsubagent_type\b',
+        '\bbrowser_subagent\b',
+        '\bbrowser_agent\b',
+        '\bspawn_agent\b',
+        '@agent\b',
+        '\bnative subagents?\b',
+        '\bGemini CLI subagents?\b',
+        '\bbrowser-capable agents?\b'
+    )
+    $sharedScanFiles = @()
+    $sharedSkillRoot = Join-Path $RepoRoot 'Shared\skills'
+    if (Test-Path -LiteralPath $sharedSkillRoot) {
+        $sharedScanFiles += @(Get-ChildItem -LiteralPath $sharedSkillRoot -Recurse -File -Include '*.md')
+    }
+    $sharedPolicyPath = Join-Path $RepoRoot 'Shared\policies\subagent-invocation.md'
+    if (Test-Path -LiteralPath $sharedPolicyPath) {
+        $sharedScanFiles += @(Get-Item -LiteralPath $sharedPolicyPath)
+    }
+
+    foreach ($file in $sharedScanFiles) {
+        $relative = Get-AuditRelativePath -RepoRoot $RepoRoot -Path $file.FullName
+        $lines = Get-Content -LiteralPath $file.FullName -Encoding UTF8
+        $insidePlatformTranslation = $false
+        $adapterSectionLevel = 0
+        for ($i = 0; $i -lt $lines.Count; $i++) {
+            if ($relative -eq 'Shared\policies\subagent-invocation.md' -and $lines[$i] -match '^##\s+(Platform Translation Blocks|平台轉譯區塊)') {
+                $insidePlatformTranslation = $true
+            }
+
+            if ($lines[$i] -match '^(#+)\s+') {
+                $headingLevel = $matches[1].Length
+                if ($adapterSectionLevel -gt 0 -and $headingLevel -le $adapterSectionLevel) {
+                    $adapterSectionLevel = 0
+                }
+                if ($lines[$i] -match '(Platform Adapter|Adapter Notes|平台轉譯)') {
+                    $adapterSectionLevel = $headingLevel
+                }
+            }
+
+            if ($insidePlatformTranslation -or $adapterSectionLevel -gt 0) { continue }
+
+            foreach ($pattern in $sharedForbiddenPatterns) {
+                if ($lines[$i] -match $pattern) {
+                    Add-SubagentVocabularyFinding -Severity 'Red' `
+                        -Scope 'Shared' `
+                        -File $relative `
+                        -Line ($i + 1) `
+                        -Reason 'Shared 共用層不得硬寫未標註平台的子代理工具名，請改成 evidence branch / platform adapter 語彙' `
+                        -Text $lines[$i].Trim()
+                    break
+                }
+            }
+        }
+    }
+
+    $codexRoots = @(
+        Join-Path $RepoRoot 'Codex\.agents\workflow-skills',
+        Join-Path $RepoRoot '.agents\skills'
+    )
+    foreach ($root in $codexRoots) {
+        if (-not (Test-Path -LiteralPath $root)) { continue }
+        Get-ChildItem -LiteralPath $root -Recurse -File -Include '*.md' | ForEach-Object {
+            $lines = Get-Content -LiteralPath $_.FullName -Encoding UTF8
+            for ($i = 0; $i -lt $lines.Count; $i++) {
+                if ($lines[$i] -match 'Agent\(subagent_type') {
+                    Add-SubagentVocabularyFinding -Severity 'Red' `
+                        -Scope 'Codex' `
+                        -File (Get-AuditRelativePath -RepoRoot $RepoRoot -Path $_.FullName) `
+                        -Line ($i + 1) `
+                        -Reason 'Codex workflow 不得使用 Claude 舊式 Agent(subagent_type) 語法' `
+                        -Text $lines[$i].Trim()
+                }
+            }
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 Subagent Vocabulary Drift"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
+    foreach ($finding in $results | Sort-Object Severity, Scope, File, Line) {
+        $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+        Write-Host ("  {0} {1} {2}:{3} — {4}" -f $finding.Severity, $finding.Scope, $finding.File, $finding.Line, $finding.Reason) -ForegroundColor $color
+    }
+
+    return [PSCustomObject]@{
+        Results     = @($results.ToArray())
+        RedCount    = $redCount
+        YellowCount = $yellowCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
 function Measure-GovernanceSemantics {
     <#
     .SYNOPSIS
@@ -1689,6 +1819,7 @@ function Invoke-PlatformGovernanceAudit {
     $runtime = Measure-RuntimeGlobalDrift -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
     $semantics = Measure-GovernanceSemantics -RepoRoot $RepoRoot
     $subagentPolicy = Measure-SharedSubagentPolicyDrift -RepoRoot $RepoRoot -TargetRoot $TargetRoot
+    $subagentVocabulary = Measure-SubagentVocabularyDrift -RepoRoot $RepoRoot
     $directorOutput = Measure-DirectorOutputContract -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $projectLinks = Measure-ProjectSkillLinks -TargetRoot $TargetRoot
 
@@ -1697,9 +1828,9 @@ function Invoke-PlatformGovernanceAudit {
     $skillRed = ($skillQuality | Where-Object { $_.OverallStatus -eq '🔴' }).Count
     $skillYellow = ($skillQuality | Where-Object { $_.OverallStatus -eq '🟡' }).Count
     $docStale = $docs.StaleHits.Count
-    $redTotal = $runtime.RedCount + $semantics.RedCount + $subagentPolicy.RedCount + $directorOutput.RedCount + $projectLinks.RedCount
+    $redTotal = $runtime.RedCount + $semantics.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $projectLinks.RedCount
     $redTotal += $skillRed
-    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $subagentPolicy.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount
+    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount
     $yellowTotal += $metadataYellow + $skillYellow
     $ok = $capability.CapabilityMatrix -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
@@ -1719,6 +1850,7 @@ function Invoke-PlatformGovernanceAudit {
         Runtime    = $runtime
         Semantics  = $semantics
         SubagentPolicy = $subagentPolicy
+        SubagentVocabulary = $subagentVocabulary
         DirectorOutput = $directorOutput
         ProjectLinks = $projectLinks
         RedCount   = $redTotal
@@ -1727,4 +1859,4 @@ function Invoke-PlatformGovernanceAudit {
     }
 }
 
-Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-GovernanceSemantics, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Invoke-PlatformGovernanceAudit
+Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Invoke-PlatformGovernanceAudit

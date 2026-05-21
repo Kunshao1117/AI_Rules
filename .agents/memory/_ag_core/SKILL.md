@@ -2,7 +2,7 @@
 name: _ag_core
 description: Antigravity 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Antigravity/
-last_updated: '2026-05-19T19:25:00+08:00'
+last_updated: '2026-05-22T01:55:34+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -84,6 +84,8 @@ metadata:
 - **Antigravity `.gitignore` 模板整理 (2026-05-18)**: `Antigravity/.gitignore` 移除無來源依據的歷史殘留規則，保留 `.vscode/`、`.cartridge/`、`.agents/logs/`、`.git_backup/`、`antigravity_export/`，並明確標示 `.agents/memory/` 預設進版控。
 - **Antigravity Skill 觸發治理同步 (2026-05-19)**: Antigravity README 與 `.agents/rules/AGENTS.md` 的 Shared skill 數量同步到 37；`02/03/04-1/09-1/12` workflow 入口加入插件 / extension / VSIX / GitHub Release / version bump / tag / update reminder 情境的 `plugin-release-governance` 載入閘門。
 - **Antigravity workflow trigger descriptions (2026-05-19)**: 20 個 `.agents/workflows/*.md` 入口補齊 `Use when` 與負向邊界；分階段流程如 `03-2`、`04-2`、`09-2` 明確標示只在前階段 GO 後使用。
+- **Antigravity / Gemini Delegation Gate adapter (2026-05-22)**: `01_explore`、`06_test`、`07_debug`、`08-2_audit_logic` workflow 改為 evidence branch / browser branch / CLI branch 語彙；Antigravity / Gemini adapter 才轉成 Gemini CLI subagents、`@` 指派、browser-capable agent 或 plugin adapter，並保留 Reader role、GO/HITL 與唯讀限制。
+- **Antigravity 08-2 log 邊界硬化 (2026-05-22)**: `08-2_audit_logic` 明確規定 CLI evidence branch 只回傳證據包，不寫專案檔；`.agents/logs/audit_logic_results.md` 只能由 Master workflow 在狀態彙整階段寫入，避免把 evidence branch 解讀成可寫入者。
 
 ## Known Issues
 
@@ -101,6 +103,8 @@ metadata:
 - **D07: 工作流也要明示總監契約**：核心規則存在仍不足以保證每個平台的 workflow 都遵守；面向總監的輸出格式應同時寫入實際 workflow 入口，讓審計器能直接驗證。
 - **D08: 平台 workflow 只放載入閘門**：Antigravity workflow 是入口層，不應複製完整插件發布 playbook；共用細節放在 `Shared/skills/plugin-release-governance`，由部署同步注入 `.agents/skills/`。
 - **D09: 分階段 workflow 要寫清楚入口條件**：`03-2`、`04-2`、`09-2` 不是一般語意入口，description 必須標示已取得前階段 GO，避免 AI 直接跳到執行階段。
+- **D10: Antigravity browser/CLI 分支是證據來源**：browser 或 CLI 分支只能蒐集證據、重現步驟與風險建議；任何原始碼、記憶、Git 或外部狀態修改仍必須回到主代理並通過對應 GO/HITL gate。
+- **D11: `.agents/logs/` 寫入是 Master workflow 狀態傳遞，不是 evidence branch 權限**：即使 audit workflow 允許寫中介 log，也必須明確指出執行者是 Master workflow；分支代理只能回報。
 
 ## Applicable Skills
 

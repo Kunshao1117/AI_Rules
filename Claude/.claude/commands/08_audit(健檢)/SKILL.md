@@ -38,6 +38,8 @@ Technical details may only appear after a `補充技術細節` section. File nam
 
 執行 §1.1–§1.5 並收集基礎盤點報告物件。
 
+Before starting broad scans, run the Delegation Gate. Claude adapter may use description-driven subagents, `@agent`, or governed `Agent(...)` permissions for isolated read-only evidence branches.
+
 ---
 
 ## Phase 2 → 深度邏輯審查

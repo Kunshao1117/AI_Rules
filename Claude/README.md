@@ -131,7 +131,8 @@ graph TB
 | **D06 安全防線** | Fresh 模式下以 `try/finally` 備份記憶卡到暫存目錄，部署中斷也不會損失資料 |
 | **記憶卡保護** | `.agents/memory/` 和 `.agents/project_skills/` 在升級時絕對不覆蓋 |
 | **確認閘門** | Upgrade 模式產出分類顏色差異報告，需使用者確認才套用 |
-| **Shared policy drift** | Doctor 檢查 Claude Agent marker block 是否仍由 `Shared/policies/subagent-invocation.md` 生成 |
+| **Shared policy drift** | Doctor 檢查 Claude adapter marker block 是否仍由 `Shared/policies/subagent-invocation.md` 生成 |
+| **Subagent vocabulary drift** | Doctor 檢查 Shared 技能是否誤把平台工具名寫成共用語義，避免 Claude、Codex、Antigravity 的委派語彙互相污染 |
 | **孤兒偵測** | 偵測源碼已刪除但目標仍存在的殘留檔案，加入 `-RemoveOrphans` 可自動清除 |
 | **衍生技能補建** | 每次部署自動掃描 `project_skills/`，補建缺少的符號連結 |
 
@@ -155,7 +156,7 @@ graph TB
 #### 分層治理架構
 
 **`core-identity.md`** — 核心原則（Always On）
-1. **專職化分工** — 主代理人直接執行，`Shared/policies/subagent-invocation.md` 轉譯出 Claude `Agent` 工具的唯讀委派邊界
+1. **專職化分工** — 主代理人直接執行，`Shared/policies/subagent-invocation.md` 只定義 Delegation Gate；Claude adapter 才轉成 description-driven subagent、`@agent` 或受控 `Agent(...)`
 2. **多代理人透明度** — 子代理人的修改必須回傳主代理人在介面呈現
 3. **生命週期強制** — Plan Mode → 驗證閘門 → 實體執行 → 記憶更新
 4. **禁止終端機文書處理** — 靜默閘門式攔截，支援 `[SUDO]` 覆寫
@@ -331,7 +332,7 @@ graph TD
 | **主規則載入** | `.agents/rules/` (IDE 自動注入) | `CLAUDE.md` @import 模組化 |
 | **計畫模式** | `task_boundary` 呼叫 | Claude Code 原生 `Plan Mode` |
 | **檔案寫入** | `write_to_file` / `replace_file_content` | `Write` / `Edit` 工具 |
-| **子代理人** | Shared policy → `browser_subagent` / Gemini CLI 唯讀 adapter | Shared policy → `Agent` 工具 |
+| **子代理人** | Delegation Gate → Gemini CLI / `@` 指派 / browser-capable agent / Antigravity plugin adapter | Delegation Gate → description-driven subagent / `@agent` / governed `Agent(...)` |
 | **任務追蹤** | `.gemini` scratchpad Artifact | `TodoWrite` 清單 |
 | **工作流觸發** | `.agents/workflows/` (IDE 注入) | `.claude/commands/` (Slash Command) |
 | **記憶啟動** | D7 Push 三路徑探測 | Turn=1 啟動探測協議 |
@@ -396,7 +397,7 @@ Claude/
     │   ├── github-ops/
     │   ├── gitnexus-*/          ← 代碼知識圖譜（6 個）
     │   └── ...                  ← 其餘 27 個技能
-    └── agents/                  ← 官方子代理人設定槽位（保留；啟用政策仍由 Shared policy 轉譯）
+    └── agents/                  ← 官方子代理人設定槽位（保留；啟用政策仍由 Delegation Gate 轉譯）
 
 .agents/memory/                  ← 專案記憶（與 Gemini 版共用，升級時受保護）
     └── (由 AI 執行 /02_blueprint 初始化)

@@ -15,7 +15,7 @@ metadata:
 
 # Audit Engine — Health Check Semantic Reasoning Engine
 
-> **Caller**: `/08_audit_index` workflow | **Executor**: AI Master Agent (not CLI)
+> **Caller**: `/08_audit_index` workflow | **Executor**: AI Master, not CLI
 > **Mandate**: All steps in this skill are unconditionally enforced. No [SUDO] bypass permitted.
 
 ## 1. Trigger Conditions

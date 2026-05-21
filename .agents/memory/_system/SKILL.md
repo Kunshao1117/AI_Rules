@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-19T19:56:44+08:00'
+last_updated: '2026-05-22T01:55:31+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -74,7 +74,7 @@ metadata:
 - **D28: Doctor 掃描口徑必須遞迴一致 (2026-05-18)**: Workflow Metadata、Governance Semantics、Director Output Contract 與文件一致性統一把 Claude `commands/**/SKILL.md` 視為 17 個 command 入口；避免只掃頂層 14 個 command 而漏掉 `08_audit` 三個階段子命令。
 - **D29: Project skill discovery 連結治理 (2026-05-18)**: `.agents/project_skills/<name>/SKILL.md` 是 project skill 唯一原檔；`.agents/skills/project-*` 與 `.claude/skills/project-*` 僅作 discovery 連結。Doctor 必須檢查缺連結、壞連結、連錯目標與實體目錄混入；`SyncProjectRules -Apply` 可修復 reparse point，但不得覆寫實體 `project-*`。
 - **D30: 分類式專案規則同步 (2026-05-18)**: VS Code 管理器與 `AI-RulesManager.ps1` 的專案同步改為 `Auto|Codex|Claude|Antigravity` 分類；Auto 只同步已安裝平台，未安裝平台只回報 Yellow，不自動建立目錄。Codex live 版本錨點改為 `.codex/VERSION`，`.agents/VERSION` 保留給 Antigravity。
-- **D31: 子代理政策同源轉譯 (2026-05-18)**: 子代理啟用政策不再由工作流或單一平台持有，改由 `Shared/policies/subagent-invocation.md` 定義共用語義，再轉譯注入 Codex、Claude、Antigravity 核心規則；Doctor 以 shared policy drift 檢查三平台 marker block 是否一致。
+- **D31: 子代理啟用轉譯 (2026-05-18)**: 子代理啟用政策不再由工作流或單一平台持有，改由 `Shared/policies/subagent-invocation.md` 定義共用語義，再轉譯注入 Codex、Claude、Antigravity 核心規則；Doctor 以 shared policy drift 檢查三平台 marker block 是否一致。
 - **D32: `.gitignore` 雙層策略整理 (2026-05-18)**: 框架 repo root `.gitignore` 只處理本倉庫 live deployment、本機索引、logs 與 Extension build artifacts；三平台模板 `.gitignore` 移除歷史殘留規則。部署到一般專案時，`Set-GitignoreEntries` 以 `AI_RULES_GITIGNORE` marker block 管理 `.cartridge/` 與 `.agents/logs/`，且 `.agents/memory/` 預設視為專案知識庫進版控。
 - **D33: VSIX Release asset 自動化 (2026-05-18)**: VS Code extension 發布流程改為推送 `v*` tag 後由 GitHub Actions 自動打包 `.vsix`、建立 GitHub Release 並上傳 asset；tag 必須符合 `v<Extensions/vscode-ai-rules-manager/package.json version>`，避免 release 名稱與插件包版本分裂。`.vsix` 仍為發布成品，不進 git。
 - **D34: Runtime drift 以文字內容為準 (2026-05-19)**: `D:\AI_Rules` 與 Antigravity / VS Code 類 IDE 的 globalStorage managed clone 可能因 Git checkout 產生 LF/CRLF 差異；全域規則與專案規則同步的健康判斷改以正規化後文字內容為準，避免全機器共用的 `~/.codex`、`~/.claude`、`~/.gemini` 因換行格式在多專案間反覆被誤判為不同。
@@ -87,6 +87,8 @@ metadata:
 - **D41: Skill 觸發可靠性治理 (2026-05-19)**: 三平台 workflow/command description 統一補成 `Use when` 口徑；Doctor 同時檢查 Shared operational skill 的中英觸發詞、負向邊界，以及 workflow 入口是否描述何時啟動。
 - **D42: VSIX Release Node 24 路線 (2026-05-19)**: `.github/workflows/release-vsix.yml` 改用支援 Node 24 runtime 的官方 GitHub Actions，並以 Node 24 打包 VSIX；這是發布基礎設施維護，不代表 AI Rules Manager 功能版本升級。
 - **D43: 插件更新提醒靜默合約 (2026-05-19)**: AI Rules Manager 啟動自動檢查 GitHub latest release 時，只有新版才通知操作者；沒有新版或暫時無法檢查時只寫入 Output Channel。手動「檢查插件新版」才回報已是最新版或錯誤。
+- **D44: 三平台子代理治理建構 (2026-05-22)**: 子代理治理正式收斂為「Shared 共用語義 + 平台 adapter」。Shared 層只定義 Delegation Gate、evidence branch、唯讀邊界、主代理整合責任與固定證據包格式；Antigravity / Gemini、Claude Code、Codex 各自在平台入口轉譯成對應子代理或插件能力。Doctor 新增 Subagent Vocabulary Drift，避免 Shared 技能硬寫平台工具名，也避免 Codex workflow 混入 Claude 舊式 Agent subagent_type 語彙。
+- **D45: Subagent vocabulary Red gate (2026-05-22)**: 04-fix 將 Shared 未標註平台子代理工具名從 Doctor Yellow 提升為 Red；Shared 主體不得硬編平台狀態檔、子代理工具名或 CLI 工具函式名，合法平台語彙只能出現在明確標示的 adapter / 平台轉譯區塊。
 
 ## Known Issues
 
@@ -111,6 +113,8 @@ metadata:
 - **D15: 框架模板差異與專案身份差異要分層**: 同一個核心規則檔可能同時承載框架規則與專案身份；同步工具必須只管理框架層，保留專案層。
 - **D16: Skill 不能承擔 always-on 安全底線**: Skill 是按需載入的知識壓縮層，不是冷啟動安全規則；凡是 GO gate、禁止靜默安裝、禁止 blanket staging 等不可漏行為，仍必須存在於核心規則或 workflow 入口。
 - **D17: Workflow description 是路由介面**: workflow / command 的 `description` 不應只描述內部步驟，也要寫出總監會怎麼觸發；否則 AI 可能知道流程存在，卻不會在正確任務自動載入。
+- **D18: 子代理是證據分支，不是第二個交付主代理**: 三平台可以用不同的 subagent / plugin / browser 能力蒐證，但 GO、memory、commit、push、部署與 mutating MCP 永遠留在主代理整合，Shared 規範不得把任一廠商工具名當成共用語義。
+- **D19: Shared vocabulary drift 必須阻斷**: 若 Shared 主體硬寫平台工具名，代表共用語義已被污染；Doctor 應回 Red，而不是只提示 Yellow。
 
 ## Documentation Files
 

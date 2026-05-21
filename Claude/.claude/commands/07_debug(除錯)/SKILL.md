@@ -52,7 +52,8 @@ Technical details may only appear after a `補充技術細節` section. File nam
 - Use `Read` tool to examine relevant source files.
 - Trace the call chain from stack trace to root cause.
 - For complex cross-module issues:
-  - Use `Agent(subagent_type="general-purpose")` to parallelize file reading if needed.
+  - Run the Delegation Gate.
+  - Claude adapter: use description-driven delegation, `@agent`, or governed `Agent(...)` permissions for an isolated read-only evidence branch when available.
 
 ## 4. Business Translation (商業語言翻譯)
 

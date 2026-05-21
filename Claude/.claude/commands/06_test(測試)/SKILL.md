@@ -37,16 +37,17 @@ Technical details may only appear after a `補充技術細節` section. File nam
 - IF (triggered directly by Director):
   - Ask Director for target URL or component.
 
-## 2. Browser Agent Delegation (瀏覽器代理人委派)
+## 2. Browser Evidence Branch (瀏覽器證據分支)
 
 > [LOAD SKILL] Read `.claude/skills/browser-testing/SKILL.md`.
 
-- Delegate to `Agent(subagent_type="general-purpose")` with browser access.
+- Run the Delegation Gate and use the Claude adapter for browser evidence.
+- Claude adapter: use description-driven delegation, `@agent`, or governed `Agent(...)` permissions for a read-only testing branch when available.
 - Task description MUST be in Traditional Chinese and include:
   1. 測試目標 URL 或路徑
   2. 預期行為描述
   3. 截圖要求（完成後回傳）
-  4. 回報格式（通過/失敗 + 截圖路徑）
+  4. 回報格式（`發現 / 證據 / 風險 / 建議 / 是否阻塞`）
 
 ## 3. Result Processing (結果處理)
 
@@ -61,5 +62,5 @@ Technical details may only appear after a `補充技術細節` section. File nam
 ---
 
 ## [SECURITY & COMPLIANCE]
-- **Role**: Reader — delegates to subagent, no direct source file writes.
+- **Role**: Reader — collects browser evidence, no direct source file writes.
 - **Memory**: none — test results are not persisted to memory cards.

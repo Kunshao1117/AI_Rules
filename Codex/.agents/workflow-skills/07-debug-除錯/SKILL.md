@@ -55,7 +55,8 @@ Use this skill when the user asks to run the migrated source command `07_debug(�
 - Use `Read` tool to examine relevant source files.
 - Trace the call chain from stack trace to root cause.
 - For complex cross-module issues:
-  - Use `Agent(subagent_type="general-purpose")` to parallelize file reading if needed.
+  - Run the Delegation Gate from `delegation-strategy`.
+  - Codex adapter: use native subagents only when the Director explicitly asks or this workflow gate requires an isolated read-only evidence branch.
 
 ## 4. Business Translation (商業語言翻譯)
 

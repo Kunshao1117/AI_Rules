@@ -19,20 +19,28 @@
 | 指令載入 | `native`：`.agents/rules/AGENTS.md` 與 IDE workflow 注入 | `native`：`.claude/CLAUDE.md` 與 `@import` 規則 | `native`：`.codex/AGENTS.md` 與 `Codex/global/config.toml` fallback |
 | MCP resources / prompts | `adapter`：以 Multi-MCP Gateway 統一探索與呼叫 | `native`：Claude MCP 支援 resources/prompts/commands 語義，框架用 Gateway 約束呼叫 | `native`：Codex MCP 設定與 tool approval，框架只提供 opt-in profile |
 | MCP transports | `adapter`：由 Gateway 封裝下游 stdio/http/SSE | `native`：Claude MCP profile 支援多 transport | `native`：Codex MCP profile 支援受控 server 設定 |
-| Subagents | `adapter`：Shared policy 轉譯為 `browser_subagent` / Gemini CLI 唯讀分析 adapter | `native`：Shared policy 轉譯為 Claude Code `Agent` 工具使用邊界 | `native`：Shared policy 轉譯為 Codex native subagents 使用邊界 |
+| Subagents | `adapter`：Shared evidence branch 語義轉譯為 Gemini CLI subagents、`@` 指派、browser-capable agent 或 Antigravity plugin adapter | `native`：Shared evidence branch 語義轉譯為 Claude Code built-in/custom/plugin subagents、description 自動委派、`@agent` 或 governed `Agent(...)` 權限模型 | `native`：Shared evidence branch 語義轉譯為 Codex native subagents；僅在 Director 明確要求、workflow gate 指定或 `.codex/agents/*.toml` custom agents 已配置時啟動 |
 | Automation-safe workflow | `adapter`：metadata `automation_safe` + workflow gate | `adapter`：metadata `automation_safe` + Slash Command gate | `native`：Codex Automations 可觸發唯讀 workflow；寫入仍需 GO |
 | 權限 / 確認模型 | `adapter`：Role Lock Gate + `GO` / `[SUDO]` | `native` + `adapter`：Claude 權限提示與框架 `GO` gate | `native` + `adapter`：Codex approval/sandbox 設定與框架 `GO` gate |
 | 記憶系統 | `adapter`：`.agents/memory/` + cartridge-system | `adapter`：共用 `.agents/memory/` | `adapter`：共用 `.agents/memory/` |
 
 ## Shared Subagent Invocation Policy
 
-子代理啟用語義以 `Shared/policies/subagent-invocation.md` 為唯一來源。三平台核心規則只保存由該檔生成的 marker block：
+子代理治理語義以 `Shared/policies/subagent-invocation.md` 為唯一來源。Shared 層只描述 Delegation Gate、read-only evidence branch、主代理整合責任與回報格式；平台專用工具名稱只能出現在該檔的平台轉譯區塊、平台專屬 workflow / command，或明確標示為對照的文件段落。
 
-- Codex：注入 `.codex/AGENTS.md`，對應 native subagents。
-- Claude：注入 `.claude/rules/core-identity.md`，對應 Claude `Agent` tool。
-- Antigravity：注入 `.agents/rules/00_core_identity.md`，對應 `browser_subagent` 與 Gemini CLI 唯讀分析 adapter。
+- Codex：注入 `.codex/AGENTS.md`，對應 native subagents、project custom agents 與 explicit/workflow-gated invocation。
+- Claude：注入 `.claude/rules/core-identity.md`，對應 Claude Code built-in/custom/plugin subagents、description delegation、`@agent` 與 governed `Agent(...)`。
+- Antigravity：注入 `.agents/rules/00_core_identity.md`，對應 Gemini CLI subagents、`@` 指派、browser-capable agent 與 Antigravity plugin adapter。
 
 MCP 仍是主代理直接呼叫的工具，不是委派目標；任何會改檔、改記憶、commit/push、部署、安裝或改外部狀態的工具都必須停在 GO / HITL gate。
+
+### Shared 層語彙邊界
+
+| 層級 | 可以使用的語彙 | 不應出現的語彙 |
+|------|----------------|----------------|
+| Shared 共用語義 | Delegation Gate、evidence branch、browser branch、CLI branch、MCP direct、Master Agent | 未標註平台的 Claude Agent call syntax、舊 browser subagent token、舊 browser agent token、Codex native spawn helper token |
+| 平台轉譯區塊 | 該平台真實工具或插件名，並需明確標示平台 | 其他平台工具名當作本平台執行指令 |
+| workflow / command 入口 | 引用 Delegation Gate，再描述平台 adapter | 直接複製另一平台的工具語法 |
 
 ## Workflow `SKILL.md` v2 Metadata
 

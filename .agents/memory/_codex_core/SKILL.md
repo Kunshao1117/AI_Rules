@@ -4,7 +4,7 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.3）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-19T19:57:01+08:00'
+last_updated: '2026-05-22T01:58:56+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -85,6 +85,8 @@ metadata:
 - **Codex workflow trigger descriptions (2026-05-19)**: 17 個 `Codex/.agents/workflow-skills/*/SKILL.md` 的 description 補齊 `Use when` 與負向邊界，讓 Codex 語意觸發能先把任務導向正確 workflow，再由 workflow 載入必要 Shared Skill。
 - **VSIX Release Node 24 文件同步 (2026-05-19)**: 根 README 的 GitHub Release 自動建立段落補充 VSIX workflow 使用 Node 24 與 Node 24-compatible 官方 actions；此變更只影響發布管線說明，不改 Codex Edition 版本。
 - **插件更新提醒文件同步 (2026-05-19)**: 根 README 補明 AI Rules Manager 啟動自動檢查只有在 GitHub Release 有新版時通知；沒有新版或暫時無法檢查時只寫入 Output Channel，手動按鈕才回報完整狀態。
+- **Codex Delegation Gate adapter (2026-05-22)**: `01-explore`、`06-test`、`07-debug`、`08-audit` 工作流改為引用 Shared Delegation Gate，不再使用 Claude 舊式 Agent subagent_type 語彙。Codex adapter 明確規定只有總監明確要求、workflow gate 指定，或專案配置 `.codex/agents/*.toml` 時才啟動 native subagents；一般 browser evidence branch 可留在主執行緒工具。
+- **Codex 子代理治理文件同步 (2026-05-22)**: 根 README / Codex README 對外說明子代理治理是「Shared 共用語義 + 平台 adapter」，並記錄 Doctor 會把 Shared 未標註平台子代理工具名視為 Red gate；Codex 仍不宣稱自動 spawn，主代理保留 GO、memory、commit、push、部署責任。
 
 
 ## Known Issues
@@ -108,6 +110,7 @@ metadata:
 - **Codex 05 Path A 必須指向 `.codex/AGENTS.md`**: 舊 `.Codex/*` 口徑會讓新專案身份寫入錯誤位置，也會讓同步保護無法覆蓋實際載入檔。
 - **插件發布情境要明示載入共用技能**: Codex 會把 workflow skills 與 operational skills 放在同一個 `.agents/skills` 搜尋面，因此高風險插件發布流程必須在 workflow 入口補明確 load gate，不能只期待語意觸發。
 - **Codex workflow 描述要避免只寫內部階段**: 語意觸發主要看 `name` 與 `description`；若 description 只寫「第一階段/第二階段」而不寫使用者會說的任務語句，Codex 容易漏載 workflow。
+- **Codex 不宣稱自動 spawn**: Codex 的子代理能力是平台 adapter 的執行語彙，不是 Shared 層的預設行為；除非總監明確要求或 workflow gate 指定，主代理應自己整合證據並維持 GO、memory、commit、push、部署責任。
 
 ## Relations
 

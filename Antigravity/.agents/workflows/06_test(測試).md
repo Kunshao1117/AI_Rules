@@ -39,7 +39,7 @@ Technical details may only appear after a `補充技術細節` section. File nam
 > 1. `view_file .agents/skills/browser-testing/SKILL.md`
 > 2. `view_file .agents/skills/test-automation-strategy/SKILL.md`
 
-- You MUST spawn the `browser_agent` for E2E visual testing.
+- You MUST request a browser evidence branch through the Antigravity / Gemini adapter for E2E visual testing.
 
 [TEST OUTPUT GATE] 根據結果執行單一路徑：
 - IF (全部通過): 印出「✅ E2E 測試全數通過 ({pass_count}/{total_count})」並產出含截圖的 walkthrough。

@@ -8,7 +8,7 @@
 ├── [SUDO] detected? → Allow Role Impersonation. Override role to Writer/SRE.
 └── Proceed to workflow body.
 ```
-- **Browser Gate**: browser_subagent usage follows `delegation-strategy` Skill. For workflows with Reader role, browser spawning requires explicit Director authorization.
+- **Browser Gate**: Browser evidence branch usage follows the `delegation-strategy` Skill and the active platform adapter. For workflows with Reader role, browser branch invocation requires explicit Director authorization.
   - **Exemption**: `/01_explore` has built-in browser authorization (autonomous research mandate) and is exempt from the Reader browser gate.
 - **Role Declaration**: The invoking workflow MUST declare the agent's role and specific permissions in its own `[SECURITY & COMPLIANCE MANDATE]` section below the `Inherits` reference.
 - **Tool Scope Cross-Validation（工具範圍交叉驗證）**: When a skill's `tool_scope` declares permitted tool categories, the Agent SHOULD verify that these do not exceed the workflow's role permissions. Skills loaded within a Reader-role workflow MUST NOT use `filesystem:write` or `terminal` scoped tools.

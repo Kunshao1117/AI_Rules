@@ -37,7 +37,8 @@ Technical details may only appear after a `補充技術細節` section. File nam
 - IF (research requires only text/data retrieval):
   - [FAST PATH] Use `WebSearch` + `WebFetch` tools directly.
 - IF (research requires UI/UX analysis or JS-rendered pages):
-  - [SLOW PATH] Delegate to `Agent(subagent_type="general-purpose")` with browser access.
+  - [SLOW PATH] Run the Delegation Gate.
+  - Claude adapter: use description-driven delegation, `@agent`, or governed `Agent(...)` permissions for a read-only browser evidence branch when available.
 
 ## 2. Devil's Advocate Protocol (魔鬼代言人協議)
 
