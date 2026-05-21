@@ -4,7 +4,7 @@ description: >-
   AI_Rules VS Code 延伸模組與按鈕式管理入口。追蹤側邊欄 UI、命令註冊、PowerShell 腳本橋接、VSIX 打包設定與 Release
   asset 自動化。
 scopePath: Extensions/vscode-ai-rules-manager
-last_updated: '2026-05-19T19:56:51+08:00'
+last_updated: '2026-05-22T02:36:29+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -64,6 +64,7 @@ metadata:
 - **VSIX Release Node 24 pipeline (2026-05-19)**: Release workflow 改用 `actions/checkout@v6`、`actions/setup-node@v6` 與 Node 24 建置，提前避開 GitHub Actions Node 20 淘汰；本次只維護發布管線，不升級 extension 版本。
 - **VSIX LICENSE packaging (2026-05-19)**: extension package 內補入 MIT `LICENSE`，讓 `vsce package` 不再出現缺少 LICENSE 的警告；repo root 也補同版授權檔對齊 README badge。
 - **Update reminder silent startup (2026-05-19)**: 更新提醒維持既有行為：啟動自動檢查若沒有新版或 GitHub API 失敗，只寫入 Output Channel；只有新版才跳通知。側邊欄手動「檢查插件新版」則必須回報已是最新版或錯誤。
+- **AI Rules Manager v0.1.8 operation wording precision (2026-05-22)**: 側邊欄、Command Palette、確認視窗與 `AI-RulesManager.ps1` 輸出明確拆分「AI_Rules 來源庫更新」、「VSIX 安裝包新版檢查」、「治理巡檢 Doctor」與「目前專案規則同步」。這是操作者可見行為修復，extension manifest 與 lockfile 升級到 `0.1.8`；本次只更新 source 與文件，不產出 VSIX、tag 或 release。
 
 ## Known Issues
 
@@ -91,6 +92,7 @@ metadata:
 - **D15: 同一未發布 patch 可合併治理補強**：若版本尚未 tag/release，後續 Doctor 規則補強可併入同一 patch 重新打包；若已發布，才需要再 bump 下一個 patch。
 - **D16: 發布管線維護不必自動 bump VSIX**：只要沒有改 extension 功能或操作者可見後端結果，GitHub Actions / LICENSE 這類發布基礎設施修正可不升 patch；下一個正式版本 tag 會自然使用新版 pipeline。
 - **D17: 自動更新檢查不可產生無更新提示**：啟動時的背景檢查是低干擾提醒機制，不應在「沒有新版」時彈窗；需要完整狀態回饋時，操作者應使用手動檢查按鈕。
+- **D18: 管理按鈕文案要標明目標與非目標**：當同一個面板同時管理 source repo、VSIX 安裝包與目前專案規則時，按鈕標題、確認視窗與 README 必須明確說明會動哪一層，也要說明不會動哪一層，避免「更新」一詞混淆來源庫、插件包與專案同步。
 
 ## Relations
 

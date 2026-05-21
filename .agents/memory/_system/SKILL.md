@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-22T02:18:34+08:00'
+last_updated: '2026-05-22T02:36:32+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -90,6 +90,7 @@ metadata:
 - **D44: 三平台子代理治理建構 (2026-05-22)**: 子代理治理正式收斂為「Shared 共用語義 + 平台 adapter」。Shared 層只定義 Delegation Gate、evidence branch、唯讀邊界、主代理整合責任與固定證據包格式；Antigravity / Gemini、Claude Code、Codex 各自在平台入口轉譯成對應子代理或插件能力。Doctor 新增 Subagent Vocabulary Drift，避免 Shared 技能硬寫平台工具名，也避免 Codex workflow 混入 Claude 舊式 Agent subagent_type 語彙。
 - **D45: Subagent vocabulary Red gate (2026-05-22)**: 04-fix 將 Shared 未標註平台子代理工具名從 Doctor Yellow 提升為 Red；Shared 主體不得硬編平台狀態檔、子代理工具名或 CLI 工具函式名，合法平台語彙只能出現在明確標示的 adapter / 平台轉譯區塊。
 - **D46: Doctor PS5.1 Join-Path 相容修復 (2026-05-22)**: `Measure-SubagentVocabularyDrift` 的 Codex 掃描根目錄改用具名參數與括號包覆的 `Join-Path`，避免 VS Code extension / Windows PowerShell 5.1 將多個路徑誤綁成 `ChildPath` 陣列而中斷平台治理巡檢。
+- **D47: AI Rules Manager v0.1.8 更新語意精準化 (2026-05-22)**: 插件面板、Command Palette、確認視窗、`AI-RulesManager.ps1`、README 與 CHANGELOG 統一把「檢查來源狀態 / 更新 AI_Rules 來源庫 / 檢查 VSIX 新版 / 治理巡檢 Doctor / 同步已安裝平台規則」拆成不同語義；extension 版本升到 `0.1.8`，但本次不自動產出 VSIX、tag 或 release。
 
 ## Known Issues
 
@@ -117,6 +118,7 @@ metadata:
 - **D18: 子代理是證據分支，不是第二個交付主代理**: 三平台可以用不同的 subagent / plugin / browser 能力蒐證，但 GO、memory、commit、push、部署與 mutating MCP 永遠留在主代理整合，Shared 規範不得把任一廠商工具名當成共用語義。
 - **D19: Shared vocabulary drift 必須阻斷**: 若 Shared 主體硬寫平台工具名，代表共用語義已被污染；Doctor 應回 Red，而不是只提示 Yellow。
 - **D20: Doctor 模組要兼容 extension 的 Windows PowerShell 5.1 host**: 即使 `pwsh` 與互動 shell 可通過，VS Code extension 仍可能走 Windows PowerShell 5.1；`Audit.psm1` 新增語法時必須用保守、具名參數寫法並同時驗證兩個 host。
+- **D21: 來源更新與專案同步不可共用模糊文案**: AI_Rules 管理來源庫、VSIX 安裝包與目前 workspace 治理規則是三個不同狀態面；公開文件與插件 UI 必須把「會寫哪裡」和「不會寫哪裡」同時講清楚。
 
 ## Documentation Files
 

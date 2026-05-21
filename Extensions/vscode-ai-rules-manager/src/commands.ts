@@ -17,16 +17,16 @@ export function registerAiRulesCommands(
     }));
   };
 
-  runReadOnly("aiRules.checkUpdate", "檢查更新", "Check");
+  runReadOnly("aiRules.checkUpdate", "檢查來源狀態", "Check");
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.checkExtensionUpdate", async () => {
     await updateChecker.checkForUpdates({ manual: true });
   }));
-  runReadOnly("aiRules.planUpdate", "查看更新內容", "Plan");
-  runReadOnly("aiRules.doctor", "健康檢查", "Doctor");
+  runReadOnly("aiRules.planUpdate", "查看來源更新影響", "Plan");
+  runReadOnly("aiRules.doctor", "治理巡檢 Doctor", "Doctor");
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.applyUpdate", async () => {
-    const ok = await confirm("套用更新會執行 git pull --ff-only，並重新執行治理巡檢。");
-    if (ok) await run("套用更新", "Apply", runner, status, panel, { apply: true });
+    const ok = await confirm("這會更新 AI_Rules 管理來源庫：執行 git pull --ff-only，然後跑治理巡檢。不會安裝新版 VSIX，也不會同步目前專案的 .agents / .claude / .codex。");
+    if (ok) await run("更新 AI_Rules 來源庫", "Apply", runner, status, panel, { apply: true });
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncGlobalRules", async () => {
@@ -93,7 +93,7 @@ async function runProjectSync(
   panel: AiRulesPanelProvider
 ): Promise<void> {
   await run(`${label}預覽`, "SyncProjectRules", runner, status, panel, { projectPlatform });
-  const ok = await confirm("要更新目前專案已安裝的對應平台規則嗎？未安裝平台不會被建立，memory / project_skills 不會被覆寫。");
+  const ok = await confirm("要把 AI_Rules source 中的規則、Shared Skills 與平台入口同步到目前專案已安裝的平台嗎？未安裝平台不會被建立，memory / project_skills 不會被覆寫。");
   if (ok) await run(label, "SyncProjectRules", runner, status, panel, { apply: true, projectPlatform });
 }
 

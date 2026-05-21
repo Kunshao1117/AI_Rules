@@ -122,13 +122,13 @@ AI_Rules 也提供本機 VS Code 延伸模組管理器，適合不想記 PowerSh
 
 | 按鈕 | 行為 |
 |------|------|
-| **檢查更新** | 讀取 Git 狀態與三平台全域規則漂移，不修改檔案 |
-| **檢查插件新版** | 手動查詢 GitHub Release；有新版時提示開啟下載頁，沒有新版時也明確回報已是最新版 |
-| **查看更新內容** | 用白話整理更新影響與建議動作 |
-| **套用更新** | 顯示確認視窗後才執行 `git pull --ff-only` 與治理巡檢 |
-| **健康檢查** | 執行治理巡檢，包含全域規則、專案規則、工作流輸出契約與 project skill 缺連結/壞連結 |
+| **檢查來源狀態** | 讀取 AI_Rules 管理來源庫的 Git 狀態，並檢查使用者層全域規則漂移；不修改檔案 |
+| **檢查 VSIX 新版** | 手動查詢 GitHub Release；有新版 VSIX 安裝包時提示開啟下載頁，沒有新版時也明確回報已是最新版 |
+| **查看來源更新影響** | 說明若更新 AI_Rules 來源庫，會執行哪些 Git 與治理巡檢動作 |
+| **更新 AI_Rules 來源庫** | 顯示確認視窗後才執行 `git pull --ff-only` 與治理巡檢；不安裝 VSIX，也不同步目前專案規則 |
+| **治理巡檢 Doctor** | 執行治理巡檢，包含 Shared Skill 品質、workflow metadata、policy marker、子代理語彙、全域規則漂移與 project skill links |
 | **同步使用者層規則** | 先預覽差異，確認後才寫入 `~/.codex`、`~/.claude`、`~/.gemini` |
-| **同步已安裝平台規則** | 先偵測目前專案實際安裝的平台，再同步對應規則、技能與 project skill discovery 連結 |
+| **同步已安裝平台規則** | 先偵測目前專案實際安裝的平台，再預覽並同步 `.agents` / `.claude` / `.codex` 對應規則、技能與 project skill discovery 連結 |
 | **同步 Codex** | 只同步已安裝 Codex 專案的 `.codex/`、Codex 工作流技能與 `.agents/skills/project-*` |
 | **同步 Claude** | 只同步已安裝 Claude 專案的 `.claude/rules`、`.claude/commands`、`.claude/skills` 與 `.claude/skills/project-*` |
 | **同步 Antigravity** | 只同步已安裝 Antigravity 專案的 `.agents/rules`、`.agents/workflows`、`.agents/skills` 與 `.agents/skills/project-*` |
@@ -157,7 +157,7 @@ npm run package
 
 ### GitHub Release 自動建立與附加 VSIX
 
-推送 tag `v0.1.7` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.7.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
+推送 tag `v0.1.8` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.8.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
 
 ---
 
@@ -492,7 +492,7 @@ sequenceDiagram
 | **確認閘門** | Upgrade 模式下產出分類顏色差異報告，需使用者確認才套用 |
 | **Governed bootstrap** | 全域觸發器不再自動下載執行；未初始化專案需等待 `GO INSTALL`，升級需等待 `GO UPGRADE` |
 | **治理語義審計** | `Deploy.ps1 -Action Audit` 會掃描舊路徑、自動安裝語義、blanket staging、automation-safe 變異與 MCP HITL 邊界；紅燈 exit 1 |
-| **總監輸出契約審計** | 健康檢查會掃描三平台 workflow、Codex live workflow、目前專案 `.codex/AGENTS.md` 與 project skill discovery 連結 |
+| **總監輸出契約審計** | 治理巡檢 Doctor 會掃描三平台 workflow、Codex live workflow、目前專案 `.codex/AGENTS.md` 與 project skill discovery 連結 |
 | **Experiment 例外** | `03-1_experiment` 是刻意設計的沙盒例外，允許直接寫檔並停用品質/安全/測試/記憶閘門，但不可標為 automation-safe |
 | **孤兒檔案偵測** | 自動偵測源碼已刪除但目標仍存在的殘留檔案 |
 | **孤兒清除選項** | 加入 `-RemoveOrphans` 參數可自動清除，預設僅標記 |

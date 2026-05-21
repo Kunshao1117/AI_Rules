@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-22] AI Rules Manager v0.1.8
+
+### fix
+- **Operation wording precision** — VS Code 側邊欄、Command Palette、確認視窗與管理腳本輸出明確區分 AI_Rules 來源庫更新、VSIX 安裝包新版檢查、治理巡檢 Doctor 與目前專案規則同步，避免「套用更新」被誤解成會安裝插件或同步 `.agents` / `.claude` / `.codex`。
+
+### chore
+- **AI Rules Manager v0.1.8** — extension manifest 與 lockfile 版本升級到 `0.1.8`，下一次正式 release asset 檔名對齊 `ai-rules-manager-0.1.8.vsix`。
+
 ## [2026-05-22] 三平台子代理治理建構
 
 ### feat

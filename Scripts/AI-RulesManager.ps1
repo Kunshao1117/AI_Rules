@@ -88,21 +88,23 @@ function Show-GitSnapshot {
 }
 
 function Invoke-Check {
-    Write-ManagerHeader "檢查更新"
+    Write-ManagerHeader "檢查 AI_Rules 來源狀態"
+    Write-Host "用途：讀取 AI_Rules 管理來源庫的 Git 狀態，並檢查使用者層全域規則漂移；不寫入檔案。"
     $snapshot = Get-GitSnapshot
     Show-GitSnapshot -Snapshot $snapshot
     $null = Measure-RuntimeGlobalDrift -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
 }
 
 function Invoke-Plan {
-    Write-ManagerHeader "查看更新內容"
+    Write-ManagerHeader "查看 AI_Rules 來源更新影響"
     $snapshot = Get-GitSnapshot
     Show-GitSnapshot -Snapshot $snapshot
     Write-Host ""
-    Write-Host "更新計畫"
-    Write-Host "- 若有遠端更新，套用時會執行 git pull --ff-only。"
+    Write-Host "來源庫更新計畫"
+    Write-Host "- 若有遠端更新，更新 AI_Rules 來源庫時會執行 git pull --ff-only。"
     Write-Host "- 套用後會重新執行平台代理治理巡檢。"
-    Write-Host "- 全域規則與孤兒檔案仍需另外按鈕確認，不會在 Plan 階段修改。"
+    Write-Host "- 這不會安裝新版 VSIX，也不會同步目前專案的 .agents / .claude / .codex。"
+    Write-Host "- 全域規則、專案規則與孤兒檔案仍需另外按鈕確認，不會在 Plan 階段修改。"
     if ($snapshot.DirtyCount -gt 0) {
         Write-Host ""
         Write-Host "目前工作樹不是乾淨狀態，建議先檢查以下變更：" -ForegroundColor Yellow
@@ -111,9 +113,9 @@ function Invoke-Plan {
 }
 
 function Invoke-ApplyUpdate {
-    Write-ManagerHeader "套用更新"
+    Write-ManagerHeader "更新 AI_Rules 來源庫"
     if ($WhatIf) {
-        Write-Host "WhatIf：將執行 git pull --ff-only，然後執行治理巡檢。"
+        Write-Host "WhatIf：將對 AI_Rules 管理來源庫執行 git pull --ff-only，然後執行治理巡檢；不安裝 VSIX，也不同步目前專案規則。"
         return
     }
     if (-not $Apply) {
@@ -126,7 +128,8 @@ function Invoke-ApplyUpdate {
 }
 
 function Invoke-Doctor {
-    Write-ManagerHeader "健康檢查"
+    Write-ManagerHeader "治理巡檢 Doctor"
+    Write-Host "用途：檢查 Shared Skill 品質、workflow metadata、policy marker、子代理語彙、全域規則漂移與 project skill links；不寫入檔案。"
     $null = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target
 }
 

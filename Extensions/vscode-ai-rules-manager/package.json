@@ -1,9 +1,9 @@
 {
   "name": "ai-rules-manager",
   "displayName": "AI Rules Manager",
-  "description": "Point-and-click VS Code manager for AI_Rules governance checks, updates, global rules, and orphan cleanup.",
+  "description": "Point-and-click VS Code manager for AI_Rules source updates, governance checks, rule sync, and orphan cleanup.",
   "icon": "resources/icon.png",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "publisher": "kunshao",
   "license": "MIT",
   "repository": {
@@ -55,23 +55,23 @@
     "commands": [
       {
         "command": "aiRules.checkUpdate",
-        "title": "AI Rules: 檢查更新"
+        "title": "AI Rules: 檢查來源狀態"
       },
       {
         "command": "aiRules.checkExtensionUpdate",
-        "title": "AI Rules: 檢查插件新版"
+        "title": "AI Rules: 檢查 VSIX 安裝包新版"
       },
       {
         "command": "aiRules.planUpdate",
-        "title": "AI Rules: 查看更新內容"
+        "title": "AI Rules: 查看來源更新影響"
       },
       {
         "command": "aiRules.applyUpdate",
-        "title": "AI Rules: 套用更新"
+        "title": "AI Rules: 更新 AI_Rules 來源庫"
       },
       {
         "command": "aiRules.doctor",
-        "title": "AI Rules: 健康檢查"
+        "title": "AI Rules: 治理巡檢 Doctor"
       },
       {
         "command": "aiRules.syncGlobalRules",
