@@ -2,7 +2,7 @@
 name: _claude_core
 description: Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Claude/
-last_updated: '2026-05-22T01:36:35+08:00'
+last_updated: '2026-05-29T01:07:28+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -65,8 +65,12 @@ metadata:
 - **公開安裝入口相容性升級 (2026-05-17)**: Claude README、全域 CLAUDE bootstrapper 與 `Claude/install.ps1` 改用 UTF-8 raw bytes 下載與 BOM 暫存寫入策略；installer 補入 `#Requires -Version 5.1` 並保存為 UTF-8 with BOM。
 - **Claude平台代理治理升級 (2026-05-17, 2026-05-18 修正)**: `.claude/CLAUDE.md` 補入 MCP prompts/resources、Agent 工具、automation-safe 與 opt-in MCP profile 治理語義；`.claude/commands/` 新增 `10_routine(巡檢)`，並將 `08_audit` 三個階段子命令納入遞迴掃描，現行 Slash Command 入口為 17 道。
 - **Claude 基底治理語義修復 (2026-05-17)**: `global/CLAUDE.md` 改為 governed install/upgrade；`09_commit` 在 GO 前只產生 CHANGELOG 草稿，GO 後才寫入 CHANGELOG 並用明確檔案清單 commit/push；Claude 技能路徑統一為 `.claude/skills/`。
-- **Claude 總監可讀輸出契約 (2026-05-18)**: `core-identity.md` 新增 Director-facing 表格契約，要求對話、計畫、報告與完成摘要先用「功能/目的、相關檔案、白話說明、寫入/風險」呈現，再補技術細節。
-- **Claude Slash Command 契約明示 (2026-05-18)**: 17 個 `.claude/commands/**/SKILL.md` 全部直接加入總監可讀輸出契約，確保 Slash Command 觸發時不只依賴 `core-identity.md`。
+- **Claude 總監可讀輸出契約初版 (2026-05-18, 2026-05-29 取代)**: `core-identity.md` 早期新增固定表格契約；此規則已由情境式輸出契約取代。
+- **Claude Slash Command 契約明示 (2026-05-18, 2026-05-29 更新)**: 17 個 `.claude/commands/**/SKILL.md` 全部直接加入總監可讀輸出契約；現行規則改為一般情境可短段落，正式情境才用表格或結構化摘要。
+- **Claude 技術詞彙翻譯閘門 (2026-05-29)**: Claude 核心身份規則（core-identity.md）、禁用詞規則（forbidden-vocab.md）與 17 個 Claude 指令規則（.claude/commands/**/SKILL.md）全面補入技術詞彙翻譯閘門；面向總監時每一次提到技術名稱都必須先寫白話名稱，技術名稱只能放在白話名稱後方的括號內。
+- **Claude 可讀性規則硬化 (2026-05-29)**: Claude 規範與指令規則的總監可讀輸出契約標題改成中文在前、英文在括號內；共用完成閘門的記憶提交工具（memory_commit）提示改成白話名稱加括號定位。
+- **Claude 情境式輸出契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步改為情境式總監可讀輸出。一般討論、狀態回報與簡短判斷可用短段落；正式計畫、寫入前風險、多檔案變更、完成報告、健檢報告與交接才用表格或結構化摘要。正式表格欄位統一為「事項、位置、影響、狀態」。
+- **Claude 位置欄精準定位 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步要求總監可讀表格的「位置」欄必須提供白話位置加括號內具體檔案、區塊、工具狀態或目錄範圍，避免只寫抽象範圍而讓總監無法定位。
 - **Claude Edition v1.2.2 (2026-05-18)**: patch bump 用於分類式專案同步；Auto 只有在 `.claude/CLAUDE.md`、`.claude/commands` 或 `.claude/rules` 存在時才同步 Claude，`.claude/skills/project-*` 仍由 `.agents/project_skills/` backfill 產生。
 - **Claude Edition v1.2.3 (2026-05-18)**: patch bump 用於接收 shared subagent policy marker；`core-identity.md` 由 `Shared/policies/subagent-invocation.md` 注入 Claude `Agent` tool 的唯讀啟用邊界，`CLAUDE.md` 版本同步更新。
 - **Claude `.gitignore` 模板整理 (2026-05-18)**: `Claude/.gitignore` 移除 `.agents/memory` 忽略規則與舊殘留項，改以狀態註解保留本機 runtime、agent logs、備份/匯出產物；三平台共用 `.agents/memory/` 預設進版控。

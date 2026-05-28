@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-22T02:36:32+08:00'
+last_updated: '2026-05-29T01:07:17+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -68,7 +68,7 @@ metadata:
 - **D22: 基底治理語義修復 (2026-05-17)**: 全域 bootstrapper 改為 governed install/upgrade，未初始化只輸出安裝計畫並等待 `GO INSTALL`，升級等待 `GO UPGRADE`；`Audit.psm1` 新增 Governance Semantics，紅燈 exit 1、黃燈只報告；`03-1_experiment` 保持沙盒例外但不得標為 automation-safe。
 - **D23: VS Code 延伸模組管理器 (2026-05-17)**: 建立 `Extensions/vscode-ai-rules-manager/` 作為點選式操作面板；真正治理行為集中在 `Scripts/AI-RulesManager.ps1`、`Deploy.ps1` 與 `Scripts/modules/*.psm1`。延伸模組只提供側邊欄按鈕與確認視窗，不靜默 pull、覆寫全域規則或清理孤兒檔案。
 - **D24: 受保護孤兒清理 (2026-05-17)**: `Remove-OrphanFiles` 必須先驗證候選路徑位於目標根目錄內，並跳過受保護目錄。Antigravity / VS Code CleanupOrphans 的 protected dirs 至少包含 `memory` 與 `project_skills`，避免清理程序碰到專案記憶或專案技能。
-- **D25: 總監可讀輸出契約 (2026-05-17)**: 所有面向總監的對話、計畫、報告與完成摘要必須先用「功能/目的、相關檔案、白話說明、寫入/風險」表格呈現；技術細節只能放在後續「補充技術細節」段落，避免以檔名、metadata、schema 或 CLI 參數作為第一層說明。
+- **D25: 總監可讀輸出契約初版 (2026-05-17, 2026-05-29 取代)**: 早期版本要求所有面向總監輸出固定先用白話表格；此規則已由 D50 的情境式輸出契約取代，保留歷史脈絡但不再作為現行輸出標準。
 - **D26: VS Code 管理腳本 5.1 編碼相容 (2026-05-18)**: `Scripts/AI-RulesManager.ps1` 是 extension 與 CLI 共用的治理橋接入口，必須保存為 UTF-8 with BOM；不得因 `pwsh` 可解析就改回 UTF-8 無 BOM，否則 Windows PowerShell 5.1 會在含中文/框線輸出時誤解碼並造成 ParserError。
 - **D27: 總監輸出契約進入 Doctor (2026-05-18)**: `Audit.psm1` 新增 Director Output Contract 與 Project Skill Links 檢查，直接掃三平台 workflow、Codex live workflow、目前專案 `.codex/AGENTS.md` 與 project skill 連結；VS Code 管理器同步區分「使用者層規則」與「目前專案規則」。
 - **D28: Doctor 掃描口徑必須遞迴一致 (2026-05-18)**: Workflow Metadata、Governance Semantics、Director Output Contract 與文件一致性統一把 Claude `commands/**/SKILL.md` 視為 17 個 command 入口；避免只掃頂層 14 個 command 而漏掉 `08_audit` 三個階段子命令。
@@ -91,6 +91,10 @@ metadata:
 - **D45: Subagent vocabulary Red gate (2026-05-22)**: 04-fix 將 Shared 未標註平台子代理工具名從 Doctor Yellow 提升為 Red；Shared 主體不得硬編平台狀態檔、子代理工具名或 CLI 工具函式名，合法平台語彙只能出現在明確標示的 adapter / 平台轉譯區塊。
 - **D46: Doctor PS5.1 Join-Path 相容修復 (2026-05-22)**: `Measure-SubagentVocabularyDrift` 的 Codex 掃描根目錄改用具名參數與括號包覆的 `Join-Path`，避免 VS Code extension / Windows PowerShell 5.1 將多個路徑誤綁成 `ChildPath` 陣列而中斷平台治理巡檢。
 - **D47: AI Rules Manager v0.1.8 更新語意精準化 (2026-05-22)**: 插件面板、Command Palette、確認視窗、`AI-RulesManager.ps1`、README 與 CHANGELOG 統一把「檢查來源狀態 / 更新 AI_Rules 來源庫 / 檢查 VSIX 新版 / 治理巡檢 Doctor / 同步已安裝平台規則」拆成不同語義；extension 版本升到 `0.1.8`，但本次不自動產出 VSIX、tag 或 release。
+- **D48: 技術詞彙翻譯閘門 (2026-05-29)**: 三平台面向總監的輸出不得裸露函式名稱、變數名稱、欄位名稱、命令參數、內部工具名或檔案路徑；每一次提到都必須先寫白話名稱，技術名稱只能放在白話名稱後方的括號內。治理巡檢（Doctor）的總監可讀輸出檢查（Director Output Contract）同步檢查此閘門，避免只有表格合格但內容仍看不懂。
+- **D49: 技術詞彙括號規則硬化 (2026-05-29)**: 治理巡檢（Doctor）的總監可讀輸出檢查（Director Output Contract）不只確認有技術詞彙翻譯閘門，也要確認規則明示「技術名稱只能放在括號內」與「技術名稱不得單獨出現」；三平台規範標題同步改成中文在前、英文在括號內。
+- **D50: 情境式總監可讀輸出契約 (2026-05-29)**: 總監可讀輸出不再每次強制表格。一般討論、狀態回報與簡短判斷可用短段落或短清單；正式計畫、寫入前風險、多檔案變更、完成報告、健檢報告與交接才使用表格或結構化摘要。表格欄位統一為「事項、位置、影響、狀態」，技術詞彙仍必須維持白話名稱在前、技術名稱只放括號內。
+- **D51: 表格位置欄精準定位 (2026-05-29)**: 總監可讀表格的「位置」欄不得只寫概念詞，必須先寫白話位置，再用括號標出具體檔案、區塊、工具狀態或目錄範圍；若不是單一檔案，也要明說它是工作區狀態、工具結果或目錄範圍。治理巡檢（Doctor）的總監可讀輸出檢查（Director Output Contract）同步檢查此規則。
 
 ## Known Issues
 
@@ -119,6 +123,7 @@ metadata:
 - **D19: Shared vocabulary drift 必須阻斷**: 若 Shared 主體硬寫平台工具名，代表共用語義已被污染；Doctor 應回 Red，而不是只提示 Yellow。
 - **D20: Doctor 模組要兼容 extension 的 Windows PowerShell 5.1 host**: 即使 `pwsh` 與互動 shell 可通過，VS Code extension 仍可能走 Windows PowerShell 5.1；`Audit.psm1` 新增語法時必須用保守、具名參數寫法並同時驗證兩個 host。
 - **D21: 來源更新與專案同步不可共用模糊文案**: AI_Rules 管理來源庫、VSIX 安裝包與目前 workspace 治理規則是三個不同狀態面；公開文件與插件 UI 必須把「會寫哪裡」和「不會寫哪裡」同時講清楚。
+- **D22: 技術詞彙可讀性不能只做首次翻譯**: 若後續描述改回裸技術詞，總監仍會失去脈絡；面向總監的每一次引用都要維持白話名稱，技術名稱只能放在白話名稱後方的括號內，且巡檢必須檢查此硬規則本身是否存在。
 
 ## Documentation Files
 

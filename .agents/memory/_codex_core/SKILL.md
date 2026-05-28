@@ -4,7 +4,7 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.3）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-22T02:36:36+08:00'
+last_updated: '2026-05-29T01:07:21+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -70,8 +70,12 @@ metadata:
 - **Codex平台代理治理升級 (2026-05-17)**: `.codex/AGENTS.md` 補入 Codex subagents、Automations、MCP config 與 metadata v2 治理語義；`workflow-skills/` 增加 `10-routine-巡檢` 唯讀 automation-safe 工作流，Codex 部署後技能總數當時為 53（36 Shared + 17 workflow）。
 - **Codex 基底治理語義修復 (2026-05-17)**: `global/AGENTS.md` 改為 governed install/upgrade；`09-commit-紀錄總結` 在 GO 前只輸出 CHANGELOG 草稿，GO 後才寫入 CHANGELOG 並用明確清單 stage/commit/push；舊大寫 Codex agents/commands 路徑語義由 Audit 紅燈攔截。
 - **VS Code 延伸模組方向釐清 (2026-05-17)**: 使用者所稱插件是 VS Code extension，而非 Codex plugin；根 README 已改以 `Extensions/vscode-ai-rules-manager/` 說明點選式管理入口，Codex plugin marketplace 不作為本版實作方向。
-- **Codex 總監可讀輸出契約 (2026-05-17)**: `.codex/AGENTS.md` 與 Codex `03-build-建構` / `04-fix-修復` 工作流要求所有面向總監的計畫、報告與完成摘要先用功能表格呈現，再補技術細節。
-- **Codex 全工作流契約覆蓋 (2026-05-18)**: 17 個 `Codex/.agents/workflow-skills/*/SKILL.md` 全部直接加入總監可讀輸出契約，並同步到 live `.agents/skills/`，避免 `$00-chat-聊天` 等非建構/修復工作流漏用白話表格。
+- **Codex 總監可讀輸出契約初版 (2026-05-17, 2026-05-29 取代)**: `.codex/AGENTS.md` 與 Codex `03-build-建構` / `04-fix-修復` 工作流早期要求所有正式回覆先用功能表格；此規則已由情境式輸出契約取代。
+- **Codex 全工作流契約覆蓋 (2026-05-18, 2026-05-29 更新)**: 17 個 `Codex/.agents/workflow-skills/*/SKILL.md` 全部直接加入總監可讀輸出契約，並同步到 live `.agents/skills/`；現行規則改為一般情境可短段落，正式情境才用表格或結構化摘要。
+- **Codex 技術詞彙翻譯閘門 (2026-05-29)**: Codex 總規範（Codex/.codex/AGENTS.md）與 17 個 Codex 工作流規則（Codex/.agents/workflow-skills/*/SKILL.md）全面補入技術詞彙翻譯閘門；面向總監時每一次提到技術名稱都必須先寫白話名稱，技術名稱只能放在白話名稱後方的括號內。目前工作區總規範（.codex/AGENTS.md）與目前工作區技能規則（.agents/skills/）同步套用，讓目前工作區立即生效。
+- **Codex 可讀性規則硬化 (2026-05-29)**: Codex 規範與目前工作區技能規則的總監可讀輸出契約標題改成中文在前、英文在括號內；共用完成閘門的記憶提交工具（memory_commit）提示改成白話名稱加括號定位。
+- **Codex 情境式輸出契約 (2026-05-29)**: Codex 總規範、17 個 Codex 工作流規則與目前工作區技能規則同步改為情境式總監可讀輸出。一般討論、狀態回報與簡短判斷可用短段落；正式計畫、寫入前風險、多檔案變更、完成報告、健檢報告與交接才用表格或結構化摘要。正式表格欄位統一為「事項、位置、影響、狀態」。
+- **Codex 位置欄精準定位 (2026-05-29)**: Codex 總規範、17 個 Codex 工作流規則與目前工作區技能規則同步要求總監可讀表格的「位置」欄必須提供白話位置加括號內具體檔案、區塊、工具狀態或目錄範圍，避免只寫「版本庫狀態」或「管理器巡檢」這類無法追蹤的概念詞。
 - **Codex project rules sync (2026-05-18)**: `AI-RulesManager.ps1 -Action SyncProjectRules -ProjectPlatform Codex` 同步 `.codex/`、Shared skills、Codex workflow skills 與 `.agents/skills/project-*`；Auto 模式只在偵測到 `.codex/AGENTS.md` 或 `.codex/config.toml` 時執行 Codex 同步。
 - **Codex workflow metadata 縮排修復 (2026-05-18)**: `03-build-建構` 與 `04-fix-修復` 的 `automation_safe: false` 必須位於 `metadata` 底下；若少縮排，Doctor 會視為缺少 `metadata.automation_safe`。
 - **Codex Edition v0.1.2 (2026-05-18)**: patch bump 用於分類式專案同步與版本錨點隔離；Codex live 版本寫入 `.codex/VERSION`，不再覆寫 Antigravity 使用的 `.agents/VERSION`。
@@ -111,6 +115,7 @@ metadata:
 - **Codex 05 Path A 必須指向 `.codex/AGENTS.md`**: 舊 `.Codex/*` 口徑會讓新專案身份寫入錯誤位置，也會讓同步保護無法覆蓋實際載入檔。
 - **插件發布情境要明示載入共用技能**: Codex 會把 workflow skills 與 operational skills 放在同一個 `.agents/skills` 搜尋面，因此高風險插件發布流程必須在 workflow 入口補明確 load gate，不能只期待語意觸發。
 - **Codex workflow 描述要避免只寫內部階段**: 語意觸發主要看 `name` 與 `description`；若 description 只寫「第一階段/第二階段」而不寫使用者會說的任務語句，Codex 容易漏載 workflow。
+- **Codex Director-facing 技術詞不可裸露**: Codex workflow skills 與 live `.agents/skills` 會分開存在；可讀性規則需同時同步 source 與 live，且巡檢要確認括號順序與不得單獨出現規則，否則目前專案仍可能輸出裸技術詞。
 - **Codex 不宣稱自動 spawn**: Codex 的子代理能力是平台 adapter 的執行語彙，不是 Shared 層的預設行為；除非總監明確要求或 workflow gate 指定，主代理應自己整合證據並維持 GO、memory、commit、push、部署責任。
 - **插件操作文案同步不代表 Codex 版本升級**: 根 README 會同時承載 Codex Edition 與 VS Code extension 說明；只更新 extension release 範例或操作文案時，不應改動 `Codex/VERSION` 或 `.codex/VERSION`。
 

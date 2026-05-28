@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-29] 情境式總監可讀輸出契約
+
+### feat
+- **情境式輸出契約** — 三平台核心規範、工作流與指令入口不再要求所有面向總監文字固定用表格開頭；一般討論與狀態回報可用短段落，正式計畫、寫入前風險、多檔案變更、完成報告、健檢報告與交接才使用表格或結構化摘要。
+- **精簡表格欄位** — 正式情境需要表格時，欄位統一為「事項、位置、影響、狀態」，降低欄位本身造成的閱讀負擔。
+- **位置欄精準定位** — 表格的「位置」欄必須提供白話位置加具體檔案、區塊、工具狀態或目錄範圍，避免只寫概念詞而無法追蹤來源。
+- **巡檢標準同步** — 治理巡檢改檢查情境式輸出規則、精簡表格欄位與技術詞括號規則，不再把早期固定四欄表格當成硬性標準。
+
+### docs
+- **歷史規則取代註記** — README、記憶卡與舊變更紀錄補上新規則語意，避免 AI 從舊紀錄恢復成每次強制表格。
+
+## [2026-05-28] 技術詞彙可讀性治理
+
+### feat
+- **技術詞彙翻譯閘門（Technical vocabulary translation gate）** — 三平台核心規則與工作流入口新增「技術詞彙翻譯閘門」，禁止面向總監的輸出只用函式名稱、變數名稱、欄位名稱、命令參數、內部工具名或檔案路徑描述變更。
+- **總監輸出巡檢強化（Director output audit hardening）** — 治理巡檢（Doctor）新增技術詞彙翻譯閘門要求，避免工作流只有表格與補充段落卻仍輸出裸技術詞。
+
+### docs
+- **總監可讀輸出文件（Director-readable output docs）** — README 補充技術詞每次出現時都必須先寫白話名稱，技術名稱只能放在白話名稱後方的括號內。
+- **中文前置標題** — 規範與工作流中的總監可讀輸出契約、技術詞彙翻譯閘門標題改成中文在前、英文名稱在括號內。
+
 ## [2026-05-22] AI Rules Manager v0.1.8
 
 ### fix
@@ -140,7 +161,7 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-18] 三平台總監可讀治理修復
 
 ### feat
-- **Workflow output contract coverage** — 三平台所有 workflow / command / workflow skill 皆明示總監可讀輸出契約，要求先用「功能/目的、相關檔案、白話說明、寫入/風險」表格，再補 `補充技術細節`。
+- **Workflow output contract coverage** — 三平台所有 workflow / command / workflow skill 皆明示總監可讀輸出契約；此早期版本要求固定白話表格，已由 2026-05-29 的情境式輸出契約取代。
 - **Director output contract audit** — `Doctor` 新增輸出契約覆蓋率檢查，直接掃 source workflow、Codex live workflow 與目前專案 `.codex/AGENTS.md`。
 - **Project rules sync** — VS Code 管理器新增「同步目前專案規則」，與「同步使用者層規則」分開處理，避免把全域 bootstrap 同步誤認為專案治理同步。
 
@@ -161,8 +182,8 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-17] 總監可讀輸出契約
 
 ### docs
-- **Director-readable output contract** — 三平台核心規則新增「總監可讀輸出契約」，要求對話、計畫、報告與完成摘要先用「功能/目的、相關檔案、白話說明、寫入/風險」表格呈現，再補技術細節。
-- **建構/修復計畫模板** — Codex `03-build-建構` 與 `04-fix-修復` 工作流要求計畫先列功能表格，避免以檔名、metadata、schema 或 CLI 參數作為第一層說明。
+- **總監可讀輸出契約（Director-readable output contract）** — 三平台核心規則新增「總監可讀輸出契約」；此早期版本要求固定白話表格，已由 2026-05-29 的情境式輸出契約取代。
+- **建構/修復計畫模板** — Codex 的建構流程規則（03-build-建構）與修復流程規則（04-fix-修復）要求計畫先用白話摘要，避免以檔名、內部欄位、資料結構或命令參數作為第一層說明。
 
 ## [2026-05-17] VS Code 延伸模組管理器
 

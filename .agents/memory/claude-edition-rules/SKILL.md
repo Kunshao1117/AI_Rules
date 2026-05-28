@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-22T02:17:34+08:00'
+last_updated: '2026-05-29T01:07:32+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -89,8 +89,8 @@ metadata:
 - **D21: 基底治理語義修復 (2026-05-17)**: 統一部署引擎的 `Audit.psm1` 新增 Governance Semantics；三平台 global bootstrapper 等待 `GO INSTALL` / `GO UPGRADE`；commit workflow 統一為 GO 前草稿、GO 後 CHANGELOG 寫入與明確檔案清單 commit/push；紅燈讓 `Deploy.ps1 -Action Audit` exit 1。
 - **D22: VS Code 管理器治理後端 (2026-05-17)**: `Deploy.ps1 -Action Global` 改成 dry-run 預設，只有 `-Apply` 才寫入使用者層全域規則；`Core.psm1` 寫入前建立備份；`Audit.psm1` 新增 Runtime Global Drift；`Scripts/AI-RulesManager.ps1` 成為 VS Code extension 的按鈕式後端。
 - **D23: 孤兒清理安全邊界 (2026-05-17)**: `Core.psm1` 的 `Remove-OrphanFiles` 新增目標根目錄驗證與 `ProtectedDirs` 跳過機制；Antigravity 升級與 VS Code 清理孤兒檔案時傳入 `memory` / `project_skills`，確保清理程序不碰專案記憶或專案技能。
-- **D24: Claude 總監可讀輸出契約 (2026-05-17)**: `Claude/.claude/rules/core-identity.md` 對齊三平台總監可讀輸出契約，所有面向總監的計畫、報告與完成摘要必須先用功能表格呈現，再補技術細節。
-- **D25: Claude command 輸出契約覆蓋 (2026-05-18)**: 所有 `Claude/.claude/commands/**/SKILL.md` 直接明示總監可讀表格與 `補充技術細節` 隔離規範，避免只靠核心規則導致 Slash Command 實際輸出不一致。
+- **D24: Claude 總監可讀輸出契約初版 (2026-05-17, 2026-05-29 取代)**: `Claude/.claude/rules/core-identity.md` 對齊三平台總監可讀輸出契約；早期版本要求固定功能表格，已由 D39 的情境式輸出契約取代。
+- **D25: Claude command 輸出契約覆蓋 (2026-05-18, 2026-05-29 更新)**: 所有 `Claude/.claude/commands/**/SKILL.md` 直接明示總監可讀輸出契約；現行規則改為一般情境可短段落，正式情境才用表格或結構化摘要。
 - **D26: Claude 巢狀 command 納入 Doctor (2026-05-18)**: `Audit.psm1` 的 Workflow Metadata、Governance Semantics 與文件一致性改用 `Claude/.claude/commands/**/SKILL.md` 遞迴口徑；`08_audit` 三個階段子命令已補齊 metadata v2。
 - **D27: Project skill 連結治理 (2026-05-18)**: `Core.psm1` backfill 可修復 `.agents/skills/project-*` 與 `.claude/skills/project-*` 的壞 reparse point；`Audit.psm1` 將實體 `project-*` 或連到 `.agents/project_skills/` 外部的情況列為 Red。
 - **D28: Shared subagent policy sync (2026-05-18)**: `Skills-Sync.psm1` 新增 shared policy marker 同步函式，三個 `Platform-*.psm1`、`Deploy.ps1` 與 `AI-RulesManager.ps1` 會把 `Shared/policies/subagent-invocation.md` 的平台轉譯區塊注入核心規則；`Audit.psm1` 新增漂移檢查。
@@ -102,6 +102,10 @@ metadata:
 - **D34: Subagent vocabulary drift 審計 (2026-05-22)**: `Audit.psm1` 新增 `Measure-SubagentVocabularyDrift` 並納入 `Invoke-PlatformGovernanceAudit` 統計；Shared 技能若殘留未標註平台的子代理工具名會報 Red，Codex workflow 若殘留 Claude 舊式 Agent subagent_type 語彙會報 Red，既有 shared policy marker drift 檢查維持不變。
 - **D35: Shared 子代理語彙 Red gate 硬化 (2026-05-22)**: `Measure-SubagentVocabularyDrift` 擴充 `@agent`、native subagent、Gemini CLI subagent、browser-capable agent、Agent call 與獨立 subagent_type 等模式；明確 adapter / 平台轉譯章節豁免，避免合法平台轉譯說明誤報。
 - **D36: Subagent vocabulary drift PS5.1 相容修復 (2026-05-22)**: `Measure-SubagentVocabularyDrift` 的 Codex 掃描根目錄改用逐項括號包覆的 `Join-Path -Path ... -ChildPath ...`，避免 VS Code extension / Windows PowerShell 5.1 將逗號後的路徑解析成 `ChildPath` 陣列而中斷 Doctor。
+- **D37: 技術詞彙翻譯閘門進入治理巡檢 (2026-05-29)**: 巡檢模組（Audit.psm1）的總監可讀輸出檢查（Director Output Contract）新增技術詞彙翻譯閘門；Claude 指令規則與平台規則同步要求每一次面向總監的技術名稱都要先寫白話名稱，技術名稱只能放在白話名稱後方的括號內，避免後續又回到裸代碼名稱。
+- **D38: 技術詞彙括號規則進入治理巡檢 (2026-05-29)**: 巡檢模組（Audit.psm1）新增嚴格檢查，要求總監可讀輸出契約必須明示「技術名稱只能放在括號內」與「技術名稱不得單獨出現」；Claude 指令規則標題同步改成中文在前、英文在括號內。
+- **D39: Claude 情境式輸出契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步改為情境式總監可讀輸出。一般討論、狀態回報與簡短判斷可用短段落；正式計畫、寫入前風險、多檔案變更、完成報告、健檢報告與交接才用表格或結構化摘要。正式表格欄位統一為「事項、位置、影響、狀態」。
+- **D40: Claude 位置欄精準定位 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步要求總監可讀表格的「位置」欄必須提供白話位置加括號內具體檔案、區塊、工具狀態或目錄範圍；巡檢模組（Audit.psm1）的總監可讀輸出檢查（Director Output Contract）同步檢查此規則。
 
 ## Known Issues
 
@@ -123,11 +127,12 @@ metadata:
 - **D14: Skill 觸發品質也是治理語義**: Doctor 綠燈不能只代表 frontmatter 格式完整；若 AI 在觸發前看不到足夠 description 關鍵詞，就等同於高風險流程可能不會載入對應 Skill。
 - **D15: Workflow 入口也要可被語意觸發**: 三平台 workflow/command 是任務路由器；description 需要寫清楚何時啟動與何時不該用，不能只寫內部流程或階段名稱。
 - **D13: 受保護專案資訊不可用雜湊判斷漂移**: `AGENTS.md` / `CLAUDE.md` 類核心規則檔可能帶有專案身份區塊；健康檢查應比較框架內容，而不是把專案資訊當作需要覆寫的漂移。
-- **D11: 輸出契約也屬語義審計**: workflow metadata 完整不代表面向總監的輸出可讀；Doctor 必須直接掃 workflow 內容是否具備表格契約與技術細節隔離。
+- **D11: 輸出契約也屬語義審計**: workflow metadata 完整不代表面向總監的輸出可讀；Doctor 必須直接掃 workflow 內容是否具備情境式輸出契約、正式情境結構化規則、位置欄精準定位與技術詞彙隔離。
 - **D12: project skill discovery entry 不能是實體目錄**: `.agents/project_skills/` 是唯一原檔區，discovery 目錄只允許 SymbolicLink 或 Junction；自動修復不得覆寫實體目錄。
 - **D16: Doctor 要同時檢查 policy sync 與 vocabulary drift**: marker block 一致只代表平台核心規則有同步，不能保證 workflow / Shared skill 沒有混入其他廠商的工具語彙；語彙漂移應獨立列入平台治理總結。
 - **D17: Shared vocabulary drift 必須是阻斷級**: 若 Shared 主體硬寫平台工具名，代表共用語義已被污染；Doctor 應回 Red，而不是只提示 Yellow。
 - **D18: PowerShell array entries 要避免裸 `Join-Path` 逗號串接**: 在 module function 內建陣列時，每個 `Join-Path` 應使用具名參數並以括號包覆，避免不同 host 把下一個元素誤綁到前一個 cmdlet 的 `ChildPath`。
+- **D19: 輸出可讀性要納入 Doctor 語義檢查**: 只檢查表格與補充段落會產生假綠燈；Doctor 必須確認 workflow 也具備技術詞彙翻譯閘門、括號順序規則與不得單獨出現規則。
 
 ## Relations
 

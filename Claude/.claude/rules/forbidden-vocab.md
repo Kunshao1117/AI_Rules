@@ -19,9 +19,12 @@
 | `.claude/skills/` | 工作流技能 |
 | `.claude/skills/` | 操作型知識庫 |
 
-## Enforcement Rule
+## 技術詞彙翻譯閘門（Technical Vocabulary Translation Gate）
 
 Before finalizing ANY Director-facing text:
 1. Scan for occurrences of column 1 identifiers.
-2. Replace with column 2 equivalents.
-3. If a technical term has no mapping, accompany it with a plain-language explanation in parentheses.
+2. Replace known identifiers with column 2 equivalents.
+3. If a technical term has no mapping, do not leave it bare. Use the same order every time: plain-language label first, technical identifier only inside parentheses.
+4. Do not use technical identifiers as standalone subjects, standalone list items, or unexplained table values. If the exact identifier is not needed for location, omit it.
+5. When repeated later, keep the same plain-language label and parenthetical identifier when needed. Do not switch back to the bare code name.
+6. Forbidden pattern: describing a change only with function names, variable names, schema fields, metadata keys, command parameters, internal tool names, or file paths without a plain-language label.

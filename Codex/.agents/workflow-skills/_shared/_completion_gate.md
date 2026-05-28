@@ -17,7 +17,7 @@
 ├── Check 4: Linter 通過（若專案具備 Linter 設定）？
 │   └── FAIL → [HALT]「🔴 [COMPLETION HALT] Linter 未通過。」
 ├── Check 5: 所有受影響記憶卡時間戳已更新（staleness = 0）？
-│   └── NO → [HALT]「🔴 [COMPLETION HALT] 記憶卡時間戳未同步，請執行 memory_commit。」
+│   └── NO → [HALT]「🔴 [完成中止（COMPLETION HALT）] 記憶卡時間戳未同步，請執行記憶提交工具（memory_commit）。」
 ├── Check 6: 技能蒸餾偵測 — 本次工作是否存在跨模組重複操作模式（2+ 次出現的操作序列）？
 │   ├── 偵測到 → 非阻斷性建議：「💡 [SKILL DISTILL] 建議執行 /12_skill_forge 萃取可重用技能。」
 │   └── 未偵測到 → 靜默通過

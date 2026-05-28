@@ -2,7 +2,7 @@
 name: _ag_core
 description: Antigravity 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Antigravity/
-last_updated: '2026-05-22T01:55:34+08:00'
+last_updated: '2026-05-29T01:07:25+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -77,8 +77,12 @@ metadata:
 - **公開安裝入口相容性升級 (2026-05-17)**: Antigravity README 與全域 GEMINI bootstrapper 改用 UTF-8 raw bytes 下載與 BOM 暫存寫入流程；`Antigravity/install.ps1` 保存為 UTF-8 with BOM，管理控制台通用 wrapper 改用 `powershell.exe -EncodedCommand`，讓同一行可在 CMD 與 PowerShell 外層中穩定啟動。
 - **Antigravity平台代理治理升級 (2026-05-17)**: `.agents/rules/AGENTS.md` 補入三平台能力矩陣、workflow metadata v2 與 MCP opt-in profile 政策；`.agents/workflows/` 新增 `10_routine(巡檢).md`，現行工作流檔案為 20 個（含分階段流程）。
 - **Antigravity 基底治理語義修復 (2026-05-17)**: `global/GEMINI.md` 改為等待 `GO INSTALL` / `GO UPGRADE`；`08-2_audit_logic` 只允許 `.agents/logs/` 中繼報告寫入；`06_test` 僅輸出失敗報告與修復建議；`09-2_commit_execute` 在 GO 後才寫 CHANGELOG、stage 明確檔案、commit、push。
-- **Antigravity 總監可讀輸出契約 (2026-05-18)**: `00_core_identity.md` 新增 Director-facing 表格契約，要求對話、計畫、報告與完成摘要先用「功能/目的、相關檔案、白話說明、寫入/風險」呈現，再補技術細節。
-- **Antigravity 工作流契約明示 (2026-05-18)**: 20 個 `.agents/workflows/` 檔案全部直接加入總監可讀輸出契約，避免只依賴核心規則造成 IDE 注入或工作流觸發時語氣不一致。
+- **Antigravity 總監可讀輸出契約初版 (2026-05-18, 2026-05-29 取代)**: `00_core_identity.md` 早期新增固定表格契約；此規則已由情境式輸出契約取代。
+- **Antigravity 工作流契約明示 (2026-05-18, 2026-05-29 更新)**: 20 個 `.agents/workflows/` 檔案全部直接加入總監可讀輸出契約；現行規則改為一般情境可短段落，正式情境才用表格或結構化摘要。
+- **Antigravity 技術詞彙翻譯閘門 (2026-05-29)**: Antigravity 核心身份規則（00_core_identity.md）、禁用詞規則（04_forbidden_vocab.md）與 20 個 Antigravity 工作流規則（.agents/workflows/*.md）全面補入技術詞彙翻譯閘門；面向總監時每一次提到技術名稱都必須先寫白話名稱，技術名稱只能放在白話名稱後方的括號內。
+- **Antigravity 可讀性規則硬化 (2026-05-29)**: Antigravity 規範、目前工作區規則與共用完成閘門同步改成中文白話在前、技術名稱在括號內；記憶提交工具（memory_commit）提示不得再裸露。
+- **Antigravity 情境式輸出契約 (2026-05-29)**: Antigravity 核心身份規則、20 個工作流規則與目前工作區規則同步改為情境式總監可讀輸出。一般討論、狀態回報與簡短判斷可用短段落；正式計畫、寫入前風險、多檔案變更、完成報告、健檢報告與交接才用表格或結構化摘要。正式表格欄位統一為「事項、位置、影響、狀態」。
+- **Antigravity 位置欄精準定位 (2026-05-29)**: Antigravity 核心身份規則、20 個工作流規則與目前工作區規則同步要求總監可讀表格的「位置」欄必須提供白話位置加括號內具體檔案、區塊、工具狀態或目錄範圍，避免只寫抽象範圍而讓總監無法定位。
 - **Antigravity v8.0.2 (2026-05-18)**: patch bump 用於分類式專案同步；Auto 只有在 `.agents/rules` 或 `.agents/workflows` 存在時才同步 Antigravity，`.agents/VERSION` 僅代表 Antigravity。
 - **Antigravity v8.0.3 (2026-05-18)**: patch bump 用於接收 shared subagent policy marker；`00_core_identity.md` 由 `Shared/policies/subagent-invocation.md` 注入 browser / Gemini CLI adapter 的唯讀啟用邊界。
 - **Antigravity `.gitignore` 模板整理 (2026-05-18)**: `Antigravity/.gitignore` 移除無來源依據的歷史殘留規則，保留 `.vscode/`、`.cartridge/`、`.agents/logs/`、`.git_backup/`、`antigravity_export/`，並明確標示 `.agents/memory/` 預設進版控。
@@ -99,7 +103,7 @@ metadata:
 - **管理控制台 wrapper 需防外層 Shell 展開**：若使用 `powershell.exe -Command "..."` 包住含 `$` 變數的內層腳本，PowerShell 外層會先展開 `$wc/$bytes/$text`，造成 ParserError；管理控制台公開入口應使用 `-EncodedCommand`。
 - **Gemini 工作流檔案數要用檔案計數而非高階流程數**：Antigravity 採分階段 workflow file，公開文件應說「20 個工作流檔案」而不是混用高階流程條數。
 - **logs-only write 不是一般寫入權限**：`filesystem:write:logs` 僅能寫 `.agents/logs/` 中繼報告，不能被解讀為可寫原始碼、設定檔或記憶卡。
-- **D06: Director-facing 契約屬核心身份規則**：只要核心身份規則新增面向總監的輸出格式，記憶卡必須同步記錄，否則提交前會被 staleness gate 攔截。
+- **D06: Director-facing 契約屬核心身份規則**：只要核心身份規則新增面向總監的輸出格式或技術詞彙括號規則，記憶卡必須同步記錄，否則提交前會被 staleness gate 攔截。
 - **D07: 工作流也要明示總監契約**：核心規則存在仍不足以保證每個平台的 workflow 都遵守；面向總監的輸出格式應同時寫入實際 workflow 入口，讓審計器能直接驗證。
 - **D08: 平台 workflow 只放載入閘門**：Antigravity workflow 是入口層，不應複製完整插件發布 playbook；共用細節放在 `Shared/skills/plugin-release-governance`，由部署同步注入 `.agents/skills/`。
 - **D09: 分階段 workflow 要寫清楚入口條件**：`03-2`、`04-2`、`09-2` 不是一般語意入口，description 必須標示已取得前階段 GO，避免 AI 直接跳到執行階段。

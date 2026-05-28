@@ -1510,7 +1510,22 @@ function Measure-DirectorOutputContract {
     $RepoRoot = (Resolve-Path $RepoRoot).Path
     $TargetRoot = (Resolve-Path $TargetRoot).Path
     $results = New-Object System.Collections.ArrayList
-    $tablePattern = '功能/目的\s*\|\s*相關檔案\s*\|\s*白話說明\s*\|\s*寫入/風險'
+    $contextualOutputPattern = 'context-sensitive plain-language structure|情境式'
+    $routineOutputPattern = 'Routine discussion, short status updates, and simple judgments|一般討論|狀態回報|簡短判斷'
+    $formalOutputPattern = 'Implementation plans, pre-write risk reviews, multi-file changes, completion summaries, audit reports, and handoffs|正式計畫|寫入前風險|多檔案變更|完成報告|健檢報告|交接'
+    $compactTablePattern = '事項\s*\|\s*位置\s*\|\s*影響\s*\|\s*狀態'
+    $preciseLocationPattern = 'The `位置` column MUST name the concrete location|位置欄.*具體|file path, section heading, tool/status scope, or directory scope|檔案.*區塊.*工具.*目錄'
+    $technicalVocabularyPattern = 'Technical Vocabulary Translation Gate|技術詞彙翻譯閘門'
+    $technicalVocabularyStrictPatterns = @(
+        @{
+            Pattern = 'technical identifier only inside parentheses|技術名稱.*括號'
+            Label = '技術詞彙括號順序規則'
+        },
+        @{
+            Pattern = 'standalone subjects|單獨.*主詞'
+            Label = '技術詞彙不得單獨出現規則'
+        }
+    )
 
     function Get-DirectorDisplayPath {
         param([string]$Path)
@@ -1546,8 +1561,16 @@ function Measure-DirectorOutputContract {
     foreach ($target in (Get-DirectorOutputContractTargets -RepoRoot $RepoRoot -TargetRoot $TargetRoot)) {
         $content = Get-Content -LiteralPath $target.Path -Raw -Encoding UTF8
         $missing = @()
-        if ($content -notmatch $tablePattern) { $missing += '白話表格' }
+        if ($content -notmatch $contextualOutputPattern) { $missing += '情境式輸出規則' }
+        if ($content -notmatch $routineOutputPattern) { $missing += '日常情境免表格規則' }
+        if ($content -notmatch $formalOutputPattern) { $missing += '正式情境結構化規則' }
+        if ($content -notmatch $compactTablePattern) { $missing += '精簡表格欄位' }
+        if ($content -notmatch $preciseLocationPattern) { $missing += '位置欄精準定位規則' }
         if ($content -notmatch '補充技術細節') { $missing += '補充技術細節' }
+        if ($content -notmatch $technicalVocabularyPattern) { $missing += '技術詞彙翻譯閘門' }
+        foreach ($strictPattern in $technicalVocabularyStrictPatterns) {
+            if ($content -notmatch $strictPattern.Pattern) { $missing += $strictPattern.Label }
+        }
         if ($missing.Count -gt 0) {
             Add-DirectorFinding -Severity 'Red' `
                 -File (Get-DirectorDisplayPath -Path $target.Path) `
@@ -1567,8 +1590,15 @@ function Measure-DirectorOutputContract {
             $targetContent = Get-Content -LiteralPath $targetCodexAgents -Raw -Encoding UTF8
             $requiredMarkers = @(
                 'Director-Readable Output Contract',
-                '功能/目的 | 相關檔案 | 白話說明 | 寫入/風險',
-                '補充技術細節'
+                'context-sensitive plain-language structure',
+                'Routine discussion, short status updates',
+                'Implementation plans, pre-write risk reviews',
+                '事項 | 位置 | 影響 | 狀態',
+                'The `位置` column MUST name the concrete location',
+                '補充技術細節',
+                '技術詞彙翻譯閘門',
+                'technical identifier only inside parentheses',
+                'standalone subjects'
             )
             foreach ($marker in $requiredMarkers) {
                 if (($sourceContent -match [regex]::Escape($marker)) -and ($targetContent -notmatch [regex]::Escape($marker))) {
@@ -1582,7 +1612,21 @@ function Measure-DirectorOutputContract {
                 -SourcePath $sourceCodexAgents `
                 -TargetPath $targetCodexAgents `
                 -IgnoreProjectIdentity
-            if (-not $isEquivalent -and $targetContent -match $tablePattern -and $targetContent -match '補充技術細節') {
+            $hasStrictTechnicalVocabularyContract = $targetContent -match $technicalVocabularyPattern
+            foreach ($strictPattern in $technicalVocabularyStrictPatterns) {
+                if ($targetContent -notmatch $strictPattern.Pattern) {
+                    $hasStrictTechnicalVocabularyContract = $false
+                }
+            }
+            $hasContextualOutputContract = (
+                $targetContent -match $contextualOutputPattern -and
+                $targetContent -match $routineOutputPattern -and
+                $targetContent -match $formalOutputPattern -and
+                $targetContent -match $compactTablePattern -and
+                $targetContent -match $preciseLocationPattern -and
+                $targetContent -match '補充技術細節'
+            )
+            if (-not $isEquivalent -and $hasContextualOutputContract -and $hasStrictTechnicalVocabularyContract) {
                 Add-DirectorFinding -Severity 'Yellow' `
                     -File (Get-DirectorDisplayPath -Path $targetCodexAgents) `
                     -Reason '目前專案 .codex/AGENTS.md 與 source 框架內容不同，請確認是否為本地客製'
