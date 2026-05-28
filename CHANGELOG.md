@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-29] AI Rules Manager v0.1.9
+
+### fix
+- **Source update guard** — AI Rules Manager now stops immediately when the managed AI_Rules source repo is diverged, locally ahead, dirty, or unable to fast-forward; it no longer runs Doctor after a failed source update.
+- **Source status wording** — Source checks now distinguish synced, fast-forward available, diverged source, local-ahead source, and dirty working tree states.
+- **Workflow skill count** — Codex workflow skill merge now excludes `_shared` from the user-facing workflow count.
+
+### chore
+- **AI Rules Manager v0.1.9** — extension manifest and lockfile versions are bumped to `0.1.9`; source and docs are updated, with no VSIX packaging or release in this change.
+
 ## [2026-05-29] 情境式總監可讀輸出與中立誠實協作契約
 
 ### feat

@@ -103,10 +103,10 @@ async function confirm(message: string): Promise<boolean> {
 }
 
 function needsAttention(output: string): boolean {
-  return /狀態：偵測到遠端更新/.test(output)
+  return /狀態：偵測到遠端更新|狀態：可快轉更新|狀態：來源庫分叉|狀態：本機領先遠端|工作樹有變更/.test(output)
     || hasPositiveCounter(output, "Yellow")
     || hasPositiveCounter(output, "Red")
-    || /規則與 source 不同|待授權|有差異/.test(output);
+    || /規則與 source 不同|待授權|有差異|來源庫更新失敗|無法快轉/.test(output);
 }
 
 function hasPositiveCounter(output: string, label: "Yellow" | "Red"): boolean {

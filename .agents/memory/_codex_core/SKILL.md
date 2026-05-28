@@ -4,7 +4,7 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.3）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-29T02:03:44+08:00'
+last_updated: '2026-05-29T02:51:00+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -16,7 +16,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core 收容卡匣
 
 ## Tracked Files
@@ -95,6 +94,7 @@ metadata:
 - **Codex Delegation Gate adapter (2026-05-22)**: `01-explore`、`06-test`、`07-debug`、`08-audit` 工作流改為引用 Shared Delegation Gate，不再使用 Claude 舊式 Agent subagent_type 語彙。Codex adapter 明確規定只有總監明確要求、workflow gate 指定，或專案配置 `.codex/agents/*.toml` 時才啟動 native subagents；一般 browser evidence branch 可留在主執行緒工具。
 - **Codex 子代理治理文件同步 (2026-05-22)**: 根 README / Codex README 對外說明子代理治理是「Shared 共用語義 + 平台 adapter」，並記錄 Doctor 會把 Shared 未標註平台子代理工具名視為 Red gate；Codex 仍不宣稱自動 spawn，主代理保留 GO、memory、commit、push、部署責任。
 - **AI Rules Manager v0.1.8 文件同步 (2026-05-22)**: 根 README 的 VS Code extension 操作表與 release 範例同步到 `v0.1.8` / `ai-rules-manager-0.1.8.vsix`，並明確拆分來源庫更新、VSIX 新版檢查、治理巡檢 Doctor 與目前專案規則同步；這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
+- **AI Rules Manager v0.1.9 文件同步 (2026-05-29)**: 根 README 的 VS Code extension 操作表與 release 範例同步到 `v0.1.9` / `ai-rules-manager-0.1.9.vsix`，並明確說明來源庫分叉、本機領先、工作樹有變更或快轉失敗時會停止且不執行 Doctor；這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
 
 
 ## Known Issues

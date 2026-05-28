@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-29T02:03:58+08:00'
+last_updated: '2026-05-29T02:50:56+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -17,7 +17,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # Claude Edition 框架規範層
 
 ## Tracked Files
@@ -137,6 +136,7 @@ metadata:
 - **D18: PowerShell array entries 要避免裸 `Join-Path` 逗號串接**: 在 module function 內建陣列時，每個 `Join-Path` 應使用具名參數並以括號包覆，避免不同 host 把下一個元素誤綁到前一個 cmdlet 的 `ChildPath`。
 - **D19: 輸出可讀性要納入 Doctor 語義檢查**: 只檢查表格與補充段落會產生假綠燈；Doctor 必須確認 workflow 也具備技術詞彙翻譯閘門、括號順序規則與不得單獨出現規則。
 - **D20: 短名稱需搭配位置索引**: 正式輸出可以用短名稱減少路徑噪音，但必須在同份輸出用「位置索引」補回具體檔案、章節、工具狀態或目錄範圍，否則總監仍無法追蹤實際位置。
+- **D21: Codex workflow merge 不計入共用片段 (2026-05-29)**: `Scripts/modules/Skills-Sync.psm1` 合併 Codex workflow skills 時，必須排除 `_shared` 共用片段目錄，避免專案同步把共用資料夾顯示成第 18 套工作流。
 
 ## Relations
 

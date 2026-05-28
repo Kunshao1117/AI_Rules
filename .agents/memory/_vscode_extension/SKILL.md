@@ -4,7 +4,7 @@ description: >-
   AI_Rules VS Code 延伸模組與按鈕式管理入口。追蹤側邊欄 UI、命令註冊、PowerShell 腳本橋接、VSIX 打包設定與 Release
   asset 自動化。
 scopePath: Extensions/vscode-ai-rules-manager
-last_updated: '2026-05-22T02:36:29+08:00'
+last_updated: '2026-05-29T02:50:43+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -16,7 +16,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _vscode_extension 收容卡匣
 
 ## Tracked Files
@@ -65,6 +64,7 @@ metadata:
 - **VSIX LICENSE packaging (2026-05-19)**: extension package 內補入 MIT `LICENSE`，讓 `vsce package` 不再出現缺少 LICENSE 的警告；repo root 也補同版授權檔對齊 README badge。
 - **Update reminder silent startup (2026-05-19)**: 更新提醒維持既有行為：啟動自動檢查若沒有新版或 GitHub API 失敗，只寫入 Output Channel；只有新版才跳通知。側邊欄手動「檢查插件新版」則必須回報已是最新版或錯誤。
 - **AI Rules Manager v0.1.8 operation wording precision (2026-05-22)**: 側邊欄、Command Palette、確認視窗與 `AI-RulesManager.ps1` 輸出明確拆分「AI_Rules 來源庫更新」、「VSIX 安裝包新版檢查」、「治理巡檢 Doctor」與「目前專案規則同步」。這是操作者可見行為修復，extension manifest 與 lockfile 升級到 `0.1.8`；本次只更新 source 與文件，不產出 VSIX、tag 或 release。
+- **AI Rules Manager v0.1.9 source update guard (2026-05-29)**: 來源庫更新流程遇到 managed clone 分叉、本機領先、工作樹有變更或 `git pull --ff-only` 失敗時，`AI-RulesManager.ps1` 必須立即停止並不得繼續跑 Doctor；側邊欄狀態判斷同步將來源庫分叉、無法快轉與更新失敗視為需要處理。這是操作者可見行為修復，extension manifest 與 lockfile 升級到 `0.1.9`；本次只更新 source 與文件，不產出 VSIX、tag 或 release。
 
 ## Known Issues
 

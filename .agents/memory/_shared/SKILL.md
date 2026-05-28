@@ -5,7 +5,7 @@ description: >
   Skills-Sync.psm1 注入 Antigravity、Claude、Codex 三個平台。 Use when: 修改 Shared/
   下任何共用技能或平台治理資產時。
 scopePath: Shared/
-last_updated: '2026-05-22T01:57:42+08:00'
+last_updated: '2026-05-29T02:50:50+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -17,7 +17,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared 共用技能庫
 
 ## Tracked Files
@@ -136,6 +135,7 @@ metadata:
 - **Shared policy 注入輔助函式 (2026-05-19)**: `Skills-Sync.psm1` 承擔 shared subagent policy 的讀取與 marker block 同步能力，提供平台區塊讀取、既有 marker 取代與缺 marker 時的插入策略；三平台部署與專案同步可共用同一套注入語義。
 - **Delegation Gate 語義核心 (2026-05-22)**: `Shared/policies/subagent-invocation.md` 改為 vendor-neutral 的 Delegation Gate / evidence branch 契約；`delegation-strategy` 改為 direct、evidence branch、browser branch、CLI branch、MCP direct 的決策引擎；`browser-testing` 與 `test-automation-strategy` 改稱 browser evidence branch，由平台 adapter 決定實際工具。
 - **Shared 語彙漂移硬化 (2026-05-22)**: `delegation-strategy` 移除平台專屬 transient state path，CLI prompt skeleton 與 CLI capability matrix 改用抽象讀檔、搜尋、唯讀 shell 讀取與報告寫入能力，`browser-testing` 明確 Auto-Pass 不得略過 Director GO / HITL gate；`audit-engine` 也移除會誤觸平台工具掃描的 `Agent` 字樣。Shared 主體只能描述治理語義，實際工具名由平台 adapter 注入。
+- **Workflow shared directory exclusion (2026-05-29)**: `Merge-WorkflowSkills` 只計算並複製可啟動的 workflow skill 目錄，排除 `_shared` 共用片段目錄，避免 Codex 專案同步顯示「18 套工作流技能」而實際只有 17 套可啟動工作流。
 - **Skill governance contract (2026-05-19)**: 新增 `Shared/skill-governance.md` 作為 Skill 放置與觸發契約，規定核心規則只保留 always-on 安全底線、workflow/command 只做入口路由、Shared skills 承載按需載入操作細節、memory 記錄專案事實。
 - **Plugin release governance skill (2026-05-19)**: 新增 `plugin-release-governance` 作為第 37 套 Shared operational skill，集中管理插件升版、VSIX 打包、GitHub Release/tag/asset 與 GitHub latest release 更新提醒；三平台 workflow/command 入口只加載入閘門，不複製完整 playbook。
 - **Skill trigger effectiveness hardening (2026-05-19)**: GitNexus、Supabase 與 skill-factory 等相鄰技能補齊繁中/英文觸發詞與 `DO NOT use when` 邊界；Doctor 的技能品質檢查升級為檢查 Shared operational skill 是否具備雙語觸發與負向邊界。

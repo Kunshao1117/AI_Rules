@@ -122,10 +122,10 @@ AI_Rules 也提供本機 VS Code 延伸模組管理器，適合不想記 PowerSh
 
 | 按鈕 | 行為 |
 |------|------|
-| **檢查來源狀態** | 讀取 AI_Rules 管理來源庫的 Git 狀態，並檢查使用者層全域規則漂移；不修改檔案 |
+| **檢查來源狀態** | 讀取 AI_Rules 管理來源庫的 Git 狀態，區分已同步、可快轉更新、來源庫分叉、本機領先遠端與工作樹變更；不修改檔案 |
 | **檢查 VSIX 新版** | 手動查詢 GitHub Release；有新版 VSIX 安裝包時提示開啟下載頁，沒有新版時也明確回報已是最新版 |
 | **查看來源更新影響** | 說明若更新 AI_Rules 來源庫，會執行哪些 Git 與治理巡檢動作 |
-| **更新 AI_Rules 來源庫** | 顯示確認視窗後才執行 `git pull --ff-only` 與治理巡檢；不安裝 VSIX，也不同步目前專案規則 |
+| **更新 AI_Rules 來源庫** | 顯示確認視窗後才嘗試快轉更新；若來源庫分叉、工作樹有變更或 Git 更新失敗，會停止且不執行治理巡檢；不安裝 VSIX，也不同步目前專案規則 |
 | **治理巡檢 Doctor** | 執行治理巡檢，包含 Shared Skill 品質、workflow metadata、policy marker、子代理語彙、全域規則漂移與 project skill links |
 | **同步使用者層規則** | 先預覽差異，確認後才寫入 `~/.codex`、`~/.claude`、`~/.gemini` |
 | **同步已安裝平台規則** | 先偵測目前專案實際安裝的平台，再預覽並同步 `.agents` / `.claude` / `.codex` 對應規則、技能與 project skill discovery 連結 |
@@ -157,7 +157,7 @@ npm run package
 
 ### GitHub Release 自動建立與附加 VSIX
 
-推送 tag `v0.1.8` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.8.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
+推送 tag `v0.1.9` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.9.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
 
 ---
 

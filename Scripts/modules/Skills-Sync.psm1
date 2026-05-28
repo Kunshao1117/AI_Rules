@@ -100,7 +100,9 @@ function Merge-WorkflowSkills {
     New-Item -ItemType Directory -Force -Path $TargetSkillsPath | Out-Null
 
     $count = 0
-    Get-ChildItem $WorkflowSkillsPath -Directory | ForEach-Object {
+    Get-ChildItem $WorkflowSkillsPath -Directory |
+        Where-Object { $_.Name -notmatch '^_' } |
+        ForEach-Object {
         $destDir = Join-Path $TargetSkillsPath $_.Name
         if (-not (Test-Path $destDir)) { New-Item -ItemType Directory $destDir -Force | Out-Null }
         Copy-Item (Join-Path $_.FullName "*") $destDir -Recurse -Force

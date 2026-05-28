@@ -53,24 +53,74 @@ function Get-GitSnapshot {
     $head = "unknown"
     $branch = "unknown"
     $remoteHead = "unknown"
+    $remoteTrackingHead = "unknown"
     $dirty = @()
 
     try { $head = (git -C $RepoRoot rev-parse HEAD 2>$null).Trim() } catch { }
     try { $branch = (git -C $RepoRoot branch --show-current 2>$null).Trim() } catch { }
+    if ($branch) {
+        try { $remoteTrackingHead = (git -C $RepoRoot rev-parse --verify "refs/remotes/origin/$branch" 2>$null).Trim() } catch { }
+    }
     try {
         $remoteLine = git -C $RepoRoot ls-remote origin "refs/heads/$branch" 2>$null | Select-Object -First 1
         if ($remoteLine) { $remoteHead = (($remoteLine -split "\s+")[0]).Trim() }
     } catch { }
     try { $dirty = @(git -C $RepoRoot status --short 2>$null) } catch { }
 
+    $relation = Get-GitRelation -Head $head -RemoteHead $remoteHead -RemoteTrackingHead $remoteTrackingHead
+
     return [PSCustomObject]@{
-        Branch     = $branch
-        Head       = $head
-        RemoteHead = $remoteHead
-        DirtyCount = $dirty.Count
-        DirtyFiles = $dirty
-        HasUpdate  = ($head -ne "unknown") -and ($remoteHead -ne "unknown") -and ($head -ne $remoteHead)
+        Branch             = $branch
+        Head               = $head
+        RemoteHead         = $remoteHead
+        RemoteTrackingHead = $remoteTrackingHead
+        DirtyCount         = $dirty.Count
+        DirtyFiles         = $dirty
+        Relation           = $relation
+        HasUpdate          = ($head -ne "unknown") -and ($remoteHead -ne "unknown") -and ($head -ne $remoteHead)
     }
+}
+
+function Test-GitCommitExists {
+    param([string]$Commit)
+    if (-not $Commit -or $Commit -eq "unknown") { return $false }
+    git -C $RepoRoot cat-file -e "${Commit}^{commit}" 2>$null
+    return $LASTEXITCODE -eq 0
+}
+
+function Test-GitAncestor {
+    param(
+        [string]$Ancestor,
+        [string]$Descendant
+    )
+    if (-not (Test-GitCommitExists -Commit $Ancestor) -or -not (Test-GitCommitExists -Commit $Descendant)) {
+        return $false
+    }
+    git -C $RepoRoot merge-base --is-ancestor $Ancestor $Descendant 2>$null
+    return $LASTEXITCODE -eq 0
+}
+
+function Get-GitRelation {
+    param(
+        [string]$Head,
+        [string]$RemoteHead,
+        [string]$RemoteTrackingHead
+    )
+    if ($Head -eq "unknown" -or $RemoteHead -eq "unknown") { return "Unknown" }
+    if ($Head -eq $RemoteHead) { return "Synced" }
+
+    if (Test-GitCommitExists -Commit $RemoteHead) {
+        $remoteContainsLocal = Test-GitAncestor -Ancestor $Head -Descendant $RemoteHead
+        $localContainsRemote = Test-GitAncestor -Ancestor $RemoteHead -Descendant $Head
+        if ($remoteContainsLocal -and -not $localContainsRemote) { return "FastForward" }
+        if ($localContainsRemote -and -not $remoteContainsLocal) { return "LocalAhead" }
+        return "Diverged"
+    }
+
+    if ($RemoteTrackingHead -ne "unknown" -and $RemoteTrackingHead -ne $RemoteHead) {
+        return "RemoteChanged"
+    }
+    return "RemoteChanged"
 }
 
 function Show-GitSnapshot {
@@ -80,10 +130,19 @@ function Show-GitSnapshot {
     Write-Host "Local HEAD：$($Snapshot.Head)"
     Write-Host "Remote HEAD：$($Snapshot.RemoteHead)"
     Write-Host "工作樹變更：$($Snapshot.DirtyCount)"
-    if ($Snapshot.HasUpdate) {
-        Write-Host "狀態：偵測到遠端更新" -ForegroundColor Yellow
+    if ($Snapshot.DirtyCount -gt 0) {
+        Write-Host "工作樹狀態：工作樹有變更" -ForegroundColor Yellow
     } else {
-        Write-Host "狀態：未偵測到遠端更新" -ForegroundColor Green
+        Write-Host "工作樹狀態：乾淨" -ForegroundColor Green
+    }
+
+    switch ($Snapshot.Relation) {
+        "Synced"       { Write-Host "狀態：已同步" -ForegroundColor Green }
+        "FastForward"  { Write-Host "狀態：可快轉更新" -ForegroundColor Yellow }
+        "Diverged"     { Write-Host "狀態：來源庫分叉" -ForegroundColor Red }
+        "LocalAhead"   { Write-Host "狀態：本機領先遠端" -ForegroundColor Yellow }
+        "RemoteChanged" { Write-Host "狀態：偵測到遠端更新（尚未能確認是否可快轉）" -ForegroundColor Yellow }
+        default        { Write-Host "狀態：無法判斷來源庫狀態" -ForegroundColor Yellow }
     }
 }
 
@@ -122,7 +181,27 @@ function Invoke-ApplyUpdate {
         Write-Host "未指定 -Apply，拒絕寫入。請由 VS Code 確認視窗或命令明確授權後再執行。" -ForegroundColor Yellow
         exit 2
     }
+    $snapshot = Get-GitSnapshot
+    if ($snapshot.DirtyCount -gt 0) {
+        Show-GitSnapshot -Snapshot $snapshot
+        Write-Fail "來源庫更新失敗：工作樹有變更；已停止，不執行治理巡檢。"
+        exit 1
+    }
+    if ($snapshot.Relation -eq "Diverged") {
+        Show-GitSnapshot -Snapshot $snapshot
+        Write-Fail "來源庫更新失敗：來源庫分叉；已停止，不執行治理巡檢。"
+        exit 1
+    }
+    if ($snapshot.Relation -eq "LocalAhead") {
+        Show-GitSnapshot -Snapshot $snapshot
+        Write-Fail "來源庫更新失敗：本機領先遠端；已停止，不執行治理巡檢。"
+        exit 1
+    }
     git -C $RepoRoot pull --ff-only
+    if ($LASTEXITCODE -ne 0) {
+        Write-Fail "來源庫更新失敗：無法快轉或 Git 回報錯誤；已停止，不執行治理巡檢。"
+        exit 1
+    }
     $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target
     if (-not $audit.Passed) { exit 1 }
 }
