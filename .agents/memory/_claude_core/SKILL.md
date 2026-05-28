@@ -2,7 +2,7 @@
 name: _claude_core
 description: Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Claude/
-last_updated: '2026-05-29T01:07:28+08:00'
+last_updated: '2026-05-29T02:03:55+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -71,6 +71,9 @@ metadata:
 - **Claude 可讀性規則硬化 (2026-05-29)**: Claude 規範與指令規則的總監可讀輸出契約標題改成中文在前、英文在括號內；共用完成閘門的記憶提交工具（memory_commit）提示改成白話名稱加括號定位。
 - **Claude 情境式輸出契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步改為情境式總監可讀輸出。一般討論、狀態回報與簡短判斷可用短段落；正式計畫、寫入前風險、多檔案變更、完成報告、健檢報告與交接才用表格或結構化摘要。正式表格欄位統一為「事項、位置、影響、狀態」。
 - **Claude 位置欄精準定位 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步要求總監可讀表格的「位置」欄必須提供白話位置加括號內具體檔案、區塊、工具狀態或目錄範圍，避免只寫抽象範圍而讓總監無法定位。
+- **Claude 事實優先與知識新鮮度初版 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步新增以證據校正總監提議與知識新鮮度查證基礎規則。Claude 回應總監提議時要先查證本地事實或可靠來源；記憶與內建知識視為可能過時，高變動資訊需查最新或官方來源。此決策已由 Claude 中立誠實協作契約升級。
+- **Claude 中立誠實協作契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步把證據校正規則升級為中立誠實協作。Claude 不以討好、附和或迎合總監為目標，也不得刻意反對；合理時支持，證據衝突時用短證據格式指出問題並提出可行替代做法。
+- **Claude 位置索引式輸出契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步要求正式輸出若使用短名稱，必須在同一份輸出提供「位置索引」，把短名稱對應到具體檔案、章節、工具狀態或目錄範圍。
 - **Claude Edition v1.2.2 (2026-05-18)**: patch bump 用於分類式專案同步；Auto 只有在 `.claude/CLAUDE.md`、`.claude/commands` 或 `.claude/rules` 存在時才同步 Claude，`.claude/skills/project-*` 仍由 `.agents/project_skills/` backfill 產生。
 - **Claude Edition v1.2.3 (2026-05-18)**: patch bump 用於接收 shared subagent policy marker；`core-identity.md` 由 `Shared/policies/subagent-invocation.md` 注入 Claude `Agent` tool 的唯讀啟用邊界，`CLAUDE.md` 版本同步更新。
 - **Claude `.gitignore` 模板整理 (2026-05-18)**: `Claude/.gitignore` 移除 `.agents/memory` 忽略規則與舊殘留項，改以狀態註解保留本機 runtime、agent logs、備份/匯出產物；三平台共用 `.agents/memory/` 預設進版控。
@@ -94,6 +97,7 @@ metadata:
 - **D08: Slash Command 不複製共用 playbook**：Claude command 只負責任務入口與載入閘門；插件發布、VSIX、Release、版本與更新提醒的細節應放在 `Shared/skills/plugin-release-governance`，避免與 Antigravity/Codex 分叉。
 - **D09: Slash Command description 也是觸發契約**：即使 Claude 可用明確 slash command，description 仍要寫真實任務語句與排除條件，方便跨平台同步與 Doctor 自動審計。
 - **D10: Claude subagents 只回證據包**：Claude 可用內建、自訂或 plugin subagents，但框架語義仍要求 `發現 / 證據 / 風險 / 建議 / 是否阻塞`，且不得把 GO、memory、commit、push、部署或 mutating MCP 交給分支代理。
+- **D11: Claude 短名稱需搭配位置索引**：Claude 正式計畫、完成報告與巡檢摘要可以用短名稱保持清爽，但必須在同份輸出用「位置索引」補回具體檔案、章節、工具狀態或目錄範圍。
 
 ## Applicable Skills
 

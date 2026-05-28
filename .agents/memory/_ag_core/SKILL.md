@@ -2,7 +2,7 @@
 name: _ag_core
 description: Antigravity 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Antigravity/
-last_updated: '2026-05-29T01:07:25+08:00'
+last_updated: '2026-05-29T02:03:47+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -83,6 +83,9 @@ metadata:
 - **Antigravity 可讀性規則硬化 (2026-05-29)**: Antigravity 規範、目前工作區規則與共用完成閘門同步改成中文白話在前、技術名稱在括號內；記憶提交工具（memory_commit）提示不得再裸露。
 - **Antigravity 情境式輸出契約 (2026-05-29)**: Antigravity 核心身份規則、20 個工作流規則與目前工作區規則同步改為情境式總監可讀輸出。一般討論、狀態回報與簡短判斷可用短段落；正式計畫、寫入前風險、多檔案變更、完成報告、健檢報告與交接才用表格或結構化摘要。正式表格欄位統一為「事項、位置、影響、狀態」。
 - **Antigravity 位置欄精準定位 (2026-05-29)**: Antigravity 核心身份規則、20 個工作流規則與目前工作區規則同步要求總監可讀表格的「位置」欄必須提供白話位置加括號內具體檔案、區塊、工具狀態或目錄範圍，避免只寫抽象範圍而讓總監無法定位。
+- **Antigravity 事實優先與知識新鮮度初版 (2026-05-29)**: Antigravity 核心身份規則、20 個工作流規則與目前工作區規則同步新增以證據校正總監提議、短證據格式與知識新鮮度查證基礎規則。高變動資訊需以版本與目前日期錨定後查最新或官方來源；此決策已由 Antigravity 中立誠實協作契約升級。
+- **Antigravity 中立誠實協作契約 (2026-05-29)**: Antigravity 核心身份規則、20 個工作流規則與目前工作區規則同步把證據校正規則升級為中立誠實協作。AI 不以討好、附和或迎合總監為目標，也不得刻意反對；合理時支持，證據衝突時用短證據格式指出問題並提出可行替代做法。
+- **Antigravity 位置索引式輸出契約 (2026-05-29)**: Antigravity 核心身份規則、20 個工作流規則與目前工作區規則同步要求正式輸出若使用短名稱，必須在同一份輸出提供「位置索引」，把短名稱對應到具體檔案、章節、工具狀態或目錄範圍。
 - **Antigravity v8.0.2 (2026-05-18)**: patch bump 用於分類式專案同步；Auto 只有在 `.agents/rules` 或 `.agents/workflows` 存在時才同步 Antigravity，`.agents/VERSION` 僅代表 Antigravity。
 - **Antigravity v8.0.3 (2026-05-18)**: patch bump 用於接收 shared subagent policy marker；`00_core_identity.md` 由 `Shared/policies/subagent-invocation.md` 注入 browser / Gemini CLI adapter 的唯讀啟用邊界。
 - **Antigravity `.gitignore` 模板整理 (2026-05-18)**: `Antigravity/.gitignore` 移除無來源依據的歷史殘留規則，保留 `.vscode/`、`.cartridge/`、`.agents/logs/`、`.git_backup/`、`antigravity_export/`，並明確標示 `.agents/memory/` 預設進版控。
@@ -109,6 +112,7 @@ metadata:
 - **D09: 分階段 workflow 要寫清楚入口條件**：`03-2`、`04-2`、`09-2` 不是一般語意入口，description 必須標示已取得前階段 GO，避免 AI 直接跳到執行階段。
 - **D10: Antigravity browser/CLI 分支是證據來源**：browser 或 CLI 分支只能蒐集證據、重現步驟與風險建議；任何原始碼、記憶、Git 或外部狀態修改仍必須回到主代理並通過對應 GO/HITL gate。
 - **D11: `.agents/logs/` 寫入是 Master workflow 狀態傳遞，不是 evidence branch 權限**：即使 audit workflow 允許寫中介 log，也必須明確指出執行者是 Master workflow；分支代理只能回報。
+- **D12: 短名稱需搭配位置索引**：Antigravity 正式計畫、完成報告與巡檢摘要可以用短名稱保持清爽，但必須在同份輸出用「位置索引」補回具體檔案、章節、工具狀態或目錄範圍。
 
 ## Applicable Skills
 

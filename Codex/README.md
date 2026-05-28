@@ -147,6 +147,9 @@ Codex Edition 採用單一規則檔設計，所有治理規範集中於 `AGENTS.
 | 區段 | 內容 |
 |------|------|
 | **Core Identity** | 代理人分工、生命週期骨幹、語言溝通規範 |
+| **Neutral Honest Collaboration** | 不討好、不附和、不刻意反對；以實際檔案、工具輸出、官方文件或主要來源校正方向 |
+| **Knowledge Freshness** | 記憶與內建知識視為可能過時；高變動資訊需查最新或官方來源 |
+| **Location Index** | 正式輸出可用短名稱保持可讀，但同一份輸出必須用位置索引對應具體檔案、章節、工具狀態或目錄範圍 |
 | **Memory System** | Turn=1 啟動探測、`.agents/memory/` 路徑規範、三路徑判斷、Gateway 顯式路徑 |
 | **Skill Protocol** | 技能觸發方式（`$skill-name`）、按需載入原則、工作流清單 |
 | **Gate Summary** | 所有治理閘門速覽（PLANNING / SEC / LINTER / EXIT HOLD / MCP HITL） |

@@ -688,6 +688,20 @@ function Get-DirectorOutputContractTargets {
     $TargetRoot = (Resolve-Path $TargetRoot).Path
     $targets = @()
 
+    $coreTargets = @(
+        [PSCustomObject]@{ Platform = 'Antigravity'; Scope = 'core-source'; Path = (Join-Path $RepoRoot 'Antigravity\.agents\rules\00_core_identity.md') },
+        [PSCustomObject]@{ Platform = 'Claude'; Scope = 'core-source'; Path = (Join-Path $RepoRoot 'Claude\.claude\rules\core-identity.md') },
+        [PSCustomObject]@{ Platform = 'Codex'; Scope = 'core-source'; Path = (Join-Path $RepoRoot 'Codex\.codex\AGENTS.md') },
+        [PSCustomObject]@{ Platform = 'Antigravity'; Scope = 'core-target'; Path = (Join-Path $TargetRoot '.agents\rules\00_core_identity.md') },
+        [PSCustomObject]@{ Platform = 'Claude'; Scope = 'core-target'; Path = (Join-Path $TargetRoot '.claude\rules\core-identity.md') },
+        [PSCustomObject]@{ Platform = 'Codex'; Scope = 'core-target'; Path = (Join-Path $TargetRoot '.codex\AGENTS.md') }
+    )
+    foreach ($target in $coreTargets) {
+        if (Test-Path -LiteralPath $target.Path) {
+            $targets += $target
+        }
+    }
+
     $agRoot = Join-Path $RepoRoot 'Antigravity\.agents\workflows'
     if (Test-Path -LiteralPath $agRoot) {
         Get-ChildItem -LiteralPath $agRoot -Filter '*.md' -File -ErrorAction SilentlyContinue |
@@ -1515,6 +1529,7 @@ function Measure-DirectorOutputContract {
     $formalOutputPattern = 'Implementation plans, pre-write risk reviews, multi-file changes, completion summaries, audit reports, and handoffs|正式計畫|寫入前風險|多檔案變更|完成報告|健檢報告|交接'
     $compactTablePattern = '事項\s*\|\s*位置\s*\|\s*影響\s*\|\s*狀態'
     $preciseLocationPattern = 'The `位置` column MUST name the concrete location|位置欄.*具體|file path, section heading, tool/status scope, or directory scope|檔案.*區塊.*工具.*目錄'
+    $locationIndexPattern = '位置索引|compact scope labels|abstract labels.*MUST be resolved|compact label.*concrete file'
     $technicalVocabularyPattern = 'Technical Vocabulary Translation Gate|技術詞彙翻譯閘門'
     $technicalVocabularyStrictPatterns = @(
         @{
@@ -1526,6 +1541,13 @@ function Measure-DirectorOutputContract {
             Label = '技術詞彙不得單獨出現規則'
         }
     )
+    $neutralHonestPattern = 'neutral, honest stance|中立誠實協作契約|中立誠實協作與知識新鮮度契約'
+    $nonAppeasementPattern = 'pleasing, flattering, appeasing|討好.*附和.*迎合|不討好.*不附和'
+    $nonContrarianPattern = 'Do not object merely to appear critical|刻意反對'
+    $shortEvidencePattern = '我看到的事實.*可能問題.*建議做法'
+    $knowledgeFreshnessPattern = 'memory and internal model knowledge as possibly stale|內建知識.*過時|記憶.*過時'
+    $highChangeGroundingPattern = 'high-change information|外部框架.*API.*套件版本|official documentation or primary sources|官方.*最新'
+    $verificationAnchorPattern = 'project version first|current date/year|版本.*目前日期|版本.*時間錨'
 
     function Get-DirectorDisplayPath {
         param([string]$Path)
@@ -1566,11 +1588,19 @@ function Measure-DirectorOutputContract {
         if ($content -notmatch $formalOutputPattern) { $missing += '正式情境結構化規則' }
         if ($content -notmatch $compactTablePattern) { $missing += '精簡表格欄位' }
         if ($content -notmatch $preciseLocationPattern) { $missing += '位置欄精準定位規則' }
+        if ($content -notmatch $locationIndexPattern) { $missing += '位置索引規則' }
         if ($content -notmatch '補充技術細節') { $missing += '補充技術細節' }
         if ($content -notmatch $technicalVocabularyPattern) { $missing += '技術詞彙翻譯閘門' }
         foreach ($strictPattern in $technicalVocabularyStrictPatterns) {
             if ($content -notmatch $strictPattern.Pattern) { $missing += $strictPattern.Label }
         }
+        if ($content -notmatch $neutralHonestPattern) { $missing += '中立誠實協作契約' }
+        if ($content -notmatch $nonAppeasementPattern) { $missing += '不討好不附和規則' }
+        if ($content -notmatch $nonContrarianPattern) { $missing += '不刻意反對規則' }
+        if ($content -notmatch $shortEvidencePattern) { $missing += '短證據衝突格式' }
+        if ($content -notmatch $knowledgeFreshnessPattern) { $missing += '知識新鮮度規則' }
+        if ($content -notmatch $highChangeGroundingPattern) { $missing += '高變動資訊查證規則' }
+        if ($content -notmatch $verificationAnchorPattern) { $missing += '版本與日期錨定規則' }
         if ($missing.Count -gt 0) {
             Add-DirectorFinding -Severity 'Red' `
                 -File (Get-DirectorDisplayPath -Path $target.Path) `
@@ -1595,10 +1625,22 @@ function Measure-DirectorOutputContract {
                 'Implementation plans, pre-write risk reviews',
                 '事項 | 位置 | 影響 | 狀態',
                 'The `位置` column MUST name the concrete location',
+                '位置索引',
+                'compact scope labels',
+                'abstract labels',
                 '補充技術細節',
                 '技術詞彙翻譯閘門',
                 'technical identifier only inside parentheses',
-                'standalone subjects'
+                'standalone subjects',
+                'neutral, honest stance',
+                'pleasing, flattering, appeasing',
+                'Support proposals when evidence and feasibility align',
+                'Do not object merely to appear critical',
+                '我看到的事實',
+                'memory and internal model knowledge as possibly stale',
+                'high-change information',
+                'official documentation or primary sources',
+                'current date/year'
             )
             foreach ($marker in $requiredMarkers) {
                 if (($sourceContent -match [regex]::Escape($marker)) -and ($targetContent -notmatch [regex]::Escape($marker))) {
@@ -1624,9 +1666,19 @@ function Measure-DirectorOutputContract {
                 $targetContent -match $formalOutputPattern -and
                 $targetContent -match $compactTablePattern -and
                 $targetContent -match $preciseLocationPattern -and
+                $targetContent -match $locationIndexPattern -and
                 $targetContent -match '補充技術細節'
             )
-            if (-not $isEquivalent -and $hasContextualOutputContract -and $hasStrictTechnicalVocabularyContract) {
+            $hasNeutralHonestFreshnessContract = (
+                $targetContent -match $neutralHonestPattern -and
+                $targetContent -match $nonAppeasementPattern -and
+                $targetContent -match $nonContrarianPattern -and
+                $targetContent -match $shortEvidencePattern -and
+                $targetContent -match $knowledgeFreshnessPattern -and
+                $targetContent -match $highChangeGroundingPattern -and
+                $targetContent -match $verificationAnchorPattern
+            )
+            if (-not $isEquivalent -and $hasContextualOutputContract -and $hasStrictTechnicalVocabularyContract -and $hasNeutralHonestFreshnessContract) {
                 Add-DirectorFinding -Severity 'Yellow' `
                     -File (Get-DirectorDisplayPath -Path $targetCodexAgents) `
                     -Reason '目前專案 .codex/AGENTS.md 與 source 框架內容不同，請確認是否為本地客製'

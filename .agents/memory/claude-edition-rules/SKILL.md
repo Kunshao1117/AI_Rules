@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-29T01:07:32+08:00'
+last_updated: '2026-05-29T02:03:58+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -106,6 +106,9 @@ metadata:
 - **D38: 技術詞彙括號規則進入治理巡檢 (2026-05-29)**: 巡檢模組（Audit.psm1）新增嚴格檢查，要求總監可讀輸出契約必須明示「技術名稱只能放在括號內」與「技術名稱不得單獨出現」；Claude 指令規則標題同步改成中文在前、英文在括號內。
 - **D39: Claude 情境式輸出契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步改為情境式總監可讀輸出。一般討論、狀態回報與簡短判斷可用短段落；正式計畫、寫入前風險、多檔案變更、完成報告、健檢報告與交接才用表格或結構化摘要。正式表格欄位統一為「事項、位置、影響、狀態」。
 - **D40: Claude 位置欄精準定位 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步要求總監可讀表格的「位置」欄必須提供白話位置加括號內具體檔案、區塊、工具狀態或目錄範圍；巡檢模組（Audit.psm1）的總監可讀輸出檢查（Director Output Contract）同步檢查此規則。
+- **D41: Claude 事實優先與知識新鮮度初版 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步新增以證據校正總監提議、短證據格式與知識新鮮度查證基礎規則。高變動資訊需查最新或官方來源；此決策已由 D42 升級為中立誠實協作口徑。
+- **D42: Claude 中立誠實協作契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步把證據校正規則升級為中立誠實協作。AI 不以討好、附和或迎合總監為目標，也不得刻意反對；合理時支持，證據衝突時用短證據格式指出問題並提出可行替代做法。
+- **D43: Claude 位置索引式輸出契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步要求正式輸出若使用短名稱，必須在同一份輸出提供「位置索引」，把短名稱對應到具體檔案、章節、工具狀態或目錄範圍；巡檢模組（Audit.psm1）的總監可讀輸出檢查（Director Output Contract）同步檢查此規則。
 
 ## Known Issues
 
@@ -127,12 +130,13 @@ metadata:
 - **D14: Skill 觸發品質也是治理語義**: Doctor 綠燈不能只代表 frontmatter 格式完整；若 AI 在觸發前看不到足夠 description 關鍵詞，就等同於高風險流程可能不會載入對應 Skill。
 - **D15: Workflow 入口也要可被語意觸發**: 三平台 workflow/command 是任務路由器；description 需要寫清楚何時啟動與何時不該用，不能只寫內部流程或階段名稱。
 - **D13: 受保護專案資訊不可用雜湊判斷漂移**: `AGENTS.md` / `CLAUDE.md` 類核心規則檔可能帶有專案身份區塊；健康檢查應比較框架內容，而不是把專案資訊當作需要覆寫的漂移。
-- **D11: 輸出契約也屬語義審計**: workflow metadata 完整不代表面向總監的輸出可讀；Doctor 必須直接掃 workflow 內容是否具備情境式輸出契約、正式情境結構化規則、位置欄精準定位與技術詞彙隔離。
+- **D11: 輸出契約也屬語義審計**: workflow metadata 完整不代表面向總監的輸出可讀；Doctor 必須直接掃 workflow 內容是否具備情境式輸出契約、正式情境結構化規則、位置欄精準定位、技術詞彙隔離、中立誠實協作與知識新鮮度查證。
 - **D12: project skill discovery entry 不能是實體目錄**: `.agents/project_skills/` 是唯一原檔區，discovery 目錄只允許 SymbolicLink 或 Junction；自動修復不得覆寫實體目錄。
 - **D16: Doctor 要同時檢查 policy sync 與 vocabulary drift**: marker block 一致只代表平台核心規則有同步，不能保證 workflow / Shared skill 沒有混入其他廠商的工具語彙；語彙漂移應獨立列入平台治理總結。
 - **D17: Shared vocabulary drift 必須是阻斷級**: 若 Shared 主體硬寫平台工具名，代表共用語義已被污染；Doctor 應回 Red，而不是只提示 Yellow。
 - **D18: PowerShell array entries 要避免裸 `Join-Path` 逗號串接**: 在 module function 內建陣列時，每個 `Join-Path` 應使用具名參數並以括號包覆，避免不同 host 把下一個元素誤綁到前一個 cmdlet 的 `ChildPath`。
 - **D19: 輸出可讀性要納入 Doctor 語義檢查**: 只檢查表格與補充段落會產生假綠燈；Doctor 必須確認 workflow 也具備技術詞彙翻譯閘門、括號順序規則與不得單獨出現規則。
+- **D20: 短名稱需搭配位置索引**: 正式輸出可以用短名稱減少路徑噪音，但必須在同份輸出用「位置索引」補回具體檔案、章節、工具狀態或目錄範圍，否則總監仍無法追蹤實際位置。
 
 ## Relations
 
