@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-29] AI Rules Manager v0.1.10
+
+### fix
+- **Remote source mirror** — VS Code managed AI_Rules cache now auto-aligns to the remote `main` branch before manager actions, so stale or diverged cache copies cannot be used to sync project rules.
+- **Project sync freshness gate** — project rule sync now stops if the selected AI_Rules source is not aligned with the remote repository.
+- **Gitignore additive policy** — target project `.gitignore` handling now checks for required AI Rules entries and inserts only missing lines, preserving existing project rules and comments.
+
+### chore
+- **AI Rules Manager v0.1.10 release** — extension manifest and lockfile versions are bumped to `0.1.10`; source and docs are updated for the tag-driven VSIX release.
+
 ## [2026-05-29] AI Rules Manager v0.1.9
 
 ### fix

@@ -5,6 +5,7 @@ import * as vscode from "vscode";
 
 const DEFAULT_REPO_URL = "https://github.com/Kunshao1117/AI_Rules.git";
 const MANAGED_REPO_DIR = "AI_Rules";
+const MANAGED_BRANCH = "main";
 
 export type ManagerAction =
   | "Check"
@@ -24,6 +25,11 @@ export interface RunOptions {
   whatIf?: boolean;
 }
 
+interface RepoResolution {
+  repoRoot: string;
+  managed: boolean;
+}
+
 export class ScriptRunner {
   constructor(
     private readonly context: vscode.ExtensionContext,
@@ -31,7 +37,8 @@ export class ScriptRunner {
   ) {}
 
   async run(action: ManagerAction, options: RunOptions = {}): Promise<string> {
-    const repoRoot = await this.resolveRepoRoot();
+    const source = await this.resolveRepoRoot();
+    const repoRoot = source.repoRoot;
     const script = path.join(repoRoot, "Scripts", "AI-RulesManager.ps1");
     const config = vscode.workspace.getConfiguration("aiRules");
     const ps = config.get<string>("powerShellPath") || "powershell.exe";
@@ -50,6 +57,7 @@ export class ScriptRunner {
       target
     ];
 
+    if (source.managed) args.push("-ManagedSource");
     if (options.apply) args.push("-Apply");
     if (options.removeOrphans) args.push("-RemoveOrphans");
     if (options.projectPlatform) args.push("-ProjectPlatform", options.projectPlatform);
@@ -79,16 +87,16 @@ export class ScriptRunner {
     });
   }
 
-  private async resolveRepoRoot(): Promise<string> {
+  private async resolveRepoRoot(): Promise<RepoResolution> {
     const config = vscode.workspace.getConfiguration("aiRules");
     const configRoot = config.get<string>("repoRoot")?.trim();
     if (configRoot) {
-      if (this.hasManagerScript(configRoot)) return configRoot;
+      if (this.hasManagerScript(configRoot)) return { repoRoot: configRoot, managed: false };
       throw new Error(`aiRules.repoRoot 無效，找不到 Scripts\\AI-RulesManager.ps1：${configRoot}`);
     }
 
     const workspaceRoot = this.findWorkspaceRepoRoot();
-    if (workspaceRoot) return workspaceRoot;
+    if (workspaceRoot) return { repoRoot: workspaceRoot, managed: false };
 
     return this.ensureManagedRepoRoot(config.get<string>("repoUrl")?.trim() || DEFAULT_REPO_URL);
   }
@@ -100,37 +108,72 @@ export class ScriptRunner {
     return undefined;
   }
 
-  private async ensureManagedRepoRoot(repoUrl: string): Promise<string> {
+  private async ensureManagedRepoRoot(repoUrl: string): Promise<RepoResolution> {
     const storageRoot = this.context.globalStorageUri.fsPath;
     const managedRoot = path.join(storageRoot, MANAGED_REPO_DIR);
+    this.assertManagedPath(storageRoot, managedRoot);
 
-    if (this.hasManagerScript(managedRoot)) return managedRoot;
-
-    if (fs.existsSync(managedRoot)) {
-      throw new Error(`AI_Rules 管理快取已存在但不完整：${managedRoot}。請刪除該資料夾或設定 aiRules.repoRoot。`);
+    if (fs.existsSync(managedRoot) && !this.isUsableManagedRepo(managedRoot)) {
+      this.output.show(true);
+      this.output.appendLine(`AI_Rules 管理快取不完整，將重新建立：${managedRoot}`);
+      fs.rmSync(managedRoot, { recursive: true, force: true });
     }
 
-    const answer = await vscode.window.showWarningMessage(
-      `目前專案不是 AI_Rules repo。是否要從 ${repoUrl} 建立 AI_Rules 管理快取？`,
-      { modal: true },
-      "建立快取"
-    );
-    if (answer !== "建立快取") {
-      throw new Error("尚未建立 AI_Rules 管理快取，無法執行管理腳本。");
+    if (!fs.existsSync(managedRoot)) {
+      const answer = await vscode.window.showWarningMessage(
+        `目前專案不是 AI_Rules repo。是否要從 ${repoUrl} 建立 AI_Rules 管理快取？`,
+        { modal: true },
+        "建立快取"
+      );
+      if (answer !== "建立快取") {
+        throw new Error("尚未建立 AI_Rules 管理快取，無法執行管理腳本。");
+      }
+
+      fs.mkdirSync(storageRoot, { recursive: true });
+      await this.runGit(["clone", repoUrl, managedRoot], storageRoot);
     }
 
-    fs.mkdirSync(storageRoot, { recursive: true });
-    await this.runGit(["clone", repoUrl, managedRoot], storageRoot);
+    await this.alignManagedRepoRoot(managedRoot, repoUrl);
 
     if (!this.hasManagerScript(managedRoot)) {
-      throw new Error(`Git clone 完成，但找不到 Scripts\\AI-RulesManager.ps1：${managedRoot}`);
+      throw new Error(`AI_Rules 管理快取已對齊遠端，但找不到 Scripts\\AI-RulesManager.ps1：${managedRoot}`);
     }
 
-    return managedRoot;
+    return { repoRoot: managedRoot, managed: true };
   }
 
   private hasManagerScript(repoRoot: string): boolean {
     return fs.existsSync(path.join(repoRoot, "Scripts", "AI-RulesManager.ps1"));
+  }
+
+  private isUsableManagedRepo(repoRoot: string): boolean {
+    return fs.existsSync(path.join(repoRoot, ".git")) && this.hasManagerScript(repoRoot);
+  }
+
+  private assertManagedPath(storageRoot: string, managedRoot: string): void {
+    const storage = path.resolve(storageRoot);
+    const managed = path.resolve(managedRoot);
+    const relative = path.relative(storage, managed);
+    if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) {
+      throw new Error(`AI_Rules 管理快取路徑不安全：${managedRoot}`);
+    }
+  }
+
+  private async alignManagedRepoRoot(managedRoot: string, repoUrl: string): Promise<void> {
+    this.output.show(true);
+    this.output.appendLine(`→ AI_Rules 管理快取會自動對齊遠端版本庫：${repoUrl}#${MANAGED_BRANCH}`);
+    try {
+      await this.runGit(["remote", "set-url", "origin", repoUrl], managedRoot);
+      await this.runGit(["fetch", "origin", MANAGED_BRANCH, "--prune"], managedRoot);
+      await this.runGit(["reset", "--hard"], managedRoot);
+      await this.runGit(["clean", "-fdx"], managedRoot);
+      await this.runGit(["checkout", "-B", MANAGED_BRANCH, `origin/${MANAGED_BRANCH}`], managedRoot);
+      await this.runGit(["reset", "--hard", `origin/${MANAGED_BRANCH}`], managedRoot);
+      await this.runGit(["clean", "-fdx"], managedRoot);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`AI_Rules 管理快取無法對齊遠端版本庫，已停止避免使用舊規則同步專案。${message}`);
+    }
   }
 
   private runGit(args: string[], cwd: string): Promise<void> {
@@ -146,7 +189,7 @@ export class ScriptRunner {
       });
       child.on("close", (code) => {
         if (code === 0) resolve();
-        else reject(new Error(`Git clone 失敗，exit code ${code}`));
+        else reject(new Error(`Git 指令失敗：git ${args.join(" ")}，exit code ${code}`));
       });
     });
   }

@@ -760,17 +760,9 @@ function Set-GitignoreEntries {
     $startMarker = "# AI_RULES_GITIGNORE_START"
     $endMarker   = "# AI_RULES_GITIGNORE_END"
     $newline     = [Environment]::NewLine
-    $managedBlock = @(
-        $startMarker,
-        "# [ACTIVE][AI_RULES_LOCAL] Local AI Rules runtime state",
-        ".cartridge/",
-        "",
-        "# [ACTIVE][AI_RULES_RUNTIME] Agent logs",
-        ".agents/logs/",
-        "",
-        "# [TRACKED][AI_RULES_MEMORY] .agents/memory/ is project knowledge and is not ignored by default.",
-        $endMarker
-    ) -join $newline
+    $requiredLines = @(@(".agents/logs/", ".cartridge/") + @($Lines)) |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+        Select-Object -Unique
 
     if (-not (Test-Path $gitignorePath)) {
         Set-Content $gitignorePath "" -Encoding UTF8
@@ -779,42 +771,103 @@ function Set-GitignoreEntries {
 
     $content = Get-Content $gitignorePath -Raw
     if ($null -eq $content) { $content = "" }
-    $legacyLines = @(@(".agents/logs/", ".cartridge/") + @($Lines)) |
-        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
-        Select-Object -Unique
-    $filtered = New-Object System.Collections.Generic.List[string]
-    $insideManagedBlock = $false
+
+    function Normalize-GitignorePattern {
+        param([string]$Pattern)
+
+        if ([string]::IsNullOrWhiteSpace($Pattern)) { return "" }
+        $normalized = $Pattern.Trim()
+        if ($normalized.StartsWith("#")) { return "" }
+        $normalized = $normalized -replace "\\", "/"
+        $normalized = $normalized.TrimStart("/")
+        $normalized = $normalized -replace "/\*\*$", "/"
+        return $normalized
+    }
+
+    function Test-GitignoreEntryPresent {
+        param(
+            [string[]]$ExistingLines,
+            [string]$Pattern
+        )
+
+        $target = Normalize-GitignorePattern -Pattern $Pattern
+        if (-not $target) { return $true }
+        $targetNoSlash = $target.TrimEnd("/")
+        foreach ($line in $ExistingLines) {
+            $candidate = Normalize-GitignorePattern -Pattern $line
+            if (-not $candidate) { continue }
+            $candidateNoSlash = $candidate.TrimEnd("/")
+            if ($candidate -eq $target -or $candidateNoSlash -eq $targetNoSlash) {
+                return $true
+            }
+        }
+        return $false
+    }
+
+    function New-GitignoreInsertLines {
+        param([string[]]$MissingLines)
+
+        $insert = New-Object System.Collections.Generic.List[string]
+        if ($MissingLines -contains ".cartridge/") {
+            $insert.Add("# [ACTIVE][AI_RULES_LOCAL] Local AI Rules runtime state")
+            $insert.Add(".cartridge/")
+        }
+        if ($MissingLines -contains ".agents/logs/") {
+            if ($insert.Count -gt 0) { $insert.Add("") }
+            $insert.Add("# [ACTIVE][AI_RULES_RUNTIME] Agent logs")
+            $insert.Add(".agents/logs/")
+        }
+        $otherLines = @($MissingLines | Where-Object { $_ -notin @(".cartridge/", ".agents/logs/") })
+        if ($otherLines.Count -gt 0) {
+            if ($insert.Count -gt 0) { $insert.Add("") }
+            foreach ($line in $otherLines) { $insert.Add($line) }
+        }
+        return @($insert)
+    }
+
+    $existingLines = @($content -split "\r?\n")
+    $missingLines = @($requiredLines | Where-Object {
+        -not (Test-GitignoreEntryPresent -ExistingLines $existingLines -Pattern $_)
+    })
+
+    if ($missingLines.Count -eq 0) {
+        Write-Step ".gitignore 已包含 AI Rules 需要的排除項目"
+        return
+    }
+
+    $insertLines = @(New-GitignoreInsertLines -MissingLines $missingLines)
     $hasCompleteManagedBlock = $content.Contains($startMarker) -and $content.Contains($endMarker)
 
-    foreach ($line in ($content -split "\r?\n")) {
-        if ($hasCompleteManagedBlock -and $line -eq $startMarker) {
-            $insideManagedBlock = $true
-            continue
-        }
-        if ($insideManagedBlock) {
-            if ($line -eq $endMarker) {
-                $insideManagedBlock = $false
+    if ($hasCompleteManagedBlock) {
+        $newLines = New-Object System.Collections.Generic.List[string]
+        $inserted = $false
+        foreach ($line in $existingLines) {
+            if ((-not $inserted) -and $line -eq $endMarker) {
+                if ($newLines.Count -gt 0 -and -not [string]::IsNullOrWhiteSpace($newLines[$newLines.Count - 1])) {
+                    $newLines.Add("")
+                }
+                foreach ($insertLine in $insertLines) { $newLines.Add($insertLine) }
+                if ($insertLines.Count -gt 0) { $newLines.Add("") }
+                $inserted = $true
             }
-            continue
+            $newLines.Add($line)
         }
-        if ($legacyLines -contains $line) {
-            continue
-        }
-        $filtered.Add($line)
-    }
-
-    while ($filtered.Count -gt 0 -and [string]::IsNullOrWhiteSpace($filtered[$filtered.Count - 1])) {
-        $filtered.RemoveAt($filtered.Count - 1)
-    }
-
-    if ($filtered.Count -gt 0) {
-        $newContent = ($filtered -join $newline) + ($newline * 2) + $managedBlock + $newline
+        $newContent = $newLines -join $newline
     } else {
-        $newContent = $managedBlock + $newline
+        $managedBlock = @($startMarker) + $insertLines + @(
+            "",
+            "# [TRACKED][AI_RULES_MEMORY] .agents/memory/ is project knowledge and is not ignored by default.",
+            $endMarker
+        )
+        if ($content.Length -gt 0 -and -not ($content.EndsWith("`n") -or $content.EndsWith("`r"))) {
+            $content += $newline
+        }
+        if ($content.Length -gt 0) { $content += $newline }
+        $newContent = $content + ($managedBlock -join $newline) + $newline
     }
 
     Set-Content $gitignorePath $newContent -NoNewline -Encoding UTF8
-    Write-Ok ".gitignore AI Rules managed block 已同步"
+    Write-Ok ".gitignore 已補入 AI Rules 缺少的排除項目：$($missingLines -join ', ')"
 }
 
 Export-ModuleMember -Function *

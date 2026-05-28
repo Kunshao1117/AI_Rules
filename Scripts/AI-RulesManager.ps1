@@ -24,7 +24,9 @@ param(
     [ValidateSet("Auto", "Codex", "Claude", "Antigravity")]
     [string]$ProjectPlatform = "Auto",
 
-    [switch]$WhatIf
+    [switch]$WhatIf,
+
+    [switch]$ManagedSource
 )
 
 $ErrorActionPreference = "Stop"
@@ -126,6 +128,7 @@ function Get-GitRelation {
 function Show-GitSnapshot {
     param([object]$Snapshot)
     Write-Host "RepoRoot：$RepoRoot"
+    Write-Host "來源模式：$(if ($ManagedSource) { '使用者層管理快取（以遠端版本庫為準）' } else { '本機來源（不自動重設）' })"
     Write-Host "Branch：$($Snapshot.Branch)"
     Write-Host "Local HEAD：$($Snapshot.Head)"
     Write-Host "Remote HEAD：$($Snapshot.RemoteHead)"
@@ -146,9 +149,27 @@ function Show-GitSnapshot {
     }
 }
 
+function Assert-SourceSyncedForProjectSync {
+    $snapshot = Get-GitSnapshot
+    if (($snapshot.DirtyCount -eq 0) -and ($snapshot.Relation -eq "Synced")) {
+        return
+    }
+
+    Write-Host ""
+    Write-Host "📊 AI_Rules Source Freshness"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Show-GitSnapshot -Snapshot $snapshot
+    if ($ManagedSource) {
+        Write-Fail "專案規則同步已停止：AI_Rules 管理快取未能對齊遠端版本庫；不使用舊快取同步專案。"
+    } else {
+        Write-Fail "專案規則同步已停止：目前指定的 AI_Rules 本機來源尚未對齊遠端版本庫；請先整理或更新來源後再同步。"
+    }
+    exit 1
+}
+
 function Invoke-Check {
     Write-ManagerHeader "檢查 AI_Rules 來源狀態"
-    Write-Host "用途：讀取 AI_Rules 管理來源庫的 Git 狀態，並檢查使用者層全域規則漂移；不寫入檔案。"
+    Write-Host "用途：讀取 AI_Rules 來源版本庫的 Git 狀態，並檢查使用者層全域規則漂移；不寫入目前專案。"
     $snapshot = Get-GitSnapshot
     Show-GitSnapshot -Snapshot $snapshot
     $null = Measure-RuntimeGlobalDrift -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
@@ -160,7 +181,13 @@ function Invoke-Plan {
     Show-GitSnapshot -Snapshot $snapshot
     Write-Host ""
     Write-Host "來源庫更新計畫"
-    Write-Host "- 若有遠端更新，更新 AI_Rules 來源庫時會執行 git pull --ff-only。"
+    if ($ManagedSource) {
+        Write-Host "- 目前來源是使用者層管理快取；插件會先把快取對齊遠端版本庫，再執行管理腳本。"
+        Write-Host "- 若快取無法對齊遠端，流程會停止，不會用舊快取巡檢或同步專案規則。"
+    } else {
+        Write-Host "- 目前來源是本機來源；工具只檢查狀態，不會自動重設本機變更。"
+        Write-Host "- 若有遠端更新，更新動作只會嘗試快轉更新，不會重設本機變更。"
+    }
     Write-Host "- 套用後會重新執行平台代理治理巡檢。"
     Write-Host "- 這不會安裝新版 VSIX，也不會同步目前專案的 .agents / .claude / .codex。"
     Write-Host "- 全域規則、專案規則與孤兒檔案仍需另外按鈕確認，不會在 Plan 階段修改。"
@@ -174,7 +201,11 @@ function Invoke-Plan {
 function Invoke-ApplyUpdate {
     Write-ManagerHeader "更新 AI_Rules 來源庫"
     if ($WhatIf) {
-        Write-Host "WhatIf：將對 AI_Rules 管理來源庫執行 git pull --ff-only，然後執行治理巡檢；不安裝 VSIX，也不同步目前專案規則。"
+        if ($ManagedSource) {
+            Write-Host "WhatIf：插件會先對齊 AI_Rules 遠端來源鏡像，然後執行治理巡檢；不安裝 VSIX，也不同步目前專案規則。"
+        } else {
+            Write-Host "WhatIf：將檢查本機 AI_Rules 來源並嘗試快轉更新，然後執行治理巡檢；不安裝 VSIX，也不同步目前專案規則。"
+        }
         return
     }
     if (-not $Apply) {
@@ -196,6 +227,16 @@ function Invoke-ApplyUpdate {
         Show-GitSnapshot -Snapshot $snapshot
         Write-Fail "來源庫更新失敗：本機領先遠端；已停止，不執行治理巡檢。"
         exit 1
+    }
+    if ($ManagedSource) {
+        if ($snapshot.Relation -ne "Synced") {
+            Show-GitSnapshot -Snapshot $snapshot
+            Write-Fail "來源庫更新失敗：AI_Rules 管理快取未能對齊遠端版本庫；已停止，不執行治理巡檢。"
+            exit 1
+        }
+        $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target
+        if (-not $audit.Passed) { exit 1 }
+        return
     }
     git -C $RepoRoot pull --ff-only
     if ($LASTEXITCODE -ne 0) {
@@ -519,8 +560,11 @@ function Invoke-SyncProjectRules {
     $sharedSkillsRoot = Join-Path $RepoRoot "Shared\skills"
 
     Write-Host "RepoRoot：$RepoRoot"
+    Write-Host "來源模式：$(if ($ManagedSource) { '使用者層管理快取（以遠端版本庫為準）' } else { '本機來源（不自動重設）' })"
     Write-Host "Target：$targetRoot"
     Write-Host "範圍：$ProjectPlatform"
+
+    Assert-SourceSyncedForProjectSync
 
     Write-Host ""
     Write-Host "📊 Project Platform Selection"

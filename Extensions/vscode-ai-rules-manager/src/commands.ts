@@ -25,8 +25,8 @@ export function registerAiRulesCommands(
   runReadOnly("aiRules.doctor", "治理巡檢 Doctor", "Doctor");
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.applyUpdate", async () => {
-    const ok = await confirm("這會更新 AI_Rules 管理來源庫：執行 git pull --ff-only，然後跑治理巡檢。不會安裝新版 VSIX，也不會同步目前專案的 .agents / .claude / .codex。");
-    if (ok) await run("更新 AI_Rules 來源庫", "Apply", runner, status, panel, { apply: true });
+    const ok = await confirm("這會對齊 AI_Rules 遠端來源庫，然後跑治理巡檢。不會安裝新版 VSIX，也不會同步目前專案的 .agents / .claude / .codex。明確設定的本機來源只檢查狀態，不會被自動重設。");
+    if (ok) await run("對齊 AI_Rules 遠端來源", "Apply", runner, status, panel, { apply: true });
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncGlobalRules", async () => {
@@ -93,7 +93,7 @@ async function runProjectSync(
   panel: AiRulesPanelProvider
 ): Promise<void> {
   await run(`${label}預覽`, "SyncProjectRules", runner, status, panel, { projectPlatform });
-  const ok = await confirm("要把 AI_Rules source 中的規則、Shared Skills 與平台入口同步到目前專案已安裝的平台嗎？未安裝平台不會被建立，memory / project_skills 不會被覆寫。");
+  const ok = await confirm("要先確認 AI_Rules 遠端來源已對齊，再把規則、Shared Skills 與平台入口同步到目前專案已安裝的平台嗎？未安裝平台不會被建立，memory / project_skills 不會被覆寫。");
   if (ok) await run(label, "SyncProjectRules", runner, status, panel, { apply: true, projectPlatform });
 }
 

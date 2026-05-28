@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-29T02:50:56+08:00'
+last_updated: '2026-05-29T03:29:42+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -108,6 +108,7 @@ metadata:
 - **D41: Claude 事實優先與知識新鮮度初版 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步新增以證據校正總監提議、短證據格式與知識新鮮度查證基礎規則。高變動資訊需查最新或官方來源；此決策已由 D42 升級為中立誠實協作口徑。
 - **D42: Claude 中立誠實協作契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步把證據校正規則升級為中立誠實協作。AI 不以討好、附和或迎合總監為目標，也不得刻意反對；合理時支持，證據衝突時用短證據格式指出問題並提出可行替代做法。
 - **D43: Claude 位置索引式輸出契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步要求正式輸出若使用短名稱，必須在同一份輸出提供「位置索引」，把短名稱對應到具體檔案、章節、工具狀態或目錄範圍；巡檢模組（Audit.psm1）的總監可讀輸出檢查（Director Output Contract）同步檢查此規則。
+- **D44: 部署目標 `.gitignore` 補缺策略 (2026-05-29)**: `Core.psm1` 的 `Set-GitignoreEntries` 不再以 managed block 覆蓋或整理目標專案 `.gitignore`；改為檢查 `.agents/logs/`、`.cartridge/` 等必要排除項是否存在，缺少才插入並保留使用者原本註解、排序與自訂規則。
 
 ## Known Issues
 
@@ -137,6 +138,7 @@ metadata:
 - **D19: 輸出可讀性要納入 Doctor 語義檢查**: 只檢查表格與補充段落會產生假綠燈；Doctor 必須確認 workflow 也具備技術詞彙翻譯閘門、括號順序規則與不得單獨出現規則。
 - **D20: 短名稱需搭配位置索引**: 正式輸出可以用短名稱減少路徑噪音，但必須在同份輸出用「位置索引」補回具體檔案、章節、工具狀態或目錄範圍，否則總監仍無法追蹤實際位置。
 - **D21: Codex workflow merge 不計入共用片段 (2026-05-29)**: `Scripts/modules/Skills-Sync.psm1` 合併 Codex workflow skills 時，必須排除 `_shared` 共用片段目錄，避免專案同步把共用資料夾顯示成第 18 套工作流。
+- **D22: `.gitignore` 是專案資產，不是框架格式化目標**: 一般專案的排除檔常包含機密、測試產物、交易資料與本機 IDE 設定；部署工具只能補 AI_Rules 必要排除項，不應重排、覆蓋或把整份檔案包進 managed block。
 
 ## Relations
 

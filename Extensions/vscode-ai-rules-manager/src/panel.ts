@@ -45,10 +45,10 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
       {
         title: "來源更新與巡檢",
         buttons: [
-          ["aiRules.checkUpdate", "檢查來源狀態", "讀取 AI_Rules repo 與使用者層規則漂移"],
+          ["aiRules.checkUpdate", "檢查來源狀態", "讀取 AI_Rules 遠端來源與使用者層規則漂移"],
           ["aiRules.checkExtensionUpdate", "檢查 VSIX 新版", "查 GitHub Release 是否有新版安裝包"],
-          ["aiRules.planUpdate", "查看來源更新影響", "說明 git pull 後會做的巡檢"],
-          ["aiRules.applyUpdate", "更新 AI_Rules 來源庫", "確認後 git pull；不安裝 VSIX、不同步專案規則"],
+          ["aiRules.planUpdate", "查看來源更新影響", "說明遠端來源對齊後會做的巡檢"],
+          ["aiRules.applyUpdate", "對齊 AI_Rules 遠端來源", "確認後對齊來源；不安裝 VSIX、不同步專案規則"],
           ["aiRules.doctor", "治理巡檢 Doctor", "只檢查規範、技能與連結；不寫入"]
         ]
       },
@@ -56,7 +56,7 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
         title: "規則同步",
         buttons: [
           ["aiRules.syncGlobalRules", "同步使用者層規則", "只更新 ~/.codex、~/.claude、~/.gemini"],
-          ["aiRules.syncProjectRules", "同步已安裝平台規則", "預覽後更新目前專案的 .agents / .claude / .codex"]
+          ["aiRules.syncProjectRules", "同步已安裝平台規則", "先對齊遠端來源，再更新目前專案規則"]
         ]
       },
       {

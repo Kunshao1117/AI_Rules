@@ -122,10 +122,10 @@ AI_Rules 也提供本機 VS Code 延伸模組管理器，適合不想記 PowerSh
 
 | 按鈕 | 行為 |
 |------|------|
-| **檢查來源狀態** | 讀取 AI_Rules 管理來源庫的 Git 狀態，區分已同步、可快轉更新、來源庫分叉、本機領先遠端與工作樹變更；不修改檔案 |
+| **檢查來源狀態** | 讀取 AI_Rules 遠端來源狀態；使用者層管理快取會先對齊遠端版本庫，不修改目前專案 |
 | **檢查 VSIX 新版** | 手動查詢 GitHub Release；有新版 VSIX 安裝包時提示開啟下載頁，沒有新版時也明確回報已是最新版 |
-| **查看來源更新影響** | 說明若更新 AI_Rules 來源庫，會執行哪些 Git 與治理巡檢動作 |
-| **更新 AI_Rules 來源庫** | 顯示確認視窗後才嘗試快轉更新；若來源庫分叉、工作樹有變更或 Git 更新失敗，會停止且不執行治理巡檢；不安裝 VSIX，也不同步目前專案規則 |
+| **查看來源更新影響** | 說明若對齊 AI_Rules 遠端來源，會執行哪些來源檢查與治理巡檢動作 |
+| **對齊 AI_Rules 遠端來源** | 顯示確認視窗後才對齊遠端來源；不安裝 VSIX，也不同步目前專案規則 |
 | **治理巡檢 Doctor** | 執行治理巡檢，包含 Shared Skill 品質、workflow metadata、policy marker、子代理語彙、全域規則漂移與 project skill links |
 | **同步使用者層規則** | 先預覽差異，確認後才寫入 `~/.codex`、`~/.claude`、`~/.gemini` |
 | **同步已安裝平台規則** | 先偵測目前專案實際安裝的平台，再預覽並同步 `.agents` / `.claude` / `.codex` 對應規則、技能與 project skill discovery 連結 |
@@ -153,11 +153,11 @@ npm run package
 
 延伸模組只是操作面板；真正治理邏輯仍由 `Scripts/AI-RulesManager.ps1`、`Scripts/Deploy.ps1` 與 `Scripts/modules/*.psm1` 執行。
 
-在 Antigravity、VS Code 或相容 IDE 中，如果目前 workspace 不是 AI_Rules repo，延伸模組會使用該 IDE `globalStorage` 內的 AI_Rules 管理快取作為來源。使用者層規則檢查以文字內容為準；同一份規則只因 Git/Windows 將換行存成 LF 或 CRLF 時，不會被視為需要同步的漂移。同步目前專案規則時，05 濃縮工作流寫入的 `PROJECT IDENTITY` 區段會被保留，只更新框架管理內容。
+在 Antigravity、VS Code 或相容 IDE 中，如果目前 workspace 不是 AI_Rules repo，延伸模組會使用該 IDE `globalStorage` 內的 AI_Rules 管理快取作為來源。這份快取被視為遠端版本庫鏡像：每次執行管理動作前會自動對齊 `aiRules.repoUrl` 的 `main` 分支；若已明確設定 `aiRules.repoRoot`，則該本機來源只檢查狀態，不會被自動重設。使用者層規則檢查以文字內容為準；同一份規則只因 Git/Windows 將換行存成 LF 或 CRLF 時，不會被視為需要同步的漂移。同步目前專案規則時，05 濃縮工作流寫入的 `PROJECT IDENTITY` 區段會被保留，只更新框架管理內容。
 
 ### GitHub Release 自動建立與附加 VSIX
 
-推送 tag `v0.1.9` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.9.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
+推送 tag `v0.1.10` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.10.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
 
 ---
 
@@ -445,7 +445,7 @@ Extensions/**/*.vsix     ← VS Code extension 打包產物（不推送）
 
 > **重要**：root live deployment 規則只針對倉庫根目錄；`Antigravity/.agents/`、`Claude/.claude/`、`Codex/.codex/` 是框架模板源碼，必須進版控。
 
-部署到其他專案時，`Deploy.ps1` 會在目標專案 `.gitignore` 寫入 `AI_RULES_GITIGNORE` managed block：
+部署到其他專案時，`Deploy.ps1` 會檢查目標專案 `.gitignore` 是否已有 AI Rules 需要的排除項目；已有就不動，缺少才補入，不會整理、搬移或覆蓋專案原本規則。若需要補入，會使用 `AI_RULES_GITIGNORE` marker block 收納新增項目：
 
 ```
 # AI_RULES_GITIGNORE_START
@@ -509,7 +509,7 @@ sequenceDiagram
 | **Runtime drift 巡檢** | 檢查使用者層 `~/.codex/AGENTS.md`、`~/.claude/CLAUDE.md`、`~/.gemini/GEMINI.md` 是否與 repo source 同步；文字規則以內容比對，CRLF/LF 換行差異不算漂移 |
 | **Shared policy drift 巡檢** | 檢查三平台核心規則中的子代理 marker block 是否與 `Shared/policies/subagent-invocation.md` 一致 |
 | **Subagent vocabulary drift 巡檢** | Shared 技能若殘留未標註平台的子代理工具名會報 Red 阻斷，並攔截 Codex workflow 的 Claude 舊式 Agent subagent_type 語法 |
-| **VS Code 管理器** | 將常用治理動作包成側邊欄按鈕；使用者層規則、已安裝平台規則與單平台規則分開同步，寫入、更新、清理都需確認 |
+| **VS Code 管理器** | 將常用治理動作包成側邊欄按鈕；管理快取會先對齊遠端來源，使用者層規則、已安裝平台規則與單平台規則分開同步，寫入、更新、清理都需確認 |
 | **分類式專案同步** | `SyncProjectRules` 預設只同步目前專案已安裝的平台；單平台同步遇到未安裝平台只回報 Yellow，不自動建立未使用平台 |
 | **衍生技能自動補建** | 每次部署或專案同步自動掃描 `project_skills/`，補建 `.agents/skills/project-*` 與 `.claude/skills/project-*` discovery 連結；實體 `project-*` 目錄會被 Doctor 攔截 |
 
