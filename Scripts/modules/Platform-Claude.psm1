@@ -38,6 +38,7 @@ function Invoke-ClaudeFresh {
     $agentsRoot    = Join-Path $Target ".agents"
     $version       = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
     Write-Banner "Claude Edition v$version — Fresh 安裝 | 目標: $Target" "Magenta"
 
@@ -45,7 +46,7 @@ function Invoke-ClaudeFresh {
         New-Item -ItemType Directory -Force -Path $Target | Out-Null
     }
 
-    # D06 安全網備份（memory/ 與 project_skills/ 在 .agents/ 下，兩平台共用）
+    # D06 安全網備份（memory/、project_skills/ 與 context/ 在 .agents/ 下，三平台共用）
     $backup = Backup-ProtectedDirs -AgentsRoot $agentsRoot
 
     try {
@@ -67,7 +68,7 @@ function Invoke-ClaudeFresh {
             -Platform Claude `
             -InsertBeforePattern '(?m)^## 2\. Multi-Agent Transparency'
 
-        # 技能注入：從 Shared/ 注入 36 套共用技能到 .claude/skills/
+        # 技能注入：從 Shared/ 注入共用技能到 .claude/skills/
         Write-Step "注入共用技能（Shared/skills/ → .claude/skills/）..."
         $targetSkillsPath = Join-Path $dstDotClaude "skills"
         $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
@@ -78,8 +79,8 @@ function Invoke-ClaudeFresh {
         Set-Content (Join-Path $dstDotClaude "VERSION") $version -Encoding UTF8
         Write-Ok ".claude\VERSION → $version"
 
-        # 基礎設施確保（.agents/memory/ 和 .agents/project_skills/）
-        Initialize-AgentInfrastructure -AgentsRoot $agentsRoot
+        # 基礎設施確保（.agents/memory/、.agents/project_skills/ 和 .agents/context/）
+        Initialize-AgentInfrastructure -AgentsRoot $agentsRoot -ContextTemplatesRoot $contextTemplatesRoot
 
         # .gitignore 設定
         Set-GitignoreEntries -ProjectRoot $Target -Lines @(".agents/logs/", ".cartridge/")
@@ -137,6 +138,7 @@ function Invoke-ClaudeUpgrade {
     $agentsRoot   = Join-Path $Target ".agents"
     $version      = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
     if (-Not (Test-Path $dstDotClaude)) {
         Write-Warn "目標尚未安裝 Claude Edition，切換為 Fresh 模式。"
@@ -233,7 +235,7 @@ function Invoke-ClaudeUpgrade {
     }
 
     # 基礎設施確保
-    Initialize-AgentInfrastructure -AgentsRoot $agentsRoot
+    Initialize-AgentInfrastructure -AgentsRoot $agentsRoot -ContextTemplatesRoot $contextTemplatesRoot
 
     # .gitignore 設定
     Set-GitignoreEntries -ProjectRoot $Target -Lines @(".agents/logs/", ".cartridge/")

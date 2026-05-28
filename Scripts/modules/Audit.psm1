@@ -1717,6 +1717,7 @@ function Measure-ProjectSkillLinks {
     $results = New-Object System.Collections.ArrayList
     $projectSkillsRoot = Join-Path $TargetRoot '.agents\project_skills'
     $projectSkills = @()
+    $allowedSharedProjectPrefixedSkills = @('project-context-protocol')
 
     if (Test-Path -LiteralPath $projectSkillsRoot) {
         $projectSkills = @(Get-ChildItem -LiteralPath $projectSkillsRoot -Directory -Force -ErrorAction SilentlyContinue |
@@ -1844,7 +1845,7 @@ function Measure-ProjectSkillLinks {
 
         if (Test-Path -LiteralPath $root.Path) {
             Get-ChildItem -LiteralPath $root.Path -Force -ErrorAction SilentlyContinue |
-                Where-Object { $_.Name -match '^project-' } |
+                Where-Object { ($_.Name -match '^project-') -and ($allowedSharedProjectPrefixedSkills -notcontains $_.Name) } |
                 ForEach-Object {
                     $full = (Get-ProjectLinkFullPath -Path $_.FullName).ToLowerInvariant()
                     if ($checkedLinks -notcontains $full) {
@@ -1874,6 +1875,231 @@ function Measure-ProjectSkillLinks {
         if ($finding.Target) {
             Write-Host ("      target: {0}" -f $finding.Target) -ForegroundColor DarkGray
         }
+    }
+
+    return [PSCustomObject]@{
+        Results     = @($results.ToArray())
+        RedCount    = $redCount
+        YellowCount = $yellowCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
+function Measure-ProjectContextCards {
+    <#
+    .SYNOPSIS
+        檢查專案脈絡卡格式、核准紀錄、衝突狀態與誤放位置。
+    #>
+    param(
+        [string]$TargetRoot = ".",
+        [int]$CandidateReviewDays = 90
+    )
+
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
+    $results = New-Object System.Collections.Generic.List[object]
+    $contextRoot = Join-Path $TargetRoot ".agents\context"
+    $memoryRoot = Join-Path $TargetRoot ".agents\memory"
+    $requiredFields = @(
+        'name',
+        'description',
+        'context_type',
+        'scope',
+        'status',
+        'confidence',
+        'last_reviewed',
+        'approval',
+        'sources'
+    )
+    $allowedStatuses = @('candidate', 'approved', 'deprecated', 'conflict', 'review')
+    $requiredSections = @(
+        'Approved Context',
+        'Candidate Context',
+        'Deprecated Context',
+        'Conflicts',
+        'Evidence',
+        'Relations',
+        'Promotion Notes'
+    )
+
+    function Add-ProjectContextFinding {
+        param(
+            [string]$Severity,
+            [string]$File,
+            [string]$Reason
+        )
+        $results.Add([PSCustomObject]@{
+            Severity = $Severity
+            File     = $File
+            Reason   = $Reason
+        })
+    }
+
+    if (Test-Path -LiteralPath $memoryRoot) {
+        $misplaced = @(Get-ChildItem -LiteralPath $memoryRoot -Filter 'CONTEXT.md' -File -Recurse -ErrorAction SilentlyContinue)
+        foreach ($file in $misplaced) {
+            Add-ProjectContextFinding -Severity 'Red' `
+                -File (Get-AuditRelativePath -RepoRoot $TargetRoot -Path $file.FullName) `
+                -Reason '脈絡卡誤放在原始碼記憶目錄'
+        }
+    }
+
+    if (-not (Test-Path -LiteralPath $contextRoot)) {
+        Add-ProjectContextFinding -Severity 'Yellow' -File '.agents/context/' -Reason '尚未建立專案脈絡目錄'
+    } else {
+        $cards = @(Get-ChildItem -LiteralPath $contextRoot -Filter 'CONTEXT.md' -File -Recurse -ErrorAction SilentlyContinue)
+        if ($cards.Count -eq 0) {
+            Add-ProjectContextFinding -Severity 'Yellow' -File '.agents/context/' -Reason '尚未建立任何脈絡卡'
+        }
+
+        foreach ($card in $cards) {
+            $relative = Get-AuditRelativePath -RepoRoot $TargetRoot -Path $card.FullName
+            $content = Get-Content -LiteralPath $card.FullName -Raw -Encoding UTF8
+            $fm = Get-FrontmatterBlock -Path $card.FullName
+            if ([string]::IsNullOrWhiteSpace($fm)) {
+                Add-ProjectContextFinding -Severity 'Red' -File $relative -Reason '缺少 frontmatter'
+                continue
+            }
+
+            foreach ($field in $requiredFields) {
+                if ($fm -notmatch "(?m)^\s*$([regex]::Escape($field))\s*:") {
+                    Add-ProjectContextFinding -Severity 'Red' -File $relative -Reason "缺少必要欄位 $field"
+                }
+            }
+
+            $status = (Get-AuditFrontmatterFieldValue -Frontmatter $fm -Field 'status').ToLowerInvariant()
+            if ($status -and ($allowedStatuses -notcontains $status)) {
+                Add-ProjectContextFinding -Severity 'Red' -File $relative -Reason "不支援的狀態 $status"
+            }
+
+            foreach ($section in $requiredSections) {
+                if ($content -notmatch "(?m)^##\s+$([regex]::Escape($section))\s*$") {
+                    Add-ProjectContextFinding -Severity 'Red' -File $relative -Reason "缺少必要章節 $section"
+                }
+            }
+
+            $approval = Get-AuditFrontmatterFieldValue -Frontmatter $fm -Field 'approval'
+            if ($status -eq 'approved' -and ($approval -match '^\s*(none|null|\[\]|pending)?\s*$')) {
+                Add-ProjectContextFinding -Severity 'Yellow' -File $relative -Reason '已核准脈絡缺少核准紀錄'
+            }
+
+            if ($status -eq 'conflict') {
+                Add-ProjectContextFinding -Severity 'Yellow' -File $relative -Reason '衝突脈絡仍待總監決策'
+            }
+
+            if ($status -eq 'review') {
+                Add-ProjectContextFinding -Severity 'Yellow' -File $relative -Reason '脈絡卡處於 review 狀態，使用時需標註風險'
+            }
+
+            $lastReviewed = Get-AuditFrontmatterFieldValue -Frontmatter $fm -Field 'last_reviewed'
+            if ($status -eq 'candidate' -and $lastReviewed) {
+                $reviewDate = [datetime]::MinValue
+                if ([datetime]::TryParse($lastReviewed, [ref]$reviewDate)) {
+                    if (((Get-Date) - $reviewDate).TotalDays -gt $CandidateReviewDays) {
+                        Add-ProjectContextFinding -Severity 'Yellow' -File $relative -Reason "候選脈絡超過 $CandidateReviewDays 天未處理"
+                    }
+                }
+            }
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 Project Context Cards"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
+    foreach ($finding in $results | Sort-Object Severity, File, Reason) {
+        $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+        Write-Host ("  {0} {1} — {2}" -f $finding.Severity, $finding.File, $finding.Reason) -ForegroundColor $color
+    }
+
+    return [PSCustomObject]@{
+        Results     = @($results.ToArray())
+        RedCount    = $redCount
+        YellowCount = $yellowCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
+function Measure-SharedContextTemplates {
+    <#
+    .SYNOPSIS
+        檢查 Shared/context/ 是否提供可部署的專案脈絡模板。
+    #>
+    param([string]$RepoRoot = ".")
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $results = New-Object System.Collections.Generic.List[object]
+    $templateFile = Join-Path $RepoRoot "Shared\context\_map\CONTEXT.md"
+    $requiredFields = @(
+        'name',
+        'description',
+        'context_type',
+        'scope',
+        'status',
+        'confidence',
+        'last_reviewed',
+        'approval',
+        'sources'
+    )
+    $requiredSections = @(
+        'Approved Context',
+        'Candidate Context',
+        'Deprecated Context',
+        'Conflicts',
+        'Evidence',
+        'Relations',
+        'Promotion Notes'
+    )
+
+    function Add-SharedContextTemplateFinding {
+        param(
+            [string]$Severity,
+            [string]$File,
+            [string]$Reason
+        )
+        $results.Add([PSCustomObject]@{
+            Severity = $Severity
+            File     = $File
+            Reason   = $Reason
+        })
+    }
+
+    if (-not (Test-Path -LiteralPath $templateFile)) {
+        Add-SharedContextTemplateFinding -Severity 'Red' -File 'Shared/context/_map/CONTEXT.md' -Reason '缺少共用專案脈絡索引模板'
+    } else {
+        $relative = Get-AuditRelativePath -RepoRoot $RepoRoot -Path $templateFile
+        $content = Get-Content -LiteralPath $templateFile -Raw -Encoding UTF8
+        $fm = Get-FrontmatterBlock -Path $templateFile
+
+        if ([string]::IsNullOrWhiteSpace($fm)) {
+            Add-SharedContextTemplateFinding -Severity 'Red' -File $relative -Reason '共用脈絡模板缺少 frontmatter'
+        } else {
+            foreach ($field in $requiredFields) {
+                if ($fm -notmatch "(?m)^\s*$([regex]::Escape($field))\s*:") {
+                    Add-SharedContextTemplateFinding -Severity 'Red' -File $relative -Reason "共用脈絡模板缺少必要欄位 $field"
+                }
+            }
+        }
+
+        foreach ($section in $requiredSections) {
+            if ($content -notmatch "(?m)^##\s+$([regex]::Escape($section))\s*$") {
+                Add-SharedContextTemplateFinding -Severity 'Red' -File $relative -Reason "共用脈絡模板缺少必要章節 $section"
+            }
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 Shared Context Templates"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
+    foreach ($finding in $results | Sort-Object Severity, File, Reason) {
+        $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+        Write-Host ("  {0} {1} — {2}" -f $finding.Severity, $finding.File, $finding.Reason) -ForegroundColor $color
     }
 
     return [PSCustomObject]@{
@@ -1918,15 +2144,17 @@ function Invoke-PlatformGovernanceAudit {
     $subagentVocabulary = Measure-SubagentVocabularyDrift -RepoRoot $RepoRoot
     $directorOutput = Measure-DirectorOutputContract -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $projectLinks = Measure-ProjectSkillLinks -TargetRoot $TargetRoot
+    $sharedContextTemplates = Measure-SharedContextTemplates -RepoRoot $RepoRoot
+    $projectContext = Measure-ProjectContextCards -TargetRoot $TargetRoot
 
     $metadataFail = ($metadata | Where-Object { $_.Status -eq '🔴' }).Count
     $metadataYellow = ($metadata | Where-Object { $_.Status -eq '🟡' }).Count
     $skillRed = ($skillQuality | Where-Object { $_.OverallStatus -eq '🔴' }).Count
     $skillYellow = ($skillQuality | Where-Object { $_.OverallStatus -eq '🟡' }).Count
     $docStale = $docs.StaleHits.Count
-    $redTotal = $runtime.RedCount + $semantics.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $projectLinks.RedCount
+    $redTotal = $runtime.RedCount + $semantics.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $projectLinks.RedCount + $sharedContextTemplates.RedCount + $projectContext.RedCount
     $redTotal += $skillRed
-    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount
+    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount
     $yellowTotal += $metadataYellow + $skillYellow
     $ok = $capability.CapabilityMatrix -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
@@ -1949,10 +2177,12 @@ function Invoke-PlatformGovernanceAudit {
         SubagentVocabulary = $subagentVocabulary
         DirectorOutput = $directorOutput
         ProjectLinks = $projectLinks
+        SharedContextTemplates = $sharedContextTemplates
+        ProjectContext = $projectContext
         RedCount   = $redTotal
         YellowCount = $yellowTotal
         Passed     = $ok
     }
 }
 
-Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Invoke-PlatformGovernanceAudit
+Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Measure-SharedContextTemplates, Measure-ProjectContextCards, Invoke-PlatformGovernanceAudit

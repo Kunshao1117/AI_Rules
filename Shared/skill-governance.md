@@ -12,10 +12,14 @@ without forcing every rule into always-on context.
 | Workflow / command entry | Task routing and lifecycle phase selection | Build/fix/commit/audit stage order, explicit load gates | Full implementation recipes shared across platforms |
 | Shared skills | On-demand operational knowledge | Repeatable procedures, tool playbooks, release steps, test recipes | Non-negotiable safety rules that must apply before skill load |
 | Memory | Project-specific facts and decisions | Current architecture, version choices, repo lessons, module ownership | Generic procedure that should apply to many projects |
+| Project context | Long-lived project preferences | Design DNA, product preferences, technical preferences, communication preferences, acceptance preferences | Source ownership, stale tracking, executable procedures |
 
 Rules that must be obeyed even when no skill triggers stay in core rules.
 Details that are only needed for a task should move into Shared skills or their
 references.
+Long-lived preferences should move into `.agents/context/**/CONTEXT.md`, not
+memory cards. Stable context that becomes a repeatable procedure can be promoted
+to a project skill through the skill forge workflow.
 
 ## Skill Trigger Contract
 

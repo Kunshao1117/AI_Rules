@@ -1,6 +1,6 @@
 ---
 description: "Use when: 架構設計、藍圖、技術堆疊探勘、ER 圖、API 路由設計、三平台代理治理架構宣告。DO NOT use when: 已有核准計畫要直接建構或修復。"
-required_skills: [memory-ops, tech-stack-protocol]
+required_skills: [memory-ops, tech-stack-protocol, ai-dev-quality-gate, project-context-protocol]
 memory_awareness: full
 metadata:
   author: antigravity
@@ -48,6 +48,8 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 
 > [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before architecture planning.
+> [LOAD SKILL] If this blueprint touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before architecture planning.
+> [LOAD SKILL] If this blueprint touches product direction, design DNA, technical preferences, communication preferences, or acceptance preferences, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before architecture planning.
 # [WORKFLOW: BLUEPRINT (架構)]
 
 
@@ -55,6 +57,7 @@ Technical details may only appear after a `補充技術細節` section when they
 > 1. `view_file .agents/skills/memory-ops/SKILL.md`
 > 2. `view_file .agents/skills/tech-stack-protocol/SKILL.md`
 > 3. `view_file .agents/skills/memory-arch/SKILL.md`
+> 4. `view_file .agents/skills/project-context-protocol/SKILL.md`
 
 ## 1. Context Retrieval
 

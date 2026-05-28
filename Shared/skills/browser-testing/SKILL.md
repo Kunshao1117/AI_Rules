@@ -1,8 +1,8 @@
 ---
 name: browser-testing
 description: >
-  [Testing] Browser evidence branch SOP and auto-arbitration gate for E2E visual testing.
-  Use when: 需要瀏覽器證據分支進行視覺驗證、E2E 測試執行、DOM 檢查、截圖證據、或瀏覽器自動仲裁閘門判定的場景。
+  [Testing] Browser evidence branch SOP, responsive screenshot evidence, and auto-arbitration gate for E2E visual testing.
+  Use when: 需要瀏覽器證據分支進行視覺驗證、E2E 測試執行、DOM 檢查、截圖證據、手機/平板/桌面響應式驗收、或瀏覽器自動仲裁閘門判定的場景。
   DO NOT use when: 寫單元測試（用 test-patterns）、只需要 DOM 選擇器策略（用 test-automation-strategy）、決定委派管道（用 delegation-strategy）。
 metadata:
   author: antigravity
@@ -55,8 +55,8 @@ When requesting a browser evidence branch:
 
 - Browser evidence branches may not have module memory loaded.
   （瀏覽器證據分支不一定能存取模組記憶）
-- If project context is needed, embed key details directly in the task description prompt.
-  （如需專案資訊，直接嵌入任務描述中）
+- If project context or design DNA is needed, the main thread reads approved `.agents/context/**/CONTEXT.md` cards and embeds key details directly in the task description prompt.
+  （如需專案脈絡或設計 DNA，由主線讀取已核准脈絡後直接嵌入任務描述中）
 
 ### Step 4: Auto-Arbitration Gate (自動仲裁閘門)
 
@@ -71,6 +71,20 @@ After a browser evidence branch proposes changes:
    （全通過時可略過額外人工審查，但不得略過既有 GO / HITL 閘門，也不自行授權寫入）
 4. **Visual Authorization Gate**: UI changes MUST conclude with `/06_test` for visual verification.
    （UI 變更必須以視覺測試收尾）
+
+### Step 4.5: Responsive Evidence Matrix (響應式證據矩陣)
+
+For UI changes that affect layout, components, styling, or interaction states:
+（影響版面、元件、樣式或互動狀態的 UI 變更）
+
+1. Capture or inspect at least one mobile viewport, one tablet viewport, and one desktop viewport.
+   （至少檢查手機、平板與桌面三種視窗）
+2. Check text overflow, compressed buttons, overlapping components, table overflow, fixed elements covering content, touch target size, spacing consistency, and type hierarchy.
+   （檢查文字溢出、按鈕擠壓、元件重疊、表格超出、固定區塊遮擋、觸控尺寸、間距一致性與字級層級）
+3. If any required viewport evidence is missing, report the UI as pending visual validation and do not mark the task complete.
+   （缺少任一必要視窗證據時，只能回報待驗收，不得宣稱完成）
+4. Operational tools and trading terminals must define a mobile information strategy instead of shrinking desktop tables blindly.
+   （操作型工具與期貨使用端必須定義手機資訊策略，不可直接壓縮桌面表格）
 
 ## Constraints (約束)
 
@@ -104,3 +118,4 @@ When Auto-Arbitration Gate FAILS, classify the error before deciding next action
 - Browser evidence branch returned successfully with report
 - All approved proposed changes applied by the Master Agent and tests pass
 - Visual verification screenshot/recording or DOM state evidence is included in the walkthrough
+- Layout-affecting UI changes include mobile, tablet, and desktop evidence or are explicitly marked pending validation

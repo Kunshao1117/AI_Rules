@@ -11,9 +11,11 @@
 # [ACTIVE][GENERATED] Root Antigravity live deployment
 /.agents/*
 
-# [TRACKED][EXCEPTION] Shared memory cards are repository state
+# [TRACKED][EXCEPTION] Shared memory and context cards are repository state
 !/.agents/memory/
 !/.agents/memory/**
+!/.agents/context/
+!/.agents/context/**
 
 # [ACTIVE][RUNTIME] Platform logs
 **/.agents/logs/

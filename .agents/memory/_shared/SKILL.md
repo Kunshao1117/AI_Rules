@@ -1,11 +1,11 @@
 ---
 name: _shared
 description: >
-  Shared/ 共用治理資產記憶卡。追蹤 37 套操作型技能唯一真實來源、三平台能力矩陣與 MCP opt-in profiles。 部署時由
+  Shared/ 共用治理資產記憶卡。追蹤 39 套操作型技能唯一真實來源、三平台能力矩陣與 MCP opt-in profiles。 部署時由
   Skills-Sync.psm1 注入 Antigravity、Claude、Codex 三個平台。 Use when: 修改 Shared/
   下任何共用技能或平台治理資產時。
 scopePath: Shared/
-last_updated: '2026-05-29T02:50:50+08:00'
+last_updated: '2026-05-29T06:07:10+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -17,6 +17,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared 共用技能庫
 
 ## Tracked Files
@@ -25,9 +26,13 @@ metadata:
 - Shared/skill-governance.md
 - Shared/policies/subagent-invocation.md
 - Shared/mcp-profiles/README.md
+- Shared/context
+- Shared/context/_map
+- Shared/context/_map/CONTEXT.md
 - Shared/skills/_index.md
 - Scripts/modules/Skills-Sync.psm1
 - Shared/skills/a11y-testing/SKILL.md
+- Shared/skills/ai-dev-quality-gate/SKILL.md
 - Shared/skills/audit-engine/SKILL.md
 - Shared/skills/browser-testing/SKILL.md
 - Shared/skills/cloudflare-ops/SKILL.md
@@ -61,6 +66,8 @@ metadata:
 - Shared/skills/performance-audit/SKILL.md
 - Shared/skills/plugin-release-governance/SKILL.md
 - Shared/skills/plugin-release-governance/references/vsix-release-playbook.md
+- Shared/skills/project-context-protocol/SKILL.md
+- Shared/skills/project-context-protocol/references/context-template.md
 - Shared/skills/pr-review-ops/SKILL.md
 - Shared/skills/security-sre/SKILL.md
 - Shared/skills/sentry-ops/SKILL.md
@@ -141,6 +148,10 @@ metadata:
 - **Skill trigger effectiveness hardening (2026-05-19)**: GitNexus、Supabase 與 skill-factory 等相鄰技能補齊繁中/英文觸發詞與 `DO NOT use when` 邊界；Doctor 的技能品質檢查升級為檢查 Shared operational skill 是否具備雙語觸發與負向邊界。
 - **VSIX release playbook Node 24 guard (2026-05-19)**: `plugin-release-governance` 的 VSIX playbook 將 Node 24-compatible GitHub Actions、Node 24 打包與 LICENSE presence 納入發布檢查，避免每次插件發布重複漏看 GitHub Actions 淘汰訊號。
 - **Update reminder acceptance split (2026-05-19)**: `plugin-release-governance` 的 VSIX playbook 明確拆分自動與手動更新提醒驗收：自動啟動檢查無新版時保持靜默，手動檢查才回報已是最新版或錯誤。
+- **AI development quality gate (2026-05-29)**: 新增 `ai-dev-quality-gate` 作為 AI 開發品質治理技能，集中管理技術新鮮度、共用元件復用、偏好探索、AI 生成圖降級、小切片原型與手機/平板/桌面三尺寸 UI 證據；`ui-ux-standards`、`tech-stack-protocol`、`stitch-design`、`browser-testing` 與 `test-automation-strategy` 改為承接同一套品質語義。
+- **Project context protocol (2026-05-29)**: 新增 `project-context-protocol` 作為 Shared operational skill，使 Shared 操作型技能總數成為 39。專案脈絡層固定使用 `.agents/context/**/CONTEXT.md`，承載設計 DNA、產品偏好、技術偏好、溝通偏好與驗收偏好；候選脈絡不得自動升級，永久採用需 `GO CONTEXT` 或設計 DNA 別名 `GO DNA`。
+- **Project context prefix exception (2026-05-29)**: `Sync-SharedSkills` 原本會排除所有 `project-*` 開頭目錄以避開專案技能連結；專案技能連結巡檢也會掃描 `project-*` 實體目錄。本次為正式共用技能 `project-context-protocol` 加入例外，避免源碼有技能但部署時漏注入，或部署後被誤報為非法 project skill discovery 實體。
+- **Shared context template source (2026-05-29)**: 新增 `Shared/context/_map/CONTEXT.md` 作為專案脈絡索引卡的可見模板來源。部署初始化只在目標缺少 `.agents/context/_map/CONTEXT.md` 時複製模板；既有專案脈絡卡維持受保護，不覆蓋、不合併、不刪除。
 
 ## Known Issues
 
@@ -161,6 +172,10 @@ metadata:
 - **更新提醒要分清背景與手動**：背景檢查只負責在有新版時提醒，不能把「已是最新版」當成啟動通知；手動檢查才需要完整回饋，避免 IDE 每次啟動造成干擾。
 - **Shared 技能只能描述治理語義**：共用層允許說 Delegation Gate、evidence branch、browser branch、CLI branch、MCP direct；平台專用子代理、browser、CLI 或 Agent 工具名只能放在明確標註的平台 adapter 區塊或平台入口。
 - **Shared 主體禁止硬編平台狀態檔與工具名**：若需要保存重試狀態或執行 CLI 分支，Shared skill 只能說 adapter-provided transient state / 平台核准能力；不得在共用層直接寫特定平台路徑或工具函式名。
+- **AI 開發品質要拆成可驗收閘門**：對 UI 平庸、手機版跑版、模型知識過舊與生成圖落差這類痛點，不應只寫抽象設計要求；必須落成技術新鮮度、元件復用、偏好探索、參考圖降級與三尺寸證據等可檢查欄位。
+- **長期偏好不放進原始碼記憶**：設計 DNA、產品偏好與驗收偏好屬於專案脈絡層；原始碼記憶只記錄架構、檔案、依賴與 stale 事實，避免偏好資訊混入 `memory_commit` 的過期判斷。
+- **Shared 技能命名前綴不可只看字串排除**：若正式共用技能名稱與保護前綴相撞，部署同步器與巡檢器必須有明確例外；否則技能品質掃描會全綠，但下游平台實際掃不到技能或部署後被誤報紅燈。
+- **共用脈絡模板要可見但不能覆寫**：專案脈絡模板應放在 Shared 層作為三平台同源來源；部署只能補缺，不能用模板重置使用者已核准或候選的脈絡卡。
 
 ## Relations
 

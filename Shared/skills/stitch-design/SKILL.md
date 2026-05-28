@@ -1,12 +1,13 @@
 ---
 name: stitch-design
 description: >
-  [MCP: stitch] StitchMCP UI design workflow: project management, screen generation, and design DNA extraction.
-  Use when: 需要 UI 設計稿生成/編輯/變體/設計規範擷取 的場景。
+  [MCP: stitch] StitchMCP UI design workflow: project management, screen generation,
+  design DNA extraction, and generated image downgrade.
+  Use when: 需要 UI 設計稿生成/編輯/變體/設計規範擷取/生成圖降級/設計 DNA 的場景。
   DO NOT use when: 非 UI 設計稿場景、純程式碼實作不需要設計稿。
 metadata:
   author: antigravity
-  version: "5.3"
+  version: "5.4"
   origin: framework
   kind: operational
   memory_awareness: none
@@ -85,6 +86,22 @@ Establish a unified visual language and apply it across all screens.
    （將設計規範記錄為專案參考）
 3. Feed design tokens into frontend implementation
    （將設計規範輸入前端實作）
+4. Persist approved design DNA only through `project-context-protocol` after `GO CONTEXT` or `GO DNA`.
+   （核准後的設計 DNA 只能透過專案脈絡協議寫入專案脈絡）
+
+### Step 4.5: Reference Downgrade Gate (參考圖降級閘門)
+
+Generated screens and AI images are direction material, not implementation contracts.
+（生成畫面與 AI 圖像只能作為方向素材，不是實作契約）
+
+1. Extract implementable constraints: density, hierarchy, color roles, type scale, spacing rhythm, shape language, component behavior, and responsive strategy.
+   （萃取可實作約束：密度、層級、色彩角色、字級、間距、形狀、元件行為與響應式策略）
+2. Map constraints to existing project components before creating new components.
+   （先對應既有專案元件，再決定是否新增元件）
+3. Discard purely decorative or impossible details that cannot be reproduced in the project's frontend stack.
+   （捨棄無法在專案前端技術棧穩定重現的裝飾細節）
+4. Use real rendered screenshots, not generated images, for final acceptance.
+   （最終驗收以真實渲染截圖為準，不以生成圖為準）
 
 ### Step 5: Sync Checkpoint (設計同步檢查)
 

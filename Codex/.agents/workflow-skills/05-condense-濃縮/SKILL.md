@@ -1,6 +1,7 @@
 ---
 name: "05-condense-濃縮"
 description: "Use when: 專案濃縮初始化、萃取 PROJECT IDENTITY、掃描代碼庫並寫入永久上下文。DO NOT use when: 只要讀取既有記憶或一般架構說明。"
+required_skills: [memory-ops, memory-arch, tech-stack-protocol, project-context-protocol]
 metadata:
   author: antigravity
   version: "2.0"
@@ -69,6 +70,7 @@ Use this skill when the user asks to run the migrated source command `05_condens
 > 1. `.agents/skills/memory-ops/SKILL.md`
 > 2. `.agents/skills/memory-arch/SKILL.md`
 > 3. `.agents/skills/tech-stack-protocol/SKILL.md`
+> 4. `.agents/skills/project-context-protocol/SKILL.md`
 
 Scan the project systematically using the following priority order:
 
@@ -94,6 +96,7 @@ From the scan results, extract exactly **6 dimensions**, each in **one sentence*
 Generate two outputs:
 - **壓縮摘要（6 行）** → 寫入 AGENTS.md 保護區段（Path A）
 - **完整上下文** → 寫入 `_system` 記憶卡（Path B）
+- **候選專案脈絡** → 只列為候選清單（Path C）；永久寫入 `.agents/context/**/CONTEXT.md` 需另取得 `GO CONTEXT`
 
 ## 3. Director Review Gate（總監審閱閘門）
 

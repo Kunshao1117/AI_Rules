@@ -6,7 +6,7 @@ description: >
   DO NOT use when: 純更新記憶卡內容或修復過期指數（用 memory-ops）。
 metadata:
   author: antigravity
-  version: "1.1"
+  version: "1.2"
   origin: framework
   kind: operational
   memory_awareness: none
@@ -122,6 +122,18 @@ Nested cards should list parent/child context in `## Relations`, for example:
 ```
 
 Do not mirror these navigation links into frontmatter `dependencies` unless the Dependency Write Gate in `memory-ops` passes.
+
+## 2.5 Project Context Boundary (專案脈絡邊界)
+
+Long-lived preferences, design DNA, product acceptance defaults, and communication style belong in `.agents/context/`, not `.agents/memory/`.
+
+Source memory cards should record source ownership, architecture decisions, dependencies, stale tracking, and module lessons only.
+
+If a task discovers a reusable preference:
+
+1. Propose it as candidate project context.
+2. Wait for explicit `GO CONTEXT` before writing `.agents/context/**/CONTEXT.md`.
+3. Do not call `memory_commit`; project context does not participate in source memory staleness.
 
 ### Granularity Rule (粒度規則)
 

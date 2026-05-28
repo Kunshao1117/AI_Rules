@@ -57,7 +57,7 @@ All workflows that modify source code MUST follow:
 1. **Planning phase**: List complete implementation steps in conversation. Do NOT write source files.
 2. **Review gate**: Present plan to Director. Wait for GO.
 3. **Execution phase**: After GO, write source code using tools.
-4. **Completion protocol**: Update `.agents/memory/` cards.
+4. **Completion protocol**: Update `.agents/memory/` cards for source changes. Project context changes require separate `GO CONTEXT`.
 
 ```
 [PLANNING GATE]
@@ -86,10 +86,22 @@ Before writing any source file:
 
 ---
 
+## Project Context System
+
+**Shared project context store**: `.agents/context/`
+- Stores long-lived design DNA, product preferences, technical preferences, communication preferences, and acceptance preferences.
+- Context cards use `CONTEXT.md`, not `SKILL.md`; they are readable context, not executable skills.
+- Valid context states are `candidate`, `approved`, `deprecated`, `conflict`, and `review`.
+- Relevant blueprint, build, fix, test, condense, and skill-forge workflows may read matching context cards.
+- Persistent context writes require `GO CONTEXT`; design DNA may use `GO DNA` as an alias.
+- Project context does not use `memory_commit` and does not participate in source memory staleness.
+
+---
+
 ## Skill System
 
 **`.agents/skills/`** — Codex native scan path (agentskills.io open standard):
-- 37 shared operational skills (injected from `Shared/skills/`)
+- 39 shared operational skills (injected from `Shared/skills/`)
 - 17 workflow skills (merged from `workflow-skills/`)
 - Workflow `SKILL.md` files MUST carry governance metadata v2: `kind`, `platforms`, `lifecycle_phase`, `role`, `memory_awareness`, `tool_scope`, `human_gate`, and `automation_safe`.
 

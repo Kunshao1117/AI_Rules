@@ -1,7 +1,7 @@
 ---
 description: "Use when: 執行 E2E、視覺測試、瀏覽器功能測試、回歸驗證或測試委派。DO NOT use when: 只需要單元測試設計或純程式碼審查。"
 required_skills:
-  [test-automation-strategy, browser-testing, a11y-testing, trunk-ops]
+  [test-automation-strategy, browser-testing, a11y-testing, trunk-ops, ai-dev-quality-gate, project-context-protocol]
 memory_awareness: read
 metadata:
   author: antigravity
@@ -48,6 +48,9 @@ Technical details may only appear after a `補充技術細節` section when they
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 # [WORKFLOW: TEST (測試)]
+
+> [LOAD SKILL] If the test target includes layout, components, styling, interaction states, mobile behavior, generated UI references, or design DNA, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before defining visual evidence.
+> [LOAD SKILL] If the test target includes design DNA, product preference, communication preference, or acceptance preference, read `.agents/skills/project-context-protocol/SKILL.md` and compare rendered behavior against approved `.agents/context/**/CONTEXT.md` cards.
 
 
 ## 1. Invocation & Autonomy

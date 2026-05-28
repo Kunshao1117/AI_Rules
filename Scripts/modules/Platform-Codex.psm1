@@ -40,6 +40,7 @@ function Invoke-CodexFresh {
     $targetSkillsPath = Join-Path $agentsRoot "skills"
     $version         = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
     Write-Banner "Codex v$version — Fresh 安裝 | 目標: $Target" "Magenta"
 
@@ -74,7 +75,7 @@ function Invoke-CodexFresh {
         }
 
         # 技能注入（兩步驟）：
-        # Step 1: 注入 36 套共用技能（Shared/skills/ → .agents/skills/）
+        # Step 1: 注入共用技能（Shared/skills/ → .agents/skills/）
         Write-Step "注入共用技能（Shared/skills/ → .agents/skills/）..."
         $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
                           -TargetSkillsPath $targetSkillsPath `
@@ -90,7 +91,7 @@ function Invoke-CodexFresh {
         }
 
         # 基礎設施確保
-        Initialize-AgentInfrastructure -AgentsRoot $agentsRoot
+        Initialize-AgentInfrastructure -AgentsRoot $agentsRoot -ContextTemplatesRoot $contextTemplatesRoot
 
         # .gitignore 設定
         Set-GitignoreEntries -ProjectRoot $Target -Lines @(".agents/logs/", ".cartridge/")
@@ -153,6 +154,7 @@ function Invoke-CodexUpgrade {
     $targetSkillsPath = Join-Path $agentsRoot "skills"
     $version         = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
     if (-Not (Test-Path $dstDotCodex)) {
         Write-Warn "目標尚未安裝 Codex，切換為 Fresh 模式。"
@@ -243,7 +245,7 @@ function Invoke-CodexUpgrade {
     }
 
     # 基礎設施確保
-    Initialize-AgentInfrastructure -AgentsRoot $agentsRoot
+    Initialize-AgentInfrastructure -AgentsRoot $agentsRoot -ContextTemplatesRoot $contextTemplatesRoot
 
     # .gitignore 設定
     Set-GitignoreEntries -ProjectRoot $Target -Lines @(".agents/logs/", ".cartridge/")

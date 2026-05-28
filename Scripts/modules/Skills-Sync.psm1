@@ -41,8 +41,8 @@ function Sync-SharedSkills {
     if ($Mode -eq "Full") {
         # 全量複製（Fresh 模式使用）
         Get-ChildItem $SharedSkillsRoot | Where-Object {
-            # 排除符號連結目錄（_memory、_project、project-*）
-            -not ($_.Name -match '^_') -and -not ($_.Name -match '^project-')
+            # 排除符號連結目錄（_memory、_project、project-*），但保留正式共用技能 project-context-protocol。
+            -not ($_.Name -match '^_') -and (($_.Name -eq 'project-context-protocol') -or -not ($_.Name -match '^project-'))
         } | ForEach-Object {
             Copy-Item $_.FullName $TargetSkillsPath -Recurse -Force
         }
@@ -57,8 +57,9 @@ function Sync-SharedSkills {
     $updated = 0
     Get-ChildItem $SharedSkillsRoot -Recurse -File | Where-Object {
         $relPath = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
+        $isProjectContextProtocol = $relPath -match '^project-context-protocol([\\\/]|$)'
         -not ($relPath -match '^_memory[\\\/]') -and -not ($relPath -match '^_project[\\\/]') `
-        -and -not ($relPath -match '^project-')
+        -and ($isProjectContextProtocol -or -not ($relPath -match '^project-'))
     } | ForEach-Object {
         $rel     = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
         $tgtFile = Join-Path $TargetSkillsPath $rel

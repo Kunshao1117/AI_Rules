@@ -2,7 +2,7 @@
 name: _ag_core
 description: Antigravity 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Antigravity/
-last_updated: '2026-05-29T02:03:47+08:00'
+last_updated: '2026-05-29T05:43:55+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -93,6 +93,8 @@ metadata:
 - **Antigravity workflow trigger descriptions (2026-05-19)**: 20 個 `.agents/workflows/*.md` 入口補齊 `Use when` 與負向邊界；分階段流程如 `03-2`、`04-2`、`09-2` 明確標示只在前階段 GO 後使用。
 - **Antigravity / Gemini Delegation Gate adapter (2026-05-22)**: `01_explore`、`06_test`、`07_debug`、`08-2_audit_logic` workflow 改為 evidence branch / browser branch / CLI branch 語彙；Antigravity / Gemini adapter 才轉成 Gemini CLI subagents、`@` 指派、browser-capable agent 或 plugin adapter，並保留 Reader role、GO/HITL 與唯讀限制。
 - **Antigravity 08-2 log 邊界硬化 (2026-05-22)**: `08-2_audit_logic` 明確規定 CLI evidence branch 只回傳證據包，不寫專案檔；`.agents/logs/audit_logic_results.md` 只能由 Master workflow 在狀態彙整階段寫入，避免把 evidence branch 解讀成可寫入者。
+- **Antigravity AI 開發品質閘門 (2026-05-29)**: `02_blueprint(架構)`、`03_build(建構計畫)`、`04-1_fix_plan(修復計畫)` 與 `06_test(測試)` 在 UI、版面、元件、設計、客製化網頁或高變動技術棧情境載入 `ai-dev-quality-gate`，測試流程承接手機、平板、桌面三尺寸證據。
+- **Antigravity 專案脈絡層接入 (2026-05-29)**: Antigravity README、核心規則與記憶合約同步加入 `.agents/context/`。`02_blueprint(架構)`、`03_build(建構計畫)`、`04-1_fix_plan(修復計畫)`、`05_condense(濃縮)`、`06_test(測試)` 與 `12_skill_forge(技能鍛造)` 在任務相關時載入 `project-context-protocol`；設計 DNA、產品偏好、技術偏好與驗收偏好不得再塞入原始碼記憶卡。
 
 ## Known Issues
 
@@ -113,6 +115,8 @@ metadata:
 - **D10: Antigravity browser/CLI 分支是證據來源**：browser 或 CLI 分支只能蒐集證據、重現步驟與風險建議；任何原始碼、記憶、Git 或外部狀態修改仍必須回到主代理並通過對應 GO/HITL gate。
 - **D11: `.agents/logs/` 寫入是 Master workflow 狀態傳遞，不是 evidence branch 權限**：即使 audit workflow 允許寫中介 log，也必須明確指出執行者是 Master workflow；分支代理只能回報。
 - **D12: 短名稱需搭配位置索引**：Antigravity 正式計畫、完成報告與巡檢摘要可以用短名稱保持清爽，但必須在同份輸出用「位置索引」補回具體檔案、章節、工具狀態或目錄範圍。
+- **D13: UI 變更不能只驗桌面**：Antigravity 若完成版面、元件或互動狀態變更，必須在回報中交代三尺寸證據與手機版風險；缺少手機證據時不得宣稱 UI 完成。
+- **D14: Antigravity 偏好資訊走脈絡層**：Antigravity workflow 只能採用已核准脈絡；濃縮或建構過程萃取出的新偏好先列為候選，必須等 `GO CONTEXT` 或 `GO DNA` 才能永久寫入 `.agents/context/`。
 
 ## Applicable Skills
 

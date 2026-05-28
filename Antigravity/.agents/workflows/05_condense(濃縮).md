@@ -1,5 +1,6 @@
 ---
 description: "Use when: 專案濃縮初始化、萃取 PROJECT IDENTITY、掃描代碼庫並寫入永久上下文。DO NOT use when: 只要讀取既有記憶或一般架構說明。"
+required_skills: [memory-ops, memory-arch, tech-stack-protocol, project-context-protocol]
 metadata:
   author: antigravity
   version: "2.0"
@@ -57,6 +58,7 @@ Technical details may only appear after a `補充技術細節` section when they
 > 1. `view_file .agents/skills/memory-ops/SKILL.md`
 > 2. `view_file .agents/skills/memory-arch/SKILL.md`
 > 3. `view_file .agents/skills/tech-stack-protocol/SKILL.md`
+> 4. `view_file .agents/skills/project-context-protocol/SKILL.md`
 
 Scan the project systematically using the following priority order:
 
@@ -92,6 +94,7 @@ Generate two outputs from these dimensions:
 
 - **壓縮摘要（6 行以內）** → 寫入 AGENTS.md 保護區段（Path A）
 - **完整上下文** → 寫入 _system 記憶卡的 `## 專案身份與工作模式` 段落（Path B）
+- **候選專案脈絡** → 只列出可審核候選（Path C）；永久寫入 `.agents/context/**/CONTEXT.md` 需另取得 `GO CONTEXT`
 
 ## 3. Director Review Gate（總監審閱閘門）
 
@@ -114,6 +117,9 @@ Output format:
 
 ═══ Path B：_system 記憶卡 — 新增/更新段落 ═══
 （完整記憶卡預覽）
+
+═══ Path C：候選專案脈絡 — 不會自動寫入 ═══
+（設計 DNA、產品偏好、技術偏好、溝通偏好、驗收偏好候選清單）
 
 確認後輸入 GO 授權寫入。
 ```

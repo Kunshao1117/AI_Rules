@@ -436,7 +436,7 @@ function Invoke-SyncAntigravityProjectRules {
         -SourceRoot $sourceRoot `
         -TargetRoot $agTargetRoot `
         -ScanDirs @("rules", "workflows") `
-        -ProtectedDirs @("memory", "project_skills") `
+        -ProtectedDirs @("memory", "project_skills", "context") `
         -ExcludeFiles @() `
         -PreserveProjectIdentity)
 
@@ -445,6 +445,7 @@ function Invoke-SyncAntigravityProjectRules {
         "工作流程 (.agents/workflows)" = { $_.Path -like "workflows/*" -or $_.Path -like "workflows\*" }
         "專案記憶 — 受保護" = { $_.Path -like "memory/*" -or $_.Path -like "memory\*" }
         "專案技能 — 受保護" = { $_.Path -like "project_skills/*" -or $_.Path -like "project_skills\*" }
+        "專案脈絡 — 受保護" = { $_.Path -like "context/*" -or $_.Path -like "context\*" }
     }) -Platform "Antigravity"
 
     $targetSkillsPath = Join-Path $agTargetRoot "skills"
@@ -558,6 +559,7 @@ function Invoke-SyncProjectRules {
     Write-ManagerHeader "同步專案平台規則"
     $targetRoot = (Resolve-Path $Target).Path
     $sharedSkillsRoot = Join-Path $RepoRoot "Shared\skills"
+    $contextTemplatesRoot = Join-Path (Split-Path $sharedSkillsRoot -Parent) "context"
 
     Write-Host "RepoRoot：$RepoRoot"
     Write-Host "來源模式：$(if ($ManagedSource) { '使用者層管理快取（以遠端版本庫為準）' } else { '本機來源（不自動重設）' })"
@@ -602,6 +604,9 @@ function Invoke-SyncProjectRules {
         return
     }
 
+    $agentsRoot = Join-Path $targetRoot ".agents"
+    Initialize-AgentInfrastructure -AgentsRoot $agentsRoot -ContextTemplatesRoot $contextTemplatesRoot
+    Set-GitignoreEntries -ProjectRoot $targetRoot -Lines @(".agents/logs/", ".cartridge/")
     Sync-ProjectSkillLinks -TargetRoot $targetRoot -Platforms $selected
     Write-Ok "目前專案規則同步完成：$($selected -join ', ')"
 }
@@ -616,7 +621,7 @@ function Get-OrphanReports {
             Source = Join-Path $RepoRoot 'Antigravity\.agents'
             Target = Join-Path $TargetRoot '.agents'
             ScanDirs = @('rules', 'workflows')
-            ProtectedDirs = @('memory', 'project_skills')
+            ProtectedDirs = @('memory', 'project_skills', 'context')
         },
         [PSCustomObject]@{
             Name = 'Claude'

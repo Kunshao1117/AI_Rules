@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-29] AI Rules Manager v0.1.12
+
+### feat
+- **Project context layer release** — VSIX 安裝包升級為 `0.1.12`，讓 AI Rules Manager 能同步本次 AI 開發品質治理與專案脈絡層能力。
+
+### fix
+- **Project sync context backfill** — 專案規則同步套用後會補建專案脈絡索引卡與必要追蹤註記，既有專案只透過管理器同步時也能取得 `.agents/context/`。
+- **Context protection in manager cleanup** — 管理器同步與孤兒清理會把專案脈絡視為受保護知識資產，不覆蓋、不刪除既有脈絡卡。
+
+### docs
+- **Release examples** — 根文件與延伸模組文件的 Release tag 與 VSIX 檔名更新為 `v0.1.12` / `ai-rules-manager-0.1.12.vsix`。
+
+## [2026-05-29] 專案脈絡層治理
+
+### feat
+- **Project context layer** — 新增 `.agents/context/` 專案脈絡層與 `_map/CONTEXT.md` 索引卡，用來保存設計 DNA、產品偏好、技術偏好、溝通偏好與驗收偏好，避免混入原始碼記憶。
+- **Project context protocol** — 新增 `project-context-protocol` 共用技能，定義 `CONTEXT.md` 格式、狀態機、讀取優先級、`GO CONTEXT` / `GO DNA` 核准口令與升級為專案技能的條件。
+- **Deployment protection** — Fresh、Upgrade、專案同步與孤兒清理會保護 `.agents/context/`；基礎設施初始化會建立專案脈絡目錄與預設索引卡。
+- **Shared context templates** — 新增 `Shared/context/_map/CONTEXT.md` 作為可見模板來源；部署時只在目標專案缺少索引卡時補建，不覆蓋既有脈絡。
+- **Workflow context gates** — Antigravity、Claude Edition 與 Codex Edition 的藍圖、建構、修復、測試、濃縮與技能鍛造入口接入專案脈絡協議；工作流只能提出候選脈絡，永久寫入仍需 `GO CONTEXT`。
+- **Project context audit** — 治理巡檢新增脈絡卡格式、核准紀錄、衝突狀態、候選脈絡過期與誤放記憶目錄檢查。
+
+### fix
+- **Shared skill prefix exception** — 技能同步器與專案技能連結巡檢保留 `project-context-protocol`，避免既有 `project-*` 排除規則把正式共用技能誤判成專案技能連結而漏部署或誤報紅燈。
+- **Manager context backfill** — AI Rules Manager 的專案規則同步在套用後會補建 `.agents/context/_map/CONTEXT.md` 與必要 `.gitignore` 追蹤註記，讓既有專案只走管理器同步時也能取得專案脈絡層。
+
+### docs
+- **Skill count refresh** — 共用操作型技能數更新為 39；Codex Edition 部署後技能總數更新為 56（39 共用 + 17 工作流）。
+
+## [2026-05-29] AI 開發品質治理
+
+### feat
+- **AI development quality gate** — 新增 `ai-dev-quality-gate` 共用技能，統一管理技術新鮮度、共用元件復用、偏好探索、生成圖降級與手機/平板/桌面三尺寸證據。
+- **UI quality hardening** — 介面品質、設計稿、瀏覽器測試與測試自動化技能新增操作型/品牌展示分流、設計 DNA、元件復用報告與響應式證據閘門。
+- **Workflow load gates** — Antigravity、Claude Edition 與 Codex Edition 的藍圖、建構、修復與測試入口會在 UI、高變動技術、生成圖或手機響應式任務中載入 AI 開發品質閘門。
+
+### docs
+- **Skill count refresh** — 共用操作型技能數更新為 39；Codex Edition 部署後技能總數更新為 56（39 共用 + 17 工作流）。
+
 ## [2026-05-29] AI Rules Manager v0.1.11
 
 ### fix

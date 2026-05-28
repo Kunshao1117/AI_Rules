@@ -1,6 +1,6 @@
 ---
 description: "Use when: 正式建構計畫、新功能、工具建構或產品行為變更，需要先產生計畫並等待 GO。DO NOT use when: 純討論、沙盒實驗或已進入授權執行階段。"
-required_skills: [memory-ops, tech-stack-protocol]
+required_skills: [memory-ops, tech-stack-protocol, ai-dev-quality-gate, project-context-protocol]
 memory_awareness: read
 metadata:
   author: antigravity
@@ -48,6 +48,8 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 
 > [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before planning changes.
+> [LOAD SKILL] If this task touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before planning changes.
+> [LOAD SKILL] If this task touches product behavior, UX preference, design DNA, technical preference, communication preference, or acceptance criteria, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before planning changes. Report adopted context or deviation reasons.
 # [WORKFLOW: BUILD — PLAN (建構計畫)]
 
 

@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-29T04:10:49+08:00'
+last_updated: '2026-05-29T06:04:31+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -111,6 +111,10 @@ metadata:
 - **D43: Claude 位置索引式輸出契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步要求正式輸出若使用短名稱，必須在同一份輸出提供「位置索引」，把短名稱對應到具體檔案、章節、工具狀態或目錄範圍；巡檢模組（Audit.psm1）的總監可讀輸出檢查（Director Output Contract）同步檢查此規則。
 - **D44: 部署目標 `.gitignore` 補缺策略 (2026-05-29)**: `Core.psm1` 的 `Set-GitignoreEntries` 不再以 managed block 覆蓋或整理目標專案 `.gitignore`；改為檢查 `.agents/logs/`、`.cartridge/` 等必要排除項是否存在，缺少才插入並保留使用者原本註解、排序與自訂規則。
 - **D45: 部署目標 `.gitignore` 等價判斷 (2026-05-29)**: `Core.psm1` 的 `Set-GitignoreEntries` 需要把 `**/.agents/logs/`、`/.agents/logs/**`、`.agents/logs/` 與 `.cartridge/` 等等價排除寫法視為已存在；在 Git repo 內優先用實際 ignore 行為判斷，無 Git 時再退回正規化字串比對。
+- **D46: Claude AI 開發品質入口 (2026-05-29)**: Claude command 入口在藍圖、建構、修復與測試流程遇到 UI、設計、元件、客製化網頁或高變動技術棧時載入 `ai-dev-quality-gate`；command 只放載入閘門與平台接入，完整品質規則維持在 Shared skill。
+- **D47: 專案脈絡層與部署保護 (2026-05-29)**: 統一部署引擎、Claude 平台模組與 Claude command 入口接入 `.agents/context/`。Fresh、Upgrade、同步與孤兒清理都保護 `context`；`memory-contract.md` 明確區分原始碼記憶與專案脈絡，長期偏好與設計 DNA 只能走 `CONTEXT.md` 與 `GO CONTEXT` / `GO DNA`。
+- **D48: project-context-protocol 前綴例外 (2026-05-29)**: `Skills-Sync.psm1` 與 `Audit.psm1` 保留 `project-context-protocol` 這個正式 Shared skill，避免既有 `project-*` 排除與 project skill discovery 巡檢規則把它誤判成專案技能連結，造成漏部署或部署後紅燈。
+- **D49: Shared context template deployment (2026-05-29)**: `Core.psm1` 的基礎設施初始化支援 `Shared/context/_map/CONTEXT.md` 作為專案脈絡索引模板；三平台部署模組都傳入 Shared context 模板根目錄。`Audit.psm1` 新增 Shared Context Templates 巡檢，確保模板存在且格式符合脈絡協議。
 
 ## Known Issues
 
@@ -129,6 +133,7 @@ metadata:
 - **D08: Installer 文件化模式必須納入 ValidateSet**: 啟動器內部即使有分支，若 PowerShell `ValidateSet` 未列入該模式，遠端單行指令仍會在參數綁定階段失敗。
 - **D09: 統一部署引擎編碼是跨平台公共契約**: `Scripts/Deploy.ps1` 與 modules 被三平台 installer 共同載入，若其中任一檔含中文但不是 UTF-8 BOM，舊版 Windows PowerShell 仍可能在 import 階段失敗。
 - **D10: Audit 必須看語義而非只看格式**: metadata 全綠不代表治理安全；審計器需要同步掃描正文是否違反 tool_scope、human_gate、automation_safe 與 MCP HITL 邊界。
+- **D11: 新品質技能仍應維持 Shared 單一真實來源**：Claude command 不應複製 UI 品質、技術新鮮度或三尺寸驗收全文；新增或調整 AI 開發品質規則時，先改 Shared skill，再由平台 command 接入。
 - **D14: Skill 觸發品質也是治理語義**: Doctor 綠燈不能只代表 frontmatter 格式完整；若 AI 在觸發前看不到足夠 description 關鍵詞，就等同於高風險流程可能不會載入對應 Skill。
 - **D15: Workflow 入口也要可被語意觸發**: 三平台 workflow/command 是任務路由器；description 需要寫清楚何時啟動與何時不該用，不能只寫內部流程或階段名稱。
 - **D13: 受保護專案資訊不可用雜湊判斷漂移**: `AGENTS.md` / `CLAUDE.md` 類核心規則檔可能帶有專案身份區塊；健康檢查應比較框架內容，而不是把專案資訊當作需要覆寫的漂移。
@@ -142,6 +147,9 @@ metadata:
 - **D21: Codex workflow merge 不計入共用片段 (2026-05-29)**: `Scripts/modules/Skills-Sync.psm1` 合併 Codex workflow skills 時，必須排除 `_shared` 共用片段目錄，避免專案同步把共用資料夾顯示成第 18 套工作流。
 - **D22: `.gitignore` 是專案資產，不是框架格式化目標**: 一般專案的排除檔常包含機密、測試產物、交易資料與本機 IDE 設定；部署工具只能補 AI_Rules 必要排除項，不應重排、覆蓋或把整份檔案包進 managed block。
 - **D23: ignore 規則要看實際效果**: 判斷 `.gitignore` 是否已有必要排除項時，不能只做字串完全比對；同一排除意圖可能以 `**/`、根目錄斜線或結尾萬用字元表達，應以 Git 的 ignore 行為或等價正規化判定。
+- **D24: 專案脈絡是受保護知識資產**: 部署保護清單新增 `context` 後，任何 Fresh / Upgrade / Cleanup 流程都不得覆蓋或刪除 `.agents/context/`；脈絡卡格式錯誤應由巡檢報警，而不是由部署工具自動修正。
+- **D25: 同步與巡檢排除規則需要正式技能例外**: `project-*` 前綴原本服務 project skill discovery 邊界；若 Shared 正式技能採用相同前綴，必須明確列入允許清單，避免 source 與 live deployment 產生假一致或巡檢誤報。
+- **D26: 模板來源與目標脈絡要分層**: Shared context template 是部署補缺來源，不是目標專案脈絡的覆寫來源；部署工具必須在目標已有 `CONTEXT.md` 時停手。
 
 ## Relations
 

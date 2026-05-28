@@ -4,7 +4,7 @@ description: >-
   AI_Rules VS Code 延伸模組與按鈕式管理入口。追蹤側邊欄 UI、命令註冊、PowerShell 腳本橋接、VSIX 打包設定與 Release
   asset 自動化。
 scopePath: Extensions/vscode-ai-rules-manager
-last_updated: '2026-05-29T04:09:23+08:00'
+last_updated: '2026-05-29T06:41:15+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -68,6 +68,9 @@ metadata:
 - **AI Rules Manager v0.1.9 source update guard (2026-05-29)**: 來源庫更新流程遇到 managed clone 分叉、本機領先、工作樹有變更或 `git pull --ff-only` 失敗時，`AI-RulesManager.ps1` 必須立即停止並不得繼續跑 Doctor；側邊欄狀態判斷同步將來源庫分叉、無法快轉與更新失敗視為需要處理。這是操作者可見行為修復，extension manifest 與 lockfile 升級到 `0.1.9`；本次只更新 source 與文件，不產出 VSIX、tag 或 release。
 - **AI Rules Manager v0.1.10 remote mirror source (2026-05-29)**: VS Code / Antigravity 類 IDE 的使用者層 AI_Rules 管理快取是遠端版本庫鏡像，不是人工維護來源；extension 在執行管理腳本前會把快取對齊 `aiRules.repoUrl` 的 `main` 分支，避免舊快取或分叉快取繼續同步專案。明確設定的 `aiRules.repoRoot` 仍視為本機開發來源，只檢查狀態、不自動重設。這是操作者可見行為修復，extension manifest 與 lockfile 升級到 `0.1.10`；正式發布流程透過 `v0.1.10` tag 產生 VSIX 與 GitHub Release。
 - **AI Rules Manager v0.1.11 workspace trust boundary (2026-05-29)**: `aiRules.repoRoot`、`aiRules.repoUrl` 與 `aiRules.powerShellPath` 只能由使用者層設定提供；若陌生 workspace 嘗試用專案設定改寫來源或執行檔，extension 會停止。同步與清理預覽若失敗，不再跳確認視窗。extension manifest 與 lockfile 升級到 `0.1.11`；本次只更新 source 與文件，不產出 VSIX、tag 或 release。
+- **AI Rules Manager project context protection (2026-05-29)**: 管理器後端的專案同步與孤兒清理受保護目錄新增 `context`。使用者透過 VS Code 側邊欄同步或清理已安裝平台規則時，`.agents/context/` 與 `.agents/memory/`、`.agents/project_skills/` 同樣保留，不會被當成孤兒框架檔刪除。
+- **AI Rules Manager context backfill on project sync (2026-05-29)**: `SyncProjectRules -Apply` 在完成平台規則與技能同步後，會呼叫基礎設施初始化補建 `.agents/context/_map/CONTEXT.md`，並補入 `.gitignore` 的記憶與脈絡追蹤註記。這補齊只透過 VS Code 管理器同步舊專案、不跑正式 Fresh / Upgrade 時的脈絡層缺口。
+- **AI Rules Manager v0.1.12 project context release (2026-05-29)**: VSIX 版本升級到 `0.1.12`，用於發布 AI 開發品質治理與專案脈絡層同步能力。`package.json`、lockfile、根 README、extension README 與 CHANGELOG 同步更新，Release workflow 將透過 `v0.1.12` tag 打包 `ai-rules-manager-0.1.12.vsix`。
 
 ## Known Issues
 
@@ -98,6 +101,9 @@ metadata:
 - **D18: 管理按鈕文案要標明目標與非目標**：當同一個面板同時管理 source repo、VSIX 安裝包與目前專案規則時，按鈕標題、確認視窗與 README 必須明確說明會動哪一層，也要說明不會動哪一層，避免「更新」一詞混淆來源庫、插件包與專案同步。
 - **D19: 管理快取是遠端鏡像，不是第二來源**：非 AI_Rules workspace 透過 IDE globalStorage 使用的管理快取必須自動對齊遠端版本庫；若快取落後、分叉、本機領先或有髒變更，應修復快取或停止，不可拿舊快取同步目前專案。
 - **D20: 工作區設定不可決定治理來源**：VS Code extension 開在陌生專案時，workspace settings 屬於專案輸入，不可控制 AI_Rules 來源、遠端網址或 PowerShell 執行檔；這些設定必須限制在 user settings。
+- **D21: 管理器清理要保護脈絡層**：VS Code extension 的後端腳本只負責框架同步與孤兒清理，不可刪除 `.agents/context/`；脈絡卡有效性由 Doctor 報告，寫入仍由 `GO CONTEXT` 控制。
+- **D22: 專案同步也要補基礎設施**：管理器的「同步目前專案規則」不只是複製規則與技能；套用成功後也必須補齊 `.agents/memory/`、`.agents/project_skills/`、`.agents/context/` 與 `.gitignore` 註記，避免舊專案只走同步路徑時缺少脈絡索引卡。
+- **D23: 可見後端行為發布要升 VSIX patch**：即使 TypeScript UI 未變，只要管理器按鈕呼叫的後端治理結果改變，仍要升級 extension patch 版本並重新打包，讓 GitHub Release update reminder 能正確提示操作者。
 
 ## Relations
 

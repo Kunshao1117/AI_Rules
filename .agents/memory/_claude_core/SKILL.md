@@ -2,7 +2,7 @@
 name: _claude_core
 description: Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Claude/
-last_updated: '2026-05-29T02:03:55+08:00'
+last_updated: '2026-05-29T05:43:58+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -80,6 +80,8 @@ metadata:
 - **Claude Skill 觸發治理同步 (2026-05-19)**: Claude README 的 Shared skill 數量同步到 37；`02/03/04/09/12` Slash Command 入口加入插件 / extension / VSIX / GitHub Release / version bump / tag / update reminder 情境的 `plugin-release-governance` 載入閘門，實際共用細節由 `.claude/skills/` 注入的 Shared skill 承載。
 - **Claude command trigger descriptions (2026-05-19)**: 17 個 `.claude/commands/**/SKILL.md` description 補齊 `Use when` 與負向邊界，讓 Slash Command 入口可同時支援明確指令與語意路由。
 - **Claude Delegation Gate adapter (2026-05-22)**: `01_explore`、`06_test`、`07_debug`、`08_audit` command 入口改為只引用 Shared Delegation Gate，Claude adapter 再轉譯為 description-driven subagent、`@agent` 或受控 `Agent(...)`。command 入口不複製 Shared 規則，只保留平台轉譯提醒與唯讀 evidence branch 邊界。
+- **Claude AI 開發品質閘門 (2026-05-29)**: `02_blueprint(架構)`、`03_build(建構)`、`04_fix(修復)` 與 `06_test(測試)` 在 UI、版面、元件、設計、客製化網頁或高變動技術棧情境載入 `ai-dev-quality-gate`，測試流程承接手機、平板、桌面三尺寸證據。
+- **Claude 專案脈絡層接入 (2026-05-29)**: Claude README、記憶規則與 Slash Command 入口同步加入 `.agents/context/`。`02_blueprint(架構)`、`03_build(建構)`、`04_fix(修復)`、`05_condense（濃縮）`、`06_test(測試)` 與 `12_skill_forge(技能鍛造)` 在任務相關時載入 `project-context-protocol`；新偏好只能先列候選，永久寫入需 `GO CONTEXT` 或 `GO DNA`。
 
 ## Known Issues
 
@@ -98,6 +100,8 @@ metadata:
 - **D09: Slash Command description 也是觸發契約**：即使 Claude 可用明確 slash command，description 仍要寫真實任務語句與排除條件，方便跨平台同步與 Doctor 自動審計。
 - **D10: Claude subagents 只回證據包**：Claude 可用內建、自訂或 plugin subagents，但框架語義仍要求 `發現 / 證據 / 風險 / 建議 / 是否阻塞`，且不得把 GO、memory、commit、push、部署或 mutating MCP 交給分支代理。
 - **D11: Claude 短名稱需搭配位置索引**：Claude 正式計畫、完成報告與巡檢摘要可以用短名稱保持清爽，但必須在同份輸出用「位置索引」補回具體檔案、章節、工具狀態或目錄範圍。
+- **D12: UI 變更不能只驗桌面**：Claude 若完成版面、元件或互動狀態變更，必須在回報中交代三尺寸證據與手機版風險；缺少手機證據時不得宣稱 UI 完成。
+- **D13: Claude 偏好資訊走脈絡層**：Claude Slash Command 可讀取已核准 `.agents/context/**/CONTEXT.md` 作為任務脈絡；原始碼記憶仍只處理檔案、架構、依賴與 stale，不承載長期審美或產品偏好。
 
 ## Applicable Skills
 

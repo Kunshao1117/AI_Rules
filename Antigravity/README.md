@@ -15,10 +15,11 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → 透過 `.agents/memory/` 記憶卡系統持久保存
 2. **無紀律執行** — 寫碼前不規劃、寫完不測試 → 20 個工作流檔案強制四拍子節奏
 3. **角色權限模糊** — 子代理人隨意改檔案 → 由 Delegation Gate 統一判斷 evidence branch，子代理人只能唯讀提供證據包
-4. **知識碎片化** — 技能散落各處，Token 暴增 → 37 套按需載入的操作型技能，不用時零開銷
+4. **知識碎片化** — 技能散落各處，Token 暴增 → 39 套按需載入的操作型技能，不用時零開銷
 5. **語言不友善** — 工程術語充斥 → 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
-6. **框架升級斷裂** — 升級怕覆蓋記憶 → D06 安全網 + SHA256 差異比對 + 記憶卡永久保護
+6. **框架升級斷裂** — 升級怕覆蓋記憶或脈絡 → D06 安全網 + SHA256 差異比對 + 知識資產永久保護
 7. **工具碎片化** — MCP 工具散亂 → 透過 Multi-MCP Gateway 統一探索 schema，並用 `gateway__call_tool` 真實呼叫下游工具
+8. **偏好與記憶混雜** — 設計 DNA、產品偏好與驗收口味不再放入原始碼記憶，改由 `.agents/context/` 專案脈絡層保存
 
 ---
 
@@ -67,6 +68,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 |------|------|
 | **受治理安裝** | 使用者可手動貼上一行指令安裝；全域 GEMINI bootstrapper 只輸出安裝/升級命令並等待 `GO INSTALL` / `GO UPGRADE` |
 | **跨對話持久記憶** | 透過 `.agents/memory/` 記憶卡，AI 在新對話中也能回憶過去的架構決策與教訓 |
+| **專案脈絡分層** | 透過 `.agents/context/` 保存設計 DNA、產品偏好、技術偏好與驗收偏好 |
 | **按需載入** | 技能僅在需要時載入，減少 AI 的認知負擔和 Token 消耗 |
 | **繁體中文特化** | 三層語言架構：指令層（英文）、介面層（繁體中文）、橋接層（雙語） |
 | **最小權限治理** | 角色分層（讀取者 / 工作者 / 寫入者），子代理政策由 `Shared/policies/` 轉譯，且子代理只能唯讀 |
@@ -80,7 +82,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 graph TB
     subgraph "AI_Rules 框架核心庫"
         SRC["Antigravity/<br/>Gemini 版源碼"]
-        SH["Shared/skills/<br/>37 套共用技能"]
+        SH["Shared/skills/<br/>39 套共用技能"]
     end
 
     subgraph "統一部署引擎"
@@ -90,8 +92,9 @@ graph TB
     subgraph ".agents/ 生態系統（部署後）"
         RULES["rules/<br/>9 個治理規則"]
         WF["workflows/<br/>20 個工作流檔案"]
-        SKILLS["skills/<br/>37 套操作型技能"]
+        SKILLS["skills/<br/>39 套操作型技能"]
         MEM["memory/<br/>專案記憶（三平台共用）"]
+        CTX["context/<br/>專案脈絡（三平台共用）"]
         PROJ["project_skills/<br/>衍生技能（升級保護）"]
     end
 
@@ -103,6 +106,7 @@ graph TB
     RULES --> WF
     WF --> SKILLS
     SKILLS -.->|"Gateway: workspace + projectRoot"| MEM
+    SKILLS -.->|"讀取已核准脈絡"| CTX
 ```
 
 ---
@@ -134,7 +138,7 @@ graph TB
 | 防護機制 | 說明 |
 |----------|---------|
 | **D06 安全防線** | Fresh 模式下以 `try/finally` 備份記憶卡到暫存目錄，部署中斷也不會損失資料 |
-| **記憶卡保護** | `memory/` 和 `project_skills/` 在升級時絕對不覆蓋 |
+| **知識資產保護** | `memory/`、`project_skills/` 和 `context/` 在升級時絕對不覆蓋 |
 | **確認閘門** | Upgrade 模式產出分類顏色差異報告，需使用者確認才套用 |
 | **Shared policy drift** | Doctor 檢查 Antigravity / Gemini adapter marker block 是否仍由 `Shared/policies/subagent-invocation.md` 生成 |
 | **Subagent vocabulary drift** | Doctor 檢查 Shared 技能是否誤把平台工具名寫成共用語義，避免 Antigravity、Claude、Codex 的委派語彙互相污染 |
@@ -423,13 +427,15 @@ Antigravity/
     │   ├── 00_chat ~ 12_skill_forge ← 主要工作流程（含建構/修復/提交分階段與例行巡檢）
     │   ├── _completion_gate.md   ← 共用完成閘門
     │   └── _security_footer.md   ← 共用安全閘門
-    ├── skills/                   ← 37 套操作型技能（部署時從 Shared/ 注入）
+    ├── skills/                   ← 39 套操作型技能（部署時從 Shared/ 注入）
     │   ├── _index.md             ← 核心技能路由表
     │   ├── project-xxx -> ../project_skills/xxx ← 專案衍生技能符號連結
     │   ├── memory-ops/           ← 記憶操作指引
-    │   └── ... (37 套)
+    │   └── ... (39 套)
     ├── memory/                   ← 專案記憶（專案特有，升級時受保護）
     │   └── (由 AI 執行 /02 架構 初始化)
+    ├── context/                  ← 專案脈絡（設計 DNA 與長期偏好，升級時受保護）
+    │   └── _map/CONTEXT.md       ← 專案脈絡索引
     ├── project_skills/           ← 專案衍生技能（專案特有，升級時受保護）
     │   └── _index.md             ← 專案衍生技能路由表
     └── logs/                     ← 暫存日誌（不進版控）

@@ -1,10 +1,10 @@
 ---
 name: tech-stack-protocol
 description: >
-  [Infra] Tech stack discovery, lock-in, and self-mutation protocols.
+  [Infra] Tech stack discovery, latest-stable grounding, lock-in, and self-mutation protocols.
   References Memory Skill System for state storage.
   Use when: 進入新專案、執行 /02_blueprint 架構設計、
-  或任何涉及 技術堆疊/框架/依賴/tech stack/初始化 的決策。
+  或任何涉及 技術堆疊/框架/依賴/tech stack/初始化/最新穩定版/API 新鮮度 的決策。
   DO NOT use when: 系統記憶卡已鎖定且無新依賴引入、純程式碼實作不涉及堆疊變更。
 metadata:
   author: antigravity
@@ -47,6 +47,17 @@ Project state?
 
 1. Derive primary framework (e.g., Next.js, Django) and testing environment (e.g., Jest, PyTest)
 2. Record in `.agents/memory/_system/SKILL.md`
+
+### Phase 3.5: Latest-Stable Grounding
+
+Before coding against any external framework, MCP server, VS Code extension API, browser API, or package with high-change behavior:
+
+1. Identify the exact project version from lockfiles, package manifests, config files, or memory.
+2. Prefer current stable guidance, but only if it is compatible with the project version.
+3. Verify uncertain APIs through official documentation, Context7, or primary sources.
+4. If the latest stable API conflicts with the locked project version, follow the locked project version and record the mismatch in the plan.
+
+Do not introduce a new core dependency, framework replacement, or API migration just because latest documentation recommends it. Core stack changes still require the Locked State gate.
 
 ## 2. Locked State (鎖定狀態)
 

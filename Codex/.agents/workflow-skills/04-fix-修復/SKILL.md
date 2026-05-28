@@ -1,6 +1,7 @@
 ---
 name: "04-fix-修復"
 description: "Use when: 修 bug、修復回歸、排除錯誤、診斷缺陷並執行正式修復。流程包含診斷、GO、寫入、記憶更新與回歸測試。DO NOT use when: 新功能建構或純除錯說明。"
+required_skills: [memory-ops, impact-test-strategy, ai-dev-quality-gate, project-context-protocol]
 metadata:
   author: antigravity
   version: "2.0"
@@ -47,6 +48,8 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 
 > [LOAD SKILL] If this fix touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before diagnosing release impact.
+> [LOAD SKILL] If this fix touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before diagnosing quality impact.
+> [LOAD SKILL] If this fix may change user experience, product behavior, design DNA, acceptance defaults, or existing preferences, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before diagnosing impact.
 # source-command-04-fix-skill
 
 Use this skill when the user asks to run the migrated source command `04_fix(修復)-SKILL`.
@@ -65,6 +68,7 @@ Use this skill when the user asks to run the migrated source command `04_fix(修
 
 - Check MEMORY.md index for cards relevant to the bug's module.
 - Load relevant `.agents/memory/*/SKILL.md`. Check `## Known Issues` (bug may be documented) and `## Relations` for cascade impact.
+- Read relevant `.agents/context/**/CONTEXT.md` cards if the fix touches user experience or preference-sensitive behavior.
 
 ### 1. Current State Constraint
 

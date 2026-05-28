@@ -13,11 +13,12 @@
 OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigravity Codex Edition 在其之上解決了這些問題：
 
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → Turn=1 即探測 `.agents/memory/` 記憶庫
-2. **技能孤島** — 每個 Codex 專案各自維護技能 → 37 套共用操作型技能一次部署，統一真實來源
+2. **技能孤島** — 每個 Codex 專案各自維護技能 → 39 套共用操作型技能一次部署，統一真實來源
 3. **工作流缺失** — Codex 原生無內建工作流程 → 17 套工作流技能整合至 `.agents/skills/`，無縫觸發
 4. **記憶庫與 Gemini/Claude 分裂** — 三個 AI 各記各的 → `.agents/memory/` 統一記憶庫，三平台共用
 5. **治理規則模板缺失** → `.codex/AGENTS.md` 提供包含閘門、記憶協議、工作流的完整治理規範
 6. **框架升級風險** — 升級怕覆蓋設定 → D06 安全網 + SHA256 差異比對 + PROJECT IDENTITY 保護
+7. **偏好與記憶混雜** — 設計 DNA、產品偏好與驗收口味不再放入原始碼記憶，改由 `.agents/context/` 專案脈絡層保存
 
 ---
 
@@ -48,7 +49,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 - [模組詳解](#-模組詳解)
   - [部署引擎](#-部署引擎)
   - [治理規則系統](#-治理規則系統)
-  - [技能系統（54 套）](#-技能系統54-套)
+  - [技能系統（56 套）](#-技能系統56-套)
   - [專案記憶系統](#-專案記憶系統)
 - [與其他版本對比](#-與其他版本對比)
 - [版本管理](#-版本管理)
@@ -63,6 +64,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 | **零接觸部署** | 執行一行安裝指令即完成整套治理生態部署，無需人工逐一設定 |
 | **技能原生整合** | 工作流技能與共用技能合併至 `.agents/skills/`，符合 agentskills.io 標準路徑 |
 | **三平台共用記憶** | `.agents/memory/` 為唯一記憶庫，Codex / Gemini / Claude Code 三者共用 |
+| **三平台共用脈絡** | `.agents/context/` 保存設計 DNA、產品偏好、技術偏好與驗收偏好，不參與原始碼記憶 stale |
 | **輕量治理規則** | 所有治理規範收錄於單一 `.codex/AGENTS.md`，無需多檔案載入機制 |
 | **技能即工作流** | Codex 透過技能觸發 `$skill-name`，工作流與操作型技能統一在同一目錄 |
 | **子代理治理模型** | `Shared/policies/subagent-invocation.md` 提供 Delegation Gate 與 evidence branch 語義；Codex adapter 只在使用者明確要求、workflow gate 或 `.codex/agents/*.toml` 設定時啟動 native subagents |
@@ -76,7 +78,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 graph TB
     subgraph "AI_Rules 框架核心庫"
         SRC["Codex/<br/>.codex/ + .agents/workflow-skills/"]
-        SH["Shared/skills/<br/>37 套共用技能"]
+        SH["Shared/skills/<br/>39 套共用技能"]
     end
 
     subgraph "統一部署引擎"
@@ -85,8 +87,9 @@ graph TB
 
     subgraph "目標專案（部署後）"
         CODEX[".codex/AGENTS.md<br/>治理規則"]
-        SKILLS[".agents/skills/<br/>54 套（37 共用 + 17 工作流）"]
+        SKILLS[".agents/skills/<br/>56 套（39 共用 + 17 工作流）"]
         MEM[".agents/memory/<br/>三平台共用記憶庫"]
+        CTX[".agents/context/<br/>三平台共用專案脈絡"]
         PROJ[".agents/project_skills/<br/>衍生技能（升級保護）"]
     end
 
@@ -95,6 +98,7 @@ graph TB
     DEPLOY -->|"部署 .codex/"| CODEX
     DEPLOY -->|"注入技能"| SKILLS
     SKILLS -.->|"$memory-ops"| MEM
+    SKILLS -.->|"$project-context-protocol"| CTX
     CODEX -.->|"治理閘門"| SKILLS
 ```
 
@@ -106,21 +110,21 @@ graph TB
 
 **腳本**: `Scripts/Deploy.ps1 -Platform Codex`（統一部署引擎，核心邏輯位於 `Scripts/modules/Platform-Codex.psm1`）
 
-負責將 `.codex/` 治理規則與 54 套技能部署到目標專案。所有 PowerShell 程式碼均配備完整的繁體中文行內說明，三個平台部署能力完全對等。
+負責將 `.codex/` 治理規則與 56 套技能部署到目標專案。所有 PowerShell 程式碼均配備完整的繁體中文行內說明，三個平台部署能力完全對等。
 
 #### 兩種部署模式
 
 | 模式 | 觸發條件 | 行為 |
 |------|---------|------|
-| **Fresh** | 專案無 `.codex/` 目錄 | D06 安全網備份記憶 → 部署 `.codex/` 治理規則 → 注入 37 套共用技能 → 合併 17 套工作流技能 → 建立基礎設施 → 寫入版本檔 → 還原記憶 |
+| **Fresh** | 專案無 `.codex/` 目錄 | D06 安全網備份記憶 → 部署 `.codex/` 治理規則 → 注入 39 套共用技能 → 合併 17 套工作流技能 → 建立基礎設施 → 寫入版本檔 → 還原記憶 |
 | **Upgrade** | 專案已有 `.codex/` 目錄 | 掃描 `.codex/` 差異 → 彩色報告 → 顯示 CHANGELOG → 確認閘門 → 套用 `.codex/` 變更 → 差異注入技能更新 |
 
 #### 技能部署兩步驟
 
 ```
-Step 1: Shared/skills/ → .agents/skills/    （37 套共用技能）
+Step 1: Shared/skills/ → .agents/skills/    （39 套共用技能）
 Step 2: workflow-skills/ → .agents/skills/  （17 套工作流技能）
-合計部署：54 套技能
+合計部署：56 套技能
 ```
 
 #### 安全防護
@@ -128,7 +132,7 @@ Step 2: workflow-skills/ → .agents/skills/  （17 套工作流技能）
 | 防護機制 | 說明 |
 |----------|---------|
 | **D06 安全防線** | Fresh 模式下以 `try/finally` 備份記憶卡到暫存目錄，部署中斷也不會損失資料 |
-| **記憶卡保護** | `.agents/memory/` 和 `.agents/project_skills/` 在升級時絕對不覆蓋 |
+| **知識資產保護** | `.agents/memory/`、`.agents/project_skills/` 和 `.agents/context/` 在升級時絕對不覆蓋 |
 | **確認閘門** | Upgrade 模式產出分類顏色差異報告，需使用者確認才套用 |
 | **PROJECT IDENTITY 保護** | 升級時自動偵測 `.codex/AGENTS.md` 中使用者自訂的 `## [PROJECT IDENTITY]` 區段，升級後自動還原 |
 | **Shared policy drift** | Doctor 檢查 Codex 子代理 marker block 是否仍由 `Shared/policies/subagent-invocation.md` 生成 |
@@ -159,13 +163,13 @@ Codex Edition 採用單一規則檔設計，所有治理規範集中於 `AGENTS.
 
 ---
 
-### 🎯 技能系統（54 套）
+### 🎯 技能系統（56 套）
 
 **目錄**: `.agents/skills/`（部署後）
 
 技能是**按需載入的知識手冊**，分為兩個來源：
 
-#### 共用技能（37 套）—— 源自 `Shared/skills/`
+#### 共用技能（39 套）—— 源自 `Shared/skills/`
 
 與 Antigravity 和 Claude Edition 完全同步，涵蓋記憶操作、品質約束、測試策略、MCP 操作食譜、代碼知識圖譜等完整分類。詳見 [Antigravity/README.md](../Antigravity/README.md) 的技能表格。
 
@@ -242,8 +246,8 @@ graph TD
 | **任務追蹤** | scratchpad Artifact | `TodoWrite` 清單 | 對話中維護任務清單 |
 | **記憶啟動** | D7 Push 三路徑探測 | Turn=1 啟動探測協議 | Turn=1 cartridge-system 探測 |
 | **記憶位置** | `.agents/memory/` | `.agents/memory/`（共用） | `.agents/memory/`（**三者共用**） |
-| **技能來源** | Shared/ 37 套 | Shared/ 37 套 | Shared/ 37 套 + workflow-skills/ 17 套 |
-| **技能總數** | 37 套 | 37 套 | **54 套** |
+| **技能來源** | Shared/ 39 套 | Shared/ 39 套 | Shared/ 39 套 + workflow-skills/ 17 套 |
+| **技能總數** | 39 套 | 39 套 | **56 套** |
 
 ---
 
@@ -268,7 +272,7 @@ graph TD
 │   ├── config.toml                ← 專案層 Codex 設定（project_doc_fallback_filenames）
 │   └── VERSION                    ← Codex live 版本錨點
 └── .agents/
-    ├── skills/                    ← 54 套技能（37 共用 + 17 工作流，扁平結構）
+    ├── skills/                    ← 56 套技能（39 共用 + 17 工作流，扁平結構）
     │   ├── _index.md              ← 技能路由表
     │   ├── memory-ops/            ← 記憶操作指引
     │   ├── code-quality/          ← 品質約束
@@ -279,9 +283,11 @@ graph TD
     │   ├── 08-2-logic-深度邏輯/   ← 健檢子技能（邏輯審查）
     │   ├── 08-3-report-健檢總結/  ← 健檢子技能（報告）
     │   ├── 10-routine-巡檢/       ← automation-safe 例行巡檢
-    │   └── ...（共 54 套）
+    │   └── ...（共 56 套）
     ├── memory/                    ← 專案記憶卡（跨平台共用，升級受保護）
     │   └── (由 AI 執行 $02-blueprint-架構 初始化)
+    ├── context/                   ← 專案脈絡卡（設計 DNA 與長期偏好，升級受保護）
+    │   └── _map/CONTEXT.md        ← 專案脈絡索引
     ├── project_skills/            ← 衍生技能（專案特有，升級受保護）
     │   └── _index.md
     └── logs/                      ← 暫存日誌（不進版控）

@@ -1,8 +1,8 @@
 ---
 name: test-automation-strategy
 description: >
-  [Testing] DOM element interaction patterns, selector strategy, visual evidence strategy, and auto-fix feedback loops.
-  Use when: 需要 DOM 選擇器策略（data-testid/aria-label 選擇）、E2E 測試的自動修復迴圈、視覺證據策略、或繁體中文 UI 字串斷言的場景。
+  [Testing] DOM element interaction patterns, selector strategy, responsive visual evidence strategy, and auto-fix feedback loops.
+  Use when: 需要 DOM 選擇器策略（data-testid/aria-label 選擇）、E2E 測試的自動修復迴圈、視覺證據策略、手機/平板/桌面截圖證據、或繁體中文 UI 字串斷言的場景。
   DO NOT use when: 啟動或委派瀏覽器證據分支（用 browser-testing）、寫單元測試程式碼（用 test-patterns）。
 metadata:
   author: antigravity
@@ -20,6 +20,20 @@ metadata:
 - **Visual Validation**: Do not rely solely on CLI tests. UI behavior changes require browser evidence through the current platform's browser branch adapter or available main-thread browser tool.
 - **Server Warmup**: Always ensure the local server is running and fully booted (`npm run dev` or equivalent) before triggering browser verification.
 - **Artifact Proof**: After clicking elements or submitting forms, capture the final successful DOM state or screenshot and embed it into the `walkthrough.md` artifact when the workflow produces one.
+- **Responsive Proof**: Layout, component, style, or interaction changes require mobile, tablet, and desktop evidence. Missing evidence means the UI is pending validation, not complete.
+
+### Responsive Viewport Checklist
+
+For each required viewport, check:
+
+- Text overflow or clipping
+- Compressed or wrapped buttons
+- Component overlap
+- Table or chart overflow
+- Fixed header/footer/sidebar covering content
+- Touch targets that are too small
+- Inconsistent spacing or type hierarchy
+- Operational screens that need summary cards, column priority, horizontal scroll, or bottom actions
 
 ## 2. DOM Selection Patterns
 

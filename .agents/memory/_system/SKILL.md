@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-29T04:10:45+08:00'
+last_updated: '2026-05-29T06:41:20+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -31,6 +31,8 @@ metadata:
 - Antigravity/.agents/memory/_system/SKILL.md
 - Antigravity/.agents/rules/00_core_identity.md
 - Antigravity/.agents/rules/07_mcp_guardrails.md
+- .gitignore
+- .agents/context/_map/CONTEXT.md
 - README.md
 - LICENSE
 - CHANGELOG.md
@@ -38,6 +40,7 @@ metadata:
 - Shared/skill-governance.md
 - Shared/policies/subagent-invocation.md
 - Shared/mcp-profiles/README.md
+- Shared/context/_map/CONTEXT.md
 - Scripts/Deploy.ps1
 - Scripts/AI-RulesManager.ps1
 - .github/workflows/release-vsix.yml
@@ -101,6 +104,12 @@ metadata:
 - **D55: AI Rules Manager source update guard (2026-05-29)**: `AI-RulesManager.ps1` 更新 AI_Rules 來源庫時，若 managed clone 分叉、本機領先、工作樹有變更或 `git pull --ff-only` 失敗，必須立即停止並不得繼續跑 Doctor，避免更新失敗被後續綠燈巡檢掩蓋。
 - **D56: 遠端來源鏡像與排除檔補缺 (2026-05-29)**: AI Rules Manager 在一般專案使用的使用者層 AI_Rules 快取必須視為遠端版本庫鏡像，執行管理動作前先對齊遠端；專案規則同步前若來源未對齊遠端必須停止。`Set-GitignoreEntries` 只檢查並補入 `.agents/logs/` 與 `.cartridge/` 等缺少項目，不得覆蓋、搬移或整理目標專案既有 `.gitignore` 內容。
 - **D57: 插件來源設定信任邊界 (2026-05-29)**: VS Code extension 中會改寫 AI_Rules 來源、遠端網址或 PowerShell 執行檔的設定只能放在使用者層設定；專案 workspace 設定若提供這些值，extension 必須停止。同步與清理預覽失敗時，不得再進入確認或寫入階段。
+- **D58: AI 開發品質治理共用化 (2026-05-29)**: 新共用技能集中處理技術新鮮度、元件復用、偏好探索、設計參考降級與三尺寸響應式證據；根 README、三平台 README 與 CHANGELOG 同步記錄此治理語義，後續由 D59 的專案脈絡層更新最終技能數字。
+- **D59: 專案脈絡層建構 (2026-05-29)**: 建立 `.agents/context/` 作為與 `.agents/memory/`、`.agents/project_skills/` 平行的專案知識資產，用 `CONTEXT.md` 保存設計 DNA、產品偏好、技術偏好、溝通偏好與驗收偏好。Shared 操作型技能增至 39 套，Codex 部署後技能總數增至 56 套（39 Shared + 17 workflow）。Fresh、Upgrade、同步與孤兒清理都必須保護 `.agents/context/`，治理巡檢新增脈絡卡欄位、狀態、核准與誤放檢查。
+- **D60: project-context-protocol 前綴例外 (2026-05-29)**: `project-context-protocol` 是正式 Shared skill，不是 project skill discovery 連結。同步器與巡檢器需在 `project-*` 排除與檢查規則中保留此技能，否則來源文件、技能品質掃描、下游實際技能目錄與治理巡檢會互相分裂。
+- **D61: Shared 專案脈絡模板來源 (2026-05-29)**: 專案脈絡索引卡改由 `Shared/context/_map/CONTEXT.md` 作為可見 source template。部署初始化優先從 Shared 模板補建缺少的 `.agents/context/_map/CONTEXT.md`，若模板遺失才使用內建 fallback；既有脈絡卡仍受保護，不因 Fresh、Upgrade、Sync 或孤兒清理而被覆蓋。
+- **D62: 管理器同步補齊專案脈絡基礎設施 (2026-05-29)**: `AI-RulesManager.ps1` 的專案規則同步在 `-Apply` 階段也會呼叫基礎設施初始化，補建 `.agents/context/_map/CONTEXT.md` 與 `.gitignore` 追蹤註記。這確保既有專案只透過 VS Code 管理器同步規則時，也能取得與 Fresh / Upgrade 一致的脈絡層。
+- **D63: AI Rules Manager v0.1.12 發布批次 (2026-05-29)**: 因本次治理更新改變 VS Code 管理器的專案同步可見行為，延伸模組版本升級為 `0.1.12` 並準備透過 `v0.1.12` tag 觸發 GitHub Actions 打包 VSIX。CHANGELOG 需保留 `AI Rules Manager v0.1.12` 章節，讓 release notes 來源明確。
 
 ## Known Issues
 
@@ -133,6 +142,12 @@ metadata:
 - **D23: 短名稱需要同份輸出內定位**: 為了避免每一條正式輸出都塞滿路徑，可以用短名稱降低閱讀負擔；但短名稱必須在同一份輸出用位置索引補回具體檔案、章節、工具狀態或目錄範圍，否則總監仍無法追蹤實際位置。
 - **D24: `.gitignore` 同步只能補缺，不做整理**: 部署到一般專案時，排除檔可能已有使用者自訂註解、機密規則與工具產物規則；AI_Rules 只能確認必要排除項是否存在，缺少才插入，不可為了 managed block 漂亮而重排或覆蓋整份檔案。
 - **D25: 預覽失敗不可接續寫入確認**: 只要同步或清理的 dry-run / preview 已失敗，UI 不應再問使用者是否套用；否則使用者會以為上一階段成功，只差確認。
+- **D26: 偏好脈絡要與原始碼記憶分層**: `.agents/memory/` 只承載架構、檔案、依賴、stale 與治理事實；`.agents/context/` 承載長期偏好與設計 DNA，不走 `memory_commit`，也不參與原始碼記憶的 stale 傳播。
+- **D27: 受保護知識資產包含脈絡層**: 部署、升級、專案同步與孤兒清理的保護清單必須同時包含 `memory`、`project_skills`、`context`，避免把總監核准過的偏好或設計 DNA 當成框架殘留刪除。
+- **D28: 驗證要看部署後技能目錄**: 新增 Shared skill 時不能只看 `Shared/skills/` 計數；若同步器有排除規則，還要驗證 `.agents/skills/` 或 `.claude/skills/` 的實際注入結果。
+- **D29: 脈絡模板也要進治理巡檢**: 專案脈絡層若只有部署程式內建字串，維護者看不到 source template；治理巡檢需同時檢查 Shared 模板存在與目標專案脈絡卡格式。
+- **D30: Release notes 必須有版本專章**: VSIX 發布 workflow 會依 `AI Rules Manager v<version>` 標題擷取 release notes；升版打包前必須同步建立對應 CHANGELOG 章節，避免 GitHub Release 只有泛用文字。
+- **D31: 管理器同步路徑要等同部署路徑**: 凡是 Fresh / Upgrade 會補齊的受保護知識層，VS Code 管理器的專案同步在套用時也要補齊；否則老專案可能得到新工作流規則，卻缺少其依賴的脈絡索引卡。
 
 ## Documentation Files
 

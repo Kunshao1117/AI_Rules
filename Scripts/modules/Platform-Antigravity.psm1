@@ -38,6 +38,7 @@ function Invoke-AgFresh {
     $version    = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $agentsRoot = $targetDir
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
     Write-Banner "Antigravity v$version — Fresh 安裝 | 目標: $Target" "Magenta"
 
@@ -53,9 +54,9 @@ function Invoke-AgFresh {
         New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
         Write-Step "部署 .agents/ 框架檔案（rules/workflows）..."
 
-        # 複製 rules/workflows（排除 skills/，由 Shared/ 注入）
+        # 複製 rules/workflows（排除受保護知識層與 skills/，由 Shared/ 注入）
         Get-ChildItem $sourceDir | Where-Object {
-            $_.Name -notin @("memory", "project_skills", "skills")
+            $_.Name -notin @("memory", "project_skills", "context", "skills")
         } | ForEach-Object {
             Copy-Item $_.FullName $targetDir -Recurse -Force
         }
@@ -74,7 +75,7 @@ function Invoke-AgFresh {
                           -Mode Full
 
         # 基礎設施確保
-        Initialize-AgentInfrastructure -AgentsRoot $agentsRoot
+        Initialize-AgentInfrastructure -AgentsRoot $agentsRoot -ContextTemplatesRoot $contextTemplatesRoot
 
         # .gitignore 設定
         Set-GitignoreEntries -ProjectRoot $Target -Lines @(".agents/logs/", ".cartridge/")
@@ -100,11 +101,14 @@ function Invoke-AgFresh {
         $memDir        = Join-Path $targetDir "memory"
         $memCards      = @(Get-ChildItem $memDir -Directory -Recurse -ErrorAction SilentlyContinue |
             Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") }).Count
+        $ctxDir        = Join-Path $targetDir "context"
+        $contextCards  = @(Get-ChildItem $ctxDir -Directory -Recurse -ErrorAction SilentlyContinue |
+            Where-Object { Test-Path (Join-Path $_.FullName "CONTEXT.md") }).Count
 
         Write-Host ""
         Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Magenta
         Write-Host "  Antigravity v$version 框架已部署完成。" -ForegroundColor Green
-        Write-Host "  技能: $totalSkills 套核心 + $linkedSkills 套衍生（已掛載）+ $memCards 張記憶卡" -ForegroundColor Cyan
+        Write-Host "  技能: $totalSkills 套核心 + $linkedSkills 套衍生（已掛載）+ $memCards 張記憶卡 + $contextCards 張脈絡卡" -ForegroundColor Cyan
         Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Magenta
         Write-Host ""
     }
@@ -140,6 +144,7 @@ function Invoke-AgUpgrade {
     $targetDir  = Join-Path $Target ".agents"
     $version    = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
     if (-Not (Test-Path $targetDir)) {
         Write-Warn "目標尚未安裝 Antigravity，切換為 Fresh 模式。"
@@ -158,13 +163,14 @@ function Invoke-AgUpgrade {
         "工作流程 (Workflows)"  = { $_.Path -like "workflows/*" }
         "專案記憶 — 受保護"    = { $_.Path -like "memory/*" -and $_.Status -eq "KEEP" }
         "衍生技能 — 受保護"    = { $_.Path -like "project_skills/*" -and $_.Status -eq "KEEP" }
+        "專案脈絡 — 受保護"    = { $_.Path -like "context/*" -and $_.Status -eq "KEEP" }
     }
 
     $report = Get-UpgradeReport `
         -SourceRoot $sourceDir `
         -TargetRoot $targetDir `
         -ScanDirs @("rules", "workflows") `
-        -ProtectedDirs @("memory", "project_skills") `
+        -ProtectedDirs @("memory", "project_skills", "context") `
         -ExcludeFiles @()
 
     $stats = Write-UpgradeReport -Report $report -CategoryMap $categoryMap -Platform "Antigravity"
@@ -228,14 +234,14 @@ function Invoke-AgUpgrade {
     # 孤兒處理
     if ($stats.Orphan -gt 0) {
         if ($RemoveOrphans) {
-            Remove-OrphanFiles -Report $report -TargetRoot $targetDir -ProtectedDirs @("memory", "project_skills")
+            Remove-OrphanFiles -Report $report -TargetRoot $targetDir -ProtectedDirs @("memory", "project_skills", "context")
         } else {
             Write-Warn "$($stats.Orphan) 個孤兒檔案。加入 -RemoveOrphans 可自動清除。"
         }
     }
 
     # 基礎設施確保
-    Initialize-AgentInfrastructure -AgentsRoot $targetDir
+    Initialize-AgentInfrastructure -AgentsRoot $targetDir -ContextTemplatesRoot $contextTemplatesRoot
 
     # .gitignore 設定
     Set-GitignoreEntries -ProjectRoot $Target -Lines @(".agents/logs/", ".cartridge/")

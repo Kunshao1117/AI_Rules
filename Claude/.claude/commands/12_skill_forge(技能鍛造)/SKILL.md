@@ -1,7 +1,7 @@
 ---
 name: 12_skill_forge
 description: "Use when: 技能鍛造、建立新專案技能、從健檢/除錯/總監指令萃取可重用方法論。DO NOT use when: 只要修改既有 Shared Skill 描述。"
-required_skills: [memory-ops]
+required_skills: [memory-ops, project-context-protocol]
 memory_awareness: full
 user-invocable: true
 metadata:
@@ -50,6 +50,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 
 > [LOAD SKILL] If the new or revised skill covers plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.claude/skills/plugin-release-governance/SKILL.md` before defining trigger language.
+> [LOAD SKILL] If the new or revised skill promotes stable project context, design DNA, product preference, technical preference, or acceptance preference into repeatable procedure, read `.claude/skills/project-context-protocol/SKILL.md` before defining scope.
 # [SKILL: /12_skill_forge — 技能鍛造]
 
 ## 0. Source Gate (觸發來源判斷)
@@ -58,6 +59,7 @@ Technical details may only appear after a `補充技術細節` section when they
 [SOURCE GATE] Identify skill source:
 ├── 觸發自 /08_audit 建議？→ 從審查報告中萃取重複模式
 ├── 觸發自 /07_debug 方法論？→ 將除錯步驟萃取為可重用技能
+├── 觸發自已核准專案脈絡？→ 只在其描述穩定且可重複執行程序時升級為專案技能
 └── 觸發自總監明確指令？→ 依總監規格設計
 ```
 

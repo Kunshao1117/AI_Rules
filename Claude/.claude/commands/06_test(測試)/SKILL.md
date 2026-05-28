@@ -1,7 +1,7 @@
 ---
 name: 06_test
 description: "Use when: 執行 E2E、視覺測試、瀏覽器功能測試、回歸驗證或測試委派。DO NOT use when: 只需要單元測試設計或純程式碼審查。"
-required_skills: [browser-testing, test-automation-strategy]
+required_skills: [browser-testing, test-automation-strategy, ai-dev-quality-gate, project-context-protocol]
 memory_awareness: none
 user-invocable: true
 metadata:
@@ -49,6 +49,9 @@ Technical details may only appear after a `補充技術細節` section when they
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 # [SKILL: /06_test — 視覺測試]
+
+> [LOAD SKILL] If the test target includes layout, components, styling, interaction states, mobile behavior, generated UI references, or design DNA, read `.claude/skills/ai-dev-quality-gate/SKILL.md` before defining visual evidence.
+> [LOAD SKILL] If the test target includes design DNA, product preference, communication preference, or acceptance preference, read `.claude/skills/project-context-protocol/SKILL.md` and compare rendered behavior against approved `.agents/context/**/CONTEXT.md` cards.
 
 ## 1. Test Scope Identification (測試範圍識別)
 

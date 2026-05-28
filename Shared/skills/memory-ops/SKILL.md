@@ -7,7 +7,7 @@ description: >
   DO NOT use when: 決定系統層級架構拓樸、新建模組或拆分卡匣（用 memory-arch 技能）。
 metadata:
   author: antigravity
-  version: "2.2"
+  version: "2.3"
   origin: framework
   kind: operational
   memory_awareness: full
@@ -25,6 +25,8 @@ Read references/memory-template.md when creating or upgrading a memory card sche
 - Discovery of memory tool schemas is not permission to execute mutating memory tools.
 
 ## 1. Core Mandate (支配規則)
+
+Project context is not source memory. Files under `.agents/context/**/CONTEXT.md` are governed by `project-context-protocol`, require `GO CONTEXT` for persistent writes, and must never be synchronized through `memory_commit`.
 
 All cartridge-system MCP calls routed through Multi-MCP Gateway MUST use the real downstream execution entrypoint:
 

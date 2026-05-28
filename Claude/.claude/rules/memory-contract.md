@@ -50,6 +50,17 @@ Checkpoint 格式規範（寫入時參考）：
 - **格式**：每個模組一個 `SKILL.md`，路徑為 `.agents/memory/<module>/SKILL.md`
 - **禁止使用** `~/.claude/projects/` 或 `.claude/agents/memory/` 作為記憶卡存儲位置
 
+## 1.5 Project Context Layer (專案脈絡層)
+
+**專案脈絡目錄**：`.agents/context/`（相對於專案根目錄）
+
+- **用途**：保存設計 DNA、產品偏好、技術偏好、溝通偏好與驗收偏好。
+- **格式**：每張卡使用 `CONTEXT.md`，不可使用 `SKILL.md`，避免被當成可執行技能。
+- **狀態**：`candidate`、`approved`、`deprecated`、`conflict`、`review`。
+- **讀取**：藍圖、建構、修復、測試、濃縮與技能鍛造遇到相關任務時讀取。
+- **寫入**：只能提出候選脈絡；永久寫入或升級為已核准脈絡需要 `GO CONTEXT`。設計 DNA 可用 `GO DNA` 作為別名。
+- **邊界**：專案脈絡不走 `memory_commit`，不參與原始碼記憶 stale 檢查。
+
 ## 2. Exit Hold Gate (離場條件鎖)
 
 ```
@@ -73,6 +84,7 @@ Checkpoint 格式規範（寫入時參考）：
 ## 3. Memory Card Operations (記憶卡操作規範)
 
 - **Directory**: `.agents/memory/` with nested `SKILL.md` files (max 4 levels deep).
+- **Context boundary**: Long-term preferences and aesthetic rules belong in `.agents/context/`, not memory cards.
 - **Granularity**: 1 card ≤ 8 tracked files. Suggest splitting when exceeded.
 - **Timestamp**: ALL timestamps MUST use ISO 8601 Taiwan timezone: `YYYY-MM-DDTHH:mm:ss+08:00`. UTC (`Z`) is FORBIDDEN.
 - **Before modifying files**: Check if the file appears in any memory card's `## Tracked Files`. If yes, read that card first.

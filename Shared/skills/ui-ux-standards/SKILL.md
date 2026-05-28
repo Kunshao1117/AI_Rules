@@ -2,13 +2,13 @@
 name: ui-ux-standards
 description: >
   [Quality] UI/UX design manifesto: engineering jargon isolation, multi-language strategy,
-  human-readable error handling, and intent-driven interface design.
+  human-readable error handling, component reuse, design DNA, and intent-driven interface design.
   Use when: 建構或修改前端 UI 元件、設計錯誤訊息、
-  或任何涉及 UI/UX/介面/錯誤訊息/i18n/多語系/前端元件 的任務。
+  或任何涉及 UI/UX/介面/錯誤訊息/i18n/多語系/前端元件/共用元件/設計 DNA 的任務。
   DO NOT use when: 純後端 API 開發（用 security-sre）、不涉及使用者介面的場景。
 metadata:
   author: antigravity
-  version: "5.1"
+  version: "5.2"
   origin: framework
   kind: operational
   memory_awareness: none
@@ -64,6 +64,34 @@ When a backend service throws a technical exception, the UI MUST intercept it an
 1. Design layouts by **user task**, NOT by database structure
 2. MUST implement Skeleton Loading for data fetching
 3. Empty states MUST include a Call to Action (CTA) — FORBIDDEN: 「No Data」 alone
+
+## 4.5 Interface Mode Gate (介面模式閘門)
+
+Classify the UI before choosing layout patterns:
+
+```text
+UI task type?
+├── Operational interface（操作型介面）
+│   └── Use dense but organized information, restrained styling, clear state hierarchy, stable controls, and low visual noise.
+├── Brand or marketing interface（品牌展示介面）
+│   └── Use stronger visual identity, narrative hierarchy, and memorable first-screen composition.
+└── Unknown
+    └── Ask for preference or run ai-dev-quality-gate preference discovery before implementation.
+```
+
+Trading terminals, dashboards, admin tools, and VS Code panels default to operational interface. Do not apply sparse marketing-page composition to them unless the Director explicitly asks for it.
+
+## 4.6 Component Reuse & Design DNA (元件復用與設計 DNA)
+
+Before creating or modifying UI:
+
+1. Inspect existing shared components, layout primitives, design tokens, and page patterns.
+2. Report whether the work reuses, extends, or creates components.
+3. If creating a new component, explain why existing components cannot cover the case.
+4. Use approved screenshots, approved small slices, or approved `.agents/context/**/CONTEXT.md` cards as design DNA.
+5. Do not persist generated-image output as design DNA until the Director approves it with `GO CONTEXT` or `GO DNA`.
+
+When the Director cannot describe the desired style precisely, provide three visibly different directions and a small slice before building the full page.
 
 ## 5. Color Palette Gate (色碼品質閘門)
 

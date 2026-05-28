@@ -1,6 +1,6 @@
 ---
 description: "Use when: 技能鍛造、建立新專案技能、從健檢/除錯/總監指令萃取可重用方法論。DO NOT use when: 只要修改既有 Shared Skill 描述。"
-required_skills: [skill-factory, memory-ops]
+required_skills: [skill-factory, memory-ops, project-context-protocol]
 memory_awareness: full
 skill_generation: true
 metadata:
@@ -49,6 +49,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 
 > [LOAD SKILL] If the new or revised skill covers plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before defining trigger language.
+> [LOAD SKILL] If the new or revised skill promotes stable project context, design DNA, product preference, technical preference, or acceptance preference into repeatable procedure, read `.agents/skills/project-context-protocol/SKILL.md` before defining scope.
 # [WORKFLOW: SKILL FORGE (技能鍛造)]
 
 
@@ -59,6 +60,7 @@ This workflow is triggered by one of the following:
 - Director explicitly requests a new project skill（總監明確指示建立新技能）
 - `/08_audit` Phase G recommends a new skill based on pattern detection（健檢偵測到跨模組重複模式）
 - `/04_fix` or `/07_debug` recommends distilling a methodology（修復/除錯後發現可萃取方法論）
+- Approved project context describes a stable repeatable procedure（已核准專案脈絡可轉為可執行流程）
 
 ## 0.5 Backfill Gate（現有技能補齊閘門）
 
@@ -85,6 +87,7 @@ if (Test-Path $projDir) {
 
 > [LOAD SKILL] §2 設計前，必須讀取：
 > `view_file .agents/skills/skill-factory/SKILL.md`
+> 若來源是專案脈絡，也必須讀取 `view_file .agents/skills/project-context-protocol/SKILL.md` 並確認該脈絡已核准且不是單純審美偏好。
 
 ## 2. Skill Design Planning
 

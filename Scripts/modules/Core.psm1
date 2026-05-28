@@ -289,7 +289,7 @@ function Get-UpgradeReport {
         [string]$SourceRoot,
         [string]$TargetRoot,
         [string[]]$ScanDirs       = @("rules", "workflows"),
-        [string[]]$ProtectedDirs  = @("memory", "project_skills"),
+        [string[]]$ProtectedDirs  = @("memory", "project_skills", "context"),
         [string[]]$ExcludeFiles   = @(),
         [string[]]$ScanFiles      = @(),
         [switch]$PreserveProjectIdentity
@@ -351,7 +351,8 @@ function Get-UpgradeReport {
         $tgtProt = Join-Path $TargetRoot $protDir
         if (-Not (Test-Path $tgtProt)) { continue }
         Get-ChildItem $tgtProt -Directory -Recurse | Where-Object {
-            Test-Path (Join-Path $_.FullName "SKILL.md")
+            (Test-Path (Join-Path $_.FullName "SKILL.md")) -or
+            (Test-Path (Join-Path $_.FullName "CONTEXT.md"))
         } | ForEach-Object {
             $rel = $_.FullName.Substring($tgtProt.Length).TrimStart('\', '/').Replace("\", "/")
             $results += [PSCustomObject]@{ Status = "KEEP"; Path = "$protDir/$rel/" }
@@ -494,13 +495,14 @@ function Get-ReleaseNotes {
 function Backup-ProtectedDirs {
     <#
     .SYNOPSIS
-        將 memory/ 與 project_skills/ 備份到 TEMP 目錄。
-        回傳 hashtable: @{ Memory = $tmpPath; Project = $tmpPath }
+        將 memory/、project_skills/ 與 context/ 備份到 TEMP 目錄。
+        回傳 hashtable: @{ Memory = $tmpPath; Project = $tmpPath; Context = $tmpPath }
     #>
     param([string]$AgentsRoot)
-    $backup = @{ Memory = $null; Project = $null }
+    $backup = @{ Memory = $null; Project = $null; Context = $null }
     $memDir  = Join-Path $AgentsRoot "memory"
     $projDir = Join-Path $AgentsRoot "project_skills"
+    $ctxDir  = Join-Path $AgentsRoot "context"
     if (Test-Path $memDir) {
         $tmp = Join-Path $env:TEMP "ag_backup_memory_$(Get-Random)"
         Copy-Item $memDir $tmp -Recurse -Force
@@ -513,13 +515,19 @@ function Backup-ProtectedDirs {
         $backup.Project = $tmp
         Write-Step "已備份衍生技能（D06 安全防線）..."
     }
+    if (Test-Path $ctxDir) {
+        $tmp = Join-Path $env:TEMP "ag_backup_context_$(Get-Random)"
+        Copy-Item $ctxDir $tmp -Recurse -Force
+        $backup.Context = $tmp
+        Write-Step "已備份專案脈絡卡（D06 安全防線）..."
+    }
     return $backup
 }
 
 function Restore-ProtectedDirs {
     <#
     .SYNOPSIS
-        從 TEMP 備份還原 memory/ 與 project_skills/，並清除暫存。
+        從 TEMP 備份還原 memory/、project_skills/ 與 context/，並清除暫存。
     #>
     param(
         [hashtable]$Backup,
@@ -527,26 +535,39 @@ function Restore-ProtectedDirs {
     )
     $memDir  = Join-Path $AgentsRoot "memory"
     $projDir = Join-Path $AgentsRoot "project_skills"
+    $ctxDir  = Join-Path $AgentsRoot "context"
     if ($Backup.Memory -and (Test-Path $Backup.Memory)) {
+        New-Item -ItemType Directory -Force -Path $memDir | Out-Null
         Copy-Item "$($Backup.Memory)\*" $memDir -Recurse -Force
         Remove-Item $Backup.Memory -Recurse -Force -ErrorAction SilentlyContinue
         Write-Ok "共用記憶卡已完整保留並還原。"
     }
     if ($Backup.Project -and (Test-Path $Backup.Project)) {
+        New-Item -ItemType Directory -Force -Path $projDir | Out-Null
         Copy-Item "$($Backup.Project)\*" $projDir -Recurse -Force
         Remove-Item $Backup.Project -Recurse -Force -ErrorAction SilentlyContinue
         Write-Ok "衍生技能已完整保留並還原。"
     }
+    if ($Backup.Context -and (Test-Path $Backup.Context)) {
+        New-Item -ItemType Directory -Force -Path $ctxDir | Out-Null
+        Copy-Item "$($Backup.Context)\*" $ctxDir -Recurse -Force
+        Remove-Item $Backup.Context -Recurse -Force -ErrorAction SilentlyContinue
+        Write-Ok "專案脈絡卡已完整保留並還原。"
+    }
 }
 
 # ══════════════════════════════════════════════════════════
-# 基礎設施初始化（memory/ project_skills/ _index.md）
+# 基礎設施初始化（memory/ project_skills/ context/ _index.md）
 # ══════════════════════════════════════════════════════════
 
 function Initialize-AgentInfrastructure {
-    param([string]$AgentsRoot)
+    param(
+        [string]$AgentsRoot,
+        [string]$ContextTemplatesRoot = ""
+    )
     $memDir  = Join-Path $AgentsRoot "memory"
     $projDir = Join-Path $AgentsRoot "project_skills"
+    $ctxDir  = Join-Path $AgentsRoot "context"
     if (-not (Test-Path $memDir)) {
         New-Item -ItemType Directory $memDir -Force | Out-Null
         Write-Ok ".agents\memory\ 共用記憶庫目錄已建立（D01）"
@@ -554,6 +575,10 @@ function Initialize-AgentInfrastructure {
     if (-not (Test-Path $projDir)) {
         New-Item -ItemType Directory $projDir -Force | Out-Null
         Write-Ok ".agents\project_skills\ 衍生技能目錄已建立"
+    }
+    if (-not (Test-Path $ctxDir)) {
+        New-Item -ItemType Directory $ctxDir -Force | Out-Null
+        Write-Ok ".agents\context\ 專案脈絡目錄已建立"
     }
     $indexFile = Join-Path $projDir "_index.md"
     if (-not (Test-Path $indexFile)) {
@@ -564,6 +589,71 @@ function Initialize-AgentInfrastructure {
 |--------------|------------|-------|------------|
 "@ | Set-Content $indexFile -Encoding UTF8
         Write-Ok "衍生技能路由表模板已建立"
+    }
+    $ctxMapDir = Join-Path $ctxDir "_map"
+    if (-not (Test-Path $ctxMapDir)) {
+        New-Item -ItemType Directory $ctxMapDir -Force | Out-Null
+    }
+    $ctxMapFile = Join-Path $ctxMapDir "CONTEXT.md"
+    if (-not (Test-Path $ctxMapFile)) {
+        $ctxMapTemplate = ""
+        if ($ContextTemplatesRoot) {
+            $candidateTemplate = Join-Path $ContextTemplatesRoot "_map\CONTEXT.md"
+            if (Test-Path -LiteralPath $candidateTemplate) {
+                $ctxMapTemplate = $candidateTemplate
+            }
+        }
+
+        if ($ctxMapTemplate) {
+            Copy-Item -LiteralPath $ctxMapTemplate -Destination $ctxMapFile -Force
+            Write-Ok "專案脈絡索引卡模板已從 Shared/context 建立"
+        } else {
+            $today = (Get-Date).ToString("yyyy-MM-dd")
+            @"
+---
+name: context-map
+description: Index of project context cards.
+context_type: index
+scope: project
+status: approved
+confidence: high
+last_reviewed: $today
+approval: framework-default
+sources: []
+---
+
+# Project Context Map
+
+## Approved Context
+
+- `_map`: Project context card registry.
+
+## Candidate Context
+
+- None.
+
+## Deprecated Context
+
+- None.
+
+## Conflicts
+
+- None.
+
+## Evidence
+
+- Created by Antigravity project context infrastructure.
+
+## Relations
+
+- `.agents/context/`: project context root.
+
+## Promotion Notes
+
+- Map cards are infrastructure indexes and should not be promoted to project skills.
+"@ | Set-Content $ctxMapFile -Encoding UTF8
+            Write-Ok "專案脈絡索引卡 fallback 模板已建立"
+        }
     }
 }
 
@@ -897,6 +987,7 @@ function Set-GitignoreEntries {
         $managedBlock = @($startMarker) + $insertLines + @(
             "",
             "# [TRACKED][AI_RULES_MEMORY] .agents/memory/ is project knowledge and is not ignored by default.",
+            "# [TRACKED][AI_RULES_CONTEXT] .agents/context/ is project context and is not ignored by default.",
             $endMarker
         )
         if ($content.Length -gt 0 -and -not ($content.EndsWith("`n") -or $content.EndsWith("`r"))) {
