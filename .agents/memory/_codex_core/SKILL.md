@@ -4,7 +4,7 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.3）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-29T03:29:42+08:00'
+last_updated: '2026-05-29T04:09:33+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -16,6 +16,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core 收容卡匣
 
 ## Tracked Files
@@ -96,6 +97,7 @@ metadata:
 - **AI Rules Manager v0.1.8 文件同步 (2026-05-22)**: 根 README 的 VS Code extension 操作表與 release 範例同步到 `v0.1.8` / `ai-rules-manager-0.1.8.vsix`，並明確拆分來源庫更新、VSIX 新版檢查、治理巡檢 Doctor 與目前專案規則同步；這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
 - **AI Rules Manager v0.1.9 文件同步 (2026-05-29)**: 根 README 的 VS Code extension 操作表與 release 範例同步到 `v0.1.9` / `ai-rules-manager-0.1.9.vsix`，並明確說明來源庫分叉、本機領先、工作樹有變更或快轉失敗時會停止且不執行 Doctor；這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
 - **AI Rules Manager v0.1.10 文件同步 (2026-05-29)**: 根 README 的 VS Code extension 操作表與 release 範例同步到 `v0.1.10` / `ai-rules-manager-0.1.10.vsix`，並明確說明一般專案中的使用者層管理快取會自動對齊遠端版本庫，本機指定來源只檢查不重設；這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
+- **AI Rules Manager v0.1.11 文件同步 (2026-05-29)**: 根 README 的 VS Code extension 段落同步到 `v0.1.11` / `ai-rules-manager-0.1.11.vsix`，並明確說明來源、遠端網址與 PowerShell 執行檔設定只能放在使用者層設定，預覽失敗不會進入寫入確認；這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
 
 
 ## Known Issues
@@ -124,6 +126,7 @@ metadata:
 - **Codex 不宣稱自動 spawn**: Codex 的子代理能力是平台 adapter 的執行語彙，不是 Shared 層的預設行為；除非總監明確要求或 workflow gate 指定，主代理應自己整合證據並維持 GO、memory、commit、push、部署責任。
 - **插件操作文案同步不代表 Codex 版本升級**: 根 README 會同時承載 Codex Edition 與 VS Code extension 說明；只更新 extension release 範例或操作文案時，不應改動 `Codex/VERSION` 或 `.codex/VERSION`。
 - **遠端來源鏡像口徑需寫進總覽文件**: Codex 使用者常從根 README 理解插件行為；若插件快取策略改變，README 必須同步說清楚管理快取是遠端鏡像、本機來源不自動重設，避免把目前專案規則誤認成來源。
+- **插件信任邊界也需寫進總覽文件**: Codex 使用者可能在任意專案開啟 VS Code extension；若 `repoRoot`、`repoUrl` 或 `powerShellPath` 被工作區設定接管，README 必須說明這些設定只允許使用者層設定。
 
 ## Relations
 

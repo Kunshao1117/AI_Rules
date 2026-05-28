@@ -777,18 +777,58 @@ function Set-GitignoreEntries {
 
         if ([string]::IsNullOrWhiteSpace($Pattern)) { return "" }
         $normalized = $Pattern.Trim()
-        if ($normalized.StartsWith("#")) { return "" }
+        if ($normalized.StartsWith("#") -or $normalized.StartsWith("!")) { return "" }
         $normalized = $normalized -replace "\\", "/"
         $normalized = $normalized.TrimStart("/")
+        while ($normalized.StartsWith("**/")) {
+            $normalized = $normalized.Substring(3)
+        }
         $normalized = $normalized -replace "/\*\*$", "/"
+        $normalized = $normalized -replace "/\*$", "/"
         return $normalized
+    }
+
+    function Get-GitignoreProbePath {
+        param([string]$Pattern)
+
+        $normalized = Normalize-GitignorePattern -Pattern $Pattern
+        if (-not $normalized) { return "" }
+        if ($normalized.EndsWith("/")) {
+            return ($normalized.TrimEnd("/") + "/__ai_rules_probe__")
+        }
+        return $normalized
+    }
+
+    function Test-GitignorePatternActive {
+        param(
+            [string]$ProjectRoot,
+            [string]$Pattern
+        )
+
+        $probePath = Get-GitignoreProbePath -Pattern $Pattern
+        if (-not $probePath) { return $true }
+
+        if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+            return $null
+        }
+
+        & git -C $ProjectRoot check-ignore -q --no-index -- $probePath 2>$null
+        $exitCode = $LASTEXITCODE
+
+        if ($exitCode -eq 0) { return $true }
+        if ($exitCode -eq 1) { return $false }
+        return $null
     }
 
     function Test-GitignoreEntryPresent {
         param(
             [string[]]$ExistingLines,
-            [string]$Pattern
+            [string]$Pattern,
+            [string]$ProjectRoot
         )
+
+        $activeIgnore = Test-GitignorePatternActive -ProjectRoot $ProjectRoot -Pattern $Pattern
+        if ($null -ne $activeIgnore) { return $activeIgnore }
 
         $target = Normalize-GitignorePattern -Pattern $Pattern
         if (-not $target) { return $true }
@@ -827,7 +867,7 @@ function Set-GitignoreEntries {
 
     $existingLines = @($content -split "\r?\n")
     $missingLines = @($requiredLines | Where-Object {
-        -not (Test-GitignoreEntryPresent -ExistingLines $existingLines -Pattern $_)
+        -not (Test-GitignoreEntryPresent -ExistingLines $existingLines -Pattern $_ -ProjectRoot $ProjectRoot)
     })
 
     if ($missingLines.Count -eq 0) {

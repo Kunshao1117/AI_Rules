@@ -127,8 +127,8 @@ AI_Rules 也提供本機 VS Code 延伸模組管理器，適合不想記 PowerSh
 | **查看來源更新影響** | 說明若對齊 AI_Rules 遠端來源，會執行哪些來源檢查與治理巡檢動作 |
 | **對齊 AI_Rules 遠端來源** | 顯示確認視窗後才對齊遠端來源；不安裝 VSIX，也不同步目前專案規則 |
 | **治理巡檢 Doctor** | 執行治理巡檢，包含 Shared Skill 品質、workflow metadata、policy marker、子代理語彙、全域規則漂移與 project skill links |
-| **同步使用者層規則** | 先預覽差異，確認後才寫入 `~/.codex`、`~/.claude`、`~/.gemini` |
-| **同步已安裝平台規則** | 先偵測目前專案實際安裝的平台，再預覽並同步 `.agents` / `.claude` / `.codex` 對應規則、技能與 project skill discovery 連結 |
+| **同步使用者層規則** | 先預覽差異，預覽成功後才詢問是否寫入 `~/.codex`、`~/.claude`、`~/.gemini` |
+| **同步已安裝平台規則** | 先偵測目前專案實際安裝的平台，再預覽；預覽成功後才同步 `.agents` / `.claude` / `.codex` 對應規則、技能與 project skill discovery 連結 |
 | **同步 Codex** | 只同步已安裝 Codex 專案的 `.codex/`、Codex 工作流技能與 `.agents/skills/project-*` |
 | **同步 Claude** | 只同步已安裝 Claude 專案的 `.claude/rules`、`.claude/commands`、`.claude/skills` 與 `.claude/skills/project-*` |
 | **同步 Antigravity** | 只同步已安裝 Antigravity 專案的 `.agents/rules`、`.agents/workflows`、`.agents/skills` 與 `.agents/skills/project-*` |
@@ -155,9 +155,11 @@ npm run package
 
 在 Antigravity、VS Code 或相容 IDE 中，如果目前 workspace 不是 AI_Rules repo，延伸模組會使用該 IDE `globalStorage` 內的 AI_Rules 管理快取作為來源。這份快取被視為遠端版本庫鏡像：每次執行管理動作前會自動對齊 `aiRules.repoUrl` 的 `main` 分支；若已明確設定 `aiRules.repoRoot`，則該本機來源只檢查狀態，不會被自動重設。使用者層規則檢查以文字內容為準；同一份規則只因 Git/Windows 將換行存成 LF 或 CRLF 時，不會被視為需要同步的漂移。同步目前專案規則時，05 濃縮工作流寫入的 `PROJECT IDENTITY` 區段會被保留，只更新框架管理內容。
 
+`aiRules.repoRoot`、`aiRules.repoUrl` 與 `aiRules.powerShellPath` 只能放在 VS Code 使用者設定，不能放在專案工作區設定。若陌生專案嘗試用工作區設定改寫 AI_Rules 來源或 PowerShell 執行檔，延伸模組會停止，避免用不可信來源同步規則。
+
 ### GitHub Release 自動建立與附加 VSIX
 
-推送 tag `v0.1.10` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.10.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
+推送 tag `v0.1.11` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.11.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
 
 ---
 
@@ -445,7 +447,7 @@ Extensions/**/*.vsix     ← VS Code extension 打包產物（不推送）
 
 > **重要**：root live deployment 規則只針對倉庫根目錄；`Antigravity/.agents/`、`Claude/.claude/`、`Codex/.codex/` 是框架模板源碼，必須進版控。
 
-部署到其他專案時，`Deploy.ps1` 會檢查目標專案 `.gitignore` 是否已有 AI Rules 需要的排除項目；已有就不動，缺少才補入，不會整理、搬移或覆蓋專案原本規則。若需要補入，會使用 `AI_RULES_GITIGNORE` marker block 收納新增項目：
+部署到其他專案時，`Deploy.ps1` 會檢查目標專案 `.gitignore` 是否已有 AI Rules 需要的排除項目；已有就不動，缺少才補入，不會整理、搬移或覆蓋專案原本規則。等價寫法也會被視為已存在，例如 `**/.agents/logs/`、`/.agents/logs/` 與 `.agents/logs/` 不會被重複插入。若需要補入，會使用 `AI_RULES_GITIGNORE` marker block 收納新增項目：
 
 ```
 # AI_RULES_GITIGNORE_START

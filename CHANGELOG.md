@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-29] AI Rules Manager v0.1.11
+
+### fix
+- **Workspace setting trust boundary** — AI Rules Manager now rejects source URL, source root, and PowerShell executable overrides from project workspace settings. These sensitive settings must live in user settings, so opening an unfamiliar project cannot silently redirect the manager to an untrusted source or executable.
+- **Preview failure gate** — global rule sync, project rule sync, and orphan cleanup no longer show the write-confirmation prompt after a failed preview.
+- **Gitignore equivalent patterns** — target project `.gitignore` checks now recognize equivalent ignore patterns such as `**/.agents/logs/` and `**/.cartridge/`, avoiding duplicate AI Rules managed blocks.
+
+### chore
+- **AI Rules Manager v0.1.11** — extension manifest and lockfile versions are bumped to `0.1.11`; source and docs are updated, with no VSIX packaging or release in this change.
+
 ## [2026-05-29] AI Rules Manager v0.1.10
 
 ### fix

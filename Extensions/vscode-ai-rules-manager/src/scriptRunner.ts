@@ -30,6 +30,15 @@ interface RepoResolution {
   managed: boolean;
 }
 
+type TrustedSettingKey = "repoRoot" | "repoUrl" | "powerShellPath";
+
+interface ConfigurationInspection<T> {
+  defaultValue?: T;
+  globalValue?: T;
+  workspaceValue?: T;
+  workspaceFolderValue?: T;
+}
+
 export class ScriptRunner {
   constructor(
     private readonly context: vscode.ExtensionContext,
@@ -40,8 +49,7 @@ export class ScriptRunner {
     const source = await this.resolveRepoRoot();
     const repoRoot = source.repoRoot;
     const script = path.join(repoRoot, "Scripts", "AI-RulesManager.ps1");
-    const config = vscode.workspace.getConfiguration("aiRules");
-    const ps = config.get<string>("powerShellPath") || "powershell.exe";
+    const ps = this.getTrustedConfigurationString("powerShellPath", "powershell.exe") || "powershell.exe";
     const target = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || repoRoot;
     const args = [
       "-NoProfile",
@@ -88,8 +96,7 @@ export class ScriptRunner {
   }
 
   private async resolveRepoRoot(): Promise<RepoResolution> {
-    const config = vscode.workspace.getConfiguration("aiRules");
-    const configRoot = config.get<string>("repoRoot")?.trim();
+    const configRoot = this.getTrustedConfigurationString("repoRoot");
     if (configRoot) {
       if (this.hasManagerScript(configRoot)) return { repoRoot: configRoot, managed: false };
       throw new Error(`aiRules.repoRoot 無效，找不到 Scripts\\AI-RulesManager.ps1：${configRoot}`);
@@ -98,7 +105,34 @@ export class ScriptRunner {
     const workspaceRoot = this.findWorkspaceRepoRoot();
     if (workspaceRoot) return { repoRoot: workspaceRoot, managed: false };
 
-    return this.ensureManagedRepoRoot(config.get<string>("repoUrl")?.trim() || DEFAULT_REPO_URL);
+    return this.ensureManagedRepoRoot(this.getTrustedConfigurationString("repoUrl", DEFAULT_REPO_URL) || DEFAULT_REPO_URL);
+  }
+
+  private getTrustedConfigurationString(key: TrustedSettingKey, fallback = ""): string {
+    const config = vscode.workspace.getConfiguration("aiRules");
+    const inspection = config.inspect<string>(key);
+    this.rejectWorkspaceConfiguration(key, inspection);
+
+    for (const folder of vscode.workspace.workspaceFolders || []) {
+      const folderInspection = vscode.workspace.getConfiguration("aiRules", folder.uri).inspect<string>(key);
+      this.rejectWorkspaceConfiguration(key, folderInspection);
+    }
+
+    const value = inspection?.globalValue ?? inspection?.defaultValue ?? fallback;
+    return typeof value === "string" ? value.trim() : fallback;
+  }
+
+  private rejectWorkspaceConfiguration(
+    key: TrustedSettingKey,
+    inspection: ConfigurationInspection<string> | undefined
+  ): void {
+    if (!inspection) return;
+    if (inspection.workspaceValue !== undefined || inspection.workspaceFolderValue !== undefined) {
+      throw new Error(
+        `AI Rules 設定（aiRules.${key}）不可放在目前專案的設定檔。` +
+        "請移到 VS Code 使用者設定，避免陌生專案改寫 AI_Rules 來源或執行檔。"
+      );
+    }
   }
 
   private findWorkspaceRepoRoot(): string | undefined {

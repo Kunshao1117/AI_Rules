@@ -30,7 +30,8 @@ export function registerAiRulesCommands(
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncGlobalRules", async () => {
-    await run("同步使用者層規則預覽", "SyncGlobal", runner, status, panel);
+    const previewOk = await run("同步使用者層規則預覽", "SyncGlobal", runner, status, panel);
+    if (!previewOk) return;
     const ok = await confirm("要寫入使用者層規則並備份舊檔嗎？這不會更新目前專案的 .codex/ 或 .agents/skills。");
     if (ok) await run("同步使用者層規則", "SyncGlobal", runner, status, panel, { apply: true });
   }));
@@ -52,7 +53,8 @@ export function registerAiRulesCommands(
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.cleanupOrphans", async () => {
-    await run("孤兒檔案預覽", "CleanupOrphans", runner, status, panel);
+    const previewOk = await run("孤兒檔案預覽", "CleanupOrphans", runner, status, panel);
+    if (!previewOk) return;
     const ok = await confirm("要刪除上方列出的孤兒檔案嗎？memory / project_skills 不會被清理。");
     if (ok) await run("清理孤兒檔案", "CleanupOrphans", runner, status, panel, { apply: true, removeOrphans: true });
   }));
@@ -65,7 +67,7 @@ async function run(
   status: AiRulesStatus,
   panel: AiRulesPanelProvider,
   options: RunOptions = {}
-): Promise<void> {
+): Promise<boolean> {
   try {
     status.setBusy(`AI Rules: ${label}`);
     panel.setStatus(`${label}執行中...`);
@@ -77,11 +79,13 @@ async function run(
       status.setIdle("AI Rules: OK");
       panel.setStatus(`${label}完成`);
     }
+    return true;
   } catch (error) {
     status.setWarning("AI Rules: 失敗");
     panel.setStatus(`${label}失敗`);
     const message = error instanceof Error ? error.message : String(error);
     void vscode.window.showErrorMessage(message);
+    return false;
   }
 }
 
@@ -92,7 +96,8 @@ async function runProjectSync(
   status: AiRulesStatus,
   panel: AiRulesPanelProvider
 ): Promise<void> {
-  await run(`${label}預覽`, "SyncProjectRules", runner, status, panel, { projectPlatform });
+  const previewOk = await run(`${label}預覽`, "SyncProjectRules", runner, status, panel, { projectPlatform });
+  if (!previewOk) return;
   const ok = await confirm("要先確認 AI_Rules 遠端來源已對齊，再把規則、Shared Skills 與平台入口同步到目前專案已安裝的平台嗎？未安裝平台不會被建立，memory / project_skills 不會被覆寫。");
   if (ok) await run(label, "SyncProjectRules", runner, status, panel, { apply: true, projectPlatform });
 }

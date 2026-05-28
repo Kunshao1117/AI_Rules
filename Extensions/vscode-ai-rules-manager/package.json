@@ -3,7 +3,7 @@
   "displayName": "AI Rules Manager",
   "description": "Point-and-click VS Code manager for AI_Rules source updates, governance checks, rule sync, and orphan cleanup.",
   "icon": "resources/icon.png",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "publisher": "kunshao",
   "license": "MIT",
   "repository": {
@@ -37,18 +37,21 @@
       "properties": {
         "aiRules.repoRoot": {
           "type": "string",
+          "scope": "application",
           "default": "",
-          "description": "Optional local AI_Rules repository root. When set, this path must contain Scripts/AI-RulesManager.ps1."
+          "description": "User setting only. Optional local AI_Rules repository root. When set, this path must contain Scripts/AI-RulesManager.ps1."
         },
         "aiRules.repoUrl": {
           "type": "string",
+          "scope": "application",
           "default": "https://github.com/Kunshao1117/AI_Rules.git",
-          "description": "Git URL used to create the managed AI_Rules cache when the current workspace is not the AI_Rules repository."
+          "description": "User setting only. Git URL used to create the managed AI_Rules cache when the current workspace is not the AI_Rules repository."
         },
         "aiRules.powerShellPath": {
           "type": "string",
+          "scope": "application",
           "default": "powershell.exe",
-          "description": "PowerShell executable used to run AI_Rules scripts."
+          "description": "User setting only. PowerShell executable used to run AI_Rules scripts."
         }
       }
     },
