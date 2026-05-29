@@ -840,6 +840,52 @@ function Remove-OrphanFiles {
 # .gitignore 條目設定
 # ══════════════════════════════════════════════════════════
 
+function Get-AiRulesTextFileContent {
+    param([string]$Path)
+
+    if (-not (Test-Path -LiteralPath $Path)) { return "" }
+
+    $bytes = [System.IO.File]::ReadAllBytes($Path)
+    if ($bytes.Length -eq 0) { return "" }
+
+    if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
+        return (New-Object System.Text.UTF8Encoding -ArgumentList $false, $true).GetString($bytes, 3, ($bytes.Length - 3))
+    }
+    if ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
+        return [System.Text.Encoding]::Unicode.GetString($bytes, 2, ($bytes.Length - 2))
+    }
+    if ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFE -and $bytes[1] -eq 0xFF) {
+        return [System.Text.Encoding]::BigEndianUnicode.GetString($bytes, 2, ($bytes.Length - 2))
+    }
+
+    try {
+        return (New-Object System.Text.UTF8Encoding -ArgumentList $false, $true).GetString($bytes)
+    } catch {
+        return (Get-AiRulesLegacyTextEncoding).GetString($bytes)
+    }
+}
+
+function Get-AiRulesLegacyTextEncoding {
+    try {
+        Add-Type -AssemblyName System.Text.Encoding.CodePages -ErrorAction SilentlyContinue
+        [System.Text.Encoding]::RegisterProvider([System.Text.CodePagesEncodingProvider]::Instance)
+        return [System.Text.Encoding]::GetEncoding(0)
+    } catch {
+        return [System.Text.Encoding]::Default
+    }
+}
+
+function Set-AiRulesTextFileContent {
+    param(
+        [string]$Path,
+        [AllowNull()][string]$Content
+    )
+
+    if ($null -eq $Content) { $Content = "" }
+    $encoding = New-Object System.Text.UTF8Encoding -ArgumentList $true
+    [System.IO.File]::WriteAllText($Path, $Content, $encoding)
+}
+
 function Get-AiRulesGitignoreMarkers {
     return [PSCustomObject]@{
         Start = "# AI_RULES_GITIGNORE_START"
@@ -1081,7 +1127,7 @@ function Get-AiRulesGitignoreReport {
     $gitignorePath = Join-Path $ProjectRoot ".gitignore"
     $content = ""
     if (Test-Path -LiteralPath $gitignorePath) {
-        $content = Get-Content -LiteralPath $gitignorePath -Raw
+        $content = Get-AiRulesTextFileContent -Path $gitignorePath
     }
     if ($null -eq $content) { $content = "" }
     $lines = @($content -split "\r?\n")
@@ -1142,11 +1188,11 @@ function Set-GitignoreEntries {
     $managedBlock = @(Get-AiRulesGitignoreManagedBlock -AdditionalLines $Lines)
 
     if (-not (Test-Path $gitignorePath)) {
-        Set-Content $gitignorePath "" -Encoding UTF8
+        Set-AiRulesTextFileContent -Path $gitignorePath -Content ""
         Write-Ok ".gitignore 已建立"
     }
 
-    $content = Get-Content $gitignorePath -Raw
+    $content = Get-AiRulesTextFileContent -Path $gitignorePath
     if ($null -eq $content) { $content = "" }
     $existingLines = @($content -split "\r?\n")
     $hasCompleteManagedBlock = $content.Contains($markers.Start) -and $content.Contains($markers.End)
@@ -1158,7 +1204,7 @@ function Set-GitignoreEntries {
             Write-Step ".gitignore AI Rules 管理區塊已是最新"
             return
         }
-        Set-Content $gitignorePath $newContent -NoNewline -Encoding UTF8
+        Set-AiRulesTextFileContent -Path $gitignorePath -Content $newContent
         Write-Ok ".gitignore AI Rules 管理區塊已更新"
         return
     }
@@ -1174,7 +1220,7 @@ function Set-GitignoreEntries {
             $cleanContent += $newline
         }
         $newContent = $cleanContent + ($managedBlock -join $newline) + $newline
-        Set-Content $gitignorePath $newContent -NoNewline -Encoding UTF8
+        Set-AiRulesTextFileContent -Path $gitignorePath -Content $newContent
         Write-Ok ".gitignore 已將既有標準根目錄規則整理為 AI Rules 管理區塊"
         return
     }
@@ -1185,7 +1231,7 @@ function Set-GitignoreEntries {
     if ($content.Length -gt 0) { $content += $newline }
     $newContent = $content + ($managedBlock -join $newline) + $newline
 
-    Set-Content $gitignorePath $newContent -NoNewline -Encoding UTF8
+    Set-AiRulesTextFileContent -Path $gitignorePath -Content $newContent
     Write-Ok ".gitignore 已補入 AI Rules 標準根目錄排除規則"
 }
 
@@ -1211,14 +1257,14 @@ function Invoke-AiRulesGitignoreMaintenance {
     if ($Mode -eq "Overwrite") {
         $content = ""
         if (Test-Path -LiteralPath $gitignorePath) {
-            $content = Get-Content -LiteralPath $gitignorePath -Raw
+            $content = Get-AiRulesTextFileContent -Path $gitignorePath
         }
         if ($null -eq $content) { $content = "" }
         $cleanContent = Remove-AiRulesGitignoreRelatedLines -Content $content
         if ($cleanContent.Length -gt 0) {
-            Set-Content -LiteralPath $gitignorePath -Value ($cleanContent + [Environment]::NewLine) -NoNewline -Encoding UTF8
+            Set-AiRulesTextFileContent -Path $gitignorePath -Content ($cleanContent + [Environment]::NewLine)
         } else {
-            Set-Content -LiteralPath $gitignorePath -Value "" -NoNewline -Encoding UTF8
+            Set-AiRulesTextFileContent -Path $gitignorePath -Content ""
         }
         Write-Ok "已移除 AI Rules 相關既有排除規則，準備重建標準區塊。"
     }

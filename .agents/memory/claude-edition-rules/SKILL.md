@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-29T07:44:12+08:00'
+last_updated: '2026-05-29T08:35:01+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -115,6 +115,7 @@ metadata:
 - **D47: 專案脈絡層與部署保護 (2026-05-29)**: 統一部署引擎、Claude 平台模組與 Claude command 入口接入 `.agents/context/`。Fresh、Upgrade、同步與孤兒清理都保護 `context`；`memory-contract.md` 明確區分原始碼記憶與專案脈絡，長期偏好與設計 DNA 只能走 `CONTEXT.md` 與 `GO CONTEXT` / `GO DNA`。
 - **D48: project-context-protocol 前綴例外 (2026-05-29)**: `Skills-Sync.psm1` 與 `Audit.psm1` 保留 `project-context-protocol` 這個正式 Shared skill，避免既有 `project-*` 排除與 project skill discovery 巡檢規則把它誤判成專案技能連結，造成漏部署或部署後紅燈。
 - **D49: Shared context template deployment (2026-05-29)**: `Core.psm1` 的基礎設施初始化支援 `Shared/context/_map/CONTEXT.md` 作為專案脈絡索引模板；三平台部署模組都傳入 Shared context 模板根目錄。`Audit.psm1` 新增 Shared Context Templates 巡檢，確保模板存在且格式符合脈絡協議。
+- **D50: `.gitignore` 中文註解編碼熱修復 (2026-05-29)**: `Core.psm1` 的 `.gitignore` 讀寫改為先偵測既有 UTF-8、UTF-8 BOM、UTF-16 或舊 ANSI，再以 UTF-8 BOM 寫回，避免部署與管理器補入中文註解後在 VS Code 或 Windows PowerShell 5.1 顯示亂碼。
 
 ## Known Issues
 
@@ -151,6 +152,7 @@ metadata:
 - **D25: 同步與巡檢排除規則需要正式技能例外**: `project-*` 前綴原本服務 project skill discovery 邊界；若 Shared 正式技能採用相同前綴，必須明確列入允許清單，避免 source 與 live deployment 產生假一致或巡檢誤報。
 - **D26: 模板來源與目標脈絡要分層**: Shared context template 是部署補缺來源，不是目標專案脈絡的覆寫來源；部署工具必須在目標已有 `CONTEXT.md` 時停手。
 - **D27: 腳本與插件共用同一個排除規則管理區塊**: Fresh、Upgrade、專案同步與 VS Code 管理器都必須辨識 `AI_RULES_GITIGNORE` 標記；插件套用不得在腳本已寫入後再插入第二份規則，覆蓋模式也只能移除 AI Rules 相關規則，不得碰其他專案規則。
+- **D28: 目標專案中文註解必須固定寫回編碼**: 只讓腳本檔本身維持 BOM 不足以保護目標專案；當部署引擎會寫入中文註解時，寫回檔案也要有明確 BOM 或等效編碼訊號。
 
 ## Relations
 

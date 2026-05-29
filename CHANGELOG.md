@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-29] AI Rules Manager v0.1.14
+
+### fix
+- **Gitignore comment encoding hotfix** — `.gitignore` 管理流程改用專用文字讀寫，讀取既有 UTF-8、UTF-8 BOM、UTF-16 與舊 ANSI 檔案，寫回時固定使用 UTF-8 BOM，避免中文註解在 VS Code 或 Windows PowerShell 5.1 情境下變成亂碼。
+
+### docs
+- **Release examples** — 根文件與延伸模組文件的 Release tag 與 VSIX 檔名更新為 `v0.1.14` / `ai-rules-manager-0.1.14.vsix`。
+
 ## [2026-05-29] AI Rules Manager v0.1.13
 
 ### feat

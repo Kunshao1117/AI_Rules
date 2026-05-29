@@ -4,7 +4,7 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.3）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-29T07:32:04+08:00'
+last_updated: '2026-05-29T08:35:17+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -99,6 +99,7 @@ metadata:
 - **AI Rules Manager v0.1.10 文件同步 (2026-05-29)**: 根 README 的 VS Code extension 操作表與 release 範例同步到 `v0.1.10` / `ai-rules-manager-0.1.10.vsix`，並明確說明一般專案中的使用者層管理快取會自動對齊遠端版本庫，本機指定來源只檢查不重設；這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
 - **AI Rules Manager v0.1.11 文件同步 (2026-05-29)**: 根 README 的 VS Code extension 段落同步到 `v0.1.11` / `ai-rules-manager-0.1.11.vsix`，並明確說明來源、遠端網址與 PowerShell 執行檔設定只能放在使用者層設定，預覽失敗不會進入寫入確認；這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
 - **AI Rules Manager v0.1.13 文件同步 (2026-05-29)**: 根 README 的 VS Code extension 操作表、`.gitignore` 策略與 release 範例同步到 `v0.1.13` / `ai-rules-manager-0.1.13.vsix`，並說明版控排除規則健檢按鈕會先預覽，再讓操作者選擇保留既有規則補標準區塊或覆蓋整理 AI Rules 相關寬鬆規則。這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
+- **AI Rules Manager v0.1.14 文件同步 (2026-05-29)**: 根 README 的 VS Code extension release 範例同步到 `v0.1.14` / `ai-rules-manager-0.1.14.vsix`，並承接 `.gitignore` 中文註解編碼 hotfix；這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
 - **Codex AI 開發品質閘門 (2026-05-29)**: `02-blueprint-架構`、`03-build-建構`、`04-fix-修復` 與 `06-test-測試` 在遇到 UI、版面、元件、設計、客製化網頁、VS Code extension 或高變動技術棧時載入 `ai-dev-quality-gate`；測試入口承接手機、平板、桌面三尺寸截圖與清單驗收。
 - **Codex 專案脈絡層接入 (2026-05-29)**: Codex README 與 `.codex/AGENTS.md` 同步宣告 `.agents/context/` 作為專案脈絡層，Codex 部署後技能總數為 56 套（39 Shared + 17 workflow）。`02-blueprint-架構`、`03-build-建構`、`04-fix-修復`、`05-condense-濃縮`、`06-test-測試` 與 `12-skill-forge-技能鍛造` 會在任務相關時載入 `project-context-protocol`；永久寫入脈絡需 `GO CONTEXT`，設計 DNA 可接受 `GO DNA`。
 - **Codex 專案脈絡模板來源 (2026-05-29)**: 根 README 補明 `Shared/context/_map/CONTEXT.md` 是三平台共用脈絡索引模板來源；Codex Fresh 會在空白專案從 Shared 模板建立 `.agents/context/_map/CONTEXT.md`，已有脈絡的 Fresh / Upgrade 會保留原內容。
@@ -132,6 +133,7 @@ metadata:
 - **遠端來源鏡像口徑需寫進總覽文件**: Codex 使用者常從根 README 理解插件行為；若插件快取策略改變，README 必須同步說清楚管理快取是遠端鏡像、本機來源不自動重設，避免把目前專案規則誤認成來源。
 - **插件信任邊界也需寫進總覽文件**: Codex 使用者可能在任意專案開啟 VS Code extension；若 `repoRoot`、`repoUrl` 或 `powerShellPath` 被工作區設定接管，README 必須說明這些設定只允許使用者層設定。
 - **插件排除規則按鈕要寫清楚不會全檔覆蓋**: 根 README 需要說明管理器只整理 AI Rules 相關 `.gitignore` 規則；即使選擇覆蓋整理，也不會刪除專案自己的建置、機密、測試或 IDE 排除規則。
+- **插件寫入中文註解要同步說明版本修補**: 若插件後端修正目標專案檔案的編碼或顯示問題，根 README 的 release 範例與 CHANGELOG 必須同步版本，讓 Codex 使用者知道這是插件 hotfix 而不是 Codex Edition 版本升級。
 - **Codex UI 完成回報要帶證據欄位**: 版面或互動狀態變更後，Codex 不能只回報桌面正常；完成摘要至少要交代元件復用判斷、設計方向來源、三尺寸證據與手機版風險結論。
 - **Codex 脈絡層只讀到候選寫入要停下**: Codex workflow 可讀取已核准 `.agents/context/**/CONTEXT.md` 作為偏好依據；若任務中萃取出新偏好，只能提出候選脈絡，必須等 `GO CONTEXT` 或 `GO DNA` 才能寫入。
 - **Codex 部署驗證要覆蓋空白與既有脈絡**: 專案脈絡模板調整後，Codex Fresh 必須驗證空白專案會建立索引；已有脈絡的 Fresh / Upgrade 必須驗證不覆蓋使用者內容。

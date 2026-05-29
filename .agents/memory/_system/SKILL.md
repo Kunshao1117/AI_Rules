@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-29T07:44:09+08:00'
+last_updated: '2026-05-29T08:34:57+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -112,6 +112,7 @@ metadata:
 - **D62: 管理器同步補齊專案脈絡基礎設施 (2026-05-29)**: `AI-RulesManager.ps1` 的專案規則同步在 `-Apply` 階段也會呼叫基礎設施初始化，補建 `.agents/context/_map/CONTEXT.md` 與 `.gitignore` 追蹤註記。這確保既有專案只透過 VS Code 管理器同步規則時，也能取得與 Fresh / Upgrade 一致的脈絡層。
 - **D63: AI Rules Manager v0.1.12 發布批次 (2026-05-29)**: 因本次治理更新改變 VS Code 管理器的專案同步可見行為，延伸模組版本升級為 `0.1.12` 並準備透過 `v0.1.12` tag 觸發 GitHub Actions 打包 VSIX。CHANGELOG 需保留 `AI Rules Manager v0.1.12` 章節，讓 release notes 來源明確。
 - **D64: 根目錄錨定 `.gitignore` 治理 (2026-05-29)**: Fresh、Upgrade 與專案同步預設補入根目錄錨定的 AI Rules `.gitignore` 管理區塊；框架部署產物與本地執行狀態不進版控，`.agents/memory/`、`.agents/context/`、`.agents/project_skills/` 明確放行。VS Code 管理器另提供版控排除規則健檢，可選不覆蓋或覆蓋整理；覆蓋只移除 AI Rules 相關寬鬆規則與舊管理區塊，不影響其他專案自訂規則。
+- **D65: `.gitignore` 中文註解編碼熱修復 (2026-05-29)**: `Core.psm1` 的 `.gitignore` 管理流程改用專用文字讀寫，讀取時支援既有 UTF-8、UTF-8 BOM、UTF-16 與舊 ANSI 檔案，寫回時固定使用 UTF-8 BOM。AI Rules Manager v0.1.14 作為 v0.1.13 的 hotfix 版本，避免中文註解在 VS Code 或 Windows PowerShell 5.1 情境下變成亂碼。
 
 ## Known Issues
 
@@ -151,6 +152,7 @@ metadata:
 - **D30: Release notes 必須有版本專章**: VSIX 發布 workflow 會依 `AI Rules Manager v<version>` 標題擷取 release notes；升版打包前必須同步建立對應 CHANGELOG 章節，避免 GitHub Release 只有泛用文字。
 - **D31: 管理器同步路徑要等同部署路徑**: 凡是 Fresh / Upgrade 會補齊的受保護知識層，VS Code 管理器的專案同步在套用時也要補齊；否則老專案可能得到新工作流規則，卻缺少其依賴的脈絡索引卡。
 - **D32: 排除規則自動補齊必須根目錄錨定**: AI Rules 預設 `.gitignore` 只應管理專案根目錄的框架產物；歷史專案若有寬鬆規則，應交由使用者主動啟動的管理器健檢按鈕整理，不應在 Fresh / Upgrade 自動重排使用者規則。
+- **D33: 被寫入的目標文字檔也需要編碼契約**: 不能只保護腳本本身的 UTF-8 BOM；只要框架會把中文註解寫進目標專案檔案，也必須用明確編碼寫回，避免 IDE 或舊版 PowerShell 以錯誤 code page 顯示。
 
 ## Documentation Files
 
