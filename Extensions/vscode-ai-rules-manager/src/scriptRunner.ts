@@ -18,7 +18,7 @@ export type ManagerAction =
   | "CleanupOrphans";
 
 export type ProjectPlatform = "Auto" | "Codex" | "Claude" | "Antigravity";
-export type GitignoreMode = "Append" | "Overwrite";
+export type GitignoreMode = "Append" | "CleanSimilar";
 
 export interface RunOptions {
   apply?: boolean;

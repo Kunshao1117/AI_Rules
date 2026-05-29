@@ -4,7 +4,7 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.3）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-29T08:35:17+08:00'
+last_updated: '2026-05-29T09:45:14+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -100,6 +100,7 @@ metadata:
 - **AI Rules Manager v0.1.11 文件同步 (2026-05-29)**: 根 README 的 VS Code extension 段落同步到 `v0.1.11` / `ai-rules-manager-0.1.11.vsix`，並明確說明來源、遠端網址與 PowerShell 執行檔設定只能放在使用者層設定，預覽失敗不會進入寫入確認；這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
 - **AI Rules Manager v0.1.13 文件同步 (2026-05-29)**: 根 README 的 VS Code extension 操作表、`.gitignore` 策略與 release 範例同步到 `v0.1.13` / `ai-rules-manager-0.1.13.vsix`，並說明版控排除規則健檢按鈕會先預覽，再讓操作者選擇保留既有規則補標準區塊或覆蓋整理 AI Rules 相關寬鬆規則。這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
 - **AI Rules Manager v0.1.14 文件同步 (2026-05-29)**: 根 README 的 VS Code extension release 範例同步到 `v0.1.14` / `ai-rules-manager-0.1.14.vsix`，並承接 `.gitignore` 中文註解編碼 hotfix；這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
+- **AI Rules Manager v0.1.15 文件同步 (2026-05-29)**: 根 README 的 VS Code extension release 範例同步到 `v0.1.15` / `ai-rules-manager-0.1.15.vsix`，並將 `.gitignore` 策略文件改為精準標準規則與相似規則清單分流：自動流程補入帶繁中註解的標準規則，相似規則由管理器預覽後取得操作者確認才刪除，舊版註解不由自動流程處理。這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
 - **Codex AI 開發品質閘門 (2026-05-29)**: `02-blueprint-架構`、`03-build-建構`、`04-fix-修復` 與 `06-test-測試` 在遇到 UI、版面、元件、設計、客製化網頁、VS Code extension 或高變動技術棧時載入 `ai-dev-quality-gate`；測試入口承接手機、平板、桌面三尺寸截圖與清單驗收。
 - **Codex 專案脈絡層接入 (2026-05-29)**: Codex README 與 `.codex/AGENTS.md` 同步宣告 `.agents/context/` 作為專案脈絡層，Codex 部署後技能總數為 56 套（39 Shared + 17 workflow）。`02-blueprint-架構`、`03-build-建構`、`04-fix-修復`、`05-condense-濃縮`、`06-test-測試` 與 `12-skill-forge-技能鍛造` 會在任務相關時載入 `project-context-protocol`；永久寫入脈絡需 `GO CONTEXT`，設計 DNA 可接受 `GO DNA`。
 - **Codex 專案脈絡模板來源 (2026-05-29)**: 根 README 補明 `Shared/context/_map/CONTEXT.md` 是三平台共用脈絡索引模板來源；Codex Fresh 會在空白專案從 Shared 模板建立 `.agents/context/_map/CONTEXT.md`，已有脈絡的 Fresh / Upgrade 會保留原內容。

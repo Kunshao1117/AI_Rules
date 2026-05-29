@@ -2,7 +2,7 @@
 name: _claude_core
 description: Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Claude/
-last_updated: '2026-05-29T05:43:58+08:00'
+last_updated: '2026-05-29T09:30:25+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -20,6 +20,7 @@ metadata:
 ## Tracked Files
 
 - Claude/.gitignore
+- Claude/.vscode/settings.json
 - Claude/install.ps1
 - Claude/README.md
 - Claude/VERSION
@@ -82,6 +83,7 @@ metadata:
 - **Claude Delegation Gate adapter (2026-05-22)**: `01_explore`、`06_test`、`07_debug`、`08_audit` command 入口改為只引用 Shared Delegation Gate，Claude adapter 再轉譯為 description-driven subagent、`@agent` 或受控 `Agent(...)`。command 入口不複製 Shared 規則，只保留平台轉譯提醒與唯讀 evidence branch 邊界。
 - **Claude AI 開發品質閘門 (2026-05-29)**: `02_blueprint(架構)`、`03_build(建構)`、`04_fix(修復)` 與 `06_test(測試)` 在 UI、版面、元件、設計、客製化網頁或高變動技術棧情境載入 `ai-dev-quality-gate`，測試流程承接手機、平板、桌面三尺寸證據。
 - **Claude 專案脈絡層接入 (2026-05-29)**: Claude README、記憶規則與 Slash Command 入口同步加入 `.agents/context/`。`02_blueprint(架構)`、`03_build(建構)`、`04_fix(修復)`、`05_condense（濃縮）`、`06_test(測試)` 與 `12_skill_forge(技能鍛造)` 在任務相關時載入 `project-context-protocol`；新偏好只能先列候選，永久寫入需 `GO CONTEXT` 或 `GO DNA`。
+- **Claude 本機 IDE 設定歸屬 (2026-05-29)**: `Claude/.vscode/settings.json` 是平台子目錄內的本機 IDE 設定，仍由 `Claude/.gitignore` 排除，不進版控；記憶卡追蹤它是為了讓 cartridge-system 不再把既有本機設定視為未歸屬檔案。
 
 ## Known Issues
 

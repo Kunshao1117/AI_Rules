@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-29T08:35:01+08:00'
+last_updated: '2026-05-29T09:45:14+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -116,6 +116,7 @@ metadata:
 - **D48: project-context-protocol 前綴例外 (2026-05-29)**: `Skills-Sync.psm1` 與 `Audit.psm1` 保留 `project-context-protocol` 這個正式 Shared skill，避免既有 `project-*` 排除與 project skill discovery 巡檢規則把它誤判成專案技能連結，造成漏部署或部署後紅燈。
 - **D49: Shared context template deployment (2026-05-29)**: `Core.psm1` 的基礎設施初始化支援 `Shared/context/_map/CONTEXT.md` 作為專案脈絡索引模板；三平台部署模組都傳入 Shared context 模板根目錄。`Audit.psm1` 新增 Shared Context Templates 巡檢，確保模板存在且格式符合脈絡協議。
 - **D50: `.gitignore` 中文註解編碼熱修復 (2026-05-29)**: `Core.psm1` 的 `.gitignore` 讀寫改為先偵測既有 UTF-8、UTF-8 BOM、UTF-16 或舊 ANSI，再以 UTF-8 BOM 寫回，避免部署與管理器補入中文註解後在 VS Code 或 Windows PowerShell 5.1 顯示亂碼。
+- **D51: `.gitignore` 精準標準行治理 (2026-05-29)**: `Core.psm1` 的部署目標 `.gitignore` 維護改為自動流程只整理目前版本自己產生的繁中標準註解與完全相同的 AI Rules 標準規則行，然後補入帶繁中註解的最新標準規則，不再維護或刪除舊版 marker 註解、上下文或相似寬鬆規則。相似規則清理只在管理器 `CleanSimilar` 模式下執行，且只刪除預覽清單中的具體行；舊 `Overwrite` 參數僅作相容別名，不再代表覆蓋整理。
 
 ## Known Issues
 

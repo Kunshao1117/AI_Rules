@@ -4,7 +4,7 @@ description: >-
   AI_Rules VS Code 延伸模組與按鈕式管理入口。追蹤側邊欄 UI、命令註冊、PowerShell 腳本橋接、VSIX 打包設定與 Release
   asset 自動化。
 scopePath: Extensions/vscode-ai-rules-manager
-last_updated: '2026-05-29T08:35:08+08:00'
+last_updated: '2026-05-29T09:45:14+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -73,6 +73,7 @@ metadata:
 - **AI Rules Manager v0.1.12 project context release (2026-05-29)**: VSIX 版本升級到 `0.1.12`，用於發布 AI 開發品質治理與專案脈絡層同步能力。`package.json`、lockfile、根 README、extension README 與 CHANGELOG 同步更新，Release workflow 將透過 `v0.1.12` tag 打包 `ai-rules-manager-0.1.12.vsix`。
 - **AI Rules Manager v0.1.13 gitignore maintenance (2026-05-29)**: VSIX 版本升級到 `0.1.13`，新增「版控排除規則健檢」命令與側邊欄按鈕。按鈕會先預覽 `.gitignore` 的 AI Rules 管理區塊、缺少的根目錄標準規則與寬鬆規則；套用時可選不覆蓋補標準區塊，或覆蓋整理 AI Rules 相關規則與舊管理區塊。若腳本已寫入 AI Rules 管理區塊，插件必須更新同一區塊，不得插入第二份規則。
 - **AI Rules Manager v0.1.14 gitignore encoding hotfix (2026-05-29)**: VSIX 版本升級到 `0.1.14`，修正 v0.1.13 版控排除規則健檢寫入中文註解後可能在 VS Code 顯示亂碼的問題。後端 `.gitignore` 寫回固定使用 UTF-8 BOM，並保留既有規則與管理區塊去重語意。
+- **AI Rules Manager v0.1.15 gitignore precision cleanup (2026-05-29)**: VSIX 版本升級到 `0.1.15`，版控排除規則健檢改為「只補標準規則」或「刪除相似規則清單」。確認視窗明確說明清理只會刪除清單中列出的具體相似規則行，不會刪註解、上下文或整段區塊；後端保留舊 `Overwrite` 參數作為相容別名，但 UI 不再使用覆蓋語意。同版重新打包時補回繁中標準註解，且不處理舊版英文標記註解。
 
 ## Known Issues
 
@@ -106,7 +107,7 @@ metadata:
 - **D21: 管理器清理要保護脈絡層**：VS Code extension 的後端腳本只負責框架同步與孤兒清理，不可刪除 `.agents/context/`；脈絡卡有效性由 Doctor 報告，寫入仍由 `GO CONTEXT` 控制。
 - **D22: 專案同步也要補基礎設施**：管理器的「同步目前專案規則」不只是複製規則與技能；套用成功後也必須補齊 `.agents/memory/`、`.agents/project_skills/`、`.agents/context/` 與 `.gitignore` 註記，避免舊專案只走同步路徑時缺少脈絡索引卡。
 - **D23: 可見後端行為發布要升 VSIX patch**：即使 TypeScript UI 未變，只要管理器按鈕呼叫的後端治理結果改變，仍要升級 extension patch 版本並重新打包，讓 GitHub Release update reminder 能正確提示操作者。
-- **D24: 版控排除整理必須先預覽再選模式**：`.gitignore` 可能承載專案自訂機密、工具與 monorepo 規則；管理器只能在操作者主動確認後處理 AI Rules 相關規則，且覆蓋模式不得刪除其他專案規則。預覽與套用都要辨識腳本已建立的 AI Rules 管理區塊，避免插件按鈕造成重複區塊。
+- **D24: 版控排除整理必須先預覽再選具體行為**：`.gitignore` 可能承載專案自訂機密、工具與 monorepo 規則；管理器預覽只列出標準缺口與相似規則清單。一般套用只補帶繁中註解的 AI Rules 精準標準規則；清理模式只能刪除清單中列出的具體相似規則行，不得刪舊版註解、上下文或整段區塊。
 - **D25: 管理器寫入目標專案中文檔案時必須有明確編碼**：使用者看到的是目標專案檔案，不只是腳本輸出；若管理器會寫入中文註解，後端必須使用穩定編碼，不能依賴 VS Code 或 PowerShell 自行猜測。
 
 ## Relations

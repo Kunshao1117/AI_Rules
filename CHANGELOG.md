@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-29] AI Rules Manager v0.1.15
+
+### fix
+- **Gitignore precision cleanup** — 初始化、升級與專案同步改為只處理 AI Rules 精準標準規則；自動流程不再判斷管理區塊、註解、上下行或寬鬆相似規則，避免誤刪專案既有版控設定。
+- **Gitignore Chinese comments** — v0.1.15 重新打包時補回繁中標準註解；舊版英文標記註解與專案自訂註解不再由自動流程處理，避免誤刪。
+- **Gitignore maintenance confirmation** — 版控排除規則健檢按鈕改為列出相似規則清單，操作者可選擇只補標準規則，或刪除清單中的具體相似規則行後再補標準規則。
+
+### docs
+- **Release examples** — 根文件與延伸模組文件的 Release tag 與 VSIX 檔名更新為 `v0.1.15` / `ai-rules-manager-0.1.15.vsix`。
+
 ## [2026-05-29] AI Rules Manager v0.1.14
 
 ### fix

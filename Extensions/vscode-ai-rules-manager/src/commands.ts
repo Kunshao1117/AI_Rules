@@ -63,13 +63,13 @@ export function registerAiRulesCommands(
     const previewOk = await run("版控排除規則健檢", "Gitignore", runner, status, panel);
     if (!previewOk) return;
     const choice = await vscode.window.showWarningMessage(
-      "要如何處理目前專案的 .gitignore？若已有 AI Rules 管理區塊，會更新同一區塊不重複插入。不覆蓋會保留既有寬鬆規則並補入根目錄標準區塊；覆蓋會移除 AI Rules 相關寬鬆規則與舊管理區塊後重建標準區塊。",
+      "要如何處理目前專案的 .gitignore？系統會補入 AI Rules 精準標準規則。若上方列出相似規則，只有在你同意時才會刪除清單中的具體行；不會刪註解、上下文或整段區塊。",
       { modal: true },
-      "不覆蓋，補標準區塊",
-      "覆蓋整理 AI Rules 規則"
+      "只補標準規則",
+      "刪除相似規則清單"
     );
     if (!choice) return;
-    const mode: GitignoreMode = choice === "覆蓋整理 AI Rules 規則" ? "Overwrite" : "Append";
+    const mode: GitignoreMode = choice === "刪除相似規則清單" ? "CleanSimilar" : "Append";
     await run("版控排除規則整理", "Gitignore", runner, status, panel, { apply: true, gitignoreMode: mode });
   }));
 }

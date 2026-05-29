@@ -2,7 +2,7 @@
 name: _ag_core
 description: Antigravity 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Antigravity/
-last_updated: '2026-05-29T07:32:11+08:00'
+last_updated: '2026-05-29T09:30:21+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -20,12 +20,12 @@ metadata:
 ## Tracked Files
 
 - Antigravity/.gitignore
+- Antigravity/.vscode/settings.json
 - Antigravity/install.ps1
 - Antigravity/README.md
 - Antigravity/VERSION
 - Antigravity/global/GEMINI.md
 - Antigravity/.agents/VERSION
-- Antigravity/.agents/logs/doc_scan.md
 - Antigravity/.agents/memory/_map/SKILL.md
 - Antigravity/.agents/memory/_system/SKILL.md
 - Antigravity/.agents/rules/00_core_identity.md
@@ -95,6 +95,7 @@ metadata:
 - **Antigravity 08-2 log 邊界硬化 (2026-05-22)**: `08-2_audit_logic` 明確規定 CLI evidence branch 只回傳證據包，不寫專案檔；`.agents/logs/audit_logic_results.md` 只能由 Master workflow 在狀態彙整階段寫入，避免把 evidence branch 解讀成可寫入者。
 - **Antigravity AI 開發品質閘門 (2026-05-29)**: `02_blueprint(架構)`、`03_build(建構計畫)`、`04-1_fix_plan(修復計畫)` 與 `06_test(測試)` 在 UI、版面、元件、設計、客製化網頁或高變動技術棧情境載入 `ai-dev-quality-gate`，測試流程承接手機、平板、桌面三尺寸證據。
 - **Antigravity 專案脈絡層接入 (2026-05-29)**: Antigravity README、核心規則與記憶合約同步加入 `.agents/context/`。`02_blueprint(架構)`、`03_build(建構計畫)`、`04-1_fix_plan(修復計畫)`、`05_condense(濃縮)`、`06_test(測試)` 與 `12_skill_forge(技能鍛造)` 在任務相關時載入 `project-context-protocol`；設計 DNA、產品偏好、技術偏好與驗收偏好不得再塞入原始碼記憶卡。
+- **Antigravity 本機 IDE 設定歸屬 (2026-05-29)**: `Antigravity/.vscode/settings.json` 是平台子目錄內的本機 IDE 設定，仍由 `Antigravity/.gitignore` 排除，不進版控；記憶卡追蹤它是為了讓 cartridge-system 不再把既有本機設定視為未歸屬檔案。舊的 `Antigravity/.agents/logs/doc_scan.md` 為執行期掃描紀錄，檔案已不存在，從追蹤清單移除。
 
 ## Known Issues
 

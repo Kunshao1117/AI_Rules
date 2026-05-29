@@ -24,7 +24,7 @@ param(
     [ValidateSet("Auto", "Codex", "Claude", "Antigravity")]
     [string]$ProjectPlatform = "Auto",
 
-    [ValidateSet("Append", "Overwrite")]
+    [ValidateSet("Append", "CleanSimilar", "Overwrite")]
     [string]$GitignoreMode = "Append",
 
     [switch]$WhatIf,
@@ -694,7 +694,7 @@ function Invoke-GitignoreMaintenance {
     Write-ManagerHeader "版控排除規則健檢"
     $targetRoot = (Resolve-Path $Target).Path
     Write-Host "Target：$targetRoot"
-    Write-Host "模式：$(if ($GitignoreMode -eq 'Overwrite') { '覆蓋整理 AI Rules 相關規則' } else { '不覆蓋，保留既有規則並補標準區塊' })"
+    Write-Host "模式：$(if ($GitignoreMode -in @('CleanSimilar', 'Overwrite')) { '刪除清單列出的相似規則，再補入帶繁中註解的 AI Rules 精準標準規則' } else { '只補入帶繁中註解的 AI Rules 精準標準規則，相似規則僅列出提醒' })"
     $null = Invoke-AiRulesGitignoreMaintenance -ProjectRoot $targetRoot -Mode $GitignoreMode -Apply:$Apply
 }
 

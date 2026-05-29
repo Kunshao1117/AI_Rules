@@ -1,11 +1,11 @@
-# [ACTIVE][BUILD] VS Code extension dependencies and outputs
+﻿# [啟用][延伸模組] VS Code extension 依賴與打包產物，不進版控
 /Extensions/**/node_modules/
 /Extensions/**/out/
 /Extensions/**/*.vsix
 
+# [啟用][工作區設定] 本機 IDE 設定，不進版控
 .vscode/settings.json
 
-# AI_RULES_GITIGNORE_START
 # [啟用][AI Rules 框架] 由框架初始化或升級產生，可重建，不進版控
 /.codex/
 /.claude/
@@ -30,4 +30,3 @@
 # [啟用][執行狀態] 代理日誌與本地索引是執行期產物，不進版控
 /.agents/logs/
 /.cartridge/
-# AI_RULES_GITIGNORE_END
