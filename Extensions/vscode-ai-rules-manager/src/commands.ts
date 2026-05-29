@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { ExtensionUpdateChecker } from "./extensionUpdate";
 import { AiRulesPanelProvider } from "./panel";
-import { ManagerAction, ProjectPlatform, RunOptions, ScriptRunner } from "./scriptRunner";
+import { GitignoreMode, ManagerAction, ProjectPlatform, RunOptions, ScriptRunner } from "./scriptRunner";
 import { AiRulesStatus } from "./status";
 
 export function registerAiRulesCommands(
@@ -55,8 +55,22 @@ export function registerAiRulesCommands(
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.cleanupOrphans", async () => {
     const previewOk = await run("孤兒檔案預覽", "CleanupOrphans", runner, status, panel);
     if (!previewOk) return;
-    const ok = await confirm("要刪除上方列出的孤兒檔案嗎？memory / project_skills 不會被清理。");
+    const ok = await confirm("要刪除上方列出的孤兒檔案嗎？memory / project_skills / context 不會被清理。");
     if (ok) await run("清理孤兒檔案", "CleanupOrphans", runner, status, panel, { apply: true, removeOrphans: true });
+  }));
+
+  context.subscriptions.push(vscode.commands.registerCommand("aiRules.gitignoreMaintenance", async () => {
+    const previewOk = await run("版控排除規則健檢", "Gitignore", runner, status, panel);
+    if (!previewOk) return;
+    const choice = await vscode.window.showWarningMessage(
+      "要如何處理目前專案的 .gitignore？若已有 AI Rules 管理區塊，會更新同一區塊不重複插入。不覆蓋會保留既有寬鬆規則並補入根目錄標準區塊；覆蓋會移除 AI Rules 相關寬鬆規則與舊管理區塊後重建標準區塊。",
+      { modal: true },
+      "不覆蓋，補標準區塊",
+      "覆蓋整理 AI Rules 規則"
+    );
+    if (!choice) return;
+    const mode: GitignoreMode = choice === "覆蓋整理 AI Rules 規則" ? "Overwrite" : "Append";
+    await run("版控排除規則整理", "Gitignore", runner, status, panel, { apply: true, gitignoreMode: mode });
   }));
 }
 
@@ -98,7 +112,7 @@ async function runProjectSync(
 ): Promise<void> {
   const previewOk = await run(`${label}預覽`, "SyncProjectRules", runner, status, panel, { projectPlatform });
   if (!previewOk) return;
-  const ok = await confirm("要先確認 AI_Rules 遠端來源已對齊，再把規則、Shared Skills 與平台入口同步到目前專案已安裝的平台嗎？未安裝平台不會被建立，memory / project_skills 不會被覆寫。");
+  const ok = await confirm("要先確認 AI_Rules 遠端來源已對齊，再把規則、Shared Skills 與平台入口同步到目前專案已安裝的平台嗎？未安裝平台不會被建立，memory / project_skills / context 不會被覆寫。");
   if (ok) await run(label, "SyncProjectRules", runner, status, panel, { apply: true, projectPlatform });
 }
 
@@ -111,7 +125,9 @@ function needsAttention(output: string): boolean {
   return /狀態：偵測到遠端更新|狀態：可快轉更新|狀態：來源庫分叉|狀態：本機領先遠端|工作樹有變更/.test(output)
     || hasPositiveCounter(output, "Yellow")
     || hasPositiveCounter(output, "Red")
-    || /規則與 source 不同|待授權|有差異|來源庫更新失敗|無法快轉/.test(output);
+    || /規則與 source 不同|待授權|有差異|來源庫更新失敗|無法快轉/.test(output)
+    || /缺少標準根目錄規則：\s*[1-9]/.test(output)
+    || /寬鬆規則：\s*[1-9]/.test(output);
 }
 
 function hasPositiveCounter(output: string, label: "Yellow" | "Red"): boolean {

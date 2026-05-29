@@ -1,26 +1,33 @@
-# [ACTIVE][LOCAL] Editor and local runtime state
-**/.vscode/
-**/.cartridge/
+# [ACTIVE][BUILD] VS Code extension dependencies and outputs
+/Extensions/**/node_modules/
+/Extensions/**/out/
+/Extensions/**/*.vsix
 
-# [ACTIVE][GENERATED] Root live platform deployments
+.vscode/settings.json
+
+# AI_RULES_GITIGNORE_START
+# [啟用][AI Rules 框架] 由框架初始化或升級產生，可重建，不進版控
 /.codex/
 /.claude/
 /CLAUDE.md
 /antigravity_export/
 
-# [ACTIVE][GENERATED] Root Antigravity live deployment
+# [啟用][代理框架] 代理規則、工作流與共用技能多為部署產物，預設不進版控
 /.agents/*
 
-# [TRACKED][EXCEPTION] Shared memory and context cards are repository state
+# [保留][專案記憶] 原始碼記憶是專案知識資產，必須允許進版控
 !/.agents/memory/
 !/.agents/memory/**
+
+# [保留][專案脈絡] 設計 DNA、產品偏好與驗收偏好是專案知識資產，必須允許進版控
 !/.agents/context/
 !/.agents/context/**
 
-# [ACTIVE][RUNTIME] Platform logs
-**/.agents/logs/
+# [保留][專案衍生技能] 專案專屬技能屬於專案能力，必須允許進版控
+!/.agents/project_skills/
+!/.agents/project_skills/**
 
-# [ACTIVE][BUILD] VS Code extension dependencies and outputs
-/Extensions/**/node_modules/
-/Extensions/**/out/
-/Extensions/**/*.vsix
+# [啟用][執行狀態] 代理日誌與本地索引是執行期產物，不進版控
+/.agents/logs/
+/.cartridge/
+# AI_RULES_GITIGNORE_END

@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-29] AI Rules Manager v0.1.13
+
+### feat
+- **Gitignore maintenance button** — AI Rules Manager 新增「版控排除規則健檢」按鈕，先預覽目前專案 `.gitignore` 的 AI Rules 管理區塊、根目錄標準規則與寬鬆規則，再由操作者選擇不覆蓋或覆蓋整理。
+
+### fix
+- **Root-anchored default ignore policy** — Fresh、Upgrade 與專案同步預設補入根目錄錨定的 AI Rules `.gitignore` 規則，只管理專案根目錄的框架產物，避免影響子資料夾同名目錄。
+- **Managed block deduplication** — 若腳本已寫入 AI Rules 管理區塊，插件整理會更新或覆蓋同一區塊，不會重複插入；覆蓋模式只移除 AI Rules 相關寬鬆規則與舊管理區塊，不影響其他專案自訂規則。
+
+### docs
+- **Gitignore policy docs** — 根文件與延伸模組文件補充預設排除策略、專案記憶/脈絡/衍生技能放行，以及插件按鈕的不覆蓋與覆蓋行為。
+
 ## [2026-05-29] AI Rules Manager v0.1.12
 
 ### feat

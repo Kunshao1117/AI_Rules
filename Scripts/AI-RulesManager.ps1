@@ -8,7 +8,7 @@
     orphan deletion, -RemoveOrphans.
 #>
 param(
-    [ValidateSet("Check", "Plan", "Apply", "Doctor", "SyncGlobal", "SyncProjectRules", "CleanupOrphans")]
+    [ValidateSet("Check", "Plan", "Apply", "Doctor", "SyncGlobal", "SyncProjectRules", "CleanupOrphans", "Gitignore")]
     [string]$Action = "Check",
 
     [string]$RepoRoot,
@@ -23,6 +23,9 @@ param(
 
     [ValidateSet("Auto", "Codex", "Claude", "Antigravity")]
     [string]$ProjectPlatform = "Auto",
+
+    [ValidateSet("Append", "Overwrite")]
+    [string]$GitignoreMode = "Append",
 
     [switch]$WhatIf,
 
@@ -687,6 +690,14 @@ function Invoke-CleanupOrphans {
     }
 }
 
+function Invoke-GitignoreMaintenance {
+    Write-ManagerHeader "版控排除規則健檢"
+    $targetRoot = (Resolve-Path $Target).Path
+    Write-Host "Target：$targetRoot"
+    Write-Host "模式：$(if ($GitignoreMode -eq 'Overwrite') { '覆蓋整理 AI Rules 相關規則' } else { '不覆蓋，保留既有規則並補標準區塊' })"
+    $null = Invoke-AiRulesGitignoreMaintenance -ProjectRoot $targetRoot -Mode $GitignoreMode -Apply:$Apply
+}
+
 switch ($Action) {
     "Check"          { Invoke-Check }
     "Plan"           { Invoke-Plan }
@@ -695,4 +706,5 @@ switch ($Action) {
     "SyncGlobal"     { Invoke-SyncGlobal }
     "SyncProjectRules" { Invoke-SyncProjectRules }
     "CleanupOrphans" { Invoke-CleanupOrphans }
+    "Gitignore"      { Invoke-GitignoreMaintenance }
 }

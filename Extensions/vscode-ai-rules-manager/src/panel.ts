@@ -14,6 +14,7 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
     "aiRules.syncProjectRulesCodex",
     "aiRules.syncProjectRulesClaude",
     "aiRules.syncProjectRulesAntigravity",
+    "aiRules.gitignoreMaintenance",
     "aiRules.cleanupOrphans"
   ]);
 
@@ -70,6 +71,7 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
       {
         title: "維護",
         buttons: [
+          ["aiRules.gitignoreMaintenance", "版控排除規則健檢", "掃描 .gitignore，確認後補入或整理 AI Rules 規則"],
           ["aiRules.cleanupOrphans", "清理孤兒檔案", "先預覽，確認後清理"]
         ]
       }

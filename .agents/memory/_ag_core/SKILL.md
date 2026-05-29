@@ -2,7 +2,7 @@
 name: _ag_core
 description: Antigravity 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Antigravity/
-last_updated: '2026-05-29T05:43:55+08:00'
+last_updated: '2026-05-29T07:32:11+08:00'
 staleness: 0
 status: stable
 metadata:

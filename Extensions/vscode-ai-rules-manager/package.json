@@ -3,7 +3,7 @@
   "displayName": "AI Rules Manager",
   "description": "Point-and-click VS Code manager for AI_Rules source updates, governance checks, rule sync, and orphan cleanup.",
   "icon": "resources/icon.png",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "publisher": "kunshao",
   "license": "MIT",
   "repository": {
@@ -29,6 +29,7 @@
     "onCommand:aiRules.syncProjectRulesCodex",
     "onCommand:aiRules.syncProjectRulesClaude",
     "onCommand:aiRules.syncProjectRulesAntigravity",
+    "onCommand:aiRules.gitignoreMaintenance",
     "onCommand:aiRules.cleanupOrphans"
   ],
   "contributes": {
@@ -99,6 +100,10 @@
       {
         "command": "aiRules.cleanupOrphans",
         "title": "AI Rules: 清理孤兒檔案"
+      },
+      {
+        "command": "aiRules.gitignoreMaintenance",
+        "title": "AI Rules: 版控排除規則健檢"
       }
     ],
     "viewsContainers": {

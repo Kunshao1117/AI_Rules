@@ -14,14 +14,17 @@ export type ManagerAction =
   | "Doctor"
   | "SyncGlobal"
   | "SyncProjectRules"
+  | "Gitignore"
   | "CleanupOrphans";
 
 export type ProjectPlatform = "Auto" | "Codex" | "Claude" | "Antigravity";
+export type GitignoreMode = "Append" | "Overwrite";
 
 export interface RunOptions {
   apply?: boolean;
   removeOrphans?: boolean;
   projectPlatform?: ProjectPlatform;
+  gitignoreMode?: GitignoreMode;
   whatIf?: boolean;
 }
 
@@ -69,6 +72,7 @@ export class ScriptRunner {
     if (options.apply) args.push("-Apply");
     if (options.removeOrphans) args.push("-RemoveOrphans");
     if (options.projectPlatform) args.push("-ProjectPlatform", options.projectPlatform);
+    if (options.gitignoreMode) args.push("-GitignoreMode", options.gitignoreMode);
     if (options.whatIf) args.push("-WhatIf");
 
     this.output.show(true);

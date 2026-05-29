@@ -5,7 +5,7 @@ description: >
   記錄記憶卡系統架構決策、三平台共用記憶庫設計、目錄結構對齊歷程，以及統一腳本引擎遷移歷程。 Use when: 修改
   Claude/.claude/rules/ 或 Scripts/ 或 Claude/.claude/commands/ 時。
 scopePath: Claude/.claude
-last_updated: '2026-05-29T06:04:31+08:00'
+last_updated: '2026-05-29T07:44:12+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -109,8 +109,8 @@ metadata:
 - **D41: Claude 事實優先與知識新鮮度初版 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步新增以證據校正總監提議、短證據格式與知識新鮮度查證基礎規則。高變動資訊需查最新或官方來源；此決策已由 D42 升級為中立誠實協作口徑。
 - **D42: Claude 中立誠實協作契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步把證據校正規則升級為中立誠實協作。AI 不以討好、附和或迎合總監為目標，也不得刻意反對；合理時支持，證據衝突時用短證據格式指出問題並提出可行替代做法。
 - **D43: Claude 位置索引式輸出契約 (2026-05-29)**: Claude 核心身份規則與 17 個指令規則同步要求正式輸出若使用短名稱，必須在同一份輸出提供「位置索引」，把短名稱對應到具體檔案、章節、工具狀態或目錄範圍；巡檢模組（Audit.psm1）的總監可讀輸出檢查（Director Output Contract）同步檢查此規則。
-- **D44: 部署目標 `.gitignore` 補缺策略 (2026-05-29)**: `Core.psm1` 的 `Set-GitignoreEntries` 不再以 managed block 覆蓋或整理目標專案 `.gitignore`；改為檢查 `.agents/logs/`、`.cartridge/` 等必要排除項是否存在，缺少才插入並保留使用者原本註解、排序與自訂規則。
-- **D45: 部署目標 `.gitignore` 等價判斷 (2026-05-29)**: `Core.psm1` 的 `Set-GitignoreEntries` 需要把 `**/.agents/logs/`、`/.agents/logs/**`、`.agents/logs/` 與 `.cartridge/` 等等價排除寫法視為已存在；在 Git repo 內優先用實際 ignore 行為判斷，無 Git 時再退回正規化字串比對。
+- **D44: 部署目標 `.gitignore` 根目錄錨定策略 (2026-05-29)**: `Core.psm1` 的 `Set-GitignoreEntries` 改為建立或更新 AI Rules 管理區塊，標準規則只錨定專案根目錄的 `.codex/`、`.claude/`、`.agents/*`、`.agents/logs/`、`.cartridge/` 與框架匯出檔，並明確放行 `.agents/memory/`、`.agents/context/`、`.agents/project_skills/` 進版控。
+- **D45: 部署與管理器排除規則去重 (2026-05-29)**: `Core.psm1` 會辨識既有 AI Rules 管理區塊並更新同一區塊；若只有完整根目錄標準規則但沒有標記，會收斂為單一管理區塊。歷史寬鬆規則預設保留，只有 VS Code 管理器的版控排除規則健檢在操作者選擇覆蓋整理時，才移除 AI Rules 相關寬鬆規則與舊管理區塊。
 - **D46: Claude AI 開發品質入口 (2026-05-29)**: Claude command 入口在藍圖、建構、修復與測試流程遇到 UI、設計、元件、客製化網頁或高變動技術棧時載入 `ai-dev-quality-gate`；command 只放載入閘門與平台接入，完整品質規則維持在 Shared skill。
 - **D47: 專案脈絡層與部署保護 (2026-05-29)**: 統一部署引擎、Claude 平台模組與 Claude command 入口接入 `.agents/context/`。Fresh、Upgrade、同步與孤兒清理都保護 `context`；`memory-contract.md` 明確區分原始碼記憶與專案脈絡，長期偏好與設計 DNA 只能走 `CONTEXT.md` 與 `GO CONTEXT` / `GO DNA`。
 - **D48: project-context-protocol 前綴例外 (2026-05-29)**: `Skills-Sync.psm1` 與 `Audit.psm1` 保留 `project-context-protocol` 這個正式 Shared skill，避免既有 `project-*` 排除與 project skill discovery 巡檢規則把它誤判成專案技能連結，造成漏部署或部署後紅燈。
@@ -145,11 +145,12 @@ metadata:
 - **D19: 輸出可讀性要納入 Doctor 語義檢查**: 只檢查表格與補充段落會產生假綠燈；Doctor 必須確認 workflow 也具備技術詞彙翻譯閘門、括號順序規則與不得單獨出現規則。
 - **D20: 短名稱需搭配位置索引**: 正式輸出可以用短名稱減少路徑噪音，但必須在同份輸出用「位置索引」補回具體檔案、章節、工具狀態或目錄範圍，否則總監仍無法追蹤實際位置。
 - **D21: Codex workflow merge 不計入共用片段 (2026-05-29)**: `Scripts/modules/Skills-Sync.psm1` 合併 Codex workflow skills 時，必須排除 `_shared` 共用片段目錄，避免專案同步把共用資料夾顯示成第 18 套工作流。
-- **D22: `.gitignore` 是專案資產，不是框架格式化目標**: 一般專案的排除檔常包含機密、測試產物、交易資料與本機 IDE 設定；部署工具只能補 AI_Rules 必要排除項，不應重排、覆蓋或把整份檔案包進 managed block。
-- **D23: ignore 規則要看實際效果**: 判斷 `.gitignore` 是否已有必要排除項時，不能只做字串完全比對；同一排除意圖可能以 `**/`、根目錄斜線或結尾萬用字元表達，應以 Git 的 ignore 行為或等價正規化判定。
+- **D22: `.gitignore` 是專案資產，不是全檔格式化目標**: 一般專案的排除檔常包含機密、測試產物、交易資料與本機 IDE 設定；部署工具只能建立或更新 AI Rules 管理區塊，不得刪除或重排其他專案規則。
+- **D23: ignore 規則要分清根目錄與寬鬆規則**: AI Rules 預設規則必須根目錄錨定，避免誤影響 monorepo 子資料夾同名目錄；既有寬鬆規則代表歷史專案狀態，需由管理器預覽後讓操作者決定是否覆蓋整理。
 - **D24: 專案脈絡是受保護知識資產**: 部署保護清單新增 `context` 後，任何 Fresh / Upgrade / Cleanup 流程都不得覆蓋或刪除 `.agents/context/`；脈絡卡格式錯誤應由巡檢報警，而不是由部署工具自動修正。
 - **D25: 同步與巡檢排除規則需要正式技能例外**: `project-*` 前綴原本服務 project skill discovery 邊界；若 Shared 正式技能採用相同前綴，必須明確列入允許清單，避免 source 與 live deployment 產生假一致或巡檢誤報。
 - **D26: 模板來源與目標脈絡要分層**: Shared context template 是部署補缺來源，不是目標專案脈絡的覆寫來源；部署工具必須在目標已有 `CONTEXT.md` 時停手。
+- **D27: 腳本與插件共用同一個排除規則管理區塊**: Fresh、Upgrade、專案同步與 VS Code 管理器都必須辨識 `AI_RULES_GITIGNORE` 標記；插件套用不得在腳本已寫入後再插入第二份規則，覆蓋模式也只能移除 AI Rules 相關規則，不得碰其他專案規則。
 
 ## Relations
 

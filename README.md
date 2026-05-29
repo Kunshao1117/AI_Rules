@@ -160,7 +160,7 @@ npm run package
 
 ### GitHub Release 自動建立與附加 VSIX
 
-推送 tag `v0.1.12` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.12.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
+推送 tag `v0.1.13` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.13.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
 
 ---
 
@@ -460,35 +460,57 @@ AI_Rules/                              ← 框架核心庫根目錄
 本倉庫的 root `.gitignore` 只處理框架核心庫自身的本機狀態與部署後 live 產物：
 
 ```
-**/.vscode/              ← IDE 設定（本機專屬）
-**/.cartridge/           ← cartridge-system 本地索引（不推送）
-/.codex/                 ← Codex live deployment（不推送）
-/.claude/                ← Claude live deployment（不推送）
-/.agents/*               ← Antigravity live deployment（不推送）
-!/.agents/memory/**      ← 框架核心庫記憶卡仍進版控
-!/.agents/context/**     ← 框架核心庫脈絡卡仍進版控
-**/.agents/logs/         ← 執行紀錄（不推送）
-Extensions/**/*.vsix     ← VS Code extension 打包產物（不推送）
+/.codex/                         ← Codex live deployment（不推送）
+/.claude/                        ← Claude live deployment（不推送）
+/CLAUDE.md                       ← Claude live 入口（不推送）
+/antigravity_export/             ← 匯出產物（不推送）
+/.agents/*                       ← Antigravity live deployment（不推送）
+!/.agents/memory/**              ← 框架核心庫記憶卡仍進版控
+!/.agents/context/**             ← 框架核心庫脈絡卡仍進版控
+!/.agents/project_skills/**      ← 框架核心庫衍生技能仍進版控
+/.agents/logs/                   ← 執行紀錄（不推送）
+/.cartridge/                     ← cartridge-system 本地索引（不推送）
+Extensions/**/*.vsix             ← VS Code extension 打包產物（不推送）
 ```
 
 > **重要**：root live deployment 規則只針對倉庫根目錄；`Antigravity/.agents/`、`Claude/.claude/`、`Codex/.codex/` 是框架模板源碼，必須進版控。
 
-部署到其他專案時，`Deploy.ps1` 會檢查目標專案 `.gitignore` 是否已有 AI Rules 需要的排除項目；已有就不動，缺少才補入，不會整理、搬移或覆蓋專案原本規則。等價寫法也會被視為已存在，例如 `**/.agents/logs/`、`/.agents/logs/` 與 `.agents/logs/` 不會被重複插入。若需要補入，會使用 `AI_RULES_GITIGNORE` marker block 收納新增項目：
+部署到其他專案時，`Deploy.ps1` 與 AI Rules Manager 的專案規則同步會補入根目錄錨定的 AI Rules 排除規則：框架部署產物與本地執行狀態不進版控，專案記憶、專案脈絡與專案衍生技能則明確放行。這組預設規則只管理專案根目錄，不處理子資料夾同名目錄。
 
 ```
 # AI_RULES_GITIGNORE_START
-# [ACTIVE][AI_RULES_LOCAL] Local AI Rules runtime state
-.cartridge/
+# [啟用][AI Rules 框架] 由框架初始化或升級產生，可重建，不進版控
+/.codex/
+/.claude/
+/CLAUDE.md
+/antigravity_export/
 
-# [ACTIVE][AI_RULES_RUNTIME] Agent logs
-.agents/logs/
+# [啟用][代理框架] 代理規則、工作流與共用技能多為部署產物，預設不進版控
+/.agents/*
 
-# [TRACKED][AI_RULES_MEMORY] .agents/memory/ is project knowledge and is not ignored by default.
-# [TRACKED][AI_RULES_CONTEXT] .agents/context/ is project context and is not ignored by default.
+# [保留][專案記憶] 原始碼記憶是專案知識資產，必須允許進版控
+!/.agents/memory/
+!/.agents/memory/**
+
+# [保留][專案脈絡] 設計 DNA、產品偏好與驗收偏好是專案知識資產，必須允許進版控
+!/.agents/context/
+!/.agents/context/**
+
+# [保留][專案衍生技能] 專案專屬技能屬於專案能力，必須允許進版控
+!/.agents/project_skills/
+!/.agents/project_skills/**
+
+# [啟用][執行狀態] 代理日誌與本地索引是執行期產物，不進版控
+/.agents/logs/
+/.cartridge/
 # AI_RULES_GITIGNORE_END
 ```
 
-目標專案的 `.agents/memory/` 與 `.agents/context/` 預設視為專案知識資產，應進版控；若某個專案要私有化記憶卡或脈絡卡，需由該專案自行加上額外 ignore 規則。
+若目標專案已經有 AI Rules 管理區塊，部署工具會更新同一區塊，不會重複插入。若沒有管理區塊但已有較寬鬆的舊規則，預設部署不會刪除或搬移既有規則，只會補入根目錄標準區塊。
+
+AI Rules Manager 另提供「版控排除規則健檢」按鈕：預覽時會列出缺少的根目錄標準規則、既有 AI Rules 相關規則與寬鬆規則；套用時可選擇「不覆蓋」或「覆蓋」。不覆蓋會保留舊規則並補標準區塊；覆蓋只會移除 AI Rules 相關寬鬆規則與舊管理區塊，再重建標準區塊，不會影響其他專案自訂排除規則。
+
+目標專案的 `.agents/memory/`、`.agents/context/` 與 `.agents/project_skills/` 預設視為專案知識資產，應進版控；若某個專案要私有化這些資產，需由該專案自行加上額外 ignore 規則。
 
 ---
 
