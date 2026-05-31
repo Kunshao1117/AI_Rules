@@ -13,7 +13,7 @@
 OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigravity Codex Edition 在其之上解決了這些問題：
 
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → Turn=1 即探測 `.agents/memory/` 記憶庫
-2. **技能孤島** — 每個 Codex 專案各自維護技能 → 39 套共用操作型技能一次部署，統一真實來源
+2. **技能孤島** — 每個 Codex 專案各自維護技能 → 40 套共用操作型技能一次部署，統一真實來源
 3. **工作流缺失** — Codex 原生無內建工作流程 → 17 套工作流技能整合至 `.agents/skills/`，無縫觸發
 4. **記憶庫與 Gemini/Claude 分裂** — 三個 AI 各記各的 → `.agents/memory/` 統一記憶庫，三平台共用
 5. **治理規則模板缺失** → `.codex/AGENTS.md` 提供包含閘門、記憶協議、工作流的完整治理規範
@@ -49,7 +49,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 - [模組詳解](#-模組詳解)
   - [部署引擎](#-部署引擎)
   - [治理規則系統](#-治理規則系統)
-  - [技能系統（56 套）](#-技能系統56-套)
+  - [技能系統（57 套）](#-技能系統57-套)
   - [專案記憶系統](#-專案記憶系統)
 - [與其他版本對比](#-與其他版本對比)
 - [版本管理](#-版本管理)
@@ -78,7 +78,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 graph TB
     subgraph "AI_Rules 框架核心庫"
         SRC["Codex/<br/>.codex/ + .agents/workflow-skills/"]
-        SH["Shared/skills/<br/>39 套共用技能"]
+        SH["Shared/skills/<br/>40 套共用技能"]
     end
 
     subgraph "統一部署引擎"
@@ -87,7 +87,7 @@ graph TB
 
     subgraph "目標專案（部署後）"
         CODEX[".codex/AGENTS.md<br/>治理規則"]
-        SKILLS[".agents/skills/<br/>56 套（39 共用 + 17 工作流）"]
+        SKILLS[".agents/skills/<br/>57 套（40 共用 + 17 工作流）"]
         MEM[".agents/memory/<br/>三平台共用記憶庫"]
         CTX[".agents/context/<br/>三平台共用專案脈絡"]
         PROJ[".agents/project_skills/<br/>衍生技能（升級保護）"]
@@ -110,21 +110,21 @@ graph TB
 
 **腳本**: `Scripts/Deploy.ps1 -Platform Codex`（統一部署引擎，核心邏輯位於 `Scripts/modules/Platform-Codex.psm1`）
 
-負責將 `.codex/` 治理規則與 56 套技能部署到目標專案。所有 PowerShell 程式碼均配備完整的繁體中文行內說明，三個平台部署能力完全對等。
+負責將 `.codex/` 治理規則與 57 套技能部署到目標專案。所有 PowerShell 程式碼均配備完整的繁體中文行內說明，三個平台部署能力完全對等。
 
 #### 兩種部署模式
 
 | 模式 | 觸發條件 | 行為 |
 |------|---------|------|
-| **Fresh** | 專案無 `.codex/` 目錄 | D06 安全網備份記憶 → 部署 `.codex/` 治理規則 → 注入 39 套共用技能 → 合併 17 套工作流技能 → 建立基礎設施 → 寫入版本檔 → 還原記憶 |
+| **Fresh** | 專案無 `.codex/` 目錄 | D06 安全網備份記憶 → 部署 `.codex/` 治理規則 → 注入 40 套共用技能 → 合併 17 套工作流技能 → 建立基礎設施 → 寫入版本檔 → 還原記憶 |
 | **Upgrade** | 專案已有 `.codex/` 目錄 | 掃描 `.codex/` 差異 → 彩色報告 → 顯示 CHANGELOG → 確認閘門 → 套用 `.codex/` 變更 → 差異注入技能更新 |
 
 #### 技能部署兩步驟
 
 ```
-Step 1: Shared/skills/ → .agents/skills/    （39 套共用技能）
+Step 1: Shared/skills/ → .agents/skills/    （40 套共用技能）
 Step 2: workflow-skills/ → .agents/skills/  （17 套工作流技能）
-合計部署：56 套技能
+合計部署：57 套技能
 ```
 
 #### 安全防護
@@ -163,13 +163,13 @@ Codex Edition 採用單一規則檔設計，所有治理規範集中於 `AGENTS.
 
 ---
 
-### 🎯 技能系統（56 套）
+### 🎯 技能系統（57 套）
 
 **目錄**: `.agents/skills/`（部署後）
 
 技能是**按需載入的知識手冊**，分為兩個來源：
 
-#### 共用技能（39 套）—— 源自 `Shared/skills/`
+#### 共用技能（40 套）—— 源自 `Shared/skills/`
 
 與 Antigravity 和 Claude Edition 完全同步，涵蓋記憶操作、品質約束、測試策略、MCP 操作食譜、代碼知識圖譜等完整分類。詳見 [Antigravity/README.md](../Antigravity/README.md) 的技能表格。
 
@@ -246,8 +246,8 @@ graph TD
 | **任務追蹤** | scratchpad Artifact | `TodoWrite` 清單 | 對話中維護任務清單 |
 | **記憶啟動** | D7 Push 三路徑探測 | Turn=1 啟動探測協議 | Turn=1 cartridge-system 探測 |
 | **記憶位置** | `.agents/memory/` | `.agents/memory/`（共用） | `.agents/memory/`（**三者共用**） |
-| **技能來源** | Shared/ 39 套 | Shared/ 39 套 | Shared/ 39 套 + workflow-skills/ 17 套 |
-| **技能總數** | 39 套 | 39 套 | **56 套** |
+| **技能來源** | Shared/ 40 套 | Shared/ 40 套 | Shared/ 40 套 + workflow-skills/ 17 套 |
+| **技能總數** | 40 套 | 40 套 | **57 套** |
 
 ---
 
@@ -272,7 +272,7 @@ graph TD
 │   ├── config.toml                ← 專案層 Codex 設定（project_doc_fallback_filenames）
 │   └── VERSION                    ← Codex live 版本錨點
 └── .agents/
-    ├── skills/                    ← 56 套技能（39 共用 + 17 工作流，扁平結構）
+    ├── skills/                    ← 57 套技能（40 共用 + 17 工作流，扁平結構）
     │   ├── _index.md              ← 技能路由表
     │   ├── memory-ops/            ← 記憶操作指引
     │   ├── code-quality/          ← 品質約束
@@ -283,7 +283,7 @@ graph TD
     │   ├── 08-2-logic-深度邏輯/   ← 健檢子技能（邏輯審查）
     │   ├── 08-3-report-健檢總結/  ← 健檢子技能（報告）
     │   ├── 10-routine-巡檢/       ← automation-safe 例行巡檢
-    │   └── ...（共 56 套）
+    │   └── ...（共 57 套）
     ├── memory/                    ← 專案記憶卡（跨平台共用，升級受保護）
     │   └── (由 AI 執行 $02-blueprint-架構 初始化)
     ├── context/                   ← 專案脈絡卡（設計 DNA 與長期偏好，升級受保護）

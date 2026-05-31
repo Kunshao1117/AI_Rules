@@ -2,9 +2,11 @@
 name: ui-ux-standards
 description: >
   [Quality] UI/UX design manifesto: engineering jargon isolation, multi-language strategy,
-  human-readable error handling, component reuse, design DNA, and intent-driven interface design.
+  human-readable error handling, component reuse, design DNA, UI exploration routing,
+  new project UI discussion, UI skill discovery, and intent-driven interface design.
   Use when: 建構或修改前端 UI 元件、設計錯誤訊息、
-  或任何涉及 UI/UX/介面/錯誤訊息/i18n/多語系/前端元件/共用元件/設計 DNA 的任務。
+  或任何涉及 UI/UX/介面/錯誤訊息/i18n/多語系/前端元件/共用元件/設計 DNA/UI 探索/
+  新專案 UI 討論/UI 設計技能搜尋 的任務。
   DO NOT use when: 純後端 API 開發（用 security-sre）、不涉及使用者介面的場景。
 metadata:
   author: antigravity
@@ -81,15 +83,31 @@ UI task type?
 
 Trading terminals, dashboards, admin tools, and VS Code panels default to operational interface. Do not apply sparse marketing-page composition to them unless the Director explicitly asks for it.
 
+## 4.55 UI Exploration Routing Gate (UI 探索路由閘門)
+
+Load `ui-design-exploration` before UI implementation when any condition is true:
+
+- The project is new, has no existing UI, or has no confirmed product direction.
+- The task creates a new page, major surface, new app flow, redesign, or visual direction.
+- The Director says the existing UI is visually unsuitable and no approved design DNA exists.
+- The work requires three directions, UI skill discovery, design tool discovery, templates, reference screenshots, generated visual directions, or an HTML demo.
+- Shared component primitives are undecided, including dropdowns, scroll behavior, tables, cards, forms, modals, navigation, loading states, or empty states.
+
+For new projects, run the discussion gate first: clarify product type, operator, primary workflow, platform targets, density, constraints, and likely component primitive families before reading DNA or inventorying components.
+
+Skip exploration only when approved project DNA and existing component rules already cover the change, or when the Director explicitly asks for a narrow edit.
+
 ## 4.6 Component Reuse & Design DNA (元件復用與設計 DNA)
 
 Before creating or modifying UI:
 
-1. Inspect existing shared components, layout primitives, design tokens, and page patterns.
-2. Report whether the work reuses, extends, or creates components.
-3. If creating a new component, explain why existing components cannot cover the case.
-4. Use approved screenshots, approved small slices, or approved `.agents/context/**/CONTEXT.md` cards as design DNA.
-5. Do not persist generated-image output as design DNA until the Director approves it with `GO CONTEXT` or `GO DNA`.
+1. Determine whether the project has an existing UI and approved design DNA.
+2. For an existing UI, inspect shared components, layout primitives, design tokens, and page patterns.
+3. For a new project or empty UI surface, define candidate shared primitives before implementation instead of reporting nonexistent reuse.
+4. Report whether the work reuses, extends, creates, or establishes components.
+5. If creating or establishing a new component, explain why existing components cannot cover the case or why none exist yet.
+6. Use approved screenshots, approved small slices, or approved `.agents/context/**/CONTEXT.md` cards as design DNA.
+7. Do not persist generated-image output as design DNA until the Director approves it with `GO CONTEXT` or `GO DNA`.
 
 When the Director cannot describe the desired style precisely, provide three visibly different directions and a small slice before building the full page.
 

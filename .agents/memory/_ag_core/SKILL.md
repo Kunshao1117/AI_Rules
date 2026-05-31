@@ -2,7 +2,7 @@
 name: _ag_core
 description: Antigravity 框架核心規則與工作流收容卡匣（框架原始碼）。
 scopePath: Antigravity/
-last_updated: '2026-05-29T09:30:21+08:00'
+last_updated: '2026-05-31T08:58:08+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -90,6 +90,7 @@ metadata:
 - **Antigravity v8.0.3 (2026-05-18)**: patch bump 用於接收 shared subagent policy marker；`00_core_identity.md` 由 `Shared/policies/subagent-invocation.md` 注入 browser / Gemini CLI adapter 的唯讀啟用邊界。
 - **Antigravity `.gitignore` 模板整理 (2026-05-18)**: `Antigravity/.gitignore` 移除無來源依據的歷史殘留規則，保留 `.vscode/`、`.cartridge/`、`.agents/logs/`、`.git_backup/`、`antigravity_export/`，並明確標示 `.agents/memory/` 預設進版控。
 - **Antigravity Skill 觸發治理同步 (2026-05-19)**: Antigravity README 與 `.agents/rules/AGENTS.md` 的 Shared skill 數量同步到 37；`02/03/04-1/09-1/12` workflow 入口加入插件 / extension / VSIX / GitHub Release / version bump / tag / update reminder 情境的 `plugin-release-governance` 載入閘門。
+- **Antigravity Shared skill count refresh (2026-05-31)**: 新增 `ui-design-exploration` 後，Antigravity README 的 Shared 操作型技能數同步更新為 40 套；實際技能內容仍由 `Shared/skills/` 注入。
 - **Antigravity workflow trigger descriptions (2026-05-19)**: 20 個 `.agents/workflows/*.md` 入口補齊 `Use when` 與負向邊界；分階段流程如 `03-2`、`04-2`、`09-2` 明確標示只在前階段 GO 後使用。
 - **Antigravity / Gemini Delegation Gate adapter (2026-05-22)**: `01_explore`、`06_test`、`07_debug`、`08-2_audit_logic` workflow 改為 evidence branch / browser branch / CLI branch 語彙；Antigravity / Gemini adapter 才轉成 Gemini CLI subagents、`@` 指派、browser-capable agent 或 plugin adapter，並保留 Reader role、GO/HITL 與唯讀限制。
 - **Antigravity 08-2 log 邊界硬化 (2026-05-22)**: `08-2_audit_logic` 明確規定 CLI evidence branch 只回傳證據包，不寫專案檔；`.agents/logs/audit_logic_results.md` 只能由 Master workflow 在狀態彙整階段寫入，避免把 evidence branch 解讀成可寫入者。

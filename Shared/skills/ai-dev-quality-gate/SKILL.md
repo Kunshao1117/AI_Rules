@@ -2,9 +2,10 @@
 name: ai-dev-quality-gate
 description: >
   [Quality] AI development quality gate for tech freshness, UI component reuse,
-  design DNA, generated image downgrade, and responsive screenshot evidence.
-  Use when: AI 開發品質、技術新鮮度、UI 介面、共用元件、設計 DNA、生成圖降級、手機版截圖、
-  響應式驗收、期貨使用端、客製化網頁或 VS Code 插件介面任務。
+  UI design exploration, new project UI discussion, UI skill discovery, design DNA,
+  generated image downgrade, and responsive screenshot evidence.
+  Use when: AI 開發品質、技術新鮮度、UI 介面、UI 探索、共用元件、設計 DNA、生成圖降級、手機版截圖、
+  響應式驗收、新專案 UI 討論、UI 設計技能搜尋、期貨使用端、客製化網頁或 VS Code 插件介面任務。
   DO NOT use when: 純後端內部重構、無 UI 且無高變動外部技術依賴的微小修正。
 metadata:
   author: antigravity
@@ -43,26 +44,37 @@ Do not use model memory as the source of truth for APIs that may have changed.
 
 Before UI implementation:
 
-1. Inspect existing shared components, layout primitives, design tokens, style utilities, and page patterns.
-2. Classify the implementation choice as one of:
+1. Determine project state before assuming a reusable component system exists.
+2. For existing projects, inspect shared components, layout primitives, design tokens, style utilities, and page patterns.
+3. For new projects or projects without UI source, define candidate shared primitives before implementation.
+4. Classify the implementation choice as one of:
    - Reuse existing component.
    - Extend existing component.
    - Create new component.
-3. If creating a new component, state why reuse or extension is not appropriate.
-4. Include the reuse decision in the implementation plan and completion report.
+   - Establish new primitive.
+5. If creating or establishing a new component, state why reuse or extension is not appropriate.
+6. Include the reuse decision in the implementation plan and completion report.
 
 Do not create a visually similar component while ignoring an existing shared component.
+Do not require a component inventory when the project has no existing UI surface.
 
 ### 3. Preference Discovery Gate
 
 When the Director cannot precisely describe the desired UI:
 
-1. Load `project-context-protocol` and inspect relevant `.agents/context/` design DNA or product preference cards when they exist.
-2. Apply only approved context. Treat candidate context as advisory and disclose it.
-3. If no approved context exists, present three clearly different directions for comparison.
-4. Build or describe only a small slice before committing to a full page.
-5. Treat the Director's selected direction as a candidate preference, not a permanent rule.
-6. Persist design DNA only after explicit `GO CONTEXT` or `GO DNA`.
+1. Load `ui-design-exploration` for new UI, redesign, ambiguous visual direction, new project UI discussion, or missing approved DNA.
+2. Determine project state before reading DNA or components:
+   - New project, no existing UI, or no confirmed product direction: discuss product category, operator, workflow, platform, density, constraints, and likely primitive families first.
+   - Existing project with approved DNA: read approved DNA first, then inspect current UI and component system.
+   - Existing project without approved DNA: inspect current UI, then discuss whether the work establishes candidate DNA.
+   - Narrow local edit: preserve current DNA and component rules; skip full exploration unless the Director asks.
+3. Load `project-context-protocol` and inspect relevant `.agents/context/` design DNA or product preference cards only when they exist.
+4. Apply only approved context. Treat candidate context as advisory and disclose it.
+5. Search for usable UI skills or design tools before static webpage templates when direction is open.
+6. If no approved context exists, use discovered UI skills/design tools, web research, and three clearly different directions for comparison.
+7. Build or describe only a small slice before committing to a full page.
+8. Treat the Director's selected direction as a candidate preference, not a permanent rule.
+9. Persist design DNA only after explicit `GO CONTEXT` or `GO DNA`.
 
 The goal is to help the Director choose by contrast, not to force a detailed design brief upfront.
 

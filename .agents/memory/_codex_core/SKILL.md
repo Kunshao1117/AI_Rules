@@ -4,7 +4,7 @@ description: >
   Codex Edition 框架核心規則與工作流收容卡匣（框架原始碼，v0.1.3）。 追蹤 OpenAI Codex
   平台適配層的治理規則、工作流技能與部署配置。 Use when: 修改 Codex/ 目錄下任何檔案時。
 scopePath: Codex/
-last_updated: '2026-05-29T09:45:14+08:00'
+last_updated: '2026-05-31T09:22:32+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -103,6 +103,7 @@ metadata:
 - **AI Rules Manager v0.1.15 文件同步 (2026-05-29)**: 根 README 的 VS Code extension release 範例同步到 `v0.1.15` / `ai-rules-manager-0.1.15.vsix`，並將 `.gitignore` 策略文件改為精準標準規則與相似規則清單分流：自動流程補入帶繁中註解的標準規則，相似規則由管理器預覽後取得操作者確認才刪除，舊版註解不由自動流程處理。這是插件文件口徑修正，不改 Codex Edition `v0.1.3`。
 - **Codex AI 開發品質閘門 (2026-05-29)**: `02-blueprint-架構`、`03-build-建構`、`04-fix-修復` 與 `06-test-測試` 在遇到 UI、版面、元件、設計、客製化網頁、VS Code extension 或高變動技術棧時載入 `ai-dev-quality-gate`；測試入口承接手機、平板、桌面三尺寸截圖與清單驗收。
 - **Codex 專案脈絡層接入 (2026-05-29)**: Codex README 與 `.codex/AGENTS.md` 同步宣告 `.agents/context/` 作為專案脈絡層，Codex 部署後技能總數為 56 套（39 Shared + 17 workflow）。`02-blueprint-架構`、`03-build-建構`、`04-fix-修復`、`05-condense-濃縮`、`06-test-測試` 與 `12-skill-forge-技能鍛造` 會在任務相關時載入 `project-context-protocol`；永久寫入脈絡需 `GO CONTEXT`，設計 DNA 可接受 `GO DNA`。
+- **Codex UI exploration skill count (2026-05-31)**: 新增 Shared skill `ui-design-exploration` 後，Codex 部署後技能總數更新為 57 套（40 Shared + 17 workflow）。Codex README 與目前 live `.agents/skills/` 已同步此數字與新技能。
 - **Codex 專案脈絡模板來源 (2026-05-29)**: 根 README 補明 `Shared/context/_map/CONTEXT.md` 是三平台共用脈絡索引模板來源；Codex Fresh 會在空白專案從 Shared 模板建立 `.agents/context/_map/CONTEXT.md`，已有脈絡的 Fresh / Upgrade 會保留原內容。
 
 
@@ -127,6 +128,7 @@ metadata:
 - **Codex 05 Path A 必須指向 `.codex/AGENTS.md`**: 舊 `.Codex/*` 口徑會讓新專案身份寫入錯誤位置，也會讓同步保護無法覆蓋實際載入檔。
 - **插件發布情境要明示載入共用技能**: Codex 會把 workflow skills 與 operational skills 放在同一個 `.agents/skills` 搜尋面，因此高風險插件發布流程必須在 workflow 入口補明確 load gate，不能只期待語意觸發。
 - **Codex workflow 描述要避免只寫內部階段**: 語意觸發主要看 `name` 與 `description`；若 description 只寫「第一階段/第二階段」而不寫使用者會說的任務語句，Codex 容易漏載 workflow。
+- **Codex skill forge compatibility (2026-05-31)**: 技能鍛造工作流保留中文技能名稱 `12-skill-forge-技能鍛造`；這是工作流層的刻意命名策略，不應用通用 Codex 技能驗證器的純英文 hyphen-case 規則判定為缺陷。相容性調整只把 `required_skills` 等 AI_Rules 治理欄位移入 `metadata`，新建操作型技能仍必須遵守 Codex 相容 frontmatter。
 - **Codex Director-facing 技術詞不可裸露**: Codex workflow skills 與 live `.agents/skills` 會分開存在；可讀性規則需同時同步 source 與 live，且巡檢要確認括號順序與不得單獨出現規則，否則目前專案仍可能輸出裸技術詞。
 - **Codex 短名稱需搭配位置索引**: Codex 正式計畫、完成報告與巡檢摘要可以用短名稱保持清爽，但必須在同份輸出用「位置索引」補回具體檔案、章節、工具狀態或目錄範圍。
 - **Codex 不宣稱自動 spawn**: Codex 的子代理能力是平台 adapter 的執行語彙，不是 Shared 層的預設行為；除非總監明確要求或 workflow gate 指定，主代理應自己整合證據並維持 GO、memory、commit、push、部署責任。

@@ -1,11 +1,11 @@
 ---
 name: _shared
 description: >
-  Shared/ 共用治理資產記憶卡。追蹤 39 套操作型技能唯一真實來源、三平台能力矩陣與 MCP opt-in profiles。 部署時由
+  Shared/ 共用治理資產記憶卡。追蹤 40 套操作型技能唯一真實來源、三平台能力矩陣與 MCP opt-in profiles。 部署時由
   Skills-Sync.psm1 注入 Antigravity、Claude、Codex 三個平台。 Use when: 修改 Shared/
   下任何共用技能或平台治理資產時。
 scopePath: Shared/
-last_updated: '2026-05-29T06:07:10+08:00'
+last_updated: '2026-05-31T09:09:32+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -123,6 +123,7 @@ metadata:
 - Shared/skills/test-patterns/references/hook-test-template.md
 - Shared/skills/test-patterns/references/utility-test-template.md
 - Shared/skills/trunk-ops/SKILL.md
+- Shared/skills/ui-design-exploration/SKILL.md
 - Shared/skills/ui-ux-standards/SKILL.md
 
 ## Key Decisions
@@ -146,10 +147,12 @@ metadata:
 - **Skill governance contract (2026-05-19)**: 新增 `Shared/skill-governance.md` 作為 Skill 放置與觸發契約，規定核心規則只保留 always-on 安全底線、workflow/command 只做入口路由、Shared skills 承載按需載入操作細節、memory 記錄專案事實。
 - **Plugin release governance skill (2026-05-19)**: 新增 `plugin-release-governance` 作為第 37 套 Shared operational skill，集中管理插件升版、VSIX 打包、GitHub Release/tag/asset 與 GitHub latest release 更新提醒；三平台 workflow/command 入口只加載入閘門，不複製完整 playbook。
 - **Skill trigger effectiveness hardening (2026-05-19)**: GitNexus、Supabase 與 skill-factory 等相鄰技能補齊繁中/英文觸發詞與 `DO NOT use when` 邊界；Doctor 的技能品質檢查升級為檢查 Shared operational skill 是否具備雙語觸發與負向邊界。
+- **Skill factory Codex compatibility branch (2026-05-31)**: `skill-factory` 改為先判斷 Shared framework、project-derived、user Codex 與 workflow/command entry 四種產物層級；新技能的 top-level YAML 必須維持 Codex 相容，AI_Rules 治理欄位放入 `metadata`，並以 Codex `quick_validate.py` 與 AI_Rules `Measure-SkillQuality` 雙驗證作為完成條件。
 - **VSIX release playbook Node 24 guard (2026-05-19)**: `plugin-release-governance` 的 VSIX playbook 將 Node 24-compatible GitHub Actions、Node 24 打包與 LICENSE presence 納入發布檢查，避免每次插件發布重複漏看 GitHub Actions 淘汰訊號。
 - **Update reminder acceptance split (2026-05-19)**: `plugin-release-governance` 的 VSIX playbook 明確拆分自動與手動更新提醒驗收：自動啟動檢查無新版時保持靜默，手動檢查才回報已是最新版或錯誤。
 - **AI development quality gate (2026-05-29)**: 新增 `ai-dev-quality-gate` 作為 AI 開發品質治理技能，集中管理技術新鮮度、共用元件復用、偏好探索、AI 生成圖降級、小切片原型與手機/平板/桌面三尺寸 UI 證據；`ui-ux-standards`、`tech-stack-protocol`、`stitch-design`、`browser-testing` 與 `test-automation-strategy` 改為承接同一套品質語義。
 - **Project context protocol (2026-05-29)**: 新增 `project-context-protocol` 作為 Shared operational skill，使 Shared 操作型技能總數成為 39。專案脈絡層固定使用 `.agents/context/**/CONTEXT.md`，承載設計 DNA、產品偏好、技術偏好、溝通偏好與驗收偏好；候選脈絡不得自動升級，永久採用需 `GO CONTEXT` 或設計 DNA 別名 `GO DNA`。
+- **UI design exploration skill (2026-05-31)**: 新增 `ui-design-exploration` 作為第 40 套 Shared operational skill；UI 新增、重設或風格不明時必須先判斷專案狀態。新專案或無既有 UI 時先討論產品類型、操作者、流程、平台、密度、限制與候選共用元件；既有專案才讀取已核准設計 DNA 與盤點既有元件。探索參考來源改為先搜尋可用 UI skill 或設計工具，再搜尋網頁範本、產品參考與設計系統；核准後才沉澱為設計 DNA 或 project-derived skill。
 - **Project context prefix exception (2026-05-29)**: `Sync-SharedSkills` 原本會排除所有 `project-*` 開頭目錄以避開專案技能連結；專案技能連結巡檢也會掃描 `project-*` 實體目錄。本次為正式共用技能 `project-context-protocol` 加入例外，避免源碼有技能但部署時漏注入，或部署後被誤報為非法 project skill discovery 實體。
 - **Shared context template source (2026-05-29)**: 新增 `Shared/context/_map/CONTEXT.md` 作為專案脈絡索引卡的可見模板來源。部署初始化只在目標缺少 `.agents/context/_map/CONTEXT.md` 時複製模板；既有專案脈絡卡維持受保護，不覆蓋、不合併、不刪除。
 

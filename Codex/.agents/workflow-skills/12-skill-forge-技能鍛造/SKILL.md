@@ -1,7 +1,6 @@
 ---
-name: "12-skill-forge-技能鍛造"
-description: "Use when: 技能鍛造、建立新專案技能、從健檢/除錯/總監指令萃取可重用方法論。DO NOT use when: 只要修改既有 Shared Skill 描述。"
-required_skills: [skill-factory, memory-ops, project-context-protocol]
+name: 12-skill-forge-技能鍛造
+description: "Use when: 技能鍛造、建立新技能、建立 Shared skill、建立 project skill、建立 Codex skill、從健檢/除錯/總監指令萃取可重用方法論、12-skill-forge-技能鍛造。DO NOT use when: 只是討論技能想法、不準備寫入，或只要修改既有技能描述。"
 metadata:
   author: antigravity
   version: "2.0"
@@ -14,6 +13,7 @@ metadata:
   tool_scope: ["filesystem:write", "mcp:cartridge-system"]
   human_gate: "GO required before writes"
   automation_safe: false
+  required_skills: ["skill-factory", "memory-ops", "project-context-protocol"]
 ---
 
 
@@ -89,8 +89,21 @@ Use this skill when the user asks to run the migrated source command `12_skill_f
 
 ## 2. Skill Design (技能設計)
 
-Draft new skill with structure:
-1. **Frontmatter**: name, description（Traditional Chinese），metadata
+Draft new skill only after selecting the target layer:
+
+```
+[LAYER GATE]
+├── Cross-project framework behavior? → Shared framework skill
+│   └── Source path: Shared/skills/<skill-name>/SKILL.md
+├── Single project repeatable behavior? → Project-derived skill
+│   └── Source path: .agents/project_skills/<project-code>-<skill-name>/SKILL.md
+├── Personal/global Codex behavior? → User Codex skill
+│   └── Source path: user's Codex skills directory
+└── Lifecycle entry or command routing? → Workflow/command entry
+```
+
+Skill structure:
+1. **Frontmatter**: Codex-compatible `name`, `description`, and `metadata`
 2. **Core Logic**: Step-by-step procedure with decision gates
 3. **Constraints**: Scope boundaries, forbidden actions
 4. **Security & Compliance**: Role, memory interaction level
@@ -99,12 +112,23 @@ Draft new skill with structure:
 ```yaml
 ---
 name: <skill-name>
-description: <繁中描述>
-required_skills: []
-memory_awareness: none
-user-invocable: false  # 操作型知識庫預設不出現在 / 選單
+description: >
+  Use when: <English and Traditional Chinese trigger phrases>.
+  DO NOT use when: <negative boundary>.
+metadata:
+  author: antigravity
+  version: "1.0"
+  origin: framework|project
+  kind: operational
+  style: imperative|guided|hybrid
+  memory_awareness: none|read|full
+  tool_scope: []
+  required_skills: []
+  user_invocable: false
 ---
 ```
+
+Do not add AI_Rules-only fields at the YAML top level. Codex-compatible top-level fields are `name`, `description`, `license`, `allowed-tools`, and `metadata`.
 
 ## 3. FORGE VALIDATION GATE（技能格式驗證閘門）
 
@@ -115,19 +139,22 @@ user-invocable: false  # 操作型知識庫預設不出現在 / 選單
 ├── YAML frontmatter 是否符合規範（含 name、description、metadata）？
 │   └── NO → 自動修正（最多重試 2 次）
 │   └── 2 次後仍不符 → [HALT]「🔴 [FORGE HALT] YAML 格式驗證失敗。」
-├── 技能名稱是否與現有技能衝突（`.agents/skills/_index.md`）？
+├── Codex 內建技能驗證器是否通過？
+│   └── NO → 修正 name、description、top-level YAML 欄位後重試
+├── 技能名稱是否與目標層既有技能衝突？
 │   └── YES → 提示總監選擇：覆蓋或重新命名
-└── 存放路徑是否為 `.agents/project_skills/`？
+└── 存放路徑是否符合 LAYER GATE 判定？
     └── NO → 自動修正路徑後繼續
 ```
 
 ## 4. Write & Archive (寫入與歸檔)
 
-- 寫入技能至 `.agents/project_skills/<name>/SKILL.md`。
-- 更新 `.agents/project_skills/_index.md` 路由表。
-- 更新 `.agents/skills/_index.md`（若適用）。
+- Shared framework skill：寫入 `Shared/skills/<name>/SKILL.md`，更新 `Shared/skills/_index.md`，並同步到平台技能目錄。
+- Project-derived skill：寫入 `.agents/project_skills/<name>/SKILL.md`，更新 `.agents/project_skills/_index.md`，並建立 `.agents/skills/project-<name>` discovery link。
+- User Codex skill：寫入使用者 Codex 技能目錄；除非總監明確要求，不更新 AI_Rules 專案索引。
+- Workflow/command entry：寫入對應平台 workflow/command 來源，並更新平台文件。
 - Report to Director:
-  > `[技能鍛造完成] 新技能 <name> 已建立於 .agents/project_skills/<name>/。`
+  > `[技能鍛造完成] 新技能 <name> 已建立於核准的技能層。`
 
 ---
 
@@ -135,5 +162,5 @@ user-invocable: false  # 操作型知識庫預設不出現在 / 選單
 
 > Inherits: `.agents/skills/_shared/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Writer/SRE` — 僅允許寫入 `.agents/project_skills/` 目錄。
-- **Memory**: full — 更新技能索引。
+- **Role**: `Writer/SRE` — 僅允許寫入 LAYER GATE 核准的技能來源目錄與對應索引。
+- **Memory**: full — 更新受影響的技能索引與記憶卡。

@@ -1,12 +1,12 @@
-# Project Skill Template
+# Skill Template
 
-> Reference template for `skill-factory` skill. Use when creating new project skills.
+> Reference template for `skill-factory` skill. Use when creating Shared framework skills, project-derived skills, or user Codex skills.
 
 ## YAML Frontmatter (Required Fields)
 
 ```yaml
 ---
-name: { skill-name }
+name: skill-name
 description: >
   [{Domain}] {English functional description}.
   Use when: {中文正向觸發條件}。
@@ -21,7 +21,17 @@ metadata:
 ---
 ```
 
-> **Note**: `origin` MUST be `project` for all AI-generated skills（origin 欄位必須為 project，區別於核心技能的 framework）.
+Top-level YAML keys must remain Codex-compatible: `name`, `description`, optional `license`, optional `allowed-tools`, and `metadata`.
+
+Layer-specific origin:
+
+| Layer | Source path | `metadata.origin` |
+| --- | --- | --- |
+| Shared framework skill | `Shared/skills/{skill-name}/SKILL.md` | `framework` |
+| Project-derived skill | `.agents/project_skills/{project-code}-{skill-name}/SKILL.md` | `project` |
+| User Codex skill | user's Codex skills directory | optional local policy |
+
+Put localized names, legacy aliases, required skills, lifecycle fields, and user visibility under `description` or `metadata`, not as extra top-level YAML keys.
 
 ## Markdown Body (Standard Sections)
 

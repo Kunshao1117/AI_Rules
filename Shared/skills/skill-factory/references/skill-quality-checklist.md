@@ -41,9 +41,24 @@
 
 ### 5. agentskills.io 相容性
 
-- **name**: kebab-case，≤ 64 字元
-- **description**: < 1024 字元
+- **name**: ASCII kebab-case，≤ 64 字元
+- **description**: < 1024 字元，且不得含 angle brackets
+- **top-level YAML**: 僅允許 `name`、`description`、`license`、`allowed-tools`、`metadata`
+- **AI_Rules governance fields**: 必須放在 `metadata` 之下，不得新增額外 top-level YAML 欄位
 - **判定**: 🟢 相容 / 🔴 不符
+
+Codex 相容性需用內建驗證器確認：
+
+```powershell
+python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" "{skill-directory-path}"
+```
+
+### 5.5 Layer Placement（技能層放置）
+
+- **Shared framework skill**: 放在 `Shared/skills/{skill-name}/`，更新 `Shared/skills/_index.md`
+- **Project-derived skill**: 放在 `.agents/project_skills/{project-code}-{skill-name}/`，更新 `.agents/project_skills/_index.md` 並建立 discovery link
+- **User Codex skill**: 放在使用者 Codex 技能目錄，不更新 AI_Rules 專案索引，除非總監明確要求
+- **判定**: 🟢 層級正確 / 🔴 放錯層
 
 ### 6. L3 內嵌狀態
 

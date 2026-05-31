@@ -4,7 +4,7 @@ description: >
   框架導航索引卡。記錄所有 Layer 1 父記憶卡的模組名稱與範圍摘要， 供對話啟動時的 D7 Push 機制快速載入，讓 AI
   在不深讀各模組卡的情況下知道「哪裡有什麼」。 Use when: D7 三路徑探測的第一條路徑（_map 在清單中）。
 scopePath: .agents/memory
-last_updated: '2026-05-29T05:43:50+08:00'
+last_updated: '2026-05-31T08:58:08+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -27,7 +27,7 @@ metadata:
 | claude-edition-rules | Claude Code 插件框架規範層、三平台共用記憶庫架構決策、統一腳本引擎設計 |
 | _ag_core | Antigravity 框架核心規則與工作流收容卡匣（框架原始碼） |
 | _claude_core | Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼） |
-| _shared | Shared/ 共用治理資產（能力矩陣、MCP snippets、子代理政策、39 套操作型技能、專案脈絡協議與觸發契約唯一真實來源） |
+| _shared | Shared/ 共用治理資產（能力矩陣、MCP snippets、子代理政策、40 套操作型技能、專案脈絡協議與觸發契約唯一真實來源） |
 | _codex_core | Codex Edition 框架核心規則與工作流收容卡匣（v0.1.3，OpenAI Codex 適配層） |
 | _vscode_extension | AI_Rules VS Code 延伸模組與按鈕式管理入口 |
 
@@ -43,7 +43,7 @@ metadata:
 - **格式精簡原則 (2026-04)**：_map 只列 Layer 1 父卡名稱與一句話範圍。
   不放讀取時機（由 D1 工作流閘門負責），不放子卡（Scale 控制）。
 - **獨立卡設計**：_system 承載業務知識，_map 承載純導航索引，職責不重疊。
-- **Shared 技能數同步 (2026-05-29)**：Shared 操作型技能已調整為 39 套；新增專案脈絡協議後，本索引只更新導航摘要，不展開單一技能細節。
+- **Shared 技能數同步 (2026-05-31)**：Shared 操作型技能已調整為 40 套；新增 UI 設計探索技能後，本索引只更新導航摘要，不展開單一技能細節。
 
 ## Known Issues
 

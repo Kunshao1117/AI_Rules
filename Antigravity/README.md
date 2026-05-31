@@ -15,7 +15,7 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → 透過 `.agents/memory/` 記憶卡系統持久保存
 2. **無紀律執行** — 寫碼前不規劃、寫完不測試 → 20 個工作流檔案強制四拍子節奏
 3. **角色權限模糊** — 子代理人隨意改檔案 → 由 Delegation Gate 統一判斷 evidence branch，子代理人只能唯讀提供證據包
-4. **知識碎片化** — 技能散落各處，Token 暴增 → 39 套按需載入的操作型技能，不用時零開銷
+4. **知識碎片化** — 技能散落各處，Token 暴增 → 40 套按需載入的操作型技能，不用時零開銷
 5. **語言不友善** — 工程術語充斥 → 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
 6. **框架升級斷裂** — 升級怕覆蓋記憶或脈絡 → D06 安全網 + SHA256 差異比對 + 知識資產永久保護
 7. **工具碎片化** — MCP 工具散亂 → 透過 Multi-MCP Gateway 統一探索 schema，並用 `gateway__call_tool` 真實呼叫下游工具
@@ -82,7 +82,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 graph TB
     subgraph "AI_Rules 框架核心庫"
         SRC["Antigravity/<br/>Gemini 版源碼"]
-        SH["Shared/skills/<br/>39 套共用技能"]
+        SH["Shared/skills/<br/>40 套共用技能"]
     end
 
     subgraph "統一部署引擎"
@@ -92,7 +92,7 @@ graph TB
     subgraph ".agents/ 生態系統（部署後）"
         RULES["rules/<br/>9 個治理規則"]
         WF["workflows/<br/>20 個工作流檔案"]
-        SKILLS["skills/<br/>39 套操作型技能"]
+        SKILLS["skills/<br/>40 套操作型技能"]
         MEM["memory/<br/>專案記憶（三平台共用）"]
         CTX["context/<br/>專案脈絡（三平台共用）"]
         PROJ["project_skills/<br/>衍生技能（升級保護）"]
@@ -427,11 +427,11 @@ Antigravity/
     │   ├── 00_chat ~ 12_skill_forge ← 主要工作流程（含建構/修復/提交分階段與例行巡檢）
     │   ├── _completion_gate.md   ← 共用完成閘門
     │   └── _security_footer.md   ← 共用安全閘門
-    ├── skills/                   ← 39 套操作型技能（部署時從 Shared/ 注入）
+    ├── skills/                   ← 40 套操作型技能（部署時從 Shared/ 注入）
     │   ├── _index.md             ← 核心技能路由表
     │   ├── project-xxx -> ../project_skills/xxx ← 專案衍生技能符號連結
     │   ├── memory-ops/           ← 記憶操作指引
-    │   └── ... (39 套)
+    │   └── ... (40 套)
     ├── memory/                   ← 專案記憶（專案特有，升級時受保護）
     │   └── (由 AI 執行 /02 架構 初始化)
     ├── context/                  ← 專案脈絡（設計 DNA 與長期偏好，升級時受保護）

@@ -10,6 +10,7 @@
 | test automation, DOM selector, auto-fix                                      | 測試自動化、DOM 選擇、自動修復                   | test-automation-strategy | playwright         |
 | tech stack, framework, init, MCP registry                                    | 技術堆疊、框架、初始化、MCP 登錄                 | tech-stack-protocol      | —                  |
 | UI, UX, jargon, i18n, error message                                          | UI、介面、多語系、錯誤訊息                       | ui-ux-standards          | stitch             |
+| UI design exploration, web UI research, component primitives, HTML demo, design directions | UI 探索、網路 UI 參考、共用元件、HTML 展示頁、三案比較 | ui-design-exploration    | —                  |
 | AI development quality, tech freshness, component reuse, responsive evidence, design DNA | AI 開發品質、技術新鮮度、共用元件、手機截圖、設計 DNA | ai-dev-quality-gate      | context7, stitch   |
 | project context, design DNA context, product preferences, acceptance preferences, GO CONTEXT | 專案脈絡、設計 DNA、產品偏好、驗收偏好、脈絡核准 | project-context-protocol | —                  |
 | stitch, UI prototype, design DNA, screen                                     | Stitch、設計稿、UI 生成、畫面                    | stitch-design            | stitch             |

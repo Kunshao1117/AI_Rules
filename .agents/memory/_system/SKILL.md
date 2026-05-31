@@ -2,7 +2,7 @@
 name: _system
 description: 全域系統設定與工作流共識。紀錄系統層別特殊要求，避免重複提醒。
 scopePath: .
-last_updated: '2026-05-29T09:45:14+08:00'
+last_updated: '2026-05-31T08:58:08+08:00'
 staleness: 0
 status: stable
 metadata:
@@ -109,6 +109,7 @@ metadata:
 - **D59: 專案脈絡層建構 (2026-05-29)**: 建立 `.agents/context/` 作為與 `.agents/memory/`、`.agents/project_skills/` 平行的專案知識資產，用 `CONTEXT.md` 保存設計 DNA、產品偏好、技術偏好、溝通偏好與驗收偏好。Shared 操作型技能增至 39 套，Codex 部署後技能總數增至 56 套（39 Shared + 17 workflow）。Fresh、Upgrade、同步與孤兒清理都必須保護 `.agents/context/`，治理巡檢新增脈絡卡欄位、狀態、核准與誤放檢查。
 - **D60: project-context-protocol 前綴例外 (2026-05-29)**: `project-context-protocol` 是正式 Shared skill，不是 project skill discovery 連結。同步器與巡檢器需在 `project-*` 排除與檢查規則中保留此技能，否則來源文件、技能品質掃描、下游實際技能目錄與治理巡檢會互相分裂。
 - **D61: Shared 專案脈絡模板來源 (2026-05-29)**: 專案脈絡索引卡改由 `Shared/context/_map/CONTEXT.md` 作為可見 source template。部署初始化優先從 Shared 模板補建缺少的 `.agents/context/_map/CONTEXT.md`，若模板遺失才使用內建 fallback；既有脈絡卡仍受保護，不因 Fresh、Upgrade、Sync 或孤兒清理而被覆蓋。
+- **D67: UI 設計探索治理 (2026-05-31)**: 新增 `ui-design-exploration` 共用技能，將 UI 需求探索、網路研究、操作者意圖、共用元件盤點、三案比較、HTML 展示頁或視覺參考選擇、設計 DNA 與專案衍生技能沉澱制度化。Shared 操作型技能更新為 40 套，Codex 部署後技能總數更新為 57 套。
 - **D62: 管理器同步補齊專案脈絡基礎設施 (2026-05-29)**: `AI-RulesManager.ps1` 的專案規則同步在 `-Apply` 階段也會呼叫基礎設施初始化，補建 `.agents/context/_map/CONTEXT.md` 與 `.gitignore` 追蹤註記。這確保既有專案只透過 VS Code 管理器同步規則時，也能取得與 Fresh / Upgrade 一致的脈絡層。
 - **D63: AI Rules Manager v0.1.12 發布批次 (2026-05-29)**: 因本次治理更新改變 VS Code 管理器的專案同步可見行為，延伸模組版本升級為 `0.1.12` 並準備透過 `v0.1.12` tag 觸發 GitHub Actions 打包 VSIX。CHANGELOG 需保留 `AI Rules Manager v0.1.12` 章節，讓 release notes 來源明確。
 - **D64: 根目錄錨定 `.gitignore` 治理 (2026-05-29)**: Fresh、Upgrade 與專案同步預設補入根目錄錨定的 AI Rules `.gitignore` 管理區塊；框架部署產物與本地執行狀態不進版控，`.agents/memory/`、`.agents/context/`、`.agents/project_skills/` 明確放行。VS Code 管理器另提供版控排除規則健檢，可選不覆蓋或覆蓋整理；覆蓋只移除 AI Rules 相關寬鬆規則與舊管理區塊，不影響其他專案自訂規則。

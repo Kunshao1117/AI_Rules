@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-05-31] UI 設計探索治理
+
+### feat
+- **UI design exploration skill** — 新增 `ui-design-exploration` 共用技能，將 UI 需求探索、網路參考搜尋、操作者意圖、共用元件盤點、三案比較、HTML 展示頁或視覺參考選擇、設計 DNA 與專案衍生技能沉澱串成固定流程。
+- **Skill forge compatibility** — 技能工廠改為先分流 Shared framework、project-derived、user Codex 與 workflow/command entry 產物；Codex 相容欄位維持在 top-level 允許清單內，AI_Rules 治理欄位收斂到 `metadata`。
+
+### docs
+- **Skill count refresh** — 共用操作型技能數更新為 40；Codex Edition 部署後技能總數更新為 57（40 共用 + 17 工作流）。
+
 ## [2026-05-29] AI Rules Manager v0.1.15
 
 ### fix

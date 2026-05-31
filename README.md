@@ -17,7 +17,7 @@ AI 編碼助手天生有幾個致命弱點，Antigravity Governance Suite 逐一
 1. **跨對話失憶** — 每開新對話就忘記之前的架構決策。→ 透過 `.agents/memory/` 記憶卡系統，AI 在新對話中也能回憶過去的決策與教訓
 2. **無紀律執行** — 寫碼前不規劃、寫完不測試、改完不更新文件。→ 20 個工作流檔案強制「規劃→閘門→執行→歸檔」四拍子
 3. **角色權限模糊** — 子代理人隨意修改檔案，主代理人無法審閱。→ Delegation Gate 只允許唯讀 evidence branch，所有交付仍由主代理整合
-4. **知識碎片化** — 技能散落各處，Token 消耗暴增。→ 39 套按需載入的操作型技能，不用時零開銷
+4. **知識碎片化** — 技能散落各處，Token 消耗暴增。→ 40 套按需載入的操作型技能，不用時零開銷
 5. **語言不友善** — 工程術語充斥，非技術背景的專案總監看不懂。→ 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
 6. **三平台記憶分歧** — Gemini、Claude Code、Codex 各自記各自的。→ `.agents/memory/` 統一記憶庫，三個平台共用同一份記憶
 7. **偏好與記憶混雜** — 設計 DNA、產品偏好與驗收口味塞進原始碼記憶。→ `.agents/context/` 專案脈絡層獨立保存長期偏好
@@ -168,11 +168,11 @@ npm run package
 
 | 版本 | 目標平台 | 當前版號 | 規則數 | 工作流 | 操作型技能 | 詳細文件 |
 |------|---------|---------|--------|--------|-----------|---------| 
-| **Antigravity** | Gemini（IDE 插件 + CLI） | v8.0.3 | 9 | 20 | 39 | [Antigravity/README.md](Antigravity/README.md) |
-| **Claude Edition** | Claude Code（VS Code 插件） | v1.2.3 | 7 | 17 | 39 | [Claude/README.md](Claude/README.md) |
-| **Codex Edition** | OpenAI Codex（agentskills.io 標準）| v0.1.3 | 1 | 17 | 39 | [Codex/README.md](Codex/README.md) |
+| **Antigravity** | Gemini（IDE 插件 + CLI） | v8.0.3 | 9 | 20 | 40 | [Antigravity/README.md](Antigravity/README.md) |
+| **Claude Edition** | Claude Code（VS Code 插件） | v1.2.3 | 7 | 17 | 40 | [Claude/README.md](Claude/README.md) |
+| **Codex Edition** | OpenAI Codex（agentskills.io 標準）| v0.1.3 | 1 | 17 | 40 | [Codex/README.md](Codex/README.md) |
 
-三個版本的**操作型技能均源自 `Shared/skills/`**（唯一真實來源，39 個），記憶系統依賴 [cartridge-system](https://github.com/Kunshao1117/cartridge_system)，並透過 [Multi-MCP Gateway](https://github.com/Kunshao1117/Multi-MCP) 統一探索與呼叫下游 MCP 工具（外部依賴）。專案脈絡層使用 `.agents/context/` 保存設計 DNA、產品偏好、技術偏好、溝通偏好與驗收偏好，不走記憶 stale。
+三個版本的**操作型技能均源自 `Shared/skills/`**（唯一真實來源，40 個），記憶系統依賴 [cartridge-system](https://github.com/Kunshao1117/cartridge_system)，並透過 [Multi-MCP Gateway](https://github.com/Kunshao1117/Multi-MCP) 統一探索與呼叫下游 MCP 工具（外部依賴）。專案脈絡層使用 `.agents/context/` 保存設計 DNA、產品偏好、技術偏好、溝通偏好與驗收偏好，不走記憶 stale。
 
 ---
 
@@ -245,7 +245,7 @@ graph TB
     subgraph "目標專案（三版本可共存）"
         AGE[".agents/<br/>rules / workflows / skills"]
         CLE[".claude/<br/>rules / commands / skills"]
-        CXE[".codex/ + .agents/skills/<br/>治理規則 + 技能（56 套）"]
+        CXE[".codex/ + .agents/skills/<br/>治理規則 + 技能（57 套）"]
         MEM[".agents/memory/<br/>三平台共用記憶庫"]
         CTX[".agents/context/<br/>三平台共用專案脈絡"]
     end
@@ -286,7 +286,7 @@ graph TB
 | **任務追蹤** | `.gemini` scratchpad Artifact | `TodoWrite` 清單 | 對話中維護任務清單 |
 | **記憶啟動** | D7 Push 三路徑探測 | Turn=1 啟動探測協議 | Turn=1 cartridge-system 探測 |
 | **記憶存放** | `.agents/memory/` | `.agents/memory/`（**共用**） | `.agents/memory/`（**三者共用**） |
-| **技能總數** | 39 套 | 39 套 | **56 套**（39 共用 + 17 工作流） |
+| **技能總數** | 40 套 | 40 套 | **57 套**（40 共用 + 17 工作流） |
 
 ---
 
@@ -378,7 +378,7 @@ AI_Rules/                              ← 框架核心庫根目錄
 │   ├── mcp-profiles/                  ← opt-in MCP profile snippets（不自動安裝）
 │   ├── context/                       ← 專案脈絡模板來源，部署時只補缺不覆蓋
 │   ├── skill-governance.md            ← Skill 放置與觸發契約
-│   └── skills/                        ← 39 套操作型技能唯一真實來源，部署時注入各平台
+│   └── skills/                        ← 40 套操作型技能唯一真實來源，部署時注入各平台
 │
 ├── Scripts/                           ← 統一部署引擎（取代各平台分散腳本）
 │   ├── Deploy.ps1                     ← 主入口（選單模式 + 參數模式）
@@ -406,7 +406,7 @@ AI_Rules/                              ← 框架核心庫根目錄
 │       │   ├── 01_cross_lingual_guard.md ← 跨語系防護（Always On）
 │       │   └── 02~07_*.md             ← 條件載入規則
 │       ├── workflows/                 ← 20 個工作流檔案 + 2 個共用閘門
-│       ├── skills/                    ← 39 套操作型技能（部署時從 Shared/ 注入）
+│       ├── skills/                    ← 40 套操作型技能（部署時從 Shared/ 注入）
 │       ├── memory/                    ← 專案記憶（部署後由 AI 初始化）
 │       ├── context/                   ← 專案脈絡（設計 DNA 與長期偏好）
 │       ├── project_skills/            ← 專案衍生技能（專案特有，受保護）
@@ -425,7 +425,7 @@ AI_Rules/                              ← 框架核心庫根目錄
 │       │   ├── cross-lingual-guard.md ← 跨語系防護（Always On）
 │       │   └── *.md                   ← 條件載入規則（4 個）
 │       ├── commands/                  ← 17 道 Slash Command 入口
-│       └── skills/                    ← 39 套操作型技能（部署時從 Shared/ 注入）
+│       └── skills/                    ← 40 套操作型技能（部署時從 Shared/ 注入）
 │
 ├── Codex/                             ← OpenAI Codex 版框架源碼
 │   ├── VERSION                        ← v0.1.3
@@ -584,7 +584,7 @@ sequenceDiagram
 
 ### 操作型技能同步原則
 
-39 套操作型技能存放於 `Shared/skills/`（唯一真實來源），部署時由 `Scripts/modules/Skills-Sync.psm1` 注入各平台：
+40 套操作型技能存放於 `Shared/skills/`（唯一真實來源），部署時由 `Scripts/modules/Skills-Sync.psm1` 注入各平台：
 
 ```
 Shared/skills/                       ← 唯一真實來源
@@ -593,7 +593,7 @@ Shared/skills/                       ← 唯一真實來源
 ├── github-ops/
 ├── plugin-release-governance/
 ├── gitnexus-*/
-└── ...（39 套）
+└── ...（40 套）
 
         ↓ 部署時自動注入
 
