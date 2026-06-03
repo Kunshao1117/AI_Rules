@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-04] 記憶卡壓縮治理
+
+### feat
+- **Memory compaction governance** — 記憶操作與架構技能升級為 schema v2 語義：主卡只保留英文現行真相，週期事件最多 30 筆，超限需先彙整，歷史移入歸檔分卷。
+- **Lazy legacy upgrade** — 舊格式記憶卡維持可讀，不做全專案重寫；只有在修改、修復過期或新增歸屬時才無痛升級，且舊長文先進歸檔卷。
+
+### docs
+- **Platform docs alignment** — 根文件、Codex、Claude 與 Antigravity 文件同步補充主卡大小、週期事件、歸檔卷、舊卡懶升級與 cartridge-system 壓縮度量揭露。
+
 ## [2026-05-31] UI 設計探索治理
 
 ### feat

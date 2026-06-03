@@ -59,7 +59,7 @@ Technical details may only appear after a `補充技術細節` section when they
 > `view_file .agents/skills/memory-ops/SKILL.md`
 
 - Check the IDE-injected skill list for memory cards relevant to the target modules.
-- Load relevant memory card SKILL.md files — match against `## Known Issues` (the fix may relate to a previously documented issue) and check `## Relations` for cascading impact.
+- Load relevant memory card SKILL.md files — match against `## Current Truth`, `## Active Constraints`, and `## Cycle Events` (the fix may relate to documented current behavior or a prior event) and check `## Relations` for cascading impact.
 
 ## 1. Current State Constraint
 - [CONSTRAINT] Use loaded memory skills' `## Tracked Files` to navigate directly to relevant files.

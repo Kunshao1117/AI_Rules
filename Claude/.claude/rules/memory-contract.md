@@ -78,6 +78,9 @@ Checkpoint 格式規範（寫入時參考）：
 │   └── Call memory_list, scan for modules where ghostFilesCount > 0
 │       ├── Found → Output: 「⚠️ [GHOST WARN] {模組名} 存在 {N} 個幽靈檔案（已追蹤但磁碟不存在）。建議下次對話優先處理。」
 │       └── None → Pass silently
+├── [v5.5] Compaction Check
+│   └── If memory_list / workspace_brief / commit_preflight reports needsCompaction=true
+│       └── [HALT]「🔴 [MEM HALT] 記憶卡已達壓縮門檻。請先彙整週期事件或拆分歸檔，再繼續追加。」
 └── Hold released → Proceed to completion.
 ```
 
@@ -86,6 +89,8 @@ Checkpoint 格式規範（寫入時參考）：
 - **Directory**: `.agents/memory/` with nested `SKILL.md` files (max 4 levels deep).
 - **Context boundary**: Long-term preferences and aesthetic rules belong in `.agents/context/`, not memory cards.
 - **Granularity**: 1 card ≤ 8 tracked files. Suggest splitting when exceeded.
+- **Compaction limits**: Main card ≤ 16 KB / 120 lines; Cycle Events ≤ 30 items; archive volume ≤ 32 KB / 200 lines.
+- **Schema v2**: Main cards keep English `Current Truth`, `Active Constraints`, `Cycle Events`, `Archive Index`, and `中文摘要`; old cards are readable and upgraded lazily only when touched.
 - **Timestamp**: ALL timestamps MUST use ISO 8601 Taiwan timezone: `YYYY-MM-DDTHH:mm:ss+08:00`. UTC (`Z`) is FORBIDDEN.
 - **Before modifying files**: Check if the file appears in any memory card's `## Tracked Files`. If yes, read that card first.
 - **Sanitization**: NEVER write PII, absolute user paths (`C:\Users\username\`), or secret tokens into memory cards.

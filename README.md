@@ -315,11 +315,15 @@ graph LR
 │   ├── SKILL.md                  ← 共用 API 架構決策
 │   ├── auth/                     ← 子模組（Layer 2）
 │   │   └── SKILL.md
+│   ├── archive-001.md            ← 歷史歸檔分卷（按需追溯）
+│   ├── archive-002.md            ← 下一個歷史歸檔分卷
 │   └── manage/
 │       └── SKILL.md
 └── frontend/                     ← 獨立功能域（Layer 1）
     └── SKILL.md
 ```
+
+新版記憶卡採「主卡現行真相 + 週期事件 + 歸檔分卷」模型。主卡只保留目前有效資訊，英文短句為主；中文保留在卡片描述、觸發關鍵詞與 `## 中文摘要`。歷史修復過程不再無限追加到主卡，彙整後移入歸檔分卷並由 `## Archive Index` 指向。
 
 ### 專案脈絡層
 
@@ -341,8 +345,12 @@ graph LR
 
 | 機制 | 說明 |
 |------|------|
-| **每張卡 ≤ 8 個追蹤檔案** | 超過時主動提示拆分 |
+| **建議每張卡 ≤ 8 個追蹤檔案** | 超過時提示拆分；只有混雜職責、維護困難或同時超過硬限制時才必須拆分 |
 | **最多 4 層深度** | 超過則觸發 `memory-arch` 技能 |
+| **主卡 ≤ 16 KB / 120 行** | 超過時必須壓縮、拆子卡或移入歸檔卷 |
+| **週期事件 ≤ 30 筆** | 達 30 筆後不得追加第 31 筆，必須先彙整 |
+| **歸檔卷 ≤ 32 KB / 200 行** | 超過時開下一卷，主卡只保留索引 |
+| **舊卡懶升級** | 舊格式可讀；只有被修改、修復或新增歸屬時才轉新版 |
 | **寫入後立即歸卡** | `write_to_file` → `memory_commit`（二步流程不可跳過） |
 | **Gateway 顯式路徑** | 透過 Gateway 呼叫 cartridge-system 時，每次 `gateway__call_tool` 都必須帶 `workspace`，下游參數也必須帶 `projectRoot` |
 | **讀寫工具分級** | `workspace_brief` / `memory_audit` / `commit_preflight` 為唯讀診斷；`memory_commit` 會寫檔，僅能在歸卡階段呼叫 |
@@ -350,6 +358,7 @@ graph LR
 | **禁止假設歷史** | 每次新對話必須重新讀取，不可依賴上次對話的記憶內容 |
 | **幽靈偵測 (v4.0)** | `memory_list` 回傳 `ghostFilesCount`，自動標記已追蹤但磁碟不存在的檔案 |
 | **依賴過期傳播 (v4.0)** | `memory_list` 回傳 `indirectStaleness`，上游卡匣過期時自動通知下游；`memory_deps()` 可查詢卡匣依賴圖 |
+| **壓縮治理 (v5.5)** | `memory_list` / `memory_audit` / `workspace_brief` / `commit_preflight` 顯示大小、語言比例、事件數、舊格式與建議動作 |
 
 ---
 

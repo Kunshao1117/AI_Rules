@@ -73,7 +73,7 @@ Technical details may only appear after a `補充技術細節` section when they
 > [LOAD SKILL] Read `.claude/skills/memory-ops/SKILL.md` before proceeding.
 
 - Check MEMORY.md index for cards relevant to target module.
-- Load relevant `.claude/agents/memory/*/SKILL.md` — understand architecture, tracked files, decisions, known issues.
+- Load relevant `.agents/memory/*/SKILL.md` — understand Current Truth, Active Constraints, Cycle Events, archive pointers, tracked files, and relations.
 - Check `## Relations` for cross-module dependencies.
 - Check `## Applicable Skills` for required operational skills.
 
@@ -117,8 +117,8 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > [LOAD SKILL] Re-confirm `.claude/skills/memory-ops/SKILL.md` is loaded.
 
-- **[NEW] files**: Find or create matching `.claude/agents/memory/` card. Record file under `## Tracked Files`.
-- **[MODIFY] files**: Update corresponding memory card's `## Key Decisions` and `## Known Issues`.
+- **[NEW] files**: Find or create matching `.agents/memory/` card. Record file under `## Tracked Files`.
+- **[MODIFY] files**: Update the corresponding memory card's `## Current Truth` only for still-valid facts, add one short English item to `## Cycle Events`, and stop for compaction if the card is already due.
 - Apply `[EXIT HOLD GATE]` before reporting completion.
 
 ### 7. Validation (驗證)

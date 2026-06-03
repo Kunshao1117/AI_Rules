@@ -84,13 +84,13 @@ Invoked exclusively by `/08_audit_index`. Not applicable to build, fix, or refac
 
 ## 4. §3 — Test Coverage Gap Analysis (4-Step Procedure)
 
-> **Prerequisite**: All memory card `## Key Decisions` sections and test directory structure have been read.
+> **Prerequisite**: All memory card `## Current Truth` / `## Active Constraints` sections and test directory structure have been read.
 
 ```
 [TEST COVERAGE AUDIT GATE] Enforce all four steps:
 │
 ├── Step 1: Extract complete "critical business function" list
-│           from all memory card ## Key Decisions sections
+│           from all memory card ## Current Truth and ## Active Constraints sections
 │
 ├── Step 2: Scan test directories (__tests__/ / *.spec.ts / *.test.ts)
 │           Extract list of functions/endpoints already covered by tests
@@ -117,7 +117,7 @@ Consolidates output from workflow §3.5 items B, E, F:
 
 - **Module Relation Anomalies**: Check whether memory card `## Relations` navigation is missing, stale, or dead-linked. Do not use `Relations` to build staleness propagation graphs.
 - **Orphan File List**: Files not imported by any module (excluding known entry points)
-- **Missing Key Functions**: Functions recorded in memory card Key Decisions no longer found via `grep_search`
+- **Missing Key Functions**: Functions recorded in memory card Current Truth or Active Constraints no longer found via `grep_search`
 
 ---
 

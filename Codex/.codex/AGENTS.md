@@ -78,6 +78,8 @@ Before writing any source file:
 - Accessed via `cartridge-system` MCP.
 - When routed through Multi-MCP Gateway, real downstream calls MUST use `gateway__call_tool` with explicit `workspace`; cartridge-system arguments MUST also include explicit `projectRoot`.
 - Gateway discovery tools (`gateway__search_tools`, `gateway__list_server_tools`) only inspect names and schemas. They do not execute downstream MCP tools.
+- Schema v2 cards use English `Current Truth`, `Active Constraints`, `Cycle Events`, `Archive Index`, and `中文摘要`; old cards remain readable and are upgraded lazily only when touched.
+- Hard limits: main card ≤ 16 KB / 120 lines, cycle events ≤ 30 items, archive volume ≤ 32 KB / 200 lines. If a read-only memory tool reports compaction due, compact or split/archive before adding another event.
 
 **Turn=1 startup protocol**: Call `cartridge-system__memory_list` → three-path decision:
 - `_map` entry found → load map index

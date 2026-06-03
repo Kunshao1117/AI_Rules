@@ -157,7 +157,7 @@ After Director GO approval:
 │   ├── IF 已包含 「## 專案身份與工作模式」段落
 │   │   └── 覆蓋更新該段落
 │   └── ELSE
-│       └── 在 ## Key Decisions 前插入新段落
+│       └── 在 ## Current Truth 前插入新段落；舊卡缺少該段落時先建立 schema v2 段落
 ├── ELSE IF _system/SKILL.md 不存在
 │   └── 依 memory-arch 模板建立完整記憶卡，以 6 大維度填充
 └── 強制呼叫 memory_commit('_system', projectRoot) 同步索引

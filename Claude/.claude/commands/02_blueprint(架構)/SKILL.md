@@ -102,7 +102,7 @@ Technical details may only appear after a `補充技術細節` section when they
 > [LOAD SKILL] Read `.agents/skills/memory-ops/SKILL.md`.
 
 - Create initial memory cards for each major module identified.
-- Populate: `## Tracked Files`, `## Key Decisions`, `## Relations`.
+- Populate schema v2 sections: `## Current Truth`, `## Active Constraints`, `## Cycle Events`, `## Archive Index`, `## 中文摘要`, `## Tracked Files`, and `## Relations`.
 - Follow `memory-arch` nesting guidelines (max depth 4, child paths inside parent directories).
 
 ## 4. Blueprint Output (藍圖產出)

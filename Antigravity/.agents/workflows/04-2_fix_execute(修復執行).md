@@ -67,7 +67,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 3. Mandatory Distillation
 
 - [EXECUTE] Immediately after writing the fix:
-  1. Append the lesson to the affected memory skill's `## Known Issues` or `## Module Lessons`.
+  1. Record the fix as one short English item in the affected memory skill's `## Cycle Events`; update `## Current Truth` only if the still-valid behavior changed.
   2. Update the memory skill's frontmatter (`last_updated`, `staleness: 0`).
 - [EXECUTE] Execute `impact-test-strategy` skill § 3 to auto-generate a regression test for this fix.
 - [ASSERT] If the same module has surfaced the same class of bug more than twice, RECOMMEND creating a defensive skill via `/12_skill_forge`.

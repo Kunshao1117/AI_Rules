@@ -129,7 +129,7 @@ What type of bug was fixed?
 
 1. Write the regression test using `test-patterns` skill's § 1 decision tree for file placement
 2. Name the test descriptively: `it('should not regress: {bug description}')`
-3. Document in the module's memory card `## Module Lessons` with lesson ID
+3. Document one short English evidence item in the module's memory card `## Cycle Events`
 
 ### /04_fix Completion Gate Integration
 

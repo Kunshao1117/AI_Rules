@@ -75,7 +75,7 @@ Technical details may only appear after a `補充技術細節` section when they
   - Append new file to that card's `## Tracked Files` section. Update `last_updated`.
 - ELSE (No existing card found):
   - [LOAD SKILL] `view_file .agents/skills/memory-ops/SKILL.md`
-  - Create a new memory card. Populate: Tracked Files, Key Decisions, Relations, Applicable Skills.
+  - Create a new memory card. Populate schema v2 sections: Current Truth, Active Constraints, Cycle Events, Archive Index, 中文摘要, Tracked Files, Relations, Applicable Skills.
 - CONSTRAINT: Memory card descriptions MUST include Traditional Chinese keywords.
 - HALT CHECK: If card creation/update fails, [HALT] and output: 「🔴 [MEM HALT] 新建模組尚未完成歸卡。」 Do NOT proceed to §3.
 
@@ -83,7 +83,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 [MEM UPDATE GATE] For every [MODIFY] file in implementation_plan.md:
 - IF (Found the memory card tracking this file):
-  - Update Key Decisions, Known Issues, Module Lessons, and `last_updated`.
+  - Update Current Truth only for still-valid facts, add one short English item to Cycle Events, update Archive Index if compaction is performed, and let `memory_commit` sync `last_updated`.
 - ELSE (Card not found):
   - [LOAD SKILL] `view_file .agents/skills/memory-ops/SKILL.md` and create it.
 - HALT CHECK: If card update fails, [HALT] and output: 「🔴 [MEM HALT] 記憶卡尚未更新。」 Do NOT proceed to §4.

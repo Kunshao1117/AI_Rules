@@ -9,9 +9,14 @@
 |---|---|
 | `memory/*/SKILL.md` | 模組記憶 |
 | `Tracked Files` | 追蹤的檔案清單 |
-| `Key Decisions` | 歷史決策紀錄 |
-| `Module Lessons` | 模組教訓 |
-| `Known Issues` | 已知問題 |
+| `Current Truth` | 現行真相 |
+| `Active Constraints` | 當前限制 |
+| `Cycle Events` | 週期事件 |
+| `Archive Index` | 歷史索引 |
+| `中文摘要` | 中文摘要 |
+| `Key Decisions` | 舊版歷史決策紀錄 |
+| `Module Lessons` | 舊版模組教訓 |
+| `Known Issues` | 舊版已知問題 |
 | `staleness` | 記憶過期指數 |
 | `memory-ops` | 記憶操作指引 |
 | `project_skills/` | 專案衍生技能 |

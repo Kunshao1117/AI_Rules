@@ -142,8 +142,8 @@ What are you mocking?
 
 When generating tests, cross-reference target module's memory card:
 
-1. `## Key Decisions` → Tests MUST verify these decisions are upheld
-2. `## Known Issues` → Tests MUST cover documented edge cases
+1. `## Current Truth` → Tests MUST verify current valid behavior is upheld
+2. `## Active Constraints` → Tests MUST cover documented hard limits and edge cases
 3. `## Applicable Skills` → Load referenced skills for domain-specific constraints
 
 ## Constraints (限制與邊界)

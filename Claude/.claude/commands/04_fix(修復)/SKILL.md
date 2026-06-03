@@ -63,7 +63,7 @@ Technical details may only appear after a `補充技術細節` section when they
 > [LOAD SKILL] Read `.agents/skills/memory-ops/SKILL.md` before proceeding.
 
 - Check MEMORY.md index for cards relevant to the bug's module.
-- Load relevant `.agents/memory/*/SKILL.md`. Check `## Known Issues` (bug may be documented) and `## Relations` for cascade impact.
+- Load relevant `.agents/memory/*/SKILL.md`. Check `## Current Truth`, `## Active Constraints`, `## Cycle Events`, and `## Relations` for existing context and cascade impact.
 
 ### 1. Current State Constraint
 
@@ -123,7 +123,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > [LOAD SKILL] Re-confirm `.agents/skills/memory-ops/SKILL.md` is loaded.
 
-- Update `.agents/memory/` cards for all modified files: record fix in `## Key Decisions`, remove resolved item from `## Known Issues`.
+- Update `.agents/memory/` cards for all modified files: keep only still-valid facts in `## Current Truth`, add one short English fix event to `## Cycle Events`, and stop for compaction if the card is already due.
 - Apply `[EXIT HOLD GATE]` before reporting completion.
 - Report completion in Traditional Chinese with business-level summary.
 

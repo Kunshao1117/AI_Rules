@@ -36,7 +36,7 @@ Do not use project context for source ownership, dependency staleness, implement
 
 | Layer | Location | Purpose | Write Gate |
 |---|---|---|---|
-| Source memory | `.agents/memory/` | Source files, architecture decisions, dependencies, stale tracking | workflow GO + memory commit phase |
+| Source memory | `.agents/memory/` | Source ownership, Current Truth, Active Constraints, Cycle Events, Archive Index, Relations, staleness | workflow GO + memory commit phase |
 | Project context | `.agents/context/` | Long-lived preferences, design DNA, acceptance defaults | `GO CONTEXT` |
 | Project skills | `.agents/project_skills/` | Reusable project-specific execution procedure | skill forge GO |
 | Process evidence | task report, screenshots, test output | Per-task proof and temporary observations | no persistence by default |

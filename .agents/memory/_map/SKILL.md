@@ -1,12 +1,21 @@
 ---
 name: _map
-description: >
-  框架導航索引卡。記錄所有 Layer 1 父記憶卡的模組名稱與範圍摘要， 供對話啟動時的 D7 Push 機制快速載入，讓 AI
-  在不深讀各模組卡的情況下知道「哪裡有什麼」。 Use when: D7 三路徑探測的第一條路徑（_map 在清單中）。
-scopePath: .agents/memory
-last_updated: '2026-05-31T08:58:08+08:00'
-staleness: 0
+description: |
+  框架記憶導航索引卡。只保留 Layer 1 主卡名稱、有效範圍與讀取路徑。 Use when: 對話啟動需要先判斷應讀取哪張記憶卡時。
+scopePath: .agents/memory/
+last_updated: '2026-06-04T03:47:17+08:00'
 status: stable
+staleness: 0
+memory_schema_version: 2
+content_language: en
+human_language: zh-TW
+cycle_id: 2026-06-04-001
+cycle_event_count: 1
+cycle_event_limit: 30
+size_limit_bytes: 8192
+line_limit: 120
+archive_policy: volume
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -17,52 +26,63 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
-# 框架記憶導航索引 (_map)
+# _map — Memory Navigation Index
 
-## 模組索引
+## Current Truth
 
-| 模組名稱 | 一句話範圍 |
-|---------|-----------|
-| _system | 全域技術堆疊、Git 推播根目錄規範、Skill 觸發治理與工作流設計哲學 |
-| claude-edition-rules | Claude Code 插件框架規範層、三平台共用記憶庫架構決策、統一腳本引擎設計 |
-| _ag_core | Antigravity 框架核心規則與工作流收容卡匣（框架原始碼） |
-| _claude_core | Claude Edition 框架核心規則與工作流收容卡匣（框架原始碼） |
-| _shared | Shared/ 共用治理資產（能力矩陣、MCP snippets、子代理政策、40 套操作型技能、專案脈絡協議與觸發契約唯一真實來源） |
-| _codex_core | Codex Edition 框架核心規則與工作流收容卡匣（v0.1.3，OpenAI Codex 適配層） |
-| _vscode_extension | AI_Rules VS Code 延伸模組與按鈕式管理入口 |
+- This card is a root memory index only.
+- Startup readers use it to choose the next active Layer 1 card.
+- It does not store historical decisions or implementation detail.
+- Child cards are discovered through each parent card's Relations section.
 
-> **維護規則**：新增或刪除 Layer 1 父記憶卡時，必須同步更新本表格。
-> 子卡（Layer 2–4）不進本索引，由各父卡的 `## Relations` 管理。
+## Active Constraints
+
+- Keep this card under 8 KB.
+- Do not add detailed history here.
+- Update the module table when Layer 1 memory cards are added, deprecated, or renamed.
+
+## Cycle Events
+
+- 01: Upgraded the navigation index to schema v2 and archived the legacy body.
+
+## Archive Index
+
+- archive-001.md — Legacy _map card preserved before schema v2 compaction on 2026-06-04.
+
+## 中文摘要
+
+- 這張卡只做導航索引。
+- 不再承載歷史決策或長篇說明。
+- 新增或移除主卡時才更新表格。
+
+## Module Index
+
+| Module | Current scope |
+|---|---|
+| _system | Repository-wide governance, root docs, deployment scripts, and release rules. |
+| _shared | Shared governance assets and operational skills under Shared/. |
+| _codex_core | Codex Edition framework source under Codex/. |
+| _claude_core | Claude Edition framework source under Claude/. |
+| _ag_core | Antigravity framework source under Antigravity/. |
+| _vscode_extension | VS Code extension source, release workflow, and manager bridge. |
+| claude-edition-rules | Deprecated historical card for legacy Claude rule decisions. |
 
 ## Tracked Files
 
-- Antigravity/.agents/memory/_map/SKILL.md
-
-## Key Decisions
-
-- **格式精簡原則 (2026-04)**：_map 只列 Layer 1 父卡名稱與一句話範圍。
-  不放讀取時機（由 D1 工作流閘門負責），不放子卡（Scale 控制）。
-- **獨立卡設計**：_system 承載業務知識，_map 承載純導航索引，職責不重疊。
-- **Shared 技能數同步 (2026-05-31)**：Shared 操作型技能已調整為 40 套；新增 UI 設計探索技能後，本索引只更新導航摘要，不展開單一技能細節。
-
-## Known Issues
-
-- 無
-
-## Module Lessons
-
-- 無
+- .agents/memory/_map/SKILL.md
+- .agents/memory/_map/archive-001.md
 
 ## Relations
 
-- 導航目標：`_system`（全域設計哲學）
-- 導航目標：`claude-edition-rules`（Claude Edition 規範層 + 統一腳本引擎）
-- 導航目標：`_ag_core`（Antigravity 核心原始碼）
-- 導航目標：`_claude_core`（Claude 核心原始碼）
-- 導航目標：`_shared`（共用技能庫原始碼，Shared/skills/）
-- 導航目標：`_codex_core`（Codex Edition 核心原始碼）
-- 導航目標：`_vscode_extension`（VS Code 延伸模組與管理腳本）
+- _system (root governance memory)
+- _shared (shared skill and policy memory)
+- _codex_core (Codex platform memory)
+- _claude_core (Claude platform memory)
+- _ag_core (Antigravity platform memory)
+- _vscode_extension (VS Code extension memory)
+- claude-edition-rules (deprecated historical archive)
 
 ## Applicable Skills
 
-- memory-ops（維護與更新本卡時）
+- memory-ops — Use when updating this card.
+- memory-arch — Use when changing memory topology.

@@ -94,9 +94,9 @@ You MUST execute BOTH of the following actions synchronously:
 
 - Initialize the Memory Card System at `.agents/memory/`:
   1. Create `_system/SKILL.md` from tech stack decisions. Include runtime, framework, external_services, env_keys, config_files, and deploy info.
-  2. Create one `{module}/SKILL.md` per major functional module. Populate standard sections: Tracked Files, Key Decisions, Known Issues, Module Lessons, Relations, Applicable Skills.
+  2. Create one `{module}/SKILL.md` per major functional module. Populate schema v2 sections: Current Truth, Active Constraints, Cycle Events, Archive Index, 中文摘要, Tracked Files, Relations, Applicable Skills.
   3. Memory card descriptions MUST include Traditional Chinese keywords for Director instruction matching.
-  4. Memory card frontmatter MUST include `last_updated`, `status`, and `staleness: 0`.
+  4. Memory card frontmatter MUST include `last_updated`, `status`, `staleness: 0`, `memory_schema_version: 2`, `content_language: en`, `human_language: zh-TW`, `cycle_id`, `cycle_event_count`, `cycle_event_limit`, `size_limit_bytes`, `line_limit`, `archive_policy`, and `compaction_status`.
   5. Hierarchy: Follow `memory-arch` nesting guidelines (max depth 4, child paths placed inside parent directories).
   6. Applicable Skills: For each module memory card, analyze its characteristics (e.g., API, Auth, UI) and list the framework skills that govern it (e.g., `security-sre`, `ui-ux-standards`).
 

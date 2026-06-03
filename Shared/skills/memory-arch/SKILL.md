@@ -6,7 +6,7 @@ description: >
   DO NOT use when: 純更新記憶卡內容或修復過期指數（用 memory-ops）。
 metadata:
   author: antigravity
-  version: "1.2"
+  version: "1.3"
   origin: framework
   kind: operational
   memory_awareness: none
@@ -29,12 +29,13 @@ New module identified by /02_blueprint or /08_audit?
 ├── Step 2: Create folder at resolved path → `.agents/memory/{module}/`
 ├── Step 3: Create SKILL.md using template → see references/memory-template.md
 │   ⇒ frontmatter: name, description (MUST include Chinese keywords), scopePath
-│   ⇒ body: Tracked Files, Key Decisions, Known Issues, Module Lessons, Relations, Applicable Skills
+│   ⇒ frontmatter: memory_schema_version=2, content_language=en, human_language=zh-TW
+│   ⇒ body: Current Truth, Active Constraints, Cycle Events, Archive Index, 中文摘要, Tracked Files
 ├── Step 3.5: Dependency Assessment (v4.0)
 │   ⇒ Check whether this module's source files import files owned by other memory cards
 │   ⇒ If yes, add a `dependencies` field only for those upstream cards
 │   ⇒ Also add dependencies for direct technical decision coupling when upstream staleness requires review
-│   ⇒ Record the dependency reason in ## Key Decisions or ## Known Issues
+│   ⇒ Record the dependency reason in ## Current Truth or ## Active Constraints
 └── Step 4: Call memory_commit(moduleName, projectRoot)
     ⇒ Registers card in index + validates structure. When routed through Gateway, use `gateway__call_tool` with explicit `workspace` and `projectRoot`.
 ```
@@ -92,9 +93,9 @@ Directory nesting is topology and navigation, not dependency. A child card MUST 
 ```
 .agents/memory/
 ├── api/                          ← Layer 1 (functional domain) depth=1
-│   ├── SKILL.md                  ← Shared API architecture decisions
+│   ├── SKILL.md                  ← Shared API current truth and constraints
 │   ├── auth/                     ← Layer 2 depth=2, parent='api'
-│   │   ├── SKILL.md              ← Auth module specific decisions
+│   │   ├── SKILL.md              ← Auth module current truth
 │   │   └── oauth/                ← Layer 3 depth=3
 │   │       └── SKILL.md          ← OAuth sub-module
 │   └── manage/                   ← Layer 2 depth=2, parent='api'
@@ -117,8 +118,8 @@ Nested cards should list parent/child context in `## Relations`, for example:
 
 ```markdown
 ## Relations
-- api（parent card: shared API architecture decisions）
-- api.auth.oauth（child card: OAuth-specific decisions）
+- api（parent card: shared API current truth and constraints）
+- api.auth.oauth（child card: OAuth-specific current truth and constraints）
 ```
 
 Do not mirror these navigation links into frontmatter `dependencies` unless the Dependency Write Gate in `memory-ops` passes.
@@ -127,7 +128,7 @@ Do not mirror these navigation links into frontmatter `dependencies` unless the 
 
 Long-lived preferences, design DNA, product acceptance defaults, and communication style belong in `.agents/context/`, not `.agents/memory/`.
 
-Source memory cards should record source ownership, architecture decisions, dependencies, stale tracking, and module lessons only.
+Source memory cards should record source ownership, Current Truth, Active Constraints, Cycle Events, Archive Index, staleness, and Relations. Historical detail belongs in archives or compacted summaries only when still relevant to current behavior.
 
 If a task discovers a reusable preference:
 
@@ -135,26 +136,48 @@ If a task discovers a reusable preference:
 2. Wait for explicit `GO CONTEXT` before writing `.agents/context/**/CONTEXT.md`.
 3. Do not call `memory_commit`; project context does not participate in source memory staleness.
 
-### Granularity Rule (粒度規則)
+### Granularity Advisory (粒度建議)
 
-- Maximum **8 tracked files** per card
-- Exceeded → `memory_list` flags automatically → execute § 3 Splitting Memory Cards
+- Target **8 tracked files** or fewer per card for easy review.
+- Exceeded → `memory_list` may flag a split suggestion; this is advisory by file count alone.
+- Split becomes required only when the card also exceeds a hard limit, mixes unrelated ownership, or creates real maintenance difficulty.
+
+### Compaction Hard Limits (壓縮硬上限)
+
+Memory architecture separates current truth from historical evidence:
+
+| Layer | Default limit | Action after limit | Notes |
+|------|---------------|--------------------|-------|
+| Main card | 16 KB or 120 lines | Compact or split into child cards | Controls default read cost |
+| Cycle Events | 30 items | Compact before adding item 31 | Event numbers are cycle-local |
+| Archive volume | 32 KB or 200 lines | Open the next volume | Archive is loaded only for trace-back |
+| Root index card | 8 KB | Keep as pure navigation index | Do not store history here |
+
+Main cards MUST preserve only currently valid facts. Historical repair detail belongs in archive volumes referenced by `## Archive Index`.
+
+### Card Layer Model (卡片分層模型)
+
+- **Main card**: schema v2 SKILL.md containing English `## Current Truth`, `## Active Constraints`, `## Cycle Events`, `## Archive Index`, `## 中文摘要`, and `## Tracked Files`.
+- **Child card**: narrower ownership card created when a main card exceeds hard limits, mixes concerns, or file-count warnings reveal real maintenance difficulty.
+- **Archive volume**: historical long-form record created during compaction or lazy upgrade. It is not part of normal startup loading.
+- **Root index card**: map/navigation only. If it grows past 8 KB, move details into child cards or archive volumes.
 
 ## 3. Splitting Memory Cards (拆分操作步驟)
 
-When the system flags a memory card as oversized, or maintenance difficulty is discovered during routine work:
+When a memory card exceeds hard limits, mixes unrelated ownership, or maintenance difficulty is discovered during routine work:
 
 ```
 Need to split a memory card?
 ├── Step 1: Call memory_read to get the full content of the old card
-│   ⇒ Analyze trackedFiles directory distribution and Key Decisions attribution
+│   ⇒ Analyze trackedFiles distribution, Current Truth, Cycle Events, and Archive Index
 ├── Step 2: Propose split strategy to Director
-│   ⇒ Explain which decisions promote to shared (parent) and which demote to (child)
+│   ⇒ Explain which current truths stay in the parent, which move to child cards, and which history moves to archive volumes
 ├── Step 3: Execute after Director approves
-│   ├── Promote the original card to parent (retain shared decisions + scopePath)
+│   ├── Promote the original card to parent (retain shared current truth + scopePath)
 │   ├── Create child card subdirectories under parent (each with scopePath + specific decisions)
 │   ├── Add parent/child navigation under ## Relations
-│   └── write_to_file to update parent SKILL.md (trim to shared portions only)
+│   ├── Move superseded or verbose history into archive volumes
+│   └── write_to_file to update parent SKILL.md (trim to current shared portions only)
 ├── Step 4: Plugin auto scan + refresh
 │   ⇒ Index and file watchers update automatically
 ├── Step 5: Call memory_commit for EACH new child card
@@ -164,6 +187,24 @@ Need to split a memory card?
 ```
 
 Splitting a card does not automatically create `dependencies` between the parent and children. Add frontmatter dependencies only when source imports or decision coupling require indirect staleness propagation.
+
+## 3.5 Compaction Procedure (週期彙整程序)
+
+Use this when a main card reaches 30 cycle events, exceeds 16 KB, exceeds 120 lines, or contains conflicting historical notes:
+
+```
+Compaction due?
+├── Step 1: Read the main card and relevant source files
+├── Step 2: Identify still-valid facts and constraints
+├── Step 3: Rewrite ## Current Truth as at most 10 English bullets
+├── Step 4: Rewrite ## Active Constraints as active hard limits only
+├── Step 5: Move historical cycle detail into archive-001.md / archive-002.md / ...
+├── Step 6: Update ## Archive Index with volume path and scope
+├── Step 7: Reset ## Cycle Events for the next cycle
+└── Step 8: Call memory_commit after the SKILL.md file is updated
+```
+
+Do not add event 31. If the card is too contradictory to summarize safely, stop at a compaction plan and ask for Director approval.
 
 ## 4. Static Container Cards (靜態收容卡匣)
 

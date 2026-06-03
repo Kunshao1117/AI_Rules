@@ -7,7 +7,7 @@ description: >
   DO NOT use when: 決定系統層級架構拓樸、新建模組或拆分卡匣（用 memory-arch 技能）。
 metadata:
   author: antigravity
-  version: "2.3"
+  version: "2.4"
   origin: framework
   kind: operational
   memory_awareness: full
@@ -91,6 +91,10 @@ Use these before deciding whether memory content must be edited:
 > Prioritize these modules — after reading the card, remove deleted paths from `## Tracked Files`,
 > then call `memory_commit` to synchronize.
 
+> **Compaction Awareness (v5.5)**: read-only governance tools surface size, line count, Chinese ratio,
+> cycle count, legacy status, and recommended action. If `needsCompaction=true`, compact or
+> split/archive before adding another event, then call `memory_commit`.
+
 ## 3. Repairing Stale Memory (過期修復)
 
 When a memory cartridge has staleness > 0, you **MUST NOT** simply call `memory_update` to reset staleness. Follow this repair procedure:
@@ -106,7 +110,9 @@ Stale memory card detected?
 ├── Step 3: Call memory_read(moduleName)
 │   ⇒ Read existing memory content
 ├── Step 4: Compare source code changes vs existing memory
-│   ⇒ Produce updated memory content (update decisions/known issues/lessons sections)
+│   ⇒ Produce updated memory content as current truth, not a full repair log
+│   ⇒ If the card is legacy, prepare a lazy upgrade to schema v2
+│   ⇒ If the card is over limit or has 30 cycle events, compact before adding a new event
 ├── Step 4.5: Check ghostFiles (v4.0)
 │   ⇒ Call memory_status; if ghostFiles array is non-empty
 │   ⇒ Confirm these files have been removed from the project
@@ -138,7 +144,7 @@ After modifying source files tracked by a memory skill, you **MUST** update the 
 > **Indirect Staleness Awareness (v4.0)**: `memory_list` now returns an `indirectStaleness` field per module.
 > If `indirectStaleness > 0`, an upstream dependency cartridge has gone stale.
 > Call `memory_deps(moduleName)` to inspect upstream cartridges and confirm whether upstream changes
-> affect this module's Key Decisions or Known Issues before deciding to update.
+> affect this module's Current Truth or Active Constraints before deciding to update.
 >
 > **Field Semantics Boundary**: Cartridge System analyzes local memory card data only. It reads frontmatter
 > `dependencies` to build dependency graphs, indirect staleness propagation, cycle detection, and
@@ -151,7 +157,7 @@ Before adding any frontmatter `dependencies` entry, ask:
 
 > If this upstream card becomes stale, must this card be reviewed too?
 
-- If **yes**, the upstream card may be added to `dependencies`, and the reason MUST be documented in `## Key Decisions` or `## Known Issues`.
+- If **yes**, the upstream card may be added to `dependencies`, and the reason MUST be documented in `## Current Truth` or `## Active Constraints`.
 - If the answer is only "these cards should be read together", write it under `## Relations`.
 - If the item is an operational recommendation, write it under `## Applicable Skills`.
 - Parent/child memory card relationships default to `## Relations`; do not add them to `dependencies` unless staleness propagation is truly required.
@@ -159,13 +165,16 @@ Before adding any frontmatter `dependencies` entry, ask:
 
 ```
 Need to update memory?
-├── 🔍 Granularity pre-check: does the target memory card have > 8 trackedFiles?
-│   └── Yes → Pause update. Execute memory-arch split procedure first.
+├── 🔍 Granularity advisory pre-check: does the target memory card have > 8 trackedFiles?
+│   └── Yes → Treat as a split suggestion. Continue if hard limits are healthy; pause only for mixed ownership, maintenance difficulty, or approved split.
+├── 🔍 Compaction pre-check: does memory_list / memory_audit report needsCompaction=true?
+│   └── Yes → Pause update. Summarize Cycle Events into Current Truth and Archive Index first.
 ├── Step 1: Call memory_read(moduleName) to get current content
-│   ⇒ Understand existing decisions, tracked files, known issues
+│   ⇒ Understand Current Truth, Active Constraints, Cycle Events, tracked files, and archive pointers
 ├── Step 2: Use write_to_file / replace_file_content to write updated SKILL.md
-│   ⇒ Include all sections: frontmatter, Tracked Files, Key Decisions, etc.
-│   ⇒ AI native tools provide the highest write stability
+│   ⇒ Keep the main body in English short sentences
+│   ⇒ Add exactly one new item to ## Cycle Events unless compaction is due
+│   ⇒ Keep Chinese only in description, trigger keywords, and ## 中文摘要
 └── Step 3: Call memory_commit(moduleName, projectRoot)
     ⇒ Auto-injects Taiwan timezone timestamp
     ⇒ Auto-resets staleness to 0
@@ -181,7 +190,10 @@ Need to update memory?
 
 ### Post-Commit Obligations (歸卡後義務)
 
-1. Under `## Module Lessons`, append reusable knowledge discovered (format: `Dxx: description`)
+1. Keep `## Current Truth` as the current valid summary; do not preserve obsolete repair history there.
+2. Add one short English item to `## Cycle Events` for the current cycle, unless the card is already at 30 events.
+3. When a cycle reaches 30 events, summarize the cycle into `## Current Truth`, move historical detail to an archive volume, reset the next cycle to event 1, and update `## Archive Index`.
+4. `memory_commit` validates and warns only. It does not rewrite or compact content for the AI.
 
 ### Enforcement (強制閘門)
 
@@ -211,8 +223,13 @@ New source file created?
 
 When modifying, fixing logic, or repairing staleness on a legacy memory card (e.g. ones created before V5 architecture), you MUST organically upgrade the card format during your two-step flow to match the latest structural requirements:
 
-- Inject missing fields strictly according to the format constraint.
+- Do not run a full-project rewrite.
+- If this turn only reads the card, mark it as readable but pending lazy upgrade in the report.
+- If this turn must update the card, preserve old long-form content in an archive volume, then rebuild the main card as schema v2.
+- Main card frontmatter MUST include `memory_schema_version: 2`, `content_language: en`, `human_language: zh-TW`, `cycle_id`, `cycle_event_count`, `cycle_event_limit`, `size_limit_bytes`, `line_limit`, `archive_policy`, and `compaction_status`.
+- Main card body MUST include `## Current Truth`, `## Active Constraints`, `## Cycle Events`, `## Archive Index`, `## 中文摘要`, and `## Tracked Files`.
 - Normalize section headers (e.g., ensure `## Tracked Files` matches naming conventions).
+- If old content is too large or contradictory, stop at a compaction plan instead of silently cutting content.
 - **Goal**: Seamlessly patch technical debt dynamically on-demand. Avoid massive migration shocks.
 
 <!-- NOTE: Creation, Tree Topology, and Splitting operations have been migrated to the memory-arch skill. -->

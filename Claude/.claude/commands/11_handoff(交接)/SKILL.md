@@ -66,7 +66,7 @@ Technical details may only appear after a `補充技術細節` section when they
 > [LOAD SKILL] Read `.agents/skills/memory-ops/SKILL.md`.
 
 - Call `cartridge-system__memory_list` 取得所有記憶卡清單與健康狀態。
-- Load ALL memory cards. For each card, extract: module name, scope, key decisions, known issues, staleness.
+- Load ALL memory cards. For each card, extract: module name, scope, Current Truth, Active Constraints, Cycle Events, Archive Index, 中文摘要, staleness, and compaction status.
 
 ## 2. Session Delta & Trap Extraction（對話成果 + 防雷萃取）
 
