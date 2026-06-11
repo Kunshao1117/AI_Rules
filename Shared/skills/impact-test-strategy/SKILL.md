@@ -64,6 +64,7 @@ Include in `implementation_plan.md`:
 - 受影響模組：{list of affected modules}
 - 關聯文件：{documentation files that require sync}
 - 建議測試範圍：{see § 2}
+- 真實驗證路徑：{real operation surface, data source, executable path, and blocker status}
 ```
 
 ### Step 5: Impact Array Validation (影響陣列驗證)
@@ -88,6 +89,14 @@ Change type?
 ├── UI-only → Run: E2E visual test for affected pages only
 └── Config / Environment → Run: Full E2E suite (no unit tests)
 ```
+
+Real-path scope rule:
+
+- If the change affects user-visible behavior, data flow, persistence, network requests, files, scheduled jobs, CLI output, permissions, or external integrations, include at least one real execution path in the recommended test scope.
+- Before marking real execution unavailable, include operator-tool discovery in the scope: search project scripts, documented commands, routes, test harnesses, browser or desktop operation paths, plugin hosts, logs, databases, and direct request options.
+- Treat transient readiness, timeout, or tool-connection failures as retryable evidence gaps first. They do not remove the need for the real execution path.
+- If real execution is blocked, list the blocker and the closest controlled real-path alternative, such as preview branch, local service, dry-run, sandbox database, recorded real response, or read-only production check.
+- Unit tests, mocks, fixtures, and visual screenshots may support the regression scope, but cannot replace the real execution path for behavior-dependent completion.
 
 ### Execution Protocol (執行協定)
 

@@ -48,7 +48,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 
 > [LOAD SKILL] If this fix touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before diagnosing release impact.
-> [LOAD SKILL] If this fix touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before diagnosing quality impact.
+> [LOAD SKILL] If this fix touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, real data, runtime behavior, operator-visible output, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before diagnosing quality impact.
 > [LOAD SKILL] If this fix may change user experience, product behavior, design DNA, acceptance defaults, or existing preferences, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before diagnosing impact.
 # [WORKFLOW: FIX PLAN (修復計畫)]
 
@@ -73,6 +73,7 @@ Technical details may only appear after a `補充技術細節` section when they
   1. Map the target file(s) to their owning module(s) via memory cards.
   2. Identify affected modules through Relations.
   3. Classify risk level (High/Medium/Low).
+  4. Identify the real failure reproduction path, operator-tool discovery result, data source, executable validation path, retry or equivalent-path strategy, and any hard blocker.
 - [ASSERT] Include the impact report in the patch plan (§ 3).
 
 ## 2. Minimal Impact Principle
@@ -91,6 +92,7 @@ Technical details may only appear after a `補充技術細節` section when they
      - Code syntax, function/class names, and system control tags (e.g. `[EXECUTE]`, `[CONSTRAINT]`) MAY remain in English.
      - ALL surrounding documentation, business logic descriptions, and transition text MUST be 100% Traditional Chinese. Zero English prose visible to the Director.
   5. 【連帶影響評估】
+  6. 【真實回歸驗證】(Original failure path, real operation surface, operator tools searched, data source, executable evidence, transient retry plan, equivalent real-path alternative, blocker status, and why mock-only evidence is insufficient when applicable)
 
 ## 4. Halt & Eject
 - [HALT] This workflow has NO permission to write to the physical file system.

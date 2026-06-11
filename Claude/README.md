@@ -222,11 +222,11 @@ graph LR
 | `/00_chat` | 純對話、腦力激盪、程式碼問答 | Reader |
 | `/01_explore` | 可行性研究：網路研究 + 雙狀態魔鬼代言人分析 | Reader |
 | `/02_blueprint` | 需求轉化為技術藍圖，同步初始化記憶系統 | Writer/SRE |
-| `/03_build` | 兩階段建構：Plan Mode 計畫 → GO → 實體寫入 → 記憶歸卡 | Writer/SRE |
+| `/03_build` | 兩階段建構：Plan Mode 計畫 → GO → 實體寫入 → 記憶歸卡 → 真實執行驗證 | Writer/SRE |
 | `/03-1_experiment` | 沙盒快速實驗（所有閘門停用） | Experiment Worker |
-| `/04_fix` | 兩階段修復：診斷計畫 → GO → 實體修復 → 記憶更新 | Writer/SRE |
+| `/04_fix` | 兩階段修復：診斷計畫 → GO → 實體修復 → 記憶更新 → 真實失敗路徑回歸 | Writer/SRE |
 | `/05_condense` | 專案濃縮初始化（掃描 → 萃取 → 審閱 → 寫入） | Writer/SRE |
-| `/06_test` | 瀏覽器自動化視覺與功能測試 | Reader |
+| `/06_test` | 依介面與真實操作面收集視覺、命令、資料、日誌或執行證據 | Reader |
 | `/07_debug` | 堆疊追蹤分析、錯誤翻譯為商業語言 | Reader |
 | `/08_audit` | 全方位專案健康審計 | Writer/SRE |
 | `/09_commit` | 授權備份：掃描 → CHANGELOG 草稿 → GO → 更新 CHANGELOG + 明確清單 commit/push | Writer/SRE |
@@ -237,6 +237,8 @@ graph LR
 ---
 
 ### 🎯 技能系統
+
+Claude Edition 同步套用跨專案真實驗證契約：能啟動、操作、呼叫、查詢、截圖、讀日誌或觀察副作用時，AI 必須實測。mock、fixture、假資料、靜態截圖或局部單元測試只能作為局部證據；若功能依賴真實資料、執行期狀態、持久化、外部整合、命令輸出、自動化、雲端服務或操作者可見行為，缺少真實執行證據即不得宣稱完成。Claude 可用瀏覽器、桌面操作、終端、MCP、外掛宿主或 preview/deployment 工具時，必須先搜尋可用入口、確認就緒、重試短暫失敗，或改用等價真實路徑；不能因一次工具不可用就放棄該驗證方式。
 
 **目錄**: `.claude/skills/`
 

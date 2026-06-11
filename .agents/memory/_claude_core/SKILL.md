@@ -4,14 +4,14 @@ description: >
   Claude Edition 框架核心記憶卡。追蹤 Claude 平台核心規則、Slash Command 工作流與 Claude 專用文件。 Use
   when: 修改 Claude/ 目錄、Claude 規則或 Claude 指令工作流時。
 scopePath: Claude/
-last_updated: '2026-06-11T18:11:04+08:00'
+last_updated: '2026-06-12T01:01:19+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 3
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -26,6 +26,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
@@ -38,6 +39,8 @@ metadata:
 - The deprecated `claude-edition-rules` card is historical only; active Claude source ownership is here.
 - Claude blueprint and build commands now preserve same-turn design-to-build contract semantics.
 - Claude build commands now include a compact governance depth summary sourced from the shared quality matrix.
+- Claude build and fix commands now require real execution planning and evidence before completing behavior-dependent work.
+- Claude build, fix, and docs now require operator-tool discovery, transient retry handling, and equivalent real-path fallback before blocked real verification can be accepted.
 
 ## Active Constraints
 
@@ -51,6 +54,8 @@ metadata:
 - 01: Compacted Claude memory into schema v2 and absorbed active ownership from the legacy Claude rules card.
 - 02: Updated Claude blueprint and build commands for design-to-build governance.
 - 03: Added governance depth summary output to the Claude build command.
+- 04: Added real execution evidence requirements to Claude build, fix, and documentation.
+- 05: Added operator-path discovery and retry requirements to Claude build, fix, and documentation.
 
 ## Archive Index
 
@@ -63,6 +68,8 @@ metadata:
 - 舊 Claude 規範卡已降為歷史索引。
 - 除錯與交接流程已讀新版記憶欄位。
 - 建構指令輸出治理深度摘要，但不重貼完整矩陣。
+- 建構與修復指令已補真實執行證據要求。
+- Claude 驗證阻塞前需先搜尋可用操作者工具、重試短暫失敗或說明等價路徑。
 
 ## Tracked Files
 

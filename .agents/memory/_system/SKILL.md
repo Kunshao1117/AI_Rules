@@ -4,14 +4,14 @@ description: >
   全域系統設定與框架工作模式記憶卡。保存 AI_Rules 根層目前有效治理事實。 Use when:
   修改根層文件、部署腳本、提交規則、發布治理或跨平台全域契約時。
 scopePath: .
-last_updated: '2026-06-11T18:09:38+08:00'
+last_updated: '2026-06-12T01:10:48+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 5
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -40,6 +40,8 @@ metadata:
 - Public Windows PowerShell entrypoints must preserve UTF-8 compatibility for Windows PowerShell 5.1.
 - VSIX publishing is governed separately from Codex, Claude, and Antigravity framework versioning.
 - Root documentation now describes design-to-build contracts, autonomous governance depth, functional modularity, and interface adaptation evidence as framework-wide governance semantics.
+- Root documentation now defines cross-project real execution evidence as a framework-wide completion requirement.
+- Root documentation and platform capability governance now define operator-path verification retention: search available operation tools, retry transient failures, and use equivalent real-path alternatives before blocked validation is accepted.
 
 ## Active Constraints
 
@@ -55,6 +57,9 @@ metadata:
 - 03: Aligned root documentation with flat archive files and advisory granularity.
 - 04: Documented design-to-build, functional modularity, and interface adaptation governance.
 - 05: Documented autonomous governance depth as a shared framework decision.
+- 06: Documented the cross-project real execution evidence contract in root and platform docs.
+- 07: Documented operator-path discovery, transient retry, and equivalent real-path fallback as framework-wide verification requirements.
+- 08: Added changelog coverage for the real verification and operator-path governance update.
 
 ## Archive Index
 
@@ -69,6 +74,8 @@ metadata:
 - 跨 repo 修改必須先取得明確授權。
 - 根層文件已說明 8 檔是建議門檻，非硬阻擋。
 - AI 自治分級以不確定就升級為預設。
+- 跨專案驗證必須保留操作者工具搜尋、重試與等價真實路徑。
+- 跨專案真實驗證契約已寫入根層文件。
 
 ## Tracked Files
 

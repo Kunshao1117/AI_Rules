@@ -86,6 +86,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - **G (Skill Quality Scan)**: Optionally execute `.agents/skills/skill-factory/scripts/Measure-SkillQuality.ps1` if checking derivative skills.
 - **J (Data Layer Consistency)**: Ensure Database Schema models precisely match the expected API Response interfaces.
 - **K (Test Coverage Gap Analysis)**: `> [LOAD SKILL] impact-test-strategy`. Identify high-risk modules completely lacking unit/integration tests.
+- **K2 (Real Verification Gap Analysis)**: `> [LOAD SKILL] audit-engine`. Identify high-risk modules whose tests or screenshots cover only mocks, fixtures, static UI, or unit logic while the documented behavior depends on real data flow, persistence, UI operation, files, automation, permissions, external integrations, or deployment state. Also flag verification claims that do not show operator-tool discovery, transient retry evidence, or equivalent real-path alternatives.
 - **H (Accessibility Audit)**: `> [LOAD SKILL] a11y-testing` (JIT Load). Evaluate frontend UI components for semantic HTML and WCAG compliance.
 - **S (Security Architecture Review)**: `> [LOAD SKILL] security-sre`. Execute the S1-S5 checks:
   - S1: Hardcoded Secrets.
@@ -103,7 +104,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 **Directive**: You MUST compile ALL findings from Section 2 and Section 3 and write them to the intermediary log file.
 1. Target File: `.agents/logs/audit_logic_results.md`
-2. Structure: Markdown format with clear sections for `API Gaps`, `Security S1-S5`, `Dead Code`, and `A11Y Issues`.
+2. Structure: Markdown format with clear sections for `API Gaps`, `Security S1-S5`, `Dead Code`, `Real Verification Gaps`, and `A11Y Issues`.
 3. Master workflow action: Use native file write only for `.agents/logs/audit_logic_results.md`. DO NOT delegate this write to an evidence branch. DO NOT modify source files, configuration files, dependency files, or memory cards.
 
 ## 5. Interface Layer (Output Mandate)

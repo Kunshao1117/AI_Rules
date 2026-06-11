@@ -89,6 +89,24 @@ For browser-rendered UI changes that affect layout, components, styling, or inte
 5. If required evidence for the selected surface is missing, report the UI as pending visual validation and do not mark the task complete.
    （缺少該介面類型必要證據時，只能回報待驗收，不得宣稱完成）
 
+### Step 4.6: Real Function Evidence Boundary (真實功能證據邊界)
+
+Screenshots and DOM snapshots prove only what is visible at capture time. They do not, by themselves, prove real data, persistence, business logic, market data, time-series correctness, permissions, external integrations, or post-action side effects.
+
+For browser-rendered features that depend on data or behavior:
+
+1. Pair screenshots with at least one real execution signal: user interaction result, network request or response, console or server log, persisted state, timestamped data source, or accessible application state.
+2. If the page uses mock, fixture, seeded, or static data, label that evidence as layout or flow evidence only.
+3. If a browser branch cannot access the needed data source, it must return a blocked validation report with attempted steps and missing conditions.
+4. A browser evidence packet that contains only screenshots for a data-dependent feature is incomplete and must not be treated as passing.
+
+Operator-path retention:
+
+1. Do not drop browser validation because the first route, selector, tab, or tool call failed. Search the app routes, scripts, docs, and stable selectors before declaring the browser path unavailable.
+2. For transient browser, network, or server-readiness failures, retry with the Step 5 triage budget before switching paths.
+3. If browser control remains unavailable, use the nearest equivalent operator path when it still exercises the same behavior: desktop controller, plugin host, direct request plus logs, preview URL, or controlled real-path replay.
+4. The blocked report must list the searched entry points, tool attempts, retry count, alternative paths considered, and the missing condition.
+
 ## Constraints (約束)
 
 - Browser evidence branch output is read-only evidence; Master Agent performs all physical writes.
@@ -104,7 +122,7 @@ When Auto-Arbitration Gate FAILS, classify the error before deciding next action
 ```text
 [ERROR TRIAGE] On Auto-Arbitration failure:
 ├── TRANSIENT (暫時性): Network timeout, server not ready, rate limit, 429/503
-│   └── Action: Wait 3s with backoff, then retry (max 2 retries).
+│   └── Action: Wait 3s with backoff, then retry (max 2 retries). Do not abandon the browser evidence path after a single transient failure.
 │       Counts toward Circuit Breaker (Check 0 in _completion_gate).
 ├── SEMANTIC (語意性): Wrong selector, element not found, assertion mismatch, logic error
 │   └── Action: Return structured error to Master Agent for re-planning.
@@ -121,4 +139,5 @@ When Auto-Arbitration Gate FAILS, classify the error before deciding next action
 - Browser evidence branch returned successfully with report
 - All approved proposed changes applied by the Master Agent and tests pass
 - Visual verification screenshot/recording or DOM state evidence is included in the walkthrough
+- Data-dependent or behavior-dependent UI includes a real execution signal, or is explicitly marked failed or blocked
 - Layout-affecting browser UI changes include the required web or plugin-panel evidence, or are explicitly marked pending validation

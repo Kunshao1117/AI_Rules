@@ -1,7 +1,7 @@
 ---
 description: "Use when: 已有 /04-1_fix_plan 核准 GO，要執行修復寫入、記憶更新與回歸測試。DO NOT use when: 尚未完成修復計畫或未取得 GO。"
 required_skills:
-  [memory-ops, security-sre, test-patterns, impact-test-strategy, trunk-ops]
+  [memory-ops, security-sre, test-patterns, impact-test-strategy, ai-dev-quality-gate, trunk-ops]
 memory_awareness: full
 metadata:
   author: antigravity
@@ -76,7 +76,11 @@ Technical details may only appear after a `補充技術細節` section when they
 
 [FIX CIRCUIT BREAKER] Post-patch verification:
 - Run regression tests on patched files.
-- IF (Tests PASS): Chain to `/06_test` silently.
+- Reproduce the original failure path through the real operation surface whenever available: UI flow, request, command, query, log, scheduled job, plugin host, preview, sandbox, dry-run, or recorded real-source replay.
+- Before declaring the real failure path unavailable, search and try available operator tools and entries. Transient server, browser, tool connection, timeout, or readiness failures require retry or an equivalent real-path alternative.
+- If the failure path remains blocked, report searched entries, attempted tools, retry count or unsafe-retry reason, equivalent alternatives considered, and the smallest missing condition.
+- IF (Regression tests PASS and required real failure-path evidence PASS): Chain to `/06_test` silently when the fix affects UI, interaction, operator-visible output, or interface adaptation.
+- IF (Only mock, fixture, static screenshot, or unit evidence is available for a behavior-dependent bug): Mark verification as failed or blocked; do not report the fix complete.
 - IF (Tests FAIL - regression detected):
   - IF ([SUDO] detected in Director prompt): Bypass revert. Keep dirty patch. Warn Director.
   - ELSE: Auto-revert patch (`git checkout` on affected files). Trigger auto-repair loop (max 2 attempts).

@@ -4,14 +4,14 @@ description: >
   Codex Edition 框架核心記憶卡。追蹤 OpenAI Codex 平台適配層、Codex 工作流技能與 Codex 專用治理規則。 Use
   when: 修改 Codex/ 目錄、Codex 工作流或 Codex 專用文件時。
 scopePath: Codex/
-last_updated: '2026-06-11T18:10:41+08:00'
+last_updated: '2026-06-12T01:01:19+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 3
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -26,6 +26,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
@@ -38,6 +39,8 @@ metadata:
 - Codex must not claim automatic subagent use unless the workflow gate or Director explicitly requires it.
 - Codex build now owns same-turn design-to-build contracts; blueprint is reserved for pure architecture, initialization, or major pivots.
 - Codex build plans now include a compact governance depth summary sourced from the shared quality matrix.
+- Codex build and fix workflows now require real execution planning and evidence before completing behavior-dependent work.
+- Codex build, fix, and docs now require operator-tool discovery, transient retry handling, and equivalent real-path fallback before blocked real verification can be accepted.
 
 ## Active Constraints
 
@@ -51,6 +54,8 @@ metadata:
 - 01: Compacted Codex memory into schema v2 and removed root README ownership from this card.
 - 02: Repositioned Codex blueprint/build docs around same-turn design-to-build contracts.
 - 03: Added governance depth summary output to the Codex build workflow and documentation.
+- 04: Added real execution evidence requirements to Codex build, fix, and documentation.
+- 05: Added operator-path discovery and retry requirements to Codex build, fix, and documentation.
 
 ## Archive Index
 
@@ -63,6 +68,8 @@ metadata:
 - 記憶讀取已對齊新版欄位。
 - 根層 README 不再由本卡追蹤。
 - 建構計畫會輸出治理深度摘要，但不重貼完整矩陣。
+- 建構與修復入口已補真實執行證據要求。
+- Codex 驗證阻塞前需先搜尋可用操作者工具、重試短暫失敗或說明等價路徑。
 
 ## Tracked Files
 

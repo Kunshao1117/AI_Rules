@@ -5,14 +5,14 @@ description: >
   audit、commit、routine、handoff 與 project support files。Use when: 修改 Antigravity
   輔助規則或非核心工作流入口時。
 scopePath: Antigravity/.agents/
-last_updated: '2026-06-11T18:10:58+08:00'
+last_updated: '2026-06-12T01:01:19+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 3
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -27,6 +27,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core.support — Antigravity Support Memory
 
 ## Current Truth
@@ -37,6 +38,8 @@ metadata:
 - Changes here usually require checking shared policy drift and deployment injection behavior.
 - Antigravity build and test support workflows now use design-to-build contracts and interface-surface evidence.
 - Antigravity build and test support workflows now output governance depth summaries and evidence levels without duplicating the shared matrix.
+- Antigravity support workflows now require [REAL EXECUTION] planning and fail or block missing real evidence for behavior-dependent work.
+- Antigravity support workflows now require operator-tool search, transient retry, and equivalent real-path alternatives before accepting a blocked real verification result.
 
 ## Active Constraints
 
@@ -49,6 +52,8 @@ metadata:
 - 01: Created child ownership card for Antigravity support rules and remaining workflows.
 - 02: Updated Antigravity build and test support workflows for the governance flow redesign.
 - 03: Added governance depth summary and evidence-level handling to Antigravity support workflows.
+- 04: Added real execution planning, test, and audit gap handling to Antigravity support workflows.
+- 05: Added operator-path discovery, retry, and equivalent fallback requirements to Antigravity build, fix, test, and audit workflows.
 
 ## Archive Index
 
@@ -60,6 +65,8 @@ metadata:
 - 主卡保留平台核心事實；子卡只處理支援範圍。
 - 後續若單一工作流變大，再拆更深子卡。
 - 建構與測試入口只輸出分級摘要，不重貼共用矩陣。
+- 支援工作流已補真實驗證路徑與缺證據失敗判定。
+- 支援工作流已要求阻塞前先搜尋操作者工具、重試或評估等價路徑。
 
 ## Tracked Files
 

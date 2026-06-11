@@ -48,7 +48,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 
 > [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before planning changes.
-> [LOAD SKILL] If this task touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before planning changes.
+> [LOAD SKILL] If this task touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, real data, runtime behavior, operator-visible output, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before planning changes.
 > [LOAD SKILL] If this task touches product behavior, UX preference, design DNA, technical preference, communication preference, or acceptance criteria, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before planning changes. Report adopted context or deviation reasons.
 # source-command-03-build-skill
 
@@ -92,6 +92,8 @@ Use this skill when the user asks to run the migrated source command `03_build(�
 - If a blueprint already exists in the same conversation, reuse it directly instead of re-planning from scratch.
 - If no blueprint exists, include architecture decisions inside this build plan: functional boundaries, affected modules, public interfaces, rejected alternatives, and validation impact.
 - Use `/02_blueprint` only when the Director asks for pure architecture, full-system initialization, major technology pivot, or architecture-only output with no implementation.
+- If the feature touches real data, runtime state, persistence, external integrations, command output, automation, cloud services, or operator-visible behavior, plan the real verification path through `ai-dev-quality-gate` Real Execution Evidence Gate.
+- Real verification planning must include operator-tool discovery: available start commands, browser routes, desktop control path, CLI/TUI, plugin host, API, database, logs, dry-run, preview, or sandbox. Temporary unavailability requires retry planning or an equivalent real-path alternative.
 
 ### 3. Planning Mode (規劃階段)
 
@@ -106,11 +108,12 @@ Use this skill when the user asks to run the migrated source command `03_build(�
 - Plan MUST include:
   - **[GOVERNANCE DEPTH / 治理深度判定]**: Task level, matched escalation factors, exemption reason, and validation evidence. Output only the summary; do not duplicate the full autonomy matrix from `ai-dev-quality-gate`.
   - **[ARCHITECTURE]**: Functional boundary, affected modules, public interface changes, and rejected alternatives.
+  - **[REAL EXECUTION]**: Real operation surface, operator-tool discovery result, data source, executable validation path, transient retry strategy, equivalent real-path alternative, expected evidence level, possible blockers, and smallest authorization needed.
   - **[MODIFY]**: Files to be modified
   - **[NEW]**: New files to be created (required for memory archiving)
   - **[DELETE]**: Files to be deleted
   - **[COMPLETENESS]**: User flow, loading/empty/error/permission/offline states when relevant.
-  - **[VALIDATION]**: Unit, integration, regression, and interface adaptation evidence required for completion.
+  - **[VALIDATION]**: Unit, integration, regression, real execution evidence, and interface adaptation evidence required for completion. Mock, fixture, fake, static screenshot, or synthetic data evidence is partial evidence only.
   - **[MEMORY/DOCS]**: Memory cards, project context, README, changelog, or release notes affected by the change.
   - Code diff previews for each change
 
@@ -143,7 +146,11 @@ Use this skill when the user asks to run the migrated source command `03_build(�
 ### 7. Validation (驗證)
 
 - Run linter/tests via `Bash` tool. Apply `[LINTER GATE]` (max 3 retries).
-- If tests pass: Report completion in Traditional Chinese with business-level summary.
+- If behavior depends on real data, runtime state, persistence, external integration, command output, automation, cloud service, or operator-visible output, collect real execution evidence from the planned operation surface before reporting completion.
+- Before declaring the planned operation surface unavailable, re-check available operator tools and entries. Transient server, browser, desktop-control, tool connection, timeout, or readiness failures require retry or an equivalent real-path alternative.
+- If operation evidence remains blocked, report searched entries, attempted tools, retry count or unsafe-retry reason, equivalent alternatives considered, and the smallest missing condition.
+- If only mock, fixture, static screenshot, or unit evidence is available for behavior-dependent work, report validation as failed or blocked instead of complete.
+- If tests and required real execution evidence pass: Report completion in Traditional Chinese with business-level summary.
 - If tests fail after 3 retries: Apply `[CIRCUIT BREAK]`. HALT and notify Director.
 
 ---

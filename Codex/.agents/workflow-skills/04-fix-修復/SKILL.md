@@ -48,7 +48,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 
 > [LOAD SKILL] If this fix touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before diagnosing release impact.
-> [LOAD SKILL] If this fix touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before diagnosing quality impact.
+> [LOAD SKILL] If this fix touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, real data, runtime behavior, operator-visible output, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before diagnosing quality impact.
 > [LOAD SKILL] If this fix may change user experience, product behavior, design DNA, acceptance defaults, or existing preferences, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before diagnosing impact.
 # source-command-04-fix-skill
 
@@ -82,7 +82,8 @@ Use this skill when the user asks to run the migrated source command `04_fix(修
 1. Map target file(s) to owning module(s) via memory cards.
 2. Identify affected modules through `## Relations`.
 3. Classify risk level (High / Medium / Low).
-4. Include impact report in patch plan (§3).
+4. Identify original failure reproduction path, real operation surface, operator-tool discovery result, data source, executable validation path, retry or equivalent-path strategy, and hard blocker status.
+5. Include impact report in patch plan (§3).
 
 ### 2. Minimal Impact Principle (最小影響原則)
 
@@ -104,6 +105,7 @@ Use this skill when the user asks to run the migrated source command `04_fix(修
   3. 【修改範圍】(Exact files to be touched)
   4. 【實作邏輯對照】(Before / After diff)
   5. 【連帶影響評估】
+  6. 【真實回歸驗證】(Original failure path, real operation surface, operator tools searched, data source, executable evidence, transient retry plan, equivalent real-path alternative, blocker status, and why mock-only evidence is insufficient when applicable)
 
 ### 4. Halt & Eject
 
@@ -128,7 +130,11 @@ Use this skill when the user asks to run the migrated source command `04_fix(修
 > [LOAD SKILL] Re-confirm `.agents/skills/impact-test-strategy/SKILL.md` is loaded.
 
 - Run tests scoped to affected modules via `Bash` tool. Apply `[LINTER GATE]`.
-- Verify the original bug is resolved AND no regression introduced.
+- Verify the original bug is resolved through the real failure path whenever available: UI flow, request, command, query, log, scheduled job, plugin host, preview, sandbox, dry-run, or recorded real-source replay.
+- Before declaring the real failure path unavailable, search and try available operator tools and entries. Transient server, browser, desktop-control, tool connection, timeout, or readiness failures require retry or an equivalent real-path alternative.
+- If the failure path remains blocked, report searched entries, attempted tools, retry count or unsafe-retry reason, equivalent alternatives considered, and the smallest missing condition.
+- If only mock, fixture, static screenshot, or unit evidence is available for a behavior-dependent bug, report validation as failed or blocked instead of complete.
+- Verify no regression introduced.
 
 ### 7. Memory Update (記憶更新)
 

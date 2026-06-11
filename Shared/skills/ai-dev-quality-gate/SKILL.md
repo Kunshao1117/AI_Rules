@@ -3,9 +3,11 @@ name: ai-dev-quality-gate
 description: >
   [Quality] AI development quality gate for autonomous governance depth,
   tech freshness, UI component reuse, UI design exploration, new project UI discussion,
-  UI skill discovery, design DNA, generated image downgrade, and interface adaptation evidence.
+  UI skill discovery, design DNA, generated image downgrade, real execution evidence,
+  and interface adaptation evidence.
   Use when: AI 開發品質、技術新鮮度、UI 介面、UI 探索、共用元件、設計 DNA、生成圖降級、真實畫面證據、
-  介面適配驗收、桌面 GUI、Python GUI、新專案 UI 討論、UI 設計技能搜尋、期貨使用端、客製化網頁或 VS Code 插件介面任務。
+  真實資料驗證、實際操作驗收、介面適配驗收、桌面 GUI、Python GUI、新專案 UI 討論、UI 設計技能搜尋、期貨使用端、
+  客製化網頁或 VS Code 插件介面任務。
   DO NOT use when: 純後端內部重構、無 UI 且無高變動外部技術依賴的微小修正。
 metadata:
   author: antigravity
@@ -26,6 +28,7 @@ Load this skill when any task touches:
 - UI layout, components, styling, typography, spacing, interface adaptation, desktop window behavior, or interaction states.
 - Generated UI images, Stitch screens, visual reference screenshots, design DNA, or Director preference discovery.
 - Trading terminals, dashboards, admin tools, custom websites, or product-facing pages.
+- Real data, real execution paths, live service state, CLI output, database effects, scheduled jobs, automation, cloud deployment, or external integrations.
 
 ## Procedure
 
@@ -70,6 +73,50 @@ Before implementing against a framework, plugin platform, MCP protocol, or brows
 4. Record version assumptions in the plan or completion report when they affect implementation choices.
 
 Do not use model memory as the source of truth for APIs that may have changed.
+
+### 2.5 Real Execution Evidence Gate
+
+Production build, fix, test, and audit work must default to real verification. If a behavior can be started, operated, called, queried, observed, screenshotted, logged, or inspected with available tools, the agent must attempt that verification before claiming completion.
+
+Classify the real-world operation surface before choosing evidence:
+
+| Surface | Minimum real evidence |
+| --- | --- |
+| Web app or admin panel | Running app, browser interaction, final UI state, and request or response evidence when data is involved. |
+| Desktop GUI | Running window, real user flow, screenshots, logs, or observable state output. |
+| CLI, terminal, or TUI | Actual command, exit code, stdout or stderr, non-interactive behavior, and failure case when relevant. |
+| Backend service | Real request, response payload or status, server log, and data side-effect check when applicable. |
+| Database or migration | Query result, before or after state, transaction or rollback evidence, and branch or sandbox isolation when production data is unsafe. |
+| Scheduled job or automation | Actual trigger or dry-run supported by the app, timestamped run record, retry or failure evidence when relevant. |
+| IDE extension or plugin | Real host environment, command feedback, panel state, trust or permission state, and confirmation behavior. |
+| Scraper or data sync | Real source response, parsed output, timestamp, and rate-limit or failure handling evidence. |
+| AI or model feature | Real input and output samples, source data used, evaluation sample, and uncertainty limits. |
+| Cloud or deployment | Real deployment status, health check, logs, version, asset, or endpoint evidence. |
+
+Verification method discovery and retention:
+
+1. Before "unable to verify", inventory project scripts, dev servers, tests, browser or desktop control, terminal, plugin host, MCP/API tools, logs, databases, artifacts, and automatable documented workflows.
+2. Select the closest operator-capable path for the real operation surface and pair it with lower-level evidence when useful.
+3. Not found immediately is not unavailable. Search repo docs, package scripts, task files, routes, and platform capability notes first.
+4. Transient warmup, stale browser, connection, timeout, rate-limit, or delayed readiness failures require short backoff or readiness checks before changing strategy.
+5. If the primary operator tool remains unavailable, try an equivalent real path: another controller, command, direct request, read-only database check, log inspection, sandbox, preview, dry-run, or recorded real-source replay.
+6. Blocked reports must list search scope, tools tried, retry count or unsafe-retry reason, alternatives considered, and the smallest missing condition.
+
+Evidence levels:
+
+1. Live evidence: current production-like service, real source, real runtime, or actual tool output.
+2. Controlled real-path evidence: sandbox, local environment, preview branch, test database, or dry-run that exercises the same executable path.
+3. Recorded real-source evidence: captured real response or log with timestamp and source, used only when live access is unavailable or unsafe.
+4. Synthetic, fixture, mock, or static screenshot evidence: allowed for unit logic, layout, or skeleton validation only. It cannot prove real feature completion.
+
+Completion rules:
+
+1. If the requested outcome depends on real data, external state, persistence, timing, permissions, network behavior, or operator-visible behavior, completion requires level 1, 2, or 3 evidence.
+2. Level 4 evidence must be reported as partial validation only and cannot be used to mark the function complete.
+3. "Unable to verify" is allowed only after tool and surface inventory, operator-tool discovery, at least one concrete verification attempt, and retry or equivalent-path consideration, unless the blocker is obvious before attempting.
+4. Allowed blockers are limited to missing credentials or login, missing physical hardware, unsafe destructive external action, unavailable third-party service, rate limit, CAPTCHA, MFA, legal or safety restriction, or absent Director authorization for a mutating real-world action.
+5. Blocked verification must report attempted checks, collected evidence, tools searched or tried, retry status, equivalent alternatives considered, missing external condition, and the next smallest authorization or input needed.
+6. Insufficient evidence is a failed or blocked validation state, not a successful completion state.
 
 ### 3. Component Reuse Gate
 
@@ -143,6 +190,7 @@ Do not force every interface into web responsive rules. Match the evidence to th
 For affected UI or high-change technical work, include:
 
 - Tech freshness check
+- Real execution evidence status
 - Governance depth decision
 - Component reuse decision
 - Design direction source
@@ -156,3 +204,4 @@ For affected UI or high-change technical work, include:
 - This skill does not authorize writes, installs, memory updates, commits, pushes, deployments, or mutating MCP calls.
 - Project design DNA belongs in project context or project skills only after Director approval.
 - Missing interface adaptation evidence blocks completion claims for layout, component, style, or interaction changes.
+- Missing real execution evidence blocks completion claims for behavior that depends on real data, runtime state, persistence, integration, or operator-visible output.

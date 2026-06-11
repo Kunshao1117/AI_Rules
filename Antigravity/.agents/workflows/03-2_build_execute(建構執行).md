@@ -1,6 +1,6 @@
 ---
 description: "Use when: 已有 /03_build 設計到建構合約並取得 GO，要執行建構寫入、記憶歸卡與驗證測試。DO NOT use when: 尚未完成建構合約或未取得 GO。"
-required_skills: [memory-ops, security-sre, code-quality, test-patterns, trunk-ops]
+required_skills: [memory-ops, security-sre, code-quality, test-patterns, ai-dev-quality-gate, trunk-ops]
 memory_awareness: full
 metadata:
   author: antigravity
@@ -57,7 +57,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - IF (Not triggered by an explicit GO approval from /03_build):
   - [HALT] Output exactly: 「🔴 [AUTH HALT] 未收到建構計畫授權。請先執行 /03_build 並取得 GO 確認。」
 - ELSE:
-  - Load `implementation_plan.md` to identify [ARCHITECTURE], [NEW], [MODIFY], [COMPLETENESS], [VALIDATION], and [MEMORY/DOCS] sections. Proceed to §1.
+  - Load `implementation_plan.md` to identify [ARCHITECTURE], [REAL EXECUTION], [NEW], [MODIFY], [COMPLETENESS], [VALIDATION], and [MEMORY/DOCS] sections. Proceed to §1.
 
 ## 1. Physical Write（實體寫入磁碟）
 
@@ -105,10 +105,15 @@ Technical details may only appear after a `補充技術細節` section when they
 
 // turbo
 
-## 5. Automated Chaining to Interface Test（自動串聯介面測試）
+## 5. Real Execution And Interface Verification（真實執行與介面驗證）
 
-- 單元測試通過後，若本次變更影響版面、元件、樣式、互動或操作者可見輸出，**必須自主觸發** `/06_test` 工作流，依 [VALIDATION] 的介面類型執行介面適配證據驗證。
-- **禁止**要求總監手動執行測試工作流。
+- 單元測試通過後，若本次變更影響真實資料、執行期狀態、持久化、外部整合、命令輸出、自動化、雲端服務或操作者可見行為，必須依 [REAL EXECUTION] 與 [VALIDATION] 收集真實執行證據。
+- 若本次變更影響版面、元件、樣式、互動或操作者可見輸出，**必須自主觸發** `/06_test` 工作流，依 [VALIDATION] 的介面類型執行介面適配與真實功能證據驗證。
+- 非 UI 的後端、CLI、資料庫、排程、外掛或雲端變更，必須執行對應的真實命令、請求、查詢、日誌、dry-run、preview、sandbox 或只讀狀態檢查。
+- 執行驗證前必須重新確認可用操作者工具與入口；若計畫中的主要工具短暫失敗，先確認服務就緒、重試或改用等價真實路徑，不得因第一次失敗就捨棄該驗證方式。
+- 若最後仍無法操作驗證，回報必須列出已搜尋的入口、嘗試的工具、重試次數或未重試理由、已評估的等價路徑與最小阻塞條件。
+- 若只取得 mock、fixture、假資料、靜態截圖或局部單元測試證據，結果必須標記為驗證失敗或阻塞，不得結案。
+- **禁止**要求總監手動執行可由代理完成的測試工作流；只有缺少外部授權、真實憑證、實體設備、不可安全執行的破壞性動作、第三方不可用、MFA/CAPTCHA、法規或安全限制時，才可回報阻塞。
 
 ## COMPLETION GATE（完成閘門 — 不可略過）
 

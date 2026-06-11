@@ -48,7 +48,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 
 > [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before planning changes.
-> [LOAD SKILL] If this task touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before planning changes.
+> [LOAD SKILL] If this task touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, real data, runtime behavior, operator-visible output, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before planning changes.
 > [LOAD SKILL] If this task touches product behavior, UX preference, design DNA, technical preference, communication preference, or acceptance criteria, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before planning changes. Report adopted context or deviation reasons.
 # [WORKFLOW: BUILD — PLAN (建構計畫)]
 
@@ -82,6 +82,8 @@ Technical details may only appear after a `補充技術細節` section when they
 - 若沒有藍圖，將架構決策納入本次建構計畫：功能邊界、受影響模組、公開介面、不採用方案與驗證影響。
 - `/02_blueprint` 僅用於純架構、全系統初始化、重大技術轉向或不立即實作的輸出。
 - 根據 Glob 模式，自動套用 `.agents/rules/` 中所有適用的規範。
+- 若功能涉及真實資料、執行期狀態、持久化、外部整合、命令輸出、自動化、雲端服務或操作者可見行為，必須依 `ai-dev-quality-gate` 的 Real Execution Evidence Gate 規劃真實驗證路徑。
+- 真實驗證規劃必須包含操作者工具搜尋：可用啟動指令、瀏覽器路徑、桌面操作路徑、CLI/TUI、外掛宿主、API、資料庫、日誌、dry-run、preview 或 sandbox；短暫不可用時需規劃重試或等價真實路徑。
 
 > [LOAD SKILL] §3 產出計畫並涉及程式碼時，必須讀取：
 > 1. `view_file .agents/skills/code-quality/SKILL.md`
@@ -95,11 +97,12 @@ Technical details may only appear after a `補充技術細節` section when they
 - 產出詳細的 `implementation_plan.md` Artifact，附上程式碼 `diff`，並明確標記：
   - **[GOVERNANCE DEPTH / 治理深度判定]**：任務等級、命中升級因子、豁免理由、驗證證據；只輸出摘要，不重貼 `ai-dev-quality-gate` 的完整自治矩陣
   - **[ARCHITECTURE]**：功能邊界、受影響模組、公開介面變更、不採用方案
+  - **[REAL EXECUTION]**：真實操作面、操作者工具搜尋結果、資料來源、可執行驗證路徑、短暫失敗重試策略、等價真實替代路徑、預期證據等級、可能阻塞條件與最小授權需求
   - **[MODIFY]**：修改的現有檔案
   - **[NEW]**：本次建構將新建的原始碼檔案（後續歸卡流程依賴此清單）
   - **[DELETE]**：將被刪除的檔案
   - **[COMPLETENESS]**：使用者流程、載入、空狀態、錯誤、權限、離線狀態
-  - **[VALIDATION]**：單元、整合、回歸與介面適配證據
+  - **[VALIDATION]**：單元、整合、回歸、真實執行證據與介面適配證據；假資料、示意資料、靜態截圖或 mock 僅能列為局部證據，不得作為完成依據
   - **[MEMORY/DOCS]**：需要更新的記憶卡、脈絡卡、README、CHANGELOG 或發布紀錄
 
 ## 4. Code Review Gate（程式碼審查閘門）

@@ -5,14 +5,14 @@ description: >
   experiment、test、audit、commit、routine 與 skill-forge entries。Use when: 修改 Codex
   非核心 workflow skill 或 shared gate 時。
 scopePath: Codex/.agents/workflow-skills/
-last_updated: '2026-06-11T18:10:46+08:00'
+last_updated: '2026-06-12T01:01:19+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 3
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -27,6 +27,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core.support — Codex Support Memory
 
 ## Current Truth
@@ -37,6 +38,8 @@ metadata:
 - The parent card keeps Codex core identity, install, config, and the highest-risk workflow entries.
 - Codex test workflow now selects evidence by interface surface, including browser, desktop GUI, plugin panel, terminal, and mixed surfaces.
 - Codex test workflow now records evidence level as minimum, enhanced, or exemption and keeps evidence matched to the selected surface.
+- Codex test and audit support workflows now treat missing real execution evidence as failed or blocked validation for behavior-dependent work.
+- Codex test and audit support workflows now require operator-tool discovery, retry/readiness checks, and equivalent real-path alternatives before marking real verification blocked.
 
 ## Active Constraints
 
@@ -49,6 +52,8 @@ metadata:
 - 01: Created child ownership card for Codex support workflow skills.
 - 02: Updated Codex test workflow for interface adaptation evidence.
 - 03: Added evidence-level handling to the Codex test workflow.
+- 04: Added real execution evidence and audit gap handling to Codex support workflows.
+- 05: Added operator-tool discovery, retry, and equivalent fallback requirements to Codex test and audit support workflows.
 
 ## Archive Index
 
@@ -60,6 +65,8 @@ metadata:
 - 主卡保留 Codex 核心設定與高風險入口。
 - 健檢、提交、巡檢與技能鍛造等入口都納入追蹤。
 - 測試入口依治理深度選擇證據等級。
+- 測試與健檢入口已納入真實執行證據缺口。
+- 測試與健檢會追查缺少工具搜尋、重試或等價路徑的驗證聲稱。
 
 ## Tracked Files
 

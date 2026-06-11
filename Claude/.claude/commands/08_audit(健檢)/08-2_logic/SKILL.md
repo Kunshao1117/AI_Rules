@@ -74,6 +74,8 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 2.3 Test Coverage Gap (測試覆蓋缺口)
 
 - 識別核心業務路徑中缺少測試覆蓋的區域
+- 識別已有測試但只有 mock、fixture、靜態截圖或局部單元邏輯，缺少真實執行證據的高風險區域
+- 識別宣稱已驗證但沒有操作者工具搜尋、短暫失敗重試或等價真實路徑替代記錄的區域
 - 依「業務影響 × 缺口嚴重程度」排序優先修復清單
 
 ## 2.4 Dead Code & Orphan Detection (死碼偵測)
@@ -90,7 +92,7 @@ Technical details may only appear after a `補充技術細節` section when they
 {
   security: { s1, s2, s3, s4, s5 },  // 各維度：{ status: green|yellow|red, findings[] }
   api_alignment: { broken_links[], type_mismatches[], deprecated[] },
-  test_coverage: { critical_gaps[] },
+  test_coverage: { critical_gaps[], real_evidence_gaps[] },
   dead_code: { unused_exports[], orphan_files[] }
 }
 ```

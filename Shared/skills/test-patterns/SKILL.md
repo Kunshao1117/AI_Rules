@@ -105,6 +105,17 @@ Verify these states when calling APIs from frontend:
 
 ## 5. Mock Strategy Decision Tree (Mock 策略決策樹)
 
+Unit tests and mocks validate scoped logic and contracts. They do not prove that the complete feature works against the real runtime, real data source, real external service, real file system state, real browser behavior, or real operator workflow.
+
+Use mocks to isolate:
+
+- Error handling
+- Branch coverage
+- Contract assumptions
+- Deterministic unit behavior
+
+Do not use mocks, fixtures, fake timers, seeded data, or synthetic screenshots as completion evidence for data-dependent or integration-dependent features. Pair them with real execution evidence through `ai-dev-quality-gate`, `browser-testing`, terminal commands, database queries, logs, preview deployments, or controlled real-path environments. If that real path is unavailable, document operator-tool discovery, transient retry status, equivalent real-path alternatives considered, and the remaining blocker.
+
 ```
 What are you mocking?
 ├── External API calls (fetch/axios to third-party)
@@ -149,6 +160,7 @@ When generating tests, cross-reference target module's memory card:
 ## Constraints (限制與邊界)
 
 - Scope: unit tests and contract validation ONLY
+- Mocked, fixture, or fake-time tests are partial evidence and cannot by themselves complete a feature that depends on real runtime behavior.
 - E2E browser tests: `browser-testing` + `test-automation-strategy`
 - Performance testing: NOT covered
 - Test execution: via terminal `run_command`, NOT MCP tools

@@ -4,14 +4,14 @@ description: >
   Antigravity 框架核心記憶卡。追蹤 Antigravity 平台核心規則、工作流與平台文件。 Use when: 修改 Antigravity/
   目錄、Antigravity 規則或 Antigravity 工作流時。
 scopePath: Antigravity/
-last_updated: '2026-06-11T18:10:51+08:00'
+last_updated: '2026-06-12T01:01:19+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 2
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -37,6 +37,8 @@ metadata:
 - Antigravity rules protect shared memory, project skills, and project context during deployment and cleanup.
 - Antigravity platform behavior must stay semantically aligned with Claude and Codex where possible.
 - Antigravity core blueprint and build execution workflows now preserve design-to-build contract semantics.
+- Antigravity build, fix, test, audit, and docs now apply the real execution evidence contract for behavior-dependent completion.
+- Antigravity docs now require verification entry search, transient retry, and equivalent real-path fallback before blocked real verification can be accepted.
 
 ## Active Constraints
 
@@ -49,6 +51,8 @@ metadata:
 
 - 01: Compacted Antigravity memory into schema v2 and removed shared system memory ownership.
 - 02: Updated core blueprint and build execution workflows for design-to-build governance.
+- 03: Aligned Antigravity workflows and docs with real execution evidence requirements.
+- 04: Documented operator-path discovery and retry requirements for Antigravity real verification.
 
 ## Archive Index
 
@@ -60,6 +64,8 @@ metadata:
 - 記憶治理已對齊新版壓縮模型。
 - 本卡不再追蹤根層系統卡或地圖卡來源。
 - 後續仍可拆出工作流子卡。
+- 建構、修復、測試與健檢已要求真實執行證據。
+- 真實驗證阻塞前需先搜尋入口、重試短暫失敗或說明等價路徑。
 
 ## Tracked Files
 

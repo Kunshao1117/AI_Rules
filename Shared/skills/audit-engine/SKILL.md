@@ -1,8 +1,8 @@
 ---
 name: audit-engine
 description: >
-  [Audit] Health audit semantic reasoning engine — AI-driven analysis for /08_audit_index §2 (S1–S5, API, test coverage, architecture).
-  Use when: 執行 /08_audit_index 的語義推理審查（安全架構 S1–S5 / 前後端串接比對 / 測試覆蓋缺口 / 架構分析）。
+  [Audit] Health audit semantic reasoning engine — AI-driven analysis for /08_audit_index §2 (S1–S5, API, test coverage, real evidence, architecture).
+  Use when: 執行 /08_audit_index 的語義推理審查（安全架構 S1–S5 / 前後端串接比對 / 測試覆蓋缺口 / 真實驗證缺口 / 架構分析）。
   DO NOT use when: 執行 ESLint/npm audit 等工具掃描（用 code-audit）、非 /08_audit_index 工作流、修復或重構場景。
 metadata:
   author: antigravity
@@ -82,12 +82,12 @@ Invoked exclusively by `/08_audit_index`. Not applicable to build, fix, or refac
 
 ---
 
-## 4. §3 — Test Coverage Gap Analysis (4-Step Procedure)
+## 4. §3 — Test Coverage And Real Evidence Gap Analysis
 
 > **Prerequisite**: All memory card `## Current Truth` / `## Active Constraints` sections and test directory structure have been read.
 
 ```
-[TEST COVERAGE AUDIT GATE] Enforce all four steps:
+[TEST COVERAGE AUDIT GATE] Enforce all six steps:
 │
 ├── Step 1: Extract complete "critical business function" list
 │           from all memory card ## Current Truth and ## Active Constraints sections
@@ -97,7 +97,17 @@ Invoked exclusively by `/08_audit_index`. Not applicable to build, fix, or refac
 │
 ├── Step 3: Cross-compare → Output list of critical functions with zero test coverage
 │
-└── Step 4: Calculate uncovered rate (uncovered count ÷ total critical functions)
+├── Step 4: For each covered critical function, classify evidence level:
+│           live evidence, controlled real-path evidence, recorded real-source evidence,
+│           or synthetic/mock/static evidence only
+│
+├── Step 5: Flag critical functions with tests but no real execution path evidence
+│           when the behavior depends on data flow, persistence, UI operation,
+│           external integration, files, time, automation, permissions, or deployment state.
+│           Also flag real-verification claims that lack operator-tool discovery,
+│           transient retry evidence, or equivalent real-path alternatives.
+│
+└── Step 6: Calculate uncovered rate (uncovered count ÷ total critical functions)
     ├── Uncovered rate > 50% → 🔴 Red
     ├── Uncovered rate 20–50% → 🟡 Yellow
     └── Uncovered rate < 20% → 🟢 Green
@@ -105,7 +115,7 @@ Invoked exclusively by `/08_audit_index`. Not applicable to build, fix, or refac
     List top 5 highest-risk uncovered functions (sorted by module dependency count)
 ```
 
-**Output**: Uncovered rate + top-5 list → final report under【測試覆蓋缺口】section.
+**Output**: Uncovered rate + top-5 list + functions with only synthetic/mock/static evidence → final report under【測試與真實驗證缺口】section.
 
 ---
 

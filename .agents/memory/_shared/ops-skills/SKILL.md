@@ -5,14 +5,14 @@ description: >
   skill files。Use when: 修改 Shared/skills 下非記憶核心與非 Supabase Postgres
   best-practices 的操作型技能時。
 scopePath: Shared/skills/
-last_updated: '2026-06-11T18:10:35+08:00'
+last_updated: '2026-06-12T01:10:03+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 3
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,6 +36,8 @@ metadata:
 - Code quality treats size as a review signal, keeps cohesive files when justified, and splits only by real functional boundaries.
 - AI development quality owns the autonomous governance depth matrix; workflows output summaries only.
 - UI and test skills now select evidence by interface surface instead of forcing every UI into web responsive proof.
+- Quality and testing skills now require real execution evidence for behavior that depends on real data, runtime state, persistence, integrations, automation, or operator-visible output.
+- Quality, browser, test automation, impact, audit, and unit-test guidance now require searched operator paths, retry or readiness checks, and equivalent real-path fallback before accepting blocked verification.
 ## Active Constraints
 - Keep this card focused on ownership and current constraints, not per-skill long history.
 - Add new general Shared skills here unless they clearly require a dedicated child card.
@@ -44,6 +46,8 @@ metadata:
 - 01: Created child ownership card for general Shared operational skills.
 - 02: Updated quality and UI testing skills for functional modularity and interface adaptation evidence.
 - 03: Added autonomous governance depth and explicit large-file split criteria to shared quality skills.
+- 04: Added real execution evidence rules across quality, browser, test, impact, and unit-test skills.
+- 05: Added operator-tool discovery, transient retry handling, and equivalent real-path fallback rules to shared quality and testing skills.
 ## Archive Index
 - None.
 ## 中文摘要
@@ -51,6 +55,7 @@ metadata:
 - 記憶核心與專案脈絡核心仍留在 Shared 主卡。
 - Supabase Postgres 大型參考集另有專卡。
 - 共用品質規則保存自治分級矩陣，平台工作流只輸出摘要。
+- 真實功能驗收不能只靠假資料、mock、fixture 或靜態截圖；缺證據前必須先交代工具搜尋、重試與等價路徑。
 ## Tracked Files
 - Shared/skills/a11y-testing/SKILL.md
 - Shared/skills/ai-dev-quality-gate/SKILL.md

@@ -50,7 +50,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 # [SKILL: /06_test — 介面與回歸測試]
 
-> [LOAD SKILL] If the test target includes layout, components, styling, interaction states, interface adaptation, generated UI references, or design DNA, read `.claude/skills/ai-dev-quality-gate/SKILL.md` before defining visual evidence.
+> [LOAD SKILL] If the test target includes layout, components, styling, interaction states, interface adaptation, generated UI references, design DNA, real data, runtime behavior, or operator-visible output, read `.claude/skills/ai-dev-quality-gate/SKILL.md` before defining visual and real execution evidence.
 > [LOAD SKILL] If the test target includes design DNA, product preference, communication preference, or acceptance preference, read `.claude/skills/project-context-protocol/SKILL.md` and compare rendered behavior against approved `.agents/context/**/CONTEXT.md` cards.
 
 ## 1. Test Scope Identification (測試範圍識別)
@@ -66,11 +66,17 @@ Technical details may only appear after a `補充技術細節` section when they
 > [LOAD SKILL] Read `.claude/skills/browser-testing/SKILL.md`.
 
 - Classify the target surface before selecting evidence: web/browser, desktop GUI, IDE/plugin panel, terminal/CLI/TUI, or mixed surface.
+- Classify the real operation surface before selecting evidence: web, desktop GUI, CLI/TUI, backend service, database, scheduled job, automation, IDE/plugin, scraper/data sync, AI/model feature, cloud/deployment, or mixed surface.
+- Inventory operator-capable verification entries before selecting evidence: project scripts, app routes, browser control, desktop GUI control, terminal commands, plugin host commands, direct requests, logs, databases, dry-run, preview, sandbox, recorded real-source replay, or read-only production checks.
 - Select evidence level from the preceding **[GOVERNANCE DEPTH / 治理深度判定]** summary, or infer it when the Director invokes testing directly:
   - Minimum evidence: targeted proof for a lightweight change, with the selected evidence matching the interface surface.
   - Enhanced evidence: real rendered or executed evidence across the affected states for medium features and all user-visible UI changes.
   - Exemption evidence: allowed only when the target has no UI, no user-visible output, and no interface adaptation impact; state the reason instead of collecting visual evidence.
-- Evidence type MUST match the interface surface. Missing required evidence means the result is pending validation, not complete.
+- Evidence type MUST match the interface surface and real operation surface. Missing required evidence means the result is failed or blocked, not complete.
+- For data-dependent or behavior-dependent features, collect at least one real execution signal: request/response, server log, database query, file side effect, timestamped source data, command output, automation run record, plugin host state, model input/output sample, deployment health check, or controlled real-path dry-run.
+- If the primary operator path is temporarily unavailable, confirm readiness and retry before abandoning it. If it remains unavailable, use the nearest equivalent real-path alternative and explain the equivalence.
+- If no operator or equivalent real path can run, the test result is blocked and must list searched entries, attempted tools, retry count or unsafe-retry reason, alternatives considered, and the smallest missing condition.
+- Mock, fixture, seeded, fake, static, or screenshot-only evidence may support layout or unit logic, but cannot pass a feature that requires real verification.
 - For web and browser-rendered panels, run the Delegation Gate and use the Claude adapter for browser evidence.
 - For desktop GUI, collect screenshots or UI test evidence for minimum window size, resized window, high-DPI/font-scale behavior, dialogs, scroll regions, and keyboard navigation.
 - For terminal or CLI/TUI output, collect command output, wrapping behavior, error readability, exit code, and non-interactive mode evidence.
@@ -83,13 +89,14 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 3. Result Processing (結果處理)
 
-- IF (All tests PASS): Report success in Traditional Chinese.
-- IF (Tests FAIL):
+- IF (All tests PASS and required real execution evidence is present): Report success in Traditional Chinese.
+- IF (Tests FAIL or required real execution evidence is missing):
   - Collect failure screenshots and descriptions.
   - Output diagnostic report:
     1. 【失敗項目】— What failed
-    2. 【截圖證據】— Screenshot paths
-    3. 【建議修復方向】— Suggested fix approach
+    2. 【證據狀態】— Screenshot paths, runtime evidence, or missing evidence
+    3. 【操作嘗試】— Searched entries, attempted tools, retry status, and equivalent paths considered
+    4. 【建議修復方向】— Suggested fix approach
 
 ---
 

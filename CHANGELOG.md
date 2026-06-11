@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-12] 真實驗證治理強化
+
+### feat
+- **Real execution evidence contract** — 三平台建構、修復、測試與健檢流程改為「可驗必驗」；假資料、mock、fixture、靜態截圖或局部單元測試只能作為局部證據，缺少真實執行證據時必須標記為失敗或阻塞。
+- **Operator path retention** — 驗證入口沒有第一時間找到或操作者工具短暫失敗時，AI 必須搜尋可用入口、確認服務就緒、重試或改用等價真實路徑，不得直接放棄該驗證方式。
+- **Cross-platform verification routing** — 平台能力矩陣補入瀏覽器、桌面操作、終端、外掛宿主、API、資料庫、日誌、preview 與 sandbox 等操作型驗證路徑，並要求阻塞報告列出搜尋、嘗試、重試與替代路徑。
+
+### docs
+- **Framework documentation alignment** — 根文件與 Antigravity、Codex、Claude 文件同步說明真實驗證契約與操作者路徑保留原則。
+
 ## [2026-06-11] 三平台治理流程改版
 
 ### feat

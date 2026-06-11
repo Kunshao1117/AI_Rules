@@ -64,18 +64,24 @@ Technical details may only appear after a `補充技術細節` section when they
 > 2. `view_file .agents/skills/test-automation-strategy/SKILL.md`
 
 - Classify the target surface before selecting evidence: web/browser, desktop GUI, IDE/plugin panel, terminal/CLI/TUI, or mixed surface.
+- Classify the real operation surface before selecting evidence: web, desktop GUI, CLI/TUI, backend service, database, scheduled job, automation, IDE/plugin, scraper/data sync, AI/model feature, cloud/deployment, or mixed surface.
+- Inventory operator-capable verification entries before selecting evidence: project scripts, app routes, browser control, desktop GUI control, terminal commands, plugin host commands, direct requests, logs, databases, dry-run, preview, sandbox, recorded real-source replay, or read-only production checks.
 - Select evidence level from the preceding **[GOVERNANCE DEPTH / 治理深度判定]** summary, or infer it when the Director invokes testing directly:
   - Minimum evidence: targeted proof for a lightweight change, with the selected evidence matching the interface surface.
   - Enhanced evidence: real rendered or executed evidence across the affected states for medium features and all user-visible UI changes.
   - Exemption evidence: allowed only when the target has no UI, no user-visible output, and no interface adaptation impact; state the reason instead of collecting visual evidence.
-- Evidence type MUST match the interface surface. Missing required evidence means the result is pending validation, not complete.
+- Evidence type MUST match the interface surface and the real operation surface. Missing required evidence means the result is failed or blocked, not complete.
+- For data-dependent or behavior-dependent features, collect at least one real execution signal: request/response, server log, database query, file side effect, timestamped source data, command output, automation run record, plugin host state, model input/output sample, deployment health check, or controlled real-path dry-run.
+- If the primary operator path is temporarily unavailable, confirm readiness and retry before abandoning it. If it remains unavailable, use the nearest equivalent real-path alternative and explain the equivalence.
+- If no operator or equivalent real path can run, the test result is blocked and must list searched entries, attempted tools, retry count or unsafe-retry reason, alternatives considered, and the smallest missing condition.
+- Mock, fixture, seeded, fake, static, or screenshot-only evidence may support layout or unit logic, but cannot pass a feature that requires real verification.
 - For web and browser-rendered panels, request a browser evidence branch through the Antigravity / Gemini adapter for E2E visual testing.
 - For desktop GUI, collect screenshots or UI test evidence for minimum window size, resized window, high-DPI/font-scale behavior, dialogs, scroll regions, and keyboard navigation.
 - For terminal or CLI/TUI output, collect command output, wrapping behavior, error readability, exit code, and non-interactive mode evidence.
 
 [TEST OUTPUT GATE] 根據結果執行單一路徑：
-- IF (全部通過): 印出「✅ E2E 測試全數通過 ({pass_count}/{total_count})」並產出含截圖的 walkthrough。
-- IF (包含失敗): 印出「🔴 [TEST FAIL] {test_name}: {error_summary}」，輸出失敗報告與建議的 `/04-1_fix_plan` 啟動指令。DO NOT write memory cards. DO NOT invoke writable fix workflows automatically.
+- IF (全部通過且真實執行證據齊備): 印出「✅ E2E 測試全數通過 ({pass_count}/{total_count})」並產出含截圖與真實執行證據的 walkthrough。
+- IF (包含失敗或缺少必要真實執行證據): 印出「🔴 [TEST FAIL] {test_name}: {error_summary}」，輸出失敗或阻塞報告與建議的 `/04-1_fix_plan` 啟動指令。DO NOT write memory cards. DO NOT invoke writable fix workflows automatically.
 - CONSTRAINT: 錯誤訊息最多 5 行。不輸出冗長日誌。
 
 ## 2.5 Accessibility Scan (無障礙掃描 — 新增步驟)
@@ -90,7 +96,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 3. 測試授權與自動判斷
 
 - You MUST call `task_boundary` to enter `VERIFICATION` mode before starting tests.
-- As proof of work, you MUST capture screenshots, recordings, terminal output, or equivalent evidence for the selected interface surface.
+- As proof of work, you MUST capture screenshots, recordings, terminal output, request/response evidence, logs, timestamps, database checks, run records, health checks, operator-tool search notes, retry status, alternative-path rationale, or equivalent evidence for the selected interface and real operation surfaces.
 - Generate a Markdown `walkthrough.md` Artifact embedding these visual assets alongside a summary of what was tested.
 
 ### 情境 A：測試通過 (Passed)
@@ -101,7 +107,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ### 情境 B：測試失敗 (Failed)
 
-- **Failure Report Only**: If the test fails or produces unexpected UI behavior, output a concise failure report with affected routes/components, screenshots, reproduction steps, and suggested `/04-1_fix_plan` prompt.
+- **Failure Report Only**: If the test fails, lacks required real execution evidence, or produces unexpected UI behavior, output a concise failure or blocked report with affected routes/components, screenshots or runtime evidence, reproduction steps, missing external conditions if any, and suggested `/04-1_fix_plan` prompt.
 - **No Writable Follow-up**: DO NOT write memory cards, source files, or logs from this workflow. DO NOT autonomously invoke `/04_fix` or any writable remediation workflow. Output: `[系統通報] 偵測到測試失敗，已產出失敗報告與修復建議。若要修復，請總監啟動 /04-1_fix_plan。`
 
 ## [SECURITY & COMPLIANCE MANDATE]
