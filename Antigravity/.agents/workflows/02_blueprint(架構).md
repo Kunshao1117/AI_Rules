@@ -1,5 +1,5 @@
 ---
-description: "Use when: 架構設計、藍圖、技術堆疊探勘、ER 圖、API 路由設計、三平台代理治理架構宣告。DO NOT use when: 已有核准計畫要直接建構或修復。"
+description: "Use when: 純架構設計、藍圖、技術堆疊探勘、全系統初始化、重大技術轉向、ER 圖、API 路由設計、三平台代理治理架構宣告。DO NOT use when: 目標是同一輪直接建構功能；改用建構流程的設計到建構合約。"
 required_skills: [memory-ops, tech-stack-protocol, ai-dev-quality-gate, project-context-protocol]
 memory_awareness: full
 metadata:
@@ -50,7 +50,9 @@ Technical details may only appear after a `補充技術細節` section when they
 > [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before architecture planning.
 > [LOAD SKILL] If this blueprint touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before architecture planning.
 > [LOAD SKILL] If this blueprint touches product direction, design DNA, technical preferences, communication preferences, or acceptance preferences, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before architecture planning.
-# [WORKFLOW: BLUEPRINT (架構)]
+# [WORKFLOW: BLUEPRINT (純架構)]
+
+Use this workflow only when the Director needs architecture output without immediate source implementation, full-system initialization, or a major technology pivot. Normal feature work should keep architecture decisions inside `/03_build` so planning context is not split across workflows.
 
 
 > [LOAD SKILL] Before executing §1, you MUST read:
@@ -72,6 +74,8 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 2. Topology Generation
 
+If the Director intends to implement the feature in the same task, stop and route to `/03_build` design-to-build contract instead of producing a separate blueprint handoff.
+
 [STRUCTURE GATE] Topology output validation:
 - IF ([SUDO] detected in Director prompt): Allow freeform markdown. Skip structure validation.
 - ELSE IF (Missing ER diagram, API endpoint list, or component tree):
@@ -88,7 +92,7 @@ You MUST execute BOTH of the following actions synchronously:
 - Generate a comprehensive Markdown Artifact named `implementation_plan.md` (representing the Blueprint).
 - **Language**: STRICTLY **Traditional Chinese (繁體中文, zh-TW)**.
 - Must include visual representations (e.g., Mermaid.js diagrams for ER mapping).
-- **Halt**: Call `notify_user` with `implementation_plan.md` in `PathsToReview` and append exactly: `[系統鎖定] 架構藍圖規劃已完成。請總監審閱。若確認無誤，請輸入 /build 授權實體建設。`
+- **Halt**: Call `notify_user` with `implementation_plan.md` in `PathsToReview` and append exactly: `[系統鎖定] 架構藍圖規劃已完成。若要進入實作，請在同一對話交給 /03_build 沿用本藍圖，不要重新規劃上下文。`
 
 **Track B: Machine-Readable Memory (Memory Skill System)**
 

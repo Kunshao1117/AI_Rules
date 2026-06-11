@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-11] 三平台治理流程改版
+
+### feat
+- **Design-to-build contract** — 三平台建構入口改為同一份計畫內整合架構判斷、功能邊界、完整度檢查與驗收矩陣；純架構入口保留給不立即落地的藍圖、初始化與重大技術轉向。
+- **Autonomous governance depth** — 共用品質規則新增自治分級矩陣，工作流只輸出治理深度判定摘要；AI 無法證明輕量時預設升級，且不得為了省事自行降級。
+- **Functional modularity quality gate** — 原始碼品質規則改為功能模組化優先；檔案大小超線只觸發複查，拆分必須依功能責任、公開介面、測試邊界、耦合或維護困難決定。
+- **Interface adaptation evidence** — UI/UX、開發品質與測試技能改用介面類型矩陣，分別處理網頁、桌面 GUI、外掛面板、終端工具與操作型儀表板證據。
+
+### docs
+- **Workflow documentation alignment** — 根文件與 Codex 文件同步說明設計到建構合約、自治分級治理、功能模組化優先與介面適配證據。
+
 ## [2026-06-04] 記憶卡壓縮治理
 
 ### feat

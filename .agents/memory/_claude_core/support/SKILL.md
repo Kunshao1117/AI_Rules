@@ -5,14 +5,14 @@ description: >
   settings 與 support rules。Use when: 修改 Claude 補充規則、非核心 slash command 或 command
   helper 時。
 scopePath: Claude/.claude/
-last_updated: '2026-06-04T03:56:43+08:00'
+last_updated: '2026-06-11T18:11:12+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 1
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -27,7 +27,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core.support — Claude Support Memory
 
 ## Current Truth
@@ -36,6 +35,8 @@ metadata:
 - Claude command behavior must stay aligned with shared workflow semantics and Director gates.
 - Audit subcommands are distinct command entries and must remain covered by memory ownership.
 - Local settings and template gitignore files are support artifacts, not cross-platform source truth.
+- Claude test command now selects interface evidence by surface type instead of assuming browser-only proof.
+- Claude test command now records evidence level as minimum, enhanced, or exemption and keeps evidence matched to the selected surface.
 
 ## Active Constraints
 
@@ -46,6 +47,8 @@ metadata:
 ## Cycle Events
 
 - 01: Created child ownership card for Claude support rules and remaining command entries.
+- 02: Updated Claude test command for interface adaptation evidence.
+- 03: Added evidence-level handling to the Claude test command.
 
 ## Archive Index
 
@@ -56,6 +59,7 @@ metadata:
 - 這張子卡承接 Claude 補充規則與其餘指令歸屬。
 - 舊 Claude 歷史卡仍只是歸檔，不再當 active owner。
 - Claude 健檢子命令也必須有記憶歸屬。
+- 測試指令依治理深度選擇證據等級。
 
 ## Tracked Files
 

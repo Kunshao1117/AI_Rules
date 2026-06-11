@@ -1,5 +1,5 @@
 ---
-description: "Use when: 正式建構計畫、新功能、工具建構或產品行為變更，需要先產生計畫並等待 GO。DO NOT use when: 純討論、沙盒實驗或已進入授權執行階段。"
+description: "Use when: 正式建構、設計到建構合約、新功能、工具建構或產品行為變更，需要先整合架構判斷、建構計畫並等待 GO。DO NOT use when: 純討論、沙盒實驗、純架構方案或已進入授權執行階段。"
 required_skills: [memory-ops, tech-stack-protocol, ai-dev-quality-gate, project-context-protocol]
 memory_awareness: read
 metadata:
@@ -75,30 +75,37 @@ Technical details may only appear after a `補充技術細節` section when they
 - 查看 `## Relations` 段落，確認可能被此次建構影響的跨模組依賴關係。
 - 查看 `## Applicable Skills` 段落，確認應載入的操作技能已啟動。
 
-## 2. Context & Blueprint Acquisition（情境與藍圖讀取）
+## 2. Context & Architecture Acquisition（情境與架構讀取）
 
 - 使用已載入的記憶技能，理解模組架構與當前狀態。
-- 嚴格遵守 `/02_blueprint` 或總監指定的藍圖 / 實作計畫。
+- 若同一對話已有藍圖，直接沿用，不得重新規劃到遺失上下文。
+- 若沒有藍圖，將架構決策納入本次建構計畫：功能邊界、受影響模組、公開介面、不採用方案與驗證影響。
+- `/02_blueprint` 僅用於純架構、全系統初始化、重大技術轉向或不立即實作的輸出。
 - 根據 Glob 模式，自動套用 `.agents/rules/` 中所有適用的規範。
 
 > [LOAD SKILL] §3 產出計畫並涉及程式碼時，必須讀取：
 > 1. `view_file .agents/skills/code-quality/SKILL.md`
 > 2. `view_file .agents/skills/security-sre/SKILL.md`
 
-## 3. Planning Mode & Diff Generation（規劃模式與差異生成）
+## 3. Design-to-Build Contract & Diff Generation（設計到建構合約與差異生成）
 
 - **必須**呼叫 `task_boundary` 進入 `PLANNING` 模式。
 - 將所有新程式碼或修改寫入**隔離的沙盒記憶體**。
 - **嚴禁**在此階段寫入物理檔案系統。
 - 產出詳細的 `implementation_plan.md` Artifact，附上程式碼 `diff`，並明確標記：
+  - **[GOVERNANCE DEPTH / 治理深度判定]**：任務等級、命中升級因子、豁免理由、驗證證據；只輸出摘要，不重貼 `ai-dev-quality-gate` 的完整自治矩陣
+  - **[ARCHITECTURE]**：功能邊界、受影響模組、公開介面變更、不採用方案
   - **[MODIFY]**：修改的現有檔案
   - **[NEW]**：本次建構將新建的原始碼檔案（後續歸卡流程依賴此清單）
   - **[DELETE]**：將被刪除的檔案
+  - **[COMPLETENESS]**：使用者流程、載入、空狀態、錯誤、權限、離線狀態
+  - **[VALIDATION]**：單元、整合、回歸與介面適配證據
+  - **[MEMORY/DOCS]**：需要更新的記憶卡、脈絡卡、README、CHANGELOG 或發布紀錄
 
 ## 4. Code Review Gate（程式碼審查閘門）
 
 - **停止**：呼叫 `notify_user`，將 `implementation_plan.md` 放入 `PathsToReview`，並輸出：
-  > `[最高授權閘門] 實體建構計畫已完成。請總監審閱上方計畫。系統防護中。請輸入 GO 授權覆寫，或留言退回。`
+  > `[最高授權閘門] 設計到建構合約已完成。請總監審閱上方計畫。系統防護中。請輸入 GO 授權覆寫，或留言退回。`
 - **等待 GO 指令**。收到核准後，**必須**呼叫 `task_boundary` 切換至 `EXECUTION` 模式，並立即觸發 `/03-2_build_execute` 工作流繼續執行。
 
 ## [SECURITY & COMPLIANCE MANDATE]

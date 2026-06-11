@@ -1,6 +1,6 @@
 ---
 name: 06_test
-description: "Use when: 執行 E2E、視覺測試、瀏覽器功能測試、回歸驗證或測試委派。DO NOT use when: 只需要單元測試設計或純程式碼審查。"
+description: "Use when: 執行 E2E、視覺測試、介面適配證據、瀏覽器功能測試、桌面 GUI 驗證、終端輸出驗證、回歸驗證或測試委派。DO NOT use when: 只需要單元測試設計或純程式碼審查。"
 required_skills: [browser-testing, test-automation-strategy, ai-dev-quality-gate, project-context-protocol]
 memory_awareness: none
 user-invocable: true
@@ -48,9 +48,9 @@ Technical details may only appear after a `補充技術細節` section when they
 - Treat memory and internal model knowledge as possibly stale. Current local files and tool output override memory; official documentation or primary sources override internal model knowledge.
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
-# [SKILL: /06_test — 視覺測試]
+# [SKILL: /06_test — 介面與回歸測試]
 
-> [LOAD SKILL] If the test target includes layout, components, styling, interaction states, mobile behavior, generated UI references, or design DNA, read `.claude/skills/ai-dev-quality-gate/SKILL.md` before defining visual evidence.
+> [LOAD SKILL] If the test target includes layout, components, styling, interaction states, interface adaptation, generated UI references, or design DNA, read `.claude/skills/ai-dev-quality-gate/SKILL.md` before defining visual evidence.
 > [LOAD SKILL] If the test target includes design DNA, product preference, communication preference, or acceptance preference, read `.claude/skills/project-context-protocol/SKILL.md` and compare rendered behavior against approved `.agents/context/**/CONTEXT.md` cards.
 
 ## 1. Test Scope Identification (測試範圍識別)
@@ -61,16 +61,24 @@ Technical details may only appear after a `補充技術細節` section when they
 - IF (triggered directly by Director):
   - Ask Director for target URL or component.
 
-## 2. Browser Evidence Branch (瀏覽器證據分支)
+## 2. Interface Evidence Branch (介面證據分支)
 
 > [LOAD SKILL] Read `.claude/skills/browser-testing/SKILL.md`.
 
-- Run the Delegation Gate and use the Claude adapter for browser evidence.
+- Classify the target surface before selecting evidence: web/browser, desktop GUI, IDE/plugin panel, terminal/CLI/TUI, or mixed surface.
+- Select evidence level from the preceding **[GOVERNANCE DEPTH / 治理深度判定]** summary, or infer it when the Director invokes testing directly:
+  - Minimum evidence: targeted proof for a lightweight change, with the selected evidence matching the interface surface.
+  - Enhanced evidence: real rendered or executed evidence across the affected states for medium features and all user-visible UI changes.
+  - Exemption evidence: allowed only when the target has no UI, no user-visible output, and no interface adaptation impact; state the reason instead of collecting visual evidence.
+- Evidence type MUST match the interface surface. Missing required evidence means the result is pending validation, not complete.
+- For web and browser-rendered panels, run the Delegation Gate and use the Claude adapter for browser evidence.
+- For desktop GUI, collect screenshots or UI test evidence for minimum window size, resized window, high-DPI/font-scale behavior, dialogs, scroll regions, and keyboard navigation.
+- For terminal or CLI/TUI output, collect command output, wrapping behavior, error readability, exit code, and non-interactive mode evidence.
 - Claude adapter: use description-driven delegation, `@agent`, or governed `Agent(...)` permissions for a read-only testing branch when available.
 - Task description MUST be in Traditional Chinese and include:
   1. 測試目標 URL 或路徑
   2. 預期行為描述
-  3. 截圖要求（完成後回傳）
+  3. 介面類型、證據等級與證據要求（完成後回傳）
   4. 回報格式（`發現 / 證據 / 風險 / 建議 / 是否阻塞`）
 
 ## 3. Result Processing (結果處理)

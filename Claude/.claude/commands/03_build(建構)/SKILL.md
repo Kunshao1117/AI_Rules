@@ -1,6 +1,6 @@
 ---
 name: 03_build
-description: "Use when: 正式建構功能、實作已核准計畫、新增工具或產品行為變更。流程包含計畫、GO、寫入、記憶歸卡與驗證。DO NOT use when: 純討論或沙盒實驗。"
+description: "Use when: 正式建構功能、設計到建構合約、實作已核准計畫、新增工具或產品行為變更。流程包含架構判斷、建構計畫、GO、寫入、記憶歸卡與驗證。DO NOT use when: 純討論、沙盒實驗、或只需要不落地的純架構方案。"
 required_skills: [memory-ops, tech-stack-protocol, code-quality, security-sre, ai-dev-quality-gate, project-context-protocol]
 memory_awareness: full
 user-invocable: true
@@ -52,7 +52,7 @@ Technical details may only appear after a `補充技術細節` section when they
 > [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.claude/skills/plugin-release-governance/SKILL.md` before planning changes.
 > [LOAD SKILL] If this task touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, or mobile/responsive behavior, read `.claude/skills/ai-dev-quality-gate/SKILL.md` before planning changes.
 > [LOAD SKILL] If this task touches product behavior, UX preference, design DNA, technical preference, communication preference, or acceptance criteria, read `.claude/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before planning changes. Report adopted context or deviation reasons.
-# [SKILL: /build — 建構計畫與執行]
+# [SKILL: /build — 設計到建構合約與執行]
 
 ## 0. Execution Mode Check (執行模式識別)
 
@@ -66,7 +66,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ---
 
-## STAGE 1 — PLAN (建構計畫)
+## STAGE 1 — DESIGN-TO-BUILD CONTRACT (設計到建構合約)
 
 ### 1. Memory Recall (記憶載入)
 
@@ -77,28 +77,35 @@ Technical details may only appear after a `補充技術細節` section when they
 - Check `## Relations` for cross-module dependencies.
 - Check `## Applicable Skills` for required operational skills.
 
-### 2. Context Acquisition (情境讀取)
+### 2. Context And Architecture Acquisition (情境與架構讀取)
 
 > [LOAD SKILL] Read `.claude/skills/code-quality/SKILL.md` and `.claude/skills/security-sre/SKILL.md`.
 
 - Read relevant source files using `Read` tool (from memory card's Tracked Files).
 - Check tech stack version via `package.json` or equivalent. Use `WebSearch` to ground framework docs.
-- Follow the blueprint or Director's specification strictly.
+- If a blueprint already exists in the same conversation, reuse it directly instead of re-planning from scratch.
+- If no blueprint exists, include architecture decisions inside this build plan: functional boundaries, affected modules, public interfaces, rejected alternatives, and validation impact.
+- Use `/02_blueprint` only when the Director asks for pure architecture, full-system initialization, major technology pivot, or architecture-only output with no implementation.
 
 ### 3. Planning Mode (規劃階段)
 
 - **Enter Plan Mode** (`EnterPlanMode`). Use `TodoWrite` to track implementation steps.
-- Draft implementation plan in chat. DO NOT use `Write`/`Edit` on source files.
+- Draft one design-to-build contract in chat. DO NOT use `Write`/`Edit` on source files.
 - Plan MUST include:
+  - **[GOVERNANCE DEPTH / 治理深度判定]**: Task level, matched escalation factors, exemption reason, and validation evidence. Output only the summary; do not duplicate the full autonomy matrix from `ai-dev-quality-gate`.
+  - **[ARCHITECTURE]**: Functional boundary, affected modules, public interface changes, and rejected alternatives.
   - **[MODIFY]**: Files to be modified
   - **[NEW]**: New files to be created (required for memory archiving)
   - **[DELETE]**: Files to be deleted
+  - **[COMPLETENESS]**: User flow, loading/empty/error/permission/offline states when relevant.
+  - **[VALIDATION]**: Unit, integration, regression, and interface adaptation evidence required for completion.
+  - **[MEMORY/DOCS]**: Memory cards, project context, README, changelog, or release notes affected by the change.
   - Code diff previews for each change
 
 ### 4. Review Gate (審查閘門)
 
 - Present plan to Director. Output:
-  > `[最高授權閘門] 實體建構計畫已完成。請總監審閱上方計畫。系統防護中。請輸入 GO 授權覆寫，或留言退回。`
+  > `[最高授權閘門] 設計到建構合約已完成。請總監審閱上方計畫。系統防護中。請輸入 GO 授權覆寫，或留言退回。`
 - **HALT. Wait for GO.**
 
 ---

@@ -4,14 +4,14 @@ description: >
   全域系統設定與框架工作模式記憶卡。保存 AI_Rules 根層目前有效治理事實。 Use when:
   修改根層文件、部署腳本、提交規則、發布治理或跨平台全域契約時。
 scopePath: .
-last_updated: '2026-06-04T04:17:43+08:00'
+last_updated: '2026-06-11T18:09:38+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 3
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -26,7 +26,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _system — Repository Governance Memory
 
 ## Current Truth
@@ -40,6 +39,7 @@ metadata:
 - The PowerShell deployment engine is the shared implementation path for Fresh, Upgrade, Audit, Global, and project sync flows.
 - Public Windows PowerShell entrypoints must preserve UTF-8 compatibility for Windows PowerShell 5.1.
 - VSIX publishing is governed separately from Codex, Claude, and Antigravity framework versioning.
+- Root documentation now describes design-to-build contracts, autonomous governance depth, functional modularity, and interface adaptation evidence as framework-wide governance semantics.
 
 ## Active Constraints
 
@@ -53,6 +53,8 @@ metadata:
 - 01: Compacted legacy system memory into schema v2 and archived historical detail.
 - 02: Split oversized legacy archive into two bounded archive volumes.
 - 03: Aligned root documentation with flat archive files and advisory granularity.
+- 04: Documented design-to-build, functional modularity, and interface adaptation governance.
+- 05: Documented autonomous governance depth as a shared framework decision.
 
 ## Archive Index
 
@@ -66,6 +68,7 @@ metadata:
 - 記憶卡已改採新版壓縮模型。
 - 跨 repo 修改必須先取得明確授權。
 - 根層文件已說明 8 檔是建議門檻，非硬阻擋。
+- AI 自治分級以不確定就升級為預設。
 
 ## Tracked Files
 

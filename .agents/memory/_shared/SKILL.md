@@ -4,14 +4,14 @@ description: >
   Shared 共用治理資產記憶卡。追蹤跨平台共用政策、記憶模型、操作型技能來源與脈絡模板。 Use when: 修改 Shared/
   下的共用技能、政策、記憶治理或脈絡模板時。
 scopePath: Shared/
-last_updated: '2026-06-04T04:23:01+08:00'
+last_updated: '2026-06-11T18:09:46+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 2
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -40,6 +40,7 @@ metadata:
 - Project context lives in `.agents/context/` and is not source memory.
 - Shared subagent policy is vendor-neutral; platform-specific tool wording belongs in platform adapters.
 - UI quality, testing, audit, and project-context skills are shared operational guidance, not platform-only rules.
+- Shared quality skills now define autonomous governance depth, functional module boundaries, and interface adaptation evidence as cross-platform semantics.
 
 ## Active Constraints
 
@@ -53,6 +54,8 @@ metadata:
 
 - 01: Compacted Shared memory into schema v2 and archived the legacy long-form card.
 - 02: Aligned granularity and archive naming rules with advisory split semantics.
+- 03: Aligned shared quality skills with functional modularity and interface adaptation evidence.
+- 04: Added autonomous governance depth as the shared quality source for workflow summaries.
 
 ## Archive Index
 
@@ -65,6 +68,7 @@ metadata:
 - 專案脈絡與原始碼記憶分層管理。
 - 超過 8 個追蹤檔是拆卡建議，不是自動阻擋。
 - 歸檔卷採平面檔名，避免目錄污染索引。
+- 自治分級矩陣保存在共用品質規則，工作流只輸出摘要。
 
 ## Tracked Files
 

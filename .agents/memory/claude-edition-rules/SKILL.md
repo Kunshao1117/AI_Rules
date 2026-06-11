@@ -4,7 +4,7 @@ description: >
   Claude Edition 舊規範歷史卡。此卡已降為歸檔索引，不再作為 Claude source owner。 Use when: 需要追溯
   Claude Edition 早期規範與統一部署引擎歷史時。
 scopePath: .agents/memory/claude-edition-rules/
-last_updated: '2026-06-04T03:49:11+08:00'
+last_updated: '2026-06-11T18:15:13+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -26,7 +26,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # claude-edition-rules — Deprecated Archive Index
 
 ## Current Truth

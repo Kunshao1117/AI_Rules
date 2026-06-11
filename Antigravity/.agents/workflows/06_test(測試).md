@@ -1,5 +1,5 @@
 ---
-description: "Use when: 執行 E2E、視覺測試、瀏覽器功能測試、回歸驗證或測試委派。DO NOT use when: 只需要單元測試設計或純程式碼審查。"
+description: "Use when: 執行 E2E、視覺測試、介面適配證據、瀏覽器功能測試、桌面 GUI 驗證、終端輸出驗證、回歸驗證或測試委派。DO NOT use when: 只需要單元測試設計或純程式碼審查。"
 required_skills:
   [test-automation-strategy, browser-testing, a11y-testing, trunk-ops, ai-dev-quality-gate, project-context-protocol]
 memory_awareness: read
@@ -49,7 +49,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 # [WORKFLOW: TEST (測試)]
 
-> [LOAD SKILL] If the test target includes layout, components, styling, interaction states, mobile behavior, generated UI references, or design DNA, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before defining visual evidence.
+> [LOAD SKILL] If the test target includes layout, components, styling, interaction states, interface adaptation, generated UI references, or design DNA, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before defining visual evidence.
 > [LOAD SKILL] If the test target includes design DNA, product preference, communication preference, or acceptance preference, read `.agents/skills/project-context-protocol/SKILL.md` and compare rendered behavior against approved `.agents/context/**/CONTEXT.md` cards.
 
 
@@ -57,13 +57,21 @@ Technical details may only appear after a `補充技術細節` section when they
 
 - This workflow can be called by the Director directly or autonomously invoked by other workflows (e.g., via the `// turbo` chain from `/03_build`).
 
-## 2. Robotic QA & Visual Verification
+## 2. Interface QA & Visual Verification
 
 > [LOAD SKILL] 啟動瀏覽器測試前，必須讀取：
 > 1. `view_file .agents/skills/browser-testing/SKILL.md`
 > 2. `view_file .agents/skills/test-automation-strategy/SKILL.md`
 
-- You MUST request a browser evidence branch through the Antigravity / Gemini adapter for E2E visual testing.
+- Classify the target surface before selecting evidence: web/browser, desktop GUI, IDE/plugin panel, terminal/CLI/TUI, or mixed surface.
+- Select evidence level from the preceding **[GOVERNANCE DEPTH / 治理深度判定]** summary, or infer it when the Director invokes testing directly:
+  - Minimum evidence: targeted proof for a lightweight change, with the selected evidence matching the interface surface.
+  - Enhanced evidence: real rendered or executed evidence across the affected states for medium features and all user-visible UI changes.
+  - Exemption evidence: allowed only when the target has no UI, no user-visible output, and no interface adaptation impact; state the reason instead of collecting visual evidence.
+- Evidence type MUST match the interface surface. Missing required evidence means the result is pending validation, not complete.
+- For web and browser-rendered panels, request a browser evidence branch through the Antigravity / Gemini adapter for E2E visual testing.
+- For desktop GUI, collect screenshots or UI test evidence for minimum window size, resized window, high-DPI/font-scale behavior, dialogs, scroll regions, and keyboard navigation.
+- For terminal or CLI/TUI output, collect command output, wrapping behavior, error readability, exit code, and non-interactive mode evidence.
 
 [TEST OUTPUT GATE] 根據結果執行單一路徑：
 - IF (全部通過): 印出「✅ E2E 測試全數通過 ({pass_count}/{total_count})」並產出含截圖的 walkthrough。
@@ -82,7 +90,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 3. 測試授權與自動判斷
 
 - You MUST call `task_boundary` to enter `VERIFICATION` mode before starting tests.
-- As proof of work, you MUST capture screenshots (or video recordings) of the browser's final state or the successful UI changes.
+- As proof of work, you MUST capture screenshots, recordings, terminal output, or equivalent evidence for the selected interface surface.
 - Generate a Markdown `walkthrough.md` Artifact embedding these visual assets alongside a summary of what was tested.
 
 ### 情境 A：測試通過 (Passed)

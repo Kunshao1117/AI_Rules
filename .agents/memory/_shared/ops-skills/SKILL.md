@@ -5,14 +5,14 @@ description: >
   skill files。Use when: 修改 Shared/skills 下非記憶核心與非 Supabase Postgres
   best-practices 的操作型技能時。
 scopePath: Shared/skills/
-last_updated: '2026-06-04T04:20:53+08:00'
+last_updated: '2026-06-11T18:10:35+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 1
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -27,30 +27,30 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared.ops-skills — Shared Operational Skills Memory
 ## Current Truth
 - This child card owns general Shared operational skill files and their compact references.
 - The parent `_shared` card keeps shared governance, memory model, context protocol, and high-level policy truth.
 - Skill trigger quality, placement, and cross-platform injection must remain consistent with Shared governance.
 - Supabase Postgres best-practices references are owned by a separate child card.
-
+- Code quality treats size as a review signal, keeps cohesive files when justified, and splits only by real functional boundaries.
+- AI development quality owns the autonomous governance depth matrix; workflows output summaries only.
+- UI and test skills now select evidence by interface surface instead of forcing every UI into web responsive proof.
 ## Active Constraints
 - Keep this card focused on ownership and current constraints, not per-skill long history.
 - Add new general Shared skills here unless they clearly require a dedicated child card.
 - Use deeper child cards for a large skill family with many references.
-
 ## Cycle Events
 - 01: Created child ownership card for general Shared operational skills.
-
+- 02: Updated quality and UI testing skills for functional modularity and interface adaptation evidence.
+- 03: Added autonomous governance depth and explicit large-file split criteria to shared quality skills.
 ## Archive Index
 - None.
-
 ## 中文摘要
 - 這張子卡承接一般 Shared 操作型技能歸屬。
 - 記憶核心與專案脈絡核心仍留在 Shared 主卡。
 - Supabase Postgres 大型參考集另有專卡。
-
+- 共用品質規則保存自治分級矩陣，平台工作流只輸出摘要。
 ## Tracked Files
 - Shared/skills/a11y-testing/SKILL.md
 - Shared/skills/ai-dev-quality-gate/SKILL.md
@@ -104,15 +104,11 @@ metadata:
 - Shared/skills/trunk-ops/SKILL.md
 - Shared/skills/ui-design-exploration/SKILL.md
 - Shared/skills/ui-ux-standards/SKILL.md
-
 ## Relations
-
 - _shared (parent Shared governance memory)
 - _shared.supabase-postgres (large Supabase Postgres reference family)
 - _system (root deployment and sync memory)
-
 ## Applicable Skills
-
 - memory-ops — Use when updating this child card.
 - skill-factory — Use when adding or reshaping Shared skills.
 - memory-arch — Use when this child needs deeper splits.

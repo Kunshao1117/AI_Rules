@@ -3,7 +3,7 @@ name: ui-ux-standards
 description: >
   [Quality] UI/UX design manifesto: engineering jargon isolation, multi-language strategy,
   human-readable error handling, component reuse, design DNA, UI exploration routing,
-  new project UI discussion, UI skill discovery, and intent-driven interface design.
+  interface surface classification, new project UI discussion, UI skill discovery, and intent-driven interface design.
   Use when: 建構或修改前端 UI 元件、設計錯誤訊息、
   或任何涉及 UI/UX/介面/錯誤訊息/i18n/多語系/前端元件/共用元件/設計 DNA/UI 探索/
   新專案 UI 討論/UI 設計技能搜尋 的任務。
@@ -69,7 +69,21 @@ When a backend service throws a technical exception, the UI MUST intercept it an
 
 ## 4.5 Interface Mode Gate (介面模式閘門)
 
-Classify the UI before choosing layout patterns:
+Classify both the surface and the UI mode before choosing layout patterns:
+
+```text
+Interface surface?
+├── Web app / website（網頁介面）
+│   └── Plan responsive behavior and browser evidence.
+├── Desktop GUI（桌面 GUI）
+│   └── Plan minimum window size, resize behavior, dialogs, high-DPI/font scaling, keyboard navigation, and screenshots.
+├── IDE / plugin panel（IDE 或外掛面板）
+│   └── Plan narrow/sidebar width, expanded width, theme states, command feedback, and confirmation states.
+├── Terminal / CLI / TUI（終端或文字介面）
+│   └── Plan output wrapping, error readability, exit codes, and non-interactive behavior.
+└── Mixed surface（混合介面）
+    └── Define evidence requirements separately for each surface.
+```
 
 ```text
 UI task type?
@@ -81,7 +95,7 @@ UI task type?
     └── Ask for preference or run ai-dev-quality-gate preference discovery before implementation.
 ```
 
-Trading terminals, dashboards, admin tools, and VS Code panels default to operational interface. Do not apply sparse marketing-page composition to them unless the Director explicitly asks for it.
+Trading terminals, dashboards, admin tools, desktop control panels, and VS Code panels default to operational interface. Do not apply sparse marketing-page composition to them unless the Director explicitly asks for it.
 
 ## 4.55 UI Exploration Routing Gate (UI 探索路由閘門)
 

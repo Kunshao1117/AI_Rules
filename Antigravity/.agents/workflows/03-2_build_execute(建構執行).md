@@ -1,5 +1,5 @@
 ---
-description: "Use when: 已有 /03_build 核准 GO，要執行建構寫入、記憶歸卡與驗證測試。DO NOT use when: 尚未完成建構計畫或未取得 GO。"
+description: "Use when: 已有 /03_build 設計到建構合約並取得 GO，要執行建構寫入、記憶歸卡與驗證測試。DO NOT use when: 尚未完成建構合約或未取得 GO。"
 required_skills: [memory-ops, security-sre, code-quality, test-patterns, trunk-ops]
 memory_awareness: full
 metadata:
@@ -49,7 +49,7 @@ Technical details may only appear after a `補充技術細節` section when they
 # [WORKFLOW: BUILD — EXECUTE (建構執行)]
 
 
-> **前置條件**: 本工作流須由 `/03_build(建構計畫)` 的 GO 授權後方可執行。
+> **前置條件**: 本工作流須由 `/03_build(設計到建構合約)` 的 GO 授權後方可執行。
 
 ## 0. Precondition Check（前置條件確認）
 
@@ -57,7 +57,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - IF (Not triggered by an explicit GO approval from /03_build):
   - [HALT] Output exactly: 「🔴 [AUTH HALT] 未收到建構計畫授權。請先執行 /03_build 並取得 GO 確認。」
 - ELSE:
-  - Load `implementation_plan.md` to identify [NEW] and [MODIFY] file lists. Proceed to §1.
+  - Load `implementation_plan.md` to identify [ARCHITECTURE], [NEW], [MODIFY], [COMPLETENESS], [VALIDATION], and [MEMORY/DOCS] sections. Proceed to §1.
 
 ## 1. Physical Write（實體寫入磁碟）
 
@@ -105,9 +105,9 @@ Technical details may only appear after a `補充技術細節` section when they
 
 // turbo
 
-## 5. Automated Chaining to Test（自動串聯視覺測試）
+## 5. Automated Chaining to Interface Test（自動串聯介面測試）
 
-- 單元測試通過後，**必須自主觸發** `/06_test` 工作流，對自身的修改執行視覺驗證。
+- 單元測試通過後，若本次變更影響版面、元件、樣式、互動或操作者可見輸出，**必須自主觸發** `/06_test` 工作流，依 [VALIDATION] 的介面類型執行介面適配證據驗證。
 - **禁止**要求總監手動執行測試工作流。
 
 ## COMPLETION GATE（完成閘門 — 不可略過）

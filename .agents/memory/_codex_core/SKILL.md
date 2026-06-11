@@ -4,14 +4,14 @@ description: >
   Codex Edition 框架核心記憶卡。追蹤 OpenAI Codex 平台適配層、Codex 工作流技能與 Codex 專用治理規則。 Use
   when: 修改 Codex/ 目錄、Codex 工作流或 Codex 專用文件時。
 scopePath: Codex/
-last_updated: '2026-06-04T03:57:26+08:00'
+last_updated: '2026-06-11T18:10:41+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 1
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -26,7 +26,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
@@ -37,6 +36,8 @@ metadata:
 - Codex output to the Director must follow the Traditional Chinese and Director-readable output contracts.
 - Codex build, fix, debug, blueprint, and handoff workflows now read schema v2 memory fields.
 - Codex must not claim automatic subagent use unless the workflow gate or Director explicitly requires it.
+- Codex build now owns same-turn design-to-build contracts; blueprint is reserved for pure architecture, initialization, or major pivots.
+- Codex build plans now include a compact governance depth summary sourced from the shared quality matrix.
 
 ## Active Constraints
 
@@ -48,6 +49,8 @@ metadata:
 ## Cycle Events
 
 - 01: Compacted Codex memory into schema v2 and removed root README ownership from this card.
+- 02: Repositioned Codex blueprint/build docs around same-turn design-to-build contracts.
+- 03: Added governance depth summary output to the Codex build workflow and documentation.
 
 ## Archive Index
 
@@ -59,6 +62,7 @@ metadata:
 - 工作流來源在 Codex 目錄，live 技能在 `.agents/skills/`。
 - 記憶讀取已對齊新版欄位。
 - 根層 README 不再由本卡追蹤。
+- 建構計畫會輸出治理深度摘要，但不重貼完整矩陣。
 
 ## Tracked Files
 

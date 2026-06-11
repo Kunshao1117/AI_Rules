@@ -5,14 +5,14 @@ description: >
   audit、commit、routine、handoff 與 project support files。Use when: 修改 Antigravity
   輔助規則或非核心工作流入口時。
 scopePath: Antigravity/.agents/
-last_updated: '2026-06-04T03:56:38+08:00'
+last_updated: '2026-06-11T18:10:58+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 1
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -27,7 +27,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core.support — Antigravity Support Memory
 
 ## Current Truth
@@ -36,6 +35,8 @@ metadata:
 - The parent card keeps platform-wide current truth; this card keeps file ownership and local constraints.
 - Antigravity workflow helpers remain governed by the same planning, completion, memory, and security gates.
 - Changes here usually require checking shared policy drift and deployment injection behavior.
+- Antigravity build and test support workflows now use design-to-build contracts and interface-surface evidence.
+- Antigravity build and test support workflows now output governance depth summaries and evidence levels without duplicating the shared matrix.
 
 ## Active Constraints
 
@@ -46,6 +47,8 @@ metadata:
 ## Cycle Events
 
 - 01: Created child ownership card for Antigravity support rules and remaining workflows.
+- 02: Updated Antigravity build and test support workflows for the governance flow redesign.
+- 03: Added governance depth summary and evidence-level handling to Antigravity support workflows.
 
 ## Archive Index
 
@@ -56,6 +59,7 @@ metadata:
 - 這張子卡承接 Antigravity 補充規則與其餘工作流歸屬。
 - 主卡保留平台核心事實；子卡只處理支援範圍。
 - 後續若單一工作流變大，再拆更深子卡。
+- 建構與測試入口只輸出分級摘要，不重貼共用矩陣。
 
 ## Tracked Files
 

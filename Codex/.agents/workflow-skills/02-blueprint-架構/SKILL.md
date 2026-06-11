@@ -1,6 +1,6 @@
 ---
 name: "02-blueprint-架構"
-description: "Use when: 架構設計、藍圖、技術堆疊探勘、ER 圖、API 路由設計、三平台代理治理架構宣告。DO NOT use when: 已有核准計畫要直接建構或修復。"
+description: "Use when: 純架構設計、藍圖、技術堆疊探勘、全系統初始化、重大技術轉向、ER 圖、API 路由設計、三平台代理治理架構宣告。DO NOT use when: 目標是同一輪直接建構功能；改用 03-build 的設計到建構合約。"
 required_skills: [memory-ops, tech-stack-protocol, memory-arch, ai-dev-quality-gate, project-context-protocol]
 metadata:
   author: antigravity
@@ -56,7 +56,9 @@ Use this skill when the user asks to run the migrated source command `02_bluepri
 
 ## Command Template
 
-# [SKILL: /02_blueprint — 架構藍圖]
+# [SKILL: /02_blueprint — 純架構藍圖]
+
+Use this workflow only when the Director needs architecture output without immediate source implementation, full-system initialization, or a major technology pivot. Normal feature work should keep architecture decisions inside `/03_build` so planning context is not split across workflows.
 
 ## 1. Tech Stack Discovery (技術堆疊探勘)
 
@@ -93,6 +95,8 @@ Use this skill when the user asks to run the migrated source command `02_bluepri
 ## 2. Architecture Design (架構設計)
 
 [SCOPE GATE] Classify blueprint scope:
+- IF (Director intends to implement the feature in the same task):
+  - Stop and route to `/03_build` design-to-build contract.
 - IF (Director specifies a single module or feature):
   - Design module-level architecture only.
 - IF (Director specifies full-system or greenfield):
@@ -120,7 +124,7 @@ Use this skill when the user asks to run the migrated source command `02_bluepri
   5. 【三平台代理治理架構說明】— 若適用
   6. 【開放問題】— Design decisions requiring Director input
 
-- Output:「[架構藍圖] 已產出。請總監審閱後，執行 /03_build 進入建構階段。」
+- Output:「[架構藍圖] 已產出。若總監要進入實作，請在同一對話中交給 /03_build 沿用本藍圖，不要重新規劃上下文。」
 
 ---
 

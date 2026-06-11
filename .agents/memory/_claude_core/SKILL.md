@@ -4,14 +4,14 @@ description: >
   Claude Edition 框架核心記憶卡。追蹤 Claude 平台核心規則、Slash Command 工作流與 Claude 專用文件。 Use
   when: 修改 Claude/ 目錄、Claude 規則或 Claude 指令工作流時。
 scopePath: Claude/
-last_updated: '2026-06-04T03:57:20+08:00'
+last_updated: '2026-06-11T18:11:04+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 1
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -26,7 +26,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
@@ -37,6 +36,8 @@ metadata:
 - Claude memory operations use the shared `.agents/memory/` store, not a `.claude/agents/memory/` fork.
 - Claude debug and handoff commands now read schema v2 memory fields instead of legacy issue fields.
 - The deprecated `claude-edition-rules` card is historical only; active Claude source ownership is here.
+- Claude blueprint and build commands now preserve same-turn design-to-build contract semantics.
+- Claude build commands now include a compact governance depth summary sourced from the shared quality matrix.
 
 ## Active Constraints
 
@@ -48,6 +49,8 @@ metadata:
 ## Cycle Events
 
 - 01: Compacted Claude memory into schema v2 and absorbed active ownership from the legacy Claude rules card.
+- 02: Updated Claude blueprint and build commands for design-to-build governance.
+- 03: Added governance depth summary output to the Claude build command.
 
 ## Archive Index
 
@@ -59,6 +62,7 @@ metadata:
 - Claude 記憶路徑固定使用 `.agents/memory/`。
 - 舊 Claude 規範卡已降為歷史索引。
 - 除錯與交接流程已讀新版記憶欄位。
+- 建構指令輸出治理深度摘要，但不重貼完整矩陣。
 
 ## Tracked Files
 

@@ -2,7 +2,7 @@
 name: ui-design-exploration
 description: >
   [Quality] UI design exploration workflow for project-state discussion, UI skill
-  discovery, web research, operator intent, component primitives, design directions,
+  discovery, web research, operator intent, interface surface classification, component primitives, design directions,
   HTML demo or visual reference selection, design DNA, and project-derived skill preservation.
   Use when: 新專案 UI 討論、新增或重設 UI、介面風格不明確、需要搜尋 UI 設計技能、
   需要網路搜尋 UI 參考、需要三案比較、共用元件盤點、HTML 展示頁、設計 DNA 或專案衍生技能沉澱。
@@ -51,7 +51,7 @@ Discussion for a new project must produce:
 - product or service category
 - target operator and audience
 - primary workflow
-- platform targets: mobile, desktop, web app, marketing site, extension, kiosk, or mixed
+- platform targets: mobile, desktop web, desktop GUI, web app, marketing site, extension, kiosk, terminal, or mixed
 - expected information density
 - style boundaries: avoid, prefer, must match, must not match
 - initial component families likely needed
@@ -81,6 +81,7 @@ Identify the operator, not only the screen type:
 | Who operates this UI? | End user, internal operator, admin, developer, buyer, visitor, or mixed audience |
 | What task are they trying to finish? | Primary workflow and secondary workflow |
 | How dense should the interface be? | Operational, editorial, marketing, creative, game, or utility |
+| What surface renders it? | Web, desktop GUI, IDE/plugin panel, terminal/TUI, kiosk, or mixed |
 | What information must stay visible? | Sticky controls, summary metrics, filters, current object, warnings |
 | What failure states matter? | Empty, loading, error, disabled, offline, permission, overflow |
 
@@ -128,7 +129,7 @@ Before presenting directions, define the shared component scope:
 | --- | --- |
 | Controls | buttons, icon buttons, text fields, selects, dropdowns, toggles, checkboxes, sliders, tabs, segmented controls |
 | Data and content | tables, lists, cards, detail panels, metrics, charts, timelines, media blocks |
-| Layout | app shell, sidebar, top bar, split panes, drawers, modals, sheets, sticky regions, responsive grids |
+| Layout | app shell, sidebar, top bar, split panes, drawers, modals, sheets, desktop windows, sticky regions, responsive grids |
 | Feedback | loading, skeleton, empty state, error state, success state, warning state, toast, inline validation |
 | Interaction | hover, focus, disabled, keyboard, scroll containers, overflow, pagination, sorting, filtering, drag or resize |
 
@@ -136,7 +137,7 @@ For each new or changed primitive, specify:
 
 - visual role
 - interaction role
-- responsive behavior
+- interface adaptation behavior
 - accessibility requirement
 - reuse or extension decision
 
@@ -150,7 +151,7 @@ Present three distinct directions unless the Director already approved one:
 | Visual traits | Density, hierarchy, color role, shape language, typography rhythm |
 | Component system | Reused, extended, new, and established primitives |
 | Interaction model | Navigation, scroll, filtering, selection, editing, feedback |
-| Responsive strategy | Mobile, tablet, desktop behavior |
+| Interface adaptation strategy | Web viewport, desktop window, plugin panel, terminal, or mixed-surface behavior |
 | Reference source | Skill, design tool, product reference, design system, or mixed |
 | Risk | What could make this direction unsuitable |
 

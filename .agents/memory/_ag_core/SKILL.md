@@ -4,14 +4,14 @@ description: >
   Antigravity 框架核心記憶卡。追蹤 Antigravity 平台核心規則、工作流與平台文件。 Use when: 修改 Antigravity/
   目錄、Antigravity 規則或 Antigravity 工作流時。
 scopePath: Antigravity/
-last_updated: '2026-06-04T03:57:14+08:00'
+last_updated: '2026-06-11T18:10:51+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,6 +36,7 @@ metadata:
 - Antigravity workflow rules now align memory updates with schema v2 compaction governance.
 - Antigravity rules protect shared memory, project skills, and project context during deployment and cleanup.
 - Antigravity platform behavior must stay semantically aligned with Claude and Codex where possible.
+- Antigravity core blueprint and build execution workflows now preserve design-to-build contract semantics.
 
 ## Active Constraints
 
@@ -47,6 +48,7 @@ metadata:
 ## Cycle Events
 
 - 01: Compacted Antigravity memory into schema v2 and removed shared system memory ownership.
+- 02: Updated core blueprint and build execution workflows for design-to-build governance.
 
 ## Archive Index
 
