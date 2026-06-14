@@ -15,7 +15,7 @@ Load this rule when:
 
 ## 2. Project Skill System (專案衍生技能系統)
 
-- **Project Skills Directory**: AI-generated reusable skills are stored in `.agents/project_skills/` as individual SKILL.md files. A symlink at `.agents/skills/_project` points to this directory, enabling IDE auto-discovery. This mirrors the memory card symlink pattern.
+- **Project Skills Directory**: AI-generated reusable skills are stored in `.agents/project_skills/` as individual SKILL.md files. A symlink at `.agents/skills/_project` points to this directory, enabling IDE auto-discovery. Project memory is a separate readable knowledge layer and is not mirrored as executable skills.
 - **Readable AND Writable by Master Agent**: Unlike framework-provided skills (read-only), project skills CAN be created and modified by the Master Agent during sanctioned workflows.
 - **Director Review Gate**: ALL newly generated project skills MUST be presented to the Director for approval before activation. The Agent MUST NOT silently create and use project skills without Director visibility.
 - **Upgrade Protection**: Framework upgrades (via `Deploy-Antigravity.ps1`) NEVER touch the `project_skills/` directory. The symlink architecture ensures physical isolation from the `skills/` copy operation.

@@ -70,12 +70,12 @@ Use this workflow only when the Director needs architecture output without immed
 
 ## 1. Context Retrieval
 
-- Read the current state of `.agents/memory/_system/SKILL.md`. If it does not exist or the stack is `[UNDEFINED]`, halt and prompt the Director to finalize the tech stack first.
+- Read the current state of the active `_system` memory main file. If it does not exist or the stack is `[UNDEFINED]`, halt and prompt the Director to finalize the tech stack first.
 
 ## 1.5 Real-Time Grounding (Zero-Trust Retrieval)
 
 - [ASSERT] Do NOT rely solely on internal training weights for external frameworks and APIs.
-- Identify the exact major versions of the target tech stack from `_system/SKILL.md`.
+- Identify the exact major versions of the target tech stack from the active `_system` memory main file.
 - [EXECUTE] You MUST execute an external retrieval step (e.g., `search_web` or `context7-docs`) to verify the latest 2026 best practices, breaking changes, or optimal architecture patterns for the chosen stack.
 - Append the current year (e.g., "2026") to the search query if the framework version is ambiguous.
 
@@ -104,8 +104,8 @@ You MUST execute BOTH of the following actions synchronously:
 **Track B: Machine-Readable Memory (Memory Skill System)**
 
 - Initialize the Memory Card System at `.agents/memory/`:
-  1. Create `_system/SKILL.md` from tech stack decisions. Include runtime, framework, external_services, env_keys, config_files, and deploy info.
-  2. Create one `{module}/SKILL.md` per major functional module. Populate schema v2 sections: Current Truth, Active Constraints, Cycle Events, Archive Index, 中文摘要, Tracked Files, Relations, Applicable Skills.
+  1. Create the active `_system` memory main file from tech stack decisions. Include runtime, framework, external_services, env_keys, config_files, and deploy info.
+  2. Create one active memory main file per major functional module. Populate schema v2 sections: Current Truth, Active Constraints, Cycle Events, Archive Index, 中文摘要, Tracked Files, Relations, Applicable Skills.
   3. Memory card descriptions MUST include Traditional Chinese keywords for Director instruction matching.
   4. Memory card frontmatter MUST include `last_updated`, `status`, `staleness: 0`, `memory_schema_version: 2`, `content_language: en`, `human_language: zh-TW`, `cycle_id`, `cycle_event_count`, `cycle_event_limit`, `size_limit_bytes`, `line_limit`, `archive_policy`, and `compaction_status`.
   5. Hierarchy: Follow `memory-arch` nesting guidelines (max depth 4, child paths placed inside parent directories).

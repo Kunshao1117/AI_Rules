@@ -47,7 +47,7 @@ Checkpoint 格式規範（寫入時參考）：
 
 - **Antigravity（Gemini）**：透過 `cartridge-system` MCP 讀寫
 - **Claude Code（本 Agent）**：透過 `cartridge-system` MCP 讀寫（Multi-MCP Gateway 提供）
-- **格式**：每個模組一個 `SKILL.md`，路徑為 `.agents/memory/<module>/SKILL.md`
+- **格式**：每個模組一張作用中記憶卡；目標標準主檔為 `MEMORY.md`，既有 `.agents/memory/**/SKILL.md` 只作相容期來源，直到受治理遷移與 cartridge-system 支援完成。
 - **禁止使用** `~/.claude/projects/` 或 `.claude/agents/memory/` 作為記憶卡存儲位置
 
 ## 1.5 Project Context Layer (專案脈絡層)
@@ -86,7 +86,7 @@ Checkpoint 格式規範（寫入時參考）：
 
 ## 3. Memory Card Operations (記憶卡操作規範)
 
-- **Directory**: `.agents/memory/` with nested `SKILL.md` files (max 4 levels deep).
+- **Directory**: `.agents/memory/` with nested active memory main files (max 4 levels deep). Memory cards are readable source memory, not executable skills.
 - **Context boundary**: Long-term preferences and aesthetic rules belong in `.agents/context/`, not memory cards.
 - **Granularity**: 1 card ≤ 8 tracked files. Suggest splitting when exceeded.
 - **Compaction limits**: Main card ≤ 16 KB / 120 lines; Cycle Events ≤ 30 items; archive volume ≤ 32 KB / 200 lines.
@@ -97,7 +97,7 @@ Checkpoint 格式規範（寫入時參考）：
 - **Load procedures**: Read `.claude/skills/memory-ops/SKILL.md` for card write format and commit procedures.
 - **MCP Tool Chain**: `cartridge-system__memory_list` → `cartridge-system__memory_read` → `write_to_file` → `cartridge-system__memory_commit`
 - **Gateway Path Discipline**: When cartridge-system is reached through Multi-MCP Gateway, use `gateway__call_tool` with explicit `workspace`; also pass `projectRoot` in downstream arguments. Discovery tools (`gateway__search_tools`, `gateway__list_server_tools`) are schema-only.
-- **Commit Risk Boundary**: `cartridge-system__memory_commit` writes files and index metadata. It is forbidden in discussion, planning, testing, or read-only audit phases; call it only after the target memory card has already been updated.
+- **Commit Risk Boundary**: `cartridge-system__memory_commit` writes files and index metadata. It is forbidden in discussion, planning, testing, or read-only audit phases; call it only after the target active memory main file has already been updated.
 
 ## 4. Skill System (技能系統契約)
 

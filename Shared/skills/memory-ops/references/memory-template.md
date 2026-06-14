@@ -1,6 +1,7 @@
 # Memory Card Template
 
 > Reference template for `memory-ops` and `memory-arch`. Use this for new memory cards and lazy upgrades.
+> Canonical active memory card main files are named `MEMORY.md`. Existing project cards may still use legacy `SKILL.md` until the governed migration is applied and cartridge-system support is confirmed.
 
 ## YAML Frontmatter (Required Fields)
 
@@ -17,6 +18,11 @@ last_updated: YYYY-MM-DDTHH:mm:ss+08:00
 status: stable | in_progress | deprecated
 staleness: 0
 memory_schema_version: 2
+memory_quality_version: 1
+memory_kind: source_fact        # source_fact | governance_rule | static_container | deprecated_index | migration_index
+verification_status: pending_review  # verified | partial_evidence | pending_review | conflict | superseded
+last_verified: YYYY-MM-DDTHH:mm:ss+08:00
+valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: YYYY-MM-DD-001
@@ -41,6 +47,11 @@ metadata:
 ### Field Semantics
 
 - `memory_schema_version`: Current card schema. New and upgraded cards use `2`.
+- `memory_quality_version`: Content quality standard version. New and standardized active cards use `1`.
+- `memory_kind`: Card class. Use `source_fact` for normal module memory, `governance_rule` for framework governance, `static_container` for lockfiles/assets, `deprecated_index` for retired cards, and `migration_index` for migration batch records.
+- `verification_status`: Evidence state of current facts: `verified`, `partial_evidence`, `pending_review`, `conflict`, or `superseded`.
+- `last_verified`: Last timestamp when current facts were checked against source files, tool output, Director instruction, or official documentation.
+- `valid_scope`: Where this card's facts apply, such as `current-project`, `codex`, `claude`, `antigravity`, `module:<name>`, `version:<range>`, or `historical`.
 - `content_language`: Main technical body language. Default is `en`.
 - `human_language`: Human-facing summary language. Default is `zh-TW`.
 - `cycle_id`: Current compaction cycle identifier.
@@ -86,6 +97,24 @@ If you manually add `dependencies`, document the reason in `## Current Truth` or
 
 - None yet.
 - archive-001.md — Historical details from cycle YYYY-MM-DD-001.
+
+## Evidence Base
+
+- source:file/path.ext — Current facts verified from source.
+- tool:command-or-audit — Tool output supporting current constraints.
+- director:YYYY-MM-DD — Director instruction that remains active.
+- official:url — Official documentation used for high-change external facts.
+
+## Read Contract
+
+- Read this card when working on owned source files or related module behavior.
+- Do not use this card for long-term preferences, design DNA, temporary task notes, or unrelated platform rules.
+
+## Conflicts and Supersession
+
+- None.
+- pending-review: describe unresolved contradiction or missing evidence.
+- superseded: old fact replaced by newer source or Director decision.
 
 ## 中文摘要
 

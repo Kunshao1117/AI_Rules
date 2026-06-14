@@ -83,7 +83,7 @@ Scan the project systematically using the following priority order:
 3. 技術堆疊設定檔（`package.json` / `*.toml` / `requirements.txt`）→ 框架版本、依賴
 4. `gitnexus` 知識圖譜 → 代碼結構、模組關聯
    - 降級路徑：gitnexus 未索引時 → `Read` + `Glob` 工具代替
-5. `.agents/memory/_system/SKILL.md` → 現有系統記憶（若已存在）
+5. `_system` 作用中記憶主檔 → 現有系統記憶（若已存在）
 6. 主要設定檔（`.env.example` / `docker-compose.yml`）→ 部署環境
 
 ## 2. Extract（萃取階段）
@@ -132,7 +132,7 @@ DO NOT proceed until Director provides explicit GO approval.
 
 ### Path B: _system 記憶卡
 
-寫入 `.agents/memory/_system/SKILL.md`，新增或更新 `## 專案身份與工作模式` 段落。
+寫入 `_system` 作用中記憶主檔，新增或更新 `## 專案身份與工作模式` 段落。
 完成後強制呼叫 `cartridge-system__memory_commit('_system', projectRoot)`。
 
 ---

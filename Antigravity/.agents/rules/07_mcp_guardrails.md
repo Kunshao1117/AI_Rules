@@ -45,7 +45,7 @@ When a tool is NOT listed, fall back to §1 READ/WRITE classification.
 | `supabase.execute_sql` (non-SELECT) | 🔴 HIGH | Director approval + Justification Block |
 | `supabase.apply_migration` | 🔴 HIGH | Director approval + Justification Block |
 | `supabase.deploy_edge_function` | 🔴 HIGH | Director approval + Justification Block |
-| `cartridge-system__memory_commit` | 🔴 HIGH | Only after SKILL.md has been written and memory commit phase is active |
+| `cartridge-system__memory_commit` | 🔴 HIGH | Only after the active memory main file has been written and memory commit phase is active |
 | `github.create_or_update_file` | 🟡 MEDIUM | Justification Block (auto-logged) |
 | `github.push_files` | 🟡 MEDIUM | Justification Block (auto-logged) |
 | `cloudflare.container_*` (mutating) | 🟡 MEDIUM | Justification Block (auto-logged) |

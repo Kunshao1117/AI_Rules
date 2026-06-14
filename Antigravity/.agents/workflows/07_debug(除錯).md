@@ -62,7 +62,7 @@ Technical details may only appear after a `補充技術細節` section when they
 > `view_file .agents/skills/memory-ops/SKILL.md`
 
 - Check the IDE-injected skill list for memory cards relevant to the failing module.
-- Load relevant memory card SKILL.md files — check `## Current Truth`, `## Active Constraints`, and `## Cycle Events` to determine if this behavior or prior fix event is documented.
+- Load relevant active memory main files — check `## Current Truth`, `## Active Constraints`, and `## Cycle Events` to determine if this behavior or prior fix event is documented.
 
 ## 1. Hardened Evidence Collection
 

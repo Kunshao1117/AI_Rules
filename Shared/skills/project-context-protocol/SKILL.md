@@ -32,6 +32,8 @@ Use `.agents/context/` for:
 
 Do not use project context for source ownership, dependency staleness, implementation evidence, temporary task notes, or executable skills.
 
+Do not write long-lived preferences, design DNA, acceptance defaults, or product direction into source memory. If a workflow discovers a reusable preference, report it as candidate project context and wait for `GO CONTEXT` before persistence.
+
 ## Layer Boundary
 
 | Layer | Location | Purpose | Write Gate |
@@ -145,3 +147,4 @@ When project context affects a task, report:
 - This skill does not authorize writes, installs, memory commits, commits, pushes, deployments, or mutating MCP calls.
 - Project context does not participate in source memory staleness.
 - Source memory cards must not store long-term preferences or aesthetic rules.
+- Source memory quality fields may cite Director instructions as evidence only for source facts or active constraints; preference evidence still belongs in project context.

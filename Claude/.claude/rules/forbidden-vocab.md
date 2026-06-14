@@ -7,7 +7,7 @@
 
 | ❌ Raw Code Identifier | ✅ Business Description (zh-TW) |
 |---|---|
-| `memory/*/SKILL.md` | 模組記憶 |
+| `memory card main file` | 模組記憶 |
 | `Tracked Files` | 追蹤的檔案清單 |
 | `Current Truth` | 現行真相 |
 | `Active Constraints` | 當前限制 |

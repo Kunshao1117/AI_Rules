@@ -72,7 +72,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > [LOAD SKILL] Read `.claude/skills/memory-ops/SKILL.md`.
 
-- Check MEMORY.md index for module owning the error file.
+- Check the memory index for the module owning the error file.
 - Load relevant memory card to understand current behavior, active constraints, and prior cycle events.
 - Check `## Current Truth`, `## Active Constraints`, and `## Cycle Events` — the behavior or prior fix event may already be documented.
 

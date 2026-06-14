@@ -78,7 +78,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 1. Memory Recall（記憶載入）
 
 - 從 IDE 注入的技能清單中，找出與目標模組相關的記憶卡。
-- 載入相關記憶卡的 `SKILL.md`，了解模組架構、追蹤檔案、決策記錄、已知問題。
+- 載入相關作用中記憶主檔，了解模組架構、追蹤檔案、決策記錄、已知問題。
 - 查看 `## Relations` 段落，確認可能被此次建構影響的跨模組依賴關係。
 - 查看 `## Applicable Skills` 段落，確認應載入的操作技能已啟動。
 

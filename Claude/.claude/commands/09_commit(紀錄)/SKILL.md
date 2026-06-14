@@ -77,7 +77,7 @@ Scan for:
 
 ### 2. Memory Staleness Check (記憶過期偵測)
 
-- Cross-reference changed files against `.agents/memory/*/SKILL.md` cards.
+- Cross-reference changed files against active memory card main files.
 - Flag any modified source file whose memory card was NOT updated this session.
 - Output staleness report in Traditional Chinese.
 

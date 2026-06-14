@@ -76,7 +76,7 @@ Scan the project systematically using the following priority order:
 ├── 3. 技術堆疊設定檔（package.json / *.toml / *.mod / requirements.txt）→ 框架版本、依賴
 ├── 4. gitnexus 知識圖譜 → 代碼結構、模組關聯、入口點
 │   └── 降級路徑：gitnexus 未索引時 → list_dir + view_file 代表性檔案
-├── 5. .agents/memory/_system/SKILL.md → 現有系統記憶（若已存在）
+├── 5. _system 作用中記憶主檔 → 現有系統記憶（若已存在）
 └── 6. 主要設定檔（.env.example / docker-compose.yml / wrangler.toml 等）→ 部署環境
 ```
 
@@ -159,13 +159,13 @@ After Director GO approval:
 ### Path B: _system 記憶卡
 
 ```
-寫入目標：.agents/memory/_system/SKILL.md
-├── IF _system/SKILL.md 已存在
+寫入目標：_system 作用中記憶主檔
+├── IF _system 作用中記憶主檔已存在
 │   ├── IF 已包含 「## 專案身份與工作模式」段落
 │   │   └── 覆蓋更新該段落
 │   └── ELSE
 │       └── 在 ## Current Truth 前插入新段落；舊卡缺少該段落時先建立 schema v2 段落
-├── ELSE IF _system/SKILL.md 不存在
+├── ELSE IF _system 作用中記憶主檔不存在
 │   └── 依 memory-arch 模板建立完整記憶卡，以 6 大維度填充
 └── 強制呼叫 memory_commit('_system', projectRoot) 同步索引
 ```

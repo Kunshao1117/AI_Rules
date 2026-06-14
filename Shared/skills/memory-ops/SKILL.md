@@ -16,7 +16,7 @@ metadata:
 
 # Memory Skill Operations (記憶技能操作指引)
 
-Read references/memory-template.md when creating or upgrading a memory card schema.
+Read `references/memory-template.md` when creating or upgrading a memory card schema. Read `../memory-arch/references/memory-quality-migration-blueprint.md` when planning full-card standardization.
 
 ## HITL Boundary
 
@@ -28,30 +28,30 @@ Read references/memory-template.md when creating or upgrading a memory card sche
 
 Project context is not source memory. Files under `.agents/context/**/CONTEXT.md` are governed by `project-context-protocol`, require `GO CONTEXT` for persistent writes, and must never be synchronized through `memory_commit`.
 
-All cartridge-system MCP calls routed through Multi-MCP Gateway MUST use the real downstream execution entrypoint:
+Active memory cards are source memory, not executable skills. The canonical target filename for active memory card main files is `MEMORY.md`; `SKILL.md` under `.agents/memory/` is a legacy compatibility name and migration source only. Until cartridge-system support for `MEMORY.md` is confirmed and the project migration is explicitly applied, existing project memory cards may remain on `SKILL.md`. Do not hand-rename active memory cards; use the governed memory main-file migration tool and keep archive volumes (`archive-*.md`) unchanged.
 
-```json
-{
-  "name": "cartridge-system__memory_list",
-  "workspace": "<absolute project root>",
-  "arguments": {
-    "projectRoot": "<absolute project root>"
-  }
-}
-```
+### Memory Admission Rules
 
-- `gateway__search_tools` and `gateway__list_server_tools` are discovery-only. They confirm tool names and schemas; they do not execute downstream MCP behavior.
-- Every `gateway__call_tool` invocation MUST include an explicit `workspace`. For cartridge-system tools, `arguments.projectRoot` MUST also be explicit. Do not rely on Gateway global workspace state.
-- Do not guess argument names. Confirm schema first; for example, `memory_deps` uses `moduleName`, not `module`.
+Write permanent source memory only for current source ownership, verified source facts, active constraints, stable validation routes, and concise cycle events. Keep task notes, screenshots, raw test output, audit logs, failed attempts, unverified guesses, and one-off observations in reports or `.agents/logs/`.
+
+Long-lived preferences, design DNA, acceptance defaults, and product direction belong in project context, not source memory. If a fact is only partially verified, set the card's verification state accordingly and record the missing evidence instead of presenting it as current truth.
+
+### Quality Standard
+
+New and standardized active cards should carry content quality metadata in addition to parser schema metadata: quality version, memory kind, verification status, last verified timestamp, and valid scope. Active cards should also include `## Evidence Base`, `## Read Contract`, and `## Conflicts and Supersession`.
+
+If old content conflicts, stop at a conflict report or mark the card as conflict/pending review. Do not silently choose the more convenient fact.
+
+Gateway calls MUST use the real downstream execution entrypoint. Discovery tools only reveal names and schemas; real cartridge-system execution needs explicit `workspace`, and downstream arguments need explicit `projectRoot`. Do not guess argument names; inspect schema first.
 
 All memory card **writes and updates** MUST follow the **two-step flow**:
 
-1. Use native tools (`write_to_file` / `replace_file_content`) to write the full SKILL.md content
+1. Use native tools (`write_to_file` / `replace_file_content`) to write the full active memory main-file content (`SKILL.md` during legacy compatibility; `MEMORY.md` after migration)
 2. Call `cartridge-system__memory_commit` to sync metadata (timezone, staleness, index)
 
 **Commit Obligation (歸卡義務)**: Skipping step 2 is FORBIDDEN. A memory card written without `memory_commit` is considered INCOMPLETE. The Completion Gate will reject the workflow.
 
-**High-Risk Tool Boundary**: `cartridge-system__memory_commit` writes files and updates index metadata. It is FORBIDDEN during discussion, planning, testing, or read-only audit phases. Call it only after the target `SKILL.md` has already been updated and the workflow is explicitly in the memory commit phase.
+**High-Risk Tool Boundary**: `cartridge-system__memory_commit` writes files and updates index metadata. It is FORBIDDEN during discussion, planning, testing, or read-only audit phases. Call it only after the target active memory main file has already been updated and the workflow is explicitly in the memory commit phase.
 
 > **Legacy**: `memory_update(mode: replace)` is still available as a fallback but NOT recommended.
 > **Deprecated**: `memory_update(mode: patch)` and `memory_update(mode: append)` are deprecated due to high error rates in Markdown merging.
@@ -67,33 +67,16 @@ Need to load memory?
 ├── Full project overview or handoff (/11_handoff)
 │   └── Call memory_list → returns all module names + health status
 └── Single module context (pre-task loading)
-    └── Call memory_read(moduleName) → returns full SKILL.md content
+    └── Call memory_read(moduleName) → returns the full active memory main-file content
 ```
 
 ### Read-Only Governance Tools (唯讀治理工具)
 
-Use these before deciding whether memory content must be edited:
-
-| Tool | Purpose | Write behavior |
-|------|---------|----------------|
-| `cartridge-system__workspace_brief` | High-level project identity, memory health, stale/ghost/untracked summary, and next recommended action | Read-only |
-| `cartridge-system__memory_audit` | Full memory system audit: legacy format, frontmatter, Tracked Files, index, dependency semantics, cycles | Read-only |
-| `cartridge-system__commit_preflight` | Pre-commit governance check: git dirty state, memory health, blockers, and suggested validation commands | Read-only |
-| `cartridge-system__memory_list` | Card inventory with health, ghost files, untracked files, dependency count, indirect staleness, split suggestions | Read-only |
-| `cartridge-system__memory_status` | Single-card stale/ghost/pending-change diagnosis | Read-only |
-| `cartridge-system__memory_read` | Full card content read | Read-only |
-| `cartridge-system__memory_deps` | Single-card dependency topology, dependents, cycles, and indirect staleness | Read-only |
+Use read-only tools before deciding whether memory content must be edited: `workspace_brief`, `memory_audit`, `commit_preflight`, `memory_list`, `memory_status`, `memory_read`, and `memory_deps`.
 
 `commit_preflight` returning `blocked` because of dirty files is a governance signal, not a tool failure. Review the listed files and continue with the governed commit workflow.
 
-> **Ghost Awareness (v4.0)**: `memory_list` now returns a `ghostFilesCount` field per module.
-> If `ghostFilesCount > 0`, tracked files have been deleted from disk but remain registered in the cartridge.
-> Prioritize these modules — after reading the card, remove deleted paths from `## Tracked Files`,
-> then call `memory_commit` to synchronize.
-
-> **Compaction Awareness (v5.5)**: read-only governance tools surface size, line count, Chinese ratio,
-> cycle count, legacy status, and recommended action. If `needsCompaction=true`, compact or
-> split/archive before adding another event, then call `memory_commit`.
+If read-only tools report ghost files, remove deleted paths from `## Tracked Files` during the next authorized update. If they report `needsCompaction=true`, compact or split/archive before adding another event.
 
 ## 3. Repairing Stale Memory (過期修復)
 
@@ -101,34 +84,15 @@ When a memory cartridge has staleness > 0, you **MUST NOT** simply call `memory_
 
 ### Staleness Repair Procedure (過期修復流程)
 
-```
-Stale memory card detected?
-├── Step 1: Call memory_status(moduleName) ← diagnose staleness
-│   ⇒ Returns: staleness index, changed files list (absolute paths), action guidance
-├── Step 2: Call view_file on each changed file
-│   ⇒ Understand the latest state of the source code
-├── Step 3: Call memory_read(moduleName)
-│   ⇒ Read existing memory content
-├── Step 4: Compare source code changes vs existing memory
-│   ⇒ Produce updated memory content as current truth, not a full repair log
-│   ⇒ If the card is legacy, prepare a lazy upgrade to schema v2
-│   ⇒ If the card is over limit or has 30 cycle events, compact before adding a new event
-├── Step 4.5: Check ghostFiles (v4.0)
-│   ⇒ Call memory_status; if ghostFiles array is non-empty
-│   ⇒ Confirm these files have been removed from the project
-│   ⇒ Remove corresponding paths from the ## Tracked Files section
-│   ⇒ If ALL tracked files in the module are ghosts, consider retiring the entire memory card
-├── Step 5: Use write_to_file to write the updated SKILL.md
-│   ⇒ Full content including updated sections
-└── Step 6: Call memory_commit(moduleName, projectRoot)
-    ⇒ staleness auto-resets to 0 + pendingChanges auto-cleared + index synced
-```
+1. Call `memory_status(moduleName)` and read each changed source file.
+2. Call `memory_read(moduleName)` and compare memory against current source.
+3. Update current truth, constraints, tracked files, archive pointers, and one cycle event as needed.
+4. If the card is legacy or over limits, lazy-upgrade or compact before writing.
+5. Write the full active memory main file, then call `memory_commit(moduleName, projectRoot)`.
 
 > **FORBIDDEN**: Calling `memory_commit` without first completing Steps 1–5 to sync content. Staleness reset is a SIDE EFFECT of sync, not the goal.
 
-> **⚠️ Auto-Cleanup Guarantee (v4.0)**: `memory_commit` has `stripWarningBlock()` built in.
-> It **automatically removes** `<!-- CARTRIDGE_SYSTEM_WARNING_START/END -->` blocks on every commit.
-> **No manual deletion needed.** If warning blocks persist after commit, verify you are NOT using the deprecated `memory_update` mode.
+`memory_commit` removes `CARTRIDGE_SYSTEM_WARNING` blocks. If warning blocks persist after commit, verify you are not using deprecated update modes.
 
 ## 4. Updating Memory (更新記憶)
 
@@ -141,15 +105,7 @@ After modifying source files tracked by a memory skill, you **MUST** update the 
 
 ### Mandatory Flow (強制流程 — 不可略過)
 
-> **Indirect Staleness Awareness (v4.0)**: `memory_list` now returns an `indirectStaleness` field per module.
-> If `indirectStaleness > 0`, an upstream dependency cartridge has gone stale.
-> Call `memory_deps(moduleName)` to inspect upstream cartridges and confirm whether upstream changes
-> affect this module's Current Truth or Active Constraints before deciding to update.
->
-> **Field Semantics Boundary**: Cartridge System analyzes local memory card data only. It reads frontmatter
-> `dependencies` to build dependency graphs, indirect staleness propagation, cycle detection, and
-> `memory_deps` output. It does **not** define whether a relationship should be a dependency; that is a
-> memory-writing responsibility governed by this skill（欄位語義由規範層定義，不由工具層代判）.
+If `memory_list` reports `indirectStaleness > 0`, call `memory_deps(moduleName)` and confirm whether upstream changes affect this card before updating. Cartridge System reports dependency data only; the agent decides relationship semantics under this skill.
 
 ### Dependency Write Gate (dependencies 寫入閘門)
 
@@ -163,30 +119,11 @@ Before adding any frontmatter `dependencies` entry, ask:
 - Parent/child memory card relationships default to `## Relations`; do not add them to `dependencies` unless staleness propagation is truly required.
 - Do not add `dependencies` merely to make context look more complete.
 
-```
-Need to update memory?
-├── 🔍 Granularity advisory pre-check: does the target memory card have > 8 trackedFiles?
-│   └── Yes → Treat as a split suggestion. Continue if hard limits are healthy; pause only for mixed ownership, maintenance difficulty, or approved split.
-├── 🔍 Compaction pre-check: does memory_list / memory_audit report needsCompaction=true?
-│   └── Yes → Pause update. Summarize Cycle Events into Current Truth and Archive Index first.
-├── Step 1: Call memory_read(moduleName) to get current content
-│   ⇒ Understand Current Truth, Active Constraints, Cycle Events, tracked files, and archive pointers
-├── Step 2: Use write_to_file / replace_file_content to write updated SKILL.md
-│   ⇒ Keep the main body in English short sentences
-│   ⇒ Add exactly one new item to ## Cycle Events unless compaction is due
-│   ⇒ Keep Chinese only in description, trigger keywords, and ## 中文摘要
-└── Step 3: Call memory_commit(moduleName, projectRoot)
-    ⇒ Auto-injects Taiwan timezone timestamp
-    ⇒ Auto-resets staleness to 0
-    ⇒ Auto-syncs cartridge_index.json (clears pendingChanges, re-parses trackedFiles)
-    ⇒ Returns structural validation report
-```
+Flow: check granularity and compaction, call `memory_read(moduleName)`, write the full active memory main file, then call `memory_commit(moduleName, projectRoot)`. Keep the body as short English facts; Chinese belongs in description, trigger keywords, and `## 中文摘要`.
 
 ### Legacy Fallback (舊版備用)
 
-- `memory_update(mode: replace)`: Send complete SKILL.md content for full replacement. Still functional but less stable than the two-step flow.
-- `memory_update(mode: patch)`: **Deprecated** — High error rate due to Markdown section matching sensitivity.
-- `memory_update(mode: append)`: **Deprecated** — No structural validation, causes duplicate sections.
+`memory_update(mode: replace)` is a fallback only. `patch` and `append` modes are deprecated.
 
 ### Post-Commit Obligations (歸卡後義務)
 
@@ -226,11 +163,16 @@ When modifying, fixing logic, or repairing staleness on a legacy memory card (e.
 - Do not run a full-project rewrite.
 - If this turn only reads the card, mark it as readable but pending lazy upgrade in the report.
 - If this turn must update the card, preserve old long-form content in an archive volume, then rebuild the main card as schema v2.
-- Main card frontmatter MUST include `memory_schema_version: 2`, `content_language: en`, `human_language: zh-TW`, `cycle_id`, `cycle_event_count`, `cycle_event_limit`, `size_limit_bytes`, `line_limit`, `archive_policy`, and `compaction_status`.
-- Main card body MUST include `## Current Truth`, `## Active Constraints`, `## Cycle Events`, `## Archive Index`, `## 中文摘要`, and `## Tracked Files`.
+- Main card frontmatter MUST include schema v2 governance fields, language fields, cycle counters, size/line limits, archive policy, and compaction status.
+- Standardized cards also add quality version, memory kind, verification status, last verified timestamp, valid scope, Evidence Base, Read Contract, and Conflicts and Supersession.
+- Main card body MUST include Current Truth, Active Constraints, Cycle Events, Archive Index, Evidence Base, Read Contract, Conflicts and Supersession, 中文摘要, and Tracked Files sections.
 - Normalize section headers (e.g., ensure `## Tracked Files` matches naming conventions).
 - If old content is too large or contradictory, stop at a compaction plan instead of silently cutting content.
 - **Goal**: Seamlessly patch technical debt dynamically on-demand. Avoid massive migration shocks.
+
+### Controlled Standardization Migration
+
+Use controlled standardization when the Director authorizes a full active-card rebuild. The agent must inventory the card, preserve old long-form content in an archive volume when needed, extract still-valid facts, rebuild the active card with quality metadata and sections, then call `memory_commit`. Archive volumes are historical evidence and must not be bulk-rewritten into the active-card template.
 
 <!-- NOTE: Creation, Tree Topology, and Splitting operations have been migrated to the memory-arch skill. -->
 
@@ -244,8 +186,18 @@ and the parser will fail to recognize the tracked-files block — all tracked fi
 - **Detection**: Check the `warnings` field returned by `memory_commit`.
 - **Remediation**: On `[HEADING_TYPO]`, use `replace_file_content` to correct the heading to exactly `## Tracked Files`, then call `memory_commit` again.
 
+## 4.8 Main File Naming Migration
+
+- Use `Scripts/modules/Memory-Migration.psm1` through the AI Rules Manager memory migration action to inventory or rename active memory main files.
+- Run dry-run first with `.\Scripts\AI-RulesManager.ps1 -Action MemoryMigration -Target .`.
+- Dry-run mode is safe and may be used to report legacy `SKILL.md` cards, existing `MEMORY.md` cards, conflicts, archive volumes, and legacy path references.
+- Apply mode must stop if a card directory contains both `SKILL.md` and `MEMORY.md`; do not merge or guess the winner automatically.
+- This tool does not update cartridge-system itself. Treat external engine support for `MEMORY.md` as a later compatibility gate.
+- Current project memory cards must not be renamed as a side effect of updating this skill.
+
 ## 5. System Memory (系統記憶)
 
-- Path: `.agents/memory/_system/SKILL.md`
+- Current compatibility path: `.agents/memory/_system/SKILL.md`
+- Target canonical path after migration: `.agents/memory/_system/MEMORY.md`
 - Content: tech stack, host platform, deployment config
 - Update rules: same as § 4 (write → commit)

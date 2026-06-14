@@ -37,7 +37,7 @@ When tools are provided through Multi-MCP Gateway:
 | `mcp__claude_ai_Supabase__apply_migration` | 🔴 HIGH | Director approval + Justification |
 | `mcp__claude_ai_Supabase__deploy_edge_function` | 🔴 HIGH | Director approval + Justification |
 | `mcp__claude_ai_Vercel__deploy_to_vercel` | 🔴 HIGH | Director approval + Justification |
-| `cartridge-system__memory_commit` | 🔴 HIGH | Only after SKILL.md has been written and memory commit phase is active |
+| `cartridge-system__memory_commit` | 🔴 HIGH | Only after the active memory main file has been written and memory commit phase is active |
 | Bash `git push` | 🟡 MEDIUM | Justification Block (auto-logged) |
 | Bash `git commit` | 🟡 MEDIUM | Justification Block (auto-logged) |
 | `gateway__search_tools` / `gateway__list_server_tools` | 🟢 LOW | Auto-proceed |

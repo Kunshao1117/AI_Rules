@@ -2022,6 +2022,126 @@ function Measure-ProjectContextCards {
     }
 }
 
+function Measure-MemoryCardNaming {
+    <#
+    .SYNOPSIS
+        檢查 .agents/memory/ 內作用中記憶卡主檔命名、基本結構與內容品質欄位，僅掃描記憶庫，不掃描技能目錄。
+    #>
+    param([string]$TargetRoot = ".")
+
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
+    $results = New-Object System.Collections.Generic.List[object]
+    $memoryRoot = Join-Path $TargetRoot ".agents\memory"
+    $requiredFrontmatterFields = @('name', 'description', 'status', 'staleness', 'memory_schema_version')
+    $qualityFrontmatterFields = @(
+        'memory_quality_version',
+        'memory_kind',
+        'verification_status',
+        'last_verified',
+        'valid_scope'
+    )
+    $requiredSections = @(
+        'Current Truth',
+        'Active Constraints',
+        'Cycle Events',
+        'Archive Index',
+        '中文摘要',
+        'Tracked Files'
+    )
+    $qualitySections = @(
+        'Evidence Base',
+        'Read Contract',
+        'Conflicts and Supersession'
+    )
+
+    function Add-MemoryNamingFinding {
+        param(
+            [string]$Severity,
+            [string]$File,
+            [string]$Reason
+        )
+        $results.Add([PSCustomObject]@{
+            Severity = $Severity
+            File     = $File
+            Reason   = $Reason
+        })
+    }
+
+    if (-not (Test-Path -LiteralPath $memoryRoot -PathType Container)) {
+        Add-MemoryNamingFinding -Severity 'Yellow' -File '.agents/memory/' -Reason '尚未建立專案記憶目錄'
+    } else {
+        $memoryDirs = New-Object System.Collections.Generic.List[object]
+        $memoryDirs.Add((Get-Item -LiteralPath $memoryRoot))
+        Get-ChildItem -LiteralPath $memoryRoot -Directory -Recurse -ErrorAction SilentlyContinue |
+            Sort-Object FullName |
+            ForEach-Object { $memoryDirs.Add($_) }
+
+        foreach ($dir in $memoryDirs) {
+            $legacyFile = Join-Path $dir.FullName 'SKILL.md'
+            $currentFile = Join-Path $dir.FullName 'MEMORY.md'
+            $hasLegacy = Test-Path -LiteralPath $legacyFile -PathType Leaf
+            $hasCurrent = Test-Path -LiteralPath $currentFile -PathType Leaf
+            if (-not $hasLegacy -and -not $hasCurrent) { continue }
+
+            $mainFile = if ($hasCurrent) { $currentFile } else { $legacyFile }
+            $relative = Get-AuditRelativePath -RepoRoot $TargetRoot -Path $mainFile
+
+            if ($hasLegacy -and $hasCurrent) {
+                Add-MemoryNamingFinding -Severity 'Red' -File $relative -Reason '同一記憶卡資料夾同時存在 SKILL.md 與 MEMORY.md'
+            } elseif ($hasLegacy) {
+                Add-MemoryNamingFinding -Severity 'Yellow' -File $relative -Reason '作用中記憶卡仍使用舊主檔名稱；請用記憶主檔遷移工具規劃更名'
+            }
+
+            $frontmatter = Get-FrontmatterBlock -Path $mainFile
+            if (-not $frontmatter) {
+                Add-MemoryNamingFinding -Severity 'Red' -File $relative -Reason '作用中記憶主檔缺少 frontmatter'
+            } else {
+                foreach ($field in $requiredFrontmatterFields) {
+                    if ($frontmatter -notmatch "(?m)^$([regex]::Escape($field))\s*:") {
+                        Add-MemoryNamingFinding -Severity 'Yellow' -File $relative -Reason "作用中記憶主檔缺少前置欄位：$field"
+                    }
+                }
+                foreach ($field in $qualityFrontmatterFields) {
+                    if ($frontmatter -notmatch "(?m)^$([regex]::Escape($field))\s*:") {
+                        Add-MemoryNamingFinding -Severity 'Yellow' -File $relative -Reason "作用中記憶主檔缺少內容品質欄位：$field"
+                    }
+                }
+            }
+
+            $content = Get-Content -LiteralPath $mainFile -Raw -Encoding UTF8
+            foreach ($section in $requiredSections) {
+                if ($content -notmatch "(?m)^##\s+$([regex]::Escape($section))\s*$") {
+                    Add-MemoryNamingFinding -Severity 'Yellow' -File $relative -Reason "作用中記憶主檔缺少必要段落：$section"
+                }
+            }
+            foreach ($section in $qualitySections) {
+                if ($content -notmatch "(?m)^##\s+$([regex]::Escape($section))\s*$") {
+                    Add-MemoryNamingFinding -Severity 'Yellow' -File $relative -Reason "作用中記憶主檔缺少內容品質段落：$section"
+                }
+            }
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 Memory Card Naming, Structure, and Quality"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
+    foreach ($finding in $results | Sort-Object Severity, File, Reason) {
+        $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+        Write-Host ("  {0} {1} — {2}" -f $finding.Severity, $finding.File, $finding.Reason) -ForegroundColor $color
+    }
+
+    return [PSCustomObject]@{
+        Results     = @($results.ToArray())
+        RedCount    = $redCount
+        YellowCount = $yellowCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
 function Measure-SharedContextTemplates {
     <#
     .SYNOPSIS
@@ -2146,15 +2266,16 @@ function Invoke-PlatformGovernanceAudit {
     $projectLinks = Measure-ProjectSkillLinks -TargetRoot $TargetRoot
     $sharedContextTemplates = Measure-SharedContextTemplates -RepoRoot $RepoRoot
     $projectContext = Measure-ProjectContextCards -TargetRoot $TargetRoot
+    $memoryNaming = Measure-MemoryCardNaming -TargetRoot $TargetRoot
 
     $metadataFail = ($metadata | Where-Object { $_.Status -eq '🔴' }).Count
     $metadataYellow = ($metadata | Where-Object { $_.Status -eq '🟡' }).Count
     $skillRed = ($skillQuality | Where-Object { $_.OverallStatus -eq '🔴' }).Count
     $skillYellow = ($skillQuality | Where-Object { $_.OverallStatus -eq '🟡' }).Count
     $docStale = $docs.StaleHits.Count
-    $redTotal = $runtime.RedCount + $semantics.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $projectLinks.RedCount + $sharedContextTemplates.RedCount + $projectContext.RedCount
+    $redTotal = $runtime.RedCount + $semantics.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $projectLinks.RedCount + $sharedContextTemplates.RedCount + $projectContext.RedCount + $memoryNaming.RedCount
     $redTotal += $skillRed
-    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount
+    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount + $memoryNaming.YellowCount
     $yellowTotal += $metadataYellow + $skillYellow
     $ok = $capability.CapabilityMatrix -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
@@ -2179,10 +2300,11 @@ function Invoke-PlatformGovernanceAudit {
         ProjectLinks = $projectLinks
         SharedContextTemplates = $sharedContextTemplates
         ProjectContext = $projectContext
+        MemoryNaming = $memoryNaming
         RedCount   = $redTotal
         YellowCount = $yellowTotal
         Passed     = $ok
     }
 }
 
-Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Measure-SharedContextTemplates, Measure-ProjectContextCards, Invoke-PlatformGovernanceAudit
+Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Measure-SharedContextTemplates, Measure-ProjectContextCards, Measure-MemoryCardNaming, Invoke-PlatformGovernanceAudit

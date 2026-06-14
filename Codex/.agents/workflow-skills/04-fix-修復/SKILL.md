@@ -74,8 +74,8 @@ Use this skill when the user asks to run the migrated source command `04_fix(修
 
 > [LOAD SKILL] Read `.agents/skills/memory-ops/SKILL.md` before proceeding.
 
-- Check MEMORY.md index for cards relevant to the bug's module.
-- Load relevant `.agents/memory/*/SKILL.md`. Check `## Current Truth`, `## Active Constraints`, `## Cycle Events`, and `## Relations` for existing context and cascade impact.
+- Check the memory index for cards relevant to the bug's module.
+- Load relevant active memory main files. Check `## Current Truth`, `## Active Constraints`, `## Cycle Events`, and `## Relations` for existing context and cascade impact.
 - Read relevant `.agents/context/**/CONTEXT.md` cards if the fix touches user experience or preference-sensitive behavior.
 
 ### 1. Current State Constraint

@@ -104,7 +104,7 @@ Technical details may only appear after a `補充技術細節` section when they
 > Inherits: `.agents/workflows/_security_footer.md` (Role Lock Gate)
 
 - **Role**: `Writer/SRE` | Permissions based on the security gate matrix。
-- **Memory Update**: After executing the fix, update all affected memory card SKILL.md files.
+- **Memory Update**: After executing the fix, update all affected active memory main files.
 
 ---
 

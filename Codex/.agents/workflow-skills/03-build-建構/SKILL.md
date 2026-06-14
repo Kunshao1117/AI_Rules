@@ -85,8 +85,8 @@ Use this skill when the user asks to run the migrated source command `03_build(�
 > [LOAD SKILL] Read `.agents/skills/memory-ops/SKILL.md` before proceeding.
 > [LOAD SKILL] Read `.agents/skills/project-context-protocol/SKILL.md` if project context can influence the implementation plan.
 
-- Check MEMORY.md index for cards relevant to target module.
-- Load relevant `.agents/memory/*/SKILL.md` — understand Current Truth, Active Constraints, Cycle Events, archive pointers, tracked files, and relations.
+- Check the memory index for cards relevant to target module.
+- Load relevant active memory main files — understand Current Truth, Active Constraints, Cycle Events, archive pointers, tracked files, and relations.
 - Check `## Relations` for cross-module dependencies.
 - Check `## Applicable Skills` for required operational skills.
 - Read relevant `.agents/context/**/CONTEXT.md` cards and record whether approved context is adopted, skipped, or only considered as candidate.

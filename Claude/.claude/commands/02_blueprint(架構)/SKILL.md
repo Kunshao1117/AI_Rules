@@ -81,7 +81,7 @@ Use this workflow only when the Director needs architecture output without immed
 - Scan project root for `package.json`, `tsconfig.json`, `next.config.*`, `.env*` files.
 - Identify framework versions and major dependencies.
 - Use `WebSearch` to ground latest stable docs for detected frameworks.
-- Lock tech stack into `.agents/memory/_system/SKILL.md`.
+- Lock tech stack into the active `_system` memory main file.
 
 **三平台代理治理架構宣告：**
 ```

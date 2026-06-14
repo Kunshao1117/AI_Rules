@@ -40,7 +40,7 @@ HALT. Execute the following PowerShell command only after the Director explicitl
 
 *(Optional: If the Director explicitly requests clearing orphaned files, append `-RemoveOrphans` to the `& $f ...` command above.)*
 
-The Upgrade mode will compare all framework files (rules, workflows, skills) against the source, produce a diff report, and wait for Director confirmation before applying changes. Project memory skills (`.agents/memory/`) and project-derived skills (`.agents/project_skills/`) are protected and will NOT be overwritten.
+The Upgrade mode will compare all framework files (rules, workflows, skills) against the source, produce a diff report, and wait for Director confirmation before applying changes. Project memory (`.agents/memory/`) and project-derived skills (`.agents/project_skills/`) are protected and will NOT be overwritten.
 
 *(Note: Replace `<Current_Workspace_Directory>` with the absolute path of the user's current project).*
 

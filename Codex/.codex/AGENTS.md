@@ -186,6 +186,6 @@ This block is generated from `Shared/policies/subagent-invocation.md`. Do not ed
 └── Clear → Allow completion.
 ```
 
-`cartridge-system__memory_commit` is a state-mutating tool. It is forbidden during discussion, planning, testing, or read-only audit phases; call it only after the target `SKILL.md` has already been updated and the workflow is explicitly in the memory commit phase.
+`cartridge-system__memory_commit` is a state-mutating tool. It is forbidden during discussion, planning, testing, or read-only audit phases; call it only after the target active memory main file has already been updated and the workflow is explicitly in the memory commit phase.
 
 Read-only governance tools may be used for diagnosis before edits: `workspace_brief`, `memory_audit`, `commit_preflight`, `memory_list`, `memory_status`, `memory_read`, and `memory_deps`. `commit_preflight` returning blocked because of dirty files is a governance signal, not a tool failure.

@@ -23,7 +23,9 @@
 | Subagents | `adapter`：Shared evidence branch 語義轉譯為 Gemini CLI subagents、`@` 指派、browser-capable agent 或 Antigravity plugin adapter | `native`：Shared evidence branch 語義轉譯為 Claude Code built-in/custom/plugin subagents、description 自動委派、`@agent` 或 governed `Agent(...)` 權限模型 | `native`：Shared evidence branch 語義轉譯為 Codex native subagents；僅在 Director 明確要求、workflow gate 指定或 `.codex/agents/*.toml` custom agents 已配置時啟動 |
 | Automation-safe workflow | `adapter`：metadata `automation_safe` + workflow gate | `adapter`：metadata `automation_safe` + Slash Command gate | `native`：Codex Automations 可觸發唯讀 workflow；寫入仍需 GO |
 | 權限 / 確認模型 | `adapter`：Role Lock Gate + `GO` / `[SUDO]` | `native` + `adapter`：Claude 權限提示與框架 `GO` gate | `native` + `adapter`：Codex approval/sandbox 設定與框架 `GO` gate |
-| 記憶系統 | `adapter`：`.agents/memory/` + cartridge-system | `adapter`：共用 `.agents/memory/` | `adapter`：共用 `.agents/memory/` |
+| 記憶系統 | `adapter`：共用 `.agents/memory/` 記憶語義，工具與授權由 Antigravity 轉譯 | `adapter`：共用 `.agents/memory/` 記憶語義，工具與授權由 Claude 轉譯 | `adapter`：共用 `.agents/memory/` 記憶語義，工具與授權由 Codex 轉譯 |
+
+記憶語義不得因平台不同而分裂。三平台共享同一套記憶卡品質欄位、證據狀態、讀取契約、衝突與取代規則；平台差異只限讀寫工具、授權提示、採證方式與外部引擎可用性。
 
 ## Workflow Grounding Translation Layer
 

@@ -39,6 +39,22 @@
 | 11 交接 | 任務交接、續接提示 | 上下文交接與任務摘要實務 | 目前狀態、髒檔、阻塞、未驗證項、下一流程 | 02、03、04、09 |
 | 12 技能鍛造 | 新技能、共用技能、專案技能 | Agent Skills 規格、技能描述、漸進載入 | 層級選擇、描述品質、參考資料拆分、驗證門檻 | 03、08、10 |
 
+## Memory Admission Matrix
+
+Source memory writes are allowed only when the workflow has a durable, source-backed fact or active constraint to preserve. Task evidence, screenshots, raw test output, temporary observations, and preference candidates stay in reports, logs, or project context.
+
+| 工作流 | 可寫入來源記憶 | 不可寫入來源記憶 |
+|---|---|---|
+| 03 建構 | Implemented and verified source facts, active constraints, tracked file ownership, stable validation route summaries | Draft plans, unimplemented assumptions, raw test output |
+| 04 修復 | Confirmed root cause, still-valid repair constraint, regression route summary | Full debugging transcript, failed attempts without active consequence |
+| 05 濃縮 | Source-supported project identity, tech stack, deployment, governance facts | Unapproved preferences, temporary observations |
+| 06 測試 | Long-lived validation entry points, invariants, test surface decisions | Single-run logs, screenshots, fixture-only evidence |
+| 08 健檢 | Evidence-confirmed long-lived governance facts | Intermediate audit packets, unverified guesses |
+| 09 提交 | Required memory attribution or final source-memory consistency notes | Changelog prose or commit message text |
+| 11 交接 | Pending memory actions and blockers as report items | Full next-agent prompt or temporary handoff narrative |
+
+Memory cards must record incomplete evidence as partial, pending review, conflict, or superseded instead of presenting it as verified current truth.
+
 ## Official References
 
 | 主題 | 來源 |

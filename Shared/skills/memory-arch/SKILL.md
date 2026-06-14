@@ -15,6 +15,8 @@ metadata:
 
 # Memory Architecture (記憶卡架構與拓樸)
 
+Read `references/memory-quality-migration-blueprint.md` when designing or reviewing full-card standardization.
+
 ## HITL Boundary
 
 - Read-only memory topology inspection may proceed silently.
@@ -23,11 +25,13 @@ metadata:
 
 ## 1. Creating New Memory (建立新記憶)
 
+Active memory cards are source memory, not executable skills. The canonical target filename for active memory card main files is `MEMORY.md`; `SKILL.md` under `.agents/memory/` is a legacy compatibility name until the governed migration is applied and cartridge-system support is confirmed. Do not rename existing project memory cards manually.
+
 ```
 New module identified by /02_blueprint or /08_audit?
 ├── Step 1: Determine nesting level (see Nesting Decision Tree below)
 ├── Step 2: Create folder at resolved path → `.agents/memory/{module}/`
-├── Step 3: Create SKILL.md using template → see references/memory-template.md
+├── Step 3: Create the active memory main file using template → see references/memory-template.md
 │   ⇒ frontmatter: name, description (MUST include Chinese keywords), scopePath
 │   ⇒ frontmatter: memory_schema_version=2, content_language=en, human_language=zh-TW
 │   ⇒ body: Current Truth, Active Constraints, Cycle Events, Archive Index, 中文摘要, Tracked Files
@@ -61,6 +65,19 @@ Forbidden cases:
 
 Use `## Relations` for navigation. Use `## Applicable Skills` for operational guidance.
 
+### Card Classes (卡片分類)
+
+| Class | Purpose | Required standard |
+|---|---|---|
+| Active main card | Current source facts, active constraints, evidence, tracked files, and relations | Full quality standard |
+| Child card | Narrow ownership inside a parent module | Full quality standard |
+| Archive volume | Historical repair detail, old decisions, migration source text | Preserve body text; do not force active-card fields |
+| Deprecated index card | Historical card that no longer owns active source | Mark deprecated and point to replacement or retirement reason |
+| Static container card | Lockfiles, generated assets, or static files with little semantic logic | Simplified quality standard: ownership, safety boundary, tracked files, and ghost handling |
+| Migration index card | Optional migration batch record | Record batch evidence, blockers, and conflict summaries only |
+
+Active main and child cards should include quality metadata and Evidence Base / Read Contract / Conflicts and Supersession sections. Static container cards may use a shorter Current Truth and Evidence Base, but must not carry broad semantic facts.
+
 ### Nesting Decision Tree (層級判斷決策樹)
 
 ```
@@ -70,7 +87,7 @@ Create new memory card?
 │   └── Yes → Is the parent card's depth < 4?
 │       ├── No → Max depth reached, create at parent's level (keep flat)
 │       └── Yes → Create inside parent card's subdirectory
-│           ⇒ Path: `.agents/memory/{parentName}/{child}/SKILL.md`
+│           ⇒ Target path after migration: `.agents/memory/{parentName}/{child}/MEMORY.md`
 └── Decision criteria:
     ├── scopePath containment? (child's scopePath is sub-path of parent's)
     ├── Does modifying the child typically require referencing the parent's shared decisions?
@@ -83,8 +100,10 @@ Directory nesting is topology and navigation, not dependency. A child card MUST 
 
 ### Rules (規則)
 
-- Layer 1–2: `.agents/memory/{module}/SKILL.md` — IDE auto-discovers
-- Layer 3–4: `.agents/memory/{parent}/{child}/SKILL.md` — AI loads on-demand via `## Relations`
+- Layer 1–2: active memory main files under `.agents/memory/{module}/` — currently read through cartridge-system and migration-compatible direct file reads
+- Layer 3–4: active memory main files under `.agents/memory/{parent}/{child}/` — AI loads on-demand via `## Relations`
+- Target canonical main-file name after migration: `MEMORY.md`
+- Legacy compatibility main-file name before migration: `SKILL.md`
 - Maximum depth: **4 layers**
 - `scopePath` (optional): directory prefix for file attribution matching
 
@@ -93,15 +112,15 @@ Directory nesting is topology and navigation, not dependency. A child card MUST 
 ```
 .agents/memory/
 ├── api/                          ← Layer 1 (functional domain) depth=1
-│   ├── SKILL.md                  ← Shared API current truth and constraints
+│   ├── MEMORY.md                 ← Shared API current truth and constraints
 │   ├── auth/                     ← Layer 2 depth=2, parent='api'
-│   │   ├── SKILL.md              ← Auth module current truth
+│   │   ├── MEMORY.md             ← Auth module current truth
 │   │   └── oauth/                ← Layer 3 depth=3
-│   │       └── SKILL.md          ← OAuth sub-module
+│   │       └── MEMORY.md         ← OAuth sub-module
 │   └── manage/                   ← Layer 2 depth=2, parent='api'
-│       └── SKILL.md              ← Management module
+│       └── MEMORY.md             ← Management module
 └── frontend/                     ← Layer 1 (independent domain)
-    └── SKILL.md
+    └── MEMORY.md
 ```
 
 ### Loading Nested Cards (子卡載入流程)
@@ -157,7 +176,7 @@ Main cards MUST preserve only currently valid facts. Historical repair detail be
 
 ### Card Layer Model (卡片分層模型)
 
-- **Main card**: schema v2 SKILL.md containing English `## Current Truth`, `## Active Constraints`, `## Cycle Events`, `## Archive Index`, `## 中文摘要`, and `## Tracked Files`.
+- **Main card**: schema v2 active memory main file containing English `## Current Truth`, `## Active Constraints`, `## Cycle Events`, `## Archive Index`, `## Evidence Base`, `## Read Contract`, `## Conflicts and Supersession`, `## 中文摘要`, and `## Tracked Files`. The canonical filename is `MEMORY.md`; `SKILL.md` is legacy compatibility only.
 - **Child card**: narrower ownership card created when a main card exceeds hard limits, mixes concerns, or file-count warnings reveal real maintenance difficulty.
 - **Archive volume**: historical long-form record created during compaction or lazy upgrade. It is not part of normal startup loading.
 - **Root index card**: map/navigation only. If it grows past 8 KB, move details into child cards or archive volumes.
@@ -177,7 +196,7 @@ Need to split a memory card?
 │   ├── Create child card subdirectories under parent (each with scopePath + specific decisions)
 │   ├── Add parent/child navigation under ## Relations
 │   ├── Move superseded or verbose history into archive volumes
-│   └── write_to_file to update parent SKILL.md (trim to current shared portions only)
+│   └── write_to_file to update the parent active memory main file (trim to current shared portions only)
 ├── Step 4: Plugin auto scan + refresh
 │   ⇒ Index and file watchers update automatically
 ├── Step 5: Call memory_commit for EACH new child card
@@ -201,7 +220,7 @@ Compaction due?
 ├── Step 5: Move historical cycle detail into archive-001.md / archive-002.md / ...
 ├── Step 6: Update ## Archive Index with volume path and scope
 ├── Step 7: Reset ## Cycle Events for the next cycle
-└── Step 8: Call memory_commit after the SKILL.md file is updated
+└── Step 8: Call memory_commit after the active memory main file is updated
 ```
 
 Do not add event 31. If the card is too contradictory to summarize safely, stop at a compaction plan and ask for Director approval.

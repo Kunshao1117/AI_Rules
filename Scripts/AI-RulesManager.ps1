@@ -8,7 +8,7 @@
     orphan deletion, -RemoveOrphans.
 #>
 param(
-    [ValidateSet("Check", "Plan", "Apply", "Doctor", "SyncGlobal", "SyncProjectRules", "CleanupOrphans", "Gitignore")]
+    [ValidateSet("Check", "Plan", "Apply", "Doctor", "SyncGlobal", "SyncProjectRules", "CleanupOrphans", "Gitignore", "MemoryMigration")]
     [string]$Action = "Check",
 
     [string]$RepoRoot,
@@ -45,6 +45,7 @@ $ModulesDir = Join-Path $RepoRoot "Scripts\modules"
 Import-Module (Join-Path $ModulesDir "Core.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Audit.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Skills-Sync.psm1") -Force
+Import-Module (Join-Path $ModulesDir "Memory-Migration.psm1") -Force
 
 function Write-ManagerHeader {
     param([string]$Title)
@@ -698,6 +699,14 @@ function Invoke-GitignoreMaintenance {
     $null = Invoke-AiRulesGitignoreMaintenance -ProjectRoot $targetRoot -Mode $GitignoreMode -Apply:$Apply
 }
 
+function Invoke-MemoryMigration {
+    Write-ManagerHeader "記憶主檔命名遷移"
+    $targetRoot = (Resolve-Path $Target).Path
+    Write-Host "用途：掃描 .agents/memory/ 內仍使用 SKILL.md 的作用中記憶卡主檔；預設只做 dry-run。"
+    Write-Host "Target：$targetRoot"
+    $null = Invoke-MemoryMainFileMigration -TargetRoot $targetRoot -Apply:$Apply -WhatIf:$WhatIf
+}
+
 switch ($Action) {
     "Check"          { Invoke-Check }
     "Plan"           { Invoke-Plan }
@@ -707,4 +716,5 @@ switch ($Action) {
     "SyncProjectRules" { Invoke-SyncProjectRules }
     "CleanupOrphans" { Invoke-CleanupOrphans }
     "Gitignore"      { Invoke-GitignoreMaintenance }
+    "MemoryMigration" { Invoke-MemoryMigration }
 }

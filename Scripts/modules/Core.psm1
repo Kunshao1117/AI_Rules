@@ -352,6 +352,7 @@ function Get-UpgradeReport {
         if (-Not (Test-Path $tgtProt)) { continue }
         Get-ChildItem $tgtProt -Directory -Recurse | Where-Object {
             (Test-Path (Join-Path $_.FullName "SKILL.md")) -or
+            (Test-Path (Join-Path $_.FullName "MEMORY.md")) -or
             (Test-Path (Join-Path $_.FullName "CONTEXT.md"))
         } | ForEach-Object {
             $rel = $_.FullName.Substring($tgtProt.Length).TrimStart('\', '/').Replace("\", "/")
