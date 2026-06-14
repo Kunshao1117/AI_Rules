@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 健檢與提交工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-15T02:54:05+08:00'
+last_updated: '2026-06-15T03:31:52+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: partial_evidence
-last_verified: '2026-06-15T02:48:38+08:00'
+last_verified: '2026-06-15T03:28:12+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,14 +36,17 @@ metadata:
 ## Current Truth
 - This child card owns Antigravity audit, audit subphase, and commit execution workflow entries.
 - Audit workflows use evidence status and project-surface routing rather than a fixed scan checklist.
+- Audit workflows now support quick, standard, deep, and forensic depth modes with feature, endpoint, command, job, interface, data-flow, performance, and risk inventories.
 - Commit workflows must not bypass Director gates for git state changes.
 
 ## Active Constraints
 - Do not mark missing evidence as green or complete.
+- Do not claim full coverage from sampled evidence; report coverage denominators and sampling limits.
 - Do not commit, push, tag, or release without explicit Director approval.
 
 ## Cycle Events
 - 01: Split Antigravity audit and commit workflow ownership out of the support parent card.
+- 02: Updated Antigravity audit entry and subphases for depth selection, inventory construction, visual evidence mapping, and coverage reporting.
 
 ## Archive Index
 - Parent archive remains at .agents/memory/_ag_core/support/archive-001.md.

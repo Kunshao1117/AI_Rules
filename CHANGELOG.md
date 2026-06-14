@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-15] 深層證據式健檢
+
+### feat
+- **Deep audit depth model** — 健檢流程新增快速、標準、深度與鑑識四級，讓不同風險與不同專案型態能選擇對應的盤點深度。
+- **Audit inventory coverage** — 健檢流程新增功能、端點、命令、操作路徑、效能與風險盤點契約，報告必須揭露覆蓋率、未驗證項與阻塞項。
+- **Surface-specific audit recipes** — 健檢引擎新增網站、後端、命令列、桌面、外掛、函式庫、基礎設施、資料管線、AI 功能與治理庫的型態專屬檢查食譜。
+
+### docs
+- **Cross-platform audit alignment** — 根文件與三平台文件同步說明新版深層健檢、平台採證轉譯、證據狀態與中繼日誌輸出。
+
 ## [2026-06-15] 記憶卡主檔標準化與拆分
 
 ### chore

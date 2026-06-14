@@ -1,6 +1,6 @@
 ---
 name: 08-2_logic
-description: "Use when: 健檢第二階段、深度邏輯審查、安全架構、API/資料流比對、真實功能驗證、子代理採證、效能可靠性、測試覆蓋缺口與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08-audit。"
+description: "Use when: 健檢第二階段、依盤點清單做深度邏輯審查、安全架構、API/端點/資料流比對、真實功能驗證、子代理採證、效能可靠性、測試覆蓋缺口與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08-audit。"
 required_skills: [audit-engine, code-diagnosis, security-sre, impact-test-strategy, browser-testing, performance-audit]
 memory_awareness: full
 user-invocable: false
@@ -50,7 +50,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 # [SKILL: /08_audit — Phase 2: 深度邏輯與真實證據審查]
 
-> 本工作流由 `08_audit(健檢)/SKILL.md` 入口觸發，不應直接呼叫。Phase 2 使用 Phase 1 的專案型態設定檔，只檢查適用表面，並把缺入口、缺工具、缺登入或缺憑證的項目標記為 `未驗證` 或 `阻塞`。
+> 本工作流由 `08_audit(健檢)/SKILL.md` 入口觸發，不應直接呼叫。Phase 2 使用 Phase 1 的健檢深度、專案型態設定檔與盤點清單，只檢查適用表面，並把缺入口、缺工具、缺登入或缺憑證的項目標記為 `未驗證` 或 `阻塞`。
 
 ## 2.1 Evidence Branch Gate
 
@@ -65,13 +65,15 @@ The main workflow remains responsible for integration, status decisions, and fin
 
 ## 2.2 Semantic Architecture Review
 
-Use `audit-engine`, `security-sre`, and `impact-test-strategy` to review only applicable surfaces:
+Use `audit-engine`, `security-sre`, and `impact-test-strategy` to review only applicable surfaces and inventory ids:
 
 - Security: credential isolation, authorization, input validation, rate limits, unsafe public endpoints, and secret exposure.
 - API/data flow: frontend calls, backend routes, schemas, database models, external service boundaries, and contract drift.
 - State invariants: authentication, payments, inventory, permissions, automation state, file writes, queue jobs, and retry/idempotency behavior.
 - Reliability: swallowed errors, missing rollback, race conditions, concurrency hazards, retry loops, timeout handling, and observability gaps.
 - Dead code and architecture drift: unused exports, unreachable workflows, stale routes, stale commands, and memory-tracked files that no longer exist.
+
+For API/backend/data surfaces, iterate endpoint and data-flow inventories. For CLI, plugin, extension, library, and governance repositories, iterate command, interface, export, workflow, and artifact inventories instead of forcing API checks.
 
 ## 2.3 Real Operation Evidence
 
@@ -87,6 +89,8 @@ For every high-risk behavior, prefer real execution evidence over static inferen
 
 Synthetic tests, mocks, fixtures, or static screenshots may support a finding, but they cannot alone turn a high-risk item green.
 
+For `deep` and `forensic` audits, every critical inventory item must end as covered, partial, unverified, blocked, or not_applicable.
+
 ## 2.4 Performance, Accessibility & Compatibility
 
 Conditionally load additional recipes:
@@ -96,11 +100,13 @@ Conditionally load additional recipes:
 - `a11y-testing` only when a rendered UI exists.
 - `plugin-release-governance` only for extension, installer, release, or artifact surfaces.
 
+For non-web surfaces, use equivalent latency and reliability evidence such as CLI cold start, backend request latency, database/query timing, job duration, build duration, plugin activation time, or desktop operation responsiveness.
+
 If the tool is missing or the app cannot run, report `未驗證` with rerun instructions.
 
 ## 2.5 Optional Log Output
 
-If log writing is available, append Phase 2 evidence packets under `.agents/logs/audit/<timestamp>/evidence.json`.
+If log writing is available, append Phase 2 evidence packets under `.agents/logs/audit/<timestamp>/evidence.json` and keep coverage state aligned with `.agents/logs/audit/<timestamp>/inventories.json`.
 
 Do not write source files, configuration files, dependency manifests, memory cards, context cards, git state, releases, deployments, or external services.
 
@@ -110,9 +116,12 @@ Return this object to Phase 3:
 
 ```json
 {
+  "audit_depth": "standard",
+  "inventories": {},
   "semantic": {},
   "real_evidence": {},
   "release_supply_chain": {},
+  "coverage": {},
   "evidence_packets": [],
   "blocked": [],
   "unverified": [],

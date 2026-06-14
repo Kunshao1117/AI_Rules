@@ -1,6 +1,6 @@
 # 三平台工作流能力與證據矩陣
 
-此檔是 08 以外工作流的共用外部接地規格。它不取代各工作流本體；各工作流只引用本矩陣，再套用自己的任務邊界、平台能力與證據狀態。
+此檔是 00 到 12 工作流的共用外部接地規格。它不取代各工作流本體；各工作流只引用本矩陣，再套用自己的任務邊界、平台能力與證據狀態。08 健檢另由共用健檢引擎定義深度模式、盤點分母與覆蓋率規則。
 
 ## Evidence Status
 
@@ -33,7 +33,7 @@
 | 05 濃縮 | 專案身份、長期記憶初始化 | 上下文壓縮、長期記憶、偏好治理 | 來源依據、永久事實與暫時觀察分離 | 02、11、12 |
 | 06 測試 | E2E、視覺、效能、無障礙、回歸 | Playwright、Lighthouse、Web Vitals、WCAG | 專案型態、測試面、證據等級、阻塞原因 | 03、04、08 |
 | 07 除錯 | stack trace、日誌、故障定位 | OpenTelemetry、SRE 監控、根因診斷 | 可觀測訊號、假設、證實/反證、轉修復條件 | 04、06、08 |
-| 08 健檢 | 全光譜專案健檢 | 08 共用健檢引擎與本矩陣 | 專案型態、能力快照、證據包、燈號 | 02、03、04、06、09 |
+| 08 健檢 | 全光譜專案健檢、深層健檢、上線前高風險審查 | 08 共用健檢引擎、本矩陣、OWASP、Playwright、Lighthouse、Web Vitals、WCAG、OpenTelemetry | 健檢深度、專案型態、能力快照、功能/端點/命令盤點、覆蓋率分母、證據包、燈號、未驗證/阻塞清單 | 02、03、04、06、09 |
 | 09 提交 | 變更紀錄、提交、版本、發布前掃描 | Conventional Commits、Keep a Changelog、SemVer、狀態檢查 | 明確檔案清單、記憶狀態、變更摘要、版本/成品判定 | 04、06、08、11 |
 | 10 巡檢 | automation-safe 唯讀治理 | 自動化健康檢查、工作流漂移檢查 | 技能品質、文件一致性、矩陣覆蓋、無寫入證明 | 08、12 |
 | 11 交接 | 任務交接、續接提示 | 上下文交接與任務摘要實務 | 目前狀態、髒檔、阻塞、未驗證項、下一流程 | 02、03、04、09 |
@@ -49,7 +49,7 @@ Source memory writes are allowed only when the workflow has a durable, source-ba
 | 04 修復 | Confirmed root cause, still-valid repair constraint, regression route summary | Full debugging transcript, failed attempts without active consequence |
 | 05 濃縮 | Source-supported project identity, tech stack, deployment, governance facts | Unapproved preferences, temporary observations |
 | 06 測試 | Long-lived validation entry points, invariants, test surface decisions | Single-run logs, screenshots, fixture-only evidence |
-| 08 健檢 | Evidence-confirmed long-lived governance facts | Intermediate audit packets, unverified guesses |
+| 08 健檢 | Evidence-confirmed long-lived governance facts, stable validation route summaries after follow-up work lands | Intermediate audit inventories, raw evidence packets, one-time performance readings, unverified guesses |
 | 09 提交 | Required memory attribution or final source-memory consistency notes | Changelog prose or commit message text |
 | 11 交接 | Pending memory actions and blockers as report items | Full next-agent prompt or temporary handoff narrative |
 
@@ -73,4 +73,4 @@ Memory cards must record incomplete evidence as partial, pending review, conflic
 - Workflow files must reference this matrix instead of copying every rule.
 - Missing tools, missing credentials, or unsupported platform features must be reported as 未驗證 or 阻塞, not treated as success.
 - Platform adapters may add stronger evidence paths, but they must not weaken the minimum evidence contract.
-- 08 remains the full-spectrum audit baseline; other workflows use only the row relevant to their lifecycle.
+- 08 remains the deep full-spectrum audit baseline; other workflows use only the row relevant to their lifecycle and do not copy 08 inventory machinery unless the audit workflow is active.

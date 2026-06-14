@@ -1,6 +1,6 @@
 ---
 name: "08-2-logic-深度邏輯"
-description: "Use when: 健檢第二階段、深度邏輯審查、安全架構、API/資料流串接比對、狀態不變量、測試覆蓋缺口、真實證據缺口、效能可靠性、plugin、VSIX、Release、version、tag、update reminder 與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08-audit。"
+description: "Use when: 健檢第二階段、依盤點清單做深度邏輯審查、安全架構、API/端點/資料流串接比對、功能操作驗證、狀態不變量、測試覆蓋缺口、真實證據缺口、效能可靠性、plugin、VSIX、Release、version、tag、update reminder 與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08-audit。"
 metadata:
   author: antigravity
   version: "2.0"
@@ -53,11 +53,11 @@ Use this skill when the user asks to run the migrated source command `08_audit(�
 
 # [SKILL: /08_audit — Phase 2: 深度邏輯、真實證據與可靠性審查]
 
-> 本工作流接收 Phase 1 profile. It applies only checks that are relevant to detected project surfaces.
+> 本工作流接收 Phase 1 audit depth、profile and inventories. It applies only checks that are relevant to detected project surfaces and inventory items.
 
 ## 2.1 Semantic Security And Safety Review
 
-Use `audit-engine` Phase C rules.
+Use `audit-engine` Phase D rules and link findings to inventory ids when available.
 
 Apply where relevant:
 
@@ -69,11 +69,11 @@ Apply where relevant:
 - Public endpoint exposure.
 - Unsafe file, command, cloud, deployment, or external-state behavior.
 
-Every finding must include an evidence packet. API/backend checks are `not_applicable` only when Phase 1 proves no API/backend surface exists.
+Every finding must include an evidence packet. API/backend checks are `not_applicable` only when Phase 1 proves no API/backend surface exists. Endpoint checks that apply but cannot be exercised are `unverified` or `blocked`, not green.
 
 ## 2.2 API, Data Flow, And State Invariants
 
-For API/backend/data surfaces:
+For API/backend/data surfaces, iterate the Phase 1 endpoint and data-flow inventories:
 
 - Compare client calls against backend handlers or service commands.
 - Compare request/response payloads against runtime validators and documented schemas.
@@ -81,12 +81,13 @@ For API/backend/data surfaces:
 - Inspect persistence, file, scheduler, queue, import/export, retry, timeout, rollback, and idempotency behavior.
 - Identify domain state transitions that lack tests or real execution evidence.
 
-For CLI/plugin/governance repositories, replace API comparison with command, workflow, and artifact contract comparison.
+For CLI/plugin/governance repositories, iterate command, interface, workflow, and artifact inventories instead of API comparison.
 
 ## 2.3 Test Coverage And Real Evidence Gap
 
 Extract critical behavior from:
 
+- Phase 1 inventories and selected audit depth.
 - Memory card Current Truth and Active Constraints.
 - Public commands, routes, scripts, workflows, plugin activation events, release workflows, and documentation.
 - Existing test files and CI configuration.
@@ -102,6 +103,8 @@ Classify evidence using `evidence-packet.md`:
 
 Mock, fixture, fake-time, static screenshot, and unit-only evidence cannot complete behavior-dependent validation.
 
+For `deep` and `forensic` audits, every critical inventory item must end as covered, partial, unverified, blocked, or not_applicable.
+
 ## 2.4 Real Operation Evidence
 
 When the selected path is `evidence` or when a behavior depends on real operation:
@@ -110,6 +113,7 @@ When the selected path is `evidence` or when a behavior depends on real operatio
 - Use Codex terminal, browser, MCP read tools, sandbox transcript, IDE/cloud task evidence, logs, or direct request paths when available.
 - Retry transient readiness, timeout, browser, server, tool-connection, or rate-limit failures when safe.
 - If blocked, list searched entries, attempted tools, retry state, equivalent paths considered, and smallest missing condition.
+- Record operation evidence against inventory ids and coverage status.
 
 ## 2.5 Performance, Reliability, Accessibility, And Compatibility
 
@@ -119,6 +123,8 @@ Load optional skills only when relevant:
 - `browser-testing` and `a11y-testing` for browser-rendered UI.
 - `plugin-release-governance` for plugin, extension, VSIX, tag, release, changelog, or update reminder surfaces.
 - `supabase-postgres-best-practices` when Supabase/Postgres database surfaces exist.
+
+For non-web surfaces, use equivalent latency and reliability evidence such as CLI cold start, backend request latency, database/query timing, job duration, build duration, plugin activation time, or desktop operation responsiveness.
 
 Do not report skipped optional checks as green. Use `not_applicable`, `unverified`, or `blocked`.
 
@@ -132,12 +138,16 @@ Use static import/search evidence plus memory ownership:
 - Memory facts naming functions, routes, commands, or artifacts that no longer exist.
 - Cross-platform workflow drift between Antigravity, Claude, and Codex.
 
+In `forensic` depth, expand this section to include regression surface, stale exported APIs, stale commands, unreferenced route handlers, orphan generated artifacts, and observability gaps.
+
 ## 2.7 Output Object
 
 Pass this object to Phase 3:
 
 ```json
 {
+  "audit_depth": "standard",
+  "inventories": {},
   "semantic": {},
   "security": {},
   "api_data_flow": {},
@@ -146,6 +156,7 @@ Pass this object to Phase 3:
   "performance_reliability": {},
   "release_supply_chain": {},
   "architecture_drift": {},
+  "coverage": {},
   "evidence_packets": [],
   "blocked": [],
   "unverified": [],

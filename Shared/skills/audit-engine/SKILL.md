@@ -2,11 +2,13 @@
 name: audit-engine
 description: >
   [Audit] Full-spectrum health audit semantic engine for /08_audit:
-  project surface detection, evidence packets, traffic-light gates, security,
+  audit depth selection, project surface detection, feature/endpoint/command
+  inventories, evidence packets, coverage gates, traffic-light gates, security,
   API/data-flow analysis, real execution evidence, compatibility, release, and
-  governance review. Use when: 執行 /08_audit 的全光譜健檢語義判定、
-  專案型態偵測、證據包、紅黃綠燈、未驗證/阻塞判定、安全架構、
-  API/資料流、測試覆蓋、真實驗證、相容性與發布治理審查。
+  governance review. Use when: 執行 /08_audit 的全光譜深層健檢語義判定、
+  健檢深度、專案型態偵測、功能/端點/命令盤點、覆蓋率分母、證據包、
+  紅黃綠燈、未驗證/阻塞判定、安全架構、API/資料流、測試覆蓋、
+  真實驗證、相容性與發布治理審查。
   DO NOT use when: 執行 ESLint/npm audit/tsc 等工具掃描（用 code-audit）、
   單一 bug 修復、一般重構、或非健檢工作流。
 metadata:
@@ -26,9 +28,12 @@ metadata:
 
 ## Required References
 
-Before using this skill in `/08_audit`, read all three reference files:
+Before using this skill in `/08_audit`, read all reference files:
 
 - `references/project-surface-matrix.md`
+- `references/audit-depth-matrix.md`
+- `references/audit-inventory-contracts.md`
+- `references/surface-audit-recipes.md`
 - `references/evidence-packet.md`
 - `references/report-gates.md`
 
@@ -56,14 +61,16 @@ Forbidden callers:
 
 Run the semantic flow in this order. A later phase must preserve earlier evidence and cannot overwrite a blocked or unverified state with a green result unless new evidence resolves the reason.
 
-### Phase A — Project Surface Profile
+### Phase A — Audit Depth And Project Surface Profile
 
-Use `project-surface-matrix.md` to classify the repository before applying checks.
+Use `audit-depth-matrix.md` to select audit depth, then use `project-surface-matrix.md` to classify the repository before applying checks.
 
 Required output:
 
 ```json
 {
+  "auditDepth": "standard",
+  "auditDepthReason": "",
   "surfaces": [],
   "primarySurface": "",
   "mixedProject": false,
@@ -80,12 +87,37 @@ Required output:
 
 Rules:
 
+- Default to `standard` when no depth is provided.
+- Use `deep` when the Director asks for deep, complete, full, thorough, serious, or equivalent review.
+- Use `forensic` when the Director indicates legacy risk, pre-release risk, incident analysis, or suspected hidden defects.
 - Do not assume a web/API project from the presence of `package.json`.
 - Mixed repositories must keep all detected surfaces, not only the first one.
 - A check may be `not_applicable` only when the surface matrix gives a concrete reason.
 - If the surface is unknown but files are present, mark the profile `unverified`, not green.
 
-### Phase B — Baseline And Governance Topology
+### Phase B — Inventory Construction
+
+Use `audit-inventory-contracts.md` and `surface-audit-recipes.md` to build the audit denominator before judging coverage.
+
+Required inventory categories when applicable:
+
+- Features and user-facing workflows.
+- API, RPC, route, or event endpoints.
+- Commands, scripts, jobs, and scheduled tasks.
+- Interfaces, panels, host commands, browser pages, or desktop operation paths.
+- Data flows, persistence boundaries, external integrations, and side effects.
+- Performance targets, latency-sensitive paths, and startup/load paths.
+- Risk candidates discovered during inventory.
+
+Rules:
+
+- In `quick` mode, inventory obvious entrypoints only and label the report as a quick scan.
+- In `standard` mode, inventory primary entries and critical behaviors.
+- In `deep` mode, every critical inventory item must end as covered, partial, unverified, blocked, or not_applicable.
+- In `forensic` mode, add historical drift, dead-code candidates, regression surface, observability, and release readiness.
+- Do not use a sample to claim the full inventory passed.
+
+### Phase C — Baseline And Governance Topology
 
 Combine deterministic scan output from `code-audit` with governance inspection.
 
@@ -95,12 +127,13 @@ Review areas:
 - Memory cards, project context cards, skills, workflow entries, rules, and platform policy markers.
 - Directory hygiene for installed platform folders and generated runtime copies.
 - Tool availability: terminal, browser, desktop, MCP, cloud, plugin host, logs, and report-write path.
+- Audit log write availability for `profile.json`, `inventories.json`, `evidence.json`, and `summary.md`.
 
 The semantic output must include an evidence packet for each yellow/red/unverified item.
 
-### Phase C — Security, API, Data Flow, And Invariants
+### Phase D — Security, API, Data Flow, And Invariants
 
-Use the detected project surfaces to decide which semantic checks apply.
+Use the detected project surfaces and inventory items to decide which semantic checks apply.
 
 Backend/API checks:
 
@@ -120,11 +153,11 @@ Data and state checks:
 - External integration boundaries.
 - Rollback, retry, timeout, and idempotency behavior where relevant.
 
-If the repository has no API/backend surface, mark API-specific checks `not_applicable` with profile evidence.
+If the repository has no API/backend surface, mark API-specific checks `not_applicable` with profile evidence. If endpoints exist but cannot be exercised, keep them `unverified` or `blocked` per item.
 
-### Phase D — Test Coverage And Real Evidence Gaps
+### Phase E — Test Coverage And Real Evidence Gaps
 
-Extract critical behavior from memory cards, public entrypoints, commands, routes, tests, docs, and package scripts.
+Extract critical behavior from memory cards, public entrypoints, commands, routes, tests, docs, package scripts, and the inventory denominator.
 
 For each critical behavior, classify coverage:
 
@@ -136,7 +169,7 @@ For each critical behavior, classify coverage:
 
 Synthetic evidence cannot complete behavior that depends on runtime state, persistence, external state, permissions, network, time, files, CLI output, UI operation, or deployment status.
 
-### Phase E — Performance, Reliability, Accessibility, And Compatibility
+### Phase F — Performance, Reliability, Accessibility, And Compatibility
 
 Apply only when the surface matrix makes the check relevant.
 
@@ -149,7 +182,7 @@ Review areas:
 - Accessibility when a browser-rendered UI exists.
 - Runtime, framework, operating system, shell, package manager, and CI compatibility.
 
-### Phase F — Supply Chain, Release, And Deployment Governance
+### Phase G — Supply Chain, Release, And Deployment Governance
 
 Review when manifests, CI workflows, release scripts, plugin packages, containers, infrastructure, or deployment config exist.
 
@@ -162,17 +195,20 @@ Review areas:
 - Installer or update behavior.
 - Optional security posture from repository health tools when available.
 
-### Phase G — Report Synthesis And Repair Routing
+### Phase H — Report Synthesis And Repair Routing
 
 Use `report-gates.md` to synthesize final status. Use `evidence-packet.md` to ensure every finding is actionable and reproducible.
 
 The final report must include:
 
+- Audit depth and depth reason.
 - Project profile summary.
 - Platform capability snapshot.
+- Inventory coverage summary with denominators.
 - Traffic-light dashboard.
 - Evidence level distribution.
 - Unverified and blocked checks.
+- Sampling limits and blind spots.
 - Top repair priorities.
 - Suggested next workflow for each priority.
 - Location index for any compact labels.
@@ -184,11 +220,14 @@ Each non-green or non-applicable result must include an evidence packet. Green r
 Minimum fields:
 
 - Finding.
+- Inventory item id when applicable.
 - Location.
 - Surface.
 - Check.
 - Status.
 - Severity.
+- Criticality.
+- Coverage status.
 - Evidence level.
 - Evidence source.
 - Reproduction or rerun path.
@@ -224,3 +263,5 @@ Platform adapters must not change:
 - May authorize writing intermediate audit logs only when the caller workflow explicitly grants `filesystem:write:logs`.
 - Missing tools or unavailable operators do not produce green results. Use `unverified` or `blocked`.
 - `not_applicable` requires surface-profile evidence.
+- Coverage claims require an inventory denominator for the selected depth.
+- A full pass cannot be inferred from sampled checks; sampled checks must be labeled as partial or standard-scope evidence.

@@ -1,6 +1,6 @@
 ---
 name: 08-3_audit_report(健檢總結)
-description: "Use when: 健檢第三階段、彙整證據式健康報告、紅黃綠燈號、未驗證/阻塞判定、優先修復清單、位置索引與行動建議。DO NOT use when: 尚未完成前兩階段健檢。"
+description: "Use when: 健檢第三階段、彙整證據式健康報告、健檢深度摘要、功能/端點/命令覆蓋率、紅黃綠燈號、未驗證/阻塞判定、優先修復清單、位置索引與行動建議。DO NOT use when: 尚未完成前兩階段健檢。"
 trigger: manual
 required_skills:
   - audit-engine
@@ -51,13 +51,14 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 # [08-3_audit_report] Phase 3: Evidence-Based Health Report
 
-> 本工作流由 `@[/08_audit]` 入口觸發。Phase 3 只彙整 Phase 1/2 的證據包，不把缺少證據的項目升格為綠燈。
+> 本工作流由 `@[/08_audit]` 入口觸發。Phase 3 只彙整 Phase 1/2 的健檢深度、盤點清單、覆蓋率與證據包，不把缺少證據的項目升格為綠燈。
 
 ## 3.1 Evidence Normalization
 
 Read the newest audit packet from the active workflow state or `.agents/logs/audit/<timestamp>/` when available:
 
 - `profile.json` for project surfaces, tools, entries, applicable modules, and not-applicable reasons.
+- `inventories.json` for features, endpoints, commands, jobs, interfaces, data flows, performance targets, risks, and coverage denominators.
 - `evidence.json` for findings, evidence levels, rerun paths, tool summaries, blocked reasons, and equivalent evidence paths.
 
 Normalize every finding through `report-gates.md`:
@@ -68,6 +69,8 @@ Normalize every finding through `report-gates.md`:
 - `未驗證` means the check is needed but evidence/tool/entry is insufficient.
 - `阻塞` means credentials, login, permission, external service, or high-risk approval is missing.
 - `不適用` requires explicit project-surface evidence.
+- Deep and forensic audits require every critical inventory item to be covered, partial, unverified, blocked, or not applicable.
+- Sampling limits must be visible whenever the report is not full denominator coverage.
 
 ## 3.2 Required Report Structure
 
@@ -75,6 +78,7 @@ Generate a Traditional Chinese report with these sections:
 
 | 事項 | 位置 | 影響 | 狀態 |
 |---|---|---|---|
+| 健檢深度與覆蓋率 | 盤點證據包（inventory evidence） | 決定本次報告可宣稱的檢查深度與分母 | 綠燈/黃燈/未驗證/阻塞 |
 | 專案型態與能力 | 專案設定檔（profile evidence） | 決定哪些檢查適用與不適用 | 綠燈/黃燈/未驗證 |
 | 基礎盤點與相容性 | 基礎證據包（baseline evidence） | 依賴、型別、工具、版本、目錄衛生 | 綠燈/黃燈/紅燈/未驗證 |
 | 治理拓樸 | 治理證據包（governance evidence） | 記憶卡、脈絡卡、技能、平台政策漂移 | 綠燈/黃燈/紅燈 |
@@ -85,9 +89,12 @@ Generate a Traditional Chinese report with these sections:
 
 The report must include:
 
+- Selected audit depth and reason.
+- Inventory coverage counts for features, endpoints, commands, jobs, interfaces, data flows, performance targets, and risks.
 - Priority repair list sorted by severity, evidence strength, and blast radius.
 - Suggested next workflow for each actionable item.
 - Explicit unverified and blocked lists.
+- Sampling limits and unreviewed areas.
 - Position index mapping compact labels to concrete files, directories, tools, or evidence packets.
 - Rerun instructions for every finding that depends on a command, browser flow, external service, or missing credential.
 
@@ -101,4 +108,4 @@ Do not write source files, memory cards, context cards, git state, releases, dep
 
 Append:
 
-「[健檢完成] 本次報告採證據優先判定。缺少真實證據的項目已標記為未驗證或阻塞，不列為綠燈。如需修復指定項目，請依優先級交給修復、測試、架構、例行巡檢或發布治理工作流。」
+「[健檢完成] 本次報告採證據優先判定，並依健檢深度列出盤點覆蓋率。缺少真實證據的項目已標記為未驗證或阻塞，不列為綠燈；抽樣結果不會被宣稱為全量通過。如需修復指定項目，請依優先級交給修復、測試、架構、例行巡檢或發布治理工作流。」

@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 健檢主工作流與三階段子工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-15T02:54:32+08:00'
+last_updated: '2026-06-15T03:31:44+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: partial_evidence
-last_verified: '2026-06-15T02:50:19+08:00'
+last_verified: '2026-06-15T03:28:12+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,14 +36,17 @@ metadata:
 ## Current Truth
 - This child card owns Codex audit workflow skills and three audit subphase skills.
 - Audit workflows use project-surface detection, platform capability snapshots, evidence status, and report routing.
+- Audit workflows now support quick, standard, deep, and forensic depth modes with feature, endpoint, command, job, interface, data-flow, performance, and risk inventories.
 - Codex subagents remain evidence branches only when explicitly enabled by Director or workflow gate.
 
 ## Active Constraints
 - Do not mark missing evidence as green or complete.
 - Do not let audit subflows write source files or memory unless the governing workflow is in an approved write phase.
+- Do not claim full coverage from sampled evidence; Phase 3 must report coverage denominators and sampling limits.
 
 ## Cycle Events
 - 01: Split Codex audit workflow ownership out of the support parent card.
+- 02: Updated Codex audit entry and three subphases for depth selection, inventory construction, evidence-linked coverage, and coverage reporting.
 
 ## Archive Index
 - Parent archive remains at .agents/memory/_codex_core/support/archive-001.md.

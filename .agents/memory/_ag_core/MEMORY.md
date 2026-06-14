@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-15T02:23:27+08:00'
+last_updated: '2026-06-15T03:32:06+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: partial_evidence
-last_verified: '2026-06-15T02:22:52+08:00'
+last_verified: '2026-06-15T03:28:12+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -42,6 +42,7 @@ metadata:
 - Antigravity core blueprint and build execution workflows now preserve design-to-build contract semantics.
 - Antigravity build, fix, test, audit, and docs now apply the real execution evidence contract for behavior-dependent completion.
 - Antigravity docs now require verification entry search, transient retry, and equivalent real-path fallback before blocked real verification can be accepted.
+- Antigravity documentation describes 08 as a deep evidence audit with depth modes, inventories, coverage denominators, and visual/browser evidence adapters.
 ## Active Constraints
 - Do not duplicate root system ownership in this card.
 - Do not track `.agents/memory/_map` or `.agents/memory/_system` source copies here.
@@ -49,6 +50,7 @@ metadata:
 - This card still needs a later child-card split if all Antigravity workflows are actively edited again.
 ## Cycle Events
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
+- 02: Updated Antigravity README to describe the deep 08 audit model and coverage reporting.
 ## Archive Index
 - archive-001.md — Legacy _ag_core card preserved before schema v2 compaction on 2026-06-04.
 - archive-002.md: Pre-standardization active card snapshot created during MEMORY.md migration.

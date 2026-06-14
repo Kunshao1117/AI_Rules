@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-06-15T02:56:14+08:00'
+last_updated: '2026-06-15T03:31:39+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: partial_evidence
-last_verified: '2026-06-15T02:22:52+08:00'
+last_verified: '2026-06-15T03:28:12+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 2
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -42,6 +42,7 @@ metadata:
 - Archive volumes use flat `archive-###.md` files rather than nested archive directories.
 - Project context lives in `.agents/context/` and is not source memory.
 - Shared subagent policy is vendor-neutral; platform-specific tool wording belongs in platform adapters.
+- Audit engine now defines depth modes, inventory denominators, surface recipes, coverage states, and evidence gates for deep 08 audits.
 ## Active Constraints
 - Do not put platform-specific tool calls in Shared skill bodies unless the section is explicitly an adapter note.
 - Do not list directories under Tracked Files; the memory audit tool expects readable files.
@@ -51,6 +52,7 @@ metadata:
 ## Cycle Events
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
 - 02: Moved testing strategy ownership from the Shared parent card to the focused testing child card.
+- 03: Added deep evidence audit semantics: depth matrix, inventory contracts, surface recipes, coverage gates, and platform translation notes.
 ## Archive Index
 - archive-001.md — Legacy _shared card preserved before schema v2 compaction on 2026-06-04.
 - archive-002.md: Pre-standardization active card snapshot created during MEMORY.md migration.
@@ -83,6 +85,9 @@ metadata:
 - Shared/skills/project-context-protocol/SKILL.md
 - Shared/skills/project-context-protocol/references/context-template.md
 - Shared/skills/audit-engine/SKILL.md
+- Shared/skills/audit-engine/references/audit-depth-matrix.md
+- Shared/skills/audit-engine/references/audit-inventory-contracts.md
+- Shared/skills/audit-engine/references/surface-audit-recipes.md
 - Shared/skills/audit-engine/references/project-surface-matrix.md
 - Shared/skills/audit-engine/references/evidence-packet.md
 - Shared/skills/audit-engine/references/report-gates.md

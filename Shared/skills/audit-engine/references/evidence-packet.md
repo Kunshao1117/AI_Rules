@@ -7,11 +7,15 @@ Every non-green health audit finding must be traceable and reproducible. High-ri
 | Field | Meaning |
 |---|---|
 | finding | Plain-language issue or confirmed absence of issue |
+| inventory_id | Audit-local inventory id when the finding maps to a feature, endpoint, command, job, interface, data flow, performance target, or risk |
 | location | Plain-language location plus concrete file, section, command, route, tool result, or directory scope |
 | surface | Project surface from the matrix |
 | check | Audit check name |
+| audit_depth | quick, standard, deep, or forensic |
 | status | green, yellow, red, unverified, blocked, not_applicable |
 | severity | critical, high, medium, low, info |
+| criticality | critical, high, medium, low, or unknown for the affected inventory item |
+| coverage_status | covered, partial, unverified, blocked, or not_applicable |
 | evidence_level | live, controlled_real_path, recorded_real_source, synthetic_partial, missing, not_applicable |
 | evidence_source | Tool output, file read, browser state, screenshot, log, request/response, memory card, documentation, or report |
 | rerun_path | Exact command, workflow, route, tool path, or manual path needed to reproduce |
@@ -49,3 +53,16 @@ Blocked findings must list:
 - AI semantic analysis is a hypothesis until paired with file, tool, runtime, or operator evidence.
 - Missing evidence cannot become green through confidence language.
 - `not_applicable` must cite the project surface profile.
+- Deep and forensic audits must link findings to inventory ids when an inventory item exists.
+- A sampled finding may support a standard-scope claim, but it cannot prove every equivalent item passed.
+- Coverage status must be downgraded to `partial` when evidence proves only one platform, route, shell, viewport, auth role, or runtime variant.
+
+## Coverage Evidence Rules
+
+| Coverage Status | Minimum Evidence |
+|---|---|
+| covered | Evidence satisfies the selected depth for the full inventory item contract |
+| partial | Evidence exists but misses a role, environment, path, variant, or expected side effect |
+| unverified | The item applies but no sufficient evidence was collected |
+| blocked | The item applies but credentials, host, service, approval, unsafe mutation, or unavailable tool prevents validation |
+| not_applicable | Surface profile or inventory evidence proves the item does not apply |

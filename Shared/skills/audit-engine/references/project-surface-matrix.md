@@ -32,6 +32,7 @@ Capture available evidence paths before deciding that validation is unavailable:
 - Cloud/preview/deployment access.
 - Logs, artifacts, reports, or audit log write path.
 - Platform subagent or evidence branch support.
+- Inventory extraction paths for features, endpoints, commands, jobs, interfaces, data flows, performance targets, and risk candidates.
 
 ## Applicability Rules
 
@@ -39,3 +40,12 @@ Capture available evidence paths before deciding that validation is unavailable:
 - A check is `unverified` when it applies but no evidence path is available yet.
 - A check is `blocked` when a needed external condition is missing, such as credentials, login, explicit authorization, third-party availability, hardware, or unsafe mutation approval.
 - Mixed projects must keep independent results per surface when a single status would hide risk.
+
+## Recipe Selection
+
+After surface detection:
+
+- Use `audit-depth-matrix.md` to decide how broad the inventory must be.
+- Use `surface-audit-recipes.md` to choose surface-specific checks.
+- Use `audit-inventory-contracts.md` to build the denominator for coverage.
+- Preserve every detected surface in mixed projects, even when only one surface has runtime evidence.

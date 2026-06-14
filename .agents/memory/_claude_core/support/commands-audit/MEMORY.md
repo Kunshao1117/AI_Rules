@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/08_audit(健檢)/
 description: >-
   專案記憶：Claude 健檢主指令與三階段子指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-15T02:54:15+08:00'
+last_updated: '2026-06-15T03:31:47+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: partial_evidence
-last_verified: '2026-06-15T02:49:33+08:00'
+last_verified: '2026-06-15T03:28:12+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,14 +36,17 @@ metadata:
 ## Current Truth
 - This child card owns Claude audit command entries and their three-phase subcommands.
 - Audit commands use project-surface detection, evidence status, and blocked/unverified states.
+- Audit commands now support quick, standard, deep, and forensic depth modes with feature, endpoint, command, job, interface, data-flow, performance, and risk inventories.
 - Claude-specific subagent, hook, permission, and checkpoint semantics are platform translation details, not memory format differences.
 
 ## Active Constraints
 - Do not mark missing evidence as passed.
 - Do not let Claude-specific hooks or checkpoints leak into Codex or Antigravity memory semantics.
+- Do not claim full coverage from sampled evidence; report coverage denominators and sampling limits.
 
 ## Cycle Events
 - 01: Split Claude audit command ownership out of the support parent card.
+- 02: Updated Claude audit entry and subcommands for depth selection, inventory construction, evidence-linked coverage, and coverage reporting.
 
 ## Archive Index
 - Parent archive remains at .agents/memory/_claude_core/support/archive-001.md.

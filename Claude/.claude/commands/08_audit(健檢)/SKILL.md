@@ -1,6 +1,6 @@
 ---
 name: 08_audit
-description: "Use when: 全光譜專案健檢、audit、證據式健檢、專案型態偵測、相容性檢查、治理巡檢、基礎盤點、深度邏輯審查、子代理採證、鉤子/檢查點治理與健康報告。DO NOT use when: 只要單一測試或單一 bug 修復。"
+description: "Use when: 全光譜專案健檢、深層健檢、audit、證據式健檢、健檢深度、專案型態偵測、功能盤點、端點盤點、命令盤點、相容性檢查、治理巡檢、基礎盤點、深度邏輯審查、子代理採證、鉤子/檢查點治理、效能與載入速度與健康報告。DO NOT use when: 只要單一測試或單一 bug 修復。"
 required_skills: [memory-ops, code-audit, audit-engine]
 memory_awareness: full
 user-invocable: true
@@ -50,14 +50,14 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 # [SKILL: /08_audit — 全光譜證據式健檢入口]
 
-> 本工作流是 Claude 健檢總控入口。它保留既有三階段健檢語義，但內部升級為「專案型態偵測 → 動態掛載模組 → 證據式報告」。
+> 本工作流是 Claude 健檢總控入口。它保留既有三階段健檢語義，但內部升級為「深度模式 → 專案型態偵測 → 功能/端點/命令盤點 → 動態掛載模組 → 覆蓋率證據式報告」。
 > 共用判定規則來自 `audit-engine`；Claude 負責把證據採集轉譯成子代理、鉤子、權限模式、檢查點、批次讀取與非互動命令可複查的證據。
 
 ## Required Shared Skills
 
 Load these before running the audit:
 
-- `audit-engine` — project surface, evidence packet, traffic-light, blocked/unverified semantics.
+- `audit-engine` — audit depth, project surface, inventory denominator, evidence packet, traffic-light, blocked/unverified semantics.
 - `code-audit` — deterministic CLI scan recipes.
 - `ai-dev-quality-gate` — real execution evidence boundary.
 - `browser-testing` — browser/operator evidence when a rendered surface exists.
@@ -69,7 +69,7 @@ Load these before running the audit:
 - Use Claude slash-command context as the main integration thread. The main agent remains responsible for final decisions and must review all evidence before reporting.
 - Subagents may be used only for isolated read-only evidence branches through description-driven delegation, explicit agent routing, or governed permissions. They must return findings, evidence, risks, recommendations, and blocking status.
 - Hooks, permissions, checkpoints, non-interactive command output, MCP read tools, and batch file reads are evidence sources when available.
-- Audit may write intermediate evidence only under `.agents/logs/audit/<timestamp>/`. Allowed files are `profile.json`, `evidence.json`, and `summary.md`.
+- Audit may write intermediate evidence only under `.agents/logs/audit/<timestamp>/`. Allowed files are `profile.json`, `inventories.json`, `evidence.json`, and `summary.md`.
 - Missing subagent, hook, checkpoint, login, credential, MCP, or external service access is not a pass. Mark the item as `未驗證` or `阻塞` using the report gate rules.
 
 ## Audit Data Flow
@@ -77,18 +77,22 @@ Load these before running the audit:
 ```
 [FULL-SPECTRUM AUDIT]
 ├── Step 0: Load `audit-engine` references.
-├── Step 1: Run profile detection through `08-1_infra/SKILL.md`.
-├── Step 2: Run baseline, governance, and compatibility checks through `08-1_infra/SKILL.md`.
-├── Step 3: Run semantic, security, API/data-flow, and real-evidence checks through `08-2_logic/SKILL.md`.
-├── Step 4: Run evidence-only checks through `08-2_logic/SKILL.md` when requested.
-├── Step 5: Merge evidence packets and emit the final report through `08-3_report/SKILL.md`.
-└── Step 6: Route each high-priority item to the next workflow.
+├── Step 1: Select audit depth and run profile detection through `08-1_infra/SKILL.md`.
+├── Step 2: Build feature, endpoint, command, job, interface, data-flow, performance, and risk inventories through `08-1_infra/SKILL.md`.
+├── Step 3: Run baseline, governance, and compatibility checks through `08-1_infra/SKILL.md`.
+├── Step 4: Run semantic, security, API/data-flow, operation, performance, and reliability checks through `08-2_logic/SKILL.md`.
+├── Step 5: Run evidence-only checks through `08-2_logic/SKILL.md` when requested.
+├── Step 6: Merge evidence packets, coverage denominators, and inventory states through `08-3_report/SKILL.md`.
+└── Step 7: Route each high-priority item to the next workflow.
 ```
 
 ## Partial Audit Gate
 
 ```
 [PARTIAL AUDIT GATE]
+├── Depth modifiers: quick/快速, standard/標準, deep/深度/深層/完整, forensic/鑑識/上線前/遺留問題.
+├── No depth modifier → standard.
+├── Director asks for deep/full/complete/thorough/serious review → deep unless narrowed.
 ├── "/08_audit profile" / "只做型態偵測" → Phase 1 profile-only output.
 ├── "/08_audit infra" / "只跑基礎盤點" → Phase 1 profile + baseline + governance.
 ├── "/08_audit logic" / "只跑邏輯審查" → Phase 2 semantic + security + API/data-flow + coverage.
@@ -103,12 +107,25 @@ The three phases pass these objects forward:
 
 ```json
 {
+  "audit_depth": "standard",
+  "depth_reason": "",
   "profile": {},
+  "inventories": {
+    "features": [],
+    "endpoints": [],
+    "commands": [],
+    "jobs": [],
+    "interfaces": [],
+    "data_flows": [],
+    "performance_targets": [],
+    "risks": []
+  },
   "baseline": {},
   "governance": {},
   "semantic": {},
   "real_evidence": {},
   "release_supply_chain": {},
+  "coverage": {},
   "evidence_packets": [],
   "blocked": [],
   "unverified": [],
@@ -120,7 +137,7 @@ The three phases pass these objects forward:
 
 Append to the final Director-facing response:
 
-「[健檢完成] 本次報告採證據優先判定。缺少真實證據的項目已標記為未驗證或阻塞，不列為綠燈。如需修復指定項目，請依優先級交給修復、測試、架構、例行巡檢或發布治理工作流。」
+「[健檢完成] 本次報告採證據優先判定，並依健檢深度列出盤點覆蓋率。缺少真實證據的項目已標記為未驗證或阻塞，不列為綠燈；抽樣結果不會被宣稱為全量通過。如需修復指定項目，請依優先級交給修復、測試、架構、例行巡檢或發布治理工作流。」
 
 ---
 
