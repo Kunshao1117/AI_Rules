@@ -1,0 +1,86 @@
+---
+name: _shared.ops-skills.testing
+scopePath: Shared/skills/
+description: >-
+  專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory
+  scope or its tracked files.
+last_updated: '2026-06-15T02:53:00+08:00'
+status: stable
+staleness: 0
+memory_schema_version: 2
+memory_quality_version: 1
+memory_kind: source_fact
+verification_status: partial_evidence
+last_verified: '2026-06-15T02:44:59+08:00'
+valid_scope: current-project
+content_language: en
+human_language: zh-TW
+cycle_id: 2026-06-15-001
+cycle_event_count: 1
+cycle_event_limit: 30
+size_limit_bytes: 16384
+line_limit: 120
+archive_policy: volume
+compaction_status: ready
+metadata:
+  author: antigravity
+  version: '1.0'
+  origin: framework
+  memory_awareness: full
+  tool_scope:
+    - 'filesystem:write'
+    - 'mcp:cartridge-system'
+---
+# _shared.ops-skills.testing — Testing Skills Memory
+
+## Current Truth
+- This child card owns Shared testing, browser evidence, performance, accessibility, and regression strategy skills.
+- Testing facts must stay tied to project surface type and current tool availability.
+- Single-run test output belongs in task reports or logs unless it becomes a stable validation route.
+
+## Active Constraints
+- Do not turn one-time test output into permanent memory.
+- Use project-surface evidence requirements from the workflow matrix before declaring behavior verified.
+
+## Cycle Events
+- 01: Split testing and evidence strategy ownership out of the broad Shared operational skills card.
+
+## Archive Index
+- Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
+
+## Evidence Base
+- source:.agents/memory/_shared/ops-skills/archive-001.md — Previous parent-card content preserved during migration.
+- tool:memory_audit — Granularity advisory identified this card as too broad by tracked-file count.
+- director:2026-06-15 — GO SPLIT authorized controlled child-card split.
+
+## Read Contract
+- Read this card when working on owned source files or the named operational area.
+- Read the parent card only for Shared-level navigation; do not treat parent-child links as dependencies.
+
+## Conflicts and Supersession
+- No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
+
+## 中文摘要
+- 此子卡負責 Shared 測試、瀏覽器、效能、無障礙與回歸策略。
+- 測試輸出不是永久記憶，除非形成穩定驗證路徑。
+
+## Tracked Files
+- Shared/skills/a11y-testing/SKILL.md
+- Shared/skills/browser-testing/SKILL.md
+- Shared/skills/impact-test-strategy/references/regression-test-examples.md
+- Shared/skills/impact-test-strategy/SKILL.md
+- Shared/skills/performance-audit/SKILL.md
+- Shared/skills/test-automation-strategy/SKILL.md
+- Shared/skills/test-patterns/references/api-route-test-template.md
+- Shared/skills/test-patterns/references/hook-test-template.md
+- Shared/skills/test-patterns/references/utility-test-template.md
+- Shared/skills/test-patterns/SKILL.md
+- Shared/skills/trunk-ops/SKILL.md
+
+## Relations
+- _shared.ops-skills (parent card: operational-skill family index)
+- _shared (Shared governance parent)
+
+## Applicable Skills
+- memory-ops — Use when updating this child card.
+- memory-arch — Use when adjusting child-card topology.

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-15] 記憶卡主檔標準化與拆分
+
+### chore
+- **Memory main-file migration** — 專案記憶庫完成作用中主檔從技能主檔命名切換到記憶主檔命名，並保留舊內容歸檔卷作為歷史依據。
+- **Memory ownership split** — 將大型記憶卡拆成共用操作技能、Supabase Postgres 參考集、三平台支援入口、根層腳本與 VS Code 外掛子卡，降低單卡追蹤範圍與後續歸屬混亂。
+- **Memory engine verification** — 使用記憶引擎完成逐卡提交、索引重建與歸屬檢查；目前無未歸屬檔、幽靈檔、舊主檔或主檔衝突。
+
 ## [2026-06-14] 三平台證據式工作流治理
 
 ### feat
