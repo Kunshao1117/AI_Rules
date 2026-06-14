@@ -1,139 +1,226 @@
 ---
 name: audit-engine
 description: >
-  [Audit] Health audit semantic reasoning engine — AI-driven analysis for /08_audit_index §2 (S1–S5, API, test coverage, real evidence, architecture).
-  Use when: 執行 /08_audit_index 的語義推理審查（安全架構 S1–S5 / 前後端串接比對 / 測試覆蓋缺口 / 真實驗證缺口 / 架構分析）。
-  DO NOT use when: 執行 ESLint/npm audit 等工具掃描（用 code-audit）、非 /08_audit_index 工作流、修復或重構場景。
+  [Audit] Full-spectrum health audit semantic engine for /08_audit:
+  project surface detection, evidence packets, traffic-light gates, security,
+  API/data-flow analysis, real execution evidence, compatibility, release, and
+  governance review. Use when: 執行 /08_audit 的全光譜健檢語義判定、
+  專案型態偵測、證據包、紅黃綠燈、未驗證/阻塞判定、安全架構、
+  API/資料流、測試覆蓋、真實驗證、相容性與發布治理審查。
+  DO NOT use when: 執行 ESLint/npm audit/tsc 等工具掃描（用 code-audit）、
+  單一 bug 修復、一般重構、或非健檢工作流。
 metadata:
   author: antigravity
-  version: "1.0"
+  version: "2.0"
   origin: framework
   kind: operational
   memory_awareness: read
   tool_scope: ["filesystem:read"]
 ---
 
-# Audit Engine — Health Check Semantic Reasoning Engine
+# Audit Engine — Full-Spectrum Evidence Health Engine
 
-> **Caller**: `/08_audit_index` workflow | **Executor**: AI Master, not CLI
-> **Mandate**: All steps in this skill are unconditionally enforced. No [SUDO] bypass permitted.
+> **Caller**: `/08_audit` workflow family.
+> **Executor**: Master Agent semantic layer, not a CLI scanner.
+> **Mandate**: Shared audit meaning is defined here. Platform entrypoints only translate evidence collection to Antigravity, Claude, or Codex capabilities.
+
+## Required References
+
+Before using this skill in `/08_audit`, read all three reference files:
+
+- `references/project-surface-matrix.md`
+- `references/evidence-packet.md`
+- `references/report-gates.md`
+
+These references are part of the contract. Do not inline or fork their rules inside platform-specific workflows.
 
 ## 1. Trigger Conditions
 
-Invoked exclusively by `/08_audit_index`. Not applicable to build, fix, or refactor workflows.
+Use only inside a health audit workflow. The engine decides what an audit result means; it does not run package managers, linters, browser tools, MCP calls, deployments, or memory writes.
 
----
+Allowed callers:
 
-## 2. §1 — Backend Security Architecture Audit (S1–S5)
+- Full audit entrypoint.
+- Audit profile/surface detection phase.
+- Audit infra phase.
+- Audit logic/evidence phase.
+- Audit report phase.
 
-> **Prerequisite**: All backend API handler source files have been read.
+Forbidden callers:
 
-```
-[SECURITY AUDIT GATE] Enforce all checks — output PASS / FAIL + details / N/A per item:
-│
-├── S1: API Input Validation Coverage
-│   Scan all backend API handlers → Does each endpoint have a Zod/Joi schema?
-│   FAIL: Any endpoint missing schema → 🔴 Red, list missing endpoint paths
-│
-├── S2: Credential Isolation
-│   Scan all source files → Any hardcoded API Key, DB URL, or JWT Secret?
-│   FAIL: Any hardcoded credential found → 🔴 Red, list file path and line number
-│
-├── S3: Authentication Access Control
-│   Scan all POST / PUT / DELETE routes → Role guard or overrideAccess present?
-│   FAIL: Any write operation without guard → 🔴 Red, list unguarded routes
-│
-├── S4: Error Response Isolation
-│   Scan error handlers → Does any API response expose stack traces or DB query strings?
-│   FAIL: Any leak detected → 🔴 Red, list leak locations
-│
-└── S5: Structured Logging Standard
-    Scan logging implementation → Is JSON structured format used (timestamp/level/module)?
-    FAIL: Bare console.log usage found → 🟡 Yellow, list violating modules
-```
+- Build, fix, refactor, commit, release, or experiment workflows.
+- One-off code review outside `/08_audit`.
+- Any workflow that intends to modify source code.
 
-**Output**: Write S1–S5 results to final report under【安全架構審查】section.
+## 2. Full-Spectrum Audit Flow
 
----
+Run the semantic flow in this order. A later phase must preserve earlier evidence and cannot overwrite a blocked or unverified state with a green result unless new evidence resolves the reason.
 
-## 3. §2 — API Static Semantic Analysis (3-Layer Comparison)
+### Phase A — Project Surface Profile
 
-> **Prerequisite**: API route definitions and frontend fetch/axios call source files have been read.
+Use `project-surface-matrix.md` to classify the repository before applying checks.
 
-```
-[API INTEGRITY GATE] Enforce three comparison layers:
-│
-├── Layer 1: Endpoint Existence
-│   All frontend fetch/axios calls → Does each have a matching backend route?
-│   FAIL: Frontend calls non-existent backend route → 🔴 Red, list missing routes
-│
-├── Layer 2: Dead API Detection
-│   All backend routes → Does each have a matching frontend call?
-│   WARNING: Route exists but no frontend call → 🟡 Yellow, list candidate dead endpoints
-│
-└── Layer 3: Schema Field Consistency
-    For each matched endpoint, compare frontend payload fields vs backend Zod schema:
-    - Field name mismatch → 🔴 Red, list mismatched fields and affected endpoints
-    - Type mismatch (string vs number) → 🔴 Red
-    - Frontend sends fields not defined in backend schema → 🟡 Yellow
+Required output:
+
+```json
+{
+  "surfaces": [],
+  "primarySurface": "",
+  "mixedProject": false,
+  "languages": [],
+  "packageManagers": [],
+  "testFrameworks": [],
+  "runtimeEntrypoints": [],
+  "operatorSurfaces": [],
+  "platformCapabilities": {},
+  "applicableModules": [],
+  "notApplicableModules": []
+}
 ```
 
-**Output**: Write comparison results to final report under【前後端串接缺口】section.
+Rules:
 
----
+- Do not assume a web/API project from the presence of `package.json`.
+- Mixed repositories must keep all detected surfaces, not only the first one.
+- A check may be `not_applicable` only when the surface matrix gives a concrete reason.
+- If the surface is unknown but files are present, mark the profile `unverified`, not green.
 
-## 4. §3 — Test Coverage And Real Evidence Gap Analysis
+### Phase B — Baseline And Governance Topology
 
-> **Prerequisite**: All memory card `## Current Truth` / `## Active Constraints` sections and test directory structure have been read.
+Combine deterministic scan output from `code-audit` with governance inspection.
 
-```
-[TEST COVERAGE AUDIT GATE] Enforce all six steps:
-│
-├── Step 1: Extract complete "critical business function" list
-│           from all memory card ## Current Truth and ## Active Constraints sections
-│
-├── Step 2: Scan test directories (__tests__/ / *.spec.ts / *.test.ts)
-│           Extract list of functions/endpoints already covered by tests
-│
-├── Step 3: Cross-compare → Output list of critical functions with zero test coverage
-│
-├── Step 4: For each covered critical function, classify evidence level:
-│           live evidence, controlled real-path evidence, recorded real-source evidence,
-│           or synthetic/mock/static evidence only
-│
-├── Step 5: Flag critical functions with tests but no real execution path evidence
-│           when the behavior depends on data flow, persistence, UI operation,
-│           external integration, files, time, automation, permissions, or deployment state.
-│           Also flag real-verification claims that lack operator-tool discovery,
-│           transient retry evidence, or equivalent real-path alternatives.
-│
-└── Step 6: Calculate uncovered rate (uncovered count ÷ total critical functions)
-    ├── Uncovered rate > 50% → 🔴 Red
-    ├── Uncovered rate 20–50% → 🟡 Yellow
-    └── Uncovered rate < 20% → 🟢 Green
+Review areas:
 
-    List top 5 highest-risk uncovered functions (sorted by module dependency count)
-```
+- Dependency, type, lint, script, and environment parity scan results.
+- Memory cards, project context cards, skills, workflow entries, rules, and platform policy markers.
+- Directory hygiene for installed platform folders and generated runtime copies.
+- Tool availability: terminal, browser, desktop, MCP, cloud, plugin host, logs, and report-write path.
 
-**Output**: Uncovered rate + top-5 list + functions with only synthetic/mock/static evidence → final report under【測試與真實驗證缺口】section.
+The semantic output must include an evidence packet for each yellow/red/unverified item.
 
----
+### Phase C — Security, API, Data Flow, And Invariants
 
-## 5. §4 — Memory-Driven Architecture Analysis
+Use the detected project surfaces to decide which semantic checks apply.
 
-> **Prerequisite**: Memory card traversal complete (Phase B/E/F from §3 of the workflow).
+Backend/API checks:
 
-Consolidates output from workflow §3.5 items B, E, F:
+- Runtime input validation.
+- Credential isolation.
+- Authentication and authorization coverage.
+- Error response isolation.
+- Structured logging and traceability.
+- API existence, dead API candidates, and schema/field consistency.
 
-- **Module Relation Anomalies**: Check whether memory card `## Relations` navigation is missing, stale, or dead-linked. Do not use `Relations` to build staleness propagation graphs.
-- **Orphan File List**: Files not imported by any module (excluding known entry points)
-- **Missing Key Functions**: Functions recorded in memory card Current Truth or Active Constraints no longer found via `grep_search`
+Data and state checks:
 
----
+- Persistence side effects.
+- File system side effects.
+- Scheduled jobs and automation.
+- State transitions and domain invariants.
+- External integration boundaries.
+- Rollback, retry, timeout, and idempotency behavior where relevant.
 
-## 6. Constraints
+If the repository has no API/backend surface, mark API-specific checks `not_applicable` with profile evidence.
 
-- **Exclusively invoked by `/08_audit_index`** — not applicable to build or fix flows
-- **Does not perform tool scans** (ESLint/npm audit) — delegated to CLI + `Invoke-HealthAudit.ps1`
-- **Does not perform memory card read/write** — memory traversal is handled by workflow §3
-- **No [SUDO] exemption**: Commercial-grade audit does not permit skipping any check item
+### Phase D — Test Coverage And Real Evidence Gaps
+
+Extract critical behavior from memory cards, public entrypoints, commands, routes, tests, docs, and package scripts.
+
+For each critical behavior, classify coverage:
+
+- Live evidence.
+- Controlled real-path evidence.
+- Recorded real-source evidence.
+- Synthetic, mock, fixture, static, or unit-only evidence.
+- Missing evidence.
+
+Synthetic evidence cannot complete behavior that depends on runtime state, persistence, external state, permissions, network, time, files, CLI output, UI operation, or deployment status.
+
+### Phase E — Performance, Reliability, Accessibility, And Compatibility
+
+Apply only when the surface matrix makes the check relevant.
+
+Review areas:
+
+- Web performance and Core Web Vitals when a web surface exists.
+- CLI/TUI latency, exit codes, non-interactive behavior, and narrow terminal readability when a command surface exists.
+- Desktop or plugin panel resize, theme, permission, and host-state behavior when a GUI or extension surface exists.
+- Database/query performance when a database surface exists.
+- Accessibility when a browser-rendered UI exists.
+- Runtime, framework, operating system, shell, package manager, and CI compatibility.
+
+### Phase F — Supply Chain, Release, And Deployment Governance
+
+Review when manifests, CI workflows, release scripts, plugin packages, containers, infrastructure, or deployment config exist.
+
+Review areas:
+
+- Lockfile and manifest consistency.
+- CI workflow permissions and release triggers.
+- Package/artifact version alignment.
+- Publishable artifact naming and changelog alignment.
+- Installer or update behavior.
+- Optional security posture from repository health tools when available.
+
+### Phase G — Report Synthesis And Repair Routing
+
+Use `report-gates.md` to synthesize final status. Use `evidence-packet.md` to ensure every finding is actionable and reproducible.
+
+The final report must include:
+
+- Project profile summary.
+- Platform capability snapshot.
+- Traffic-light dashboard.
+- Evidence level distribution.
+- Unverified and blocked checks.
+- Top repair priorities.
+- Suggested next workflow for each priority.
+- Location index for any compact labels.
+
+## 3. Evidence Packet Boundary
+
+Each non-green or non-applicable result must include an evidence packet. Green results should include at least a short evidence summary for high-risk categories.
+
+Minimum fields:
+
+- Finding.
+- Location.
+- Surface.
+- Check.
+- Status.
+- Severity.
+- Evidence level.
+- Evidence source.
+- Reproduction or rerun path.
+- Tool attempts and retry state when blocked.
+- Equivalent real-path alternatives considered.
+- Impact.
+- Suggested next workflow.
+
+Do not report a scanner warning, AI suspicion, or screenshot-only observation as a confirmed defect without matching evidence level.
+
+## 4. Platform Adapter Contract
+
+Shared rules stop at semantics. Platform workflows may choose different evidence collection paths:
+
+- Antigravity: prefer visual artifacts, browser subagent evidence, screenshots, action videos, manager view, terminal, MCP, and plugin adapters when available.
+- Claude: prefer built-in/project subagents, hooks, permission modes, checkpoints, non-interactive CLI, MCP, and SDK automation when available.
+- Codex: prefer skills, explicit subagent workflows, sandbox/approval transcript, CLI/IDE/cloud task evidence, MCP, web search transcript, and report logs when available.
+
+Platform adapters must not change:
+
+- Status names.
+- Evidence levels.
+- Traffic-light meaning.
+- Required report fields.
+- Read-only boundary for audit evidence branches.
+- Master Agent accountability.
+
+## 5. Constraints
+
+- No [SUDO] exemption for semantic audit meaning.
+- Does not perform tool scans; it interprets tool output.
+- Does not write source, memory, project context, commits, releases, cloud resources, or external state.
+- May authorize writing intermediate audit logs only when the caller workflow explicitly grants `filesystem:write:logs`.
+- Missing tools or unavailable operators do not produce green results. Use `unverified` or `blocked`.
+- `not_applicable` requires surface-profile evidence.

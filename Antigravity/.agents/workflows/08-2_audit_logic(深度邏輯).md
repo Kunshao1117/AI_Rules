@@ -1,6 +1,6 @@
 ---
 name: 08-2_audit_logic(深度邏輯)
-description: "Use when: 健檢第二階段、深度邏輯審查、安全架構、API 串接比對、測試覆蓋缺口與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08_audit。"
+description: "Use when: 健檢第二階段、深度邏輯審查、安全架構、API/資料流比對、真實功能驗證、視覺/瀏覽器採證、效能可靠性、測試覆蓋缺口與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08_audit。"
 trigger: manual
 required_skills:
   - delegation-strategy
@@ -9,6 +9,8 @@ required_skills:
   - security-sre
   - impact-test-strategy
   - test-patterns
+  - browser-testing
+  - performance-audit
 metadata:
   author: antigravity
   version: "2.0"
@@ -53,68 +55,85 @@ Technical details may only appear after a `補充技術細節` section when they
 - Treat memory and internal model knowledge as possibly stale. Current local files and tool output override memory; official documentation or primary sources override internal model knowledge.
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
-# [08-2_audit_logic] Deep Source Code & Architecture Audit
+# [08-2_audit_logic] Phase 2: Semantic, Security & Real Evidence Audit
 
-**[SECURITY & COMPLIANCE MANDATE]**
-- Role: Master Agent
-- Operating Constraint: READ-ONLY analysis for source files and memory cards. CLI evidence branches return evidence only and must not write project files.
-- State Passing: The Master workflow is the only actor permitted to write `.agents/logs/audit_logic_results.md` as an intermediary Phase 3 report.
+> 本工作流由 `@[/08_audit]` 入口觸發。Phase 2 使用 Phase 1 的專案型態設定檔，只檢查適用表面，並把缺入口、缺工具、缺登入或缺憑證的項目標記為 `未驗證` 或 `阻塞`。
 
-## 1. CLI Evidence Branch Tool Scan
+## 2.1 Evidence Branch Gate
 
-**Directive**: Use the Delegation Gate to request a read-only CLI evidence branch for static code scanning. The branch returns an evidence packet; it does not write the intermediary audit log.
-1. Formulate the scan request.
-2. Output the exact Traditional Chinese delegation string for the Director to execute:
-   `@[CLI] 請讀取 .agents/skills/delegation-strategy/SKILL.md 與 .agents/skills/code-audit/SKILL.md，並以唯讀 CLI evidence branch 執行掃描。請回報 ESLint 警告、TypeScript 型別錯誤與 npm audit 狀態。`
-3. **[HALT]** Wait for the Director to run the CLI and confirm completion. DO NOT proceed to Step 2 until the CLI report is ready.
+Use Antigravity evidence branches only for isolated read-only work:
 
-## 2. Scan Report Parsing
+- Browser/visual branch: UI flow inspection, screenshot, recording, visual artifact comparison.
+- Terminal branch: deterministic command output and toolchain scan.
+- MCP/read branch: cloud, issue, release, database, or observability inspection when configured.
 
-**Directive**: Read the static analysis results.
-1. Read `.agents/logs/scan_report.md` or `.agents/logs/audit_security_scan.md`.
-2. Extract critical TypeScript/ESLint errors and CVE alerts.
-3. `> [LOAD SKILL] trunk-ops` (JIT Load). Scan for Flaky Tests or Trunk CI errors if applicable.
+The main workflow remains responsible for integration, status decisions, and final reporting.
 
-## 3. AI Cross-Boundary Analysis (Semantic Reasoning)
+## 2.2 Semantic Architecture Review
 
-**Directive**: Perform deep architectural and code-level checks. This is the core of the AI audit.
+Use `audit-engine`, `security-sre`, and `impact-test-strategy` to review only applicable surfaces:
 
-- **B (Module Relationship)**: Analyze the dependency graph. Detect Circular Dependencies between core modules.
-- **C (API Integration Check)**: `> [LOAD SKILL] audit-engine` (Execute §2). Compare Frontend fetch/axios calls against Backend Routes (Next.js/Express) to ensure parameter and schema alignment.
-- **E (Dead Code Detection)**: Identify orphaned functions, unused exports, and unreachable logic.
-- **F (Key Function Survival)**: Verify that critical system pathways (e.g., Auth, Payments, Core Features) are intact and not bypassed.
-- **G (Skill Quality Scan)**: Optionally execute `.agents/skills/skill-factory/scripts/Measure-SkillQuality.ps1` if checking derivative skills.
-- **J (Data Layer Consistency)**: Ensure Database Schema models precisely match the expected API Response interfaces.
-- **K (Test Coverage Gap Analysis)**: `> [LOAD SKILL] impact-test-strategy`. Identify high-risk modules completely lacking unit/integration tests.
-- **K2 (Real Verification Gap Analysis)**: `> [LOAD SKILL] audit-engine`. Identify high-risk modules whose tests or screenshots cover only mocks, fixtures, static UI, or unit logic while the documented behavior depends on real data flow, persistence, UI operation, files, automation, permissions, external integrations, or deployment state. Also flag verification claims that do not show operator-tool discovery, transient retry evidence, or equivalent real-path alternatives.
-- **H (Accessibility Audit)**: `> [LOAD SKILL] a11y-testing` (JIT Load). Evaluate frontend UI components for semantic HTML and WCAG compliance.
-- **S (Security Architecture Review)**: `> [LOAD SKILL] security-sre`. Execute the S1-S5 checks:
-  - S1: Hardcoded Secrets.
-  - S2: Authorization Bypasses (RLS/Middleware).
-  - S3: Input Sanitization (SQLi/XSS).
-  - S4: Credential Isolation.
-  - S5: Rate Limiting & DoS vectors.
-- **P (DB Performance & N+1)**: Scan loop-driven logic for hidden ORM/SQL calls causing N+1 query bottlenecks. Identify missing index vectors on high-frequency query fields.
-- **R (Error Swallowing & Resilience)**: Detect anti-patterns such as `try...catch` blocks that swallow errors without throwing or logging to external services (e.g., Sentry). Check for missing Transaction rollbacks in critical DB mutations.
-- **C2 (Concurrency & Race Conditions)**: Scan async state updates, financial/inventory mutations, and concurrent DB writes for missing Row-Level Locks (Optimistic/Pessimistic) or Atomic operations.
-- **L (State & Data Flow)**: Detect React/Vue state anomalies (e.g., Stale Closures in Hooks, unsafe global state mutations, excessive prop drilling).
-- **T (Type Safety Strictness)**: Detect misuse of `any` or brute-force Type Assertions (`as Type`). Ensure all external API boundaries employ rigorous unknown parsing (e.g., Zod validation).
+- Security: credential isolation, authorization, input validation, rate limits, unsafe public endpoints, and secret exposure.
+- API/data flow: frontend calls, backend routes, schemas, database models, external service boundaries, and contract drift.
+- State invariants: authentication, payments, inventory, permissions, automation state, file writes, queue jobs, and retry/idempotency behavior.
+- Reliability: swallowed errors, missing rollback, race conditions, concurrency hazards, retry loops, timeout handling, and observability gaps.
+- Dead code and architecture drift: unused exports, unreachable workflows, stale routes, stale commands, and memory-tracked files that no longer exist.
 
-## 4. State Passing (Mandatory Logging)
+## 2.3 Real Operation Evidence
 
-**Directive**: You MUST compile ALL findings from Section 2 and Section 3 and write them to the intermediary log file.
-1. Target File: `.agents/logs/audit_logic_results.md`
-2. Structure: Markdown format with clear sections for `API Gaps`, `Security S1-S5`, `Dead Code`, `Real Verification Gaps`, and `A11Y Issues`.
-3. Master workflow action: Use native file write only for `.agents/logs/audit_logic_results.md`. DO NOT delegate this write to an evidence branch. DO NOT modify source files, configuration files, dependency files, or memory cards.
+For every high-risk behavior, prefer real execution evidence over static inference:
 
-## 5. Interface Layer (Output Mandate)
+- Web: launch or inspect the app, navigate critical flows, capture screenshot/recording evidence, and note console/network failures.
+- Backend: run documented health checks or endpoint probes when safe; otherwise mark blocked by missing service, token, or approval.
+- CLI/TUI: run help/version/dry-run paths and record command output.
+- Desktop/extension: inspect package/config surface, launch or operate panel when available, and capture visual evidence.
+- Library/package: run tests/builds/examples and inspect public API compatibility.
+- Infrastructure/cloud: inspect config and read-only deployment state when credentials exist; otherwise mark blocked.
+- Docs/governance repository: verify workflow, policy, memory, and platform consistency instead of forcing web/API checks.
 
-**[STRICT RULE]**: Output the following summary in **Traditional Chinese**.
+Synthetic tests, mocks, fixtures, or static screenshots may support a finding, but they cannot alone turn a high-risk item green.
 
-> ### 🟢 深度邏輯與安全審查已完成
-> 
-> **狀態摘要**：
-> - 跨邊界掃描完成。
-> - 邏輯缺陷與資安漏洞已寫入中繼日誌 (`.agents/logs/audit_logic_results.md`)。
-> 
-> 請總監接續輸入 `@[/08-3_audit_report]` 產出最終全光譜健康報告。
+## 2.4 Performance, Accessibility & Compatibility
+
+Conditionally load additional recipes:
+
+- `performance-audit` for web, runtime, data, or deployment surfaces with measurable performance risks.
+- `browser-testing` for rendered web, extension, desktop-webview, or documentation UI surfaces.
+- `a11y-testing` only when a rendered UI exists.
+- `plugin-release-governance` only for extension, installer, release, or artifact surfaces.
+
+If the tool is missing or the app cannot run, report `未驗證` with rerun instructions.
+
+## 2.5 Optional Log Output
+
+If log writing is available, append Phase 2 evidence packets under `.agents/logs/audit/<timestamp>/evidence.json`.
+
+Do not write source files, configuration files, dependency manifests, memory cards, context cards, git state, releases, deployments, or external services.
+
+## 2.6 Phase Output
+
+Return this object to Phase 3:
+
+```json
+{
+  "semantic": {},
+  "real_evidence": {},
+  "release_supply_chain": {},
+  "evidence_packets": [],
+  "blocked": [],
+  "unverified": [],
+  "not_applicable": []
+}
+```
+
+## Interface Layer
+
+Output in Traditional Chinese with a compact table and a `位置索引`. Include:
+
+- Confirmed defects and their evidence level.
+- Real operation evidence collected.
+- High-risk items without real evidence.
+- Blocked checks and exact unblock conditions.
+- Suggested next workflow for each red or yellow item.
+
+Direct the Director to continue with `@[/08-3_audit_report]` when Phase 2 is complete.

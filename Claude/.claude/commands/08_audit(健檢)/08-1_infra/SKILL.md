@@ -1,7 +1,7 @@
 ---
 name: 08-1_infra
-description: "Use when: 健檢第一階段、基礎盤點、依賴安全掃描、記憶卡拓樸、技能覆蓋率與目錄衛生檢查。DO NOT use when: 要完整健檢入口，改用 08-audit。"
-required_skills: [memory-ops, code-audit]
+description: "Use when: 健檢第一階段、專案型態偵測、平台能力快照、基礎盤點、相容性、依賴掃描、治理拓樸、技能覆蓋率與目錄衛生檢查。DO NOT use when: 要完整健檢入口，改用 08-audit。"
+required_skills: [memory-ops, code-audit, audit-engine, tech-stack-protocol]
 memory_awareness: full
 user-invocable: false
 metadata:
@@ -13,7 +13,7 @@ metadata:
   lifecycle_phase: audit
   role: analyst
   memory_awareness: full
-  tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
+  tool_scope: ["filesystem:read", "filesystem:write:logs", "terminal:read", "mcp:read"]
   human_gate: "none"
   automation_safe: false
 ---
@@ -48,58 +48,86 @@ Technical details may only appear after a `補充技術細節` section when they
 - Treat memory and internal model knowledge as possibly stale. Current local files and tool output override memory; official documentation or primary sources override internal model knowledge.
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
-# [SKILL: /08_audit — Phase 1: 基礎盤點]
+# [SKILL: /08_audit — Phase 1: 專案型態、基礎盤點與治理拓樸]
 
-> 本工作流由 `08_audit(健檢)/SKILL.md` 入口觸發，不應直接呼叫。
+> 本工作流由 `08_audit(健檢)/SKILL.md` 入口觸發，不應直接呼叫。Phase 1 必須先建立專案型態與平台能力快照，再決定哪些檢查適用、哪些不適用、哪些缺工具而未驗證。
 
-## 1.1 Dependency Security (依賴安全掃描)
+## 1.1 Load Shared Semantics
 
-Run via `Bash` tool:
-```bash
-npm audit --json
-```
-- 解析嚴重程度（critical / high / moderate / low）。
-- 記錄結果到臨時報告物件供 Phase 3 彙整。
+Read `audit-engine` and its references before scanning:
 
-```bash
-npx tsc --noEmit 2>&1
-```
-- 解析 TypeScript 型別錯誤數量與位置。
+- `project-surface-matrix.md` for project surface detection.
+- `evidence-packet.md` for evidence requirements.
+- `report-gates.md` for unverified, blocked, and not-applicable status rules.
 
-## 1.2 Memory Topology Check (記憶卡拓樸驗證)
+## 1.2 Project Surface Profile
 
-> [LOAD SKILL] 確認 `.agents/skills/memory-ops/SKILL.md` 已載入。
+Detect all matching project surfaces instead of forcing a single type:
 
-- Call `cartridge-system__memory_list` 取得所有記憶卡清單。
-- 對每張記憶卡執行：
-  - 檢查 `staleness` 是否 > 0（過期警報）
-  - 檢查 `## Tracked Files` 中的路徑是否實際存在（孤立記憶卡偵測）
-  - 檢查是否有未被任何記憶卡追蹤的原始碼檔案（未覆蓋檔案偵測）
+- Web application, backend API, CLI/TUI, desktop GUI, IDE/editor extension, library/package, infrastructure/deployment, data pipeline, AI/model feature, docs/governance repository, or mixed project.
+- Language, package manager, test runner, runtime, deployment target, database, external service, release artifact, and documentation/governance roots.
+- Claude capability snapshot: terminal, non-interactive command execution, subagents, hooks, permissions, checkpoints, MCP read tools, browser/visual path if configured, and log-write availability.
 
-## 1.3 Skill Coverage Check (技能覆蓋率)
+If detection is incomplete, keep the profile explicit and mark affected modules as `未驗證`, not `綠燈`.
 
-- 掃描 `.agents/skills/` 目錄，列出所有可用技能。
-- 比對 `.claude/commands/*/SKILL.md` 的 `required_skills` 欄位。
-- 標記有工作流引用但實際不存在的技能（斷鏈技能）。
+## 1.3 Baseline Evidence
 
-## 1.4 Directory Hygiene (.claude/ 目錄衛生)
+Use `code-audit` and local toolchain commands only when manifests prove they apply:
 
-- 掃描 `.claude/commands/` 目錄，確認每個子目錄均有 `SKILL.md`。
-- 掃描 `.agents/memory/` 目錄，確認格式符合 V5 架構（含 frontmatter）。
-- 偵測 `.agents/project_skills/` 中無對應符號連結的衍生技能。
+- Dependency/security scan for detected package managers.
+- Type/lint/build script discovery without assuming JavaScript-only projects.
+- Environment variable parity and plaintext credential search.
+- Directory hygiene, generated artifact boundaries, and large/untracked surface detection.
+- Compatibility scan for framework versions, runtime constraints, platform-specific configs, and lockfile consistency.
 
-## 1.5 Output
+Each result must become an evidence packet with command summary, rerun path, and applicability reason.
 
-產出基礎盤點報告物件，傳遞給 Phase 3（08-3_report）彙整：
-```
+## 1.4 Governance Topology
+
+Inspect governance state without mutating memory:
+
+- Memory cards, context cards, workflow skills, shared skills, platform command files, hooks, permissions, checkpoints, and project skills.
+- Cross-platform drift between Antigravity, Claude, and Codex health-audit entries.
+- Missing skill references, stale tracked files, uncovered files, and source files that should not be governed.
+
+Memory or context writes are not allowed in this audit phase. Propose updates as findings only.
+
+## 1.5 Optional Log Output
+
+If log writing is available, write intermediate evidence only under `.agents/logs/audit/<timestamp>/`:
+
+- `profile.json` for project type and capability snapshot.
+- `evidence.json` for baseline and governance evidence packets.
+
+Do not write source files, memory cards, context cards, git state, releases, deployments, or external services.
+
+## 1.6 Phase Output
+
+Return this object to Phase 2 and Phase 3:
+
+```json
 {
-  npm_audit: { critical, high, moderate, low },
-  typescript: { error_count },
-  memory: { stale_cards[], orphan_cards[], uncovered_files[] },
-  skills: { broken_links[] },
-  directory: { missing_skill_md[], format_violations[] }
+  "profile": {},
+  "baseline": {},
+  "governance": {},
+  "evidence_packets": [],
+  "blocked": [],
+  "unverified": [],
+  "not_applicable": []
 }
 ```
+
+## Interface Layer
+
+Output in Traditional Chinese with a compact table and a `位置索引`. Include:
+
+- Project surfaces detected.
+- Claude evidence capabilities available.
+- Baseline findings by status.
+- Governance findings by status.
+- Explicit unverified, blocked, and not-applicable checks.
+
+Direct the Director to continue with `/08_audit logic` when Phase 1 is complete.
 
 ---
 
@@ -107,4 +135,4 @@ npx tsc --noEmit 2>&1
 
 > Inherits: `.claude/commands/_shared/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Reader/Memory` | 唯讀掃描 + memory_list 呼叫，不修改任何原始碼。
+- **Role**: `Reader/Memory` | 唯讀掃描 + 記憶讀取；只允許寫入健檢日誌，不修改原始碼或記憶卡。

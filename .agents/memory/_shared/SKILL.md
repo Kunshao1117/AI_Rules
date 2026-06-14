@@ -4,14 +4,14 @@ description: >
   Shared 共用治理資產記憶卡。追蹤跨平台共用政策、記憶模型、操作型技能來源與脈絡模板。 Use when: 修改 Shared/
   下的共用技能、政策、記憶治理或脈絡模板時。
 scopePath: Shared/
-last_updated: '2026-06-12T01:01:19+08:00'
+last_updated: '2026-06-14T16:20:18+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 6
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -26,7 +26,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared — Shared Governance Memory
 
 ## Current Truth
@@ -42,6 +41,8 @@ metadata:
 - UI quality, testing, audit, and project-context skills are shared operational guidance, not platform-only rules.
 - Shared quality skills now define autonomous governance depth, functional module boundaries, interface adaptation evidence, and real execution evidence as cross-platform semantics.
 - Shared verification rules now require operator-tool discovery, transient retry handling, and equivalent real-path alternatives before a behavior-dependent verification path can be marked blocked.
+- Shared audit engine now owns full-spectrum project-surface detection, evidence packet structure, traffic-light gates, compatibility review, and platform adapter semantics through reference specs.
+- Shared workflow capability evidence matrix now defines 00-12 workflow external grounding, evidence statuses, platform translation, blockers, and next-route semantics.
 
 ## Active Constraints
 
@@ -59,6 +60,8 @@ metadata:
 - 04: Added autonomous governance depth as the shared quality source for workflow summaries.
 - 05: Added the cross-project real execution evidence contract to shared quality and audit skills.
 - 06: Added operator-path discovery, retry, and equivalent real-path fallback requirements to shared verification governance.
+- 07: Expanded audit-engine into the full-spectrum evidence audit semantic core with project surface, evidence packet, and report gate references.
+- 08: Added the shared workflow capability evidence matrix and platform translation layer for all 00-12 workflow entries.
 
 ## Archive Index
 
@@ -74,10 +77,13 @@ metadata:
 - 自治分級矩陣保存在共用品質規則，工作流只輸出摘要。
 - 真實驗證契約由共用品質與健檢技能承載。
 - 驗證入口短暫不可用時，必須先搜尋、重試或改用等價真實路徑。
+- 共用健檢引擎現在承載專案型態矩陣、證據包格式與報告燈號規則。
+- 00 到 12 工作流現在共用外部依據、證據狀態、平台差異與下一流程路由矩陣。
 
 ## Tracked Files
 
 - Shared/platform-capability-matrix.md
+- Shared/workflow-capability-evidence-matrix.md
 - Shared/skill-governance.md
 - Shared/policies/subagent-invocation.md
 - Shared/mcp-profiles/README.md
@@ -88,6 +94,9 @@ metadata:
 - Shared/skills/memory-ops/references/memory-template.md
 - Shared/skills/project-context-protocol/SKILL.md
 - Shared/skills/audit-engine/SKILL.md
+- Shared/skills/audit-engine/references/project-surface-matrix.md
+- Shared/skills/audit-engine/references/evidence-packet.md
+- Shared/skills/audit-engine/references/report-gates.md
 - Shared/skills/impact-test-strategy/SKILL.md
 - Shared/skills/test-patterns/SKILL.md
 - .agents/memory/_shared/archive-001.md

@@ -5,14 +5,14 @@ description: >
   audit、commit、routine、handoff 與 project support files。Use when: 修改 Antigravity
   輔助規則或非核心工作流入口時。
 scopePath: Antigravity/.agents/
-last_updated: '2026-06-12T01:01:19+08:00'
+last_updated: '2026-06-14T16:01:25+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 5
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -27,7 +27,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core.support — Antigravity Support Memory
 
 ## Current Truth
@@ -40,6 +39,8 @@ metadata:
 - Antigravity build and test support workflows now output governance depth summaries and evidence levels without duplicating the shared matrix.
 - Antigravity support workflows now require [REAL EXECUTION] planning and fail or block missing real evidence for behavior-dependent work.
 - Antigravity support workflows now require operator-tool search, transient retry, and equivalent real-path alternatives before accepting a blocked real verification result.
+- Antigravity audit workflows now use full-spectrum project-surface profiling, capability snapshots, evidence packets, traffic-light gates, and log-only intermediate evidence.
+- Antigravity support workflows now carry the workflow grounding contract for chat, explore, build plan, experiment, test, commit, routine, handoff, and skill-forge entries.
 
 ## Active Constraints
 
@@ -54,6 +55,8 @@ metadata:
 - 03: Added governance depth summary and evidence-level handling to Antigravity support workflows.
 - 04: Added real execution planning, test, and audit gap handling to Antigravity support workflows.
 - 05: Added operator-path discovery, retry, and equivalent fallback requirements to Antigravity build, fix, test, and audit workflows.
+- 06: Refactored Antigravity audit entry and three audit phases into the full-spectrum evidence workflow with visual/browser adapter rules.
+- 07: Added shared workflow grounding matrix references to Antigravity support workflow entries and kept them before workflow execution bodies.
 
 ## Archive Index
 
@@ -67,6 +70,8 @@ metadata:
 - 建構與測試入口只輸出分級摘要，不重貼共用矩陣。
 - 支援工作流已補真實驗證路徑與缺證據失敗判定。
 - 支援工作流已要求阻塞前先搜尋操作者工具、重試或評估等價路徑。
+- 健檢入口與三階段已改為證據包、燈號、未驗證/阻塞與只寫日誌的流程。
+- 支援工作流已補外部依據、最低證據狀態、平台採證差異與下一流程路由。
 
 ## Tracked Files
 

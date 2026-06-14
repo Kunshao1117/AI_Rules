@@ -4,14 +4,14 @@ description: >
   Claude Edition 框架核心記憶卡。追蹤 Claude 平台核心規則、Slash Command 工作流與 Claude 專用文件。 Use
   when: 修改 Claude/ 目錄、Claude 規則或 Claude 指令工作流時。
 scopePath: Claude/
-last_updated: '2026-06-12T01:01:19+08:00'
+last_updated: '2026-06-14T16:01:29+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 5
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -26,7 +26,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
@@ -41,6 +40,8 @@ metadata:
 - Claude build commands now include a compact governance depth summary sourced from the shared quality matrix.
 - Claude build and fix commands now require real execution planning and evidence before completing behavior-dependent work.
 - Claude build, fix, and docs now require operator-tool discovery, transient retry handling, and equivalent real-path fallback before blocked real verification can be accepted.
+- Claude docs now describe the health-audit adapter as full-spectrum, evidence-based, and optimized for subagents, hooks, permissions, checkpoints, batch reads, and non-interactive command evidence.
+- Claude core commands now reference the shared workflow grounding matrix and translate it into plan mode, subagent, permission, hook, checkpoint, and batch command evidence boundaries.
 
 ## Active Constraints
 
@@ -56,6 +57,8 @@ metadata:
 - 03: Added governance depth summary output to the Claude build command.
 - 04: Added real execution evidence requirements to Claude build, fix, and documentation.
 - 05: Added operator-path discovery and retry requirements to Claude build, fix, and documentation.
+- 06: Documented the Claude full-spectrum evidence audit adapter and log-only evidence boundary.
+- 07: Connected Claude core commands and docs to the shared all-workflow grounding matrix.
 
 ## Archive Index
 
@@ -70,6 +73,8 @@ metadata:
 - 建構指令輸出治理深度摘要，但不重貼完整矩陣。
 - 建構與修復指令已補真實執行證據要求。
 - Claude 驗證阻塞前需先搜尋可用操作者工具、重試短暫失敗或說明等價路徑。
+- Claude 健檢文件已改為專案型態偵測、平台能力快照與子代理/鉤子/檢查點採證優先。
+- Claude 核心指令已引用全工作流外部接地矩陣，並保留主代理 GO gate 與整合責任。
 
 ## Tracked Files
 

@@ -3,14 +3,14 @@ name: _map
 description: |
   框架記憶導航索引卡。只保留 Layer 1 主卡名稱、有效範圍與讀取路徑。 Use when: 對話啟動需要先判斷應讀取哪張記憶卡時。
 scopePath: .agents/memory/
-last_updated: '2026-06-11T18:15:07+08:00'
+last_updated: '2026-06-14T16:17:27+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 2
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 8192
 line_limit: 120
@@ -44,6 +44,7 @@ metadata:
 
 - 01: Upgraded the navigation index to schema v2 and archived the legacy body.
 - 02: Cleared stale self-warning after confirming no pending tracked file changes.
+- 03: Confirmed root navigation after full-workflow grounding and audit memory updates.
 
 ## Archive Index
 

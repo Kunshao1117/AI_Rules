@@ -1,6 +1,6 @@
 ---
 name: 12-skill-forge-技能鍛造
-description: "Use when: 技能鍛造、建立新技能、建立 Shared skill、建立 project skill、建立 Codex skill、從健檢/除錯/總監指令萃取可重用方法論、12-skill-forge-技能鍛造。DO NOT use when: 只是討論技能想法、不準備寫入，或只要修改既有技能描述。"
+description: "Use when: 技能鍛造、建立新技能、建立 Shared skill、建立 project skill、建立 Codex skill、從健檢/除錯/總監指令萃取可重用方法論、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 相關技能設計。DO NOT use when: 只是討論技能想法、不準備寫入，或只要修改既有技能描述。"
 metadata:
   author: antigravity
   version: "2.0"
@@ -49,6 +49,14 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > [LOAD SKILL] If the new or revised skill covers plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before defining trigger language.
 > [LOAD SKILL] If the new or revised skill promotes stable project context, design DNA, product preference, technical preference, or acceptance preference into repeatable procedure, read `.agents/skills/project-context-protocol/SKILL.md` before defining scope.
+
+## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
+
+- Before applying this workflow, read Shared/workflow-capability-evidence-matrix.md and use the 12 row as the minimum external grounding and evidence contract.
+- Workflow-specific grounding: Apply the Agent Skills format, description-trigger quality, progressive disclosure, layer selection, reference splitting, and validation gates before writing skills.
+- Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
+- Apply the platform adapter in Shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+
 # source-command-12-skill-forge-skill
 
 Use this skill when the user asks to run the migrated source command `12_skill_forge(技能鍛造)-SKILL`.

@@ -32,7 +32,7 @@
 | performance, Lighthouse, Web Vitals, page speed, SEO score                   | 效能、Lighthouse、Web Vitals、載入速度、SEO 評分 | performance-audit        | playwright         |
 | live docs, framework query, Context7, API docs                               | 即時文件、框架查詢、Context7、API 文件           | context7-docs            | context7           |
 | CI test quality, flaky test, test framework, trunk uploads                    | CI 測試品質、不穩定測試、測試框架偵測、測試上傳   | trunk-ops                | trunk              |
-| health audit, security scan, API integrity, test coverage gap, audit engine   | 健檢引擎、安全架構審查、API 完整性、測試覆蓋缺口   | audit-engine             | —                  |
+| full-spectrum health audit, evidence packet, project surface, compatibility, audit engine | 全光譜健檢、證據包、專案型態、相容性、健檢引擎 | audit-engine             | —                  |
 | gitnexus CLI, index repo, analyze codebase, generate wiki                      | 索引倉庫、分析代碼庫、生成 Wiki                  | gitnexus-cli             | gitnexus           |
 | debugging, trace bug, error origin, why failing                                | 偵錯、追蹤錯誤、找出原因                         | gitnexus-debugging       | gitnexus           |
 | explore code, how does X work, architecture, execution flow                    | 探索代碼、理解架構、執行流程                     | gitnexus-exploring       | gitnexus           |

@@ -5,14 +5,14 @@ description: >
   experiment、test、audit、commit、routine 與 skill-forge entries。Use when: 修改 Codex
   非核心 workflow skill 或 shared gate 時。
 scopePath: Codex/.agents/workflow-skills/
-last_updated: '2026-06-12T01:01:19+08:00'
+last_updated: '2026-06-14T16:01:44+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 5
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -27,7 +27,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core.support — Codex Support Memory
 
 ## Current Truth
@@ -40,6 +39,8 @@ metadata:
 - Codex test workflow now records evidence level as minimum, enhanced, or exemption and keeps evidence matched to the selected surface.
 - Codex test and audit support workflows now treat missing real execution evidence as failed or blocked validation for behavior-dependent work.
 - Codex test and audit support workflows now require operator-tool discovery, retry/readiness checks, and equivalent real-path alternatives before marking real verification blocked.
+- Codex audit workflows now use full-spectrum project-surface profiling, capability snapshots, evidence packets, traffic-light gates, and log-only intermediate evidence.
+- Codex support workflow skills now carry the workflow grounding contract for chat, explore, experiment, condense, test, commit, routine, and skill-forge entries.
 
 ## Active Constraints
 
@@ -54,6 +55,8 @@ metadata:
 - 03: Added evidence-level handling to the Codex test workflow.
 - 04: Added real execution evidence and audit gap handling to Codex support workflows.
 - 05: Added operator-tool discovery, retry, and equivalent fallback requirements to Codex test and audit support workflows.
+- 06: Refactored Codex audit entry and three audit phases into the full-spectrum evidence workflow with Codex skill/subagent/sandbox adapter rules.
+- 07: Added shared workflow grounding matrix references to Codex support workflow skills and synced the live skill copies.
 
 ## Archive Index
 
@@ -67,6 +70,8 @@ metadata:
 - 測試入口依治理深度選擇證據等級。
 - 測試與健檢入口已納入真實執行證據缺口。
 - 測試與健檢會追查缺少工具搜尋、重試或等價路徑的驗證聲稱。
+- 健檢入口與三階段已改為證據包、燈號、未驗證/阻塞與只寫日誌的流程。
+- 支援工作流已補外部依據、最低證據狀態、平台採證差異與下一流程路由，live 技能已同步。
 
 ## Tracked Files
 

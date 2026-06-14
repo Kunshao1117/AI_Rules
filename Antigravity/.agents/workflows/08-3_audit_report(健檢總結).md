@@ -1,8 +1,9 @@
 ---
 name: 08-3_audit_report(健檢總結)
-description: "Use when: 健檢第三階段、彙整健康報告、紅黃綠燈號、優先修復清單與行動建議。DO NOT use when: 尚未完成前兩階段健檢。"
+description: "Use when: 健檢第三階段、彙整證據式健康報告、紅黃綠燈號、未驗證/阻塞判定、優先修復清單、位置索引與行動建議。DO NOT use when: 尚未完成前兩階段健檢。"
 trigger: manual
 required_skills:
+  - audit-engine
   - performance-audit
 metadata:
   author: antigravity
@@ -13,7 +14,7 @@ metadata:
   lifecycle_phase: audit
   role: analyst
   memory_awareness: read
-  tool_scope: ["filesystem:read", "terminal:read"]
+  tool_scope: ["filesystem:read", "filesystem:write:logs", "terminal:read"]
   human_gate: "none"
   automation_safe: false
 ---
@@ -48,56 +49,56 @@ Technical details may only appear after a `補充技術細節` section when they
 - Treat memory and internal model knowledge as possibly stale. Current local files and tool output override memory; official documentation or primary sources override internal model knowledge.
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
-# [08-3_audit_report] Traffic Light Health Report Generation
+# [08-3_audit_report] Phase 3: Evidence-Based Health Report
 
-**[SECURITY & COMPLIANCE MANDATE]**
-- Role: Master Agent
-- Operating Constraint: Read-only aggregation.
+> 本工作流由 `@[/08_audit]` 入口觸發。Phase 3 只彙整 Phase 1/2 的證據包，不把缺少證據的項目升格為綠燈。
 
-## 1. Data Aggregation
+## 3.1 Evidence Normalization
 
-**Directive**: Collect all audit states.
-1. Read `.agents/cartridges/_system.md` and related memory cards.
-2. Read `.agents/logs/scan_report.md` (CLI Static Scan).
-3. Read `.agents/logs/audit_logic_results.md` (AI Deep Logic Scan from Phase 2).
+Read the newest audit packet from the active workflow state or `.agents/logs/audit/<timestamp>/` when available:
 
-## 2. Performance, UI & SEO Scan
+- `profile.json` for project surfaces, tools, entries, applicable modules, and not-applicable reasons.
+- `evidence.json` for findings, evidence levels, rerun paths, tool summaries, blocked reasons, and equivalent evidence paths.
 
-**Directive**: Evaluate frontend performance, design compliance, and SEO structures.
-1. IF the project is a frontend web application (e.g., React, Next.js, Vite):
-   - `> [LOAD SKILL] performance-audit`.
-   - Extract metrics from `.agents/logs/audit_perf.md` (if previously run by CLI) OR deduce standard Core Web Vitals optimizations needed based on code structure.
-   - **[Design Token Compliance]**: Detect hardcoded magic numbers in CSS/Tailwind (e.g., `#3a4f5c`, `27px`) and mandate consolidation into the Design System tokens.
-   - **[SEO & Assets Audit]**: Evaluate the presence of proper OpenGraph Meta Tags and identify unoptimized large static asset patterns.
-2. IF the project is strictly backend:
-   - Skip performance web UI checks and focus on API response time architectures.
+Normalize every finding through `report-gates.md`:
 
-## 3. Interface Layer (Output Mandate)
+- `綠燈` requires sufficient evidence and low residual risk.
+- `黃燈` covers medium risk, partial evidence, or near-term repair needs.
+- `紅燈` covers confirmed high-risk defects, security issues, or core behavior failure.
+- `未驗證` means the check is needed but evidence/tool/entry is insufficient.
+- `阻塞` means credentials, login, permission, external service, or high-risk approval is missing.
+- `不適用` requires explicit project-surface evidence.
 
-**[STRICT RULE]**: You MUST generate the final report EXACTLY matching the structure below in **Traditional Chinese**.
+## 3.2 Required Report Structure
 
-> ## 專案全光譜健康報告 (Traffic Light Health Report)
->
-> **1. 系統記憶狀態 (Memory Topology)**
-> - 🟢 狀態：[例如：完美對齊] / 🔴 狀態：[例如：發現 3 個孤兒檔案]
-> - 描述：[從 08-1 擷取的結果]
->
-> **2. 架構與邏輯缺陷 (Architecture & Code Logic)**
-> - 🟢/🟡/🔴 狀態：
-> - 描述：[從 audit_logic_results.md 擷取的 API 缺口、死碼等結果]
->
-> **3. 安全性審查 (S1-S5 Security)**
-> - 🟢/🟡/🔴 狀態：
-> - 描述：[從 audit_logic_results.md 擷取的資安掃描結果]
->
-> **4. 資料庫效能與程式韌性 (DB Perf & Resilience)**
-> - 🟢/🟡/🔴 狀態：
-> - 描述：[從 audit_logic_results.md 擷取的 N+1 查詢、錯誤吞噬、競態條件等深層邏輯結果]
->
-> **5. 靜態指標與 UI/UX 規範 (Static, UI/UX & SEO)**
-> - 🟢/🟡/🔴 狀態：
-> - 描述：[CLI ESLint/TS 狀態、Lighthouse 效能、Magic Numbers 抓漏與 SEO 狀態]
-> 
-> ### 💡 總監行動建議 (Next Steps)
-> 1. [最高優先級的修復建議]
-> 2. [次要優化建議]
+Generate a Traditional Chinese report with these sections:
+
+| 事項 | 位置 | 影響 | 狀態 |
+|---|---|---|---|
+| 專案型態與能力 | 專案設定檔（profile evidence） | 決定哪些檢查適用與不適用 | 綠燈/黃燈/未驗證 |
+| 基礎盤點與相容性 | 基礎證據包（baseline evidence） | 依賴、型別、工具、版本、目錄衛生 | 綠燈/黃燈/紅燈/未驗證 |
+| 治理拓樸 | 治理證據包（governance evidence） | 記憶卡、脈絡卡、技能、平台政策漂移 | 綠燈/黃燈/紅燈 |
+| 架構與安全 | 語意證據包（semantic evidence） | API、資料流、狀態不變量、權限、憑證 | 綠燈/黃燈/紅燈/阻塞 |
+| 真實功能證據 | 操作證據包（real operation evidence） | 網頁、後端、CLI、桌面、外掛、雲端、資料庫 | 綠燈/黃燈/紅燈/未驗證/阻塞 |
+| 效能與可靠性 | 效能可靠性證據包（perf reliability evidence） | 載入速度、錯誤處理、競態、重試、可觀測性 | 綠燈/黃燈/紅燈/未驗證 |
+| 供應鏈與發布 | 發布證據包（release evidence） | 套件、版本、打包、發布、安裝包、相容性 | 綠燈/黃燈/紅燈/不適用 |
+
+The report must include:
+
+- Priority repair list sorted by severity, evidence strength, and blast radius.
+- Suggested next workflow for each actionable item.
+- Explicit unverified and blocked lists.
+- Position index mapping compact labels to concrete files, directories, tools, or evidence packets.
+- Rerun instructions for every finding that depends on a command, browser flow, external service, or missing credential.
+
+## 3.3 Optional Summary Log
+
+If log writing is available, write the final report to `.agents/logs/audit/<timestamp>/summary.md`.
+
+Do not write source files, memory cards, context cards, git state, releases, deployments, or external services.
+
+## 3.4 Completion
+
+Append:
+
+「[健檢完成] 本次報告採證據優先判定。缺少真實證據的項目已標記為未驗證或阻塞，不列為綠燈。如需修復指定項目，請依優先級交給修復、測試、架構、例行巡檢或發布治理工作流。」

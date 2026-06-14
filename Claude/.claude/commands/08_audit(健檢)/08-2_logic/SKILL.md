@@ -1,7 +1,7 @@
 ---
 name: 08-2_logic
-description: "Use when: 健檢第二階段、深度邏輯審查、安全架構、API 串接比對、測試覆蓋缺口與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08-audit。"
-required_skills: [audit-engine, code-diagnosis]
+description: "Use when: 健檢第二階段、深度邏輯審查、安全架構、API/資料流比對、真實功能驗證、子代理採證、效能可靠性、測試覆蓋缺口與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08-audit。"
+required_skills: [audit-engine, code-diagnosis, security-sre, impact-test-strategy, browser-testing, performance-audit]
 memory_awareness: full
 user-invocable: false
 metadata:
@@ -13,7 +13,7 @@ metadata:
   lifecycle_phase: audit
   role: analyst
   memory_awareness: full
-  tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
+  tool_scope: ["filesystem:read", "filesystem:write:logs", "terminal:read", "mcp:read"]
   human_gate: "none"
   automation_safe: false
 ---
@@ -48,54 +48,89 @@ Technical details may only appear after a `補充技術細節` section when they
 - Treat memory and internal model knowledge as possibly stale. Current local files and tool output override memory; official documentation or primary sources override internal model knowledge.
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
-# [SKILL: /08_audit — Phase 2: 深度邏輯審查]
+# [SKILL: /08_audit — Phase 2: 深度邏輯與真實證據審查]
 
-> 本工作流由 `08_audit(健檢)/SKILL.md` 入口觸發，不應直接呼叫。
+> 本工作流由 `08_audit(健檢)/SKILL.md` 入口觸發，不應直接呼叫。Phase 2 使用 Phase 1 的專案型態設定檔，只檢查適用表面，並把缺入口、缺工具、缺登入或缺憑證的項目標記為 `未驗證` 或 `阻塞`。
 
-## 2.1 Security Review (S1–S5 安全架構審查)
+## 2.1 Evidence Branch Gate
 
-> [LOAD SKILL] 確認 `.agents/skills/audit-engine/SKILL.md` 已載入。
+Use Claude evidence branches only for isolated read-only work:
 
-- **S1: 認證流程完整性** — 驗證所有受保護路由均有認證守衛
-- **S2: 授權/RLS 政策覆蓋** — 確認資料庫查詢有適當的 RLS 政策
-- **S3: 輸入驗證完整性** — 所有使用者輸入是否有 Zod/Yup 等驗證
-- **S4: 憑證隔離** — 掃描 hardcoded secrets、API Key 外洩風險
-- **S5: API 端點暴露** — 公開端點是否有不必要的資料外洩
+- Subagent branch: broad file reading, static scan summarization, architecture evidence, or test gap inventory.
+- Hook/checkpoint branch: governance evidence around permissions, automated checks, and rollback points.
+- Terminal branch: deterministic command output and toolchain scan.
+- MCP/read branch: cloud, issue, release, database, or observability inspection when configured.
 
-## 2.2 API Contract Alignment (前後端串接比對)
+The main workflow remains responsible for integration, status decisions, and final reporting.
 
-- 收集前端 API 呼叫清單（`fetch()`、`axios`、`trpc`、`supabase.from()` 等）
-- 比對後端路由定義（`app/api/*/route.ts` 或類似結構）
-- 標記：
-  - 前端呼叫但後端不存在的端點（斷鏈）
-  - 型別不符的請求/回應格式
-  - 已棄用但仍被呼叫的路由
+## 2.2 Semantic Architecture Review
 
-## 2.3 Test Coverage Gap (測試覆蓋缺口)
+Use `audit-engine`, `security-sre`, and `impact-test-strategy` to review only applicable surfaces:
 
-- 識別核心業務路徑中缺少測試覆蓋的區域
-- 識別已有測試但只有 mock、fixture、靜態截圖或局部單元邏輯，缺少真實執行證據的高風險區域
-- 識別宣稱已驗證但沒有操作者工具搜尋、短暫失敗重試或等價真實路徑替代記錄的區域
-- 依「業務影響 × 缺口嚴重程度」排序優先修復清單
+- Security: credential isolation, authorization, input validation, rate limits, unsafe public endpoints, and secret exposure.
+- API/data flow: frontend calls, backend routes, schemas, database models, external service boundaries, and contract drift.
+- State invariants: authentication, payments, inventory, permissions, automation state, file writes, queue jobs, and retry/idempotency behavior.
+- Reliability: swallowed errors, missing rollback, race conditions, concurrency hazards, retry loops, timeout handling, and observability gaps.
+- Dead code and architecture drift: unused exports, unreachable workflows, stale routes, stale commands, and memory-tracked files that no longer exist.
 
-## 2.4 Dead Code & Orphan Detection (死碼偵測)
+## 2.3 Real Operation Evidence
 
-> [LOAD SKILL] 若涉及 3+ 模組診斷，確認 `.agents/skills/code-diagnosis/SKILL.md` 已載入。
+For every high-risk behavior, prefer real execution evidence over static inference:
 
-- 掃描未使用的 export、未被 import 的檔案
-- 與記憶卡 `## Tracked Files` 交叉比對，找出已追蹤但實際已移除的檔案
+- Web: launch or inspect the app, navigate critical flows when a browser path exists, and record console/network failures.
+- Backend: run documented health checks or endpoint probes when safe; otherwise mark blocked by missing service, token, or approval.
+- CLI/TUI: run help/version/dry-run paths and record command output.
+- Desktop/extension: inspect package/config surface, launch or operate panel when available, and capture available evidence.
+- Library/package: run tests/builds/examples and inspect public API compatibility.
+- Infrastructure/cloud: inspect config and read-only deployment state when credentials exist; otherwise mark blocked.
+- Docs/governance repository: verify workflow, policy, memory, and platform consistency instead of forcing web/API checks.
 
-## 2.5 Output
+Synthetic tests, mocks, fixtures, or static screenshots may support a finding, but they cannot alone turn a high-risk item green.
 
-產出深度邏輯報告物件，傳遞給 Phase 3（08-3_report）彙整：
-```
+## 2.4 Performance, Accessibility & Compatibility
+
+Conditionally load additional recipes:
+
+- `performance-audit` for web, runtime, data, or deployment surfaces with measurable performance risks.
+- `browser-testing` for rendered web, extension, desktop-webview, or documentation UI surfaces.
+- `a11y-testing` only when a rendered UI exists.
+- `plugin-release-governance` only for extension, installer, release, or artifact surfaces.
+
+If the tool is missing or the app cannot run, report `未驗證` with rerun instructions.
+
+## 2.5 Optional Log Output
+
+If log writing is available, append Phase 2 evidence packets under `.agents/logs/audit/<timestamp>/evidence.json`.
+
+Do not write source files, configuration files, dependency manifests, memory cards, context cards, git state, releases, deployments, or external services.
+
+## 2.6 Phase Output
+
+Return this object to Phase 3:
+
+```json
 {
-  security: { s1, s2, s3, s4, s5 },  // 各維度：{ status: green|yellow|red, findings[] }
-  api_alignment: { broken_links[], type_mismatches[], deprecated[] },
-  test_coverage: { critical_gaps[], real_evidence_gaps[] },
-  dead_code: { unused_exports[], orphan_files[] }
+  "semantic": {},
+  "real_evidence": {},
+  "release_supply_chain": {},
+  "evidence_packets": [],
+  "blocked": [],
+  "unverified": [],
+  "not_applicable": []
 }
 ```
+
+## Interface Layer
+
+Output in Traditional Chinese with a compact table and a `位置索引`. Include:
+
+- Confirmed defects and their evidence level.
+- Real operation evidence collected.
+- High-risk items without real evidence.
+- Blocked checks and exact unblock conditions.
+- Suggested next workflow for each red or yellow item.
+
+Direct the Director to continue with `/08_audit report` when Phase 2 is complete.
 
 ---
 
@@ -103,4 +138,4 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > Inherits: `.claude/commands/_shared/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Reader` | 純分析審查，不修改任何原始碼或記憶卡。
+- **Role**: `Reader` | 純分析審查；只允許寫入健檢日誌，不修改原始碼或記憶卡。

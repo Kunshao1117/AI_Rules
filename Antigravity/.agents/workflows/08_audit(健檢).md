@@ -1,5 +1,5 @@
 ---
-description: "Use when: 全光譜專案健檢、audit、治理巡檢、基礎盤點、深度邏輯審查與健康報告。DO NOT use when: 只要單一測試或單一 bug 修復。"
+description: "Use when: 全光譜專案健檢、audit、證據式健檢、專案型態偵測、相容性檢查、治理巡檢、基礎盤點、深度邏輯審查、視覺/瀏覽器採證與健康報告。DO NOT use when: 只要單一測試或單一 bug 修復。"
 required_skills: [memory-ops, code-audit, audit-engine]
 memory_awareness: full
 metadata:
@@ -11,7 +11,7 @@ metadata:
   lifecycle_phase: audit
   role: analyst
   memory_awareness: full
-  tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
+  tool_scope: ["filesystem:read", "filesystem:write:logs", "terminal:read", "mcp:read"]
   human_gate: "none"
   automation_safe: false
 ---
@@ -46,23 +46,78 @@ Technical details may only appear after a `補充技術細節` section when they
 - Treat memory and internal model knowledge as possibly stale. Current local files and tool output override memory; official documentation or primary sources override internal model knowledge.
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
-# [WORKFLOW: 08_audit — 全光譜健檢入口]
+# [WORKFLOW: 08_audit — 全光譜證據式健檢入口]
 
-> 本工作流為三階段健檢的入口控制器，不包含實際掃描邏輯。
-> 實際邏輯分別在 08-1_audit_infra / 08-2_audit_logic / 08-3_audit_report 工作流中。
+> 本工作流是 Antigravity 健檢總控入口。它保留既有三階段健檢語義，但內部升級為「專案型態偵測 → 動態掛載模組 → 證據式報告」。
+> 共用判定規則來自 `audit-engine`；Antigravity 負責把證據採集轉譯成代理管理、瀏覽器、截圖、錄影與視覺產物可複查的證據。
 
-## 入口分派閘門
+## Required Shared Skills
+
+Load these before running the audit:
+
+- `audit-engine` — project surface, evidence packet, traffic-light, blocked/unverified semantics.
+- `code-audit` — deterministic CLI scan recipes.
+- `ai-dev-quality-gate` — real execution evidence boundary.
+- `browser-testing` — browser/operator evidence when a rendered surface exists.
+- `performance-audit` — performance evidence when a web or runtime surface exists.
+- `plugin-release-governance` — only when extension, plugin, versioned release, tag, installer, or artifact surfaces exist.
+
+## Antigravity Adapter Rules
+
+- Prefer Antigravity agent management, browser subagents, screenshots, action recordings, visual artifacts, terminal output, and MCP read tools as evidence sources.
+- Browser or visual evidence branches must remain read-only. They may inspect UI state, navigate, capture screenshots, record interaction evidence, and summarize findings; they must not modify source files, memory cards, git state, deployments, or external services.
+- Audit may write intermediate evidence only under `.agents/logs/audit/<timestamp>/`. Allowed files are `profile.json`, `evidence.json`, and `summary.md`.
+- Missing browser, login, credential, MCP, or external service access is not a pass. Mark the item as `未驗證` or `阻塞` using the report gate rules.
+
+## Audit Data Flow
 
 ```
-[PARTIAL AUDIT GATE] 依總監輸入決定執行路徑：
-├── 「@[/08_audit] infra」或「只跑基礎盤點」→ 僅觸發 @[/08-1_audit_infra]
-├── 「@[/08_audit] logic」或「只跑邏輯審查」→ 僅觸發 @[/08-2_audit_logic]
-├── 「@[/08_audit] report」→ 使用上次快取報告直接觸發 @[/08-3_audit_report]
-└── 無修飾詞 → 完整三階段依序執行：
-    Step 1: 觸發 @[/08-1_audit_infra] → 等待完成
-    Step 2: 觸發 @[/08-2_audit_logic] → 等待完成
-    Step 3: 觸發 @[/08-3_audit_report] → 輸出最終燈號儀表板
+[FULL-SPECTRUM AUDIT]
+├── Step 0: Load `audit-engine` references.
+├── Step 1: Run profile detection through `@[/08-1_audit_infra]`.
+├── Step 2: Run baseline, governance, and compatibility checks through `@[/08-1_audit_infra]`.
+├── Step 3: Run semantic, security, API/data-flow, and real-evidence checks through `@[/08-2_audit_logic]`.
+├── Step 4: Run visual/browser evidence only through `@[/08-2_audit_logic]` when requested.
+├── Step 5: Merge evidence packets and emit the final report through `@[/08-3_audit_report]`.
+└── Step 6: Route each high-priority item to the next workflow.
 ```
+
+## Partial Audit Gate
+
+```
+[PARTIAL AUDIT GATE]
+├── "@[/08_audit] profile" / "只做型態偵測" → Phase 1 profile-only output.
+├── "@[/08_audit] infra" / "只跑基礎盤點" → Phase 1 profile + baseline + governance.
+├── "@[/08_audit] logic" / "只跑邏輯審查" → Phase 2 semantic + security + API/data-flow + coverage.
+├── "@[/08_audit] evidence" / "只跑證據驗證" → Phase 2 visual, browser, terminal, extension, cloud, or desktop real-path evidence only.
+├── "@[/08_audit] report" / "只重出報告" → Phase 3 from the newest audit log packet.
+└── No modifier → Phase 1 + Phase 2 + Phase 3.
+```
+
+## Required Output Objects
+
+The three phases pass these objects forward:
+
+```json
+{
+  "profile": {},
+  "baseline": {},
+  "governance": {},
+  "semantic": {},
+  "real_evidence": {},
+  "release_supply_chain": {},
+  "evidence_packets": [],
+  "blocked": [],
+  "unverified": [],
+  "not_applicable": []
+}
+```
+
+## Completion
+
+Append to the final Director-facing response:
+
+「[健檢完成] 本次報告採證據優先判定。缺少真實證據的項目已標記為未驗證或阻塞，不列為綠燈。如需修復指定項目，請依優先級交給修復、測試、架構、例行巡檢或發布治理工作流。」
 
 ## [SECURITY & COMPLIANCE MANDATE]
 

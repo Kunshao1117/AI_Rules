@@ -1,6 +1,6 @@
 ---
 name: 08_audit
-description: "Use when: 全光譜專案健檢、audit、治理巡檢、基礎盤點、深度邏輯審查與健康報告。DO NOT use when: 只要單一測試或單一 bug 修復。"
+description: "Use when: 全光譜專案健檢、audit、證據式健檢、專案型態偵測、相容性檢查、治理巡檢、基礎盤點、深度邏輯審查、子代理採證、鉤子/檢查點治理與健康報告。DO NOT use when: 只要單一測試或單一 bug 修復。"
 required_skills: [memory-ops, code-audit, audit-engine]
 memory_awareness: full
 user-invocable: true
@@ -13,7 +13,7 @@ metadata:
   lifecycle_phase: audit
   role: analyst
   memory_awareness: full
-  tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
+  tool_scope: ["filesystem:read", "filesystem:write:logs", "terminal:read", "mcp:read"]
   human_gate: "none"
   automation_safe: false
 ---
@@ -48,48 +48,79 @@ Technical details may only appear after a `補充技術細節` section when they
 - Treat memory and internal model knowledge as possibly stale. Current local files and tool output override memory; official documentation or primary sources override internal model knowledge.
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
-# [SKILL: /08_audit — 全光譜健檢（三階段入口）]
+# [SKILL: /08_audit — 全光譜證據式健檢入口]
 
-> 本工作流為三階段健檢的**入口控制器**，不包含實際掃描邏輯。
-> 實際邏輯分別在 `08-1_infra/`、`08-2_logic/`、`08-3_report/` 子工作流中。
+> 本工作流是 Claude 健檢總控入口。它保留既有三階段健檢語義，但內部升級為「專案型態偵測 → 動態掛載模組 → 證據式報告」。
+> 共用判定規則來自 `audit-engine`；Claude 負責把證據採集轉譯成子代理、鉤子、權限模式、檢查點、批次讀取與非互動命令可複查的證據。
 
-## Phase 1 → 基礎盤點
+## Required Shared Skills
 
-> [LOAD SKILL] Read `08_audit(健檢)/08-1_infra/SKILL.md`
+Load these before running the audit:
 
-執行 §1.1–§1.5 並收集基礎盤點報告物件。
+- `audit-engine` — project surface, evidence packet, traffic-light, blocked/unverified semantics.
+- `code-audit` — deterministic CLI scan recipes.
+- `ai-dev-quality-gate` — real execution evidence boundary.
+- `browser-testing` — browser/operator evidence when a rendered surface exists.
+- `performance-audit` — performance evidence when a web or runtime surface exists.
+- `plugin-release-governance` — only when extension, plugin, versioned release, tag, installer, or artifact surfaces exist.
 
-Before starting broad scans, run the Delegation Gate. Claude adapter may use description-driven subagents, `@agent`, or governed `Agent(...)` permissions for isolated read-only evidence branches.
+## Claude Adapter Rules
 
----
+- Use Claude slash-command context as the main integration thread. The main agent remains responsible for final decisions and must review all evidence before reporting.
+- Subagents may be used only for isolated read-only evidence branches through description-driven delegation, explicit agent routing, or governed permissions. They must return findings, evidence, risks, recommendations, and blocking status.
+- Hooks, permissions, checkpoints, non-interactive command output, MCP read tools, and batch file reads are evidence sources when available.
+- Audit may write intermediate evidence only under `.agents/logs/audit/<timestamp>/`. Allowed files are `profile.json`, `evidence.json`, and `summary.md`.
+- Missing subagent, hook, checkpoint, login, credential, MCP, or external service access is not a pass. Mark the item as `未驗證` or `阻塞` using the report gate rules.
 
-## Phase 2 → 深度邏輯審查
+## Audit Data Flow
 
-> [LOAD SKILL] Read `08_audit(健檢)/08-2_logic/SKILL.md`
+```
+[FULL-SPECTRUM AUDIT]
+├── Step 0: Load `audit-engine` references.
+├── Step 1: Run profile detection through `08-1_infra/SKILL.md`.
+├── Step 2: Run baseline, governance, and compatibility checks through `08-1_infra/SKILL.md`.
+├── Step 3: Run semantic, security, API/data-flow, and real-evidence checks through `08-2_logic/SKILL.md`.
+├── Step 4: Run evidence-only checks through `08-2_logic/SKILL.md` when requested.
+├── Step 5: Merge evidence packets and emit the final report through `08-3_report/SKILL.md`.
+└── Step 6: Route each high-priority item to the next workflow.
+```
 
-執行 §2.1–§2.5 並收集深度邏輯報告物件。
-
----
-
-## Phase 3 → 健檢總結報告
-
-> [LOAD SKILL] Read `08_audit(健檢)/08-3_report/SKILL.md`
-
-合併 Phase 1 + Phase 2 報告物件，執行 §3.1–§3.3，輸出最終燈號儀表板。
-
----
-
-## 單獨觸發模式（Partial Audit）
-
-若總監只需要特定階段：
+## Partial Audit Gate
 
 ```
 [PARTIAL AUDIT GATE]
-├── 「/08_audit infra」或「只跑基礎盤點」→ 僅執行 Phase 1
-├── 「/08_audit logic」或「只跑邏輯審查」→ 僅執行 Phase 2
-├── 「/08_audit report」→ 使用上次快取的報告物件直接出燈號
-└── 無修飾詞 → 執行完整三階段
+├── "/08_audit profile" / "只做型態偵測" → Phase 1 profile-only output.
+├── "/08_audit infra" / "只跑基礎盤點" → Phase 1 profile + baseline + governance.
+├── "/08_audit logic" / "只跑邏輯審查" → Phase 2 semantic + security + API/data-flow + coverage.
+├── "/08_audit evidence" / "只跑證據驗證" → Phase 2 real operation evidence only.
+├── "/08_audit report" / "只重出報告" → Phase 3 from the newest audit log packet.
+└── No modifier → Phase 1 + Phase 2 + Phase 3.
 ```
+
+## Required Output Objects
+
+The three phases pass these objects forward:
+
+```json
+{
+  "profile": {},
+  "baseline": {},
+  "governance": {},
+  "semantic": {},
+  "real_evidence": {},
+  "release_supply_chain": {},
+  "evidence_packets": [],
+  "blocked": [],
+  "unverified": [],
+  "not_applicable": []
+}
+```
+
+## Completion
+
+Append to the final Director-facing response:
+
+「[健檢完成] 本次報告採證據優先判定。缺少真實證據的項目已標記為未驗證或阻塞，不列為綠燈。如需修復指定項目，請依優先級交給修復、測試、架構、例行巡檢或發布治理工作流。」
 
 ---
 

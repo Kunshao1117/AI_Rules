@@ -25,6 +25,17 @@
 | 權限 / 確認模型 | `adapter`：Role Lock Gate + `GO` / `[SUDO]` | `native` + `adapter`：Claude 權限提示與框架 `GO` gate | `native` + `adapter`：Codex approval/sandbox 設定與框架 `GO` gate |
 | 記憶系統 | `adapter`：`.agents/memory/` + cartridge-system | `adapter`：共用 `.agents/memory/` | `adapter`：共用 `.agents/memory/` |
 
+## Workflow Grounding Translation Layer
+
+`Shared/workflow-capability-evidence-matrix.md` 是 00 到 12 工作流的外部接地與最低證據契約。平台工作流只應引用該矩陣並加入平台 adapter 語義，不應在三平台重複維護長規則。
+
+| 工作流面向 | Antigravity / Gemini | Claude Edition | Codex Edition |
+|------|----------------------|----------------|---------------|
+| 外部查證 | 使用網路搜尋、瀏覽器代理與視覺產物補足研究或操作證據 | 使用計畫模式、批次讀取、子代理與非互動命令保留查證脈絡 | 使用技能漸進載入、官方文件查證、沙盒/審批轉錄與工具輸出 |
+| 操作證據 | 優先採集截圖、錄影、瀏覽器狀態與 IDE 可見結果 | 優先採集測試輸出、鉤子結果、權限/檢查點脈絡與命令證據 | 優先採集終端、瀏覽器、MCP、背景任務、審批與沙盒證據 |
+| 委派邊界 | 子代理與瀏覽器分支限於唯讀採證，主代理保留整合責任 | 子代理、鉤子與檢查點不得取代主代理決策與 GO gate | 子代理只能在總監明確要求、工作流閘門允許或專案代理已配置時啟動 |
+| 缺證處理 | 工具不可用時列出搜尋範圍、替代路徑與阻塞條件 | 權限、憑證或鉤子不可用時標記未驗證或阻塞 | 缺工具、缺沙盒、缺登入或未授權時標記未驗證或阻塞 |
+
 ## Shared Subagent Invocation Policy
 
 子代理治理語義以 `Shared/policies/subagent-invocation.md` 為唯一來源。Shared 層只描述 Delegation Gate、read-only evidence branch、主代理整合責任與回報格式；平台專用工具名稱只能出現在該檔的平台轉譯區塊、平台專屬 workflow / command，或明確標示為對照的文件段落。

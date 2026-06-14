@@ -1,6 +1,6 @@
 ---
 name: "02-blueprint-架構"
-description: "Use when: 純架構設計、藍圖、技術堆疊探勘、全系統初始化、重大技術轉向、ER 圖、API 路由設計、三平台代理治理架構宣告。DO NOT use when: 目標是同一輪直接建構功能；改用 03-build 的設計到建構合約。"
+description: "Use when: 純架構設計、藍圖、技術堆疊探勘、全系統初始化、重大技術轉向、ER 圖、API 路由設計、三平台代理治理架構宣告、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 的架構判斷。DO NOT use when: 目標是同一輪直接建構功能；改用建構流程的設計到建構合約。"
 required_skills: [memory-ops, tech-stack-protocol, memory-arch, ai-dev-quality-gate, project-context-protocol]
 metadata:
   author: antigravity
@@ -50,6 +50,14 @@ Technical details may only appear after a `補充技術細節` section when they
 > [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before architecture planning.
 > [LOAD SKILL] If this blueprint touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before architecture planning.
 > [LOAD SKILL] If this blueprint touches product direction, design DNA, technical preferences, communication preferences, or acceptance preferences, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before architecture planning.
+
+## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
+
+- Before applying this workflow, read Shared/workflow-capability-evidence-matrix.md and use the 02 row as the minimum external grounding and evidence contract.
+- Workflow-specific grounding: Record decision status, alternatives, trade-offs, assumptions, compatibility impact, and the handoff contract for later build work.
+- Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
+- Apply the platform adapter in Shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+
 # source-command-02-blueprint-skill
 
 Use this skill when the user asks to run the migrated source command `02_blueprint(架構)-SKILL`.

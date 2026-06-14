@@ -5,14 +5,14 @@ description: >
   settings 與 support rules。Use when: 修改 Claude 補充規則、非核心 slash command 或 command
   helper 時。
 scopePath: Claude/.claude/
-last_updated: '2026-06-12T01:01:19+08:00'
+last_updated: '2026-06-14T16:01:33+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 5
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -27,7 +27,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core.support — Claude Support Memory
 
 ## Current Truth
@@ -40,6 +39,8 @@ metadata:
 - Claude test command now records evidence level as minimum, enhanced, or exemption and keeps evidence matched to the selected surface.
 - Claude test and audit support commands now treat missing real execution evidence as failed or blocked validation for behavior-dependent work.
 - Claude test and audit support commands now require operator-tool discovery, retry/readiness checks, and equivalent real-path alternatives before marking real verification blocked.
+- Claude audit commands now use full-spectrum project-surface profiling, capability snapshots, evidence packets, traffic-light gates, and log-only intermediate evidence.
+- Claude support commands now carry the workflow grounding contract for chat, explore, experiment, condense, test, commit, routine, and skill-forge entries.
 
 ## Active Constraints
 
@@ -54,6 +55,8 @@ metadata:
 - 03: Added evidence-level handling to the Claude test command.
 - 04: Added real execution evidence and audit gap handling to Claude support commands.
 - 05: Added operator-tool discovery, retry, and equivalent fallback requirements to Claude test and audit support commands.
+- 06: Refactored Claude audit entry and three audit phases into the full-spectrum evidence workflow with subagent/hook/checkpoint adapter rules.
+- 07: Added shared workflow grounding matrix references to Claude support commands without moving GO gates to subagents or hooks.
 
 ## Archive Index
 
@@ -67,6 +70,8 @@ metadata:
 - 測試指令依治理深度選擇證據等級。
 - 測試與健檢指令已納入真實執行證據缺口。
 - 測試與健檢會追查缺少工具搜尋、重試或等價路徑的驗證聲稱。
+- 健檢入口與三階段已改為證據包、燈號、未驗證/阻塞與只寫日誌的流程。
+- 支援指令已補外部依據、最低證據狀態、平台採證差異與下一流程路由。
 
 ## Tracked Files
 

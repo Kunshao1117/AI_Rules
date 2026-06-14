@@ -1,10 +1,12 @@
 ---
 name: 08-1_audit_infra(基礎盤點)
-description: "Use when: 健檢第一階段、基礎盤點、依賴安全掃描、記憶卡拓樸、技能覆蓋率與目錄衛生檢查。DO NOT use when: 要完整健檢入口，改用 08_audit。"
+description: "Use when: 健檢第一階段、專案型態偵測、平台能力快照、基礎盤點、相容性、依賴掃描、治理拓樸、技能覆蓋率與目錄衛生檢查。DO NOT use when: 要完整健檢入口，改用 08_audit。"
 trigger: manual
 required_skills:
   - memory-ops
   - tech-stack-protocol
+  - audit-engine
+  - code-audit
 metadata:
   author: antigravity
   version: "2.0"
@@ -14,7 +16,7 @@ metadata:
   lifecycle_phase: audit
   role: analyst
   memory_awareness: read
-  tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
+  tool_scope: ["filesystem:read", "filesystem:write:logs", "terminal:read", "mcp:read"]
   human_gate: "none"
   automation_safe: false
 ---
@@ -49,70 +51,83 @@ Technical details may only appear after a `補充技術細節` section when they
 - Treat memory and internal model knowledge as possibly stale. Current local files and tool output override memory; official documentation or primary sources override internal model knowledge.
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
-# [08-1_audit_infra] Infrastructure & Memory System Audit
+# [08-1_audit_infra] Phase 1: Project Surface, Baseline & Governance Audit
 
-**[SECURITY & COMPLIANCE MANDATE]**
-- Role: Master Agent
-- Operating Constraint: READ-ONLY analysis + Memory Card UPDATE. DO NOT modify project source code during this workflow.
-- Instruction Layer: ALL logic checks must remain in Technical English.
-- Target Output: Provide a summary of the Memory Map and direct the Director to trigger `/08-2_audit_logic`.
+> 本工作流由 `@[/08_audit]` 入口觸發。Phase 1 必須先建立專案型態與平台能力快照，再決定哪些檢查適用、哪些不適用、哪些缺工具而未驗證。
 
-## 1. Global Workspace Security Scan
+## 1.1 Load Shared Semantics
 
-**Directive**: Analyze the project's dependency manifest (`package.json`) and configuration files to establish a security baseline.
-1. Scan for any known Common Vulnerabilities and Exposures (CVEs) in `package.json`.
-2. Identify deprecated or abandoned packages.
-3. Check for exposed hardcoded secrets or API keys in configuration files (e.g., `.env.example`, `vercel.json`).
-4. **[Env Var Parity]**: Search the codebase for `process.env.*` usage and cross-reference with `.env.example`. Identify any "ghost" environment variables that are used in code but missing from the template.
+Read `audit-engine` and its references before scanning:
 
-## 2. Memory System Initialization Check
+- `project-surface-matrix.md` for project surface detection.
+- `evidence-packet.md` for evidence requirements.
+- `report-gates.md` for unverified, blocked, and not-applicable status rules.
 
-**Directive**: Verify the core Antigravity paths.
-1. Determine `workspace_root`, `project_root`, and `.agents_dir`.
-2. IF `AGENTS.md` or the directory is empty THEN
-   - `[HALT]` Output: "🔴 初始化失敗。系統未載入記憶。請先執行 `/02_blueprint` 建立架構與記憶卡。"
-3. IF `_system.md` is missing inside `.agents/cartridges/` THEN
-   - Trigger the `Migration Protocol` (Section 4) immediately.
+## 1.2 Project Surface Profile
 
-## 3. Progressive Memory Skill Mapping
+Detect all matching project surfaces instead of forcing a single type:
 
-**Directive**: Traverse all memory skills in `.agents/cartridges/` and `.agents/project_skills/` to ensure full coverage of the active codebase.
+- Web application, backend API, CLI/TUI, desktop GUI, IDE/editor extension, library/package, infrastructure/deployment, data pipeline, AI/model feature, docs/governance repository, or mixed project.
+- Language, package manager, test runner, runtime, deployment target, database, external service, release artifact, and documentation/governance roots.
+- Antigravity capability snapshot: terminal, browser agent, visual artifact capture, screenshot/recording, desktop/app surface, MCP read tools, subagent/evidence branch availability, and log-write availability.
 
-1. **Phase A (Structure Scan)**
-   - Read the `SKILL.md` for every card in the `cartridges` and `project_skills` directories.
-2. **Phase B (Gap Detection & Orphan Files)**
-   - Compare the documented files against the physical project structure.
-   - Detect "Orphan Files" (files > 50 lines that are not mapped to ANY memory card).
-   - IF orphan files exist THEN generate a list and propose which card they belong to, OR propose creating a new card.
-3. **Phase C (Staleness & Schema Compliance)**
-   - Check every card for the required metadata (Name, Core Entity, Scope, Timestamp).
-   - Calculate Staleness Score (days since last update). IF score > 10 THEN mark for regeneration.
-   - Check Granularity: IF a single card tracks > 8 files THEN output a warning recommending splitting the card.
-   - IF a card tracks files that no longer exist THEN mark the card as `_archived`.
-4. **Phase D (System Memory Refresh)**
-   - Read `package.json` and compare it with the active stack documented in `_system.md`. Highlight any deltas.
-5. **Phase E (Cross-Reference Integrity)**
-   - Verify that all cards have a valid `## Relations` section pointing to other existing cards. Detect dead links.
-6. **Phase F (Workflow-Skill Binding Verification)**
-   - Ensure that any workflow defining `memory_awareness: true` has the corresponding `memory-ops` skill loaded.
-7. **Phase G (Project Skills Health)**
-   - Scan `.agents/project_skills/`. Ensure each skill has a clear `Use when:` and `DO NOT use when:` clause.
+If detection is incomplete, keep the profile explicit and mark affected modules as `未驗證`, not `綠燈`.
 
-## 4. Migration Protocol (Cartridge System Fallback)
+## 1.3 Baseline Evidence
 
-**Directive**: IF the memory system uses the legacy `knowledge/` structure instead of `.agents/cartridges/` THEN:
-1. Initialize `.agents/cartridges/_system.md` mapping to the new format.
-2. Inform the Director that a memory migration is underway.
+Use `code-audit` and local toolchain commands only when manifests prove they apply:
 
-## 5. Interface Layer (Output Mandate)
+- Dependency/security scan for detected package managers.
+- Type/lint/build script discovery without assuming JavaScript-only projects.
+- Environment variable parity and plaintext credential search.
+- Directory hygiene, generated artifact boundaries, and large/untracked surface detection.
+- Compatibility scan for framework versions, runtime constraints, platform-specific configs, and lockfile consistency.
 
-**[STRICT RULE]**: Output the following summary in **Traditional Chinese**. Do NOT output any English logic instructions.
+Each result must become an evidence packet with command summary, rerun path, and applicability reason.
 
-> ### 🟢 基礎盤點已完成
-> 
-> **狀態摘要**：
-> - 孤兒檔案偵測：[列出結果]
-> - 記憶卡過期警報：[列出結果]
-> - 依賴安全掃描：[列出結果]
-> 
-> 記憶卡系統已對齊完畢。請總監接續輸入 `@[/08-2_audit_logic]` 啟動深層原始碼審計。
+## 1.4 Governance Topology
+
+Inspect governance state without mutating memory:
+
+- Memory cards, context cards, workflow skills, shared skills, platform workflow files, and project skills.
+- Cross-platform drift between Antigravity, Claude, and Codex health-audit entries.
+- Missing skill references, stale tracked files, uncovered files, and source files that should not be governed.
+
+Memory or context writes are not allowed in this audit phase. Propose updates as findings only.
+
+## 1.5 Optional Log Output
+
+If log writing is available, write intermediate evidence only under `.agents/logs/audit/<timestamp>/`:
+
+- `profile.json` for project type and capability snapshot.
+- `evidence.json` for baseline and governance evidence packets.
+
+Do not write source files, memory cards, context cards, git state, releases, deployments, or external services.
+
+## 1.6 Phase Output
+
+Return this object to Phase 2 and Phase 3:
+
+```json
+{
+  "profile": {},
+  "baseline": {},
+  "governance": {},
+  "evidence_packets": [],
+  "blocked": [],
+  "unverified": [],
+  "not_applicable": []
+}
+```
+
+## Interface Layer
+
+Output in Traditional Chinese with a compact table and a `位置索引`. Include:
+
+- Project surfaces detected.
+- Antigravity evidence capabilities available.
+- Baseline findings by status.
+- Governance findings by status.
+- Explicit unverified, blocked, and not-applicable checks.
+
+Direct the Director to continue with `@[/08-2_audit_logic]` when Phase 1 is complete.

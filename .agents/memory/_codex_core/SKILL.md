@@ -4,14 +4,14 @@ description: >
   Codex Edition 框架核心記憶卡。追蹤 OpenAI Codex 平台適配層、Codex 工作流技能與 Codex 專用治理規則。 Use
   when: 修改 Codex/ 目錄、Codex 工作流或 Codex 專用文件時。
 scopePath: Codex/
-last_updated: '2026-06-12T01:01:19+08:00'
+last_updated: '2026-06-14T16:01:38+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 5
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -26,7 +26,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
@@ -41,6 +40,8 @@ metadata:
 - Codex build plans now include a compact governance depth summary sourced from the shared quality matrix.
 - Codex build and fix workflows now require real execution planning and evidence before completing behavior-dependent work.
 - Codex build, fix, and docs now require operator-tool discovery, transient retry handling, and equivalent real-path fallback before blocked real verification can be accepted.
+- Codex docs now describe the health-audit adapter as full-spectrum, evidence-based, and optimized for progressive skill loading, sandbox/approval transcripts, explicitly allowed subagents, browser, terminal, MCP, and cloud task evidence.
+- Codex core workflow skills now reference the shared workflow grounding matrix and translate it into progressive skill loading, sandbox/approval transcripts, terminal, browser, MCP, and governed subagent evidence.
 
 ## Active Constraints
 
@@ -56,6 +57,8 @@ metadata:
 - 03: Added governance depth summary output to the Codex build workflow and documentation.
 - 04: Added real execution evidence requirements to Codex build, fix, and documentation.
 - 05: Added operator-path discovery and retry requirements to Codex build, fix, and documentation.
+- 06: Documented the Codex full-spectrum evidence audit adapter and log-only evidence boundary.
+- 07: Connected Codex core workflow skills and docs to the shared all-workflow grounding matrix and synced live `.agents/skills/`.
 
 ## Archive Index
 
@@ -70,6 +73,8 @@ metadata:
 - 建構計畫會輸出治理深度摘要，但不重貼完整矩陣。
 - 建構與修復入口已補真實執行證據要求。
 - Codex 驗證阻塞前需先搜尋可用操作者工具、重試短暫失敗或說明等價路徑。
+- Codex 健檢文件已改為專案型態偵測、平台能力快照與技能/沙盒/明確子代理採證優先。
+- Codex 核心工作流已引用全工作流外部接地矩陣，live 技能目錄也已同步。
 
 ## Tracked Files
 

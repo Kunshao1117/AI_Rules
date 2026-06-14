@@ -1,6 +1,6 @@
 ---
 name: "04-fix-修復"
-description: "Use when: 修 bug、修復回歸、排除錯誤、診斷缺陷並執行正式修復。流程包含診斷、GO、寫入、記憶更新與回歸測試。DO NOT use when: 新功能建構或純除錯說明。"
+description: "Use when: 修 bug、修復回歸、排除錯誤、診斷缺陷並執行正式修復；也涵蓋 plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 相關缺陷。DO NOT use when: 新功能建構或純除錯說明。"
 required_skills: [memory-ops, impact-test-strategy, ai-dev-quality-gate, project-context-protocol]
 metadata:
   author: antigravity
@@ -50,6 +50,14 @@ Technical details may only appear after a `補充技術細節` section when they
 > [LOAD SKILL] If this fix touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before diagnosing release impact.
 > [LOAD SKILL] If this fix touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, real data, runtime behavior, operator-visible output, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before diagnosing quality impact.
 > [LOAD SKILL] If this fix may change user experience, product behavior, design DNA, acceptance defaults, or existing preferences, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before diagnosing impact.
+
+## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
+
+- Before applying this workflow, read Shared/workflow-capability-evidence-matrix.md and use the 04 row as the minimum external grounding and evidence contract.
+- Workflow-specific grounding: Separate symptom, confirmed root cause, repair scope, regression evidence, and the conditions that route back to debug or test.
+- Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
+- Apply the platform adapter in Shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+
 # source-command-04-fix-skill
 
 Use this skill when the user asks to run the migrated source command `04_fix(修復)-SKILL`.

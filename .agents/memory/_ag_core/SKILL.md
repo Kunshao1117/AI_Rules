@@ -4,14 +4,14 @@ description: >
   Antigravity 框架核心記憶卡。追蹤 Antigravity 平台核心規則、工作流與平台文件。 Use when: 修改 Antigravity/
   目錄、Antigravity 規則或 Antigravity 工作流時。
 scopePath: Antigravity/
-last_updated: '2026-06-12T01:01:19+08:00'
+last_updated: '2026-06-14T16:01:18+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-04-001
-cycle_event_count: 4
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -26,7 +26,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core — Antigravity Memory
 
 ## Current Truth
@@ -39,6 +38,8 @@ metadata:
 - Antigravity core blueprint and build execution workflows now preserve design-to-build contract semantics.
 - Antigravity build, fix, test, audit, and docs now apply the real execution evidence contract for behavior-dependent completion.
 - Antigravity docs now require verification entry search, transient retry, and equivalent real-path fallback before blocked real verification can be accepted.
+- Antigravity docs now describe the health-audit adapter as full-spectrum, evidence-based, and optimized for agent management, browser subagents, screenshots, recordings, and visual artifacts.
+- Antigravity core workflows now reference the shared workflow grounding matrix and translate it into browser, visual artifact, IDE-visible result, and terminal evidence semantics.
 
 ## Active Constraints
 
@@ -53,6 +54,8 @@ metadata:
 - 02: Updated core blueprint and build execution workflows for design-to-build governance.
 - 03: Aligned Antigravity workflows and docs with real execution evidence requirements.
 - 04: Documented operator-path discovery and retry requirements for Antigravity real verification.
+- 05: Documented the Antigravity full-spectrum evidence audit adapter and log-only evidence boundary.
+- 06: Connected Antigravity core workflows and docs to the shared all-workflow grounding matrix.
 
 ## Archive Index
 
@@ -66,6 +69,8 @@ metadata:
 - 後續仍可拆出工作流子卡。
 - 建構、修復、測試與健檢已要求真實執行證據。
 - 真實驗證阻塞前需先搜尋入口、重試短暫失敗或說明等價路徑。
+- Antigravity 健檢文件已改為專案型態偵測、平台能力快照與視覺/瀏覽器採證優先。
+- Antigravity 核心工作流已引用全工作流外部接地矩陣，並保留視覺與瀏覽器採證優先語義。
 
 ## Tracked Files
 

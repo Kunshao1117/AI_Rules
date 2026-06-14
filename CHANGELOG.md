@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-14] 三平台證據式工作流治理
+
+### feat
+- **Full-spectrum audit workflow** — 三平台健檢入口升級為專案型態偵測、動態模組掛載與證據式報告模型，缺少真實證據時改標記為未驗證、阻塞或部分證據。
+- **Workflow grounding matrix** — 新增 00 到 12 工作流共用矩陣，統一外部最佳實務、平台採證差異、證據狀態、阻塞條件與下一流程路由。
+- **Cross-platform workflow alignment** — Antigravity、Claude Edition 與 Codex Edition 工作流同步補強外部接地、相容性、子代理邊界、GO 閘門與可重跑證據語義。
+
+### docs
+- **Platform documentation alignment** — 根文件與三平台文件同步說明新版健檢基準、全工作流外部接地、平台能力矩陣與證據優先原則。
+
+### chore
+- **Memory hygiene** — 記憶卡完成本輪歸屬與過期收斂，新增健檢參考規格與工作流矩陣的追蹤事實。
+
 ## [2026-06-12] 真實驗證治理強化
 
 ### feat
