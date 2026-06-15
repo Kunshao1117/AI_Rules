@@ -1,22 +1,22 @@
-﻿---
+---
 name: _codex_core
 scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-15T11:55:00+08:00'
+last_updated: '2026-06-15T13:23:01+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-15T11:55:00+08:00'
+last_verified: '2026-06-15T13:21:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -44,12 +44,14 @@ metadata:
 - Codex build now owns same-turn design-to-build contracts; blueprint is reserved for pure architecture, initialization, or major pivots.
 - Codex build plans now include a compact governance depth summary sourced from the shared quality matrix.
 - Codex documentation describes 08 as a deep evidence audit with depth modes, inventories, coverage denominators, and Codex-specific evidence adapters.
+- Codex documentation tells downstream agents to use `.agents/tools/Memory-Migration.ps1` for memory main-file migration and to resync if the tool is missing.
 ## Active Constraints
 - Keep Codex framework versioning separate from VS Code extension versioning.
 - Keep root README ownership in `_system`, not this card.
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 ## Cycle Events
+- 05: Documented Codex downstream memory migration through project-local tools.
 - 04: Documented Codex downstream shared policy and .agents/shared reference deployment.
 - 03: Aligned Codex workflow grounding paths to deployed .agents/shared governance references.
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.

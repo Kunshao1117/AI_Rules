@@ -40,6 +40,7 @@ function Invoke-CodexFresh {
     $targetSkillsPath = Join-Path $agentsRoot "skills"
     $version         = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
+    $projectToolsRoot = Join-Path $sharedRoot "project-tools"
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
@@ -93,6 +94,11 @@ function Invoke-CodexFresh {
 
         Write-Step "注入共用治理參考（Shared/ → .agents/shared/）..."
         $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot `
+                          -TargetAgentsRoot $agentsRoot `
+                          -Mode Full
+
+        Write-Step "注入專案本地工具（Shared/project-tools/ → .agents/tools/）..."
+        $null = Sync-ProjectTools -ProjectToolsRoot $projectToolsRoot `
                           -TargetAgentsRoot $agentsRoot `
                           -Mode Full
 
@@ -160,6 +166,7 @@ function Invoke-CodexUpgrade {
     $targetSkillsPath = Join-Path $agentsRoot "skills"
     $version         = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
+    $projectToolsRoot = Join-Path $sharedRoot "project-tools"
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
@@ -253,6 +260,11 @@ function Invoke-CodexUpgrade {
 
     Write-Step "同步共用治理參考（Shared/ → .agents/shared/）..."
     $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot `
+                      -TargetAgentsRoot $agentsRoot `
+                      -Mode Diff
+
+    Write-Step "同步專案本地工具（Shared/project-tools/ → .agents/tools/）..."
+    $null = Sync-ProjectTools -ProjectToolsRoot $projectToolsRoot `
                       -TargetAgentsRoot $agentsRoot `
                       -Mode Diff
 

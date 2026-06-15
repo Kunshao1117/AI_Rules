@@ -1,22 +1,22 @@
-﻿---
+---
 name: _vscode_extension.release
 scopePath: Extensions/vscode-ai-rules-manager/
 description: >-
   專案記憶：VS Code 管理器外掛封裝、資源、發布與後端入口。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-06-15T11:55:00+08:00'
+last_updated: '2026-06-15T13:22:43+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-15T11:55:00+08:00'
+last_verified: '2026-06-15T13:21:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 3
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,10 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _vscode_extension.release — VS Code Extension Release Memory
 
 ## Current Truth
-- AI Rules Manager v0.1.16 packages sync coverage and memory migration command entries.
+- AI Rules Manager v0.1.17 packages project-local tool sync coverage and memory migration path documentation.
 - The manager backend reports and applies shared governance reference deployment during project rule synchronization.
 - This child card owns VS Code extension package metadata, lockfile, README, resources, release workflow, and manager backend entrypoint.
 - VSIX release assets are produced through GitHub Release tags and the release workflow.
@@ -46,6 +47,7 @@ metadata:
 - Do not silently publish or install VSIX packages.
 
 ## Cycle Events
+- 04: Bumped AI Rules Manager to v0.1.17 for project-local tool sync coverage and release notes.
 - 03: Bumped AI Rules Manager to v0.1.16 and packaged the VSIX with sync coverage and memory migration entries.
 - 02: Project sync backend now reports and applies shared governance reference files for plugin-driven sync.
 - 01: Split VS Code extension release and packaging ownership out of the extension parent card.

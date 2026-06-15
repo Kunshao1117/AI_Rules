@@ -53,14 +53,14 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
           ["aiRules.planUpdate", "查看來源更新影響", "說明遠端來源對齊後會做的巡檢"],
           ["aiRules.applyUpdate", "對齊 AI_Rules 遠端來源", "確認後對齊來源；不安裝 VSIX、不同步專案規則"],
           ["aiRules.doctor", "治理巡檢 Doctor", "只檢查規範、技能與連結；不寫入"],
-          ["aiRules.syncCoverageCheck", "同步完整性檢查", "檢查共用治理參考、支援檔與外掛入口是否完整"]
+          ["aiRules.syncCoverageCheck", "同步完整性檢查", "檢查共用治理參考、支援檔、專案工具與外掛入口是否完整"]
         ]
       },
       {
         title: "規則同步",
         buttons: [
           ["aiRules.syncGlobalRules", "同步使用者層規則", "只更新 ~/.codex、~/.claude、~/.gemini"],
-          ["aiRules.syncProjectRules", "同步已安裝平台規則", "先對齊遠端來源，再更新目前專案規則"]
+          ["aiRules.syncProjectRules", "同步已安裝平台規則", "先對齊遠端來源，再更新目前專案規則與工具"]
         ]
       },
       {

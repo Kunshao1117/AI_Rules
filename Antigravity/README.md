@@ -392,8 +392,8 @@ graph TD
 - 主卡不超過 **16 KB / 120 行**，週期事件不超過 **30 筆**
 - 歸檔卷不超過 **32 KB / 200 行**，超過時開下一卷
 - 記憶卡不是可執行技能；目標主檔是 `MEMORY.md`，舊 `SKILL.md` 僅作相容期來源
-- 記憶主檔遷移由管理器乾跑盤點、檢查雙主檔衝突與舊路徑引用；本專案尚未執行實體更名
-- 乾跑入口：`.\Scripts\AI-RulesManager.ps1 -Action MemoryMigration -Target .`；正式套用需另行授權並加上 `-Apply`
+- 記憶主檔遷移由部署後專案本地工具乾跑盤點、檢查雙主檔衝突與舊路徑引用；找不到 `.agents/tools/Memory-Migration.ps1` 時必須先重新同步，不得手動批次搬檔
+- 下游乾跑入口：`powershell -NoProfile -ExecutionPolicy Bypass -File .\.agents\tools\Memory-Migration.ps1`；正式套用需另行授權並加上 `-Apply -ConfirmApply`
 - 舊格式記憶卡相容期可讀；現役主卡要透過盤點、歸檔、萃取有效事實與品質欄位重建逐步升級
 - 巡檢會提示缺少品質欄位、證據段落、讀取契約或衝突狀態的現役主卡；初期列提醒，不等同已完成遷移
 - 透過 Multi-MCP Gateway 呼叫 cartridge-system 時，每次真實呼叫都必須顯式帶 `workspace`，下游參數必須帶 `projectRoot`

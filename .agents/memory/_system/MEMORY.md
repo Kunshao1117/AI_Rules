@@ -4,19 +4,19 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-15T12:05:11+08:00'
+last_updated: '2026-06-15T13:22:39+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-15T12:05:11+08:00'
+last_verified: '2026-06-15T13:21:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 9
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,13 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _system — Repository Governance Memory
 
 ## Current Truth
 - Root documentation describes shared matrix source paths and their deployed `.agents/shared/` paths.
-- Changelog includes a dedicated AI Rules Manager v0.1.16 section for tag-driven release notes and a separate shared governance reference deployment section.
+- Root documentation describes downstream project-local tools under `.agents/tools/` and labels source-manager commands as framework-source-only paths.
+- Changelog includes a dedicated AI Rules Manager v0.1.17 section for tag-driven release notes and project-local tool deployment.
 - AI_Rules is the source repository for Antigravity, Claude Edition, and Codex Edition governance.
 - Director-facing output must use Traditional Chinese unless a lower-level artifact explicitly requires another language.
 - Root repository work, git status, commit, tag, and push operations use `D:\AI_Rules` as the baseline.
@@ -49,6 +51,7 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 10: Documented project-local tool deployment and AI Rules Manager v0.1.17 release notes.
 - 09: Added dedicated AI Rules Manager v0.1.16 changelog section so Release workflow can extract version notes.
 - 08: Updated root documentation and changelog release examples to AI Rules Manager v0.1.16 after sync coverage implementation.
 - 07: Recorded downstream sync coverage documentation and AI Rules Manager v0.1.16 release notes.

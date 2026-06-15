@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-15T11:58:55+08:00'
+last_updated: '2026-06-15T13:22:51+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-15T11:58:55+08:00'
+last_verified: '2026-06-15T13:21:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 5
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -45,12 +45,14 @@ metadata:
 - Antigravity build, fix, test, audit, and docs now apply the real execution evidence contract for behavior-dependent completion.
 - Antigravity docs now require verification entry search, transient retry, and equivalent real-path fallback before blocked real verification can be accepted.
 - Antigravity documentation describes 08 as a deep evidence audit with depth modes, inventories, coverage denominators, and visual/browser evidence adapters.
+- Antigravity documentation tells downstream agents to use `.agents/tools/Memory-Migration.ps1` for memory main-file migration and to resync if the tool is missing.
 ## Active Constraints
 - Do not duplicate root system ownership in this card.
 - Do not track `.agents/memory/_map` or `.agents/memory/_system` source copies here.
 - Keep Antigravity-specific workflow facts here and shared operational details in Shared skills.
 - This card still needs a later child-card split if all Antigravity workflows are actively edited again.
 ## Cycle Events
+- 06: Documented Antigravity downstream memory migration through project-local tools.
 - 05: Updated Antigravity core rule output examples to avoid downstream projects treating framework source paths as local files.
 - 04: Documented Antigravity downstream shared governance references and policy deployment.
 - 03: Aligned Antigravity workflow grounding paths to deployed .agents/shared governance references.

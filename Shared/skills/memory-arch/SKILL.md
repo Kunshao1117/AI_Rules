@@ -25,7 +25,7 @@ Read `references/memory-quality-migration-blueprint.md` when designing or review
 
 ## 1. Creating New Memory (建立新記憶)
 
-Active memory cards are source memory, not executable skills. The canonical target filename for active memory card main files is `MEMORY.md`; `SKILL.md` under `.agents/memory/` is a legacy compatibility name until the governed migration is applied and cartridge-system support is confirmed. Do not rename existing project memory cards manually.
+Active memory cards are source memory, not executable skills. The canonical target filename for active memory card main files is `MEMORY.md`; `SKILL.md` under `.agents/memory/` is a legacy compatibility name until the governed migration is applied and cartridge-system support is confirmed. Do not rename existing project memory cards manually. Downstream projects should have `.agents/tools/Memory-Migration.ps1`; if that tool is missing, treat the project as not fully synced and stop for resync instead of using ad hoc file moves.
 
 ```
 New module identified by /02_blueprint or /08_audit?

@@ -989,10 +989,16 @@ function Measure-PlatformCapability {
     $workflowMatrixPath = Join-Path $RepoRoot 'Shared\workflow-capability-evidence-matrix.md'
     $mcpProfilePath = Join-Path $RepoRoot 'Shared\mcp-profiles\README.md'
     $sharedRoot = Join-Path $RepoRoot 'Shared'
+    $projectToolsRoot = Join-Path $sharedRoot 'project-tools'
     $targetSharedRoot = Join-Path $TargetRoot '.agents\shared'
+    $targetProjectToolsRoot = Join-Path $TargetRoot '.agents\tools'
     $targetCodexSupportFiles = @(
         (Join-Path $TargetRoot '.agents\skills\_shared\_security_footer.md'),
         (Join-Path $TargetRoot '.agents\skills\_shared\_completion_gate.md')
+    )
+    $targetProjectToolFiles = @(
+        (Join-Path $targetProjectToolsRoot 'Memory-Migration.ps1'),
+        (Join-Path $targetProjectToolsRoot 'modules\Memory-Migration.psm1')
     )
     $extensionPackagePath = Join-Path $RepoRoot 'Extensions\vscode-ai-rules-manager\package.json'
     $extensionCommandsPath = Join-Path $RepoRoot 'Extensions\vscode-ai-rules-manager\src\commands.ts'
@@ -1001,6 +1007,9 @@ function Measure-PlatformCapability {
     $matrixOk = (Test-Path $matrixPath) -and ((Get-Content -LiteralPath $matrixPath -Raw -Encoding UTF8) -match 'native' -and (Get-Content -LiteralPath $matrixPath -Raw -Encoding UTF8) -match 'adapter' -and (Get-Content -LiteralPath $matrixPath -Raw -Encoding UTF8) -match 'manual')
     $workflowMatrixOk = (Test-Path $workflowMatrixPath) -and ((Get-Content -LiteralPath $workflowMatrixPath -Raw -Encoding UTF8) -match 'Workflow Matrix')
     $mcpProfileOk = (Test-Path $mcpProfilePath) -and ((Get-Content -LiteralPath $mcpProfilePath -Raw -Encoding UTF8) -match 'Opt-in')
+    $projectToolSourceOk =
+        (Test-Path -LiteralPath (Join-Path $projectToolsRoot 'Memory-Migration.ps1') -PathType Leaf) -and
+        (Test-Path -LiteralPath (Join-Path $projectToolsRoot 'modules\Memory-Migration.psm1') -PathType Leaf)
     $memoryMigrationManagerOk = (Test-Path -LiteralPath $managerPath -PathType Leaf) -and ((Get-Content -LiteralPath $managerPath -Raw -Encoding UTF8) -match 'MemoryMigration')
     $memoryMigrationExtensionOk =
         (Test-Path -LiteralPath $extensionPackagePath -PathType Leaf) -and
@@ -1034,6 +1043,16 @@ function Measure-PlatformCapability {
         }
     }
     $targetCodexSupportOk = (-not $targetCodexSupportRequired) -or (@($missingCodexSupport).Count -eq 0)
+    $targetProjectToolsRequired = $targetSharedRequired -and (-not [string]::Equals($TargetRoot, $RepoRoot, [System.StringComparison]::OrdinalIgnoreCase))
+    $missingProjectTools = @()
+    if ($targetProjectToolsRequired) {
+        foreach ($file in $targetProjectToolFiles) {
+            if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
+                $missingProjectTools += $file
+            }
+        }
+    }
+    $targetProjectToolsOk = (-not $targetProjectToolsRequired) -or (@($missingProjectTools).Count -eq 0)
 
     Write-Host ""
     Write-Host "📊 平台能力與 MCP profile"
@@ -1048,6 +1067,11 @@ function Measure-PlatformCapability {
     foreach ($file in @($missingCodexSupport | Select-Object -First 20)) {
         Write-Host ("  [缺少] {0}" -f (Get-AuditRelativePath -RepoRoot $TargetRoot -Path $file)) -ForegroundColor Red
     }
+    Write-Host ("專案本地工具來源：{0}" -f ($(if ($projectToolSourceOk) { '🟢' } else { '🔴' })))
+    Write-Host ("專案本地工具部署：{0}" -f ($(if ($targetProjectToolsOk) { '🟢' } else { '🔴' })))
+    foreach ($file in @($missingProjectTools | Select-Object -First 20)) {
+        Write-Host ("  [缺少] {0}" -f (Get-AuditRelativePath -RepoRoot $TargetRoot -Path $file)) -ForegroundColor Red
+    }
     Write-Host ("MCP opt-in snippets：{0}" -f ($(if ($mcpProfileOk) { '🟢' } else { '🔴' })))
     Write-Host ("記憶遷移管理器入口：{0}" -f ($(if ($memoryMigrationManagerOk) { '🟢' } else { '🔴' })))
     Write-Host ("記憶遷移外掛入口：{0}" -f ($(if ($memoryMigrationExtensionOk) { '🟢' } else { '🔴' })))
@@ -1057,6 +1081,8 @@ function Measure-PlatformCapability {
         WorkflowMatrix          = $workflowMatrixOk
         TargetSharedRefs        = $targetSharedOk
         TargetCodexSupport      = $targetCodexSupportOk
+        ProjectToolSource       = $projectToolSourceOk
+        TargetProjectTools      = $targetProjectToolsOk
         McpProfiles             = $mcpProfileOk
         MemoryMigrationManager  = $memoryMigrationManagerOk
         MemoryMigrationExtension = $memoryMigrationExtensionOk
@@ -2379,7 +2405,7 @@ function Invoke-PlatformGovernanceAudit {
     $redTotal += $skillRed
     $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount + $memoryNaming.YellowCount
     $yellowTotal += $metadataYellow + $skillYellow
-    $ok = $capability.CapabilityMatrix -and $capability.WorkflowMatrix -and $capability.TargetSharedRefs -and $capability.TargetCodexSupport -and $capability.McpProfiles -and $capability.MemoryMigrationManager -and $capability.MemoryMigrationExtension -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
+    $ok = $capability.CapabilityMatrix -and $capability.WorkflowMatrix -and $capability.TargetSharedRefs -and $capability.TargetCodexSupport -and $capability.ProjectToolSource -and $capability.TargetProjectTools -and $capability.McpProfiles -and $capability.MemoryMigrationManager -and $capability.MemoryMigrationExtension -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
     Write-Host ""
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

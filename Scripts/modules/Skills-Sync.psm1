@@ -74,6 +74,108 @@ function Get-SharedGovernanceReferenceRelativePaths {
     return @($references.ToArray())
 }
 
+function Get-ProjectToolRelativePaths {
+    <#
+    .SYNOPSIS
+        Lists project-local tools deployed to .agents/tools/.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectToolsRoot
+    )
+
+    if (-not (Test-Path -LiteralPath $ProjectToolsRoot -PathType Container)) {
+        return @()
+    }
+
+    return @(Get-ChildItem -LiteralPath $ProjectToolsRoot -Recurse -File -ErrorAction SilentlyContinue |
+        Sort-Object FullName |
+        ForEach-Object { $_.FullName.Substring($ProjectToolsRoot.Length).TrimStart('\', '/') })
+}
+
+function Get-ProjectToolDiffs {
+    <#
+    .SYNOPSIS
+        Reports differences for deployable project-local tools.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectToolsRoot,
+
+        [Parameter(Mandatory = $true)]
+        [string]$TargetAgentsRoot
+    )
+
+    $diffs = @()
+    if (-not (Test-Path -LiteralPath $ProjectToolsRoot -PathType Container)) {
+        return $diffs
+    }
+
+    $targetToolsRoot = Join-Path $TargetAgentsRoot "tools"
+    foreach ($rel in @(Get-ProjectToolRelativePaths -ProjectToolsRoot $ProjectToolsRoot)) {
+        $sourceFile = Join-Path $ProjectToolsRoot $rel
+        $targetFile = Join-Path $targetToolsRoot $rel
+        $diff = Compare-FrameworkFile -SourcePath $sourceFile -TargetPath $targetFile -RelativePath $rel
+        if ($diff.Status -in @("NEW", "CHANGED")) { $diffs += $diff }
+    }
+
+    return $diffs
+}
+
+function Sync-ProjectTools {
+    <#
+    .SYNOPSIS
+        Deploys restricted project-local tools into .agents/tools/.
+    .PARAMETER ProjectToolsRoot
+        Source Shared/project-tools/ directory.
+    .PARAMETER TargetAgentsRoot
+        Target project's .agents/ directory.
+    .PARAMETER Mode
+        Full copies every deployable tool. Diff copies only new or changed tools.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectToolsRoot,
+
+        [Parameter(Mandatory = $true)]
+        [string]$TargetAgentsRoot,
+
+        [ValidateSet("Full", "Diff")]
+        [string]$Mode = "Full"
+    )
+
+    if (-not (Test-Path -LiteralPath $ProjectToolsRoot -PathType Container)) {
+        Write-Warn "專案本地工具來源不存在，跳過：$ProjectToolsRoot"
+        return 0
+    }
+
+    $targetToolsRoot = Join-Path $TargetAgentsRoot "tools"
+    New-Item -ItemType Directory -Force -Path $targetToolsRoot | Out-Null
+
+    $updated = 0
+    foreach ($rel in @(Get-ProjectToolRelativePaths -ProjectToolsRoot $ProjectToolsRoot)) {
+        $sourceFile = Join-Path $ProjectToolsRoot $rel
+        $targetFile = Join-Path $targetToolsRoot $rel
+        $shouldCopy = $Mode -eq "Full"
+        if (-not $shouldCopy) {
+            $result = Compare-FrameworkFile -SourcePath $sourceFile -TargetPath $targetFile -RelativePath $rel
+            $shouldCopy = $result.Status -in @("NEW", "CHANGED")
+        }
+
+        if ($shouldCopy) {
+            $targetDir = Split-Path $targetFile -Parent
+            if (-not (Test-Path -LiteralPath $targetDir -PathType Container)) {
+                New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
+            }
+            Copy-Item -LiteralPath $sourceFile -Destination $targetFile -Force
+            $updated++
+        }
+    }
+
+    Write-Ok "專案本地工具同步完成：更新 $updated 個檔案 → $targetToolsRoot"
+    return $updated
+}
+
 function Sync-SharedSkills {
     <#
     .SYNOPSIS
@@ -343,4 +445,4 @@ function Sync-SharedPolicyBlock {
     return 1
 }
 
-Export-ModuleMember -Function Sync-SharedSkills, Sync-SharedGovernanceReferences, Merge-WorkflowSkills, Get-SharedPolicyBlock, Sync-SharedPolicyBlock, Get-SharedGovernanceReferenceRelativePaths, Test-SharedSkillRelativePathIncluded, Test-CodexWorkflowRelativePathIncluded
+Export-ModuleMember -Function Sync-SharedSkills, Sync-SharedGovernanceReferences, Sync-ProjectTools, Merge-WorkflowSkills, Get-SharedPolicyBlock, Sync-SharedPolicyBlock, Get-SharedGovernanceReferenceRelativePaths, Get-ProjectToolRelativePaths, Get-ProjectToolDiffs, Test-SharedSkillRelativePathIncluded, Test-CodexWorkflowRelativePathIncluded

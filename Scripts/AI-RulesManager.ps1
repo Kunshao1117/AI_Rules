@@ -253,7 +253,7 @@ function Invoke-ApplyUpdate {
 
 function Invoke-Doctor {
     Write-ManagerHeader "治理巡檢 Doctor"
-    Write-Host "用途：檢查 Shared Skill 品質、workflow metadata、policy marker、子代理語彙、全域規則漂移與 project skill links；不寫入檔案。"
+    Write-Host "用途：檢查 Shared Skill 品質、workflow metadata、policy marker、子代理語彙、下游共用參考、專案本地工具、全域規則漂移與 project skill links；不寫入檔案。"
     $null = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target
 }
 
@@ -458,6 +458,7 @@ function Invoke-SyncAntigravityProjectRules {
     $agTargetRoot = Join-Path $ProjectRoot ".agents"
     $version = Get-VersionContent -Path (Join-Path $RepoRoot "Antigravity\VERSION")
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
+    $projectToolsRoot = Join-Path $sharedRoot "project-tools"
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
     $report = @(Get-UpgradeReport `
         -SourceRoot $sourceRoot `
@@ -480,6 +481,8 @@ function Invoke-SyncAntigravityProjectRules {
     Write-DiffSummary -Title "Antigravity Shared Skills" -Diffs $skillDiffs
     $governanceDiffs = @(Get-SharedGovernanceReferenceDiffs -SharedRoot $sharedRoot -TargetAgentsRoot $agTargetRoot)
     Write-DiffSummary -Title "Antigravity Shared Governance References" -Diffs $governanceDiffs
+    $toolDiffs = @(Get-ProjectToolDiffs -ProjectToolsRoot $projectToolsRoot -TargetAgentsRoot $agTargetRoot)
+    Write-DiffSummary -Title "Antigravity Project Tools" -Diffs $toolDiffs
     Set-ProjectVersionFile -Path (Join-Path $agTargetRoot "VERSION") -Version $version -Apply:$Apply
 
     if (-not $Apply) { return }
@@ -493,6 +496,7 @@ function Invoke-SyncAntigravityProjectRules {
         -InsertBeforePattern '(?m)^## 2\. Agentic Swarm UI Visibility'
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
     $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot -TargetAgentsRoot $agTargetRoot -Mode Diff
+    $null = Sync-ProjectTools -ProjectToolsRoot $projectToolsRoot -TargetAgentsRoot $agTargetRoot -Mode Diff
 }
 
 function Invoke-SyncClaudeProjectRules {
@@ -506,6 +510,7 @@ function Invoke-SyncClaudeProjectRules {
     $claudeTargetRoot = Join-Path $ProjectRoot ".claude"
     $version = Get-VersionContent -Path (Join-Path $RepoRoot "Claude\VERSION")
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
+    $projectToolsRoot = Join-Path $sharedRoot "project-tools"
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
     $report = @(Get-UpgradeReport `
         -SourceRoot $sourceRoot `
@@ -527,6 +532,8 @@ function Invoke-SyncClaudeProjectRules {
     Write-DiffSummary -Title "Claude Shared Skills" -Diffs $skillDiffs
     $governanceDiffs = @(Get-SharedGovernanceReferenceDiffs -SharedRoot $sharedRoot -TargetAgentsRoot (Join-Path $ProjectRoot ".agents"))
     Write-DiffSummary -Title "Claude Shared Governance References" -Diffs $governanceDiffs
+    $toolDiffs = @(Get-ProjectToolDiffs -ProjectToolsRoot $projectToolsRoot -TargetAgentsRoot (Join-Path $ProjectRoot ".agents"))
+    Write-DiffSummary -Title "Claude Project Tools" -Diffs $toolDiffs
     Set-ProjectVersionFile -Path (Join-Path $claudeTargetRoot "VERSION") -Version $version -Apply:$Apply
 
     if (-not $Apply) { return }
@@ -540,6 +547,7 @@ function Invoke-SyncClaudeProjectRules {
         -InsertBeforePattern '(?m)^## 2\. Multi-Agent Transparency'
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
     $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot -TargetAgentsRoot (Join-Path $ProjectRoot ".agents") -Mode Diff
+    $null = Sync-ProjectTools -ProjectToolsRoot $projectToolsRoot -TargetAgentsRoot (Join-Path $ProjectRoot ".agents") -Mode Diff
 }
 
 function Invoke-SyncCodexProjectRules {
@@ -556,6 +564,7 @@ function Invoke-SyncCodexProjectRules {
     $targetSkillsPath = Join-Path $agentsRoot "skills"
     $version = Get-VersionContent -Path (Join-Path $RepoRoot "Codex\VERSION")
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
+    $projectToolsRoot = Join-Path $sharedRoot "project-tools"
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
 
     $report = @(Get-UpgradeReport `
@@ -575,6 +584,8 @@ function Invoke-SyncCodexProjectRules {
     Write-DiffSummary -Title "Codex Workflow Skills" -Diffs $workflowDiffs
     $governanceDiffs = @(Get-SharedGovernanceReferenceDiffs -SharedRoot $sharedRoot -TargetAgentsRoot $agentsRoot)
     Write-DiffSummary -Title "Codex Shared Governance References" -Diffs $governanceDiffs
+    $toolDiffs = @(Get-ProjectToolDiffs -ProjectToolsRoot $projectToolsRoot -TargetAgentsRoot $agentsRoot)
+    Write-DiffSummary -Title "Codex Project Tools" -Diffs $toolDiffs
     Set-ProjectVersionFile -Path (Join-Path $codexTargetRoot "VERSION") -Version $version -Apply:$Apply
 
     if (-not $Apply) { return }
@@ -588,6 +599,7 @@ function Invoke-SyncCodexProjectRules {
         -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
     $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot -TargetAgentsRoot $agentsRoot -Mode Diff
+    $null = Sync-ProjectTools -ProjectToolsRoot $projectToolsRoot -TargetAgentsRoot $agentsRoot -Mode Diff
     if (Test-Path -LiteralPath $workflowSkillsRoot) {
         $null = Merge-WorkflowSkills -WorkflowSkillsPath $workflowSkillsRoot -TargetSkillsPath $targetSkillsPath
     }
@@ -738,7 +750,7 @@ function Invoke-MemoryMigration {
     $targetRoot = (Resolve-Path $Target).Path
     Write-Host "用途：掃描 .agents/memory/ 內仍使用 SKILL.md 的作用中記憶卡主檔；預設只做 dry-run。"
     Write-Host "Target：$targetRoot"
-    $null = Invoke-MemoryMainFileMigration -TargetRoot $targetRoot -Apply:$Apply -WhatIf:$WhatIf
+    $null = Invoke-MemoryMainFileMigration -TargetRoot $targetRoot -Apply:$Apply -ConfirmApply:$Apply -WhatIf:$WhatIf
 }
 
 switch ($Action) {

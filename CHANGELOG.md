@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-15] AI Rules Manager v0.1.17
+
+### fix
+- **Project-local tools** — 部署與同步流程新增 `.agents/tools/Memory-Migration.ps1`，讓下游專案 AI 不需要完整 AI_Rules 來源倉庫也能乾跑記憶主檔遷移。
+- **Sync coverage** — 治理巡檢與同步預覽納入專案本地工具來源與部署狀態，避免預覽通過但下游缺工具。
+- **Memory migration safety** — 專案本地遷移工具套用更名時要求 `-Apply -ConfirmApply`，雙主檔衝突仍停止，歸檔卷不被改名。
+
+### docs
+- **Downstream tool path** — 根文件、三平台文件與 VS Code 延伸模組文件改為下游優先使用 `.agents/tools/Memory-Migration.ps1`，來源管理器入口標示為框架來源倉庫限定。
+
 ## [2026-06-15] AI Rules Manager v0.1.16
 
 ### feat

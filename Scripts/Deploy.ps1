@@ -61,6 +61,7 @@ $RepoRoot         = Split-Path $PSScriptRoot -Parent
 $ModulesDir       = Join-Path $PSScriptRoot "modules"
 $SharedRoot       = Join-Path $RepoRoot "Shared"
 $SharedSkillsRoot = Join-Path $RepoRoot "Shared\skills"
+$ProjectToolsRoot = Join-Path $SharedRoot "project-tools"
 $SharedPolicyPath = Join-Path $RepoRoot "Shared\policies\subagent-invocation.md"
 $AgRoot           = Join-Path $RepoRoot "Antigravity"
 $ClaudeRoot       = Join-Path $RepoRoot "Claude"
@@ -160,6 +161,7 @@ function Invoke-PlatformDeploy {
                 "Sync"    {
                     Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".agents\skills") -Mode Diff
                     Sync-SharedGovernanceReferences -SharedRoot $SharedRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
+                    Sync-ProjectTools -ProjectToolsRoot $ProjectToolsRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
                     Sync-SharedPolicyBlock -PolicyPath $SharedPolicyPath `
                         -TargetPath (Join-Path $TargetPath ".agents\rules\00_core_identity.md") `
                         -Platform Antigravity `
@@ -179,6 +181,7 @@ function Invoke-PlatformDeploy {
                 "Sync"    {
                     Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".claude\skills") -Mode Diff
                     Sync-SharedGovernanceReferences -SharedRoot $SharedRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
+                    Sync-ProjectTools -ProjectToolsRoot $ProjectToolsRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
                     Sync-SharedPolicyBlock -PolicyPath $SharedPolicyPath `
                         -TargetPath (Join-Path $TargetPath ".claude\rules\core-identity.md") `
                         -Platform Claude `
@@ -198,6 +201,7 @@ function Invoke-PlatformDeploy {
                 "Sync"    {
                     Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".agents\skills") -Mode Diff
                     Sync-SharedGovernanceReferences -SharedRoot $SharedRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
+                    Sync-ProjectTools -ProjectToolsRoot $ProjectToolsRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
                     Sync-SharedPolicyBlock -PolicyPath $SharedPolicyPath `
                         -TargetPath (Join-Path $TargetPath ".codex\AGENTS.md") `
                         -Platform Codex `

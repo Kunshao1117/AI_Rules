@@ -188,8 +188,10 @@ and the parser will fail to recognize the tracked-files block — all tracked fi
 
 ## 4.8 Main File Naming Migration
 
-- Use the AI Rules Manager memory migration action to inventory or rename active memory main files. In downstream projects, prefer the VS Code AI Rules Manager command or the configured framework source repository; do not assume the target project contains a local `Scripts/` directory.
-- Run dry-run first through the manager action. If you are inside the AI_Rules framework source repository, the equivalent command is `.\Scripts\AI-RulesManager.ps1 -Action MemoryMigration -Target .`; otherwise ask the Director to run the extension command or provide the framework source root.
+- Use the deployed project-local memory migration tool to inventory or rename active memory main files. In downstream projects, the first expected entrypoint is `.agents/tools/Memory-Migration.ps1`; do not assume the target project contains a local `Scripts/` directory.
+- Run dry-run first through the project-local tool: `powershell -NoProfile -ExecutionPolicy Bypass -File .\.agents\tools\Memory-Migration.ps1`. If the tool is missing, treat it as a framework sync gap and ask the Director to resync through the VS Code AI Rules Manager command or configured framework source repository. Do not hand-rename active memory cards.
+- Apply mode requires explicit Director authorization and both `-Apply` and `-ConfirmApply`: `powershell -NoProfile -ExecutionPolicy Bypass -File .\.agents\tools\Memory-Migration.ps1 -Apply -ConfirmApply`.
+- If you are inside the AI_Rules framework source repository, the source-manager equivalent remains `.\Scripts\AI-RulesManager.ps1 -Action MemoryMigration -Target .`; this is a source repository maintenance path, not the downstream project default.
 - Dry-run mode is safe and may be used to report legacy `SKILL.md` cards, existing `MEMORY.md` cards, conflicts, archive volumes, and legacy path references.
 - Apply mode must stop if a card directory contains both `SKILL.md` and `MEMORY.md`; do not merge or guess the winner automatically.
 - This tool does not update cartridge-system itself. Treat external engine support for `MEMORY.md` as a later compatibility gate.

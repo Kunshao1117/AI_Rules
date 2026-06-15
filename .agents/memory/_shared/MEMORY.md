@@ -1,22 +1,22 @@
-﻿---
+---
 name: _shared
 scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-06-15T11:55:00+08:00'
+last_updated: '2026-06-15T13:22:33+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-15T11:55:00+08:00'
+last_verified: '2026-06-15T13:21:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 5
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,10 +31,13 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared — Shared Governance Memory
 
 ## Current Truth
 - Shared governance references deployed to `.agents/shared/` include platform capability, workflow evidence, skill governance, subagent policy, and MCP opt-in snippets.
+- `Shared/project-tools/` is the source for restricted project-local tools deployed to downstream `.agents/tools/`.
+- Memory migration guidance now requires downstream agents to use the project-local tool before falling back to the framework source manager or extension.
 - Workflow and platform matrices are authored under `Shared/` and deployed to `.agents/shared/` for target-project AI access.
 - Shared/ is the single source for 40 operational skills and cross-platform governance assets.
 - Shared skills are deployed into Antigravity, Claude, and Codex by the shared sync engine.
@@ -52,6 +55,7 @@ metadata:
 - Treat cards above 8 tracked files as split candidates, not automatic blockers.
 - Operational skill families are routed through child cards under `_shared.ops-skills`.
 ## Cycle Events
+- 06: Added Shared project-local memory migration tool source and downstream-first migration guidance.
 - 05: Expanded shared governance deployment to include skill-governance, subagent policy, and MCP opt-in references.
 - 04: Declared shared matrices as source-authored assets deployed to .agents/shared for target projects.
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
@@ -95,6 +99,8 @@ metadata:
 - Shared/skills/audit-engine/references/project-surface-matrix.md
 - Shared/skills/audit-engine/references/evidence-packet.md
 - Shared/skills/audit-engine/references/report-gates.md
+- Shared/project-tools/Memory-Migration.ps1
+- Shared/project-tools/modules/Memory-Migration.psm1
 - .agents/memory/_shared/archive-001.md
 ## Relations
 - _system (deployment and sync engine memory)

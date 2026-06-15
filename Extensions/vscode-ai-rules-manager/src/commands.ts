@@ -120,7 +120,7 @@ async function runProjectSync(
 ): Promise<void> {
   const previewOk = await run(`${label}預覽`, "SyncProjectRules", runner, status, panel, { projectPlatform });
   if (!previewOk) return;
-  const ok = await confirm("要先確認 AI_Rules 遠端來源已對齊，再把規則、Shared Skills 與平台入口同步到目前專案已安裝的平台嗎？未安裝平台不會被建立，memory / project_skills / context 不會被覆寫。");
+  const ok = await confirm("要先確認 AI_Rules 遠端來源已對齊，再把規則、Shared Skills、平台入口與 .agents/tools 專案本地工具同步到目前專案已安裝的平台嗎？未安裝平台不會被建立，memory / project_skills / context 不會被覆寫。");
   if (ok) await run(label, "SyncProjectRules", runner, status, panel, { apply: true, projectPlatform });
 }
 
