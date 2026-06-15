@@ -21,8 +21,8 @@ The full bootstrapping protocol (Zero-Touch Environment Check, Silent Deployment
   - 其他：00–02, 06–07, 11–12 各一個工作流
   - 共用閘門：`_completion_gate` / `_security_footer`
 - **Skills**: 39 shared operational skills + project memory cards + project context cards
-- **Platform governance**: `Shared/platform-capability-matrix.md` defines native/adapter/manual capability levels. Workflow frontmatter MUST carry metadata v2 (`kind`, `platforms`, `lifecycle_phase`, `role`, `memory_awareness`, `tool_scope`, `human_gate`, `automation_safe`).
-- **MCP profile policy**: external MCP servers are opt-in only. Use `Shared/mcp-profiles/` snippets; never install or modify global MCP config during Fresh/Upgrade/Audit.
+- **Platform governance**: deployed project reference `.agents/shared/platform-capability-matrix.md` defines native/adapter/manual capability levels; the framework source repository keeps the original at `Shared/platform-capability-matrix.md`. Workflow frontmatter MUST carry metadata v2 (`kind`, `platforms`, `lifecycle_phase`, `role`, `memory_awareness`, `tool_scope`, `human_gate`, `automation_safe`).
+- **MCP profile policy**: external MCP servers are opt-in only. Use deployed snippets in `.agents/shared/mcp-profiles/`; the framework source repository keeps the originals under `Shared/mcp-profiles/`. Never install or modify global MCP config during Fresh/Upgrade/Audit.
 
 <!-- PROJECT IDENTITY 保護區段格式定義：
      由 /05_condense 工作流生成，升級時由部署腳本保留。

@@ -14,6 +14,7 @@ export type ManagerAction =
   | "Doctor"
   | "SyncGlobal"
   | "SyncProjectRules"
+  | "MemoryMigration"
   | "Gitignore"
   | "CleanupOrphans";
 

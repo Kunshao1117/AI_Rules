@@ -329,9 +329,7 @@ function Get-SharedSkillDiffs {
     Get-ChildItem -LiteralPath $SharedSkillsRoot -Recurse -File -ErrorAction SilentlyContinue |
         Where-Object {
             $relPath = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
-            -not ($relPath -match '^_memory[\\\/]') -and
-            -not ($relPath -match '^_project[\\\/]') -and
-            -not ($relPath -match '^project-')
+            Test-SharedSkillRelativePathIncluded -RelativePath $relPath
         } |
         ForEach-Object {
             $rel = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
@@ -353,6 +351,10 @@ function Get-CodexWorkflowDiffs {
     if (-not (Test-Path -LiteralPath $WorkflowSkillsPath)) { return $diffs }
 
     Get-ChildItem -LiteralPath $WorkflowSkillsPath -Recurse -File -ErrorAction SilentlyContinue |
+        Where-Object {
+            $rel = $_.FullName.Substring($WorkflowSkillsPath.Length).TrimStart('\', '/')
+            Test-CodexWorkflowRelativePathIncluded -RelativePath $rel
+        } |
         ForEach-Object {
             $rel = $_.FullName.Substring($WorkflowSkillsPath.Length).TrimStart('\', '/')
             $targetFile = Join-Path $TargetSkillsPath $rel
@@ -372,7 +374,7 @@ function Get-SharedGovernanceReferenceDiffs {
     $diffs = @()
     if (-not (Test-Path -LiteralPath $SharedRoot)) { return $diffs }
 
-    foreach ($rel in @("platform-capability-matrix.md", "workflow-capability-evidence-matrix.md")) {
+    foreach ($rel in @(Get-SharedGovernanceReferenceRelativePaths -SharedRoot $SharedRoot)) {
         $sourceFile = Join-Path $SharedRoot $rel
         if (-not (Test-Path -LiteralPath $sourceFile -PathType Leaf)) { continue }
         $targetFile = Join-Path (Join-Path $TargetAgentsRoot "shared") $rel

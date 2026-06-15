@@ -65,7 +65,7 @@
 <!-- SUBAGENT_POLICY:CODEX_START -->
 ### Shared Subagent Invocation Policy (Codex native subagents)
 
-This block is generated from `Shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
+This block is generated from the framework source policy (`Shared/policies/subagent-invocation.md`) and deployed with a readable project copy at `.agents/shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
 
 - **Delegation Gate**: Evaluate whether the task has an isolated read-only evidence branch before broad research, testing, debugging, audit work, or post-change verification.
 - **Invocation rule**: Codex spawns native subagents only when the Director explicitly asks for subagents, when a workflow gate explicitly requires a Codex evidence branch, or when project-scoped `.codex/agents/*.toml` custom agents are intentionally configured for that workflow.
@@ -78,7 +78,7 @@ This block is generated from `Shared/policies/subagent-invocation.md`. Do not ed
 <!-- SUBAGENT_POLICY:CLAUDE_START -->
 ### Shared Subagent Invocation Policy (Claude Code subagents)
 
-This block is generated from `Shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
+This block is generated from the framework source policy (`Shared/policies/subagent-invocation.md`) and deployed with a readable project copy at `.agents/shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
 
 - **Delegation Gate**: Evaluate whether the task has an isolated read-only evidence branch before broad research, testing, debugging, audit work, or post-change verification.
 - **Invocation rule**: Claude Code may use built-in, custom, or plugin subagents through description-driven delegation, `@agent` mentions, or `Agent(...)` tool permissions when the branch is bounded and read-only.
@@ -91,7 +91,7 @@ This block is generated from `Shared/policies/subagent-invocation.md`. Do not ed
 <!-- SUBAGENT_POLICY:ANTIGRAVITY_START -->
 ### Shared Subagent Invocation Policy (Antigravity / Gemini adapters)
 
-This block is generated from `Shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
+This block is generated from the framework source policy (`Shared/policies/subagent-invocation.md`) and deployed with a readable project copy at `.agents/shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
 
 - **Delegation Gate**: Evaluate whether the task has an isolated read-only evidence branch before broad research, testing, debugging, audit work, or post-change verification.
 - **Invocation rule**: Antigravity / Gemini may map evidence branches to Gemini CLI subagents, `@`-directed specialists, browser-capable agents, or Antigravity plugin adapters when the branch is bounded and read-only.

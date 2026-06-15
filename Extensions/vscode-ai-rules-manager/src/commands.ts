@@ -23,6 +23,7 @@ export function registerAiRulesCommands(
   }));
   runReadOnly("aiRules.planUpdate", "查看來源更新影響", "Plan");
   runReadOnly("aiRules.doctor", "治理巡檢 Doctor", "Doctor");
+  runReadOnly("aiRules.syncCoverageCheck", "同步完整性檢查", "Doctor");
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.applyUpdate", async () => {
     const ok = await confirm("這會對齊 AI_Rules 遠端來源庫，然後跑治理巡檢。不會安裝新版 VSIX，也不會同步目前專案的 .agents / .claude / .codex。明確設定的本機來源只檢查狀態，不會被自動重設。");
@@ -57,6 +58,13 @@ export function registerAiRulesCommands(
     if (!previewOk) return;
     const ok = await confirm("要刪除上方列出的孤兒檔案嗎？memory / project_skills / context 不會被清理。");
     if (ok) await run("清理孤兒檔案", "CleanupOrphans", runner, status, panel, { apply: true, removeOrphans: true });
+  }));
+
+  context.subscriptions.push(vscode.commands.registerCommand("aiRules.memoryMigration", async () => {
+    const previewOk = await run("記憶主檔遷移乾跑", "MemoryMigration", runner, status, panel);
+    if (!previewOk) return;
+    const ok = await confirm("要套用上方列出的記憶主檔更名嗎？若同一資料夾同時存在舊主檔與新主檔，管理器會停止；歸檔卷不會被更名。");
+    if (ok) await run("記憶主檔遷移", "MemoryMigration", runner, status, panel, { apply: true });
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.gitignoreMaintenance", async () => {
@@ -127,7 +135,10 @@ function needsAttention(output: string): boolean {
     || hasPositiveCounter(output, "Red")
     || /規則與 source 不同|待授權|有差異|來源庫更新失敗|無法快轉/.test(output)
     || /缺少標準根目錄規則：\s*[1-9]/.test(output)
-    || /寬鬆規則：\s*[1-9]/.test(output);
+    || /寬鬆規則：\s*[1-9]/.test(output)
+    || /舊主檔（SKILL\.md）：\s*[1-9]/.test(output)
+    || /雙主檔衝突：\s*[1-9]/.test(output)
+    || /文內舊路徑引用：\s*[1-9]/.test(output);
 }
 
 function hasPositiveCounter(output: string, label: "Yellow" | "Red"): boolean {

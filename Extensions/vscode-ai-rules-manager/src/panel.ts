@@ -9,12 +9,14 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
     "aiRules.planUpdate",
     "aiRules.applyUpdate",
     "aiRules.doctor",
+    "aiRules.syncCoverageCheck",
     "aiRules.syncGlobalRules",
     "aiRules.syncProjectRules",
     "aiRules.syncProjectRulesCodex",
     "aiRules.syncProjectRulesClaude",
     "aiRules.syncProjectRulesAntigravity",
     "aiRules.gitignoreMaintenance",
+    "aiRules.memoryMigration",
     "aiRules.cleanupOrphans"
   ]);
 
@@ -50,7 +52,8 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
           ["aiRules.checkExtensionUpdate", "檢查 VSIX 新版", "查 GitHub Release 是否有新版安裝包"],
           ["aiRules.planUpdate", "查看來源更新影響", "說明遠端來源對齊後會做的巡檢"],
           ["aiRules.applyUpdate", "對齊 AI_Rules 遠端來源", "確認後對齊來源；不安裝 VSIX、不同步專案規則"],
-          ["aiRules.doctor", "治理巡檢 Doctor", "只檢查規範、技能與連結；不寫入"]
+          ["aiRules.doctor", "治理巡檢 Doctor", "只檢查規範、技能與連結；不寫入"],
+          ["aiRules.syncCoverageCheck", "同步完整性檢查", "檢查共用治理參考、支援檔與外掛入口是否完整"]
         ]
       },
       {
@@ -72,6 +75,7 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
         title: "維護",
         buttons: [
           ["aiRules.gitignoreMaintenance", "版控排除規則健檢", "掃描 .gitignore，列出相似規則並補入帶繁中註解的標準規則"],
+          ["aiRules.memoryMigration", "記憶主檔遷移", "先乾跑盤點；確認後才更名作用中記憶主檔"],
           ["aiRules.cleanupOrphans", "清理孤兒檔案", "先預覽，確認後清理"]
         ]
       }

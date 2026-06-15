@@ -3,7 +3,7 @@
   "displayName": "AI Rules Manager",
   "description": "Point-and-click VS Code manager for AI_Rules source updates, governance checks, rule sync, and orphan cleanup.",
   "icon": "resources/icon.png",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "publisher": "kunshao",
   "license": "MIT",
   "repository": {
@@ -24,12 +24,14 @@
     "onCommand:aiRules.planUpdate",
     "onCommand:aiRules.applyUpdate",
     "onCommand:aiRules.doctor",
+    "onCommand:aiRules.syncCoverageCheck",
     "onCommand:aiRules.syncGlobalRules",
     "onCommand:aiRules.syncProjectRules",
     "onCommand:aiRules.syncProjectRulesCodex",
     "onCommand:aiRules.syncProjectRulesClaude",
     "onCommand:aiRules.syncProjectRulesAntigravity",
     "onCommand:aiRules.gitignoreMaintenance",
+    "onCommand:aiRules.memoryMigration",
     "onCommand:aiRules.cleanupOrphans"
   ],
   "contributes": {
@@ -78,6 +80,10 @@
         "title": "AI Rules: 治理巡檢 Doctor"
       },
       {
+        "command": "aiRules.syncCoverageCheck",
+        "title": "AI Rules: 同步完整性檢查"
+      },
+      {
         "command": "aiRules.syncGlobalRules",
         "title": "AI Rules: 同步使用者層規則"
       },
@@ -100,6 +106,10 @@
       {
         "command": "aiRules.cleanupOrphans",
         "title": "AI Rules: 清理孤兒檔案"
+      },
+      {
+        "command": "aiRules.memoryMigration",
+        "title": "AI Rules: 記憶主檔遷移"
       },
       {
         "command": "aiRules.gitignoreMaintenance",

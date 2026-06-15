@@ -67,7 +67,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 | **三平台共用脈絡** | `.agents/context/` 保存設計 DNA、產品偏好、技術偏好與驗收偏好，不參與原始碼記憶 stale |
 | **輕量治理規則** | 所有治理規範收錄於單一 `.codex/AGENTS.md`，無需多檔案載入機制 |
 | **技能即工作流** | Codex 透過技能觸發 `$skill-name`，工作流與操作型技能統一在同一目錄 |
-| **子代理治理模型** | `Shared/policies/subagent-invocation.md` 提供 Delegation Gate 與 evidence branch 語義；Codex adapter 只在使用者明確要求、workflow gate 或 `.codex/agents/*.toml` 設定時啟動 native subagents |
+| **子代理治理模型** | 下游 `.agents/shared/policies/subagent-invocation.md` 與框架來源 `Shared/policies/subagent-invocation.md` 提供 Delegation Gate 與 evidence branch 語義；Codex adapter 只在使用者明確要求、workflow gate 或 `.codex/agents/*.toml` 設定時啟動 native subagents |
 | **升級保護** | PROJECT IDENTITY 保護機制：升級後自動還原使用者自訂的專案身份區段 |
 
 ---
@@ -135,7 +135,7 @@ Step 2: workflow-skills/ → .agents/skills/  （17 套工作流技能）
 | **知識資產保護** | `.agents/memory/`、`.agents/project_skills/` 和 `.agents/context/` 在升級時絕對不覆蓋 |
 | **確認閘門** | Upgrade 模式產出分類顏色差異報告，需使用者確認才套用 |
 | **PROJECT IDENTITY 保護** | 升級時自動偵測 `.codex/AGENTS.md` 中使用者自訂的 `## [PROJECT IDENTITY]` 區段，升級後自動還原 |
-| **Shared policy drift** | Doctor 檢查 Codex 子代理 marker block 是否仍由 `Shared/policies/subagent-invocation.md` 生成 |
+| **Shared policy drift** | Doctor 檢查 Codex 子代理 marker block 是否仍由框架來源 `Shared/policies/subagent-invocation.md` 生成，並確認下游 `.agents/shared/policies/subagent-invocation.md` 已部署 |
 | **Subagent vocabulary drift** | Doctor 攔截 Codex workflow 殘留的 Claude 舊式 Agent subagent_type 語法，並要求 Shared 技能使用 evidence branch / platform adapter 語彙 |
 | **孤兒偵測** | 加入 `-RemoveOrphans` 可自動清除源碼已刪除的殘留技能 |
 

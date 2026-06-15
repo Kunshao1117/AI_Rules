@@ -27,7 +27,7 @@ Layer-specific origin:
 
 | Layer | Source path | `metadata.origin` |
 | --- | --- | --- |
-| Shared framework skill | `Shared/skills/{skill-name}/SKILL.md` | `framework` |
+| Shared framework skill | `Shared/skills/{skill-name}/SKILL.md` in the AI_Rules framework source repository only | `framework` |
 | Project-derived skill | `.agents/project_skills/{project-code}-{skill-name}/SKILL.md` | `project` |
 | User Codex skill | user's Codex skills directory | optional local policy |
 

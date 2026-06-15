@@ -1,27 +1,27 @@
----
+﻿---
 name: _shared.ops-skills.skill-governance
 scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-15T02:53:18+08:00'
+last_updated: '2026-06-15T11:55:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: partial_evidence
-last_verified: '2026-06-15T02:45:58+08:00'
+verification_status: verified
+last_verified: '2026-06-15T11:55:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: ready
+compaction_status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -34,6 +34,7 @@ metadata:
 # _shared.ops-skills.skill-governance — Skill Governance Memory
 
 ## Current Truth
+- Shared skill forging is framework-source only unless the Director explicitly supplies the AI_Rules source root; downstream projects default to project-derived skills.
 - This child card owns Shared delegation strategy and skill-factory governance files.
 - Skill creation and delegation rules must stay compatible with Codex native skill loading and cross-platform governance.
 - Parent and child card relations are navigation only unless a real staleness dependency is documented.
@@ -43,6 +44,7 @@ metadata:
 - Use the tracked references as the source of truth for skill formatting and delegation procedures.
 
 ## Cycle Events
+- 02: Clarified downstream project boundaries for delegation policy, memory migration, and Shared skill forging.
 - 01: Split skill governance ownership out of the broad Shared operational skills card.
 
 ## Archive Index

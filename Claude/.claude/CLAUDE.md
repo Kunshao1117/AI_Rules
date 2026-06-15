@@ -54,11 +54,11 @@ Workflow `SKILL.md` frontmatter MUST carry governance metadata v2: `kind`、`pla
 
 ## Platform Agent Governance (平台代理治理)
 
-三平台能力語義以 `Shared/platform-capability-matrix.md` 為準：
+三平台能力語義以下游共用治理參考（`.agents/shared/platform-capability-matrix.md`）為準；框架來源倉庫的原始檔位於 `Shared/platform-capability-matrix.md`：
 - Claude MCP prompts/resources 可作為 Slash Command 與上下文來源，但寫入型 tool 仍受 `[MCP HITL GATE]` 管制。
 - Claude `Agent` 工具可用於唯讀分析與測試驗證；主代理人負責整合結果，不得把需立即決策的阻塞工作外包。
 - `automation_safe: true` 僅代表可做唯讀例行巡檢；任何 Write/Edit、記憶歸卡、安裝、commit、push 都必須先取得 GO。
-- 外部 MCP server 不由框架自動安裝；只可參考 `Shared/mcp-profiles/` 的 opt-in snippets。
+- 外部 MCP server 不由框架自動安裝；下游專案只可參考 `.agents/shared/mcp-profiles/` 的 opt-in snippets，框架來源倉庫的原始片段位於 `Shared/mcp-profiles/`。
 
 <!-- PROJECT IDENTITY 保護區段格式定義：
      由 /05_condense 工作流生成，升級時由部署腳本保留。

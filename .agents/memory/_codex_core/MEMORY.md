@@ -1,27 +1,27 @@
----
+﻿---
 name: _codex_core
 scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-15T08:05:16+08:00'
+last_updated: '2026-06-15T11:55:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: partial_evidence
-last_verified: '2026-06-15T08:08:00+08:00'
+verification_status: verified
+last_verified: '2026-06-15T11:55:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 3
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: ready
+compaction_status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -50,6 +50,7 @@ metadata:
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 ## Cycle Events
+- 04: Documented Codex downstream shared policy and .agents/shared reference deployment.
 - 03: Aligned Codex workflow grounding paths to deployed .agents/shared governance references.
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
 - 02: Updated Codex README to describe the deep 08 audit model and coverage reporting.

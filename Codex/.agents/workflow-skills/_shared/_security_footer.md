@@ -29,7 +29,7 @@
 ```markdown
 ## [SECURITY & COMPLIANCE MANDATE]
 
-> Inherits: `.claude/commands/_shared/_security_footer.md` (Role Lock Gate)
+> Inherits: `.agents/skills/_shared/_security_footer.md` after deployment; framework source copy: `Codex/.agents/workflow-skills/_shared/_security_footer.md` (Role Lock Gate)
 
 - **Role**: `<Reader | Reader/Memory | Writer/SRE>` | 依上方矩陣執行權限管控。
 ```

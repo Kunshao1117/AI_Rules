@@ -1,4 +1,4 @@
----
+﻿---
 name: 08_audit
 description: "Use when: 全光譜專案健檢、深層健檢、audit、證據式健檢、健檢深度、專案型態偵測、功能盤點、端點盤點、命令盤點、相容性檢查、治理巡檢、基礎盤點、深度邏輯審查、子代理採證、鉤子/檢查點治理、效能與載入速度與健康報告。DO NOT use when: 只要單一測試或單一 bug 修復。"
 required_skills: [memory-ops, code-audit, audit-engine]
@@ -26,7 +26,7 @@ Director-facing output MUST use a context-sensitive plain-language structure bef
 - Routine discussion, short status updates, and simple judgments may use concise paragraphs or short lists.
 - Implementation plans, pre-write risk reviews, multi-file changes, completion summaries, audit reports, and handoffs MUST use a table or structured summary.
 - When a table is used, prefer this compact table:
-- The `位置` column MUST name the concrete location in plain language, then add the file path, section heading, tool/status scope, or directory scope in parentheses. If the item is not a single file, say so explicitly, e.g. `工作區狀態（git status）`, `管理器巡檢工具（Scripts/AI-RulesManager.ps1）`, or `規則與技能範圍（Codex/.codex、Shared/skills）`.
+- The `位置` column MUST name the concrete location in plain language, then add the file path, section heading, tool/status scope, or directory scope in parentheses. If the item is not a single file, say so explicitly, e.g. `工作區狀態（git status）`, `管理器巡檢工具（框架來源倉庫限定：Scripts/AI-RulesManager.ps1）`, or `規則與技能範圍（部署後：.codex、.agents/skills；框架來源倉庫限定：Codex/.codex、Shared/skills）`.
 - Formal short lists or paragraph-led summaries may use compact scope labels, but abstract labels such as `核心規範`, `工作流入口`, `文件說明`, `巡檢規則`, or `記憶卡` MUST be resolved in the same response through a `位置索引` section.
 - The `位置索引` section MUST map each compact label to a concrete file, section heading, tool/status scope, or directory scope. Do not leave compact labels as unexplained categories.
 

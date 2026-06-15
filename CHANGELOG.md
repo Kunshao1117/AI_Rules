@@ -2,10 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-15] AI Rules Manager v0.1.16
+
+### feat
+- **Sync coverage check** — VS Code 延伸模組新增同步完整性檢查入口，讓下游專案可從面板確認共用治理參考、Codex 支援檔與同步入口是否齊全。
+- **Memory migration dry-run** — VS Code 延伸模組新增記憶遷移乾跑入口；正式套用仍需操作者確認。
+
+### fix
+- **Downstream sync coverage** — 專案同步與全新部署補齊子代理政策、選用外部工具設定片段、Codex 工作流支援檔與技能索引，避免下游 AI 找不到共用矩陣或支援檔。
+- **Manager dry-run alignment** — 管理器乾跑報告改用與套用流程相同的檔案清單，避免預覽與實際同步結果不一致。
+
+### docs
+- **Release examples** — 根文件與延伸模組文件的 Release tag 與 VSIX 檔名更新為 `v0.1.16` / `ai-rules-manager-0.1.16.vsix`。
+
 ## [2026-06-15] 共用治理參考部署
 
 ### fix
 - **Shared governance references** — 專案同步與三平台部署會把平台能力矩陣與工作流證據矩陣複製到共用治理參考目錄，避免下游專案只取得技能卻找不到矩陣依據。
+- **Sync coverage completeness** — 專案同步與全新部署補齊子代理政策、選用外部工具設定片段、Codex 工作流支援檔與技能索引，並讓乾跑報告只列出實際會套用的檔案。
+- **Downstream path semantics** — 下游規則與工作流改讀部署後共用治理參考目錄；框架來源路徑只保留在明確標示為框架來源倉庫限定的段落。
+- **Governance doctor coverage** — 治理巡檢新增下游共用治理參考、Codex 支援檔、記憶遷移入口與外掛入口檢查，避免同步後仍遺漏可讀依據。
 
 ### docs
 - **Workflow grounding paths** — 三平台工作流與根文件改用部署後可讀的位置說明共用矩陣，並保留框架來源檔作為唯一維護位置。

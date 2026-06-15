@@ -589,8 +589,44 @@ function Get-AuditRelativePath {
     )
 
     $root = (Resolve-Path $RepoRoot).Path
-    $full = (Resolve-Path -LiteralPath $Path).Path
+    try {
+        $full = (Resolve-Path -LiteralPath $Path).Path
+    } catch {
+        $full = [System.IO.Path]::GetFullPath($Path)
+    }
     return $full.Substring($root.Length).TrimStart('\', '/')
+}
+
+function Get-AuditSharedGovernanceReferenceRelativePaths {
+    param([string]$SharedRoot)
+
+    $references = New-Object System.Collections.Generic.List[string]
+    foreach ($rel in @(
+        'platform-capability-matrix.md',
+        'workflow-capability-evidence-matrix.md',
+        'skill-governance.md',
+        'policies\subagent-invocation.md'
+    )) {
+        $path = Join-Path $SharedRoot $rel
+        if (Test-Path -LiteralPath $path -PathType Leaf) {
+            $references.Add($rel)
+        }
+    }
+
+    foreach ($dirRel in @('mcp-profiles', 'policies')) {
+        $dir = Join-Path $SharedRoot $dirRel
+        if (-not (Test-Path -LiteralPath $dir -PathType Container)) { continue }
+        Get-ChildItem -LiteralPath $dir -Recurse -File -ErrorAction SilentlyContinue |
+            Sort-Object FullName |
+            ForEach-Object {
+                $rel = $_.FullName.Substring($SharedRoot.Length).TrimStart('\', '/')
+                if (-not $references.Contains($rel)) {
+                    $references.Add($rel)
+                }
+            }
+    }
+
+    return @($references.ToArray())
 }
 
 function Get-GovernanceScanFiles {
@@ -606,6 +642,7 @@ function Get-GovernanceScanFiles {
         'Codex\README.md',
         'Shared\platform-capability-matrix.md',
         'Shared\workflow-capability-evidence-matrix.md',
+        'Shared\skill-governance.md',
         'Shared\policies\subagent-invocation.md',
         'Shared\mcp-profiles\README.md',
         'Codex\.codex\AGENTS.md',
@@ -951,20 +988,52 @@ function Measure-PlatformCapability {
     $matrixPath = Join-Path $RepoRoot 'Shared\platform-capability-matrix.md'
     $workflowMatrixPath = Join-Path $RepoRoot 'Shared\workflow-capability-evidence-matrix.md'
     $mcpProfilePath = Join-Path $RepoRoot 'Shared\mcp-profiles\README.md'
+    $sharedRoot = Join-Path $RepoRoot 'Shared'
     $targetSharedRoot = Join-Path $TargetRoot '.agents\shared'
-    $targetPlatformMatrixPath = Join-Path $targetSharedRoot 'platform-capability-matrix.md'
-    $targetWorkflowMatrixPath = Join-Path $targetSharedRoot 'workflow-capability-evidence-matrix.md'
+    $targetCodexSupportFiles = @(
+        (Join-Path $TargetRoot '.agents\skills\_shared\_security_footer.md'),
+        (Join-Path $TargetRoot '.agents\skills\_shared\_completion_gate.md')
+    )
+    $extensionPackagePath = Join-Path $RepoRoot 'Extensions\vscode-ai-rules-manager\package.json'
+    $extensionCommandsPath = Join-Path $RepoRoot 'Extensions\vscode-ai-rules-manager\src\commands.ts'
+    $managerPath = Join-Path $RepoRoot 'Scripts\AI-RulesManager.ps1'
 
     $matrixOk = (Test-Path $matrixPath) -and ((Get-Content -LiteralPath $matrixPath -Raw -Encoding UTF8) -match 'native' -and (Get-Content -LiteralPath $matrixPath -Raw -Encoding UTF8) -match 'adapter' -and (Get-Content -LiteralPath $matrixPath -Raw -Encoding UTF8) -match 'manual')
     $workflowMatrixOk = (Test-Path $workflowMatrixPath) -and ((Get-Content -LiteralPath $workflowMatrixPath -Raw -Encoding UTF8) -match 'Workflow Matrix')
     $mcpProfileOk = (Test-Path $mcpProfilePath) -and ((Get-Content -LiteralPath $mcpProfilePath -Raw -Encoding UTF8) -match 'Opt-in')
+    $memoryMigrationManagerOk = (Test-Path -LiteralPath $managerPath -PathType Leaf) -and ((Get-Content -LiteralPath $managerPath -Raw -Encoding UTF8) -match 'MemoryMigration')
+    $memoryMigrationExtensionOk =
+        (Test-Path -LiteralPath $extensionPackagePath -PathType Leaf) -and
+        (Test-Path -LiteralPath $extensionCommandsPath -PathType Leaf) -and
+        ((Get-Content -LiteralPath $extensionPackagePath -Raw -Encoding UTF8) -match 'aiRules\.memoryMigration') -and
+        ((Get-Content -LiteralPath $extensionCommandsPath -Raw -Encoding UTF8) -match 'MemoryMigration')
     $targetSharedRequired =
         (Test-Path -LiteralPath (Join-Path $TargetRoot '.agents\skills') -PathType Container) -or
         (Test-Path -LiteralPath (Join-Path $TargetRoot '.agents\workflows') -PathType Container) -or
         (Test-Path -LiteralPath (Join-Path $TargetRoot '.agents\rules') -PathType Container) -or
         (Test-Path -LiteralPath (Join-Path $TargetRoot '.codex') -PathType Container) -or
         (Test-Path -LiteralPath (Join-Path $TargetRoot '.claude') -PathType Container)
-    $targetSharedOk = (-not $targetSharedRequired) -or ((Test-Path -LiteralPath $targetPlatformMatrixPath -PathType Leaf) -and (Test-Path -LiteralPath $targetWorkflowMatrixPath -PathType Leaf))
+    $referenceRels = @(Get-AuditSharedGovernanceReferenceRelativePaths -SharedRoot $sharedRoot)
+    $missingTargetSharedRefs = @()
+    if ($targetSharedRequired) {
+        foreach ($rel in $referenceRels) {
+            $targetPath = Join-Path $targetSharedRoot $rel
+            if (-not (Test-Path -LiteralPath $targetPath -PathType Leaf)) {
+                $missingTargetSharedRefs += $rel
+            }
+        }
+    }
+    $targetSharedOk = (-not $targetSharedRequired) -or (@($missingTargetSharedRefs).Count -eq 0)
+    $targetCodexSupportRequired = Test-Path -LiteralPath (Join-Path $TargetRoot '.agents\skills') -PathType Container
+    $missingCodexSupport = @()
+    if ($targetCodexSupportRequired) {
+        foreach ($file in $targetCodexSupportFiles) {
+            if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
+                $missingCodexSupport += $file
+            }
+        }
+    }
+    $targetCodexSupportOk = (-not $targetCodexSupportRequired) -or (@($missingCodexSupport).Count -eq 0)
 
     Write-Host ""
     Write-Host "📊 平台能力與 MCP profile"
@@ -972,13 +1041,25 @@ function Measure-PlatformCapability {
     Write-Host ("能力矩陣：{0}" -f ($(if ($matrixOk) { '🟢' } else { '🔴' })))
     Write-Host ("工作流證據矩陣：{0}" -f ($(if ($workflowMatrixOk) { '🟢' } else { '🔴' })))
     Write-Host ("共用治理參考部署：{0}" -f ($(if ($targetSharedOk) { '🟢' } else { '🔴' })))
+    foreach ($rel in @($missingTargetSharedRefs | Select-Object -First 20)) {
+        Write-Host ("  [缺少] .agents/shared/{0}" -f ($rel -replace '\\', '/')) -ForegroundColor Red
+    }
+    Write-Host ("Codex 工作流支援檔部署：{0}" -f ($(if ($targetCodexSupportOk) { '🟢' } else { '🔴' })))
+    foreach ($file in @($missingCodexSupport | Select-Object -First 20)) {
+        Write-Host ("  [缺少] {0}" -f (Get-AuditRelativePath -RepoRoot $TargetRoot -Path $file)) -ForegroundColor Red
+    }
     Write-Host ("MCP opt-in snippets：{0}" -f ($(if ($mcpProfileOk) { '🟢' } else { '🔴' })))
+    Write-Host ("記憶遷移管理器入口：{0}" -f ($(if ($memoryMigrationManagerOk) { '🟢' } else { '🔴' })))
+    Write-Host ("記憶遷移外掛入口：{0}" -f ($(if ($memoryMigrationExtensionOk) { '🟢' } else { '🔴' })))
 
     return [PSCustomObject]@{
-        CapabilityMatrix = $matrixOk
-        WorkflowMatrix   = $workflowMatrixOk
-        TargetSharedRefs = $targetSharedOk
-        McpProfiles      = $mcpProfileOk
+        CapabilityMatrix        = $matrixOk
+        WorkflowMatrix          = $workflowMatrixOk
+        TargetSharedRefs        = $targetSharedOk
+        TargetCodexSupport      = $targetCodexSupportOk
+        McpProfiles             = $mcpProfileOk
+        MemoryMigrationManager  = $memoryMigrationManagerOk
+        MemoryMigrationExtension = $memoryMigrationExtensionOk
     }
 }
 
@@ -2298,7 +2379,7 @@ function Invoke-PlatformGovernanceAudit {
     $redTotal += $skillRed
     $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount + $memoryNaming.YellowCount
     $yellowTotal += $metadataYellow + $skillYellow
-    $ok = $capability.CapabilityMatrix -and $capability.WorkflowMatrix -and $capability.TargetSharedRefs -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
+    $ok = $capability.CapabilityMatrix -and $capability.WorkflowMatrix -and $capability.TargetSharedRefs -and $capability.TargetCodexSupport -and $capability.McpProfiles -and $capability.MemoryMigrationManager -and $capability.MemoryMigrationExtension -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
     Write-Host ""
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

@@ -29,7 +29,7 @@ Evaluate in this order:
 
 > **Hot-Path Exclusion**: CLI branch is NOT for tasks needing immediate feedback on code just written. Use the main agent's terminal tool directly.
 
-> **Shared Policy Source**: 子代理啟用條件與唯讀邊界以 `Shared/policies/subagent-invocation.md` 為唯一來源；本技能只負責管道選擇與平台中立任務包格式。
+> **Shared Policy Source**: 子代理啟用條件與唯讀邊界以下游 `.agents/shared/policies/subagent-invocation.md` 為部署後參考；框架來源倉庫的唯一來源檔是 `Shared/policies/subagent-invocation.md`。本技能只負責管道選擇與平台中立任務包格式。
 
 | Channel | Context | Speed | Output |
 |---|---|---|---|

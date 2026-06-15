@@ -9,6 +9,71 @@
 
 using module ".\Core.psm1"
 
+function Test-SharedSkillRelativePathIncluded {
+    param([string]$RelativePath)
+
+    if (-not $RelativePath) { return $false }
+    $normalized = $RelativePath.TrimStart('\', '/')
+    $firstSegment = ($normalized -split '[\\/]')[0]
+    $isProjectContextProtocol = $normalized -match '^project-context-protocol([\\\/]|$)'
+
+    if ($normalized -match '^_memory([\\\/]|$)') { return $false }
+    if ($normalized -match '^_project([\\\/]|$)') { return $false }
+    if ($firstSegment -match '^_' -and $normalized -ne '_index.md') { return $false }
+    if ($normalized -match '^project-' -and -not $isProjectContextProtocol) { return $false }
+    return $true
+}
+
+function Test-CodexWorkflowRelativePathIncluded {
+    param([string]$RelativePath)
+
+    if (-not $RelativePath) { return $false }
+    $normalized = $RelativePath.TrimStart('\', '/')
+    $firstSegment = ($normalized -split '[\\/]')[0]
+
+    if ($firstSegment -eq '_shared') { return $true }
+    return $firstSegment -notmatch '^_'
+}
+
+function Get-SharedGovernanceReferenceRelativePaths {
+    <#
+    .SYNOPSIS
+        Lists read-only Shared governance references deployed to .agents/shared/.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$SharedRoot
+    )
+
+    $references = New-Object System.Collections.Generic.List[string]
+    foreach ($rel in @(
+        "platform-capability-matrix.md",
+        "workflow-capability-evidence-matrix.md",
+        "skill-governance.md",
+        "policies\subagent-invocation.md"
+    )) {
+        $srcFile = Join-Path $SharedRoot $rel
+        if (Test-Path -LiteralPath $srcFile -PathType Leaf) {
+            $references.Add($rel)
+        }
+    }
+
+    foreach ($dirRel in @("mcp-profiles", "policies")) {
+        $dir = Join-Path $SharedRoot $dirRel
+        if (-not (Test-Path -LiteralPath $dir -PathType Container)) { continue }
+        Get-ChildItem -LiteralPath $dir -Recurse -File -ErrorAction SilentlyContinue |
+            Sort-Object FullName |
+            ForEach-Object {
+                $rel = $_.FullName.Substring($SharedRoot.Length).TrimStart('\', '/')
+                if (-not $references.Contains($rel)) {
+                    $references.Add($rel)
+                }
+            }
+    }
+
+    return @($references.ToArray())
+}
+
 function Sync-SharedSkills {
     <#
     .SYNOPSIS
@@ -41,8 +106,8 @@ function Sync-SharedSkills {
     if ($Mode -eq "Full") {
         # 全量複製（Fresh 模式使用）
         Get-ChildItem $SharedSkillsRoot | Where-Object {
-            # 排除符號連結目錄（_memory、_project、project-*），但保留正式共用技能 project-context-protocol。
-            -not ($_.Name -match '^_') -and (($_.Name -eq 'project-context-protocol') -or -not ($_.Name -match '^project-'))
+            # 排除符號連結目錄（_memory、_project、project-*），但保留正式索引與 project-context-protocol。
+            Test-SharedSkillRelativePathIncluded -RelativePath $_.Name
         } | ForEach-Object {
             Copy-Item $_.FullName $TargetSkillsPath -Recurse -Force
         }
@@ -57,9 +122,7 @@ function Sync-SharedSkills {
     $updated = 0
     Get-ChildItem $SharedSkillsRoot -Recurse -File | Where-Object {
         $relPath = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
-        $isProjectContextProtocol = $relPath -match '^project-context-protocol([\\\/]|$)'
-        -not ($relPath -match '^_memory[\\\/]') -and -not ($relPath -match '^_project[\\\/]') `
-        -and ($isProjectContextProtocol -or -not ($relPath -match '^project-'))
+        Test-SharedSkillRelativePathIncluded -RelativePath $relPath
     } | ForEach-Object {
         $rel     = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
         $tgtFile = Join-Path $TargetSkillsPath $rel
@@ -105,10 +168,7 @@ function Sync-SharedGovernanceReferences {
     $targetSharedRoot = Join-Path $TargetAgentsRoot "shared"
     New-Item -ItemType Directory -Force -Path $targetSharedRoot | Out-Null
 
-    $referenceFiles = @(
-        "platform-capability-matrix.md",
-        "workflow-capability-evidence-matrix.md"
-    )
+    $referenceFiles = @(Get-SharedGovernanceReferenceRelativePaths -SharedRoot $SharedRoot)
 
     $updated = 0
     foreach ($rel in $referenceFiles) {
@@ -126,6 +186,10 @@ function Sync-SharedGovernanceReferences {
         }
 
         if ($shouldCopy) {
+            $tgtDir = Split-Path $tgtFile -Parent
+            if (-not (Test-Path -LiteralPath $tgtDir -PathType Container)) {
+                New-Item -ItemType Directory -Force -Path $tgtDir | Out-Null
+            }
             Copy-Item -LiteralPath $srcFile -Destination $tgtFile -Force
             $updated++
         }
@@ -162,12 +226,12 @@ function Merge-WorkflowSkills {
 
     $count = 0
     Get-ChildItem $WorkflowSkillsPath -Directory |
-        Where-Object { $_.Name -notmatch '^_' } |
+        Where-Object { Test-CodexWorkflowRelativePathIncluded -RelativePath $_.Name } |
         ForEach-Object {
         $destDir = Join-Path $TargetSkillsPath $_.Name
         if (-not (Test-Path $destDir)) { New-Item -ItemType Directory $destDir -Force | Out-Null }
         Copy-Item (Join-Path $_.FullName "*") $destDir -Recurse -Force
-        $count++
+        if ($_.Name -ne "_shared") { $count++ }
     }
     Write-Ok "工作流技能合併完成：$count 套工作流技能 → $TargetSkillsPath"
     return $count
@@ -279,4 +343,4 @@ function Sync-SharedPolicyBlock {
     return 1
 }
 
-Export-ModuleMember -Function Sync-SharedSkills, Sync-SharedGovernanceReferences, Merge-WorkflowSkills, Get-SharedPolicyBlock, Sync-SharedPolicyBlock
+Export-ModuleMember -Function Sync-SharedSkills, Sync-SharedGovernanceReferences, Merge-WorkflowSkills, Get-SharedPolicyBlock, Sync-SharedPolicyBlock, Get-SharedGovernanceReferenceRelativePaths, Test-SharedSkillRelativePathIncluded, Test-CodexWorkflowRelativePathIncluded

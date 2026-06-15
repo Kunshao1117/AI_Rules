@@ -24,7 +24,7 @@ Director-facing output MUST use a context-sensitive plain-language structure bef
 - Routine discussion, short status updates, and simple judgments may use concise paragraphs or short lists.
 - Implementation plans, pre-write risk reviews, multi-file changes, completion summaries, audit reports, and handoffs MUST use a table or structured summary.
 - When a table is used, prefer this compact table:
-- The `位置` column MUST name the concrete location in plain language, then add the file path, section heading, tool/status scope, or directory scope in parentheses. If the item is not a single file, say so explicitly, e.g. `工作區狀態（git status）`, `管理器巡檢工具（Scripts/AI-RulesManager.ps1）`, or `規則與技能範圍（Codex/.codex、Shared/skills）`.
+- The `位置` column MUST name the concrete location in plain language, then add the file path, section heading, tool/status scope, or directory scope in parentheses. If the item is not a single file, say so explicitly, e.g. `工作區狀態（git status）`, `管理器巡檢工具（框架來源倉庫限定：Scripts/AI-RulesManager.ps1）`, or `規則與技能範圍（部署後：.codex、.agents/skills；框架來源倉庫限定：Codex/.codex、Shared/skills）`.
 - Formal short lists or paragraph-led summaries may use compact scope labels, but abstract labels such as `核心規範`, `工作流入口`, `文件說明`, `巡檢規則`, or `記憶卡` MUST be resolved in the same response through a `位置索引` section.
 - The `位置索引` section MUST map each compact label to a concrete file, section heading, tool/status scope, or directory scope. Do not leave compact labels as unexplained categories.
 
@@ -101,8 +101,9 @@ Draft new skill only after selecting the target layer:
 
 ```
 [LAYER GATE]
-├── Cross-project framework behavior? → Shared framework skill
+├── Cross-project framework behavior AND current workspace is the AI_Rules framework source repository? → Shared framework skill
 │   └── Source path: Shared/skills/<skill-name>/SKILL.md
+├── Cross-project framework behavior in a downstream project without framework source root? → stop and ask Director to run skill forge from AI_Rules source or explicitly approve project-derived scope
 ├── Single project repeatable behavior? → Project-derived skill
 │   └── Source path: .agents/project_skills/<project-code>-<skill-name>/SKILL.md
 ├── Personal/global Codex behavior? → User Codex skill
@@ -157,7 +158,7 @@ Do not add AI_Rules-only fields at the YAML top level. Codex-compatible top-leve
 
 ## 4. Write & Archive (寫入與歸檔)
 
-- Shared framework skill：寫入 `Shared/skills/<name>/SKILL.md`，更新 `Shared/skills/_index.md`，並同步到平台技能目錄。
+- Shared framework skill：only inside the AI_Rules framework source repository, write `Shared/skills/<name>/SKILL.md`, update `Shared/skills/_index.md`, and sync through the manager.
 - Project-derived skill：寫入 `.agents/project_skills/<name>/SKILL.md`，更新 `.agents/project_skills/_index.md`，並建立 `.agents/skills/project-<name>` discovery link。
 - User Codex skill：寫入使用者 Codex 技能目錄；除非總監明確要求，不更新 AI_Rules 專案索引。
 - Workflow/command entry：寫入對應平台 workflow/command 來源，並更新平台文件。

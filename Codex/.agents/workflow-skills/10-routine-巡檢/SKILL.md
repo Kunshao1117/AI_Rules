@@ -25,7 +25,7 @@ Director-facing output MUST use a context-sensitive plain-language structure bef
 - Routine discussion, short status updates, and simple judgments may use concise paragraphs or short lists.
 - Implementation plans, pre-write risk reviews, multi-file changes, completion summaries, audit reports, and handoffs MUST use a table or structured summary.
 - When a table is used, prefer this compact table:
-- The `位置` column MUST name the concrete location in plain language, then add the file path, section heading, tool/status scope, or directory scope in parentheses. If the item is not a single file, say so explicitly, e.g. `工作區狀態（git status）`, `管理器巡檢工具（Scripts/AI-RulesManager.ps1）`, or `規則與技能範圍（Codex/.codex、Shared/skills）`.
+- The `位置` column MUST name the concrete location in plain language, then add the file path, section heading, tool/status scope, or directory scope in parentheses. If the item is not a single file, say so explicitly, e.g. `工作區狀態（git status）`, `管理器巡檢工具（框架來源倉庫限定：Scripts/AI-RulesManager.ps1）`, or `規則與技能範圍（部署後：.codex、.agents/skills；框架來源倉庫限定：Codex/.codex、Shared/skills）`.
 - Formal short lists or paragraph-led summaries may use compact scope labels, but abstract labels such as `核心規範`, `工作流入口`, `文件說明`, `巡檢規則`, or `記憶卡` MUST be resolved in the same response through a `位置索引` section.
 - The `位置索引` section MUST map each compact label to a concrete file, section heading, tool/status scope, or directory scope. Do not leave compact labels as unexplained categories.
 
@@ -63,7 +63,8 @@ Use this workflow for scheduled or manually triggered maintenance checks. It is 
 
 ## 2. Read-only Checks
 
-- Run skill quality checks for `Shared/skills/` and `Codex/.agents/workflow-skills/`.
+- In downstream projects, inspect deployed skills in `.agents/skills/` and shared governance references in `.agents/shared/`.
+- In the AI_Rules framework source repository only, run source skill quality checks for `Shared/skills/` and `Codex/.agents/workflow-skills/`.
 - Compare documented platform, skill, workflow, and command counts against the live filesystem.
 - Inspect `.agents/memory/` for stale tracked files, missing references, or outdated platform descriptions.
 - Inspect MCP configuration surfaces and opt-in profile snippets without installing or modifying servers.

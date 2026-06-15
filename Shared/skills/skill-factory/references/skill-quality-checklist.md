@@ -55,7 +55,7 @@ python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_valid
 
 ### 5.5 Layer Placement（技能層放置）
 
-- **Shared framework skill**: 放在 `Shared/skills/{skill-name}/`，更新 `Shared/skills/_index.md`
+- **Shared framework skill**: 只在 AI_Rules 框架來源倉庫中放在 `Shared/skills/{skill-name}/`，更新 `Shared/skills/_index.md`
 - **Project-derived skill**: 放在 `.agents/project_skills/{project-code}-{skill-name}/`，更新 `.agents/project_skills/_index.md` 並建立 discovery link
 - **User Codex skill**: 放在使用者 Codex 技能目錄，不更新 AI_Rules 專案索引，除非總監明確要求
 - **判定**: 🟢 層級正確 / 🔴 放錯層

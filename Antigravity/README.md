@@ -71,7 +71,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 | **專案脈絡分層** | 透過 `.agents/context/` 保存設計 DNA、產品偏好、技術偏好與驗收偏好 |
 | **按需載入** | 技能僅在需要時載入，減少 AI 的認知負擔和 Token 消耗 |
 | **繁體中文特化** | 三層語言架構：指令層（英文）、介面層（繁體中文）、橋接層（雙語） |
-| **最小權限治理** | 角色分層（讀取者 / 工作者 / 寫入者），子代理政策由 `Shared/policies/` 轉譯，且子代理只能唯讀 |
+| **最小權限治理** | 角色分層（讀取者 / 工作者 / 寫入者），子代理政策由部署後 `.agents/shared/policies/` 與框架來源 `Shared/policies/` 同源轉譯，且子代理只能唯讀 |
 | **三位一體治理** | 靜默異常中斷（閘門攔截時才中斷）+ 特權覆寫（`[SUDO]`）+ 雙軌沙盒（生產 / 草圖） |
 
 ---
@@ -140,7 +140,7 @@ graph TB
 | **D06 安全防線** | Fresh 模式下以 `try/finally` 備份記憶卡到暫存目錄，部署中斷也不會損失資料 |
 | **知識資產保護** | `memory/`、`project_skills/` 和 `context/` 在升級時絕對不覆蓋 |
 | **確認閘門** | Upgrade 模式產出分類顏色差異報告，需使用者確認才套用 |
-| **Shared policy drift** | Doctor 檢查 Antigravity / Gemini adapter marker block 是否仍由 `Shared/policies/subagent-invocation.md` 生成 |
+| **Shared policy drift** | Doctor 檢查 Antigravity / Gemini adapter marker block 是否仍由框架來源 `Shared/policies/subagent-invocation.md` 生成，並確認下游 `.agents/shared/policies/subagent-invocation.md` 已部署 |
 | **Subagent vocabulary drift** | Doctor 檢查 Shared 技能是否誤把平台工具名寫成共用語義，避免 Antigravity、Claude、Codex 的委派語彙互相污染 |
 | **孤兒偵測** | 偵測源碼已刪除但目標仍存在的「孤兒檔案」，標記為 `ORPHAN` 提醒 |
 | **衍生技能補建** | 每次部署自動掃描 `project_skills/`，補建缺少的符號連結 |
@@ -168,7 +168,7 @@ graph TB
 底層規範依啟動模式分為三層：
 
 **`00_core_identity.md`** — Always On（每次對話必載）
-1. **專職化分工** — 主代理人直接執行，`Shared/policies/subagent-invocation.md` 只定義 Delegation Gate；Antigravity / Gemini adapter 才轉成 Gemini CLI、`@` 指派、browser-capable agent 或 plugin adapter
+1. **專職化分工** — 主代理人直接執行；下游 `.agents/shared/policies/subagent-invocation.md` 與框架來源 `Shared/policies/subagent-invocation.md` 只定義 Delegation Gate；Antigravity / Gemini adapter 才轉成 Gemini CLI、`@` 指派、browser-capable agent 或 plugin adapter
 2. **多代理人視圖透明度** — 子代理人的修改必須回傳主代理人在介面呈現
 3. **生命週期強制** — 規劃 → 驗證閘門 → 執行 → 記憶更新
 4. **禁止終端機文書處理** — 靜默閘門式攔截（`[PRE-FLIGHT GATE]`），支援 `[SUDO]` 覆寫與 `/03-1_experiment` 豁免

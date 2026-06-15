@@ -25,7 +25,7 @@ Director-facing output MUST use a context-sensitive plain-language structure bef
 - Routine discussion, short status updates, and simple judgments may use concise paragraphs or short lists.
 - Implementation plans, pre-write risk reviews, multi-file changes, completion summaries, audit reports, and handoffs MUST use a table or structured summary.
 - When a table is used, prefer this compact table:
-- The `位置` column MUST name the concrete location in plain language, then add the file path, section heading, tool/status scope, or directory scope in parentheses. If the item is not a single file, say so explicitly, e.g. `工作區狀態（git status）`, `管理器巡檢工具（Scripts/AI-RulesManager.ps1）`, or `規則與技能範圍（Codex/.codex、Shared/skills）`.
+- The `位置` column MUST name the concrete location in plain language, then add the file path, section heading, tool/status scope, or directory scope in parentheses. If the item is not a single file, say so explicitly, e.g. `工作區狀態（git status）`, `管理器巡檢工具（框架來源倉庫限定：Scripts/AI-RulesManager.ps1）`, or `規則與技能範圍（部署後：.codex、.agents/skills；框架來源倉庫限定：Codex/.codex、Shared/skills）`.
 - Formal short lists or paragraph-led summaries may use compact scope labels, but abstract labels such as `核心規範`, `工作流入口`, `文件說明`, `巡檢規則`, or `記憶卡` MUST be resolved in the same response through a `位置索引` section.
 - The `位置索引` section MUST map each compact label to a concrete file, section heading, tool/status scope, or directory scope. Do not leave compact labels as unexplained categories.
 
@@ -62,7 +62,8 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 2. Read-only Checks
 
-- 檢查 `Shared/skills/` 技能品質。
+- 下游專案巡檢部署後的 `.agents/skills/` 與 `.agents/shared/`。
+- 只有在 AI_Rules 框架來源倉庫維護時，才檢查來源 `Shared/skills/` 技能品質。
 - 比對三平台文件中的平台數、技能數、工作流數與命令數。
 - 檢查 `.agents/memory/` 是否有過期追蹤、舊平台敘述或缺失關聯。
 - 檢查 MCP opt-in profile snippets 是否存在；不得安裝外部 MCP server。

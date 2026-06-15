@@ -1,27 +1,27 @@
----
+﻿---
 name: _vscode_extension.runtime
 scopePath: Extensions/vscode-ai-rules-manager/src/
 description: >-
   專案記憶：VS Code 管理器外掛 runtime TypeScript 來源。Use when: task touches this split
   memory scope or its tracked files.
-last_updated: '2026-06-15T02:54:52+08:00'
+last_updated: '2026-06-15T11:55:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: partial_evidence
-last_verified: '2026-06-15T02:51:30+08:00'
+verification_status: verified
+last_verified: '2026-06-15T11:55:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: ready
+compaction_status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -34,6 +34,7 @@ metadata:
 # _vscode_extension.runtime — VS Code Extension Runtime Memory
 
 ## Current Truth
+- The extension exposes read-only sync coverage checks and governed memory main-file migration commands.
 - This child card owns VS Code extension TypeScript runtime source files.
 - The extension UI delegates governed actions to repository PowerShell scripts.
 - User-level settings remain the trusted source for repository root, repository URL, and PowerShell executable overrides.
@@ -44,6 +45,7 @@ metadata:
 - Do not silently install or update VSIX packages from runtime UI behavior.
 
 ## Cycle Events
+- 02: Added VS Code commands for sync coverage checks and memory main-file migration.
 - 01: Split VS Code extension runtime source ownership out of the extension parent card.
 
 ## Archive Index

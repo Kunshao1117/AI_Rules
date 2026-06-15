@@ -44,10 +44,11 @@ Trigger?
 
 ```
 [LAYER GATE] Determine target layer before writing:
-├── Cross-project framework behavior? → Shared framework skill
+├── Cross-project framework behavior AND current workspace is the AI_Rules framework source repository? → Shared framework skill
 │   ├── Source path: Shared/skills/{skill-name}/SKILL.md
 │   ├── Register: Shared/skills/_index.md
 │   └── Sync target: platform skills directories through the deployment sync path
+├── Cross-project framework behavior in a downstream project without framework source root? → stop and ask the Director to run from AI_Rules source or explicitly downgrade the target to project-derived scope
 ├── Single project repeatable behavior? → Project-derived skill
 │   ├── Source path: .agents/project_skills/{project-code}-{skill-name}/SKILL.md
 │   ├── Register: .agents/project_skills/_index.md
@@ -58,6 +59,7 @@ Trigger?
 └── Lifecycle entry or command routing? → Workflow/command entry, not an operational skill
 ```
 
+Do not create Shared framework skills from a downstream project unless the Director has provided and approved the AI_Rules framework source root.
 Do not route Shared framework skills through `.agents/project_skills/`.
 Do not add project prefixes to Shared framework skill names.
 
@@ -120,7 +122,7 @@ Project-derived skill:
 
 ### Step 4: Register in Skill Index
 
-1. Shared framework skill: append one row to `Shared/skills/_index.md`, then sync into platform skills directories.
+1. Shared framework skill: only inside the AI_Rules framework source repository, append one row to `Shared/skills/_index.md`, then sync into platform skills directories.
 2. Project-derived skill: append one row to `.agents/project_skills/_index.md`.
 3. User Codex skill: do not update AI_Rules project indexes unless Director explicitly requests project registration.
 4. Do NOT hand-edit generated platform copies as the source of truth.

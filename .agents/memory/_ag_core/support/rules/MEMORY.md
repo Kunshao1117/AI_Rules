@@ -1,27 +1,27 @@
----
+﻿---
 name: _ag_core.support.rules
 scopePath: Antigravity/.agents/rules/
 description: >-
   專案記憶：Antigravity 支援規則檔。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-15T02:53:54+08:00'
+last_updated: '2026-06-15T11:55:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: partial_evidence
-last_verified: '2026-06-15T02:48:38+08:00'
+verification_status: verified
+last_verified: '2026-06-15T11:55:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: ready
+compaction_status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -43,6 +43,7 @@ metadata:
 - Check shared policy drift when editing these support rules.
 
 ## Cycle Events
+- 02: Updated Antigravity rule entrypoints to prefer deployed .agents/shared references.
 - 01: Split Antigravity rules ownership out of the support parent card.
 
 ## Archive Index
