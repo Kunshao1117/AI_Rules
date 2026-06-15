@@ -1,4 +1,4 @@
-﻿---
+---
 name: 08-3_audit_report(健檢總結)
 description: "Use when: 健檢第三階段、彙整證據式健康報告、健檢深度摘要、功能/端點/命令覆蓋率、紅黃綠燈號、未驗證/阻塞判定、優先修復清單、位置索引與行動建議。DO NOT use when: 尚未完成前兩階段健檢。"
 trigger: manual
@@ -109,3 +109,5 @@ Do not write source files, memory cards, context cards, git state, releases, dep
 Append:
 
 「[健檢完成] 本次報告採證據優先判定，並依健檢深度列出盤點覆蓋率。缺少真實證據的項目已標記為未驗證或阻塞，不列為綠燈；抽樣結果不會被宣稱為全量通過。如需修復指定項目，請依優先級交給修復、測試、架構、例行巡檢或發布治理工作流。」
+
+> MCP 記憶證據沿用 08 入口與 .agents/skills/memory-ops/references/memory-mcp-tool-contract.md；子流程只能使用唯讀 cartridge-system 證據，缺少 MCP 工具時標記未驗證或阻塞，不得直接改記憶。

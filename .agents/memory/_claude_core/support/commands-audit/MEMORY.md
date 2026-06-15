@@ -1,10 +1,10 @@
-﻿---
+---
 name: _claude_core.support.commands-audit
 scopePath: Claude/.claude/commands/08_audit(健檢)/
 description: >-
   專案記憶：Claude 健檢主指令與三階段子指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-15T11:55:00+08:00'
+last_updated: '2026-06-15T14:18:27+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 3
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core.support.commands-audit — Claude Audit Commands Memory
 
 ## Current Truth
+- Claude audit entry and subcommands inherit the MCP memory evidence contract and keep audit memory checks read-only.
 - This child card owns Claude audit command entries and their three-phase subcommands.
 - Audit commands use project-surface detection, evidence status, and blocked/unverified states.
 - Audit commands now support quick, standard, deep, and forensic depth modes with feature, endpoint, command, job, interface, data-flow, performance, and risk inventories.
@@ -45,6 +47,7 @@ metadata:
 - Do not claim full coverage from sampled evidence; report coverage denominators and sampling limits.
 
 ## Cycle Events
+- 04: Added MCP memory evidence contract references to Claude audit entry and subcommands.
 - 03: Updated Claude audit command output examples with deployed shared reference labels.
 - 01: Split Claude audit command ownership out of the support parent card.
 - 02: Updated Claude audit entry and subcommands for depth selection, inventory construction, evidence-linked coverage, and coverage reporting.

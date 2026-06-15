@@ -1,4 +1,4 @@
-﻿---
+---
 name: 10_routine(巡檢)
 description: "Use when: automation-safe 例行巡檢、唯讀健康檢查、技能品質、文件數字、記憶過期與 MCP 設定健康。DO NOT use when: 需要直接修復或寫入檔案。"
 required_skills: [memory-ops, code-audit]
@@ -53,6 +53,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Stay read-only and automation-safe. Check workflow drift, skill quality, document consistency, matrix coverage, memory health, and MCP configuration without writes.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+- MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
 
 # [WORKFLOW: ROUTINE — 例行巡檢]
 

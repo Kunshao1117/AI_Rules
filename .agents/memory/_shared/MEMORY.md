@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-06-15T13:22:33+08:00'
+last_updated: '2026-06-15T14:17:52+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-15T13:21:00+08:00'
+last_verified: '2026-06-15T13:46:01+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 6
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,17 +35,14 @@ metadata:
 # _shared — Shared Governance Memory
 
 ## Current Truth
-- Shared governance references deployed to `.agents/shared/` include platform capability, workflow evidence, skill governance, subagent policy, and MCP opt-in snippets.
-- `Shared/project-tools/` is the source for restricted project-local tools deployed to downstream `.agents/tools/`.
-- Memory migration guidance now requires downstream agents to use the project-local tool before falling back to the framework source manager or extension.
-- Workflow and platform matrices are authored under `Shared/` and deployed to `.agents/shared/` for target-project AI access.
-- Shared/ is the single source for 40 operational skills and cross-platform governance assets.
-- Shared skills are deployed into Antigravity, Claude, and Codex by the shared sync engine.
+- Memory MCP tool contract defines project-local migration tools, read-only MCP evidence, mutating memory gates, and Gateway execution rules for workflows.
+- Shared governance references deployed to `.agents/shared/` include platform/workflow matrices, skill governance, subagent policy, and MCP opt-in snippets.
+- `Shared/project-tools/` is the source for restricted project-local tools deployed to downstream `.agents/tools/`; Traditional Chinese PowerShell tools use UTF-8 BOM for Windows PowerShell 5.1.
+- Memory migration guidance requires downstream agents to use the project-local tool before falling back to the framework source manager or extension.
+- `Shared/` is the single source for 40 operational skills and cross-platform governance assets deployed into Antigravity, Claude, and Codex.
 - Memory governance now uses schema v2 with Current Truth, Active Constraints, Cycle Events, Archive Index, and 中文摘要.
-- Memory cards must avoid unbounded repair logs and must compact or archive historical detail.
-- File-count split warnings are advisory unless hard limits, mixed ownership, or maintenance difficulty require a split.
-- Archive volumes use flat `archive-###.md` files rather than nested archive directories.
-- Project context lives in `.agents/context/` and is not source memory.
+- Memory cards must avoid unbounded repair logs; split warnings are advisory unless hard limits, mixed ownership, or maintenance difficulty require a split.
+- Project context lives in `.agents/context/`, is not source memory, and uses separate approval.
 - Shared subagent policy is vendor-neutral; platform-specific tool wording belongs in platform adapters.
 - Audit engine now defines depth modes, inventory denominators, surface recipes, coverage states, and evidence gates for deep 08 audits.
 ## Active Constraints
@@ -53,8 +50,10 @@ metadata:
 - Do not list directories under Tracked Files; the memory audit tool expects readable files.
 - Parent or child card navigation belongs in Relations, not frontmatter dependencies.
 - Treat cards above 8 tracked files as split candidates, not automatic blockers.
-- Operational skill families are routed through child cards under `_shared.ops-skills`.
+- Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
 ## Cycle Events
+- 08: Added MCP memory tool contract and workflow-matrix evidence requirements for 03/04/05/08/09/10/11/12.
+- 07: Preserved Traditional Chinese memory migration tool output by storing project-local PowerShell tools with UTF-8 BOM for Windows PowerShell 5.1 compatibility.
 - 06: Added Shared project-local memory migration tool source and downstream-first migration guidance.
 - 05: Expanded shared governance deployment to include skill-governance, subagent policy, and MCP opt-in references.
 - 04: Declared shared matrices as source-authored assets deployed to .agents/shared for target projects.
@@ -90,6 +89,7 @@ metadata:
 - Shared/skills/memory-arch/SKILL.md
 - Shared/skills/memory-arch/references/memory-quality-migration-blueprint.md
 - Shared/skills/memory-ops/references/memory-template.md
+- Shared/skills/memory-ops/references/memory-mcp-tool-contract.md
 - Shared/skills/project-context-protocol/SKILL.md
 - Shared/skills/project-context-protocol/references/context-template.md
 - Shared/skills/audit-engine/SKILL.md
@@ -108,8 +108,6 @@ metadata:
 - _claude_core (Claude platform adapter memory)
 - _ag_core (Antigravity platform adapter memory)
 - _shared.ops-skills (child card for general operational skills)
-- _shared.ops-skills.testing (child card owning testing strategy files)
 ## Applicable Skills
 - memory-ops — Use when updating this card.
-- memory-arch — Use for phase-2 Shared child-card splitting.
-- skill-factory — Use when adding or reshaping Shared skills.
+- memory-arch — Use for Shared child-card splitting.

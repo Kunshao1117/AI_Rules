@@ -16,7 +16,7 @@ metadata:
 
 # Memory Skill Operations (記憶技能操作指引)
 
-Read `references/memory-template.md` when creating or upgrading a memory card schema. Read `../memory-arch/references/memory-quality-migration-blueprint.md` when planning full-card standardization.
+Read `references/memory-template.md` when creating or upgrading a memory card schema. Read `references/memory-mcp-tool-contract.md` when choosing between project-local memory tools and cartridge-system MCP tools. Read `../memory-arch/references/memory-quality-migration-blueprint.md` when planning full-card standardization.
 
 ## HITL Boundary
 
@@ -72,11 +72,13 @@ Need to load memory?
 
 ### Read-Only Governance Tools (唯讀治理工具)
 
-Use read-only tools before deciding whether memory content must be edited: `workspace_brief`, `memory_audit`, `commit_preflight`, `memory_list`, `memory_status`, `memory_read`, and `memory_deps`.
+Use read-only tools before deciding whether memory content must be edited: `workspace_brief`, `memory_audit`, `memory_graph`, `commit_preflight`, `memory_list`, `memory_status`, `memory_read`, `memory_deps`, `project_context_status`, `context_inventory`, `context_audit`, `context_diff`, `context_plan`, `project_context_list`, `project_context_read`, and `project_context_validate`.
 
 `commit_preflight` returning `blocked` because of dirty files is a governance signal, not a tool failure. Review the listed files and continue with the governed commit workflow.
 
 If read-only tools report ghost files, remove deleted paths from `## Tracked Files` during the next authorized update. If they report `needsCompaction=true`, compact or split/archive before adding another event.
+
+Read-only context tools are evidence for project context only. They do not grant permission to write `.agents/context/**/CONTEXT.md`, and they must not be treated as source-memory evidence unless a source file or active memory card also supports the fact.
 
 ## 3. Repairing Stale Memory (過期修復)
 
@@ -194,7 +196,7 @@ and the parser will fail to recognize the tracked-files block — all tracked fi
 - If you are inside the AI_Rules framework source repository, the source-manager equivalent remains `.\Scripts\AI-RulesManager.ps1 -Action MemoryMigration -Target .`; this is a source repository maintenance path, not the downstream project default.
 - Dry-run mode is safe and may be used to report legacy `SKILL.md` cards, existing `MEMORY.md` cards, conflicts, archive volumes, and legacy path references.
 - Apply mode must stop if a card directory contains both `SKILL.md` and `MEMORY.md`; do not merge or guess the winner automatically.
-- This tool does not update cartridge-system itself. Treat external engine support for `MEMORY.md` as a later compatibility gate.
+- After an authorized apply run, verify engine state through the MCP path when available: run the memory reindex operation, then confirm with read-only workspace or memory audit evidence. If the MCP engine is missing or cannot verify `MEMORY.md`, report the migration as partially verified instead of treating filesystem rename as full success.
 - Current project memory cards must not be renamed as a side effect of updating this skill.
 
 ## 5. System Memory (系統記憶)

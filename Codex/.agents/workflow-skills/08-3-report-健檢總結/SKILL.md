@@ -1,4 +1,4 @@
-﻿---
+---
 name: "08-3-report-健檢總結"
 description: "Use when: 健檢第三階段、證據式健康報告、健檢深度摘要、功能/端點/命令覆蓋率、紅黃綠燈號、未驗證/阻塞清單、證據等級摘要、優先修復清單與行動建議。DO NOT use when: 尚未完成前兩階段健檢。"
 metadata:
@@ -140,3 +140,5 @@ Append:
 > Inherits: `.agents/skills/_shared/_security_footer.md` (Role Lock Gate)
 
 - **Role**: `Reader` | 純報告彙整；只允許寫入健檢摘要日誌，不修改原始碼或記憶卡。
+
+> MCP 記憶證據沿用 08 入口與 .agents/skills/memory-ops/references/memory-mcp-tool-contract.md；子流程只能使用唯讀 cartridge-system 證據，缺少 MCP 工具時標記未驗證或阻塞，不得直接改記憶。

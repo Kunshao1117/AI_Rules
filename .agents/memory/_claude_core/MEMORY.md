@@ -4,7 +4,7 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-15T13:22:56+08:00'
+last_updated: '2026-06-15T14:18:22+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 6
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
+- Claude build, fix, and handoff commands now reference the shared MCP memory evidence contract before relying on memory state.
 - Claude commands read workflow grounding and platform capability matrices from deployed `.agents/shared/` paths.
 - Claude Edition is the Claude Code adapter for the AI_Rules governance framework.
 - Claude uses `.claude/CLAUDE.md`, `.claude/rules/`, `.claude/commands/`, and `.claude/skills/`.
@@ -52,6 +54,7 @@ metadata:
 - Keep Claude source ownership out of the deprecated historical card.
 - This card still needs a later child-card split if all Claude commands are actively edited again.
 ## Cycle Events
+- 07: Added MCP memory evidence contract references to Claude build, fix, and handoff commands.
 - 06: Documented Claude downstream memory migration through project-local tools.
 - 05: Updated Claude core rule output examples to avoid downstream projects treating framework source paths as local files.
 - 04: Documented Claude downstream shared policy and .agents/shared reference deployment.

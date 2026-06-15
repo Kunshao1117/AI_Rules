@@ -28,16 +28,16 @@
 | 01 探索 | 網路研究、競品、可行性、反方分析 | 深度研究實務、來源可信度、資料新鮮度 | 來源層級、日期、偏誤、覆蓋缺口與未驗證項 | 02、03、08 |
 | 02 架構 | 純架構、重大技術轉向、系統藍圖 | ADR、C4、arc42、官方框架文件 | 決策狀態、替代方案、假設、相容性與後續建構契約 | 03、08、12 |
 | 03-1 實驗 | 沙盒 spike、丟棄式原型 | 技術 spike 與原型隔離實務 | 實驗邊界、丟棄條件、禁止生產品質聲明 | 03、11 |
-| 03 建構 | 正式建構、產品行為變更 | 先探索、再計畫、再實作、再驗證 | 驗收條件、真實驗證路徑、工具發現、阻塞條件 | 04、06、08、09 |
-| 04 修復 | bug 修復、回歸修復 | 根因分析、缺陷管理、回歸測試 | 症狀、根因、修復證據、回歸證據 | 06、07、09 |
-| 05 濃縮 | 專案身份、長期記憶初始化 | 上下文壓縮、長期記憶、偏好治理 | 來源依據、永久事實與暫時觀察分離 | 02、11、12 |
+| 03 建構 | 正式建構、產品行為變更 | 先探索、再計畫、再實作、再驗證 | 驗收條件、真實驗證路徑、工具發現、阻塞條件、記憶所有權與狀態證據 | 04、06、08、09 |
+| 04 修復 | bug 修復、回歸修復 | 根因分析、缺陷管理、回歸測試 | 症狀、根因、修復證據、回歸證據、受影響記憶卡狀態與依賴證據 | 06、07、09 |
+| 05 濃縮 | 專案身份、長期記憶初始化 | 上下文壓縮、長期記憶、偏好治理 | 來源依據、永久事實與暫時觀察分離、工作區與脈絡盤點證據 | 02、11、12 |
 | 06 測試 | E2E、視覺、效能、無障礙、回歸 | Playwright、Lighthouse、Web Vitals、WCAG | 專案型態、測試面、證據等級、阻塞原因 | 03、04、08 |
 | 07 除錯 | stack trace、日誌、故障定位 | OpenTelemetry、SRE 監控、根因診斷 | 可觀測訊號、假設、證實/反證、轉修復條件 | 04、06、08 |
-| 08 健檢 | 全光譜專案健檢、深層健檢、上線前高風險審查 | 08 共用健檢引擎、本矩陣、OWASP、Playwright、Lighthouse、Web Vitals、WCAG、OpenTelemetry | 健檢深度、專案型態、能力快照、功能/端點/命令盤點、覆蓋率分母、證據包、燈號、未驗證/阻塞清單 | 02、03、04、06、09 |
-| 09 提交 | 變更紀錄、提交、版本、發布前掃描 | Conventional Commits、Keep a Changelog、SemVer、狀態檢查 | 明確檔案清單、記憶狀態、變更摘要、版本/成品判定 | 04、06、08、11 |
-| 10 巡檢 | automation-safe 唯讀治理 | 自動化健康檢查、工作流漂移檢查 | 技能品質、文件一致性、矩陣覆蓋、無寫入證明 | 08、12 |
-| 11 交接 | 任務交接、續接提示 | 上下文交接與任務摘要實務 | 目前狀態、髒檔、阻塞、未驗證項、下一流程 | 02、03、04、09 |
-| 12 技能鍛造 | 新技能、共用技能、專案技能 | Agent Skills 規格、技能描述、漸進載入 | 層級選擇、描述品質、參考資料拆分、驗證門檻 | 03、08、10 |
+| 08 健檢 | 全光譜專案健檢、深層健檢、上線前高風險審查 | 08 共用健檢引擎、本矩陣、OWASP、Playwright、Lighthouse、Web Vitals、WCAG、OpenTelemetry | 健檢深度、專案型態、能力快照、功能/端點/命令盤點、覆蓋率分母、證據包、記憶/脈絡治理證據、燈號、未驗證/阻塞清單 | 02、03、04、06、09 |
+| 09 提交 | 變更紀錄、提交、版本、發布前掃描 | Conventional Commits、Keep a Changelog、SemVer、狀態檢查 | 明確檔案清單、記憶狀態、提交前記憶預檢、變更摘要、版本/成品判定 | 04、06、08、11 |
+| 10 巡檢 | automation-safe 唯讀治理 | 自動化健康檢查、工作流漂移檢查 | 技能品質、文件一致性、矩陣覆蓋、唯讀記憶/脈絡巡檢、無寫入證明 | 08、12 |
+| 11 交接 | 任務交接、續接提示 | 上下文交接與任務摘要實務 | 目前狀態、髒檔、阻塞、未驗證項、工作區/記憶健康證據、下一流程 | 02、03、04、09 |
+| 12 技能鍛造 | 新技能、共用技能、專案技能 | Agent Skills 規格、技能描述、漸進載入 | 層級選擇、描述品質、參考資料拆分、驗證門檻、受影響記憶與技能索引證據 | 03、08、10 |
 
 ## Memory Admission Matrix
 
@@ -51,9 +51,26 @@ Source memory writes are allowed only when the workflow has a durable, source-ba
 | 06 測試 | Long-lived validation entry points, invariants, test surface decisions | Single-run logs, screenshots, fixture-only evidence |
 | 08 健檢 | Evidence-confirmed long-lived governance facts, stable validation route summaries after follow-up work lands | Intermediate audit inventories, raw evidence packets, one-time performance readings, unverified guesses |
 | 09 提交 | Required memory attribution or final source-memory consistency notes | Changelog prose or commit message text |
+| 10 巡檢 | Stable governance drift facts after a follow-up source or rule change lands | Read-only routine report, temporary warning list, one-time health snapshot |
 | 11 交接 | Pending memory actions and blockers as report items | Full next-agent prompt or temporary handoff narrative |
+| 12 技能鍛造 | Stable skill ownership, trigger semantics, generated skill source facts, and validation route summaries | Brainstorming notes, rejected skill drafts, raw lint/test output |
 
 Memory cards must record incomplete evidence as partial, pending review, conflict, or superseded instead of presenting it as verified current truth.
+
+## MCP Memory Evidence Matrix
+
+The detailed tool contract lives in `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md`. Workflows may use filesystem evidence when MCP is unavailable, but missing MCP evidence must be reported as 未驗證 or 阻塞 when it affects the decision.
+
+| 工作流 | 實際位置 | 最低 MCP 記憶證據 | 會寫入的 MCP 閘門 |
+|---|---|---|---|
+| 03 建構 | Codex: `.agents/skills/03-build-建構/SKILL.md`; Claude: `.claude/commands/03_build(建構)/SKILL.md`; Antigravity: `.agents/workflows/03_build(建構計畫).md` | Relevant ownership and staleness from memory list/status/read; dependency evidence when indirect staleness is reported; context read evidence when acceptance preferences affect implementation | Memory commit only after source changes and active memory main-file content are updated |
+| 04 修復 | Codex: `.agents/skills/04-fix-修復/SKILL.md`; Claude: `.claude/commands/04_fix(修復)/SKILL.md`; Antigravity: `.agents/workflows/04-1_fix_plan(修復計畫).md` | Ownership, status, dependency, and root-cause evidence for affected cards; unresolved memory conflicts are repair blockers | Memory commit cannot be used as a staleness reset shortcut; it follows verified card edits |
+| 05 濃縮 | Codex: `.agents/skills/05-condense-濃縮/SKILL.md`; Claude: `.claude/commands/05_condense（濃縮）/SKILL.md`; Antigravity: `.agents/workflows/05_condense(濃縮).md` | Workspace brief, memory list/read, and context inventory/status evidence to separate source facts from preferences | `_system` source-memory write requires GO; project context write requires GO CONTEXT |
+| 08 健檢 | Codex: `.agents/skills/08-audit-健檢/SKILL.md` plus `08-1/08-2/08-3`; Claude: `.claude/commands/08_audit(健檢)/SKILL.md` plus subflows; Antigravity: `.agents/workflows/08_audit(健檢).md` plus subflows | Workspace brief, memory audit, memory graph/status, context audit, and commit preflight when relevant to governance health | Audit does not mutate memory; follow-up build/fix/commit workflows perform authorized writes |
+| 09 提交 | Codex: `.agents/skills/09-commit-紀錄總結/SKILL.md`; Claude: `.claude/commands/09_commit(紀錄)/SKILL.md`; Antigravity: `.agents/workflows/09-1_commit_scan(紀錄掃描).md` | Commit preflight or equivalent memory status evidence, dirty file list, stale/unattributed file evidence, and blockers | Commit/push are separate gates; memory commit only happens before commit after card content is edited |
+| 10 巡檢 | Codex: `.agents/skills/10-routine-巡檢/SKILL.md`; Claude: `.claude/commands/10_routine(巡檢)/SKILL.md`; Antigravity: `.agents/workflows/10_routine(巡檢).md` | Workspace brief, memory audit, context audit, sync integrity, and read-only tool availability evidence | No mutating MCP calls; any write proposal routes to build/fix/audit with GO |
+| 11 交接 | Codex: `.agents/skills/11-handoff-交接/SKILL.md`; Claude: `.claude/commands/11_handoff(交接)/SKILL.md`; Antigravity: `.agents/workflows/11_handoff(交接).md` | Workspace brief, memory list/status/read summary, stale cards, blockers, dirty files, and unresolved context evidence | Handoff does not mutate memory; pending writes are reported as next-step blockers |
+| 12 技能鍛造 | Codex: `.agents/skills/12-skill-forge-技能鍛造/SKILL.md`; Claude: `.claude/commands/12_skill_forge(技能鍛造)/SKILL.md`; Antigravity: `.agents/workflows/12_skill_forge(技能鍛造).md` | Skill ownership, memory status/read evidence for affected skill domains, context boundary evidence, and validation route evidence | New or modified skill source requires memory attribution and authorized memory commit before completion |
 
 ## Official References
 

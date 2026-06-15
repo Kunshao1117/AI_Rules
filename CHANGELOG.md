@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-15] MCP 記憶工具治理
+
+### feat
+- **MCP memory evidence governance** — 工作流證據矩陣新增記憶工具證據規則與三平台實際位置，讓建構、修復、濃縮、健檢、提交、巡檢、交接與技能鍛造都有一致的最低記憶證據要求。
+- **Memory tool contract** — 記憶操作規範新增 MCP 工具契約，明確區分專案本地遷移工具、框架來源管理器、唯讀記憶工具與需要授權的寫入工具。
+
+### fix
+- **Traditional Chinese tool output** — 專案本地記憶遷移工具修正 Windows PowerShell 下的繁體中文輸出相容性，避免管理器與外掛呼叫時因編碼造成解析失敗。
+
+### docs
+- **Cross-platform workflow alignment** — 三平台工作流與記憶規範同步說明缺少 MCP 證據時應標記為未驗證或阻塞，不得改用手動批次搬檔。
+
 ## [2026-06-15] AI Rules Manager v0.1.17
 
 ### fix

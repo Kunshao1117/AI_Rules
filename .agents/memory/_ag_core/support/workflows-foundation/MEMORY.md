@@ -1,10 +1,10 @@
-﻿---
+---
 name: _ag_core.support.workflows-foundation
 scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 基礎與討論建構工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-15T11:55:00+08:00'
+last_updated: '2026-06-15T14:19:21+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 3
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core.support.workflows-foundation — Antigravity Foundation Workflow Memory
 
 ## Current Truth
+- Antigravity build workflow now uses the MCP Memory Evidence Matrix for memory-state evidence and project-local migration routing.
 - This child card owns Antigravity shared gates and foundation workflows for chat, exploration, build, and experiment work.
 - These workflow files translate shared semantics into Antigravity-facing workflow entries.
 - Build and experiment boundaries must remain distinct.
@@ -43,6 +45,7 @@ metadata:
 - Keep shared gate fragments aligned with platform governance.
 
 ## Cycle Events
+- 04: Added MCP memory evidence contract reference to the Antigravity build workflow.
 - 03: Updated Antigravity foundation workflow output examples with source-only labels.
 - 02: Aligned foundation workflow grounding paths to deployed .agents/shared governance references.
 - 01: Split Antigravity foundation workflow ownership out of the support parent card.

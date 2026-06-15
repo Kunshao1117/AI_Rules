@@ -1,4 +1,4 @@
-﻿---
+---
 name: 08-1_infra
 description: "Use when: 健檢第一階段、健檢深度選擇、專案型態偵測、功能盤點、端點盤點、命令盤點、平台能力快照、基礎盤點、相容性、依賴掃描、治理拓樸、技能覆蓋率與目錄衛生檢查。DO NOT use when: 要完整健檢入口，改用 08-audit。"
 required_skills: [memory-ops, code-audit, audit-engine, tech-stack-protocol]
@@ -168,3 +168,5 @@ Direct the Director to continue with `/08_audit logic` when Phase 1 is complete.
 > Inherits: `.claude/commands/_shared/_security_footer.md` (Role Lock Gate)
 
 - **Role**: `Reader/Memory` | 唯讀掃描 + 記憶讀取；只允許寫入健檢日誌，不修改原始碼或記憶卡。
+
+> MCP 記憶證據沿用 08 入口與 .agents/skills/memory-ops/references/memory-mcp-tool-contract.md；子流程只能使用唯讀 cartridge-system 證據，缺少 MCP 工具時標記未驗證或阻塞，不得直接改記憶。

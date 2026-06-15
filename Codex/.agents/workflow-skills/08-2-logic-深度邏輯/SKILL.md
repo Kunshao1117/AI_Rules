@@ -1,4 +1,4 @@
-﻿---
+---
 name: "08-2-logic-深度邏輯"
 description: "Use when: 健檢第二階段、依盤點清單做深度邏輯審查、安全架構、API/端點/資料流串接比對、功能操作驗證、狀態不變量、測試覆蓋缺口、真實證據缺口、效能可靠性、plugin、VSIX、Release、version、tag、update reminder 與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08-audit。"
 metadata:
@@ -171,3 +171,5 @@ Pass this object to Phase 3:
 > Inherits: `.agents/skills/_shared/_security_footer.md` (Role Lock Gate)
 
 - **Role**: `Reader` | 純分析審查；只允許寫入健檢日誌，不修改原始碼或記憶卡。
+
+> MCP 記憶證據沿用 08 入口與 .agents/skills/memory-ops/references/memory-mcp-tool-contract.md；子流程只能使用唯讀 cartridge-system 證據，缺少 MCP 工具時標記未驗證或阻塞，不得直接改記憶。

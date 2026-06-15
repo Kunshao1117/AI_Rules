@@ -51,6 +51,14 @@ Technical details may only appear after a `補充技術細節` section when they
 > 本工作流是 Antigravity 健檢總控入口。它保留既有三階段健檢語義，但內部升級為「深度模式 → 專案型態偵測 → 功能/端點/命令盤點 → 動態掛載模組 → 覆蓋率證據式報告」。
 > 共用判定規則來自 `audit-engine`；Antigravity 負責把證據採集轉譯成代理管理、瀏覽器、截圖、錄影與視覺產物可複查的證據。
 
+## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
+
+- Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 08 row plus MCP Memory Evidence Matrix as the minimum external grounding and evidence contract.
+- Workflow-specific grounding: Use audit-engine depth, inventory denominator, project surface recipes, and evidence packet rules before reporting audit gates.
+- Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
+- Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+- MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md; audit may use read-only cartridge-system tools for governance evidence, but missing MCP evidence must become 未驗證 or 阻塞 and audit must not mutate memory.
+
 ## Required Shared Skills
 
 Load these before running the audit:

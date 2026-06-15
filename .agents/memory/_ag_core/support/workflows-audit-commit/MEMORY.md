@@ -1,10 +1,10 @@
-﻿---
+---
 name: _ag_core.support.workflows-audit-commit
 scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 健檢與提交工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-15T11:55:00+08:00'
+last_updated: '2026-06-15T14:19:10+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core.support.workflows-audit-commit — Antigravity Audit and Commit Workflow Memory
 
 ## Current Truth
+- Antigravity audit, audit subflows, and commit scan workflows now use the MCP Memory Evidence Matrix while preserving read-only audit boundaries.
 - This child card owns Antigravity audit, audit subphase, and commit execution workflow entries.
 - Audit workflows use evidence status and project-surface routing rather than a fixed scan checklist.
 - Audit workflows now support quick, standard, deep, and forensic depth modes with feature, endpoint, command, job, interface, data-flow, performance, and risk inventories.
@@ -45,6 +47,7 @@ metadata:
 - Do not commit, push, tag, or release without explicit Director approval.
 
 ## Cycle Events
+- 05: Added MCP memory evidence contract references to Antigravity audit and commit scan workflows.
 - 04: Updated Antigravity audit and commit workflow output examples with deployed reference labels.
 - 03: Aligned audit and commit workflow grounding paths to deployed .agents/shared governance references.
 - 01: Split Antigravity audit and commit workflow ownership out of the support parent card.

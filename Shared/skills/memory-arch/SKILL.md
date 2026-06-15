@@ -15,7 +15,7 @@ metadata:
 
 # Memory Architecture (記憶卡架構與拓樸)
 
-Read `references/memory-quality-migration-blueprint.md` when designing or reviewing full-card standardization.
+Read `references/memory-quality-migration-blueprint.md` when designing or reviewing full-card standardization. Read `../memory-ops/references/memory-mcp-tool-contract.md` when topology work needs MCP evidence, reindex verification, or project-local migration tooling.
 
 ## HITL Boundary
 
@@ -100,8 +100,8 @@ Directory nesting is topology and navigation, not dependency. A child card MUST 
 
 ### Rules (規則)
 
-- Layer 1–2: active memory main files under `.agents/memory/{module}/` — currently read through cartridge-system and migration-compatible direct file reads
-- Layer 3–4: active memory main files under `.agents/memory/{parent}/{child}/` — AI loads on-demand via `## Relations`
+- Layer 1–2: active memory main files under `.agents/memory/{module}/` — read through cartridge-system when available and through migration-compatible direct file reads when MCP evidence is unavailable
+- Layer 3–4: active memory main files under `.agents/memory/{parent}/{child}/` — AI loads on-demand via `## Relations`; use MCP graph/status evidence when available before rewriting topology
 - Target canonical main-file name after migration: `MEMORY.md`
 - Legacy compatibility main-file name before migration: `SKILL.md`
 - Maximum depth: **4 layers**
@@ -221,6 +221,7 @@ Compaction due?
 ├── Step 6: Update ## Archive Index with volume path and scope
 ├── Step 7: Reset ## Cycle Events for the next cycle
 └── Step 8: Call memory_commit after the active memory main file is updated
+    ⇒ If the split also changed main-file naming or index topology, verify with read-only memory audit or workspace brief after any authorized reindex
 ```
 
 Do not add event 31. If the card is too contradictory to summarize safely, stop at a compaction plan and ask for Director approval.

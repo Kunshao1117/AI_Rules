@@ -1,4 +1,4 @@
-﻿---
+---
 name: 08-2_audit_logic(深度邏輯)
 description: "Use when: 健檢第二階段、依盤點清單做深度邏輯審查、安全架構、API/端點/資料流比對、真實功能驗證、視覺/瀏覽器採證、效能可靠性、測試覆蓋缺口與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08_audit。"
 trigger: manual
@@ -146,3 +146,5 @@ Output in Traditional Chinese with a compact table and a `位置索引`. Include
 - Suggested next workflow for each red or yellow item.
 
 Direct the Director to continue with `@[/08-3_audit_report]` when Phase 2 is complete.
+
+> MCP 記憶證據沿用 08 入口與 .agents/skills/memory-ops/references/memory-mcp-tool-contract.md；子流程只能使用唯讀 cartridge-system 證據，缺少 MCP 工具時標記未驗證或阻塞，不得直接改記憶。

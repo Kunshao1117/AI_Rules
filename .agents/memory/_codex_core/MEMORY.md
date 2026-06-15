@@ -4,7 +4,7 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-15T13:23:01+08:00'
+last_updated: '2026-06-15T14:17:59+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 5
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
+- Codex build, fix, and handoff workflows now reference the shared MCP memory evidence contract before relying on memory state.
 - Codex workflow skills read workflow grounding and platform capability matrices from deployed `.agents/shared/` paths.
 - Codex Edition is the OpenAI Codex adapter for the AI_Rules governance framework.
 - Codex uses `.codex/AGENTS.md` as the project governance document and `.agents/skills/` as the live skill directory.
@@ -51,6 +53,7 @@ metadata:
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 ## Cycle Events
+- 06: Added MCP memory evidence contract references to Codex build, fix, and handoff workflows.
 - 05: Documented Codex downstream memory migration through project-local tools.
 - 04: Documented Codex downstream shared policy and .agents/shared reference deployment.
 - 03: Aligned Codex workflow grounding paths to deployed .agents/shared governance references.
