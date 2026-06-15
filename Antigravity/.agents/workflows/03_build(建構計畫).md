@@ -1,6 +1,6 @@
 ---
 description: "Use when: 正式建構功能、設計到建構合約、實作已核准計畫、新增工具或產品行為變更、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 的建構與驗證。DO NOT use when: 純討論、沙盒實驗、或只需要不落地的純架構方案。"
-required_skills: [memory-ops, tech-stack-protocol, ai-dev-quality-gate, project-context-protocol]
+required_skills: [memory-ops, tech-stack-protocol, ai-dev-quality-gate, intent-alignment-gate, project-context-protocol]
 memory_awareness: read
 metadata:
   author: antigravity
@@ -49,11 +49,12 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before planning changes.
 > [LOAD SKILL] If this task touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, real data, runtime behavior, operator-visible output, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before planning changes.
+> [LOAD SKILL] Before producing a design-to-build contract, read `.agents/skills/intent-alignment-gate/SKILL.md` and apply requirement playback, neutral challenge, requirement-to-task trace, acceptance matrix, and drift audit rules.
 > [LOAD SKILL] If this task touches product behavior, UX preference, design DNA, technical preference, communication preference, or acceptance criteria, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before planning changes. Report adopted context or deviation reasons.
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 03 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Use explore-plan-implement-verify sequencing. Define acceptance evidence, operator-tool discovery, retry strategy, and blocked validation rules before writes.
+- Workflow-specific grounding: Use explore-plan-implement-verify sequencing. Define blueprint adoption status, requirement-to-task trace, acceptance evidence, operator-tool discovery, retry strategy, blocked validation rules, and drift audit rules before writes.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
@@ -105,6 +106,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - 產出詳細的 `implementation_plan.md` Artifact，附上程式碼 `diff`，並明確標記：
   - **[GOVERNANCE DEPTH / 治理深度判定]**：任務等級、命中升級因子、豁免理由、驗證證據；只輸出摘要，不重貼 `ai-dev-quality-gate` 的完整自治矩陣
   - **[CHANGE INTENT / 變更意圖分類]**：將工作分類為緊急修補、根因修復、局部修整或結構重構；包含補丁堆疊風險、允許範圍、升級條件，以及為何可以或不可用更窄補丁處理
+  - **[INTENT ALIGNMENT / 需求對齊]**：需求理解回放、中立反證檢查、沿用藍圖狀態、需求到任務追蹤表、任務驗收矩陣，以及帶證據狀態的假設
   - **[ARCHITECTURE]**：功能邊界、受影響模組、公開介面變更、不採用方案
   - **[REAL EXECUTION]**：真實操作面、操作者工具搜尋結果、資料來源、可執行驗證路徑、短暫失敗重試策略、等價真實替代路徑、預期證據等級、可能阻塞條件與最小授權需求
   - **[MODIFY]**：修改的現有檔案
@@ -112,6 +114,7 @@ Technical details may only appear after a `補充技術細節` section when they
   - **[DELETE]**：將被刪除的檔案
   - **[COMPLETENESS]**：使用者流程、載入、空狀態、錯誤、權限、離線狀態
   - **[VALIDATION]**：單元、整合、回歸、真實執行證據與介面適配證據；假資料、示意資料、靜態截圖或 mock 僅能列為局部證據，不得作為完成依據；視覺驗證必須包含細微觀察並優先使用真實資訊，假資料備援必須標記原因、殘留風險與不可宣稱的完成範圍
+  - **[DRIFT AUDIT / 偏移稽核]**：完成前必須比對原始需求、核准合約、實際變更、驗證證據與未驗證項，並標記符合、合理偏離、未授權偏離或未驗證
   - **[MEMORY/DOCS]**：需要更新的記憶卡、脈絡卡、README、CHANGELOG 或發布紀錄
 
 ## 4. Code Review Gate（程式碼審查閘門）

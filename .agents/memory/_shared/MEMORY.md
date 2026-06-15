@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-06-16T02:26:59+08:00'
+last_updated: '2026-06-16T06:33:32+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-16T02:26:11+08:00'
+last_verified: '2026-06-16T06:26:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 10
+cycle_event_count: 11
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -39,13 +39,14 @@ metadata:
 - Shared governance references deployed to `.agents/shared/` include platform/workflow matrices, skill governance, subagent policy, and MCP opt-in snippets.
 - `Shared/project-tools/` is the source for restricted project-local tools deployed to downstream `.agents/tools/`; Traditional Chinese PowerShell tools use UTF-8 BOM for Windows PowerShell 5.1.
 - Memory migration guidance requires downstream agents to use the project-local tool before falling back to the framework source manager or extension.
-- `Shared/` is the single source for 40 operational skills and cross-platform governance assets deployed into Antigravity, Claude, and Codex.
+- `Shared/` is the single source for 41 operational skills and cross-platform governance assets deployed into Antigravity, Claude, and Codex.
 - Memory governance now uses schema v2 with Current Truth, Active Constraints, Cycle Events, Archive Index, and 中文摘要.
 - Memory cards must avoid unbounded repair logs; split warnings are advisory unless hard limits, mixed ownership, or maintenance difficulty require a split.
 - Project context lives in `.agents/context/`, is not source memory, and uses separate approval.
 - Shared subagent policy is vendor-neutral; platform-specific tool wording belongs in platform adapters.
 - Audit engine now defines depth modes, inventory denominators, surface recipes, coverage states, and evidence gates for deep 08 audits.
 - Workflow matrix now defines change intent classification and visual evidence governance for patch, repair, refinement, refactor, detail observation, and real-information priority.
+- Workflow matrix now defines intent alignment governance for requirement playback, neutral challenge, decision trace, requirement trace, and drift audit in 02/03 workflows.
 - Memory operations guidance stays under the Shared skill quality size limit while preserving memory commit, migration, and heading-accuracy governance.
 ## Active Constraints
 - Do not put platform-specific tool calls in Shared skill bodies unless the section is explicitly an adapter note.
@@ -54,6 +55,7 @@ metadata:
 - Treat cards above 8 tracked files as split candidates, not automatic blockers.
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
 ## Cycle Events
+- 11: Added intent alignment governance to the shared workflow matrix and skill routing index.
 - 10: Compressed memory-ops wording under the Shared skill quality token limit without changing memory governance semantics.
 - 09: Added change intent and visual evidence governance to the shared workflow matrix and skill routing index.
 - 08: Added MCP memory tool contract and workflow-matrix evidence requirements for 03/04/05/08/09/10/11/12.
@@ -77,7 +79,7 @@ metadata:
 ## Conflicts and Supersession
 - No unresolved conflict recorded during the migration pass; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
-- Shared 是 40 套共用技能與政策的唯一來源。
+- Shared 是 41 套共用技能與政策的唯一來源。
 - 記憶治理已改成新版主卡加歸檔模型。
 - 專案脈絡與原始碼記憶分層管理。
 - 超過 8 個追蹤檔是拆卡建議，不是自動阻擋。

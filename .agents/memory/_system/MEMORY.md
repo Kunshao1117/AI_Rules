@@ -4,19 +4,19 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-16T02:17:04+08:00'
+last_updated: '2026-06-16T06:33:48+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-16T02:14:11+08:00'
+last_verified: '2026-06-16T06:26:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 12
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -46,6 +46,7 @@ metadata:
 - The PowerShell deployment implementation moved to child card `_system.scripts` for file ownership.
 - Root documentation describes 08 as a deep evidence audit with depth modes, inventories, coverage denominators, and log-only intermediate evidence.
 - Root documentation and changelog now describe change intent governance, patch-stack escalation, visual detail observation, and real-information visual evidence.
+- Root documentation and changelog now describe requirement alignment, neutral challenge, traceability, and drift-audit governance; shared skill count is 41 and Codex total skill count is 58.
 
 ## Active Constraints
 - Do not commit, push, tag, publish, install, upgrade, or mutate external state without explicit Director approval.
@@ -53,6 +54,7 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 13: Documented requirement alignment and drift-audit governance across root docs and changelog.
 - 12: Documented change intent and visual evidence governance across root docs and changelog.
 - 11: Added changelog coverage for MCP memory tool governance and Traditional Chinese project-tool output compatibility.
 - 10: Documented project-local tool deployment and AI Rules Manager v0.1.17 release notes.

@@ -1,7 +1,7 @@
 ---
 name: 03_build
 description: "Use when: 正式建構功能、設計到建構合約、實作已核准計畫、新增工具或產品行為變更、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 的建構與驗證。DO NOT use when: 純討論、沙盒實驗、或只需要不落地的純架構方案。"
-required_skills: [memory-ops, tech-stack-protocol, code-quality, security-sre, ai-dev-quality-gate, project-context-protocol]
+required_skills: [memory-ops, tech-stack-protocol, code-quality, security-sre, ai-dev-quality-gate, intent-alignment-gate, project-context-protocol]
 memory_awareness: full
 user-invocable: true
 metadata:
@@ -51,12 +51,13 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.claude/skills/plugin-release-governance/SKILL.md` before planning changes.
 > [LOAD SKILL] If this task touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, real data, runtime behavior, operator-visible output, or mobile/responsive behavior, read `.claude/skills/ai-dev-quality-gate/SKILL.md` before planning changes.
+> [LOAD SKILL] Before producing a design-to-build contract, read `.claude/skills/intent-alignment-gate/SKILL.md` and apply requirement playback, neutral challenge, requirement-to-task trace, acceptance matrix, and drift audit rules.
 > [LOAD SKILL] If this task touches product behavior, UX preference, design DNA, technical preference, communication preference, or acceptance criteria, read `.claude/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before planning changes. Report adopted context or deviation reasons.
 
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 03 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Use explore-plan-implement-verify sequencing. Define acceptance evidence, operator-tool discovery, retry strategy, and blocked validation rules before writes.
+- Workflow-specific grounding: Use explore-plan-implement-verify sequencing. Define blueprint adoption status, requirement-to-task trace, acceptance evidence, operator-tool discovery, retry strategy, blocked validation rules, and drift audit rules before writes.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
@@ -105,6 +106,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Plan MUST include:
   - **[GOVERNANCE DEPTH / 治理深度判定]**: Task level, matched escalation factors, exemption reason, and validation evidence. Output only the summary; do not duplicate the full autonomy matrix from `ai-dev-quality-gate`.
   - **[CHANGE INTENT / 變更意圖分類]**: Classify the work as emergency patch, root-cause repair, local refinement, or structural refactor; include patch-stack risk, allowed scope, escalation trigger, and why a narrower patch is or is not acceptable.
+  - **[INTENT ALIGNMENT / 需求對齊]**: Requirement playback, neutral challenge, blueprint adoption status, requirement-to-task trace, task acceptance matrix, and assumptions with evidence status.
   - **[ARCHITECTURE]**: Functional boundary, affected modules, public interface changes, and rejected alternatives.
   - **[REAL EXECUTION]**: Real operation surface, operator-tool discovery result, data source, executable validation path, transient retry strategy, equivalent real-path alternative, expected evidence level, possible blockers, and smallest authorization needed.
   - **[MODIFY]**: Files to be modified
@@ -112,6 +114,7 @@ Technical details may only appear after a `補充技術細節` section when they
   - **[DELETE]**: Files to be deleted
   - **[COMPLETENESS]**: User flow, loading/empty/error/permission/offline states when relevant.
   - **[VALIDATION]**: Unit, integration, regression, real execution evidence, and interface adaptation evidence required for completion. Mock, fixture, fake, static screenshot, or synthetic data evidence is partial evidence only. Visual validation must include detail observation and real-information evidence first; fallback fake data must be labeled with reason, residual risk, and unsupported claims.
+  - **[DRIFT AUDIT / 偏移稽核]**: Completion must compare original request, approved contract, actual changes, validation evidence, and unverified items; classify differences as aligned, justified deviation, unauthorized deviation, or unverified.
   - **[MEMORY/DOCS]**: Memory cards, project context, README, changelog, or release notes affected by the change.
   - Code diff previews for each change
 

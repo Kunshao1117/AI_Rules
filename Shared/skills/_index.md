@@ -12,6 +12,7 @@
 | UI, UX, jargon, i18n, error message                                          | UI、介面、多語系、錯誤訊息                       | ui-ux-standards          | stitch             |
 | UI design exploration, web UI research, component primitives, HTML demo, design directions | UI 探索、網路 UI 參考、共用元件、HTML 展示頁、三案比較 | ui-design-exploration    | —                  |
 | AI development quality, change intent, patch stack, tech freshness, component reuse, responsive evidence, real visual data, design DNA | AI 開發品質、變更分類、補丁堆疊、技術新鮮度、共用元件、真實畫面證據、設計 DNA | ai-dev-quality-gate      | context7, stitch   |
+| requirement alignment, neutral challenge, anti-sycophancy, decision record, acceptance trace, drift audit | 需求對齊、反證、中立檢查、反迎合、決策紀錄、驗收追蹤、偏移稽核 | intent-alignment-gate | — |
 | project context, design DNA context, product preferences, acceptance preferences, GO CONTEXT | 專案脈絡、設計 DNA、產品偏好、驗收偏好、脈絡核准 | project-context-protocol | —                  |
 | stitch, UI prototype, design DNA, screen                                     | Stitch、設計稿、UI 生成、畫面                    | stitch-design            | stitch             |
 | maps, geocoding, places, routes API                                          | 地圖、定位、地點、路線                           | maps-assist              | —                  |

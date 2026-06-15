@@ -1,7 +1,7 @@
 ﻿---
 name: 02_blueprint
 description: "Use when: 純架構設計、藍圖、技術堆疊探勘、全系統初始化、重大技術轉向、ER 圖、API 路由設計、三平台代理治理架構宣告、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 的架構判斷。DO NOT use when: 目標是同一輪直接建構功能；改用建構流程的設計到建構合約。"
-required_skills: [memory-ops, tech-stack-protocol, memory-arch, ai-dev-quality-gate, project-context-protocol]
+required_skills: [memory-ops, tech-stack-protocol, memory-arch, ai-dev-quality-gate, intent-alignment-gate, project-context-protocol]
 memory_awareness: full
 user-invocable: true
 metadata:
@@ -51,12 +51,13 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > [LOAD SKILL] If this task touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.claude/skills/plugin-release-governance/SKILL.md` before architecture planning.
 > [LOAD SKILL] If this blueprint touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, or mobile/responsive behavior, read `.claude/skills/ai-dev-quality-gate/SKILL.md` before architecture planning.
+> [LOAD SKILL] Before producing an architecture blueprint, read `.claude/skills/intent-alignment-gate/SKILL.md` and apply requirement playback, neutral challenge, decision trace, acceptance trace, and drift-risk output sections.
 > [LOAD SKILL] If this blueprint touches product direction, design DNA, technical preferences, communication preferences, or acceptance preferences, read `.claude/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before architecture planning.
 
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 02 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Record decision status, alternatives, trade-offs, assumptions, compatibility impact, and the handoff contract for later build work.
+- Workflow-specific grounding: Record requirement playback, neutral challenge, decision status, alternatives, trade-offs, assumptions, compatibility impact, requirement-to-acceptance trace, and the handoff contract for later build work.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 
@@ -120,12 +121,17 @@ Use this workflow only when the Director needs architecture output without immed
 ## 4. Blueprint Output (藍圖產出)
 
 - Generate blueprint artifact in Traditional Chinese with structure:
-  1. 【技術堆疊鎖定】— Framework + version + rationale
-  2. 【系統架構圖】— Mermaid ER/flow diagrams
-  3. 【API 路由規劃】— Route map table
-  4. 【模組拆分與記憶卡對照】— Module → memory card mapping
-  5. 【三平台代理治理架構說明】— 若適用
-  6. 【開放問題】— Design decisions requiring Director input
+  1. 【需求理解回放】— Goal, non-goals, operator scenario, constraints, success criteria, and assumptions
+  2. 【中立反證檢查】— 我看到的事實 / 可能問題 / 建議做法
+  3. 【技術堆疊鎖定】— Framework + version + rationale
+  4. 【系統架構圖】— Mermaid ER/flow diagrams
+  5. 【API 路由規劃】— Route map table
+  6. 【模組拆分與記憶卡對照】— Module → memory card mapping
+  7. 【架構決策表】— Decision status, alternatives, trade-offs, compatibility, and evidence level
+  8. 【需求到驗收追蹤表】— Requirement source, plan coverage, acceptance evidence, and status
+  9. 【建構交接合約】— Must-do, must-not-do, dependencies, risks, and unverified items for `/03_build`
+  10. 【三平台代理治理架構說明】— 若適用
+  11. 【未驗證與阻塞清單】— Design decisions requiring Director input or later evidence
 
 - Output:「[架構藍圖] 已產出。若總監要進入實作，請在同一對話中交給 /03_build 沿用本藍圖，不要重新規劃上下文。」
 

@@ -35,6 +35,18 @@ Production build, fix, test, and audit workflows must classify the requested cha
 
 Patch-stack rule: a workflow must not keep adding emergency patches when the same symptom family, file region, or operator path has already been patched once in the current cycle. It must route to root-cause repair or structural refactor unless the Director explicitly accepts a temporary unresolved-risk marker.
 
+## Intent Alignment Governance Matrix
+
+Architecture and build workflows must preserve Director intent as a traceable contract instead of relying on agreeable summaries.
+
+| 階段 | 必須輸出 | 最低證據 |
+|---|---|---|
+| 需求理解 | 需求理解回放、非目標、限制、成功標準 | Current prompt, relevant memory/context, source files, and explicitly marked assumptions |
+| 中立反證 | 我看到的事實、可能問題、建議做法 | Source/tool/official evidence when available; inference must be labeled |
+| 決策紀錄 | Accepted/rejected/deferred decisions, alternatives, trade-offs, compatibility | Decision status plus evidence level |
+| 需求追蹤 | Requirement-to-plan/task-to-acceptance mapping | Every requirement has a planned task or a recorded rejection/narrowing decision |
+| 偏移稽核 | Aligned, justified deviation, unauthorized deviation, unverified | Original request, approved plan, actual changes, and validation evidence compared before completion |
+
 ## Visual Evidence Governance Matrix
 
 Visual verification must inspect details and prefer real information. Screenshots are visible-state evidence only; they do not prove data correctness, persistence, business logic, permissions, integrations, or post-action side effects.
@@ -60,9 +72,9 @@ Visual verification must inspect details and prefer real information. Screenshot
 |---|---|---|---|---|
 | 00 對話 | 純討論、概念釐清、輕量問答 | Codex 指令分層、Claude 上下文管理、Agent Skills 描述觸發 | 當前規則與已知上下文；高變動事實需轉研究 | 01、02、03、04、06、09 |
 | 01 探索 | 網路研究、競品、可行性、反方分析 | 深度研究實務、來源可信度、資料新鮮度 | 來源層級、日期、偏誤、覆蓋缺口與未驗證項 | 02、03、08 |
-| 02 架構 | 純架構、重大技術轉向、系統藍圖 | ADR、C4、arc42、官方框架文件 | 決策狀態、替代方案、假設、相容性與後續建構契約 | 03、08、12 |
+| 02 架構 | 純架構、重大技術轉向、系統藍圖 | ADR、C4、arc42、官方框架文件、需求對齊閘門 | 需求理解回放、中立反證、決策狀態、替代方案、需求到驗收追蹤、假設、相容性與後續建構契約 | 03、08、12 |
 | 03-1 實驗 | 沙盒 spike、丟棄式原型 | 技術 spike 與原型隔離實務 | 實驗邊界、丟棄條件、禁止生產品質聲明 | 03、11 |
-| 03 建構 | 正式建構、產品行為變更 | 先探索、再計畫、再實作、再驗證 | 驗收條件、真實驗證路徑、工具發現、阻塞條件、記憶所有權與狀態證據 | 04、06、08、09 |
+| 03 建構 | 正式建構、產品行為變更 | 先探索、再計畫、再實作、再驗證、需求對齊閘門 | 沿用藍圖狀態、需求到任務追蹤、任務驗收矩陣、偏移稽核規則、真實驗證路徑、工具發現、阻塞條件、記憶所有權與狀態證據 | 04、06、08、09 |
 | 04 修復 | bug 修復、回歸修復 | 根因分析、缺陷管理、回歸測試 | 症狀、根因、修復證據、回歸證據、受影響記憶卡狀態與依賴證據 | 06、07、09 |
 | 05 濃縮 | 專案身份、長期記憶初始化 | 上下文壓縮、長期記憶、偏好治理 | 來源依據、永久事實與暫時觀察分離、工作區與脈絡盤點證據 | 02、11、12 |
 | 06 測試 | E2E、視覺、效能、無障礙、回歸 | Playwright、Lighthouse、Web Vitals、WCAG | 專案型態、測試面、證據等級、阻塞原因 | 03、04、08 |

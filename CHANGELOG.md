@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-16] 需求對齊與中立建構治理
+
+### feat
+- **Intent alignment gate** — 新增需求對齊共用技能，讓架構藍圖與建構計畫固定輸出需求理解回放、中立反證、決策紀錄、驗收追蹤與偏移稽核。
+- **Blueprint traceability** — 三平台架構入口要求架構決策表、需求到驗收追蹤表、建構交接合約與未驗證/阻塞清單，避免藍圖與總監意圖分歧。
+- **Build drift audit** — 三平台建構入口要求沿用藍圖狀態、需求到任務追蹤表、任務驗收矩陣、偏移稽核規則與完成前回查。
+
+### docs
+- **Skill count refresh** — 共用操作型技能數更新為 41；Codex Edition 部署後技能總數更新為 58（41 共用 + 17 工作流）。
+
 ## [2026-06-16] 變更意圖與視覺驗證治理
 
 ### feat
