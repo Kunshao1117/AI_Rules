@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-15] 共用治理參考部署
+
+### fix
+- **Shared governance references** — 專案同步與三平台部署會把平台能力矩陣與工作流證據矩陣複製到共用治理參考目錄，避免下游專案只取得技能卻找不到矩陣依據。
+
+### docs
+- **Workflow grounding paths** — 三平台工作流與根文件改用部署後可讀的位置說明共用矩陣，並保留框架來源檔作為唯一維護位置。
+
 ## [2026-06-15] 深層證據式健檢
 
 ### feat

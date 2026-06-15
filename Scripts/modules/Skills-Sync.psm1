@@ -75,6 +75,66 @@ function Sync-SharedSkills {
     return $updated
 }
 
+function Sync-SharedGovernanceReferences {
+    <#
+    .SYNOPSIS
+        將 Shared/ 根層共用治理參考檔同步到目標專案 .agents/shared/。
+    .PARAMETER SharedRoot
+        Shared/ 的絕對路徑。
+    .PARAMETER TargetAgentsRoot
+        目標專案 .agents/ 的絕對路徑。
+    .PARAMETER Mode
+        Full（全量覆蓋）或 Diff（僅更新有差異的檔案）。
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$SharedRoot,
+
+        [Parameter(Mandatory = $true)]
+        [string]$TargetAgentsRoot,
+
+        [ValidateSet("Full", "Diff")]
+        [string]$Mode = "Full"
+    )
+
+    if (-not (Test-Path -LiteralPath $SharedRoot -PathType Container)) {
+        Write-Fail "Shared/ 不存在：$SharedRoot"
+        return 0
+    }
+
+    $targetSharedRoot = Join-Path $TargetAgentsRoot "shared"
+    New-Item -ItemType Directory -Force -Path $targetSharedRoot | Out-Null
+
+    $referenceFiles = @(
+        "platform-capability-matrix.md",
+        "workflow-capability-evidence-matrix.md"
+    )
+
+    $updated = 0
+    foreach ($rel in $referenceFiles) {
+        $srcFile = Join-Path $SharedRoot $rel
+        if (-not (Test-Path -LiteralPath $srcFile -PathType Leaf)) {
+            Write-Warn "共用治理參考檔不存在，跳過：$srcFile"
+            continue
+        }
+
+        $tgtFile = Join-Path $targetSharedRoot $rel
+        $shouldCopy = $Mode -eq "Full"
+        if (-not $shouldCopy) {
+            $result = Compare-FrameworkFile -SourcePath $srcFile -TargetPath $tgtFile -RelativePath $rel
+            $shouldCopy = $result.Status -in @("NEW", "CHANGED")
+        }
+
+        if ($shouldCopy) {
+            Copy-Item -LiteralPath $srcFile -Destination $tgtFile -Force
+            $updated++
+        }
+    }
+
+    Write-Ok "共用治理參考同步完成：更新 $updated 個檔案 → $targetSharedRoot"
+    return $updated
+}
+
 function Merge-WorkflowSkills {
     <#
     .SYNOPSIS
@@ -219,4 +279,4 @@ function Sync-SharedPolicyBlock {
     return 1
 }
 
-Export-ModuleMember -Function Sync-SharedSkills, Merge-WorkflowSkills, Get-SharedPolicyBlock, Sync-SharedPolicyBlock
+Export-ModuleMember -Function Sync-SharedSkills, Sync-SharedGovernanceReferences, Merge-WorkflowSkills, Get-SharedPolicyBlock, Sync-SharedPolicyBlock

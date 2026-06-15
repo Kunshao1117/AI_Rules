@@ -29,7 +29,7 @@
 
 ## Workflow Grounding Translation Layer
 
-`Shared/workflow-capability-evidence-matrix.md` 是 00 到 12 工作流的外部接地與最低證據契約。平台工作流只應引用該矩陣並加入平台 adapter 語義，不應在三平台重複維護長規則。
+工作流能力與證據矩陣的來源檔（`Shared/workflow-capability-evidence-matrix.md`）會在部署或專案同步時複製到共用治理參考目錄（`.agents/shared/workflow-capability-evidence-matrix.md`）。平台工作流必須讀取部署後位置，避免下游專案只取得技能卻缺少矩陣依據；來源檔仍是框架倉庫的唯一維護位置。
 
 | 工作流面向 | Antigravity / Gemini | Claude Edition | Codex Edition |
 |------|----------------------|----------------|---------------|

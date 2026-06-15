@@ -363,6 +363,26 @@ function Get-CodexWorkflowDiffs {
     return $diffs
 }
 
+function Get-SharedGovernanceReferenceDiffs {
+    param(
+        [string]$SharedRoot,
+        [string]$TargetAgentsRoot
+    )
+
+    $diffs = @()
+    if (-not (Test-Path -LiteralPath $SharedRoot)) { return $diffs }
+
+    foreach ($rel in @("platform-capability-matrix.md", "workflow-capability-evidence-matrix.md")) {
+        $sourceFile = Join-Path $SharedRoot $rel
+        if (-not (Test-Path -LiteralPath $sourceFile -PathType Leaf)) { continue }
+        $targetFile = Join-Path (Join-Path $TargetAgentsRoot "shared") $rel
+        $diff = Compare-FrameworkFile -SourcePath $sourceFile -TargetPath $targetFile -RelativePath $rel
+        if ($diff.Status -in @("NEW", "CHANGED")) { $diffs += $diff }
+    }
+
+    return $diffs
+}
+
 function Write-DiffSummary {
     param(
         [string]$Title,
@@ -435,6 +455,7 @@ function Invoke-SyncAntigravityProjectRules {
     $sourceRoot = Join-Path $RepoRoot "Antigravity\.agents"
     $agTargetRoot = Join-Path $ProjectRoot ".agents"
     $version = Get-VersionContent -Path (Join-Path $RepoRoot "Antigravity\VERSION")
+    $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
     $report = @(Get-UpgradeReport `
         -SourceRoot $sourceRoot `
@@ -455,6 +476,8 @@ function Invoke-SyncAntigravityProjectRules {
     $targetSkillsPath = Join-Path $agTargetRoot "skills"
     $skillDiffs = @(Get-SharedSkillDiffs -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath)
     Write-DiffSummary -Title "Antigravity Shared Skills" -Diffs $skillDiffs
+    $governanceDiffs = @(Get-SharedGovernanceReferenceDiffs -SharedRoot $sharedRoot -TargetAgentsRoot $agTargetRoot)
+    Write-DiffSummary -Title "Antigravity Shared Governance References" -Diffs $governanceDiffs
     Set-ProjectVersionFile -Path (Join-Path $agTargetRoot "VERSION") -Version $version -Apply:$Apply
 
     if (-not $Apply) { return }
@@ -467,6 +490,7 @@ function Invoke-SyncAntigravityProjectRules {
         -Platform Antigravity `
         -InsertBeforePattern '(?m)^## 2\. Agentic Swarm UI Visibility'
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
+    $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot -TargetAgentsRoot $agTargetRoot -Mode Diff
 }
 
 function Invoke-SyncClaudeProjectRules {
@@ -479,6 +503,7 @@ function Invoke-SyncClaudeProjectRules {
     $sourceRoot = Join-Path $RepoRoot "Claude\.claude"
     $claudeTargetRoot = Join-Path $ProjectRoot ".claude"
     $version = Get-VersionContent -Path (Join-Path $RepoRoot "Claude\VERSION")
+    $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
     $report = @(Get-UpgradeReport `
         -SourceRoot $sourceRoot `
@@ -498,6 +523,8 @@ function Invoke-SyncClaudeProjectRules {
     $targetSkillsPath = Join-Path $claudeTargetRoot "skills"
     $skillDiffs = @(Get-SharedSkillDiffs -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath)
     Write-DiffSummary -Title "Claude Shared Skills" -Diffs $skillDiffs
+    $governanceDiffs = @(Get-SharedGovernanceReferenceDiffs -SharedRoot $sharedRoot -TargetAgentsRoot (Join-Path $ProjectRoot ".agents"))
+    Write-DiffSummary -Title "Claude Shared Governance References" -Diffs $governanceDiffs
     Set-ProjectVersionFile -Path (Join-Path $claudeTargetRoot "VERSION") -Version $version -Apply:$Apply
 
     if (-not $Apply) { return }
@@ -510,6 +537,7 @@ function Invoke-SyncClaudeProjectRules {
         -Platform Claude `
         -InsertBeforePattern '(?m)^## 2\. Multi-Agent Transparency'
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
+    $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot -TargetAgentsRoot (Join-Path $ProjectRoot ".agents") -Mode Diff
 }
 
 function Invoke-SyncCodexProjectRules {
@@ -525,6 +553,7 @@ function Invoke-SyncCodexProjectRules {
     $agentsRoot = Join-Path $ProjectRoot ".agents"
     $targetSkillsPath = Join-Path $agentsRoot "skills"
     $version = Get-VersionContent -Path (Join-Path $RepoRoot "Codex\VERSION")
+    $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
 
     $report = @(Get-UpgradeReport `
@@ -542,6 +571,8 @@ function Invoke-SyncCodexProjectRules {
     Write-DiffSummary -Title "Codex Shared Skills" -Diffs $skillDiffs
     $workflowDiffs = @(Get-CodexWorkflowDiffs -WorkflowSkillsPath $workflowSkillsRoot -TargetSkillsPath $targetSkillsPath)
     Write-DiffSummary -Title "Codex Workflow Skills" -Diffs $workflowDiffs
+    $governanceDiffs = @(Get-SharedGovernanceReferenceDiffs -SharedRoot $sharedRoot -TargetAgentsRoot $agentsRoot)
+    Write-DiffSummary -Title "Codex Shared Governance References" -Diffs $governanceDiffs
     Set-ProjectVersionFile -Path (Join-Path $codexTargetRoot "VERSION") -Version $version -Apply:$Apply
 
     if (-not $Apply) { return }
@@ -554,6 +585,7 @@ function Invoke-SyncCodexProjectRules {
         -Platform Codex `
         -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
+    $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot -TargetAgentsRoot $agentsRoot -Mode Diff
     if (Test-Path -LiteralPath $workflowSkillsRoot) {
         $null = Merge-WorkflowSkills -WorkflowSkillsPath $workflowSkillsRoot -TargetSkillsPath $targetSkillsPath
     }

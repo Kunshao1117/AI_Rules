@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 一般討論、探索、實驗、濃縮與測試指令。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-06-15T02:54:12+08:00'
+last_updated: '2026-06-15T08:05:44+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: partial_evidence
-last_verified: '2026-06-15T02:49:32+08:00'
+last_verified: '2026-06-15T08:08:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -43,6 +43,7 @@ metadata:
 - Do not write source or memory from read-only command flows without the appropriate gate.
 
 ## Cycle Events
+- 02: Aligned general Claude command grounding paths to deployed .agents/shared governance references.
 - 01: Split Claude general command ownership out of the support parent card.
 
 ## Archive Index

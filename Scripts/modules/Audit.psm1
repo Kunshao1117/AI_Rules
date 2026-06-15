@@ -605,6 +605,7 @@ function Get-GovernanceScanFiles {
         'Claude\README.md',
         'Codex\README.md',
         'Shared\platform-capability-matrix.md',
+        'Shared\workflow-capability-evidence-matrix.md',
         'Shared\policies\subagent-invocation.md',
         'Shared\mcp-profiles\README.md',
         'Codex\.codex\AGENTS.md',
@@ -940,23 +941,43 @@ function Measure-PlatformCapability {
     .PARAMETER RepoRoot
         AI_Rules 倉庫根目錄
     #>
-    param([string]$RepoRoot = ".")
+    param(
+        [string]$RepoRoot = ".",
+        [string]$TargetRoot = "."
+    )
 
     $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
     $matrixPath = Join-Path $RepoRoot 'Shared\platform-capability-matrix.md'
+    $workflowMatrixPath = Join-Path $RepoRoot 'Shared\workflow-capability-evidence-matrix.md'
     $mcpProfilePath = Join-Path $RepoRoot 'Shared\mcp-profiles\README.md'
+    $targetSharedRoot = Join-Path $TargetRoot '.agents\shared'
+    $targetPlatformMatrixPath = Join-Path $targetSharedRoot 'platform-capability-matrix.md'
+    $targetWorkflowMatrixPath = Join-Path $targetSharedRoot 'workflow-capability-evidence-matrix.md'
 
     $matrixOk = (Test-Path $matrixPath) -and ((Get-Content -LiteralPath $matrixPath -Raw -Encoding UTF8) -match 'native' -and (Get-Content -LiteralPath $matrixPath -Raw -Encoding UTF8) -match 'adapter' -and (Get-Content -LiteralPath $matrixPath -Raw -Encoding UTF8) -match 'manual')
+    $workflowMatrixOk = (Test-Path $workflowMatrixPath) -and ((Get-Content -LiteralPath $workflowMatrixPath -Raw -Encoding UTF8) -match 'Workflow Matrix')
     $mcpProfileOk = (Test-Path $mcpProfilePath) -and ((Get-Content -LiteralPath $mcpProfilePath -Raw -Encoding UTF8) -match 'Opt-in')
+    $targetSharedRequired =
+        (Test-Path -LiteralPath (Join-Path $TargetRoot '.agents\skills') -PathType Container) -or
+        (Test-Path -LiteralPath (Join-Path $TargetRoot '.agents\workflows') -PathType Container) -or
+        (Test-Path -LiteralPath (Join-Path $TargetRoot '.agents\rules') -PathType Container) -or
+        (Test-Path -LiteralPath (Join-Path $TargetRoot '.codex') -PathType Container) -or
+        (Test-Path -LiteralPath (Join-Path $TargetRoot '.claude') -PathType Container)
+    $targetSharedOk = (-not $targetSharedRequired) -or ((Test-Path -LiteralPath $targetPlatformMatrixPath -PathType Leaf) -and (Test-Path -LiteralPath $targetWorkflowMatrixPath -PathType Leaf))
 
     Write-Host ""
     Write-Host "📊 平台能力與 MCP profile"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host ("能力矩陣：{0}" -f ($(if ($matrixOk) { '🟢' } else { '🔴' })))
+    Write-Host ("工作流證據矩陣：{0}" -f ($(if ($workflowMatrixOk) { '🟢' } else { '🔴' })))
+    Write-Host ("共用治理參考部署：{0}" -f ($(if ($targetSharedOk) { '🟢' } else { '🔴' })))
     Write-Host ("MCP opt-in snippets：{0}" -f ($(if ($mcpProfileOk) { '🟢' } else { '🔴' })))
 
     return [PSCustomObject]@{
         CapabilityMatrix = $matrixOk
+        WorkflowMatrix   = $workflowMatrixOk
+        TargetSharedRefs = $targetSharedOk
         McpProfiles      = $mcpProfileOk
     }
 }
@@ -2254,7 +2275,7 @@ function Invoke-PlatformGovernanceAudit {
     Write-Host "RepoRoot：$RepoRoot"
     Write-Host "TargetRoot：$TargetRoot"
 
-    $capability = Measure-PlatformCapability -RepoRoot $RepoRoot
+    $capability = Measure-PlatformCapability -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $metadata = Measure-WorkflowMetadata -RepoRoot $RepoRoot
     $skillQuality = Measure-SkillQuality -SkillsRoot (Join-Path $RepoRoot 'Shared\skills')
     $docs = Measure-DocsConsistency -RepoRoot $RepoRoot
@@ -2277,7 +2298,7 @@ function Invoke-PlatformGovernanceAudit {
     $redTotal += $skillRed
     $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount + $memoryNaming.YellowCount
     $yellowTotal += $metadataYellow + $skillYellow
-    $ok = $capability.CapabilityMatrix -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
+    $ok = $capability.CapabilityMatrix -and $capability.WorkflowMatrix -and $capability.TargetSharedRefs -and $capability.McpProfiles -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
     Write-Host ""
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

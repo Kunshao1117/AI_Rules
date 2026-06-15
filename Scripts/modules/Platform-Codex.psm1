@@ -39,6 +39,7 @@ function Invoke-CodexFresh {
     $agentsRoot      = Join-Path $Target ".agents"
     $targetSkillsPath = Join-Path $agentsRoot "skills"
     $version         = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
+    $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
@@ -89,6 +90,11 @@ function Invoke-CodexFresh {
         } else {
             Write-Warn "workflow-skills/ 不存在，跳過工作流技能合併。"
         }
+
+        Write-Step "注入共用治理參考（Shared/ → .agents/shared/）..."
+        $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot `
+                          -TargetAgentsRoot $agentsRoot `
+                          -Mode Full
 
         # 基礎設施確保
         Initialize-AgentInfrastructure -AgentsRoot $agentsRoot -ContextTemplatesRoot $contextTemplatesRoot
@@ -153,6 +159,7 @@ function Invoke-CodexUpgrade {
     $agentsRoot      = Join-Path $Target ".agents"
     $targetSkillsPath = Join-Path $agentsRoot "skills"
     $version         = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
+    $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
@@ -243,6 +250,11 @@ function Invoke-CodexUpgrade {
         $null = Merge-WorkflowSkills -WorkflowSkillsPath $srcWorkflowSkills `
                               -TargetSkillsPath $targetSkillsPath
     }
+
+    Write-Step "同步共用治理參考（Shared/ → .agents/shared/）..."
+    $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot `
+                      -TargetAgentsRoot $agentsRoot `
+                      -Mode Diff
 
     # 基礎設施確保
     Initialize-AgentInfrastructure -AgentsRoot $agentsRoot -ContextTemplatesRoot $contextTemplatesRoot

@@ -1,4 +1,4 @@
----
+﻿---
 description: "Use when: 交接、handoff、彙整目前對話成果、掃描記憶卡並產出下一個 AI 可接手的提示詞。DO NOT use when: 仍在實作或需要提交。"
 required_skills: [memory-ops]
 memory_awareness: full
@@ -48,10 +48,10 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
-- Before applying this workflow, read Shared/workflow-capability-evidence-matrix.md and use the 11 row as the minimum external grounding and evidence contract.
+- Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 11 row as the minimum external grounding and evidence contract.
 - Workflow-specific grounding: Preserve current state, dirty files, blockers, unverified evidence, source references, decisions made, and the exact next workflow route.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
-- Apply the platform adapter in Shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+- Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 
 # [WORKFLOW: HANDOFF (交接)]
 

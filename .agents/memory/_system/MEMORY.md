@@ -4,19 +4,19 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-15T03:31:57+08:00'
-status: stale
-staleness: 10
+last_updated: '2026-06-15T08:09:16+08:00'
+status: stable
+staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: partial_evidence
-last_verified: '2026-06-15T03:28:12+08:00'
+last_verified: '2026-06-15T08:08:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,18 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-<!-- CARTRIDGE_SYSTEM_WARNING_START -->
 
-> [!CAUTION]
-> 🟠 **系統強制攔截**：此記憶已過期失真！
-> 追蹤檔案異動：`CHANGELOG.md`（2026-06-15T04:57:18+08:00）
-> AI 嚴禁基於此記憶施工，必須優先閱讀最新原始碼並更新此記憶卡。
-> staleness: 10 | threshold: 🟠 顯著過期
-
-<!-- CARTRIDGE_SYSTEM_WARNING_END -->
 # _system — Repository Governance Memory
 
 ## Current Truth
+- Root documentation describes shared matrix source paths and their deployed `.agents/shared/` paths.
+- Changelog records the shared governance reference deployment behavior for downstream project synchronization.
 - AI_Rules is the source repository for Antigravity, Claude Edition, and Codex Edition governance.
 - Director-facing output must use Traditional Chinese unless a lower-level artifact explicitly requires another language.
 - Root repository work, git status, commit, tag, and push operations use `D:\AI_Rules` as the baseline.
@@ -56,6 +50,8 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 05: Documented shared governance reference deployment in root documentation.
+- 06: Added changelog coverage for shared governance reference deployment.
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
 - 02: Split root PowerShell script ownership into `_system.scripts`.
 - 03: Recorded changelog summary for the memory main-file migration and split commit.

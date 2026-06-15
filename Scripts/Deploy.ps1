@@ -59,6 +59,7 @@ $OutputEncoding          = [System.Text.Encoding]::UTF8
 # $PSScriptRoot = Scripts/ 目錄，往上一層就是 AI_Rules 根目錄
 $RepoRoot         = Split-Path $PSScriptRoot -Parent
 $ModulesDir       = Join-Path $PSScriptRoot "modules"
+$SharedRoot       = Join-Path $RepoRoot "Shared"
 $SharedSkillsRoot = Join-Path $RepoRoot "Shared\skills"
 $SharedPolicyPath = Join-Path $RepoRoot "Shared\policies\subagent-invocation.md"
 $AgRoot           = Join-Path $RepoRoot "Antigravity"
@@ -158,6 +159,7 @@ function Invoke-PlatformDeploy {
                 "Upgrade" { Invoke-AgUpgrade -FrameworkRoot $AgRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot -RemoveOrphans:$RemoveOrphans }
                 "Sync"    {
                     Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".agents\skills") -Mode Diff
+                    Sync-SharedGovernanceReferences -SharedRoot $SharedRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
                     Sync-SharedPolicyBlock -PolicyPath $SharedPolicyPath `
                         -TargetPath (Join-Path $TargetPath ".agents\rules\00_core_identity.md") `
                         -Platform Antigravity `
@@ -176,6 +178,7 @@ function Invoke-PlatformDeploy {
                 "Upgrade" { Invoke-ClaudeUpgrade -FrameworkRoot $ClaudeRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot -RemoveOrphans:$RemoveOrphans }
                 "Sync"    {
                     Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".claude\skills") -Mode Diff
+                    Sync-SharedGovernanceReferences -SharedRoot $SharedRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
                     Sync-SharedPolicyBlock -PolicyPath $SharedPolicyPath `
                         -TargetPath (Join-Path $TargetPath ".claude\rules\core-identity.md") `
                         -Platform Claude `
@@ -194,6 +197,7 @@ function Invoke-PlatformDeploy {
                 "Upgrade" { Invoke-CodexUpgrade -FrameworkRoot $CodexRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot -RemoveOrphans:$RemoveOrphans }
                 "Sync"    {
                     Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".agents\skills") -Mode Diff
+                    Sync-SharedGovernanceReferences -SharedRoot $SharedRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
                     Sync-SharedPolicyBlock -PolicyPath $SharedPolicyPath `
                         -TargetPath (Join-Path $TargetPath ".codex\AGENTS.md") `
                         -Platform Codex `

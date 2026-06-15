@@ -1,4 +1,4 @@
----
+﻿---
 name: 12_skill_forge
 description: "Use when: 技能鍛造、建立新技能、建立 Shared skill、建立 project skill、建立 Codex skill、從健檢/除錯/總監指令萃取可重用方法論、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 相關技能設計。DO NOT use when: 只是討論技能想法、不準備寫入，或只要修改既有技能描述。"
 required_skills: [memory-ops, project-context-protocol]
@@ -54,10 +54,10 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
-- Before applying this workflow, read Shared/workflow-capability-evidence-matrix.md and use the 12 row as the minimum external grounding and evidence contract.
+- Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 12 row as the minimum external grounding and evidence contract.
 - Workflow-specific grounding: Apply the Agent Skills format, description-trigger quality, progressive disclosure, layer selection, reference splitting, and validation gates before writing skills.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
-- Apply the platform adapter in Shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+- Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 
 # [SKILL: /12_skill_forge — 技能鍛造]
 

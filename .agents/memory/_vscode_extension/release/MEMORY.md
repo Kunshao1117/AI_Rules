@@ -4,19 +4,19 @@ scopePath: Extensions/vscode-ai-rules-manager/
 description: >-
   專案記憶：VS Code 管理器外掛封裝、資源、發布與後端入口。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-06-15T02:54:56+08:00'
+last_updated: '2026-06-15T08:06:22+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: partial_evidence
-last_verified: '2026-06-15T02:51:30+08:00'
+last_verified: '2026-06-15T08:08:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,6 +34,7 @@ metadata:
 # _vscode_extension.release — VS Code Extension Release Memory
 
 ## Current Truth
+- The manager backend reports and applies shared governance reference deployment during project rule synchronization.
 - This child card owns VS Code extension package metadata, lockfile, README, resources, release workflow, and manager backend entrypoint.
 - VSIX release assets are produced through GitHub Release tags and the release workflow.
 - Lockfile-only transitive dev dependency security patches do not change extension behavior or product version by default.
@@ -44,6 +45,7 @@ metadata:
 - Do not silently publish or install VSIX packages.
 
 ## Cycle Events
+- 02: Project sync backend now reports and applies shared governance reference files for plugin-driven sync.
 - 01: Split VS Code extension release and packaging ownership out of the extension parent card.
 
 ## Archive Index

@@ -1,4 +1,4 @@
----
+﻿---
 name: "07-debug-除錯"
 description: "Use when: 除錯、分析 stack trace、閱讀日誌、定位錯誤來源並說明商業影響。DO NOT use when: 已決定要修改原始碼，改用修復工作流。"
 metadata:
@@ -48,10 +48,10 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
-- Before applying this workflow, read Shared/workflow-capability-evidence-matrix.md and use the 07 row as the minimum external grounding and evidence contract.
+- Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 07 row as the minimum external grounding and evidence contract.
 - Workflow-specific grounding: Use logs, traces, metrics, runtime output, or equivalent observable signals to prove or disprove root-cause hypotheses before routing to fix.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
-- Apply the platform adapter in Shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+- Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 
 # source-command-07-debug-skill
 

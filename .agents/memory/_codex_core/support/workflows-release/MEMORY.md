@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 提交、巡檢與技能鍛造工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-15T02:54:37+08:00'
+last_updated: '2026-06-15T08:05:28+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: partial_evidence
-last_verified: '2026-06-15T02:50:19+08:00'
+last_verified: '2026-06-15T08:08:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -43,6 +43,7 @@ metadata:
 - Do not let automation-safe routine inspection perform writes.
 
 ## Cycle Events
+- 02: Aligned release Codex workflow grounding paths to deployed .agents/shared governance references.
 - 01: Split Codex release and governance workflow ownership out of the support parent card.
 
 ## Archive Index

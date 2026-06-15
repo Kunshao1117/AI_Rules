@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 測試、巡檢、交接與技能鍛造工作流。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-15T02:54:01+08:00'
+last_updated: '2026-06-15T08:06:07+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: partial_evidence
-last_verified: '2026-06-15T02:48:38+08:00'
+last_verified: '2026-06-15T08:08:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -43,6 +43,7 @@ metadata:
 - Keep handoff and routine workflows from mutating source or memory without the appropriate gate.
 
 ## Cycle Events
+- 02: Aligned operational workflow grounding paths to deployed .agents/shared governance references.
 - 01: Split Antigravity operational workflow ownership out of the support parent card.
 
 ## Archive Index

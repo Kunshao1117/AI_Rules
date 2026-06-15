@@ -37,6 +37,7 @@ function Invoke-AgFresh {
     $targetDir  = Join-Path $Target ".agents"
     $version    = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $agentsRoot = $targetDir
+    $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
@@ -72,6 +73,11 @@ function Invoke-AgFresh {
         $targetSkillsPath = Join-Path $targetDir "skills"
         $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
                           -TargetSkillsPath $targetSkillsPath `
+                          -Mode Full
+
+        Write-Step "注入共用治理參考（Shared/ → .agents/shared/）..."
+        $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot `
+                          -TargetAgentsRoot $agentsRoot `
                           -Mode Full
 
         # 基礎設施確保
@@ -143,6 +149,7 @@ function Invoke-AgUpgrade {
     $sourceDir  = Join-Path $FrameworkRoot ".agents"
     $targetDir  = Join-Path $Target ".agents"
     $version    = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
+    $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
@@ -213,6 +220,11 @@ function Invoke-AgUpgrade {
     $targetSkillsPath = Join-Path $targetDir "skills"
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot `
                       -TargetSkillsPath $targetSkillsPath `
+                      -Mode Diff
+
+    Write-Step "同步共用治理參考（Shared/ → .agents/shared/）..."
+    $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot `
+                      -TargetAgentsRoot $targetDir `
                       -Mode Diff
 
     # PROJECT IDENTITY 還原

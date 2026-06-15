@@ -1,4 +1,4 @@
----
+﻿---
 name: 06_test
 description: "Use when: 執行 E2E、視覺測試、介面適配證據、瀏覽器功能測試、桌面 GUI 驗證、終端輸出驗證、回歸驗證或測試委派。DO NOT use when: 只需要單元測試設計或純程式碼審查。"
 required_skills: [browser-testing, test-automation-strategy, ai-dev-quality-gate, project-context-protocol]
@@ -51,10 +51,10 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
-- Before applying this workflow, read Shared/workflow-capability-evidence-matrix.md and use the 06 row as the minimum external grounding and evidence contract.
+- Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 06 row as the minimum external grounding and evidence contract.
 - Workflow-specific grounding: Select tests by project surface and evidence level, including terminal, browser, plugin panel, desktop GUI, performance, and accessibility paths when applicable.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
-- Apply the platform adapter in Shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+- Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 
 # [SKILL: /06_test — 介面與回歸測試]
 

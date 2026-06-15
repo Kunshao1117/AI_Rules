@@ -1,4 +1,4 @@
-# Memory Quality Migration Blueprint
+﻿# Memory Quality Migration Blueprint
 
 This reference defines the content-quality migration layer for AI_Rules memory cards.
 It extends the main-file naming migration: naming separates memory from skills, while
@@ -10,7 +10,7 @@ and how old cards are rebuilt without rewriting archive history.
 | Item | Location | Decision |
 |---|---|---|
 | Memory role | `.agents/memory/` | Source memory is an auditable project fact governance layer, not an executable skill layer. |
-| Platform boundary | `Shared/platform-capability-matrix.md` | Antigravity, Claude, and Codex share memory semantics; only tools, permission prompts, and evidence collection differ. |
+| Platform boundary | `.agents/shared/platform-capability-matrix.md` | Antigravity, Claude, and Codex share memory semantics; only tools, permission prompts, and evidence collection differ. |
 | Legacy cards | `.agents/memory/**/SKILL.md` | Legacy active main files must move through governed standardization instead of permanent lazy upgrade. |
 | Archives | `.agents/memory/**/archive-*.md` | Archive volumes preserve historical wording and are not force-upgraded to active-card fields. |
 | Tool compatibility | `Shared/skills/memory-ops/references/memory-template.md` | Keep `memory_schema_version` for existing parser compatibility; add quality fields separately. |

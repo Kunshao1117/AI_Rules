@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-06-15T03:31:39+08:00'
+last_updated: '2026-06-15T08:05:06+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: partial_evidence
-last_verified: '2026-06-15T03:28:12+08:00'
+last_verified: '2026-06-15T08:08:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 3
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,6 +34,7 @@ metadata:
 # _shared — Shared Governance Memory
 
 ## Current Truth
+- Workflow and platform matrices are authored under `Shared/` and deployed to `.agents/shared/` for target-project AI access.
 - Shared/ is the single source for 40 operational skills and cross-platform governance assets.
 - Shared skills are deployed into Antigravity, Claude, and Codex by the shared sync engine.
 - Memory governance now uses schema v2 with Current Truth, Active Constraints, Cycle Events, Archive Index, and 中文摘要.
@@ -50,6 +51,7 @@ metadata:
 - Treat cards above 8 tracked files as split candidates, not automatic blockers.
 - Operational skill families are routed through child cards under `_shared.ops-skills`.
 ## Cycle Events
+- 04: Declared shared matrices as source-authored assets deployed to .agents/shared for target projects.
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
 - 02: Moved testing strategy ownership from the Shared parent card to the focused testing child card.
 - 03: Added deep evidence audit semantics: depth matrix, inventory contracts, surface recipes, coverage gates, and platform translation notes.

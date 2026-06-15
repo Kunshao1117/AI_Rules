@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-15T03:32:06+08:00'
+last_updated: '2026-06-15T08:05:53+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: partial_evidence
-last_verified: '2026-06-15T03:28:12+08:00'
+last_verified: '2026-06-15T08:08:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 2
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,6 +34,7 @@ metadata:
 # _ag_core — Antigravity Memory
 
 ## Current Truth
+- Antigravity workflows read workflow grounding and platform capability matrices from deployed `.agents/shared/` paths.
 - Antigravity is the Gemini-facing platform adapter for the AI_Rules governance framework.
 - Antigravity uses `.agents/rules/`, `.agents/workflows/`, and `.agents/skills/`.
 - Antigravity workflow rules now align memory updates with schema v2 compaction governance.
@@ -49,6 +50,7 @@ metadata:
 - Keep Antigravity-specific workflow facts here and shared operational details in Shared skills.
 - This card still needs a later child-card split if all Antigravity workflows are actively edited again.
 ## Cycle Events
+- 03: Aligned Antigravity workflow grounding paths to deployed .agents/shared governance references.
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
 - 02: Updated Antigravity README to describe the deep 08 audit model and coverage reporting.
 ## Archive Index

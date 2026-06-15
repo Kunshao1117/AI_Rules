@@ -1,4 +1,4 @@
----
+﻿---
 name: 00_chat
 description: "Use when: 純對話討論、腦力激盪、程式碼問答、概念釐清。DO NOT use when: 需要深度研究、建構、修復、測試、提交或產出正式 Artifact。"
 required_skills: []
@@ -51,10 +51,10 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
-- Before applying this workflow, read Shared/workflow-capability-evidence-matrix.md and use the 00 row as the minimum external grounding and evidence contract.
+- Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 00 row as the minimum external grounding and evidence contract.
 - Workflow-specific grounding: Keep this as pure conversation. Route research, architecture, build, fix, test, commit, or evidence-seeking requests to the matching workflow instead of expanding chat scope.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
-- Apply the platform adapter in Shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+- Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 
 # [SKILL: /00_chat — 純對話討論]
 
