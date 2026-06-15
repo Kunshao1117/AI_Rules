@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 基礎與討論建構工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-15T14:19:21+08:00'
+last_updated: '2026-06-16T02:17:41+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-15T11:55:00+08:00'
+last_verified: '2026-06-16T02:14:11+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -39,12 +39,14 @@ metadata:
 - This child card owns Antigravity shared gates and foundation workflows for chat, exploration, build, and experiment work.
 - These workflow files translate shared semantics into Antigravity-facing workflow entries.
 - Build and experiment boundaries must remain distinct.
+- Antigravity build planning now requires change intent classification, patch-stack risk, and real-information visual evidence requirements in validation plans.
 
 ## Active Constraints
 - Do not mix visual evidence requirements into pure discussion workflows.
 - Keep shared gate fragments aligned with platform governance.
 
 ## Cycle Events
+- 05: Added change intent and real-information visual evidence requirements to the Antigravity build planning workflow.
 - 04: Added MCP memory evidence contract reference to the Antigravity build workflow.
 - 03: Updated Antigravity foundation workflow output examples with source-only labels.
 - 02: Aligned foundation workflow grounding paths to deployed .agents/shared governance references.

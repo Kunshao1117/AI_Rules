@@ -17,6 +17,9 @@ Use these gates to convert evidence packets into the final health report.
 
 - Any critical security, credential, destructive data, release integrity, or core behavior failure is red.
 - Any applicable check with only synthetic evidence is at best yellow and often unverified for behavior-dependent work.
+- Any data-dependent visual check using only fake, fixture, seeded, static, or idealized data is at best yellow and often unverified until a real-information path is collected or explicitly blocked.
+- Any rendered-interface check with screenshots but no detail-observation notes is at best yellow and cannot be the sole basis for green.
+- Any repeated emergency patch without a root-cause repair or structural refactor route is yellow or red depending on impact and recurrence.
 - Any blocked high-risk check prevents the category from being green.
 - Any unverified high-risk check prevents the category from being green.
 - Any critical inventory item without covered, not_applicable, or justified partial status prevents a full green result.
@@ -38,6 +41,8 @@ The final report should include categories only when applicable, plus a reason f
 - API, data flow, and domain invariants.
 - Test coverage and real evidence.
 - UI, accessibility, and interface adaptation.
+- Change intent governance and patch-stack risk when workflow or skill governance is in scope.
+- Visual detail and real-information evidence when rendered interfaces are in scope.
 - Performance and reliability.
 - Release, CI, deployment, and artifact governance.
 - Compatibility across runtime, OS, shell, package manager, platform, and AI tool adapter.
@@ -49,6 +54,9 @@ The final report should include categories only when applicable, plus a reason f
 | Confirmed bug or regression | fix |
 | Missing or weak tests | test |
 | Architecture ambiguity or broad redesign | blueprint |
+| Repeated patch stack or unresolved root cause | fix or blueprint depending on scope |
+| Visual detail evidence missing | test |
+| Fake-data-only visual evidence for data-dependent UI | test or fix depending on data-source blocker |
 | Routine governance drift | routine |
 | Release, VSIX, tag, changelog, or artifact issue | release governance |
 | Memory or context drift | memory/context workflow with explicit approval |
@@ -64,6 +72,7 @@ Final reports must include:
 - Inventory coverage summary with denominators.
 - Top prioritized action items.
 - Evidence level summary.
+- Change intent, patch-stack, visual-detail, and real-information summary when applicable.
 - Unverified and blocked list.
 - Sampling limits, unreviewed areas, and blocked evidence paths.
 - Location index for any compact label.

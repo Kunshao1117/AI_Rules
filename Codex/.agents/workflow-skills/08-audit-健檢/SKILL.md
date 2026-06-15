@@ -60,6 +60,7 @@ Use this skill when the user asks to run the migrated source command `08_audit(�
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 08 row plus MCP Memory Evidence Matrix as the minimum external grounding and evidence contract.
 - Workflow-specific grounding: Use audit-engine depth, inventory denominator, project surface recipes, and evidence packet rules before reporting audit gates.
+- Governance checks must include change-intent classification coverage, patch-stack risk, unresolved-root-cause markers, visual detail evidence, and real-information priority when those surfaces exist.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md; audit may use read-only cartridge-system tools for governance evidence, but missing MCP evidence must become 未驗證 or 阻塞 and audit must not mutate memory.
@@ -68,7 +69,7 @@ Use this skill when the user asks to run the migrated source command `08_audit(�
 
 Load these before running the audit:
 
-- `audit-engine` — audit depth, project surface, inventory denominator, evidence packet, traffic-light, blocked/unverified semantics.
+- `audit-engine` — audit depth, project surface, inventory denominator, change-intent governance, patch-stack risk, visual detail evidence, real-information priority, evidence packet, traffic-light, blocked/unverified semantics.
 - `code-audit` — deterministic CLI scan recipes.
 - `ai-dev-quality-gate` — real execution evidence boundary.
 - `browser-testing` — browser/operator evidence when a rendered surface exists.
@@ -134,6 +135,8 @@ The three phases pass these objects forward:
   "governance": {},
   "semantic": {},
   "real_evidence": {},
+  "change_intent": {},
+  "visual_detail_evidence": {},
   "release_supply_chain": {},
   "coverage": {},
   "evidence_packets": [],

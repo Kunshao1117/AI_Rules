@@ -104,13 +104,14 @@ Technical details may only appear after a `補充技術細節` section when they
 - Draft one design-to-build contract in chat. DO NOT use `Write`/`Edit` on source files.
 - Plan MUST include:
   - **[GOVERNANCE DEPTH / 治理深度判定]**: Task level, matched escalation factors, exemption reason, and validation evidence. Output only the summary; do not duplicate the full autonomy matrix from `ai-dev-quality-gate`.
+  - **[CHANGE INTENT / 變更意圖分類]**: Classify the work as emergency patch, root-cause repair, local refinement, or structural refactor; include patch-stack risk, allowed scope, escalation trigger, and why a narrower patch is or is not acceptable.
   - **[ARCHITECTURE]**: Functional boundary, affected modules, public interface changes, and rejected alternatives.
   - **[REAL EXECUTION]**: Real operation surface, operator-tool discovery result, data source, executable validation path, transient retry strategy, equivalent real-path alternative, expected evidence level, possible blockers, and smallest authorization needed.
   - **[MODIFY]**: Files to be modified
   - **[NEW]**: New files to be created (required for memory archiving)
   - **[DELETE]**: Files to be deleted
   - **[COMPLETENESS]**: User flow, loading/empty/error/permission/offline states when relevant.
-  - **[VALIDATION]**: Unit, integration, regression, real execution evidence, and interface adaptation evidence required for completion. Mock, fixture, fake, static screenshot, or synthetic data evidence is partial evidence only.
+  - **[VALIDATION]**: Unit, integration, regression, real execution evidence, and interface adaptation evidence required for completion. Mock, fixture, fake, static screenshot, or synthetic data evidence is partial evidence only. Visual validation must include detail observation and real-information evidence first; fallback fake data must be labeled with reason, residual risk, and unsupported claims.
   - **[MEMORY/DOCS]**: Memory cards, project context, README, changelog, or release notes affected by the change.
   - Code diff previews for each change
 

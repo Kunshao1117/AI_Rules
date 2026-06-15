@@ -22,6 +22,40 @@
 
 ## Workflow Matrix
 
+## Change Intent Classification Matrix
+
+Production build, fix, test, and audit workflows must classify the requested change before writing or declaring completion. The classification is evidence governance, not wording preference.
+
+| 變更意圖 | 允許用途 | 最低證據 | 必須升級條件 |
+|---|---|---|---|
+| 緊急修補 | Temporarily stop an acute failure, isolate risk, or unblock operation while preserving a follow-up path | Reproduced symptom, smallest affected scope, rollback or follow-up note, and explicit unresolved-root-cause marker when root cause is not fixed | Same area needs a second patch, cause remains unknown, behavior crosses module boundaries, or verification depends on real data/operator flow |
+| 根因修復 | Correct a confirmed defect, regression, or invariant violation | Symptom, root cause, repair scope, regression route, affected memory ownership, and real-path evidence when the behavior is observable | Structural duplication, unclear module boundary, repeated failures, or fix requires changing public behavior/contract |
+| 局部修整 | Improve local clarity, naming, documentation, test boundary, or maintainability without changing behavior | Behavior-unchanged rationale, affected scope, targeted validation, and no hidden user-visible/data/public-interface impact | Data flow, state model, interface behavior, cross-workflow rule, or repeated adjacent edits are touched |
+| 結構重構 | Redraw module boundaries, remove patch stacks, simplify shared contracts, or reduce systemic maintenance risk | Dependency impact, migration or compatibility path, regression matrix, memory/docs impact, and visual/real evidence where surfaces are user-visible | If verification capacity is insufficient, split into reviewable stages instead of pretending the refactor is complete |
+
+Patch-stack rule: a workflow must not keep adding emergency patches when the same symptom family, file region, or operator path has already been patched once in the current cycle. It must route to root-cause repair or structural refactor unless the Director explicitly accepts a temporary unresolved-risk marker.
+
+## Visual Evidence Governance Matrix
+
+Visual verification must inspect details and prefer real information. Screenshots are visible-state evidence only; they do not prove data correctness, persistence, business logic, permissions, integrations, or post-action side effects.
+
+| 原則 | 必須做到 | 不可宣稱 |
+|---|---|---|
+| 細微觀察 | Inspect text clipping, button alignment, spacing, border breaks, overlap, focus state, disabled state, loading flicker, empty state, error state, density, and hierarchy | Do not pass a UI by saying the overall screenshot looks fine |
+| 真實資訊優先 | Use real pages, real data, real account state, current logs, current responses, or an equivalent real path before synthetic examples | Do not treat mock, fixture, seeded, fake, or idealized sample data as completed real validation |
+| 假資料備援 | Use fake data only when real information is unavailable, permission-blocked, unsafe, broken, or not authorized; record the reason and risk | Do not present fallback fake-data screenshots as real production-like evidence |
+| 狀態覆蓋 | Cover normal, loading, empty, error, permission/disabled, and before/after interaction states when applicable | Do not use a single initial screenshot to pass a whole flow |
+| 尺寸覆蓋 | Match the interface surface: mobile/tablet/desktop for web, panel widths/themes for IDE panels, window sizes for desktop GUI, narrow output for terminal | Do not treat one large desktop screenshot as responsive or interface adaptation proof |
+| 視覺回歸 | For refactor or broad UI adjustment, compare before/after and explain intended and unintended detail differences | Do not ignore all diffs, and do not fail all diffs without semantic review |
+
+| 介面類型 | 最低證據 | 補充要求 |
+|---|---|---|
+| 純文件或純規則 | Source read, semantic search, and rule consistency evidence | Do not claim product UI validation |
+| 元件或頁面樣式 | Real rendered screenshots across required sizes plus detail-observation notes | Screenshots should use real-information pages first; fake data is fallback only |
+| 互動流程 | User-path evidence, before/after state, failure or blocked states, and detail checks after action | Include focus, disabled, confirmation, validation, toast/message, and feedback states where relevant |
+| 資料驅動畫面 | Real-data normal state plus empty/loading/error or blocked-state evidence | If fake data is used, label why and what remains unverified |
+| 視覺回歸高風險 | Before/after comparison, difference explanation, and acceptance rationale | Detail-level deltas must be named, not summarized as only overall direction |
+
 | 工作流 | 任務型態 | 外部接地依據 | 最低證據 | 常見路由 |
 |---|---|---|---|---|
 | 00 對話 | 純討論、概念釐清、輕量問答 | Codex 指令分層、Claude 上下文管理、Agent Skills 描述觸發 | 當前規則與已知上下文；高變動事實需轉研究 | 01、02、03、04、06、09 |

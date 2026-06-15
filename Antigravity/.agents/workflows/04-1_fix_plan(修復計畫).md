@@ -81,26 +81,31 @@ Technical details may only appear after a `補充技術細節` section when they
   1. Map the target file(s) to their owning module(s) via memory cards.
   2. Identify affected modules through Relations.
   3. Classify risk level (High/Medium/Low).
-  4. Identify the real failure reproduction path, operator-tool discovery result, data source, executable validation path, retry or equivalent-path strategy, and any hard blocker.
+  4. Classify the repair intent as emergency patch, root-cause repair, local refinement, or structural refactor; if this is not a root-cause repair, record unresolved risk and follow-up route.
+  5. Identify patch-stack risk: repeated symptom family, repeated file region, repeated operator path, or previous temporary stopgap in the current cycle.
+  6. Identify the real failure reproduction path, operator-tool discovery result, data source, executable validation path, retry or equivalent-path strategy, and any hard blocker.
 - [ASSERT] Include the impact report in the patch plan (§ 3).
 
 ## 2. Minimal Impact Principle
 - Identify the exact root cause of the bug.
 - [FORBIDDEN] You are STRICTLY FORBIDDEN from refactoring adjacent code or changing the overall architecture. Modify ONLY the precise lines necessary to resolve the issue.
+- If the exact root cause is not known, the plan must label the work as an emergency patch and cannot present it as a completed repair.
+- If patch-stack risk is present, route to root-cause repair or blueprint/refactor unless the Director explicitly accepts a temporary unresolved-risk marker.
 
 ## 3. Patch Plan Generation
 - [ASSERT] You MUST call `task_boundary` to enter `PLANNING` mode.
 - [EXECUTE] Generate a Markdown Artifact named `implementation_plan.md`.
 - **Structure**:
   1. 【故障根因白話文翻譯】
-  2. 【影響分析】(Risk level and affected modules from § 1.5)
-  3. 【修改範圍】(Exact files to be touched)
-  4. 【實作邏輯對照】(Before / After diff)
+  2. 【變更意圖分類】(Emergency patch / root-cause repair / local refinement / structural refactor, patch-stack risk, escalation trigger, unresolved-risk marker when applicable)
+  3. 【影響分析】(Risk level and affected modules from § 1.5)
+  4. 【修改範圍】(Exact files to be touched)
+  5. 【實作邏輯對照】(Before / After diff)
      [CONSTRAINT: DUAL-AUDIENCE ARCHITECTURE]
      - Code syntax, function/class names, and system control tags (e.g. `[EXECUTE]`, `[CONSTRAINT]`) MAY remain in English.
      - ALL surrounding documentation, business logic descriptions, and transition text MUST be 100% Traditional Chinese. Zero English prose visible to the Director.
-  5. 【連帶影響評估】
-  6. 【真實回歸驗證】(Original failure path, real operation surface, operator tools searched, data source, executable evidence, transient retry plan, equivalent real-path alternative, blocker status, and why mock-only evidence is insufficient when applicable)
+  6. 【連帶影響評估】
+  7. 【真實回歸驗證】(Original failure path, real operation surface, operator tools searched, data source, executable evidence, transient retry plan, equivalent real-path alternative, blocker status, why mock-only evidence is insufficient when applicable, and visual detail/real-information evidence when UI is affected)
 
 ## 4. Halt & Eject
 - [HALT] This workflow has NO permission to write to the physical file system.

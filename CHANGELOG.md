@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-16] 變更意圖與視覺驗證治理
+
+### feat
+- **Change intent governance** — 共用矩陣與三平台建構、修復、測試、健檢入口新增緊急修補、根因修復、局部修整與結構重構分類，重複補丁會升級為根因修復或結構重構。
+- **Visual detail verification** — 視覺驗證新增細微觀察要求，必須檢查文字截斷、對齊、間距、遮擋、焦點、載入、空狀態與錯誤狀態，不得只用整頁大方向判定通過。
+- **Real-information visual evidence** — 視覺證據預設使用真實資訊頁面、真實資料、實際帳號狀態或等價真實路徑；假資料只能作為明確標記的備援證據。
+
+### docs
+- **Cross-platform governance docs** — 根文件與三平台文件同步說明補丁堆疊升級、視覺細節觀察與真實資訊優先規則。
+
 ## [2026-06-15] MCP 記憶工具治理
 
 ### feat

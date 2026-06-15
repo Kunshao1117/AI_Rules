@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-15T02:53:00+08:00'
+last_updated: '2026-06-16T02:17:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: partial_evidence
-last_verified: '2026-06-15T02:44:59+08:00'
+verification_status: verified
+last_verified: '2026-06-16T02:14:11+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,14 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.ops-skills.testing — Testing Skills Memory
 
 ## Current Truth
 - This child card owns Shared testing, browser evidence, performance, accessibility, and regression strategy skills.
 - Testing facts must stay tied to project surface type and current tool availability.
+- Browser and test automation skills now require detail-observation notes for visual validation.
+- Visual evidence must prefer real pages, real data, real account state, current responses/logs, or equivalent real paths before fake-data fallback.
 - Single-run test output belongs in task reports or logs unless it becomes a stable validation route.
 
 ## Active Constraints
@@ -43,6 +46,7 @@ metadata:
 - Use project-surface evidence requirements from the workflow matrix before declaring behavior verified.
 
 ## Cycle Events
+- 02: Added visual detail observation and real-information priority to browser and test automation evidence strategy.
 - 01: Split testing and evidence strategy ownership out of the broad Shared operational skills card.
 
 ## Archive Index

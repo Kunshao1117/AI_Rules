@@ -4,19 +4,19 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-15T14:18:22+08:00'
+last_updated: '2026-06-16T02:36:44+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-15T13:21:00+08:00'
+last_verified: '2026-06-16T02:36:12+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 7
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -48,12 +48,14 @@ metadata:
 - Claude build commands now include a compact governance depth summary sourced from the shared quality matrix.
 - Claude documentation describes 08 as a deep evidence audit with depth modes, inventories, coverage denominators, and Claude-specific evidence adapters.
 - Claude documentation tells downstream agents to use `.agents/tools/Memory-Migration.ps1` for memory main-file migration and to resync if the tool is missing.
+- Claude README, documentation, and build/fix command entries now describe change intent classification, patch-stack escalation, visual detail observation, and real-information-first evidence.
 ## Active Constraints
 - Do not restore `.claude/agents/memory/` as a storage path.
 - Keep Claude command entrypoints concise; shared operational detail belongs in Shared skills.
 - Keep Claude source ownership out of the deprecated historical card.
 - This card still needs a later child-card split if all Claude commands are actively edited again.
 ## Cycle Events
+- 08: Added Claude README wording for change intent, plus real-information visual evidence governance in docs and build/fix commands.
 - 07: Added MCP memory evidence contract references to Claude build, fix, and handoff commands.
 - 06: Documented Claude downstream memory migration through project-local tools.
 - 05: Updated Claude core rule output examples to avoid downstream projects treating framework source paths as local files.

@@ -89,6 +89,14 @@ For browser-rendered UI changes that affect layout, components, styling, or inte
 5. If required evidence for the selected surface is missing, report the UI as pending visual validation and do not mark the task complete.
    （缺少該介面類型必要證據時，只能回報待驗收，不得宣稱完成）
 
+Detail-observation rule:
+（細微觀察規則）
+
+1. Inspect the screenshot or rendered state at component detail level: text clipping, long labels, button alignment, spacing gaps, border breaks, overlap, z-index/floating layer issues, focus ring, disabled state, hover/active feedback when applicable, loading flicker, empty state, and error state.
+   （必須逐項檢查文字截斷、長字串、按鈕對齊、間距、邊框、遮擋、浮層、焦點、禁用、互動回饋、載入、空狀態與錯誤狀態）
+2. The browser evidence report must name the detail points inspected and any uninspected scope. A statement such as "overall screenshot looks normal" is insufficient.
+   （回報必須列出已檢查細節與未檢查範圍；不可只用整體看起來正常作為通過依據）
+
 ### Step 4.6: Real Function Evidence Boundary (真實功能證據邊界)
 
 Screenshots and DOM snapshots prove only what is visible at capture time. They do not, by themselves, prove real data, persistence, business logic, market data, time-series correctness, permissions, external integrations, or post-action side effects.
@@ -99,6 +107,13 @@ For browser-rendered features that depend on data or behavior:
 2. If the page uses mock, fixture, seeded, or static data, label that evidence as layout or flow evidence only.
 3. If a browser branch cannot access the needed data source, it must return a blocked validation report with attempted steps and missing conditions.
 4. A browser evidence packet that contains only screenshots for a data-dependent feature is incomplete and must not be treated as passing.
+
+Real-information priority:
+
+1. Prefer real pages, real records, real account state, current API responses, current logs, or an equivalent real path for visual evidence.
+2. Fake, mock, fixture, seeded, static, or idealized data may be used only when real information is unavailable, permission-blocked, unsafe, broken, or not authorized.
+3. When fallback data is used, the report must state the reason, the difference risk, and which claims remain unverified.
+4. Do not present fallback-data screenshots as production-like visual validation.
 
 Operator-path retention:
 
@@ -141,3 +156,4 @@ When Auto-Arbitration Gate FAILS, classify the error before deciding next action
 - Visual verification screenshot/recording or DOM state evidence is included in the walkthrough
 - Data-dependent or behavior-dependent UI includes a real execution signal, or is explicitly marked failed or blocked
 - Layout-affecting browser UI changes include the required web or plugin-panel evidence, or are explicitly marked pending validation
+- Visual evidence includes detail-observation notes and uses real information first, or explicitly labels fallback data and remaining risk

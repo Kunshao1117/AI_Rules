@@ -4,14 +4,14 @@
 | ---------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------ | ------------------ |
 | memory read/write, module memory, .agents/memory/                            | 記憶讀寫、模組記憶更新                           | memory-ops               | cartridge-system   |
 | delegate, channel selection                                                  | 委派、管道選擇                                   | delegation-strategy      | —                  |
-| browser E2E, visual test, subagent                                           | 瀏覽器測試、視覺驗證                             | browser-testing          | playwright, a11y   |
+| browser E2E, visual test, real visual data, detail observation, subagent      | 瀏覽器測試、視覺驗證、真實資訊、細微觀察         | browser-testing          | playwright, a11y   |
 | SOLID, line threshold, refactor quality                                      | SOLID、行數上限、重構品質                        | code-quality             | eslint             |
 | security, validation, credentials, env                                       | 安全、驗證、密碼、環境變數                       | security-sre             | snyk               |
-| test automation, DOM selector, auto-fix                                      | 測試自動化、DOM 選擇、自動修復                   | test-automation-strategy | playwright         |
+| test automation, DOM selector, auto-fix, visual detail, real data proof       | 測試自動化、DOM 選擇、自動修復、視覺細節、真實資料證據 | test-automation-strategy | playwright         |
 | tech stack, framework, init, MCP registry                                    | 技術堆疊、框架、初始化、MCP 登錄                 | tech-stack-protocol      | —                  |
 | UI, UX, jargon, i18n, error message                                          | UI、介面、多語系、錯誤訊息                       | ui-ux-standards          | stitch             |
 | UI design exploration, web UI research, component primitives, HTML demo, design directions | UI 探索、網路 UI 參考、共用元件、HTML 展示頁、三案比較 | ui-design-exploration    | —                  |
-| AI development quality, tech freshness, component reuse, responsive evidence, design DNA | AI 開發品質、技術新鮮度、共用元件、手機截圖、設計 DNA | ai-dev-quality-gate      | context7, stitch   |
+| AI development quality, change intent, patch stack, tech freshness, component reuse, responsive evidence, real visual data, design DNA | AI 開發品質、變更分類、補丁堆疊、技術新鮮度、共用元件、真實畫面證據、設計 DNA | ai-dev-quality-gate      | context7, stitch   |
 | project context, design DNA context, product preferences, acceptance preferences, GO CONTEXT | 專案脈絡、設計 DNA、產品偏好、驗收偏好、脈絡核准 | project-context-protocol | —                  |
 | stitch, UI prototype, design DNA, screen                                     | Stitch、設計稿、UI 生成、畫面                    | stitch-design            | stitch             |
 | maps, geocoding, places, routes API                                          | 地圖、定位、地點、路線                           | maps-assist              | —                  |
@@ -32,7 +32,7 @@
 | performance, Lighthouse, Web Vitals, page speed, SEO score                   | 效能、Lighthouse、Web Vitals、載入速度、SEO 評分 | performance-audit        | playwright         |
 | live docs, framework query, Context7, API docs                               | 即時文件、框架查詢、Context7、API 文件           | context7-docs            | context7           |
 | CI test quality, flaky test, test framework, trunk uploads                    | CI 測試品質、不穩定測試、測試框架偵測、測試上傳   | trunk-ops                | trunk              |
-| full-spectrum health audit, evidence packet, project surface, compatibility, audit engine | 全光譜健檢、證據包、專案型態、相容性、健檢引擎 | audit-engine             | —                  |
+| full-spectrum health audit, evidence packet, patch stack, visual evidence, project surface, compatibility, audit engine | 全光譜健檢、證據包、補丁堆疊、視覺證據、專案型態、相容性、健檢引擎 | audit-engine             | —                  |
 | gitnexus CLI, index repo, analyze codebase, generate wiki                      | 索引倉庫、分析代碼庫、生成 Wiki                  | gitnexus-cli             | gitnexus           |
 | debugging, trace bug, error origin, why failing                                | 偵錯、追蹤錯誤、找出原因                         | gitnexus-debugging       | gitnexus           |
 | explore code, how does X work, architecture, execution flow                    | 探索代碼、理解架構、執行流程                     | gitnexus-exploring       | gitnexus           |

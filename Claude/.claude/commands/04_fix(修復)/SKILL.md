@@ -86,24 +86,29 @@ Technical details may only appear after a `補充技術細節` section when they
 1. Map target file(s) to owning module(s) via memory cards.
 2. Identify affected modules through `## Relations`.
 3. Classify risk level (High / Medium / Low).
-4. Identify original failure reproduction path, real operation surface, operator-tool discovery result, data source, executable validation path, retry or equivalent-path strategy, and hard blocker status.
-5. Include impact report in patch plan (§3).
+4. Classify the repair intent as emergency patch, root-cause repair, local refinement, or structural refactor; if this is not a root-cause repair, record the unresolved risk and follow-up route.
+5. Identify patch-stack risk: repeated symptom family, repeated file region, repeated operator path, or previous temporary stopgap in the current cycle.
+6. Identify original failure reproduction path, real operation surface, operator-tool discovery result, data source, executable validation path, retry or equivalent-path strategy, and hard blocker status.
+7. Include impact report in patch plan (§3).
 
 ### 2. Minimal Impact Principle (最小影響原則)
 
 - Identify the exact root cause.
 - [FORBIDDEN] STRICTLY FORBIDDEN from refactoring adjacent code or changing architecture. Modify ONLY the precise lines necessary to resolve the issue.
+- If the exact root cause is not known, the plan must label the work as an emergency patch and cannot present it as a completed repair.
+- If patch-stack risk is present, route to root-cause repair or blueprint/refactor unless the Director explicitly accepts a temporary unresolved-risk marker.
 
 ### 3. Patch Plan Generation (修復計畫產出)
 
 - **Enter Plan Mode** (`EnterPlanMode`). Use `TodoWrite` to track fix steps.
 - Draft plan in chat with structure:
   1. 【故障根因白話文翻譯】
-  2. 【影響分析】(Risk level + affected modules from §1.5)
-  3. 【修改範圍】(Exact files to be touched)
-  4. 【實作邏輯對照】(Before / After diff)
-  5. 【連帶影響評估】
-  6. 【真實回歸驗證】(Original failure path, real operation surface, operator tools searched, data source, executable evidence, transient retry plan, equivalent real-path alternative, blocker status, and why mock-only evidence is insufficient when applicable)
+  2. 【變更意圖分類】(Emergency patch / root-cause repair / local refinement / structural refactor, patch-stack risk, escalation trigger, unresolved-risk marker when applicable)
+  3. 【影響分析】(Risk level + affected modules from §1.5)
+  4. 【修改範圍】(Exact files to be touched)
+  5. 【實作邏輯對照】(Before / After diff)
+  6. 【連帶影響評估】
+  7. 【真實回歸驗證】(Original failure path, real operation surface, operator tools searched, data source, executable evidence, transient retry plan, equivalent real-path alternative, blocker status, why mock-only evidence is insufficient when applicable, and visual detail/real-information evidence when UI is affected)
 
 ### 4. Halt & Eject
 

@@ -85,6 +85,9 @@ Use this skill when the user asks to run the migrated source command `06_test(�
   - Enhanced evidence: real rendered or executed evidence across the affected states for medium features and all user-visible UI changes.
   - Exemption evidence: allowed only when the target has no UI, no user-visible output, and no interface adaptation impact; state the reason instead of collecting visual evidence.
 - Evidence type MUST match the interface surface and real operation surface. Missing required evidence means the result is failed or blocked, not complete.
+- Visual evidence MUST include detail-observation notes: text clipping, long labels, alignment, spacing, borders, overlap, focus/disabled states, loading, empty, error, and feedback states relevant to the surface.
+- Visual evidence MUST prefer real information: real pages, real data, real account state, current responses/logs, or an equivalent real path before fallback fake data.
+- Fake, fixture, seeded, mock, static, or idealized visual data may be used only when real information is unavailable, permission-blocked, unsafe, broken, or not authorized; label the reason, residual risk, and unsupported completion claims.
 - For data-dependent or behavior-dependent features, collect at least one real execution signal: request/response, server log, database query, file side effect, timestamped source data, command output, automation run record, plugin host state, model input/output sample, deployment health check, or controlled real-path dry-run.
 - If the primary operator path is temporarily unavailable, confirm readiness and retry before abandoning it. If it remains unavailable, use the nearest equivalent real-path alternative and explain the equivalence.
 - If no operator or equivalent real path can run, the test result is blocked and must list searched entries, attempted tools, retry count or unsafe-retry reason, alternatives considered, and the smallest missing condition.
@@ -96,7 +99,7 @@ Use this skill when the user asks to run the migrated source command `06_test(�
 - Task description MUST be in Traditional Chinese and include:
   1. 測試目標 URL 或路徑
   2. 預期行為描述
-  3. 介面類型、證據等級與證據要求（完成後回傳）
+  3. 介面類型、證據等級與證據要求（包含細微觀察、真實資訊優先、假資料備援標記，完成後回傳）
   4. 回報格式（`發現 / 證據 / 風險 / 建議 / 是否阻塞`）
 
 ## 3. Result Processing (結果處理)

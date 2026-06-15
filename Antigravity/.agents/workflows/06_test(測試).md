@@ -78,6 +78,9 @@ Technical details may only appear after a `補充技術細節` section when they
   - Enhanced evidence: real rendered or executed evidence across the affected states for medium features and all user-visible UI changes.
   - Exemption evidence: allowed only when the target has no UI, no user-visible output, and no interface adaptation impact; state the reason instead of collecting visual evidence.
 - Evidence type MUST match the interface surface and the real operation surface. Missing required evidence means the result is failed or blocked, not complete.
+- Visual evidence MUST include detail-observation notes: text clipping, long labels, alignment, spacing, borders, overlap, focus/disabled states, loading, empty, error, and feedback states relevant to the surface.
+- Visual evidence MUST prefer real information: real pages, real data, real account state, current responses/logs, or an equivalent real path before fallback fake data.
+- Fake, fixture, seeded, mock, static, or idealized visual data may be used only when real information is unavailable, permission-blocked, unsafe, broken, or not authorized; label the reason, residual risk, and unsupported completion claims.
 - For data-dependent or behavior-dependent features, collect at least one real execution signal: request/response, server log, database query, file side effect, timestamped source data, command output, automation run record, plugin host state, model input/output sample, deployment health check, or controlled real-path dry-run.
 - If the primary operator path is temporarily unavailable, confirm readiness and retry before abandoning it. If it remains unavailable, use the nearest equivalent real-path alternative and explain the equivalence.
 - If no operator or equivalent real path can run, the test result is blocked and must list searched entries, attempted tools, retry count or unsafe-retry reason, alternatives considered, and the smallest missing condition.
@@ -104,7 +107,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 - You MUST call `task_boundary` to enter `VERIFICATION` mode before starting tests.
 - As proof of work, you MUST capture screenshots, recordings, terminal output, request/response evidence, logs, timestamps, database checks, run records, health checks, operator-tool search notes, retry status, alternative-path rationale, or equivalent evidence for the selected interface and real operation surfaces.
-- Generate a Markdown `walkthrough.md` Artifact embedding these visual assets alongside a summary of what was tested.
+- Generate a Markdown `walkthrough.md` Artifact embedding these visual assets alongside a summary of what was tested, including detail-observation notes and whether the evidence used real information or fallback fake data.
 
 ### 情境 A：測試通過 (Passed)
 

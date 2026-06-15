@@ -125,6 +125,8 @@ Review areas:
 
 - Dependency, type, lint, script, and environment parity scan results.
 - Memory cards, project context cards, skills, workflow entries, rules, and platform policy markers.
+- Change intent governance: whether build/fix/test/audit entries require emergency patch, root-cause repair, local refinement, or structural refactor classification before writes or completion claims.
+- Patch-stack risk: repeated stopgap edits in the same symptom family, file region, workflow rule, or operator path without a current root-cause or refactor route.
 - Directory hygiene for installed platform folders and generated runtime copies.
 - Tool availability: terminal, browser, desktop, MCP, cloud, plugin host, logs, and report-write path.
 - Audit log write availability for `profile.json`, `inventories.json`, `evidence.json`, and `summary.md`.
@@ -169,6 +171,14 @@ For each critical behavior, classify coverage:
 
 Synthetic evidence cannot complete behavior that depends on runtime state, persistence, external state, permissions, network, time, files, CLI output, UI operation, or deployment status.
 
+When a rendered or visual interface is in scope, also classify:
+
+- Detail-observation coverage: text clipping, long labels, alignment, spacing, borders, overlap, focus/disabled states, loading, empty, and error states.
+- Real-information coverage: real page, real data, real account state, current response/log, or equivalent real path.
+- Fallback-data disclosure: whether mock, fixture, seeded, fake, static, or idealized data was used, why it was used, and what remains unverified.
+
+Screenshot-only visual evidence with no detail-observation notes is partial at best. Fake-data visual evidence for a data-dependent surface is partial or unverified unless paired with a real-information path.
+
 ### Phase F — Performance, Reliability, Accessibility, And Compatibility
 
 Apply only when the surface matrix makes the check relevant.
@@ -178,6 +188,7 @@ Review areas:
 - Web performance and Core Web Vitals when a web surface exists.
 - CLI/TUI latency, exit codes, non-interactive behavior, and narrow terminal readability when a command surface exists.
 - Desktop or plugin panel resize, theme, permission, and host-state behavior when a GUI or extension surface exists.
+- Visual detail quality when a rendered interface exists: clipping, alignment, spacing, overlap, fixed-layer coverage, focus/disabled feedback, loading/empty/error states, and density under realistic information.
 - Database/query performance when a database surface exists.
 - Accessibility when a browser-rendered UI exists.
 - Runtime, framework, operating system, shell, package manager, and CI compatibility.
@@ -207,6 +218,8 @@ The final report must include:
 - Inventory coverage summary with denominators.
 - Traffic-light dashboard.
 - Evidence level distribution.
+- Change intent and patch-stack risk summary when workflow governance is in scope.
+- Visual detail and real-information evidence summary when rendered interfaces are in scope.
 - Unverified and blocked checks.
 - Sampling limits and blind spots.
 - Top repair priorities.

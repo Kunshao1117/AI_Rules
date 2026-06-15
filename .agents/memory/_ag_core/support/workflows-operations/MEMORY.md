@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 測試、巡檢、交接與技能鍛造工作流。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-15T14:19:31+08:00'
+last_updated: '2026-06-16T02:18:57+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-15T11:55:00+08:00'
+last_verified: '2026-06-16T02:14:11+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -39,12 +39,14 @@ metadata:
 - This child card owns Antigravity testing, routine, handoff, and skill-forge workflow entries.
 - Operational workflows must keep evidence requirements matched to Antigravity browser and visual artifact capabilities.
 - Routine inspection remains read-only unless a later Director gate approves writes.
+- Antigravity test workflow now requires visual detail-observation notes and real-information-first evidence before fallback fake data.
 
 ## Active Constraints
 - Do not claim real behavior verification without captured operation evidence or an explicit blocked state.
 - Keep handoff and routine workflows from mutating source or memory without the appropriate gate.
 
 ## Cycle Events
+- 05: Added detail observation and real-information priority to the Antigravity test workflow evidence branch.
 - 04: Added MCP memory evidence contract references to Antigravity routine, handoff, and skill-forge workflows.
 - 03: Updated Antigravity operation workflow output examples and routine downstream scan scope.
 - 02: Aligned operational workflow grounding paths to deployed .agents/shared governance references.
