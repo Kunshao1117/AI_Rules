@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-06-21T11:15:00+08:00'
+last_updated: '2026-06-21T11:28:19+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-21T11:15:00+08:00'
+last_verified: '2026-06-21T11:28:19+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 12
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -48,7 +48,7 @@ metadata:
 - Workflow matrix now defines intent alignment governance for requirement playback, neutral challenge, decision trace, requirement trace, and drift audit in 02/03 workflows.
 - Workflow matrix now defines review lifecycle governance for review purpose, review state, accepted risk, blockers, evidence branches, and minimum sufficient complexity.
 - Shared subagent policy states that evidence branches provide review evidence but do not own final review lifecycle status.
-- Memory operations guidance stays under the Shared skill quality size limit while preserving memory commit, migration, and heading-accuracy governance.
+- Memory operations guidance stays below the Shared skill quality size limit with safety margin while preserving memory commit, migration, and heading-accuracy governance.
 ## Active Constraints
 - Do not put platform-specific tool calls in Shared skill bodies unless the section is explicitly an adapter note.
 - Do not list directories under Tracked Files; the memory audit tool expects readable files.
@@ -56,6 +56,7 @@ metadata:
 - Treat cards above 8 tracked files as split candidates, not automatic blockers.
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
 ## Cycle Events
+- 13: Compressed memory-ops with extra token margin after managed cache CRLF checkout exposed line-ending-sensitive estimates.
 - 12: Added engineering review governance to the workflow matrix, skill routing index, and shared subagent review-state boundary; shared skill count is 42.
 - 11: Added intent alignment governance to the shared workflow matrix and skill routing index.
 - 10: Compressed memory-ops wording under the Shared skill quality token limit without changing memory governance semantics.

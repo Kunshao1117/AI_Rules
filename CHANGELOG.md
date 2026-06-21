@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-21] AI Rules Manager v0.1.19
+
+### fix
+- **Doctor token stability** — 技能品質掃描改為使用換行正規化後的內容估算長度，避免同一版本在來源倉庫與管理快取中因換行差異出現不同紅綠燈。
+- **Project skill discovery repair** — 專案同步補建流程會安全處理誤落在 discovery 位置的實體 project skill 目錄，必要時遷移到專案技能原檔區並重建 discovery 連結。
+- **Shared skill safety margin** — AI 開發品質與記憶操作技能再壓縮，避免貼近技能品質門檻造成後續維護風險。
+
 ## [2026-06-21] AI Rules Manager v0.1.18
 
 ### feat

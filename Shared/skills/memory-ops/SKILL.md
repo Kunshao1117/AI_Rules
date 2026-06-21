@@ -1,7 +1,7 @@
 ---
 name: memory-ops
 description: >
-  [Infra] Lightweight operational guide for reading, updating memory cards, and fixing staleness.
+  [Infra] Operational guide for reading, updating memory cards, and fixing staleness.
   MCP Server: cartridge-system
   Use when: 讀取、更新已存在的專案記憶卡、復原過期指數或升級舊卡格式時載入。
   DO NOT use when: 決定系統層級架構拓樸、新建模組或拆分卡匣（用 memory-arch 技能）。
@@ -16,7 +16,7 @@ metadata:
 
 # Memory Skill Operations (記憶技能操作指引)
 
-Read `references/memory-template.md` when creating or upgrading a memory card schema. Read `references/memory-mcp-tool-contract.md` when choosing between project-local memory tools and cartridge-system MCP tools. Read `../memory-arch/references/memory-quality-migration-blueprint.md` when planning full-card standardization.
+Read `references/memory-template.md` when creating/upgrading a card schema. Read `references/memory-mcp-tool-contract.md` when choosing local tools or cartridge-system MCP. Read `../memory-arch/references/memory-quality-migration-blueprint.md` for full-card standardization.
 
 ## HITL Boundary
 
@@ -34,24 +34,24 @@ Active memory cards are source memory, not executable skills. The canonical targ
 
 Write permanent source memory only for current source ownership, verified source facts, active constraints, stable validation routes, and concise cycle events. Keep task notes, screenshots, raw test output, audit logs, failed attempts, unverified guesses, and one-off observations in reports or `.agents/logs/`.
 
-Long-lived preferences, design DNA, acceptance defaults, and product direction belong in project context, not source memory. If a fact is only partially verified, set the card's verification state accordingly and record the missing evidence instead of presenting it as current truth.
+Long-lived preferences, design DNA, acceptance defaults, and product direction belong in project context. If a fact is partially verified, mark that state and record missing evidence instead of presenting it as current truth.
 
 ### Quality Standard
 
-New and standardized active cards should carry content quality metadata in addition to parser schema metadata: quality version, memory kind, verification status, last verified timestamp, and valid scope. Active cards should also include `## Evidence Base`, `## Read Contract`, and `## Conflicts and Supersession`.
+New and standardized active cards should carry content quality metadata: quality version, memory kind, verification status, last verified timestamp, and valid scope. Active cards also include `## Evidence Base`, `## Read Contract`, and `## Conflicts and Supersession`.
 
-If old content conflicts, stop at a conflict report or mark the card as conflict/pending review. Do not silently choose the more convenient fact.
+If old content conflicts, stop at a conflict report or mark the card conflict/pending review. Do not silently choose the convenient fact.
 
-Gateway calls MUST use the real downstream execution entrypoint. Discovery tools only reveal names and schemas; real cartridge-system execution needs explicit `workspace`, and downstream arguments need explicit `projectRoot`. Do not guess argument names; inspect schema first.
+Gateway calls MUST use the real downstream execution entrypoint. Discovery only reveals names/schemas; real cartridge-system execution needs explicit `workspace` and downstream `projectRoot`. Inspect schema before guessing arguments.
 
 All memory card **writes and updates** MUST follow the **two-step flow**:
 
-1. Use native tools (`write_to_file` / `replace_file_content`) to write the full active memory main-file content (`SKILL.md` during legacy compatibility; `MEMORY.md` after migration)
-2. Call `cartridge-system__memory_commit` to sync metadata (timezone, staleness, index)
+1. Use native tools to write the full active memory main file (`SKILL.md` during legacy compatibility; `MEMORY.md` after migration).
+2. Call `cartridge-system__memory_commit` to sync metadata, staleness, and index.
 
-**Commit Obligation (歸卡義務)**: Skipping step 2 is FORBIDDEN. A memory card written without `memory_commit` is considered INCOMPLETE. The Completion Gate will reject the workflow.
+**Commit Obligation (歸卡義務)**: Skipping step 2 is FORBIDDEN. A card written without `memory_commit` is incomplete and fails the Completion Gate.
 
-**High-Risk Tool Boundary**: `cartridge-system__memory_commit` writes files and updates index metadata. It is FORBIDDEN during discussion, planning, testing, or read-only audit phases. Call it only after the target active memory main file has already been updated and the workflow is explicitly in the memory commit phase.
+**High-Risk Tool Boundary**: `cartridge-system__memory_commit` writes files and index metadata. It is FORBIDDEN during discussion, planning, testing, or read-only audit. Call it only after the active main file is updated and the workflow is in the memory commit phase.
 
 > **Legacy**: `memory_update(mode: replace)` is still available as a fallback but NOT recommended.
 > **Deprecated**: `memory_update(mode: patch)` and `memory_update(mode: append)` are deprecated due to high error rates in Markdown merging.
@@ -72,13 +72,13 @@ Need to load memory?
 
 ### Read-Only Governance Tools (唯讀治理工具)
 
-Use read-only tools before deciding whether memory content must be edited: `workspace_brief`, `memory_audit`, `memory_graph`, `commit_preflight`, `memory_list`, `memory_status`, `memory_read`, `memory_deps`, `project_context_status`, `context_inventory`, `context_audit`, `context_diff`, `context_plan`, `project_context_list`, `project_context_read`, and `project_context_validate`.
+Use read-only tools before deciding whether memory content needs edits: `workspace_brief`, `memory_audit`, `memory_graph`, `commit_preflight`, `memory_list`, `memory_status`, `memory_read`, `memory_deps`, `project_context_status`, `context_inventory`, `context_audit`, `context_diff`, `context_plan`, `project_context_list`, `project_context_read`, and `project_context_validate`.
 
 `commit_preflight` returning `blocked` because of dirty files is a governance signal, not a tool failure. Review the listed files and continue with the governed commit workflow.
 
 If read-only tools report ghost files, remove deleted paths from `## Tracked Files` during the next authorized update. If they report `needsCompaction=true`, compact or split/archive before adding another event.
 
-Read-only context tools are evidence for project context only. They do not grant permission to write `.agents/context/**/CONTEXT.md`, and they must not be treated as source-memory evidence unless a source file or active memory card also supports the fact.
+Read-only context tools are evidence for project context only. They do not permit writes to `.agents/context/**/CONTEXT.md` and are not source-memory evidence unless a source file or active card also supports the fact.
 
 ## 3. Repairing Stale Memory (過期修復)
 
@@ -92,7 +92,7 @@ When a memory cartridge has staleness > 0, you **MUST NOT** simply call `memory_
 4. If the card is legacy or over limits, lazy-upgrade or compact before writing.
 5. Write the full active memory main file, then call `memory_commit(moduleName, projectRoot)`.
 
-> **FORBIDDEN**: Calling `memory_commit` without first completing Steps 1–5 to sync content. Staleness reset is a SIDE EFFECT of sync, not the goal.
+> **FORBIDDEN**: Calling `memory_commit` without Steps 1–5. Staleness reset is a side effect, not the goal.
 
 `memory_commit` removes `CARTRIDGE_SYSTEM_WARNING` blocks. If warning blocks persist after commit, verify you are not using deprecated update modes.
 
@@ -121,7 +121,7 @@ Before adding any frontmatter `dependencies` entry, ask:
 - Parent/child memory card relationships default to `## Relations`; do not add them to `dependencies` unless staleness propagation is truly required.
 - Do not add `dependencies` merely to make context look more complete.
 
-Flow: check granularity and compaction, call `memory_read(moduleName)`, write the full active memory main file, then call `memory_commit(moduleName, projectRoot)`. Keep the body as short English facts; Chinese belongs in description, trigger keywords, and `## 中文摘要`.
+Flow: check granularity/compaction, call `memory_read(moduleName)`, write the full active main file, then call `memory_commit(moduleName, projectRoot)`. Keep body facts short and English; Chinese belongs in description, triggers, and `## 中文摘要`.
 
 ### Legacy Fallback (舊版備用)
 
@@ -143,7 +143,7 @@ The following enforcement mechanisms ensure compliance:
 
 ## 4.5 New File Attribution (新建檔案歸屬義務)
 
-When your workflow creates new source code files, you MUST attribute them to memory cards BEFORE entering the Completion Gate.
+When a workflow creates new source files, attribute them to memory cards BEFORE the Completion Gate.
 
 ```
 New source file created?
@@ -156,25 +156,25 @@ New source file created?
     └── Option B: Create new memory card (load memory-arch skill)
 ```
 
-**FORBIDDEN**: Leaving new source files untracked. Every production source file MUST belong to exactly one memory card.
+**FORBIDDEN**: Leaving new source files untracked. Every production source file belongs to exactly one memory card.
 
 ## 4.6 Lazy Upgrade Protocol (舊版記憶卡延遲升級義務)
 
-When modifying, fixing logic, or repairing staleness on a legacy card, organically upgrade the card format during the two-step flow:
+When modifying, fixing, or repairing staleness on a legacy card, organically upgrade during the two-step flow:
 
 - Do not run a full-project rewrite.
 - If this turn only reads the card, report it as readable but pending lazy upgrade.
-- If this turn updates the card, preserve old long-form content in an archive volume, then rebuild the main card as schema v2.
+- If this turn updates the card, preserve old long-form content in an archive, then rebuild the main card as schema v2.
 - Main card frontmatter includes schema v2 governance fields, language fields, cycle counters, limits, archive policy, and compaction status.
 - Standardized cards also add quality metadata, Evidence Base, Read Contract, and Conflicts and Supersession.
-- Main card body MUST include Current Truth, Active Constraints, Cycle Events, Archive Index, Evidence Base, Read Contract, Conflicts and Supersession, 中文摘要, and Tracked Files sections.
+- Main card body MUST include Current Truth, Active Constraints, Cycle Events, Archive Index, Evidence Base, Read Contract, Conflicts and Supersession, 中文摘要, and Tracked Files.
 - Normalize section headers (e.g., ensure `## Tracked Files` matches naming conventions).
 - If old content is too large or contradictory, stop at a compaction plan instead of silently cutting content.
-- **Goal**: Seamlessly patch technical debt dynamically on-demand. Avoid massive migration shocks.
+- **Goal**: Patch memory technical debt on demand without disruptive bulk migration.
 
 ### Controlled Standardization Migration
 
-Use controlled standardization when the Director authorizes a full active-card rebuild. The agent must inventory the card, preserve old long-form content in an archive volume when needed, extract still-valid facts, rebuild the active card with quality metadata and sections, then call `memory_commit`. Archive volumes are historical evidence and must not be bulk-rewritten into the active-card template.
+Use controlled standardization only when the Director authorizes a full active-card rebuild. Inventory the card, archive old long-form content when needed, extract valid facts, rebuild with quality metadata and sections, then call `memory_commit`. Archive volumes are history and must not be bulk-rewritten into the active template.
 
 <!-- NOTE: Creation, Tree Topology, and Splitting operations have been migrated to the memory-arch skill. -->
 

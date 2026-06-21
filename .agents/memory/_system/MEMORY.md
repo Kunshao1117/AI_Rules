@@ -4,19 +4,19 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-21T11:15:00+08:00'
+last_updated: '2026-06-21T11:28:19+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-21T11:15:00+08:00'
+last_verified: '2026-06-21T11:28:19+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 14
+cycle_event_count: 15
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,7 +36,7 @@ metadata:
 ## Current Truth
 - Root documentation describes shared matrix source paths and their deployed `.agents/shared/` paths.
 - Root documentation describes downstream project-local tools under `.agents/tools/` and labels source-manager commands as framework-source-only paths.
-- Changelog includes a dedicated AI Rules Manager v0.1.18 section for tag-driven release notes and review-governance coverage.
+- Changelog includes a dedicated AI Rules Manager v0.1.19 section for token-stable Doctor checks, project skill discovery repair, and shared skill margin.
 - Changelog includes an MCP memory tool governance section covering workflow evidence, tool contracts, Traditional Chinese tool output, and cross-platform alignment.
 - AI_Rules is the source repository for Antigravity, Claude Edition, and Codex Edition governance.
 - Director-facing output must use Traditional Chinese unless a lower-level artifact explicitly requires another language.
@@ -53,6 +53,7 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 15: Documented AI Rules Manager v0.1.19 for Doctor token stability and project skill discovery repair.
 - 14: Documented engineering review governance, Doctor review coverage, AI Rules Manager v0.1.18, and refreshed 42/59 skill counts.
 - 13: Documented requirement alignment and drift-audit governance across root docs and changelog.
 - 12: Documented change intent and visual evidence governance across root docs and changelog.

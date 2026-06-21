@@ -373,7 +373,8 @@ function Measure-SkillQuality {
 
         $lineCount    = $lines.Count
         $lineStatus   = if ($lineCount -lt 500) { '🟢' } else { '🔴' }
-        $tokenEst     = [math]::Ceiling($content.Length / 3)
+        $tokenContent = $content -replace "`r`n", "`n"
+        $tokenEst     = [math]::Ceiling($tokenContent.Length / 3)
         $tokenStatus  = if ($tokenEst -lt 5000) { '🟢' } else { '🔴' }
 
         $foundForbidden = @()

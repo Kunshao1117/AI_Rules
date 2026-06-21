@@ -2,10 +2,9 @@
 name: ai-dev-quality-gate
 description: >
   [Quality] AI development quality gate for autonomous governance depth,
-  tech freshness, UI component reuse, design DNA, generated image downgrade,
-  real execution evidence, interface evidence, change intent, patch-stack risk, and review lifecycle escalation.
-  Use when: AI 開發品質、技術新鮮度、UI 介面、UI 探索、共用元件、設計 DNA、真實畫面證據、
-  真實資料驗證、實際操作驗收、介面適配驗收、桌面 GUI、新專案 UI、插件介面任務。
+  tech freshness, UI reuse, design DNA, reference downgrade, real evidence,
+  interface evidence, change intent, patch-stack risk, and review escalation.
+  Use when: AI 開發品質、技術新鮮度、UI 介面、UI 探索、共用元件、設計 DNA、真實證據、實際驗收、插件介面任務。
   DO NOT use when: 純後端內部重構、無 UI 且無高變動外部技術依賴的微小修正。
 metadata:
   author: antigravity
@@ -24,8 +23,7 @@ Load this skill when any task touches:
 
 - External frameworks, MCP servers, VS Code extensions, browser APIs, or other high-change dependencies.
 - UI layout, components, styling, interface adaptation, desktop window behavior, or interaction states.
-- Generated UI images, Stitch screens, visual references, design DNA, or Director preference discovery.
-- Trading terminals, dashboards, admin tools, websites, product pages, real data, runtime state, CLI output, database effects, automation, cloud deployment, or integrations.
+- Generated UI images, Stitch screens, visual references, design DNA, Director preference discovery, trading terminals, dashboards, admin tools, websites, product pages, real data, runtime state, CLI, database effects, automation, cloud deployment, or integrations.
 - Governance, workflow, public contract, release, security, cross-module, or repeated fragile-code changes that need review state.
 
 ## Procedure
@@ -38,12 +36,12 @@ Task levels:
 
 | Level | Use when | Minimum governance |
 | --- | --- | --- |
-| Lightweight change | Docs, copy, comments, narrow styling, or isolated internal logic with no user-visible, data, public interface, memory, governance, security, or cross-platform impact. | State why no escalation factor applies and name targeted validation. |
+| Lightweight change | Docs, copy, comments, narrow styling, or isolated internal logic with no user-visible, data, public interface, memory, governance, security, or cross-platform impact. | State why no escalation applies and name targeted validation. |
 | Medium feature | Normal feature, UI state, single workflow, data flow, component behavior, CLI behavior, or product-facing change. | Include impact, completeness states, validation, and memory/docs. |
 | Heavy change | Multi-module behavior, persistent data shape, migration, permission/security, public API, release behavior, workflow/skill governance, cross-platform semantics, irreversible action, or high recovery cost. | Use the full design-to-build contract, risk handling, broader regression, docs, and memory updates. |
-| Pure architecture | Architecture-only output, full-system initialization, major technology pivot, ER/API route design, or no implementation in the same turn. | Route to the blueprint workflow and do not claim implementation readiness. |
+| Pure architecture | Architecture-only output, full-system initialization, major technology pivot, ER/API route design, or no same-turn implementation. | Route to blueprint and do not claim implementation readiness. |
 
-Escalation factors: user-visible workflow; data mutation; auth, secrets, security, or compliance; public API/CLI/config/schema/plugin/release contracts; generated runtime copies; memory/context/docs truth; irreversible action or high recovery cost.
+Escalation factors: user-visible workflow; data mutation; auth/secrets/security/compliance; public API/CLI/config/schema/plugin/release contracts; generated runtime copies; memory/context/docs truth; irreversible action or high recovery cost.
 
 Decision rules:
 
@@ -58,10 +56,10 @@ Before production build, fix, test, or audit work writes files or declares compl
 
 | Intent | Use when | Minimum evidence |
 | --- | --- | --- |
-| Emergency patch | A temporary stopgap is needed to isolate a confirmed acute failure or unblock operation. | Reproduced symptom, smallest safe scope, rollback or follow-up path, and explicit unresolved-root-cause marker when root cause remains open. |
+| Emergency patch | A temporary stopgap is needed to isolate a confirmed acute failure or unblock operation. | Reproduced symptom, smallest safe scope, rollback/follow-up path, and unresolved-root-cause marker when root cause remains open. |
 | Root-cause repair | A confirmed defect, regression, or invariant violation is being fixed. | Symptom, cause, repair scope, regression path, affected ownership, and real-path evidence when observable. |
 | Local refinement | Behavior should stay the same while local readability, naming, documentation, tests, or small boundaries improve. | Behavior-unchanged rationale, affected scope, targeted validation, and no hidden user-visible/data/public-interface impact. |
-| Structural refactor | Module boundaries, shared contracts, repeated patch stacks, or systemic maintainability risk are being corrected. | Dependency impact, compatibility or migration path, regression matrix, memory/docs impact, and visual/real evidence for user-visible surfaces. |
+| Structural refactor | Module boundaries, shared contracts, repeated patch stacks, or systemic maintainability risk are corrected. | Dependency impact, compatibility/migration path, regression matrix, memory/docs impact, and visual/real evidence for user-visible surfaces. |
 
 Patch-stack escalation:
 
@@ -72,7 +70,7 @@ Patch-stack escalation:
 
 ### 1.6 Review Lifecycle Gate
 
-For Heavy change, Structural refactor, governance/workflow/public contract work, release/plugin behavior, security-sensitive change, or repeated fragile-code repair, load `quality-review-governance` before the plan or completion is ready.
+For Heavy change, Structural refactor, governance/workflow/public contract work, release/plugin behavior, security-sensitive change, or repeated fragile repair, load `quality-review-governance` before the plan or completion is ready.
 
 Report review purpose, lifecycle state, evidence status, accepted risk, and blockers. Use exactly one lifecycle state from `quality-review-governance`.
 
@@ -80,16 +78,16 @@ Report review purpose, lifecycle state, evidence status, accepted risk, and bloc
 
 Before implementing against a framework, plugin platform, MCP protocol, or browser API:
 
-1. Identify the project's locked version from package files, memory cards, or existing config.
-2. Prefer the latest stable public guidance only when it is compatible with the locked project version.
-3. Verify uncertain or high-change APIs through official documentation, Context7, or primary sources before coding.
-4. Record version assumptions in the plan or completion report when they affect implementation choices.
+1. Identify the project's locked version from package files, memory cards, or config.
+2. Prefer latest stable guidance only when compatible with that version.
+3. Verify uncertain or high-change APIs through official docs, Context7, or primary sources before coding.
+4. Record version assumptions when they affect implementation choices.
 
 Do not use model memory as the source of truth for APIs that may have changed.
 
 ### 2.5 Real Execution Evidence Gate
 
-Production build, fix, test, and audit work defaults to real verification. If behavior can be started, called, queried, observed, logged, or inspected, attempt that path before claiming completion.
+Production build, fix, test, and audit work defaults to real verification. If behavior can be started, called, queried, observed, logged, or inspected, try that path before claiming completion.
 
 Classify the real-world operation surface before choosing evidence:
 
@@ -99,7 +97,7 @@ Classify the real-world operation surface before choosing evidence:
 | Desktop GUI | Running window, user flow, screenshot/log/state. |
 | CLI/TUI | Command, exit code, stdout/stderr, non-interactive behavior, and failure case when relevant. |
 | Backend/API | Real request, status, log, and side-effect check when applicable. |
-| Database/migration | Query, before/after state, rollback evidence, and sandbox isolation when needed. |
+| Database/migration | Query, before/after state, rollback evidence, and sandbox isolation. |
 | Automation/job | Actual trigger or supported dry-run, timestamped record, retry or failure evidence. |
 | IDE/plugin | Real host, command feedback, panel state, trust/permission state, and confirmation behavior. |
 | Sync/scraper | Real source response, parsed output, timestamp, and rate-limit or failure handling. |
@@ -109,7 +107,7 @@ Classify the real-world operation surface before choosing evidence:
 Verification method discovery:
 
 1. Before "unable to verify", inventory scripts, servers, tests, browser/desktop control, terminal, plugin host, MCP/API tools, logs, databases, artifacts, and docs.
-2. Choose the closest operator-capable path for the surface, then add lower-level evidence only when it improves confidence.
+2. Choose the closest operator-capable path, then add lower-level evidence only when useful.
 3. Search docs, scripts, routes, task files, and platform notes before marking a path unavailable.
 4. Retry warmup, stale controller, timeout, rate-limit, or delayed readiness failures when safe.
 5. If the primary tool is unavailable, try an equivalent real path: alternate controller, command, request, read-only DB check, log, sandbox, preview, dry-run, or recorded real-source replay.
@@ -126,7 +124,7 @@ Completion rules:
 
 1. Outcomes depending on real data, external state, persistence, timing, permissions, network, or operator-visible behavior need level 1, 2, or 3 evidence.
 2. Level 4 is partial validation only.
-3. "Unable to verify" needs inventory, a concrete attempt, and retry or equivalent-path consideration unless the blocker is obvious.
+3. "Unable to verify" needs inventory, an attempt, and retry or equivalent-path consideration unless the blocker is obvious.
 4. Allowed blockers: missing credentials/login/hardware, unsafe destructive action, outage, rate limit, CAPTCHA/MFA, legal/safety limit, or missing Director authorization.
 5. Blocked reports include attempts, evidence, tools, retry status, alternatives, missing condition, and next input.
 6. Insufficient evidence means failed or blocked validation, not completion.
@@ -137,9 +135,9 @@ Before UI implementation:
 
 1. Determine whether a reusable component system exists.
 2. Existing projects: inspect shared components, primitives, tokens, utilities, and page patterns.
-3. New projects or projects without UI source: define candidate primitives before implementation.
-4. Classify the choice as reuse, extension, new component, or new primitive; if creating new, state why reuse/extension is not appropriate.
-5. Include the decision in the plan and completion report.
+3. New/no-UI projects: define candidate primitives before implementation.
+4. Classify as reuse, extension, new component, or new primitive; if new, state why reuse/extension is wrong.
+5. Include the decision in plan and completion report.
 
 Do not create a visually similar component while ignoring an existing shared component.
 Do not require a component inventory when the project has no existing UI surface.
@@ -149,11 +147,11 @@ Do not require a component inventory when the project has no existing UI surface
 When the Director cannot precisely describe the desired UI:
 
 1. Load `ui-design-exploration` for new UI, redesign, ambiguous direction, or missing approved DNA.
-2. Determine project state before reading DNA or components: new/no UI needs product category, operator, platform, density, and primitive discussion; approved DNA comes before UI inspection; missing DNA requires inspection before candidate DNA; narrow edits preserve current rules.
+2. Determine state before reading DNA or components: new/no UI needs category, operator, platform, density, and primitives; approved DNA comes before inspection; missing DNA needs inspection before candidate DNA; narrow edits preserve current rules.
 3. Load `project-context-protocol` and inspect relevant `.agents/context/` design DNA or product preference cards only when they exist.
-4. Apply only approved context. Treat candidate context as advisory and disclose it.
-5. Search for usable UI skills or design tools before static webpage templates when direction is open.
-6. If no approved context exists, use discovered UI skills/design tools, web research, and three clearly different directions.
+4. Apply only approved context; treat candidate context as advisory and disclose it.
+5. Search usable UI skills or design tools before static templates when direction is open.
+6. If no approved context exists, use discovered UI skills/tools, web research, and three distinct directions.
 7. Build or describe only a small slice before committing to a full page.
 8. Treat the Director's selected direction as a candidate preference, not a permanent rule.
 9. Persist design DNA only after explicit `GO CONTEXT` or `GO DNA`.
@@ -167,8 +165,8 @@ Generated images, Stitch screens, mood boards, and visual references are directi
 Before implementation:
 
 1. Extract constraints: density, hierarchy, color roles, spacing, shape language, component behavior, and adaptation strategy.
-2. Map extracted constraints to project components and technical limits.
-3. Discard visual details that cannot be reproduced reliably with the project's UI stack.
+2. Map constraints to project components and technical limits.
+3. Discard visual details the UI stack cannot reproduce reliably.
 4. Never treat a generated image as the acceptance baseline.
 
 Implementation acceptance must be based on the real rendered interface.
@@ -184,7 +182,7 @@ For UI changes affecting layout, components, styling, or interaction states:
    - CLI/TUI: wrapping, error readability, exit code, non-interactive mode, and narrow width.
    - Operational dashboard/trading terminal: density, hierarchy, overflow, degraded state, and updates.
 2. Collect real rendered screenshot, browser, desktop, terminal, or test evidence for the selected surface.
-3. Check for text overflow, compressed controls, overlap, table/chart overflow, fixed regions covering content, small touch targets, inconsistent spacing, and typography.
+3. Check text overflow, compressed controls, overlap, table/chart overflow, fixed regions, small touch targets, spacing, and typography.
 4. If required surface evidence is missing, report the UI as pending visual validation instead of complete.
 
 Do not force every interface into web responsive rules. Match the evidence to the product surface and operator workflow.

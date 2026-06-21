@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-21T11:15:00+08:00'
+last_updated: '2026-06-21T11:38:33+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-21T11:15:00+08:00'
+last_verified: '2026-06-21T11:38:33+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 5
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -41,6 +41,9 @@ metadata:
 - Project rule sync and platform deploy scripts copy shared governance reference files into `.agents/shared/` for target projects.
 - This child card owns root PowerShell deployment, audit, memory migration, skill sync, and platform sync scripts.
 - Governance Doctor now includes review-governance coverage checks for the new quality-review skill, workflow matrix, subagent policy, deployed copies, and three-platform 02/03/04/08/09/10 entrypoints.
+- Skill quality scanning now normalizes line endings before estimating token length so managed cache checkouts and source checkouts report consistent results.
+- Project skill backfill now safely migrates physical `project-*` discovery skill directories into `.agents/project_skills/` or replaces exact duplicates before rebuilding discovery links.
+- Project skill backfill also treats single-file routing stubs that point at the canonical project skill source as safe discovery entries to replace with links.
 - The root `_system` card keeps repository identity, documentation, license, and top-level governance truth.
 - Public PowerShell entrypoints must preserve UTF-8 compatibility for Windows PowerShell 5.1.
 
@@ -50,6 +53,8 @@ metadata:
 - Do not use this card as a substitute for reading the current script implementation before edits.
 
 ## Cycle Events
+- 07: Treated project skill routing stubs as safe replaceable discovery entries while keeping divergent content blocked.
+- 06: Made skill quality token estimates line-ending stable and added safe repair for physical project skill discovery entries.
 - 05: Added review governance coverage into Audit.psm1 and the manager Doctor description.
 - 04: Added project-local tool sync and shared memory migration implementation wiring for downstream projects.
 - 03: Expanded sync scripts to deploy full shared governance references, Codex workflow support files, and downstream sync coverage checks.
