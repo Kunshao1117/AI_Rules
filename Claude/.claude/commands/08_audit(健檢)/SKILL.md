@@ -1,7 +1,7 @@
 ﻿---
 name: 08_audit
 description: "Use when: 全光譜專案健檢、深層健檢、audit、證據式健檢、健檢深度、專案型態偵測、功能盤點、端點盤點、命令盤點、相容性檢查、治理巡檢、基礎盤點、深度邏輯審查、子代理採證、鉤子/檢查點治理、效能與載入速度與健康報告。DO NOT use when: 只要單一測試或單一 bug 修復。"
-required_skills: [memory-ops, code-audit, audit-engine]
+required_skills: [memory-ops, code-audit, audit-engine, quality-review-governance]
 memory_awareness: full
 user-invocable: true
 metadata:
@@ -58,6 +58,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 08 row plus MCP Memory Evidence Matrix as the minimum external grounding and evidence contract.
 - Workflow-specific grounding: Use audit-engine depth, inventory denominator, project surface recipes, and evidence packet rules before reporting audit gates.
 - Governance checks must include change-intent classification coverage, patch-stack risk, unresolved-root-cause markers, visual detail evidence, and real-information priority when those surfaces exist.
+- Governance checks must include review lifecycle coverage from `.claude/skills/quality-review-governance/SKILL.md` when findings touch governance, public contracts, release/plugin behavior, security, cross-module logic, or repeated fragile code.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md; audit may use read-only cartridge-system tools for governance evidence, but missing MCP evidence must become 未驗證 or 阻塞 and audit must not mutate memory.
@@ -69,6 +70,7 @@ Load these before running the audit:
 - `audit-engine` — audit depth, project surface, inventory denominator, change-intent governance, patch-stack risk, visual detail evidence, real-information priority, evidence packet, traffic-light, blocked/unverified semantics.
 - `code-audit` — deterministic CLI scan recipes.
 - `ai-dev-quality-gate` — real execution evidence boundary.
+- `quality-review-governance` — review purpose, lifecycle state, accepted-risk, blocked-state, and minimum sufficient complexity rules.
 - `browser-testing` — browser/operator evidence when a rendered surface exists.
 - `performance-audit` — performance evidence when a web or runtime surface exists.
 - `plugin-release-governance` — only when extension, plugin, versioned release, tag, installer, or artifact surfaces exist.

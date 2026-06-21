@@ -1,6 +1,7 @@
 ---
 name: "08-2-logic-深度邏輯"
 description: "Use when: 健檢第二階段、依盤點清單做深度邏輯審查、安全架構、API/端點/資料流串接比對、功能操作驗證、狀態不變量、測試覆蓋缺口、真實證據缺口、效能可靠性、plugin、VSIX、Release、version、tag、update reminder 與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08-audit。"
+required_skills: [audit-engine, quality-review-governance]
 metadata:
   author: antigravity
   version: "2.0"
@@ -105,6 +106,10 @@ Mock, fixture, fake-time, static screenshot, and unit-only evidence cannot compl
 
 For `deep` and `forensic` audits, every critical inventory item must end as covered, partial, unverified, blocked, or not_applicable.
 
+## 2.35 Review Lifecycle Mapping
+
+For governance, public contract, release/plugin, security, cross-module, state/data, repeated fragile-code, or high-recovery-cost findings, load `quality-review-governance` and map each finding to a review lifecycle state. Evidence branches may supply packets, but the audit output must own the final review state.
+
 ## 2.4 Real Operation Evidence
 
 When the selected path is `evidence` or when a behavior depends on real operation:
@@ -152,6 +157,7 @@ Pass this object to Phase 3:
   "security": {},
   "api_data_flow": {},
   "test_coverage": {},
+  "review_state": {},
   "real_evidence": {},
   "performance_reliability": {},
   "release_supply_chain": {},

@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-15T13:22:29+08:00'
+last_updated: '2026-06-21T11:15:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-15T13:21:00+08:00'
+last_verified: '2026-06-21T11:15:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _system.scripts — Repository Script Governance Memory
 
 ## Current Truth
@@ -41,6 +40,7 @@ metadata:
 - Project rule sync and platform deploy scripts copy the full shared governance reference set into `.agents/shared/`, including matrices, skill governance, subagent policy, and MCP profile snippets.
 - Project rule sync and platform deploy scripts copy shared governance reference files into `.agents/shared/` for target projects.
 - This child card owns root PowerShell deployment, audit, memory migration, skill sync, and platform sync scripts.
+- Governance Doctor now includes review-governance coverage checks for the new quality-review skill, workflow matrix, subagent policy, deployed copies, and three-platform 02/03/04/08/09/10 entrypoints.
 - The root `_system` card keeps repository identity, documentation, license, and top-level governance truth.
 - Public PowerShell entrypoints must preserve UTF-8 compatibility for Windows PowerShell 5.1.
 
@@ -50,6 +50,7 @@ metadata:
 - Do not use this card as a substitute for reading the current script implementation before edits.
 
 ## Cycle Events
+- 05: Added review governance coverage into Audit.psm1 and the manager Doctor description.
 - 04: Added project-local tool sync and shared memory migration implementation wiring for downstream projects.
 - 03: Expanded sync scripts to deploy full shared governance references, Codex workflow support files, and downstream sync coverage checks.
 - 02: Added shared governance reference sync to deployment and project-rule sync scripts.

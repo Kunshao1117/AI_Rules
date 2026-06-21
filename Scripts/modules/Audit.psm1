@@ -1639,6 +1639,246 @@ function Measure-GovernanceSemantics {
     }
 }
 
+function Measure-ReviewGovernanceCoverage {
+    <#
+    .SYNOPSIS
+        檢查工程審查治理是否覆蓋共用技能、矩陣、政策與三平台工作流入口。
+    .PARAMETER RepoRoot
+        AI_Rules 倉庫根目錄
+    .PARAMETER TargetRoot
+        目前專案根目錄，用於檢查部署後副本是否同步。
+    #>
+    param(
+        [string]$RepoRoot = ".",
+        [string]$TargetRoot = "."
+    )
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
+    $results = New-Object System.Collections.ArrayList
+
+    function Add-ReviewGovernanceFinding {
+        param(
+            [string]$Severity,
+            [string]$File,
+            [int]$Line,
+            [string]$Reason,
+            [string]$Text
+        )
+
+        $null = $results.Add([PSCustomObject]@{
+            Severity = $Severity
+            File     = $File
+            Line     = $Line
+            Reason   = $Reason
+            Text     = $Text
+        })
+    }
+
+    function Get-ReviewGovernanceContent {
+        param([string]$Path)
+        if (-not (Test-Path -LiteralPath $Path)) { return $null }
+        return (Get-Content -LiteralPath $Path -Raw -Encoding UTF8)
+    }
+
+    $coreChecks = @(
+        [PSCustomObject]@{
+            Path = 'Shared\skills\quality-review-governance\SKILL.md'
+            Severity = 'Red'
+            Label = '審查治理共用技能缺少必要章節'
+            Patterns = @(
+                'Review Lifecycle States',
+                'Minimum Sufficient Complexity',
+                'Evidence Branch Boundary',
+                'fixed-pending-validation',
+                'accepted-risk'
+            )
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\_index.md'
+            Severity = 'Red'
+            Label = '技能索引缺少審查治理路由'
+            Patterns = @('quality-review-governance')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\workflow-capability-evidence-matrix.md'
+            Severity = 'Red'
+            Label = '工作流矩陣缺少審查生命週期'
+            Patterns = @(
+                'Review Lifecycle Governance Matrix',
+                'fixed-pending-validation',
+                'accepted-risk',
+                'blocked'
+            )
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\ai-dev-quality-gate\SKILL.md'
+            Severity = 'Red'
+            Label = 'AI 開發品質閘門未引用審查治理'
+            Patterns = @('quality-review-governance', 'Review Lifecycle Gate', 'review state')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\intent-alignment-gate\SKILL.md'
+            Severity = 'Red'
+            Label = '需求對齊閘門未納入審查狀態'
+            Patterns = @('quality-review-governance', 'Review state|審查目的與狀態')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\delegation-strategy\SKILL.md'
+            Severity = 'Red'
+            Label = '委派策略未分離證據分支與審查責任'
+            Patterns = @('quality-review-governance', 'Evidence branches can support', 'review lifecycle|lifecycle state|審查生命週期')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\policies\subagent-invocation.md'
+            Severity = 'Red'
+            Label = '子代理政策未聲明審查狀態邊界'
+            Patterns = @('quality-review-governance', '審查生命週期狀態', 'Review-state boundary')
+        }
+    )
+
+    foreach ($check in $coreChecks) {
+        $fullPath = Join-Path $RepoRoot $check.Path
+        $content = Get-ReviewGovernanceContent -Path $fullPath
+        if ($null -eq $content) {
+            Add-ReviewGovernanceFinding -Severity $check.Severity `
+                -File $check.Path `
+                -Line 1 `
+                -Reason '必要檔案不存在' `
+                -Text $check.Label
+            continue
+        }
+
+        foreach ($pattern in $check.Patterns) {
+            if ($content -notmatch $pattern) {
+                Add-ReviewGovernanceFinding -Severity $check.Severity `
+                    -File $check.Path `
+                    -Line 1 `
+                    -Reason $check.Label `
+                    -Text "missing pattern: $pattern"
+            }
+        }
+    }
+
+    $workflowChecks = @(
+        'Codex\.agents\workflow-skills\02-blueprint-架構\SKILL.md',
+        'Codex\.agents\workflow-skills\03-build-建構\SKILL.md',
+        'Codex\.agents\workflow-skills\04-fix-修復\SKILL.md',
+        'Codex\.agents\workflow-skills\08-audit-健檢\SKILL.md',
+        'Codex\.agents\workflow-skills\08-2-logic-深度邏輯\SKILL.md',
+        'Codex\.agents\workflow-skills\08-3-report-健檢總結\SKILL.md',
+        'Codex\.agents\workflow-skills\09-commit-紀錄總結\SKILL.md',
+        'Codex\.agents\workflow-skills\10-routine-巡檢\SKILL.md',
+        'Claude\.claude\commands\02_blueprint(架構)\SKILL.md',
+        'Claude\.claude\commands\03_build(建構)\SKILL.md',
+        'Claude\.claude\commands\04_fix(修復)\SKILL.md',
+        'Claude\.claude\commands\08_audit(健檢)\SKILL.md',
+        'Claude\.claude\commands\08_audit(健檢)\08-2_logic\SKILL.md',
+        'Claude\.claude\commands\08_audit(健檢)\08-3_report\SKILL.md',
+        'Claude\.claude\commands\09_commit(紀錄)\SKILL.md',
+        'Claude\.claude\commands\10_routine(巡檢)\SKILL.md',
+        'Antigravity\.agents\workflows\02_blueprint(架構).md',
+        'Antigravity\.agents\workflows\03_build(建構計畫).md',
+        'Antigravity\.agents\workflows\04-1_fix_plan(修復計畫).md',
+        'Antigravity\.agents\workflows\08_audit(健檢).md',
+        'Antigravity\.agents\workflows\08-2_audit_logic(深度邏輯).md',
+        'Antigravity\.agents\workflows\08-3_audit_report(健檢總結).md',
+        'Antigravity\.agents\workflows\09-1_commit_scan(紀錄掃描).md',
+        'Antigravity\.agents\workflows\10_routine(巡檢).md'
+    )
+
+    foreach ($relPath in $workflowChecks) {
+        $fullPath = Join-Path $RepoRoot $relPath
+        $content = Get-ReviewGovernanceContent -Path $fullPath
+        if ($null -eq $content) {
+            Add-ReviewGovernanceFinding -Severity 'Red' `
+                -File $relPath `
+                -Line 1 `
+                -Reason '三平台工作流入口不存在' `
+                -Text $relPath
+            continue
+        }
+
+        if ($content -notmatch 'quality-review-governance') {
+            Add-ReviewGovernanceFinding -Severity 'Red' `
+                -File $relPath `
+                -Line 1 `
+                -Reason '工作流入口未引用審查治理技能' `
+                -Text $relPath
+        }
+        if ($content -notmatch 'review state|review lifecycle|review governance|審查狀態|審查治理|審查目的') {
+            Add-ReviewGovernanceFinding -Severity 'Yellow' `
+                -File $relPath `
+                -Line 1 `
+                -Reason '工作流入口缺少可讀審查狀態語義' `
+                -Text $relPath
+        }
+    }
+
+    $targetAgents = Join-Path $TargetRoot '.agents'
+    if (Test-Path -LiteralPath $targetAgents) {
+        $targetChecks = @(
+            [PSCustomObject]@{
+                Path = '.agents\skills\quality-review-governance\SKILL.md'
+                Patterns = @('Review Lifecycle States', 'Minimum Sufficient Complexity')
+            },
+            [PSCustomObject]@{
+                Path = '.agents\shared\workflow-capability-evidence-matrix.md'
+                Patterns = @('Review Lifecycle Governance Matrix')
+            },
+            [PSCustomObject]@{
+                Path = '.agents\shared\policies\subagent-invocation.md'
+                Patterns = @('quality-review-governance', 'Review-state boundary')
+            }
+        )
+
+        foreach ($check in $targetChecks) {
+            $fullPath = Join-Path $TargetRoot $check.Path
+            $content = Get-ReviewGovernanceContent -Path $fullPath
+            if ($null -eq $content) {
+                Add-ReviewGovernanceFinding -Severity 'Yellow' `
+                    -File $check.Path `
+                    -Line 1 `
+                    -Reason '部署後副本缺少審查治理覆蓋，需同步專案規則' `
+                    -Text $check.Path
+                continue
+            }
+
+            foreach ($pattern in $check.Patterns) {
+                if ($content -notmatch $pattern) {
+                    Add-ReviewGovernanceFinding -Severity 'Yellow' `
+                        -File $check.Path `
+                        -Line 1 `
+                        -Reason '部署後副本審查治理內容過期，需同步專案規則' `
+                        -Text "missing pattern: $pattern"
+                }
+            }
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 Review Governance Coverage"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
+    foreach ($finding in $results | Sort-Object Severity, File, Reason) {
+        $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+        Write-Host ("  {0} {1}:{2} — {3}" -f $finding.Severity, $finding.File, $finding.Line, $finding.Reason) -ForegroundColor $color
+        if ($finding.Text) {
+            Write-Host ("      {0}" -f $finding.Text) -ForegroundColor DarkGray
+        }
+    }
+
+    return [PSCustomObject]@{
+        Results     = @($results.ToArray())
+        RedCount    = $redCount
+        YellowCount = $yellowCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
 function Measure-DirectorOutputContract {
     <#
     .SYNOPSIS
@@ -2388,6 +2628,7 @@ function Invoke-PlatformGovernanceAudit {
     $docs = Measure-DocsConsistency -RepoRoot $RepoRoot
     $runtime = Measure-RuntimeGlobalDrift -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
     $semantics = Measure-GovernanceSemantics -RepoRoot $RepoRoot
+    $reviewGovernance = Measure-ReviewGovernanceCoverage -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $subagentPolicy = Measure-SharedSubagentPolicyDrift -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $subagentVocabulary = Measure-SubagentVocabularyDrift -RepoRoot $RepoRoot
     $directorOutput = Measure-DirectorOutputContract -RepoRoot $RepoRoot -TargetRoot $TargetRoot
@@ -2401,9 +2642,9 @@ function Invoke-PlatformGovernanceAudit {
     $skillRed = ($skillQuality | Where-Object { $_.OverallStatus -eq '🔴' }).Count
     $skillYellow = ($skillQuality | Where-Object { $_.OverallStatus -eq '🟡' }).Count
     $docStale = $docs.StaleHits.Count
-    $redTotal = $runtime.RedCount + $semantics.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $projectLinks.RedCount + $sharedContextTemplates.RedCount + $projectContext.RedCount + $memoryNaming.RedCount
+    $redTotal = $runtime.RedCount + $semantics.RedCount + $reviewGovernance.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $projectLinks.RedCount + $sharedContextTemplates.RedCount + $projectContext.RedCount + $memoryNaming.RedCount
     $redTotal += $skillRed
-    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount + $memoryNaming.YellowCount
+    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $reviewGovernance.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount + $memoryNaming.YellowCount
     $yellowTotal += $metadataYellow + $skillYellow
     $ok = $capability.CapabilityMatrix -and $capability.WorkflowMatrix -and $capability.TargetSharedRefs -and $capability.TargetCodexSupport -and $capability.ProjectToolSource -and $capability.TargetProjectTools -and $capability.McpProfiles -and $capability.MemoryMigrationManager -and $capability.MemoryMigrationExtension -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
@@ -2422,6 +2663,7 @@ function Invoke-PlatformGovernanceAudit {
         Docs       = $docs
         Runtime    = $runtime
         Semantics  = $semantics
+        ReviewGovernance = $reviewGovernance
         SubagentPolicy = $subagentPolicy
         SubagentVocabulary = $subagentVocabulary
         DirectorOutput = $directorOutput
@@ -2435,4 +2677,4 @@ function Invoke-PlatformGovernanceAudit {
     }
 }
 
-Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Measure-SharedContextTemplates, Measure-ProjectContextCards, Measure-MemoryCardNaming, Invoke-PlatformGovernanceAudit
+Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-ReviewGovernanceCoverage, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Measure-SharedContextTemplates, Measure-ProjectContextCards, Measure-MemoryCardNaming, Invoke-PlatformGovernanceAudit

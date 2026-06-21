@@ -253,7 +253,7 @@ function Invoke-ApplyUpdate {
 
 function Invoke-Doctor {
     Write-ManagerHeader "治理巡檢 Doctor"
-    Write-Host "用途：檢查 Shared Skill 品質、workflow metadata、policy marker、子代理語彙、下游共用參考、專案本地工具、全域規則漂移與 project skill links；不寫入檔案。"
+    Write-Host "用途：檢查 Shared Skill 品質、workflow metadata、policy marker、子代理語彙、審查治理覆蓋、下游共用參考、專案本地工具、全域規則漂移與 project skill links；不寫入檔案。"
     $null = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target
 }
 

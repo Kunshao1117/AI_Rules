@@ -1,6 +1,7 @@
 ---
 name: "08-3-report-健檢總結"
 description: "Use when: 健檢第三階段、證據式健康報告、健檢深度摘要、功能/端點/命令覆蓋率、紅黃綠燈號、未驗證/阻塞清單、證據等級摘要、優先修復清單與行動建議。DO NOT use when: 尚未完成前兩階段健檢。"
+required_skills: [audit-engine, quality-review-governance]
 metadata:
   author: antigravity
   version: "2.0"
@@ -65,6 +66,7 @@ Before writing the final report:
 - Every evidence packet for a known inventory item must include the inventory id.
 - High-risk green items must include a short evidence summary.
 - Missing real evidence cannot be converted to green by confidence language.
+- Review lifecycle state must remain unverified, blocked, findings-open, or accepted-risk when evidence does not support accepted status.
 - Scanner output, screenshots, or AI semantic suspicion must not be reported as confirmed defects without matching evidence.
 - Sampling limits must be stated when the audit depth is quick or standard, or when a deep audit could not cover the full denominator.
 
@@ -85,6 +87,7 @@ Output only applicable categories and explain omitted ones:
 | 介面、無障礙與操作證據 | 🟢/🟡/🔴/未驗證/阻塞/不適用 | ... | ... |
 | 效能、可靠性與相容性 | 🟢/🟡/🔴/未驗證/阻塞/不適用 | ... | ... |
 | 發布、部署與成品治理 | 🟢/🟡/🔴/未驗證/阻塞/不適用 | ... | ... |
+| 工程審查狀態 | 🟢/🟡/🔴/未驗證/阻塞/不適用 | review lifecycle/evidence | ... |
 
 ## 3.3 Evidence Summary
 
@@ -93,6 +96,7 @@ Include:
 - Selected audit depth and reason.
 - Inventory coverage counts by features, endpoints, commands, jobs, interfaces, data flows, performance targets, and risks.
 - Evidence level counts.
+- Review lifecycle state counts and accepted-risk items.
 - Unverified checks.
 - Blocked checks with smallest missing condition.
 - Not-applicable checks with surface-profile reason.

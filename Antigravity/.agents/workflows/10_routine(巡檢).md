@@ -1,7 +1,7 @@
 ---
 name: 10_routine(巡檢)
 description: "Use when: automation-safe 例行巡檢、唯讀健康檢查、技能品質、文件數字、記憶過期與 MCP 設定健康。DO NOT use when: 需要直接修復或寫入檔案。"
-required_skills: [memory-ops, code-audit]
+required_skills: [memory-ops, code-audit, quality-review-governance]
 memory_awareness: read
 metadata:
   author: antigravity
@@ -50,7 +50,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 10 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Stay read-only and automation-safe. Check workflow drift, skill quality, document consistency, matrix coverage, memory health, and MCP configuration without writes.
+- Workflow-specific grounding: Stay read-only and automation-safe. Check workflow drift, skill quality, review governance coverage, document consistency, matrix coverage, memory health, and MCP configuration without writes.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
@@ -66,6 +66,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - 下游專案巡檢部署後的 `.agents/skills/` 與 `.agents/shared/`。
 - 只有在 AI_Rules 框架來源倉庫維護時，才檢查來源 `Shared/skills/` 技能品質。
 - 比對三平台文件中的平台數、技能數、工作流數與命令數。
+- 檢查審查治理覆蓋：共用技能、工作流矩陣生命週期狀態，以及建構、修復、健檢、提交、巡檢入口引用。
 - 檢查 `.agents/memory/` 是否有過期追蹤、舊平台敘述或缺失關聯。
 - 檢查 MCP opt-in profile snippets 是否存在；不得安裝外部 MCP server。
 - 搜尋舊詞：舊技能數、舊版本、舊路徑與不再適用的平台描述。
@@ -79,4 +80,4 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 4. Output
 
-輸出繁體中文報告，包含平台代理能力一致性、workflow metadata、MCP profile、automation-safe 狀態與文件/記憶漂移。
+輸出繁體中文報告，包含平台代理能力一致性、workflow metadata、審查治理覆蓋、MCP profile、automation-safe 狀態與文件/記憶漂移。

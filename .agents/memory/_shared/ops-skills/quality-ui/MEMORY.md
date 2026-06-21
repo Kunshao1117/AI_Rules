@@ -4,24 +4,24 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 品質閘門、安全可靠性與 UI/UX 標準技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-16T06:33:19+08:00'
+last_updated: '2026-06-21T11:15:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-16T06:26:29+08:00'
+last_verified: '2026-06-21T11:15:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: ready
+compaction_status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared.ops-skills.quality-ui — Quality and UI Skills Memory
 
 ## Current Truth
@@ -40,6 +39,8 @@ metadata:
 - AI development quality gate now classifies emergency patches, root-cause repairs, local refinements, and structural refactors before production completion.
 - Interface evidence now requires detail observation and real-information priority; fake data is fallback evidence with residual risk.
 - Intent alignment gate now defines requirement playback, neutral challenge, decision trace, requirement trace, and drift audit output contracts for architecture and build workflows.
+- Quality review governance now defines correctness, high quality, rigor, review timing, review lifecycle states, evidence branch boundaries, and minimum sufficient complexity.
+- AI development and intent alignment gates now escalate heavy, structural, governance, public-contract, release, security, cross-module, and repeated fragile-code work into review-state reporting.
 - High-change security or accessibility guidance must be grounded in current official sources before decisions.
 
 ## Active Constraints
@@ -47,6 +48,7 @@ metadata:
 - Keep Director-facing design and quality summaries in Traditional Chinese.
 
 ## Cycle Events
+- 05: Added quality-review-governance and wired review-state escalation into AI development quality and intent alignment gates.
 - 04: Added intent-alignment-gate as the shared requirement alignment and drift-audit governance skill.
 - 03: Compressed ai-dev-quality-gate wording under the Shared skill quality token limit while preserving change-intent and visual-evidence gates.
 - 02: Added change intent classification, patch-stack escalation, detail observation, and real-information visual evidence gates.
@@ -74,6 +76,7 @@ metadata:
 ## Tracked Files
 - Shared/skills/ai-dev-quality-gate/SKILL.md
 - Shared/skills/intent-alignment-gate/SKILL.md
+- Shared/skills/quality-review-governance/SKILL.md
 - Shared/skills/security-sre/SKILL.md
 - Shared/skills/ui-design-exploration/SKILL.md
 - Shared/skills/ui-ux-standards/SKILL.md

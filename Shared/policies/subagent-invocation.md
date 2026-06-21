@@ -1,6 +1,6 @@
 # 三平台共用子代理治理政策
 
-此檔是 AI_Rules 的子代理治理唯一來源。共用層只定義「何時需要委派證據分支」與「主代理如何收斂證據」，不得把任一廠商的工具名稱當成跨平台規則。三平台核心規則只能保存由本檔轉譯出的 marker block；工作流與技能不得另立一套啟用政策，只能繼承本檔與 `Shared/skills/delegation-strategy/SKILL.md`。
+此檔是 AI_Rules 的子代理治理唯一來源。共用層只定義「何時需要委派證據分支」與「主代理如何收斂證據」，不得把任一廠商的工具名稱當成跨平台規則。三平台核心規則只能保存由本檔轉譯出的 marker block；工作流與技能不得另立一套啟用政策，只能繼承本檔與 `Shared/skills/delegation-strategy/SKILL.md`。證據分支只提供審查素材，不取代 `Shared/skills/quality-review-governance/SKILL.md` 的審查狀態判定。
 
 ## 共用語義
 
@@ -39,6 +39,7 @@
 
 - 主代理必須審核證據分支輸出，不得原樣視為事實或直接套用。
 - 主代理負責決定哪些發現進入計畫、程式碼、文件、測試或記憶卡。
+- 若證據分支用於工程審查，主代理必須把回收證據映射到 `quality-review-governance` 的審查生命週期狀態。
 - 主代理不得把總監溝通、GO gate、commit、push、部署、安裝、memory_commit 或外部狀態變更委派出去。
 - 分支回報若互相矛盾，主代理必須重新查證或明確標示不確定性。
 
@@ -71,6 +72,7 @@ This block is generated from the framework source policy (`Shared/policies/subag
 - **Invocation rule**: Codex spawns native subagents only when the Director explicitly asks for subagents, when a workflow gate explicitly requires a Codex evidence branch, or when project-scoped `.codex/agents/*.toml` custom agents are intentionally configured for that workflow.
 - **Do not invoke**: Do not use a Codex subagent when the next main-thread step is blocked on that answer, when the task is vague, when it requires secrets or login state, or when it would duplicate the main agent's current work.
 - **Main-agent accountability**: The main Codex agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
+- **Review-state boundary**: Codex evidence branches support review evidence, but the main Codex agent decides review lifecycle status through `quality-review-governance`.
 - **Read-only boundary**: Codex evidence branches may read, search, inspect browser state when available, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
 - **Required report format**: Every Codex evidence branch returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
 <!-- SUBAGENT_POLICY:CODEX_END -->
@@ -84,6 +86,7 @@ This block is generated from the framework source policy (`Shared/policies/subag
 - **Invocation rule**: Claude Code may use built-in, custom, or plugin subagents through description-driven delegation, `@agent` mentions, or `Agent(...)` tool permissions when the branch is bounded and read-only.
 - **Do not invoke**: Do not use a Claude subagent when the next main-thread step is blocked on that answer, when the task is vague, when it requires secrets or login state, or when it would duplicate the Master Agent's current work.
 - **Master-Agent accountability**: The Master Agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
+- **Review-state boundary**: Claude evidence branches support review evidence, but the Master Agent decides review lifecycle status through `quality-review-governance`.
 - **Read-only boundary**: Claude evidence branches may read, search, inspect browser state when allowed, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
 - **Required report format**: Every Claude evidence branch returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
 <!-- SUBAGENT_POLICY:CLAUDE_END -->
@@ -97,6 +100,7 @@ This block is generated from the framework source policy (`Shared/policies/subag
 - **Invocation rule**: Antigravity / Gemini may map evidence branches to Gemini CLI subagents, `@`-directed specialists, browser-capable agents, or Antigravity plugin adapters when the branch is bounded and read-only.
 - **Do not invoke**: Do not use an Antigravity / Gemini adapter when the next main-thread step is blocked on that answer, when the task is vague, when it requires secrets or login state, or when it would duplicate the Master Agent's current work.
 - **Master-Agent accountability**: The Master Agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
+- **Review-state boundary**: Antigravity / Gemini evidence branches support review evidence, but the Master Agent decides review lifecycle status through `quality-review-governance`.
 - **Read-only boundary**: Antigravity / Gemini evidence branches may read, search, inspect browser state, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
 - **Required report format**: Every Antigravity / Gemini evidence branch returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
 <!-- SUBAGENT_POLICY:ANTIGRAVITY_END -->

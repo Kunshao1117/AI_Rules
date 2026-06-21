@@ -5,6 +5,7 @@ trigger: manual
 required_skills:
   - audit-engine
   - performance-audit
+  - quality-review-governance
 metadata:
   author: antigravity
   version: "2.0"
@@ -70,6 +71,7 @@ Normalize every finding through `report-gates.md`:
 - `阻塞` means credentials, login, permission, external service, or high-risk approval is missing.
 - `不適用` requires explicit project-surface evidence.
 - Deep and forensic audits require every critical inventory item to be covered, partial, unverified, blocked, or not applicable.
+- Review lifecycle state must remain unverified, blocked, findings-open, or accepted-risk when evidence does not support accepted status.
 - Sampling limits must be visible whenever the report is not full denominator coverage.
 
 ## 3.2 Required Report Structure
@@ -86,11 +88,13 @@ Generate a Traditional Chinese report with these sections:
 | 真實功能證據 | 操作證據包（real operation evidence） | 網頁、後端、CLI、桌面、外掛、雲端、資料庫 | 綠燈/黃燈/紅燈/未驗證/阻塞 |
 | 效能與可靠性 | 效能可靠性證據包（perf reliability evidence） | 載入速度、錯誤處理、競態、重試、可觀測性 | 綠燈/黃燈/紅燈/未驗證 |
 | 供應鏈與發布 | 發布證據包（release evidence） | 套件、版本、打包、發布、安裝包、相容性 | 綠燈/黃燈/紅燈/不適用 |
+| 工程審查狀態 | 審查證據包（review lifecycle evidence） | 正確性、高品質、嚴謹度、複雜度取捨、accepted-risk | 綠燈/黃燈/紅燈/未驗證/阻塞 |
 
 The report must include:
 
 - Selected audit depth and reason.
 - Inventory coverage counts for features, endpoints, commands, jobs, interfaces, data flows, performance targets, and risks.
+- Review lifecycle state counts and accepted-risk items.
 - Priority repair list sorted by severity, evidence strength, and blast radius.
 - Suggested next workflow for each actionable item.
 - Explicit unverified and blocked lists.

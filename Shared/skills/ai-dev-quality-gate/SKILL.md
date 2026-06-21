@@ -3,9 +3,9 @@ name: ai-dev-quality-gate
 description: >
   [Quality] AI development quality gate for autonomous governance depth,
   tech freshness, UI component reuse, design DNA, generated image downgrade,
-  real execution evidence, interface evidence, change intent, and patch-stack risk.
-  Use when: AI 開發品質、技術新鮮度、UI 介面、UI 探索、共用元件、設計 DNA、生成圖降級、真實畫面證據、
-  真實資料驗證、實際操作驗收、介面適配驗收、桌面 GUI、新專案 UI、期貨使用端、插件介面任務。
+  real execution evidence, interface evidence, change intent, patch-stack risk, and review lifecycle escalation.
+  Use when: AI 開發品質、技術新鮮度、UI 介面、UI 探索、共用元件、設計 DNA、真實畫面證據、
+  真實資料驗證、實際操作驗收、介面適配驗收、桌面 GUI、新專案 UI、插件介面任務。
   DO NOT use when: 純後端內部重構、無 UI 且無高變動外部技術依賴的微小修正。
 metadata:
   author: antigravity
@@ -25,8 +25,8 @@ Load this skill when any task touches:
 - External frameworks, MCP servers, VS Code extensions, browser APIs, or other high-change dependencies.
 - UI layout, components, styling, interface adaptation, desktop window behavior, or interaction states.
 - Generated UI images, Stitch screens, visual references, design DNA, or Director preference discovery.
-- Trading terminals, dashboards, admin tools, websites, or product pages.
-- Real data, live runtime state, CLI output, database effects, automation, cloud deployment, or external integrations.
+- Trading terminals, dashboards, admin tools, websites, product pages, real data, runtime state, CLI output, database effects, automation, cloud deployment, or integrations.
+- Governance, workflow, public contract, release, security, cross-module, or repeated fragile-code changes that need review state.
 
 ## Procedure
 
@@ -43,7 +43,7 @@ Task levels:
 | Heavy change | Multi-module behavior, persistent data shape, migration, permission/security, public API, release behavior, workflow/skill governance, cross-platform semantics, irreversible action, or high recovery cost. | Use the full design-to-build contract, risk handling, broader regression, docs, and memory updates. |
 | Pure architecture | Architecture-only output, full-system initialization, major technology pivot, ER/API route design, or no implementation in the same turn. | Route to the blueprint workflow and do not claim implementation readiness. |
 
-Escalation factors: user-visible UI or workflow; data mutation or migration; auth, secrets, security, or compliance; public API/CLI/config/schema/plugin/release contracts; cross-platform or generated runtime copies; memory, context, docs, changelog, or handoff truth; irreversible action or high recovery cost.
+Escalation factors: user-visible workflow; data mutation; auth, secrets, security, or compliance; public API/CLI/config/schema/plugin/release contracts; generated runtime copies; memory/context/docs truth; irreversible action or high recovery cost.
 
 Decision rules:
 
@@ -68,7 +68,13 @@ Patch-stack escalation:
 1. If the same symptom family, file region, or operator path has already received one emergency patch in the current cycle, route the next change to root-cause repair or structural refactor.
 2. Do not use "minimal change" language to avoid root-cause analysis when the cause is unknown, repeated, cross-module, or data/operator dependent.
 3. If the Director explicitly accepts a temporary patch, report the unresolved risk and the smallest follow-up needed.
-4. Local refinement becomes structural refactor when it touches data flow, state model, public interface, workflow governance, or repeated adjacent edits.
+4. Local refinement becomes structural refactor when it touches data flow, state, public interface, workflow governance, or repeated edits.
+
+### 1.6 Review Lifecycle Gate
+
+For Heavy change, Structural refactor, governance/workflow/public contract work, release/plugin behavior, security-sensitive change, or repeated fragile-code repair, load `quality-review-governance` before the plan or completion is ready.
+
+Report review purpose, lifecycle state, evidence status, accepted risk, and blockers. Use exactly one lifecycle state from `quality-review-governance`.
 
 ### 2. Tech Freshness Gate
 
@@ -83,31 +89,31 @@ Do not use model memory as the source of truth for APIs that may have changed.
 
 ### 2.5 Real Execution Evidence Gate
 
-Production build, fix, test, and audit work defaults to real verification. If a behavior can be started, operated, called, queried, observed, screenshotted, logged, or inspected, attempt that path before claiming completion.
+Production build, fix, test, and audit work defaults to real verification. If behavior can be started, called, queried, observed, logged, or inspected, attempt that path before claiming completion.
 
 Classify the real-world operation surface before choosing evidence:
 
 | Surface | Minimum real evidence |
 | --- | --- |
-| Web/admin UI | Running app, browser interaction, final state, and request/response evidence when data is involved. |
-| Desktop GUI | Running window, user flow, screenshot/log/state output. |
-| CLI/TUI | Actual command, exit code, stdout/stderr, non-interactive behavior, and failure case when relevant. |
-| Backend/API | Real request, response/status, log, and side-effect check when applicable. |
-| Database/migration | Query result, before/after state, transaction or rollback evidence, and sandbox/branch isolation when needed. |
+| Web/admin UI | Running app, browser flow, final state, and request/response evidence when data is involved. |
+| Desktop GUI | Running window, user flow, screenshot/log/state. |
+| CLI/TUI | Command, exit code, stdout/stderr, non-interactive behavior, and failure case when relevant. |
+| Backend/API | Real request, status, log, and side-effect check when applicable. |
+| Database/migration | Query, before/after state, rollback evidence, and sandbox isolation when needed. |
 | Automation/job | Actual trigger or supported dry-run, timestamped record, retry or failure evidence. |
 | IDE/plugin | Real host, command feedback, panel state, trust/permission state, and confirmation behavior. |
 | Sync/scraper | Real source response, parsed output, timestamp, and rate-limit or failure handling. |
 | AI/model | Real input/output samples, source data, evaluation sample, and uncertainty limits. |
-| Cloud/deployment | Deployment status, health check, logs, version, asset, or endpoint evidence. |
+| Cloud/deployment | Deployment status, health check, logs, version, or endpoint evidence. |
 
-Verification method discovery and retention:
+Verification method discovery:
 
-1. Before "unable to verify", inventory scripts, dev servers, tests, browser/desktop control, terminal, plugin host, MCP/API tools, logs, databases, artifacts, and documented workflows.
-2. Select the closest operator-capable path for the real operation surface and pair it with lower-level evidence when useful.
-3. Search docs, scripts, task files, routes, and platform notes before treating a path as unavailable.
-4. Retry or readiness-check transient warmup, stale browser, timeout, rate-limit, or delayed readiness failures before changing strategy.
-5. If the primary tool remains unavailable, try an equivalent real path: alternate controller, command, request, read-only DB check, log, sandbox, preview, dry-run, or recorded real-source replay.
-6. Blocked reports must list search scope, tools tried, retry count or unsafe-retry reason, alternatives considered, and the smallest missing condition.
+1. Before "unable to verify", inventory scripts, servers, tests, browser/desktop control, terminal, plugin host, MCP/API tools, logs, databases, artifacts, and docs.
+2. Choose the closest operator-capable path for the surface, then add lower-level evidence only when it improves confidence.
+3. Search docs, scripts, routes, task files, and platform notes before marking a path unavailable.
+4. Retry warmup, stale controller, timeout, rate-limit, or delayed readiness failures when safe.
+5. If the primary tool is unavailable, try an equivalent real path: alternate controller, command, request, read-only DB check, log, sandbox, preview, dry-run, or recorded real-source replay.
+6. Blocked reports list search scope, tools tried, retry status, alternatives, and the smallest missing condition.
 
 Evidence levels:
 
@@ -119,10 +125,10 @@ Evidence levels:
 Completion rules:
 
 1. Outcomes depending on real data, external state, persistence, timing, permissions, network, or operator-visible behavior need level 1, 2, or 3 evidence.
-2. Level 4 is partial validation and cannot complete the function.
-3. "Unable to verify" requires inventory, operator-tool discovery, a concrete attempt, and retry or equivalent-path consideration unless the blocker is obvious.
-4. Allowed blockers: missing credentials/login/hardware, unsafe destructive external action, third-party outage, rate limit, CAPTCHA/MFA, legal/safety limit, or missing Director authorization for a mutating real-world action.
-5. Blocked verification reports attempts, evidence, tools, retry status, alternatives, missing condition, and next smallest input.
+2. Level 4 is partial validation only.
+3. "Unable to verify" needs inventory, a concrete attempt, and retry or equivalent-path consideration unless the blocker is obvious.
+4. Allowed blockers: missing credentials/login/hardware, unsafe destructive action, outage, rate limit, CAPTCHA/MFA, legal/safety limit, or missing Director authorization.
+5. Blocked reports include attempts, evidence, tools, retry status, alternatives, missing condition, and next input.
 6. Insufficient evidence means failed or blocked validation, not completion.
 
 ### 3. Component Reuse Gate
@@ -169,7 +175,7 @@ Implementation acceptance must be based on the real rendered interface.
 
 ### 6. Interface Adaptation Evidence Gate
 
-For UI changes that affect layout, components, styling, or interaction states:
+For UI changes affecting layout, components, styling, or interaction states:
 
 1. Classify the interface surface before choosing evidence:
    - Web: mobile, tablet, desktop screenshots or browser evidence.
@@ -178,22 +184,22 @@ For UI changes that affect layout, components, styling, or interaction states:
    - CLI/TUI: wrapping, error readability, exit code, non-interactive mode, and narrow width.
    - Operational dashboard/trading terminal: density, hierarchy, overflow, degraded state, and updates.
 2. Collect real rendered screenshot, browser, desktop, terminal, or test evidence for the selected surface.
-3. Check for text overflow, compressed controls, overlapping components, table or chart overflow, fixed regions covering content, small touch targets when touch is relevant, inconsistent spacing, and inconsistent typography.
+3. Check for text overflow, compressed controls, overlap, table/chart overflow, fixed regions covering content, small touch targets, inconsistent spacing, and typography.
 4. If required surface evidence is missing, report the UI as pending visual validation instead of complete.
 
 Do not force every interface into web responsive rules. Match the evidence to the product surface and operator workflow.
 
 Visual detail and real-information requirements:
 
-1. Detail observation is mandatory for visual validation. Inspect text clipping, button alignment, spacing, border breaks, overlap, focus state, disabled state, loading flicker, empty state, error state, density, and hierarchy. "Looks fine overall" is not a pass condition.
-2. Prefer real information pages: real data, real account state, current API responses, current logs, production-like records, or an equivalent real path. Fake, fixture, seeded, mock, or idealized data is fallback evidence only.
-3. Use fake data only when real information is unavailable, permission-blocked, unsafe, broken, or not authorized. The report must state why fake data was used, what risk remains, and which completion claims are not supported.
-4. Screenshots must be paired with state coverage when relevant: normal, loading, empty, error, permission/disabled, and before/after interaction states.
-5. For refactors or broad UI adjustments, compare before/after and name detail-level differences instead of only describing the overall direction.
+1. Visual validation must inspect text clipping, alignment, spacing, border breaks, overlap, focus/disabled state, loading flicker, empty/error state, density, and hierarchy. "Looks fine overall" is not enough.
+2. Prefer real data, account state, current API responses, logs, production-like records, or an equivalent real path. Fake, fixture, seeded, mock, or idealized data is fallback only.
+3. Use fake data only when real information is unavailable, blocked, unsafe, broken, or unauthorized; report why, remaining risk, and unsupported completion claims.
+4. Pair screenshots with relevant states: normal, loading, empty, error, permission/disabled, and before/after interaction.
+5. For refactors or broad UI work, compare before/after and name detail-level differences.
 
 ## Required Report Fields
 
-For affected UI or high-change work, report tech freshness, real execution evidence, change intent, governance depth, component reuse, design direction, context/DNA alignment, reference downgrade, interface evidence, and remaining Director review points.
+For affected UI or high-change work, report tech freshness, real execution evidence, change intent, governance depth, review state when the lifecycle gate applies, component reuse, design direction, context/DNA alignment, reference downgrade, interface evidence, and remaining Director review points.
 
 ## Constraints
 

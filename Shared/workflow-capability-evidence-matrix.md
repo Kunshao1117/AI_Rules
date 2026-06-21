@@ -47,6 +47,23 @@ Architecture and build workflows must preserve Director intent as a traceable co
 | 需求追蹤 | Requirement-to-plan/task-to-acceptance mapping | Every requirement has a planned task or a recorded rejection/narrowing decision |
 | 偏移稽核 | Aligned, justified deviation, unauthorized deviation, unverified | Original request, approved plan, actual changes, and validation evidence compared before completion |
 
+## Review Lifecycle Governance Matrix
+
+Engineering review is separate from evidence collection. Evidence branches may collect facts, but the main workflow owns the review purpose, review state, accepted risk, and final acceptance.
+
+| 審查狀態 | 使用時機 | 最低證據 |
+|---|---|---|
+| not-started | Review is not required yet, or no review trigger is present | No-review reason or pending trigger |
+| collecting-evidence | Files, commands, docs, logs, or helper evidence are still being gathered | Evidence scope and current missing pieces |
+| findings-open | Concrete issues exist and still need disposition | Issue list tied to source, tool output, docs, logs, or observed behavior |
+| fix-required | At least one issue blocks acceptance | Required fix, owner workflow, and validation path |
+| fixed-pending-validation | A fix exists, but verification has not passed yet | Changed scope and pending validation command or real-path check |
+| accepted | Evidence supports correctness, quality, and required validation | Passing validation and alignment evidence |
+| accepted-risk | Work can proceed with a known bounded risk | Explicit risk, reason, owner, and Director-visible limitation |
+| blocked | Required access, evidence, approval, or external state is missing | Blocker, attempted evidence path, and smallest unblock condition |
+
+Review state is mandatory for governance, workflow, public contract, release/plugin behavior, security, cross-module, data/state, repeated fragile-code, or high-recovery-cost changes. Low-risk local edits may record targeted validation without a lifecycle review.
+
 ## Visual Evidence Governance Matrix
 
 Visual verification must inspect details and prefer real information. Screenshots are visible-state evidence only; they do not prove data correctness, persistence, business logic, permissions, integrations, or post-action side effects.
@@ -72,16 +89,16 @@ Visual verification must inspect details and prefer real information. Screenshot
 |---|---|---|---|---|
 | 00 對話 | 純討論、概念釐清、輕量問答 | Codex 指令分層、Claude 上下文管理、Agent Skills 描述觸發 | 當前規則與已知上下文；高變動事實需轉研究 | 01、02、03、04、06、09 |
 | 01 探索 | 網路研究、競品、可行性、反方分析 | 深度研究實務、來源可信度、資料新鮮度 | 來源層級、日期、偏誤、覆蓋缺口與未驗證項 | 02、03、08 |
-| 02 架構 | 純架構、重大技術轉向、系統藍圖 | ADR、C4、arc42、官方框架文件、需求對齊閘門 | 需求理解回放、中立反證、決策狀態、替代方案、需求到驗收追蹤、假設、相容性與後續建構契約 | 03、08、12 |
+| 02 架構 | 純架構、重大技術轉向、系統藍圖 | ADR、C4、arc42、官方框架文件、需求對齊閘門 | 需求理解回放、中立反證、決策狀態、替代方案、審查目的與狀態、需求到驗收追蹤、假設、相容性與後續建構契約 | 03、08、12 |
 | 03-1 實驗 | 沙盒 spike、丟棄式原型 | 技術 spike 與原型隔離實務 | 實驗邊界、丟棄條件、禁止生產品質聲明 | 03、11 |
-| 03 建構 | 正式建構、產品行為變更 | 先探索、再計畫、再實作、再驗證、需求對齊閘門 | 沿用藍圖狀態、需求到任務追蹤、任務驗收矩陣、偏移稽核規則、真實驗證路徑、工具發現、阻塞條件、記憶所有權與狀態證據 | 04、06、08、09 |
-| 04 修復 | bug 修復、回歸修復 | 根因分析、缺陷管理、回歸測試 | 症狀、根因、修復證據、回歸證據、受影響記憶卡狀態與依賴證據 | 06、07、09 |
+| 03 建構 | 正式建構、產品行為變更 | 先探索、再計畫、再實作、再驗證、需求對齊閘門、工程審查治理 | 沿用藍圖狀態、審查目的與狀態、需求到任務追蹤、任務驗收矩陣、偏移稽核規則、真實驗證路徑、工具發現、阻塞條件、記憶所有權與狀態證據 | 04、06、08、09 |
+| 04 修復 | bug 修復、回歸修復 | 根因分析、缺陷管理、回歸測試、工程審查治理 | 症狀、根因、審查目的與狀態、修復證據、回歸證據、受影響記憶卡狀態與依賴證據 | 06、07、09 |
 | 05 濃縮 | 專案身份、長期記憶初始化 | 上下文壓縮、長期記憶、偏好治理 | 來源依據、永久事實與暫時觀察分離、工作區與脈絡盤點證據 | 02、11、12 |
 | 06 測試 | E2E、視覺、效能、無障礙、回歸 | Playwright、Lighthouse、Web Vitals、WCAG | 專案型態、測試面、證據等級、阻塞原因 | 03、04、08 |
 | 07 除錯 | stack trace、日誌、故障定位 | OpenTelemetry、SRE 監控、根因診斷 | 可觀測訊號、假設、證實/反證、轉修復條件 | 04、06、08 |
-| 08 健檢 | 全光譜專案健檢、深層健檢、上線前高風險審查 | 08 共用健檢引擎、本矩陣、OWASP、Playwright、Lighthouse、Web Vitals、WCAG、OpenTelemetry | 健檢深度、專案型態、能力快照、功能/端點/命令盤點、覆蓋率分母、證據包、記憶/脈絡治理證據、燈號、未驗證/阻塞清單 | 02、03、04、06、09 |
-| 09 提交 | 變更紀錄、提交、版本、發布前掃描 | Conventional Commits、Keep a Changelog、SemVer、狀態檢查 | 明確檔案清單、記憶狀態、提交前記憶預檢、變更摘要、版本/成品判定 | 04、06、08、11 |
-| 10 巡檢 | automation-safe 唯讀治理 | 自動化健康檢查、工作流漂移檢查 | 技能品質、文件一致性、矩陣覆蓋、唯讀記憶/脈絡巡檢、無寫入證明 | 08、12 |
+| 08 健檢 | 全光譜專案健檢、深層健檢、上線前高風險審查 | 08 共用健檢引擎、本矩陣、OWASP、Playwright、Lighthouse、Web Vitals、WCAG、OpenTelemetry、工程審查治理 | 健檢深度、專案型態、能力快照、功能/端點/命令盤點、覆蓋率分母、證據包、審查狀態、記憶/脈絡治理證據、燈號、未驗證/阻塞清單 | 02、03、04、06、09 |
+| 09 提交 | 變更紀錄、提交、版本、發布前掃描 | Conventional Commits、Keep a Changelog、SemVer、狀態檢查、工程審查治理 | 明確檔案清單、審查狀態與 accepted-risk/unverified/blocker 清單、記憶狀態、提交前記憶預檢、變更摘要、版本/成品判定 | 04、06、08、11 |
+| 10 巡檢 | automation-safe 唯讀治理 | 自動化健康檢查、工作流漂移檢查、工程審查治理 | 技能品質、文件一致性、矩陣覆蓋、審查治理覆蓋、唯讀記憶/脈絡巡檢、無寫入證明 | 08、12 |
 | 11 交接 | 任務交接、續接提示 | 上下文交接與任務摘要實務 | 目前狀態、髒檔、阻塞、未驗證項、工作區/記憶健康證據、下一流程 | 02、03、04、09 |
 | 12 技能鍛造 | 新技能、共用技能、專案技能 | Agent Skills 規格、技能描述、漸進載入 | 層級選擇、描述品質、參考資料拆分、驗證門檻、受影響記憶與技能索引證據 | 03、08、10 |
 

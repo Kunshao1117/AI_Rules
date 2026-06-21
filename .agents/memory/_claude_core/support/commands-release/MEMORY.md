@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 紀錄、巡檢與技能鍛造指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-15T14:18:46+08:00'
+last_updated: '2026-06-21T11:15:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-15T11:55:00+08:00'
+last_verified: '2026-06-21T11:15:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core.support.commands-release — Claude Release and Governance Commands Memory
 
 ## Current Truth
@@ -39,12 +38,14 @@ metadata:
 - This child card owns Claude commit, routine, and skill-forge command entries.
 - Commit commands must respect Director gates for git and external state changes.
 - Routine checks are read-only unless a later gate authorizes writes.
+- Claude commit and routine commands now check review-state blockers, accepted-risk items, unverified high-risk validation, and review governance coverage before release or routine conclusions.
 
 ## Active Constraints
 - Do not commit, push, tag, or release without explicit Director approval.
 - Do not let routine inspection mutate source or memory without a write gate.
 
 ## Cycle Events
+- 05: Added review-state preflight and review governance coverage to Claude commit and routine commands.
 - 04: Added MCP memory evidence contract references to Claude commit, routine, and skill-forge commands.
 - 03: Updated Claude release and skill-forge command boundaries for downstream project use.
 - 02: Aligned release Claude command grounding paths to deployed .agents/shared governance references.

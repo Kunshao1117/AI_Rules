@@ -2,8 +2,8 @@
 name: code-quality
 description: >
   [Quality] Code quality enforcement via functional module boundaries, SOLID review,
-  size review warnings, and maintainability-driven refactoring.
-  Use when: 建構新原始碼檔案、調整功能模組邊界、執行 /05_refactor 重構、或檔案大小可能造成維護風險 的場景。
+  size review warnings, maintainability-driven refactoring, and minimum sufficient complexity review.
+  Use when: 建構新原始碼檔案、調整功能模組邊界、執行 /05_refactor 重構、檔案大小可能造成維護風險、或需要取捨簡潔與複雜設計 的場景。
   DO NOT use when: 純討論/研究/讀取程式碼、修改設定檔或樣式文字、/03-1_experiment 沙盒模式。
 metadata:
   author: antigravity
@@ -103,6 +103,15 @@ Split by behavior, domain, or adapter boundary when any of these are true:
 │           「🟡 [QUALITY REVIEW] {filename} 超過建議行數，但拆分必須依功能邊界決定。」
 └── Gate cleared → Proceed.
 ```
+
+## 5. Complexity Review Alignment (複雜度審查對齊)
+
+Load `quality-review-governance` when the choice is between a simple direct implementation and a more structured design.
+
+- Keep the simple path when the requirement is stable, local, readable, testable, and already fits existing project patterns.
+- Accept more structure only when it isolates a real risk, protects a public contract, improves testability, reduces meaningful duplication, or matches an established local architecture.
+- Treat speculative abstraction, line-count-only splitting, and mixed responsibilities as quality regressions.
+- Record the review state when boundary, coupling, testability, or future-maintenance risk remains unresolved.
 
 ## Constraints
 

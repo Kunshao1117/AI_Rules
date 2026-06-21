@@ -1,7 +1,8 @@
 ---
 name: intent-alignment-gate
 description: >
-  [Quality] Requirement alignment, neutral challenge, decision trace, acceptance trace, and drift audit gate.
+  [Quality] Requirement alignment, neutral challenge, decision trace, acceptance trace,
+  review state alignment, and drift audit gate.
   Use when: architecture blueprint, design-to-build plan, requirements clarification, anti-sycophancy review,
   neutral challenge, decision record, acceptance trace, drift audit, requirements traceability /
   需求對齊、反證、中立檢查、架構藍圖、建構計畫、驗收追蹤、偏移稽核、需求追蹤。
@@ -62,6 +63,7 @@ Every blueprint or build plan that changes architecture, workflow behavior, publ
 - Trade-offs and residual risk
 - Reversibility and compatibility impact
 - Evidence level: sufficient, partial, unverified, blocked, or not applicable
+- Review state: required when `quality-review-governance` applies; otherwise not applicable
 
 ### 4. Requirement Trace
 
@@ -107,6 +109,7 @@ Architecture blueprint outputs must include:
 Build plan outputs must include:
 
 - 沿用藍圖狀態
+- 審查目的與狀態（when `quality-review-governance` applies）
 - 需求到任務追蹤表
 - 任務驗收矩陣
 - 偏移稽核規則

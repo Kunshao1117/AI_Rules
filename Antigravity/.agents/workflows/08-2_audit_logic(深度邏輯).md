@@ -11,6 +11,7 @@ required_skills:
   - test-patterns
   - browser-testing
   - performance-audit
+  - quality-review-governance
 metadata:
   author: antigravity
   version: "2.0"
@@ -69,6 +70,8 @@ Use Antigravity evidence branches only for isolated read-only work:
 
 The main workflow remains responsible for integration, status decisions, and final reporting.
 
+If evidence branches are used for engineering review, the main workflow must map their packets to the lifecycle states in `quality-review-governance`. Branch output is evidence, not acceptance.
+
 ## 2.2 Semantic Architecture Review
 
 Use `audit-engine`, `security-sre`, and `impact-test-strategy` to review only applicable surfaces and inventory ids:
@@ -96,6 +99,10 @@ For every high-risk behavior, prefer real execution evidence over static inferen
 Synthetic tests, mocks, fixtures, or static screenshots may support a finding, but they cannot alone turn a high-risk item green.
 
 For `deep` and `forensic` audits, every critical inventory item must end as covered, partial, unverified, blocked, or not_applicable.
+
+## 2.35 Review Lifecycle Mapping
+
+For governance, public contract, release/plugin, security, cross-module, state/data, repeated fragile-code, or high-recovery-cost findings, load `quality-review-governance` and map each finding to a review lifecycle state.
 
 ## 2.4 Performance, Accessibility & Compatibility
 
@@ -125,6 +132,7 @@ Return this object to Phase 3:
   "audit_depth": "standard",
   "inventories": {},
   "semantic": {},
+  "review_state": {},
   "real_evidence": {},
   "release_supply_chain": {},
   "coverage": {},

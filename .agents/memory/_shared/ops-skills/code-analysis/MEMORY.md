@@ -4,24 +4,24 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 程式掃描、診斷與品質操作技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-15T02:52:53+08:00'
+last_updated: '2026-06-21T11:15:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: partial_evidence
-last_verified: '2026-06-15T02:44:59+08:00'
+verification_status: verified
+last_verified: '2026-06-21T11:15:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: ready
+compaction_status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -37,12 +37,14 @@ metadata:
 - This child card owns Shared code scanning, diagnosis, and code-quality operational skills.
 - The parent `_shared.ops-skills` card is now a navigation card for operational-skill families.
 - Detailed command recipes and report templates remain in the tracked skill references, not in memory.
+- Code-quality now routes simple-versus-complex implementation choices to quality-review-governance and treats speculative abstraction or line-count-only splitting as a quality regression.
 
 ## Active Constraints
 - Keep scan command recipes in source reference files; this card stores ownership and current constraints only.
 - Do not mark findings as verified unless the relevant source or tool output has been checked in the current task.
 
 ## Cycle Events
+- 02: Added minimum-sufficient-complexity alignment to code-quality through quality-review-governance.
 - 01: Split code analysis ownership out of the broad Shared operational skills card.
 
 ## Archive Index

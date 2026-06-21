@@ -1,5 +1,6 @@
 ---
 description: "Use when: 提交、commit、push、版本紀錄、CHANGELOG、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 前置掃描與受治理備份。DO NOT use when: 尚未完成實作或只想查看 git 狀態。"
+required_skills: [memory-ops, plugin-release-governance, quality-review-governance]
 metadata:
   author: antigravity
   version: "2.0"
@@ -46,10 +47,11 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 
 > [LOAD SKILL] If staged or dirty files touch plugin / extension / VSIX / GitHub Release / package version / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before drafting commit and release steps.
+> [LOAD SKILL] If staged or dirty files include governance, public contract, release/plugin behavior, security, cross-module, repeated fragile-code, or accepted-risk changes, read `.agents/skills/quality-review-governance/SKILL.md` before declaring commit readiness.
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 09 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Require explicit file lists, memory hygiene, status-check awareness, changelog quality, version impact, and governed release routing before commit or push.
+- Workflow-specific grounding: Require explicit file lists, review state and accepted-risk/unverified/blocker awareness, memory hygiene, status-check awareness, changelog quality, version impact, and governed release routing before commit or push.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
@@ -71,6 +73,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 [EXECUTE] Compare `git diff --name-only` against tracked files in Memory System.
 [EXECUTE] Analyze `staleness` count for affected memory cards.
+[EXECUTE] Check whether the build/fix/audit completion report contains review-state blockers, accepted-risk items, or unverified high-risk validation.
 
 ## 3. TERMINATION_POINT
 

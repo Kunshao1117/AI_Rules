@@ -1,7 +1,7 @@
 ---
 name: 10_routine
 description: "Use when: automation-safe 例行巡檢、唯讀健康檢查、技能品質、文件數字、記憶過期與 MCP 設定健康。DO NOT use when: 需要直接修復或寫入檔案。"
-required_skills: [memory-ops, code-audit]
+required_skills: [memory-ops, code-audit, quality-review-governance]
 memory_awareness: read
 user-invocable: true
 metadata:
@@ -52,7 +52,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 10 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Stay read-only and automation-safe. Check workflow drift, skill quality, document consistency, matrix coverage, memory health, and MCP configuration without writes.
+- Workflow-specific grounding: Stay read-only and automation-safe. Check workflow drift, skill quality, review governance coverage, document consistency, matrix coverage, memory health, and MCP configuration without writes.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
@@ -68,6 +68,7 @@ Use this Slash Command for scheduled or manually triggered maintenance checks. I
 - In downstream projects, inspect deployed skills in `.claude/skills/` and shared governance references in `.agents/shared/`.
 - In the AI_Rules framework source repository only, run source skill quality checks for `Shared/skills/` and `.claude/skills/`.
 - Compare documented platform, skill, workflow, and command counts against the live filesystem.
+- Inspect review governance coverage: shared skill presence, workflow matrix lifecycle states, and build/fix/audit/commit/routine references.
 - Inspect `.agents/memory/` for stale tracked files, missing references, or outdated platform descriptions.
 - Inspect MCP resources/prompts and opt-in profile snippets without installing or modifying servers.
 - Search for old counts, obsolete paths, and outdated version labels.
@@ -81,4 +82,4 @@ Use this Slash Command for scheduled or manually triggered maintenance checks. I
 
 ## 4. Output
 
-Report in Traditional Chinese with platform capability consistency, workflow metadata health, MCP profile health, automation-safe status, and stale documentation or memory findings.
+Report in Traditional Chinese with platform capability consistency, workflow metadata health, review governance coverage, MCP profile health, automation-safe status, and stale documentation or memory findings.

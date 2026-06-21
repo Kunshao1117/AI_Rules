@@ -2,8 +2,9 @@
 name: delegation-strategy
 description: >
   [Infra] Vendor-neutral Delegation Gate and channel selection decision tree
-  for direct handling / evidence branch / browser branch / CLI branch / MCP direct.
-  Use when: 需要決定任務該由主腦直接處理、交給唯讀證據分支、瀏覽器證據分支、CLI 分析分支，或由主腦直接呼叫 MCP 工具的場景。
+  for direct handling / evidence branch / browser branch / CLI branch / MCP direct,
+  including review-evidence boundaries.
+  Use when: 需要決定任務該由主腦直接處理、交給唯讀證據分支、瀏覽器證據分支、CLI 分析分支、由主腦直接呼叫 MCP 工具，或釐清子代理審查證據邊界的場景。
   DO NOT use when: 已確定管道為瀏覽器且需要執行測試（用 browser-testing）、已確定管道為 CLI 且需要掃描（用 code-audit）。
 metadata:
   author: antigravity
@@ -31,6 +32,8 @@ Evaluate in this order:
 
 > **Shared Policy Source**: 子代理啟用條件與唯讀邊界以下游 `.agents/shared/policies/subagent-invocation.md` 為部署後參考；框架來源倉庫的唯一來源檔是 `Shared/policies/subagent-invocation.md`。本技能只負責管道選擇與平台中立任務包格式。
 
+> **Review Boundary**: Evidence branches can support `quality-review-governance`, but they cannot decide final review state, quality acceptance, GO gates, or release readiness.
+
 | Channel | Context | Speed | Output |
 |---|---|---|---|
 | direct | Main thread | Fast | Integrated work |
@@ -50,6 +53,8 @@ Use an evidence branch when all are true:
 
 Do not use an evidence branch when the next main-thread action is blocked on that answer, the task needs secrets/login state, or the branch would modify source files, memory cards, git state, deployments, issues, pull requests, cloud resources, or mutating MCP state.
 
+When an evidence branch is used for review, the Master Agent must map the returned packet to the lifecycle states in `quality-review-governance`. A branch packet is evidence, not approval.
+
 ## 3. Platform Adapter Mapping (平台轉譯)
 
 Shared skills MUST describe the branch intent, not a vendor-specific tool name. The active platform maps that intent:
@@ -67,6 +72,7 @@ Every delegated branch prompt must include:
 - Role: what the branch is responsible for
 - Read scope: paths, URLs, logs, or UI flows it may inspect
 - Forbidden actions: no source writes, memory writes, git operations, deployments, installs, mutating MCP, or external state changes
+- Review use: whether this evidence affects review purpose, review state, accepted risk, or blockers
 - Stop condition: when to return
 - Return format:
 

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-21] AI Rules Manager v0.1.18
+
+### feat
+- **Engineering review governance** — 新增工程審查共用技能，定義正確、高品質、嚴謹、審查目的、審查時機、審查生命週期、accepted-risk 與最小足夠複雜度取捨。
+- **Review-state workflow coverage** — 三平台 02/03/04/08/09/10 入口納入審查目的與狀態，並明確把 evidence branch 視為證據來源而非審查結論擁有者。
+- **Doctor review coverage** — 治理巡檢新增審查治理覆蓋檢查，會掃描共用技能、工作流矩陣、子代理政策、部署後副本與三平台工作流入口。
+
+### docs
+- **Skill count refresh** — 共用操作型技能數更新為 42；Codex Edition 部署後技能總數更新為 59（42 共用 + 17 工作流）。
+
 ## [2026-06-16] 需求對齊與中立建構治理
 
 ### feat

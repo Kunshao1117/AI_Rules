@@ -17,7 +17,7 @@ AI 編碼助手天生有幾個致命弱點，Antigravity Governance Suite 逐一
 1. **跨對話失憶** — 每開新對話就忘記之前的架構決策。→ 透過 `.agents/memory/` 記憶卡系統，AI 在新對話中也能回憶過去的決策與教訓
 2. **無紀律執行** — 寫碼前不規劃、寫完不測試、改完不更新文件。→ 20 個工作流檔案強制「規劃→閘門→執行→歸檔」四拍子
 3. **角色權限模糊** — 子代理人隨意修改檔案，主代理人無法審閱。→ Delegation Gate 只允許唯讀 evidence branch，所有交付仍由主代理整合
-4. **知識碎片化** — 技能散落各處，Token 消耗暴增。→ 41 套按需載入的操作型技能，不用時零開銷
+4. **知識碎片化** — 技能散落各處，Token 消耗暴增。→ 42 套按需載入的操作型技能，不用時零開銷
 5. **語言不友善** — 工程術語充斥，非技術背景的專案總監看不懂。→ 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
 6. **三平台記憶分歧** — Gemini、Claude Code、Codex 各自記各自的。→ `.agents/memory/` 統一記憶庫，三個平台共用同一份記憶
 7. **偏好與記憶混雜** — 設計 DNA、產品偏好與驗收口味塞進原始碼記憶。→ `.agents/context/` 專案脈絡層獨立保存長期偏好
@@ -127,7 +127,7 @@ AI_Rules 也提供本機 VS Code 延伸模組管理器，適合不想記 PowerSh
 | **檢查 VSIX 新版** | 手動查詢 GitHub Release；有新版 VSIX 安裝包時提示開啟下載頁，沒有新版時也明確回報已是最新版 |
 | **查看來源更新影響** | 說明若對齊 AI_Rules 遠端來源，會執行哪些來源檢查與治理巡檢動作 |
 | **對齊 AI_Rules 遠端來源** | 顯示確認視窗後才對齊遠端來源；不安裝 VSIX，也不同步目前專案規則 |
-| **治理巡檢 Doctor** | 執行治理巡檢，包含 Shared Skill 品質、workflow metadata、policy marker、子代理語彙、全域規則漂移與 project skill links |
+| **治理巡檢 Doctor** | 執行治理巡檢，包含 Shared Skill 品質、workflow metadata、policy marker、子代理語彙、審查治理覆蓋、全域規則漂移與 project skill links |
 | **同步使用者層規則** | 先預覽差異，預覽成功後才詢問是否寫入 `~/.codex`、`~/.claude`、`~/.gemini` |
 | **同步已安裝平台規則** | 先偵測目前專案實際安裝的平台，再預覽；預覽成功後才同步 `.agents` / `.claude` / `.codex` 對應規則、技能與 project skill discovery 連結 |
 | **同步 Codex** | 只同步已安裝 Codex 專案的 `.codex/`、Codex 工作流技能與 `.agents/skills/project-*` |
@@ -160,7 +160,7 @@ npm run package
 
 ### GitHub Release 自動建立與附加 VSIX
 
-推送 tag `v0.1.17` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.17.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
+推送 tag `v0.1.18` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.18.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
 
 ---
 
@@ -168,11 +168,11 @@ npm run package
 
 | 版本 | 目標平台 | 當前版號 | 規則數 | 工作流 | 操作型技能 | 詳細文件 |
 |------|---------|---------|--------|--------|-----------|---------| 
-| **Antigravity** | Gemini（IDE 插件 + CLI） | v8.0.3 | 9 | 20 | 41 | [Antigravity/README.md](Antigravity/README.md) |
-| **Claude Edition** | Claude Code（VS Code 插件） | v1.2.3 | 7 | 17 | 41 | [Claude/README.md](Claude/README.md) |
-| **Codex Edition** | OpenAI Codex（agentskills.io 標準）| v0.1.3 | 1 | 17 | 41 | [Codex/README.md](Codex/README.md) |
+| **Antigravity** | Gemini（IDE 插件 + CLI） | v8.0.3 | 9 | 20 | 42 | [Antigravity/README.md](Antigravity/README.md) |
+| **Claude Edition** | Claude Code（VS Code 插件） | v1.2.3 | 7 | 17 | 42 | [Claude/README.md](Claude/README.md) |
+| **Codex Edition** | OpenAI Codex（agentskills.io 標準）| v0.1.3 | 1 | 17 | 42 | [Codex/README.md](Codex/README.md) |
 
-三個版本的**操作型技能均源自 `Shared/skills/`**（唯一真實來源，41 個），記憶系統依賴 [cartridge-system](https://github.com/Kunshao1117/cartridge_system)，並透過 [Multi-MCP Gateway](https://github.com/Kunshao1117/Multi-MCP) 統一探索與呼叫下游 MCP 工具（外部依賴）。專案脈絡層使用 `.agents/context/` 保存設計 DNA、產品偏好、技術偏好、溝通偏好與驗收偏好，不走記憶 stale。
+三個版本的**操作型技能均源自 `Shared/skills/`**（唯一真實來源，42 個），記憶系統依賴 [cartridge-system](https://github.com/Kunshao1117/cartridge_system)，並透過 [Multi-MCP Gateway](https://github.com/Kunshao1117/Multi-MCP) 統一探索與呼叫下游 MCP 工具（外部依賴）。專案脈絡層使用 `.agents/context/` 保存設計 DNA、產品偏好、技術偏好、溝通偏好與驗收偏好，不走記憶 stale。
 
 ---
 
@@ -265,7 +265,7 @@ graph TB
     subgraph "目標專案（三版本可共存）"
         AGE[".agents/<br/>rules / workflows / skills"]
         CLE[".claude/<br/>rules / commands / skills"]
-        CXE[".codex/ + .agents/skills/<br/>治理規則 + 技能（58 套）"]
+        CXE[".codex/ + .agents/skills/<br/>治理規則 + 技能（59 套）"]
         MEM[".agents/memory/<br/>三平台共用記憶庫"]
         CTX[".agents/context/<br/>三平台共用專案脈絡"]
     end
@@ -306,7 +306,7 @@ graph TB
 | **任務追蹤** | `.gemini` scratchpad Artifact | `TodoWrite` 清單 | 對話中維護任務清單 |
 | **記憶啟動** | D7 Push 三路徑探測 | Turn=1 啟動探測協議 | Turn=1 cartridge-system 探測 |
 | **記憶存放** | `.agents/memory/` | `.agents/memory/`（**共用**） | `.agents/memory/`（**三者共用**） |
-| **技能總數** | 41 套 | 41 套 | **58 套**（41 共用 + 17 工作流） |
+| **技能總數** | 42 套 | 42 套 | **59 套**（42 共用 + 17 工作流） |
 
 ---
 
@@ -430,7 +430,7 @@ AI_Rules/                              ← 框架核心庫根目錄
 │   ├── context/                       ← 專案脈絡模板來源，部署時只補缺不覆蓋
 │   ├── project-tools/                 ← 受限專案本地工具來源，部署到 .agents/tools/
 │   ├── skill-governance.md            ← Skill 放置與觸發契約
-│   └── skills/                        ← 41 套操作型技能唯一真實來源，部署時注入各平台
+│   └── skills/                        ← 42 套操作型技能唯一真實來源，部署時注入各平台
 │
 ├── Scripts/                           ← 統一部署引擎（取代各平台分散腳本）
 │   ├── Deploy.ps1                     ← 主入口（選單模式 + 參數模式）
@@ -458,7 +458,7 @@ AI_Rules/                              ← 框架核心庫根目錄
 │       │   ├── 01_cross_lingual_guard.md ← 跨語系防護（Always On）
 │       │   └── 02~07_*.md             ← 條件載入規則
 │       ├── workflows/                 ← 20 個工作流檔案 + 2 個共用閘門
-│       ├── skills/                    ← 41 套操作型技能（部署時從 Shared/ 注入）
+│       ├── skills/                    ← 42 套操作型技能（部署時從 Shared/ 注入）
 │       ├── memory/                    ← 專案記憶（部署後由 AI 初始化）
 │       ├── context/                   ← 專案脈絡（設計 DNA 與長期偏好）
 │       ├── project_skills/            ← 專案衍生技能（專案特有，受保護）
@@ -477,7 +477,7 @@ AI_Rules/                              ← 框架核心庫根目錄
 │       │   ├── cross-lingual-guard.md ← 跨語系防護（Always On）
 │       │   └── *.md                   ← 條件載入規則（4 個）
 │       ├── commands/                  ← 17 道 Slash Command 入口
-│       └── skills/                    ← 41 套操作型技能（部署時從 Shared/ 注入）
+│       └── skills/                    ← 42 套操作型技能（部署時從 Shared/ 注入）
 │
 ├── Codex/                             ← OpenAI Codex 版框架源碼
 │   ├── VERSION                        ← v0.1.3
@@ -604,6 +604,7 @@ sequenceDiagram
 | **Governed bootstrap** | 全域觸發器不再自動下載執行；未初始化專案需等待 `GO INSTALL`，升級需等待 `GO UPGRADE` |
 | **治理語義審計** | `Deploy.ps1 -Action Audit` 會掃描舊路徑、自動安裝語義、blanket staging、automation-safe 變異與 MCP HITL 邊界；紅燈 exit 1 |
 | **總監輸出契約審計** | 治理巡檢 Doctor 會掃描三平台核心規則與 workflow，檢查情境式輸出、技術詞隔離、位置欄精準定位、短名稱位置索引、中立誠實協作與知識新鮮度查證 |
+| **審查治理覆蓋審計** | 治理巡檢 Doctor 會掃描審查治理共用技能、工作流矩陣、子代理政策與三平台 02/03/04/08/09/10 入口，確認正確性、高品質、嚴謹度、審查狀態與子代理證據邊界已覆蓋 |
 | **Experiment 例外** | `03-1_experiment` 是刻意設計的沙盒例外，允許直接寫檔並停用品質/安全/測試/記憶閘門，但不可標為 automation-safe |
 | **孤兒檔案偵測** | 自動偵測源碼已刪除但目標仍存在的殘留檔案 |
 | **孤兒清除選項** | 加入 `-RemoveOrphans` 參數可自動清除，預設僅標記 |
@@ -637,7 +638,7 @@ sequenceDiagram
 
 ### 操作型技能同步原則
 
-41 套操作型技能存放於 `Shared/skills/`（唯一真實來源），部署時由 `Scripts/modules/Skills-Sync.psm1` 注入各平台：
+42 套操作型技能存放於 `Shared/skills/`（唯一真實來源），部署時由 `Scripts/modules/Skills-Sync.psm1` 注入各平台：
 
 ```
 Shared/skills/                       ← 唯一真實來源
@@ -647,7 +648,7 @@ Shared/skills/                       ← 唯一真實來源
 ├── plugin-release-governance/
 ├── gitnexus-*/
 ├── intent-alignment-gate/
-└── ...（41 套）
+└── ...（42 套）
 
         ↓ 部署時自動注入
 

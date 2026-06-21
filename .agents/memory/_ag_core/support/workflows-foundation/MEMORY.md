@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 基礎與討論建構工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-16T06:33:45+08:00'
+last_updated: '2026-06-21T11:15:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-16T06:26:29+08:00'
+last_verified: '2026-06-21T11:15:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 6
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core.support.workflows-foundation — Antigravity Foundation Workflow Memory
 
 ## Current Truth
@@ -41,12 +40,14 @@ metadata:
 - Build and experiment boundaries must remain distinct.
 - Antigravity build planning now requires change intent classification, patch-stack risk, and real-information visual evidence requirements in validation plans.
 - Antigravity build planning now requires the shared intent alignment gate, including blueprint adoption status, requirement-to-task trace, acceptance matrix, and drift audit rules.
+- Antigravity build planning now requires quality-review-governance when review triggers apply, including review state and minimum sufficient complexity.
 
 ## Active Constraints
 - Do not mix visual evidence requirements into pure discussion workflows.
 - Keep shared gate fragments aligned with platform governance.
 
 ## Cycle Events
+- 07: Added review-state and minimum-sufficient-complexity fields to Antigravity build planning.
 - 06: Added intent-alignment requirements to the Antigravity build planning workflow.
 - 05: Added change intent and real-information visual evidence requirements to the Antigravity build planning workflow.
 - 04: Added MCP memory evidence contract reference to the Antigravity build workflow.

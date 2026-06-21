@@ -1,7 +1,7 @@
 ---
 name: 08-2_logic
 description: "Use when: 健檢第二階段、依盤點清單做深度邏輯審查、安全架構、API/端點/資料流比對、真實功能驗證、子代理採證、效能可靠性、測試覆蓋缺口與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08-audit。"
-required_skills: [audit-engine, code-diagnosis, security-sre, impact-test-strategy, browser-testing, performance-audit]
+required_skills: [audit-engine, code-diagnosis, security-sre, impact-test-strategy, browser-testing, performance-audit, quality-review-governance]
 memory_awareness: full
 user-invocable: false
 metadata:
@@ -63,6 +63,8 @@ Use Claude evidence branches only for isolated read-only work:
 
 The main workflow remains responsible for integration, status decisions, and final reporting.
 
+If evidence branches are used for engineering review, the main workflow must map their packets to the lifecycle states in `quality-review-governance`. Branch output is evidence, not acceptance.
+
 ## 2.2 Semantic Architecture Review
 
 Use `audit-engine`, `security-sre`, and `impact-test-strategy` to review only applicable surfaces and inventory ids:
@@ -90,6 +92,10 @@ For every high-risk behavior, prefer real execution evidence over static inferen
 Synthetic tests, mocks, fixtures, or static screenshots may support a finding, but they cannot alone turn a high-risk item green.
 
 For `deep` and `forensic` audits, every critical inventory item must end as covered, partial, unverified, blocked, or not_applicable.
+
+## 2.35 Review Lifecycle Mapping
+
+For governance, public contract, release/plugin, security, cross-module, state/data, repeated fragile-code, or high-recovery-cost findings, load `quality-review-governance` and map each finding to a review lifecycle state.
 
 ## 2.4 Performance, Accessibility & Compatibility
 
@@ -119,6 +125,7 @@ Return this object to Phase 3:
   "audit_depth": "standard",
   "inventories": {},
   "semantic": {},
+  "review_state": {},
   "real_evidence": {},
   "release_supply_chain": {},
   "coverage": {},
