@@ -4,19 +4,19 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-21T11:15:00+08:00'
+last_updated: '2026-06-27T20:37:03+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-21T11:15:00+08:00'
+last_verified: '2026-06-27T19:53:01+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 10
+cycle_event_count: 11
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
@@ -50,13 +51,15 @@ metadata:
 - Claude README, documentation, and build/fix command entries now describe change intent classification, patch-stack escalation, visual detail observation, and real-information-first evidence.
 - Claude blueprint and build commands now load the shared intent alignment gate for requirement playback, neutral challenge, traceability, and drift audit.
 - Claude blueprint, build, fix, audit, commit, and routine command entries now load or reference quality-review-governance for review purpose, review state, accepted risk, blockers, and evidence-branch boundaries.
-- Claude shared skill count is 42.
+- Claude coding commands now route through programming-team-governance stations with separate applicability and execution-mode reporting before planning, execution, validation, review, or completion.
+- Claude shared skill count is 43.
 ## Active Constraints
 - Do not restore `.claude/agents/memory/` as a storage path.
 - Keep Claude command entrypoints concise; shared operational detail belongs in Shared skills.
 - Keep Claude source ownership out of the deprecated historical card.
 - This card still needs a later child-card split if all Claude commands are actively edited again.
 ## Cycle Events
+- 11: Hardened Claude programming team governance in core rules, coding commands, deployed commands, and README with applicability/execution-mode station boards and policy sync.
 - 10: Added Claude review-governance coverage to core rules, blueprint/build/fix commands, and README skill counts.
 - 09: Added Claude intent-alignment requirements to blueprint/build commands and refreshed Claude skill-count documentation.
 - 08: Added Claude README wording for change intent, plus real-information visual evidence governance in docs and build/fix commands.

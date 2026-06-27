@@ -1,7 +1,7 @@
 ---
 name: 08-2_logic
 description: "Use when: 健檢第二階段、依盤點清單做深度邏輯審查、安全架構、API/端點/資料流比對、真實功能驗證、子代理採證、效能可靠性、測試覆蓋缺口與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08-audit。"
-required_skills: [audit-engine, code-diagnosis, security-sre, impact-test-strategy, browser-testing, performance-audit, quality-review-governance]
+required_skills: [audit-engine, code-diagnosis, security-sre, impact-test-strategy, browser-testing, performance-audit, quality-review-governance, programming-team-governance]
 memory_awareness: full
 user-invocable: false
 metadata:
@@ -17,6 +17,10 @@ metadata:
   human_gate: "none"
   automation_safe: false
 ---
+
+## 編程團隊治理接地（Programming Team Board Contract）
+
+> [LOAD SKILL] For coding-related work, read `.claude/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
 
 
 ## 總監可讀輸出契約（Director-Readable Output Contract）

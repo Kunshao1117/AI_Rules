@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-27] 受治理 Full B 編程團隊治理
+
+### feat
+- **Programming team governance** — 新增編程團隊治理共用技能，將開發、修改、修復、測試、除錯、健檢、提交、交接與技能鍛造固定拆成需求回放、反證、影響面、計畫授權、實作、短迴圈、審查與收尾站點。
+- **Station-gated subagents** — 子代理政策從「必要時才用」改為「編程任務先建立團隊站點板，再判斷唯讀 evidence branch」，並明確禁止委派寫檔、提交、推送、發布、外部狀態與記憶寫入。
+- **Workflow coverage** — Codex workflow skills、Claude commands 與 Antigravity workflows 的編程入口都接入團隊站點板，讓計畫、執行、驗證、審查與收尾不再只依賴大小型或必要時判斷。
+- **Doctor coverage** — 治理巡檢新增編程團隊治理覆蓋檢查，會掃描共用技能、子代理政策、委派策略、能力矩陣、工作流證據矩陣、三平台入口與部署後副本 hash。
+
+### fix
+- **Station state hardening** — 團隊站點板改為分離「是否適用」與「執行模式」，禁止只用啟用中、必要時或大小型判斷作為最終結果。
+- **Delegation route order** — 委派策略先判斷瀏覽器、CLI 與 MCP 特殊證據路徑，再落到一般唯讀 evidence branch，避免專職隊員路由被泛化。
+- **Experiment minimum governance** — 三平台實驗入口保留快速試錯，但必須先列最小團隊站點、沙盒邊界、允許改動範圍、丟棄條件與升級條件。
+
+### docs
+- **Skill count refresh** — 共用操作型技能數更新為 43；Codex Edition 部署後技能總數更新為 60（43 共用 + 17 工作流）。
+
 ## [2026-06-21] AI Rules Manager v0.1.19
 
 ### fix

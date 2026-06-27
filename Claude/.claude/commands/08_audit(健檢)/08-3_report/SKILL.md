@@ -1,7 +1,7 @@
 ---
 name: 08-3_report
 description: "Use when: 健檢第三階段、彙整證據式健康報告、健檢深度摘要、功能/端點/命令覆蓋率、紅黃綠燈號、未驗證/阻塞判定、優先修復清單、位置索引與行動建議。DO NOT use when: 尚未完成前兩階段健檢。"
-required_skills: [audit-engine, quality-review-governance]
+required_skills: [audit-engine, quality-review-governance, programming-team-governance]
 memory_awareness: read
 user-invocable: false
 metadata:
@@ -17,6 +17,10 @@ metadata:
   human_gate: "none"
   automation_safe: false
 ---
+
+## 編程團隊治理接地（Programming Team Board Contract）
+
+> [LOAD SKILL] For coding-related work, read `.claude/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
 
 
 ## 總監可讀輸出契約（Director-Readable Output Contract）

@@ -10,7 +10,7 @@ without forcing every rule into always-on context.
 |---|---|---|---|
 | Core rules | Always-on safety baseline | GO gates, no silent install, no blanket staging, protected project identity | Long playbooks, tool recipes, examples |
 | Workflow / command entry | Task routing and lifecycle phase selection | Build/fix/commit/audit stage order, explicit load gates | Full implementation recipes shared across platforms |
-| Shared skills | On-demand operational knowledge | Repeatable procedures, tool playbooks, release steps, test recipes | Non-negotiable safety rules that must apply before skill load |
+| Shared skills | On-demand operational knowledge | Repeatable procedures, team-station governance, tool playbooks, release steps, test recipes | Non-negotiable safety rules that must apply before skill load |
 | Memory | Project-specific facts and decisions | Current architecture, version choices, repo lessons, module ownership | Generic procedure that should apply to many projects |
 | Project context | Long-lived project preferences | Design DNA, product preferences, technical preferences, communication preferences, acceptance preferences | Source ownership, stale tracking, executable procedures |
 
@@ -52,6 +52,12 @@ Shared skills must remain platform-neutral. Platform-specific workflow files
 may add a load gate pointing to the shared skill, but should not duplicate the
 full playbook.
 
+Coding workflows should route through `programming-team-governance` when they
+touch source, tests, debugging, audit, commit preparation, handoff, or skill
+creation. The shared skill defines the station board and read-only evidence
+branch boundary; platform workflow entries only load it and adapt the station
+evidence to their native tools.
+
 ## Doctor Expectations
 
 Skill quality checks should treat trigger quality as a first-class signal:
@@ -63,6 +69,8 @@ Skill quality checks should treat trigger quality as a first-class signal:
 - Operational Shared skills without a negative boundary are a warning.
 - Workflow / command entries must describe when the workflow should start, not
   only what it does internally.
+- Coding-related workflow / command entries must expose the team-station board
+  requirement through a load gate or equivalent grounding section.
 - High-risk release, deployment, or mutation skills must name their public
   trigger terms explicitly.
 - Workflow and operational skills should not mix responsibilities.

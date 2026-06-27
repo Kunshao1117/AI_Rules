@@ -125,8 +125,8 @@ Codex-specific governance:
 
 This block is generated from the framework source policy (`Shared/policies/subagent-invocation.md`) and deployed with a readable project copy at `.agents/shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
 
-- **Delegation Gate**: Evaluate whether the task has an isolated read-only evidence branch before broad research, testing, debugging, audit work, or post-change verification.
-- **Invocation rule**: Codex spawns native subagents only when the Director explicitly asks for subagents, when a workflow gate explicitly requires a Codex evidence branch, or when project-scoped `.codex/agents/*.toml` custom agents are intentionally configured for that workflow.
+- **Delegation Gate**: Build a programming-team station board for coding work, then resolve each applicable station to direct, browser branch, CLI branch, MCP direct, evidence branch, blocked, or not-applicable before broad research, testing, debugging, audit work, experiment work, commit preparation, handoff, skill-forge work, or post-change verification.
+- **Invocation rule**: Codex spawns native subagents when the Director explicitly asks for subagents, when a coding workflow station is marked as a required Codex evidence branch, or when project-scoped `.codex/agents/*.toml` custom agents are intentionally configured for that workflow.
 - **Do not invoke**: Do not use a Codex subagent when the next main-thread step is blocked on that answer, when the task is vague, when it requires secrets or login state, or when it would duplicate the main agent's current work.
 - **Main-agent accountability**: The main Codex agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
 - **Review-state boundary**: Codex evidence branches support review evidence, but the main Codex agent decides review lifecycle status through `quality-review-governance`.

@@ -1880,6 +1880,312 @@ function Measure-ReviewGovernanceCoverage {
     }
 }
 
+function Test-AuditSharedSkillRelativePathIncluded {
+    param([string]$RelativePath)
+
+    if (-not $RelativePath) { return $false }
+    $normalized = $RelativePath.TrimStart('\', '/')
+    $firstSegment = ($normalized -split '[\\/]')[0]
+    $isProjectContextProtocol = $normalized -match '^project-context-protocol([\\\/]|$)'
+
+    if ($normalized -match '^_memory([\\\/]|$)') { return $false }
+    if ($normalized -match '^_project([\\\/]|$)') { return $false }
+    if ($firstSegment -match '^_' -and $normalized -ne '_index.md') { return $false }
+    if ($normalized -match '^project-' -and -not $isProjectContextProtocol) { return $false }
+    return $true
+}
+
+function Test-AuditFileHashEqual {
+    param(
+        [string]$SourcePath,
+        [string]$TargetPath
+    )
+
+    if (-not (Test-Path -LiteralPath $SourcePath -PathType Leaf)) { return $false }
+    if (-not (Test-Path -LiteralPath $TargetPath -PathType Leaf)) { return $false }
+    $sourceHash = (Get-FileHash -LiteralPath $SourcePath -Algorithm SHA256).Hash
+    $targetHash = (Get-FileHash -LiteralPath $TargetPath -Algorithm SHA256).Hash
+    return $sourceHash -eq $targetHash
+}
+
+function Measure-ProgrammingTeamGovernanceCoverage {
+    <#
+    .SYNOPSIS
+        檢查受治理 Full B 編程團隊治理是否覆蓋共用技能、政策、矩陣、三平台入口與部署副本。
+    #>
+    param(
+        [string]$RepoRoot = ".",
+        [string]$TargetRoot = "."
+    )
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
+    $results = New-Object System.Collections.ArrayList
+
+    function Add-ProgrammingTeamFinding {
+        param(
+            [string]$Severity,
+            [string]$File,
+            [int]$Line,
+            [string]$Reason,
+            [string]$Text
+        )
+
+        $null = $results.Add([PSCustomObject]@{
+            Severity = $Severity
+            File     = $File
+            Line     = $Line
+            Reason   = $Reason
+            Text     = $Text
+        })
+    }
+
+    function Get-ProgrammingTeamContent {
+        param([string]$Path)
+        if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $null }
+        return (Get-Content -LiteralPath $Path -Raw -Encoding UTF8)
+    }
+
+    function Add-ProgrammingTeamRegexFindings {
+        param(
+            [string]$RelativePath,
+            [string]$Pattern,
+            [string]$Reason,
+            [string]$Severity = 'Red'
+        )
+
+        $fullPath = Join-Path $RepoRoot $RelativePath
+        if (-not (Test-Path -LiteralPath $fullPath -PathType Leaf)) { return }
+        $lineNumber = 0
+        Get-Content -LiteralPath $fullPath -Encoding UTF8 | ForEach-Object {
+            $lineNumber++
+            if ($_ -match $Pattern) {
+                Add-ProgrammingTeamFinding -Severity $Severity -File $RelativePath -Line $lineNumber -Reason $Reason -Text $_
+            }
+        }
+    }
+
+    $coreChecks = @(
+        [PSCustomObject]@{
+            Path = 'Shared\skills\programming-team-governance\SKILL.md'
+            Severity = 'Red'
+            Label = '編程團隊治理共用技能缺少必要章節'
+            Patterns = @('Team Stations', 'Permission Boundary', 'Delegation Decision', 'V1 Default', 'Applicability', 'Execution mode', 'Evidence owner', 'Completion condition', '發現:')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\_index.md'
+            Severity = 'Red'
+            Label = '技能索引缺少編程團隊治理路由'
+            Patterns = @('programming-team-governance', '編程團隊治理')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\policies\subagent-invocation.md'
+            Severity = 'Red'
+            Label = '子代理政策未接入團隊站點治理'
+            Patterns = @('programming-team-governance', '團隊站點', 'coding workflow station|workflow station')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\delegation-strategy\SKILL.md'
+            Severity = 'Red'
+            Label = '委派策略未使用團隊站點決策'
+            Patterns = @('programming-team-governance', 'Programming Team Board', 'station', 'Browser/UI verification station', 'Large CLI-only analysis station', 'Independent read-only station after special routes are excluded')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\platform-capability-matrix.md'
+            Severity = 'Red'
+            Label = '平台能力矩陣缺少編程團隊治理能力'
+            Patterns = @('Programming team governance', 'team station|團隊站點', 'station-gated|站點')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\workflow-capability-evidence-matrix.md'
+            Severity = 'Red'
+            Label = '工作流矩陣缺少編程團隊治理矩陣'
+            Patterns = @('Programming Team Governance Matrix', 'team-station board', '團隊站點')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skill-governance.md'
+            Severity = 'Yellow'
+            Label = '技能治理規格未說明編程團隊治理放置規則'
+            Patterns = @('programming-team-governance', 'team-station')
+        }
+    )
+
+    foreach ($check in $coreChecks) {
+        $fullPath = Join-Path $RepoRoot $check.Path
+        $content = Get-ProgrammingTeamContent -Path $fullPath
+        if ($null -eq $content) {
+            Add-ProgrammingTeamFinding -Severity $check.Severity -File $check.Path -Line 1 -Reason '必要檔案不存在' -Text $check.Label
+            continue
+        }
+
+        foreach ($pattern in $check.Patterns) {
+            if ($content -notmatch $pattern) {
+                Add-ProgrammingTeamFinding -Severity $check.Severity -File $check.Path -Line 1 -Reason $check.Label -Text "missing pattern: $pattern"
+            }
+        }
+    }
+
+    Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\programming-team-governance\SKILL.md' `
+        -Pattern '\|\s*active\s*\|' `
+        -Reason '團隊站點不得把 active 當成最終狀態'
+
+    Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\delegation-strategy\SKILL.md' `
+        -Pattern 'evaluate each active station|Independent read-only station\?\*\*\s*->\s*`evidence branch`' `
+        -Reason '委派策略不得先用一般證據分支吞掉特殊分支'
+
+    Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\policies\subagent-invocation.md' `
+        -Pattern 'active station|每個 active' `
+        -Reason '子代理政策不得保留 active station 語義'
+
+    $delegationPath = Join-Path $RepoRoot 'Shared\skills\delegation-strategy\SKILL.md'
+    $delegationContent = Get-ProgrammingTeamContent -Path $delegationPath
+    if ($null -ne $delegationContent) {
+        $browserIndex = $delegationContent.IndexOf('Browser/UI verification station?')
+        $cliIndex = $delegationContent.IndexOf('Large CLI-only analysis station?')
+        $mcpIndex = $delegationContent.IndexOf('Real-time tool access?')
+        $evidenceIndex = $delegationContent.IndexOf('Independent read-only station after special routes are excluded?')
+        if (($evidenceIndex -lt 0) -or ($browserIndex -lt 0) -or ($cliIndex -lt 0) -or ($mcpIndex -lt 0)) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File 'Shared\skills\delegation-strategy\SKILL.md' -Line 1 -Reason '委派策略缺少特殊分支優先順序' -Text 'browser/CLI/MCP/evidence route markers missing'
+        } elseif (($evidenceIndex -lt $browserIndex) -or ($evidenceIndex -lt $cliIndex) -or ($evidenceIndex -lt $mcpIndex)) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File 'Shared\skills\delegation-strategy\SKILL.md' -Line 1 -Reason '一般證據分支不得早於瀏覽器、CLI 或 MCP 分支' -Text 'reorder Delegation Gate'
+        }
+    }
+
+    $workflowChecks = @(
+        'Codex\.agents\workflow-skills\02-blueprint-架構\SKILL.md',
+        'Codex\.agents\workflow-skills\03-1-experiment-實驗\SKILL.md',
+        'Codex\.agents\workflow-skills\03-build-建構\SKILL.md',
+        'Codex\.agents\workflow-skills\04-fix-修復\SKILL.md',
+        'Codex\.agents\workflow-skills\06-test-測試\SKILL.md',
+        'Codex\.agents\workflow-skills\07-debug-除錯\SKILL.md',
+        'Codex\.agents\workflow-skills\08-audit-健檢\SKILL.md',
+        'Codex\.agents\workflow-skills\08-1-infra-基礎盤點\SKILL.md',
+        'Codex\.agents\workflow-skills\08-2-logic-深度邏輯\SKILL.md',
+        'Codex\.agents\workflow-skills\08-3-report-健檢總結\SKILL.md',
+        'Codex\.agents\workflow-skills\09-commit-紀錄總結\SKILL.md',
+        'Codex\.agents\workflow-skills\10-routine-巡檢\SKILL.md',
+        'Codex\.agents\workflow-skills\11-handoff-交接\SKILL.md',
+        'Codex\.agents\workflow-skills\12-skill-forge-技能鍛造\SKILL.md',
+        'Claude\.claude\commands\02_blueprint(架構)\SKILL.md',
+        'Claude\.claude\commands\03-1_experiment(實驗)\SKILL.md',
+        'Claude\.claude\commands\03_build(建構)\SKILL.md',
+        'Claude\.claude\commands\04_fix(修復)\SKILL.md',
+        'Claude\.claude\commands\06_test(測試)\SKILL.md',
+        'Claude\.claude\commands\07_debug(除錯)\SKILL.md',
+        'Claude\.claude\commands\08_audit(健檢)\SKILL.md',
+        'Claude\.claude\commands\08_audit(健檢)\08-1_infra\SKILL.md',
+        'Claude\.claude\commands\08_audit(健檢)\08-2_logic\SKILL.md',
+        'Claude\.claude\commands\08_audit(健檢)\08-3_report\SKILL.md',
+        'Claude\.claude\commands\09_commit(紀錄)\SKILL.md',
+        'Claude\.claude\commands\10_routine(巡檢)\SKILL.md',
+        'Claude\.claude\commands\11_handoff(交接)\SKILL.md',
+        'Claude\.claude\commands\12_skill_forge(技能鍛造)\SKILL.md',
+        'Antigravity\.agents\workflows\02_blueprint(架構).md',
+        'Antigravity\.agents\workflows\03-1_experiment(實驗).md',
+        'Antigravity\.agents\workflows\03_build(建構計畫).md',
+        'Antigravity\.agents\workflows\03-2_build_execute(建構執行).md',
+        'Antigravity\.agents\workflows\04-1_fix_plan(修復計畫).md',
+        'Antigravity\.agents\workflows\04-2_fix_execute(修復執行).md',
+        'Antigravity\.agents\workflows\06_test(測試).md',
+        'Antigravity\.agents\workflows\07_debug(除錯).md',
+        'Antigravity\.agents\workflows\08_audit(健檢).md',
+        'Antigravity\.agents\workflows\08-1_audit_infra(基礎盤點).md',
+        'Antigravity\.agents\workflows\08-2_audit_logic(深度邏輯).md',
+        'Antigravity\.agents\workflows\08-3_audit_report(健檢總結).md',
+        'Antigravity\.agents\workflows\09-1_commit_scan(紀錄掃描).md',
+        'Antigravity\.agents\workflows\09-2_commit_execute(授權備份).md',
+        'Antigravity\.agents\workflows\10_routine(巡檢).md',
+        'Antigravity\.agents\workflows\11_handoff(交接).md',
+        'Antigravity\.agents\workflows\12_skill_forge(技能鍛造).md'
+    )
+
+    foreach ($relPath in $workflowChecks) {
+        $fullPath = Join-Path $RepoRoot $relPath
+        $content = Get-ProgrammingTeamContent -Path $fullPath
+        if ($null -eq $content) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '三平台工作流入口不存在' -Text $relPath
+            continue
+        }
+
+        if ($content -notmatch 'programming-team-governance') {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口未載入編程團隊治理技能' -Text $relPath
+        }
+        if ($content -notmatch 'Programming Team Board|Team Station|團隊站點|team-station') {
+            Add-ProgrammingTeamFinding -Severity 'Yellow' -File $relPath -Line 1 -Reason '工作流入口缺少團隊站點可讀語義' -Text $relPath
+        }
+        if ($content -match 'active Team Station|each active station|每個 active') {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口不得保留 active station 語義' -Text $relPath
+        }
+        if ($relPath -match '03-1') {
+            if ($content -notmatch 'minimum Programming Team Board|最小.*團隊站點|team-station governance') {
+                Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '實驗入口缺少最小團隊站點宣告' -Text $relPath
+            }
+            if ($content -match 'All quality, security, test, and memory gates are DISABLED|ALL quality, security, testing, and memory gates are \*\*DISABLED\*\*|No review gate|所有.*閘門.*停用|所有安全閘門已停用') {
+                Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '實驗入口不得宣稱完全停用治理' -Text $relPath
+            }
+        }
+    }
+
+    $sharedSkillsRoot = Join-Path $RepoRoot 'Shared\skills'
+    $targetSkillRoots = @(
+        [PSCustomObject]@{ Label = 'agents skills'; Root = (Join-Path $TargetRoot '.agents\skills') },
+        [PSCustomObject]@{ Label = 'claude skills'; Root = (Join-Path $TargetRoot '.claude\skills') }
+    )
+    foreach ($target in $targetSkillRoots) {
+        if (-not (Test-Path -LiteralPath $target.Root -PathType Container)) { continue }
+        Get-ChildItem -LiteralPath $sharedSkillsRoot -Recurse -File -ErrorAction SilentlyContinue |
+            Where-Object {
+                $rel = $_.FullName.Substring($sharedSkillsRoot.Length).TrimStart('\', '/')
+                Test-AuditSharedSkillRelativePathIncluded -RelativePath $rel
+            } |
+            ForEach-Object {
+                $rel = $_.FullName.Substring($sharedSkillsRoot.Length).TrimStart('\', '/')
+                $targetFile = Join-Path $target.Root $rel
+                if (-not (Test-Path -LiteralPath $targetFile -PathType Leaf)) {
+                    Add-ProgrammingTeamFinding -Severity 'Yellow' -File (Get-AuditRelativePath -RepoRoot $TargetRoot -Path $targetFile) -Line 1 -Reason "部署技能副本缺少來源檔 ($($target.Label))" -Text $rel
+                } elseif (-not (Test-AuditFileHashEqual -SourcePath $_.FullName -TargetPath $targetFile)) {
+                    Add-ProgrammingTeamFinding -Severity 'Yellow' -File (Get-AuditRelativePath -RepoRoot $TargetRoot -Path $targetFile) -Line 1 -Reason "部署技能副本內容漂移 ($($target.Label))" -Text $rel
+                }
+            }
+    }
+
+    $sharedRoot = Join-Path $RepoRoot 'Shared'
+    $targetSharedRoot = Join-Path $TargetRoot '.agents\shared'
+    if (Test-Path -LiteralPath $targetSharedRoot -PathType Container) {
+        foreach ($rel in @(Get-AuditSharedGovernanceReferenceRelativePaths -SharedRoot $sharedRoot)) {
+            $sourceFile = Join-Path $sharedRoot $rel
+            $targetFile = Join-Path $targetSharedRoot $rel
+            if (-not (Test-Path -LiteralPath $targetFile -PathType Leaf)) {
+                Add-ProgrammingTeamFinding -Severity 'Yellow' -File (Get-AuditRelativePath -RepoRoot $TargetRoot -Path $targetFile) -Line 1 -Reason '部署共用治理參照缺少來源檔' -Text $rel
+            } elseif (-not (Test-AuditFileHashEqual -SourcePath $sourceFile -TargetPath $targetFile)) {
+                Add-ProgrammingTeamFinding -Severity 'Yellow' -File (Get-AuditRelativePath -RepoRoot $TargetRoot -Path $targetFile) -Line 1 -Reason '部署共用治理參照內容漂移' -Text $rel
+            }
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 Programming Team Governance"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
+    foreach ($finding in $results | Sort-Object Severity, File, Line) {
+        $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+        Write-Host ("  {0} {1}:{2} — {3}" -f $finding.Severity, $finding.File, $finding.Line, $finding.Reason) -ForegroundColor $color
+        if ($finding.Text) {
+            Write-Host ("      {0}" -f $finding.Text) -ForegroundColor DarkGray
+        }
+    }
+
+    return [PSCustomObject]@{
+        Results     = @($results.ToArray())
+        RedCount    = $redCount
+        YellowCount = $yellowCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
 function Measure-DirectorOutputContract {
     <#
     .SYNOPSIS
@@ -2630,6 +2936,7 @@ function Invoke-PlatformGovernanceAudit {
     $runtime = Measure-RuntimeGlobalDrift -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
     $semantics = Measure-GovernanceSemantics -RepoRoot $RepoRoot
     $reviewGovernance = Measure-ReviewGovernanceCoverage -RepoRoot $RepoRoot -TargetRoot $TargetRoot
+    $programmingTeamGovernance = Measure-ProgrammingTeamGovernanceCoverage -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $subagentPolicy = Measure-SharedSubagentPolicyDrift -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $subagentVocabulary = Measure-SubagentVocabularyDrift -RepoRoot $RepoRoot
     $directorOutput = Measure-DirectorOutputContract -RepoRoot $RepoRoot -TargetRoot $TargetRoot
@@ -2643,9 +2950,9 @@ function Invoke-PlatformGovernanceAudit {
     $skillRed = ($skillQuality | Where-Object { $_.OverallStatus -eq '🔴' }).Count
     $skillYellow = ($skillQuality | Where-Object { $_.OverallStatus -eq '🟡' }).Count
     $docStale = $docs.StaleHits.Count
-    $redTotal = $runtime.RedCount + $semantics.RedCount + $reviewGovernance.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $projectLinks.RedCount + $sharedContextTemplates.RedCount + $projectContext.RedCount + $memoryNaming.RedCount
+    $redTotal = $runtime.RedCount + $semantics.RedCount + $reviewGovernance.RedCount + $programmingTeamGovernance.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $projectLinks.RedCount + $sharedContextTemplates.RedCount + $projectContext.RedCount + $memoryNaming.RedCount
     $redTotal += $skillRed
-    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $reviewGovernance.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount + $memoryNaming.YellowCount
+    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $reviewGovernance.YellowCount + $programmingTeamGovernance.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount + $memoryNaming.YellowCount
     $yellowTotal += $metadataYellow + $skillYellow
     $ok = $capability.CapabilityMatrix -and $capability.WorkflowMatrix -and $capability.TargetSharedRefs -and $capability.TargetCodexSupport -and $capability.ProjectToolSource -and $capability.TargetProjectTools -and $capability.McpProfiles -and $capability.MemoryMigrationManager -and $capability.MemoryMigrationExtension -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
@@ -2665,6 +2972,7 @@ function Invoke-PlatformGovernanceAudit {
         Runtime    = $runtime
         Semantics  = $semantics
         ReviewGovernance = $reviewGovernance
+        ProgrammingTeamGovernance = $programmingTeamGovernance
         SubagentPolicy = $subagentPolicy
         SubagentVocabulary = $subagentVocabulary
         DirectorOutput = $directorOutput
@@ -2678,4 +2986,4 @@ function Invoke-PlatformGovernanceAudit {
     }
 }
 
-Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-ReviewGovernanceCoverage, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Measure-SharedContextTemplates, Measure-ProjectContextCards, Measure-MemoryCardNaming, Invoke-PlatformGovernanceAudit
+Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-ReviewGovernanceCoverage, Measure-ProgrammingTeamGovernanceCoverage, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Measure-SharedContextTemplates, Measure-ProjectContextCards, Measure-MemoryCardNaming, Invoke-PlatformGovernanceAudit

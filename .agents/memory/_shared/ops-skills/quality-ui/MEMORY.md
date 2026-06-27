@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 品質閘門、安全可靠性與 UI/UX 標準技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-21T11:28:19+08:00'
+last_updated: '2026-06-27T20:38:51+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.ops-skills.quality-ui — Quality and UI Skills Memory
 
 ## Current Truth

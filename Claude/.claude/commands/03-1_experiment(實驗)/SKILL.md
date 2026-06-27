@@ -1,7 +1,7 @@
 ﻿---
 name: 03-1_experiment
-description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，允許跳過正式品質與記憶閘門。DO NOT use when: 生產建構、正式修復或需提交發布。"
-required_skills: []
+description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，保留最小團隊治理但允許跳過正式品質與記憶收尾。DO NOT use when: 生產建構、正式修復或需提交發布。"
+required_skills: [programming-team-governance]
 memory_awareness: none
 user-invocable: true
 metadata:
@@ -52,25 +52,32 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 03-1 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Keep spikes isolated. Record discard conditions, promotion criteria, and the warning that experiment output is not production quality.
+- Workflow-specific grounding: Keep spikes isolated. Record the minimum Programming Team Board, sandbox boundary, allowed change scope, discard conditions, promotion criteria, and the warning that experiment output is not production quality.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 
 # [SKILL: /03-1_experiment — 沙盒實驗]
 
-## 0. Sandbox Declaration (沙盒宣告)
+## 0. Minimum Governance Declaration (最小治理宣告)
 
-[SANDBOX MODE ACTIVE] All quality, security, test, and memory gates are DISABLED.
+[EXPERIMENT MODE ACTIVE] Formal quality, test, and memory completion gates are reduced, not erased.
 
 - Dirty code, hardcoded values, and placeholder logic are PERMITTED.
 - No linter runs, no test generation, no memory card updates.
 - `Write`/`Edit` tools may be used IMMEDIATELY without planning phase.
+- Before writing, output a minimum Programming Team Board with:
+  - Requirement playback: direct
+  - Impact map: direct or blocked
+  - Implementation: direct
+  - Short-loop validation: direct, blocked, or not-applicable with reason
+  - Review and completion: not-applicable for production acceptance, with promotion route to `/03_build`
+- Record sandbox boundary, allowed change scope, discard conditions, and promotion criteria.
 
 ## 1. Execution (直接執行)
 
 - Read Director's request. Begin coding immediately.
 - Use `Bash` tool for quick test runs if needed.
-- No `EnterPlanMode` required. No review gate.
+- No `EnterPlanMode` required. No formal review gate, but the minimum team-station declaration is required.
 
 ## 2. Completion (完成)
 

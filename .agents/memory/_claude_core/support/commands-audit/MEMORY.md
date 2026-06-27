@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/08_audit(健檢)/
 description: >-
   專案記憶：Claude 健檢主指令與三階段子指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-21T11:15:00+08:00'
+last_updated: '2026-06-27T20:37:36+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-21T11:15:00+08:00'
+last_verified: '2026-06-27T19:53:01+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 6
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core.support.commands-audit — Claude Audit Commands Memory
 
 ## Current Truth
+- Claude audit entry and subcommands now load programming-team-governance and report applicability/execution-mode team-station board status for coding-related audit work.
 - Claude audit entry and subcommands inherit the MCP memory evidence contract and keep audit memory checks read-only.
 - This child card owns Claude audit command entries and their three-phase subcommands.
 - Audit commands use project-surface detection, evidence status, and blocked/unverified states.
@@ -48,6 +50,7 @@ metadata:
 - Do not claim full coverage from sampled evidence; report coverage denominators and sampling limits.
 
 ## Cycle Events
+- 07: Hardened Claude audit team-station reporting with applicability/execution-mode fields and synced deployed command copies.
 - 06: Added review lifecycle mapping and review_state output to Claude audit entry and subcommands.
 - 05: Added change intent, patch-stack, visual detail, and real-information evidence fields to the Claude audit entry.
 - 04: Added MCP memory evidence contract references to Claude audit entry and subcommands.

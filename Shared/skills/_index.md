@@ -4,6 +4,7 @@
 | ---------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------ | ------------------ |
 | memory read/write, module memory, .agents/memory/                            | 記憶讀寫、模組記憶更新                           | memory-ops               | cartridge-system   |
 | delegate, channel selection                                                  | 委派、管道選擇                                   | delegation-strategy      | —                  |
+| programming team governance, team station, coding workflow, evidence branch  | 編程團隊治理、團隊站點、開發流程、證據分支       | programming-team-governance | —               |
 | browser E2E, visual test, real visual data, detail observation, subagent      | 瀏覽器測試、視覺驗證、真實資訊、細微觀察         | browser-testing          | playwright, a11y   |
 | SOLID, line threshold, refactor quality                                      | SOLID、行數上限、重構品質                        | code-quality             | eslint             |
 | security, validation, credentials, env                                       | 安全、驗證、密碼、環境變數                       | security-sre             | snyk               |

@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 健檢與提交工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-21T11:15:00+08:00'
+last_updated: '2026-06-27T20:37:43+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-21T11:15:00+08:00'
+last_verified: '2026-06-27T19:53:01+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 7
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core.support.workflows-audit-commit — Antigravity Audit and Commit Workflow Memory
 
 ## Current Truth
+- Antigravity audit and commit workflows now load programming-team-governance and report applicability/execution-mode team-station board status for coding-related audit or release-prep work.
 - Antigravity audit, audit subflows, and commit scan workflows now use the MCP Memory Evidence Matrix while preserving read-only audit boundaries.
 - This child card owns Antigravity audit, audit subphase, and commit execution workflow entries.
 - Audit workflows use evidence status and project-surface routing rather than a fixed scan checklist.
@@ -48,6 +50,7 @@ metadata:
 - Do not commit, push, tag, or release without explicit Director approval.
 
 ## Cycle Events
+- 08: Hardened Antigravity audit and commit team-station reporting with applicability/execution-mode fields and synced deployed workflow copies.
 - 07: Added review lifecycle mapping and review-state preflight to Antigravity audit and commit scan workflows.
 - 06: Added change intent, patch-stack, visual detail, and real-information evidence fields to the Antigravity audit entry.
 - 05: Added MCP memory evidence contract references to Antigravity audit and commit scan workflows.

@@ -1,7 +1,7 @@
-﻿---
+---
 name: "06-test-測試"
 description: "Use when: 執行 E2E、視覺測試、介面適配證據、瀏覽器功能測試、桌面 GUI 驗證、終端輸出驗證、回歸驗證或測試委派。DO NOT use when: 只需要單元測試設計或純程式碼審查。"
-required_skills: [browser-testing, test-automation-strategy, ai-dev-quality-gate, project-context-protocol]
+required_skills: [browser-testing, test-automation-strategy, ai-dev-quality-gate, project-context-protocol, programming-team-governance]
 metadata:
   author: antigravity
   version: "2.0"
@@ -53,6 +53,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Select tests by project surface and evidence level, including terminal, browser, plugin panel, desktop GUI, performance, and accessibility paths when applicable.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+> [LOAD SKILL] For coding-related work, read `.agents/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
 
 # source-command-06-test-skill
 

@@ -12,6 +12,7 @@ required_skills:
   - browser-testing
   - performance-audit
   - quality-review-governance
+  - programming-team-governance
 metadata:
   author: antigravity
   version: "2.0"
@@ -25,6 +26,10 @@ metadata:
   human_gate: "none"
   automation_safe: false
 ---
+
+## 編程團隊治理接地（Programming Team Board Contract）
+
+> [LOAD SKILL] For coding-related work, read `.agents/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
 
 
 ## 總監可讀輸出契約（Director-Readable Output Contract）

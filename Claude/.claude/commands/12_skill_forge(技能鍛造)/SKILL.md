@@ -1,7 +1,7 @@
 ---
 name: 12_skill_forge
 description: "Use when: 技能鍛造、建立新技能、建立 Shared skill、建立 project skill、建立 Codex skill、從健檢/除錯/總監指令萃取可重用方法論、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 相關技能設計。DO NOT use when: 只是討論技能想法、不準備寫入，或只要修改既有技能描述。"
-required_skills: [memory-ops, project-context-protocol]
+required_skills: [memory-ops, project-context-protocol, programming-team-governance]
 memory_awareness: full
 user-invocable: true
 metadata:
@@ -58,6 +58,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Apply the Agent Skills format, description-trigger quality, progressive disclosure, layer selection, reference splitting, and validation gates before writing skills.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+> [LOAD SKILL] For coding-related work, read `.claude/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
 
 # [SKILL: /12_skill_forge — 技能鍛造]
@@ -105,7 +106,7 @@ Draft new skill with structure:
 ---
 name: <skill-name>
 description: <繁中描述>
-required_skills: []
+required_skills: [programming-team-governance]
 memory_awareness: none
 user-invocable: false  # 操作型知識庫預設不出現在 / 選單
 ---

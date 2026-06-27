@@ -1,5 +1,6 @@
-﻿---
+---
 description: "Use when: 已有 09-1 掃描與 GO，要執行 commit、push、tag 或 Release 同步。DO NOT use when: 只想查看狀態或尚未通過提交前掃描。"
+required_skills: [programming-team-governance]
 metadata:
   author: antigravity
   version: "2.0"
@@ -50,6 +51,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Require explicit file lists, memory hygiene, status-check awareness, changelog quality, version impact, and governed release routing before commit or push.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+> [LOAD SKILL] For coding-related work, read `.agents/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
 
 # [WORKFLOW: COMMIT EXECUTE (授權備份)]
 

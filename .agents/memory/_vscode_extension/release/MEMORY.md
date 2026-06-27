@@ -4,7 +4,7 @@ scopePath: Extensions/vscode-ai-rules-manager/
 description: >-
   專案記憶：VS Code 管理器外掛封裝、資源、發布與後端入口。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-06-21T11:28:19+08:00'
+last_updated: '2026-06-27T20:38:56+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _vscode_extension.release — VS Code Extension Release Memory
 
 ## Current Truth

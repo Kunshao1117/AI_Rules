@@ -1,6 +1,6 @@
-﻿---
+---
 description: "Use when: 已有 /03_build 設計到建構合約並取得 GO，要執行建構寫入、記憶歸卡與驗證測試。DO NOT use when: 尚未完成建構合約或未取得 GO。"
-required_skills: [memory-ops, security-sre, code-quality, test-patterns, ai-dev-quality-gate, trunk-ops]
+required_skills: [memory-ops, security-sre, code-quality, test-patterns, ai-dev-quality-gate, trunk-ops, programming-team-governance]
 memory_awareness: full
 metadata:
   author: antigravity
@@ -52,6 +52,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Use explore-plan-implement-verify sequencing. Define acceptance evidence, operator-tool discovery, retry strategy, and blocked validation rules before writes.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+> [LOAD SKILL] For coding-related work, read `.agents/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
 
 # [WORKFLOW: BUILD — EXECUTE (建構執行)]
 

@@ -1,7 +1,7 @@
 ---
 name: 09_commit
 description: "Use when: 提交、commit、push、版本紀錄、CHANGELOG、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 前置掃描與受治理備份。DO NOT use when: 尚未完成實作或只想查看 git 狀態。"
-required_skills: [github-ops, quality-review-governance]
+required_skills: [github-ops, quality-review-governance, programming-team-governance]
 memory_awareness: read
 user-invocable: true
 metadata:
@@ -58,6 +58,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Require explicit file lists, review state and accepted-risk/unverified/blocker awareness, memory hygiene, status-check awareness, changelog quality, version impact, and governed release routing before commit or push.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+> [LOAD SKILL] For coding-related work, read `.claude/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
 
 # [SKILL: /commit — 授權備份]

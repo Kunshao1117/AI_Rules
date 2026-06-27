@@ -14,8 +14,8 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → 透過 `.agents/memory/` 記憶卡系統持久保存
 2. **無紀律執行** — 寫碼前不規劃、寫完不測試 → 20 個工作流檔案強制四拍子節奏
-3. **角色權限模糊** — 子代理人隨意改檔案 → 由 Delegation Gate 統一判斷 evidence branch，子代理人只能唯讀提供證據包
-4. **知識碎片化** — 技能散落各處，Token 暴增 → 42 套按需載入的操作型技能，不用時零開銷
+3. **角色權限模糊** — 子代理人隨意改檔案 → 編程任務先建立團隊站點板，Delegation Gate 只允許唯讀 evidence branch，主代理保留寫檔、整合、審查與交付裁決
+4. **知識碎片化** — 技能散落各處，Token 暴增 → 43 套按需載入的操作型技能，不用時零開銷
 5. **語言不友善** — 工程術語充斥 → 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
 6. **框架升級斷裂** — 升級怕覆蓋記憶或脈絡 → D06 安全網 + SHA256 差異比對 + 知識資產永久保護
 7. **工具碎片化** — MCP 工具散亂 → 透過 Multi-MCP Gateway 統一探索 schema，並用 `gateway__call_tool` 真實呼叫下游工具
@@ -72,7 +72,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 | **按需載入** | 技能僅在需要時載入，減少 AI 的認知負擔和 Token 消耗 |
 | **需求對齊與反證** | 架構藍圖與建構計畫必須先回放需求、列出非目標與成功標準，再做中立反證、決策紀錄、驗收追蹤與偏移稽核 |
 | **繁體中文特化** | 三層語言架構：指令層（英文）、介面層（繁體中文）、橋接層（雙語） |
-| **最小權限治理** | 角色分層（讀取者 / 工作者 / 寫入者），子代理政策由部署後 `.agents/shared/policies/` 與框架來源 `Shared/policies/` 同源轉譯，且子代理只能唯讀 |
+| **編程團隊治理** | 開發、修改、修復、測試、除錯、健檢、提交、交接與技能鍛造先建立 Programming Team Board；每站必須標示是否適用與執行模式；Antigravity / Gemini adapter 只把站點允許的任務轉成唯讀 evidence branch |
 | **三位一體治理** | 靜默異常中斷（閘門攔截時才中斷）+ 特權覆寫（`[SUDO]`）+ 雙軌沙盒（生產 / 草圖） |
 
 ---
@@ -83,7 +83,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 graph TB
     subgraph "AI_Rules 框架核心庫"
         SRC["Antigravity/<br/>Gemini 版源碼"]
-        SH["Shared/skills/<br/>42 套共用技能"]
+        SH["Shared/skills/<br/>43 套共用技能"]
     end
 
     subgraph "統一部署引擎"
@@ -93,7 +93,7 @@ graph TB
     subgraph ".agents/ 生態系統（部署後）"
         RULES["rules/<br/>9 個治理規則"]
         WF["workflows/<br/>20 個工作流檔案"]
-        SKILLS["skills/<br/>42 套操作型技能"]
+        SKILLS["skills/<br/>43 套操作型技能"]
         MEM["memory/<br/>專案記憶（三平台共用）"]
         CTX["context/<br/>專案脈絡（三平台共用）"]
         PROJ["project_skills/<br/>衍生技能（升級保護）"]
@@ -144,6 +144,7 @@ graph TB
 | **Shared policy drift** | Doctor 檢查 Antigravity / Gemini adapter marker block 是否仍由框架來源 `Shared/policies/subagent-invocation.md` 生成，並確認下游 `.agents/shared/policies/subagent-invocation.md` 已部署 |
 | **Subagent vocabulary drift** | Doctor 檢查 Shared 技能是否誤把平台工具名寫成共用語義，避免 Antigravity、Claude、Codex 的委派語彙互相污染 |
 | **Review governance coverage** | Doctor 檢查審查治理共用技能、工作流矩陣、子代理政策與 02/03/04/08/09/10 入口是否保留審查狀態與 evidence branch 邊界 |
+| **Programming team governance coverage** | Doctor 檢查編程團隊治理共用技能、團隊站點板、Antigravity workflow 接入與部署後 shared skill / shared reference hash 是否一致 |
 | **孤兒偵測** | 偵測源碼已刪除但目標仍存在的「孤兒檔案」，標記為 `ORPHAN` 提醒 |
 | **衍生技能補建** | 每次部署自動掃描 `project_skills/`，補建缺少的符號連結 |
 
@@ -170,10 +171,10 @@ graph TB
 底層規範依啟動模式分為三層：
 
 **`00_core_identity.md`** — Always On（每次對話必載）
-1. **專職化分工** — 主代理人直接執行；下游 `.agents/shared/policies/subagent-invocation.md` 與框架來源 `Shared/policies/subagent-invocation.md` 只定義 Delegation Gate；Antigravity / Gemini adapter 才轉成 Gemini CLI、`@` 指派、browser-capable agent 或 plugin adapter
+1. **專職化分工** — 主代理人直接執行與裁決；下游 `.agents/shared/policies/subagent-invocation.md` 與框架來源 `Shared/policies/subagent-invocation.md` 只定義 Delegation Gate；編程工作先過團隊站點板，Antigravity / Gemini adapter 只把允許的 evidence branch 轉成 Gemini CLI、`@` 指派、browser-capable agent 或 plugin adapter
 2. **多代理人視圖透明度** — 子代理人的修改必須回傳主代理人在介面呈現
 3. **生命週期強制** — 規劃 → 驗證閘門 → 執行 → 記憶更新
-4. **禁止終端機文書處理** — 靜默閘門式攔截（`[PRE-FLIGHT GATE]`），支援 `[SUDO]` 覆寫與 `/03-1_experiment` 豁免
+4. **禁止終端機文書處理** — 靜默閘門式攔截（`[PRE-FLIGHT GATE]`），支援 `[SUDO]` 覆寫與 `/03-1_experiment` 沙盒例外；實驗仍需最小站點宣告
 5. **繁體中文特化** — 三層語言架構（指令層、介面層、橋接層）
 
 **`01_cross_lingual_guard.md`** — Always On（每次對話必載）
@@ -188,7 +189,7 @@ graph TB
 3. **技能系統契約** — 按需載入、漸進式揭露、三目錄架構（衍生技能詳見 `05_project_skill_contract.md`）
 
 **`02_code_quality_security.md`** — Model Decision（寫程式碼時載入）
-1. **機密隔離** — `[SEC SILENT GATE]` 靜默掃描，支援 `[SUDO]` 與 `/03-1_experiment` 豁免
+1. **機密隔離** — `[SEC SILENT GATE]` 靜默掃描，支援 `[SUDO]` 與 `/03-1_experiment` 沙盒例外；實驗仍需標示邊界與升級條件
 2. **驗證器鐵律** — `[LINTER GATE]` 最多 3 次自動修復，超限硬性中斷
 3. **橫切品質約束** — 安全/品質/介面/測試的核心原則
 
@@ -272,7 +273,7 @@ graph LR
 | 01 | 探索 | 可行性研究，雙狀態魔鬼代言人（純搜索 / 深度分析） | Reader |
 | 02 | 架構 | 需求轉化為技術藍圖與記憶系統初始化 | Writer/SRE |
 | 03 | 建構計畫 | Stage 1：記憶載入 → Diff 規劃 → 等待 GO（含沙盒快速路徑） | Writer/SRE |
-| 03-1 | 實驗 | 沙盒快速實驗（所有閘門停用） | Experiment Worker |
+| 03-1 | 實驗 | 沙盒快速實驗（保留最小團隊站點宣告） | Experiment Worker |
 | 03-2 | 建構執行 | Stage 2：實體寫入 → 新建歸卡 → 記憶更新 → 單元測試 → 真實執行驗證 | Writer/SRE |
 | 05 | 濃縮 | 專案濃縮初始化（掃描 → 萃取 → 審閱 → 寫入） | Writer/SRE |
 | 04-1 | 修復計畫 | Bug 診斷 → 產出修復計畫（唯讀，等待 GO） | Reader |
@@ -456,11 +457,11 @@ Antigravity/
     │   ├── 00_chat ~ 12_skill_forge ← 主要工作流程（含建構/修復/提交分階段與例行巡檢）
     │   ├── _completion_gate.md   ← 共用完成閘門
     │   └── _security_footer.md   ← 共用安全閘門
-    ├── skills/                   ← 42 套操作型技能（部署時從 Shared/ 注入）
+    ├── skills/                   ← 43 套操作型技能（部署時從 Shared/ 注入）
     │   ├── _index.md             ← 核心技能路由表
     │   ├── project-xxx -> ../project_skills/xxx ← 專案衍生技能符號連結
     │   ├── memory-ops/           ← 記憶操作指引
-    │   └── ... (42 套)
+    │   └── ... (43 套)
     ├── memory/                   ← 專案記憶（專案特有，升級時受保護）
     │   └── (由 AI 執行 /02 架構 初始化)
     ├── context/                  ← 專案脈絡（設計 DNA 與長期偏好，升級時受保護）

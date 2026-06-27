@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-21T11:15:00+08:00'
+last_updated: '2026-06-27T20:37:06+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-21T11:15:00+08:00'
+last_verified: '2026-06-27T19:53:01+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 10
+cycle_event_count: 11
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core — Antigravity Memory
 
 ## Current Truth
@@ -50,13 +51,15 @@ metadata:
 - Antigravity README, documentation, and build/fix workflows now describe change intent classification, patch-stack escalation, visual detail observation, and real-information-first evidence.
 - Antigravity blueprint workflow and documentation now load the shared intent alignment gate for requirement playback, neutral challenge, traceability, and drift audit.
 - Antigravity blueprint, build, fix, audit, commit, and routine workflow entries now load or reference quality-review-governance for review purpose, review state, accepted risk, blockers, and evidence-branch boundaries.
-- Antigravity shared skill count is 42.
+- Antigravity coding workflows now route through programming-team-governance stations with separate applicability and execution-mode reporting before planning, execution, validation, review, or completion.
+- Antigravity shared skill count is 43.
 ## Active Constraints
 - Do not duplicate root system ownership in this card.
 - Do not track `.agents/memory/_map` or `.agents/memory/_system` source copies here.
 - Keep Antigravity-specific workflow facts here and shared operational details in Shared skills.
 - This card still needs a later child-card split if all Antigravity workflows are actively edited again.
 ## Cycle Events
+- 11: Hardened Antigravity programming team governance in core rules, coding workflows, deployed workflows, and README with applicability/execution-mode station boards and policy sync.
 - 10: Added Antigravity review-governance coverage to core rules, blueprint/fix workflows, and README skill counts.
 - 09: Added Antigravity blueprint intent-alignment requirements and refreshed Antigravity skill-count documentation.
 - 08: Added Antigravity README wording for change intent, plus real-information visual evidence governance in docs and build/fix workflows.

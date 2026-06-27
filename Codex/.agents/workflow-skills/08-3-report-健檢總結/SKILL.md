@@ -1,7 +1,7 @@
 ---
 name: "08-3-report-健檢總結"
 description: "Use when: 健檢第三階段、證據式健康報告、健檢深度摘要、功能/端點/命令覆蓋率、紅黃綠燈號、未驗證/阻塞清單、證據等級摘要、優先修復清單與行動建議。DO NOT use when: 尚未完成前兩階段健檢。"
-required_skills: [audit-engine, quality-review-governance]
+required_skills: [audit-engine, quality-review-governance, programming-team-governance]
 metadata:
   author: antigravity
   version: "2.0"
@@ -46,6 +46,10 @@ Technical details may only appear after a `補充技術細節` section when they
 - Treat memory and internal model knowledge as possibly stale. Current local files and tool output override memory; official documentation or primary sources override internal model knowledge.
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
+## 編程團隊治理接地（Programming Team Board Contract）
+
+> [LOAD SKILL] For coding-related work, read `.agents/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
+
 # source-command-08-audit-08-3-report-skill
 
 Use this skill when the user asks to run the migrated source command `08_audit(健檢)-08-3_report-SKILL`.

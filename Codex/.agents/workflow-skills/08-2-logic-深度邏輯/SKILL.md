@@ -1,7 +1,7 @@
 ---
 name: "08-2-logic-深度邏輯"
 description: "Use when: 健檢第二階段、依盤點清單做深度邏輯審查、安全架構、API/端點/資料流串接比對、功能操作驗證、狀態不變量、測試覆蓋缺口、真實證據缺口、效能可靠性、plugin、VSIX、Release、version、tag、update reminder 與死碼偵測。DO NOT use when: 要完整健檢入口，改用 08-audit。"
-required_skills: [audit-engine, quality-review-governance]
+required_skills: [audit-engine, quality-review-governance, programming-team-governance]
 metadata:
   author: antigravity
   version: "2.0"
@@ -46,6 +46,10 @@ Technical details may only appear after a `補充技術細節` section when they
 - Treat memory and internal model knowledge as possibly stale. Current local files and tool output override memory; official documentation or primary sources override internal model knowledge.
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
+## 編程團隊治理接地（Programming Team Board Contract）
+
+> [LOAD SKILL] For coding-related work, read `.agents/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
+
 # source-command-08-audit-08-2-logic-skill
 
 Use this skill when the user asks to run the migrated source command `08_audit(健檢)-08-2_logic-SKILL`.

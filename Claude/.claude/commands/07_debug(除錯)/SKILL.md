@@ -1,7 +1,7 @@
-﻿---
+---
 name: 07_debug
 description: "Use when: 除錯、分析 stack trace、閱讀日誌、定位錯誤來源並說明商業影響。DO NOT use when: 已決定要修改原始碼，改用修復工作流。"
-required_skills: [memory-ops, code-diagnosis]
+required_skills: [memory-ops, code-diagnosis, programming-team-governance]
 memory_awareness: read
 user-invocable: true
 metadata:
@@ -55,6 +55,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Use logs, traces, metrics, runtime output, or equivalent observable signals to prove or disprove root-cause hypotheses before routing to fix.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+> [LOAD SKILL] For coding-related work, read `.claude/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
 
 # [SKILL: /07_debug — 除錯分析]
 

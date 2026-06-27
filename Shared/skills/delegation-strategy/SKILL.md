@@ -2,9 +2,9 @@
 name: delegation-strategy
 description: >
   [Infra] Vendor-neutral Delegation Gate and channel selection decision tree
-  for direct handling / evidence branch / browser branch / CLI branch / MCP direct,
-  including review-evidence boundaries.
-  Use when: 需要決定任務該由主腦直接處理、交給唯讀證據分支、瀏覽器證據分支、CLI 分析分支、由主腦直接呼叫 MCP 工具，或釐清子代理審查證據邊界的場景。
+  for programming team stations, direct handling, evidence branch, browser branch,
+  CLI branch, MCP direct, and review-evidence boundaries.
+  Use when: 需要決定任務該由主腦直接處理、交給唯讀證據分支、瀏覽器證據分支、CLI 分析分支、由主腦直接呼叫 MCP 工具，或釐清編程團隊站點與子代理審查證據邊界的場景。
   DO NOT use when: 已確定管道為瀏覽器且需要執行測試（用 browser-testing）、已確定管道為 CLI 且需要掃描（用 code-audit）。
 metadata:
   author: antigravity
@@ -19,20 +19,23 @@ metadata:
 
 ## 1. Delegation Gate (委派閘門)
 
-Evaluate in this order:
+For coding-related work, first draft the Programming Team Board from `programming-team-governance`, then evaluate each applicable station in this order:
 
-1. **Simple or blocking task?** -> `direct`
-2. **Independent read-only investigation?** -> `evidence branch`
-3. **Browser/UI verification?** -> `browser branch`; load `browser-testing`
-4. **Large CLI-only analysis?** -> `CLI branch`; load `code-audit` or `code-diagnosis`
+1. **Implementation, gate, or Director decision?** -> `direct`
+2. **Next main-thread step blocked on the answer?** -> `direct`
+3. **Browser/UI verification station?** -> `browser branch`; load `browser-testing`
+4. **Large CLI-only analysis station?** -> `CLI branch`; load `code-audit` or `code-diagnosis`
 5. **Real-time tool access?** (Maps, docs, database, cloud, design) -> `MCP direct`
-6. **None of above?** -> `direct`
+6. **Independent read-only station after special routes are excluded?** -> `evidence branch`
+7. **None of above?** -> `direct`
 
 > **Hot-Path Exclusion**: CLI branch is NOT for tasks needing immediate feedback on code just written. Use the main agent's terminal tool directly.
 
 > **Shared Policy Source**: 子代理啟用條件與唯讀邊界以下游 `.agents/shared/policies/subagent-invocation.md` 為部署後參考；框架來源倉庫的唯一來源檔是 `Shared/policies/subagent-invocation.md`。本技能只負責管道選擇與平台中立任務包格式。
 
 > **Review Boundary**: Evidence branches can support `quality-review-governance`, but they cannot decide final review state, quality acceptance, GO gates, or release readiness.
+
+> **Team Board Source**: Coding workflows use `programming-team-governance` to define fixed stations. This skill only chooses the safest channel for each station.
 
 | Channel | Context | Speed | Output |
 |---|---|---|---|
@@ -50,6 +53,7 @@ Use an evidence branch when all are true:
 2. The Master Agent can continue non-overlapping work
 3. The result is useful as evidence, risk review, compatibility review, or verification
 4. The task can be reported with the fixed format: `發現 / 證據 / 風險 / 建議 / 是否阻塞`
+5. The station is not a browser/UI, large CLI-only, or real-time MCP/tool access station; those routes must be classified before a general evidence branch.
 
 Do not use an evidence branch when the next main-thread action is blocked on that answer, the task needs secrets/login state, or the branch would modify source files, memory cards, git state, deployments, issues, pull requests, cloud resources, or mutating MCP state.
 

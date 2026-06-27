@@ -1,7 +1,7 @@
 ---
 name: 08-1_infra
 description: "Use when: 健檢第一階段、健檢深度選擇、專案型態偵測、功能盤點、端點盤點、命令盤點、平台能力快照、基礎盤點、相容性、依賴掃描、治理拓樸、技能覆蓋率與目錄衛生檢查。DO NOT use when: 要完整健檢入口，改用 08-audit。"
-required_skills: [memory-ops, code-audit, audit-engine, tech-stack-protocol]
+required_skills: [memory-ops, code-audit, audit-engine, tech-stack-protocol, programming-team-governance]
 memory_awareness: full
 user-invocable: false
 metadata:
@@ -17,6 +17,10 @@ metadata:
   human_gate: "none"
   automation_safe: false
 ---
+
+## 編程團隊治理接地（Programming Team Board Contract）
+
+> [LOAD SKILL] For coding-related work, read `.claude/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
 
 
 ## 總監可讀輸出契約（Director-Readable Output Contract）

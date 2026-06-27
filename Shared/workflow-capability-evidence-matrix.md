@@ -18,9 +18,26 @@
 |---|---|---|
 | Antigravity | 優先使用瀏覽器代理、截圖、錄影、視覺產物、IDE 工作流與終端證據 | 不把 Claude 鉤子或 Codex 原生子代理語法寫成 Antigravity 指令 |
 | Claude | 優先使用計畫模式、子代理、權限、鉤子、檢查點、批次讀取與非互動命令證據 | 不把 Claude 鉤子視為其他平台可用能力 |
-| Codex | 優先使用技能漸進載入、沙盒/審批轉錄、明確允許的子代理、瀏覽器、終端、MCP 與背景任務證據 | 子代理只在總監明確要求、工作流閘門允許或專案代理已配置時啟動 |
+| Codex | 優先使用技能漸進載入、沙盒/審批轉錄、團隊站點允許的子代理、瀏覽器、終端、MCP 與背景任務證據 | 子代理只在總監明確要求、工作流站點允許或專案代理已配置時啟動 |
 
 ## Workflow Matrix
+
+## Programming Team Governance Matrix
+
+Coding-related workflows must build a team-station board before implementation, repair, debugging, testing, audit, experiment writes, commit preparation, handoff, or skill creation work. The board is a governance trace, not a size label. Every station must separate applicability from execution mode; applicable stations must resolve to direct, delegated, or blocked, and non-applicable stations must state why.
+
+| 站點 | 適用工作 | 最低證據 | 不可委派 |
+|---|---|---|---|
+| 需求回放 | 02、03、04、08、12 及任何需求不明的編程任務 | Goal, non-goals, constraints, assumptions, success criteria | 最終需求邊界與 Director 溝通 |
+| 反證 | 02、03、04、07、08、12 | Wrong-assumption search, missing-risk list, rejected or accepted concern | 最終計畫裁決 |
+| 影響面 | 03、04、07、08、09、12 | Files, memory cards, docs, sync paths, compatibility and regression surface | Scope approval and source writes |
+| 計畫授權 | 02、03、04、09、12 | Review state, acceptance matrix, GO boundary | GO interpretation |
+| 實作 | 03、04、12 and Antigravity execute stages | Approved file list, security gate, dirty-tree protection | v1 does not delegate main-worktree writes |
+| 短迴圈驗證 | 03、04、06、07、08 | Test output, real-path attempt, blocked evidence path | Completion claim |
+| 審查 | 02、03、04、08、09、10、12 | Review purpose, lifecycle state, accepted risk, blockers | Final review lifecycle status |
+| 收尾 | 03、04、09、10、11、12 | Docs, memory, drift audit, sync evidence, unresolved items | memory_commit, commit, push, release, deployment |
+
+Evidence branches may support the board only when the station is read-only, independently bounded, and useful while the main thread continues non-overlapping work. Missing station evidence must be reported as 未驗證 or 阻塞, not silently downgraded.
 
 ## Change Intent Classification Matrix
 
@@ -89,18 +106,18 @@ Visual verification must inspect details and prefer real information. Screenshot
 |---|---|---|---|---|
 | 00 對話 | 純討論、概念釐清、輕量問答 | Codex 指令分層、Claude 上下文管理、Agent Skills 描述觸發 | 當前規則與已知上下文；高變動事實需轉研究 | 01、02、03、04、06、09 |
 | 01 探索 | 網路研究、競品、可行性、反方分析 | 深度研究實務、來源可信度、資料新鮮度 | 來源層級、日期、偏誤、覆蓋缺口與未驗證項 | 02、03、08 |
-| 02 架構 | 純架構、重大技術轉向、系統藍圖 | ADR、C4、arc42、官方框架文件、需求對齊閘門 | 需求理解回放、中立反證、決策狀態、替代方案、審查目的與狀態、需求到驗收追蹤、假設、相容性與後續建構契約 | 03、08、12 |
-| 03-1 實驗 | 沙盒 spike、丟棄式原型 | 技術 spike 與原型隔離實務 | 實驗邊界、丟棄條件、禁止生產品質聲明 | 03、11 |
-| 03 建構 | 正式建構、產品行為變更 | 先探索、再計畫、再實作、再驗證、需求對齊閘門、工程審查治理 | 沿用藍圖狀態、審查目的與狀態、需求到任務追蹤、任務驗收矩陣、偏移稽核規則、真實驗證路徑、工具發現、阻塞條件、記憶所有權與狀態證據 | 04、06、08、09 |
-| 04 修復 | bug 修復、回歸修復 | 根因分析、缺陷管理、回歸測試、工程審查治理 | 症狀、根因、審查目的與狀態、修復證據、回歸證據、受影響記憶卡狀態與依賴證據 | 06、07、09 |
+| 02 架構 | 純架構、重大技術轉向、系統藍圖 | ADR、C4、arc42、官方框架文件、需求對齊閘門、編程團隊治理 | 團隊站點板、需求理解回放、中立反證、決策狀態、替代方案、審查目的與狀態、需求到驗收追蹤、假設、相容性與後續建構契約 | 03、08、12 |
+| 03-1 實驗 | 沙盒 spike、丟棄式原型 | 技術 spike、原型隔離實務、編程團隊最小治理 | 最小團隊站點板、沙盒邊界、允許改動範圍、丟棄條件、升級條件、禁止生產品質聲明 | 03、11 |
+| 03 建構 | 正式建構、產品行為變更 | 先探索、再計畫、再實作、再驗證、需求對齊閘門、工程審查治理、編程團隊治理 | 團隊站點板、沿用藍圖狀態、審查目的與狀態、需求到任務追蹤、任務驗收矩陣、偏移稽核規則、真實驗證路徑、工具發現、阻塞條件、記憶所有權與狀態證據 | 04、06、08、09 |
+| 04 修復 | bug 修復、回歸修復 | 根因分析、缺陷管理、回歸測試、工程審查治理、編程團隊治理 | 團隊站點板、症狀、根因、審查目的與狀態、修復證據、回歸證據、受影響記憶卡狀態與依賴證據 | 06、07、09 |
 | 05 濃縮 | 專案身份、長期記憶初始化 | 上下文壓縮、長期記憶、偏好治理 | 來源依據、永久事實與暫時觀察分離、工作區與脈絡盤點證據 | 02、11、12 |
-| 06 測試 | E2E、視覺、效能、無障礙、回歸 | Playwright、Lighthouse、Web Vitals、WCAG | 專案型態、測試面、證據等級、阻塞原因 | 03、04、08 |
-| 07 除錯 | stack trace、日誌、故障定位 | OpenTelemetry、SRE 監控、根因診斷 | 可觀測訊號、假設、證實/反證、轉修復條件 | 04、06、08 |
-| 08 健檢 | 全光譜專案健檢、深層健檢、上線前高風險審查 | 08 共用健檢引擎、本矩陣、OWASP、Playwright、Lighthouse、Web Vitals、WCAG、OpenTelemetry、工程審查治理 | 健檢深度、專案型態、能力快照、功能/端點/命令盤點、覆蓋率分母、證據包、審查狀態、記憶/脈絡治理證據、燈號、未驗證/阻塞清單 | 02、03、04、06、09 |
-| 09 提交 | 變更紀錄、提交、版本、發布前掃描 | Conventional Commits、Keep a Changelog、SemVer、狀態檢查、工程審查治理 | 明確檔案清單、審查狀態與 accepted-risk/unverified/blocker 清單、記憶狀態、提交前記憶預檢、變更摘要、版本/成品判定 | 04、06、08、11 |
-| 10 巡檢 | automation-safe 唯讀治理 | 自動化健康檢查、工作流漂移檢查、工程審查治理 | 技能品質、文件一致性、矩陣覆蓋、審查治理覆蓋、唯讀記憶/脈絡巡檢、無寫入證明 | 08、12 |
-| 11 交接 | 任務交接、續接提示 | 上下文交接與任務摘要實務 | 目前狀態、髒檔、阻塞、未驗證項、工作區/記憶健康證據、下一流程 | 02、03、04、09 |
-| 12 技能鍛造 | 新技能、共用技能、專案技能 | Agent Skills 規格、技能描述、漸進載入 | 層級選擇、描述品質、參考資料拆分、驗證門檻、受影響記憶與技能索引證據 | 03、08、10 |
+| 06 測試 | E2E、視覺、效能、無障礙、回歸 | Playwright、Lighthouse、Web Vitals、WCAG、編程團隊治理 | 測試站點板、專案型態、測試面、證據等級、阻塞原因 | 03、04、08 |
+| 07 除錯 | stack trace、日誌、故障定位 | OpenTelemetry、SRE 監控、根因診斷、編程團隊治理 | 除錯站點板、可觀測訊號、假設、證實/反證、轉修復條件 | 04、06、08 |
+| 08 健檢 | 全光譜專案健檢、深層健檢、上線前高風險審查 | 08 共用健檢引擎、本矩陣、OWASP、Playwright、Lighthouse、Web Vitals、WCAG、OpenTelemetry、工程審查治理、編程團隊治理 | 健檢站點板、健檢深度、專案型態、能力快照、功能/端點/命令盤點、覆蓋率分母、證據包、審查狀態、記憶/脈絡治理證據、燈號、未驗證/阻塞清單 | 02、03、04、06、09 |
+| 09 提交 | 變更紀錄、提交、版本、發布前掃描 | Conventional Commits、Keep a Changelog、SemVer、狀態檢查、工程審查治理、編程團隊治理 | 提交站點板、明確檔案清單、審查狀態與 accepted-risk/unverified/blocker 清單、記憶狀態、提交前記憶預檢、變更摘要、版本/成品判定 | 04、06、08、11 |
+| 10 巡檢 | automation-safe 唯讀治理 | 自動化健康檢查、工作流漂移檢查、工程審查治理、編程團隊治理覆蓋檢查 | 巡檢站點覆蓋、技能品質、文件一致性、矩陣覆蓋、審查治理覆蓋、唯讀記憶/脈絡巡檢、無寫入證明 | 08、12 |
+| 11 交接 | 任務交接、續接提示 | 上下文交接與任務摘要實務、編程團隊治理 | 交接站點板、目前狀態、髒檔、阻塞、未驗證項、工作區/記憶健康證據、下一流程 | 02、03、04、09 |
+| 12 技能鍛造 | 新技能、共用技能、專案技能 | Agent Skills 規格、技能描述、漸進載入、編程團隊治理 | 技能鍛造站點板、層級選擇、描述品質、參考資料拆分、驗證門檻、受影響記憶與技能索引證據 | 03、08、10 |
 
 ## Memory Admission Matrix
 

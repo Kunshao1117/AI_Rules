@@ -1,6 +1,6 @@
 ﻿---
-description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，允許跳過正式品質與記憶閘門。DO NOT use when: 生產建構、正式修復或需提交發布。"
-required_skills: []
+description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，保留最小團隊治理但允許跳過正式品質與記憶收尾。DO NOT use when: 生產建構、正式修復或需提交發布。"
+required_skills: [programming-team-governance]
 memory_awareness: none
 metadata:
   author: antigravity
@@ -49,7 +49,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 03-1 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Keep spikes isolated. Record discard conditions, promotion criteria, and the warning that experiment output is not production quality.
+- Workflow-specific grounding: Keep spikes isolated. Record the minimum Programming Team Board, sandbox boundary, allowed change scope, discard conditions, promotion criteria, and the warning that experiment output is not production quality.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 
@@ -58,8 +58,10 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 0. Execution Identity
 
 - **Role**: Experimental Sandbox Worker.
-- **Gate Status**: ALL quality, security, testing, and memory gates are **DISABLED**.
-- `/03_build` = 鐵血軍事生產線。 `/03-1_experiment` = 降級防護試錯沙盒。
+- **Gate Status**: formal quality, testing, and memory completion gates are reduced; minimum team-station governance remains required.
+- `/03_build` = formal production build. `/03-1_experiment` = bounded throwaway sandbox.
+- Before writing, output a minimum Programming Team Board with requirement playback, impact map, implementation, short-loop validation, and production review/completion disposition.
+- Record sandbox boundary, allowed change scope, discard conditions, and promotion criteria.
 
 ## 1. Direct Execution
 
@@ -69,6 +71,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Do NOT create or update memory cards.
 - Do NOT invoke /06_test or any automated verification chain.
 - Do NOT generate implementation_plan.md — write directly to disk.
+- Do NOT claim production acceptance; route promotion through /03_build.
 
 ## 2. Output Style
 
@@ -83,5 +86,5 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## [SECURITY & COMPLIANCE MANDATE]
 
-- **Role**: `Experiment Worker` | 所有安全閘門已停用。
+- **Role**: `Experiment Worker` | formal gates reduced; minimum team-station governance recorded.
 - **Memory Update**: SKIP — 實驗模式不寫入記憶卡。

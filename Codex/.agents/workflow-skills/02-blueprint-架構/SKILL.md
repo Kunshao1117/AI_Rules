@@ -1,7 +1,7 @@
-﻿---
+---
 name: "02-blueprint-架構"
 description: "Use when: 純架構設計、藍圖、技術堆疊探勘、全系統初始化、重大技術轉向、ER 圖、API 路由設計、三平台代理治理架構宣告、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 的架構判斷。DO NOT use when: 目標是同一輪直接建構功能；改用建構流程的設計到建構合約。"
-required_skills: [memory-ops, tech-stack-protocol, memory-arch, ai-dev-quality-gate, intent-alignment-gate, quality-review-governance, project-context-protocol]
+required_skills: [memory-ops, tech-stack-protocol, memory-arch, ai-dev-quality-gate, intent-alignment-gate, quality-review-governance, project-context-protocol, programming-team-governance]
 metadata:
   author: antigravity
   version: "2.0"
@@ -59,6 +59,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Record requirement playback, neutral challenge, decision status, alternatives, trade-offs, assumptions, review purpose/state when required, compatibility impact, requirement-to-acceptance trace, and the handoff contract for later build work.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+> [LOAD SKILL] For coding-related work, read `.agents/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
 
 # source-command-02-blueprint-skill
 

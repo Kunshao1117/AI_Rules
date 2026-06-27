@@ -1,6 +1,7 @@
 ---
 name: "08-1-infra-基礎盤點"
 description: "Use when: 健檢第一階段、健檢深度選擇、專案型態偵測、功能盤點、端點盤點、命令盤點、平台能力快照、基礎盤點、依賴安全掃描、記憶卡拓樸、技能覆蓋率、相容性與目錄衛生檢查。DO NOT use when: 要完整健檢入口，改用 08-audit。"
+required_skills: [programming-team-governance]
 metadata:
   author: antigravity
   version: "2.0"
@@ -45,6 +46,10 @@ Technical details may only appear after a `補充技術細節` section when they
 - Treat memory and internal model knowledge as possibly stale. Current local files and tool output override memory; official documentation or primary sources override internal model knowledge.
 - For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
+## 編程團隊治理接地（Programming Team Board Contract）
+
+> [LOAD SKILL] For coding-related work, read `.agents/skills/programming-team-governance/SKILL.md` and build a Programming Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability and execution mode: direct, delegated, blocked, or not-applicable; evidence branches stay read-only and the main agent owns writes, review state, and acceptance.
+
 # source-command-08-audit-08-1-infra-skill
 
 Use this skill when the user asks to run the migrated source command `08_audit(健檢)-08-1_infra-SKILL`.

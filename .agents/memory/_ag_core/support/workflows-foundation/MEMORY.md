@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 基礎與討論建構工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-21T11:15:00+08:00'
+last_updated: '2026-06-27T20:37:23+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-21T11:15:00+08:00'
+last_verified: '2026-06-27T19:53:01+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 7
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core.support.workflows-foundation — Antigravity Foundation Workflow Memory
 
 ## Current Truth
+- Antigravity build planning and foundation coding workflows now load programming-team-governance and require applicability/execution-mode Programming Team Boards before coding-related work proceeds.
 - Antigravity build workflow now uses the MCP Memory Evidence Matrix for memory-state evidence and project-local migration routing.
 - This child card owns Antigravity shared gates and foundation workflows for chat, exploration, build, and experiment work.
 - These workflow files translate shared semantics into Antigravity-facing workflow entries.
@@ -47,6 +49,7 @@ metadata:
 - Keep shared gate fragments aligned with platform governance.
 
 ## Cycle Events
+- 08: Added applicability/execution-mode Programming Team Board reporting to Antigravity blueprint, build, and experiment foundation workflows and synced deployed workflow copies.
 - 07: Added review-state and minimum-sufficient-complexity fields to Antigravity build planning.
 - 06: Added intent-alignment requirements to the Antigravity build planning workflow.
 - 05: Added change intent and real-information visual evidence requirements to the Antigravity build planning workflow.

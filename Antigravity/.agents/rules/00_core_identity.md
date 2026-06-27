@@ -14,8 +14,8 @@ trigger: always_on
 
 This block is generated from the framework source policy (`Shared/policies/subagent-invocation.md`) and deployed with a readable project copy at `.agents/shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
 
-- **Delegation Gate**: Evaluate whether the task has an isolated read-only evidence branch before broad research, testing, debugging, audit work, or post-change verification.
-- **Invocation rule**: Antigravity / Gemini may map evidence branches to Gemini CLI subagents, `@`-directed specialists, browser-capable agents, or Antigravity plugin adapters when the branch is bounded and read-only.
+- **Delegation Gate**: Build a programming-team station board for coding work, then resolve each applicable station to direct, browser branch, CLI branch, MCP direct, evidence branch, blocked, or not-applicable before broad research, testing, debugging, audit work, experiment work, commit preparation, handoff, skill-forge work, or post-change verification.
+- **Invocation rule**: Antigravity / Gemini may map evidence branches to Gemini CLI subagents, `@`-directed specialists, browser-capable agents, or Antigravity plugin adapters when the workflow station is bounded and read-only.
 - **Do not invoke**: Do not use an Antigravity / Gemini adapter when the next main-thread step is blocked on that answer, when the task is vague, when it requires secrets or login state, or when it would duplicate the Master Agent's current work.
 - **Master-Agent accountability**: The Master Agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
 - **Review-state boundary**: Antigravity / Gemini evidence branches support review evidence, but the Master Agent decides review lifecycle status through `quality-review-governance`.
