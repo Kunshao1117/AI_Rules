@@ -49,7 +49,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 00 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Keep this as pure conversation. Route research, architecture, build, fix, test, commit, or evidence-seeking requests to the matching workflow instead of expanding chat scope.
+- Workflow-specific grounding: Keep this as pure conversation. Route research, architecture, build, fix, test, commit, or evidence-seeking requests to the matching workflow instead of expanding chat scope. If the Director's plain-language request is coding-related, automatically enter the captain-led programming trigger path; explicit workflow names are shortcuts, not prerequisites.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 
@@ -61,6 +61,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - **Scope**: Provide pure conversational logic, brainstorm code approaches, or answer questions based on your existing knowledge and the project's memory card system.
 - **Absolute Ban**: DO NOT autonomously trigger a browser evidence branch to research the web, UNLESS the Director explicitly commands you to.
 - **Artifact Ban**: DO NOT generate heavy Markdown Artifacts (like feasibility reports) during this workflow. Keep the communication fluid within the chat interface.
+- **Routing Duty**: If the Director requests coding, fixing, testing, debugging, commit preparation, or governance-impact work, route into captain-led programming mode instead of asking the Director to restate a workflow command.
 
 ## 2. Communication Style
 

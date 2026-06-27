@@ -37,6 +37,7 @@ Use this skill when the task needs a shared definition for engineering review:
 | Rigorous | Assumptions, evidence, unverified areas, blockers, and accepted risks are explicit. Claims are tied to files, commands, docs, or observed behavior. | A confident summary without evidence or with hidden uncertainty. |
 | Review | A targeted process that reduces wrong direction, requirement drift, over-engineering, missing validation, and blast-radius risk. | Generic praise, style-only comments, or unchecked opinion. |
 | Evidence Branch | A read-only helper path that collects facts, traces, logs, docs, or alternative analysis. It supports review but does not own acceptance. | Treating a helper summary as final quality approval. |
+| Independent Review | Review by a role that did not implement the same deliverable. | A patch author approving their own change, or a reviewer editing the same deliverable and still claiming independent review. |
 
 ## Minimum Sufficient Complexity
 
@@ -62,7 +63,7 @@ Reject complexity when it is speculative:
 - Splitting files only to reduce line count.
 - Mixing user interface, persistence, network, and business rules without a clear boundary.
 - Creating framework vocabulary before the current behavior is understood.
-- Adding a delegated evidence branch when the main thread is blocked on the same answer.
+- Adding speculative review ceremony without a station-board reason or concrete evidence value.
 
 ## Review Timing Gate
 
@@ -72,6 +73,17 @@ Does the task touch governance, public contracts, shared workflows, data/state, 
 ├── YES → Produce review purpose, review state, evidence status, and acceptance evidence.
 └── NO → Targeted validation is enough; record the no-review reason when reporting.
 ```
+
+## Role Separation Gate
+
+```text
+[ROLE SEPARATION GATE]
+Did the same specialist implement or materially author the deliverable under review?
+├── YES → Independent review is not satisfied. Mark accepted-risk, unverified, or blocked until another reviewer checks it.
+└── NO → Continue review.
+```
+
+Review specialists may propose findings and suggested fixes as text, but they must not directly implement the same deliverable they are reviewing. Implementation specialists may respond to findings, but they must not decide their own review state.
 
 ## Review Lifecycle States
 
@@ -101,7 +113,7 @@ When the Review Timing Gate returns YES, report these fields:
 
 ## Evidence Branch Boundary
 
-Read-only evidence branches may help collect facts when the work benefits from parallel inspection. They must return:
+Review evidence follows the active Programming Team Board. Evidence-oriented review stations default to read-only evidence branches unless the board records a concrete direct exception and replacement evidence. Parallelism is useful but not required; the main thread may wait for a review evidence packet when the packet is needed to decide the review state. Evidence branches must return:
 
 ```text
 發現 / 證據 / 風險 / 建議 / 是否阻塞
@@ -113,11 +125,14 @@ The main thread remains responsible for:
 - Mapping evidence to a review lifecycle state.
 - Integrating changes into the implementation plan.
 - Performing writes, commits, deployments, installs, memory updates, and final Director-facing acceptance.
+- Enforcing that implementation and review roles remain separated for the same deliverable.
 
 ## Constraints
 
 - This skill does not authorize source writes, memory writes, commits, pushes, installs, deployments, or external state changes.
 - This skill does not replace code-audit, pr-review-ops, security-sre, impact-test-strategy, or delegation-strategy.
-- Evidence branches are optional unless a workflow gate requires one or the Director explicitly asks for them.
+- Evidence branches are governed by the Programming Team Board. A review station that needs independent evidence must use an evidence branch, browser branch, CLI branch, or MCP direct path unless the board records a concrete direct exception.
+- All-direct review boards are invalid when multiple evidence-oriented stations are applicable and no concrete direct exceptions are recorded.
+- A review is not independent when the reviewer implemented the same deliverable, edited the reviewed code path, or owns the patch packet being reviewed.
 - Synthetic evidence cannot replace real behavior when real execution is available and relevant.
 - A review is incomplete when it cannot name its purpose, current state, evidence, and remaining risk.

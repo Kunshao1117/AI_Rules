@@ -52,7 +52,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 03-1 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Keep spikes isolated. Record the minimum Programming Team Board, sandbox boundary, allowed change scope, discard conditions, promotion criteria, and the warning that experiment output is not production quality.
+- Workflow-specific grounding: Keep spikes isolated. Record the minimum Captain Team Board, sandbox boundary, allowed change scope, discard conditions, promotion criteria, role boundary, and the warning that experiment output is not production quality.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 
@@ -65,13 +65,13 @@ Technical details may only appear after a `補充技術細節` section when they
 - Dirty code, hardcoded values, and placeholder logic are PERMITTED.
 - No linter runs, no test generation, no memory card updates.
 - `Write`/`Edit` tools may be used IMMEDIATELY without planning phase.
-- Before writing, output a minimum Programming Team Board with:
-  - Requirement playback: direct
-  - Impact map: direct or blocked
-  - Implementation: direct
-  - Short-loop validation: direct, blocked, or not-applicable with reason
-  - Review and completion: not-applicable for production acceptance, with promotion route to `/03_build`
-- Record sandbox boundary, allowed change scope, discard conditions, and promotion criteria.
+- Before writing, output a minimum Captain Team Board with applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition:
+  - Requirement playback: `direct`; evidence owner is Master Agent; role boundary is requirement only; direct exception is Director-facing scope lock.
+  - Impact map: `evidence branch`, `CLI branch`, `browser branch`, `direct` with concrete exception, or `blocked`; role boundary is architecture or impact only; name sandbox files, memory/docs touched, and external-risk assumptions.
+  - Implementation: `direct` for Master Agent main-worktree writes or `isolated patch` when a governed isolated workspace exists; role boundary is implementation only; implementation specialists must not expand requirements, review their own output, or touch memory/git/release state.
+  - Short-loop validation: `browser branch`, `CLI branch`, `evidence branch`, `direct` with concrete hot-path exception, `blocked`, or `not-applicable` with reason; role boundary is test only.
+  - Review and completion: `not-applicable` for production acceptance, with promotion route to `/03_build`; role boundary is review/completion only and cannot be performed by the implementation specialist for the same deliverable.
+- Record sandbox boundary, allowed change scope, discard conditions, promotion criteria, and whether any evidence-oriented station was skipped. All-direct experiment boards require concrete direct exceptions and cannot claim team collaboration.
 
 ## 1. Execution (直接執行)
 

@@ -18,26 +18,32 @@
 |---|---|---|
 | Antigravity | 優先使用瀏覽器代理、截圖、錄影、視覺產物、IDE 工作流與終端證據 | 不把 Claude 鉤子或 Codex 原生子代理語法寫成 Antigravity 指令 |
 | Claude | 優先使用計畫模式、子代理、權限、鉤子、檢查點、批次讀取與非互動命令證據 | 不把 Claude 鉤子視為其他平台可用能力 |
-| Codex | 優先使用技能漸進載入、沙盒/審批轉錄、團隊站點允許的子代理、瀏覽器、終端、MCP 與背景任務證據 | 子代理只在總監明確要求、工作流站點允許或專案代理已配置時啟動 |
+| Codex | 優先使用技能漸進載入、沙盒/審批轉錄、隊長制要求的唯讀證據分支、隔離補丁分支、瀏覽器、終端、MCP 與背景任務證據 | 子代理不可直接改主工作區或裁決；若站點要求的證據或隔離補丁分支不可用，必須標示未驗證、阻塞或具體主線直做例外 |
 
 ## Workflow Matrix
 
-## Programming Team Governance Matrix
+## Captain-Led Programming Team Governance Matrix
 
-Coding-related workflows must build a team-station board before implementation, repair, debugging, testing, audit, experiment writes, commit preparation, handoff, or skill creation work. The board is a governance trace, not a size label. Every station must separate applicability from execution mode; applicable stations must resolve to direct, delegated, or blocked, and non-applicable stations must state why.
+Coding-related workflows automatically enter captain-led mode before implementation, repair, debugging, testing, audit, experiment writes, commit preparation, handoff, or skill creation work. Explicit workflow commands are shortcuts, not prerequisites. The captain builds a team-station board before planning, execution, validation, review, or completion.
 
-| 站點 | 適用工作 | 最低證據 | 不可委派 |
-|---|---|---|---|
-| 需求回放 | 02、03、04、08、12 及任何需求不明的編程任務 | Goal, non-goals, constraints, assumptions, success criteria | 最終需求邊界與 Director 溝通 |
-| 反證 | 02、03、04、07、08、12 | Wrong-assumption search, missing-risk list, rejected or accepted concern | 最終計畫裁決 |
-| 影響面 | 03、04、07、08、09、12 | Files, memory cards, docs, sync paths, compatibility and regression surface | Scope approval and source writes |
-| 計畫授權 | 02、03、04、09、12 | Review state, acceptance matrix, GO boundary | GO interpretation |
-| 實作 | 03、04、12 and Antigravity execute stages | Approved file list, security gate, dirty-tree protection | v1 does not delegate main-worktree writes |
-| 短迴圈驗證 | 03、04、06、07、08 | Test output, real-path attempt, blocked evidence path | Completion claim |
-| 審查 | 02、03、04、08、09、10、12 | Review purpose, lifecycle state, accepted risk, blockers | Final review lifecycle status |
-| 收尾 | 03、04、09、10、11、12 | Docs, memory, drift audit, sync evidence, unresolved items | memory_commit, commit, push, release, deployment |
+The board is a governance trace, not a size label. Every station must separate applicability from execution mode; applicable stations must resolve to `direct`, `evidence branch`, `browser branch`, `CLI branch`, `MCP direct`, `isolated patch`, `blocked`, or `not-applicable`. Every applicable station must also name the evidence owner, role boundary, completion condition, and any direct exception.
 
-Evidence branches may support the board only when the station is read-only, independently bounded, and useful while the main thread continues non-overlapping work. Missing station evidence must be reported as 未驗證 or 阻塞, not silently downgraded.
+Evidence-oriented stations default to team evidence. When two or more evidence-oriented stations are applicable, at least one independent evidence path must run unless every skipped branch carries a concrete direct exception and replacement evidence. All-direct evidence boards are invalid without those exceptions.
+
+Role boundaries are part of the evidence contract. A specialist may not both implement and review the same deliverable. If independent role separation cannot be produced, mark the station `accepted-risk`, `unverified`, or `blocked`.
+
+| 站點 | 適用工作 | 預設執行模式 | 最低證據 | 不可委派 |
+|---|---|---|---|---|
+| 需求回放 | 02、03、04、08、12 及任何需求不明的編程任務 | `direct`; 矛盾檢查可用 `evidence branch` | Goal, non-goals, constraints, assumptions, success criteria | 最終需求邊界與 Director 溝通 |
+| 反證 | 02、03、04、07、08、12 | `evidence branch` unless direct exception | Wrong-assumption search, missing-risk list, rejected or accepted concern | 最終計畫裁決 |
+| 影響面 | 03、04、07、08、09、12 | `evidence branch`、`CLI branch` 或 `MCP direct` | Files, memory cards, docs, sync paths, compatibility and regression surface | Scope approval and source writes |
+| 計畫授權 | 02、03、04、09、12 | `direct` | Review state, acceptance matrix, GO boundary | GO interpretation |
+| 實作 | 03、04、12 and Antigravity execute stages | `direct` for captain main-worktree writes; `isolated patch` when a governed isolated workspace exists | Approved file list, security gate, dirty-tree protection, patch packet when delegated | Specialists do not write the main worktree directly |
+| 短迴圈驗證 | 03、04、06、07、08 | `browser branch`、`CLI branch`、`evidence branch` 或 hot-path `direct` exception | Test output, real-path attempt, blocked evidence path | Completion claim |
+| 審查 | 02、03、04、08、09、10、12 | `evidence branch` unless direct exception | Review purpose, lifecycle state, accepted risk, blockers | Final review lifecycle status |
+| 收尾 | 03、04、09、10、11、12 | `evidence branch` for drift/docs checks; `direct` for memory/git/release ownership | Docs, memory, drift audit, sync evidence, unresolved items | memory_commit, commit, push, release, deployment |
+
+Evidence branches may support the board when the station is read-only, independently bounded, and useful as a separate evidence packet; the main thread may wait for the packet when the station is required. Isolated patch branches may support implementation only when the platform provides a governed isolated workspace and the captain can inspect and integrate the patch. Missing station evidence or isolation must be reported as 未驗證 or 阻塞, not silently downgraded.
 
 ## Change Intent Classification Matrix
 

@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 一般討論、探索、實驗、濃縮與測試指令。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-06-27T20:37:14+08:00'
+last_updated: '2026-06-28T01:14:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-27T19:53:01+08:00'
+last_verified: '2026-06-28T01:14:16+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 6
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core.support.commands-general — Claude General Commands Memory
 
 ## Current Truth
+- Claude chat and explore now route coding intent into captain-led mode, and experiment uses a minimum Captain Team Board with role boundary and isolated patch conditions.
 - Claude experiment and test commands now load programming-team-governance and require applicability/execution-mode Programming Team Boards for coding-related validation and completion stations.
+- Claude experiment and test commands now require evidence owner, direct exception, completion condition, and all-direct fake-team guards in Programming Team Boards.
 - Claude condense command now uses the MCP memory evidence contract to separate source memory from project context evidence.
 - This child card owns Claude shared command gates and general command entries.
 - General commands must stay aligned with shared workflow semantics and Claude permission behavior.
@@ -47,6 +48,8 @@ metadata:
 - Do not write source or memory from read-only command flows without the appropriate gate.
 
 ## Cycle Events
+- 08: Upgraded Claude 00/01/03-1 general commands for automatic captain trigger and experiment minimum governance.
+- 07: Hardened Claude experiment and test command boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.
 - 06: Added applicability/execution-mode Programming Team Board reporting to Claude experiment and test commands and synced deployed command copies.
 - 05: Added detail observation and real-information priority to the Claude test command evidence branch.
 - 04: Added MCP memory evidence contract reference to the Claude condense command.
@@ -71,6 +74,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Claude 一般指令與共用閘門。
+- 實驗與測試指令需宣告最小團隊站點與主線直做例外。
 - 測試指令要依介面型態選擇證據。
 
 ## Tracked Files

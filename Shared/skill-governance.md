@@ -53,10 +53,15 @@ may add a load gate pointing to the shared skill, but should not duplicate the
 full playbook.
 
 Coding workflows should route through `programming-team-governance` when they
-touch source, tests, debugging, audit, commit preparation, handoff, or skill
-creation. The shared skill defines the station board and read-only evidence
-branch boundary; platform workflow entries only load it and adapt the station
-evidence to their native tools.
+touch source, tests, debugging, audit, commit preparation, handoff, skill
+creation, workflow rules, source memory, or governance decisions. The shared
+skill defines the captain trigger gate, captain team board, role exclusivity,
+station board, read-only evidence branch boundary, isolated patch boundary,
+direct exception contract, evidence owner field, completion condition, and
+fake-team guard; platform workflow entries only load it and adapt the station
+evidence or patch output to their native tools. Platform entries must not
+weaken the shared contract by replacing evidence-oriented stations with
+generic main-thread handling.
 
 ## Doctor Expectations
 
@@ -70,7 +75,14 @@ Skill quality checks should treat trigger quality as a first-class signal:
 - Workflow / command entries must describe when the workflow should start, not
   only what it does internally.
 - Coding-related workflow / command entries must expose the team-station board
-  requirement through a load gate or equivalent grounding section.
+  requirement through a load gate or equivalent grounding section, including
+  captain trigger, evidence owner, role boundary, direct exception, completion
+  condition, and the rule that all-direct evidence boards are invalid without
+  concrete exceptions.
+- Coding-related workflow / command entries must not imply that the Director
+  must manually name a workflow before captain-led governance starts.
+- Coding-related workflow / command entries must not allow implementation
+  specialists to review their own work or write the main worktree directly.
 - High-risk release, deployment, or mutation skills must name their public
   trigger terms explicitly.
 - Workflow and operational skills should not mix responsibilities.

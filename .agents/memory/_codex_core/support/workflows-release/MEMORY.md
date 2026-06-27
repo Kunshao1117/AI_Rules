@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 提交、巡檢與技能鍛造工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-27T20:37:48+08:00'
+last_updated: '2026-06-28T01:14:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-27T19:53:01+08:00'
+last_verified: '2026-06-28T01:14:16+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 6
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core.support.workflows-release — Codex Release and Governance Workflow Memory
 
 ## Current Truth
+- Codex commit, routine, and skill-forge workflows keep git, memory, and release mutations on the captain while evidence stations use role-bound team branches.
 - Codex commit, routine, and skill-forge workflows now load programming-team-governance with applicability/execution-mode station reporting while keeping git, memory, and release mutations on the main thread.
+- Codex commit, routine, handoff, and skill-forge workflows now require evidence owner, direct exception, completion condition, and all-direct fake-team guards while keeping git, memory, and release mutations on the main thread.
 - Codex commit, routine, and skill-forge workflows now use the MCP Memory Evidence Matrix for preflight, read-only routine, and skill attribution evidence.
 - This child card owns Codex commit, routine, and skill-forge workflow skills.
 - Commit workflow must verify memory state and git scope before external git state changes.
@@ -47,6 +48,8 @@ metadata:
 - Do not let automation-safe routine inspection perform writes.
 
 ## Cycle Events
+- 08: Aligned Codex release-side workflows with captain-led evidence stations and mutation ownership.
+- 07: Hardened Codex release-side workflow boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.
 - 06: Hardened Codex commit, routine, and skill-forge team-station reporting with applicability/execution-mode fields.
 - 05: Added review-state preflight and review governance coverage to Codex commit and routine workflows.
 - 04: Added MCP memory evidence contract references to Codex commit, routine, and skill-forge workflows.
@@ -71,6 +74,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Codex 提交、巡檢與技能鍛造工作流。
+- 提交、巡檢、交接與技能鍛造入口需保留團隊證據站點，但外部狀態仍由主線裁決。
 - 提交、推送與發布仍需要明確授權。
 
 ## Tracked Files

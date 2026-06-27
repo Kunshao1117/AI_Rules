@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-16T02:17:00+08:00'
+last_updated: '2026-06-28T01:14:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-16T02:14:11+08:00'
+last_verified: '2026-06-28T01:14:16+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 2
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,9 +35,11 @@ metadata:
 # _shared.ops-skills.testing — Testing Skills Memory
 
 ## Current Truth
+- Browser and validation evidence remain specialist evidence stations under captain-led boards; required evidence can stay direct only with a recorded direct exception.
 - This child card owns Shared testing, browser evidence, performance, accessibility, and regression strategy skills.
 - Testing facts must stay tied to project surface type and current tool availability.
 - Browser and test automation skills now require detail-observation notes for visual validation.
+- Browser-testing governance now prevents required browser evidence branches from silently downgrading to main-thread browser tooling without a concrete direct exception.
 - Visual evidence must prefer real pages, real data, real account state, current responses/logs, or equivalent real paths before fake-data fallback.
 - Single-run test output belongs in task reports or logs unless it becomes a stable validation route.
 
@@ -46,6 +48,8 @@ metadata:
 - Use project-surface evidence requirements from the workflow matrix before declaring behavior verified.
 
 ## Cycle Events
+- 04: Aligned testing and browser evidence memory with captain-led evidence station rules.
+- 03: Added browser-branch direct-exception boundaries for team-first evidence station governance.
 - 02: Added visual detail observation and real-information priority to browser and test automation evidence strategy.
 - 01: Split testing and evidence strategy ownership out of the broad Shared operational skills card.
 
@@ -66,6 +70,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Shared 測試、瀏覽器、效能、無障礙與回歸策略。
+- 瀏覽器證據站點不可靜默退回主線工具，需標記阻塞、未驗證或具體直做例外。
 - 測試輸出不是永久記憶，除非形成穩定驗證路徑。
 
 ## Tracked Files

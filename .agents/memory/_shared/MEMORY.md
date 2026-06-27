@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-06-27T20:36:42+08:00'
+last_updated: '2026-06-28T01:14:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-27T19:53:01+08:00'
+last_verified: '2026-06-28T01:14:16+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 14
+cycle_event_count: 16
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,20 +31,19 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared — Shared Governance Memory
 
 ## Current Truth
+- Shared governance now defines Captain Trigger Gate, Captain Team Board, role exclusivity, isolated patch, and 00/01 route semantics as the default coding collaboration model.
 - Memory MCP tool contract defines project-local migration tools, read-only MCP evidence, mutating memory gates, and Gateway execution rules for workflows.
 - Shared governance references deployed to `.agents/shared/` include platform/workflow matrices, skill governance, subagent policy, and MCP opt-in snippets.
 - `Shared/project-tools/` is the source for restricted project-local tools deployed to downstream `.agents/tools/`; Traditional Chinese PowerShell tools use UTF-8 BOM for Windows PowerShell 5.1.
-- Memory migration guidance requires downstream agents to use the project-local tool before falling back to the framework source manager or extension.
 - `Shared/` is the single source for 43 operational skills and cross-platform governance assets deployed into Antigravity, Claude, and Codex.
 - Memory governance now uses schema v2 with Current Truth, Active Constraints, Cycle Events, Archive Index, and 中文摘要.
-- Memory cards must avoid unbounded repair logs; split warnings are advisory unless hard limits, mixed ownership, or maintenance difficulty require a split.
 - Project context lives in `.agents/context/`, is not source memory, and uses separate approval.
 - Shared subagent policy is vendor-neutral; platform-specific tool wording belongs in platform adapters.
 - Programming team governance is the Shared source for fixed coding team stations; subagent policy and matrices route coding tasks through applicability/execution-mode stations and special-route-first evidence decisions.
+- Shared programming governance now defaults evidence-oriented coding stations to team evidence branches; all-direct boards require concrete direct exceptions and replacement evidence.
 - Audit engine now defines depth modes, inventory denominators, surface recipes, coverage states, and evidence gates for deep 08 audits.
 - Workflow matrix now defines change intent classification and visual evidence governance for patch, repair, refinement, refactor, detail observation, and real-information priority.
 - Workflow matrix now defines intent alignment governance for requirement playback, neutral challenge, decision trace, requirement trace, and drift audit in 02/03 workflows.
@@ -57,6 +56,8 @@ metadata:
 - Treat cards above 8 tracked files as split candidates, not automatic blockers.
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
 ## Cycle Events
+- 16: Upgraded Shared coding governance from Full B stations to captain-led team collaboration with role-exclusive specialists, isolated patch packets, and automatic coding-intent triggers.
+- 15: Converted Full B governance from optional delegation to team-first evidence stations with direct-exception and fake-team guards.
 - 14: Hardened Full B team governance with applicability/execution-mode station boards, special-route-first delegation, experiment minimum governance, policy sync, and shared skill count 43.
 - 13: Compressed memory-ops with extra token margin after managed cache CRLF checkout exposed line-ending-sensitive estimates.
 - 12: Added engineering review governance to the workflow matrix, skill routing index, and shared subagent review-state boundary; shared skill count is 42.
@@ -64,8 +65,6 @@ metadata:
 - 10: Compressed memory-ops wording under the Shared skill quality token limit without changing memory governance semantics.
 - 09: Added change intent and visual evidence governance to the shared workflow matrix and skill routing index.
 - 08: Added MCP memory tool contract and workflow-matrix evidence requirements for 03/04/05/08/09/10/11/12.
-- 07: Preserved Traditional Chinese memory migration tool output by storing project-local PowerShell tools with UTF-8 BOM for Windows PowerShell 5.1 compatibility.
-- 06: Added Shared project-local memory migration tool source and downstream-first migration guidance.
 ## Archive Index
 - archive-001.md — Legacy _shared card preserved before schema v2 compaction on 2026-06-04.
 - archive-002.md: Pre-standardization active card snapshot created during MEMORY.md migration.
@@ -80,6 +79,7 @@ metadata:
 - No unresolved conflict recorded during the migration pass; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
 - Shared 是 43 套共用技能與政策的唯一來源。
+- 編程治理已改為團隊協作優先，證據型站點不能無理由全部退回主線直做。
 - 記憶治理已改成新版主卡加歸檔模型。
 - 專案脈絡與原始碼記憶分層管理。
 - 超過 8 個追蹤檔是拆卡建議，不是自動阻擋。

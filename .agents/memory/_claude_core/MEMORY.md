@@ -4,19 +4,19 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-27T20:37:03+08:00'
+last_updated: '2026-06-28T01:14:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-27T19:53:01+08:00'
+last_verified: '2026-06-28T01:14:16+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 11
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,10 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
+- Claude core rules and README now describe the Master Agent as engineering captain; coding-related commands automatically enter captain-led mode and explicit command names are shortcuts.
 - Claude build, fix, and handoff commands now reference the shared MCP memory evidence contract before relying on memory state.
 - Claude commands read workflow grounding and platform capability matrices from deployed `.agents/shared/` paths.
 - Claude Edition is the Claude Code adapter for the AI_Rules governance framework.
@@ -52,6 +52,7 @@ metadata:
 - Claude blueprint and build commands now load the shared intent alignment gate for requirement playback, neutral challenge, traceability, and drift audit.
 - Claude blueprint, build, fix, audit, commit, and routine command entries now load or reference quality-review-governance for review purpose, review state, accepted risk, blockers, and evidence-branch boundaries.
 - Claude coding commands now route through programming-team-governance stations with separate applicability and execution-mode reporting before planning, execution, validation, review, or completion.
+- Claude core identity now uses main-agent accountability: the Master Agent owns writes, gates, memory, git, release, and final acceptance while evidence-oriented stations default to read-only team evidence.
 - Claude shared skill count is 43.
 ## Active Constraints
 - Do not restore `.claude/agents/memory/` as a storage path.
@@ -59,6 +60,8 @@ metadata:
 - Keep Claude source ownership out of the deprecated historical card.
 - This card still needs a later child-card split if all Claude commands are actively edited again.
 ## Cycle Events
+- 13: Upgraded Claude core and documentation to captain-led team coding accountability.
+- 12: Replaced Claude direct-execution wording with main-agent accountability and team-first evidence station requirements.
 - 11: Hardened Claude programming team governance in core rules, coding commands, deployed commands, and README with applicability/execution-mode station boards and policy sync.
 - 10: Added Claude review-governance coverage to core rules, blueprint/build/fix commands, and README skill counts.
 - 09: Added Claude intent-alignment requirements to blueprint/build commands and refreshed Claude skill-count documentation.
@@ -84,6 +87,7 @@ metadata:
 - No unresolved conflict recorded during the migration pass; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
 - Claude Edition 的 active source owner 是本卡。
+- Claude 指令流程已改為團隊協作優先，主代理保留寫檔與裁決責任。
 - Claude 記憶路徑固定使用 `.agents/memory/`。
 - 舊 Claude 規範卡已降為歷史索引。
 - 除錯與交接流程已讀新版記憶欄位。

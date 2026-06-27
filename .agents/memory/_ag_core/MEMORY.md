@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-27T20:37:06+08:00'
+last_updated: '2026-06-28T01:14:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-27T19:53:01+08:00'
+last_verified: '2026-06-28T01:14:16+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 11
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,10 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core — Antigravity Memory
 
 ## Current Truth
+- Antigravity core rules and README now describe the Master Agent as engineering captain; coding-related workflows automatically enter captain-led mode and explicit workflow names are shortcuts.
 - Antigravity fix and condense workflows now reference the shared MCP memory evidence contract before relying on memory state.
 - Antigravity workflows read workflow grounding and platform capability matrices from deployed `.agents/shared/` paths.
 - Antigravity is the Gemini-facing platform adapter for the AI_Rules governance framework.
@@ -52,6 +52,7 @@ metadata:
 - Antigravity blueprint workflow and documentation now load the shared intent alignment gate for requirement playback, neutral challenge, traceability, and drift audit.
 - Antigravity blueprint, build, fix, audit, commit, and routine workflow entries now load or reference quality-review-governance for review purpose, review state, accepted risk, blockers, and evidence-branch boundaries.
 - Antigravity coding workflows now route through programming-team-governance stations with separate applicability and execution-mode reporting before planning, execution, validation, review, or completion.
+- Antigravity core identity now uses Master-Agent accountability: the Master Agent owns writes, gates, memory, git, release, and final acceptance while evidence-oriented stations default to read-only team evidence.
 - Antigravity shared skill count is 43.
 ## Active Constraints
 - Do not duplicate root system ownership in this card.
@@ -59,6 +60,8 @@ metadata:
 - Keep Antigravity-specific workflow facts here and shared operational details in Shared skills.
 - This card still needs a later child-card split if all Antigravity workflows are actively edited again.
 ## Cycle Events
+- 13: Upgraded Antigravity core and documentation to captain-led team coding accountability.
+- 12: Replaced Antigravity direct-execution wording with Master-Agent accountability and team-first evidence station requirements.
 - 11: Hardened Antigravity programming team governance in core rules, coding workflows, deployed workflows, and README with applicability/execution-mode station boards and policy sync.
 - 10: Added Antigravity review-governance coverage to core rules, blueprint/fix workflows, and README skill counts.
 - 09: Added Antigravity blueprint intent-alignment requirements and refreshed Antigravity skill-count documentation.
@@ -84,6 +87,7 @@ metadata:
 - No unresolved conflict recorded during the migration pass; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
 - Antigravity 是 Gemini 平台適配層。
+- Antigravity 工作流已改為團隊協作優先，主代理保留寫檔與裁決責任。
 - 記憶治理已對齊新版壓縮模型。
 - 本卡不再追蹤根層系統卡或地圖卡來源。
 - 後續仍可拆出工作流子卡。

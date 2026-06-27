@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-27T20:37:10+08:00'
+last_updated: '2026-06-28T01:14:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-27T19:53:01+08:00'
+last_verified: '2026-06-28T01:14:16+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 6
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core.support.workflows-general — Codex General Workflow Memory
 
 ## Current Truth
+- Codex chat and explore now route coding intent into captain-led mode, and experiment uses a minimum Captain Team Board with role boundary and isolated patch conditions.
 - Codex experiment and test workflows now load programming-team-governance and require applicability/execution-mode Programming Team Boards for coding-related validation and completion stations.
+- Codex experiment and test workflows now require evidence owner, direct exception, completion condition, and all-direct fake-team guards in Programming Team Boards.
 - Codex condense workflow now uses the MCP memory evidence contract to separate source memory from project context evidence.
 - This child card owns Codex shared gates and general workflow skills.
 - Workflow skills must preserve Codex progressive loading, Director gates, and Traditional Chinese trigger language.
@@ -47,6 +48,8 @@ metadata:
 - Do not write source or memory from read-only flows without the appropriate GO gate.
 
 ## Cycle Events
+- 08: Upgraded Codex 00/01/03-1 general workflows for automatic captain trigger and experiment minimum governance.
+- 07: Hardened Codex experiment and test workflow boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.
 - 06: Added applicability/execution-mode Programming Team Board reporting to Codex experiment and test workflows and synced deployed skill copies.
 - 05: Added detail observation and real-information priority to the Codex test workflow evidence branch.
 - 04: Added MCP memory evidence contract reference to the Codex condense workflow.
@@ -71,6 +74,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Codex 一般工作流技能與共用閘門。
+- 實驗與測試入口保留快速試錯，但必須宣告最小團隊站點與主線直做例外。
 - 測試證據要依介面型態選擇。
 
 ## Tracked Files

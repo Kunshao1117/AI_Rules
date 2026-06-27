@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 紀錄、巡檢與技能鍛造指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-27T20:37:53+08:00'
+last_updated: '2026-06-28T01:14:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-27T19:53:01+08:00'
+last_verified: '2026-06-28T01:14:16+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 6
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core.support.commands-release — Claude Release and Governance Commands Memory
 
 ## Current Truth
+- Claude commit, routine, and skill-forge commands keep git, memory, and release mutations on the captain while evidence stations use role-bound team branches.
 - Claude commit, routine, and skill-forge commands now load programming-team-governance with applicability/execution-mode station reporting while keeping git, memory, and release mutations on the main thread.
+- Claude commit, routine, handoff, and skill-forge commands now require evidence owner, direct exception, completion condition, and all-direct fake-team guards while keeping git, memory, and release mutations on the main thread.
 - Claude commit, routine, and skill-forge commands now use the MCP Memory Evidence Matrix for preflight, read-only routine, and skill attribution evidence.
 - This child card owns Claude commit, routine, and skill-forge command entries.
 - Commit commands must respect Director gates for git and external state changes.
@@ -47,6 +48,8 @@ metadata:
 - Do not let routine inspection mutate source or memory without a write gate.
 
 ## Cycle Events
+- 08: Aligned Claude release-side commands with captain-led evidence stations and mutation ownership.
+- 07: Hardened Claude release-side command boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.
 - 06: Hardened Claude commit, routine, and skill-forge team-station reporting with applicability/execution-mode fields.
 - 05: Added review-state preflight and review governance coverage to Claude commit and routine commands.
 - 04: Added MCP memory evidence contract references to Claude commit, routine, and skill-forge commands.
@@ -71,6 +74,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Claude 紀錄、巡檢與技能鍛造指令。
+- 提交、巡檢、交接與技能鍛造指令需保留團隊證據站點，但外部狀態仍由主線裁決。
 - 提交與發布仍必須有明確授權。
 
 ## Tracked Files

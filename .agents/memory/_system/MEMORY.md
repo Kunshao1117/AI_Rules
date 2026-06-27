@@ -4,19 +4,19 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-27T21:12:28+08:00'
+last_updated: '2026-06-28T01:14:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-27T19:53:01+08:00'
+last_verified: '2026-06-28T01:14:16+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 17
+cycle_event_count: 19
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _system — Repository Governance Memory
 
 ## Current Truth
+- Root documentation and changelog now describe captain-led team coding mode with automatic triggers, role boundaries, isolated patch packets, and Doctor semantic coverage.
 - Root documentation and changelog now describe governed Full B programming team governance with applicability/execution-mode station boards, experiment minimum governance, Doctor coverage, and refreshed 43/60 skill counts.
+- Root documentation and changelog now describe the team-first evidence model: main-agent accountability for writes and gates, evidence branches by default for evidence-oriented stations, and all-direct boards rejected without concrete exceptions.
 - Root documentation describes shared matrix source paths and their deployed `.agents/shared/` paths.
 - Root documentation describes downstream project-local tools under `.agents/tools/` and labels source-manager commands as framework-source-only paths.
 - Changelog includes a dedicated AI Rules Manager v0.1.19 section for token-stable Doctor checks, project skill discovery repair, and shared skill margin.
@@ -55,6 +56,8 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 19: Documented captain-led team coding mode across root README and CHANGELOG.
+- 18: Documented team-first Full B governance, fake-team guard, direct-exception contract, and core accountability wording across root docs and changelog.
 - 17: Recorded the Codex core skill-count wording fix in the changelog.
 - 16: Documented Full B governance hardening: applicability/execution-mode station boards, experiment minimum governance, special-route-first delegation, Doctor coverage, and refreshed 43/60 skill counts.
 - 15: Documented AI Rules Manager v0.1.19 for Doctor token stability and project skill discovery repair.
@@ -92,6 +95,7 @@ metadata:
 
 ## 中文摘要
 - AI_Rules 是三平台治理框架核心庫。
+- 根層文件已把編程流程改成團隊協作優先，而不是主線單人處理加可選委派。
 - 根層 Git 與發布操作以 `D:\AI_Rules` 為基準。
 - PowerShell 腳本已拆到 `_system.scripts` 子卡。
 

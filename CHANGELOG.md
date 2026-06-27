@@ -2,18 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-28] 隊長制編程團隊協作模式
+
+### feat
+- **Captain trigger gate** — 編程、修改、除錯、測試、審查、記憶、提交、發布或治理影響任務會依語意自動進入隊長制，不再要求總監手動指定工作流或要求子代理。
+- **Captain team board** — 團隊站點板升級為隊長任務板，每站必須標示是否適用、執行模式、證據負責人、角色邊界、主線直做例外與完成條件。
+- **Role exclusivity** — 新增嚴格角色互斥：提出需求者不實作，架構者不偷改需求，實作者不能審查自己的交付物，審查者不能同時實作同一交付物。
+- **Isolated patch branch** — 子代理實作不再只能是唯讀採證；若平台具備受治理隔離區，實作隊員可產出 patch packet，但主工作區寫入、整合、驗證、記憶、提交、推送與發布仍由隊長負責。
+- **00/01 trigger routing** — 對話與探勘入口新增編程意圖轉向規則；普通自然語言要求只要涉及編程，就轉入隊長制編程模式。
+
+### fix
+- **Experiment boundary** — 三平台實驗入口保留快速試錯，但最小治理宣告改為 Captain Team Board，並加入角色邊界、隔離補丁條件、不能自我審查與不能宣稱團隊協作的全主線例外。
+- **Doctor semantic coverage** — 巡檢模組改抓隊長觸發、角色邊界、隔離補丁、自我審查、00/01 自動轉向與實驗邊界，避免舊版只檢查 Full B 字串造成假綠燈。
+- **Documentation alignment** — 根文件與三平台文件改以隊長制團隊協作描述編程治理，明確區分主代理整合責任、唯讀證據分支與隔離補丁分支。
+
 ## [2026-06-27] 受治理 Full B 編程團隊治理
 
 ### feat
 - **Programming team governance** — 新增編程團隊治理共用技能，將開發、修改、修復、測試、除錯、健檢、提交、交接與技能鍛造固定拆成需求回放、反證、影響面、計畫授權、實作、短迴圈、審查與收尾站點。
 - **Station-gated subagents** — 子代理政策從「必要時才用」改為「編程任務先建立團隊站點板，再判斷唯讀 evidence branch」，並明確禁止委派寫檔、提交、推送、發布、外部狀態與記憶寫入。
+- **Team-first evidence stations** — 反證、影響面、短迴圈驗證、審查與收尾稽核預設需要獨立證據分支；全主線直做必須逐站留下主線直做例外與替代證據。
 - **Workflow coverage** — Codex workflow skills、Claude commands 與 Antigravity workflows 的編程入口都接入團隊站點板，讓計畫、執行、驗證、審查與收尾不再只依賴大小型或必要時判斷。
 - **Doctor coverage** — 治理巡檢新增編程團隊治理覆蓋檢查，會掃描共用技能、子代理政策、委派策略、能力矩陣、工作流證據矩陣、三平台入口與部署後副本 hash。
 
 ### fix
 - **Station state hardening** — 團隊站點板改為分離「是否適用」與「執行模式」，禁止只用啟用中、必要時或大小型判斷作為最終結果。
-- **Delegation route order** — 委派策略先判斷瀏覽器、CLI 與 MCP 特殊證據路徑，再落到一般唯讀 evidence branch，避免專職隊員路由被泛化。
-- **Experiment minimum governance** — 三平台實驗入口保留快速試錯，但必須先列最小團隊站點、沙盒邊界、允許改動範圍、丟棄條件與升級條件。
+- **Delegation route order** — 委派策略先判斷主線不可委派責任、憑證與外部狀態邊界，再判斷瀏覽器、CLI 與 MCP 特殊證據路徑，最後才落到一般唯讀 evidence branch。
+- **Core accountability wording** — 三平台核心規則從「主代理處理所有事情」改為「主代理負責整合、寫入、審查狀態、記憶與交付」，避免壓過團隊站點板。
+- **Review and browser branch boundaries** — 審查治理與瀏覽器測試技能不再把證據分支描述為可選 fallback；必要分支不可用時必須標示未驗證、阻塞或具體主線直做例外。
+- **Experiment minimum governance** — 三平台實驗入口保留快速試錯，但必須先列最小團隊站點、沙盒邊界、允許改動範圍、丟棄條件、升級條件、證據負責人與主線直做例外。
 - **Codex skill count wording** — 修正 Codex 核心規範中的共用技能數字，讓來源規範與部署後 43/60 技能統計一致。
 
 ### docs

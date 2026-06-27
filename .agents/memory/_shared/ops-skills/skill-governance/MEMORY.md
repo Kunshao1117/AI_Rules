@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-27T20:36:38+08:00'
+last_updated: '2026-06-28T01:23:46+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-27T19:53:01+08:00'
+last_verified: '2026-06-28T01:23:46+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,15 +31,16 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared.ops-skills.skill-governance — Skill Governance Memory
 
 ## Current Truth
+- Programming team governance and delegation strategy now use captain trigger, role dispatch, isolated patch boundary, role exclusivity, and no-self-review rules instead of optional delegation.
 - Shared skill forging is framework-source only unless the Director explicitly supplies the AI_Rules source root; downstream projects default to project-derived skills.
 - This child card owns Shared delegation strategy and skill-factory governance files.
 - Skill creation and delegation rules must stay compatible with Codex native skill loading and cross-platform governance.
 - Delegation strategy now checks main-thread, direct, blocked, browser/UI, CLI, and MCP-specific routes before any general read-only evidence branch.
 - Programming team governance defines fixed coding stations with separate Applicability and Execution mode fields; a station cannot complete as merely active or applicable.
+- Programming team governance now treats evidence-oriented stations as team-first branches and requires concrete direct exceptions when an applicable evidence station stays on the main thread.
 - Parent and child card relations are navigation only unless a real staleness dependency is documented.
 
 ## Active Constraints
@@ -47,6 +48,9 @@ metadata:
 - Use the tracked references as the source of truth for skill formatting and delegation procedures.
 
 ## Cycle Events
+- 07: Re-verified programming-team-governance after deployment audit compression and kept captain-led governance truth current.
+- 06: Upgraded programming-team-governance and delegation-strategy to captain-led routing with isolated patch and strict role separation.
+- 05: Added team-first evidence station defaults, direct-exception contracts, and fake-team guards to programming-team-governance and delegation-strategy.
 - 04: Hardened programming-team-governance station state model and delegation order so applicability is separate from execution mode and special routes precede general evidence branches.
 - 03: Added review-evidence boundary to delegation strategy so evidence branches cannot become final quality approval.
 - 02: Clarified downstream project boundaries for delegation policy, memory migration, and Shared skill forging.
@@ -69,6 +73,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責委派策略與技能工廠治理。
+- 委派策略已從可選分支改為團隊證據站點優先。
 - 技能模板與長規則仍保留在來源參考檔。
 
 ## Tracked Files

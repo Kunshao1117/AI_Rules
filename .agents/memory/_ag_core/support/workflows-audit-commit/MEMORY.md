@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 健檢與提交工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-27T20:37:43+08:00'
+last_updated: '2026-06-28T01:14:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-27T19:53:01+08:00'
+last_verified: '2026-06-28T01:14:16+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 8
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core.support.workflows-audit-commit — Antigravity Audit and Commit Workflow Memory
 
 ## Current Truth
+- Antigravity audit and commit workflows load captain-led governance with role boundary, isolated patch semantics, and no-self-review rules for audit and release-prep stations.
 - Antigravity audit and commit workflows now load programming-team-governance and report applicability/execution-mode team-station board status for coding-related audit or release-prep work.
+- Antigravity audit and commit workflows now require evidence owner, direct exception, completion condition, and all-direct fake-team guard reporting for team-station boards.
 - Antigravity audit, audit subflows, and commit scan workflows now use the MCP Memory Evidence Matrix while preserving read-only audit boundaries.
 - This child card owns Antigravity audit, audit subphase, and commit execution workflow entries.
 - Audit workflows use evidence status and project-surface routing rather than a fixed scan checklist.
@@ -50,6 +51,8 @@ metadata:
 - Do not commit, push, tag, or release without explicit Director approval.
 
 ## Cycle Events
+- 10: Aligned Antigravity audit and commit workflows with captain-led team board fields and mutation ownership.
+- 09: Hardened Antigravity audit and commit boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.
 - 08: Hardened Antigravity audit and commit team-station reporting with applicability/execution-mode fields and synced deployed workflow copies.
 - 07: Added review lifecycle mapping and review-state preflight to Antigravity audit and commit scan workflows.
 - 06: Added change intent, patch-stack, visual detail, and real-information evidence fields to the Antigravity audit entry.
@@ -75,6 +78,8 @@ metadata:
 - No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
 
 ## 中文摘要
+- 此子卡負責 Antigravity 健檢與提交相關工作流。
+- 健檢與提交入口需呈現團隊證據負責與全主線例外，不能只標示直做或委派。
 - 此子卡負責 Antigravity 健檢與提交相關工作流。
 - 缺證據不能當通過；Git 外部狀態仍需總監授權。
 

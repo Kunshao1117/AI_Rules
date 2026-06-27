@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-27T21:09:21+08:00'
+last_updated: '2026-06-28T01:27:51+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-27T19:53:01+08:00'
+last_verified: '2026-06-28T01:27:51+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 11
+cycle_event_count: 14
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,10 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
+- Codex core rules and README now describe the main agent as engineering captain; coding-related work automatically enters captain-led mode and explicit workflow names are shortcuts.
 - Codex build, fix, and handoff workflows now reference the shared MCP memory evidence contract before relying on memory state.
 - Codex workflow skills read workflow grounding and platform capability matrices from deployed `.agents/shared/` paths.
 - Codex Edition is the OpenAI Codex adapter for the AI_Rules governance framework.
@@ -43,6 +43,7 @@ metadata:
 - Codex output to the Director must follow the Traditional Chinese and Director-readable output contracts.
 - Codex must not claim automatic subagent use unless the workflow gate or Director explicitly requires it.
 - Codex coding workflows now route through programming-team-governance stations with separate applicability and execution-mode reporting before planning, execution, validation, review, or completion.
+- Codex core identity now uses main-agent accountability: the main agent owns writes, gates, memory, git, release, and final acceptance while evidence-oriented stations default to read-only team evidence.
 - Codex build now owns same-turn design-to-build contracts; blueprint is reserved for pure architecture, initialization, or major pivots.
 - Codex blueprint and build workflows now load the shared intent alignment gate for requirement playback, neutral challenge, traceability, and drift audit.
 - Codex blueprint, build, fix, audit, commit, and routine workflow entries now load or reference quality-review-governance for review purpose, review state, accepted risk, blockers, and minimum sufficient complexity.
@@ -53,6 +54,9 @@ metadata:
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 ## Cycle Events
+- 14: Compressed Codex build workflow governance wording and restored output-contract scan anchors while preserving captain-led mode requirements.
+- 13: Upgraded Codex core and documentation to captain-led team coding accountability.
+- 12: Replaced Codex direct-execution wording with main-agent accountability and team-first evidence station requirements.
 - 11: Corrected Codex core skill-count wording to 43 shared skills plus 17 workflow skills.
 - 10: Hardened Codex programming team governance in core rules, coding workflows, deployed skills, and README with applicability/execution-mode station boards and policy sync.
 - 09: Added Codex review-governance coverage to core rules, blueprint/build/fix workflows, and skill-count documentation.
@@ -73,6 +77,7 @@ metadata:
 ## 中文摘要
 - Codex 是 OpenAI Codex 平台適配層。
 - 工作流來源在 Codex 目錄，live 技能在 `.agents/skills/`。
+- Codex 編程工作流已改為團隊協作優先，主線保留寫檔與裁決責任。
 - 記憶讀取已對齊新版欄位。
 - 根層 README 不再由本卡追蹤。
 ## Tracked Files

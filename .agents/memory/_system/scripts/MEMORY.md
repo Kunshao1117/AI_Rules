@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-27T20:36:50+08:00'
+last_updated: '2026-06-28T01:14:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-27T19:53:01+08:00'
+last_verified: '2026-06-28T01:14:16+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 8
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,10 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _system.scripts — Repository Script Governance Memory
 
 ## Current Truth
+- Governance Doctor now checks Captain Trigger Gate, Captain Team Board, role boundary, isolated patch, no-self-review, 00/01 automatic routing, experiment boundaries, and source/deployed hash drift.
 - Codex workflow skill merge includes the `_shared` support directory so deployed workflows can inherit gates.
 - Project rule sync and platform deploy scripts copy restricted project-local tools from `Shared/project-tools/` into downstream `.agents/tools/`.
 - The source manager memory migration entrypoint delegates to the shared project-tool implementation so source-manager and downstream behavior stay aligned.
@@ -43,6 +43,7 @@ metadata:
 - This child card owns root PowerShell deployment, audit, memory migration, skill sync, and platform sync scripts.
 - Governance Doctor now includes review-governance coverage checks for the new quality-review skill, workflow matrix, subagent policy, deployed copies, and three-platform 02/03/04/08/09/10 entrypoints.
 - Governance Doctor now includes programming-team-governance coverage, active-only station guards, delegation order guards, experiment minimum-board checks, deployed shared skill/reference hash checks, and three-platform coding entrypoint checks.
+- Governance Doctor now checks team-first semantics, evidence owner fields, direct exceptions, all-direct fake-team guards, review evidence boundaries, and browser branch downgrade guards.
 - Skill quality scanning now normalizes line endings before estimating token length so managed cache checkouts and source checkouts report consistent results.
 - Project skill backfill now safely migrates physical `project-*` discovery skill directories into `.agents/project_skills/` or replaces exact duplicates before rebuilding discovery links.
 - Project skill backfill also treats single-file routing stubs that point at the canonical project skill source as safe discovery entries to replace with links.
@@ -55,6 +56,8 @@ metadata:
 - Do not use this card as a substitute for reading the current script implementation before edits.
 
 ## Cycle Events
+- 10: Extended Audit.psm1 programming-team coverage for captain-led routing and role-exclusivity semantics.
+- 09: Extended Audit.psm1 programming-team coverage for team-first evidence defaults, direct exceptions, all-direct guards, review governance, and browser branch boundaries.
 - 08: Added programming-team-governance coverage, negative semantic checks, experiment minimum-governance checks, and deployed hash drift checks to Audit.psm1.
 - 07: Treated project skill routing stubs as safe replaceable discovery entries while keeping divergent content blocked.
 - 06: Made skill quality token estimates line-ending stable and added safe repair for physical project skill discovery entries.
@@ -81,6 +84,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責根層 PowerShell 腳本。
+- Doctor 已能抓出假團隊、缺主線直做例外、審查證據降級與瀏覽器分支靜默降級。
 - 根層父卡保留專案身份、文件與授權。
 - 腳本修改前仍必須讀取實際來源。
 

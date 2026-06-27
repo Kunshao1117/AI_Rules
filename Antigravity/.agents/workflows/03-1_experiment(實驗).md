@@ -49,7 +49,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 03-1 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Keep spikes isolated. Record the minimum Programming Team Board, sandbox boundary, allowed change scope, discard conditions, promotion criteria, and the warning that experiment output is not production quality.
+- Workflow-specific grounding: Keep spikes isolated. Record the minimum Captain Team Board, sandbox boundary, allowed change scope, discard conditions, promotion criteria, role boundary, and the warning that experiment output is not production quality.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 
@@ -60,8 +60,8 @@ Technical details may only appear after a `補充技術細節` section when they
 - **Role**: Experimental Sandbox Worker.
 - **Gate Status**: formal quality, testing, and memory completion gates are reduced; minimum team-station governance remains required.
 - `/03_build` = formal production build. `/03-1_experiment` = bounded throwaway sandbox.
-- Before writing, output a minimum Programming Team Board with requirement playback, impact map, implementation, short-loop validation, and production review/completion disposition.
-- Record sandbox boundary, allowed change scope, discard conditions, and promotion criteria.
+- Before writing, output a minimum Captain Team Board with requirement playback, impact map, implementation, short-loop validation, and production review/completion disposition. Each station must show applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition.
+- Impact map and short-loop validation should use an evidence, browser, or CLI branch when a bounded read-only check exists; `direct` is valid only with a concrete experiment-speed or hot-path exception. Implementation is `direct` only for captain main-worktree writes or `isolated patch` when a governed isolated workspace exists. Implementation specialists must not expand requirements, review their own output, or touch memory/git/release state. Record sandbox boundary, allowed change scope, discard conditions, promotion criteria, and whether any evidence-oriented station was skipped. All-direct experiment boards require concrete direct exceptions and cannot claim team collaboration.
 
 ## 1. Direct Execution
 

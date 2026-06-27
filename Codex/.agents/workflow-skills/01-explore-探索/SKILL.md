@@ -64,13 +64,14 @@ Use this skill when the user asks to run the migrated source command `01_explore
 ## 1. Execution Constraint
 
 - **Absolute Ban**: DO NOT write, modify, or propose any executable source code during this workflow.
+- If the Director's request shifts from research into coding, fixing, testing, debugging, commit preparation, or governance-impact work, stop this workflow and route into captain-led programming mode. Explicit workflow names are shortcuts, not prerequisites.
 
 [RECON GATE] Select research path:
 - IF (research requires only text/data retrieval):
   - [FAST PATH] Use `WebSearch` + `WebFetch` tools directly.
 - IF (research requires UI/UX analysis or JS-rendered pages):
   - [SLOW PATH] Run the Delegation Gate from `delegation-strategy`.
-  - Codex adapter: request a browser evidence branch only when the Director explicitly asks for subagents or this workflow gate requires one; otherwise use available main-thread web/browser tools.
+  - Codex adapter: request a browser evidence branch when this workflow gate requires one; otherwise use available main-thread web/browser tools only with a recorded direct exception.
 
 ## 2. Devil's Advocate Protocol (魔鬼代言人協議)
 

@@ -61,6 +61,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 1. Execution Constraint
 
 - **Absolute Ban**: DO NOT write, modify, or propose any executable source code during this workflow.
+- If the Director's request shifts from research into coding, fixing, testing, debugging, commit preparation, or governance-impact work, stop this workflow and route into captain-led programming mode. Explicit command names are shortcuts, not prerequisites.
 
 [RECON GATE] Select research path:
 - IF (research requires only text/data retrieval):

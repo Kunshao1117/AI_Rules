@@ -50,7 +50,8 @@ When requesting a browser evidence branch:
 
 - Antigravity / Gemini maps browser branch intent to its browser-capable agent or plugin adapter.
 - Claude maps browser branch intent to an allowed browser/testing subagent or main-thread browser tool, depending on project permissions.
-- Codex maps browser branch intent to native subagents only when the Director explicitly asks or a workflow gate requires it; otherwise the main Codex agent uses available Browser tooling directly.
+- Codex maps browser branch intent to native subagents when the Director explicitly asks or a workflow station requires a browser evidence branch. The main Codex agent may use available Browser tooling directly only when the station is not evidence-oriented or the Programming Team Board records a concrete direct exception and replacement evidence.
+- When a browser branch is required but no browser-capable branch or equivalent tool can run, mark the station `blocked` or `unverified`; do not silently downgrade it to main-thread browsing.
 
 ### Step 3: Context Passing (上下文傳遞)
 
