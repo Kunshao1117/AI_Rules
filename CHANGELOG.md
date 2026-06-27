@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - **Station state hardening** — 團隊站點板改為分離「是否適用」與「執行模式」，禁止只用啟用中、必要時或大小型判斷作為最終結果。
 - **Delegation route order** — 委派策略先判斷瀏覽器、CLI 與 MCP 特殊證據路徑，再落到一般唯讀 evidence branch，避免專職隊員路由被泛化。
 - **Experiment minimum governance** — 三平台實驗入口保留快速試錯，但必須先列最小團隊站點、沙盒邊界、允許改動範圍、丟棄條件與升級條件。
+- **Codex skill count wording** — 修正 Codex 核心規範中的共用技能數字，讓來源規範與部署後 43/60 技能統計一致。
 
 ### docs
 - **Skill count refresh** — 共用操作型技能數更新為 43；Codex Edition 部署後技能總數更新為 60（43 共用 + 17 工作流）。

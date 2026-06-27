@@ -4,7 +4,7 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-27T20:36:55+08:00'
+last_updated: '2026-06-27T21:12:28+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 16
+cycle_event_count: 17
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -55,6 +55,7 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 17: Recorded the Codex core skill-count wording fix in the changelog.
 - 16: Documented Full B governance hardening: applicability/execution-mode station boards, experiment minimum governance, special-route-first delegation, Doctor coverage, and refreshed 43/60 skill counts.
 - 15: Documented AI Rules Manager v0.1.19 for Doctor token stability and project skill discovery repair.
 - 14: Documented engineering review governance, Doctor review coverage, AI Rules Manager v0.1.18, and refreshed 43/60 skill counts.

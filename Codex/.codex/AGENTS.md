@@ -103,7 +103,7 @@ Before writing any source file:
 ## Skill System
 
 **`.agents/skills/`** — Codex native scan path (agentskills.io open standard):
-- 39 shared operational skills (deployed into `.agents/skills/`; framework source repository path: `Shared/skills/`)
+- 43 shared operational skills (deployed into `.agents/skills/`; framework source repository path: `Shared/skills/`)
 - 17 workflow skills (merged from `workflow-skills/`)
 - Workflow `SKILL.md` files MUST carry governance metadata v2: `kind`, `platforms`, `lifecycle_phase`, `role`, `memory_awareness`, `tool_scope`, `human_gate`, and `automation_safe`.
 
