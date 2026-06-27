@@ -5,6 +5,7 @@
 
 # [啟用][工作區設定] 本機 IDE 設定，不進版控
 .vscode/settings.json
+.cfce
 
 # [啟用][AI Rules 框架] 由框架初始化或升級產生，可重建，不進版控
 /.codex/
