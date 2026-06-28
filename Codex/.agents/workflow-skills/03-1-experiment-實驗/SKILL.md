@@ -1,7 +1,7 @@
 ---
 name: "03-1-experiment-實驗"
 description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，保留最小團隊治理但允許跳過正式品質與記憶收尾。DO NOT use when: 生產建構、正式修復或需提交發布。"
-required_skills: [programming-team-governance]
+required_skills: [programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
 metadata:
   author: antigravity
   version: "2.0"
@@ -49,7 +49,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
-> [LOAD SKILL] Before experiment writes, read `.agents/skills/programming-team-governance/SKILL.md` and `.agents/skills/team-task-package/SKILL.md`; use the experiment board template and do not duplicate full team rules inline.
+> [LOAD SKILL] Before experiment writes, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-package/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/implementation-patch-delivery/SKILL.md`, `.agents/skills/memory-coupled-delivery/SKILL.md`, `.agents/skills/team-validation-packet/SKILL.md`, `.agents/skills/team-review-packet/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`; use the experiment board template. The minimum Captain Team Board records board state, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch.
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 03-1 row as the minimum external grounding and evidence contract.
 - Workflow-specific grounding: Keep spikes isolated. Record the minimum Captain Team Board, sandbox boundary, allowed change scope, discard conditions, promotion criteria, role boundary, and the warning that experiment output is not production quality.
@@ -71,7 +71,7 @@ Use this skill when the user asks to run the migrated source command `03-1_exper
 - Dirty code, hardcoded values, and placeholder logic are PERMITTED.
 - No linter runs, no test generation, no memory card updates.
 - `Write`/`Edit` tools may be used IMMEDIATELY without planning phase.
-- Before writing, output a minimum Captain Team Board with applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition:
+- Before writing, output a minimum Captain Team Board with applicability, execution mode, evidence owner, role boundary, direct exception, completion condition, and the minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition:
   - Requirement playback: `direct`; evidence owner is captain; role boundary is requirement only; direct exception is Director-facing scope lock.
   - Impact map: `evidence branch`, `CLI branch`, `browser branch`, `direct` with concrete exception, or `blocked`; role boundary is architecture or impact only; name sandbox files, memory/docs touched, and external-risk assumptions.
   - Implementation: `isolated patch` when a governed isolated workspace exists, or a text patch task package when filesystem isolation is unavailable; captain direct sandbox writing is `accepted-risk` only and cannot claim full team collaboration; role boundary is implementation only; implementation specialists must not expand requirements, review their own output, or touch memory/git/release state.
@@ -95,3 +95,7 @@ Use this skill when the user asks to run the migrated source command `03-1_exper
 ## [SECURITY & COMPLIANCE]
 - **Role**: Writer/SRE — full permissions, all gates bypassed.
 - **Memory**: none — sandbox output is not tracked.
+ Experiment completion requires a minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation patch, memory delivery, review, and validation packets.
+- Experiment completion requires a minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation patch, memory delivery, review, and validation packets.
+- Experiment completion requires a minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation patch, memory delivery, review, and validation packets.
+- Experiment completion requires a minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation patch, memory delivery, review, and validation packets.

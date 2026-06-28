@@ -4,19 +4,19 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-28T11:33:03+08:00'
+last_updated: '2026-06-28T13:56:29+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T11:28:20+08:00'
+last_verified: '2026-06-28T13:56:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 18
+cycle_event_count: 21
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,13 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
-- Claude core rules now require the Director to talk to the captain only, one bounded task per role-exclusive specialist, and packet-triad completion before full team completion.
-- Claude command entries now load team-task-package as the team-board template source; Claude shared operational skill count is 44.
+- Claude source rules and deployed commands now require formal dispatch board fields, wave-gated delegation, draft-board limits, and Master-Agent protected state ownership for coding commands.
+- Claude core rules now require the Director to talk to the captain only, one bounded task per role-exclusive specialist, and four-packet completion before full team completion.
+- Claude command entries now load team-task-package as the team-board template source; Claude shared operational skill count is 50.
 - Claude source and deployed core rules now share the updated subagent policy block for board-first captain-led dispatch.
 - Claude coding commands require task type classification, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, and captain substitution accepted-risk before any subagent or specialist branch starts.
 - Claude core rules and README describe the Master Agent as engineering captain; coding-related commands automatically enter captain-led mode and explicit command names are shortcuts.
@@ -50,15 +52,18 @@ metadata:
 - Claude blueprint and build commands now preserve same-turn design-to-build contract semantics.
 - Claude documentation and commands cover deep audit, memory migration tools, change intent, visual evidence, intent alignment, and review governance.
 - Claude coding commands route through programming-team-governance stations before planning, execution, validation, review, or completion; the Master Agent owns writes, gates, memory, git, release, and final acceptance.
-- Claude shared operational skill count is 44.
+- Claude shared operational skill count is 50.
 ## Active Constraints
 - Do not restore `.claude/agents/memory/` as a storage path.
 - Keep Claude command entrypoints concise; shared operational detail belongs in Shared skills.
 - Keep Claude source ownership out of the deprecated historical card.
 - This card still needs a later child-card split if all Claude commands are actively edited again.
 ## Cycle Events
-- 18: Tightened Claude captain accountability wording and synced deployed command/skill copies after packet-triad governance validation.
-- 17: Added team-task-package template governance, refreshed 44/61 skill-count facts, and verified Doctor/Audit green.
+- 21: Compressed captain/main delegation skills, updated Doctor four-packet checks, and resynced source/deployed policy markers.
+- 20: Added formal team child-skill routing with implementation patch, memory delivery, review, and validation packets; refreshed 50/67 skill facts after source/deployed sync.
+- 19: Aligned Claude core governance with draft/formal boards, wave dispatch, formal evidence eligibility, and protected Master-Agent ownership.
+- 18: Tightened Claude captain accountability wording and synced deployed command/skill copies after four-packet governance validation.
+- 17: Added team-task-package template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
 - 16: Updated Claude command memory for captain minimum execution, text patch packets, accepted-risk captain substitution, and condense team-board coverage.
 - 15: Synced Claude source and deployed shared subagent policy blocks after captain-led dispatch pre-gate hardening.
 - 14: Updated Claude core commands for task type, dispatch pre-gate, and captain minimum-execution loading.

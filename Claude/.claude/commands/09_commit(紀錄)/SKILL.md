@@ -1,7 +1,7 @@
 ---
 name: 09_commit
 description: "Use when: 提交、commit、push、版本紀錄、CHANGELOG、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 前置掃描與受治理備份。DO NOT use when: 尚未完成實作或只想查看 git 狀態。"
-required_skills: [github-ops, quality-review-governance, programming-team-governance]
+required_skills: [github-ops, quality-review-governance, programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
 memory_awareness: read
 user-invocable: true
 metadata:
@@ -58,7 +58,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Require explicit file lists, review state and accepted-risk/unverified/blocker awareness, memory hygiene, status-check awareness, changelog quality, version impact, and governed release routing before commit or push.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.claude/skills/programming-team-governance/SKILL.md` and `.claude/skills/team-task-package/SKILL.md`. Treat this command as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records task type, workflow route, implementation authorization, allowed/forbidden specialist roles, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.claude/skills/programming-team-governance/SKILL.md`, `.claude/skills/team-task-package/SKILL.md`, `.claude/skills/team-role-boundaries/SKILL.md`, `.claude/skills/implementation-patch-delivery/SKILL.md`, `.claude/skills/memory-coupled-delivery/SKILL.md`, `.claude/skills/team-validation-packet/SKILL.md`, `.claude/skills/team-review-packet/SKILL.md`, `.claude/skills/team-completion-gate/SKILL.md`. Treat this command as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
 
 # [SKILL: /commit — 授權備份]
@@ -122,12 +122,12 @@ Output:「【防線鎖定】準備遠端備份。請確認上方 Commit Message 
 
 > Begins only after Director inputs GO.
 
-GO for this workflow authorizes the captain to run protected completion work. It does not authorize any specialist to write memory cards, stage files, commit, push, tag, publish releases, or mutate external state. Specialists may provide review, validation, changelog-quality, release-readiness, or completion evidence packets only.
+GO for this workflow authorizes the captain to run protected completion work. It does not authorize any specialist to write memory cards, stage files, commit, push, tag, publish releases, or mutate external state. Specialists may provide memory delivery, review, validation, changelog-quality, release-readiness, or completion evidence packets only; implementation patch provenance must already exist or be marked not-applicable for commit-only work.
 
 ### 5. Review And Completion Evidence Packets（審查與收尾證據包）
 
-- Before protected writes or git operations, confirm the Programming Team Board has commit-release task type and captain-only memory/git/release ownership.
-- Collect required review and completion evidence packets for changed-file list, review-state blockers, accepted-risk items, memory hygiene, changelog quality, status-check awareness, version impact, and governed release routing.
+- Before protected writes or git operations, confirm the formal Programming Team Board has commit-release task type, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and captain-only memory/git/release ownership.
+- Collect required implementation patch provenance, memory delivery, review, validation, and completion evidence packets for changed-file list, review-state blockers, accepted-risk items, memory hygiene, changelog quality, status-check awareness, version impact, and governed release routing.
 - Evidence packet owners must not be the implementation specialists whose changes are being prepared for commit.
 
 ### 6. CHANGELOG Update (CHANGELOG 更新)
@@ -169,3 +169,7 @@ No specialist, subagent, browser branch, CLI evidence branch, or isolated patch 
 - **Stage 1 Role**: Reader — no source file modifications.
 - **Stage 2 Role**: Captain/SRE — CHANGELOG write plus approved git operations are captain-only; specialists provide evidence packets only.
 - **Memory**: read — check staleness only, no card writes in this workflow.
+ Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.

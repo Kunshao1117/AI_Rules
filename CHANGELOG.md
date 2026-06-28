@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-28] 團隊協作封包技能拆分
+
+### feat
+- **Team collaboration skill split** — 新增 team-role-boundaries、implementation-patch-delivery、memory-coupled-delivery、team-validation-packet、team-review-packet、team-completion-gate 六個共用隊員技能，將隊長制從主線處理升級為正式團隊協作。
+- **Formal packet completion** — 正式團隊完成需回收 implementation patch、memory delivery、review、validation 四類封包；隊長只負責調度、整合、裁決與總監溝通，隊員各自交付單一任務。
+
+### docs
+- **Skill count refresh** — 共用操作型技能數更新為 50；Codex Edition 部署後技能總數更新為 67（50 共用 + 17 工作流），根文件與三平台文件同步調整。
+
+## [2026-06-28] 正式派工板與波次派工語義
+
+### feat
+- **Formal dispatch lifecycle** — 隊長制流程明確分成草案包、GO、正式派工板與波次派工；草案板不得啟動隊員。
+- **Wave dispatch contract** — 正式派工不是一次開全部隊員；下一波必須以上一波回收的補丁、審查或驗證證據與啟動條件為輸入。
+
+### fix
+- **Doctor semantic coverage** — 巡檢新增正式派工生命週期、波次派工、上一波輸入、下一波啟動條件與正式證據資格檢查，並攔截草案證據冒充正式驗收。
+- **Documentation alignment** — 根文件與三平台文件同步說明主線只整合與保護性寫入，隊員依正式派工板逐波次啟動。
+
 ## [2026-06-28] 隊長制團隊任務包模板化
 
 ### feat
@@ -13,7 +32,7 @@ All notable changes to this project will be documented in this file.
 ### fix
 - **Captain scope reduction** — 隊長制編程治理改回語義核心，只負責觸發、角色邊界、隊長最小執行權與完成誠實性；任務板與專員包模板交由團隊任務包維護。
 - **Doctor semantic coverage** — 巡檢模組新增團隊任務包存在性與模板欄位檢查，並攔截工作流殘留舊版長段規則，避免同步成功但語義漂移。
-- **Documentation alignment** — 根文件與三平台文件更新共用操作型技能數為 44，Codex Edition 部署後技能總數為 61（44 共用 + 17 工作流），並說明團隊任務包的單一責任。
+- **Documentation alignment** — 根文件與三平台文件說明團隊任務包的單一責任；本日後續團隊協作封包技能拆分已將現行技能統計統一更新為 50 共用與 67 Codex 部署技能。
 
 ## [2026-06-28] 隊長制編程團隊協作模式
 

@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-28T09:53:30+08:00'
+last_updated: '2026-06-28T13:56:29+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T09:52:05+08:00'
+last_verified: '2026-06-28T13:56:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 11
+cycle_event_count: 14
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core.support.workflows-general — Codex General Workflow Memory
 
 ## Current Truth
+- Codex general and experiment workflows now record draft/formal board semantics, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once launch.
 - Codex experiment and general workflow entries now explicitly load team-task-package and use template references instead of duplicating full team rules inline.
 - Codex chat, explore, experiment, condense, and test workflows now route coding intent through task type, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, and accepted-risk captain substitution rules.
 - Codex chat and explore now route coding intent into captain-led mode, and experiment uses a minimum Captain Team Board with role boundary and isolated patch conditions.
@@ -50,7 +52,10 @@ metadata:
 - Do not write source or memory from read-only flows without the appropriate GO gate.
 
 ## Cycle Events
-- 11: Added team-task-package template governance, refreshed 44/61 skill-count facts, and verified Doctor/Audit green.
+- 14: Compressed captain/main delegation skills, updated Doctor four-packet checks, and resynced source/deployed policy markers.
+- 13: Added formal team child-skill routing with implementation patch, memory delivery, review, and validation packets; refreshed 50/67 skill facts after source/deployed sync.
+- 12: Updated Codex general/experiment workflows for minimum formal dispatch fields and verified entrypoint coverage.
+- 11: Added team-task-package template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
 - 10: Added Codex condense team-board coverage and updated general workflow memory for captain minimum execution and text patch packets.
 - 9: Updated Codex general workflow routing and board rules for the new captain dispatch gate.
 - 08: Upgraded Codex 00/01/03-1 general workflows for automatic captain trigger and experiment minimum governance.

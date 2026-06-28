@@ -6,6 +6,12 @@
 | delegate, channel selection                                                  | 委派、管道選擇                                   | delegation-strategy      | —                  |
 | programming team governance, team station, coding workflow, evidence branch  | 編程團隊治理、團隊站點、開發流程、證據分支       | programming-team-governance | —               |
 | team task package, captain board template, specialist packet, text patch packet | 團隊任務包、隊長任務板模板、專員任務包、文字補丁包 | team-task-package        | —                  |
+| team role boundary, role leakage, self-review, specialist responsibility     | 團隊角色邊界、角色越界、自我審查、專員責任       | team-role-boundaries     | —                  |
+| implementation patch packet, isolated patch, text patch, patch delivery      | 實作補丁包、隔離補丁、文字補丁、補丁交付         | implementation-patch-delivery | —              |
+| memory-coupled delivery, memory obligation, source memory gate               | 記憶耦合交付、記憶義務、來源變更記憶門檻         | memory-coupled-delivery  | cartridge-system   |
+| validation packet, non-mutating validation, test evidence                    | 驗證包、非破壞性驗證、測試證據                   | team-validation-packet   | playwright, a11y   |
+| review packet, independent review, requirement fit, regression risk          | 審查包、獨立審查、需求符合、回歸風險             | team-review-packet       | —                  |
+| completion gate, completion packet, residual risk, final evidence            | 完成門檻、完成包、殘餘風險、最終證據             | team-completion-gate     | cartridge-system   |
 | browser E2E, visual test, real visual data, detail observation, subagent      | 瀏覽器測試、視覺驗證、真實資訊、細微觀察         | browser-testing          | playwright, a11y   |
 | SOLID, line threshold, refactor quality                                      | SOLID、行數上限、重構品質                        | code-quality             | eslint             |
 | security, validation, credentials, env                                       | 安全、驗證、密碼、環境變數                       | security-sre             | snyk               |

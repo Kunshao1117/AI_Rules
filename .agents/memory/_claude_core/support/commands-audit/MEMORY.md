@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/08_audit(健檢)/
 description: >-
   專案記憶：Claude 健檢主指令與三階段子指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-28T09:54:14+08:00'
+last_updated: '2026-06-28T13:56:29+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T09:52:05+08:00'
+last_verified: '2026-06-28T13:56:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 12
+cycle_event_count: 15
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core.support.commands-audit — Claude Audit Commands Memory
 
 ## Current Truth
+- Claude audit commands are covered by entrypoint checks for draft/formal board lifecycle, wave-gated evidence, and no post-board all-at-once launch semantics.
 - Claude audit commands now inherit team-task-package references through the shared command contract and keep review/validation packets role-bound.
 - Claude audit commands now load captain governance with task type, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, and accepted-risk captain substitution requirements.
 - Claude audit commands load captain-led governance with role boundary, isolated patch semantics, and no-self-review rules for audit evidence stations.
@@ -53,7 +55,10 @@ metadata:
 - Do not claim full coverage from sampled evidence; report coverage denominators and sampling limits.
 
 ## Cycle Events
-- 12: Added team-task-package template governance, refreshed 44/61 skill-count facts, and verified Doctor/Audit green.
+- 15: Compressed captain/main delegation skills, updated Doctor four-packet checks, and resynced source/deployed policy markers.
+- 14: Added formal team child-skill routing with implementation patch, memory delivery, review, and validation packets; refreshed 50/67 skill facts after source/deployed sync.
+- 13: Verified Claude audit command coverage under the new formal dispatch and wave-gated evidence checks.
+- 12: Added team-task-package template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
 - 11: Updated Claude audit command memory for captain minimum execution and text patch packet governance.
 - 10: Updated Claude audit commands for the new captain dispatch gate.
 - 09: Aligned Claude audit commands with captain-led team board fields and role-exclusivity guards.

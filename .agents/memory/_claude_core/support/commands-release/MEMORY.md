@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 紀錄、巡檢與技能鍛造指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-28T11:33:29+08:00'
+last_updated: '2026-06-28T13:56:29+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T11:28:20+08:00'
+last_verified: '2026-06-28T13:56:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 12
+cycle_event_count: 15
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core.support.commands-release — Claude Release and Governance Commands Memory
 
 ## Current Truth
+- Claude commit commands keep memory/git/release operations Master-Agent-owned while requiring formal dispatch board fields and separated packet evidence before completion claims.
 - Claude commit command treats specialists as evidence-only for review, validation, and completion packets; memory, git, push, and release remain captain-only mutations.
 - Claude commit and release commands now inherit team-task-package references through the shared command contract while keeping git, memory, and release ownership on the captain path.
 - Claude commit, routine, handoff, and skill-forge commands now require task type, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, and accepted-risk captain substitution before specialist work.
@@ -51,8 +53,11 @@ metadata:
 - Do not let routine inspection mutate source or memory without a write gate.
 
 ## Cycle Events
-- 12: Tightened Claude commit command around evidence-only specialists, captain-only git/memory/release actions, and packet-triad completion.
-- 11: Added team-task-package template governance, refreshed 44/61 skill-count facts, and verified Doctor/Audit green.
+- 15: Compressed captain/main delegation skills, updated Doctor four-packet checks, and resynced source/deployed policy markers.
+- 14: Added formal team child-skill routing with implementation patch, memory delivery, review, and validation packets; refreshed 50/67 skill facts after source/deployed sync.
+- 13: Updated Claude release command memory for formal dispatch board fields and protected Master-Agent release gates.
+- 12: Tightened Claude commit command around evidence-only specialists, captain-only git/memory/release actions, and four-packet completion.
+- 11: Added team-task-package template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
 - 10: Updated Claude release-side command memory for captain minimum execution and text patch packet governance.
 - 9: Updated Claude release-side commands for the new captain dispatch gate.
 - 08: Aligned Claude release-side commands with captain-led evidence stations and mutation ownership.

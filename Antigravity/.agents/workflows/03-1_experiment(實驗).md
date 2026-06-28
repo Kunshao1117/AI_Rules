@@ -1,6 +1,6 @@
 ---
 description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，保留最小團隊治理但允許跳過正式品質與記憶收尾。DO NOT use when: 生產建構、正式修復或需提交發布。"
-required_skills: [programming-team-governance]
+required_skills: [programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
 memory_awareness: none
 metadata:
   author: antigravity
@@ -48,7 +48,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
-> [LOAD SKILL] Before experiment writes, read `.agents/skills/programming-team-governance/SKILL.md` and `.agents/skills/team-task-package/SKILL.md`; use the experiment board template and do not duplicate full team rules inline.
+> [LOAD SKILL] Before experiment writes, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-package/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/implementation-patch-delivery/SKILL.md`, `.agents/skills/memory-coupled-delivery/SKILL.md`, `.agents/skills/team-validation-packet/SKILL.md`, `.agents/skills/team-review-packet/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`; use the experiment board template. The minimum Captain Team Board records board state, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch.
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 03-1 row as the minimum external grounding and evidence contract.
 - Workflow-specific grounding: Keep spikes isolated. Record the minimum Captain Team Board, sandbox boundary, allowed change scope, discard conditions, promotion criteria, role boundary, and the warning that experiment output is not production quality.
@@ -62,7 +62,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - **Role**: Experimental Sandbox Worker.
 - **Gate Status**: formal quality, testing, and memory completion gates are reduced; minimum team-station governance remains required.
 - `/03_build` = formal production build. `/03-1_experiment` = bounded throwaway sandbox.
-- Before writing, output a minimum Captain Team Board with requirement playback, impact map, implementation, short-loop validation, and production review/completion disposition. Each station must show applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition.
+- Before writing, output a minimum Captain Team Board with requirement playback, impact map, implementation patch, memory delivery disposition, review disposition, validation disposition, and production promotion/completion disposition. Each station must show applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition.
 - Impact map and short-loop validation should use an evidence, browser, or CLI branch when a bounded read-only check exists; `direct` is valid only with a concrete experiment-speed or hot-path exception. Implementation uses `isolated patch` when a governed isolated workspace exists, or a text patch task package when filesystem isolation is unavailable; captain direct sandbox writing is `accepted-risk` only and cannot claim full team collaboration. Implementation specialists must not expand requirements, review their own output, or touch memory/git/release state. Record sandbox boundary, allowed change scope, discard conditions, promotion criteria, and whether any evidence-oriented station was skipped. All-direct experiment boards require concrete direct exceptions and cannot claim team collaboration.
 
 ## 1. Direct Execution
@@ -90,3 +90,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 - **Role**: `Experiment Worker` | formal gates reduced; minimum team-station governance recorded.
 - **Memory Update**: SKIP — 實驗模式不寫入記憶卡。
+ Experiment completion requires a minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation patch, memory delivery, review, and validation packets.
+- Experiment completion requires a minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation patch, memory delivery, review, and validation packets.
+- Experiment completion requires a minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation patch, memory delivery, review, and validation packets.
+- Experiment completion requires a minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation patch, memory delivery, review, and validation packets.

@@ -59,8 +59,12 @@ skill defines the captain trigger gate, captain team board, role exclusivity,
 station board, read-only evidence branch boundary, isolated patch boundary,
 direct exception contract, evidence owner field, completion condition, and
 fake-team guard; platform workflow entries only load it and adapt the station
-evidence or patch output to their native tools. Platform entries must not
-weaken the shared contract by replacing evidence-oriented stations with
+evidence or patch output to their native tools. Platform entries must also load
+the formal team child skills when applicable: `team-role-boundaries`,
+`implementation-patch-delivery`, `memory-coupled-delivery`,
+`team-validation-packet`, `team-review-packet`, and `team-completion-gate`.
+Platform entries must not weaken the shared contract by replacing
+implementation patch, memory delivery, review, or validation packets with
 generic main-thread handling.
 
 ## Doctor Expectations
@@ -79,10 +83,22 @@ Skill quality checks should treat trigger quality as a first-class signal:
   captain trigger, evidence owner, role boundary, direct exception, completion
   condition, and the rule that all-direct evidence boards are invalid without
   concrete exceptions.
+- Coding-related workflow / command entries must load the six formal team child
+  skills when applicable: `team-role-boundaries`,
+  `implementation-patch-delivery`, `memory-coupled-delivery`,
+  `team-validation-packet`, `team-review-packet`, and
+  `team-completion-gate`.
 - Coding-related workflow / command entries must not imply that the Director
   must manually name a workflow before captain-led governance starts.
 - Coding-related workflow / command entries must not allow implementation
   specialists to review their own work or write the main worktree directly.
+- Coding-related workflow / command entries must require all four formal
+  delivery packets for full team completion: implementation patch, memory
+  delivery, review, and validation. Implementation patch packets must include
+  `memory_impact`; memory delivery packets must include `memory_impact`,
+  `memory_patch`, and a blocked, unverified, or accepted-risk status when not
+  complete; review packets and validation packets must remain independent from
+  the implementation specialist.
 - High-risk release, deployment, or mutation skills must name their public
   trigger terms explicitly.
 - Workflow and operational skills should not mix responsibilities.

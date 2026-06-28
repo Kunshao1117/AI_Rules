@@ -1,6 +1,6 @@
 ---
 description: "Use when: 已有 /03_build 設計到建構合約並取得 GO，要執行建構寫入、記憶歸卡與驗證測試。DO NOT use when: 尚未完成建構合約或未取得 GO。"
-required_skills: [memory-ops, security-sre, code-quality, test-patterns, ai-dev-quality-gate, trunk-ops, programming-team-governance]
+required_skills: [memory-ops, security-sre, code-quality, test-patterns, ai-dev-quality-gate, trunk-ops, programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
 memory_awareness: full
 metadata:
   author: antigravity
@@ -52,7 +52,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Use explore-plan-implement-verify sequencing. Define acceptance evidence, operator-tool discovery, retry strategy, and blocked validation rules before writes.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md` and `.agents/skills/team-task-package/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records task type, workflow route, implementation authorization, allowed/forbidden specialist roles, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-package/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/implementation-patch-delivery/SKILL.md`, `.agents/skills/memory-coupled-delivery/SKILL.md`, `.agents/skills/team-validation-packet/SKILL.md`, `.agents/skills/team-review-packet/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
 
 # [WORKFLOW: BUILD — EXECUTE (建構執行)]
 
@@ -69,10 +69,10 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 1. Patch Packet Dispatch And Integration（補丁包派工與整合）
 
-- 呼叫 `task_boundary` 切換至 `EXECUTION` 模式前，必須確認 Captain Team Board 已標記 GO-write authorization。
+- 呼叫 `task_boundary` 切換至 `EXECUTION` 模式前，必須確認 正式 Captain Team Board 已標記 GO-write authorization、派工波次、前一波輸入、下一波啟動條件與正式證據資格。
 - 任何主工作區寫入前，先依 `team-task-package` 建立或確認實作補丁包路徑：有受治理隔離區時使用 isolated workspace patch；沒有隔離區時使用 text patch packet。隊長直接寫入只能標為 `captain substitution accepted-risk`，並記錄缺少隔離補丁路徑的原因。
 - 每個實作隊員只負責一個明確任務，只能產出補丁包；不得擴張需求、審查自己的產出、更新記憶、stage、commit、push、release、deploy、install 或改動外部狀態。
-- 隊長只整合已回收且已通過審查包與驗證包檢查的補丁；整合順序仍依賴者先於被依賴者（底層模組先整合，上層模組後整合）。
+- 隊長只整合已回收、已有記憶交付處置，且已通過審查包與驗證包檢查的補丁；整合順序仍依賴者先於被依賴者（底層模組先整合，上層模組後整合）。
 
 // turbo
 
@@ -136,3 +136,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 - **Role**: `Captain/SRE` | 主工作區寫入僅限整合已回收補丁包；實作隊員只產出隔離或文字補丁包。
 - **Memory Update**: MANDATORY — §2 與 §3 強制執行，不可略過。違反即 HALT。
+ Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.

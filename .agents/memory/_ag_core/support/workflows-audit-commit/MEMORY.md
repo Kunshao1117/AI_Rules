@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 健檢與提交工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-28T11:33:44+08:00'
+last_updated: '2026-06-28T13:56:29+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T11:28:20+08:00'
+last_verified: '2026-06-28T13:56:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 14
+cycle_event_count: 17
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core.support.workflows-audit-commit — Antigravity Audit and Commit Workflow Memory
 
 ## Current Truth
+- Antigravity audit and commit workflows are covered by entrypoint checks for formal dispatch board lifecycle, wave-gated evidence, and captain-owned memory/git/release state.
 - Antigravity commit execution treats specialists as evidence-only for review, validation, and completion packets; memory, git, push, and release remain captain-only mutations.
 - Antigravity audit and commit workflows now inherit team-task-package references through the shared workflow entry contract while keeping git, memory, and release ownership on the captain path.
 - Antigravity audit and commit workflows now require task type, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, and accepted-risk captain substitution before specialist work.
@@ -54,8 +56,11 @@ metadata:
 - Do not commit, push, tag, or release without explicit Director approval.
 
 ## Cycle Events
-- 14: Tightened Antigravity commit execution around evidence-only specialists, captain-only git/memory/release actions, and packet-triad completion.
-- 13: Added team-task-package template governance, refreshed 44/61 skill-count facts, and verified Doctor/Audit green.
+- 17: Compressed captain/main delegation skills, updated Doctor four-packet checks, and resynced source/deployed policy markers.
+- 16: Added formal team child-skill routing with implementation patch, memory delivery, review, and validation packets; refreshed 50/67 skill facts after source/deployed sync.
+- 15: Verified Antigravity audit/commit workflow coverage under formal dispatch and wave-gated evidence checks.
+- 14: Tightened Antigravity commit execution around evidence-only specialists, captain-only git/memory/release actions, and four-packet completion.
+- 13: Added team-task-package template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
 - 12: Updated Antigravity audit and commit workflow memory for captain minimum execution and text patch packet governance.
 - 11: Updated Antigravity audit and commit workflows for the new captain dispatch gate.
 - 10: Aligned Antigravity audit and commit workflows with captain-led team board fields and mutation ownership.

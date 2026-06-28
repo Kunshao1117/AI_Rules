@@ -1,7 +1,7 @@
 ---
 name: "03-build-建構"
 description: "Use when: 正式建構功能、設計到建構合約、實作已核准計畫、新增工具或產品行為變更、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 的建構與驗證。DO NOT use when: 純討論、沙盒實驗、或只需要不落地的純架構方案。"
-required_skills: [memory-ops, tech-stack-protocol, code-quality, security-sre, ai-dev-quality-gate, intent-alignment-gate, quality-review-governance, project-context-protocol, programming-team-governance]
+required_skills: [memory-ops, tech-stack-protocol, code-quality, security-sre, ai-dev-quality-gate, intent-alignment-gate, quality-review-governance, project-context-protocol, programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
 metadata:
   author: antigravity
   version: "2.0"
@@ -49,7 +49,7 @@ Technical details may only appear after `補充技術細節` when necessary.
 - Workflow-specific grounding: Use explore-plan-implement-verify sequencing. Define blueprint adoption, review state, requirement trace, acceptance evidence, operator-tool discovery, retry strategy, blocked validation, and drift audit before writes.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md` and `.agents/skills/team-task-package/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records task type, workflow route, implementation authorization, allowed/forbidden specialist roles, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-package/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/implementation-patch-delivery/SKILL.md`, `.agents/skills/memory-coupled-delivery/SKILL.md`, `.agents/skills/team-validation-packet/SKILL.md`, `.agents/skills/team-review-packet/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
 - MCP memory evidence follows `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` and the MCP Memory Evidence Matrix. Missing MCP evidence is 未驗證 or 阻塞.
 
 # source-command-03-build-skill
@@ -133,11 +133,11 @@ Technical details may only appear after `補充技術細節` when necessary.
 
 ### 5. Confirm Patch Packets & Integrate
 
-- Call `ExitPlanMode` only after the Programming Team Board has been updated to GO-write authorization.
+- Call `ExitPlanMode` only after the formal Programming Team Board has GO-write authorization, dispatch wave, previous-wave input, next-wave start condition, and formal evidence eligibility recorded.
 - Before any main-worktree source write, create or confirm the implementation patch packet route from `team-task-package`: governed isolated workspace patch when available, otherwise text patch packet. Captain direct writing is allowed only as `captain substitution accepted-risk` with the missing isolation condition recorded on the board.
 - Assign one bounded implementation specialist per task. The implementation specialist may produce only the patch packet and must not expand requirements, review their own output, update memory, stage files, commit, push, release, deploy, install, or mutate external state.
-- Assign separate review and validation packets before final acceptance. Review and validation owners must not be the same specialist who authored the implementation patch.
-- The captain integrates only returned and reviewed patch packets into the main worktree, applies `[SEC SILENT GATE]` before each integrated write, and marks each `TodoWrite` item `completed` only after integration evidence exists.
+- Require implementation patch, memory delivery, review, and validation packets before formal team completion. Review and validation owners must not be the same specialist who authored the implementation patch; memory delivery remains captain-owned unless the workflow explicitly assigns a memory delivery packet.
+- The captain integrates only returned, reviewed, and validated patch packets into the main worktree after memory delivery disposition is recorded, applies `[SEC SILENT GATE]` before each integrated write, and marks each `TodoWrite` item `completed` only after integration evidence exists.
 
 ### 6. Memory Archive (記憶歸卡)
 
@@ -162,3 +162,7 @@ Technical details may only appear after `補充技術細節` when necessary.
 ## [SECURITY & COMPLIANCE]
 - **Role**: Captain/SRE — main-worktree writes are integration of approved patch packets only; implementation specialists produce isolated or text patch packets.
 - **Memory**: full — all created/modified files MUST have memory card updates.
+ Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.

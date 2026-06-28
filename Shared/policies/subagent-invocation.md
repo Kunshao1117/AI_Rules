@@ -1,8 +1,12 @@
 # 三平台共用子代理治理政策
 
-此檔是 AI_Rules 的子代理治理唯一來源。共用層只定義「隊長制何時自動觸發」、「何時需要委派證據分支、隔離補丁分支或文字補丁任務包」與「主代理如何收斂證據」，不得把任一廠商的工具名稱當成跨平台規則。三平台核心規則只能保存由本檔轉譯出的 marker block；工作流與技能不得另立一套啟用政策，只能繼承本檔、`Shared/skills/programming-team-governance/SKILL.md`、`Shared/skills/team-task-package/SKILL.md` 與 `Shared/skills/delegation-strategy/SKILL.md`。證據分支只提供審查素材，不取代 `Shared/skills/quality-review-governance/SKILL.md` 的審查狀態判定。
+此檔是 AI_Rules 的子代理治理唯一來源。共用層只定義「隊長制何時自動觸發」、「何時需要委派證據分支、隔離補丁分支或文字補丁任務包」與「主代理如何收斂證據」，不得把任一廠商的工具名稱當成跨平台規則。三平台核心規則只能保存由本檔轉譯出的 marker block；工作流與技能不得另立一套啟用政策，只能繼承本檔、`Shared/skills/programming-team-governance/SKILL.md`、`Shared/skills/team-task-package/SKILL.md`、`Shared/skills/delegation-strategy/SKILL.md`、`Shared/skills/team-role-boundaries/SKILL.md`、`Shared/skills/implementation-patch-delivery/SKILL.md`、`Shared/skills/memory-coupled-delivery/SKILL.md`、`Shared/skills/team-validation-packet/SKILL.md`、`Shared/skills/team-review-packet/SKILL.md` 與 `Shared/skills/team-completion-gate/SKILL.md`。證據分支只提供審查素材，不取代 `Shared/skills/quality-review-governance/SKILL.md` 的審查狀態判定。
 
 ## 共用語義
+
+### 正式團隊技能來源
+
+正式團隊協作的技能來源固定為：`team-role-boundaries`、`implementation-patch-delivery`、`memory-coupled-delivery`、`team-validation-packet`、`team-review-packet`、`team-completion-gate`。工作流入口在進入隊長制編程、修復、驗證、審查、記憶、提交、交接、技能鍛造或治理影響工作時，必須載入適用的正式團隊技能來源。不得以「視情況」、「必要時」或隊長自由判斷取代這六個技能來源。
 
 ### Captain Trigger Gate
 
@@ -16,9 +20,15 @@
 
 總監明確要求使用子代理、團隊模式、平行代理或 workflow 指令時，只代表必須立即建板與派工判定；不代表可以先開隊員再補任務板。
 
+### 草案板與正式派工板
+
+草案板只屬於 GO 前規劃，可記錄候選站點、候選隊員、預計派工波次與假設。草案板不能啟動正式隊員、不能產生正式證據資格、不能滿足正式驗收，也不能支撐完整團隊完成聲明。
+
+總監 GO 後，主代理必須建立或升級為正式派工板，才能開啟正式站點。正式派工板生命週期的每個適用站點都必須記錄階段、派工波次、前一波輸入、下一波啟動條件與正式證據資格。
+
 ### Captain Minimum Execution Gate
 
-主代理是最小執行權的隊長與整合者，不是所有站點的預設執行者。主代理固定保留總監溝通、GO 解讀、任務板、授權計畫、已回收補丁包的主工作區整合、審查狀態裁決、記憶、git、發布、部署、安裝閘門與最終驗收。
+主代理是最小執行權的隊長與整合者，不是所有站點的預設執行者。主代理固定保留總監溝通、GO 解讀、任務板、授權計畫、已回收補丁包的主工作區整合、審查狀態裁決、記憶、git、發布、部署、安裝閘門與最終驗收。主代理不得把實作、審查、驗證或記憶歸因的細節任務吸收到自己身上，除非正式站點逐項標示 `blocked`、`unverified` 或 `accepted-risk`。
 
 正式實作不以主代理直做為正常路徑。實作站點預設是隔離補丁；無隔離時退為文字補丁任務包；兩者都無法產出時標示 blocked，除非總監明確接受隊長代工風險。隊長代工不得算完整團隊完成。
 
@@ -26,7 +36,7 @@
 
 ### Delegation Gate
 
-主代理在任何編程相關任務中，必須先建立 `programming-team-governance` 與 `team-task-package` 定義的隊長團隊站點板，再對每個適用站點判斷角色與執行模式。研究、測試、除錯、健檢、實驗、建構/修復後驗證、提交前掃描、交接與技能鍛造都屬於必須評估的站點化工作。站點不得只標為「啟用中」、「必要時」或大小型標籤；每個站點必須落到 `direct`、`evidence branch`、`browser branch`、`CLI branch`、`MCP direct`、`isolated patch`、`blocked` 或 `not-applicable`，並記錄證據負責人、角色邊界、完成條件與主線直做例外。Delegation Gate 的輸出只能是下列其中之一：
+主代理在任何編程相關任務中，必須先建立 `programming-team-governance` 與 `team-task-package` 定義的隊長團隊站點板，再對每個適用站點判斷角色與執行模式。研究、測試、除錯、健檢、實驗、建構/修復後驗證、提交前掃描、交接與技能鍛造都屬於必須評估的站點化工作。站點不得只標為「啟用中」、「必要時」或大小型標籤；每個站點必須落到 `direct`、`evidence branch`、`browser branch`、`CLI branch`、`MCP direct`、`isolated patch`、`text patch packet`、`blocked` 或 `not-applicable`，並記錄證據負責人、角色邊界、完成條件與主線直做例外。Delegation Gate 的輸出只能是下列其中之一：
 
 | Gate 結果 | 使用時機 | 主代理義務 |
 |---|---|---|
@@ -36,8 +46,17 @@
 | `MCP direct` | 需要即時工具資料、雲端狀態、文件查詢或資料庫讀取 | MCP 是主代理直接工具，不是委派目標；寫入型 MCP 仍需 GO/HITL |
 | `evidence branch` | 排除瀏覽器、CLI 與 MCP 特殊路徑後，仍存在獨立唯讀調查線索，例如反證、文件盤點、跨模組影響面、回歸風險或競品/規格研究 | 委派一個或多個唯讀證據分支，主代理整合結果；主線可等待該證據包，不得因此降級成直做 |
 | `isolated patch` | 實作隊員可在受治理 fork、沙盒、隔離工作樹，或文字補丁任務包中產出明確檔案範圍的補丁 | 只允許補丁提案；主代理負責檢查、整合、驗證與主工作區整合 |
+| `text patch packet` | 無受治理檔案隔離能力，但任務仍可清楚切片並以文字補丁交付 | 只允許文字補丁與證據；主代理負責檢查、套用、驗證與主工作區整合 |
 | `blocked` | 必要證據、權限、工具、登入態、授權或可分派任務包不存在 | 回報最小解除條件，不得降級成完成或正常隊長直做 |
 | `not-applicable` | 該站點不屬於本任務 | 回報不適用理由 |
+
+### 逐波次派工與正式證據資格
+
+正式派工採逐波次啟動。同一波只能開啟沒有依賴衝突的站點；需要前一站點輸出的工作必須放到後續波次。實作與審查同一交付物不得同波；依賴補丁包的驗證不得早於補丁包。
+
+不得建板後一次全派。每一波開始前，正式派工板必須記錄前一波結果，並確認下一波啟動條件已滿足。
+
+證據包具備正式證據資格的條件是：站點已列在正式派工板、所屬派工波次已開啟、回報者符合指定角色、回報格式完整、沒有跨越唯讀或角色互斥邊界。草案板期間產生的材料只能作為前一波輸入，不能單獨滿足正式驗收。
 
 ### 角色互斥
 
@@ -55,7 +74,7 @@
 
 ### 假團隊防線
 
-若兩個以上證據型站點適用，卻全部標成 `direct`，該團隊站點板不得視為完成，除非每個直做站點都有具體例外與替代證據。下列理由不能單獨成立：任務很小、比較快、委派成本、沒有必要、目前先不開、主線看過。若平台子代理、特殊分支或可分派任務包不可用，站點狀態必須標示為 `blocked`、`unverified` 或隊長代工風險接受，不得把缺工具包裝成已完成團隊協作。
+若兩個以上證據型站點標成 `direct`，該團隊站點板不得視為完成，除非每個直做站點都有逐站具體例外、替代證據，並標示 `accepted-risk`、`unverified` 或 `blocked`。下列理由不能單獨成立：任務很小、比較快、委派成本、沒有必要、目前先不開、主線看過。若平台子代理、特殊分支或可分派任務包不可用，站點狀態必須標示為 `blocked`、`unverified` 或隊長代工風險接受，不得把缺工具包裝成已完成團隊協作。
 
 ### 禁止委派條件
 
@@ -106,13 +125,25 @@
 檔案:
 證據:
 風險:
+memory_impact:
 審查需求:
+是否阻塞:
+```
+
+所有來源、工作流、治理、文件、生成副本或公開契約變更，都必須產生記憶交付包，或明確標示阻塞、未驗證或已接受風險：
+
+```text
+memory_impact:
+status: memory_patch / blocked / unverified / accepted-risk
+memory_patch:
+證據:
+風險:
 是否阻塞:
 ```
 
 ### 整合授權
 
-主代理只能在補丁包、審查包、驗證包齊全後整合正式實作。補丁包必須來自實作隊員或明確標示的隊長代工風險；審查包必須來自未參與實作的審查隊員；驗證包必須來自未修改核心實作的測試或驗證路徑。任一包缺失時，站點必須標示 blocked、unverified 或 accepted-risk，不得宣稱完整團隊完成。
+正式團隊完成條件必須同時具備實作補丁包、記憶交付包、審查包與驗證包。補丁包必須來自實作隊員或明確標示的隊長代工風險，且包含 `memory_impact`；記憶交付包必須包含 `memory_impact` 與 `memory_patch`、`blocked`、`unverified` 或 `accepted-risk` 狀態；審查包必須來自未參與實作的審查隊員；驗證包必須來自未修改核心實作的測試或驗證路徑。任一包缺失時，站點必須標示 blocked、unverified 或 accepted-risk，不得宣稱完整團隊完成。
 
 ## 平台轉譯區塊
 
@@ -124,18 +155,18 @@
 This block is generated from the framework source policy (`Shared/policies/subagent-invocation.md`) and deployed with a readable project copy at `.agents/shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
 
 - **Captain Trigger Gate**: Coding, workflow, skill, validation, review, memory, commit, release, or governance-impact work automatically enters captain-led mode; explicit workflow names are shortcuts, not prerequisites.
-- **Delegation Gate**: Build a programming-team station board with `team-task-package` for coding work, then resolve each applicable station to direct, browser branch, CLI branch, MCP direct, evidence branch, isolated patch, blocked, or not-applicable before broad research, testing, debugging, audit work, experiment work, commit preparation, handoff, skill-forge work, or post-change verification. Record evidence owner, role boundary, completion condition, and any direct exception.
-- **Invocation rule**: Codex spawns native subagents only after the Captain Team Board exists and the station is marked as a required Codex evidence or isolated/text patch branch, or when project-scoped `.codex/agents/*.toml` custom agents are intentionally configured for that station. A Director request for subagents forces board creation first; it does not authorize pre-board spawning. If a required branch cannot run, mark the station blocked, unverified, or captain substitution accepted-risk; do not treat missing isolation as routine direct work.
+- **Delegation Gate**: Build a programming-team station board with `team-task-package` for coding work, then separate draft planning from the formal dispatch board. A formal board records phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, evidence owner, role boundary, completion condition, and any direct exception before broad research, testing, debugging, audit work, experiment work, commit preparation, handoff, skill-forge work, or post-change verification.
+- **Invocation rule**: Codex spawns native subagents only after the formal Captain Team Board exists, the station's dispatch wave is open, and the station is marked as a required Codex evidence or isolated/text patch branch, or when project-scoped `.codex/agents/*.toml` custom agents are intentionally configured for that station. A draft board cannot spawn formal specialists. A Director request for subagents forces board creation first; it does not authorize pre-board or draft-board spawning. If a required branch cannot run, mark the station blocked, unverified, or captain substitution accepted-risk; do not treat missing isolation as routine direct work.
 - **Do not invoke**: Do not use a Codex subagent when the task is vague, when it requires secrets or login state, when it would duplicate the main agent's current work, or when it would perform source writes, memory writes, git operations, installs, deployments, releases, or external state mutation.
-- **Fake-team guard**: If multiple evidence-oriented stations are applicable and all are marked direct, the board is invalid unless every direct station carries a concrete exception and replacement evidence.
+- **Fake-team guard**: If two or more evidence-oriented stations are marked direct, the board is invalid unless every direct station carries a concrete exception, replacement evidence, and blocked, unverified, or accepted-risk state.
 - **Role-exclusivity guard**: A specialist must not both implement and review the same deliverable; role conflicts must be marked accepted-risk, unverified, or blocked.
-- **Isolated patch boundary**: Implementation specialists may only produce patch packets inside a governed isolated workspace or as text-only patch packets. The main Codex agent reviews and integrates into the main worktree.
+- **Isolated patch boundary**: Implementation specialists may only produce patch packets with memory impact inside a governed isolated workspace or as text-only patch packets. The main Codex agent reviews and integrates into the main worktree.
 - **Captain minimum execution gate**: The main Codex agent keeps Director communication, GO interpretation, main-worktree integration, review-state decision, memory/git/release/deploy/install ownership, and final acceptance; counter-evidence, impact map, testing, review, and completion audit do not stay direct unless the board records a concrete exception and replacement evidence.
-- **Integration authorization**: The main Codex agent integrates only after patch, review, and validation packets are present, or after missing packets are marked blocked, unverified, or accepted-risk. Captain substitution is not full team completion.
+- **Integration authorization**: Full team completion requires implementation patch, memory delivery, review, and validation packets, or missing packets marked blocked, unverified, or accepted-risk. Captain substitution is not full team completion.
 - **Main-agent accountability**: The main Codex agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
 - **Review-state boundary**: Codex evidence branches support review evidence, but the main Codex agent decides review lifecycle status through `quality-review-governance`.
 - **Read-only boundary**: Codex evidence branches may read, search, inspect browser state when available, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
-- **Required report format**: Every Codex evidence branch returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
+- **Required report format**: Every Codex evidence branch returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`; implementation patch packets include `memory_impact`; memory delivery packets include `memory_impact`, `memory_patch`, and blocked, unverified, or accepted-risk status.
 <!-- SUBAGENT_POLICY:CODEX_END -->
 
 <!-- SUBAGENT_POLICY:CLAUDE_START -->
@@ -144,18 +175,18 @@ This block is generated from the framework source policy (`Shared/policies/subag
 This block is generated from the framework source policy (`Shared/policies/subagent-invocation.md`) and deployed with a readable project copy at `.agents/shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
 
 - **Captain Trigger Gate**: Coding, workflow, skill, validation, review, memory, commit, release, or governance-impact work automatically enters captain-led mode; explicit command names are shortcuts, not prerequisites.
-- **Delegation Gate**: Build a programming-team station board with `team-task-package` for coding work, then resolve each applicable station to direct, browser branch, CLI branch, MCP direct, evidence branch, isolated patch, blocked, or not-applicable before broad research, testing, debugging, audit work, experiment work, commit preparation, handoff, skill-forge work, or post-change verification. Record evidence owner, role boundary, completion condition, and any direct exception.
-- **Invocation rule**: Claude Code may use built-in, custom, or plugin subagents through description-driven delegation, `@agent` mentions, or `Agent(...)` tool permissions only after the Captain Team Board exists and the workflow station is bounded and read-only or explicitly isolated/text-only for patch output. A Director request for subagents forces board creation first; it does not authorize pre-board delegation. If a required branch cannot run, mark the station blocked, unverified, or captain substitution accepted-risk; do not treat missing isolation as routine direct work.
+- **Delegation Gate**: Build a programming-team station board with `team-task-package` for coding work, then separate draft planning from the formal dispatch board. A formal board records phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, evidence owner, role boundary, completion condition, and any direct exception before broad research, testing, debugging, audit work, experiment work, commit preparation, handoff, skill-forge work, or post-change verification.
+- **Invocation rule**: Claude Code may use built-in, custom, or plugin subagents through description-driven delegation, `@agent` mentions, or `Agent(...)` tool permissions only after the formal Captain Team Board exists, the station's dispatch wave is open, and the workflow station is bounded and read-only or explicitly isolated/text-only for patch output. A draft board cannot spawn formal specialists. A Director request for subagents forces board creation first; it does not authorize pre-board or draft-board delegation. If a required branch cannot run, mark the station blocked, unverified, or captain substitution accepted-risk; do not treat missing isolation as routine direct work.
 - **Do not invoke**: Do not use a Claude subagent when the task is vague, when it requires secrets or login state, when it would duplicate the Master Agent's current work, or when it would perform source writes, memory writes, git operations, installs, deployments, releases, or external state mutation.
-- **Fake-team guard**: If multiple evidence-oriented stations are applicable and all are marked direct, the board is invalid unless every direct station carries a concrete exception and replacement evidence.
+- **Fake-team guard**: If two or more evidence-oriented stations are marked direct, the board is invalid unless every direct station carries a concrete exception, replacement evidence, and blocked, unverified, or accepted-risk state.
 - **Role-exclusivity guard**: A specialist must not both implement and review the same deliverable; role conflicts must be marked accepted-risk, unverified, or blocked.
-- **Isolated patch boundary**: Implementation specialists may only produce patch packets inside a governed isolated workspace or as text-only patch packets. The Master Agent reviews and integrates into the main worktree.
+- **Isolated patch boundary**: Implementation specialists may only produce patch packets with memory impact inside a governed isolated workspace or as text-only patch packets. The Master Agent reviews and integrates into the main worktree.
 - **Captain minimum execution gate**: The Master Agent keeps Director communication, GO interpretation, main-worktree integration, review-state decision, memory/git/release/deploy/install ownership, and final acceptance; counter-evidence, impact map, testing, review, and completion audit do not stay direct unless the board records a concrete exception and replacement evidence.
-- **Integration authorization**: The Master Agent integrates only after patch, review, and validation packets are present, or after missing packets are marked blocked, unverified, or accepted-risk. Captain substitution is not full team completion.
+- **Integration authorization**: Full team completion requires implementation patch, memory delivery, review, and validation packets, or missing packets marked blocked, unverified, or accepted-risk. Captain substitution is not full team completion.
 - **Master-Agent accountability**: The Master Agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
 - **Review-state boundary**: Claude evidence branches support review evidence, but the Master Agent decides review lifecycle status through `quality-review-governance`.
 - **Read-only boundary**: Claude evidence branches may read, search, inspect browser state when allowed, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
-- **Required report format**: Every Claude evidence branch returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
+- **Required report format**: Every Claude evidence branch returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`; implementation patch packets include `memory_impact`; memory delivery packets include `memory_impact`, `memory_patch`, and blocked, unverified, or accepted-risk status.
 <!-- SUBAGENT_POLICY:CLAUDE_END -->
 
 <!-- SUBAGENT_POLICY:ANTIGRAVITY_START -->
@@ -164,16 +195,16 @@ This block is generated from the framework source policy (`Shared/policies/subag
 This block is generated from the framework source policy (`Shared/policies/subagent-invocation.md`) and deployed with a readable project copy at `.agents/shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
 
 - **Captain Trigger Gate**: Coding, workflow, skill, validation, review, memory, commit, release, or governance-impact work automatically enters captain-led mode; explicit workflow names are shortcuts, not prerequisites.
-- **Delegation Gate**: Build a programming-team station board with `team-task-package` for coding work, then resolve each applicable station to direct, browser branch, CLI branch, MCP direct, evidence branch, isolated patch, blocked, or not-applicable before broad research, testing, debugging, audit work, experiment work, commit preparation, handoff, skill-forge work, or post-change verification. Record evidence owner, role boundary, completion condition, and any direct exception.
-- **Invocation rule**: Antigravity / Gemini may map evidence branches to Gemini CLI subagents, `@`-directed specialists, browser-capable agents, or Antigravity plugin adapters only after the Captain Team Board exists and the workflow station is bounded and read-only or explicitly isolated/text-only for patch output. A Director request for subagents forces board creation first; it does not authorize pre-board delegation. If a required branch cannot run, mark the station blocked, unverified, or captain substitution accepted-risk; do not treat missing isolation as routine direct work.
+- **Delegation Gate**: Build a programming-team station board with `team-task-package` for coding work, then separate draft planning from the formal dispatch board. A formal board records phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, evidence owner, role boundary, completion condition, and any direct exception before broad research, testing, debugging, audit work, experiment work, commit preparation, handoff, skill-forge work, or post-change verification.
+- **Invocation rule**: Antigravity / Gemini may map evidence branches to Gemini CLI subagents, `@`-directed specialists, browser-capable agents, or Antigravity plugin adapters only after the formal Captain Team Board exists, the station's dispatch wave is open, and the workflow station is bounded and read-only or explicitly isolated/text-only for patch output. A draft board cannot spawn formal specialists. A Director request for subagents forces board creation first; it does not authorize pre-board or draft-board delegation. If a required branch cannot run, mark the station blocked, unverified, or captain substitution accepted-risk; do not treat missing isolation as routine direct work.
 - **Do not invoke**: Do not use an Antigravity / Gemini adapter when the task is vague, when it requires secrets or login state, when it would duplicate the Master Agent's current work, or when it would perform source writes, memory writes, git operations, installs, deployments, releases, or external state mutation.
-- **Fake-team guard**: If multiple evidence-oriented stations are applicable and all are marked direct, the board is invalid unless every direct station carries a concrete exception and replacement evidence.
+- **Fake-team guard**: If two or more evidence-oriented stations are marked direct, the board is invalid unless every direct station carries a concrete exception, replacement evidence, and blocked, unverified, or accepted-risk state.
 - **Role-exclusivity guard**: A specialist must not both implement and review the same deliverable; role conflicts must be marked accepted-risk, unverified, or blocked.
-- **Isolated patch boundary**: Implementation specialists may only produce patch packets inside a governed isolated workspace or as text-only patch packets. The Master Agent reviews and integrates into the main worktree.
+- **Isolated patch boundary**: Implementation specialists may only produce patch packets with memory impact inside a governed isolated workspace or as text-only patch packets. The Master Agent reviews and integrates into the main worktree.
 - **Captain minimum execution gate**: The Master Agent keeps Director communication, GO interpretation, main-worktree integration, review-state decision, memory/git/release/deploy/install ownership, and final acceptance; counter-evidence, impact map, testing, review, and completion audit do not stay direct unless the board records a concrete exception and replacement evidence.
-- **Integration authorization**: The Master Agent integrates only after patch, review, and validation packets are present, or after missing packets are marked blocked, unverified, or accepted-risk. Captain substitution is not full team completion.
+- **Integration authorization**: Full team completion requires implementation patch, memory delivery, review, and validation packets, or missing packets marked blocked, unverified, or accepted-risk. Captain substitution is not full team completion.
 - **Master-Agent accountability**: The Master Agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
 - **Review-state boundary**: Antigravity / Gemini evidence branches support review evidence, but the Master Agent decides review lifecycle status through `quality-review-governance`.
 - **Read-only boundary**: Antigravity / Gemini evidence branches may read, search, inspect browser state, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
-- **Required report format**: Every Antigravity / Gemini evidence branch returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
+- **Required report format**: Every Antigravity / Gemini evidence branch returns `發現 / 證據 / 風險 / 建議 / 是否阻塞`; implementation patch packets include `memory_impact`; memory delivery packets include `memory_impact`, `memory_patch`, and blocked, unverified, or accepted-risk status.
 <!-- SUBAGENT_POLICY:ANTIGRAVITY_END -->

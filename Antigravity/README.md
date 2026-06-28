@@ -14,8 +14,8 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → 透過 `.agents/memory/` 記憶卡系統持久保存
 2. **無紀律執行** — 寫碼前不規劃、寫完不測試 → 20 個工作流檔案強制四拍子節奏
-3. **角色權限模糊** — 子代理人隨意改檔案，或 AI 形式上列站點卻仍全部主線直做 → 編程意圖自動進入隊長制團隊模式，先建立隊長任務板；證據型站點預設使用唯讀 evidence branch，實作隊員只能在受治理隔離區產出補丁，或在無隔離時產出文字補丁任務包，審查者不能實作同一交付物；主代理保留主工作區寫檔、整合、審查與交付裁決
-4. **知識碎片化** — 技能散落各處，Token 暴增 → 44 套按需載入的操作型技能，不用時零開銷
+3. **角色權限模糊** — 子代理人隨意改檔案，或 AI 形式上列站點卻仍全部主線直做 → 編程意圖自動進入隊長制團隊模式，先產出草案包，GO 後轉正式派工板並逐波次派工；證據型站點預設使用唯讀 evidence branch，實作隊員只能在受治理隔離區產出補丁，或在無隔離時產出文字補丁任務包，審查者不能實作同一交付物；主代理保留主工作區寫檔、整合、審查與交付裁決
+4. **知識碎片化** — 技能散落各處，Token 暴增 → 50 套按需載入的操作型技能，不用時零開銷
 5. **語言不友善** — 工程術語充斥 → 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
 6. **框架升級斷裂** — 升級怕覆蓋記憶或脈絡 → D06 安全網 + SHA256 差異比對 + 知識資產永久保護
 7. **工具碎片化** — MCP 工具散亂 → 透過 Multi-MCP Gateway 統一探索 schema，並用 `gateway__call_tool` 真實呼叫下游工具
@@ -72,7 +72,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 | **按需載入** | 技能僅在需要時載入，減少 AI 的認知負擔和 Token 消耗 |
 | **需求對齊與反證** | 架構藍圖與建構計畫必須先回放需求、列出非目標與成功標準，再做中立反證、決策紀錄、驗收追蹤與偏移稽核 |
 | **繁體中文特化** | 三層語言架構：指令層（英文）、介面層（繁體中文）、橋接層（雙語） |
-| **隊長制編程團隊治理** | 開發、修改、修復、測試、除錯、健檢、提交、交接與技能鍛造會依語意自動進入隊長制；總監只對隊長說話，隊長派一任務一隊員；證據型站點預設使用 Antigravity / Gemini adapter 的唯讀 evidence branch，實作隊員只能在受治理隔離區產出 patch packet，或在無隔離時產出文字補丁任務包；審查與驗證由不同隊員互驗，隊長最後只整合已回收且可追溯的補丁與證據 |
+| **隊長制編程團隊治理** | 開發、修改、修復、測試、除錯、健檢、提交、交接與技能鍛造會依語意自動進入隊長制；總監只對隊長說話。新版把隊長主線處理拆成團隊協作：隊長只負責調度、整合、裁決與總監溝通；隊員分別負責實作補丁、記憶交付、驗證、審查、完成閘門等單一任務。隊長先做草案包，GO 後建立正式派工板，再依波次派隊員；下一波必須以上一波回收證據與明確啟動條件為輸入。草案證據只能支持轉正式派工，不得冒充正式驗收。證據型站點預設使用 Antigravity / Gemini adapter 的唯讀 evidence branch，實作隊員只能在受治理隔離區產出 patch packet，或在無隔離時產出文字補丁任務包；正式團隊完成必須回收 implementation patch、memory delivery、review、validation 四類封包，且審查與驗證由不同隊員互驗；隊長最後只整合已回收且可追溯的補丁與證據 |
 | **三位一體治理** | 靜默異常中斷（閘門攔截時才中斷）+ 特權覆寫（`[SUDO]`）+ 雙軌沙盒（生產 / 草圖） |
 
 ---
@@ -83,7 +83,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 graph TB
     subgraph "AI_Rules 框架核心庫"
         SRC["Antigravity/<br/>Gemini 版源碼"]
-        SH["Shared/skills/<br/>44 套共用技能"]
+        SH["Shared/skills/<br/>50 套共用技能"]
     end
 
     subgraph "統一部署引擎"
@@ -93,7 +93,7 @@ graph TB
     subgraph ".agents/ 生態系統（部署後）"
         RULES["rules/<br/>9 個治理規則"]
         WF["workflows/<br/>20 個工作流檔案"]
-        SKILLS["skills/<br/>44 套操作型技能"]
+        SKILLS["skills/<br/>50 套操作型技能"]
         MEM["memory/<br/>專案記憶（三平台共用）"]
         CTX["context/<br/>專案脈絡（三平台共用）"]
         PROJ["project_skills/<br/>衍生技能（升級保護）"]
@@ -144,7 +144,7 @@ graph TB
 | **Shared policy drift** | Doctor 檢查 Antigravity / Gemini adapter marker block 是否仍由框架來源 `Shared/policies/subagent-invocation.md` 生成，並確認下游 `.agents/shared/policies/subagent-invocation.md` 已部署 |
 | **Subagent vocabulary drift** | Doctor 檢查 Shared 技能是否誤把平台工具名寫成共用語義，避免 Antigravity、Claude、Codex 的委派語彙互相污染 |
 | **Review governance coverage** | Doctor 檢查審查治理共用技能、工作流矩陣、子代理政策與 02/03/04/08/09/10 入口是否保留審查狀態與 evidence branch 邊界 |
-| **Captain-led programming governance coverage** | Doctor 檢查隊長制編程治理共用技能、團隊任務包模板、任務類型閘門、派工前置閘門、隊長最小執行權規則、隊長任務板、角色邊界、隔離補丁、文字補丁、證據負責人、主線直做例外、全主線假團隊防線、00/01 自動轉向、Antigravity workflow 接入與部署後 shared skill / shared reference hash 是否一致 |
+| **Captain-led programming governance coverage** | Doctor 檢查隊長制編程治理共用技能、團隊任務包模板、任務類型閘門、派工前置閘門、隊長最小執行權規則、隊長任務板、角色邊界、隔離補丁、文字補丁、證據負責人、主線直做例外、全主線假團隊防線、00/01 自動轉向、Antigravity workflow 接入與部署後 shared skill / shared reference hash 是否一致；也會檢查 draft-to-formal board lifecycle、dispatch wave、previous-wave input、next-wave start condition、formal evidence eligibility，並攔截草案板派工、草案證據冒充正式驗收與一次開全部隊員 |
 | **孤兒偵測** | 偵測源碼已刪除但目標仍存在的「孤兒檔案」，標記為 `ORPHAN` 提醒 |
 | **衍生技能補建** | 每次部署自動掃描 `project_skills/`，補建缺少的符號連結 |
 
@@ -274,15 +274,15 @@ graph LR
 | 02 | 架構 | 需求轉化為技術藍圖與記憶系統初始化 | Writer/SRE |
 | 03 | 建構計畫 | Stage 1：記憶載入 → Diff 規劃 → 等待 GO（含沙盒快速路徑） | Writer/SRE |
 | 03-1 | 實驗 | 沙盒快速實驗（保留最小團隊站點宣告） | Experiment Worker |
-| 03-2 | 建構執行 | Stage 2：派實作補丁包 → 審查/驗證包互驗 → 隊長整合 → 新建歸卡 → 記憶更新 → 真實執行驗證 | Captain/SRE |
+| 03-2 | 建構執行 | Stage 2：正式派工板 → 第 1 波補丁包 → 回收證據 → 達到下一波啟動條件後再派審查/驗證包 → 隊長整合 → 新建歸卡 → 記憶更新 → 真實執行驗證 | Captain/SRE |
 | 05 | 濃縮 | 專案濃縮初始化（掃描 → 萃取 → 隊長任務板 → 審閱 → 寫入） | Writer/SRE |
 | 04-1 | 修復計畫 | Bug 診斷 → 產出修復計畫（唯讀，等待 GO） | Reader |
-| 04-2 | 修復執行 | 派修復補丁包 → 審查/回歸驗證包互驗 → 隊長整合 → 記憶更新 → 真實失敗路徑回歸測試 | Captain/SRE |
+| 04-2 | 修復執行 | 正式派工板 → 第 1 波修復補丁包 → 回收證據 → 達到下一波啟動條件後再派審查/回歸驗證包 → 隊長整合 → 記憶更新 → 真實失敗路徑回歸測試 | Captain/SRE |
 | 06 | 測試 | 依介面與真實操作面收集視覺、命令、資料、日誌或執行證據 | Reader |
 | 07 | 除錯 | 堆疊追蹤分析、錯誤翻譯 | Reader |
 | 08 | 專案健檢 | 健檢深度、專案型態、平台能力、盤點分母、動態掛載模組與證據式健康報告 | Reader/Logs |
 | 09-1 | 紀錄掃描 | 倉庫衛生 + 記憶過期偵測（唯讀掃描） | Reader |
-| 09-2 | 授權備份 | 審查/收尾證據包 → 隊長文件更新 + 明確清單 Git 提交 + 遠端推播 | Captain/SRE |
+| 09-2 | 授權備份 | 正式派工板 → 審查/收尾證據包分波回收 → 隊長文件更新 + 明確清單 Git 提交 + 遠端推播 | Captain/SRE |
 | 10 | 巡檢 | automation-safe 例行巡檢：技能品質、文件數字、記憶過期、MCP 設定健康 | Reader |
 | 11 | 交接 | 產出交接文件給下一個 AI 對話（含前置檢查） | Reader/Memory |
 | 12 | 技能鍛造 | 從工作實踐中提煉可複用技能 | Worker |
@@ -300,7 +300,7 @@ graph LR
 
 **目錄**: `.agents/skills/`
 
-技能是**按需載入的知識手冊**。IDE 在對話開始時僅注入技能名稱與描述，完整內容在需要時才讀取，實現漸進式揭露。
+技能是**按需載入的知識手冊**。IDE 在對話開始時僅注入技能名稱與描述，完整內容在需要時才讀取，實現漸進式揭露。新版共用技能總數為 50 套，其中新增六個團隊協作子技能，讓實作補丁、記憶交付、驗證、審查與完成閘門由隊員分工交付。
 
 #### 技能分類與語言風格
 
@@ -457,11 +457,11 @@ Antigravity/
     │   ├── 00_chat ~ 12_skill_forge ← 主要工作流程（含建構/修復/提交分階段與例行巡檢）
     │   ├── _completion_gate.md   ← 共用完成閘門
     │   └── _security_footer.md   ← 共用安全閘門
-    ├── skills/                   ← 44 套操作型技能（部署時從 Shared/ 注入）
+    ├── skills/                   ← 50 套操作型技能（部署時從 Shared/ 注入）
     │   ├── _index.md             ← 核心技能路由表
     │   ├── project-xxx -> ../project_skills/xxx ← 專案衍生技能符號連結
     │   ├── memory-ops/           ← 記憶操作指引
-    │   └── ... (44 套)
+    │   └── ... (50 套)
     ├── memory/                   ← 專案記憶（專案特有，升級時受保護）
     │   └── (由 AI 執行 /02 架構 初始化)
     ├── context/                  ← 專案脈絡（設計 DNA 與長期偏好，升級時受保護）

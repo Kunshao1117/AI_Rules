@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-28T11:53:04+08:00'
+last_updated: '2026-06-28T13:58:23+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-28T11:51:02+08:00'
+last_verified: '2026-06-28T13:58:23+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 16
+cycle_event_count: 20
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,13 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _system.scripts — Repository Script Governance Memory
 
 ## Current Truth
+- Governance Doctor now enforces draft/formal board lifecycle, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once semantics on shared governance and three-platform workflow entries.
 - Governance Doctor rejects team-task-package direct exceptions that rely on allowed-small, tiny known file set, or direct single-step wording.
-- Governance Doctor rejects missing patch/review/validation packet triads, unbounded implementation direct modes, stale direct-write workflow phrases, and old direct-exception shortcuts.
+- Governance Doctor rejects missing implementation patch, memory delivery, review, and validation packet requirements, unbounded implementation direct modes, stale direct-write workflow phrases, and old direct-exception shortcuts.
 - Governance Doctor now checks team-task-package existence, template fields, workflow task-package references, and old long inline team-rule duplication.
 - Governance Doctor checks task type, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, accepted-risk captain substitution, pre-board specialist guards, 05 condense coverage, and captain over-direct semantics for programming-team governance.
 - Governance Doctor checks Captain Trigger Gate, Captain Team Board, role boundary, isolated patch, no-self-review, 00/01 automatic routing, experiment boundaries, source/deployed hash drift, and bilingual negative-context wording.
@@ -56,9 +58,13 @@ metadata:
 - Do not use this card as a substitute for reading the current script implementation before edits.
 
 ## Cycle Events
+- 20: Verified final Doctor/Audit green after four-packet Doctor checks, compressed captain skills, and deployed skill sync.
+- 19: Compressed captain/main delegation skills, updated Doctor four-packet checks, and resynced source/deployed policy markers.
+- 18: Added formal team child-skill routing with implementation patch, memory delivery, review, and validation packets; refreshed 50/67 skill facts after source/deployed sync.
+- 17: Extended Audit.psm1 to enforce draft/formal/wave evidence semantics on shared files and three-platform workflow entries; Doctor/Audit returned green.
 - 16: Extended Audit.psm1 direct-exception regex coverage for allowed-small, tiny-file-set, and direct single-step wording.
-- 15: Added Audit.psm1 guards for packet-triad completion, implementation direct bounds, old direct-write phrases, and verified Doctor/Audit green.
-- 14: Added team-task-package template governance, refreshed 44/61 skill-count facts, and verified Doctor/Audit green.
+- 15: Added Audit.psm1 guards for four-packet completion, implementation direct bounds, old direct-write phrases, and verified Doctor/Audit green.
+- 14: Added team-task-package template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
 - 13: Added Doctor coverage for 05 condense entries, captain minimum execution, text patch packets, and accepted-risk captain substitution.
 - 12: Updated Audit.psm1 negative-context checks so prohibition wording about pre-board agents and captain over-direct ownership is not misreported as allowed behavior.
 - 11: Extended Audit.psm1 programming-team coverage for task type, dispatch pre-gate, and captain minimum-execution semantics.
