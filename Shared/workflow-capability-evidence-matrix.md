@@ -24,13 +24,67 @@
 
 ## Captain-Led Programming Team Governance Matrix
 
-Coding-related workflows automatically enter captain-led mode before implementation, repair, debugging, testing, audit, experiment writes, commit preparation, handoff, or skill creation work. Explicit workflow commands are shortcuts, not prerequisites. The captain builds a team-station board before planning, execution, validation, review, or completion.
+Coding-related natural-language requests and explicit workflow commands automatically enter captain-led mode before implementation, repair, debugging, testing, audit, experiment writes, commit preparation, handoff, or skill creation work. Explicit workflow commands are route hints only; they are not prerequisites and do not replace the team task package. The captain builds a team-station board from `programming-team-governance` and `team-task-package` before planning, execution, validation, review, or completion.
 
-The board is a governance trace, not a size label. Every station must separate applicability from execution mode; applicable stations must resolve to `direct`, `evidence branch`, `browser branch`, `CLI branch`, `MCP direct`, `isolated patch`, `blocked`, or `not-applicable`. Every applicable station must also name the evidence owner, role boundary, completion condition, and any direct exception.
+The board is a governance trace, not a size label. Every station must separate applicability from execution mode; applicable stations must resolve to `direct`, `evidence branch`, `browser branch`, `CLI branch`, `MCP direct`, `isolated patch`, `blocked`, or `not-applicable`. Every applicable station must also name the evidence owner, role boundary, completion condition, and any direct exception. Each specialist receives one concrete station task; bundled multi-role assignments are invalid unless split or marked as captain accepted risk.
 
 Evidence-oriented stations default to team evidence. When two or more evidence-oriented stations are applicable, at least one independent evidence path must run unless every skipped branch carries a concrete direct exception and replacement evidence. All-direct evidence boards are invalid without those exceptions.
 
-Role boundaries are part of the evidence contract. A specialist may not both implement and review the same deliverable. If independent role separation cannot be produced, mark the station `accepted-risk`, `unverified`, or `blocked`.
+Role boundaries are part of the evidence contract. A specialist may not both implement and review the same deliverable. Implementation specialists produce patch packets only; test, review, and completion specialists cross-check the patch, validation evidence, drift, and remaining work. If independent role separation cannot be produced, mark the station `accepted-risk`, `unverified`, or `blocked`.
+
+### Team Task Package Contract
+
+`Shared/skills/team-task-package/SKILL.md` is the canonical source for lightweight/full/experiment board templates, specialist packet format, patch packet types, direct exception handling, and completion checklist. This matrix only records workflow evidence expectations and platform-independent acceptance rules.
+
+Natural-language programming tasks create a team task package even when no workflow command is named. The workflow command only chooses the route; it does not authorize skipping the board, collapsing roles, or claiming team completion without station evidence.
+
+The captain has minimum execution authority. The captain keeps Director communication, GO interpretation, scope arbitration, integration of returned patch packets into the main worktree, memory/git/release/deploy/install gates, review-state decision, and final acceptance. Counter-evidence, impact, test, review, and completion audit should be separated into bounded station tasks whenever a route is available.
+
+Formal implementation is not a normal captain-direct route. It starts as an isolated patch, falls back to a text patch packet when no governed filesystem isolation exists, and becomes `blocked` when neither packet can be produced. Captain substitution requires explicit accepted risk and does not count as full team completion.
+
+One specialist may own only one concrete station task for the same deliverable. Implementation specialists return a patch packet and may not edit the main worktree directly, update memory, stage/commit/push, deploy, or review their own patch. Test specialists validate behavior and regression risk; review specialists judge requirement fit and quality; completion specialists check drift, docs, memory attribution, and unresolved items. These stations must cross-check each other rather than self-approve.
+
+If no specialist route exists, no governed isolation exists for an implementation patch, or the captain must perform work normally assigned to independent evidence stations, record `blocked`, `unverified`, or `accepted-risk` with the concrete reason. Do not report "full team completed" unless implementation, test, review, and completion evidence are actually separated or the missing separation is explicitly accepted as risk.
+
+### Patch Packet Type Matrix
+
+| Patch type | Evidence status | Use when | Completion impact |
+|---|---|---|---|
+| Isolated workspace patch | 足夠證據 when file scope, isolation, changed files, and validation are visible | A fork, sandbox, checkpoint, or worktree can safely contain implementation writes | Captain integrates into the main worktree after GO and requests independent review. |
+| Text patch packet | 部分證據 until captain applies and validates it | No safe isolated filesystem exists, but the task is bounded and diffable | Captain reimplements or applies it; specialist cannot claim it is applied. |
+| Captain substitution accepted-risk | accepted-risk or 未驗證 | No isolated or text patch can be packaged and captain must implement | Cannot claim full team completion unless the missing separation is explicitly reported. |
+
+### Integration Authorization Matrix
+
+| Required packet | Owner boundary | Missing packet result |
+|---|---|---|
+| Patch packet | Implementation specialist; one concrete task only; no self-review | `blocked`, or `accepted-risk` only when Director accepts captain substitution |
+| Review packet | Review specialist who did not author the patch | `unverified` or `accepted-risk`; no full-team completion claim |
+| Validation packet | Test/validation route that does not modify core implementation | `blocked`, `unverified`, or `accepted-risk`; no full-team completion claim |
+
+Captain integration is authorized only after the three packet classes are present or explicitly marked with the missing evidence state above.
+
+### Task Type And Dispatch Pre-Gate Matrix
+
+Before any specialist branch starts, the captain must record task type, workflow route, implementation authorization, allowed specialist roles, and forbidden specialist roles. Workflow commands such as `$02`, `$03`, `$04`, or `$09` are route hints only; they do not replace the board and do not permit pre-board delegation. Natural-language coding, debugging, testing, audit, skill, or governance requests still require the same package.
+
+| 任務類型 | 可出現隊員 | 不可出現隊員 | 最低證據 |
+|---|---|---|---|
+| discussion | none | all coding specialists | no source/workflow/review impact stated |
+| exploration | requirement, architecture, review evidence | implementation | research scope and non-write boundary |
+| blueprint | requirement, architecture, counter-evidence, impact, review | implementation | decisions, alternatives, compatibility, build handoff |
+| build-plan | requirement, architecture, impact, test strategy, review | main-worktree implementation | GO boundary, acceptance matrix, validation route |
+| implementation | isolated implementation patch, test, review, completion | self-review and ungated scope expansion | approved file scope and patch or main-write evidence |
+| fix-debug | impact, debug, test, review, completion | self-review and uncontrolled writes | symptom, cause, regression route |
+| validation-audit | test, review, completion, CLI/browser evidence | source mutation unless separately authorized | command/browser/MCP evidence and blocked items |
+| commit-release | review, completion evidence | git/release/memory mutation by specialists | dirty file list, review state, memory status |
+| handoff-skill | requirement, architecture, impact, review, completion | implementation until authorized | handoff scope, skill ownership, or governance trace |
+
+### Captain Minimum Execution Contract
+
+The captain keeps only the authority that cannot safely be delegated: Director communication, task board, GO interpretation, scope arbitration, main-worktree writes or patch integration, review-state decision, memory, git, release, deployment/install gates, and final acceptance.
+
+Counter-evidence, impact map, testing, review, and completion audit default away from the captain. Short-loop validation may stay direct only for immediate hot-path feedback after a just-written change or when the board names concrete replacement evidence. A board where counter-evidence, impact map, testing, review, and completion audit are all captain-direct is invalid unless every station carries a separate concrete exception and accepted-risk or replacement evidence.
 
 | 站點 | 適用工作 | 預設執行模式 | 最低證據 | 不可委派 |
 |---|---|---|---|---|
@@ -38,12 +92,12 @@ Role boundaries are part of the evidence contract. A specialist may not both imp
 | 反證 | 02、03、04、07、08、12 | `evidence branch` unless direct exception | Wrong-assumption search, missing-risk list, rejected or accepted concern | 最終計畫裁決 |
 | 影響面 | 03、04、07、08、09、12 | `evidence branch`、`CLI branch` 或 `MCP direct` | Files, memory cards, docs, sync paths, compatibility and regression surface | Scope approval and source writes |
 | 計畫授權 | 02、03、04、09、12 | `direct` | Review state, acceptance matrix, GO boundary | GO interpretation |
-| 實作 | 03、04、12 and Antigravity execute stages | `direct` for captain main-worktree writes; `isolated patch` when a governed isolated workspace exists | Approved file list, security gate, dirty-tree protection, patch packet when delegated | Specialists do not write the main worktree directly |
+| 實作 | 03、04、12 and Antigravity execute stages | `direct` only for captain integration/main-worktree writes after GO; `isolated patch` for implementation specialists when a governed isolated workspace exists; text patch task package when filesystem isolation is unavailable | Approved file list, security gate, dirty-tree protection, patch packet or text patch packet when delegated | Specialists do not write the main worktree directly, update memory, stage/commit/push, or review their own patch |
 | 短迴圈驗證 | 03、04、06、07、08 | `browser branch`、`CLI branch`、`evidence branch` 或 hot-path `direct` exception | Test output, real-path attempt, blocked evidence path | Completion claim |
-| 審查 | 02、03、04、08、09、10、12 | `evidence branch` unless direct exception | Review purpose, lifecycle state, accepted risk, blockers | Final review lifecycle status |
-| 收尾 | 03、04、09、10、11、12 | `evidence branch` for drift/docs checks; `direct` for memory/git/release ownership | Docs, memory, drift audit, sync evidence, unresolved items | memory_commit, commit, push, release, deployment |
+| 審查 | 02、03、04、08、09、10、12 | `evidence branch` unless direct exception | Review purpose, lifecycle state, accepted risk, blockers, independence from implementation | Final review lifecycle status |
+| 收尾 | 03、04、09、10、11、12 | `evidence branch` for drift/docs checks; `direct` for memory/git/release ownership | Docs, memory, drift audit, sync evidence, unresolved items, cross-check against test and review packets | memory_commit, commit, push, release, deployment |
 
-Evidence branches may support the board when the station is read-only, independently bounded, and useful as a separate evidence packet; the main thread may wait for the packet when the station is required. Isolated patch branches may support implementation only when the platform provides a governed isolated workspace and the captain can inspect and integrate the patch. Missing station evidence or isolation must be reported as 未驗證 or 阻塞, not silently downgraded.
+Evidence branches may support the board when the station is read-only, independently bounded, and useful as a separate evidence packet; the main thread may wait for the packet when the station is required. Isolated patch branches may support implementation when the platform provides a governed isolated workspace and the captain can inspect and integrate the patch; text patch task packages are the fallback when filesystem isolation is unavailable but a bounded diffable task still exists. Missing station evidence, missing specialists, missing isolation, or missing text patch route must be reported as 未驗證, accepted-risk, or 阻塞, not silently downgraded or described as full team completion / 完整團隊完成.
 
 ## Change Intent Classification Matrix
 

@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-28T01:23:46+08:00'
+last_updated: '2026-06-28T11:52:48+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T01:23:46+08:00'
+last_verified: '2026-06-28T11:51:02+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 7
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,6 +34,11 @@ metadata:
 # _shared.ops-skills.skill-governance — Skill Governance Memory
 
 ## Current Truth
+- team-task-package direct exceptions now require no separable read scope and explicit replacement evidence instead of size or single-step shortcuts.
+- team-task-package and delegation-strategy now require patch packet, independent review packet, and validation packet before full team completion; captain substitution remains accepted-risk only.
+- team-task-package owns reusable board, specialist packet, evidence packet, patch packet, direct exception, and completion templates; programming-team-governance remains the semantic trigger and role-boundary source.
+- Programming team governance is compressed under skill quality limits while preserving task type classification, dispatch pre-gate, Captain Minimum Execution Gate, role exclusivity, isolated patch packets, and text patch packet boundaries.
+- Programming team governance and delegation strategy now require task type classification, pre-board dispatch blocking, captain minimum execution, and captain substitution accepted-risk before evidence or patch branches start.
 - Programming team governance and delegation strategy now use captain trigger, role dispatch, isolated patch boundary, role exclusivity, and no-self-review rules instead of optional delegation.
 - Shared skill forging is framework-source only unless the Director explicitly supplies the AI_Rules source root; downstream projects default to project-derived skills.
 - This child card owns Shared delegation strategy and skill-factory governance files.
@@ -48,6 +53,12 @@ metadata:
 - Use the tracked references as the source of truth for skill formatting and delegation procedures.
 
 ## Cycle Events
+- 13: Hardened team-task-package direct exceptions so size, tiny, and single-step wording cannot justify a direct route.
+- 12: Tightened team-task-package and delegation-strategy around packet-triad completion, accepted-risk captain substitution, and 44/61 Doctor/Audit green validation.
+- 11: Added team-task-package template governance, refreshed 44/61 skill-count facts, and verified Doctor/Audit green.
+- 10: Updated programming-team-governance memory for captain minimum execution, text patch packets, and accepted-risk captain substitution.
+- 09: Finalized programming-team-governance below skill token limits while preserving task type, dispatch pre-gate, and captain minimum-execution rules.
+- 8: Added task type, dispatch pre-gate, and captain minimum-execution clauses to programming-team-governance and delegation-strategy.
 - 07: Re-verified programming-team-governance after deployment audit compression and kept captain-led governance truth current.
 - 06: Upgraded programming-team-governance and delegation-strategy to captain-led routing with isolated patch and strict role separation.
 - 05: Added team-first evidence station defaults, direct-exception contracts, and fake-team guards to programming-team-governance and delegation-strategy.
@@ -77,6 +88,7 @@ metadata:
 - 技能模板與長規則仍保留在來源參考檔。
 
 ## Tracked Files
+- Shared/skills/team-task-package/SKILL.md
 - Shared/skills/delegation-strategy/references/cli-capability-matrix.md
 - Shared/skills/delegation-strategy/references/cli-delegation-sop.md
 - Shared/skills/delegation-strategy/references/cli-prompt-skeleton.md

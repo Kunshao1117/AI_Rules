@@ -785,7 +785,7 @@ function Get-AuditMetadataValue {
 function Test-AuditLineIsNegative {
     param([string]$Line)
 
-    return $Line -match '(?i)\b(DO NOT|DON''T|NEVER|FORBID|FORBIDDEN|PROHIBIT|MUST NOT|CANNOT|WITHOUT)\b|禁止|不得|不可|不應|不允許|不會|不安裝|不修改|非自動|只輸出|僅輸出|建議|草稿|proposed|recommend'
+    return $Line -match '(?i)\b(NO|NOT|DO NOT|DON''T|NEVER|FORBID|FORBIDDEN|PROHIBIT|MUST NOT|CANNOT|WITHOUT|INCOMPLETE|INVALID|FAIL)\b|禁止|不得|不可|不應|不允許|不代表|不會|不安裝|不修改|非自動|只輸出|僅輸出|建議|草稿|proposed|recommend'
 }
 
 function Measure-WorkflowMetadata {
@@ -1966,30 +1966,61 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         }
     }
 
+    function Test-ProgrammingTeamPacketTriadContent {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $hasPatchPacket = $Content -match 'patch packet|補丁包'
+        $hasReviewPacket = $Content -match 'review packet|審查包'
+        $hasValidationPacket = $Content -match 'validation packet|驗證包'
+        $hasMissingPacketState = $Content -match 'blocked|unverified|accepted-risk|阻塞|未驗證|已接受風險'
+
+        return ($hasPatchPacket -and $hasReviewPacket -and $hasValidationPacket -and $hasMissingPacketState)
+    }
+
+    function Test-ProgrammingTeamImplementationDirectBounded {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $hasImplementationDirect = $Content -match '(?is)implementation.{0,160}\bdirect\b|實作.{0,160}主線直做'
+        if (-not $hasImplementationDirect) { return $true }
+
+        $hasAcceptedRiskRoute = $Content -match 'Director.{0,120}accept.{0,80}risk|accepted-risk|隊長代工風險接受|已接受風險'
+        $hasCaptainIntegrationRoute = $Content -match 'captain.{0,120}integrat.{0,120}(returned )?(patch )?packet|隊長.{0,80}(整合|集成).{0,80}(補丁包|patch packet)'
+
+        return ($hasAcceptedRiskRoute -or $hasCaptainIntegrationRoute)
+    }
+
     $coreChecks = @(
         [PSCustomObject]@{
             Path = 'Shared\skills\programming-team-governance\SKILL.md'
             Severity = 'Red'
             Label = '隊長制編程團隊治理共用技能缺少必要章節'
-            Patterns = @('Captain Trigger Gate', 'Captain Team Board', 'Captain Routing Contract', 'Team-First Contract', 'Role Exclusivity Contract', 'Team Stations', 'Permission Boundary', 'Delegation Decision', 'Required Evidence Packet', 'Required Patch Packet', 'Direct Exception Register', 'Captain-Led Default', 'Applicability', 'Execution mode', 'Evidence owner', 'Role boundary', 'Direct exception', 'Completion condition', 'isolated patch', 'all are marked `direct`', '發現:')
+            Patterns = @('Captain Trigger Gate', 'Task Type Gate', 'Dispatch Pre-Gate', 'Board Contract', 'Captain Minimum Execution Gate', 'Captain Routing Contract', 'Role Exclusivity Contract', 'Station Semantics', 'Permission Boundary', 'Delegation Decision', 'Direct Exception Register', 'Workflow Integration', 'Completion Rules', 'team-task-package', 'Captain Team Board', 'task type', 'workflow route', 'implementation authorization', 'allowed specialist roles', 'forbidden specialist roles', 'station applicability', 'execution mode', 'evidence owner', 'role boundary', 'direct exception', 'completion condition', 'isolated patch', 'text patch', 'captain substitution accepted-risk', 'two or more evidence-oriented stations', 'No specialist branch starts before the captain has a board', 'patch packets only|patch packet', 'review.*validation|validation.*review', 'Full team completion', '發現 / 證據 / 風險 / 建議 / 是否阻塞')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\team-task-package\SKILL.md'
+            Severity = 'Red'
+            Label = '團隊任務包技能缺少可執行模板'
+            Patterns = @('Team Task Package', 'Template Selection', 'Lightweight board', 'Full board', 'Experiment board', 'Board Header', 'Full Board Table', 'Specialist Packet', 'Patch Packet Types', 'Direct Exception Rules', 'Workflow Entry Contract', 'Completion Rules', 'Task type:', 'Workflow route:', 'Implementation authorization:', 'Allowed specialist roles:', 'Forbidden specialist roles:', 'Board template:', 'Applicability', 'Execution mode', 'Evidence owner', 'Role boundary', 'Direct exception', 'Completion condition', '發現:', '變更:', 'Isolated workspace patch', 'Text patch packet', 'Captain substitution accepted-risk', 'direct only when no isolated/text patch can be produced', 'Director explicitly accepts', 'not full team completion', 'Patch, review, and validation packets')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\_index.md'
             Severity = 'Red'
             Label = '技能索引缺少編程團隊治理路由'
-            Patterns = @('programming-team-governance', '編程團隊治理')
+            Patterns = @('programming-team-governance', '編程團隊治理', 'team-task-package', '團隊任務包')
         },
         [PSCustomObject]@{
             Path = 'Shared\policies\subagent-invocation.md'
             Severity = 'Red'
             Label = '子代理政策未接入隊長制團隊治理'
-            Patterns = @('Captain Trigger Gate', 'programming-team-governance', 'coding workflow station|workflow station|隊長團隊站點板', 'Fake-team guard|假團隊防線', 'Role-exclusivity guard|角色互斥', 'isolated patch|隔離補丁', 'role boundary|角色邊界', 'direct exception|主線直做例外', 'evidence owner|證據負責')
+            Patterns = @('Captain Trigger Gate', 'Task Type And Dispatch Pre-Gate', 'Captain Minimum Execution Gate', 'programming-team-governance', 'coding workflow station|workflow station|隊長團隊站點板', 'Fake-team guard|假團隊防線', 'Role-exclusivity guard|角色互斥', 'isolated patch|隔離補丁', 'text patch|文字補丁', 'role boundary|角色邊界', 'direct exception|主線直做例外', 'evidence owner|證據負責', 'forces board creation first|立即建板', '隊長代工風險接受|captain substitution accepted-risk', '補丁包.*審查包.*驗證包|patch, review, and validation packets')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\delegation-strategy\SKILL.md'
             Severity = 'Red'
             Label = '委派策略未使用隊長制角色分派決策'
-            Patterns = @('Captain Trigger Gate', 'Role Dispatch Gate', 'programming-team-governance', 'Captain Team Board', 'station', 'Implementation station with governed isolated workspace', 'Browser/UI verification station', 'Large CLI-only analysis station', 'Real-time tool access', 'Independent read-only evidence station after special routes are excluded', 'Direct Exception Contract', 'Isolated Patch Boundary', 'Fake-Team Guard', 'Role-Exclusivity Guard')
+            Patterns = @('Captain Trigger Gate', 'Task Type And Dispatch Pre-Gate', 'Captain Minimum Execution Gate', 'Role Dispatch Gate', 'programming-team-governance', 'team-task-package', 'Captain Team Board', 'station', 'No specialist branch starts before the board exists', 'Implementation station with governed isolated workspace', 'text patch packet', 'Browser/UI verification station', 'Large CLI-only analysis station', 'Real-time tool access', 'Independent read-only evidence station after special routes are excluded', 'Direct Exception Contract', 'Isolated Patch Boundary', 'Fake-Team Guard', 'Role-Exclusivity Guard')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\quality-review-governance\SKILL.md'
@@ -2007,13 +2038,13 @@ function Measure-ProgrammingTeamGovernanceCoverage {
             Path = 'Shared\platform-capability-matrix.md'
             Severity = 'Red'
             Label = '平台能力矩陣缺少隊長制編程治理能力'
-            Patterns = @('Captain-led programming governance', 'Captain Trigger Gate', 'Captain Team Board', 'Role Exclusivity', 'isolated patch', 'evidence branch', '主線直做例外|direct exception')
+            Patterns = @('Captain-led programming governance', '任務類型閘門', '派工前置閘門', '隊長最小執行權|Captain Minimum Execution', 'Captain Trigger Gate', 'Captain Team Board', 'team-task-package', 'Role Exclusivity', 'isolated patch', 'text patch|文字補丁', 'evidence branch', '主線直做例外|direct exception', '不允許先開代理', '補丁包.*審查包.*驗證包', '完整團隊完成|full team completion')
         },
         [PSCustomObject]@{
             Path = 'Shared\workflow-capability-evidence-matrix.md'
             Severity = 'Red'
             Label = '工作流矩陣缺少隊長制編程團隊治理矩陣'
-            Patterns = @('Captain-Led Programming Team Governance Matrix', 'team-station board|Captain Team Board', 'evidence owner|證據負責', 'role boundary|角色邊界', 'isolated patch', 'direct exception|主線直做例外', 'All-direct evidence boards are invalid')
+            Patterns = @('Captain-Led Programming Team Governance Matrix', 'Task Type And Dispatch Pre-Gate Matrix', 'Captain Minimum Execution Contract', 'Team Task Package Contract', 'Patch Packet Type Matrix', 'team-task-package', 'team-station board|Captain Team Board', 'task type|任務類型', 'allowed specialist roles|可出現隊員', 'forbidden specialist roles|不可出現隊員', 'evidence owner|證據負責', 'role boundary|角色邊界', 'isolated patch', 'text patch|文字補丁', 'direct exception|主線直做例外', 'Patch packet', 'Review packet', 'Validation packet', 'All-direct evidence boards are invalid', 'full team completion|完整團隊完成')
         },
         [PSCustomObject]@{
             Path = 'Shared\skill-governance.md'
@@ -2036,6 +2067,18 @@ function Measure-ProgrammingTeamGovernanceCoverage {
                 Add-ProgrammingTeamFinding -Severity $check.Severity -File $check.Path -Line 1 -Reason $check.Label -Text "missing pattern: $pattern"
             }
         }
+
+        if (($check.Path -in @('Shared\platform-capability-matrix.md', 'Shared\policies\subagent-invocation.md', 'Shared\workflow-capability-evidence-matrix.md')) -and (-not (Test-ProgrammingTeamPacketTriadContent -Content $content))) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $check.Path -Line 1 -Reason '核心治理缺少補丁包、審查包、驗證包與缺失狀態語義' -Text 'missing patch/review/validation packet triad or missing blocked/unverified/accepted-risk state'
+        }
+
+        if (($content -match 'full team completion|完整團隊完成') -and (-not (Test-ProgrammingTeamPacketTriadContent -Content $content))) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $check.Path -Line 1 -Reason '宣稱完整團隊完成時缺少補丁、審查、驗證證據要求' -Text 'full team completion requires patch/review/validation packet evidence'
+        }
+
+        if (($check.Path -in @('Shared\skills\programming-team-governance\SKILL.md', 'Shared\skills\team-task-package\SKILL.md', 'Shared\skills\delegation-strategy\SKILL.md', 'Shared\workflow-capability-evidence-matrix.md')) -and (-not (Test-ProgrammingTeamImplementationDirectBounded -Content $content))) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $check.Path -Line 1 -Reason '實作站點 direct 必須限於隊長整合補丁包或總監接受風險' -Text 'implementation direct must not be unrestricted captain implementation'
+        }
     }
 
     Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\programming-team-governance\SKILL.md' `
@@ -2045,6 +2088,14 @@ function Measure-ProgrammingTeamGovernanceCoverage {
     Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\programming-team-governance\SKILL.md' `
         -Pattern 'same specialist both implements and reviews.*valid|implementation specialist.*may.*review|review specialist.*may.*implement' `
         -Reason '隊長制角色不得允許同一交付物自我審查'
+
+    Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\programming-team-governance\SKILL.md' `
+        -Pattern 'spawn.*before.*board|branch.*before.*board|delegate.*before.*board|先開.*(代理|隊員|分支).*再.*(板|站點)' `
+        -Reason '隊長制不得允許先開隊員再補任務板'
+
+    Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\programming-team-governance\SKILL.md' `
+        -Pattern 'captain.*direct.*(counter-evidence|impact map|review|completion audit).*default|隊長.*包辦.*(反證|影響面|審查|收尾)' `
+        -Reason '隊長制不得把反證、影響面、審查與收尾稽核預設交回隊長包辦'
 
     Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\delegation-strategy\SKILL.md' `
         -Pattern 'evaluate each active station|Independent read-only station\?\*\*\s*->\s*`evidence branch`' `
@@ -2058,6 +2109,26 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         -Pattern 'direct.*(small task|faster|not necessary|delegation cost)|主線直做.*(小型|中型|大型|必要時)|direct.*(小型|中型|大型|必要時)' `
         -Reason '委派策略不得用大小型、必要時或成本口號作為主要決策理由'
 
+    Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\team-task-package\SKILL.md' `
+        -Pattern 'Single-step direct|tiny read/write step|cost more to package|allowed only for small|tiny known file set' `
+        -Reason '團隊任務包不得保留單步、微小讀寫或包裝成本作為 direct 例外'
+
+    Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\team-task-package\SKILL.md' `
+        -Pattern 'direct.*(small task|faster|not necessary|delegation cost|tiny|single-step)|allowed only for .*?\b(tiny|single-step|small)\b|主線直做.*(小型|微小|單步|成本)' `
+        -Reason '團隊任務包不得用任務大小、速度或成本口號作為主線直做例外'
+
+    Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\programming-team-governance\SKILL.md' `
+        -Pattern 'implementation.*direct.*(unrestricted|normal fallback|routine captain)|captain.*implementation.*normal fallback|實作.*主線直做.*(不受限|正常|預設)' `
+        -Reason '隊長制不得允許實作站點不受限制地回到隊長直做'
+
+    Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\workflow-capability-evidence-matrix.md' `
+        -Pattern 'implementation.*direct.*(unrestricted|normal fallback|routine captain)|實作.*主線直做.*(不受限|正常|預設)' `
+        -Reason '工作流矩陣不得允許實作站點不受限制地回到隊長直做'
+
+    Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\delegation-strategy\SKILL.md' `
+        -Pattern 'subagent.*before.*board|specialist.*before.*board|隊員.*早於.*任務板' `
+        -Reason '委派策略不得允許前置任務板之前啟動隊員'
+
     Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\policies\subagent-invocation.md' `
         -Pattern 'active station|每個 active' `
         -Reason '子代理政策不得保留 active station 語義'
@@ -2069,6 +2140,10 @@ function Measure-ProgrammingTeamGovernanceCoverage {
     Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\policies\subagent-invocation.md' `
         -Pattern 'direct.*(small task|faster|not necessary|delegation cost)|主線直做.*(小型|中型|大型|必要時)|direct.*(小型|中型|大型|必要時)' `
         -Reason '子代理政策不得用大小型、必要時或成本口號作為主要決策理由'
+
+    Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\policies\subagent-invocation.md' `
+        -Pattern 'explicitly asks for subagents.*spawns|總監.*要求.*子代理.*(直接|立即).*(開|啟動)' `
+        -Reason '子代理政策不得把總監要求子代理解讀成繞過任務板'
 
     Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\quality-review-governance\SKILL.md' `
         -Pattern 'Evidence branches are optional|work benefits from parallel inspection|main thread is blocked on the same answer' `
@@ -2122,6 +2197,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         'Codex\.agents\workflow-skills\03-1-experiment-實驗\SKILL.md',
         'Codex\.agents\workflow-skills\03-build-建構\SKILL.md',
         'Codex\.agents\workflow-skills\04-fix-修復\SKILL.md',
+        'Codex\.agents\workflow-skills\05-condense-濃縮\SKILL.md',
         'Codex\.agents\workflow-skills\06-test-測試\SKILL.md',
         'Codex\.agents\workflow-skills\07-debug-除錯\SKILL.md',
         'Codex\.agents\workflow-skills\08-audit-健檢\SKILL.md',
@@ -2136,6 +2212,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         'Claude\.claude\commands\03-1_experiment(實驗)\SKILL.md',
         'Claude\.claude\commands\03_build(建構)\SKILL.md',
         'Claude\.claude\commands\04_fix(修復)\SKILL.md',
+        'Claude\.claude\commands\05_condense（濃縮）\SKILL.md',
         'Claude\.claude\commands\06_test(測試)\SKILL.md',
         'Claude\.claude\commands\07_debug(除錯)\SKILL.md',
         'Claude\.claude\commands\08_audit(健檢)\SKILL.md',
@@ -2152,6 +2229,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         'Antigravity\.agents\workflows\03-2_build_execute(建構執行).md',
         'Antigravity\.agents\workflows\04-1_fix_plan(修復計畫).md',
         'Antigravity\.agents\workflows\04-2_fix_execute(修復執行).md',
+        'Antigravity\.agents\workflows\05_condense(濃縮).md',
         'Antigravity\.agents\workflows\06_test(測試).md',
         'Antigravity\.agents\workflows\07_debug(除錯).md',
         'Antigravity\.agents\workflows\08_audit(健檢).md',
@@ -2175,6 +2253,9 @@ function Measure-ProgrammingTeamGovernanceCoverage {
 
         if ($content -notmatch 'programming-team-governance') {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口未載入編程團隊治理技能' -Text $relPath
+        }
+        if ($content -notmatch 'team-task-package') {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口未引用團隊任務包技能' -Text $relPath
         }
         if ($content -notmatch 'Programming Team Board|Team Station|團隊站點|team-station') {
             Add-ProgrammingTeamFinding -Severity 'Yellow' -File $relPath -Line 1 -Reason '工作流入口缺少團隊站點可讀語義' -Text $relPath
@@ -2202,6 +2283,15 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         }
         if ($content -match 'direct,\s*delegated,\s*blocked|mark stations direct,\s*delegated|execution mode:\s*direct,\s*delegated') {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口不得保留舊版 direct/delegated 模式集合' -Text $relPath
+        }
+        if ($content -match 'Begin writing source code using|Apply fixes using|Physical Write|Physical Fix Execution') {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口不得保留 GO 後主線直接實作語句' -Text $relPath
+        }
+        if (($content -match 'full team completion|完整團隊完成') -and (-not (Test-ProgrammingTeamPacketTriadContent -Content $content))) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口宣稱完整團隊完成時缺少補丁、審查、驗證證據要求' -Text $relPath
+        }
+        if ($content -match 'enter captain-minimal team mode automatically\.\s*Classify task type|No specialist branch, subagent, browser branch, CLI branch, MCP evidence route') {
+            Add-ProgrammingTeamFinding -Severity 'Yellow' -File $relPath -Line 1 -Reason '工作流入口不應複製舊版隊長制長段規則，應短引用 programming-team-governance 與 team-task-package' -Text $relPath
         }
         if ($relPath -match '03-1') {
             if ($content -notmatch 'minimum (Programming|Captain) Team Board|最小.*團隊站點|team-station governance') {

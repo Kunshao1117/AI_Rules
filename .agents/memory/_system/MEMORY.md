@@ -4,19 +4,19 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-28T01:14:16+08:00'
+last_updated: '2026-06-28T11:52:57+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-28T01:14:16+08:00'
+last_verified: '2026-06-28T11:51:02+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 19
+cycle_event_count: 24
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,21 +34,21 @@ metadata:
 # _system — Repository Governance Memory
 
 ## Current Truth
-- Root documentation and changelog now describe captain-led team coding mode with automatic triggers, role boundaries, isolated patch packets, and Doctor semantic coverage.
-- Root documentation and changelog now describe governed Full B programming team governance with applicability/execution-mode station boards, experiment minimum governance, Doctor coverage, and refreshed 43/60 skill counts.
-- Root documentation and changelog now describe the team-first evidence model: main-agent accountability for writes and gates, evidence branches by default for evidence-oriented stations, and all-direct boards rejected without concrete exceptions.
+- Root README platform table now reflects 44 shared operational skills for Antigravity, Claude, and Codex.
+- Root documentation and changelog now describe captain-led team collaboration as packet-based completion, not captain direct implementation with optional helpers.
+- Root documentation and changelog now describe team-task-package as the template source and refresh counts to 44 shared operational skills and 61 Codex deployed skills.
+- Root documentation and changelog describe captain-minimal team coding with task type classification, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, 05 condense coverage, automatic triggers, and no pre-board specialist branches.
+- Root documentation and changelog describe governed team collaboration with role boundaries, isolated patch packets, Doctor semantic coverage, experiment minimum governance, and refreshed 44/61 skill counts.
+- Root documentation and changelog describe the team-first evidence model: main-agent accountability for writes and gates, evidence branches by default for evidence-oriented stations, and all-direct boards rejected without concrete exceptions.
 - Root documentation describes shared matrix source paths and their deployed `.agents/shared/` paths.
 - Root documentation describes downstream project-local tools under `.agents/tools/` and labels source-manager commands as framework-source-only paths.
-- Changelog includes a dedicated AI Rules Manager v0.1.19 section for token-stable Doctor checks, project skill discovery repair, and shared skill margin.
-- Changelog includes an MCP memory tool governance section covering workflow evidence, tool contracts, Traditional Chinese tool output, and cross-platform alignment.
+- Changelog covers AI Rules Manager token-stable Doctor checks, project skill discovery repair, shared skill margin, MCP memory tool governance, Traditional Chinese tool output, and cross-platform alignment.
 - AI_Rules is the source repository for Antigravity, Claude Edition, and Codex Edition governance.
 - Director-facing output must use Traditional Chinese unless a lower-level artifact explicitly requires another language.
 - Root repository work, git status, commit, tag, and push operations use `D:\AI_Rules` as the baseline.
 - The shared source memory store is `.agents/memory/`; project context is `.agents/context/`.
 - The PowerShell deployment implementation moved to child card `_system.scripts` for file ownership.
-- Root documentation describes 08 as a deep evidence audit with depth modes, inventories, coverage denominators, and log-only intermediate evidence.
-- Root documentation and changelog now describe change intent governance, patch-stack escalation, visual detail observation, and real-information visual evidence.
-- Root documentation and changelog now describe requirement alignment, neutral challenge, traceability, drift-audit governance, engineering review governance, and review-state coverage; shared skill count is 43 and Codex total skill count is 60.
+- Root documentation and changelog describe deep audit, change intent, visual evidence, requirement alignment, neutral challenge, traceability, drift-audit, engineering review, and review-state governance.
 
 ## Active Constraints
 - Do not commit, push, tag, publish, install, upgrade, or mutate external state without explicit Director approval.
@@ -56,25 +56,17 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 24: Corrected root platform skill-count table from 43 to 44 shared operational skills after commit-review evidence flagged the mismatch.
+- 23: Documented packet-based team completion, strict captain substitution risk, and verified Doctor/Audit green after source/deployed sync.
+- 22: Added team-task-package template governance, refreshed 44/61 skill-count facts, and verified Doctor/Audit green.
+- 21: Documented captain minimum execution, text patch packets, accepted-risk captain substitution, and 05 condense team-board coverage.
+- 20: Documented task type, dispatch pre-gate, and captain minimum-execution upgrades in root docs and changelog.
 - 19: Documented captain-led team coding mode across root README and CHANGELOG.
 - 18: Documented team-first Full B governance, fake-team guard, direct-exception contract, and core accountability wording across root docs and changelog.
 - 17: Recorded the Codex core skill-count wording fix in the changelog.
 - 16: Documented Full B governance hardening: applicability/execution-mode station boards, experiment minimum governance, special-route-first delegation, Doctor coverage, and refreshed 43/60 skill counts.
 - 15: Documented AI Rules Manager v0.1.19 for Doctor token stability and project skill discovery repair.
 - 14: Documented engineering review governance, Doctor review coverage, AI Rules Manager v0.1.18, and refreshed 43/60 skill counts.
-- 13: Documented requirement alignment and drift-audit governance across root docs and changelog.
-- 12: Documented change intent and visual evidence governance across root docs and changelog.
-- 11: Added changelog coverage for MCP memory tool governance and Traditional Chinese project-tool output compatibility.
-- 10: Documented project-local tool deployment and AI Rules Manager v0.1.17 release notes.
-- 09: Added dedicated AI Rules Manager v0.1.16 changelog section so Release workflow can extract version notes.
-- 08: Updated root documentation and changelog release examples to AI Rules Manager v0.1.16 after sync coverage implementation.
-- 07: Recorded downstream sync coverage documentation and AI Rules Manager v0.1.16 release notes.
-- 05: Documented shared governance reference deployment in root documentation.
-- 06: Added changelog coverage for shared governance reference deployment.
-- 01: Migrated active main file to MEMORY.md and added content-quality metadata.
-- 02: Split root PowerShell script ownership into `_system.scripts`.
-- 03: Recorded changelog summary for the memory main-file migration and split commit.
-- 04: Updated root documentation for the deep evidence audit model and inventory log artifact.
 
 ## Archive Index
 - archive-001.md — Legacy _system card identity and decisions through D39.
@@ -112,8 +104,3 @@ metadata:
 - _claude_core (Claude platform source)
 - _ag_core (Antigravity platform source)
 - _system.scripts (child card: root PowerShell scripts)
-
-## Applicable Skills
-- memory-ops — Use when updating this card.
-- memory-arch — Use when adding or changing child-card topology.
-- plugin-release-governance — Use when VSIX, tag, or GitHub Release behavior changes.

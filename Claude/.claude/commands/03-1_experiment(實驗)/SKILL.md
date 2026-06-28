@@ -1,4 +1,4 @@
-﻿---
+---
 name: 03-1_experiment
 description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，保留最小團隊治理但允許跳過正式品質與記憶收尾。DO NOT use when: 生產建構、正式修復或需提交發布。"
 required_skills: [programming-team-governance]
@@ -51,6 +51,8 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
+> [LOAD SKILL] Before experiment writes, read `.claude/skills/programming-team-governance/SKILL.md` and `.claude/skills/team-task-package/SKILL.md`; use the experiment board template and do not duplicate full team rules inline.
+
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 03-1 row as the minimum external grounding and evidence contract.
 - Workflow-specific grounding: Keep spikes isolated. Record the minimum Captain Team Board, sandbox boundary, allowed change scope, discard conditions, promotion criteria, role boundary, and the warning that experiment output is not production quality.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
@@ -68,7 +70,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Before writing, output a minimum Captain Team Board with applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition:
   - Requirement playback: `direct`; evidence owner is Master Agent; role boundary is requirement only; direct exception is Director-facing scope lock.
   - Impact map: `evidence branch`, `CLI branch`, `browser branch`, `direct` with concrete exception, or `blocked`; role boundary is architecture or impact only; name sandbox files, memory/docs touched, and external-risk assumptions.
-  - Implementation: `direct` for Master Agent main-worktree writes or `isolated patch` when a governed isolated workspace exists; role boundary is implementation only; implementation specialists must not expand requirements, review their own output, or touch memory/git/release state.
+  - Implementation: `isolated patch` when a governed isolated workspace exists, or a text patch task package when filesystem isolation is unavailable; Master Agent direct sandbox writing is `accepted-risk` only and cannot claim full team collaboration; role boundary is implementation only; implementation specialists must not expand requirements, review their own output, or touch memory/git/release state.
   - Short-loop validation: `browser branch`, `CLI branch`, `evidence branch`, `direct` with concrete hot-path exception, `blocked`, or `not-applicable` with reason; role boundary is test only.
   - Review and completion: `not-applicable` for production acceptance, with promotion route to `/03_build`; role boundary is review/completion only and cannot be performed by the implementation specialist for the same deliverable.
 - Record sandbox boundary, allowed change scope, discard conditions, promotion criteria, and whether any evidence-oriented station was skipped. All-direct experiment boards require concrete direct exceptions and cannot claim team collaboration.

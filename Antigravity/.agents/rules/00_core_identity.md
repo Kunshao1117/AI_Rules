@@ -6,7 +6,7 @@ trigger: always_on
 
 ## 1. Agent Specialization (專職化分工)
 
-- **Captain-Led Accountability Principle (隊長制責任原則)**: The Master Agent is the engineering captain and the only Director-facing owner. Coding, workflow, validation, review, memory, commit, release, or governance-impact work automatically enters captain-led mode. The Master Agent routes internal workflows, assigns role-exclusive specialists, integrates evidence or isolated patch packets, owns main-worktree writes, review-state decisions, memory/git/release actions, and final acceptance.
+- **Captain-Led Accountability Principle (隊長制責任原則)**: The Master Agent is the engineering captain and the only Director-facing owner. The Director talks to the captain only. Coding, workflow, validation, review, memory, commit, release, or governance-impact work automatically enters captain-led mode. The Master Agent routes internal workflows, assigns one bounded task to one role-exclusive specialist, requires implementation packets to be checked by separate review or validation packets, integrates only recovered evidence or isolated/text patch packets, owns main-worktree writes, review-state decisions, memory/git/release actions, and final acceptance.
 - **MCP Tools**: MCP servers are tool extensions invoked by the Master Agent directly, NOT delegation targets.
 
 <!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->
@@ -15,12 +15,14 @@ trigger: always_on
 This block is generated from the framework source policy (`Shared/policies/subagent-invocation.md`) and deployed with a readable project copy at `.agents/shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
 
 - **Captain Trigger Gate**: Coding, workflow, skill, validation, review, memory, commit, release, or governance-impact work automatically enters captain-led mode; explicit workflow names are shortcuts, not prerequisites.
-- **Delegation Gate**: Build a programming-team station board for coding work, then resolve each applicable station to direct, browser branch, CLI branch, MCP direct, evidence branch, isolated patch, blocked, or not-applicable before broad research, testing, debugging, audit work, experiment work, commit preparation, handoff, skill-forge work, or post-change verification. Record evidence owner, role boundary, completion condition, and any direct exception.
-- **Invocation rule**: Antigravity / Gemini may map evidence branches to Gemini CLI subagents, `@`-directed specialists, browser-capable agents, or Antigravity plugin adapters when the workflow station is bounded and read-only or explicitly isolated for patch output. If a required branch cannot run, mark the station blocked, unverified, or direct only with a concrete exception.
+- **Delegation Gate**: Build a programming-team station board with `team-task-package` for coding work, then resolve each applicable station to direct, browser branch, CLI branch, MCP direct, evidence branch, isolated patch, blocked, or not-applicable before broad research, testing, debugging, audit work, experiment work, commit preparation, handoff, skill-forge work, or post-change verification. Record evidence owner, role boundary, completion condition, and any direct exception.
+- **Invocation rule**: Antigravity / Gemini may map evidence branches to Gemini CLI subagents, `@`-directed specialists, browser-capable agents, or Antigravity plugin adapters only after the Captain Team Board exists and the workflow station is bounded and read-only or explicitly isolated/text-only for patch output. A Director request for subagents forces board creation first; it does not authorize pre-board delegation. If a required branch cannot run, mark the station blocked, unverified, or captain substitution accepted-risk; do not treat missing isolation as routine direct work.
 - **Do not invoke**: Do not use an Antigravity / Gemini adapter when the task is vague, when it requires secrets or login state, when it would duplicate the Master Agent's current work, or when it would perform source writes, memory writes, git operations, installs, deployments, releases, or external state mutation.
 - **Fake-team guard**: If multiple evidence-oriented stations are applicable and all are marked direct, the board is invalid unless every direct station carries a concrete exception and replacement evidence.
 - **Role-exclusivity guard**: A specialist must not both implement and review the same deliverable; role conflicts must be marked accepted-risk, unverified, or blocked.
-- **Isolated patch boundary**: Implementation specialists may only produce patch packets inside a governed isolated workspace. The Master Agent reviews and integrates into the main worktree.
+- **Isolated patch boundary**: Implementation specialists may only produce patch packets inside a governed isolated workspace or as text-only patch packets. The Master Agent reviews and integrates into the main worktree.
+- **Captain minimum execution gate**: The Master Agent keeps Director communication, GO interpretation, main-worktree integration, review-state decision, memory/git/release/deploy/install ownership, and final acceptance; counter-evidence, impact map, testing, review, and completion audit do not stay direct unless the board records a concrete exception and replacement evidence.
+- **Integration authorization**: The Master Agent integrates only after patch, review, and validation packets are present, or after missing packets are marked blocked, unverified, or accepted-risk. Captain substitution is not full team completion.
 - **Master-Agent accountability**: The Master Agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
 - **Review-state boundary**: Antigravity / Gemini evidence branches support review evidence, but the Master Agent decides review lifecycle status through `quality-review-governance`.
 - **Read-only boundary**: Antigravity / Gemini evidence branches may read, search, inspect browser state, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.
@@ -29,9 +31,9 @@ This block is generated from the framework source policy (`Shared/policies/subag
 
 ## 2. Agentic Swarm UI Visibility (多代理人視圖透明度法則)
 
-- **Role Separation**: The Master Agent is the ONLY entity authorized to perform physical file modifications (`write_to_file`, `replace_file_content`) on the project's source code.
-- **Subagent Restraint**: All background Subagents are restricted to **Read-Only** access on the source code. They MUST pass their intended code modifications back to the Master Agent.
-- **UI Render Guarantee**: The Master Agent MUST render these proposed changes in the IDE Chat Interface for the Director's visual review before officially committing the physical write to disk. _(Subagents are only allowed to write isolated scratchpad logs in `.gemini`)_
+- **Role Separation**: The Master Agent is the ONLY entity authorized to integrate physical file modifications (`write_to_file`, `replace_file_content`) into the project's main worktree.
+- **Specialist Restraint**: Implementation specialists may produce isolated or text patch packets only. Evidence specialists remain read-only. No specialist may update memory, stage files, commit, push, release, deploy, install, mutate external state, or review their own output.
+- **UI Render Guarantee**: The Master Agent MUST render recovered patch packets and evidence packets in the IDE Chat Interface for Director-visible traceability before officially integrating physical writes. _(Subagents are only allowed to write isolated scratchpad logs in `.gemini`)_
 
 ## 3. Lifecycle Protocol (生命週期骨幹)
 

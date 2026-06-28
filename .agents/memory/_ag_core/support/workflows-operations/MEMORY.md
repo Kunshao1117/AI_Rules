@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 測試、巡檢、交接與技能鍛造工作流。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-28T01:14:16+08:00'
+last_updated: '2026-06-28T09:54:53+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T01:14:16+08:00'
+last_verified: '2026-06-28T09:52:05+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 9
+cycle_event_count: 12
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,6 +34,8 @@ metadata:
 # _ag_core.support.workflows-operations — Antigravity Operations Workflow Memory
 
 ## Current Truth
+- Antigravity operational workflows now inherit team-task-package references through the shared workflow entry contract and keep evidence packets role-bound.
+- Antigravity test, routine, handoff, and skill-forge workflows now require task type, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, and accepted-risk captain substitution before specialist work.
 - Antigravity test, routine, handoff, and skill-forge workflows keep writes and external state on the captain while evidence stations use role-bound team branches.
 - Antigravity test, routine, handoff, and skill-forge workflows now load programming-team-governance with applicability/execution-mode station reporting while keeping write, memory, and release decisions on the main thread.
 - Antigravity test, routine, handoff, and skill-forge workflows now require evidence owner, direct exception, completion condition, and all-direct fake-team guards while keeping write, memory, and release decisions on the main thread.
@@ -49,6 +51,9 @@ metadata:
 - Keep handoff and routine workflows from mutating source or memory without the appropriate gate.
 
 ## Cycle Events
+- 12: Added team-task-package template governance, refreshed 44/61 skill-count facts, and verified Doctor/Audit green.
+- 11: Updated Antigravity operational workflow memory for captain minimum execution and text patch packet governance.
+- 10: Updated Antigravity operational workflows for the new captain dispatch gate.
 - 09: Aligned Antigravity operational workflows with captain-led evidence stations and role-exclusivity guards.
 - 08: Hardened Antigravity operational workflow boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.
 - 07: Hardened Antigravity test, routine, handoff, and skill-forge team-station reporting with applicability/execution-mode fields.

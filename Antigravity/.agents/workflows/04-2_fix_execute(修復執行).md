@@ -52,7 +52,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Separate symptom, confirmed root cause, repair scope, regression evidence, and the conditions that route back to debug or test.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md` and enter captain-led mode automatically. Build a Captain Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Valid execution modes are direct, evidence branch, browser branch, CLI branch, MCP direct, isolated patch, blocked, or not-applicable. Evidence-oriented stations default to read-only team evidence; implementation specialists may only produce isolated patch packets when a governed isolated workspace exists; all-direct evidence boards are invalid. Role boundaries are exclusive: implementation cannot self-review and review cannot implement the same deliverable. The captain owns main-worktree writes, review state, memory/git/release actions, and acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md` and `.agents/skills/team-task-package/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records task type, workflow route, implementation authorization, allowed/forbidden specialist roles, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
 
 # [WORKFLOW: FIX EXECUTE (修復執行)]
 
@@ -63,17 +63,20 @@ Technical details may only appear after a `補充技術細節` section when they
 - [ASSERT] Confirm `implementation_plan.md` artifact exists and has been reviewed by the Director.
 - [ASSERT] Call `task_boundary` to switch to `EXECUTION` mode.
 
-## 2. Physical Fix Execution
+## 2. Fix Patch Packet Dispatch And Integration
 
-> [LOAD SKILL] Before writing fix to disk, you MUST consult:
+> [LOAD SKILL] Before integrating fix packets, you MUST consult:
 > `view_file .agents/skills/security-sre/SKILL.md`
 
-- [EXECUTE] Apply the fix strictly as defined in `implementation_plan.md`. Modify only the target files and lines specified.
-- [FORBIDDEN] Do NOT touch any file outside the approved plan scope.
+- [ASSERT] Confirm the Captain Team Board is updated to GO-write authorization before any main-worktree write.
+- [EXECUTE] Create or confirm the fix patch packet route from `team-task-package`: governed isolated workspace patch when available, otherwise text patch packet. Captain direct fixing is allowed only as `captain substitution accepted-risk` with the missing isolation condition recorded on the board.
+- [EXECUTE] Assign one bounded implementation specialist for the repair. The specialist may produce only the fix patch packet and must stay strictly limited to `implementation_plan.md`.
+- [FORBIDDEN] The implementation specialist must not touch memory, git, release, deployment, external state, or review their own fix.
+- [EXECUTE] Assign separate review and regression validation packets. The captain integrates only returned and reviewed fix packets into the main worktree.
 
 ## 3. Mandatory Distillation
 
-- [EXECUTE] Immediately after writing the fix:
+- [EXECUTE] Immediately after captain integration of the reviewed fix packet:
   1. Record the fix as one short English item in the affected memory skill's `## Cycle Events`; update `## Current Truth` only if the still-valid behavior changed.
   2. Update the memory skill's frontmatter (`last_updated`, `staleness: 0`).
 - [EXECUTE] Execute `impact-test-strategy` skill § 3 to auto-generate a regression test for this fix.
@@ -103,7 +106,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > Inherits: `.agents/workflows/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Writer/SRE` | Permissions based on the security gate matrix。
+- **Role**: `Captain/SRE` | 主工作區寫入僅限整合已回收修復補丁包；實作隊員只產出隔離或文字補丁包。
 - **Memory Update**: After executing the fix, update all affected active memory main files.
 
 ---

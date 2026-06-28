@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 基礎與討論建構工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-28T01:14:16+08:00'
+last_updated: '2026-06-28T11:33:36+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T01:14:16+08:00'
+last_verified: '2026-06-28T11:28:20+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 10
+cycle_event_count: 14
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,6 +34,9 @@ metadata:
 # _ag_core.support.workflows-foundation — Antigravity Foundation Workflow Memory
 
 ## Current Truth
+- Antigravity build planning now says later execution performs patch-packet integration and memory filing, not unbounded physical direct writing.
+- Antigravity experiment and foundation workflows now explicitly load team-task-package and use template references instead of duplicating full team rules inline.
+- Antigravity chat, explore, build planning, experiment, and condense workflows now route coding intent through task type, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, and accepted-risk captain substitution rules.
 - Antigravity chat and explore now route coding intent into captain-led mode, and experiment uses a minimum Captain Team Board with role boundary and isolated patch conditions.
 - Antigravity build planning and foundation coding workflows now load programming-team-governance and require applicability/execution-mode Programming Team Boards before coding-related work proceeds.
 - Antigravity build, experiment, and foundation workflows now require evidence owner, direct exception, completion condition, and all-direct fake-team guards in Programming Team Boards.
@@ -50,6 +53,10 @@ metadata:
 - Keep shared gate fragments aligned with platform governance.
 
 ## Cycle Events
+- 14: Reworded Antigravity build planning completion handoff to patch-packet integration, removed old direct-write phrasing, and verified source/deployed hash.
+- 13: Added team-task-package template governance, refreshed 44/61 skill-count facts, and verified Doctor/Audit green.
+- 12: Added Antigravity condense team-board coverage and updated foundation workflow memory for captain minimum execution and text patch packets.
+- 11: Updated Antigravity foundation workflows for the new captain dispatch gate.
 - 10: Upgraded Antigravity foundation workflows for automatic captain trigger and experiment minimum governance.
 - 09: Hardened Antigravity foundation workflow boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.
 - 08: Added applicability/execution-mode Programming Team Board reporting to Antigravity blueprint, build, and experiment foundation workflows and synced deployed workflow copies.

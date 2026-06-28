@@ -51,7 +51,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Require explicit file lists, memory hygiene, status-check awareness, changelog quality, version impact, and governed release routing before commit or push.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md` and enter captain-led mode automatically. Build a Captain Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Valid execution modes are direct, evidence branch, browser branch, CLI branch, MCP direct, isolated patch, blocked, or not-applicable. Evidence-oriented stations default to read-only team evidence; implementation specialists may only produce isolated patch packets when a governed isolated workspace exists; all-direct evidence boards are invalid. Role boundaries are exclusive: implementation cannot self-review and review cannot implement the same deliverable. The captain owns main-worktree writes, review state, memory/git/release actions, and acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md` and `.agents/skills/team-task-package/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records task type, workflow route, implementation authorization, allowed/forbidden specialist roles, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
 
 # [WORKFLOW: COMMIT EXECUTE (授權備份)]
 
@@ -78,10 +78,14 @@ Technical details may only appear after a `補充技術細節` section when they
 > `view_file .agents/skills/github-ops/SKILL.md`
 
 [EXECUTE ONLY UPON GO]
-Run: write the approved CHANGELOG entry to `CHANGELOG.md`.
-Run: `git add <approved file list including CHANGELOG.md>`
-Run: `git commit -m "{Message}"`
-Run: `git push`
+- Confirm the Programming Team Board is commit-release task type and memory/git/release ownership is captain-only.
+- Collect review, validation, changelog-quality, release-readiness, and completion evidence packets before protected writes or git operations.
+- Evidence packet owners must not be the implementation specialists whose changes are being prepared for commit.
+- Captain only: write the approved CHANGELOG entry to `CHANGELOG.md`.
+- Captain only: `git add <approved file list including CHANGELOG.md>`
+- Captain only: `git commit -m "{Message}"`
+- Captain only: `git push`
+- [FORBIDDEN] No specialist, subagent, browser branch, CLI evidence branch, or isolated patch branch may write memory cards, stage files, commit, push, tag, publish releases, or mutate external state.
 
 ## 4a. CHANGELOG Update（CHANGELOG 同步更新）
 
@@ -107,4 +111,4 @@ Run: `git push`
 ## [SECURITY & COMPLIANCE MANDATE]
 > Inherits: `.agents/workflows/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Writer/SRE` | CHANGELOG 寫入與授權清單 git 操作權限，不得修改其他來源檔案
+- **Role**: `Captain/SRE` | CHANGELOG 寫入與授權清單 git 操作為隊長專屬；隊員只提供審查、驗證與收尾證據包

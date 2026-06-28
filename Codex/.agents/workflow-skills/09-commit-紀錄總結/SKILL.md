@@ -56,7 +56,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Require explicit file lists, review state and accepted-risk/unverified/blocker awareness, memory hygiene, status-check awareness, changelog quality, version impact, and governed release routing before commit or push.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md` and enter captain-led mode automatically. Build a Captain Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Valid execution modes are direct, evidence branch, browser branch, CLI branch, MCP direct, isolated patch, blocked, or not-applicable. Evidence-oriented stations default to read-only team evidence; implementation specialists may only produce isolated patch packets when a governed isolated workspace exists; all-direct evidence boards are invalid. Role boundaries are exclusive: implementation cannot self-review and review cannot implement the same deliverable. The captain owns main-worktree writes, review state, memory/git/release actions, and acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md` and `.agents/skills/team-task-package/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records task type, workflow route, implementation authorization, allowed/forbidden specialist roles, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
 
 # source-command-09-commit-skill
@@ -126,7 +126,15 @@ Output:「【防線鎖定】準備遠端備份。請確認上方 Commit Message 
 
 > Begins only after Director inputs GO.
 
-### 5. CHANGELOG Update (CHANGELOG 更新)
+GO for this workflow authorizes the captain to run protected completion work. It does not authorize any specialist to write memory cards, stage files, commit, push, tag, publish releases, or mutate external state. Specialists may provide review, validation, changelog-quality, release-readiness, or completion evidence packets only.
+
+### 5. Review And Completion Evidence Packets（審查與收尾證據包）
+
+- Before protected writes or git operations, confirm the Programming Team Board has commit-release task type and captain-only memory/git/release ownership.
+- Collect required review and completion evidence packets for changed-file list, review-state blockers, accepted-risk items, memory hygiene, changelog quality, status-check awareness, version impact, and governed release routing.
+- Evidence packet owners must not be the implementation specialists whose changes are being prepared for commit.
+
+### 6. CHANGELOG Update (CHANGELOG 更新)
 
 - Only after GO, write the approved entry to repository root `CHANGELOG.md`（Keep a Changelog 格式）.
 - 格式：`## [YYYY-MM-DD]` 下分 `### feat` / `### fix` / `### chore` 三類
@@ -140,11 +148,11 @@ Output:「【防線鎖定】準備遠端備份。請確認上方 Commit Message 
   - 路徑修正 — 修復修復工作流與備份工作流中的記憶卡路徑錯誤
   ```
 
-### 6. Commit & Push
+### 7. Commit & Push
 
 > [LOAD SKILL] Read `.agents/skills/github-ops/SKILL.md`.
 
-Run via `Bash` tool (sequential):
+Captain-only protected operations via `Bash` tool (sequential):
 ```bash
 git add <approved file list including CHANGELOG.md>
 git commit -m "<approved message>"
@@ -152,8 +160,9 @@ git push
 ```
 
 [MCP HITL GATE] applies: `git push` is 🟡 MEDIUM risk. Output Justification Block before executing.
+No specialist, subagent, browser branch, CLI evidence branch, or isolated patch branch may run these operations.
 
-### 7. Completion
+### 8. Completion
 
 - Confirm push succeeded. Report branch name and commit hash.
 - Output completion summary in Traditional Chinese.
@@ -162,5 +171,5 @@ git push
 
 ## [SECURITY & COMPLIANCE]
 - **Stage 1 Role**: Reader — no source file modifications.
-- **Stage 2 Role**: Writer/SRE — CHANGELOG write + approved git operations only, no unrelated source file edits.
+- **Stage 2 Role**: Captain/SRE — CHANGELOG write plus approved git operations are captain-only; specialists provide evidence packets only.
 - **Memory**: read — check staleness only, no card writes in this workflow.

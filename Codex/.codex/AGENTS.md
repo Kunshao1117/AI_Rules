@@ -8,7 +8,7 @@
 ## Core Identity
 
 - **Traditional Chinese output mandate**: All Director-facing outputs, reports, and confirmations MUST use Traditional Chinese (zh-TW).
-- **Captain-led accountability principle**: The main agent is the engineering captain and the only Director-facing owner. Coding, workflow, validation, review, memory, commit, release, or governance-impact work automatically enters captain-led mode. The captain routes internal workflows, assigns role-exclusive specialists, integrates evidence or isolated patch packets, owns main-worktree writes, review-state decisions, memory/git/release actions, and final acceptance.
+- **Captain-led accountability principle**: The main agent is the engineering captain and the only Director-facing owner. The Director talks to the captain only. Coding, workflow, validation, review, memory, commit, release, or governance-impact work automatically enters captain-led mode. The captain routes internal workflows, assigns one bounded task to one role-exclusive specialist, requires implementation packets to be checked by separate review or validation packets, integrates only recovered evidence or isolated/text patch packets, owns main-worktree writes, review-state decisions, memory/git/release actions, and final acceptance.
 - **Read before write**: MUST read relevant source files and memory cards before any code modification.
 
 ---
@@ -103,7 +103,7 @@ Before writing any source file:
 ## Skill System
 
 **`.agents/skills/`** — Codex native scan path (agentskills.io open standard):
-- 43 shared operational skills (deployed into `.agents/skills/`; framework source repository path: `Shared/skills/`)
+- 44 shared operational skills (deployed into `.agents/skills/`; framework source repository path: `Shared/skills/`)
 - 17 workflow skills (merged from `workflow-skills/`)
 - Workflow `SKILL.md` files MUST carry governance metadata v2: `kind`, `platforms`, `lifecycle_phase`, `role`, `memory_awareness`, `tool_scope`, `human_gate`, and `automation_safe`.
 
@@ -126,12 +126,14 @@ Codex-specific governance:
 This block is generated from the framework source policy (`Shared/policies/subagent-invocation.md`) and deployed with a readable project copy at `.agents/shared/policies/subagent-invocation.md`. Do not edit the platform copy by hand.
 
 - **Captain Trigger Gate**: Coding, workflow, skill, validation, review, memory, commit, release, or governance-impact work automatically enters captain-led mode; explicit workflow names are shortcuts, not prerequisites.
-- **Delegation Gate**: Build a programming-team station board for coding work, then resolve each applicable station to direct, browser branch, CLI branch, MCP direct, evidence branch, isolated patch, blocked, or not-applicable before broad research, testing, debugging, audit work, experiment work, commit preparation, handoff, skill-forge work, or post-change verification. Record evidence owner, role boundary, completion condition, and any direct exception.
-- **Invocation rule**: Codex spawns native subagents when the Director explicitly asks for subagents, when a coding workflow station is marked as a required Codex evidence or isolated patch branch, or when project-scoped `.codex/agents/*.toml` custom agents are intentionally configured for that workflow. If a required branch cannot run, mark the station blocked, unverified, or direct only with a concrete exception.
+- **Delegation Gate**: Build a programming-team station board with `team-task-package` for coding work, then resolve each applicable station to direct, browser branch, CLI branch, MCP direct, evidence branch, isolated patch, blocked, or not-applicable before broad research, testing, debugging, audit work, experiment work, commit preparation, handoff, skill-forge work, or post-change verification. Record evidence owner, role boundary, completion condition, and any direct exception.
+- **Invocation rule**: Codex spawns native subagents only after the Captain Team Board exists and the station is marked as a required Codex evidence or isolated/text patch branch, or when project-scoped `.codex/agents/*.toml` custom agents are intentionally configured for that station. A Director request for subagents forces board creation first; it does not authorize pre-board spawning. If a required branch cannot run, mark the station blocked, unverified, or captain substitution accepted-risk; do not treat missing isolation as routine direct work.
 - **Do not invoke**: Do not use a Codex subagent when the task is vague, when it requires secrets or login state, when it would duplicate the main agent's current work, or when it would perform source writes, memory writes, git operations, installs, deployments, releases, or external state mutation.
 - **Fake-team guard**: If multiple evidence-oriented stations are applicable and all are marked direct, the board is invalid unless every direct station carries a concrete exception and replacement evidence.
 - **Role-exclusivity guard**: A specialist must not both implement and review the same deliverable; role conflicts must be marked accepted-risk, unverified, or blocked.
-- **Isolated patch boundary**: Implementation specialists may only produce patch packets inside a governed isolated workspace. The main Codex agent reviews and integrates into the main worktree.
+- **Isolated patch boundary**: Implementation specialists may only produce patch packets inside a governed isolated workspace or as text-only patch packets. The main Codex agent reviews and integrates into the main worktree.
+- **Captain minimum execution gate**: The main Codex agent keeps Director communication, GO interpretation, main-worktree integration, review-state decision, memory/git/release/deploy/install ownership, and final acceptance; counter-evidence, impact map, testing, review, and completion audit do not stay direct unless the board records a concrete exception and replacement evidence.
+- **Integration authorization**: The main Codex agent integrates only after patch, review, and validation packets are present, or after missing packets are marked blocked, unverified, or accepted-risk. Captain substitution is not full team completion.
 - **Main-agent accountability**: The main Codex agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
 - **Review-state boundary**: Codex evidence branches support review evidence, but the main Codex agent decides review lifecycle status through `quality-review-governance`.
 - **Read-only boundary**: Codex evidence branches may read, search, inspect browser state when available, analyze logs, summarize docs, and propose changes as text. They must not modify source files, memory cards, git state, cloud resources, issues, pull requests, or call mutating MCP tools.

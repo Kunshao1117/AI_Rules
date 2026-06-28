@@ -1,4 +1,4 @@
-﻿---
+---
 name: 01_explore
 description: "Use when: 探索新商業想法、技術方向、可行性研究、網路研究、魔鬼代言人分析。DO NOT use when: 需要直接寫程式、修 bug 或提交。"
 required_skills: []
@@ -61,7 +61,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 1. Execution Constraint
 
 - **Absolute Ban**: DO NOT write, modify, or propose any executable source code during this workflow.
-- If the Director's request shifts from research into coding, fixing, testing, debugging, commit preparation, or governance-impact work, stop this workflow and route into captain-led programming mode. Explicit command names are shortcuts, not prerequisites.
+- If the Director's request shifts from research into coding, fixing, testing, debugging, commit preparation, or governance-impact work, stop this workflow and route into captain-led programming mode. Explicit command names are shortcuts, not prerequisites. The routed workflow must apply Task Type Gate, Dispatch Pre-Gate, and Captain Minimum Execution Gate before any specialist branch starts.
 
 [RECON GATE] Select research path:
 - IF (research requires only text/data retrieval):

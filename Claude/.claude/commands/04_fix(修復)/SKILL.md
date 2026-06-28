@@ -60,7 +60,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Separate symptom, confirmed root cause, review purpose/state when required, repair scope, regression evidence, and the conditions that route back to debug or test.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.claude/skills/programming-team-governance/SKILL.md` and enter captain-led mode automatically. Build a Captain Team Board before planning, execution, validation, review, or completion. Report each applicable Team Station with applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Valid execution modes are direct, evidence branch, browser branch, CLI branch, MCP direct, isolated patch, blocked, or not-applicable. Evidence-oriented stations default to read-only team evidence; implementation specialists may only produce isolated patch packets when a governed isolated workspace exists; all-direct evidence boards are invalid. Role boundaries are exclusive: implementation cannot self-review and review cannot implement the same deliverable. The captain owns main-worktree writes, review state, memory/git/release actions, and acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.claude/skills/programming-team-governance/SKILL.md` and `.claude/skills/team-task-package/SKILL.md`. Treat this command as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records task type, workflow route, implementation authorization, allowed/forbidden specialist roles, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
 
 # [SKILL: /fix — 修復計畫與執行]
@@ -125,11 +125,13 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > Begins only after Director inputs GO.
 
-### 5. Exit Plan Mode & Fix
+### 5. Confirm Patch Packets & Integrate Fix
 
-- Call `ExitPlanMode`. Apply fixes using `Write`/`Edit` tools.
-- Strictly limited to the files listed in `【修改範圍】`. No scope creep.
-- Apply `[SEC SILENT GATE]` before each write.
+- Call `ExitPlanMode` only after the Programming Team Board has been updated to GO-write authorization.
+- Before any main-worktree source write, create or confirm the fix patch packet route from `team-task-package`: governed isolated workspace patch when available, otherwise text patch packet. Captain direct fixing is allowed only as `captain substitution accepted-risk` with the missing isolation condition recorded on the board.
+- Assign one bounded implementation specialist for the repair. The specialist may produce only the patch packet and must stay strictly limited to the files listed in `【修改範圍】`; no scope creep, memory writes, git operations, release actions, or self-review.
+- Assign separate regression validation and review packets before final acceptance. Review and validation owners must not be the same specialist who authored the fix patch.
+- The captain integrates only returned and reviewed fix packets into the main worktree and applies `[SEC SILENT GATE]` before each integrated write.
 
 ### 6. Regression Test (回歸測試)
 
@@ -154,5 +156,5 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## [SECURITY & COMPLIANCE]
 - **Stage 1 Role**: Reader — no disk writes.
-- **Stage 2 Role**: Writer/SRE — Write/Edit on exact files listed in plan only.
+- **Stage 2 Role**: Captain/SRE — main-worktree writes are integration of approved fix patch packets only.
 - **Memory**: full — modified files MUST have memory card updates.

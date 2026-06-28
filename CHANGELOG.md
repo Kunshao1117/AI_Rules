@@ -2,10 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-06-28] 隊長制團隊任務包模板化
+
+### feat
+- **Team task package** — 新增團隊任務包共用技能，集中保存輕量任務板、完整任務板、實驗任務板、專員任務包、證據包、隔離補丁包、文字補丁包、直接處理例外與收尾檢查表。
+- **Workflow template references** — Codex workflow、Claude command 與 Antigravity workflow 入口改為載入隊長制編程治理與團隊任務包，不再在每個入口複製長段任務板規則。
+- **Patch packet contract** — 實作隊員輸出被明確分成受治理隔離區補丁、文字補丁任務包與隊長代工風險接受三種，避免「隊員實作」被誤解成可直接改主工作區。
+- **GO execution routing** — 三平台建構、修復與提交入口明確改為 GO 後先派實作補丁包、審查包、驗證包或收尾證據包；隊長只整合已回收補丁並保留記憶、Git 與發布閘門。
+
+### fix
+- **Captain scope reduction** — 隊長制編程治理改回語義核心，只負責觸發、角色邊界、隊長最小執行權與完成誠實性；任務板與專員包模板交由團隊任務包維護。
+- **Doctor semantic coverage** — 巡檢模組新增團隊任務包存在性與模板欄位檢查，並攔截工作流殘留舊版長段規則，避免同步成功但語義漂移。
+- **Documentation alignment** — 根文件與三平台文件更新共用操作型技能數為 44，Codex Edition 部署後技能總數為 61（44 共用 + 17 工作流），並說明團隊任務包的單一責任。
+
 ## [2026-06-28] 隊長制編程團隊協作模式
 
 ### feat
 - **Captain trigger gate** — 編程、修改、除錯、測試、審查、記憶、提交、發布或治理影響任務會依語意自動進入隊長制，不再要求總監手動指定工作流或要求子代理。
+- **Task type and dispatch pre-gate** — 隊長制啟動後必須先判斷任務類型、工作流路由、實作授權、允許角色與禁止角色，再建立隊長任務板；任何隊員、子代理、瀏覽器分支、CLI 分支或隔離補丁不得早於任務板啟動。
+- **Captain minimum execution gate** — 隊長正式限制為理解、派工、主工作區整合、審查狀態、記憶、提交、發布與最終驗收；反證、影響面、測試、審查與收尾稽核預設不得全部由主線包辦，隊長代工只能標為風險接受。
 - **Captain team board** — 團隊站點板升級為隊長任務板，每站必須標示是否適用、執行模式、證據負責人、角色邊界、主線直做例外與完成條件。
 - **Role exclusivity** — 新增嚴格角色互斥：提出需求者不實作，架構者不偷改需求，實作者不能審查自己的交付物，審查者不能同時實作同一交付物。
 - **Isolated patch branch** — 子代理實作不再只能是唯讀採證；若平台具備受治理隔離區，實作隊員可產出 patch packet，但主工作區寫入、整合、驗證、記憶、提交、推送與發布仍由隊長負責。
@@ -13,7 +28,8 @@ All notable changes to this project will be documented in this file.
 
 ### fix
 - **Experiment boundary** — 三平台實驗入口保留快速試錯，但最小治理宣告改為 Captain Team Board，並加入角色邊界、隔離補丁條件、不能自我審查與不能宣稱團隊協作的全主線例外。
-- **Doctor semantic coverage** — 巡檢模組改抓隊長觸發、角色邊界、隔離補丁、自我審查、00/01 自動轉向與實驗邊界，避免舊版只檢查 Full B 字串造成假綠燈。
+- **Condense boundary** — 三平台 05 濃縮入口納入隊長最小執行權與 Captain Team Board，掃描、萃取、審查與收尾稽核不得繞過團隊派工；AGENTS、CLAUDE 與記憶寫入仍由隊長保護整合。
+- **Doctor semantic coverage** — 巡檢模組改抓隊長觸發、任務類型、派工前置、隊長最小執行權、角色邊界、隔離補丁、文字補丁、隊長代工風險接受、自我審查、00/01 自動轉向與實驗邊界，避免舊版只檢查 Full B 字串造成假綠燈。
 - **Documentation alignment** — 根文件與三平台文件改以隊長制團隊協作描述編程治理，明確區分主代理整合責任、唯讀證據分支與隔離補丁分支。
 
 ## [2026-06-27] 受治理 Full B 編程團隊治理

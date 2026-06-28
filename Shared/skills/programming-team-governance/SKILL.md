@@ -1,15 +1,13 @@
 ---
 name: programming-team-governance
 description: >
-  [Infra] Captain-led programming team governance for coding, build, fix, debug, test, audit,
-  commit, handoff, and skill-forge workflows. Use when: 編程、開發、修改、修復、除錯、測試、
-  健檢、提交、交接、技能鍛造、規範治理、工作流調整，或任何 source/workflow governance
-  task needs captain trigger, team routing, role-exclusive specialists, evidence branches, or
-  subagent boundary control. DO NOT use when: pure discussion, one-line factual answers, or
-  non-coding tasks with no source, workflow, validation, or review impact.
+  [Infra] Captain-led programming team governance. Use when: 編程、開發、修復、除錯、測試、
+  健檢、提交、交接、技能/規則治理，或 source/workflow tasks need captain trigger, team routing,
+  role-exclusive specialists, evidence branches, isolated/text patch boundaries, or subagent boundary.
+  DO NOT use when: pure discussion or non-coding no-source tasks.
 metadata:
   author: antigravity
-  version: "1.0"
+  version: "1.1"
   origin: framework
   kind: operational
   memory_awareness: read
@@ -20,168 +18,195 @@ metadata:
 
 ## Purpose
 
-Turn coding work into a captain-led team workflow. The Director talks to the captain; the captain routes the hidden workflow, assigns role-exclusive specialists, integrates evidence or patches, and owns the final answer.
+Turn programming work into a captain-led team workflow. The Director talks to the captain; the captain classifies the task, builds the board, assigns one bounded station per specialist, integrates packets, and owns acceptance.
 
-Specialists are bounded team members. The captain keeps integration, main-worktree writes, review state, validation claims, memory updates, commits, pushes, releases, deployments, installs, and Director-facing communication. Fixed captain triggers and station checks replace vague size judgments; this governance does not authorize delegated mutation.
+This skill is the semantic source for when team mode starts, which roles are allowed, what the captain may keep, and what is forbidden. `team-task-package` is the template source for board formats, specialist packets, patch packet types, and completion checklists.
 
 ## Captain Trigger Gate
 
-Captain-led mode starts automatically when a request matches any trigger below. The Director does not need to name a workflow or ask for subagents.
+Captain-led mode starts automatically when any trigger below applies. The Director does not need to name a workflow, ask for subagents, or restate the request in framework language.
 
 | Trigger | Examples | Captain action |
 |---|---|---|
-| Semantic coding trigger | build, change, fix, debug, test, review, audit, commit, release, handoff, skill or rule update | Enter captain-led mode and route internally. |
-| File impact trigger | Source, workflow, skill, policy, memory, docs, generated deployment copies | Build a team board before plan, write, validate, review, or complete. |
-| Risk trigger | Cross-file/platform, memory ownership, external state, release, UI/runtime, regression, public contract | Assign a specialist or mark blocked/unverified. |
-| Explicit workflow trigger | `$02` to `$12`, `GO`, `GO PUSH` | Treat the named workflow as an internal route, not a replacement for team governance. |
-| Non-trigger | Pure explanation, translation, small factual answer, or non-coding discussion with no source/workflow/review impact | Answer directly and do not create a team board. |
+| Semantic coding trigger | build, fix, debug, test, audit, commit, release, handoff, skill/rule update | Route internally. |
+| File impact trigger | source, workflow, skill, policy, memory, docs, generated copies | Build a board. |
+| Risk trigger | cross-file/platform, memory, external state, release, UI/runtime, regression, public contract | Assign evidence or mark blocked/unverified. |
+| Explicit workflow trigger | `$02` to `$12`, `GO`, `GO PUSH` | Treat the named workflow as a route hint, not a replacement for team governance. |
+| Non-trigger | pure explanation, translation, small factual answer, non-coding discussion | Answer directly. |
 
-When uncertain, bias toward captain-led mode if source, workflow, validation, review, memory, or release state could be affected.
+When source, workflow, validation, review, memory, or release state may change, enter captain-led mode.
 
-## Trigger Rule
+## Task Type Gate
 
-For any triggered task, build a Captain Team Board before main work. The board is both dispatch contract and completion audit record. It may be brief, but every station needs a separate decision:
+After the trigger fires, classify task type before any specialist, browser, CLI, MCP, isolated patch, text patch, or broad evidence work.
 
-| Field | Allowed values | Meaning |
-|---|---|---|
-| Applicability | applicable / not-applicable | Whether the station belongs to this task. |
-| Execution mode | direct / evidence branch / browser branch / CLI branch / MCP direct / isolated patch / blocked / not-applicable | Who handles the station and whether evidence or patch output is blocked. |
-| Evidence owner | main agent / named specialist / browser adapter / CLI report / MCP tool / none | Who produces the evidence. |
-| Direct exception | implementation / gate / Director communication / final acceptance / hot-path validation / no independent evidence value / not-applicable | Why an applicable evidence station is not assigned to a specialist. |
-| Role boundary | requirement / architecture / implementation / test / review / completion / captain | Which role owns the station and which roles are excluded. |
+| Task type | Use when | Allowed specialist roles | Forbidden roles |
+|---|---|---|---|
+| discussion | No source/workflow/review impact. | none | all coding specialists |
+| exploration | Research or reading before edits. | requirement, architecture, review evidence | implementation |
+| blueprint | Architecture, public contract, governance design. | requirement, architecture, counter-evidence, impact, review | implementation |
+| build-plan | Design-to-build contract before GO. | requirement, architecture, impact, test, review | main-worktree implementation |
+| implementation | GO-approved source/docs/generated copy work. | implementation patch, test, review, completion | self-review, ungated expansion |
+| fix-debug | Root-cause repair, logs, regression. | impact, debug, test, review, completion | self-review, uncontrolled writes |
+| validation-audit | Test, audit, post-change verification. | test, review, completion, CLI/browser evidence | source mutation without GO |
+| commit-release | Commit, changelog, version, push, tag, release. | review, completion evidence | specialist git/release/memory mutation |
+| handoff-skill | Handoff, skill forge, workflow/policy governance. | requirement, architecture, impact, review, completion | implementation before GO |
 
-`applicable` is not a completion state. Every applicable station resolves to one execution mode; non-applicable stations use `not-applicable` with a reason. Do not use vague activity, need, or size labels as final board results. Decide by station responsibility, isolation, and evidence value.
+Task type must be visible in the board or plan.
+
+## Dispatch Pre-Gate
+
+No specialist branch starts before the captain has a board. The board may be lightweight, but it must exist before subagents, browser branches, CLI branches, MCP evidence routes, isolated patch branches, text patch packets, parallel evidence, validation, review, or completion audit.
+
+Before the board, the captain may only bootstrap: active workflow/skill, governance rules, request, workspace status, and relevant memory/context index. Broad reading, impact mapping, counter-evidence, review, and completion audit are stations.
+
+Director requests for team mode, subagents, workflow commands, or parallel agents force board creation first. They do not authorize pre-board delegation.
+
+## Board Contract
+
+Use `team-task-package` to choose the lightweight, full, or experiment board template. A valid board always records:
+
+Captain Team Board is the required board artifact for captain-led programming work.
+
+- task type
+- workflow route
+- implementation authorization
+- allowed specialist roles
+- forbidden specialist roles
+- station applicability
+- execution mode
+- evidence owner
+- role boundary
+- direct exception
+- completion condition
+
+`applicable` is not a completion state. Every applicable station resolves to a valid execution mode: `direct`, `evidence branch`, `browser branch`, `CLI branch`, `MCP direct`, `isolated patch`, `text patch packet`, `blocked`, or `not-applicable`.
 
 ## Captain Routing Contract
 
-The captain maps natural-language requests to internal routes while the Director-facing conversation stays with the captain: architecture uses blueprint; approved construction uses build; bugs use fix; validation uses test; logs and stack traces use debug; health or drift uses audit/routine; version and release prep use commit; continuity uses handoff; shared or project skill changes use skill-forge.
+Route map: architecture -> blueprint; approved construction -> build; bugs -> fix; validation -> test; logs -> debug; drift -> audit/routine; version prep -> commit; continuity -> handoff; skill changes -> skill-forge.
 
-Manual workflow names remain valid shortcuts, but they are not required for captain-led mode to start.
+Manual workflow names are shortcuts, not required triggers and not authorization.
 
-## Team-First Contract
+## Captain Minimum Execution Gate
 
-Coding work defaults to a captain-led team workflow, not a solo workflow with optional delegation. Evidence-oriented stations produce independent evidence unless a direct exception is explicit and reviewable.
+The captain is an orchestrator/integrator, not the default worker.
 
-Evidence-oriented stations by default: counter-evidence, impact map, short-loop validation, review, and completion audit when docs, memory, sync, release, or governance state is affected.
+Captain-only duties:
 
-If two or more evidence-oriented stations are applicable and all are marked `direct`, the board is invalid unless each direct station has a concrete exception reason. "Faster", "small task", "delegation cost", or "not necessary" are not sufficient reasons by themselves.
+- Director communication
+- task type and board ownership
+- GO interpretation and authorization plan
+- main-worktree integration of returned patch packets after GO
+- review lifecycle decision
+- memory, git, release, deploy, install, and mutating MCP gates
+- final acceptance
+
+The captain does not perform formal implementation as a normal route. Formal implementation starts as an isolated patch; if no isolation exists, it becomes a text patch packet; if neither can be produced, the implementation station is `blocked` unless the Director explicitly accepts captain substitution risk. Captain substitution is not full team completion.
+
+Counter-evidence, impact map, review, validation, and completion audit default away from the captain when a bounded evidence path exists. Short-loop validation may stay direct only for hot-path feedback or concrete replacement evidence. If two or more evidence-oriented stations apply, at least one independent evidence path must run unless every skipped branch has a concrete direct exception and replacement evidence.
 
 ## Role Exclusivity Contract
 
-Specialists must not cross role boundaries for the same deliverable.
-
 | Role | May do | Must not do |
 |---|---|---|
-| Requirement specialist | Clarify intent, contradictions, constraints, success criteria. | Implement, review final code, or expand scope. |
-| Architecture specialist | Propose boundaries, interfaces, alternatives, risk model. | Write production code or quietly change requirements. |
-| Implementation specialist | Produce a scoped patch proposal or isolated patch for assigned files only. | Expand requirements, decide architecture, review its own output, touch main-worktree state directly. |
-| Test specialist | Design or run non-mutating validation, classify failures, report regression risk. | Change core implementation or mark completion. |
-| Review specialist | Review correctness, quality, requirement fit, regression risk, and accepted risk. | Implement the same deliverable or approve its own work. |
-| Completion specialist | Check docs, memory attribution, sync, drift, and handoff items. | Write memory, commit, push, release, deploy, or claim final acceptance. |
-| Engineering captain | Route work, integrate outputs, write main worktree after GO, decide review state, report to Director. | Hide uncertainty, skip required specialists, or delegate final accountability. |
+| Requirement specialist | Intent, contradictions, constraints, success criteria. | Implement, final-review, expand scope. |
+| Architecture specialist | Boundaries, interfaces, alternatives, risk. | Production code or hidden requirement changes. |
+| Implementation specialist | Isolated workspace patch or text patch packet. | Requirements, architecture, review, self-review, main-worktree writes. |
+| Test specialist | Non-mutating validation and regression risk. | Core implementation or completion claims. |
+| Review specialist | Correctness, quality, requirement fit, risk. | Implement, patch, or approve own work. |
+| Completion specialist | Docs, memory attribution, sync, drift, handoff checks. | Memory writes, commit, push, release, deploy, final acceptance. |
+| Engineering captain | Route, integrate, decide review state, report to Director. | Hide uncertainty, skip specialists, delegate accountability. |
 
-A deliverable is invalid if the same specialist both implements and reviews it. If role separation is unavailable, mark the review `accepted-risk`, `unverified`, or `blocked` instead of pretending independent review happened.
+Same specialist cannot implement and review the same deliverable. If separation is unavailable, mark the station `accepted-risk`, `unverified`, or `blocked`.
 
-## Team Stations
+## Station Semantics
 
-| Station | Responsibility | Delegation default | Main-agent duty |
+| Station | Responsibility | Default team route | Captain duty |
 |---|---|---|---|
-| Requirement playback | Goal, non-goals, constraints, assumptions, success criteria. | direct unless ambiguity needs contradiction evidence | Own task boundary. |
-| Counter-evidence | Wrong assumptions, missing risk, overreach, weak validation. | evidence branch for coding, governance, review, release impact | Adjust plan if needed. |
-| Impact map | Files, owners, memory, docs, sync, compatibility. | evidence branch for multi-file/platform/memory/sync impact | Set implementation scope. |
-| Authorization plan | Plan, review state, acceptance matrix, GO boundary. | direct | Never delegate approval or gate interpretation. |
-| Implementation | Approved source, generated copies, docs, memory files. | direct for main worktree; isolated patch only in governed isolation | Integrate/reject patches; captain writes main worktree. |
-| Short-loop validation | Targeted tests, scans, command checks, real-path probes. | browser branch, CLI branch, evidence branch, or main-tool path | Fix and integrate results. |
-| Review | Requirement fit, correctness, quality, regression, risk. | evidence branch for governance, public contract, cross-module, bug, release, accepted-risk work | Map evidence to review lifecycle. |
-| Completion | Docs, memory, sync outputs, drift audit, final report. | direct for writes; evidence branch for read-only completion audit | Own completion claims. |
+| Requirement playback | Goal, non-goals, constraints, success criteria. | direct or requirement evidence | Own boundary. |
+| Counter-evidence | Bad assumptions, missing risk, weak validation. | evidence branch | Adjust plan. |
+| Impact map | Files, owners, memory, docs, sync, compatibility. | evidence branch, CLI branch, or MCP direct | Set scope. |
+| Authorization plan | Plan, review state, acceptance matrix, GO boundary. | direct | Keep gates. |
+| Implementation | Approved source, generated copies, docs. | isolated patch or text patch packet | Integrate after GO. |
+| Short-loop validation | Targeted tests, scans, real-path probes. | browser, CLI, evidence, MCP, or hot-path direct | Fix/integrate results. |
+| Review | Requirement fit, correctness, quality, regression, risk. | evidence branch unless concrete exception | Set lifecycle state. |
+| Completion audit | Docs, memory, sync, drift audit, final report. | evidence branch for audit; direct for protected writes | Own final claims. |
 
 ## Permission Boundary
 
 | Layer | Allowed | Forbidden |
 |---|---|---|
-| Read-only evidence | Read files, search, inspect logs, summarize docs, analyze test output, propose text. | Source writes, memory writes, git writes, installs, deployments, cloud/resource changes, issue/PR mutation, mutating MCP calls. |
-| Non-mutating validation | Run commands that do not rewrite tracked source, collect output, classify failures. | Formatters, codegen, migrations, or commands whose purpose is to change tracked source. |
-| Isolated patch | Produce a patch in a governed fork, sandbox, or isolated worktree with a declared file scope. | Direct main-worktree writes, memory writes, git state changes, deployment, release, or self-review. |
-| Main-thread write | Modify approved files, generated copies, docs, and memory after the workflow gate allows it. | Blanket staging, ungated external state changes, or hiding unrelated dirty files. |
+| Read-only evidence | Read/search/logs/docs/test output/proposed text. | Source, memory, git, install, deploy, cloud, issue/PR, mutating MCP. |
+| Non-mutating validation | Non-rewriting checks and failure classification. | Formatters, codegen, migrations, source-changing commands. |
+| Isolated or text patch | Governed fork/sandbox/worktree patch, or text-only patch proposal. | Main-worktree writes, memory, git, deployment, release, self-review. |
+| Main-thread integration | Approved files, generated copies, docs, gated memory. | Blanket staging, ungated external state, hiding unrelated dirty files. |
 
 ## Delegation Decision
 
-Use `delegation-strategy` after drafting the board. Resolve in this order: captain-only responsibilities and gates -> secrets/login/external mutation -> hot-path validation -> browser/UI -> large CLI evidence -> MCP direct -> governed isolated patch -> bounded read-only evidence -> direct with a concrete exception. If required evidence or isolation is unavailable, mark `blocked`, `unverified`, or `direct` with an exception; never let specialists write the main worktree as fallback.
+Use `delegation-strategy` after the board. The dispatch order is:
 
-## Required Evidence Packet
+1. captain-only gates and protected state
+2. secrets, login state, credential or external mutation boundaries
+3. implementation patch packaging
+4. hot-path validation
+5. browser/UI evidence
+6. large CLI evidence
+7. MCP direct evidence
+8. bounded read-only evidence
+9. protected direct exception or accepted-risk captain substitution
 
-Every evidence branch must receive a bounded task and return:
-
-```text
-發現:
-證據:
-風險:
-建議:
-是否阻塞:
-```
-
-The main agent must review the packet before using it. Conflicting packets require a main-thread check or an explicit uncertainty label.
-
-## Required Patch Packet
-
-Every isolated patch branch must receive a bounded file scope and return:
-
-```text
-變更:
-檔案:
-證據:
-風險:
-審查需求:
-是否阻塞:
-```
-
-Patch packets are proposals. The captain must review, integrate, validate, and own the final main-worktree change. A patch branch cannot approve itself, update memory, stage files, commit, push, release, deploy, or mutate external state.
+Missing evidence, missing isolation, or missing text patch package means `blocked` or `unverified`; specialists never write the main worktree.
 
 ## Direct Exception Register
 
-Direct handling is always allowed for implementation, gates, Director communication, final acceptance, memory writes, commits, pushes, releases, deployments, installs, and mutating MCP calls.
+Direct handling is reserved for protected captain duties. Captain implementation is not a normal fallback. If no isolated patch or text patch task exists, mark `blocked` or record `captain substitution accepted-risk` with the missing condition.
 
-Direct handling of an evidence-oriented station requires one of these reasons:
+Valid direct exception reasons:
 
 | Reason | Valid use |
 |---|---|
-| implementation | The station would write source, generated copies, docs, memory, git, release, deployment, or external state. |
-| gate | The station interprets GO, approval, review state, or acceptance. |
-| Director communication | The station requires direct conversation with the Director. |
-| final acceptance | The station decides completion or accepted risk. |
-| hot-path validation | The main agent must immediately check the result of a just-written change. |
-| no independent evidence value | The station has no separable read scope, and the board records why. |
+| protected integration | Main-worktree/generated copy/docs integration, memory, git, release, deploy, external-state write. |
+| captain substitution accepted-risk | No isolated/text patch task package exists; board records risk and missing condition. |
+| gate | GO, approval, review state, or acceptance. |
+| Director communication | Direct conversation is required. |
+| final acceptance | Completion or accepted risk. |
+| hot-path validation | Immediate check after a just-written change. |
+| no independent evidence value | No separable read scope; board records why. |
 
-For evidence-oriented stations, direct exception text must be concrete. Generic phrases such as "small task", "faster", "not necessary", or "delegation cost" fail the board.
+Generic reasons such as small task, faster, not necessary, or delegation cost fail the board.
+
+## Required Output Packets
+
+Use `team-task-package` for exact packet templates.
+
+Evidence packets must include `發現 / 證據 / 風險 / 建議 / 是否阻塞`.
+
+Patch packets must include `變更 / 檔案 / 證據 / 風險 / 審查需求 / 是否阻塞`.
+
+Review packets must be produced by a reviewer who did not author the patch. Validation packets must be produced by a validation route that does not modify core implementation. The captain may integrate into the main worktree only after the patch packet, review packet, and validation packet are present, or after missing packets are explicitly marked `blocked`, `unverified`, or Director-accepted risk.
+
+Conflicts require a captain check or an uncertainty label. A patch branch cannot approve itself, update memory, stage files, commit, push, release, deploy, install, or mutate external state.
 
 ## Workflow Integration
 
-Coding-related workflow entries should load this skill before planning or execution when they touch source, validation, audit, commit preparation, handoff, skill creation, or experiment writes. The workflow should report the board in a compact form:
+Coding workflow entries load this skill and `team-task-package` before planning, execution, validation, review, completion, or experiment writes when touching source, validation, audit, commit prep, handoff, skill creation, memory, docs, or governance.
 
-| Station | Applicability | Execution mode | Evidence owner | Role boundary | Direct exception | Completion condition |
-|---|---|---|---|---|---|---|
+Workflow entries keep route-specific evidence rules. They must not copy the full board template, specialist packet template, patch packet template, or role exclusivity contract. Commands are route hints only; they do not replace the board or make all stations captain-direct.
 
-For narrow edits, the board can be one table. For heavy governance, public contract, release, or cross-platform work, the board should be paired with `intent-alignment-gate` and `quality-review-governance`.
+For heavy governance, public contract, release, or cross-platform work, pair the board with `intent-alignment-gate` and `quality-review-governance`.
 
 ## Completion Rules
 
 Before completion:
 
-1. Compare the original request, approved plan, actual changes, evidence packets, validation output, docs, and memory updates.
-2. Mark drift as aligned, justified deviation, unauthorized deviation, or unverified.
-3. Do not claim completion if required validation, review state, source sync, or memory attribution is missing.
-4. List accepted v1 limitations separately from unresolved bugs or blockers.
-5. Reject any board whose applicable stations do not resolve to a valid execution mode.
-6. Reject any board that marks two or more applicable evidence-oriented stations as `direct` without concrete direct exceptions.
-7. Reject any board where the same specialist implements and reviews the same deliverable.
-8. Reject any specialist output that directly modifies main-worktree, memory, git, release, deployment, install, or external state.
+1. Compare request, approved plan, packets, source changes, validation, docs, and memory.
+2. Mark drift: aligned, justified deviation, unauthorized deviation, or unverified.
+3. Do not claim completion if validation, review state, source sync, or memory attribution is missing.
+4. Reject boards whose applicable stations lack a valid execution mode.
+5. Reject boards where two or more evidence stations are direct without concrete exceptions.
+6. Reject self-review and specialist output that mutates main-worktree, memory, git, release, deploy, install, or external state.
+7. Reject implementation stations that fall back to captain direct without `accepted-risk` or `blocked`.
+8. Reject full-team completion claims when patch, review, or validation packets are missing.
 
-## Captain-Led Default
-
-Use captain-led workflow and guarded execution:
-
-- Captain trigger starts automatically for coding, workflow, validation, review, memory, commit, and release-impact work.
-- The captain is the only Director-facing owner and main-worktree integrator.
-- Evidence branches are read-only.
-- Isolated patch branches are allowed only when the platform provides a governed isolated workspace and the patch has a declared file scope.
-- The captain writes or merges into the main worktree, updates memory, and owns final acceptance.
+Full team completion is allowed only when implementation patch, independent review, validation evidence, and completion evidence exist. Missing separation or missing packets may be reported only as accepted risk, unverified, or blocked.
