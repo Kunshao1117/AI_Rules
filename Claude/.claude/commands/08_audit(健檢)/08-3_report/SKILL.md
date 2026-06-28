@@ -1,7 +1,7 @@
 ---
 name: 08-3_report
 description: "Use when: 健檢第三階段、彙整證據式健康報告、健檢深度摘要、功能/端點/命令覆蓋率、紅黃綠燈號、未驗證/阻塞判定、優先修復清單、位置索引與行動建議。DO NOT use when: 尚未完成前兩階段健檢。"
-required_skills: [audit-engine, quality-review-governance, programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
+required_skills: [audit-engine, quality-review-governance, programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 memory_awareness: read
 user-invocable: false
 metadata:
@@ -20,7 +20,7 @@ metadata:
 
 ## 編程團隊治理接地（Programming Team Board Contract）
 
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.claude/skills/programming-team-governance/SKILL.md`, `.claude/skills/team-task-package/SKILL.md`, `.claude/skills/team-role-boundaries/SKILL.md`, `.claude/skills/implementation-patch-delivery/SKILL.md`, `.claude/skills/memory-coupled-delivery/SKILL.md`, `.claude/skills/team-validation-packet/SKILL.md`, `.claude/skills/team-review-packet/SKILL.md`, `.claude/skills/team-completion-gate/SKILL.md`. Treat this command as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.claude/skills/programming-team-governance/SKILL.md`, `.claude/skills/team-task-board/SKILL.md`, `.claude/skills/team-role-boundaries/SKILL.md`, `.claude/skills/team-change-delivery-artifact/SKILL.md`, `.claude/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.claude/skills/team-validation-delivery-artifact/SKILL.md`, `.claude/skills/team-review-delivery-artifact/SKILL.md`, `.claude/skills/team-completion-gate/SKILL.md`. Treat this command as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, integrates returned delivery artifacts into the main worktree, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not author primary implementation, review, validation, or memory attribution.
 
 
 ## 總監可讀輸出契約（Director-Readable Output Contract）
@@ -54,11 +54,11 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 # [SKILL: /08_audit — Phase 3: 證據式健檢總結報告]
 
-> 本工作流由 `08_audit(健檢)/SKILL.md` 入口觸發。Phase 3 只彙整 Phase 1/2 的健檢深度、盤點清單、覆蓋率與證據包，不把缺少證據的項目升格為綠燈。
+> 本工作流由 `08_audit(健檢)/SKILL.md` 入口觸發。Phase 3 只彙整 Phase 1/2 的健檢深度、盤點清單、覆蓋率與證據交付件，不把缺少證據的項目升格為綠燈。
 
 ## 3.1 Evidence Normalization
 
-Read the newest audit packet from the active workflow state or `.agents/logs/audit/<timestamp>/` when available:
+Read the newest audit delivery artifact from the active workflow state or `.agents/logs/audit/<timestamp>/` when available:
 
 - `profile.json` for project surfaces, tools, entries, applicable modules, and not-applicable reasons.
 - `inventories.json` for features, endpoints, commands, jobs, interfaces, data flows, performance targets, risks, and coverage denominators.
@@ -73,7 +73,7 @@ Normalize every finding through `report-gates.md`:
 - `阻塞` means credentials, login, permission, external service, or high-risk approval is missing.
 - `不適用` requires explicit project-surface evidence.
 - Deep and forensic audits require every critical inventory item to be covered, partial, unverified, blocked, or not applicable.
-- Review lifecycle state must remain unverified, blocked, findings-open, or accepted-risk when evidence does not support accepted status.
+- Review lifecycle state must remain unverified, blocked, findings-open, or Director risk-closed but not complete (`closed-with-director-risk`) when evidence does not support accepted status.
 - Sampling limits must be visible whenever the report is not full denominator coverage.
 
 ## 3.2 Required Report Structure
@@ -82,26 +82,26 @@ Generate a Traditional Chinese report with these sections:
 
 | 事項 | 位置 | 影響 | 狀態 |
 |---|---|---|---|
-| 健檢深度與覆蓋率 | 盤點證據包（inventory evidence） | 決定本次報告可宣稱的檢查深度與分母 | 綠燈/黃燈/未驗證/阻塞 |
+| 健檢深度與覆蓋率 | 盤點證據交付件（inventory evidence） | 決定本次報告可宣稱的檢查深度與分母 | 綠燈/黃燈/未驗證/阻塞 |
 | 專案型態與能力 | 專案設定檔（profile evidence） | 決定哪些檢查適用與不適用 | 綠燈/黃燈/未驗證 |
-| 基礎盤點與相容性 | 基礎證據包（baseline evidence） | 依賴、型別、工具、版本、目錄衛生 | 綠燈/黃燈/紅燈/未驗證 |
-| 治理拓樸 | 治理證據包（governance evidence） | 記憶卡、脈絡卡、技能、平台政策漂移 | 綠燈/黃燈/紅燈 |
-| 架構與安全 | 語意證據包（semantic evidence） | API、資料流、狀態不變量、權限、憑證 | 綠燈/黃燈/紅燈/阻塞 |
-| 真實功能證據 | 操作證據包（real operation evidence） | 網頁、後端、CLI、桌面、外掛、雲端、資料庫 | 綠燈/黃燈/紅燈/未驗證/阻塞 |
-| 效能與可靠性 | 效能可靠性證據包（perf reliability evidence） | 載入速度、錯誤處理、競態、重試、可觀測性 | 綠燈/黃燈/紅燈/未驗證 |
-| 供應鏈與發布 | 發布證據包（release evidence） | 套件、版本、打包、發布、安裝包、相容性 | 綠燈/黃燈/紅燈/不適用 |
-| 工程審查狀態 | 審查證據包（review lifecycle evidence） | 正確性、高品質、嚴謹度、複雜度取捨、accepted-risk | 綠燈/黃燈/紅燈/未驗證/阻塞 |
+| 基礎盤點與相容性 | 基礎證據交付件（baseline evidence） | 依賴、型別、工具、版本、目錄衛生 | 綠燈/黃燈/紅燈/未驗證 |
+| 治理拓樸 | 治理證據交付件（governance evidence） | 記憶卡、脈絡卡、技能、平台政策漂移 | 綠燈/黃燈/紅燈 |
+| 架構與安全 | 語意證據交付件（semantic evidence） | API、資料流、狀態不變量、權限、憑證 | 綠燈/黃燈/紅燈/阻塞 |
+| 真實功能證據 | 操作證據交付件（real operation evidence） | 網頁、後端、CLI、桌面、外掛、雲端、資料庫 | 綠燈/黃燈/紅燈/未驗證/阻塞 |
+| 效能與可靠性 | 效能可靠性證據交付件（perf reliability evidence） | 載入速度、錯誤處理、競態、重試、可觀測性 | 綠燈/黃燈/紅燈/未驗證 |
+| 供應鏈與發布 | 發布證據交付件（release evidence） | 套件、版本、打包、發布、安裝包、相容性 | 綠燈/黃燈/紅燈/不適用 |
+| 工程審查狀態 | 審查證據交付件（review lifecycle evidence） | 正確性、高品質、嚴謹度、複雜度取捨、總監風險關閉但非完整（`closed-with-director-risk`） | 綠燈/黃燈/紅燈/未驗證/阻塞 |
 
 The report must include:
 
 - Selected audit depth and reason.
 - Inventory coverage counts for features, endpoints, commands, jobs, interfaces, data flows, performance targets, and risks.
-- Review lifecycle state counts and accepted-risk items.
+- Review lifecycle state counts and Director risk-closed but not complete (`closed-with-director-risk`) items.
 - Priority repair list sorted by severity, evidence strength, and blast radius.
 - Suggested next workflow for each actionable item.
 - Explicit unverified and blocked lists.
 - Sampling limits and unreviewed areas.
-- Position index mapping compact labels to concrete files, directories, tools, or evidence packets.
+- Position index mapping compact labels to concrete files, directories, tools, or evidence delivery artifacts.
 - Rerun instructions for every finding that depends on a command, browser flow, external service, or missing credential.
 
 ## 3.3 Optional Summary Log
@@ -125,7 +125,7 @@ Append:
 - **Role**: `Reader` | 純報告彙整；只允許寫入健檢摘要日誌，不修改原始碼或記憶卡。
 
 > MCP 記憶證據沿用 08 入口與 .agents/skills/memory-ops/references/memory-mcp-tool-contract.md；子流程只能使用唯讀 cartridge-system 證據，缺少 MCP 工具時標記未驗證或阻塞，不得直接改記憶。
- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+ Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).

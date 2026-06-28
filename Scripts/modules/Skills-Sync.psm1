@@ -228,7 +228,7 @@ function Sync-SharedSkills {
     } | ForEach-Object {
         $rel     = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
         $tgtFile = Join-Path $TargetSkillsPath $rel
-        $result  = Compare-FrameworkFile -SourcePath $_.FullName -TargetPath $tgtFile -RelativePath $rel
+        $result  = Compare-FrameworkFile -SourcePath $_.FullName -TargetPath $tgtFile -RelativePath $rel -RequireExactHash
         if ($result.Status -in @("NEW", "CHANGED")) {
             $tgtDir = Split-Path $tgtFile -Parent
             if (-not (Test-Path $tgtDir)) { New-Item -ItemType Directory $tgtDir -Force | Out-Null }
@@ -283,7 +283,7 @@ function Sync-SharedGovernanceReferences {
         $tgtFile = Join-Path $targetSharedRoot $rel
         $shouldCopy = $Mode -eq "Full"
         if (-not $shouldCopy) {
-            $result = Compare-FrameworkFile -SourcePath $srcFile -TargetPath $tgtFile -RelativePath $rel
+            $result = Compare-FrameworkFile -SourcePath $srcFile -TargetPath $tgtFile -RelativePath $rel -RequireExactHash
             $shouldCopy = $result.Status -in @("NEW", "CHANGED")
         }
 

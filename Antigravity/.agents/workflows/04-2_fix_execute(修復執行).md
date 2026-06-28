@@ -1,6 +1,6 @@
 ---
 description: "Use when: 已有 /04-1_fix_plan 核准 GO，要執行修復寫入、記憶更新與回歸測試。DO NOT use when: 尚未完成修復計畫或未取得 GO。"
-required_skills: [memory-ops, security-sre, test-patterns, impact-test-strategy, ai-dev-quality-gate, trunk-ops, programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
+required_skills: [memory-ops, security-sre, test-patterns, impact-test-strategy, ai-dev-quality-gate, trunk-ops, programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 memory_awareness: full
 metadata:
   author: antigravity
@@ -52,7 +52,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Separate symptom, confirmed root cause, repair scope, regression evidence, and the conditions that route back to debug or test.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-package/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/implementation-patch-delivery/SKILL.md`, `.agents/skills/memory-coupled-delivery/SKILL.md`, `.agents/skills/team-validation-packet/SKILL.md`, `.agents/skills/team-review-packet/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/team-change-delivery-artifact/SKILL.md`, `.agents/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.agents/skills/team-validation-delivery-artifact/SKILL.md`, `.agents/skills/team-review-delivery-artifact/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, integrates returned delivery artifacts into the main worktree, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not author primary implementation, review, validation, or memory attribution.
 
 # [WORKFLOW: FIX EXECUTE (修復執行)]
 
@@ -63,37 +63,37 @@ Technical details may only appear after a `補充技術細節` section when they
 - [ASSERT] Confirm `implementation_plan.md` artifact exists and has been reviewed by the Director.
 - [ASSERT] Call `task_boundary` to switch to `EXECUTION` mode.
 
-## 2. Fix Patch Packet Dispatch And Integration
+## 2. Fix Change Delivery Artifact Dispatch And Integration
 
-> [LOAD SKILL] Before integrating fix packets, you MUST consult:
+> [LOAD SKILL] Before integrating fix change delivery artifacts, you MUST consult:
 > `view_file .agents/skills/security-sre/SKILL.md`
 
 - [ASSERT] Confirm the Captain Team Board is updated to GO-write authorization before any main-worktree write.
-- [EXECUTE] Create or confirm the fix patch packet route from `team-task-package`: governed isolated workspace patch when available, otherwise text patch packet. Captain direct fixing is allowed only as `captain substitution accepted-risk` with the missing isolation condition recorded on the board.
-- [EXECUTE] Assign one bounded implementation specialist for the repair. The specialist may produce only the fix patch packet and must stay strictly limited to `implementation_plan.md`.
+- [EXECUTE] Create or confirm the fix change delivery artifact route from `team-task-board`: governed isolated change delivery artifact when available, otherwise text change delivery artifact. Captain direct fixing is not a change delivery substitute; if no qualified delivery route exists, mark the station blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`), with the missing isolation condition recorded on the board.
+- [EXECUTE] Assign one bounded implementation specialist for the repair. The specialist may produce only the fix change delivery artifact and must stay strictly limited to `implementation_plan.md`.
 - [FORBIDDEN] The implementation specialist must not touch memory, git, release, deployment, external state, or review their own fix.
-- [EXECUTE] Require implementation patch, memory delivery, review, and validation packets. The captain integrates only returned, reviewed, and validated fix packets into the main worktree.
+- [EXECUTE] Require implementation change delivery, memory/docs delivery, review, and validation delivery artifacts. The captain integrates only returned fix change delivery artifacts that have separate review and validation delivery artifacts into the main worktree.
 
 ## 3. Mandatory Distillation
 
-- [EXECUTE] Immediately after captain integration of the reviewed fix packet:
-  1. Record the fix as one short English item in the affected memory skill's `## Cycle Events`; update `## Current Truth` only if the still-valid behavior changed.
-  2. Update the memory skill's frontmatter (`last_updated`, `staleness: 0`).
+- [EXECUTE] Immediately after captain integration of the reviewed fix change delivery artifact:
+  1. Require a returned memory/docs delivery artifact that records the fix as one short English item, identifies any still-valid truth change, and names the affected memory main file.
+  2. The captain integrates only the returned memory/docs delivery artifact; the captain must not author memory attribution directly.
 - [EXECUTE] Execute `impact-test-strategy` skill § 3 to auto-generate a regression test for this fix.
 - [ASSERT] If the same module has surfaced the same class of bug more than twice, RECOMMEND creating a defensive skill via `/12_skill_forge`.
 
 ## 4. Automated Re-Verification Loop
 
-[FIX CIRCUIT BREAKER] Post-patch verification:
-- Run regression tests on patched files.
+[FIX CIRCUIT BREAKER] Post-fix verification:
+- Run regression tests on affected files.
 - Reproduce the original failure path through the real operation surface whenever available: UI flow, request, command, query, log, scheduled job, plugin host, preview, sandbox, dry-run, or recorded real-source replay.
 - Before declaring the real failure path unavailable, search and try available operator tools and entries. Transient server, browser, tool connection, timeout, or readiness failures require retry or an equivalent real-path alternative.
 - If the failure path remains blocked, report searched entries, attempted tools, retry count or unsafe-retry reason, equivalent alternatives considered, and the smallest missing condition.
 - IF (Regression tests PASS and required real failure-path evidence PASS): Chain to `/06_test` silently when the fix affects UI, interaction, operator-visible output, or interface adaptation.
 - IF (Only mock, fixture, static screenshot, or unit evidence is available for a behavior-dependent bug): Mark verification as failed or blocked; do not report the fix complete.
 - IF (Tests FAIL - regression detected):
-  - IF ([SUDO] detected in Director prompt): Bypass revert. Keep dirty patch. Warn Director.
-  - ELSE: Auto-revert patch (`git checkout` on affected files). Trigger auto-repair loop (max 2 attempts).
+  - IF ([SUDO] detected in Director prompt): Bypass revert. Keep dirty change. Warn Director.
+  - ELSE: Auto-revert change (`git checkout` on affected files). Trigger auto-repair loop (max 2 attempts).
   - IF (FAIL after 2 attempts): [HALT] Output exactly: 「🔴 [FIX HALT] 修復導致回歸且自動修復失敗 (2/2)。已退版。請總監介入。」
 
 ## COMPLETION GATE
@@ -106,13 +106,13 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > Inherits: `.agents/workflows/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Captain/SRE` | 主工作區寫入僅限整合已回收修復補丁包；實作隊員只產出隔離或文字補丁包。
-- **Memory Update**: After executing the fix, update all affected active memory main files.
+- **Role**: `Captain/SRE` | 主工作區寫入僅限整合已回收修復變更交付件；實作隊員只產出隔離或文字變更交付件。
+- **Memory Update**: After executing the fix, integrate returned memory/docs delivery artifacts for all affected active memory main files; missing delivery artifacts make the station blocked or unverified.
 
 ---
 
 `...EOF... — Agent inference context physically terminates here.`
- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+ Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).

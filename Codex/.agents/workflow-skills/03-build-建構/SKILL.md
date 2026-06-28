@@ -1,7 +1,7 @@
 ---
 name: "03-build-建構"
 description: "Use when: 正式建構功能、設計到建構合約、實作已核准計畫、新增工具或產品行為變更、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 的建構與驗證。DO NOT use when: 純討論、沙盒實驗、或只需要不落地的純架構方案。"
-required_skills: [memory-ops, tech-stack-protocol, code-quality, security-sre, ai-dev-quality-gate, intent-alignment-gate, quality-review-governance, project-context-protocol, programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
+required_skills: [memory-ops, tech-stack-protocol, code-quality, security-sre, ai-dev-quality-gate, intent-alignment-gate, quality-review-governance, project-context-protocol, programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 metadata:
   author: antigravity
   version: "2.0"
@@ -40,7 +40,7 @@ Technical details may only appear after `補充技術細節` when necessary.
 > [LOAD SKILL] If this task touches plugin, extension, VSIX, release, version, tag, or update reminder work, read `.agents/skills/plugin-release-governance/SKILL.md`.
 > [LOAD SKILL] If this task touches UI, high-change frameworks, MCP, extension APIs, generated UI references, design DNA, real data, runtime behavior, operator-visible output, or responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md`.
 > [LOAD SKILL] Before producing a design-to-build contract, read `.agents/skills/intent-alignment-gate/SKILL.md` and apply requirement playback, neutral challenge, requirement-to-task trace, acceptance matrix, and drift audit rules.
-> [LOAD SKILL] If this task touches governance, public contracts, shared workflows, release/plugin behavior, security, cross-module logic, repeated fragile code, or competing simple/complex designs, read `.agents/skills/quality-review-governance/SKILL.md` and report review purpose, review state, evidence status, accepted risk, and blockers.
+> [LOAD SKILL] If this task touches governance, public contracts, shared workflows, release/plugin behavior, security, cross-module logic, repeated fragile code, or competing simple/complex designs, read `.agents/skills/quality-review-governance/SKILL.md` and report review purpose, review state, evidence status, Director risk-closed but not complete (`closed-with-director-risk`) items, and blockers.
 > [LOAD SKILL] If this task touches product behavior, UX preference, design DNA, technical preference, communication preference, or acceptance criteria, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before planning changes. Report adopted context or deviation reasons.
 
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
@@ -49,7 +49,7 @@ Technical details may only appear after `補充技術細節` when necessary.
 - Workflow-specific grounding: Use explore-plan-implement-verify sequencing. Define blueprint adoption, review state, requirement trace, acceptance evidence, operator-tool discovery, retry strategy, blocked validation, and drift audit before writes.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-package/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/implementation-patch-delivery/SKILL.md`, `.agents/skills/memory-coupled-delivery/SKILL.md`, `.agents/skills/team-validation-packet/SKILL.md`, `.agents/skills/team-review-packet/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/team-change-delivery-artifact/SKILL.md`, `.agents/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.agents/skills/team-validation-delivery-artifact/SKILL.md`, `.agents/skills/team-review-delivery-artifact/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, integrates returned delivery artifacts into the main worktree, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not author primary implementation, review, validation, or memory attribution.
 - MCP memory evidence follows `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` and the MCP Memory Evidence Matrix. Missing MCP evidence is 未驗證 or 阻塞.
 
 # source-command-03-build-skill
@@ -105,9 +105,9 @@ Technical details may only appear after `補充技術細節` when necessary.
 - Technical details, diff previews, metadata, schema, and CLI parameters may only appear after `補充技術細節`.
 - Plan MUST include:
   - **[GOVERNANCE DEPTH / 治理深度判定]**: Task level, matched escalation factors, exemption reason, and validation evidence. Output only the summary; do not duplicate the full autonomy matrix from `ai-dev-quality-gate`.
-  - **[CHANGE INTENT / 變更意圖分類]**: Classify the work as emergency patch, root-cause repair, local refinement, or structural refactor; include patch-stack risk, allowed scope, escalation trigger, and why a narrower patch is or is not acceptable.
+  - **[CHANGE INTENT / 變更意圖分類]**: Classify the work as emergency temporary fix, root-cause repair, local refinement, or structural refactor; include temporary-fix stack risk, allowed scope, escalation trigger, and why a narrower temporary fix is or is not acceptable.
   - **[INTENT ALIGNMENT / 需求對齊]**: Requirement playback, neutral challenge, blueprint adoption status, requirement-to-task trace, task acceptance matrix, and assumptions with evidence status.
-  - **[REVIEW STATE / 審查狀態]**: When `quality-review-governance` applies, include review purpose, lifecycle state, evidence status, findings disposition, accepted risk, blockers, and the minimum sufficient complexity decision.
+  - **[REVIEW STATE / 審查狀態]**: When `quality-review-governance` applies, include review purpose, lifecycle state, evidence status, findings disposition, Director risk-closed but not complete (`closed-with-director-risk`) item, blockers, and the minimum sufficient complexity decision.
   - **[ARCHITECTURE]**: Functional boundary, affected modules, public interface changes, and rejected alternatives.
   - **[REAL EXECUTION]**: Operation surface, tool discovery result, data source, executable validation path, retry/equivalent path, expected evidence, blockers, and smallest authorization needed.
   - **[MODIFY]**: Files to be modified
@@ -131,20 +131,20 @@ Technical details may only appear after `補充技術細節` when necessary.
 
 > Begins only after Director inputs GO.
 
-### 5. Confirm Patch Packets & Integrate
+### 5. Confirm Change Delivery Artifacts & Integrate
 
 - Call `ExitPlanMode` only after the formal Programming Team Board has GO-write authorization, dispatch wave, previous-wave input, next-wave start condition, and formal evidence eligibility recorded.
-- Before any main-worktree source write, create or confirm the implementation patch packet route from `team-task-package`: governed isolated workspace patch when available, otherwise text patch packet. Captain direct writing is allowed only as `captain substitution accepted-risk` with the missing isolation condition recorded on the board.
-- Assign one bounded implementation specialist per task. The implementation specialist may produce only the patch packet and must not expand requirements, review their own output, update memory, stage files, commit, push, release, deploy, install, or mutate external state.
-- Require implementation patch, memory delivery, review, and validation packets before formal team completion. Review and validation owners must not be the same specialist who authored the implementation patch; memory delivery remains captain-owned unless the workflow explicitly assigns a memory delivery packet.
-- The captain integrates only returned, reviewed, and validated patch packets into the main worktree after memory delivery disposition is recorded, applies `[SEC SILENT GATE]` before each integrated write, and marks each `TodoWrite` item `completed` only after integration evidence exists.
+- Before any main-worktree source write, create or confirm the implementation change delivery artifact route from `team-task-board`: governed isolated change delivery artifact when available, otherwise text change delivery artifact. Captain direct writing is not a change delivery substitute; if no qualified delivery route exists, mark the station blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`), with the missing isolation condition recorded on the board.
+- Assign one bounded implementation specialist per task. The implementation specialist may produce only the change delivery artifact and must not expand requirements, review their own output, update memory, stage files, commit, push, release, deploy, install, or mutate external state.
+- Require implementation change delivery, memory/docs delivery, review, and validation delivery artifacts before formal team completion. Review and validation dispatch must wait until the implementation change delivery artifact is returned; memory attribution must come from a memory/docs delivery artifact, not from captain authorship.
+- The captain integrates only returned change delivery artifacts that have separate review and validation delivery artifacts into the main worktree after memory delivery disposition is recorded, applies `[SEC SILENT GATE]` before each integrated write, and marks each `TodoWrite` item `completed` only after integration evidence exists.
 
-### 6. Memory Archive (記憶歸卡)
+### 6. Memory/Docs Delivery Integration (記憶文件交付整合)
 
 > [LOAD SKILL] Re-confirm `.agents/skills/memory-ops/SKILL.md` is loaded.
 
-- **[NEW] files**: Find or create matching `.agents/memory/` card. Record file under `## Tracked Files`.
-- **[MODIFY] files**: Update the corresponding memory card's `## Current Truth` only for still-valid facts, add one short English item to `## Cycle Events`, and stop for compaction if the card is already due.
+- **[NEW] files**: Integrate only a returned memory/docs delivery artifact that identifies the matching memory card and tracked-file update before any protected memory write.
+- **[MODIFY] files**: Integrate only a returned memory/docs delivery artifact that states still-valid `## Current Truth` facts, one short English `## Cycle Events` item, and compaction status. Missing memory attribution is blocked or unverified.
 - Apply `[EXIT HOLD GATE]` before reporting completion.
 
 ### 7. Validation (驗證)
@@ -160,9 +160,9 @@ Technical details may only appear after `補充技術細節` when necessary.
 ---
 
 ## [SECURITY & COMPLIANCE]
-- **Role**: Captain/SRE — main-worktree writes are integration of approved patch packets only; implementation specialists produce isolated or text patch packets.
-- **Memory**: full — all created/modified files MUST have memory card updates.
- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+- **Role**: Captain/SRE — main-worktree writes are integration of approved change delivery artifacts only; implementation specialists produce isolated or text change delivery artifacts.
+- **Memory**: full — memory/docs delivery artifacts are required before protected memory writes; the captain must not author memory attribution.
+ Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).

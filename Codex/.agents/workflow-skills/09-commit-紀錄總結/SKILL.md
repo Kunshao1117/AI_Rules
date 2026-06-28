@@ -1,7 +1,7 @@
 ---
 name: "09-commit-紀錄總結"
 description: "Use when: 提交、commit、push、版本紀錄、CHANGELOG、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 前置掃描與受治理備份。DO NOT use when: 尚未完成實作或只想查看 git 狀態。"
-required_skills: [memory-ops, plugin-release-governance, quality-review-governance, programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
+required_skills: [memory-ops, plugin-release-governance, quality-review-governance, programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 metadata:
   author: antigravity
   version: "2.0"
@@ -48,15 +48,15 @@ Technical details may only appear after a `補充技術細節` section when they
 - Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
 
 > [LOAD SKILL] If staged or dirty files touch plugin / extension / VSIX / GitHub Release / package version / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before drafting commit and release steps.
-> [LOAD SKILL] If staged or dirty files include governance, public contract, release/plugin behavior, security, cross-module, repeated fragile-code, or accepted-risk changes, read `.agents/skills/quality-review-governance/SKILL.md` before declaring commit readiness.
+> [LOAD SKILL] If staged or dirty files include governance, public contract, release/plugin behavior, security, cross-module, repeated fragile-code, or Director risk-closed but not complete (`closed-with-director-risk`) changes, read `.agents/skills/quality-review-governance/SKILL.md` before declaring commit readiness.
 
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 09 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Require explicit file lists, review state and accepted-risk/unverified/blocker awareness, memory hygiene, status-check awareness, changelog quality, version impact, and governed release routing before commit or push.
+- Workflow-specific grounding: Require explicit file lists, review state and Director risk-closed but not complete (`closed-with-director-risk`), unverified, and blocker awareness, memory hygiene, status-check awareness, changelog quality, version impact, and governed release routing before commit or push.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-package/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/implementation-patch-delivery/SKILL.md`, `.agents/skills/memory-coupled-delivery/SKILL.md`, `.agents/skills/team-validation-packet/SKILL.md`, `.agents/skills/team-review-packet/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/team-change-delivery-artifact/SKILL.md`, `.agents/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.agents/skills/team-validation-delivery-artifact/SKILL.md`, `.agents/skills/team-review-delivery-artifact/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, integrates returned delivery artifacts into the main worktree, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not author primary implementation, review, validation, or memory attribution.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
 
 # source-command-09-commit-skill
@@ -81,7 +81,7 @@ Scan for:
 - Orphaned files (no memory card coverage)
 - Debug artifacts (`console.log`, hardcoded test values, `TODO` comments)
 - Untracked files that should be in `.gitignore`
-- Review-state blockers, accepted-risk items, or unverified high-risk validation from the build/fix/audit completion report
+- Review-state blockers, Director risk-closed but not complete (`closed-with-director-risk`) items, or unverified high-risk validation from the build/fix/audit completion report
 
 ### 2. Memory Staleness Check (記憶過期偵測)
 
@@ -126,13 +126,13 @@ Output:「【防線鎖定】準備遠端備份。請確認上方 Commit Message 
 
 > Begins only after Director inputs GO.
 
-GO for this workflow authorizes the captain to run protected completion work. It does not authorize any specialist to write memory cards, stage files, commit, push, tag, publish releases, or mutate external state. Specialists may provide memory delivery, review, validation, changelog-quality, release-readiness, or completion evidence packets only; implementation patch provenance must already exist or be marked not-applicable for commit-only work.
+GO for this workflow authorizes the captain to run protected completion work. It does not authorize any specialist to write memory cards, stage files, commit, push, tag, publish releases, or mutate external state. Specialists may provide memory/docs delivery, review, validation, changelog-quality, release-readiness, or completion evidence delivery artifacts only; implementation change delivery provenance must already exist or be marked not-applicable for commit-only work.
 
-### 5. Review And Completion Evidence Packets（審查與收尾證據包）
+### 5. Review And Completion Evidence Delivery Artifacts（審查與收尾證據交付件）
 
-- Before protected writes or git operations, confirm the formal Programming Team Board has commit-release task type, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and captain-only memory/git/release ownership.
-- Collect required implementation patch provenance, memory delivery, review, validation, and completion evidence packets for changed-file list, review-state blockers, accepted-risk items, memory hygiene, changelog quality, status-check awareness, version impact, and governed release routing.
-- Evidence packet owners must not be the implementation specialists whose changes are being prepared for commit.
+- Before protected writes or git operations, confirm the formal Programming Team Board has commit-release task type, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and captain-only protected git/release ownership and memory writes only from returned memory/docs delivery artifacts.
+- Collect required implementation change delivery provenance, memory/docs delivery, review, validation, and completion evidence delivery artifacts for changed-file list, review-state blockers, Director risk-closed but not complete (`closed-with-director-risk`) items, memory hygiene, changelog quality, status-check awareness, version impact, and governed release routing.
+- Evidence delivery artifact owners must not be the implementation specialists whose changes are being prepared for commit.
 
 ### 6. CHANGELOG Update (CHANGELOG 更新)
 
@@ -160,7 +160,7 @@ git push
 ```
 
 [MCP HITL GATE] applies: `git push` is 🟡 MEDIUM risk. Output Justification Block before executing.
-No specialist, subagent, browser branch, CLI evidence branch, or isolated patch branch may run these operations.
+No specialist, subagent, browser branch, CLI evidence branch, or isolated change delivery branch may run these operations.
 
 ### 8. Completion
 
@@ -171,9 +171,9 @@ No specialist, subagent, browser branch, CLI evidence branch, or isolated patch 
 
 ## [SECURITY & COMPLIANCE]
 - **Stage 1 Role**: Reader — no source file modifications.
-- **Stage 2 Role**: Captain/SRE — CHANGELOG write plus approved git operations are captain-only; specialists provide evidence packets only.
+- **Stage 2 Role**: Captain/SRE — CHANGELOG write plus approved git operations are captain-only; specialists provide evidence delivery artifacts only.
 - **Memory**: read — check staleness only, no card writes in this workflow.
- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+ Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).

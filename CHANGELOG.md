@@ -2,11 +2,53 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2026-06-28] 團隊協作封包技能拆分
+> 語彙說明：本文件保留歷史版本語境；舊條目中的 patch、packet、補丁、封包、隊長代工與 accepted-risk 不得解讀為現行正向規範。現行正向規範只使用交付件、任務軌跡帳本、逐波派工、隊長只整合已回收交付件，以及缺交付件即阻塞、未驗證或總監風險關閉但非完整。
+
+## [2026-06-29] 提交前治理收斂
+
+### fix
+- **同步漂移檢查** — 部署同步改與治理巡檢使用一致的精確雜湊判斷，避免部署副本內容不同卻回報無需更新。
+- **記憶健康收斂** — 壓縮核心記憶卡舊週期事件並補齊歸檔，讓提交前檢查不再被過期或壓縮需求阻塞。
+
+## [2026-06-28] 團隊原生交付件驅動收斂
+
+### fix
+- **Delivery-artifact governance** — 三平台工作流來源與根文件收斂為交付件驅動語義；隊長只協調、派工、監督、整合已回收交付件與回報，不產出主要實作、審查、驗證或記憶歸因。
+- **Wave and evidence ordering** — 正式入口明確要求任務軌跡帳本與逐波派工；審查與驗證交付件不得早於變更交付件，自審不得完成審查。
+- **Risk closure wording** — 缺合格交付件只能標示阻塞、未驗證或總監風險關閉但非完整；已接受風險不得宣稱完整完成。
+
+## [2026-06-28] 團隊原生通道分離重構
 
 ### feat
-- **Team collaboration skill split** — 新增 team-role-boundaries、implementation-patch-delivery、memory-coupled-delivery、team-validation-packet、team-review-packet、team-completion-gate 六個共用隊員技能，將隊長制從主線處理升級為正式團隊協作。
-- **Formal packet completion** — 正式團隊完成需回收 implementation patch、memory delivery、review、validation 四類封包；隊長只負責調度、整合、裁決與總監溝通，隊員各自交付單一任務。
+- **Assignment/channel separation** — 團隊原生流程改成先建立任務板與指派專家站點，再判斷執行通道；子代理、工具、瀏覽器、命令列、MCP 或隔離工作區不可用時，只能把站點標示為阻塞、未驗證或總監風險關閉但非完整，不得取消指派或回落成隊長代工完整完成。
+- **Direct skill rename** — 正式團隊入口更名為任務板與交付件語義：團隊任務板、變更交付件、記憶文件交付件、驗證交付件與審查交付件成為唯一正式名稱。
+- **Specialist-first routing** — 專家分類由專家角色母技能唯一維護；委派策略固定為選專家子技能、選領域標籤、選請求通道、記錄通道能力與啟動狀態，最後回收交付件或標示缺證狀態。
+
+### fix
+- **Doctor hardening** — 治理巡檢正向條件改抓新技能名、新交付件、新通道狀態欄位與 Team-Native 軌跡欄位；舊補丁語義只保留為遺留偵測，不再作為通過條件。
+- **Deployment sync** — 三平台部署副本同步新子代理政策、新任務板技能、新交付件技能與核心規則 marker block。
+
+## [2026-06-28] Team-Native Core 團隊原生核心
+
+### feat
+- **Team-Native Core** — 新增共用團隊原生核心政策與任務軌跡證據契約，將編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作預設為站點優先團隊狀態機。
+- **Specialist skill registry** — 新增專家角色母技能與十個專家子技能，將意圖需求、範圍影響、架構契約、變更交付、驗證、審查、安全可靠性、文件記憶、發布收尾與外部資訊查證從任務板抽離成獨立技能來源。
+- **Change delivery artifact model** — 正式實作成果改稱變更交付件；子代理、瀏覽器、命令列、外部查證、隔離工作區與文字交付只作為執行通道，不再等同專家角色或團隊模式本身。
+- **Platform route states** — 平台能力矩陣新增 `conditional` 能力層級；正式站點需記錄 native、adapter、conditional 或 unavailable，缺能力不得降級成 routine direct。
+- **Team trace audit** — 治理巡檢新增 Team-Native Core 語意掃描與可選嚴格任務軌跡檢查；管理器與部署稽核入口可要求 Team-Native trace。
+
+### docs
+- **Core direction alignment** — 根文件與三平台文件改以 Team-Native Core 描述團隊化方向，並明確區分 Codex / Claude 原生或外掛能力與 Antigravity / Gemini adapter / conditional 路由。
+- **Skill count refresh** — 共用操作型技能數更新為 61；Codex Edition 部署後技能總數更新為 78（61 共用 + 17 工作流），根文件與三平台文件同步調整。
+
+### fix
+- **Legacy patch wording retirement** — 正式政策、技能、矩陣、三平台工作流與部署副本改用變更交付件語義；舊補丁語彙只保留在歷史紀錄或巡檢偵測規則中。
+
+## [2026-06-28] 團隊協作封包技能拆分（歷史語境）
+
+### feat
+- **Team collaboration skill split** — 新增 team-role-boundaries、team-change-delivery-artifact、team-memory-docs-delivery-artifact、team-validation-delivery-artifact、team-review-delivery-artifact、team-completion-gate 六個共用隊員技能，將隊長制從主線處理升級為正式團隊協作。
+- **Formal packet completion** — 歷史紀錄：當時以 implementation patch、memory delivery、review、validation 四類封包描述正式團隊完成；現行規範已改為四類交付件與任務軌跡帳本，且缺件不得稱完整完成。
 
 ### docs
 - **Skill count refresh** — 共用操作型技能數更新為 50；Codex Edition 部署後技能總數更新為 67（50 共用 + 17 工作流），根文件與三平台文件同步調整。
@@ -15,7 +57,7 @@ All notable changes to this project will be documented in this file.
 
 ### feat
 - **Formal dispatch lifecycle** — 隊長制流程明確分成草案包、GO、正式派工板與波次派工；草案板不得啟動隊員。
-- **Wave dispatch contract** — 正式派工不是一次開全部隊員；下一波必須以上一波回收的補丁、審查或驗證證據與啟動條件為輸入。
+- **Wave dispatch contract** — 歷史紀錄：正式派工不是一次開全部隊員；當時寫作補丁、審查或驗證證據的上一波輸入，現行規範改稱變更、審查與驗證交付件。
 
 ### fix
 - **Doctor semantic coverage** — 巡檢新增正式派工生命週期、波次派工、上一波輸入、下一波啟動條件與正式證據資格檢查，並攔截草案證據冒充正式驗收。
@@ -24,10 +66,10 @@ All notable changes to this project will be documented in this file.
 ## [2026-06-28] 隊長制團隊任務包模板化
 
 ### feat
-- **Team task package** — 新增團隊任務包共用技能，集中保存輕量任務板、完整任務板、實驗任務板、專員任務包、證據包、隔離補丁包、文字補丁包、直接處理例外與收尾檢查表。
+- **Team task package** — 新增團隊任務包共用技能，集中保存輕量任務板、完整任務板、實驗任務板、專員任務包、證據交付件、隔離變更交付件、文字變更交付件、直接處理例外與收尾檢查表。
 - **Workflow template references** — Codex workflow、Claude command 與 Antigravity workflow 入口改為載入隊長制編程治理與團隊任務包，不再在每個入口複製長段任務板規則。
-- **Patch packet contract** — 實作隊員輸出被明確分成受治理隔離區補丁、文字補丁任務包與隊長代工風險接受三種，避免「隊員實作」被誤解成可直接改主工作區。
-- **GO execution routing** — 三平台建構、修復與提交入口明確改為 GO 後先派實作補丁包、審查包、驗證包或收尾證據包；隊長只整合已回收補丁並保留記憶、Git 與發布閘門。
+- **Patch packet contract** — 歷史紀錄：當時以補丁與任務包描述實作隊員輸出；現行規範只承認受治理隔離變更交付件或文字變更交付件，缺交付路徑只能總監風險關閉但非完整。
+- **GO execution routing** — 三平台建構、修復與提交入口明確改為 GO 後先派實作變更交付件、審查交付件、驗證交付件或收尾證據交付件；隊長只整合已回收變更交付件並保留記憶、Git 與發布閘門。
 
 ### fix
 - **Captain scope reduction** — 隊長制編程治理改回語義核心，只負責觸發、角色邊界、隊長最小執行權與完成誠實性；任務板與專員包模板交由團隊任務包維護。
@@ -38,18 +80,18 @@ All notable changes to this project will be documented in this file.
 
 ### feat
 - **Captain trigger gate** — 編程、修改、除錯、測試、審查、記憶、提交、發布或治理影響任務會依語意自動進入隊長制，不再要求總監手動指定工作流或要求子代理。
-- **Task type and dispatch pre-gate** — 隊長制啟動後必須先判斷任務類型、工作流路由、實作授權、允許角色與禁止角色，再建立隊長任務板；任何隊員、子代理、瀏覽器分支、CLI 分支或隔離補丁不得早於任務板啟動。
-- **Captain minimum execution gate** — 隊長正式限制為理解、派工、主工作區整合、審查狀態、記憶、提交、發布與最終驗收；反證、影響面、測試、審查與收尾稽核預設不得全部由主線包辦，隊長代工只能標為風險接受。
+- **Task type and dispatch pre-gate** — 隊長制啟動後必須先判斷任務類型、工作流路由、實作授權、允許角色與禁止角色，再建立隊長任務板；任何隊員、子代理、瀏覽器分支、CLI 分支或隔離變更交付不得早於任務板啟動。
+- **Captain minimum execution gate** — 歷史紀錄：當時仍保留部分隊長主線整合與驗收語氣；現行規範已收斂為隊長只協調、派工、監督、整合已回收交付件與回報，隊長代工不得稱完整完成。
 - **Captain team board** — 團隊站點板升級為隊長任務板，每站必須標示是否適用、執行模式、證據負責人、角色邊界、主線直做例外與完成條件。
 - **Role exclusivity** — 新增嚴格角色互斥：提出需求者不實作，架構者不偷改需求，實作者不能審查自己的交付物，審查者不能同時實作同一交付物。
-- **Isolated patch branch** — 子代理實作不再只能是唯讀採證；若平台具備受治理隔離區，實作隊員可產出 patch packet，但主工作區寫入、整合、驗證、記憶、提交、推送與發布仍由隊長負責。
+- **Isolated patch branch** — 歷史紀錄：當時以 patch packet 描述隔離實作分支；現行規範改稱受治理隔離變更交付件，且主工作區只能整合已回收交付件。
 - **00/01 trigger routing** — 對話與探勘入口新增編程意圖轉向規則；普通自然語言要求只要涉及編程，就轉入隊長制編程模式。
 
 ### fix
-- **Experiment boundary** — 三平台實驗入口保留快速試錯，但最小治理宣告改為 Captain Team Board，並加入角色邊界、隔離補丁條件、不能自我審查與不能宣稱團隊協作的全主線例外。
+- **Experiment boundary** — 三平台實驗入口保留快速試錯，但最小治理宣告改為 Captain Team Board，並加入角色邊界、隔離變更交付條件、不能自我審查與不能宣稱團隊協作的全主線例外。
 - **Condense boundary** — 三平台 05 濃縮入口納入隊長最小執行權與 Captain Team Board，掃描、萃取、審查與收尾稽核不得繞過團隊派工；AGENTS、CLAUDE 與記憶寫入仍由隊長保護整合。
-- **Doctor semantic coverage** — 巡檢模組改抓隊長觸發、任務類型、派工前置、隊長最小執行權、角色邊界、隔離補丁、文字補丁、隊長代工風險接受、自我審查、00/01 自動轉向與實驗邊界，避免舊版只檢查 Full B 字串造成假綠燈。
-- **Documentation alignment** — 根文件與三平台文件改以隊長制團隊協作描述編程治理，明確區分主代理整合責任、唯讀證據分支與隔離補丁分支。
+- **Doctor semantic coverage** — 巡檢模組改抓隊長觸發、任務類型、派工前置、隊長最小執行權、角色邊界、隔離變更交付、文字變更交付、總監風險關閉但非完整、自我審查、00/01 自動轉向與實驗邊界，避免舊版只檢查 Full B 字串造成假綠燈。
+- **Documentation alignment** — 根文件與三平台文件改以隊長制團隊協作描述編程治理，明確區分主代理整合責任、唯讀證據分支與隔離變更交付分支。
 
 ## [2026-06-27] 受治理 Full B 編程團隊治理
 
@@ -360,7 +402,7 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-22] 三平台子代理治理建構
 
 ### feat
-- **Delegation Gate semantic core** — `Shared/policies/subagent-invocation.md` 改為 vendor-neutral 的 Delegation Gate / evidence branch 模型，Shared 層只描述委派判斷、唯讀邊界、主代理整合責任與固定證據包格式。
+- **Delegation Gate semantic core** — `Shared/policies/subagent-invocation.md` 改為 vendor-neutral 的 Delegation Gate / evidence branch 模型，Shared 層只描述委派判斷、唯讀邊界、主代理整合責任與固定證據交付件格式。
 - **Platform adapter translation** — Antigravity / Gemini、Claude Code、Codex 三平台入口改為各自轉譯 Shared 語義，不再把任一平台的子代理工具名硬寫成共用規則。
 - **Subagent vocabulary drift audit** — Doctor 新增語彙漂移檢查，Shared 技能中的未標註平台工具名會以 Red 阻斷，並攔截 Codex workflow 殘留的 Claude 舊式 Agent subagent_type 語法。
 - **Shared vocabulary hardening** — `delegation-strategy` 與 CLI prompt skeleton 移除平台專屬狀態檔與硬編工具名，browser Auto-Pass 明確不得略過 Director GO / HITL gate。

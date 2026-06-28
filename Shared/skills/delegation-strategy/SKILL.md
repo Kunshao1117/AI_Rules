@@ -3,177 +3,145 @@ name: delegation-strategy
 description: >
   [Infra] Vendor-neutral captain dispatch and Delegation Gate for captain-led stations,
   role-exclusive specialists, evidence/browser/CLI branches, MCP direct calls,
-  isolated/text patch packets, and review evidence boundaries.
-  Use when: 需要判斷是否觸發隊長制、主腦是否直接處理、各站點該派哪種隊員或證據/補丁管道。
+  isolated/text change delivery artifacts, and review boundaries.
+  Use when: 判斷隊長制、主腦直做、站點隊員或證據/變更交付管道。
   DO NOT use when: 瀏覽器測試已確定（用 browser-testing）、CLI 掃描已確定（用 code-audit）。
 metadata:
   author: antigravity
-  version: "6.0"
+  version: "6.1"
   origin: framework
   kind: operational
   memory_awareness: none
   tool_scope: ["filesystem:read"]
 ---
 
-# Captain Dispatch And Delegation Strategy (隊長派工與委派策略)
+# Captain Dispatch And Delegation Strategy
 
-This skill chooses the safest execution channel after `programming-team-governance` triggers captain-led mode and `team-task-package` creates the board. It does not redefine board fields, packet formats, memory delivery formats, or completion templates.
+Use after captain-led mode is active and the Captain Team Board exists. This skill selects channels; `programming-team-governance` owns team semantics, `team-specialist-registry` owns roles, and `team-task-board` owns board and artifact fields. Read `references/cli-delegation-sop.md` only for CLI branch details.
 
-Formal team collaboration routes through `team-role-boundaries`, `implementation-patch-delivery`, `memory-coupled-delivery`, `team-validation-packet`, `team-review-packet`, and `team-completion-gate`. Use them as fixed sources when the matching station applies; do not replace them with discretionary captain judgment.
+## Captain Trigger Gate
 
-Read references/cli-delegation-sop.md only when a CLI branch needs full prompt, report, or cleanup procedure.
+Captain-led mode is active for code, workflow rules, skills, tests, debugging, audit, commit/release prep, source memory/docs, generated copies, public contract, or governance work. Pure conversation and small factual answers stay direct. Uncertain source/workflow/review impact enters captain-led mode.
 
-## 1. Captain Trigger Gate (隊長觸發閘門)
+## Task Type And Dispatch Pre-Gate
 
-Before choosing a branch, decide whether captain-led mode is active. It is active when the request touches code, workflow rules, skills, tests, debugging, audit, commit/release preparation, source memory, source-behavior docs, or governance decisions.
+Classify task type before any specialist, browser branch, CLI branch, MCP route, isolated change delivery, text change delivery artifact, or broad evidence route. Requests for team mode or specialist channels force board creation first.
 
-Non-coding discussion, translation, and small factual answers stay direct and do not create a board. When source/workflow/review impact is uncertain, enter captain-led mode and record the uncertainty.
+No specialist branch starts before the board exists.
 
-## 1.5 Task Type And Dispatch Pre-Gate (任務類型與派工前置閘門)
+The board records task type, workflow route, implementation authorization, allowed specialist roles, forbidden specialist roles, station applicability, execution mode, evidence owner, role boundary, direct exception, completion condition, and platform route. A draft board cannot start formal specialists or satisfy formal acceptance. The formal board lifecycle is draft -> GO-backed formal promotion -> wave-gated station dispatch -> returned delivery artifacts -> review/validation/memory states -> completion audit.
 
-Before any specialist, subagent, browser/CLI/MCP evidence route, isolated patch branch, or text patch packet starts, the captain classifies task type from `programming-team-governance` and drafts the Captain Team Board with `team-task-package`.
+Formal dispatch fields include phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, specialist lifecycle, closeout lane, Yellow classification, repair loop count, and closed-with-director-risk.
 
-No specialist branch starts before the board exists. A Director request for subagents, team mode, workflow commands, or parallel agents forces immediate board creation; it does not authorize pre-board delegation.
+## Captain Minimum Execution Gate
 
-The board must state task type, workflow route, implementation authorization, allowed/forbidden specialist roles, and station fields from `team-task-package`. If not, complete the board or mark `blocked`.
+The captain keeps Director communication, GO interpretation, protected integration, memory, git, release, deploy/install gates, review-state decision, and final acceptance. Gate ownership is not permission to absorb implementation, review, validation, or memory attribution.
 
-A pre-GO board is a draft board only. It can structure planning, but it cannot start formal specialists or satisfy formal acceptance.
+Implementation does not default to the captain. Route to isolated change delivery, then text change delivery artifact, then `blocked`. Captain substitute authoring needs case-specific Director `closed-with-director-risk` and is not full team completion. Captain protected integration of returned delivery artifacts remains normal.
 
-After Director GO, create or promote a formal board before dispatch. The formal board lifecycle must name each station's phase, dispatch wave, previous-wave input, next-wave start condition, and formal evidence eligibility.
+Evidence stations do not default to the captain. Counter-evidence, impact map, validation, review, and completion audit route to bounded evidence/CLI/browser/MCP paths unless a direct exception is recorded.
 
-## 1.6 Captain Minimum Execution Gate (隊長最小執行權閘門)
+## Formal Wave Dispatch Gate
 
-The captain keeps Director communication, GO interpretation, protected main-worktree integration, memory, git, release, deploy/install gates, review-state decision, and final acceptance.
+Dispatch is wave-gated. Open only the current wave and stations whose previous-wave input exists or is honestly marked `blocked`, `unverified`, or `closed-with-director-risk`. Same-wave stations need no dependency or implementation/review conflict. Review and validation wait for the change delivery artifact or recorded missing state.
 
-Captain direct ownership of gates is not permission to absorb implementation, review, validation, or memory attribution details. Those details require bounded station packets unless the board records `blocked`, `unverified`, or `accepted-risk`.
+Do not perform post-board all-at-once dispatch.
 
-Implementation does not default to the captain. Route to isolated patch, then text patch packet, then `blocked`; captain substitution accepted-risk is `direct` only when the Director accepts that full team completion is unavailable.
+Within an open wave, evaluate station lifecycle before starting or reusing a channel. Retain or reuse only for the same role, station, delivery artifact, and preserved role boundary. Record station lifecycle state, retention reason, conversation health, reuse count, handoff summary, and closure reason. Replace when independent opinion is required, role would change, context is stale, or handoff is insufficient.
 
-Evidence stations do not default to the captain. Counter-evidence, impact map, validation, review, and completion audit route to evidence/CLI/browser/MCP/isolated patch paths when bounded and safe. Short-loop validation may stay direct only for hot-path feedback or named replacement evidence.
+## Specialist Dispatch Gate
 
-If two or more evidence stations resolve to `direct`, dispatch is invalid unless every station has a specific direct exception, even for small tasks.
+Route each applicable station in this order:
 
-## 1.7 Formal Wave Dispatch Gate (正式波次派工閘門)
+1. Select a specialist skill from `team-specialist-registry`.
+2. Select the domain label.
+3. Select requested execution channel.
+4. Record channel capability and channel invocation status.
+5. Record station lifecycle and closeout lane.
+6. Return a delivery artifact or mark `blocked`, `unverified`, or `closed-with-director-risk`.
 
-Formal dispatch is wave-gated. Open only stations whose previous-wave input exists or is explicitly marked `blocked`, `unverified`, or `accepted-risk`.
-
-The same wave may include parallel stations only when they have no dependency conflict, no overlapping implementation/review role conflict, and no validation dependency on an unavailable patch packet.
-
-Do not perform post-board all-at-once dispatch. A completed board authorizes station evaluation, not simultaneous launch of every station.
-
-## 2. Role Dispatch Gate (角色派工閘門)
-
-After captain-led mode starts, map each station to a role:
-
-| Role | Route first | Forbidden |
-|---|---|---|
-| Requirement specialist | evidence for contradictions or missing acceptance | implementation, final approval |
-| Architecture specialist | evidence for alternatives, boundaries, compatibility | production code writes |
-| Implementation specialist | isolated patch, otherwise text patch packet | main-worktree writes, self-review, review, requirement expansion |
-| Memory delivery specialist | memory impact attribution and memory delivery packet | memory write, memory commit, source mutation, final acceptance |
-| Test specialist | browser, CLI, evidence, or hot-path command evidence | core implementation writes, completion claims |
-| Review specialist | evidence branch or MCP/browser/CLI evidence path | implementing or patching the same deliverable, final review state |
-| Completion specialist | evidence branch for drift/docs/sync checks | memory commit, git, push, release, deployment |
-| Captain | direct | hiding uncertainty, delegating accountability |
-
-## 3. Delegation Gate (委派閘門)
-
-For captain-led work, draft the Captain Team Board, then evaluate each applicable station in this order:
-
-1. **Director communication, GO interpretation, final acceptance, review-state decision, or source-state mutation?** -> `direct` with a concrete direct exception
-2. **Secrets, login state, credential handling, external mutation, commit, push, release, deployment, install, or memory write?** -> `direct` or `blocked`; never delegate
-3. **Implementation station with governed isolated workspace and declared file scope?** -> `isolated patch`; captain integrates, validates, and owns the final main-worktree change
-4. **Implementation station without governed isolation but with a bounded diffable task?** -> text patch packet under `team-task-package` patch rules; no source write by the specialist
-5. **Source, workflow, governance, docs, generated-copy, or public contract change with possible memory impact?** -> memory delivery packet through `memory-coupled-delivery`; captain retains protected memory write authority
-6. **No isolated/text patch can be packaged?** -> `blocked`, or captain substitution as `direct` only with `accepted-risk` and the missing delegation condition
-7. **Immediate hot-path validation after a just-written change?** -> `direct` with a concrete direct exception and command evidence
-8. **Browser/UI verification station?** -> `browser branch`; load `browser-testing`
-9. **Large CLI-only analysis station?** -> `CLI branch`; load `code-audit` or `code-diagnosis`
-10. **Real-time tool access?** (Maps, docs, database, cloud, design) -> `MCP direct`
-11. **Independent read-only evidence station after special routes are excluded?** -> `evidence branch`, even when the main agent waits for the packet
-12. **No independent evidence value remains for a non-implementation station?** -> `direct` with a concrete direct exception
-13. **Required evidence, isolation, task package, or tool unavailable?** -> `blocked` or `unverified`; do not silently downgrade to `direct`
-14. **Implementation patch, memory delivery, review, or validation packet missing before formal completion?** -> `blocked`, `unverified`, or `accepted-risk`; do not claim full team completion
-
-> **Pre-Board Guard**: Do not open evidence, browser, CLI, MCP, or isolated patch routes before the Captain Team Board exists.
-
-> **Hot-Path Exclusion**: CLI branch is NOT for tasks needing immediate feedback on code just written. Use the main agent's terminal tool directly.
-
-> **Fake-Team Guard**: If two or more evidence stations resolve to `direct`, each direct station needs a concrete exception, replacement evidence, and `accepted-risk`, `unverified`, or `blocked`. "small task", "faster", "not necessary", or "delegation cost" do not satisfy this rule.
-
-> **Role-Exclusivity Guard**: A specialist cannot both implement and review the same deliverable. If separation is unavailable, mark `accepted-risk`, `unverified`, or `blocked`.
-
-> **Shared Policy Source**: 子代理啟用條件與唯讀邊界以下游 `.agents/shared/policies/subagent-invocation.md` 為部署後參考；框架來源倉庫的唯一來源檔是 `Shared/policies/subagent-invocation.md`。本技能只負責管道選擇與平台中立任務包格式。
-
-> **Review Boundary**: Evidence branches can support `quality-review-governance` and review lifecycle evidence, but they cannot decide final review state, quality acceptance, GO gates, or release readiness.
-
-> **Team Board Source**: Coding workflows use `programming-team-governance` to define fixed stations and `team-task-package` for board, specialist packet, and patch packet templates. This skill only chooses the safest channel for each station.
-
-> **Four-Packet Completion Guard**: Formal team completion requires implementation patch, memory delivery, review, and validation packets. Missing memory delivery is not covered by patch, review, validation, or captain final acceptance.
-
-Browser/CLI/MCP/evidence route markers are classified before a generic evidence branch.
-
-| Channel | Context | Speed | Output |
+| Station need | Specialist source | First route | Forbidden |
 |---|---|---|---|
-| direct | Main thread | Fast | Integrated work |
-| evidence branch | Isolated read-only reasoning | Medium | Evidence packet |
-| browser branch | Isolated DOM/browser observation | Slow | Browser evidence packet |
-| CLI branch | Isolated CLI analysis | Medium | File or text report |
-| MCP direct | Main-thread tool | Fast | Tool response |
-| isolated patch | Governed fork/sandbox/worktree, or text-only patch packet without filesystem isolation | Medium | Patch packet |
+| Requirement alignment | `team-specialist-intent-requirements` | contradictions, acceptance gaps | implementation |
+| Architecture boundary | `team-specialist-architecture-contract` | interfaces, boundaries, alternatives | production writes |
+| Change delivery | `team-specialist-change-delivery` | isolated change delivery, then text change delivery artifact | main-worktree writes, self-review |
+| Memory/docs | `team-specialist-memory-docs` | memory/docs delivery artifact | memory write, memory commit |
+| Validation | `team-specialist-validation` | CLI/browser/MCP/evidence or hot-path command evidence | implementation repair |
+| Review | `team-specialist-review` | independent evidence branch | authoring the reviewed deliverable |
+| Completion readiness | `team-specialist-release-completion` | drift, sync, docs, completion evidence | final state mutation |
 
-## 4. Evidence Branch Boundary (證據分支邊界)
+## Delegation Gate
 
-Use an evidence branch only when it is read-only, independently bounded, useful as separable evidence, and reportable as `發現 / 證據 / 風險 / 建議 / 是否阻塞`. Browser/UI, CLI-only, and real-time MCP routes are classified first.
+Evaluate each station in this order:
 
-Waiting is allowed when the packet is required. Do not use evidence branches for secrets/login state, source writes, memory edits, git, deploys, installs, issue/PR edits, cloud mutation, or mutating MCP state.
+1. Director communication, GO, final acceptance, review-state decision, source-state mutation -> `direct` with protected exception.
+2. Secrets, login, credentials, external mutation, commit, push, release, deployment, install, memory write -> `direct` or `blocked`.
+3. Implementation station with governed isolated workspace -> `isolated change delivery`; captain integrates after evidence.
+4. Implementation station without isolation but bounded and diffable -> text change delivery artifact.
+5. Source, workflow, governance, docs, generated-copy, or public contract memory impact -> memory/docs delivery artifact.
+6. No isolated/text change delivery route -> `blocked`; captain substitute authoring needs Director `closed-with-director-risk`.
+7. Immediate hot-path validation after integration -> `direct` with command evidence.
+8. Browser/UI verification station? -> `browser branch`.
+9. Large CLI-only analysis station? -> `CLI branch`.
+10. Real-time tool access? -> `MCP direct`.
+11. Independent read-only evidence station after special routes are excluded? -> `evidence branch`.
+12. No independent evidence value for a non-implementation station -> `direct` with concrete direct exception.
+13. Required route unavailable -> `blocked` or `unverified`.
+14. Missing implementation, memory, review, or validation artifact before formal completion -> `blocked`, `unverified`, or `closed-with-director-risk`; do not claim full team completion.
+15. Yellow finding -> classify as `fix-this-cycle`, `residual-accepted`, `deferred-follow-up`, `local-customization`, or `informational`.
+16. Repair loop limit reached after two repair attempts for the same Yellow or validation symptom -> stop incremental repair and route to root-cause repair, structural refactor, blocked, unverified, or `closed-with-director-risk`.
 
-When used for review, map the returned packet to `quality-review-governance`; a branch packet is evidence, not approval.
+## Guards
 
-## 5. Isolated Patch Boundary (隔離補丁邊界)
+Pre-Board Guard: do not open evidence, browser, CLI, MCP, or isolated change delivery routes before the Captain Team Board exists.
 
-Use an isolated patch branch or text patch packet only when the platform provides a governed fork/sandbox/worktree/patch-only/text-only route, the file scope is explicit and non-overlapping, the implementer does not review the same deliverable, protected state is forbidden, and the captain can inspect before main-worktree integration.
+Hot-Path Exclusion: CLI branch is not for immediate feedback on just-written code; use the main terminal tool.
 
-If any condition is missing, mark the implementation station `blocked`, or record captain substitution accepted-risk with the missing condition. Every isolated patch branch or text patch task package uses `team-task-package` and must include:
+Fake-Team Guard: if two or more evidence stations resolve to `direct`, each needs a concrete exception, replacement evidence, and `closed-with-director-risk`, `unverified`, or `blocked`.
+
+Role-Exclusivity Guard: a specialist cannot implement and review the same deliverable. Missing independent review is `closed-with-director-risk`, `unverified`, or `blocked`, never `complete`.
+
+Lifecycle Guard: retained specialists remain valid only inside the same role and same delivery artifact. Reuse across implementation/review, validation/repair, memory attribution/protected memory mutation, completion/final acceptance, or second-opinion review is invalid.
+
+## Change Delivery Boundary
+
+Use isolated or text change delivery only when scope is explicit, roles are separated, protected state is forbidden, and captain inspection precedes integration. If any condition is missing, mark the implementation station `blocked` or Director-risk closed.
+
+Required fields:
 
 ```text
+delivery_artifact_id:
+author_role:
+source_input:
+integrable_scope:
 變更:
 檔案:
 證據:
 風險:
 memory_impact:
+review_state:
+validation_state:
+memory_docs_state:
+captain_authored:
 審查需求:
 是否阻塞:
 ```
 
-## 6. Platform Adapter Mapping (平台轉譯)
+## Platform Adapter Mapping
 
-Shared skills describe branch intent, not vendor tools. Antigravity/Gemini, Claude Edition, and Codex Edition map evidence, browser, CLI, MCP, isolated patch, or text patch intent to their native adapters.
+Shared skills describe Team-Native Core intent, not vendor tools. Platforms map evidence, browser, CLI, MCP, isolated change delivery, or text change delivery to `native`, `adapter`, `conditional`, or `unavailable`. Conditional routes need proof. Unavailable routes cannot become routine direct.
 
-## 7. Direct Exception Contract (主線直做例外契約)
+## Direct Exception Contract
 
-Evidence stations default to a branch. `direct` is valid only when the board records station name, why a branch is unsafe/duplicate/impossible/lower quality, replacement evidence, and whether the skipped branch leaves accepted risk, unverified evidence, or no remaining risk.
+`direct` requires station, exception reason, replacement evidence, and residual `closed-with-director-risk`, `unverified`, or `blocked` state. Valid exceptions are GO interpretation, main-worktree integration of returned delivery artifacts, memory/git/release/deploy/install ownership, secret/login boundary, hot-path feedback, no independent evidence value, or Director-accepted captain substitute authoring.
 
-Valid exceptions include GO interpretation, main-worktree integration, memory ownership, commit/push/release ownership, deploy/install ownership, secret/login boundary, hot-path feedback, no independent evidence value after scope reduction, or captain substitution accepted-risk when no isolated/text patch task package can be assigned.
+## Integration Authorization Contract
 
-Invalid exceptions include generic size labels, speed, delegation cost alone, convenience, or "not necessary" without concrete evidence.
+Formal team completion evidence requires implementation change delivery, memory/docs delivery artifact, review delivery artifact, and validation delivery artifact. Missing artifacts, route evidence, independent review, validation, or Team-Native trace evidence stop formal completion as `blocked` or `unverified` unless the Director closes the named risk as `closed-with-director-risk`. Risk closure is incomplete team separation, not completion.
 
-For implementation stations, `direct` never means routine captain coding. It means protected integration of a returned patch packet, or Director-accepted captain substitution accepted-risk when no isolated/text patch can be produced. The latter cannot satisfy full team completion.
+## Evidence Delivery Artifact Contract
 
-## 7.5 Integration Authorization Contract (整合授權契約)
-
-The captain may claim formal team completion only when implementation, memory, review, and validation separation is preserved through four packet classes:
-
-1. Implementation patch packet: isolated patch or text patch packet, including `memory_impact`.
-2. Memory delivery packet: includes `memory_impact`, `status: memory_patch / blocked / unverified / accepted-risk`, and `memory_patch`.
-3. Independent review packet: reviewer did not implement the change.
-4. Validation packet: validation route did not change core implementation.
-
-Missing packets stop formal completion as `blocked` or `unverified` unless the Director accepts the named risk. Accepted-risk integration is incomplete team separation, not complete team execution.
-
-## 8. Evidence Packet Contract (證據包契約)
-
-Every delegated branch prompt names role, read scope, forbidden actions, review use, stop condition, and this return format:
+Every delegated branch names specialist skill, domain label, requested channel, read scope, forbidden actions, review use, stop condition, and returns:
 
 ```text
 發現:
@@ -183,15 +151,6 @@ Every delegated branch prompt names role, read scope, forbidden actions, review 
 是否阻塞:
 ```
 
-The captain reviews and integrates the packet. Evidence branches cannot decide GO, memory commit, commit, push, release, deployment, or mutating MCP actions.
+The captain reviews and integrates artifacts. Evidence branches cannot decide GO, memory commit, commit, push, release, deployment, or mutating MCP actions.
 
-## 9. CLI Role Boundary (CLI 角色邊界)
-
-CLI branch = read-only analytical branch: no source modification, report-only output under `.agents/logs/`, and memory read only for context.
-
-## 10. Constraints (約束)
-
-- MCP servers are tool extensions, NOT delegation targets. They are invoked by the Master Agent, not assigned work like an evidence branch.
-- Adding/removing MCP follows `tech-stack-protocol` §4 governance.
-- Captain-led routing does not remove existing workflow gates. It decides which workflow route and specialist roles apply before execution.
-- If a validation loop fails 3 consecutive times, stop, report the repeated failure, and wait for Director direction.
+Evidence branches can support `quality-review-governance` and review lifecycle evidence, but they cannot decide final review state, quality acceptance, GO gates, or release readiness. Review delivery still needs a role-separated reviewer artifact when completion depends on review.

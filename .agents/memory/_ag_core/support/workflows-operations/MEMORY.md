@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 測試、巡檢、交接與技能鍛造工作流。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-28T13:56:29+08:00'
+last_updated: '2026-06-29T07:04:11+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T13:56:29+08:00'
+last_verified: '2026-06-28T21:54:14+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 15
+cycle_event_count: 17
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,13 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core.support.workflows-operations — Antigravity Operations Workflow Memory
 
 ## Current Truth
-- Antigravity operational workflows now inherit formal team dispatch fields and cannot claim full team completion without separated implementation patch, memory delivery, review, validation, and completion evidence or accepted risk.
-- Antigravity operational workflows now inherit team-task-package references through the shared workflow entry contract and keep evidence packets role-bound.
-- Antigravity test, routine, handoff, and skill-forge workflows now require task type, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, and accepted-risk captain substitution before specialist work.
+- Antigravity operational workflows now inherit formal team dispatch fields and cannot claim full team completion without separated implementation change delivery, memory delivery, review, validation, and completion evidence or accepted risk.
+- Antigravity operational workflows now inherit team-task-board references through the shared workflow entry contract and keep evidence delivery artifacts role-bound.
+- Antigravity test, routine, handoff, and skill-forge workflows now require task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` before specialist work.
 - Antigravity test, routine, handoff, and skill-forge workflows keep writes and external state on the captain while evidence stations use role-bound team branches.
 - Antigravity test, routine, handoff, and skill-forge workflows now load programming-team-governance with applicability/execution-mode station reporting while keeping write, memory, and release decisions on the main thread.
 - Antigravity test, routine, handoff, and skill-forge workflows now require evidence owner, direct exception, completion condition, and all-direct fake-team guards while keeping write, memory, and release decisions on the main thread.
@@ -53,11 +52,13 @@ metadata:
 - Keep handoff and routine workflows from mutating source or memory without the appropriate gate.
 
 ## Cycle Events
-- 15: Compressed captain/main delegation skills, updated Doctor four-packet checks, and resynced source/deployed policy markers.
-- 14: Added formal team child-skill routing with implementation patch, memory delivery, review, and validation packets; refreshed 50/67 skill facts after source/deployed sync.
-- 13: Updated Antigravity operational workflow memory for formal team dispatch fields and packet-separated completion evidence.
-- 12: Added team-task-package template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
-- 11: Updated Antigravity operational workflow memory for captain minimum execution and text patch packet governance.
+- 17: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
+- 16: Synced Antigravity operational workflows with Team-Native specialist registry and change delivery artifact terminology.
+- 15: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
+- 14: Added formal team specialist routing with implementation change delivery, memory delivery, review, and validation artifacts; refreshed 50/67 skill facts after source/deployed sync.
+- 13: Updated Antigravity operational workflow memory for formal team dispatch fields and delivery-artifact-separated completion evidence.
+- 12: Added team-task-board template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
+- 11: Updated Antigravity operational workflow memory for captain minimum execution and text change delivery artifact governance.
 - 10: Updated Antigravity operational workflows for the new captain dispatch gate.
 - 09: Aligned Antigravity operational workflows with captain-led evidence stations and role-exclusivity guards.
 - 08: Hardened Antigravity operational workflow boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.

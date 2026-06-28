@@ -177,21 +177,25 @@ function Compare-FrameworkFile {
         比對來源與目標同一檔案是否有差異。
         回傳：NEW / SAME / CHANGED
     .NOTES
-        先比修改時間（快），時間不同才算 SHA256（慢），最大化效能。
+        內容等價性必須優先於時間戳；部署副本可能保留來源時間但內容已漂移。
     #>
     param(
         [string]$SourcePath,
         [string]$TargetPath,
         [string]$RelativePath,
-        [switch]$IgnoreProjectIdentity
+        [switch]$IgnoreProjectIdentity,
+        [switch]$RequireExactHash
     )
     if (-Not (Test-Path $TargetPath)) {
         return [PSCustomObject]@{ Status = "NEW"; Path = $RelativePath }
     }
-    $srcTime = (Get-Item $SourcePath).LastWriteTime
-    $tgtTime = (Get-Item $TargetPath).LastWriteTime
-    if ($srcTime -eq $tgtTime -and -not $IgnoreProjectIdentity) {
-        return [PSCustomObject]@{ Status = "SAME"; Path = $RelativePath }
+    if ($RequireExactHash) {
+        $srcHash = (Get-FileHash -LiteralPath $SourcePath -Algorithm SHA256).Hash
+        $tgtHash = (Get-FileHash -LiteralPath $TargetPath -Algorithm SHA256).Hash
+        if ($srcHash -eq $tgtHash) {
+            return [PSCustomObject]@{ Status = "SAME"; Path = $RelativePath }
+        }
+        return [PSCustomObject]@{ Status = "CHANGED"; Path = $RelativePath }
     }
     if (Test-RuleTextEquivalent -SourcePath $SourcePath -TargetPath $TargetPath -IgnoreProjectIdentity:$IgnoreProjectIdentity) {
         return [PSCustomObject]@{ Status = "SAME"; Path = $RelativePath }

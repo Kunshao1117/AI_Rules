@@ -12,13 +12,17 @@
 .PARAMETER Target
     目標專案絕對路徑（Fresh/Upgrade 必填，預設為當前目錄）
 .PARAMETER Action
-    特殊動作：Global（安裝/更新全局觸發器）/ Audit（三平台代理治理巡檢）
+    特殊動作：Global（安裝/更新全局觸發器）/ Audit（三平台代理治理巡檢，包含 Team-Native 專家技能與任務軌跡）
 .PARAMETER RemoveOrphans
     Upgrade 模式：是否自動清除孤兒檔案
 .PARAMETER Apply
     Global 動作：實際寫入使用者層全域規則；未指定時只報告差異
 .PARAMETER ProfileRoot
     使用者層全域規則根目錄。預設為目前使用者 Profile，可用於 temp profile 測試
+.PARAMETER RequireTeamTrace
+    要求 Team-Native task trace；缺少或不完整的軌跡會讓治理巡檢回報紅燈
+.PARAMETER TeamTraceRoot
+    Team-Native task trace 目錄；相對路徑會以目標專案根目錄為基準
 .EXAMPLE
     # 選單模式
     .\Deploy.ps1
@@ -48,7 +52,11 @@ param(
 
     [switch]$Apply,
 
-    [string]$ProfileRoot = $env:USERPROFILE
+    [string]$ProfileRoot = $env:USERPROFILE,
+
+    [switch]$RequireTeamTrace,
+
+    [string]$TeamTraceRoot
 )
 
 $ErrorActionPreference = "Stop"
@@ -171,6 +179,7 @@ function Invoke-PlatformDeploy {
                     Invoke-DocScan    -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Invoke-HealthAudit -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Measure-SkillQuality -SkillsRoot (Join-Path $TargetPath ".agents\skills")
+                    Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $TargetPath -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot
                 }
             }
         }
@@ -191,6 +200,7 @@ function Invoke-PlatformDeploy {
                     Invoke-DocScan    -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Invoke-HealthAudit -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Measure-SkillQuality -SkillsRoot (Join-Path $TargetPath ".claude\skills")
+                    Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $TargetPath -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot
                 }
             }
         }
@@ -211,6 +221,7 @@ function Invoke-PlatformDeploy {
                     Invoke-DocScan    -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Invoke-HealthAudit -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Measure-SkillQuality -SkillsRoot (Join-Path $TargetPath ".agents\skills")
+                    Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $TargetPath -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot
                 }
             }
         }
@@ -236,7 +247,7 @@ function Show-Menu {
     Write-Host "  操作選擇:" -ForegroundColor White
     Write-Host "    [F] Fresh   全新安裝（目標目錄由下一步指定）" -ForegroundColor Green
     Write-Host "    [U] Upgrade 差異升級" -ForegroundColor Yellow
-    Write-Host "    [A] Audit   健檢掃描" -ForegroundColor Magenta
+    Write-Host "    [A] Audit   健檢掃描（含 Team-Native 專家技能與任務軌跡）" -ForegroundColor Magenta
     Write-Host "    [S] Sync    僅同步技能" -ForegroundColor DarkGray
     Write-Host "    [G] Global  安裝/更新全局觸發器" -ForegroundColor Cyan
     Write-Host "    [Q] 退出" -ForegroundColor DarkGray
@@ -289,7 +300,7 @@ if ($Action -eq "Global") {
 }
 
 if ($Action -eq "Audit") {
-    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target
+    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot
     if (-not $audit.Passed) {
         exit 1
     }

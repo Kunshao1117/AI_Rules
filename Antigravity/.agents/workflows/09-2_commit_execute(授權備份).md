@@ -1,6 +1,6 @@
 ---
 description: "Use when: 已有 09-1 掃描與 GO，要執行 commit、push、tag 或 Release 同步。DO NOT use when: 只想查看狀態或尚未通過提交前掃描。"
-required_skills: [programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
+required_skills: [programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 metadata:
   author: antigravity
   version: "2.0"
@@ -51,7 +51,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Require explicit file lists, memory hygiene, status-check awareness, changelog quality, version impact, and governed release routing before commit or push.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-package/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/implementation-patch-delivery/SKILL.md`, `.agents/skills/memory-coupled-delivery/SKILL.md`, `.agents/skills/team-validation-packet/SKILL.md`, `.agents/skills/team-review-packet/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/team-change-delivery-artifact/SKILL.md`, `.agents/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.agents/skills/team-validation-delivery-artifact/SKILL.md`, `.agents/skills/team-review-delivery-artifact/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, integrates returned delivery artifacts into the main worktree, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not author primary implementation, review, validation, or memory attribution.
 
 # [WORKFLOW: COMMIT EXECUTE (授權備份)]
 
@@ -79,13 +79,13 @@ Technical details may only appear after a `補充技術細節` section when they
 
 [EXECUTE ONLY UPON GO]
 - Confirm the Programming Team Board is commit-release task type and memory/git/release ownership is captain-only.
-- Collect review, validation, changelog-quality, release-readiness, and completion evidence packets before protected writes or git operations.
-- Evidence packet owners must not be the implementation specialists whose changes are being prepared for commit.
+- Collect review, validation, changelog-quality, release-readiness, and completion evidence delivery artifacts before protected writes or git operations.
+- Evidence delivery artifact owners must not be the implementation specialists whose changes are being prepared for commit.
 - Captain only: write the approved CHANGELOG entry to `CHANGELOG.md`.
 - Captain only: `git add <approved file list including CHANGELOG.md>`
 - Captain only: `git commit -m "{Message}"`
 - Captain only: `git push`
-- [FORBIDDEN] No specialist, subagent, browser branch, CLI evidence branch, or isolated patch branch may write memory cards, stage files, commit, push, tag, publish releases, or mutate external state.
+- [FORBIDDEN] No specialist, subagent, browser branch, CLI evidence branch, or isolated change delivery branch may write memory cards, stage files, commit, push, tag, publish releases, or mutate external state.
 
 ## 4a. CHANGELOG Update（CHANGELOG 同步更新）
 
@@ -111,8 +111,8 @@ Technical details may only appear after a `補充技術細節` section when they
 ## [SECURITY & COMPLIANCE MANDATE]
 > Inherits: `.agents/workflows/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Captain/SRE` | CHANGELOG 寫入與授權清單 git 操作為隊長專屬；隊員只提供審查、驗證與收尾證據包
- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+- **Role**: `Captain/SRE` | CHANGELOG 寫入與授權清單 git 操作為隊長專屬；隊員只提供審查、驗證與收尾證據交付件
+ Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).

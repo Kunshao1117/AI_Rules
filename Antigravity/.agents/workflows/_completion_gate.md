@@ -3,6 +3,7 @@ description: 所有 Writer/Worker 工作流共用的靜默完成閘門。
 ---
 
 <!-- Shared Completion Gate for all Writer/Worker workflows -->
+<!-- Missing qualified change delivery, validation delivery, review delivery, or memory/docs delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`). `closed-with-director-risk` is risk closure, not formal team completion. -->
 Execute ALL checks below SILENTLY. Output NOTHING when checks pass.
 Output ONLY when a check FAILS — use the halt message format.
 

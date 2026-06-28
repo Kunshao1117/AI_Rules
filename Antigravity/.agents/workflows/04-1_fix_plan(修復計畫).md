@@ -1,6 +1,6 @@
 ---
 description: "Use when: 修 bug、修復回歸、排除錯誤、診斷缺陷並執行正式修復；也涵蓋 plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 相關缺陷。DO NOT use when: 新功能建構或純除錯說明。"
-required_skills: [memory-ops, impact-test-strategy, ai-dev-quality-gate, quality-review-governance, project-context-protocol, programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
+required_skills: [memory-ops, impact-test-strategy, ai-dev-quality-gate, quality-review-governance, project-context-protocol, programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 memory_awareness: full
 metadata:
   author: antigravity
@@ -49,7 +49,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > [LOAD SKILL] If this fix touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before diagnosing release impact.
 > [LOAD SKILL] If this fix touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, real data, runtime behavior, operator-visible output, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before diagnosing quality impact.
-> [LOAD SKILL] If this fix touches governance, public contracts, release/plugin behavior, security, cross-module logic, repeated fragile code, or a choice between a direct patch and structural repair, read `.agents/skills/quality-review-governance/SKILL.md` and report review purpose, review state, evidence status, accepted risk, and blockers.
+> [LOAD SKILL] If this fix touches governance, public contracts, release/plugin behavior, security, cross-module logic, repeated fragile code, or a choice between a direct temporary fix and structural repair, read `.agents/skills/quality-review-governance/SKILL.md` and report review purpose, review state, evidence status, Director risk-closed but not complete (`closed-with-director-risk`) items, and blockers.
 > [LOAD SKILL] If this fix may change user experience, product behavior, design DNA, acceptance defaults, or existing preferences, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before diagnosing impact.
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
@@ -57,7 +57,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Separate symptom, confirmed root cause, review purpose/state when required, repair scope, regression evidence, and the conditions that route back to debug or test.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-package/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/implementation-patch-delivery/SKILL.md`, `.agents/skills/memory-coupled-delivery/SKILL.md`, `.agents/skills/team-validation-packet/SKILL.md`, `.agents/skills/team-review-packet/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/team-change-delivery-artifact/SKILL.md`, `.agents/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.agents/skills/team-validation-delivery-artifact/SKILL.md`, `.agents/skills/team-review-delivery-artifact/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, integrates returned delivery artifacts into the main worktree, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not author primary implementation, review, validation, or memory attribution.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
 
 # [WORKFLOW: FIX PLAN (修復計畫)]
@@ -83,24 +83,24 @@ Technical details may only appear after a `補充技術細節` section when they
   1. Map the target file(s) to their owning module(s) via memory cards.
   2. Identify affected modules through Relations.
   3. Classify risk level (High/Medium/Low).
-  4. Classify the repair intent as emergency patch, root-cause repair, local refinement, or structural refactor; if this is not a root-cause repair, record unresolved risk and follow-up route.
-  5. Identify patch-stack risk: repeated symptom family, repeated file region, repeated operator path, or previous temporary stopgap in the current cycle.
+  4. Classify the repair intent as emergency temporary fix, root-cause repair, local refinement, or structural refactor; if this is not a root-cause repair, record unresolved risk and follow-up route.
+  5. Identify temporary-fix stack risk: repeated symptom family, repeated file region, repeated operator path, or previous temporary stopgap in the current cycle.
   6. Identify the real failure reproduction path, operator-tool discovery result, data source, executable validation path, retry or equivalent-path strategy, and any hard blocker.
-- [ASSERT] Include the impact report in the patch plan (§ 3).
+- [ASSERT] Include the impact report in the repair plan (§ 3).
 
 ## 2. Minimal Impact Principle
 - Identify the exact root cause of the bug.
 - [FORBIDDEN] You are STRICTLY FORBIDDEN from refactoring adjacent code or changing the overall architecture. Modify ONLY the precise lines necessary to resolve the issue.
-- If the exact root cause is not known, the plan must label the work as an emergency patch and cannot present it as a completed repair.
-- If patch-stack risk is present, route to root-cause repair or blueprint/refactor unless the Director explicitly accepts a temporary unresolved-risk marker.
+- If the exact root cause is not known, the plan must label the work as an emergency temporary fix and cannot present it as a completed repair.
+- If temporary-fix stack risk is present, route to root-cause repair or blueprint/refactor unless the Director explicitly accepts a temporary unresolved-risk marker.
 
-## 3. Patch Plan Generation
+## 3. Repair Plan Generation
 - [ASSERT] You MUST call `task_boundary` to enter `PLANNING` mode.
 - [EXECUTE] Generate a Markdown Artifact named `implementation_plan.md`.
 - **Structure**:
   1. 【故障根因白話文翻譯】
-  2. 【變更意圖分類】(Emergency patch / root-cause repair / local refinement / structural refactor, patch-stack risk, escalation trigger, unresolved-risk marker when applicable)
-  3. 【審查目的與狀態】(Review purpose, lifecycle state, evidence status, accepted risk, blocker, and minimum sufficient complexity decision when applicable)
+  2. 【變更意圖分類】(Emergency temporary fix / root-cause repair / local refinement / structural refactor, temporary-fix stack risk, escalation trigger, unresolved-risk marker when applicable)
+  3. 【審查目的與狀態】(Review purpose, lifecycle state, evidence status, Director risk-closed but not complete (`closed-with-director-risk`) item, blocker, and minimum sufficient complexity decision when applicable)
   4. 【影響分析】(Risk level and affected modules from § 1.5)
   5. 【修改範圍】(Exact files to be touched)
   6. 【實作邏輯對照】(Before / After diff)
@@ -123,7 +123,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - **Role**: `Reader` | 純規劃，禁止任何磁碟寫入。
 
 `...EOF... — Agent inference context physically terminates here. No file writes may occur beyond this line.`
- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+ Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).

@@ -1,7 +1,7 @@
 ---
 name: 08-1_infra
 description: "Use when: 健檢第一階段、健檢深度選擇、專案型態偵測、功能盤點、端點盤點、命令盤點、平台能力快照、基礎盤點、相容性、依賴掃描、治理拓樸、技能覆蓋率與目錄衛生檢查。DO NOT use when: 要完整健檢入口，改用 08-audit。"
-required_skills: [memory-ops, code-audit, audit-engine, tech-stack-protocol, programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
+required_skills: [memory-ops, code-audit, audit-engine, tech-stack-protocol, programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 memory_awareness: full
 user-invocable: false
 metadata:
@@ -20,7 +20,7 @@ metadata:
 
 ## 編程團隊治理接地（Programming Team Board Contract）
 
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.claude/skills/programming-team-governance/SKILL.md`, `.claude/skills/team-task-package/SKILL.md`, `.claude/skills/team-role-boundaries/SKILL.md`, `.claude/skills/implementation-patch-delivery/SKILL.md`, `.claude/skills/memory-coupled-delivery/SKILL.md`, `.claude/skills/team-validation-packet/SKILL.md`, `.claude/skills/team-review-packet/SKILL.md`, `.claude/skills/team-completion-gate/SKILL.md`. Treat this command as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.claude/skills/programming-team-governance/SKILL.md`, `.claude/skills/team-task-board/SKILL.md`, `.claude/skills/team-role-boundaries/SKILL.md`, `.claude/skills/team-change-delivery-artifact/SKILL.md`, `.claude/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.claude/skills/team-validation-delivery-artifact/SKILL.md`, `.claude/skills/team-review-delivery-artifact/SKILL.md`, `.claude/skills/team-completion-gate/SKILL.md`. Treat this command as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, integrates returned delivery artifacts into the main worktree, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not author primary implementation, review, validation, or memory attribution.
 
 
 ## 總監可讀輸出契約（Director-Readable Output Contract）
@@ -64,7 +64,7 @@ Read `audit-engine` and its references before scanning:
 - `audit-depth-matrix.md` for audit depth selection.
 - `audit-inventory-contracts.md` for inventory object rules.
 - `surface-audit-recipes.md` for surface-specific audit work.
-- `evidence-packet.md` for evidence requirements.
+- Evidence delivery artifact requirements（legacy template filename: `evidence-packet.md`）.
 - `report-gates.md` for unverified, blocked, and not-applicable status rules.
 
 ## 1.2 Audit Depth And Project Surface Profile
@@ -102,7 +102,7 @@ Use `code-audit` and local toolchain commands only when manifests prove they app
 - Directory hygiene, generated artifact boundaries, and large/untracked surface detection.
 - Compatibility scan for framework versions, runtime constraints, platform-specific configs, and lockfile consistency.
 
-Each result must become an evidence packet with command summary, rerun path, and applicability reason.
+Each result must become an evidence delivery artifact with command summary, rerun path, and applicability reason.
 
 ## 1.5 Governance Topology
 
@@ -120,7 +120,7 @@ If log writing is available, write intermediate evidence only under `.agents/log
 
 - `profile.json` for project type and capability snapshot.
 - `inventories.json` for feature, endpoint, command, job, interface, data-flow, performance, and risk inventories.
-- `evidence.json` for baseline and governance evidence packets.
+- `evidence.json` for baseline and governance evidence delivery artifacts.
 
 Do not write source files, memory cards, context cards, git state, releases, deployments, or external services.
 
@@ -146,7 +146,7 @@ Return this object to Phase 2 and Phase 3:
   "baseline": {},
   "governance": {},
   "coverage": {},
-  "evidence_packets": [],
+  "evidence_delivery_artifacts": [],
   "blocked": [],
   "unverified": [],
   "not_applicable": []
@@ -174,7 +174,7 @@ Direct the Director to continue with `/08_audit logic` when Phase 1 is complete.
 - **Role**: `Reader/Memory` | 唯讀掃描 + 記憶讀取；只允許寫入健檢日誌，不修改原始碼或記憶卡。
 
 > MCP 記憶證據沿用 08 入口與 .agents/skills/memory-ops/references/memory-mcp-tool-contract.md；子流程只能使用唯讀 cartridge-system 證據，缺少 MCP 工具時標記未驗證或阻塞，不得直接改記憶。
- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+ Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).

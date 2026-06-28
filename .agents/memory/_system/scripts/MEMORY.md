@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-28T13:58:23+08:00'
+last_updated: '2026-06-29T07:12:13+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-28T13:58:23+08:00'
+last_verified: '2026-06-29T07:10:01+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 20
+cycle_event_count: 29
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -33,46 +33,48 @@ metadata:
 ---
 
 # _system.scripts — Repository Script Governance Memory
-
 ## Current Truth
+- Shared skill and shared governance sync now supports exact SHA256 comparison for deploy-copy paths, so Deploy Sync can clear the same raw-hash drift that Doctor reports.
+- Framework file comparison no longer trusts matching timestamps as proof of equality; timestamp-equal drift must still pass content or exact-hash comparison.
 - Governance Doctor now enforces draft/formal board lifecycle, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once semantics on shared governance and three-platform workflow entries.
-- Governance Doctor rejects team-task-package direct exceptions that rely on allowed-small, tiny known file set, or direct single-step wording.
-- Governance Doctor rejects missing implementation patch, memory delivery, review, and validation packet requirements, unbounded implementation direct modes, stale direct-write workflow phrases, and old direct-exception shortcuts.
-- Governance Doctor now checks team-task-package existence, template fields, workflow task-package references, and old long inline team-rule duplication.
-- Governance Doctor checks task type, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, accepted-risk captain substitution, pre-board specialist guards, 05 condense coverage, and captain over-direct semantics for programming-team governance.
-- Governance Doctor checks Captain Trigger Gate, Captain Team Board, role boundary, isolated patch, no-self-review, 00/01 automatic routing, experiment boundaries, source/deployed hash drift, and bilingual negative-context wording.
+- Governance Doctor now checks specialist lifecycle fields, closeout lane, Yellow classification/resolution, repair loop count, and deployment drift closure so Yellow findings cannot become infinite repair loops.
+- Governance Doctor now includes Team-Native Core semantic checks and optional strict Team-Native trace validation.
+- Governance Doctor now validates direct-renamed team task board and delivery artifact semantics, including assigned specialist skill, domain label, requested execution channel, channel capability, channel invocation status, delivery artifact type, and delivery artifact status.
+- Governance Doctor now treats `closed-with-director-risk` as non-complete Director risk closure, while old accepted-risk/packet wording remains legacy detection only.
+- The platform governance audit entrypoint explicitly declares RequireTeamTrace and TeamTraceRoot, so strict trace enforcement does not rely on outer script variables.
+- Governance Doctor rejects team-task-board direct exceptions that rely on allowed-small, tiny known file set, or direct single-step wording.
+- Governance Doctor rejects missing implementation change delivery, memory/docs delivery, review delivery, and validation delivery artifact requirements, unbounded implementation direct modes, stale direct-write workflow phrases, and old direct-exception shortcuts.
+- Governance Doctor now checks team-task-board existence, template fields, workflow task-board references, and old long inline team-rule duplication.
+- Governance Doctor checks task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, `closed-with-director-risk`, pre-board specialist guards, 05 condense coverage, and captain over-direct semantics for programming-team governance.
+- Governance Doctor checks Captain Trigger Gate, Captain Team Board, role boundary, isolated change delivery, no-self-review, 00/01 automatic routing, experiment boundaries, source/deployed hash drift, and bilingual negative-context wording.
 - Codex workflow skill merge includes the `_shared` support directory so deployed workflows can inherit gates.
 - Project rule sync and platform deploy scripts copy restricted project-local tools from `Shared/project-tools/` into downstream `.agents/tools/`.
 - The source manager memory migration entrypoint delegates to the shared project-tool implementation so source-manager and downstream behavior stay aligned.
 - Project rule sync and platform deploy scripts copy the full shared governance reference set into `.agents/shared/`, including matrices, skill governance, subagent policy, and MCP profile snippets.
+- Manager and deploy audit entrypoints can pass RequireTeamTrace and TeamTraceRoot into platform governance audit.
 - This child card owns root PowerShell deployment, audit, memory migration, skill sync, and platform sync scripts.
 - Governance Doctor covers review governance, programming-team governance, station state guards, delegation order guards, experiment minimum-board checks, direct exceptions, fake-team guards, review evidence boundaries, browser branch downgrade guards, and three-platform entrypoint coverage.
 - Skill quality scanning now normalizes line endings before estimating token length so managed cache checkouts and source checkouts report consistent results.
 - Project skill backfill safely migrates physical discovery skill directories or exact/safe routing stubs before rebuilding discovery links.
 - The root `_system` card keeps repository identity, documentation, license, and top-level governance truth.
 - Public PowerShell entrypoints must preserve UTF-8 compatibility for Windows PowerShell 5.1.
-
 ## Active Constraints
 - Do not mutate external repositories or deployment targets without explicit Director approval.
 - Keep script behavior aligned with protected memory and project-skill directories.
 - Do not use this card as a substitute for reading the current script implementation before edits.
 
 ## Cycle Events
-- 20: Verified final Doctor/Audit green after four-packet Doctor checks, compressed captain skills, and deployed skill sync.
-- 19: Compressed captain/main delegation skills, updated Doctor four-packet checks, and resynced source/deployed policy markers.
-- 18: Added formal team child-skill routing with implementation patch, memory delivery, review, and validation packets; refreshed 50/67 skill facts after source/deployed sync.
-- 17: Extended Audit.psm1 to enforce draft/formal/wave evidence semantics on shared files and three-platform workflow entries; Doctor/Audit returned green.
-- 16: Extended Audit.psm1 direct-exception regex coverage for allowed-small, tiny-file-set, and direct single-step wording.
-- 15: Added Audit.psm1 guards for four-packet completion, implementation direct bounds, old direct-write phrases, and verified Doctor/Audit green.
-- 14: Added team-task-package template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
-- 13: Added Doctor coverage for 05 condense entries, captain minimum execution, text patch packets, and accepted-risk captain substitution.
-- 12: Updated Audit.psm1 negative-context checks so prohibition wording about pre-board agents and captain over-direct ownership is not misreported as allowed behavior.
-- 11: Extended Audit.psm1 programming-team coverage for task type, dispatch pre-gate, and captain minimum-execution semantics.
-- 10: Extended Audit.psm1 programming-team coverage for captain-led routing and role-exclusivity semantics.
-- 09: Extended Audit.psm1 programming-team coverage for team-first evidence defaults, direct exceptions, all-direct guards, review governance, and browser branch boundaries.
-- 08: Added programming-team-governance coverage, negative semantic checks, experiment minimum-governance checks, and deployed hash drift checks to Audit.psm1.
+- 29: Fixed Deploy Sync false-negative drift detection by adding exact-hash comparison for shared skill and shared governance copy paths; source/deployed hashes now match after sync.
+- 28: Added Doctor checks for specialist lifecycle fields, fast closeout lanes, Yellow classification/resolution, repair loop limits, and deployed-copy drift closure; Doctor and Deploy Audit returned red 0 / yellow 0.
+- 27: Re-saved Audit module as UTF-8 BOM to clear Windows PowerShell parser failure; no audit logic changed, parser diagnostics are zero.
+- 26: Added relation checks for `closed-with-director-risk`, missing delivery artifacts, self-review, early review/validation, all-at-once dispatch, and source/deployed Team-Native drift.
+- 25: Hardened Audit.psm1 around direct-renamed delivery artifacts and assignment/channel trace fields; old patch wording remains only as legacy detection.
+- 24: Fixed Team-Native legacy-wording conflict, synchronized policy marker checks, and verified Doctor/Audit green with strict trace.
+- 23: Updated script memory for Team-Native specialist fields, change delivery artifact checks, and strict trace validation.
+- 22: Declared strict Team-Native trace parameters on the platform governance audit entrypoint and verified Doctor/Audit green.
 
 ## Archive Index
+- archive-001.md — Older script cycle events 09-21 compacted from the active card.
 - Parent archives remain at .agents/memory/_system/archive-001.md through archive-003.md.
 
 ## Evidence Base

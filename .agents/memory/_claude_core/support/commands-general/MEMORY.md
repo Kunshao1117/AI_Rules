@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 一般討論、探索、實驗、濃縮與測試指令。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-06-28T13:56:29+08:00'
+last_updated: '2026-06-29T07:04:40+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T13:56:29+08:00'
+last_verified: '2026-06-28T21:54:14+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 14
+cycle_event_count: 16
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,14 +31,13 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core.support.commands-general — Claude General Commands Memory
 
 ## Current Truth
 - Claude general and experiment commands now record draft/formal board semantics, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once launch.
-- Claude experiment and general commands now explicitly load team-task-package and use template references instead of duplicating full team rules inline.
-- Claude chat, explore, experiment, condense, and test commands now route coding intent through task type, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, and accepted-risk captain substitution rules.
-- Claude chat and explore now route coding intent into captain-led mode, and experiment uses a minimum Captain Team Board with role boundary and isolated patch conditions.
+- Claude experiment and general commands now explicitly load team-task-board and use template references instead of duplicating full team rules inline.
+- Claude chat, explore, experiment, condense, and test commands now route coding intent through task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` rules.
+- Claude chat and explore now route coding intent into captain-led mode, and experiment uses a minimum Captain Team Board with role boundary and isolated change delivery conditions.
 - Claude experiment and test commands now load programming-team-governance and require applicability/execution-mode Programming Team Boards for coding-related validation and completion stations.
 - Claude experiment and test commands now require evidence owner, direct exception, completion condition, and all-direct fake-team guards in Programming Team Boards.
 - Claude condense command now uses the MCP memory evidence contract to separate source memory from project context evidence.
@@ -52,11 +51,13 @@ metadata:
 - Do not write source or memory from read-only command flows without the appropriate gate.
 
 ## Cycle Events
-- 14: Compressed captain/main delegation skills, updated Doctor four-packet checks, and resynced source/deployed policy markers.
-- 13: Added formal team child-skill routing with implementation patch, memory delivery, review, and validation packets; refreshed 50/67 skill facts after source/deployed sync.
+- 16: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
+- 15: Synced Claude general commands with Team-Native specialist registry and change delivery artifact terminology.
+- 14: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
+- 13: Added formal team specialist routing with implementation change delivery, memory delivery, review, and validation artifacts; refreshed 50/67 skill facts after source/deployed sync.
 - 12: Updated Claude general/experiment commands for minimum formal dispatch fields and verified entrypoint coverage.
-- 11: Added team-task-package template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
-- 10: Added Claude condense team-board coverage and updated general command memory for captain minimum execution and text patch packets.
+- 11: Added team-task-board template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
+- 10: Added Claude condense team-board coverage and updated general command memory for captain minimum execution and text change delivery artifacts.
 - 9: Updated Claude general commands for the new captain dispatch gate.
 - 08: Upgraded Claude 00/01/03-1 general commands for automatic captain trigger and experiment minimum governance.
 - 07: Hardened Claude experiment and test command boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.

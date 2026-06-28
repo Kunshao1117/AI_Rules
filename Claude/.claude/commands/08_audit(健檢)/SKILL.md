@@ -1,7 +1,7 @@
 ---
 name: 08_audit
 description: "Use when: 全光譜專案健檢、深層健檢、audit、證據式健檢、健檢深度、專案型態偵測、功能盤點、端點盤點、命令盤點、相容性檢查、治理巡檢、基礎盤點、深度邏輯審查、子代理採證、鉤子/檢查點治理、效能與載入速度與健康報告。DO NOT use when: 只要單一測試或單一 bug 修復。"
-required_skills: [memory-ops, code-audit, audit-engine, quality-review-governance, programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
+required_skills: [memory-ops, code-audit, audit-engine, quality-review-governance, programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 memory_awareness: full
 user-invocable: true
 metadata:
@@ -56,22 +56,22 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 08 row plus MCP Memory Evidence Matrix as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Use audit-engine depth, inventory denominator, project surface recipes, and evidence packet rules before reporting audit gates.
-- Governance checks must include change-intent classification coverage, patch-stack risk, unresolved-root-cause markers, visual detail evidence, and real-information priority when those surfaces exist.
+- Workflow-specific grounding: Use audit-engine depth, inventory denominator, project surface recipes, and evidence delivery artifact rules before reporting audit gates.
+- Governance checks must include change-intent classification coverage, temporary-fix stack risk, unresolved-root-cause markers, visual detail evidence, and real-information priority when those surfaces exist.
 - Governance checks must include review lifecycle coverage from `.claude/skills/quality-review-governance/SKILL.md` when findings touch governance, public contracts, release/plugin behavior, security, cross-module logic, or repeated fragile code.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.claude/skills/programming-team-governance/SKILL.md`, `.claude/skills/team-task-package/SKILL.md`, `.claude/skills/team-role-boundaries/SKILL.md`, `.claude/skills/implementation-patch-delivery/SKILL.md`, `.claude/skills/memory-coupled-delivery/SKILL.md`, `.claude/skills/team-validation-packet/SKILL.md`, `.claude/skills/team-review-packet/SKILL.md`, `.claude/skills/team-completion-gate/SKILL.md`. Treat this command as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.claude/skills/programming-team-governance/SKILL.md`, `.claude/skills/team-task-board/SKILL.md`, `.claude/skills/team-role-boundaries/SKILL.md`, `.claude/skills/team-change-delivery-artifact/SKILL.md`, `.claude/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.claude/skills/team-validation-delivery-artifact/SKILL.md`, `.claude/skills/team-review-delivery-artifact/SKILL.md`, `.claude/skills/team-completion-gate/SKILL.md`. Treat this command as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, integrates returned delivery artifacts into the main worktree, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not author primary implementation, review, validation, or memory attribution.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md; audit may use read-only cartridge-system tools for governance evidence, but missing MCP evidence must become 未驗證 or 阻塞 and audit must not mutate memory.
 
 ## Required Shared Skills
 
 Load these before running the audit:
 
-- `audit-engine` — audit depth, project surface, inventory denominator, change-intent governance, patch-stack risk, visual detail evidence, real-information priority, evidence packet, traffic-light, blocked/unverified semantics.
+- `audit-engine` — audit depth, project surface, inventory denominator, change-intent governance, temporary-fix stack risk, visual detail evidence, real-information priority, evidence delivery artifact, traffic-light, blocked/unverified semantics.
 - `code-audit` — deterministic CLI scan recipes.
 - `ai-dev-quality-gate` — real execution evidence boundary.
-- `quality-review-governance` — review purpose, lifecycle state, accepted-risk, blocked-state, and minimum sufficient complexity rules.
+- `quality-review-governance` — review purpose, lifecycle state, Director risk-closed but not complete (`closed-with-director-risk`) state, blocked-state, and minimum sufficient complexity rules.
 - `browser-testing` — browser/operator evidence when a rendered surface exists.
 - `performance-audit` — performance evidence when a web or runtime surface exists.
 - `plugin-release-governance` — only when extension, plugin, versioned release, tag, installer, or artifact surfaces exist.
@@ -94,7 +94,7 @@ Load these before running the audit:
 ├── Step 3: Run baseline, governance, and compatibility checks through `08-1_infra/SKILL.md`.
 ├── Step 4: Run semantic, security, API/data-flow, operation, performance, and reliability checks through `08-2_logic/SKILL.md`.
 ├── Step 5: Run evidence-only checks through `08-2_logic/SKILL.md` when requested.
-├── Step 6: Merge evidence packets, coverage denominators, and inventory states through `08-3_report/SKILL.md`.
+├── Step 6: Merge evidence delivery artifacts, coverage denominators, and inventory states through `08-3_report/SKILL.md`.
 └── Step 7: Route each high-priority item to the next workflow.
 ```
 
@@ -109,7 +109,7 @@ Load these before running the audit:
 ├── "/08_audit infra" / "只跑基礎盤點" → Phase 1 profile + baseline + governance.
 ├── "/08_audit logic" / "只跑邏輯審查" → Phase 2 semantic + security + API/data-flow + coverage.
 ├── "/08_audit evidence" / "只跑證據驗證" → Phase 2 real operation evidence only.
-├── "/08_audit report" / "只重出報告" → Phase 3 from the newest audit log packet.
+├── "/08_audit report" / "只重出報告" → Phase 3 from the newest audit log delivery artifact.
 └── No modifier → Phase 1 + Phase 2 + Phase 3.
 ```
 
@@ -140,7 +140,7 @@ The three phases pass these objects forward:
   "visual_detail_evidence": {},
   "release_supply_chain": {},
   "coverage": {},
-  "evidence_packets": [],
+  "evidence_delivery_artifacts": [],
   "blocked": [],
   "unverified": [],
   "not_applicable": []
@@ -160,7 +160,7 @@ Append to the final Director-facing response:
 > Inherits: `.claude/commands/_shared/_security_footer.md` (Role Lock Gate)
 
 - **Role**: `Reader/Memory` | 全程唯讀，不修改任何原始碼。記憶卡讀取被允許。
- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+ Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).

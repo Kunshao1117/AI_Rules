@@ -1,0 +1,107 @@
+# Team-Native Core Policy
+
+此檔定義 AI_Rules 的團隊原生核心。Team-Native Core 是跨平台治理主幹，不是單一子代理功能、單一工作流、或單一技能。
+
+## Core Contract
+
+Team-Native Core applies when a task touches source, workflow, validation, review, memory, commit, release, deployment, install, project governance, generated copies, or public contracts.
+
+The required delivery sequence is fixed: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> execution-channel decision -> specialist work or blocked/unverified channel state -> captain supervision -> recovered change delivery artifacts / evidence delivery artifacts -> independent validation and review -> captain integration -> completion audit -> report.
+
+The captain remains the only Director-facing owner, but the captain is not the default worker and must not author specialist implementation, review, validation, or memory attribution when a delivery artifact can be produced. The captain owns routing, authorization, supervision, protected integration of recovered delivery artifacts, protected memory/git/release/deploy/install gates, review-state decision, and final acceptance. All separable requirement replay, counter-evidence, impact mapping, implementation change delivery, memory delivery, validation, review, and completion audit work belongs to team stations.
+
+Explicit workflow names and Director requests for subagents are route hints. They do not replace the team board and do not authorize pre-board dispatch.
+
+Specialist role authority comes from `team-specialist-registry` and the matching `team-specialist-*` specialist skill. Subagents, browsers, CLI routes, MCP reads, isolated workspaces, and text-only routes are execution channels for those specialist stations; they are not role definitions and do not own governance decisions.
+
+Specialist station assignment is not conditional on channel availability. Once Team-Native Core applies, every applicable station must be assigned to a specialist skill before channel selection. If the requested channel cannot be invoked, the station remains on the board with `blocked`, `unverified`, or `closed-with-director-risk`; it must not disappear and must not become routine captain work.
+
+## Station-First Rule
+
+Before any specialist, subagent execution channel, browser branch, CLI branch, MCP direct evidence, isolated change-delivery branch, text change-delivery artifact, validation, review, completion audit, commit preparation, or release preparation starts, the captain must create the Captain Team Board from `programming-team-governance` and `team-task-board`.
+
+Pre-GO work uses a draft board. A draft board can structure planning and assumptions, but it cannot start formal specialists, satisfy validation/review/completion evidence, or support a full-team completion claim.
+
+After GO, the captain must create or promote a formal dispatch board before formal station work starts. Every applicable station records phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, evidence owner, specialist role source, assigned specialist skill, domain label, requested execution channel, channel capability, channel invocation status, execution channel, delivery artifact type, delivery artifact status, role boundary, completion condition, and any direct exception.
+
+The formal board opens only the current dispatch wave. Review, validation, memory/docs delivery, and completion stations that depend on a change must not start until the required change delivery artifact is returned or explicitly marked blocked, unverified, or closed-with-director-risk. A formal board is invalid when it launches all waves at once.
+
+Each delivery ledger entry records delivery artifact ID, author role, source input, integrable scope, review state, validation state, memory/docs state, whether the captain authored specialist content, dispatch wave, previous-wave input, and next-wave condition. These fields make relationship checks auditable instead of relying on narrative claims.
+
+## Specialist Lifecycle Rule
+
+Specialist stations are not disposable one-message helpers. A specialist channel may be retained when the station, role, delivery artifact, wave, and role boundary remain the same. Reusing the same specialist channel is forbidden when the role changes, the station crosses from implementation to review, validation failure turns into implementation, memory/docs attribution turns into protected memory mutation, or a second independent opinion is required.
+
+Every formal station records the specialist lifecycle state: `assigned`, `retained`, `reused`, `handoff-required`, `closed`, `replaced`, or `blocked`. The board also records retention reason, conversation health, reuse count, handoff summary, role-boundary check, and closure reason.
+
+Lifecycle decisions are soft-budgeted instead of hard-closing every channel. If the same role can continue with clear context, the station may be retained. If the captain or specialist must reconstruct too much prior context, the station becomes `handoff-required`. If the handoff summary is insufficient, the station is `replaced`. If a role boundary would be crossed, the old station is `closed` and a new independent station is opened in a later eligible wave.
+
+## Fast Closeout Rule
+
+Closeout is risk-tiered so Team-Native Core stays rigorous without mechanical all-agent relaunches.
+
+| Closeout lane | Use when | Minimum stations |
+|---|---|---|
+| `light` | Documentation, generated-copy sync, Yellow drift, or low-risk governance wording with no release or external-state mutation | scope/impact, change delivery or sync delivery, validation, completion audit |
+| `standard` | Multi-file policies, skills, matrices, audit rules, workflow semantics, or memory/docs impact | scope/impact, change delivery, memory/docs, validation, independent review, completion audit |
+| `release-grade` | Commit, tag, release, deployment, install, external state, credentials, or public operator readiness | standard lane plus release completion and security/reliability |
+
+Fast closeout never lowers the completion bar. It only reduces unnecessary station churn. A light lane may use fewer stations only when the board records why review or memory/docs is not applicable, or records the missing station as blocked, unverified, or closed-with-director-risk. Any source, workflow, governance, generated-copy, memory, or public-contract write promotes the lane to at least `standard` unless the board records a concrete reason.
+
+## Yellow Signal Rule
+
+Yellow findings are classified before repair loops start. Valid Yellow classifications are `fix-this-cycle`, `residual-accepted`, `deferred-follow-up`, `local-customization`, and `informational`. A Yellow finding that affects the current completion claim, required Team-Native trace, independent review, validation, memory/docs attribution, public contract, deployment sync, or release readiness must be escalated to blocked, unverified, or Red instead of being treated as harmless Yellow.
+
+The same Yellow finding must not create an unbounded repair loop. After two attempts on the same symptom family, file region, or operator path, the next action must be root-cause repair, structural refactor, blocked, unverified, or closed-with-director-risk. Validation and review stations report failures; they do not repair the core change they are validating or reviewing.
+
+## Strict State Machine
+
+Team-Native Core keeps these states because they preserve completion honesty:
+
+| State | Allowed use | Required evidence |
+|---|---|---|
+| `direct` | Protected captain work only: Director communication, GO interpretation, main-worktree integration of returned delivery artifacts, protected memory/git/release/deploy/install gates, review-state decision, final acceptance, hot-path non-mutating validation, or no independent evidence value after scope reduction | Station name, direct exception, replacement evidence, and residual state |
+| `text change delivery artifact` | No governed isolated workspace is available, but the implementation task is bounded, diffable, and safe to deliver as a text change delivery artifact | File scope, proposed edits, evidence, risk, memory impact, review need, blocker status |
+| `closed-with-director-risk` | The Director closes the task with a named risk even though required team separation or delivery artifacts are missing | Director risk decision, missing artifact or separation, non-complete label, and residual limitation |
+| `unverified` | Evidence is required but currently absent or incomplete | Missing evidence, attempted route or reason not attempted, and smallest verification path |
+| `blocked` | A required tool, permission, credential, isolation boundary, delivery artifact, or authorization is unavailable | Blocking condition and smallest unblock requirement |
+| `not-applicable` | The station does not belong to the task | Concrete non-applicability reason |
+
+`direct`, `closed-with-director-risk`, and `text change delivery artifact` are not non-team shortcuts. They are formal station states or delivery forms with stricter evidence requirements. Review lifecycle risk states do not become Team-Native station, missing-artifact, completion, or capability states. Diff output may be used only as an implementation representation; the governance object is the change delivery artifact. `closed-with-director-risk` is never `complete`.
+
+## Completion Rule
+
+Full team completion requires:
+
+1. Implementation change delivery artifact with memory impact.
+2. Memory/docs delivery artifact with memory impact and memory delivery status.
+3. Independent review delivery artifact from a reviewer who did not author the implementation.
+4. Validation delivery artifact from a route that did not repair the implementation.
+5. Completion audit covering scope, sync, docs, memory, drift, and residual risk.
+
+Captain protected integration means integrating returned, qualified delivery artifacts into the main worktree and remains normal captain work; it can support `complete` when implementation, memory/docs, review, validation, completion, and trace evidence are all present. Captain substitute authoring means the captain creates specialist content because no qualified change delivery route exists; it starts as blocked, may be closed-with-director-risk only when the Director explicitly accepts that exact case, and must not be described as full team completion.
+
+If any required delivery artifact or independent review is missing, the task can only finish as blocked, unverified, or closed-with-director-risk. It must not be described as full team completion.
+
+## Platform Adapter Contract
+
+Team-Native Core is platform-neutral. Platforms may differ in native capability:
+
+- Codex maps stations to native subagents, project custom agents, browser/terminal/MCP evidence, isolated workspaces, or text change delivery artifacts when available.
+- Claude maps stations to built-in/custom/plugin subagents, description-driven delegation, hooks/checkpoints, command evidence, isolated workspaces, or text change delivery artifacts when available.
+- Antigravity / Gemini maps stations through Gemini/Antigravity adapters, browser-capable agents, CLI evidence, plugin adapters, or text change delivery artifacts when available.
+
+Missing platform capability is not normal direct work. It is blocked, unverified, or closed-with-director-risk with evidence.
+
+## MCP Boundary
+
+MCP tools are evidence or protected-action tools invoked by the captain path. MCP servers are not team members. Mutating MCP tools remain behind GO and HITL gates.
+
+## Trace Requirement
+
+Team-Native Core needs two kinds of verification:
+
+1. Static governance checks: policy, skill, workflow, matrix, and documentation semantics.
+2. Execution trace checks: a task-level board/delivery trace showing draft/formal board state, dispatch waves, previous-wave input, next-wave conditions, delivery artifact IDs, author roles, source inputs, integrable scopes, delivery artifact classes, review/validation/memory-docs states, captain authoring state, role boundaries, direct exceptions, and completion state.
+
+When execution trace evidence is required and absent, validation is unverified or blocked.

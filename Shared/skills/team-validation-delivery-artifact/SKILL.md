@@ -1,10 +1,10 @@
 ---
-name: team-validation-packet
+name: team-validation-delivery-artifact
 description: >
-  [Infra] Validation specialist packet rules for captain-led work. Use when:
-  producing or checking non-mutating validation evidence after a patch, workflow
+  [Infra] Validation specialist delivery artifact rules for captain-led work. Use when:
+  producing or checking non-mutating validation evidence after a change delivery, workflow
   change, audit, or release-prep step; when separating test evidence from
-  implementation; 驗證包、非破壞性驗證、測試證據、回歸證據。DO NOT use when:
+  implementation; 驗證交付件、非破壞性驗證、測試證據、回歸證據。DO NOT use when:
   implementing fixes, approving review state, 實作修復、審查裁決, or mutating
   source, memory, git, deploy, or release state.
 metadata:
@@ -16,7 +16,7 @@ metadata:
   tool_scope: ["filesystem:read", "terminal:read", "browser:read", "mcp:read"]
 ---
 
-# Team Validation Packet
+# Team Validation Delivery Artifact
 
 ## Purpose
 
@@ -24,7 +24,7 @@ Produce validation evidence without repairing the implementation. A validation s
 
 ## Inputs
 
-- Patch packet or changed-file list.
+- Change delivery artifact or changed-file list.
 - Expected behavior or acceptance criteria.
 - Allowed validation commands, browser path, MCP read, or manual check.
 - Known environment limits.
@@ -36,6 +36,9 @@ Produce validation evidence without repairing the implementation. A validation s
 3. Separate pass, fail, blocked, and unverified states.
 4. Do not fix failures inside the validation station.
 5. Include enough evidence for the captain to reproduce or judge the result.
+6. Validate the recovered change delivery or evidence delivery; do not treat a subagent route as proof by itself.
+7. Do not validate a change before the change delivery artifact exists. If the artifact is missing, validate only the blocked/unverified/closed-with-director-risk state.
+8. Record the delivery artifact ID, source input, validation scope, and whether validation happened after change delivery.
 
 ## Output
 
@@ -46,6 +49,9 @@ Produce validation evidence without repairing the implementation. A validation s
 建議:
 是否阻塞:
 validation_state:
+delivery_artifact_id:
+source_input:
+validation_scope:
 ```
 
 Valid `validation_state` values:

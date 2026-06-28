@@ -4,14 +4,14 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 品質閘門、安全可靠性與 UI/UX 標準技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-28T01:14:16+08:00'
+last_updated: '2026-06-29T07:04:57+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T01:14:16+08:00'
+last_verified: '2026-06-28T19:45:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW

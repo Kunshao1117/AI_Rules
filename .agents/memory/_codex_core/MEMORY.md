@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-28T14:15:50+08:00'
+last_updated: '2026-06-29T07:14:45+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T14:13:52+08:00'
+last_verified: '2026-06-29T01:20:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 24
+cycle_event_count: 29
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,15 +31,20 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
-- Codex source/deployed rules now say 50 shared operational skills and 67 deployed skills.
+- Codex source/deployed rules now say 61 shared operational skills and 78 deployed skills.
+- Codex source rules and the live project rule copy are byte-level synchronized after Team-Native lifecycle and fast-closeout updates; Director Output Contract reports red 0 / yellow 0.
+- Codex source and deployed rules now receive the Team-Native Core policy block with native, adapter, conditional, and unavailable platform route semantics.
+- Codex source and deployed rules now use `closed-with-director-risk` for Director-closed non-complete missing implementation-channel cases.
+- Codex workflows now load specialist-role skills and use change delivery artifact semantics for implementation stations.
 - Codex source rules and deployed references require formal Captain Team Board fields, wave-gated dispatch, draft-board limits, and captain-owned protected state.
-- Codex core rules require the Director to talk to the captain only, one bounded task per role-exclusive specialist, and four-packet completion before full team completion.
-- Codex workflow entries load team-task-package as the team-board template source.
+- Codex core rules require the Director to talk to the captain only, one bounded task per role-exclusive specialist, no captain-authored primary implementation/review/validation/memory attribution, and four-delivery-artifact completion before full team completion.
+- Codex workflow entries load team-task-board as the team-board template source.
 - Codex source and deployed core rules now share the updated subagent policy block for board-first captain-led dispatch.
-- Codex coding workflows require task type classification, dispatch pre-gate, Captain Minimum Execution Gate, text patch packets, and captain substitution accepted-risk before any specialist branch or subagent starts.
+- Codex coding workflows require task type classification, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` for non-complete captain substitute authoring before any specialist branch or subagent starts.
 - Codex core rules and README describe the main agent as engineering captain; coding-related work automatically enters captain-led mode and explicit workflow names are shortcuts.
 - Codex build, fix, and handoff workflows now reference the shared MCP memory evidence contract before relying on memory state.
 - Codex workflow skills read workflow grounding and platform capability matrices from deployed `.agents/shared/` paths.
@@ -56,22 +61,16 @@ metadata:
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 ## Cycle Events
+- 30: Synchronized Codex Team-Native lifecycle and fast-closeout wording, then byte-level matched `Codex/.codex/AGENTS.md` and `.codex/AGENTS.md`; Doctor returned red 0 / yellow 0.
+- 29: Synced Codex source/deployed Team-Native wording to `closed-with-director-risk`, keeping protected integration distinct from captain substitute authoring.
+- 28: Removed residual captain-substitution wording from Codex README and deployed workflow skill copies.
+- 27: Synced Codex source/deployed policy marker blocks with `closed-with-director-risk` wording.
+- 26: Synced Codex source and deployed workflow skills with Team-Native specialist registry and change delivery artifact terminology.
+- 25: Synced Codex source and deployed core rules with Team-Native Core route-state policy.
 - 24: Corrected stale 44 shared skill count in Codex source and deployed AGENTS before commit review closure.
-- 23: Compressed captain/main delegation skills, updated Doctor four-packet checks, and resynced source/deployed policy markers.
-- 22: Added formal team child-skill routing with implementation patch, memory delivery, review, and validation packets; refreshed 50/67 skill facts after source/deployed sync.
-- 21: Aligned Codex core governance with draft/formal boards, wave dispatch, formal evidence eligibility, and protected captain ownership.
-- 20: Synced Codex source and local deployed AGENTS skill-count wording to 50 shared operational skills after commit-review evidence flagged stale 43 wording.
-- 19: Tightened Codex captain accountability wording and synced deployed .codex/AGENTS.md after four-packet governance validation.
-- 18: Added team-task-package template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
-- 17: Updated Codex workflow memory for captain minimum execution, text patch packets, accepted-risk captain substitution, and condense team-board coverage.
-- 16: Synced Codex source and deployed shared subagent policy blocks after captain-led dispatch pre-gate hardening.
-- 15: Updated Codex core workflows for task type, dispatch pre-gate, and captain minimum-execution loading.
-- 14: Compressed Codex build workflow governance wording and restored output-contract scan anchors while preserving captain-led mode requirements.
-- 13: Upgraded Codex core and documentation to captain-led team coding accountability.
-- 12: Replaced Codex direct-execution wording with main-agent accountability and team-first evidence station requirements.
-- 11: Corrected Codex core skill-count wording to 43 shared skills plus 17 workflow skills.
-- 10: Hardened Codex programming team governance in core rules, coding workflows, deployed skills, and README with applicability/execution-mode station boards and policy sync.
+- 23: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
 ## Archive Index
+- archive-003.md — Older cycle events 13-22 compacted from the active card.
 - archive-001.md — Legacy _codex_core card preserved before schema v2 compaction on 2026-06-04.
 - archive-002.md: Pre-standardization active card snapshot created during MEMORY.md migration.
 ## Evidence Base

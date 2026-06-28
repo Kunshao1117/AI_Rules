@@ -1,7 +1,7 @@
 ---
 name: "03-1-experiment-實驗"
 description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，保留最小團隊治理但允許跳過正式品質與記憶收尾。DO NOT use when: 生產建構、正式修復或需提交發布。"
-required_skills: [programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
+required_skills: [programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 metadata:
   author: antigravity
   version: "2.0"
@@ -49,7 +49,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
-> [LOAD SKILL] Before experiment writes, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-package/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/implementation-patch-delivery/SKILL.md`, `.agents/skills/memory-coupled-delivery/SKILL.md`, `.agents/skills/team-validation-packet/SKILL.md`, `.agents/skills/team-review-packet/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`; use the experiment board template. The minimum Captain Team Board records board state, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch.
+> [LOAD SKILL] Before experiment writes, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/team-change-delivery-artifact/SKILL.md`, `.agents/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.agents/skills/team-validation-delivery-artifact/SKILL.md`, `.agents/skills/team-review-delivery-artifact/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`; use the experiment board template. The minimum Captain Team Board records board state, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch.
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 03-1 row as the minimum external grounding and evidence contract.
 - Workflow-specific grounding: Keep spikes isolated. Record the minimum Captain Team Board, sandbox boundary, allowed change scope, discard conditions, promotion criteria, role boundary, and the warning that experiment output is not production quality.
@@ -71,10 +71,10 @@ Use this skill when the user asks to run the migrated source command `03-1_exper
 - Dirty code, hardcoded values, and placeholder logic are PERMITTED.
 - No linter runs, no test generation, no memory card updates.
 - `Write`/`Edit` tools may be used IMMEDIATELY without planning phase.
-- Before writing, output a minimum Captain Team Board with applicability, execution mode, evidence owner, role boundary, direct exception, completion condition, and the minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition:
+- Before writing, output a minimum Captain Team Board with applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, completion condition, and the minimum delivery artifact ledger: implementation change delivery, memory delivery disposition, review disposition, and validation disposition:
   - Requirement playback: `direct`; evidence owner is captain; role boundary is requirement only; direct exception is Director-facing scope lock.
   - Impact map: `evidence branch`, `CLI branch`, `browser branch`, `direct` with concrete exception, or `blocked`; role boundary is architecture or impact only; name sandbox files, memory/docs touched, and external-risk assumptions.
-  - Implementation: `isolated patch` when a governed isolated workspace exists, or a text patch task package when filesystem isolation is unavailable; captain direct sandbox writing is `accepted-risk` only and cannot claim full team collaboration; role boundary is implementation only; implementation specialists must not expand requirements, review their own output, or touch memory/git/release state.
+  - Implementation: `isolated change delivery` when a governed isolated workspace exists, or a text change delivery task package when filesystem isolation is unavailable; captain direct sandbox writing is not a change delivery substitute; if used, it must be reported as Director risk-closed but not complete (`closed-with-director-risk`) and cannot claim full team collaboration; role boundary is implementation only; implementation specialists must not expand requirements, review their own output, or touch memory/git/release state.
   - Short-loop validation: `browser branch`, `CLI branch`, `evidence branch`, `direct` with concrete hot-path exception, `blocked`, or `not-applicable` with reason; role boundary is test only.
   - Review and completion: `not-applicable` for production acceptance, with promotion route to `/03_build`; role boundary is review/completion only and cannot be performed by the implementation specialist for the same deliverable.
 - Record sandbox boundary, allowed change scope, discard conditions, promotion criteria, and whether any evidence-oriented station was skipped. All-direct experiment boards require concrete direct exceptions and cannot claim team collaboration.
@@ -95,7 +95,7 @@ Use this skill when the user asks to run the migrated source command `03-1_exper
 ## [SECURITY & COMPLIANCE]
 - **Role**: Writer/SRE — full permissions, all gates bypassed.
 - **Memory**: none — sandbox output is not tracked.
- Experiment completion requires a minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation patch, memory delivery, review, and validation packets.
-- Experiment completion requires a minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation patch, memory delivery, review, and validation packets.
-- Experiment completion requires a minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation patch, memory delivery, review, and validation packets.
-- Experiment completion requires a minimum packet set: implementation patch, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation patch, memory delivery, review, and validation packets.
+ Experiment completion requires a minimum delivery artifact set: implementation change delivery, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation change delivery, memory/docs delivery, review, and validation delivery artifacts.
+- Experiment completion requires a minimum delivery artifact set: implementation change delivery, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation change delivery, memory/docs delivery, review, and validation delivery artifacts.
+- Experiment completion requires a minimum delivery artifact set: implementation change delivery, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation change delivery, memory/docs delivery, review, and validation delivery artifacts.
+- Experiment completion requires a minimum delivery artifact set: implementation change delivery, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation change delivery, memory/docs delivery, review, and validation delivery artifacts.

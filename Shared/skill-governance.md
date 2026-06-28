@@ -56,15 +56,15 @@ Coding workflows should route through `programming-team-governance` when they
 touch source, tests, debugging, audit, commit preparation, handoff, skill
 creation, workflow rules, source memory, or governance decisions. The shared
 skill defines the captain trigger gate, captain team board, role exclusivity,
-station board, read-only evidence branch boundary, isolated patch boundary,
+station board, read-only evidence branch boundary, isolated change delivery boundary,
 direct exception contract, evidence owner field, completion condition, and
 fake-team guard; platform workflow entries only load it and adapt the station
-evidence or patch output to their native tools. Platform entries must also load
+evidence or change delivery output to their native tools. Platform entries must also load
 the formal team child skills when applicable: `team-role-boundaries`,
-`implementation-patch-delivery`, `memory-coupled-delivery`,
-`team-validation-packet`, `team-review-packet`, and `team-completion-gate`.
+`team-change-delivery-artifact`, `team-memory-docs-delivery-artifact`,
+`team-validation-delivery-artifact`, `team-review-delivery-artifact`, and `team-completion-gate`.
 Platform entries must not weaken the shared contract by replacing
-implementation patch, memory delivery, review, or validation packets with
+implementation change delivery, memory delivery, review, or validation delivery artifacts with
 generic main-thread handling.
 
 ## Doctor Expectations
@@ -85,19 +85,19 @@ Skill quality checks should treat trigger quality as a first-class signal:
   concrete exceptions.
 - Coding-related workflow / command entries must load the six formal team child
   skills when applicable: `team-role-boundaries`,
-  `implementation-patch-delivery`, `memory-coupled-delivery`,
-  `team-validation-packet`, `team-review-packet`, and
+  `team-change-delivery-artifact`, `team-memory-docs-delivery-artifact`,
+  `team-validation-delivery-artifact`, `team-review-delivery-artifact`, and
   `team-completion-gate`.
 - Coding-related workflow / command entries must not imply that the Director
   must manually name a workflow before captain-led governance starts.
 - Coding-related workflow / command entries must not allow implementation
   specialists to review their own work or write the main worktree directly.
 - Coding-related workflow / command entries must require all four formal
-  delivery packets for full team completion: implementation patch, memory
-  delivery, review, and validation. Implementation patch packets must include
-  `memory_impact`; memory delivery packets must include `memory_impact`,
-  `memory_patch`, and a blocked, unverified, or accepted-risk status when not
-  complete; review packets and validation packets must remain independent from
+  delivery artifacts for full team completion: implementation change delivery, memory
+  delivery, review, and validation. Implementation change delivery artifacts must include
+  `memory_impact`; memory/docs delivery artifacts must include `memory_impact`,
+  `memory_delivery`, and a blocked, unverified, or closed-with-director-risk status when not
+  complete; closed-with-director-risk is Director risk closure, not completion; review delivery artifacts and validation delivery artifacts must remain independent from
   the implementation specialist.
 - High-risk release, deployment, or mutation skills must name their public
   trigger terms explicitly.

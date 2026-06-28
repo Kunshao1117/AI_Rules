@@ -1,7 +1,7 @@
 ---
 name: "04-fix-修復"
 description: "Use when: 修 bug、修復回歸、排除錯誤、診斷缺陷並執行正式修復；也涵蓋 plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 相關缺陷。DO NOT use when: 新功能建構或純除錯說明。"
-required_skills: [memory-ops, impact-test-strategy, ai-dev-quality-gate, quality-review-governance, project-context-protocol, programming-team-governance, team-task-package, team-role-boundaries, implementation-patch-delivery, memory-coupled-delivery, team-validation-packet, team-review-packet, team-completion-gate]
+required_skills: [memory-ops, impact-test-strategy, ai-dev-quality-gate, quality-review-governance, project-context-protocol, programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 metadata:
   author: antigravity
   version: "2.0"
@@ -49,7 +49,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > [LOAD SKILL] If this fix touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.agents/skills/plugin-release-governance/SKILL.md` before diagnosing release impact.
 > [LOAD SKILL] If this fix touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, real data, runtime behavior, operator-visible output, or mobile/responsive behavior, read `.agents/skills/ai-dev-quality-gate/SKILL.md` before diagnosing quality impact.
-> [LOAD SKILL] If this fix touches governance, public contracts, release/plugin behavior, security, cross-module logic, repeated fragile code, or a choice between a direct patch and structural repair, read `.agents/skills/quality-review-governance/SKILL.md` and report review purpose, review state, evidence status, accepted risk, and blockers.
+> [LOAD SKILL] If this fix touches governance, public contracts, release/plugin behavior, security, cross-module logic, repeated fragile code, or a choice between a direct temporary fix and structural repair, read `.agents/skills/quality-review-governance/SKILL.md` and report review purpose, review state, evidence status, Director risk-closed but not complete (`closed-with-director-risk`) items, and blockers.
 > [LOAD SKILL] If this fix may change user experience, product behavior, design DNA, acceptance defaults, or existing preferences, read `.agents/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before diagnosing impact.
 
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
@@ -58,7 +58,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Separate symptom, confirmed root cause, review purpose/state when required, repair scope, regression evidence, and the conditions that route back to debug or test.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-package/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/implementation-patch-delivery/SKILL.md`, `.agents/skills/memory-coupled-delivery/SKILL.md`, `.agents/skills/team-validation-packet/SKILL.md`, `.agents/skills/team-review-packet/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Programming Team Board before specialist, browser, CLI, MCP, isolated patch, text patch, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text patch packets, and all-direct fake-team guard; the captain keeps main-worktree integration, memory/git/release gates, review-state decision, and final acceptance.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/team-change-delivery-artifact/SKILL.md`, `.agents/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.agents/skills/team-validation-delivery-artifact/SKILL.md`, `.agents/skills/team-review-delivery-artifact/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, integrates returned delivery artifacts into the main worktree, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not author primary implementation, review, validation, or memory attribution.
 - MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
 
 # source-command-04-fix-skill
@@ -93,19 +93,19 @@ Use this skill when the user asks to run the migrated source command `04_fix(修
 1. Map target file(s) to owning module(s) via memory cards.
 2. Identify affected modules through `## Relations`.
 3. Classify risk level (High / Medium / Low).
-4. Classify the repair intent as emergency patch, root-cause repair, local refinement, or structural refactor; if this is not a root-cause repair, record the unresolved risk and follow-up route.
-5. Identify patch-stack risk: repeated symptom family, repeated file region, repeated operator path, or previous temporary stopgap in the current cycle.
+4. Classify the repair intent as emergency temporary fix, root-cause repair, local refinement, or structural refactor; if this is not a root-cause repair, record the unresolved risk and follow-up route.
+5. Identify temporary-fix stack risk: repeated symptom family, repeated file region, repeated operator path, or previous temporary stopgap in the current cycle.
 6. Identify original failure reproduction path, real operation surface, operator-tool discovery result, data source, executable validation path, retry or equivalent-path strategy, and hard blocker status.
-7. Include impact report in patch plan (§3).
+7. Include impact report in repair plan (§3).
 
 ### 2. Minimal Impact Principle (最小影響原則)
 
 - Identify the exact root cause.
 - [FORBIDDEN] STRICTLY FORBIDDEN from refactoring adjacent code or changing architecture. Modify ONLY the precise lines necessary to resolve the issue.
-- If the exact root cause is not known, the plan must label the work as an emergency patch and cannot present it as a completed repair.
-- If patch-stack risk is present, route to root-cause repair or blueprint/refactor unless the Director explicitly accepts a temporary unresolved-risk marker.
+- If the exact root cause is not known, the plan must label the work as an emergency temporary fix and cannot present it as a completed repair.
+- If temporary-fix stack risk is present, route to root-cause repair or blueprint/refactor unless the Director explicitly accepts a temporary unresolved-risk marker.
 
-### 3. Patch Plan Generation (修復計畫產出)
+### 3. Repair Plan Generation (修復計畫產出)
 
 - **Enter Plan Mode** (`EnterPlanMode`). Use `TodoWrite` to track fix steps.
 - Repair plans MUST use the Director-readable formal format. For formal plans, use the compact table before technical details:
@@ -116,8 +116,8 @@ Use this skill when the user asks to run the migrated source command `04_fix(修
 - Technical details, root-cause mapping, before/after diffs, and exact file lists may only appear after `補充技術細節`.
 - Draft plan in chat with structure:
   1. 【故障根因白話文翻譯】
-  2. 【變更意圖分類】(Emergency patch / root-cause repair / local refinement / structural refactor, patch-stack risk, escalation trigger, unresolved-risk marker when applicable)
-  3. 【審查目的與狀態】(Review purpose, lifecycle state, evidence status, accepted risk, blocker, and minimum sufficient complexity decision when applicable)
+  2. 【變更意圖分類】(Emergency temporary fix / root-cause repair / local refinement / structural refactor, temporary-fix stack risk, escalation trigger, unresolved-risk marker when applicable)
+  3. 【審查目的與狀態】(Review purpose, lifecycle state, evidence status, Director risk-closed but not complete (`closed-with-director-risk`) item, blocker, and minimum sufficient complexity decision when applicable)
   4. 【影響分析】(Risk level + affected modules from §1.5)
   5. 【修改範圍】(Exact files to be touched)
   6. 【實作邏輯對照】(Before / After diff)
@@ -136,13 +136,13 @@ Use this skill when the user asks to run the migrated source command `04_fix(修
 
 > Begins only after Director inputs GO.
 
-### 5. Confirm Patch Packets & Integrate Fix
+### 5. Confirm Change Delivery Artifacts & Integrate Fix
 
 - Call `ExitPlanMode` only after the formal Programming Team Board has GO-write authorization, dispatch wave, previous-wave input, next-wave start condition, and formal evidence eligibility recorded.
-- Before any main-worktree source write, create or confirm the fix patch packet route from `team-task-package`: governed isolated workspace patch when available, otherwise text patch packet. Captain direct fixing is allowed only as `captain substitution accepted-risk` with the missing isolation condition recorded on the board.
-- Assign one bounded implementation specialist for the repair. The specialist may produce only the patch packet and must stay strictly limited to the files listed in `【修改範圍】`; no scope creep, memory writes, git operations, release actions, or self-review.
-- Assign separate regression validation and review packets before final acceptance. Review and validation owners must not be the same specialist who authored the fix patch.
-- The captain integrates only returned, reviewed, and validated fix packets into the main worktree after memory delivery disposition is recorded, and applies `[SEC SILENT GATE]` before each integrated write.
+- Before any main-worktree source write, create or confirm the fix change delivery artifact route from `team-task-board`: governed isolated change delivery artifact when available, otherwise text change delivery artifact. Captain direct fixing is not a change delivery substitute; if no qualified delivery route exists, mark the station blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`), with the missing isolation condition recorded on the board.
+- Assign one bounded implementation specialist for the repair. The specialist may produce only the change delivery artifact and must stay strictly limited to the files listed in `【修改範圍】`; no scope creep, memory writes, git operations, release actions, or self-review.
+- Dispatch separate regression validation and review delivery artifacts only after the fix change delivery artifact is returned. Review and validation owners must not be the implementation specialist who authored the fix delivery artifact.
+- The captain integrates only returned fix change delivery artifacts that have separate review and validation delivery artifacts, after memory delivery disposition is recorded, and applies `[SEC SILENT GATE]` before each integrated write.
 
 ### 6. Regression Test (回歸測試)
 
@@ -155,11 +155,11 @@ Use this skill when the user asks to run the migrated source command `04_fix(修
 - If only mock, fixture, static screenshot, or unit evidence is available for a behavior-dependent bug, report validation as failed or blocked instead of complete.
 - Verify no regression introduced.
 
-### 7. Memory Update (記憶更新)
+### 7. Memory/Docs Delivery Integration (記憶文件交付整合)
 
 > [LOAD SKILL] Re-confirm `.agents/skills/memory-ops/SKILL.md` is loaded.
 
-- Update `.agents/memory/` cards for all modified files: keep only still-valid facts in `## Current Truth`, add one short English fix event to `## Cycle Events`, and stop for compaction if the card is already due.
+- Integrate only returned memory/docs delivery artifacts for modified files: keep only still-valid facts in `## Current Truth`, add one short English fix event to `## Cycle Events`, and stop for compaction if the card is already due. Missing memory attribution is blocked or unverified.
 - Apply `[EXIT HOLD GATE]` before reporting completion.
 - Report completion in Traditional Chinese with business-level summary.
 
@@ -167,9 +167,9 @@ Use this skill when the user asks to run the migrated source command `04_fix(修
 
 ## [SECURITY & COMPLIANCE]
 - **Stage 1 Role**: Reader — no disk writes.
-- **Stage 2 Role**: Captain/SRE — main-worktree writes are integration of approved fix patch packets only.
-- **Memory**: full — modified files MUST have memory card updates.
- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
-- Formal team completion requires implementation patch, memory delivery, review, and validation packets; missing packets must be marked blocked, unverified, or accepted-risk.
+- **Stage 2 Role**: Captain/SRE — main-worktree writes are integration of approved fix change delivery artifacts only.
+- **Memory**: full — memory/docs delivery artifacts are required before protected memory writes; the captain must not author memory attribution.
+ Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).

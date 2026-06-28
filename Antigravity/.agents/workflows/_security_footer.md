@@ -11,6 +11,7 @@
 - **Browser Gate**: Browser evidence branch usage follows the `delegation-strategy` Skill and the active platform adapter. For workflows with Reader role, browser branch invocation requires explicit Director authorization.
   - **Exemption**: `/01_explore` has built-in browser authorization (autonomous research mandate) and is exempt from the Reader browser gate.
 - **Role Declaration**: The invoking workflow MUST declare the agent's role and specific permissions in its own `[SECURITY & COMPLIANCE MANDATE]` section below the `Inherits` reference.
+- **Team Completion Boundary**: Missing qualified change delivery, validation delivery, review delivery, or memory/docs delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`). `closed-with-director-risk` is risk closure, not formal team completion.
 - **Tool Scope Cross-Validation（工具範圍交叉驗證）**: When a skill's `tool_scope` declares permitted tool categories, the Agent SHOULD verify that these do not exceed the workflow's role permissions. Skills loaded within a Reader-role workflow MUST NOT use `filesystem:write` or `terminal` scoped tools.
 
 ### Role Permission Matrix (角色權限矩陣)

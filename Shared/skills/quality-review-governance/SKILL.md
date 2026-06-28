@@ -133,6 +133,6 @@ The main thread remains responsible for:
 - This skill does not replace code-audit, pr-review-ops, security-sre, impact-test-strategy, or delegation-strategy.
 - Evidence branches are governed by the Programming Team Board. A review station that needs independent evidence must use an evidence branch, browser branch, CLI branch, or MCP direct path unless the board records a concrete direct exception.
 - All-direct review boards are invalid when multiple evidence-oriented stations are applicable and no concrete direct exceptions are recorded.
-- A review is not independent when the reviewer implemented the same deliverable, edited the reviewed code path, or owns the patch packet being reviewed.
+- A review is not independent when the reviewer implemented the same deliverable, edited the reviewed code path, or owns the change delivery artifact being reviewed.
 - Synthetic evidence cannot replace real behavior when real execution is available and relevant.
 - A review is incomplete when it cannot name its purpose, current state, evidence, and remaining risk.
