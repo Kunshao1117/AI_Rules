@@ -17,6 +17,12 @@ broad reading, impact mapping, implementation, validation, review, memory
 attribution, commit preparation, release preparation, or completion claims first
 and only document the team route afterward.
 
+The shared workflow sequence is defined by
+`Shared/policies/workflow-orchestration.md`. Team-Native Core remains the hard
+gate; workflow orchestration defines the route -> authorization ->
+operation_mode -> board_state -> dispatch wave -> delivery artifact -> closeout
+order used by workflow entries and stations.
+
 ## Core Injection Hard Gate
 
 Core injection rules must enforce the shortest Team-Native gate before any

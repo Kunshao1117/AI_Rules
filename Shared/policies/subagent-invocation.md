@@ -1,6 +1,11 @@
 # 三平台共用子代理治理政策
 
-此檔是 AI_Rules 的子代理執行通道治理唯一來源。共用層只定義「隊長制何時自動觸發」、「何時需要委派證據分支、隔離變更交付分支或文字變更交付件」與「主代理如何收斂證據」，不得把任一廠商的工具名稱當成跨平台規則，也不得把子代理當成角色治理主體。三平台核心規則只能保存由本檔轉譯出的 marker block；工作流與技能不得另立一套啟用政策，只能繼承本檔、`Shared/policies/team-native-core.md`、`Shared/policies/team-trace-evidence.md`、`Shared/skills/programming-team-governance/SKILL.md`、`Shared/skills/team-task-board/SKILL.md`、`Shared/skills/delegation-strategy/SKILL.md`、`Shared/skills/team-role-boundaries/SKILL.md`、`Shared/skills/team-change-delivery-artifact/SKILL.md`、`Shared/skills/team-memory-docs-delivery-artifact/SKILL.md`、`Shared/skills/team-validation-delivery-artifact/SKILL.md`、`Shared/skills/team-review-delivery-artifact/SKILL.md` 與 `Shared/skills/team-completion-gate/SKILL.md`。專家角色來源必須引用 `team-specialist-registry` 與對應的 `team-specialist-*` 子技能；證據分支只提供審查素材，不取代 `Shared/skills/quality-review-governance/SKILL.md` 的審查狀態判定。
+此檔是 AI_Rules 的子代理執行通道治理唯一來源。共用層只定義「隊長制何時自動觸發」、「何時需要委派證據分支、隔離變更交付分支或文字變更交付件」與「主代理如何收斂證據」，不得把任一廠商的工具名稱當成跨平台規則，也不得把子代理當成角色治理主體。三平台核心規則只能保存由本檔轉譯出的 marker block；工作流與技能不得另立一套啟用政策，只能繼承本檔、`Shared/policies/team-native-core.md`、`Shared/policies/workflow-orchestration.md`、`Shared/policies/team-trace-evidence.md`、`Shared/skills/programming-team-governance/SKILL.md`、`Shared/skills/team-task-board/SKILL.md`、`Shared/skills/delegation-strategy/SKILL.md`、`Shared/skills/team-role-boundaries/SKILL.md`、`Shared/skills/team-change-delivery-artifact/SKILL.md`、`Shared/skills/team-memory-docs-delivery-artifact/SKILL.md`、`Shared/skills/team-validation-delivery-artifact/SKILL.md`、`Shared/skills/team-review-delivery-artifact/SKILL.md` 與 `Shared/skills/team-completion-gate/SKILL.md`。專家角色來源必須引用 `team-specialist-registry` 與對應的 `team-specialist-*` 子技能；證據分支只提供審查素材，不取代 `Shared/skills/quality-review-governance/SKILL.md` 的審查狀態判定。
+
+Subagent invocation follows `Shared/policies/workflow-orchestration.md`: the
+orchestration contract decides board state, dispatch wave, previous-wave input,
+next-wave start condition, and formal evidence eligibility before this policy
+maps a station to an execution channel.
 
 ## 共用語義
 

@@ -22,6 +22,11 @@ metadata:
 
 Decide whether a captain-led task can be reported complete. This gate checks evidence completeness and names any blocked, unverified, or closed-with-director-risk area.
 
+Completion order is governed by `Shared/policies/workflow-orchestration.md`.
+This gate only closes after the route, authorization, operation mode, board,
+dispatch waves, delivery artifacts, validation, review, and memory/docs states
+are present or honestly blocked.
+
 ## Inputs
 
 - Director request, approved plan, and scope limits.

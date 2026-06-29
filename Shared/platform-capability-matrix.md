@@ -2,6 +2,11 @@
 
 此檔是 AI_Rules 的平台代理治理基準。框架文件、workflow metadata、審計器與 MCP profile 必須以此為準。
 
+Workflow orchestration order is governed by `Shared/policies/workflow-orchestration.md`.
+This matrix translates platform capability and channel semantics after the
+route, authorization, board state, dispatch wave, and artifact sequence are
+resolved.
+
 ## Capability Levels
 
 | Level | 定義 |

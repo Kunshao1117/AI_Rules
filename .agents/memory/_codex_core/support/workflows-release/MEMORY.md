@@ -4,24 +4,24 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 提交、巡檢與技能鍛造工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-29T12:12:34+08:00'
+last_updated: '2026-06-30T02:43:49+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-29T11:30:08+08:00'
+last_verified: '2026-06-30T02:30:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 18
+cycle_event_count: 19
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: active
 metadata:
   author: antigravity
   version: '1.0'
@@ -31,10 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core.support.workflows-release — Codex Release and Governance Workflow Memory
 
 ## Current Truth
+- Codex commit, routine, handoff, and skill-forge workflow entries now reference workflow-orchestration before completion or protected closeout work.
 - Codex commit, routine, handoff, and skill-forge workflows now load `team-station-handoff-packet`; commit scans, release readiness evidence, routine inspection, skill-source analysis, review, validation, and memory/docs attribution start as `formal-readonly` until protected captain-owned mutation is separately authorized.
 - Codex commit and release workflows keep memory/git/release operations captain-owned while requiring formal board fields, delivery artifact separation, and wave-gated evidence before completion claims.
 - Codex commit workflow treats specialists as evidence-only for review, validation, and completion delivery artifacts; memory, git, push, and release remain captain-only mutations.
@@ -54,6 +54,8 @@ metadata:
 - Do not let automation-safe routine inspection perform writes.
 
 ## Cycle Events
+- 20: Wave 6B added workflow-orchestration grounding to Codex release/closeout workflow entries and synced deployed .agents/skills copies.
+- 19: Wave 6A updated Codex build, fix, commit, routine, handoff, and skill-forge workflow entries with Team-Native operation mode, board trigger, role identity, handoff packet, and specialist lifecycle coverage.
 - 18: Updated Codex release-side workflows for Team-First formal-readonly evidence routing, handoff packet refs, standby state, and protected formal-write gates.
 - 17: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 16: Synced Codex release-side workflows with Team-Native specialist registry and change delivery artifact terminology.

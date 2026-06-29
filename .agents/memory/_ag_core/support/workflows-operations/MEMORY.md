@@ -4,24 +4,24 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 測試、巡檢、交接與技能鍛造工作流。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-29T07:04:11+08:00'
+last_updated: '2026-06-30T02:44:21+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T21:54:14+08:00'
+last_verified: '2026-06-30T02:30:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 17
+cycle_event_count: 18
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: active
 metadata:
   author: antigravity
   version: '1.0'
@@ -34,6 +34,7 @@ metadata:
 # _ag_core.support.workflows-operations — Antigravity Operations Workflow Memory
 
 ## Current Truth
+- Antigravity operational workflow entries now reference workflow-orchestration before validation, debug, memory/docs, write paths, or completion.
 - Antigravity operational workflows now inherit formal team dispatch fields and cannot claim full team completion without separated implementation change delivery, memory delivery, review, validation, and completion evidence or accepted risk.
 - Antigravity operational workflows now inherit team-task-board references through the shared workflow entry contract and keep evidence delivery artifacts role-bound.
 - Antigravity test, routine, handoff, and skill-forge workflows now require task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` before specialist work.
@@ -52,6 +53,9 @@ metadata:
 - Keep handoff and routine workflows from mutating source or memory without the appropriate gate.
 
 ## Cycle Events
+- 19: Wave 6B added workflow-orchestration grounding to Antigravity operational workflow entries.
+
+- 18: Wave 6A updated Antigravity fix, condense, test, and debug workflow entries with Team-Native operation mode, board trigger, role identity, handoff packet, and specialist lifecycle coverage.
 - 17: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 16: Synced Antigravity operational workflows with Team-Native specialist registry and change delivery artifact terminology.
 - 15: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.

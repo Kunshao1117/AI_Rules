@@ -30,6 +30,11 @@ Use this with `programming-team-governance`, `team-task-board`,
 authorization for protected mutation. It carries only the authorization already
 resolved by the board.
 
+Station startup follows `Shared/policies/workflow-orchestration.md`. The packet
+can be issued only after the workflow route, authorization state, operation
+mode, board state, dispatch wave, previous-wave input, next-wave start
+condition, and formal evidence eligibility are known.
+
 ## Trigger Conditions
 
 Use this skill after a Captain Team Board exists and before opening, retaining,

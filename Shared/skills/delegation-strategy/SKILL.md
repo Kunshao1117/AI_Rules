@@ -23,6 +23,11 @@ skill selects channels; `programming-team-governance` owns team semantics,
 fields, and `team-station-handoff-packet` owns specialist startup packets. Read
 `references/cli-delegation-sop.md` only for CLI branch details.
 
+Dispatch sequencing is governed by `Shared/policies/workflow-orchestration.md`.
+This skill chooses execution channels only after the formal board state, dispatch
+wave, previous-wave input, next-wave start condition, and formal evidence
+eligibility are established.
+
 ## Captain Trigger Gate
 
 Captain-led mode is active for code, workflow rules, skills, tests, debugging, audit, commit/release prep, source memory/docs, generated copies, public contract, or governance work. Pure conversation and small factual answers stay direct. Uncertain source/workflow/review impact enters captain-led mode.

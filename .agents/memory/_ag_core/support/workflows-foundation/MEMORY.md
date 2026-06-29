@@ -4,24 +4,24 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 基礎與討論建構工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-29T13:50:50+08:00'
+last_updated: '2026-06-30T02:44:17+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-29T13:50:50+08:00'
+last_verified: '2026-06-30T02:30:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 20
+cycle_event_count: 21
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: active
 metadata:
   author: antigravity
   version: '1.0'
@@ -31,10 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core.support.workflows-foundation — Antigravity Foundation Workflow Memory
 
 ## Current Truth
+- Antigravity foundation workflow entries now reference workflow-orchestration before evidence-bearing work, station work, write paths, or completion.
 - Antigravity foundation and experiment workflows now record draft/formal board semantics, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once launch.
 - Antigravity build planning now says later execution performs change delivery integration and memory filing, not unbounded physical direct writing.
 - Antigravity experiment and foundation workflows now explicitly load team-task-board and use template references instead of duplicating full team rules inline.
@@ -56,6 +56,8 @@ metadata:
 - Keep shared gate fragments aligned with platform governance.
 
 ## Cycle Events
+- 22: Wave 6B added workflow-orchestration grounding to Antigravity foundation workflow entries.
+- 21: Wave 6A updated Antigravity chat, explore, blueprint, build, and experiment workflow entries with daily/full mode boundaries, pure-conversation/direct limits, formal-readonly/formal-write routing, and specialist lifecycle rules.
 - 20: Rebuilt the Antigravity 00 chat workflow boundary so pure chat stays direct, while evidence-bearing discussion promotes to Team-Native formal-readonly with read scope, evidence status, and captain verify-read before the final answer.
 - 19: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 18: Synced Antigravity foundation workflows with Team-Native specialist registry and change delivery artifact terminology.

@@ -18,14 +18,16 @@ metadata:
 
 ## Purpose
 
-Captain-led programming governance makes Team-Native Core the default for
-source, workflow, validation, review, memory, commit, release, deployment,
-install, generated-copy, public-contract, governance-impact work, and read-only
-exploration or blueprint work that can shape later source changes. The Director
-talks to the captain; the captain classifies, boards, dispatches, supervises,
-integrates artifacts, adjudicates, and reports.
+Captain-led programming governance makes Team-Native Core apply to source,
+workflow, validation, review, memory, commit, release, deployment, install,
+generated-copy, public-contract, governance-impact work, and read-only
+exploration or blueprint work that can shape later changes. The captain
+classifies, boards, dispatches, supervises, integrates, adjudicates, and reports.
 
 Specialist roles come from `team-specialist-registry` plus matching `team-specialist-*`. `team-task-board` owns board, station, artifact, change delivery, and completion templates. Routes are `native`, `adapter`, `conditional`, or `unavailable`; missing route evidence is `blocked`, `unverified`, or `closed-with-director-risk`.
+
+Workflow sequence belongs to `Shared/policies/workflow-orchestration.md`; this
+skill applies team semantics after board and wave order are selected.
 
 Team-Native mode is a runtime state machine, not a reminder paragraph. Once the
 trigger fires, the captain's next action is to create or reuse the board,
@@ -150,7 +152,12 @@ the team evidence source.
 
 ## Wave Dispatch Semantics
 
-Formal dispatch is wave-gated. Open only the current dispatch wave and stations whose previous-wave input is present, blocked, unverified, or closed-with-director-risk. Same-wave stations must not conflict. Implementation and same-deliverable review do not share a wave. Change-dependent validation waits for the change delivery artifact. Completion waits for change delivery, memory/docs, validation, and independent review states.
+Formal dispatch is wave-gated. Open only the current wave and stations whose
+previous-wave input is present, blocked, unverified, or
+closed-with-director-risk. Same-wave stations must not conflict; implementation
+and same-deliverable review do not share a wave. Change-dependent validation
+waits for the change delivery artifact. Completion waits for change delivery,
+memory/docs, validation, and independent review states.
 
 ## Specialist Lifecycle Semantics
 

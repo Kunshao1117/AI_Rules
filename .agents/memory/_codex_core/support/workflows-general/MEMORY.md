@@ -4,24 +4,24 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-29T13:50:50+08:00'
+last_updated: '2026-06-30T02:43:42+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-29T13:50:50+08:00'
+last_verified: '2026-06-30T02:30:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 18
+cycle_event_count: 19
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: active
 metadata:
   author: antigravity
   version: '1.0'
@@ -31,10 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core.support.workflows-general — Codex General Workflow Memory
 
 ## Current Truth
+- Codex workflow entries now read the deployed workflow-orchestration contract before broad reading, station work, validation, review, memory/docs, write paths, or completion.
 - Codex general, explore, experiment, condense, and test workflows now load `team-station-handoff-packet` and route no-write exploration, broad reading, validation planning, review evidence, and standby through `formal-readonly`; GO-backed mutation uses `formal-write`.
 - Codex general and experiment workflows now record draft/formal board semantics, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once launch.
 - Codex experiment and general workflow entries now explicitly load team-task-board and use template references instead of duplicating full team rules inline.
@@ -54,6 +54,8 @@ metadata:
 - Do not write source or memory from read-only flows without the appropriate GO gate.
 
 ## Cycle Events
+- 20: Wave 6B added workflow-orchestration grounding to Codex general workflow entries and synced deployed .agents/skills copies.
+- 19: Wave 6A updated Codex chat, explore, blueprint, experiment, condense, test, and debug workflow entries with daily/full mode boundaries, pure-conversation/direct limits, formal-readonly/formal-write routing, and specialist lifecycle rules.
 - 18: Rebuilt the Codex 00 chat boundary so pure chat stays direct, while evidence-bearing discussion promotes to Team-Native formal-readonly with filesystem/MCP read scope, evidence status, and captain verify-read before the final answer.
 - 17: Updated Codex general workflows for Team-First formal-readonly routing, handoff packet refs, standby state, and deep-read/verify-read fields.
 - 16: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.

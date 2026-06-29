@@ -4,24 +4,24 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 健檢與提交工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-29T07:03:59+08:00'
+last_updated: '2026-06-30T02:44:27+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T21:54:14+08:00'
+last_verified: '2026-06-30T02:30:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 19
+cycle_event_count: 20
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: active
 metadata:
   author: antigravity
   version: '1.0'
@@ -34,6 +34,7 @@ metadata:
 # _ag_core.support.workflows-audit-commit — Antigravity Audit and Commit Workflow Memory
 
 ## Current Truth
+- Antigravity audit, commit, routine, handoff, and skill-forge workflow entries now reference workflow-orchestration before completion or protected closeout work.
 - Antigravity audit and commit workflows are covered by entrypoint checks for formal dispatch board lifecycle, wave-gated evidence, and captain-owned memory/git/release state.
 - Antigravity commit execution treats specialists as evidence-only for review, validation, and completion delivery artifacts; memory, git, push, and release remain captain-only mutations.
 - Antigravity audit and commit workflows now inherit team-task-board references through the shared workflow entry contract while keeping git, memory, and release ownership on the captain path.
@@ -55,6 +56,9 @@ metadata:
 - Do not commit, push, tag, or release without explicit Director approval.
 
 ## Cycle Events
+- 21: Wave 6B added workflow-orchestration grounding to Antigravity audit/commit/closeout workflow entries.
+
+- 20: Wave 6A updated Antigravity audit, commit, routine, handoff, and skill-forge workflow entries with Team-Native mode, role split, board trigger, and specialist lifecycle rules.
 - 19: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 18: Synced Antigravity audit and commit workflows with Team-Native specialist registry and change delivery artifact terminology.
 - 17: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.

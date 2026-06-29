@@ -4,24 +4,24 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-30T00:08:03+08:00'
+last_updated: '2026-06-30T03:23:25+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-30T00:05:01+08:00'
+last_verified: '2026-06-30T03:21:47+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: active
 metadata:
   author: antigravity
   version: '1.0'
@@ -33,6 +33,7 @@ metadata:
 ---
 # _system.scripts — Repository Script Governance Memory
 ## Current Truth
+- Audit and Skills-Sync now include workflow-orchestration and workflow-orchestration-scenarios as shared governance references, checking workflow-entry coverage, scenario templates, source/deployed drift, Team-Native semantics, and mixed completion/non-completion wording.
 - This child card owns root PowerShell deployment, audit, memory migration, skill sync, and platform sync scripts.
 - Doctor/Audit now enforces Team-Native core ordering, scoped authorization fields, role identity, loaded skill refs, handoff packets, full-only trace mode, strict trace parameters, delivery artifact IDs, multi-direct exceptions, and captain-authoring safety.
 - Governance Doctor rejects no-write/read-only work being treated as no-team, missing formal-readonly routing, unreported not-started specialist channels, missing standby state, and captain large-file deep-read substitution.
@@ -45,6 +46,10 @@ metadata:
 - Keep script behavior aligned with protected memory and project-skill directories.
 - Do not use this card as a substitute for reading the current script implementation before edits.
 ## Cycle Events
+- 38: Wave 6C added Doctor/Audit and Skills-Sync coverage for workflow orchestration scenarios, task-board templates, deployed scenario reference drift, and mixed completion-state wording.
+- 37: Wave 6B follow-up added Doctor coverage for source/deployed workflow entry drift across Codex, Claude, and Antigravity after independent review found a deployment false negative.
+- 36: Wave 6B updated Audit and Skills-Sync checks for workflow-orchestration coverage; Doctor and Check passed after sync.
+- 35: Wave 6A extended Audit checks for workflow operation mode, daily/full boundaries, direct/formal-readonly/formal-write routing, role split, board trigger, and specialist lifecycle coverage; Doctor and Deploy Audit governance checks passed.
 - 34: Compacted active script memory after commit preflight reported the active card line limit.
 - 33: Hardened Doctor/Audit strict trace checks for core-rule order, role identity, loaded skill refs, handoff packets, full-only trace mode, completion-state whitelist, delivery artifact IDs, multi-direct exceptions, and captain-authoring semantics.
 - 32: Added Doctor/Audit checks for Team-Native operation mode, ten role IDs, specialist relation metadata, trace/handoff references, and role-identity trace fields; source Doctor and Deploy Audit returned red 0 with deployment-drift yellows only.

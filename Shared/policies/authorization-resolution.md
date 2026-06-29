@@ -17,6 +17,11 @@ When route hints, platform modes, approval UI, tool capability, or prior
 conversation state conflict with Team-Native Core, Team-Native Core wins and
 the authorization must be resolved by this policy.
 
+Workflow routes follow `Shared/policies/workflow-orchestration.md` only after
+this policy resolves the authorized target, scope, phase, and expiry. A route
+can select the workflow and board path, but formal-write station work still
+needs scope-bound authorization.
+
 ## Authorization Signals
 
 Valid authorization evidence must identify the smallest allowed target, scope,

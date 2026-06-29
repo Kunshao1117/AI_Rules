@@ -2,6 +2,15 @@
 
 此檔是 00 到 12 工作流的共用外部接地規格。它不取代各工作流本體；各工作流只引用本矩陣，再套用自己的任務邊界、平台能力與證據狀態。08 健檢另由共用健檢引擎定義深度模式、盤點分母與覆蓋率規則。
 
+Workflow orchestration order is governed by `Shared/policies/workflow-orchestration.md`.
+This matrix owns per-workflow evidence expectations; the orchestration policy
+owns the shared route -> authorization -> operation_mode -> board -> dispatch
+wave -> delivery artifact -> completion order.
+Concrete workflow cooperation examples live in
+`Shared/policies/workflow-orchestration-scenarios.md`; those examples are
+non-authorizing playbooks and must not replace this matrix or the orchestration
+contract.
+
 ## Evidence Status
 
 | 狀態 | 意義 | 使用邊界 |

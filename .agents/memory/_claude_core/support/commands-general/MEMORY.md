@@ -4,24 +4,24 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 一般討論、探索、實驗、濃縮與測試指令。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-06-29T13:50:50+08:00'
+last_updated: '2026-06-30T02:43:57+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-29T13:50:50+08:00'
+last_verified: '2026-06-30T02:30:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 17
+cycle_event_count: 18
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: active
 metadata:
   author: antigravity
   version: '1.0'
@@ -31,10 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core.support.commands-general — Claude General Commands Memory
 
 ## Current Truth
+- Claude general command entries now reference workflow-orchestration before evidence-bearing work, station work, write paths, or completion.
 - Claude general and experiment commands now record draft/formal board semantics, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once launch.
 - Claude experiment and general commands now explicitly load team-task-board and use template references instead of duplicating full team rules inline.
 - Claude chat, explore, experiment, condense, and test commands now route coding intent through task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` rules.
@@ -53,6 +53,8 @@ metadata:
 - Do not write source or memory from read-only command flows without the appropriate gate.
 
 ## Cycle Events
+- 19: Wave 6B added workflow-orchestration grounding to Claude general commands and synced affected .claude/skills copies.
+- 18: Wave 6A updated Claude chat, explore, blueprint, experiment, condense, test, and debug command entries with daily/full mode boundaries, pure-conversation/direct limits, formal-readonly/formal-write routing, and specialist lifecycle rules.
 - 17: Rebuilt the Claude 00 chat command boundary so pure chat stays direct, while evidence-bearing discussion promotes to Team-Native formal-readonly with read scope, evidence status, and captain verify-read before the final answer.
 - 16: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 15: Synced Claude general commands with Team-Native specialist registry and change delivery artifact terminology.

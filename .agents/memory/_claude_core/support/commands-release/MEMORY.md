@@ -4,24 +4,24 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 紀錄、巡檢與技能鍛造指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-29T07:04:27+08:00'
+last_updated: '2026-06-30T02:44:06+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T21:54:14+08:00'
+last_verified: '2026-06-30T02:30:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 17
+cycle_event_count: 18
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: active
 metadata:
   author: antigravity
   version: '1.0'
@@ -34,6 +34,7 @@ metadata:
 # _claude_core.support.commands-release — Claude Release and Governance Commands Memory
 
 ## Current Truth
+- Claude commit, routine, handoff, and skill-forge commands now reference workflow-orchestration before completion or protected closeout work.
 - Claude commit commands keep memory/git/release operations Master-Agent-owned while requiring formal dispatch board fields and separated delivery artifact evidence before completion claims.
 - Claude commit command treats specialists as evidence-only for review, validation, and completion delivery artifacts; memory, git, push, and release remain captain-only mutations.
 - Claude commit and release commands now inherit team-task-board references through the shared command contract while keeping git, memory, and release ownership on the captain path.
@@ -52,6 +53,9 @@ metadata:
 - Do not let routine inspection mutate source or memory without a write gate.
 
 ## Cycle Events
+- 19: Wave 6B added workflow-orchestration grounding to Claude release/closeout commands and synced affected .claude/skills copies.
+
+- 18: Wave 6A updated Claude build, fix, commit, routine, handoff, and skill-forge command entries with Team-Native operation mode, board trigger, role identity, handoff packet, and specialist lifecycle coverage.
 - 17: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 16: Synced Claude release-side commands with Team-Native specialist registry and change delivery artifact terminology.
 - 15: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.

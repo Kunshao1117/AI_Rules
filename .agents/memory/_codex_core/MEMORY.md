@@ -4,14 +4,14 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-29T23:27:26+08:00'
+last_updated: '2026-06-30T02:43:36+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-29T23:27:26+08:00'
+last_verified: '2026-06-30T00:58:07+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
@@ -38,7 +39,7 @@ metadata:
 - Codex docs and core rules now describe Team-Native Core as a pre-execution state machine with formal-readonly for no-write evidence work, GO-backed formal-write for mutation, skill handoff packets, standby/nonlaunch reporting, and specialist deep-read / captain verify-read separation.
 - Codex docs now say Team-Native formal-readonly applies to evidence-bearing 00 chat, not only programming work; pure chat remains direct only when no external evidence is needed.
 - Codex source and deployed rules now place Team-Native Core and Authorization Resolution before Lifecycle; GO, approvals, sandbox/tool prompts, and skill names resolve only to scoped authorization evidence.
-- Codex source/deployed rules now say 61 shared operational skills and 78 deployed skills.
+- Codex workflow entries and deployed skill copies now reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
 - Codex source rules and the live project rule copy are byte-level synchronized after Team-Native lifecycle and fast-closeout updates; Director Output Contract reports red 0 / yellow 0.
 - Codex source and deployed rules now receive the Team-Native Core policy block with native, adapter, conditional, and unavailable platform route semantics.
 - Codex source and deployed rules now use `closed-with-director-risk` for Director-closed non-complete missing implementation-channel cases.
@@ -64,6 +65,8 @@ metadata:
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 ## Cycle Events
+- 34: Wave 6B added workflow-orchestration grounding to Codex workflow entries and source/deployed drift checks.
+- 33: Wave 6A updated all 17 Codex workflow entries with operation_mode, daily/full modes, direct/formal-readonly/formal-write boundaries, board triggers, and specialist lifecycle semantics; deployed workflow skill hashes were verified in sync.
 - 32: Synced Codex core source and live rules with the core-injection Team-Native hard gate before broad reading, validation, review, memory/docs attribution, completion audit, or completion claims.
 - 31: Updated Codex README to state that 00 evidence-bearing chat enters Team-Native formal-readonly, while pure chat remains direct; this aligns Codex docs with the rebuilt 00 workflow boundary.
 - 30: Synchronized Codex source/deployed core rules and README for Team-Native lifecycle, scoped authorization before Lifecycle, route-only workflow semantics, fast closeout wording, Team-First formal-readonly, handoff packets, standby or unavailable-channel reporting, and deep-read/verify-read boundaries; Doctor returned red 0 / yellow 0.
@@ -72,8 +75,6 @@ metadata:
 - 27: Synced Codex source/deployed policy marker blocks with `closed-with-director-risk` wording.
 - 26: Synced Codex source and deployed workflow skills with Team-Native specialist registry and change delivery artifact terminology.
 - 25: Synced Codex source and deployed core rules with Team-Native Core route-state policy.
-- 24: Corrected stale 44 shared skill count in Codex source and deployed AGENTS before commit review closure.
-- 23: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
 ## Archive Index
 - archive-003.md — Older cycle events 13-22 compacted from the active card.
 - archive-001.md — Legacy _codex_core card preserved before schema v2 compaction on 2026-06-04.

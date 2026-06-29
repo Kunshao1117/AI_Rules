@@ -4,6 +4,10 @@ AI_Rules uses skills as an on-demand knowledge compression layer. This file
 defines where governance content belongs so three platforms can share semantics
 without forcing every rule into always-on context.
 
+Workflow entries and team skills reference
+`Shared/policies/workflow-orchestration.md` for sequence semantics instead of
+copying the full board, wave, channel, and completion playbook into every skill.
+
 ## Skill Placement Contract
 
 | Layer | Purpose | Put Here | Do Not Put Here |

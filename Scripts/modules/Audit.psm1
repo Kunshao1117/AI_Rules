@@ -608,6 +608,8 @@ function Get-AuditSharedGovernanceReferenceRelativePaths {
         'workflow-capability-evidence-matrix.md',
         'skill-governance.md',
         'policies\authorization-resolution.md',
+        'policies\workflow-orchestration.md',
+        'policies\workflow-orchestration-scenarios.md',
         'policies\subagent-invocation.md'
     )) {
         $path = Join-Path $SharedRoot $rel
@@ -646,6 +648,8 @@ function Get-GovernanceScanFiles {
         'Shared\platform-capability-matrix.md',
         'Shared\workflow-capability-evidence-matrix.md',
         'Shared\skill-governance.md',
+        'Shared\policies\workflow-orchestration.md',
+        'Shared\policies\workflow-orchestration-scenarios.md',
         'Shared\policies\subagent-invocation.md',
         'Shared\mcp-profiles\README.md',
         'Codex\.codex\AGENTS.md',
@@ -2103,6 +2107,22 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         return ($hasMemoryImpact -and $hasMemoryDeliveryArtifact -and $hasMissingArtifactState)
     }
 
+    function Test-ProgrammingTeamFullCompletionClaimContent {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $claimPattern = '(?i)full team completion|完整團隊完成|\bcompletion_state\b\s*[:=]\s*["'']?(complete|completed|full-team-complete|full_team_complete)\b'
+        $protectivePattern = '(?i)\bnot\b|\bnever\b|\bcannot\b|\bmust not\b|\bdo not\b|non-complete|not complete|not full|missing|blocked|unverified|closed-with-director-risk|不得|不可|不能|不代表|不是|非完整|缺少|阻塞|未驗證|風險關閉'
+
+        foreach ($line in ($Content -split "\r?\n")) {
+            if (($line -match $claimPattern) -and ($line -notmatch $protectivePattern)) {
+                return $true
+            }
+        }
+
+        return $false
+    }
+
     function Test-ProgrammingTeamDirectorRiskCloseContent {
         param([string]$Content)
         if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
@@ -2132,6 +2152,36 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         $hasNonLaunchState = $Content -match 'not-started|not-authorized|unavailable|blocked|unverified|未啟動|未授權|不可用|阻塞|未驗證'
 
         return ($hasStandby -and $hasNonLaunchState)
+    }
+
+    function Test-ProgrammingTeamWorkflowModeContent {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $hasOperationMode = $Content -match 'operation_mode|Operation mode|操作模式'
+        $hasDaily = $Content -match '\bdaily\b|日常模式'
+        $hasFull = $Content -match '\bfull\b|完整模式'
+        $hasFormalReadonly = $Content -match 'formal-readonly|formal readonly|正式.{0,80}(唯讀|無寫入)'
+        $hasFormalWrite = $Content -match 'formal-write|formal write|正式.{0,80}(寫入|可寫)'
+        $hasDirectBoundary = $Content -match '\bdirect\b|直答|直行|主線直做'
+
+        return ($hasOperationMode -and $hasDaily -and $hasFull -and $hasFormalReadonly -and $hasFormalWrite -and $hasDirectBoundary)
+    }
+
+    function Test-ProgrammingTeamWorkflowRoleLifecycleContent {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $hasRegistry = $Content -match 'team-specialist-registry'
+        $hasTaskBoard = $Content -match 'team-task-board'
+        $hasHandoffPacket = $Content -match 'team-station-handoff-packet'
+        $hasRoleIdentity = $Content -match 'role_id' -and $Content -match 'role_instance_id' -and $Content -match 'exclusive_task_scope'
+        $hasLifecycle = $Content -match 'station lifecycle|specialist lifecycle|隊員生命週期|站點生命週期'
+        $hasLifecycleStates = $Content -match 'assigned' -and $Content -match 'standby' -and $Content -match 'retained' -and $Content -match 'reused' -and $Content -match 'handoff-required' -and $Content -match 'replaced' -and $Content -match 'closed' -and $Content -match 'blocked'
+        $hasStartupMonitoring = $Content -match 'startup_started_at' -and $Content -match 'first_response_deadline' -and $Content -match 'last_progress_at' -and $Content -match 'timeout_action' -and $Content -match 'standby_reason'
+        $hasNonCompleteRisk = $Content -match 'closed-with-director-risk' -and $Content -match 'not complete|not full team completion|非完整|不是完整'
+
+        return ($hasRegistry -and $hasTaskBoard -and $hasHandoffPacket -and $hasRoleIdentity -and $hasLifecycle -and $hasLifecycleStates -and $hasStartupMonitoring -and $hasNonCompleteRisk)
     }
 
     function Test-ProgrammingTeamDispatchPackageContent {
@@ -2169,6 +2219,18 @@ function Measure-ProgrammingTeamGovernanceCoverage {
 
     $coreChecks = @(
         [PSCustomObject]@{
+            Path = 'Shared\policies\workflow-orchestration.md'
+            Severity = 'Red'
+            Label = '工作流編排契約缺少狀態機與入口引用語義'
+            Patterns = @('Workflow Orchestration Contract', 'Source-Of-Truth Chain', 'Entry Sequence', 'workflow-orchestration-scenarios', 'Scenario playbooks', 'non-authorizing examples', 'workflow route is not authorization|Workflow route is not authorization', 'draft board', 'formal-readonly', 'formal-write', 'dispatch wave', 'previous-wave input', 'next-wave start condition', 'formal evidence eligibility', 'handoff packet', 'channel capability', 'channel invocation status', 'station lifecycle|Station Handoff', 'direct exception', 'change delivery artifact', 'memory/docs', 'review', 'validation', 'closed-with-director-risk', 'not full team completion|not as complete|not as `complete`', 'No-write does not mean no-team|no-write does not mean no-team', 'post-board all-at-once dispatch', 'standby', 'captain deep read')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\policies\workflow-orchestration-scenarios.md'
+            Severity = 'Red'
+            Label = '工作流情境範例缺少可照跑的轉場劇本'
+            Patterns = @('Workflow Orchestration Scenarios', 'not authorization', 'Scenario Format', 'Read-Only Evidence Station', 'Blueprint To Build', 'Build Or Fix To Validation', 'Failed Validation Route-Back', 'Audit Fan-Out', 'Commit-Preflight Blocker', 'Generated Or Deployed Copy Sync', 'workflow_route', 'operation_mode', 'board_state', 'dispatch wave', 'previous-wave input', 'next-wave start condition', 'handoff_packet_id', 'channel_capability', 'channel_invocation_status', 'delivery artifact', 'route-back', 'blocked', 'unverified', 'standby', 'closed-with-director-risk', 'not full team completion', 'Anti-Examples')
+        },
+        [PSCustomObject]@{
             Path = 'Shared\skills\programming-team-governance\SKILL.md'
             Severity = 'Red'
             Label = '隊長制編程團隊治理共用技能缺少必要章節'
@@ -2178,7 +2240,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
             Path = 'Shared\skills\team-task-board\SKILL.md'
             Severity = 'Red'
             Label = '團隊任務板技能缺少可執行模板'
-            Patterns = @('Team Task Board', 'Template Selection', 'Lightweight board', 'Full board', 'Experiment board', 'Board Header', 'Full Board Table', 'Specialist Assignment', 'Change Delivery Artifact Types', 'Direct Exception Rules', 'Workflow Entry Contract', 'Completion Rules', 'Task type:', 'Workflow route:', 'Implementation authorization:', 'Specialist role source:', 'Assigned specialist skill:', 'Domain label:', 'Requested execution channel:', 'Channel capability:', 'Channel invocation status:', 'Delivery artifact type:', 'Delivery artifact status:', 'Allowed specialist roles:', 'Forbidden specialist roles:', 'Board template:', 'Applicability', 'Execution mode', 'Execution channel', 'Evidence owner', 'Role boundary', 'Direct exception', 'Completion condition', '發現:', '變更:', 'Isolated workspace change delivery', 'Text change delivery artifact', 'closed-with-director-risk|總監風險關閉', 'direct only when no isolated change delivery or text change delivery artifact can be produced', 'Director explicitly accepts', 'not full team completion', 'Implementation change delivery, memory delivery, review, and validation artifacts')
+            Patterns = @('Team Task Board', 'Template Selection', 'Lightweight board', 'Full board', 'Experiment board', 'Board Header', 'Full Board Table', 'Reusable Scenario Templates', 'Read-Only Evidence Station Template', 'Change Delivery Wave Template', 'Failure Route-Back Template', 'Commit-Preflight Template', 'workflow-orchestration-scenarios', 'Specialist Assignment', 'Change Delivery Artifact Types', 'Direct Exception Rules', 'Workflow Entry Contract', 'Completion Rules', 'Task type:', 'Workflow route:', 'Implementation authorization:', 'Specialist role source:', 'Assigned specialist skill:', 'Domain label:', 'Requested execution channel:', 'Channel capability:', 'Channel invocation status:', 'Delivery artifact type:', 'Delivery artifact status:', 'Allowed specialist roles:', 'Forbidden specialist roles:', 'Board template:', 'Applicability', 'Execution mode', 'Execution channel', 'Evidence owner', 'Role boundary', 'Direct exception', 'Completion condition', '發現:', '變更:', 'Isolated workspace change delivery', 'Text change delivery artifact', 'closed-with-director-risk|總監風險關閉', 'direct only when no isolated change delivery or text change delivery artifact can be produced', 'Director explicitly accepts', 'not full team completion', 'Implementation change delivery, memory delivery, review, and validation artifacts')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\_index.md'
@@ -2248,11 +2310,12 @@ function Measure-ProgrammingTeamGovernanceCoverage {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $check.Path -Line 1 -Reason '核心治理缺少變更交付件、記憶文件交付件、審查交付件、驗證交付件與缺失狀態語義' -Text 'missing implementation change delivery/memory-docs delivery/review delivery/validation delivery artifact evidence or missing blocked/unverified state'
         }
 
-        if (($content -match 'full team completion|完整團隊完成') -and (-not (Test-ProgrammingTeamArtifactSetContent -Content $content))) {
+        $hasFullCompletionClaim = Test-ProgrammingTeamFullCompletionClaimContent -Content $content
+        if ($hasFullCompletionClaim -and (-not (Test-ProgrammingTeamArtifactSetContent -Content $content))) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $check.Path -Line 1 -Reason '宣稱完整團隊完成時缺少變更、記憶文件、審查、驗證交付件要求' -Text 'full team completion requires change/memory-docs/review/validation delivery artifact evidence'
         }
 
-        if (($content -match 'full team completion|完整團隊完成') -and (-not (Test-ProgrammingTeamMemoryDeliveryContent -Content $content))) {
+        if ($hasFullCompletionClaim -and (-not (Test-ProgrammingTeamMemoryDeliveryContent -Content $content))) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $check.Path -Line 1 -Reason '宣稱完整團隊完成時缺少記憶影響、記憶文件交付件與缺失狀態語義' -Text 'full team completion requires memory impact plus memory delivery artifact evidence or blocked/unverified state'
         }
 
@@ -2361,6 +2424,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         [PSCustomObject]@{ Pattern = '(?i)(draft evidence|草案證據|草案包證據).{0,140}(satisf(y|ies)|counts? as|eligible|pass(es)?|滿足|算作|可作為|通過|符合).{0,100}(formal acceptance|formal evidence|正式驗收|正式證據|正式接受)'; Reason = '草案證據不得滿足正式驗收' },
         [PSCustomObject]@{ Pattern = '(?i)(post-board|after board|任務板後|建板後|隊長任務板後).{0,180}(all-at-once|all at once|dispatch all|spawn all|一次(開|啟動|派出|派工).{0,30}(全部|所有)|全部(隊員|分支|子代理).{0,30}一次(開|啟動|派出|派工))'; Reason = '正式板後不得一次啟動全部隊員，必須逐波次派工' },
         [PSCustomObject]@{ Pattern = '(?i)(complete-with-accepted-risk|已接受風險完成|accepted-risk[^.\r\n]{0,100}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)|已接受風險[^。\r\n]{0,100}(完整完成|完整團隊完成|完成))'; Reason = '已接受風險不得宣稱完整完成，需改為 closed-with-director-risk 的非完整流程關閉' },
+        [PSCustomObject]@{ Pattern = '(?i)(complete only when|may be reported complete|reported complete only when)[^.\r\n]{0,180}(blocked|unverified|closed-with-director-risk|risk-closed|honestly blocked)'; Reason = '完成條件不得混入阻塞、未驗證或風險關閉狀態' },
         [PSCustomObject]@{ Pattern = '(?i)(closed-with-director-risk|總監風險關閉)[^.\r\n。]{0,120}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '總監風險關閉不得宣稱完整完成' },
         [PSCustomObject]@{ Pattern = '(?i)(standby|待命).{0,160}(\bcomplete\b|completed|full team completion|formal completion evidence|完整完成|完整團隊完成|已完成|已回收|已整合|正式完成證據|驗收通過)'; Reason = '待命狀態不得當成完成證據' },
         [PSCustomObject]@{ Pattern = '(?i)(review|validation|審查|驗證).{0,120}(before|prior to|earlier than|早於|先於).{0,100}(change delivery|implementation change delivery|變更交付件|實作變更交付)'; Reason = '審查或驗證不得早於變更交付件' },
@@ -2505,6 +2569,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
     Add-ProgrammingTeamAmbiguousPositiveFindings -RelativePaths @(
         'Shared\policies\subagent-invocation.md',
         'Shared\policies\team-native-core.md',
+        'Shared\policies\workflow-orchestration.md',
         'Shared\workflow-capability-evidence-matrix.md',
         'Shared\platform-capability-matrix.md',
         'Shared\skills\programming-team-governance\SKILL.md',
@@ -2582,6 +2647,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         [PSCustomObject]@{ Pattern = '(?i)(draft evidence|草案證據|草案包證據).{0,140}(satisf(y|ies)|counts? as|eligible|pass(es)?|滿足|算作|可作為|通過|符合).{0,100}(formal acceptance|formal evidence|正式驗收|正式證據|正式接受)'; Reason = '工作流入口不得允許草案證據滿足正式驗收' },
         [PSCustomObject]@{ Pattern = '(?i)(post-board|after board|任務板後|建板後|隊長任務板後).{0,180}(all-at-once|all at once|dispatch all|spawn all|一次(開|啟動|派出|派工).{0,30}(全部|所有)|全部(隊員|分支|子代理).{0,30}一次(開|啟動|派出|派工))'; Reason = '工作流入口不得允許建板後一次全派' },
         [PSCustomObject]@{ Pattern = '(?i)(complete-with-accepted-risk|已接受風險完成|accepted-risk[^.\r\n]{0,100}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)|已接受風險[^。\r\n]{0,100}(完整完成|完整團隊完成|完成))'; Reason = '工作流入口不得把已接受風險宣稱為完整完成' },
+        [PSCustomObject]@{ Pattern = '(?i)(complete only when|may be reported complete|reported complete only when)[^.\r\n]{0,180}(blocked|unverified|closed-with-director-risk|risk-closed|honestly blocked)'; Reason = '工作流入口不得把阻塞、未驗證或風險關閉混入完成條件' },
         [PSCustomObject]@{ Pattern = '(?i)(closed-with-director-risk|總監風險關閉)[^.\r\n。]{0,120}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '工作流入口不得把總監風險關閉宣稱為完整完成' },
         [PSCustomObject]@{ Pattern = '(?i)(standby|待命).{0,160}(\bcomplete\b|completed|full team completion|formal completion evidence|完整完成|完整團隊完成|已完成|已回收|已整合|正式完成證據|驗收通過)'; Reason = '工作流入口不得把待命狀態當成完成證據' },
         [PSCustomObject]@{ Pattern = '(?i)(review|validation|審查|驗證).{0,120}(before|prior to|earlier than|早於|先於).{0,100}(change delivery|implementation change delivery|變更交付件|實作變更交付)'; Reason = '工作流入口不得允許審查或驗證早於變更交付件' },
@@ -2605,8 +2671,17 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         if ($content -notmatch 'team-task-board') {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口未引用團隊任務板技能' -Text $relPath
         }
+        if ($content -notmatch 'workflow-orchestration') {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口未引用共享工作流編排契約' -Text 'missing .agents/shared/policies/workflow-orchestration.md'
+        }
         if ($content -notmatch 'Programming Team Board|Team Station|團隊站點|team-station') {
             Add-ProgrammingTeamFinding -Severity 'Yellow' -File $relPath -Line 1 -Reason '工作流入口缺少團隊站點可讀語義' -Text $relPath
+        }
+        if (-not (Test-ProgrammingTeamWorkflowModeContent -Content $content)) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少日常模式、完整模式與直行/唯讀/寫入邊界' -Text 'required: operation_mode, daily, full, direct, formal-readonly, formal-write'
+        }
+        if (-not (Test-ProgrammingTeamWorkflowRoleLifecycleContent -Content $content)) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少角色分工、任務板觸發或隊員生命週期規則' -Text 'required: team-specialist-registry, team-task-board, handoff packet, role identity, station lifecycle, startup monitoring, non-complete risk closure'
         }
         foreach ($required in $workflowEntryFormalDispatchRequiredPatterns) {
             if ($content -notmatch $required.Pattern) {
@@ -2644,10 +2719,11 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         if ($content -match 'Begin writing source code using|Apply fixes using|Physical Write|Physical Fix Execution') {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口不得保留 GO 後主線直接實作語句' -Text $relPath
         }
-        if (($content -match 'full team completion|完整團隊完成') -and (-not (Test-ProgrammingTeamArtifactSetContent -Content $content))) {
+        $hasFullCompletionClaim = Test-ProgrammingTeamFullCompletionClaimContent -Content $content
+        if ($hasFullCompletionClaim -and (-not (Test-ProgrammingTeamArtifactSetContent -Content $content))) {
                 Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口宣稱完整團隊完成時缺少變更、記憶文件、審查、驗證交付件要求' -Text $relPath
         }
-        if (($content -match 'full team completion|完整團隊完成') -and (-not (Test-ProgrammingTeamMemoryDeliveryContent -Content $content))) {
+        if ($hasFullCompletionClaim -and (-not (Test-ProgrammingTeamMemoryDeliveryContent -Content $content))) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口宣稱完整團隊完成時缺少記憶影響、記憶文件交付件與缺失狀態語義' -Text $relPath
         }
         if (-not (Test-ProgrammingTeamDirectorRiskCloseContent -Content $content)) {
@@ -3531,6 +3607,18 @@ function Measure-TeamNativeCoreSemantics {
 
     $coreChecks = @(
         [PSCustomObject]@{
+            Path = 'Shared\policies\workflow-orchestration.md'
+            Severity = 'Red'
+            Label = '工作流編排契約缺少 Team-Native 站點編排正本語義'
+            Patterns = @('Workflow Orchestration Contract', 'Source-Of-Truth Chain', 'workflow-orchestration-scenarios', 'non-authorizing examples', 'operation_mode', 'daily', 'full', 'draft board', 'formal-readonly', 'formal-write', 'dispatch wave', 'previous-wave input', 'next-wave start condition', 'formal evidence eligibility', 'handoff packet', 'channel capability', 'channel invocation status', 'station lifecycle|Station Handoff', 'closed-with-director-risk', 'not full team completion|not as `complete`')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\policies\workflow-orchestration-scenarios.md'
+            Severity = 'Red'
+            Label = '工作流情境範例缺少 Team-Native 轉場樣本'
+            Patterns = @('Workflow Orchestration Scenarios', 'not authorization', 'Scenario Format', 'Read-Only Evidence Station', 'Blueprint To Build', 'Build Or Fix To Validation', 'Failed Validation Route-Back', 'Audit Fan-Out', 'Commit-Preflight Blocker', 'Generated Or Deployed Copy Sync', 'workflow_route', 'operation_mode', 'board_state', 'dispatch wave', 'previous-wave input', 'next-wave start condition', 'handoff_packet_id', 'channel_capability', 'channel_invocation_status', 'delivery artifact', 'blocked', 'unverified', 'closed-with-director-risk', 'not full team completion', 'Anti-Examples')
+        },
+        [PSCustomObject]@{
             Path = 'Shared\policies\team-native-core.md'
             Severity = 'Red'
             Label = 'Team-Native Core 政策缺少核心狀態機'
@@ -3958,10 +4046,46 @@ function Measure-TeamNativeCoreSemantics {
         [PSCustomObject]@{ Source = 'Shared\platform-capability-matrix.md'; Target = '.agents\shared\platform-capability-matrix.md' },
         [PSCustomObject]@{ Source = 'Shared\workflow-capability-evidence-matrix.md'; Target = '.agents\shared\workflow-capability-evidence-matrix.md' },
         [PSCustomObject]@{ Source = 'Shared\policies\authorization-resolution.md'; Target = '.agents\shared\policies\authorization-resolution.md' },
+        [PSCustomObject]@{ Source = 'Shared\policies\workflow-orchestration.md'; Target = '.agents\shared\policies\workflow-orchestration.md' },
+        [PSCustomObject]@{ Source = 'Shared\policies\workflow-orchestration-scenarios.md'; Target = '.agents\shared\policies\workflow-orchestration-scenarios.md' },
         [PSCustomObject]@{ Source = 'Shared\policies\subagent-invocation.md'; Target = '.agents\shared\policies\subagent-invocation.md' },
         [PSCustomObject]@{ Source = 'Shared\policies\team-native-core.md'; Target = '.agents\shared\policies\team-native-core.md' },
         [PSCustomObject]@{ Source = 'Shared\policies\team-trace-evidence.md'; Target = '.agents\shared\policies\team-trace-evidence.md' }
     )
+
+    $codexWorkflowSourceRoot = Join-Path $RepoRoot 'Codex\.agents\workflow-skills'
+    if (Test-Path -LiteralPath $codexWorkflowSourceRoot -PathType Container) {
+        foreach ($sourceFile in (Get-ChildItem -LiteralPath $codexWorkflowSourceRoot -Filter 'SKILL.md' -File -Recurse -ErrorAction SilentlyContinue)) {
+            $rel = $sourceFile.FullName.Substring($codexWorkflowSourceRoot.Length).TrimStart('\', '/')
+            if ($rel -match '(^|[\\/])_') { continue }
+            $targetReferencePairs += [PSCustomObject]@{
+                Source = Join-Path 'Codex\.agents\workflow-skills' $rel
+                Target = Join-Path '.agents\skills' $rel
+            }
+        }
+    }
+
+    $claudeCommandSourceRoot = Join-Path $RepoRoot 'Claude\.claude\commands'
+    if (Test-Path -LiteralPath $claudeCommandSourceRoot -PathType Container) {
+        foreach ($sourceFile in (Get-ChildItem -LiteralPath $claudeCommandSourceRoot -Filter 'SKILL.md' -File -Recurse -ErrorAction SilentlyContinue)) {
+            $rel = $sourceFile.FullName.Substring($claudeCommandSourceRoot.Length).TrimStart('\', '/')
+            if ($rel -match '(^|[\\/])_') { continue }
+            $targetReferencePairs += [PSCustomObject]@{
+                Source = Join-Path 'Claude\.claude\commands' $rel
+                Target = Join-Path '.claude\commands' $rel
+            }
+        }
+    }
+
+    $antigravityWorkflowSourceRoot = Join-Path $RepoRoot 'Antigravity\.agents\workflows'
+    if (Test-Path -LiteralPath $antigravityWorkflowSourceRoot -PathType Container) {
+        foreach ($sourceFile in (Get-ChildItem -LiteralPath $antigravityWorkflowSourceRoot -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '^_' })) {
+            $targetReferencePairs += [PSCustomObject]@{
+                Source = Join-Path 'Antigravity\.agents\workflows' $sourceFile.Name
+                Target = Join-Path '.agents\workflows' $sourceFile.Name
+            }
+        }
+    }
 
     foreach ($pair in $targetReferencePairs) {
         $sourcePath = Join-Path $RepoRoot $pair.Source

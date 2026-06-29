@@ -4,7 +4,7 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-29T13:50:50+08:00'
+last_updated: '2026-06-30T03:38:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 11
+cycle_event_count: 12
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -39,6 +39,7 @@ metadata:
 - Root documentation now extends Team-Native mode beyond programming-only work: pure 00 chat stays direct, while evidence-bearing chat about files, screenshots, memory, rules, agent behavior, tool output, or governance impact enters formal-readonly with specialist evidence and captain verify-read.
 - Root documentation now states that GO, interface buttons, platform permission prompts, modes, and workflow commands must resolve to scoped authorization evidence; workflow routes and modes are not standalone authorization.
 - Changelog includes the 2026-06-29 Team-Native scoped authorization refactor entry for core priority, authorization policy, artifact fields, audit hardening, and platform documentation sync.
+- Changelog includes the 2026-06-30 Team-Native workflow orchestration entry for daily/full modes, conversation/read-only/write boundaries, transitions, lifecycle rules, task-board triggers, and Doctor coverage.
 - Repository-level governance documentation now describes delivery-artifact-driven Team-Native workflow: the captain boards, dispatches, supervises, integrates returned qualified artifacts, decides, and reports, but does not author primary implementation, review, validation, or memory attribution.
 - Root documentation and changelog now frame team collaboration as Team-Native Core with platform route states and task trace evidence.
 - Root documentation distinguishes platform route states from manual setup status; unavailable is the route state for missing station capability.
@@ -66,6 +67,7 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 12: Recorded the 2026-06-30 Team-Native workflow orchestration changelog entry and cleared the CHANGELOG staleness warning after reading the current entry.
 - 11: Documented the 00 evidence-bearing chat boundary in root README: pure chat remains direct, but evidence-dependent discussion uses Team-Native formal-readonly stations to reduce captain context pollution and preserve looped evidence.
 - 10: Documented Team-First runtime-state semantics, formal-readonly/formal-write split, station handoff packets, standby, unavailable-channel reporting, and deep-read/verify-read boundaries in root README.
 - 09: Recorded the 2026-06-29 Team-Native scoped authorization refactor changelog entry and cleared the CHANGELOG staleness warning after reading the current entry.

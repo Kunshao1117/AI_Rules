@@ -4,19 +4,19 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-30T00:08:03+08:00'
+last_updated: '2026-06-30T02:43:54+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-30T00:05:01+08:00'
+last_verified: '2026-06-30T00:58:07+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
@@ -39,6 +40,7 @@ metadata:
 - Evidence-bearing 00 chat enters Team-Native formal-readonly; pure chat stays direct only when no external evidence is needed.
 - Coding commands enter captain-led mode with a formal dispatch board, wave-gated delegation, role-exclusive specialists, change delivery artifacts, and protected captain ownership of writes, memory, git, release, and final acceptance.
 - Full team completion requires implementation change delivery, memory/docs delivery, independent review delivery, validation delivery, and trace evidence; `closed-with-director-risk` is non-complete risk closure.
+- Claude command entries and deployed command copies now reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
 - Claude memory operations use shared `.agents/memory/`; the deprecated `claude-edition-rules` card is historical only.
 - Claude command entries carry Director-readable output, neutral collaboration, freshness, memory, context, deep audit, migration, change intent, visual evidence, intent alignment, and review governance.
 ## Active Constraints
@@ -47,6 +49,8 @@ metadata:
 - Keep Claude source ownership out of the deprecated historical card.
 - Split command child cards before adding another broad Claude command cycle.
 ## Cycle Events
+- 3: Wave 6B added workflow-orchestration grounding to Claude command entries and source/deployed drift checks.
+- 2: Wave 6A updated Claude command entries with operation_mode, daily/full modes, direct/formal-readonly/formal-write boundaries, board triggers, and specialist lifecycle semantics; source/deployed command hashes were verified in sync.
 - 01: Compacted the previous Team-Native governance cycle into archive-004 after commit preflight reported line and cycle-event limits.
 ## Archive Index
 - archive-004.md — Team-Native hard-gate cycle events 20-31 compacted on 2026-06-30.

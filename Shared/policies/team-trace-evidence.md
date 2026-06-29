@@ -6,6 +6,10 @@
 
 Static rules can prove that the framework text is present. They cannot prove that a specific task actually followed the required sequence: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> execution-channel decision -> specialist work or blocked/unverified channel state -> captain supervision -> recovered change delivery artifacts / evidence delivery artifacts -> independent validation and review -> captain integration -> completion audit -> report. Team trace evidence fills that gap.
 
+`Shared/policies/workflow-orchestration.md` owns the runtime sequence that this
+trace records: route -> authorization -> operation_mode -> board -> dispatch
+wave -> handoff packet -> channel state -> delivery artifact -> completion.
+
 Trace evidence also proves that authorization was scope-bound. Workflow names,
 interface approval buttons, platform modes, and channel availability are recorded
 as evidence or context only; none of them authorizes unbounded writes or

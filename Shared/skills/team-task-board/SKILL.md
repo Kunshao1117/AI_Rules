@@ -18,29 +18,26 @@ metadata:
 
 ## Purpose
 
-Reusable Team Task Board, station, artifact, change delivery, handoff packet,
-standby, and completion templates. Use `programming-team-governance` for
-semantics, `team-station-handoff-packet` for specialist startup payloads, and
-`delegation-strategy` for channel selection.
+Reusable Team Task Board, station, artifact, handoff packet, standby, and
+completion templates. Use `programming-team-governance` for semantics,
+`team-station-handoff-packet` for startup payloads, and `delegation-strategy`
+for channel selection. Platform runners are channels, not role sources.
 
-Captain flow: intake -> board -> assigned stations -> channel decision -> artifacts -> validation/review -> integration -> audit -> report. Specialist station assignment is mandatory once Team-Native mode is active. Platform runners are channels, not role sources.
+The shared entry sequence is owned by
+`Shared/policies/workflow-orchestration.md`. This skill owns the board and
+station templates used after the workflow route, authorization, operation mode,
+board state, and dispatch wave are selected.
 
-The board is the first executable Team-Native state, not a recap after broad
-reading, implementation, review, validation, or completion claims. Stations that
-cannot start remain standby, blocked, unverified, unavailable, or
-not-authorized with the smallest unblock condition.
-
-## Formal Team Skill Sources
-
-Captain-led coding workflows load this skill, `team-specialist-registry`, matching `team-specialist-*`, and formal team subskills for boundaries, change delivery, memory/docs, validation, review, and completion.
+The board is the first executable Team-Native state, not a recap. Stations that
+cannot start remain standby, blocked, unverified, unavailable, or not-authorized.
 
 ## Template Selection
 
-Choose exactly one board shape before dispatch.
-
-- Lightweight board: explanation, read-only inspection, narrow generated-copy sync, or low-risk Yellow drift.
-- Full board: build, fix, debug, test, audit, commit prep, handoff, skill/rule update, behavior docs, memory update, or cross-file work.
-- Experiment board: sandbox/prototype work with discard and upgrade rules.
+Choose exactly one board shape before dispatch: Lightweight board for
+explanation, read-only inspection, narrow sync, or low-risk Yellow drift; Full
+board for build, fix, debug, test, audit, commit prep, handoff, skill/rule
+update, behavior docs, memory update, or cross-file work; Experiment board for
+sandbox/prototype work with discard and upgrade rules.
 
 Choose `operation_mode` before board shape. `daily` may use a lightweight board
 only for reduced routine evidence and must record `operation_mode_reason`.
@@ -52,15 +49,12 @@ impact. Do not dispatch until the selected operation mode and board exist.
 ## Board State
 
 A board is `draft`, `formal-readonly`, or `formal-write`. `draft` is pre-GO
-planning only. `formal-readonly` is the no-write team state for exploration,
-blueprint evidence, impact mapping, deep file reads, external research,
-validation planning, review evidence, and standby station preparation.
-`formal-write` is GO-backed dispatch for implementation change delivery,
-captain integration, protected memory/docs disposition, validation, review,
-completion, commit prep, or release prep. The lifecycle is draft ->
-formal-readonly or formal-write promotion -> wave-gated station dispatch ->
-returned delivery artifacts -> review/validation/memory states -> completion
-audit.
+planning. `formal-readonly` covers no-write evidence, deep-read, research,
+validation planning, review evidence, and standby. `formal-write` is GO-backed
+dispatch for change delivery, protected integration, memory/docs, validation,
+review, completion, commit prep, or release prep. Lifecycle: draft ->
+formal-readonly or formal-write -> wave-gated dispatch -> artifacts ->
+review/validation/memory states -> completion audit.
 
 Formal board lifecycle is wave-gated from promotion to completion audit.
 
@@ -161,6 +155,18 @@ Missing evidence state:
 `formal` requires a formal station, operation mode, open wave, assigned skill,
 `role_id`, `role_instance_id`, owner, artifact format, and no forbidden
 boundary. `draft-input-only` cannot satisfy acceptance.
+
+## Reusable Scenario Templates
+
+Short board-fill examples only; detailed examples live in
+`Shared/policies/workflow-orchestration-scenarios.md` and are non-authorizing.
+
+| Template | Minimal fill |
+|---|---|
+| Read-Only Evidence Station Template | `formal-readonly`, wave 1, request plus read scope, handoff forbids mutation, evidence returns/blocks. |
+| Change Delivery Wave Template | `full`, scoped `formal-write`, change delivery -> memory/docs plus validation -> independent review -> completion audit. |
+| Failure Route-Back Template | Validation/audit/routine/commit blocker routes to fix, debug, build, or audit; the finding station does not repair. |
+| Commit-Preflight Template | `full`; scan is `formal-readonly`; repairs, sync, and memory phase need scoped `formal-write`; blockers route back before commit readiness. |
 
 ## Wave Dispatch Rules
 
@@ -305,9 +311,10 @@ Workflow and command entries load `programming-team-governance`, `delegation-str
 
 ## Completion Rules
 
-A task may be reported complete only when applicable stations are done, blocked,
-unverified, or risk-closed without confusing those states with complete;
-implementation was not self-reviewed; direct exceptions are recorded;
-memory/git/release/external state stays captain-owned; implementation change
-delivery, memory delivery, review, and validation artifacts exist; residual
-memory, validation, review, sync, or trace gaps are named as risk.
+A task may be reported complete only when all applicable stations have returned
+qualified artifacts, implementation was not self-reviewed, direct exceptions are
+recorded, memory/git/release/external state stays captain-owned, and
+implementation change delivery, memory delivery, review, and validation
+artifacts exist. If any station is blocked, unverified, or risk-closed, report
+that non-complete state and name residual memory, validation, review, sync, or
+trace gaps as risk.

@@ -4,14 +4,14 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-06-29T19:54:46+08:00'
+last_updated: '2026-06-30T03:23:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-29T19:50:59+08:00'
+last_verified: '2026-06-30T03:21:47+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -21,7 +21,7 @@ cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: active
 metadata:
   author: antigravity
   version: '1.0'
@@ -31,10 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared — Shared Governance Memory
 
 ## Current Truth
+- Wave 6B/6C introduced shared workflow orchestration and scenario playbooks as the cross-platform sequence and example layer for workflow route, authorization, operation mode, board state, dispatch waves, handoff packets, delivery artifacts, route-back, and completion closeout.
 - Shared skill governance now lists `team-station-handoff-packet` and documents that large skills may split stable subinstructions into references, with station packets passing only the concrete skill refs needed by a specialist.
 - Shared skill governance now defines optional `metadata.relations` for role skills: `role_id`, role layer, parent skill, support skills, embedded artifacts, artifact contracts, and trace contracts.
 - Team-Native Core governance moved to child card `_shared.team-native-core`, which owns shared team policy, platform route states, team trace evidence, and team completion contracts.
@@ -53,6 +53,8 @@ metadata:
 - Do not list directories under Tracked Files; put card navigation in Relations, and treat cards above 8 tracked files as split candidates.
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
 ## Cycle Events
+- 33: Wave 6C added workflow orchestration scenarios, task-board scenario templates, deployed references, Doctor coverage, and completion/non-completion semantic separation.
+- 32: Wave 6B added the shared workflow orchestration policy to Shared governance, deployed references, workflow entries, and Doctor coverage.
 - 31: Added Wave 1 skill relation metadata contract for Team-Native role skills; actual specialist skill rewriting remains a later wave.
 - 30: Added Team-First handoff packet skill to the shared skill index and updated skill governance for reference splitting plus station handoff references.
 - 29: Updated source/deployed skill governance contract for four formal delivery artifacts, memory/docs delivery fields, and non-complete `closed-with-director-risk` semantics.
@@ -61,7 +63,6 @@ metadata:
 - 26: Split Team-Native Core policy, trace evidence, route semantics, and team completion ownership into `_shared.team-native-core`.
 - 25: Verified final Doctor/Audit green after four-delivery-artifact Doctor checks, compressed captain skills, and deployed skill sync.
 - 24: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
-- 23: Added formal team specialist routing with implementation change delivery, memory delivery, review, and validation artifacts; refreshed 50/67 skill facts after source/deployed sync.
 ## Archive Index
 - archive-003.md — Older cycle events 14-22 compacted from the active card.
 - archive-001.md — Legacy _shared card preserved before schema v2 compaction on 2026-06-04.
@@ -82,6 +83,8 @@ metadata:
 - 記憶治理使用新版主卡加歸檔模型，專案脈絡與原始碼記憶分層管理。
 - 超過 8 個追蹤檔是拆卡建議，不是自動阻擋。
 ## Tracked Files
+- Shared/policies/workflow-orchestration.md
+- Shared/policies/workflow-orchestration-scenarios.md
 - Shared/skill-governance.md
 - Shared/mcp-profiles/README.md
 - Shared/context/_map/CONTEXT.md
