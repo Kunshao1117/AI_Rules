@@ -6,6 +6,11 @@
 
 Static rules can prove that the framework text is present. They cannot prove that a specific task actually followed the required sequence: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> execution-channel decision -> specialist work or blocked/unverified channel state -> captain supervision -> recovered change delivery artifacts / evidence delivery artifacts -> independent validation and review -> captain integration -> completion audit -> report. Team trace evidence fills that gap.
 
+Trace evidence also proves that authorization was scope-bound. Workflow names,
+interface approval buttons, platform modes, and channel availability are recorded
+as evidence or context only; none of them authorizes unbounded writes or
+protected follow-on phases by itself.
+
 ## Recommended Location
 
 Task traces should be written under `.agents/logs/team-traces/` when the active workflow permits log output. Logs are task evidence, not source memory. Durable source facts still belong in `.agents/memory/` after the memory phase.
@@ -22,6 +27,14 @@ Each task trace should contain these fields in readable Markdown or JSON:
 | `board_state` | draft or formal |
 | `implementation_authorization` | no-write, plan-only, GO-write, GO-push, release-authorized, or blocked |
 | `go_evidence` | Prompt, workflow authorization, or blocked state |
+| `authorization_source` | Director prompt, captain board row, interface approval event, prior approved plan, or blocked/unverified source |
+| `authorization_target` | Exact target of the authorization, such as file allowlist, station, protected action, or external resource |
+| `authorization_scope` | Concrete allowed operation boundary, including files, directories, generated copies, memory cards, commands, release actions, or none |
+| `authorization_phase` | plan-only, implementation-change-delivery, captain-integration, validation, review, memory-docs, memory-commit, git, release, deployment, install, external-mutation, or blocked |
+| `authorization_evidence` | Prompt excerpt, board row, approval UI event, command confirmation, or missing evidence reason |
+| `authorization_expiry` | Current turn, current dispatch wave, named file set, named command, named protected action, explicit revocation, or blocked/unverified expiry |
+| `authorization_resolution_state` | authorized, no-write, scope-mismatch, phase-mismatch, expired, unverified, blocked, or revoked |
+| `platform_mode_observed` | Observed platform mode or capability context, recorded only as context and never as authorization |
 | `specialist_role_source` | `team-specialist-registry` entry and matching `team-specialist-*` skill, or blocked/unverified reason |
 | `specialist_skill` | Exact specialist child skill selected from the registry, or blocked/unverified reason |
 | `domain_label` | Domain label used for the station, such as governance rules, platform capability, testing automation, memory governance, documentation, architecture quality, or external information |
@@ -87,6 +100,12 @@ These patterns must not pass:
 - Subagent, browser, CLI, or MCP route described as the specialist role instead of the execution channel for a registered specialist.
 - Missing channel capability or channel invocation status for an applicable station.
 - Tool or subagent unavailability removing an applicable specialist station instead of marking it blocked, unverified, or closed-with-director-risk.
+- Missing authorization source, target, scope, phase, evidence, expiry, resolution state, or observed platform mode for any trace claiming write, integration, memory, git, release, deployment, install, or external-mutation authority.
+- Treating a workflow name as authorization instead of a route hint.
+- Treating an interface approval button as authorization beyond the displayed target, scope, phase, and expiry.
+- Treating platform mode, sandbox state, local shell access, or channel availability as authorization.
+- Reusing implementation authorization as captain integration, memory, git, release, deployment, install, or external-mutation authorization.
+- Continuing after authorization expiry, scope mismatch, or phase mismatch without a new scope-bound authorization record.
 - Retaining a specialist channel while crossing from implementation to review, validation repair, protected memory mutation, final acceptance, or another role-exclusive station.
 - Replacing or closing a specialist channel without a closure reason when the task claims formal completion.
 - Treating light closeout as permission to skip required change delivery, validation, review, memory/docs, or completion evidence.

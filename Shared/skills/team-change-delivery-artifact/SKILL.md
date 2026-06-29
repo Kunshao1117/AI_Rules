@@ -30,6 +30,7 @@ Use `team-specialist-registry` and the matching `team-specialist-*` skill to con
 
 - Formal board implementation row.
 - Approved scope and file allowlist.
+- Authorization source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode.
 - Required behavior change.
 - Existing source context read before writing.
 - Test or validation expectations, if provided.
@@ -46,15 +47,24 @@ Use `team-specialist-registry` and the matching `team-specialist-*` skill to con
 
 1. Read the target files before editing.
 2. Modify only files explicitly assigned by the board.
-3. Keep changes minimal and tied to the approved requirement.
-4. Do not add unrelated cleanup, formatting, or generated output.
-5. Stop after producing the change delivery artifact.
+3. Confirm the assigned authorization scope and phase match the artifact being produced.
+4. Keep changes minimal and tied to the approved requirement.
+5. Do not add unrelated cleanup, formatting, or generated output.
+6. Stop after producing the change delivery artifact.
 
 ## Output
 
 ```text
 交付形式:
 delivery_artifact_id:
+authorization_source:
+authorization_target:
+authorization_scope:
+authorization_phase:
+authorization_evidence:
+authorization_expiry:
+authorization_resolution_state:
+platform_mode_observed:
 author_role:
 source_input:
 integrable_scope:

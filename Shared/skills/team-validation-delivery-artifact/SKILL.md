@@ -26,6 +26,7 @@ Produce validation evidence without repairing the implementation. A validation s
 
 - Change delivery artifact or changed-file list.
 - Expected behavior or acceptance criteria.
+- Authorization source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode.
 - Allowed validation commands, browser path, MCP read, or manual check.
 - Known environment limits.
 
@@ -39,6 +40,7 @@ Produce validation evidence without repairing the implementation. A validation s
 6. Validate the recovered change delivery or evidence delivery; do not treat a subagent route as proof by itself.
 7. Do not validate a change before the change delivery artifact exists. If the artifact is missing, validate only the blocked/unverified/closed-with-director-risk state.
 8. Record the delivery artifact ID, source input, validation scope, and whether validation happened after change delivery.
+9. Treat missing or mismatched authorization fields as blocked or unverified validation evidence.
 
 ## Output
 
@@ -48,6 +50,14 @@ Produce validation evidence without repairing the implementation. A validation s
 風險:
 建議:
 是否阻塞:
+authorization_source:
+authorization_target:
+authorization_scope:
+authorization_phase:
+authorization_evidence:
+authorization_expiry:
+authorization_resolution_state:
+platform_mode_observed:
 validation_state:
 delivery_artifact_id:
 source_input:

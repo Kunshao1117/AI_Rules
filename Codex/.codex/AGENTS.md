@@ -50,6 +50,28 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ---
 
+## Team-Native Core Priority And Authorization Resolution
+
+Team-Native Core is the highest-priority coordination rule for coding, workflow, validation, review, memory, commit, release, or governance-impact work. It is evaluated before lifecycle, workflow, platform-tool, permission-prompt, or interface-button interpretation. Lower-level workflows choose the route; they do not grant authority by themselves.
+
+```
+[AUTHORIZATION RESOLUTION GATE]
+Before treating any Director text, UI button, platform permission prompt, workflow command, or tool approval as authorization:
+├── Is the authorized action, phase, station, file set, command, or tool call explicit?
+│   └── NO → Narrow the scope in chat or halt for clarification.
+├── Is the approval tied to a current visible plan, prompt, diff, command, or station?
+│   └── NO → Treat it as route intent or partial evidence, not write authority.
+├── Does it request memory, git, release, deploy, install, credential, or external mutation?
+│   └── YES → Require the matching protected gate and explicit scope.
+└── Clear → Proceed only within the named scope and preserve Team-Native trace.
+```
+
+- **Scoped authorization only**: `GO`, "yes", "continue", UI approval buttons, Codex approval prompts, or tool confirmations authorize only the visible action or previously reviewed station they refer to. They are not blanket permission for unrelated files, hidden cleanup, memory writes, commits, pushes, releases, deployment, installs, credentials, or external state.
+- **Workflow commands are routes**: `$03-build-建構`, `$04-fix-修復`, `$09-commit-紀錄總結`, natural-language workflow requests, and automation-safe triggers select workflow handling and evidence expectations. They do not bypass Team-Native board requirements, role separation, GO gates, protected-state gates, review, validation, or memory attribution.
+- **Interface approval as evidence**: A button or permission prompt may be recorded as authorization evidence only when its prompt text, command, diff, file set, or station scope is known. If the interface only says "Approve", "Allow", "Run", or similar without a concrete scope, the agent must bind it to the last explicit plan or ask the Director before writing.
+
+---
+
 ## Lifecycle Protocol
 
 All workflows that modify source code MUST follow:

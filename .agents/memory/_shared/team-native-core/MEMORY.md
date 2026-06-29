@@ -4,7 +4,7 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-06-29T07:29:11+08:00'
+last_updated: '2026-06-29T09:41:05+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 14
+cycle_event_count: 16
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -33,6 +33,8 @@ metadata:
 ---
 # _shared.team-native-core — Team-Native Core Governance Memory
 ## Current Truth
+- Authorization Resolution is now a shared Team-Native Core pre-write gate: GO, interface approvals, platform prompts, modes, and workflow names must resolve into scoped authorization fields before protected work.
+- Formal boards, Team-Native trace evidence, delivery artifacts, and completion gates now carry the same scoped authorization fields, so missing authorization blocks completion instead of becoming captain repair.
 - Team-Native Core is the default governance model for source, workflow, validation, review, memory, commit, release, handoff, skill-forge, generated-copy, public-contract, and governance-impact work.
 - Team-Native Core is delivery-artifact-driven and station-first: the captain creates boards, dispatches, supervises, integrates returned qualified artifacts, decides review state, and reports; specialist stations own primary content, implementation, review, validation, and memory attribution.
 - Specialist roles are defined by `team-specialist-registry` plus ten child skills: intent requirements, scope impact, architecture contract, change delivery, validation, review, security reliability, memory docs, release completion, and external research; task boards reference those skills instead of maintaining independent role lists.
@@ -45,7 +47,7 @@ metadata:
 - Completion gates use `closed-with-director-risk` for Director-closed non-complete risk; the old risk-completion state is retired except in legacy-detection code.
 - Team trace `review_state` may use `accepted-risk` only as a review lifecycle judgment; station status, delivery artifact status, memory/docs state, captain-authoring state, and completion state must use blocked, unverified, or `closed-with-director-risk` as applicable.
 - Subagents are execution channels only; specialist execution-channel fields use vendor-neutral platform wording, while platform-specific subagent names stay in translation sections and matrices.
-- Team trace evidence is task evidence under `.agents/logs/team-traces/` when enabled; durable source facts still belong in source memory after the memory phase.
+- Team trace evidence now includes scoped authorization fields and platform-mode observation; task logs remain under `.agents/logs/team-traces/` when enabled, while durable source facts belong in source memory after the memory phase.
 - Governance Doctor includes static Team-Native Core semantic checks and optional strict trace checks with explicit trace parameters from the audit entrypoint.
 - Antigravity / Gemini team stations are adapter or conditional routes unless a concrete native capability is verified.
 - Delegation strategy, programming-team governance, and team-task-board skills were compressed below the shared-skill quality gate; governance red lights, three-skill TokenStatus issues, and accepted-risk residue in two specialist skills were fixed and synchronized to deployed copies.
@@ -57,14 +59,17 @@ metadata:
 - Keep platform-specific tool names in adapter sections or platform-specific files.
 
 ## Cycle Events
-- 13: Added specialist lifecycle, fast closeout lanes, Yellow classification/resolution, repair loop limits, and byte-level source/deployed sync verification; Doctor and Deploy Audit returned red 0 / yellow 0.
+- 16: Promoted authorization fields into team-task-board, programming-team-governance, completion gate, and delivery artifact templates; synced Codex/Antigravity and Claude skill copies; Doctor and Deploy Audit returned red 0 / yellow 0.
+- 15: Added scoped authorization resolution policy, authorization trace fields, workflow route-only semantics, and platform button/mode mapping; source and deployed shared copies are synchronized.
 - 14: Removed format-only EOF drift from Team-Native source skills and policies, synchronized deployed copies, and reverified Doctor and Deploy Audit at red 0 / yellow 0.
+- 13: Added specialist lifecycle, fast closeout lanes, Yellow classification/resolution, repair loop limits, and byte-level source/deployed sync verification; Doctor and Deploy Audit returned red 0 / yellow 0.
 
 ## Archive Index
 - archive-001.md — Older cycle events 1-12 compacted from the active card.
 - No archive volumes yet.
 
 ## Evidence Base
+- source:Shared/policies/authorization-resolution.md — Scoped authorization policy source; deployed copy is `.agents/shared/policies/authorization-resolution.md`.
 - source:Shared/policies/team-native-core.md — Team-Native Core policy source.
 - source:Shared/policies/team-trace-evidence.md — Team trace evidence contract.
 - source:Shared/platform-capability-matrix.md and Shared/workflow-capability-evidence-matrix.md — route states, dispatch waves, and completion evidence.
@@ -80,12 +85,15 @@ metadata:
 
 ## 中文摘要
 - Team-Native Core 是團隊化的核心，不是可選子代理功能。
+- 授權現在必須解析成範圍式欄位；工作流與平台模式只提供路由或背景，不是授權本身。
+- 任務板、隊員交付件、完成閘門與任務軌跡現在使用同一組授權欄位，缺欄位就不能宣稱完成。
 - 每個正式站點都要先分派專家技能，再記錄平台能力路由與軌跡證據。
 - conditional 能力缺證時只能標示未驗證、阻塞或 `closed-with-director-risk`；這不是完整完成。
 - 隊長不得吸收主要實作、審查、驗證或記憶歸因內容；子代理不可用也不能取消站點或改稱完整完成。
 - 任務軌跡是任務證據，不直接寫入來源記憶。
 
 ## Tracked Files
+- Shared/policies/authorization-resolution.md
 - Shared/policies/team-native-core.md
 - Shared/policies/team-trace-evidence.md
 - Shared/policies/subagent-invocation.md

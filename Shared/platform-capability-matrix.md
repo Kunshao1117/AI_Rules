@@ -18,6 +18,24 @@ Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交
 
 隊員生命週期是三平台代理共同語義。平台可以保留或重用同一子代理、CLI、瀏覽器、MCP、隔離工作區或文字交付通道，但只能在同一站點、同一角色、同一交付件與同一角色邊界內。正式 trace 必須記錄 station lifecycle state、retention reason、conversation health、reuse count、handoff summary、closure reason、closeout lane、Yellow classification、Yellow resolution state 與 repair loop count。跨越實作/審查、驗證/修復、記憶歸因/記憶寫入、收尾/最終裁決或需要第二意見時，平台必須關閉或替換通道。
 
+## Scoped Authorization Semantics
+
+範圍式授權是三平台共用語義。任何人類文字、介面按鈕、模式切換、權限提示、工作流指令或工具確認，都必須先解析成「授權誰、做哪個階段、哪個站點、哪批檔案、哪個命令或哪個工具呼叫」。若範圍無法從目前可見提示、計畫、差異、命令或 Team-Native station trace 判定，該訊號只能算路由意圖或部分證據，不得當成寫入授權。
+
+| 授權訊號 | 共用語義 | 不授權項目 |
+|------|------|------|
+| 總監文字同意 | 只授權上一個明確計畫、站點、檔案清單、命令或工具呼叫；模糊同意需綁定最近的具體範圍 | 未列出的檔案、順手重構、記憶、提交、推送、發布、部署、安裝、憑證或外部狀態 |
+| 介面按鈕同意 | 可作為授權證據，但必須保留按鈕所屬提示、動作、差異、命令、站點或檔案範圍 | 介面沒有顯示的隱藏寫入、跨站點工作、無範圍批次變更 |
+| 模式切換 | 只表示進入規劃、執行、沙盒、唯讀或確認流程；仍需符合 Team-Native board 與 protected gate | 自動取得未宣告寫入權、記憶權、git 權或發布權 |
+| 權限提示 | 只授權提示中列出的工具、命令、路徑或外部操作；平台提示比框架 gate 寬時，以框架 gate 收斂 | 其他工具、其他路徑、後續命令串、外部副作用延伸 |
+| 工作流指令 | 只選擇工作流路由、證據矩陣、生命週期與站點模板 | 跳過任務板、跳過 GO、跳過審查/驗證、直接寫主工作區、直接改記憶/git/release |
+
+| 平台介面 | 按鈕 / 模式 / 提示 / 指令映射 | 統一收斂規則 |
+|------|------|------|
+| Antigravity / Gemini | IDE workflow 按鈕、確認視窗、`task_boundary` 模式、adapter 提示、`/03_build` 等入口 | 按鈕與模式只授權顯示的 workflow step、計畫或站點；adapter 能力必須標示 adapter/conditional；未證明範圍時標示未驗證或阻塞 |
+| Claude Edition | Plan Mode、Slash Command、權限提示、checkpoint、hook 結果、subagent 入口 | Plan Mode 是計畫狀態，不是寫入權；Slash Command 只路由；權限提示只涵蓋提示列出的工具與路徑；checkpoint 只提供回復證據 |
+| Codex Edition | `$skill-name`、文字規劃階段、approval/sandbox 提示、工具確認、native subagent 入口 | skill 只路由；approval/sandbox 只涵蓋提示列出的命令、路徑或工具；native subagent 只能在正式站點開啟後作為執行通道 |
+
 ## Platform Matrix
 
 | 能力 | Antigravity / Gemini | Claude Edition | Codex Edition |

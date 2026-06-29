@@ -4,7 +4,7 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-29T07:12:13+08:00'
+last_updated: '2026-06-29T09:41:05+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 29
+cycle_event_count: 30
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _system.scripts — Repository Script Governance Memory
 ## Current Truth
+- Governance Doctor now checks scoped authorization fields across Team-Native policies, task board, specialist outputs, delivery artifact contracts, role boundaries, completion gate, and task traces.
+- Governance sync and Doctor now include the authorization-resolution policy, scoped authorization trace fields, core-rule order checks, deployed-copy drift checks, and forbidden authorization semantic scans.
 - Shared skill and shared governance sync now supports exact SHA256 comparison for deploy-copy paths, so Deploy Sync can clear the same raw-hash drift that Doctor reports.
 - Framework file comparison no longer trusts matching timestamps as proof of equality; timestamp-equal drift must still pass content or exact-hash comparison.
 - Governance Doctor now enforces draft/formal board lifecycle, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once semantics on shared governance and three-platform workflow entries.
@@ -64,6 +65,7 @@ metadata:
 - Do not use this card as a substitute for reading the current script implementation before edits.
 
 ## Cycle Events
+- 30: Added authorization-resolution shared reference sync plus Doctor checks for authorization fields, core priority order, delivery artifact contracts, task-board completeness, source/deployed policy drift, and forbidden mode/workflow/button authorization semantics.
 - 29: Fixed Deploy Sync false-negative drift detection by adding exact-hash comparison for shared skill and shared governance copy paths; source/deployed hashes now match after sync.
 - 28: Added Doctor checks for specialist lifecycle fields, fast closeout lanes, Yellow classification/resolution, repair loop limits, and deployed-copy drift closure; Doctor and Deploy Audit returned red 0 / yellow 0.
 - 27: Re-saved Audit module as UTF-8 BOM to clear Windows PowerShell parser failure; no audit logic changed, parser diagnostics are zero.
@@ -91,6 +93,8 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責根層 PowerShell 腳本。
+- Doctor 現在會檢查任務板、交付件、完成閘門與任務軌跡的範圍式授權欄位。
+- Doctor 與同步工具現在會檢查授權解析政策、核心順序、授權欄位與禁止授權誤讀語句。
 - Doctor 已能抓出假團隊、缺主線直做例外、審查證據降級與瀏覽器分支靜默降級。
 - 根層父卡保留專案身份、文件與授權。
 - 腳本修改前仍必須讀取實際來源。

@@ -607,6 +607,7 @@ function Get-AuditSharedGovernanceReferenceRelativePaths {
         'platform-capability-matrix.md',
         'workflow-capability-evidence-matrix.md',
         'skill-governance.md',
+        'policies\authorization-resolution.md',
         'policies\subagent-invocation.md'
     )) {
         $path = Join-Path $SharedRoot $rel
@@ -1529,6 +1530,38 @@ function Measure-GovernanceSemantics {
                         -Line ($i + 1) `
                         -Reason $pattern.Reason `
                         -Text $lines[$i].Trim()
+                }
+            }
+        }
+    }
+
+    $authorizationForbiddenPatterns = @(
+        [PSCustomObject]@{
+            Pattern = '(?i)(platform[-_ ]?mode|platform_mode|platform route|平台模式|平台路由).{0,100}(\b(equals?|is|counts?\s+as)\b|等於|代表|視為).{0,100}(authorization|write authorization|授權|寫入授權)'
+            Reason = '不得正向宣稱平台模式等於授權'
+        },
+        [PSCustomObject]@{
+            Pattern = '(?i)(workflow|workflow_route|workflow command|工作流|流程路由|工作流指令|\$[0-9]{2}|/[0-9]{2}).{0,100}(\b(equals?|is|counts?\s+as)\b|等於|代表|視為).{0,100}(authorization|write authorization|授權|寫入授權)'
+            Reason = '不得正向宣稱工作流等於授權'
+        },
+        [PSCustomObject]@{
+            Pattern = '(?i)(button|buttons|click|confirmation|confirm|consent|按鈕|點擊|確認|同意).{0,100}(\b(equals?|is|counts?\s+as)\b|等於|代表|視為).{0,100}(unscoped|any scope|all files|blanket|without scope|無範圍|不限範圍|所有檔案|任意寫入|全域寫入|無清單寫入).{0,80}(write|mutation|寫入|變更)?'
+            Reason = '不得正向宣稱按鈕同意等於無範圍寫入'
+        }
+    )
+
+    foreach ($file in (Get-GovernanceScanFiles -RepoRoot $RepoRoot)) {
+        $lines = Get-Content -LiteralPath $file -Encoding UTF8
+        for ($i = 0; $i -lt $lines.Count; $i++) {
+            $line = $lines[$i]
+            if (Test-AuditLineIsNegative -Line $line) { continue }
+            foreach ($pattern in $authorizationForbiddenPatterns) {
+                if ($line -match $pattern.Pattern) {
+                    Add-GovernanceFinding -Severity 'Red' `
+                        -File (Get-AuditRelativePath -RepoRoot $RepoRoot -Path $file) `
+                        -Line ($i + 1) `
+                        -Reason $pattern.Reason `
+                        -Text $line.Trim()
                 }
             }
         }
@@ -3284,7 +3317,13 @@ function Measure-TeamNativeCoreSemantics {
             Path = 'Shared\policies\team-trace-evidence.md'
             Severity = 'Red'
             Label = 'Team trace 證據契約缺少最小欄位'
-            Patterns = @('Team Trace Evidence Contract', 'Minimal Trace Fields', 'task_id', 'task_type', 'workflow_route', 'board_state', 'implementation_authorization', 'specialist_skill', 'domain_label', 'requested_execution_channel', 'channel_capability', 'channel_invocation_status', 'execution_channel', 'delivery_artifact', 'delivery_artifact_status', 'no_captain_authoring', 'stations', 'waves', 'delivery_artifacts', 'direct_exceptions', 'role_separation', 'completion_state')
+            Patterns = @('Team Trace Evidence Contract', 'Minimal Trace Fields', 'task_id', 'task_type', 'workflow_route', 'board_state', 'implementation_authorization', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed', 'specialist_skill', 'domain_label', 'requested_execution_channel', 'channel_capability', 'channel_invocation_status', 'execution_channel', 'delivery_artifact', 'delivery_artifact_status', 'no_captain_authoring', 'stations', 'waves', 'delivery_artifacts', 'direct_exceptions', 'role_separation', 'completion_state')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\policies\authorization-resolution.md'
+            Severity = 'Red'
+            Label = '授權解析政策缺少必要語義'
+            Patterns = @('Authorization Resolution', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed', 'workflow.*not authorization|工作流.*不.*授權|工作流.*不是.*授權', 'platform.*not authorization|平台.*不.*授權|平台.*不是.*授權', 'button.*unscoped|按鈕.*無範圍')
         },
         [PSCustomObject]@{
             Path = 'Shared\policies\subagent-invocation.md'
@@ -3308,13 +3347,13 @@ function Measure-TeamNativeCoreSemantics {
             Path = 'Shared\skills\programming-team-governance\SKILL.md'
             Severity = 'Red'
             Label = '編程團隊治理技能缺少 Team-Native Core 路由'
-            Patterns = @('Team-Native Core', 'platform capability route', 'native.*adapter.*conditional.*unavailable', 'required Team-Native trace evidence')
+            Patterns = @('Team-Native Core', 'platform capability route', 'native.*adapter.*conditional.*unavailable', 'required Team-Native trace evidence', 'authorization source', 'authorization target', 'authorization scope', 'authorization phase', 'authorization evidence', 'authorization expiry', 'authorization resolution state', 'platform mode observed')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\team-task-board\SKILL.md'
             Severity = 'Red'
-            Label = '團隊任務板缺少平台能力路由欄位'
-            Patterns = @('Platform capability route', 'native / adapter / conditional / unavailable', 'Required Team-Native trace evidence')
+            Label = '團隊任務板缺少平台能力或授權解析欄位'
+            Patterns = @('Platform capability route', 'native / adapter / conditional / unavailable', 'Required Team-Native trace evidence', 'Authorization source', 'Authorization target', 'Authorization scope', 'Authorization phase', 'Authorization evidence', 'Authorization expiry', 'Authorization resolution state', 'Platform mode observed', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\delegation-strategy\SKILL.md'
@@ -3326,7 +3365,37 @@ function Measure-TeamNativeCoreSemantics {
             Path = 'Shared\skills\team-completion-gate\SKILL.md'
             Severity = 'Red'
             Label = '完成閘門缺少 Team-Native trace 檢查'
-            Patterns = @('Platform route', 'Team trace', 'Team-native separation')
+            Patterns = @('Platform route', 'Team trace', 'Team-native separation', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\team-change-delivery-artifact\SKILL.md'
+            Severity = 'Red'
+            Label = '變更交付件缺少授權欄位'
+            Patterns = @('authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\team-memory-docs-delivery-artifact\SKILL.md'
+            Severity = 'Red'
+            Label = '記憶文件交付件缺少授權欄位'
+            Patterns = @('authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\team-validation-delivery-artifact\SKILL.md'
+            Severity = 'Red'
+            Label = '驗證交付件缺少授權欄位'
+            Patterns = @('authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\team-review-delivery-artifact\SKILL.md'
+            Severity = 'Red'
+            Label = '審查交付件缺少授權欄位'
+            Patterns = @('authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\team-role-boundaries\SKILL.md'
+            Severity = 'Red'
+            Label = '角色邊界缺少授權欄位檢查'
+            Patterns = @('authorization fields', 'blocked or unverified', 'complete')
         }
     )
 
@@ -3348,6 +3417,14 @@ function Measure-TeamNativeCoreSemantics {
     $skillIndexRelativePath = 'Shared\skills\_index.md'
     $skillIndexContent = Get-TeamNativeContent -RelativePath $skillIndexRelativePath
     $requiredTeamTraceFields = @(
+        'authorization_source',
+        'authorization_target',
+        'authorization_scope',
+        'authorization_phase',
+        'authorization_evidence',
+        'authorization_expiry',
+        'authorization_resolution_state',
+        'platform_mode_observed',
         'specialist_skill',
         'domain_label',
         'requested_execution_channel',
@@ -3470,9 +3547,58 @@ function Measure-TeamNativeCoreSemantics {
         }
     }
 
+    function Get-TeamNativeFirstRegexIndex {
+        param(
+            [string]$Content,
+            [string[]]$Patterns
+        )
+
+        if ([string]::IsNullOrWhiteSpace($Content)) { return -1 }
+        $first = -1
+        foreach ($pattern in $Patterns) {
+            $match = [regex]::Match($Content, $pattern, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+            if (-not $match.Success) { continue }
+            if (($first -lt 0) -or ($match.Index -lt $first)) {
+                $first = $match.Index
+            }
+        }
+
+        return $first
+    }
+
+    $coreOrderTargets = @(
+        [PSCustomObject]@{ Path = Join-Path $RepoRoot 'Codex\.codex\AGENTS.md'; Display = 'Codex\.codex\AGENTS.md'; Severity = 'Red' },
+        [PSCustomObject]@{ Path = Join-Path $RepoRoot 'Claude\.claude\rules\core-identity.md'; Display = 'Claude\.claude\rules\core-identity.md'; Severity = 'Red' },
+        [PSCustomObject]@{ Path = Join-Path $RepoRoot 'Antigravity\.agents\rules\00_core_identity.md'; Display = 'Antigravity\.agents\rules\00_core_identity.md'; Severity = 'Red' },
+        [PSCustomObject]@{ Path = Join-Path $TargetRoot '.codex\AGENTS.md'; Display = '.codex\AGENTS.md'; Severity = 'Yellow' },
+        [PSCustomObject]@{ Path = Join-Path $TargetRoot '.claude\rules\core-identity.md'; Display = '.claude\rules\core-identity.md'; Severity = 'Yellow' },
+        [PSCustomObject]@{ Path = Join-Path $TargetRoot '.agents\rules\00_core_identity.md'; Display = '.agents\rules\00_core_identity.md'; Severity = 'Yellow' }
+    )
+
+    foreach ($target in $coreOrderTargets) {
+        if (-not (Test-Path -LiteralPath $target.Path -PathType Leaf)) { continue }
+        $content = Get-Content -LiteralPath $target.Path -Raw -Encoding UTF8
+        $teamIndex = Get-TeamNativeFirstRegexIndex -Content $content -Patterns @('Team-Native Core', '團隊原生核心')
+        $authorizationIndex = Get-TeamNativeFirstRegexIndex -Content $content -Patterns @('Authorization Resolution', 'authorization-resolution', '授權解析')
+        $lifecycleIndex = Get-TeamNativeFirstRegexIndex -Content $content -Patterns @('Lifecycle Protocol', '##\s+Lifecycle', '生命週期')
+
+        if ($teamIndex -lt 0) {
+            Add-TeamNativeFinding -Severity $target.Severity -File $target.Display -Line 1 -Reason '核心規則缺少 Team-Native Core 最高優先章節' -Text 'missing Team-Native Core before lifecycle'
+        } elseif (($lifecycleIndex -ge 0) -and ($teamIndex -gt $lifecycleIndex)) {
+            Add-TeamNativeFinding -Severity $target.Severity -File $target.Display -Line 1 -Reason 'Team-Native Core 章節順序晚於生命週期' -Text 'Team-Native Core must appear before lifecycle'
+        }
+
+        if ($authorizationIndex -lt 0) {
+            Add-TeamNativeFinding -Severity $target.Severity -File $target.Display -Line 1 -Reason '核心規則缺少授權解析章節' -Text 'missing authorization resolution before lifecycle'
+        } elseif (($lifecycleIndex -ge 0) -and ($authorizationIndex -gt $lifecycleIndex)) {
+            Add-TeamNativeFinding -Severity $target.Severity -File $target.Display -Line 1 -Reason '授權解析章節順序晚於生命週期' -Text 'authorization resolution must appear before lifecycle'
+        }
+    }
+
     $targetReferencePairs = @(
         [PSCustomObject]@{ Source = 'Shared\platform-capability-matrix.md'; Target = '.agents\shared\platform-capability-matrix.md' },
         [PSCustomObject]@{ Source = 'Shared\workflow-capability-evidence-matrix.md'; Target = '.agents\shared\workflow-capability-evidence-matrix.md' },
+        [PSCustomObject]@{ Source = 'Shared\policies\authorization-resolution.md'; Target = '.agents\shared\policies\authorization-resolution.md' },
         [PSCustomObject]@{ Source = 'Shared\policies\subagent-invocation.md'; Target = '.agents\shared\policies\subagent-invocation.md' },
         [PSCustomObject]@{ Source = 'Shared\policies\team-native-core.md'; Target = '.agents\shared\policies\team-native-core.md' },
         [PSCustomObject]@{ Source = 'Shared\policies\team-trace-evidence.md'; Target = '.agents\shared\policies\team-trace-evidence.md' }
@@ -3660,6 +3786,14 @@ function Measure-TeamTraceEvidence {
         'board_state',
         'implementation_authorization',
         'go_evidence',
+        'authorization_source',
+        'authorization_target',
+        'authorization_scope',
+        'authorization_phase',
+        'authorization_evidence',
+        'authorization_expiry',
+        'authorization_resolution_state',
+        'platform_mode_observed',
         'specialist_skill',
         'domain_label',
         'requested_execution_channel',
@@ -3707,7 +3841,7 @@ function Measure-TeamTraceEvidence {
         }
 
         $legacyTracePattern = '補丁包|implementation patch|text patch|captain substitution accepted-risk|patch packet|delivery packet|packet|封包'
-        $newTracePattern = 'specialist_skill|domain_label|requested_execution_channel|channel_capability|channel_invocation_status|execution_channel|delivery_artifact|delivery_artifact_status|no_captain_authoring'
+        $newTracePattern = 'authorization_source|authorization_target|authorization_scope|authorization_phase|authorization_evidence|authorization_expiry|authorization_resolution_state|platform_mode_observed|specialist_skill|domain_label|requested_execution_channel|channel_capability|channel_invocation_status|execution_channel|delivery_artifact|delivery_artifact_status|no_captain_authoring'
         if (Test-TeamTracePositiveLine -Content $content -Pattern $legacyTracePattern) {
             $legacyText = if ($content -match $newTracePattern) {
                 'legacy patch/packet wording present alongside current trace fields'

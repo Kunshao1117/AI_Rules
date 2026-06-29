@@ -50,6 +50,7 @@ Board state: draft / formal
 Task type:
 Workflow route:
 Implementation authorization:
+Authorization source; Authorization target; Authorization scope; Authorization phase; Authorization evidence; Authorization expiry; Authorization resolution state; Platform mode observed:
 Platform capability route: native / adapter / conditional / unavailable
 Delivery sequence state:
 GO evidence:
@@ -90,6 +91,7 @@ Dispatch wave:
 Previous-wave input:
 Next-wave start condition:
 Formal evidence eligibility: formal / draft-input-only / not-eligible / blocked
+Authorization source; Authorization target; Authorization scope; Authorization phase; Authorization evidence; Authorization expiry; Authorization resolution state; Platform mode observed:
 Platform capability route: native / adapter / conditional / unavailable
 Specialist role source:
 Assigned specialist skill:
@@ -129,42 +131,17 @@ The captain dispatches only the current open wave. Later waves start after prior
 
 ## Specialist Lifecycle Rules
 
-Do not close and reopen specialists mechanically. Retain only when the same station, role, delivery artifact, dispatch wave, and role boundary continue. Record station lifecycle state, retention reason, conversation health, reuse count, handoff summary when needed, and closure reason.
-
-| Lifecycle decision | Allowed when | Evidence |
-|---|---|---|
-| `retained` | same role/artifact/wave | retention reason, conversation health, reuse count |
-| `reused` | same role follow-up | prior artifact ID, handoff summary when needed |
-| `handoff-required` | stale, over budget, or unclear context | handoff summary and next input |
-| `replaced` | insufficient handoff, second opinion, unreliable route | replacement reason |
-| `closed` | delivery returned, role boundary crossed, or station done | closure reason |
-| `blocked` | no safe channel or separated route | smallest unblock condition |
+Do not close and reopen specialists mechanically. Retain only when the same station, role, delivery artifact, dispatch wave, and role boundary continue. Record station lifecycle state, retention reason, conversation health, reuse count, handoff summary when needed, and closure reason. Valid lifecycle decisions are `retained`, `reused`, `handoff-required`, `replaced`, `closed`, and `blocked`.
 
 Never retain across implementation/review, validation repair, memory attribution/protected memory mutation, completion/final acceptance, or other role-exclusive boundaries.
 
 ## Fast Closeout Lane
 
-| Closeout lane | Use when | Minimum station shape |
-|---|---|---|
-| `light` | documentation, generated-copy sync, Yellow drift, low-risk governance wording | scope/impact, change or sync delivery, validation, completion audit |
-| `standard` | policies, skills, matrices, audit logic, workflow semantics, memory/docs impact | scope/impact, change delivery, memory/docs, validation, independent review, completion audit |
-| `release-grade` | commit, tag, release, deployment, install, external mutation, operator readiness | standard plus release completion and security/reliability |
-
-Fast closeout reduces unnecessary station churn; it does not remove role separation. If light omits review or memory/docs, record not-applicable, blocked, unverified, or closed-with-director-risk. Main-worktree source, workflow, governance, generated-copy, memory, or public-contract writes use at least standard unless a concrete exception is recorded.
+Closeout lanes are `light`, `standard`, and `release-grade`. `light` fits docs, generated-copy sync, Yellow drift, or low-risk governance wording with scope/impact, change or sync delivery, validation, and completion audit. `standard` covers policies, skills, matrices, audit logic, workflow semantics, memory/docs impact, and public contracts with separated memory/docs, validation, review, and completion. `release-grade` adds release completion and security/reliability for commit, tag, release, deployment, install, external mutation, credentials, or operator readiness.
 
 ## Yellow Classification Rules
 
-Every Yellow finding involved in closeout records classification and resolution state.
-
-| Classification | Use when | Completion impact |
-|---|---|---|
-| `fix-this-cycle` | current evidence impact or cheap in-scope drift | fix or escalate |
-| `residual-accepted` | Director accepts bounded residual | report residual; not full evidence |
-| `deferred-follow-up` | outside current scope | report follow-up |
-| `local-customization` | deployment copy intentionally differs | require ownership evidence |
-| `informational` | advisory warning | report only when useful |
-
-If Yellow affects trace evidence, independent review, validation, memory/docs attribution, public contract, deployment sync, or release readiness, it becomes blocked, unverified, or Red. If the same Yellow or validation symptom remains after two repair attempts, stop the repair loop and route to root-cause repair, structural refactor, blocked, unverified, or closed-with-director-risk.
+Every Yellow finding records classification and resolution state: `fix-this-cycle`, `residual-accepted`, `deferred-follow-up`, `local-customization`, or `informational`; resolution is fixed, deferred, accepted-residual, escalated-blocked, or escalated-red. Yellow affecting trace evidence, independent review, validation, memory/docs attribution, public contract, deployment sync, or release readiness becomes blocked, unverified, or Red. After two attempts for the same symptom, stop and route to root-cause repair, structural refactor, blocked, unverified, or closed-with-director-risk.
 
 ## Specialist Assignment
 
@@ -208,6 +185,7 @@ Change delivery artifact:
 
 ```text
 delivery_artifact_id:
+authorization_fields: `authorization_source`, `authorization_target`, `authorization_scope`, `authorization_phase`, `authorization_evidence`, `authorization_expiry`, `authorization_resolution_state`, `platform_mode_observed`
 author_role:
 source_input:
 integrable_scope:
@@ -228,6 +206,7 @@ Memory/docs delivery artifact:
 
 ```text
 memory_impact:
+authorization_fields: `authorization_source`, `authorization_target`, `authorization_scope`, `authorization_phase`, `authorization_evidence`, `authorization_expiry`, `authorization_resolution_state`, `platform_mode_observed`
 status: memory_delivery / blocked / unverified / closed-with-director-risk
 memory_delivery:
 證據:
@@ -243,7 +222,7 @@ The captain may use `direct` only for protected captain action, tool-only direct
 
 ## Integration Authorization
 
-Formal team completion requires all four artifact classes: implementation change delivery, memory/docs delivery artifact, review delivery artifact, and validation delivery artifact. If any artifact or independent review is missing, mark `blocked`, `unverified`, or `closed-with-director-risk`. The captain may own protected integration and final delivery but not substitute complete team execution.
+Formal team completion requires all four artifact classes: implementation change delivery, memory/docs delivery artifact, review delivery artifact, and validation delivery artifact. Each artifact and formal station must carry the authorization fields from the board. If any artifact, scoped authorization field, or independent review is missing, mark `blocked`, `unverified`, or `closed-with-director-risk`. The captain may own protected integration and final delivery but not substitute complete team execution.
 
 Implementation change delivery, memory/docs delivery artifact, review delivery artifact, and validation delivery artifact are the minimum full-team evidence set.
 

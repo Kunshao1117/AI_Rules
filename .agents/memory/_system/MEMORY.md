@@ -4,19 +4,19 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-29T07:29:06+08:00'
+last_updated: '2026-06-29T09:58:36+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-29T07:27:25+08:00'
+last_verified: '2026-06-29T09:58:36+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 7
+cycle_event_count: 9
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,6 +34,8 @@ metadata:
 # _system — Repository Governance Memory
 
 ## Current Truth
+- Root documentation now states that GO, interface buttons, platform permission prompts, modes, and workflow commands must resolve to scoped authorization evidence; workflow routes and modes are not standalone authorization.
+- Changelog includes the 2026-06-29 Team-Native scoped authorization refactor entry for core priority, authorization policy, artifact fields, audit hardening, and platform documentation sync.
 - Repository-level governance documentation now describes delivery-artifact-driven Team-Native workflow: the captain boards, dispatches, supervises, integrates returned qualified artifacts, decides, and reports, but does not author primary implementation, review, validation, or memory attribution.
 - Root documentation and changelog now frame team collaboration as Team-Native Core with platform route states and task trace evidence.
 - Root documentation distinguishes platform route states from manual setup status; unavailable is the route state for missing station capability.
@@ -61,6 +63,8 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 09: Recorded the 2026-06-29 Team-Native scoped authorization refactor changelog entry and cleared the CHANGELOG staleness warning after reading the current entry.
+- 08: Documented scoped authorization resolution, interface-button evidence limits, workflow route-only semantics, and Team-Native priority in root README.
 - 07: Recorded the 2026-06-29 pre-commit governance convergence changelog entry after exact-hash sync and memory-health checks passed.
 - 06: Recorded the second Team-Native refactor as delivery-artifact-driven across root docs, changelog, team routes, and captain non-authoring boundaries.
 - 05: Updated root documentation and changelog to use `closed-with-director-risk` and delivery artifacts for Team-Native second refactor.
@@ -88,6 +92,7 @@ metadata:
 
 ## 中文摘要
 - AI_Rules 是三平台治理框架核心庫。
+- 根層文件已明定按鈕與 GO 只能作為有範圍的授權證據，工作流與模式不是授權本身。
 - 根層文件已把編程流程改成團隊協作優先，而不是主線單人處理加可選委派。
 - 根層 Git 與發布操作以 `D:\AI_Rules` 為基準。
 - PowerShell 腳本已拆到 `_system.scripts` 子卡。

@@ -56,6 +56,7 @@ Before accepting any delivery artifact:
 5. Mark missing separation as `closed-with-director-risk`, `unverified`, or `blocked`; it cannot support `complete`.
 6. Reject delivery artifacts that mutate memory, git, releases, deployments, installs, or external state.
 7. Distinguish captain protected integration of returned delivery artifacts from captain substitute authoring. Protected integration can be normal captain work; substitute authoring starts blocked and can only close as `closed-with-director-risk`.
+8. Confirm authorization fields are present before accepting a station artifact; missing authorization fields are blocked or unverified and cannot support `complete`.
 
 ## Outputs
 

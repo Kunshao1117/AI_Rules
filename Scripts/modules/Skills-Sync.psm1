@@ -50,6 +50,7 @@ function Get-SharedGovernanceReferenceRelativePaths {
         "platform-capability-matrix.md",
         "workflow-capability-evidence-matrix.md",
         "skill-governance.md",
+        "policies\authorization-resolution.md",
         "policies\subagent-invocation.md"
     )) {
         $srcFile = Join-Path $SharedRoot $rel

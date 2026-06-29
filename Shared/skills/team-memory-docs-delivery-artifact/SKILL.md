@@ -27,6 +27,7 @@ Connect source delivery with memory and documentation accountability without giv
 - Changed files or proposed change delivery artifact.
 - Project memory rules and current workflow phase.
 - Director authorization for memory work, if any.
+- Authorization source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode.
 - Read-only memory audit or status evidence, when available.
 
 ## Decision
@@ -47,6 +48,7 @@ Connect source delivery with memory and documentation accountability without giv
 4. Stop before memory mutation unless the workflow is in memory phase and Director authorization exists.
 5. Report blocked memory obligations as residual risk, not success.
 6. Tie the memory/docs decision to a delivery artifact ID, source input, and memory/docs state so the captain can integrate the ledger without inventing attribution.
+7. Treat missing or mismatched authorization fields as `memory-unverified` or `memory-blocked-by-scope`.
 
 ## Output
 
@@ -57,6 +59,14 @@ Connect source delivery with memory and documentation accountability without giv
 建議:
 是否阻塞:
 delivery_artifact_id:
+authorization_source:
+authorization_target:
+authorization_scope:
+authorization_phase:
+authorization_evidence:
+authorization_expiry:
+authorization_resolution_state:
+platform_mode_observed:
 source_input:
 memory_state:
 memory_impact:

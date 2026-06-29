@@ -25,6 +25,7 @@ Decide whether a captain-led task can be reported complete. This gate checks evi
 ## Inputs
 
 - Director request, approved plan, and scope limits.
+- Scoped authorization ledger from the formal board and delivery artifacts.
 - Implementation change delivery artifact, if source changed.
 - Memory/docs delivery artifact, if source changed.
 - Validation delivery artifact, if validation applies.
@@ -36,6 +37,7 @@ Decide whether a captain-led task can be reported complete. This gate checks evi
 | Check | Complete when |
 |---|---|
 | Scope | Changed files match the approved scope and exclusions. |
+| Authorization | Authorization source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode are present and match the actual work. |
 | Change delivery | Implementation change delivery artifact exists. Captain protected integration of a returned qualified artifact is allowed; captain substitute authoring is blocked or closed-with-director-risk and is not complete. |
 | Memory delivery | Memory/docs delivery artifact exists with `memory_impact` and `memory_delivery`, or is blocked, unverified, or `closed-with-director-risk` with reason. |
 | Validation | Non-mutating evidence is passed, blocked, or unverified with reason. |
@@ -58,6 +60,14 @@ Decide whether a captain-led task can be reported complete. This gate checks evi
 檔案:
 證據:
 風險:
+authorization_source:
+authorization_target:
+authorization_scope:
+authorization_phase:
+authorization_evidence:
+authorization_expiry:
+authorization_resolution_state:
+platform_mode_observed:
 審查需求:
 是否阻塞:
 completion_state:
@@ -75,10 +85,10 @@ Valid `completion_state` values:
 - `blocked`
 - `unverified`
 
-`complete` requires separated change delivery, memory/docs delivery, validation, independent review, completion evidence, specialist role evidence, channel status evidence, and required trace evidence. If any required delivery artifact, route, separation, specialist source, channel status, independent review, validation, or trace is missing, use `closed-with-director-risk`, `blocked`, or `unverified`. `closed-with-director-risk` means the Director closes a named risk even though team completion is incomplete; it is never `complete`. Captain protected integration of returned artifacts may be part of `complete`, but captain substitute authoring cannot produce `complete`.
+`complete` requires scoped authorization fields, separated change delivery, memory/docs delivery, validation, independent review, completion evidence, specialist role evidence, channel status evidence, and required trace evidence. If any authorization field, required delivery artifact, route, separation, specialist source, channel status, independent review, validation, or trace is missing, use `closed-with-director-risk`, `blocked`, or `unverified`. `closed-with-director-risk` means the Director closes a named risk even though team completion is incomplete; it is never `complete`. Captain protected integration of returned artifacts may be part of `complete`, but captain substitute authoring cannot produce `complete`.
 
 Light closeout can be complete only when its reduced station set is justified by the actual risk surface. If source, workflow, governance, generated-copy, memory, public-contract, release, deployment, or external-state impact exists, the lane must be standard or release-grade unless the board records a concrete exception. Unclassified Yellow findings, unresolved completion-relevant Yellow findings, or a third repair attempt on the same symptom block `complete`.
 
 ## Forbidden Actions
 
-Do not implement fixes, change review results, mutate memory, stage, commit, push, tag, release, deploy, or hide missing evidence behind a completion claim.
+Do not implement fixes, change review results, mutate memory, stage, commit, push, tag, release, deploy, or hide missing authorization or evidence behind a completion claim.

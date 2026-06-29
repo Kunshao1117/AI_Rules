@@ -36,6 +36,26 @@ This block is generated from the framework source policy (`Shared/policies/subag
 - **Specialist Restraint**: Implementation specialists may produce isolated or text change delivery artifacts only. Evidence specialists remain read-only. No specialist may update memory, stage files, commit, push, release, deploy, install, mutate external state, or review their own output.
 - **UI Render Guarantee**: The Master Agent MUST render recovered change delivery artifacts and evidence delivery artifacts in the IDE Chat Interface for Director-visible traceability before officially integrating physical writes. _(Subagents are only allowed to write isolated scratchpad logs in `.gemini`)_
 
+## Team-Native Core Priority And Authorization Resolution
+
+Team-Native Core is the highest-priority coordination rule for coding, workflow, validation, review, memory, commit, release, or governance-impact work. It is evaluated before lifecycle, IDE workflow, platform-tool, permission-prompt, mode, adapter, or interface-button interpretation. Lower-level workflows choose the route; they do not grant authority by themselves.
+
+```
+[AUTHORIZATION RESOLUTION GATE]
+Before treating any Director text, UI button, IDE confirmation, workflow entry, mode switch, adapter approval, or tool approval as authorization:
+├── Is the authorized action, phase, station, file set, command, or tool call explicit?
+│   └── NO → Narrow the scope in chat or halt for clarification.
+├── Is the approval tied to a current visible plan, prompt, diff, command, workflow step, or station?
+│   └── NO → Treat it as route intent or partial evidence, not write authority.
+├── Does it request memory, git, release, deploy, install, credential, or external mutation?
+│   └── YES → Require the matching protected gate and explicit scope.
+└── Clear → Proceed only within the named scope and preserve Team-Native trace.
+```
+
+- **Scoped authorization only**: `GO`, "yes", "continue", IDE confirmation buttons, Antigravity workflow buttons, mode switches, adapter prompts, or tool confirmations authorize only the visible action or previously reviewed station they refer to. They are not blanket permission for unrelated files, hidden cleanup, memory writes, commits, pushes, releases, deployment, installs, credentials, or external state.
+- **Workflow entries are routes**: `/03_build`, `/04-1_fix`, `/09-2_commit`, natural-language workflow requests, and automation-safe triggers select workflow handling and evidence expectations. They do not bypass Team-Native board requirements, role separation, GO gates, protected-state gates, review, validation, or memory attribution.
+- **Interface approval as evidence**: A button or permission prompt may be recorded as authorization evidence only when its prompt text, command, diff, file set, workflow step, or station scope is known. If the interface only says "Approve", "Allow", "Run", or similar without a concrete scope, the Master Agent must bind it to the last explicit plan or ask the Director before writing.
+
 ## 3. Lifecycle Protocol (生命週期骨幹)
 
 All workflows that modify physical project source code MUST follow this lifecycle:

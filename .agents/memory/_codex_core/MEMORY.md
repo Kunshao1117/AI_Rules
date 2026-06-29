@@ -4,7 +4,7 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-29T07:14:45+08:00'
+last_updated: '2026-06-29T09:21:02+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 29
+cycle_event_count: 30
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,10 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
+- Codex source and deployed rules now place Team-Native Core and Authorization Resolution before Lifecycle; GO, approvals, sandbox/tool prompts, and skill names resolve only to scoped authorization evidence.
 - Codex source/deployed rules now say 61 shared operational skills and 78 deployed skills.
 - Codex source rules and the live project rule copy are byte-level synchronized after Team-Native lifecycle and fast-closeout updates; Director Output Contract reports red 0 / yellow 0.
 - Codex source and deployed rules now receive the Team-Native Core policy block with native, adapter, conditional, and unavailable platform route semantics.
@@ -61,6 +61,7 @@ metadata:
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 ## Cycle Events
+- 31: Promoted Team-Native Core and scoped authorization resolution before Lifecycle in Codex source/deployed rules and documented route-only workflow semantics.
 - 30: Synchronized Codex Team-Native lifecycle and fast-closeout wording, then byte-level matched `Codex/.codex/AGENTS.md` and `.codex/AGENTS.md`; Doctor returned red 0 / yellow 0.
 - 29: Synced Codex source/deployed Team-Native wording to `closed-with-director-risk`, keeping protected integration distinct from captain substitute authoring.
 - 28: Removed residual captain-substitution wording from Codex README and deployed workflow skill copies.
@@ -84,6 +85,7 @@ metadata:
 - No unresolved conflict recorded during the migration pass; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
 - Codex 是 OpenAI Codex 平台適配層。
+- Codex 的 GO、工具提示與技能名稱現在只會變成有範圍的授權證據，不是無範圍寫入。
 - 工作流來源在 Codex 目錄，live 技能在 `.agents/skills/`。
 - Codex 編程工作流已改為團隊協作優先，主線保留寫檔與裁決責任。
 - 記憶讀取已對齊新版欄位。

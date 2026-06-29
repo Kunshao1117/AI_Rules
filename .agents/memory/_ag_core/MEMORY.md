@@ -4,7 +4,7 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-29T07:14:05+08:00'
+last_updated: '2026-06-29T09:21:02+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 26
+cycle_event_count: 27
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,10 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core — Antigravity Memory
 
 ## Current Truth
+- Antigravity core rules now place Team-Native Core and Authorization Resolution before lifecycle and treat workflow buttons, IDE confirmations, task-boundary mode, and GO as scoped authorization evidence only.
 - Antigravity source workflows and deployed references now require formal dispatch board fields, wave-gated delegation, draft-board limits, and Master-Agent protected state ownership.
 - Antigravity docs and rules now frame team stations as adapter or conditional routes unless a concrete native capability is verified.
 - Antigravity source and deployed rules now use `closed-with-director-risk` for Director-closed non-complete missing implementation-channel cases.
@@ -61,6 +61,7 @@ metadata:
 - Keep Antigravity-specific workflow facts here and shared operational details in Shared skills.
 - This card still needs a later child-card split if all Antigravity workflows are actively edited again.
 ## Cycle Events
+- 27: Promoted Team-Native Core and scoped authorization resolution before lifecycle in Antigravity core rules and documented workflow-button route-only semantics.
 - 26: Synced Antigravity source/deployed Team-Native wording to `closed-with-director-risk`, keeping protected integration distinct from captain substitute authoring.
 - 25: Removed residual captain-substitution wording from Antigravity README and deployed workflow copies.
 - 24: Synced Antigravity source/deployed policy marker blocks with `closed-with-director-risk` wording.
@@ -84,6 +85,7 @@ metadata:
 - No unresolved conflict recorded during the migration pass; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
 - Antigravity 是 Gemini 平台適配層。
+- Antigravity 的 workflow 按鈕、IDE 確認、task_boundary 模式與 GO 現在都必須限縮到明示範圍。
 - Antigravity 工作流已改為團隊協作優先，主代理保留寫檔與裁決責任。
 - 記憶治理已對齊新版壓縮模型。
 - 本卡不再追蹤根層系統卡或地圖卡來源。

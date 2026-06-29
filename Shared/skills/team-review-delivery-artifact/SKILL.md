@@ -26,6 +26,7 @@ Give an independent review judgment. The reviewer checks whether the change deli
 
 - Director request and approved plan.
 - Change delivery artifact or diff.
+- Authorization source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode.
 - Relevant source, rules, and memory delivery evidence if needed.
 - Validation delivery artifact, if available.
 
@@ -39,6 +40,7 @@ Give an independent review judgment. The reviewer checks whether the change deli
 6. Role integrity: Does the specialist role trace back to `team-specialist-registry` and the matching `team-specialist-*` skill, and is any subagent only an execution channel?
 7. Wave integrity: Did review start after the relevant change delivery artifact was returned or explicitly marked blocked, unverified, or closed-with-director-risk?
 8. Independence: Did the reviewer avoid authoring the implementation being reviewed? Missing independence prevents `complete`.
+9. Authorization fit: Do authorization source, target, scope, phase, evidence, expiry, and resolution state match the reviewed work?
 
 ## Output
 
@@ -48,6 +50,14 @@ Give an independent review judgment. The reviewer checks whether the change deli
 風險:
 建議:
 是否阻塞:
+authorization_source:
+authorization_target:
+authorization_scope:
+authorization_phase:
+authorization_evidence:
+authorization_expiry:
+authorization_resolution_state:
+platform_mode_observed:
 review_state:
 delivery_artifact_id:
 author_role_reviewed:

@@ -30,6 +30,17 @@ Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交
 
 ## Workflow Matrix
 
+### Workflow Routing Is Not Authorization
+
+00 到 12 的所有工作流都只負責任務路由、證據期望、站點模板與下一流程建議。工作流名稱、Slash Command、Codex skill 觸發、Antigravity workflow 入口、automation-safe trigger 或自然語言「走某流程」都不是寫入授權，也不是跳過 Team-Native board、角色邊界、GO、受保護狀態閘門、審查、驗證或記憶歸因的授權。
+
+| 工作流訊號 | 可做 | 不可做 |
+|---|---|---|
+| 00 到 12 工作流名稱 | 選擇任務型態、載入相關技能、套用最低證據矩陣 | 授權寫檔、改記憶、提交、推送、發布、部署或啟動無範圍隊員 |
+| 平台指令或按鈕 | 形成可記錄的路由證據，並在範圍明確時成為該範圍的授權證據 | 把按鈕同意擴張成未列檔案、未列命令或跨站點批次改動 |
+| GO 或同意語句 | 啟動上一個明確計畫、站點、命令、檔案清單或工具呼叫 | 取代 protected gate、獨立審查、驗證、memory/docs delivery、git/release 明確清單 |
+| automation-safe trigger | 啟動唯讀巡檢或報告路由 | 執行寫入、同步、提交、安裝、部署或外部狀態變更 |
+
 ## Captain-Led Programming Team Governance Matrix
 
 Coding-related natural-language requests and explicit workflow commands automatically enter Team-Native Core before implementation, repair, debugging, testing, audit, experiment writes, commit preparation, handoff, or skill creation work. Explicit workflow commands are route hints only; they are not prerequisites and do not replace the team task board. The captain builds a team-station board from `programming-team-governance` and `team-task-board` before planning, execution, validation, review, or completion.
@@ -278,6 +289,7 @@ The detailed tool contract lives in `.agents/skills/memory-ops/references/memory
 ## Usage Rules
 
 - Workflow files must reference this matrix instead of copying every rule.
+- Workflow names and platform workflow commands are route declarations only; scoped authorization must come from an explicit plan, button prompt, permission prompt, command, file list, station, or protected gate.
 - Missing tools, missing credentials, or unsupported platform features must be reported as 未驗證 or 阻塞, not treated as success.
 - Platform adapters may add stronger evidence paths, but they must not weaken the minimum evidence contract.
 - 08 remains the deep full-spectrum audit baseline; other workflows use only the row relevant to their lifecycle and do not copy 08 inventory machinery unless the audit workflow is active.

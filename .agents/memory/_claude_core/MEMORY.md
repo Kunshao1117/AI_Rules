@@ -4,7 +4,7 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-29T07:14:40+08:00'
+last_updated: '2026-06-29T09:21:02+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 27
+cycle_event_count: 28
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,10 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
+- Claude core rules now place Team-Native Core and Authorization Resolution before lifecycle and treat permission prompts, Plan Mode approval, slash commands, and GO as scoped authorization evidence only.
 - Claude source rules and deployed commands now require formal dispatch board fields, wave-gated delegation, draft-board limits, and Master-Agent protected state ownership for coding commands.
 - Claude deployed shared skill copies are synchronized with Team-Native lifecycle, fast closeout, Yellow classification, and compressed captain dispatch skills; deployed skill drift is red 0 / yellow 0.
 - Claude docs and rules now frame team stations through native, adapter, conditional, or unavailable platform route states.
@@ -63,6 +63,7 @@ metadata:
 - Keep Claude source ownership out of the deprecated historical card.
 - This card still needs a later child-card split if all Claude commands are actively edited again.
 ## Cycle Events
+- 28: Promoted Team-Native Core and scoped authorization resolution before lifecycle in Claude core rules and documented slash-command route-only semantics.
 - 27: Synchronized Claude deployed shared skill copies for lifecycle/fast-closeout governance and verified deployed drift closure through Doctor red 0 / yellow 0.
 - 26: Synced Claude source/deployed Team-Native wording to `closed-with-director-risk`, keeping protected integration distinct from captain substitute authoring.
 - 25: Removed residual captain-substitution wording from Claude README and deployed command copies.
@@ -85,6 +86,7 @@ metadata:
 - No unresolved conflict recorded during the migration pass; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
 - Claude Edition 的 active source owner 是本卡。
+- Claude 的 permission prompt、Plan Mode 同意、Slash Command 與 GO 現在都必須限縮到明示範圍。
 - Claude 指令流程已改為團隊協作優先，主代理保留寫檔與裁決責任。
 - Claude 記憶路徑固定使用 `.agents/memory/`。
 - 舊 Claude 規範卡已降為歷史索引。

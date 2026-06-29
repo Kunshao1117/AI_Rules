@@ -69,6 +69,8 @@ After GO, the captain creates or promotes a formal dispatch board. Formal board 
 Use `team-task-board`. Captain Team Board records:
 
 - board state, task type, workflow route, implementation authorization
+- authorization source, authorization target, authorization scope, authorization phase
+- authorization evidence, authorization expiry, authorization resolution state, platform mode observed
 - platform capability route, delivery sequence state, phase, dispatch wave
 - previous-wave input, next-wave start condition, formal evidence eligibility
 - specialist role source, assigned specialist skill, domain label
@@ -101,7 +103,7 @@ Counter-evidence, impact map, review, validation, and completion audit default t
 
 Use `team-specialist-registry`, matching `team-specialist-*`, and `team-role-boundaries`. Requirement defines intent; architecture defines boundaries; implementation returns change delivery artifacts only; memory delivery returns impact/proposal only; validation checks without mutation; review judges without authoring; completion audits evidence; captain dispatches, integrates, adjudicates, and reports.
 
-Same specialist cannot implement and review the same deliverable. If independent review is unavailable, mark `closed-with-director-risk`, `unverified`, or `blocked`; it cannot support `complete`. Review and validation are separate from implementation and from final captain acceptance.
+Same specialist cannot implement and review the same deliverable. If independent review is unavailable, mark `closed-with-director-risk`, `unverified`, or `blocked`; it cannot support `complete`. Review and validation are separate from implementation and from final captain acceptance. A failed validation or missing authorization field routes back to the applicable station; it does not authorize captain-authored repair.
 
 ## Station Semantics
 
@@ -143,7 +145,7 @@ Implementation change delivery artifacts include `變更 / 檔案 / 證據 / 風
 
 Memory/docs delivery artifacts include `memory_impact`, `status: memory_delivery / blocked / unverified / closed-with-director-risk`, `memory_delivery`, evidence, risk, and blocker state.
 
-Full team completion needs implementation change delivery, memory/docs delivery artifact, review delivery artifact, and validation delivery artifact. Change delivery branches cannot approve themselves, update memory, stage, commit, push, release, deploy, install, or mutate external state.
+Full team completion needs scoped authorization fields, implementation change delivery, memory/docs delivery artifact, review delivery artifact, and validation delivery artifact. Change delivery branches cannot approve themselves, update memory, stage, commit, push, release, deploy, install, or mutate external state.
 
 ## Workflow Integration
 
@@ -151,6 +153,6 @@ Coding workflow entries load this skill, `team-task-board`, `delegation-strategy
 
 ## Completion Rules
 
-Before completion, compare request, approved plan, implementation change delivery, memory/docs delivery, review, validation, source changes, docs, and memory. Reject missing execution modes, self-review, specialist mutation of protected state, captain-direct implementation without Director-accepted `closed-with-director-risk` or `blocked`, two or more evidence-oriented stations resolving to direct without concrete exceptions, and missing implementation change delivery, memory/docs delivery, review, or validation artifacts.
+Before completion, compare request, approved plan, scoped authorization fields, implementation change delivery, memory/docs delivery, review, validation, source changes, docs, and memory. Reject missing execution modes, self-review, specialist mutation of protected state, captain-direct implementation without Director-accepted `closed-with-director-risk` or `blocked`, two or more evidence-oriented stations resolving to direct without concrete exceptions, missing authorization fields, and missing implementation change delivery, memory/docs delivery, review, or validation artifacts.
 
-Full team completion is allowed only when implementation change delivery, memory delivery, independent review, validation evidence, completion evidence, and required Team-Native trace evidence exist. Missing separation, route evidence, trace evidence, independent review, validation, or delivery artifacts may be reported only as `closed-with-director-risk`, `unverified`, or `blocked`, and `closed-with-director-risk` is not complete.
+Full team completion is allowed only when scoped authorization fields, implementation change delivery, memory delivery, independent review, validation evidence, completion evidence, and required Team-Native trace evidence exist. Missing authorization, separation, route evidence, trace evidence, independent review, validation, or delivery artifacts may be reported only as `closed-with-director-risk`, `unverified`, or `blocked`, and `closed-with-director-risk` is not complete.

@@ -59,6 +59,14 @@ Return a change delivery artifact with these fields:
 
 Every specialist output must include these fields so the captain can prove role separation and execution routing:
 
+- `authorization_source`: Director prompt, captain board row, interface approval event, prior approved plan, or blocked/unverified source.
+- `authorization_target`: exact target such as file allowlist, station, protected action, command, tool, or external resource.
+- `authorization_scope`: concrete allowed operation boundary, including files, directories, generated copies, memory cards, commands, protected actions, or none.
+- `authorization_phase`: plan-only, implementation-change-delivery, captain-integration, validation, review, memory-docs, memory-commit, git, release, deployment, install, external-mutation, or blocked.
+- `authorization_evidence`: prompt excerpt, board row, approval UI event, command confirmation, or missing evidence reason.
+- `authorization_expiry`: current turn, current dispatch wave, named file set, named command, named protected action, explicit revocation, or blocked.
+- `authorization_resolution_state`: authorized, no-write, scope-mismatch, phase-mismatch, expired, unverified, blocked, or revoked.
+- `platform_mode_observed`: observed platform mode or capability context, recorded only as context and never as authorization.
 - `specialist_skill`: the exact specialist skill producing the artifact.
 - `domain_label`: the domain label used for this station.
 - `requested_execution_channel`: the requested channel before capability evaluation.
@@ -76,7 +84,8 @@ Every specialist output must include these fields so the captain can prove role 
 - `closeout_lane`: light, standard, release-grade, or not-applicable.
 - `yellow_classification`: fix-this-cycle, residual-accepted, deferred-follow-up, local-customization, informational, or not-applicable.
 - `yellow_resolution_state`: fixed, deferred, accepted-residual, escalated-blocked, escalated-red, or not-applicable.
-- `repair_loop_count`: number of attempts for the same symptom family, file region, or operator path.- `no_captain_authoring`: true, blocked, unverified, or closed-with-director-risk with reason.
+- `repair_loop_count`: number of attempts for the same symptom family, file region, or operator path.
+- `no_captain_authoring`: true, blocked, unverified, or closed-with-director-risk with reason.
 ## Gotchas
 
 - Current local source overrides memory and internal model knowledge.
