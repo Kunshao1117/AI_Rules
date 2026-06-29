@@ -28,6 +28,12 @@ specialist role.
 Use this registry to choose exactly one primary specialist for one station.
 Use the chosen child skill for the station procedure and output format.
 
+Before starting the station, create a handoff packet with
+`team-station-handoff-packet` or an equivalent platform adapter. The packet
+must include the assigned specialist skill, loaded skill refs, read scope,
+forbidden actions, output format, startup threshold, standby reason when
+applicable, and timeout action.
+
 ## Procedure
 
 ### Step 1: Apply routing gate
@@ -80,6 +86,8 @@ Every specialist output must include these fields so the captain can prove role 
 - `authorization_resolution_state`: authorized, no-write, scope-mismatch, phase-mismatch, expired, unverified, blocked, or revoked.
 - `platform_mode_observed`: observed platform mode or capability context, recorded only as context and never as authorization.
 - `specialist_skill`: the exact specialist skill producing the artifact.
+- `loaded_skill_refs`: the skill refs or paths handed to the specialist.
+- `handoff_packet_id`: the station handoff packet identifier.
 - `domain_label`: the domain label used for this station.
 - `requested_execution_channel`: the requested channel before capability evaluation.
 - `channel_capability`: available, conditional, unavailable, or unverified.
@@ -93,6 +101,14 @@ Every specialist output must include these fields so the captain can prove role 
 - `reuse_count`: number of same-role reuse decisions for this station and delivery artifact.
 - `handoff_summary`: required when context is long, stale, or the station is replaced.
 - `closure_reason`: completed delivery, context stale, role conflict, independent opinion required, blocked, or not-applicable.
+- `deep_read_scope`: files, docs, logs, or external sources assigned for specialist deep-read.
+- `captain_verify_read_scope`: the reduced scope the captain must verify before integration or acceptance.
+- `unread_scope`: relevant scope not read by the specialist or captain.
+- `startup_started_at`: local timestamp when the channel was requested.
+- `first_response_deadline`: expected first useful response or heartbeat.
+- `last_progress_at`: latest progress evidence.
+- `timeout_action`: standby, replace, blocked, unverified, or Director input.
+- `standby_reason`: why an assigned station is waiting instead of returning evidence.
 - `closeout_lane`: light, standard, release-grade, or not-applicable.
 - `yellow_classification`: fix-this-cycle, residual-accepted, deferred-follow-up, local-customization, informational, or not-applicable.
 - `yellow_resolution_state`: fixed, deferred, accepted-residual, escalated-blocked, escalated-red, or not-applicable.

@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-29T09:41:05+08:00'
+last_updated: '2026-06-29T12:13:33+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T21:54:14+08:00'
+last_verified: '2026-06-29T11:30:08+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 22
+cycle_event_count: 23
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,6 +34,7 @@ metadata:
 # _shared.ops-skills.skill-governance — Skill Governance Memory
 
 ## Current Truth
+- Role-boundary and delivery artifact skills now carry Team-First read-scope separation: specialist deep-read evidence, captain verify-read state, unread scope, and non-complete outcomes for missing route evidence.
 - Team-Native Core files moved to `_shared.team-native-core`; this card now keeps skill-factory governance plus remaining delegation reference ownership.
 - Shared skill forging is framework-source only unless the Director explicitly supplies the AI_Rules source root; downstream projects default to project-derived skills.
 - This child card owns Shared delegation strategy and skill-factory governance files.
@@ -48,6 +49,7 @@ metadata:
 - Do not duplicate full skill templates in memory; use tracked references as the source of truth for skill formatting and delegation procedures.
 
 ## Cycle Events
+- 23: Updated role-boundary and delivery-adjacent skill governance for Team-First handoff packets, deep-read/verify-read separation, and no silent captain substitution.
 - 22: Added scoped authorization fields to change, memory/docs, validation, review, and role-boundary delivery artifact contracts; synced deployed skill copies.
 - 21: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 20: Recorded that the three compressed team-governance skills moved under `_shared.team-native-core` ownership and passed the quality token gate.

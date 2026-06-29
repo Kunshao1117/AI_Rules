@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 健檢主工作流與三階段子工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-29T07:04:23+08:00'
+last_updated: '2026-06-29T12:12:08+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T21:54:14+08:00'
+last_verified: '2026-06-29T11:30:08+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 17
+cycle_event_count: 18
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core.support.workflows-audit — Codex Audit Workflow Memory
 
 ## Current Truth
+- Codex audit workflows now load `team-station-handoff-packet` and treat audit evidence, inventories, broad reads, validation planning, and review evidence as `formal-readonly` stations unless a separate GO-backed `formal-write` repair route exists.
 - Codex audit workflows now inherit Programming Team Board entry requirements and are covered by Audit.psm1 checks for formal dispatch and wave-gated evidence semantics.
 - Codex audit workflows now inherit team-task-board references through the shared workflow entry contract and keep review/validation delivery artifacts role-bound.
 - Codex audit workflows now load captain governance with task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` requirements.
@@ -54,6 +56,7 @@ metadata:
 - Do not claim full coverage from sampled evidence; Phase 3 must report coverage denominators and sampling limits.
 
 ## Cycle Events
+- 18: Updated Codex audit workflows for Team-First formal-readonly evidence routing, handoff packet refs, standby state, and deep-read/verify-read fields.
 - 17: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 16: Synced Codex audit workflows with Team-Native specialist registry and change delivery artifact terminology.
 - 15: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.

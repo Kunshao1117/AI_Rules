@@ -52,6 +52,10 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Record source tier, publication date, source bias, market or competitor coverage gaps, quantified risk, and unverified claims.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
+- Team-First routing applies before tool selection: use `formal-readonly` for research, source/doc evidence, deep-read, review, validation, and counter-evidence stations; use GO-backed `formal-write` only if the task later routes into an authorized write workflow. Workflow name is route only; it does not authorize writes or unbounded specialist launch.
+- Before opening a formal-readonly exploration station, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-station-handoff-packet/SKILL.md`, `.agents/skills/team-specialist-registry/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/team-review-delivery-artifact/SKILL.md`, and `.agents/skills/team-validation-delivery-artifact/SKILL.md`. Every exploration specialist receives loaded skill refs, read scope, forbidden actions, first-response deadline, timeout action, and standby reason when applicable.
+- Standby stations may be recorded with trigger and scope, but they cannot produce evidence until their wave is open and a delivery artifact returns.
+- Large-file or broad-corpus work uses specialist deep-read delivery with cited sections; the captain performs verify-read on the cited sections before relying on the summary and must not claim full-file ingestion from a summary alone.
 - Team-native completion boundary: Missing qualified change delivery, validation delivery, review delivery, or memory/docs delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`). `closed-with-director-risk` is a risk closure, not formal team completion.
 
 # source-command-01-explore-skill
@@ -66,10 +70,13 @@ Use this skill when the user asks to run the migrated source command `01_explore
 
 - **Absolute Ban**: DO NOT write, modify, or propose any executable source code during this workflow.
 - If the Director's request shifts from research into coding, fixing, testing, debugging, commit preparation, or governance-impact work, stop this workflow and route into captain-led programming mode. Explicit workflow names are shortcuts, not prerequisites. The routed workflow must apply Task Type Gate, Dispatch Pre-Gate, and Captain Minimum Execution Gate before any specialist branch starts.
+- If research stays no-write but can influence later build or governance decisions, use a formal-readonly team board and assign read-only specialists before broad source, memory, or external-source loading. If no specialist channel is available, record channel capability, invocation status, standby/block reason, and smallest unblock path before continuing direct.
 
 [RECON GATE] Select research path:
-- IF (research requires only text/data retrieval):
-  - [FAST PATH] Use `WebSearch` + `WebFetch` tools directly.
+- IF (research touches source/workflow/governance rules, architecture impact, broad documents, external comparison, or counter-evidence):
+  - [TEAM-FIRST READONLY PATH] Use a formal `formal-readonly` station with one bounded research/evidence/deep-read task. Direct main-thread search is allowed only as verify-read or a recorded direct exception for small factual checks.
+- IF (research requires only small text/data retrieval with no governance, architecture, or broad-corpus impact):
+  - [FAST PATH] Use `WebSearch` + `WebFetch` tools directly and record why no formal-readonly station was needed.
 - IF (research requires UI/UX analysis or JS-rendered pages):
   - [SLOW PATH] Run the Delegation Gate from `delegation-strategy`.
   - Codex adapter: request a browser evidence branch when this workflow gate requires one; otherwise use available main-thread web/browser tools only with a recorded direct exception.

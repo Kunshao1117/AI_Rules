@@ -17,6 +17,10 @@ without forcing every rule into always-on context.
 Rules that must be obeyed even when no skill triggers stay in core rules.
 Details that are only needed for a task should move into Shared skills or their
 references.
+When a skill grows beyond the quality gate or begins compressing multiple role
+identities into one file, split stable details into `references/` and pass the
+relevant reference paths through the station handoff packet. Do not keep
+shrinking text until role meaning changes.
 Long-lived preferences should move into `.agents/context/**/CONTEXT.md`, not
 memory cards. Stable context that becomes a repeatable procedure can be promoted
 to a project skill through the skill forge workflow.
@@ -63,6 +67,10 @@ evidence or change delivery output to their native tools. Platform entries must 
 the formal team child skills when applicable: `team-role-boundaries`,
 `team-change-delivery-artifact`, `team-memory-docs-delivery-artifact`,
 `team-validation-delivery-artifact`, `team-review-delivery-artifact`, and `team-completion-gate`.
+Platform entries must also preserve Team-First startup semantics: no-write work
+uses a formal-readonly board when it can influence later source work; write work
+uses a formal-write board after scoped GO; every formal station receives a
+handoff packet with loaded skill refs and startup monitoring fields.
 Platform entries must not weaken the shared contract by replacing
 implementation change delivery, memory delivery, review, or validation delivery artifacts with
 generic main-thread handling.

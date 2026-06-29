@@ -37,17 +37,27 @@ Each task trace should contain these fields in readable Markdown or JSON:
 | `platform_mode_observed` | Observed platform mode or capability context, recorded only as context and never as authorization |
 | `specialist_role_source` | `team-specialist-registry` entry and matching `team-specialist-*` skill, or blocked/unverified reason |
 | `specialist_skill` | Exact specialist child skill selected from the registry, or blocked/unverified reason |
+| `loaded_skill_refs` | Skill refs or paths passed to the specialist instead of narrative-only identity |
+| `handoff_packet_id` | Station handoff packet ID, or blocked/unverified reason |
 | `domain_label` | Domain label used for the station, such as governance rules, platform capability, testing automation, memory governance, documentation, architecture quality, or external information |
 | `requested_execution_channel` | Requested channel before capability evaluation |
 | `channel_capability` | available, conditional, unavailable, or unverified |
 | `channel_invocation_status` | not-started, requested, running, returned, unavailable, blocked, or not-authorized |
 | `execution_channel` | Native subagent, project custom agent, tool/MCP, command evidence, browser evidence, external research, isolated change delivery, text change delivery, protected captain channel, or blocked |
-| `station_lifecycle_state` | assigned, retained, reused, handoff-required, closed, replaced, blocked, or not-applicable |
+| `station_lifecycle_state` | assigned, standby, retained, reused, handoff-required, closed, replaced, blocked, or not-applicable |
 | `retention_reason` | Why the same specialist channel may continue, or why retention is not allowed |
 | `conversation_health` | clear, needs-handoff, stale, over-budget, role-conflict, or blocked |
 | `reuse_count` | Number of times the same specialist channel was reused for the same role and delivery artifact |
 | `handoff_summary` | Required when a station is retained across a long conversation or replaced |
 | `closure_reason` | Completed delivery, context stale, role conflict, independent opinion required, blocked, or not-applicable |
+| `deep_read_scope` | Files, docs, logs, or external sources assigned to specialist deep-read |
+| `captain_verify_read_scope` | Narrow scope the captain verified before integration or acceptance |
+| `unread_scope` | Relevant scope not read by the specialist or captain |
+| `startup_started_at` | Local timestamp when the station channel was requested |
+| `first_response_deadline` | Expected first useful response or heartbeat deadline |
+| `last_progress_at` | Latest progress evidence timestamp or blocked reason |
+| `timeout_action` | standby, replace, blocked, unverified, Director input, or not-applicable |
+| `standby_reason` | Why an assigned station is waiting for dispatch wave, prior input, channel warmup, or external unblock |
 | `closeout_lane` | light, standard, release-grade, or not-applicable |
 | `yellow_classification` | fix-this-cycle, residual-accepted, deferred-follow-up, local-customization, informational, or not-applicable |
 | `yellow_resolution_state` | fixed, deferred, accepted-residual, escalated-blocked, escalated-red, or not-applicable |
@@ -99,6 +109,10 @@ These patterns must not pass:
 - Missing independent review described as complete instead of blocked, unverified, or closed-with-director-risk.
 - Subagent, browser, CLI, or MCP route described as the specialist role instead of the execution channel for a registered specialist.
 - Missing channel capability or channel invocation status for an applicable station.
+- Missing loaded skill refs or handoff packet for a formal specialist station.
+- No-write or read-only work treated as a reason to skip Team-Native stations when the work can shape source, workflow, validation, review, memory, release, or governance decisions.
+- Captain broad-reading large file sets as a substitute for specialist deep-read without a direct exception and residual state.
+- Assigned stations left waiting without standby reason, first-response deadline, timeout action, or smallest unblock condition.
 - Tool or subagent unavailability removing an applicable specialist station instead of marking it blocked, unverified, or closed-with-director-risk.
 - Missing authorization source, target, scope, phase, evidence, expiry, resolution state, or observed platform mode for any trace claiming write, integration, memory, git, release, deployment, install, or external-mutation authority.
 - Treating a workflow name as authorization instead of a route hint.

@@ -45,6 +45,20 @@ Subagents, browser routes, CLI routes, MCP reads, isolated workspaces, and text-
 | Completion | Check sync, memory need, docs, handoff, residual risk. | Final acceptance, memory write, git, release, deploy. |
 | Captain | Route, supervise, integrate approved change delivery and evidence artifacts, decide review state, report. | Author specialist implementation/review/validation/memory attribution when a delivery artifact route exists; hide missing evidence; claim full team completion from direct work, substitute authoring, missing review, or unapproved substitution. |
 
+## Read Scope Boundary
+
+Large read scope is role-bound work. A specialist may deep-read assigned files,
+documents, logs, or external sources and return cited findings. The captain
+verify-reads the risky or disputed regions before integration or acceptance.
+
+| Read role | Allowed | Forbidden |
+|---|---|---|
+| Specialist deep-read | Read assigned scope, cite exact evidence, identify unread scope, summarize contradictions. | Decide final acceptance, expand scope silently, mutate files. |
+| Captain verify-read | Inspect high-risk snippets, changed regions, disputed claims, and acceptance-critical evidence. | Replace every specialist deep-read with uncontrolled broad main-thread loading when a station channel exists. |
+
+If no specialist route can deep-read, record a direct exception and mark the
+missing separation as blocked, unverified, or closed-with-director-risk.
+
 ## Boundary Check
 
 Before accepting any delivery artifact:
@@ -53,10 +67,11 @@ Before accepting any delivery artifact:
 2. Confirm the role is sourced from `team-specialist-registry` and a matching `team-specialist-*` skill, or mark the source `unverified` / `blocked`.
 3. Confirm the delivery artifact performed only the allowed action.
 4. Check that implementation and review are from different roles.
-5. Mark missing separation as `closed-with-director-risk`, `unverified`, or `blocked`; it cannot support `complete`.
-6. Reject delivery artifacts that mutate memory, git, releases, deployments, installs, or external state.
-7. Distinguish captain protected integration of returned delivery artifacts from captain substitute authoring. Protected integration can be normal captain work; substitute authoring starts blocked and can only close as `closed-with-director-risk`.
-8. Confirm authorization fields are present before accepting a station artifact; missing authorization fields are blocked or unverified and cannot support `complete`.
+5. Confirm the handoff packet lists loaded skill refs, read scope, forbidden actions, startup thresholds, and stop condition.
+6. Mark missing separation as `closed-with-director-risk`, `unverified`, or `blocked`; it cannot support `complete`.
+7. Reject delivery artifacts that mutate memory, git, releases, deployments, installs, or external state.
+8. Distinguish captain protected integration of returned delivery artifacts from captain substitute authoring. Protected integration can be normal captain work; substitute authoring starts blocked and can only close as `closed-with-director-risk`.
+9. Confirm authorization fields are present before accepting a station artifact; missing authorization fields are blocked or unverified and cannot support `complete`.
 
 ## Outputs
 

@@ -68,7 +68,7 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 | **輕量治理規則** | 所有治理規範收錄於單一 `.codex/AGENTS.md`，無需多檔案載入機制 |
 | **技能即工作流** | Codex 透過技能觸發 `$skill-name`，工作流與操作型技能統一在同一目錄 |
 | **需求對齊與反證** | 架構藍圖與建構計畫必須先回放需求、列出非目標與成功標準，再做中立反證、決策紀錄、驗收追蹤與偏移稽核 |
-| **Team-Native Core 團隊原生核心** | 開發、修改、修復、測試、除錯、健檢、提交、交接與技能鍛造會依語意自動進入 Team-Native Core；總監只對隊長說話。隊長制不是單人主線加可選子代理，而是站點優先的團隊狀態機：隊長只負責調度、整合、裁決與總監溝通；隊員分別負責實作變更交付、記憶交付、驗證、審查、完成閘門等單一任務。隊長先做草案包，GO 後建立正式派工板，再依波次派隊員；下一波必須以上一波回收證據與明確啟動條件為輸入。草案證據只能支持轉正式派工，不得冒充正式驗收。Codex 可把站點路由到 native subagents、專案自訂代理、瀏覽器、終端、背景任務或 MCP 證據；每站仍要標示 native、adapter、conditional 或 unavailable。正式團隊完成必須回收 implementation change delivery、memory delivery、review、validation 四類交付件與 Team-Native trace；隊長最後只整合已回收且可追溯的變更交付件與證據，不能讓隊員取代主代理寫檔、審查狀態或交付裁決 |
+| **Team-Native Core 團隊原生核心** | 開發、修改、修復、測試、除錯、健檢、提交、交接、技能鍛造，以及會影響後續建構的探索、架構、廣泛讀檔與外部研究，都會依語意自動進入 Team-Native Core。這不是文字建議，而是前置執行狀態機：下一個合法狀態必須是隊長任務板、適用站點、隊員派工包與通道狀態。Codex 唯讀工作使用正式唯讀板，寫入工作必須有 GO 支撐的正式寫入板；每站都要記錄隊員技能引用、深讀範圍、隊長驗讀範圍、啟動期限、待命原因或阻塞原因。Codex 可把站點路由到 native subagents、專案自訂代理、瀏覽器、終端、背景任務或 MCP 證據；若通道不可用，必須先回報 unavailable、blocked、unverified、not-authorized 或 standby，不得默默降級成隊長主線直做。正式團隊完成必須回收 implementation change delivery、memory delivery、review、validation 四類交付件與 Team-Native trace；隊長最後只整合已回收且可追溯的變更交付件與證據，不能先自行讀完、實作、審查或驗證再事後補團隊軌跡 |
 | **範圍式授權解析** | Codex approval/sandbox 提示、工具確認、GO 與 `$skill-name` 都必須收斂到目前明示的計畫、站點、命令、工具或檔案集合；skill 只做工作流路由，介面同意可作為該提示範圍的授權證據，但不是無範圍寫入或記憶/git/release 授權 |
 | **升級保護** | PROJECT IDENTITY 保護機制：升級後自動還原使用者自訂的專案身份區段 |
 

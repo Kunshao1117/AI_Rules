@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-06-29T07:14:48+08:00'
+last_updated: '2026-06-29T12:13:18+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-29T00:13:50+08:00'
+last_verified: '2026-06-29T11:30:08+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 29
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -33,9 +33,11 @@ metadata:
 ---
 
 
+
 # _shared — Shared Governance Memory
 
 ## Current Truth
+- Shared skill governance now lists `team-station-handoff-packet` and documents that large skills may split stable subinstructions into references, with station packets passing only the concrete skill refs needed by a specialist.
 - Team-Native Core governance moved to child card `_shared.team-native-core`, which owns shared team policy, platform route states, team trace evidence, and team completion contracts.
 - Shared team governance now uses direct-renamed task-board and delivery-artifact skill names; specialist assignment is mandatory before execution-channel availability is evaluated.
 - Captain Trigger Gate and Captain Team Board route explicit workflows plus natural-language coding intent into the default team collaboration model; Shared now owns 61 operational skills.
@@ -52,6 +54,7 @@ metadata:
 - Do not list directories under Tracked Files; put card navigation in Relations, and treat cards above 8 tracked files as split candidates.
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
 ## Cycle Events
+- 30: Added Team-First handoff packet skill to the shared skill index and updated skill governance for reference splitting plus station handoff references.
 - 29: Updated source/deployed skill governance contract for four formal delivery artifacts, memory/docs delivery fields, and non-complete `closed-with-director-risk` semantics.
 - 28: Updated Shared skill index for direct-renamed team task board and delivery artifact skills, plus assignment/channel separation semantics.
 - 27: Recorded Team-Native specialist registry, change delivery artifact semantics, 61 shared skills, and source/deployed sync.

@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-29T07:04:45+08:00'
+last_updated: '2026-06-29T12:12:21+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T21:54:14+08:00'
+last_verified: '2026-06-29T11:30:08+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 16
+cycle_event_count: 17
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core.support.workflows-general — Codex General Workflow Memory
 
 ## Current Truth
+- Codex general, explore, experiment, condense, and test workflows now load `team-station-handoff-packet` and route no-write exploration, broad reading, validation planning, review evidence, and standby through `formal-readonly`; GO-backed mutation uses `formal-write`.
 - Codex general and experiment workflows now record draft/formal board semantics, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once launch.
 - Codex experiment and general workflow entries now explicitly load team-task-board and use template references instead of duplicating full team rules inline.
 - Codex chat, explore, experiment, condense, and test workflows now route coding intent through task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` rules.
@@ -51,6 +53,7 @@ metadata:
 - Do not write source or memory from read-only flows without the appropriate GO gate.
 
 ## Cycle Events
+- 17: Updated Codex general workflows for Team-First formal-readonly routing, handoff packet refs, standby state, and deep-read/verify-read fields.
 - 16: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 15: Synced Codex general workflows with Team-Native specialist registry and change delivery artifact terminology.
 - 14: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.

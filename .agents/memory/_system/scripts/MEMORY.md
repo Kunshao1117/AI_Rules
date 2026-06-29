@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-29T09:41:05+08:00'
+last_updated: '2026-06-29T12:16:25+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-29T07:10:01+08:00'
+last_verified: '2026-06-29T12:06:14+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 30
+cycle_event_count: 9
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -33,6 +33,7 @@ metadata:
 ---
 # _system.scripts — Repository Script Governance Memory
 ## Current Truth
+- Governance Doctor now rejects no-write/read-only work being treated as no-team, missing formal-readonly routing for no-write exploration, unreported not-started specialist channels, missing standby state, missing skill handoff packets, and captain large-file deep-read substitution.
 - Governance Doctor now checks scoped authorization fields across Team-Native policies, task board, specialist outputs, delivery artifact contracts, role boundaries, completion gate, and task traces.
 - Governance sync and Doctor now include the authorization-resolution policy, scoped authorization trace fields, core-rule order checks, deployed-copy drift checks, and forbidden authorization semantic scans.
 - Shared skill and shared governance sync now supports exact SHA256 comparison for deploy-copy paths, so Deploy Sync can clear the same raw-hash drift that Doctor reports.
@@ -65,7 +66,7 @@ metadata:
 - Do not use this card as a substitute for reading the current script implementation before edits.
 
 ## Cycle Events
-- 30: Added authorization-resolution shared reference sync plus Doctor checks for authorization fields, core priority order, delivery artifact contracts, task-board completeness, source/deployed policy drift, and forbidden mode/workflow/button authorization semantics.
+- 30: Added authorization-resolution shared reference sync plus Doctor checks for authorization fields, core priority order, delivery artifact contracts, task-board completeness, source/deployed policy drift, forbidden mode/workflow/button authorization semantics, Team-First formal-readonly routing, no-write not no-team semantics, standby/nonlaunch reporting, skill handoff packets, and large-file specialist deep-read boundaries.
 - 29: Fixed Deploy Sync false-negative drift detection by adding exact-hash comparison for shared skill and shared governance copy paths; source/deployed hashes now match after sync.
 - 28: Added Doctor checks for specialist lifecycle fields, fast closeout lanes, Yellow classification/resolution, repair loop limits, and deployed-copy drift closure; Doctor and Deploy Audit returned red 0 / yellow 0.
 - 27: Re-saved Audit module as UTF-8 BOM to clear Windows PowerShell parser failure; no audit logic changed, parser diagnostics are zero.

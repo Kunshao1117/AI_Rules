@@ -6,6 +6,7 @@
 | delegate, channel selection                                                  | 委派、管道選擇                                   | delegation-strategy      | —                  |
 | programming team governance, team station, coding workflow, evidence branch  | 編程團隊治理、團隊站點、開發流程、證據分支       | programming-team-governance | —               |
 | team specialist registry, specialist role routing, change delivery artifact  | 專家角色路由、隊員站點、變更交付件               | team-specialist-registry | —                  |
+| team station handoff packet, loaded skill refs, standby, specialist startup | 隊員派工包、技能引用、待機、隊員啟動監控         | team-station-handoff-packet | —               |
 | intent requirements, requirement replay, acceptance criteria, non-goals       | 意圖需求、需求回放、驗收條件、非目標             | team-specialist-intent-requirements | —        |
 | scope impact, impact map, regression surface, dependency surface             | 範圍影響、影響面、回歸面、依賴面                 | team-specialist-scope-impact | —              |
 | architecture contract, boundary, interface, compatibility, migration          | 架構契約、邊界、介面、相容性、遷移               | team-specialist-architecture-contract | —       |

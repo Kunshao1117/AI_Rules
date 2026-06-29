@@ -2002,6 +2002,26 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         }
     }
 
+    function Add-ProgrammingTeamBadNoWriteNoTeamFindings {
+        param(
+            [string]$RelativePath,
+            [string]$Reason
+        )
+
+        $fullPath = Join-Path $RepoRoot $RelativePath
+        if (-not (Test-Path -LiteralPath $fullPath -PathType Leaf)) { return }
+
+        $pattern = '(?i)(no-write|read-only|無寫入|唯讀).{0,160}(no-team|no team|without team|skip team|不用(團隊|隊員)|不需要(團隊|隊員)|無團隊)'
+        $allowedNegative = '(?i)(does not mean|must not mean|not equal|must not|do not|不是|不代表|不得|不可|不能|不應|禁止)'
+        $lineNumber = 0
+        Get-Content -LiteralPath $fullPath -Encoding UTF8 | ForEach-Object {
+            $lineNumber++
+            if (($_ -match $pattern) -and ($_ -notmatch $allowedNegative)) {
+                Add-ProgrammingTeamFinding -Severity 'Red' -File $RelativePath -Line $lineNumber -Reason $Reason -Text $_
+            }
+        }
+    }
+
     function Test-ProgrammingTeamArtifactSetContent {
         param([string]$Content)
         if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
@@ -2034,6 +2054,47 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         $hasNonCompleteBoundary = $Content -match 'not full team completion|not full completion|non-complete|not complete|非完整|不可稱完整|不得稱完整|不是完整'
 
         return ($hasDirectorRiskClose -and $hasNonCompleteBoundary)
+    }
+
+    function Test-ProgrammingTeamFirstReadonlyContent {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $hasFormalReadonly = $Content -match 'formal-readonly|formal readonly|Team-First.{0,120}(read[- ]?only|readonly|唯讀)|正式.{0,80}(唯讀|無寫入)'
+        $hasNoWriteNotNoTeam = $Content -match 'no-write.{0,160}(not|does not mean|must not mean).{0,160}no-team|no-write.{0,160}team|無寫入.{0,160}(不代表|不得解讀為).{0,160}(無團隊|不用團隊|不用隊員)|唯讀.{0,160}(不代表|不得解讀為).{0,160}(無團隊|不用團隊|不用隊員)'
+        $hasReadonlyExploration = $Content -match 'read-only exploration|no-write exploration|無寫入探索|唯讀探索|探索.{0,120}(no-write|read-only|無寫入|唯讀)'
+
+        return ($hasFormalReadonly -and $hasNoWriteNotNoTeam -and $hasReadonlyExploration)
+    }
+
+    function Test-ProgrammingTeamStandbyContent {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $hasStandby = $Content -match '\bstandby\b|待命'
+        $hasNonLaunchState = $Content -match 'not-started|not-authorized|unavailable|blocked|unverified|未啟動|未授權|不可用|阻塞|未驗證'
+
+        return ($hasStandby -and $hasNonLaunchState)
+    }
+
+    function Test-ProgrammingTeamDispatchPackageContent {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $hasDispatchPackage = $Content -match 'skill dispatch package|specialist dispatch package|技能派工包|隊員派工包'
+        $hasPackageFields = $Content -match 'Allowed inputs|Allowed tools|Forbidden actions|Output artifact format|Stop condition|允許輸入|允許工具|禁止動作|輸出交付格式|停止條件'
+
+        return ($hasDispatchPackage -and $hasPackageFields)
+    }
+
+    function Test-ProgrammingTeamLargeReadBoundaryContent {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $hasLargeReadBoundary = $Content -match 'large[- ]file deep read|whole[- ]file deep read|large file.{0,120}specialist|deep read.{0,120}specialist|大檔.{0,120}深讀|大型檔案.{0,120}深讀|全檔.{0,120}深讀'
+        $hasCaptainLimit = $Content -match 'captain.{0,160}(must not|cannot|does not).{0,160}(absorb|substitute|deep read)|隊長.{0,160}(不得|不能|不可).{0,160}(吞|替代|包辦|深讀)'
+
+        return ($hasLargeReadBoundary -and $hasCaptainLimit)
     }
 
     function Test-ProgrammingTeamImplementationDirectBounded {
@@ -2204,6 +2265,23 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         }
     }
 
+    foreach ($relPath in $formalDispatchRequiredPaths) {
+        $content = Get-ProgrammingTeamContent -Path (Join-Path $RepoRoot $relPath)
+        if ($null -eq $content) { continue }
+        if (-not (Test-ProgrammingTeamFirstReadonlyContent -Content $content)) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少 Team-First formal-readonly 與 no-write 不等於 no-team 語義' -Text 'read-only exploration still requires a formal-readonly team route'
+        }
+        if (-not (Test-ProgrammingTeamStandbyContent -Content $content)) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少隊員 standby 與未啟動狀態回報語義' -Text 'non-launched specialist routes must be recorded as standby, blocked, unverified, unavailable, or not-authorized'
+        }
+        if (-not (Test-ProgrammingTeamDispatchPackageContent -Content $content)) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少技能派工包欄位要求' -Text 'specialist dispatch must include inputs, tools, forbidden actions, artifact format, and stop condition'
+        }
+        if (-not (Test-ProgrammingTeamLargeReadBoundaryContent -Content $content)) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少大檔深讀不得由隊長包辦的界線' -Text 'large-file deep read must route to a bounded specialist or be marked blocked/unverified'
+        }
+    }
+
     $formalDispatchNegativeChecks = @(
         [PSCustomObject]@{ Pattern = '(?i)(draft board|草案(任務|派工)?板).{0,140}(may|can|allowed|允許|可以|可|直接|立即).{0,100}(dispatch|spawn|start|open|啟動|開啟|派工|開出).{0,80}(specialist|subagent|branch|隊員|分支|子代理)'; Reason = '草案板不得啟動正式隊員' },
         [PSCustomObject]@{ Pattern = '(?i)(draft evidence|草案證據|草案包證據).{0,140}(satisf(y|ies)|counts? as|eligible|pass(es)?|滿足|算作|可作為|通過|符合).{0,100}(formal acceptance|formal evidence|正式驗收|正式證據|正式接受)'; Reason = '草案證據不得滿足正式驗收' },
@@ -2212,13 +2290,16 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         [PSCustomObject]@{ Pattern = '(?i)(closed-with-director-risk|總監風險關閉)[^.\r\n。]{0,120}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '總監風險關閉不得宣稱完整完成' },
         [PSCustomObject]@{ Pattern = '(?i)(review|validation|審查|驗證).{0,120}(before|prior to|earlier than|早於|先於).{0,100}(change delivery|implementation change delivery|變更交付件|實作變更交付)'; Reason = '審查或驗證不得早於變更交付件' },
         [PSCustomObject]@{ Pattern = '(?i)(same wave|同一波|同波).{0,180}(implementation|change delivery|實作|變更交付).{0,180}(review|審查).{0,120}(same deliverable|same artifact|同一交付物|同一交付件)'; Reason = '同一波不得同時啟動實作與同交付物審查' },
-        [PSCustomObject]@{ Pattern = '(?i)(captain|隊長).{0,100}(author(s|ed|ing)?|create(s|d|ing)?|produce(s|d|ing)?|\bimplement(s|ed|ing)?\b|substitut(e|es|ed|ing|ion)?|創作|產出|實作|替代|代工).{0,140}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '隊長創作或隊長替代不得宣稱 complete' }
+        [PSCustomObject]@{ Pattern = '(?i)(captain|隊長).{0,100}(author(s|ed|ing)?|create(s|d|ing)?|produce(s|d|ing)?|\bimplement(s|ed|ing)?\b|substitut(e|es|ed|ing|ion)?|創作|產出|實作|替代|代工).{0,140}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '隊長創作或隊長替代不得宣稱 complete' },
+        [PSCustomObject]@{ Pattern = '(?i)(no-write|read-only|無寫入|唯讀).{0,160}(no-team|no team|without team|skip team|不用(團隊|隊員)|不需要(團隊|隊員)|無團隊)'; Reason = '不得把 no-write 或唯讀解讀成 no-team' },
+        [PSCustomObject]@{ Pattern = '(?i)(captain|隊長).{0,120}(read|loaded|absorbed|deep read|完整讀|全量讀|吞|深讀).{0,120}(large file|whole file|full file|大檔|大型檔案|全檔|整份)'; Reason = '隊長不得用完整吞大檔替代隊員深讀' }
     )
 
     foreach ($relPath in $formalDispatchRequiredPaths) {
         foreach ($bad in $formalDispatchNegativeChecks) {
             Add-ProgrammingTeamRegexFindings -RelativePath $relPath -Pattern $bad.Pattern -Reason $bad.Reason
         }
+        Add-ProgrammingTeamBadNoWriteNoTeamFindings -RelativePath $relPath -Reason '不得把 no-write 或唯讀解讀成 no-team'
     }
 
     Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\programming-team-governance\SKILL.md' `
@@ -2402,7 +2483,9 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         [PSCustomObject]@{ Pattern = '(?i)(closed-with-director-risk|總監風險關閉)[^.\r\n。]{0,120}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '工作流入口不得把總監風險關閉宣稱為完整完成' },
         [PSCustomObject]@{ Pattern = '(?i)(review|validation|審查|驗證).{0,120}(before|prior to|earlier than|早於|先於).{0,100}(change delivery|implementation change delivery|變更交付件|實作變更交付)'; Reason = '工作流入口不得允許審查或驗證早於變更交付件' },
         [PSCustomObject]@{ Pattern = '(?i)(same wave|同一波|同波).{0,180}(implementation|change delivery|實作|變更交付).{0,180}(review|審查).{0,120}(same deliverable|same artifact|同一交付物|同一交付件)'; Reason = '工作流入口不得允許同波啟動實作與同交付物審查' },
-        [PSCustomObject]@{ Pattern = '(?i)(captain|隊長).{0,100}(author(s|ed|ing)?|create(s|d|ing)?|produce(s|d|ing)?|\bimplement(s|ed|ing)?\b|substitut(e|es|ed|ing|ion)?|創作|產出|實作|替代|代工).{0,140}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '工作流入口不得允許隊長創作或替代後宣稱 complete' }
+        [PSCustomObject]@{ Pattern = '(?i)(captain|隊長).{0,100}(author(s|ed|ing)?|create(s|d|ing)?|produce(s|d|ing)?|\bimplement(s|ed|ing)?\b|substitut(e|es|ed|ing|ion)?|創作|產出|實作|替代|代工).{0,140}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '工作流入口不得允許隊長創作或替代後宣稱 complete' },
+        [PSCustomObject]@{ Pattern = '(?i)(no-write|read-only|無寫入|唯讀).{0,160}(no-team|no team|without team|skip team|不用(團隊|隊員)|不需要(團隊|隊員)|無團隊)'; Reason = '工作流入口不得把 no-write 或唯讀解讀成 no-team' },
+        [PSCustomObject]@{ Pattern = '(?i)(captain|隊長).{0,120}(read|loaded|absorbed|deep read|完整讀|全量讀|吞|深讀).{0,120}(large file|whole file|full file|大檔|大型檔案|全檔|整份)'; Reason = '工作流入口不得用隊長完整吞大檔替代隊員深讀' }
     )
 
     foreach ($relPath in $workflowChecks) {
@@ -2430,6 +2513,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         foreach ($bad in $workflowEntryFormalDispatchForbiddenPatterns) {
             Add-ProgrammingTeamRegexFindings -RelativePath $relPath -Pattern $bad.Pattern -Reason $bad.Reason
         }
+        Add-ProgrammingTeamBadNoWriteNoTeamFindings -RelativePath $relPath -Reason '工作流入口不得把 no-write 或唯讀解讀成 no-team'
         if ($content -notmatch 'evidence owner|證據負責') {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少證據負責人欄位' -Text $relPath
         }
@@ -3532,7 +3616,7 @@ function Measure-TeamNativeCoreSemantics {
     $legacySemanticPatterns = @(
         [PSCustomObject]@{ Name = 'implementation patch'; Pattern = 'implementation patch|實作補丁|補丁包' },
         [PSCustomObject]@{ Name = 'text patch'; Pattern = 'text patch|文字補丁' },
-        [PSCustomObject]@{ Name = 'patch packet'; Pattern = 'patch packet|delivery packet|packet|封包' },
+        [PSCustomObject]@{ Name = 'patch packet'; Pattern = 'patch packet|delivery packet|補丁封包|舊封包' },
         [PSCustomObject]@{ Name = 'captain substitution accepted-risk'; Pattern = 'captain substitution accepted-risk|隊長代工風險接受|隊長代工' }
     )
 
@@ -3840,7 +3924,7 @@ function Measure-TeamTraceEvidence {
             Add-TeamTraceFinding -Severity $severity -File $rel -Line 1 -Reason 'Team-Native trace 欄位不完整' -Text ("missing: {0}" -f ($missing -join ', '))
         }
 
-        $legacyTracePattern = '補丁包|implementation patch|text patch|captain substitution accepted-risk|patch packet|delivery packet|packet|封包'
+        $legacyTracePattern = '補丁包|implementation patch|text patch|captain substitution accepted-risk|patch packet|delivery packet|補丁封包|舊封包'
         $newTracePattern = 'authorization_source|authorization_target|authorization_scope|authorization_phase|authorization_evidence|authorization_expiry|authorization_resolution_state|platform_mode_observed|specialist_skill|domain_label|requested_execution_channel|channel_capability|channel_invocation_status|execution_channel|delivery_artifact|delivery_artifact_status|no_captain_authoring'
         if (Test-TeamTracePositiveLine -Content $content -Pattern $legacyTracePattern) {
             $legacyText = if ($content -match $newTracePattern) {
@@ -3849,6 +3933,49 @@ function Measure-TeamTraceEvidence {
                 'use specialist_skill/domain_label/requested_execution_channel/channel_capability/channel_invocation_status/delivery_artifact/no_captain_authoring'
             }
             Add-TeamTraceFinding -Severity 'Yellow' -File $rel -Line 1 -Reason 'Team-Native trace 使用舊補丁、packet 或隊長代工語義，只能作遺留偵測' -Text $legacyText
+        }
+
+        $isNoWriteTrace = $content -match '(?i)\bimplementation_authorization\b\s*[:=]\s*["'']?(no-write|plan-only)\b|\bno-write\b|無寫入|唯讀'
+        $isExplorationTrace = $content -match '(?i)\btask_type\b\s*[:=]\s*["'']?(exploration|discussion|validation-audit)\b|read-only exploration|no-write exploration|無寫入探索|唯讀探索|探索'
+        $hasFormalReadonlyTrace = $content -match '(?i)formal-readonly|formal readonly|Team-First.{0,120}(read[- ]?only|readonly|唯讀)|正式.{0,80}(唯讀|無寫入)'
+        if ($isNoWriteTrace -and $isExplorationTrace -and (-not $hasFormalReadonlyTrace)) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '無寫入探索缺少 Team-First formal-readonly' -Text 'no-write exploration must still record a formal-readonly team route'
+        }
+
+        $noWriteNoTeamPattern = '(?i)(no-write|read-only|無寫入|唯讀).{0,160}(no-team|no team|without team|skip team|不用(團隊|隊員)|不需要(團隊|隊員)|無團隊)'
+        $noWriteNoTeamAllowedNegative = '(?i)(does not mean|must not mean|not equal|must not|do not|不是|不代表|不得|不可|不能|不應|禁止)'
+        $hasBadNoWriteNoTeamTrace = $false
+        foreach ($line in ($content -split "\r?\n")) {
+            if (($line -match $noWriteNoTeamPattern) -and ($line -notmatch $noWriteNoTeamAllowedNegative)) {
+                $hasBadNoWriteNoTeamTrace = $true
+                break
+            }
+        }
+        if ($hasBadNoWriteNoTeamTrace) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡把 no-write 或唯讀解讀成 no-team' -Text 'no-write controls mutation only; it does not remove formal team stations'
+        }
+
+        $hasNotStartedChannel = $content -match '(?im)^\s*[-*]?\s*["'']?channel_invocation_status["'']?\s*[:=]\s*["'']?not-started\b'
+        $hasChannelAttemptOrClosure = $content -match '(?im)^\s*[-*]?\s*["'']?channel_invocation_status["'']?\s*[:=]\s*["'']?(requested|running|returned|unavailable|blocked|not-authorized)\b'
+        $hasNotStartedExplanation = $content -match '(?i)(not-started|未啟動).{0,200}(reason|because|blocked|unverified|unavailable|not-authorized|standby|原因|阻塞|未驗證|不可用|未授權|待命)'
+        if ($hasNotStartedChannel -and (-not $hasChannelAttemptOrClosure) -and (-not $hasNotStartedExplanation)) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊員通道未嘗試啟動也未回報' -Text 'not-started requires standby, blocked, unverified, unavailable, not-authorized, or a concrete reason'
+        }
+
+        $hasStandbyTrace = $content -match '(?i)\bstandby\b|待命'
+        if ($isNoWriteTrace -and $isExplorationTrace -and (-not $hasStandbyTrace)) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '無寫入探索缺少隊員 standby 狀態' -Text 'formal-readonly traces must preserve specialist standby or a blocked/unverified equivalent'
+        }
+
+        $isFormalOrApplicableTrace = $content -match '(?i)\bboard_state\b\s*[:=]\s*["'']?formal\b|\bapplicability\b\s*[:=]\s*["'']?applicable\b|formal evidence eligibility|正式證據'
+        $hasSkillDispatchPackage = $content -match '(?i)skill dispatch package|specialist dispatch package|技能派工包|隊員派工包|Allowed inputs.{0,200}Allowed tools.{0,200}Forbidden actions.{0,200}Output artifact format.{0,200}Stop condition'
+        if ($isFormalOrApplicableTrace -and (-not $hasSkillDispatchPackage)) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '正式站點缺少技能派工包' -Text 'formal station dispatch must include inputs, tools, forbidden actions, artifact format, and stop condition'
+        }
+
+        $captainLargeReadPattern = '(?i)(captain|隊長).{0,120}(read|loaded|absorbed|deep read|完整讀|全量讀|吞|深讀).{0,120}(large file|whole file|full file|大檔|大型檔案|全檔|整份)'
+        if (Test-TeamTracePositiveLine -Content $content -Pattern $captainLargeReadPattern) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊長完整吞大檔替代隊員深讀' -Text 'large-file deep read must be a bounded specialist station or an honest blocked/unverified state'
         }
 
         $completeClaimPattern = '(?i)\bcompletion_state\b\s*[:=]\s*["'']?(complete|completed|full-team-complete|full_team_complete)\b|full team completion|完整團隊完成|完整完成'

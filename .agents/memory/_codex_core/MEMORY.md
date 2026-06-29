@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-29T09:21:02+08:00'
+last_updated: '2026-06-29T12:11:52+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-29T01:20:29+08:00'
+last_verified: '2026-06-29T12:06:14+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 30
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
+- Codex docs and core rules now describe Team-Native Core as a pre-execution state machine with formal-readonly for no-write evidence work, GO-backed formal-write for mutation, skill handoff packets, standby/nonlaunch reporting, and specialist deep-read / captain verify-read separation.
 - Codex source and deployed rules now place Team-Native Core and Authorization Resolution before Lifecycle; GO, approvals, sandbox/tool prompts, and skill names resolve only to scoped authorization evidence.
 - Codex source/deployed rules now say 61 shared operational skills and 78 deployed skills.
 - Codex source rules and the live project rule copy are byte-level synchronized after Team-Native lifecycle and fast-closeout updates; Director Output Contract reports red 0 / yellow 0.
@@ -61,8 +63,7 @@ metadata:
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 ## Cycle Events
-- 31: Promoted Team-Native Core and scoped authorization resolution before Lifecycle in Codex source/deployed rules and documented route-only workflow semantics.
-- 30: Synchronized Codex Team-Native lifecycle and fast-closeout wording, then byte-level matched `Codex/.codex/AGENTS.md` and `.codex/AGENTS.md`; Doctor returned red 0 / yellow 0.
+- 30: Synchronized Codex source/deployed core rules and README for Team-Native lifecycle, scoped authorization before Lifecycle, route-only workflow semantics, fast closeout wording, Team-First formal-readonly, handoff packets, standby or unavailable-channel reporting, and deep-read/verify-read boundaries; Doctor returned red 0 / yellow 0.
 - 29: Synced Codex source/deployed Team-Native wording to `closed-with-director-risk`, keeping protected integration distinct from captain substitute authoring.
 - 28: Removed residual captain-substitution wording from Codex README and deployed workflow skill copies.
 - 27: Synced Codex source/deployed policy marker blocks with `closed-with-director-risk` wording.

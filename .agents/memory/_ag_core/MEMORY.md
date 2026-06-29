@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-29T09:21:02+08:00'
+last_updated: '2026-06-29T12:10:47+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T21:54:14+08:00'
+last_verified: '2026-06-29T11:30:08+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 27
+cycle_event_count: 28
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core — Antigravity Memory
 
 ## Current Truth
+- Antigravity docs and core rules now describe Team-Native Core as a pre-execution state machine with formal-readonly for no-write evidence work, GO/interface-confirmation-backed formal-write for mutation, skill handoff packets, standby/nonlaunch reporting, and specialist deep-read / captain verify-read separation.
 - Antigravity core rules now place Team-Native Core and Authorization Resolution before lifecycle and treat workflow buttons, IDE confirmations, task-boundary mode, and GO as scoped authorization evidence only.
 - Antigravity source workflows and deployed references now require formal dispatch board fields, wave-gated delegation, draft-board limits, and Master-Agent protected state ownership.
 - Antigravity docs and rules now frame team stations as adapter or conditional routes unless a concrete native capability is verified.
@@ -61,6 +63,7 @@ metadata:
 - Keep Antigravity-specific workflow facts here and shared operational details in Shared skills.
 - This card still needs a later child-card split if all Antigravity workflows are actively edited again.
 ## Cycle Events
+- 28: Updated Antigravity README and source/deployed core policy blocks for Team-First formal-readonly, handoff packets, standby or unavailable-channel reporting, and deep-read/verify-read boundaries.
 - 27: Promoted Team-Native Core and scoped authorization resolution before lifecycle in Antigravity core rules and documented workflow-button route-only semantics.
 - 26: Synced Antigravity source/deployed Team-Native wording to `closed-with-director-risk`, keeping protected integration distinct from captain substitute authoring.
 - 25: Removed residual captain-substitution wording from Antigravity README and deployed workflow copies.

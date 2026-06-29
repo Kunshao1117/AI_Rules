@@ -4,19 +4,19 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-29T09:21:02+08:00'
+last_updated: '2026-06-29T12:11:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-29T01:20:29+08:00'
+last_verified: '2026-06-29T11:30:08+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 28
+cycle_event_count: 29
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
+- Claude docs and core rules now describe Team-Native Core as a pre-execution state machine with formal-readonly for no-write evidence work, GO/permission-backed formal-write for mutation, skill handoff packets, standby/nonlaunch reporting, and specialist deep-read / captain verify-read separation.
 - Claude core rules now place Team-Native Core and Authorization Resolution before lifecycle and treat permission prompts, Plan Mode approval, slash commands, and GO as scoped authorization evidence only.
 - Claude source rules and deployed commands now require formal dispatch board fields, wave-gated delegation, draft-board limits, and Master-Agent protected state ownership for coding commands.
 - Claude deployed shared skill copies are synchronized with Team-Native lifecycle, fast closeout, Yellow classification, and compressed captain dispatch skills; deployed skill drift is red 0 / yellow 0.
@@ -63,6 +65,7 @@ metadata:
 - Keep Claude source ownership out of the deprecated historical card.
 - This card still needs a later child-card split if all Claude commands are actively edited again.
 ## Cycle Events
+- 29: Updated Claude README and source/deployed core policy blocks for Team-First formal-readonly, handoff packets, standby or unavailable-channel reporting, and deep-read/verify-read boundaries.
 - 28: Promoted Team-Native Core and scoped authorization resolution before lifecycle in Claude core rules and documented slash-command route-only semantics.
 - 27: Synchronized Claude deployed shared skill copies for lifecycle/fast-closeout governance and verified deployed drift closure through Doctor red 0 / yellow 0.
 - 26: Synced Claude source/deployed Team-Native wording to `closed-with-director-risk`, keeping protected integration distinct from captain substitute authoring.

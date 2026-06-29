@@ -10,13 +10,85 @@ must be interpreted through Team-Native Core before source, workflow,
 validation, review, memory, commit, release, deployment, install, project
 governance, generated-copy, or public-contract work proceeds.
 
+Team-Native Core is an execution precondition, not advisory prose. When it
+applies, the next valid runtime state is a Captain Team Board with applicable
+stations, handoff packets, and channel states. The captain must not perform
+broad reading, impact mapping, implementation, validation, review, memory
+attribution, commit preparation, release preparation, or completion claims first
+and only document the team route afterward.
+
+Root-cause guard: if a platform cannot open a specialist channel, that is a
+station state to report (`standby`, `blocked`, `unverified`,
+`not-authorized`, or `unavailable`), not permission for silent captain-direct
+work. The captain may continue direct work only after the board names the
+missing route, replacement evidence, residual risk, and smallest unblock
+condition.
+
 Team-Native Core applies when a task touches source, workflow, validation, review, memory, commit, release, deployment, install, project governance, generated copies, or public contracts.
 
-The required delivery sequence is fixed: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> execution-channel decision -> specialist work or blocked/unverified channel state -> captain supervision -> recovered change delivery artifacts / evidence delivery artifacts -> independent validation and review -> captain integration -> completion audit -> report.
+Team-Native Core also applies to read-only exploration, blueprinting, broad file
+inspection, external research, or impact analysis when the result can shape
+later source, workflow, validation, review, memory, release, or governance work.
+No-write status limits the allowed actions; it does not cancel team-mode
+station assignment.
+
+The required delivery sequence is fixed: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> station handoff packet -> execution-channel decision -> specialist startup attempt, standby, or blocked/unverified channel state -> specialist work -> captain verification-read -> recovered change delivery artifacts / evidence delivery artifacts -> independent validation and review -> captain integration -> completion audit -> report.
 
 The captain remains the only Director-facing owner, but the captain is not the default worker and must not author specialist implementation, review, validation, or memory attribution when a delivery artifact can be produced. The captain owns routing, authorization, supervision, protected integration of recovered delivery artifacts, protected memory/git/release/deploy/install gates, review-state decision, and final acceptance. All separable requirement replay, counter-evidence, impact mapping, implementation change delivery, memory delivery, validation, review, and completion audit work belongs to team stations.
 
 Explicit workflow names and Director requests for subagents are route hints. They do not replace the team board and do not authorize pre-board dispatch.
+
+## Team-First Activation Rule
+
+When Team-Native Core applies, the captain must attempt team activation before
+doing broad context-heavy work. The minimum activation is a board row for each
+applicable station, a selected specialist skill, and an attempted execution
+channel or an explicit standby/block record.
+
+Board states are:
+
+| Board state | Allowed work | Write authority |
+|---|---|---|
+| `draft` | Pre-GO planning, candidate stations, assumptions, and scope shaping | No write authority and no formal specialist evidence |
+| `formal-readonly` | Read-only exploration, counter-evidence, impact mapping, document or file deep-read, external research, validation planning, review evidence, and standby specialist preparation | No source, memory, git, release, deployment, install, or external-state writes |
+| `formal-write` | GO-backed implementation change delivery, captain integration, validation, review, memory/docs delivery, completion audit, and protected follow-on gates | Only the scoped target, phase, station, files, commands, or tool calls resolved by authorization |
+
+The captain must not treat `formal-readonly` as weaker than team mode. It is
+the formal team state for no-write work. If no execution channel can be opened,
+the station is recorded as `blocked`, `unverified`, or `standby` with a smallest
+unblock condition. The captain reports the unavailable route before absorbing
+the station into main-thread direct work.
+
+## Skill Handoff Packet Rule
+
+Specialist identity is not a narrative label. Every formal station must receive
+a skill handoff packet that names the assigned specialist skill, loaded skill
+references, task row, read scope, forbidden actions, output artifact format,
+startup threshold, and stop condition. The handoff packet may be produced from
+`team-station-handoff-packet` or an equivalent platform adapter, but it must be
+visible in the board or delivery trace.
+
+The packet must include these fields when applicable: `loaded_skill_refs`,
+`handoff_packet_id`, `deep_read_scope`, `captain_verify_read_scope`,
+`unread_scope`, `startup_started_at`, `first_response_deadline`,
+`last_progress_at`, `timeout_action`, and `standby_reason`.
+
+## Deep-Read And Captain Verify Rule
+
+Large or numerous files should not be fully loaded by the captain when a
+bounded specialist deep-read station can inspect them first. The default split
+is:
+
+1. Specialist deep-read: read the assigned files or references, summarize
+   evidence, unresolved scope, and exact citations.
+2. Captain verify-read: inspect the highest-risk snippets, changed regions, or
+   disputed claims before integration or final acceptance.
+3. Unread scope: list any relevant file, section, document, or external source
+   not read by either party.
+
+If the captain must deep-read the whole scope directly because no channel can
+open, the station records a direct exception and the completion state cannot
+claim full team separation unless the Director closes that named risk.
 
 Authorization is resolved by `authorization-resolution.md` before any write,
 protected integration, memory, git, release, deployment, install, MCP mutation,
@@ -34,6 +106,11 @@ channel availability alone.
 Specialist role authority comes from `team-specialist-registry` and the matching `team-specialist-*` specialist skill. Subagents, browsers, CLI routes, MCP reads, isolated workspaces, and text-only routes are execution channels for those specialist stations; they are not role definitions and do not own governance decisions.
 
 Specialist station assignment is not conditional on channel availability. Once Team-Native Core applies, every applicable station must be assigned to a specialist skill before channel selection. If the requested channel cannot be invoked, the station remains on the board with `blocked`, `unverified`, or `closed-with-director-risk`; it must not disappear and must not become routine captain work.
+
+Stations may be kept in `standby` when the specialist is assigned and the packet
+is ready but the dispatch wave has not opened, the platform channel is warming
+up, or the station is waiting for previous-wave input. Standby is a formal
+lifecycle state, not a substitute for returned evidence.
 
 ## Station-First Rule
 

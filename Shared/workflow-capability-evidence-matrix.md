@@ -26,7 +26,25 @@
 
 Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設協作模型。固定流程是總監指令 -> 隊長接收 -> 轉譯 -> 建板 -> 分派專家子技能 -> 專家工作 -> 隊長監督 -> 回收變更交付件/證據交付件 -> 獨立驗證審查 -> 隊長整合 -> 完成審計 -> 回報。隊長任務板是起點，不是完成證據本身；正式完成至少需要每個適用站點的 Team-Native trace，記錄任務類型、工作流路由、實作授權、平台能力路由、channel capability、channel invocation status、專家角色來源、執行通道、交付件編號、作者角色、來源輸入、可整合範圍、審查狀態、驗證狀態、記憶文件狀態、隊長是否創作、階段、派工波次、前一波輸入、下一波啟動條件、正式證據資格、證據負責人、角色邊界、直接例外、完成條件與缺證狀態。
 
+Team-First activation applies before broad context collection. Read-only
+exploration, blueprint evidence, external research, impact mapping, deep file
+reading, validation planning, and review evidence use `formal-readonly` when the
+result can influence later source or governance decisions. GO-backed
+implementation and protected follow-on actions use `formal-write`. No-write
+does not mean no-team; no-write is an action limit, not a no-team state.
+
 平台能力路由只能是 `native`、`adapter`、`conditional` 或 `unavailable`。`conditional` 代表該平台可能支援，但本次必須用工具可用性、正式站點、交付件格式與 Team-Native trace 證明；缺任一項時不得 routine direct，也不得宣稱完整團隊完成。`unavailable` 必須轉成阻塞、未驗證或 `closed-with-director-risk`，並列出最小補證條件。
+
+### Team-First Dispatch Defaults
+
+Team-First 是所有編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設運行方式。隊長先建立或沿用正式團隊站點，再決定哪些站點啟動；隊員可以待命，但待命不是證據，只有波次開啟、範圍明確、交付件返回後才形成正式 evidence。
+
+| Team-First 模式 | 啟動條件 | 最低證據 | 不可宣稱 |
+|---|---|---|---|
+| `formal-readonly` | 探索、架構、測試、健檢、提交掃描、交接、技能設計、治理影響、廣泛讀檔、外部研究或反證站點 | 正式站點、唯讀範圍、證據負責人、來源引用、未驗證/阻塞清單、隊長驗讀結果 | 不可改檔、不可改記憶、不可提交、不可把讀取摘要當成寫入授權 |
+| `formal-write` | 來源、文件、工作流、部署副本、生成副本或技能內容需要寫入 | GO-backed 授權、精確檔案/站點範圍、隔離或文字變更交付件、memory_impact、後續審查與驗證路徑 | 不可由工作流名稱、草案板、待命隊員或唯讀證據自動升級 |
+| standby station | 下一波可能需要同一角色處理，但前一波輸入尚未返回 | 站點角色、觸發條件、允許範圍、不可執行狀態 | 不可當作已採證、已驗證、已審查或已完成 |
+| deep-read / verify-read | 大檔、多檔、長報告、外部文件或證據量會讓隊長完整吞讀降低可靠性 | 隊員深讀交付件、引用位置、摘要限制、隊長抽樣或指定段落驗讀 | 隊長不得只靠摘要宣稱全檔已讀或全量通過 |
 
 ## Workflow Matrix
 
@@ -43,7 +61,7 @@ Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交
 
 ## Captain-Led Programming Team Governance Matrix
 
-Coding-related natural-language requests and explicit workflow commands automatically enter Team-Native Core before implementation, repair, debugging, testing, audit, experiment writes, commit preparation, handoff, or skill creation work. Explicit workflow commands are route hints only; they are not prerequisites and do not replace the team task board. The captain builds a team-station board from `programming-team-governance` and `team-task-board` before planning, execution, validation, review, or completion.
+Coding-related natural-language requests and explicit workflow commands automatically enter Team-Native Core before implementation, repair, debugging, testing, audit, experiment writes, commit preparation, handoff, or skill creation work. Explicit workflow commands are route hints only; they are not prerequisites and do not replace the team task board. The captain builds a team-station board from `programming-team-governance` and `team-task-board` before planning, broad reading, execution, validation, review, or completion. Team-First dispatch means applicable read-only stations start as `formal-readonly` by default; write stations start only as GO-backed `formal-write`.
 
 Formal team collaboration uses `team-specialist-registry`, applicable `team-specialist-*` skills, and six fixed child skills as official sources: `team-role-boundaries`, `team-change-delivery-artifact`, `team-memory-docs-delivery-artifact`, `team-validation-delivery-artifact`, `team-review-delivery-artifact`, and `team-completion-gate`. Workflow entries that touch source, workflow rules, governance, memory, docs tied to behavior, generated copies, validation, review, commit prep, handoff, or skill creation must load the applicable child skills. They must not replace these sources with route-specific judgment.
 
@@ -51,10 +69,20 @@ Formal team collaboration uses `team-specialist-registry`, applicable `team-spec
 
 | Board state | Allowed use | Not accepted as | Required next step |
 |---|---|---|---|
-| Draft board | Pre-GO planning, candidate station map, proposed dispatch waves, assumptions | Formal specialist launch, formal evidence, validation acceptance, review acceptance, completion acceptance | After GO, create or promote a formal board |
-| Formal board | GO-backed station dispatch and acceptance trace | Blanket all-at-once dispatch | Record phase, dispatch wave, previous-wave input, next-wave start condition, and formal evidence eligibility for every applicable station |
+| Draft board | Pre-GO planning, candidate station map, proposed dispatch waves, assumptions | Formal specialist launch, formal evidence, validation acceptance, review acceptance, completion acceptance | Promote to formal-readonly for no-write evidence or formal-write after scoped GO |
+| Formal-readonly board | No-write team evidence, specialist standby, deep-read, external research, review evidence, validation planning | Source, memory, git, release, deployment, install, or external-state mutation | Record skill handoff packet, phase, wave, previous input, next condition, formal evidence eligibility, and channel state |
+| Formal-write board | GO-backed station dispatch, implementation change delivery, protected integration, validation, review, memory/docs, completion trace | Blanket all-at-once dispatch or unscoped protected actions | Record scoped authorization, phase, dispatch wave, previous-wave input, next-wave start condition, and formal evidence eligibility for every applicable station |
 
-Formal evidence eligibility requires a formal board station, the current open wave, assigned evidence owner, valid delivery artifact format, registered specialist role source, preserved role boundary, and captain review. Draft evidence is `draft-input-only` until rerun or reissued through a formal station.
+Formal evidence eligibility requires a formal-readonly or formal-write board
+station, the current open wave, assigned evidence owner, valid delivery artifact
+format, registered specialist role source, skill handoff packet, preserved role
+boundary, and captain review. Draft evidence is `draft-input-only` until rerun
+or reissued through a formal station.
+
+Every formal station requires a skill dispatch package with Allowed inputs,
+Allowed tools, Forbidden actions, Output artifact format, and Stop condition.
+Large-file deep read routes to a bounded specialist; the captain must not
+absorb, substitute, or deep read large files as the team evidence source.
 
 The board is a governance trace, not a size label. Every station must separate applicability from execution mode; applicable stations must resolve to `direct`, `evidence branch`, `browser branch`, `CLI branch`, `MCP direct`, `isolated change delivery`, `text change delivery artifact`, `blocked`, or `not-applicable`. Every applicable station must also name the platform capability route, Team-Native trace, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, completion condition, and any direct exception. Each specialist receives one concrete station task; bundled multi-role assignments are invalid unless split or closed by the Director as `closed-with-director-risk`, which is not complete.
 
@@ -127,14 +155,14 @@ Before any specialist branch starts, the captain must record task type, workflow
 | 任務類型 | 可出現隊員 | 不可出現隊員 | 最低證據 |
 |---|---|---|---|
 | discussion | none | all coding specialists | no source/workflow/review impact stated |
-| exploration | requirement, architecture, review evidence | implementation | research scope and non-write boundary |
-| blueprint | requirement, architecture, counter-evidence, impact, review | implementation | decisions, alternatives, compatibility, build handoff |
-| build-plan | requirement, architecture, impact, test strategy, review | main-worktree implementation | GO boundary, acceptance matrix, validation route |
-| implementation | isolated implementation change delivery, memory delivery, test, review, completion | self-review and ungated scope expansion | approved file scope, change delivery evidence, memory impact, and memory delivery status |
-| fix-debug | impact, debug, test, review, completion | self-review and uncontrolled writes | symptom, cause, regression route |
-| validation-audit | test, review, completion, CLI/browser evidence | source mutation unless separately authorized | command/browser/MCP evidence and blocked items |
-| commit-release | memory delivery, review, completion evidence | git/release/memory mutation by specialists | dirty file list, review state, memory status |
-| handoff-skill | requirement, architecture, impact, review, completion | implementation until authorized | handoff scope, skill ownership, or governance trace |
+| exploration | `formal-readonly` requirement, research, architecture, counter-evidence, review evidence | implementation and `formal-write` | research scope, source tier, non-write boundary, and deep-read/verify-read when evidence is large |
+| blueprint | `formal-readonly` requirement, architecture, counter-evidence, impact, review | implementation and `formal-write` | decisions, alternatives, compatibility, build handoff, and standby write trigger when later implementation is expected |
+| build-plan | `formal-readonly` requirement, architecture, impact, test strategy, review; standby implementation station | main-worktree implementation before GO-backed `formal-write` | GO boundary, acceptance matrix, validation route, and exact formal-write file scope |
+| implementation | GO-backed `formal-write` isolated or text implementation change delivery, memory delivery, test, review, completion | self-review and ungated scope expansion | approved file scope, change delivery evidence, memory impact, and memory delivery status |
+| fix-debug | `formal-readonly` impact/debug/test/review plus GO-backed `formal-write` repair delivery when fixing | self-review and uncontrolled writes | symptom, cause, regression route, and repair station authorization |
+| validation-audit | `formal-readonly` test, review, completion, CLI/browser/MCP evidence | source mutation unless separately authorized as `formal-write` | command/browser/MCP evidence and blocked items |
+| commit-release | `formal-readonly` memory delivery, review, completion evidence | git/release/memory mutation by specialists | dirty file list, review state, memory status, and captain-only protected action gate |
+| handoff-skill | `formal-readonly` requirement, architecture, impact, review, completion; GO-backed `formal-write` only for approved skill/source changes | implementation until authorized | handoff scope, skill ownership, governance trace, and standby next-wave trigger |
 
 ### Captain Minimum Execution Contract
 
@@ -226,8 +254,8 @@ Visual verification must inspect details and prefer real information. Screenshot
 | 工作流 | 任務型態 | 外部接地依據 | 最低證據 | 常見路由 |
 |---|---|---|---|---|
 | 00 對話 | 純討論、概念釐清、輕量問答 | Codex 指令分層、Claude 上下文管理、Agent Skills 描述觸發 | 當前規則與已知上下文；高變動事實需轉研究 | 01、02、03、04、06、09 |
-| 01 探索 | 網路研究、競品、可行性、反方分析 | 深度研究實務、來源可信度、資料新鮮度 | 來源層級、日期、偏誤、覆蓋缺口與未驗證項 | 02、03、08 |
-| 02 架構 | 純架構、重大技術轉向、系統藍圖 | ADR、C4、arc42、官方框架文件、需求對齊閘門、編程團隊治理 | 團隊站點板、需求理解回放、中立反證、決策狀態、替代方案、審查目的與狀態、需求到驗收追蹤、假設、相容性與後續建構契約 | 03、08、12 |
+| 01 探索 | 網路研究、競品、可行性、反方分析 | 深度研究實務、來源可信度、資料新鮮度、Team-First formal-readonly | formal-readonly 團隊站點板、隊員技能派工包、來源層級、日期、偏誤、覆蓋缺口與未驗證項；若不開隊員，需記錄不可用通道與直接例外 | 02、03、08 |
+| 02 架構 | 純架構、重大技術轉向、系統藍圖 | ADR、C4、arc42、官方框架文件、需求對齊閘門、編程團隊治理、Team-First formal-readonly | formal-readonly 團隊站點板、需求理解回放、中立反證、決策狀態、替代方案、審查目的與狀態、需求到驗收追蹤、假設、相容性與後續建構契約 | 03、08、12 |
 | 03-1 實驗 | 沙盒 spike、丟棄式原型 | 技術 spike、原型隔離實務、編程團隊最小治理 | 最小團隊站點板、沙盒邊界、允許改動範圍、丟棄條件、升級條件、禁止生產品質聲明 | 03、11 |
 | 03 建構 | 正式建構、產品行為變更 | 先探索、再計畫、再實作、再驗證、需求對齊閘門、工程審查治理、編程團隊治理 | 團隊站點板、沿用藍圖狀態、審查目的與狀態、需求到任務追蹤、任務驗收矩陣、偏移稽核規則、真實驗證路徑、工具發現、阻塞條件、記憶所有權與狀態證據 | 04、06、08、09 |
 | 04 修復 | bug 修復、回歸修復 | 根因分析、缺陷管理、回歸測試、工程審查治理、編程團隊治理 | 團隊站點板、症狀、根因、審查目的與狀態、修復證據、回歸證據、受影響記憶卡狀態與依賴證據 | 06、07、09 |
@@ -238,7 +266,7 @@ Visual verification must inspect details and prefer real information. Screenshot
 | 09 提交 | 變更紀錄、提交、版本、發布前掃描 | Conventional Commits、Keep a Changelog、SemVer、狀態檢查、工程審查治理、編程團隊治理 | 提交站點板、明確檔案清單、審查生命週期風險、未驗證與阻塞清單、記憶狀態、提交前記憶預檢、變更摘要、版本/成品判定 | 04、06、08、11 |
 | 10 巡檢 | automation-safe 唯讀治理 | 自動化健康檢查、工作流漂移檢查、工程審查治理、編程團隊治理覆蓋檢查 | 巡檢站點覆蓋、技能品質、文件一致性、矩陣覆蓋、審查治理覆蓋、唯讀記憶/脈絡巡檢、無寫入證明 | 08、12 |
 | 11 交接 | 任務交接、續接提示 | 上下文交接與任務摘要實務、編程團隊治理 | 交接站點板、目前狀態、髒檔、阻塞、未驗證項、工作區/記憶健康證據、下一流程 | 02、03、04、09 |
-| 12 技能鍛造 | 新技能、共用技能、專案技能 | Agent Skills 規格、技能描述、漸進載入、編程團隊治理 | 技能鍛造站點板、層級選擇、描述品質、參考資料拆分、驗證門檻、受影響記憶與技能索引證據 | 03、08、10 |
+| 12 技能鍛造 | 新技能、共用技能、專案技能 | Agent Skills 規格、技能描述、漸進載入、編程團隊治理、技能派工包 | 技能鍛造站點板、層級選擇、描述品質、參考資料拆分、技能派工包、驗證門檻、受影響記憶與技能索引證據 | 03、08、10 |
 
 ## Memory Admission Matrix
 

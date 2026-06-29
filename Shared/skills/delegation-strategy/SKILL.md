@@ -17,7 +17,11 @@ metadata:
 
 # Captain Dispatch And Delegation Strategy
 
-Use after captain-led mode is active and the Captain Team Board exists. This skill selects channels; `programming-team-governance` owns team semantics, `team-specialist-registry` owns roles, and `team-task-board` owns board and artifact fields. Read `references/cli-delegation-sop.md` only for CLI branch details.
+Use after captain-led mode is active and the Captain Team Board exists. This
+skill selects channels; `programming-team-governance` owns team semantics,
+`team-specialist-registry` owns roles, `team-task-board` owns board and artifact
+fields, and `team-station-handoff-packet` owns specialist startup packets. Read
+`references/cli-delegation-sop.md` only for CLI branch details.
 
 ## Captain Trigger Gate
 
@@ -27,7 +31,11 @@ Captain-led mode is active for code, workflow rules, skills, tests, debugging, a
 
 Classify task type before any specialist, browser branch, CLI branch, MCP route, isolated change delivery, text change delivery artifact, or broad evidence route. Requests for team mode or specialist channels force board creation first.
 
-No specialist branch starts before the board exists.
+No specialist branch starts before the board exists. No-write work still opens a
+`formal-readonly` team board when it can shape source, workflow, validation,
+review, memory, release, or governance decisions.
+No-write does not mean no-team. Read-only exploration still uses
+`formal-readonly` when it can shape later source or governance decisions.
 
 The board records task type, workflow route, implementation authorization, allowed specialist roles, forbidden specialist roles, station applicability, execution mode, evidence owner, role boundary, direct exception, completion condition, and platform route. A draft board cannot start formal specialists or satisfy formal acceptance. The formal board lifecycle is draft -> GO-backed formal promotion -> wave-gated station dispatch -> returned delivery artifacts -> review/validation/memory states -> completion audit.
 
@@ -55,10 +63,18 @@ Route each applicable station in this order:
 
 1. Select a specialist skill from `team-specialist-registry`.
 2. Select the domain label.
-3. Select requested execution channel.
-4. Record channel capability and channel invocation status.
-5. Record station lifecycle and closeout lane.
-6. Return a delivery artifact or mark `blocked`, `unverified`, or `closed-with-director-risk`.
+3. Create the station handoff packet with loaded skill refs, read scope,
+   forbidden actions, output format, startup deadline, and standby rule.
+4. Select requested execution channel.
+5. Record channel capability and channel invocation status.
+6. Record station lifecycle, standby reason, startup timing, and closeout lane.
+7. Return a delivery artifact or mark `blocked`, `unverified`, `standby`, or `closed-with-director-risk`.
+
+Skill dispatch package fields are mandatory: Allowed inputs, Allowed tools,
+Forbidden actions, Output artifact format, and Stop condition. Large-file deep
+read must route to a bounded specialist; the captain must not absorb,
+substitute, or deep read large files as the team evidence source.
+Exact large-read rule: large-file deep read routes to a bounded specialist; the captain must not absorb, substitute, or deep read large files as the team evidence source.
 
 | Station need | Specialist source | First route | Forbidden |
 |---|---|---|---|

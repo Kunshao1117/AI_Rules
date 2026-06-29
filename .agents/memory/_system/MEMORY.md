@@ -4,19 +4,19 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-29T09:58:36+08:00'
-status: stable
-staleness: 0
+last_updated: '2026-06-29T12:16:12+08:00'
+status: stale
+staleness: 10
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-29T09:58:36+08:00'
+last_verified: '2026-06-29T11:30:08+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 9
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,19 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+<!-- CARTRIDGE_SYSTEM_WARNING_START -->
+
+> [!CAUTION]
+> 🟠 **系統強制攔截**：此記憶已過期失真！
+> 追蹤檔案異動：`CHANGELOG.md`（2026-06-29T12:24:59+08:00）
+> AI 嚴禁基於此記憶施工，必須優先閱讀最新原始碼並更新此記憶卡。
+> staleness: 10 | threshold: 🟠 顯著過期
+
+<!-- CARTRIDGE_SYSTEM_WARNING_END -->
 # _system — Repository Governance Memory
 
 ## Current Truth
+- Root documentation now says Team-Native Core is a pre-execution state machine: applicable coding, architecture, broad-read, validation, review, memory, commit, release, and governance tasks must enter a board/station/handoff/channel state before captain broad reading or completion claims.
 - Root documentation now states that GO, interface buttons, platform permission prompts, modes, and workflow commands must resolve to scoped authorization evidence; workflow routes and modes are not standalone authorization.
 - Changelog includes the 2026-06-29 Team-Native scoped authorization refactor entry for core priority, authorization policy, artifact fields, audit hardening, and platform documentation sync.
 - Repository-level governance documentation now describes delivery-artifact-driven Team-Native workflow: the captain boards, dispatches, supervises, integrates returned qualified artifacts, decides, and reports, but does not author primary implementation, review, validation, or memory attribution.
@@ -63,6 +73,7 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 10: Documented Team-First runtime-state semantics, formal-readonly/formal-write split, station handoff packets, standby, unavailable-channel reporting, and deep-read/verify-read boundaries in root README.
 - 09: Recorded the 2026-06-29 Team-Native scoped authorization refactor changelog entry and cleared the CHANGELOG staleness warning after reading the current entry.
 - 08: Documented scoped authorization resolution, interface-button evidence limits, workflow route-only semantics, and Team-Native priority in root README.
 - 07: Recorded the 2026-06-29 pre-commit governance convergence changelog entry after exact-hash sync and memory-health checks passed.

@@ -16,7 +16,18 @@
 
 Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設協作模型。隊長制不是單人主線流程加上可選子代理，而是站點優先的團隊狀態機：總監指令 -> 隊長接收 -> 轉譯 -> 建板 -> 分派專家子技能 -> 專家工作 -> 隊長監督 -> 回收變更交付件/證據交付件 -> 獨立驗證審查 -> 隊長整合 -> 完成審計 -> 回報。專家角色來源是 `team-specialist-registry` 與對應 `team-specialist-*` 子技能；子代理只是平台執行通道。每個適用站點必須留下平台能力路由、channel capability、channel invocation status、交付件編號、作者角色、來源輸入、可整合範圍、審查狀態、驗證狀態、記憶文件狀態、隊長是否創作、證據負責人、角色邊界、完成條件、直接例外與 Team-Native trace；能力缺口不得降級成 routine direct，也不得宣稱完整團隊完成。
 
+Team-First activation is shared across platforms. Read-only exploration,
+blueprint evidence, broad file reading, external research, impact analysis,
+validation planning, and review evidence use `formal-readonly` when they can
+shape later source, workflow, validation, review, memory, release, or governance
+work. Scoped GO-backed implementation and protected follow-on actions use
+`formal-write`. Every formal station receives a skill handoff packet with
+loaded skill refs, deep-read scope, captain verify-read scope, startup
+monitoring, timeout action, and standby reason when applicable.
+
 隊員生命週期是三平台代理共同語義。平台可以保留或重用同一子代理、CLI、瀏覽器、MCP、隔離工作區或文字交付通道，但只能在同一站點、同一角色、同一交付件與同一角色邊界內。正式 trace 必須記錄 station lifecycle state、retention reason、conversation health、reuse count、handoff summary、closure reason、closeout lane、Yellow classification、Yellow resolution state 與 repair loop count。跨越實作/審查、驗證/修復、記憶歸因/記憶寫入、收尾/最終裁決或需要第二意見時，平台必須關閉或替換通道。
+
+Team-First 派工模式是三平台共用能力層。探索、架構、測試、健檢、提交掃描、交接、技能設計、治理影響、廣泛讀檔與反證站點優先開 `formal-readonly`；來源、文件、工作流、部署副本、生成副本或技能內容寫入只能在 GO-backed `formal-write` 站點中發生。隊員可被保留為 standby，但 standby 只記錄觸發條件與允許範圍，不是證據。遇到大檔、多檔或外部長文件時，平台應優先讓隊員深讀並回傳引用位置，隊長只做驗讀、整合與裁決，不以單一摘要宣稱全量讀畢。
 
 ## Scoped Authorization Semantics
 
@@ -46,13 +57,15 @@ Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交
 | MCP resources / prompts | `adapter`：以 Multi-MCP Gateway 統一探索與呼叫 | `native`：Claude MCP 支援 resources/prompts/commands 語義，框架用 Gateway 約束呼叫 | `native`：Codex MCP 設定與 tool approval，框架只提供 opt-in profile |
 | MCP transports | `adapter`：由 Gateway 封裝下游 stdio/http/SSE | `native`：Claude MCP profile 支援多 transport | `native`：Codex MCP profile 支援受控 server 設定 |
 | 操作者路徑驗證 | `adapter`：依可用 IDE / browser-capable agent / Gemini CLI / Gateway 工具執行瀏覽器、命令列、外掛宿主、日誌或只讀狀態證據 | `native` + `adapter`：依 Claude Code 可用 browser / shell / MCP / plugin host 能力執行真實使用路徑；不可用時回報搜尋、重試與替代路徑 | `native` + `adapter`：依 Codex Browser、Computer Use、terminal、MCP、plugin host 或 preview/deployment 工具執行真實使用路徑；不可用時回報搜尋、重試與替代路徑 |
-| Captain-led programming governance | `adapter` + `conditional`：自然語言編程任務與明示工作流都先建立隊長任務板；草案板只支援 GO 前規劃；GO 後必須建立正式派工板，且正式站點需記錄階段、派工波次、前一波輸入、下一波啟動條件、正式證據資格、平台能力路由、專家角色來源與 Team-Native trace；不得建板後一次全派；證據型站點預設轉譯為瀏覽器、CLI、插件或唯讀 specialist adapter；隔離變更交付需平台 adapter 明確支援，無隔離時可退為文字變更交付件 | `native` + `adapter` + `conditional`：自然語言編程任務與明示工作流都先建立隊長任務板；草案板只支援 GO 前規劃；GO 後必須建立正式派工板，且正式站點需記錄階段、派工波次、前一波輸入、下一波啟動條件、正式證據資格、平台能力路由、專家角色來源與 Team-Native trace；不得建板後一次全派；證據型站點預設轉譯為 Claude subagents、hooks 或隔離命令證據；隔離變更交付需受控 workspace/checkpoint，無隔離時可退為文字變更交付件 | `native` + `adapter` + `conditional`：自然語言編程任務與明示工作流都先建立隊長任務板；草案板只支援 GO 前規劃；GO 後必須建立正式派工板，且正式站點需記錄階段、派工波次、前一波輸入、下一波啟動條件、正式證據資格、平台能力路由、專家角色來源與 Team-Native trace；不得建板後一次全派；證據型站點預設轉譯為 Codex native subagents、瀏覽器、終端、背景任務或 MCP 主線工具；隔離變更交付需 forked workspace 或等價安全邊界，無隔離時可退為文字變更交付件 |
+| Captain-led programming governance | `adapter` + `conditional`：自然語言編程、探索、架構、健檢與明示工作流都先建立隊長任務板；草案板只支援規劃；唯讀站點使用 formal-readonly，GO-backed 實作使用 formal-write；正式站點需記錄派工包、技能引用、深讀/驗讀範圍、啟動期限、standby 理由、階段、派工波次、前一波輸入、下一波啟動條件、正式證據資格、平台能力路由、專家角色來源與 Team-Native trace；不得建板後一次全派；證據型站點預設轉譯為瀏覽器、CLI、插件或唯讀 specialist adapter；隔離變更交付需平台 adapter 明確支援，無隔離時可退為文字變更交付件 | `native` + `adapter` + `conditional`：自然語言編程、探索、架構、健檢與明示工作流都先建立隊長任務板；草案板只支援規劃；唯讀站點使用 formal-readonly，GO-backed 實作使用 formal-write；正式站點需記錄派工包、技能引用、深讀/驗讀範圍、啟動期限、standby 理由、階段、派工波次、前一波輸入、下一波啟動條件、正式證據資格、平台能力路由、專家角色來源與 Team-Native trace；不得建板後一次全派；證據型站點預設轉譯為 Claude subagents、hooks 或隔離命令證據；隔離變更交付需受控 workspace/checkpoint，無隔離時可退為文字變更交付件 | `native` + `adapter` + `conditional`：自然語言編程、探索、架構、健檢與明示工作流都先建立隊長任務板；草案板只支援規劃；唯讀站點使用 formal-readonly，GO-backed 實作使用 formal-write；正式站點需記錄派工包、技能引用、深讀/驗讀範圍、啟動期限、standby 理由、階段、派工波次、前一波輸入、下一波啟動條件、正式證據資格、平台能力路由、專家角色來源與 Team-Native trace；不得建板後一次全派；證據型站點預設轉譯為 Codex native subagents、瀏覽器、終端、背景任務或 MCP 主線工具；隔離變更交付需 forked workspace 或等價安全邊界，無隔離時可退為文字變更交付件 |
 | Subagents | `adapter` + `conditional`：Shared evidence branch / isolated change delivery / text change delivery 語義只能在正式派工板中對應到已開啟波次的站點後轉譯為 Gemini CLI subagents、`@` 指派、browser-capable agent 或 Antigravity plugin adapter；子代理是執行通道，不是專家角色來源；草案板不能啟動正式隊員，也不能讓草案證據滿足正式驗收；未證明可用時不得 routine direct，必須標記未驗證、阻塞或隊長替代創作 closed-with-director-risk | `native` + `conditional`：Shared evidence branch / isolated change delivery / text change delivery 語義只能在正式派工板中對應到已開啟波次的站點後轉譯為 Claude Code built-in/custom/plugin subagents、description 自動委派、`@agent` 或 governed `Agent(...)` 權限模型；子代理是執行通道，不是專家角色來源；草案板不能啟動正式隊員，也不能讓草案證據滿足正式驗收；未證明可用時不得 routine direct，必須標記未驗證、阻塞或隊長替代創作 closed-with-director-risk | `native` + `conditional`：Shared evidence branch / isolated change delivery / text change delivery 語義只能在正式派工板中對應到已開啟波次的站點後轉譯為 Codex native subagents；子代理是執行通道，不是專家角色來源；草案板不能啟動正式隊員，也不能讓草案證據滿足正式驗收；Director 要求只會強制建板派工，不允許先開代理；未證明可用時不得 routine direct，必須標記未驗證、阻塞或隊長替代創作 closed-with-director-risk |
 | Automation-safe workflow | `adapter`：metadata `automation_safe` + workflow gate | `adapter`：metadata `automation_safe` + Slash Command gate | `native`：Codex Automations 可觸發唯讀 workflow；寫入仍需 GO |
 | 權限 / 確認模型 | `adapter`：Role Lock Gate + `GO` / `[SUDO]` | `native` + `adapter`：Claude 權限提示與框架 `GO` gate | `native` + `adapter`：Codex approval/sandbox 設定與框架 `GO` gate |
 | 記憶系統 | `adapter`：共用 `.agents/memory/` 記憶語義，工具與授權由 Antigravity 轉譯 | `adapter`：共用 `.agents/memory/` 記憶語義，工具與授權由 Claude 轉譯 | `adapter`：共用 `.agents/memory/` 記憶語義，工具與授權由 Codex 轉譯 |
 
 記憶語義不得因平台不同而分裂。三平台共享同一套記憶卡品質欄位、證據狀態、讀取契約、衝突與取代規則；平台差異只限讀寫工具、授權提示、採證方式與外部引擎可用性。
+
+Captain-led programming governance 的 formal board lifecycle 是 draft -> formal-readonly or formal-write promotion -> wave-gated station dispatch -> returned delivery artifacts -> review/validation/memory states -> completion audit。No-write does not mean no-team；read-only exploration 仍需 formal-readonly team route。每個正式站點都要有 skill dispatch package：Allowed inputs、Allowed tools、Forbidden actions、Output artifact format、Stop condition。Large-file deep read 必須交給有界定範圍的隊員站點；captain must not absorb, substitute, or deep read 大檔作為團隊證據來源。standby、blocked、unverified、unavailable、not-authorized 都是可記錄狀態，不是免團隊條件。
 
 ## Workflow Grounding Translation Layer
 
