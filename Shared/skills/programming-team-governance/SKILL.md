@@ -133,7 +133,7 @@ Same specialist cannot implement and review the same deliverable. If independent
 
 ## Station Semantics
 
-Requirement playback may use protected direct handling when facts are complete.
+Requirement playback stays protected direct only when facts are complete.
 Counter-evidence, impact map, deep file reads, and broad exploration route to
 read-only evidence/CLI/MCP/browser stations under `formal-readonly`.
 Authorization planning is protected captain work. Implementation is isolated or

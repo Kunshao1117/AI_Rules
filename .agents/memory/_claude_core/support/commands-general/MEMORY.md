@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 一般討論、探索、實驗、濃縮與測試指令。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-06-29T07:04:40+08:00'
+last_updated: '2026-06-29T13:50:50+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T21:54:14+08:00'
+last_verified: '2026-06-29T13:50:50+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 16
+cycle_event_count: 17
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core.support.commands-general — Claude General Commands Memory
 
 ## Current Truth
@@ -43,6 +44,7 @@ metadata:
 - Claude condense command now uses the MCP memory evidence contract to separate source memory from project context evidence.
 - This child card owns Claude shared command gates and general command entries.
 - General commands must stay aligned with shared workflow semantics and Claude permission behavior.
+- Claude 00 chat is direct only for pure conversation with no external evidence dependency; files, screenshots, memory cards, rules, agent behavior, tool output, or governance-impact questions enter Team-Native formal-readonly and require returned evidence plus captain verify-read.
 - Test commands must select evidence by interface surface rather than assuming browser-only proof.
 - Claude test command now requires visual detail-observation notes and real-information-first evidence before fallback fake data.
 
@@ -51,6 +53,7 @@ metadata:
 - Do not write source or memory from read-only command flows without the appropriate gate.
 
 ## Cycle Events
+- 17: Rebuilt the Claude 00 chat command boundary so pure chat stays direct, while evidence-bearing discussion promotes to Team-Native formal-readonly with read scope, evidence status, and captain verify-read before the final answer.
 - 16: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 15: Synced Claude general commands with Team-Native specialist registry and change delivery artifact terminology.
 - 14: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
@@ -85,6 +88,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Claude 一般指令與共用閘門。
+- Claude 00 指令現在只讓純聊天直接回覆；需要檔案、截圖、記憶、規則、工具輸出或治理證據時要升級 formal-readonly。
 - 實驗與測試指令需宣告最小團隊站點與主線直做例外。
 - 測試指令要依介面型態選擇證據。
 

@@ -43,9 +43,11 @@ state, or mutate memory, git, release, deployment, install, or external state.
 ### 1. Build The Packet
 
 Create one packet per station. Do not bundle multiple roles into one packet.
-Do not reuse a packet across role-exclusive boundaries such as implementation
-to review, validation failure to repair, memory attribution to memory mutation,
-or completion audit to final acceptance.
+Do not reuse a packet across role-exclusive boundaries or across different
+`role_id` values. In the same task trace, a `role_instance_id` with
+`exclusive_task_scope: task` must not hold more than one `role_id`. Do not reuse
+a packet across implementation to review, validation failure to repair, memory
+attribution to memory mutation, or completion audit to final acceptance.
 
 `handoff_packet_id` is the canonical field name. `dispatch_packet_id` may appear
 only as a legacy alias in returned artifacts; new traces use
@@ -60,10 +62,15 @@ Required fields:
 
 ```text
 handoff_packet_id:
+operation_mode:
+operation_mode_reason:
 board_state:
 task_type:
 workflow_route:
 station:
+role_id:
+role_instance_id:
+exclusive_task_scope:
 assigned_specialist_skill:
 loaded_skill_refs:
 specialist_role_source:
@@ -123,6 +130,7 @@ Minimum refs:
 | Memory/docs | `team-specialist-memory-docs`, `team-memory-docs-delivery-artifact`, `memory-ops` |
 | Validation | `team-specialist-validation`, `team-validation-delivery-artifact` |
 | Review | `team-specialist-review`, `team-review-delivery-artifact`, `quality-review-governance` |
+| Security/reliability | `team-specialist-security-reliability`, `team-role-boundaries`, `security-sre` |
 | Completion | `team-specialist-release-completion`, `team-completion-gate` |
 | External research | `team-specialist-external-research`, relevant official-docs skill if available |
 
@@ -205,6 +213,12 @@ memory_delivery:
 
 - A subagent, browser, command, or MCP route is an execution channel, not the
   specialist role.
+- `operation_mode` controls execution depth before board template, board state,
+  closeout lane, or station set. `daily` is reduced Team-Native mode, not a
+  no-team route.
+- `role_id`, `role_instance_id`, and `exclusive_task_scope` prove role identity
+  and same-task exclusivity. A role instance cannot become a second specialist
+  role inside the same task.
 - Standby means the station is assigned but not yet evidence-complete.
 - A packet without loaded skill references is not a formal Team-First handoff.
 - A captain deep-reading everything is a direct exception, not full team

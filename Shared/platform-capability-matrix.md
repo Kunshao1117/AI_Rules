@@ -25,9 +25,21 @@ work. Scoped GO-backed implementation and protected follow-on actions use
 loaded skill refs, deep-read scope, captain verify-read scope, startup
 monitoring, timeout action, and standby reason when applicable.
 
-隊員生命週期是三平台代理共同語義。平台可以保留或重用同一子代理、CLI、瀏覽器、MCP、隔離工作區或文字交付通道，但只能在同一站點、同一角色、同一交付件與同一角色邊界內。正式 trace 必須記錄 station lifecycle state、retention reason、conversation health、reuse count、handoff summary、closure reason、closeout lane、Yellow classification、Yellow resolution state 與 repair loop count。跨越實作/審查、驗證/修復、記憶歸因/記憶寫入、收尾/最終裁決或需要第二意見時，平台必須關閉或替換通道。
+Team-Native execution depth is recorded as `operation_mode: daily | full`.
+`daily` is reduced Team-Native mode for routine checks, lightweight evidence,
+low-risk documentation alignment, generated-copy checks, or bounded governance
+drift. It still requires a Captain board, `operation_mode_reason`, `role_id`,
+handoff packet, trace evidence, and honest blocked/unverified states. `full` is
+required for implementation, repair, bottom-layer refactor, cross-file
+governance, specialist skill rewrites, Doctor/Audit rule changes,
+commit/release/deploy preparation, protected external-state readiness, or any
+source/workflow/public-contract impact.
 
-Team-First 派工模式是三平台共用能力層。探索、架構、測試、健檢、提交掃描、交接、技能設計、治理影響、廣泛讀檔與反證站點優先開 `formal-readonly`；來源、文件、工作流、部署副本、生成副本或技能內容寫入只能在 GO-backed `formal-write` 站點中發生。隊員可被保留為 standby，但 standby 只記錄觸發條件與允許範圍，不是證據。遇到大檔、多檔或外部長文件時，平台應優先讓隊員深讀並回傳引用位置，隊長只做驗讀、整合與裁決，不以單一摘要宣稱全量讀畢。
+00 對話入口的跨平台語義是 direct chat first, formal-readonly when evidence matters. 純聊天、概念釐清與不影響治理的輕量問答可由主線直答；一旦請求涉及檔案、截圖、記憶/脈絡卡、規則/工作流/政策、代理或子代理行為、證據查核、工具輸出、或可能影響後續來源、驗證、審查、記憶、發布與治理決策，必須升級為 `formal-readonly` 團隊站點。隊員負責有界讀檔、查資料或採證；隊長只做驗讀、整合與裁決。深度研究、架構、建構、修復、測試、提交、發布或寫入型治理仍轉對應工作流。證據型對話必須有證據狀態回報；未開啟隊員通道時必須標示 standby、blocked、unverified、unavailable 或 not-authorized。
+
+隊員生命週期是三平台代理共同語義。平台可以保留或重用同一子代理、CLI、瀏覽器、MCP、隔離工作區或文字交付通道，但只能在同一站點、同一 `role_id`、同一 `role_instance_id`、同一交付件與同一角色邊界內。同一任務中的 `exclusive_task_scope: task` 角色實例不得承擔第二個 `role_id`。正式 trace 必須記錄 operation mode、role identity、station lifecycle state、retention reason、conversation health、reuse count、handoff summary、closure reason、closeout lane、Yellow classification、Yellow resolution state 與 repair loop count。跨越實作/審查、驗證/修復、記憶歸因/記憶寫入、收尾/最終裁決、不同 `role_id` 或需要第二意見時，平台必須關閉或替換通道。
+
+Team-First 派工模式是三平台共用能力層。探索、架構、測試、健檢、提交掃描、交接、技能設計、治理影響、廣泛讀檔與反證站點優先開 `formal-readonly`；來源、文件、工作流、部署副本、生成副本或技能內容寫入只能在 GO-backed `formal-write` 站點中發生。隊員可被保留為 standby，但 standby 只記錄觸發條件與允許範圍，不是證據。遇到大檔、多檔或外部長文件時，平台必須先指派有界隊員深讀並回傳引用位置；若通道不可用，必須記錄不可用原因、待命理由、最小補證條件與隊長驗讀範圍。隊長只做驗讀、整合與裁決，不以單一摘要宣稱全量讀畢。
 
 ## Scoped Authorization Semantics
 

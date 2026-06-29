@@ -1,13 +1,10 @@
 ---
 name: team-specialist-registry
 description: >
-  [Infra] Team specialist role registry for captain-led Team-Native work.
-  Use when: route a station to a specialist role, choose intent requirements,
-  scope impact, architecture contract, change delivery, validation, review,
-  security reliability, memory docs, release completion, or external research;
-  專家角色、隊員路由、站點派工、變更交付件。 DO NOT use when: pure discussion,
-  final captain acceptance, memory writes, git or release mutation, 純討論、
-  隊長最終裁決、記憶提交、提交發布。
+  [Infra] Team specialist role registry and role_id router for Team-Native work.
+  Use when: choose one of ten specialist child skills for a station; 專家角色、
+  隊員路由、站點派工、角色代號。 DO NOT use when: pure discussion, final captain
+  acceptance, memory writes, git or release mutation.
 metadata:
   author: antigravity
   version: "1.0"
@@ -16,6 +13,22 @@ metadata:
   style: hybrid
   memory_awareness: read
   tool_scope: ["filesystem:read"]
+  relations:
+    role_layer: registry
+    support_skills:
+      - team-specialist-intent-requirements
+      - team-specialist-scope-impact
+      - team-specialist-external-research
+      - team-specialist-architecture-contract
+      - team-specialist-change-delivery
+      - team-specialist-validation
+      - team-specialist-review
+      - team-specialist-security-reliability
+      - team-specialist-memory-docs
+      - team-specialist-release-completion
+    trace_contracts:
+      - team-trace-evidence
+      - team-station-handoff-packet
 ---
 
 # Team Specialist Registry — Role Router
@@ -26,13 +39,15 @@ Use after the captain has a Team-Native board and needs a station-specific
 specialist role.
 
 Use this registry to choose exactly one primary specialist for one station.
-Use the chosen child skill for the station procedure and output format.
+Use the chosen child skill for the station procedure, role identity, support
+skills, artifact contracts, trace contracts, and output format.
 
 Before starting the station, create a handoff packet with
 `team-station-handoff-packet` or an equivalent platform adapter. The packet
-must include the assigned specialist skill, loaded skill refs, read scope,
-forbidden actions, output format, startup threshold, standby reason when
-applicable, and timeout action.
+must include `operation_mode`, `operation_mode_reason`, `role_id`,
+`role_instance_id`, `exclusive_task_scope`, the assigned specialist skill,
+loaded skill refs, read scope, forbidden actions, output format, startup
+threshold, standby reason when applicable, and timeout action.
 
 ## Procedure
 
@@ -53,67 +68,42 @@ Director prompt contains [SUDO]?
 
 ### Step 2: Select the specialist
 
-| Station need | Load skill | Change delivery artifact focus |
-|---|---|---|
-| Goal, non-goal, acceptance, ambiguity | `team-specialist-intent-requirements` | Requirement replay and exclusions |
-| File, workflow, memory, docs, compatibility surface | `team-specialist-scope-impact` | Impact map and blast radius |
-| Boundary, interface, migration, architectural contract | `team-specialist-architecture-contract` | Architecture decision evidence |
-| Assigned file edits in a governed fork or text-only delivery | `team-specialist-change-delivery` | Implemented or proposed change delivery artifact |
-| Non-mutating command, browser, MCP, or manual evidence | `team-specialist-validation` | Validation state and remaining gaps |
-| Independent requirement fit and regression review | `team-specialist-review` | Review state and findings |
-| Secret, abuse, reliability, observability, rollback risk | `team-specialist-security-reliability` | Risk classification and safeguards |
-| Memory, docs, index, handoff, generated-copy attribution | `team-specialist-memory-docs` | Memory and documentation delivery status |
-| Completion, release readiness, residual risk, final delivery artifact check | `team-specialist-release-completion` | Completion readiness evidence |
-| Official docs, current external facts, vendor or API research | `team-specialist-external-research` | Source-grounded research evidence |
+| Station need | Role ID | Load child skill | Artifact focus |
+|---|---|---|---|
+| Goal, non-goal, acceptance, ambiguity | `intent-requirements` | `team-specialist-intent-requirements` | Requirement replay and exclusions |
+| File, workflow, memory, docs, compatibility surface | `scope-impact` | `team-specialist-scope-impact` | Impact map and blast radius |
+| Official docs, current external facts, vendor or API research | `external-research` | `team-specialist-external-research` | Source-grounded research evidence |
+| Boundary, interface, migration, architectural contract | `architecture-contract` | `team-specialist-architecture-contract` | Architecture decision evidence |
+| Assigned file edits in a governed fork or text-only delivery | `change-delivery` | `team-specialist-change-delivery` | Implemented or proposed change delivery artifact |
+| Non-mutating command, browser, MCP, or manual evidence | `validation` | `team-specialist-validation` | Validation state and remaining gaps |
+| Independent requirement fit and regression review | `review` | `team-specialist-review` | Review state and findings |
+| Secret, abuse, reliability, observability, rollback risk | `security-reliability` | `team-specialist-security-reliability` | Risk classification and safeguards |
+| Memory, docs, index, handoff, generated-copy attribution | `memory-docs` | `team-specialist-memory-docs` | Memory and documentation delivery status |
+| Completion, release readiness, residual risk, final delivery artifact check | `release-completion` | `team-specialist-release-completion` | Completion readiness evidence |
 
 ### Step 3: Preserve role boundaries
 
 1. Assign one specialist to one station only.
-2. Do not let the change-delivery specialist review the same deliverable.
-3. Keep memory mutation, git mutation, release mutation, deployment, install, and final acceptance on the captain path.
-4. Return blocked, unverified, or closed-with-director-risk when the required role cannot be separated.
+2. Set `role_id` from the registry row and require a fresh `role_instance_id`
+   whenever the station crosses to another role.
+3. Do not let one `role_instance_id` with `exclusive_task_scope: task` hold
+   more than one `role_id`.
+4. Do not let the change-delivery specialist review the same deliverable.
+5. Keep memory mutation, git mutation, release mutation, deployment, install, and final acceptance on the captain path.
+6. Return blocked, unverified, or closed-with-director-risk when the required role cannot be separated.
 
-## Team-Native Trace Fields
+## Trace And Handoff Contract
 
-Every specialist output must include these fields so the captain can prove role separation and execution routing:
+The registry assigns role identity; shared trace files define the full field set.
 
-- `authorization_source`: Director prompt, captain board row, interface approval event, prior approved plan, or blocked/unverified source.
-- `authorization_target`: exact target such as file allowlist, station, protected action, command, tool, or external resource.
-- `authorization_scope`: concrete allowed operation boundary, including files, directories, generated copies, memory cards, commands, protected actions, or none.
-- `authorization_phase`: plan-only, implementation-change-delivery, captain-integration, validation, review, memory-docs, memory-commit, git, release, deployment, install, external-mutation, or blocked.
-- `authorization_evidence`: prompt excerpt, board row, approval UI event, command confirmation, or missing evidence reason.
-- `authorization_expiry`: current turn, current dispatch wave, named file set, named command, named protected action, explicit revocation, or blocked.
-- `authorization_resolution_state`: authorized, no-write, scope-mismatch, phase-mismatch, expired, unverified, blocked, or revoked.
-- `platform_mode_observed`: observed platform mode or capability context, recorded only as context and never as authorization.
-- `specialist_skill`: the exact specialist skill producing the artifact.
-- `loaded_skill_refs`: the skill refs or paths handed to the specialist.
-- `handoff_packet_id`: the station handoff packet identifier.
-- `domain_label`: the domain label used for this station.
-- `requested_execution_channel`: the requested channel before capability evaluation.
-- `channel_capability`: available, conditional, unavailable, or unverified.
-- `channel_invocation_status`: not-started, requested, running, returned, unavailable, blocked, or not-authorized.
-- `execution_channel`: native platform channel, project custom agent, tool/MCP, command evidence, browser evidence, external research, isolated change delivery, text change delivery, protected captain channel, or blocked.
-- `delivery_artifact`: intent, scope, architecture, change, validation, review, security, memory, documentation, completion, external research, or evidence artifact.
-- `delivery_artifact_status`: pending, returned, integrated, blocked, unverified, closed-with-director-risk, or not-applicable.
-- `station_lifecycle_state`: assigned, retained, reused, handoff-required, closed, replaced, blocked, or not-applicable.
-- `retention_reason`: why the same specialist channel may continue, or why retention is not allowed.
-- `conversation_health`: clear, needs-handoff, stale, over-budget, role-conflict, or blocked.
-- `reuse_count`: number of same-role reuse decisions for this station and delivery artifact.
-- `handoff_summary`: required when context is long, stale, or the station is replaced.
-- `closure_reason`: completed delivery, context stale, role conflict, independent opinion required, blocked, or not-applicable.
-- `deep_read_scope`: files, docs, logs, or external sources assigned for specialist deep-read.
-- `captain_verify_read_scope`: the reduced scope the captain must verify before integration or acceptance.
-- `unread_scope`: relevant scope not read by the specialist or captain.
-- `startup_started_at`: local timestamp when the channel was requested.
-- `first_response_deadline`: expected first useful response or heartbeat.
-- `last_progress_at`: latest progress evidence.
-- `timeout_action`: standby, replace, blocked, unverified, or Director input.
-- `standby_reason`: why an assigned station is waiting instead of returning evidence.
-- `closeout_lane`: light, standard, release-grade, or not-applicable.
-- `yellow_classification`: fix-this-cycle, residual-accepted, deferred-follow-up, local-customization, informational, or not-applicable.
-- `yellow_resolution_state`: fixed, deferred, accepted-residual, escalated-blocked, escalated-red, or not-applicable.
-- `repair_loop_count`: number of attempts for the same symptom family, file region, or operator path.
-- `no_captain_authoring`: true, blocked, unverified, or closed-with-director-risk with reason.
+1. Select exactly one registry row for each station.
+2. Copy the row's `role_id` into the handoff packet.
+3. Require `role_instance_id` and `exclusive_task_scope` before station startup.
+4. Load the child skill named in the row and the child skill's
+   `metadata.relations.support_skills`.
+5. Use `team-trace-evidence` and `team-station-handoff-packet` for the complete
+   authorization, channel, lifecycle, delivery, and blocker field list.
+
 ## Gotchas
 
 - Do not route by broad title alone. Match the station need and forbidden actions.

@@ -14,6 +14,21 @@ metadata:
   style: hybrid
   memory_awareness: read
   tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
+  relations:
+    role_id: security-reliability
+    role_layer: specialist
+    parent_skill: team-specialist-registry
+    support_skills:
+      - team-role-boundaries
+      - security-sre
+      - quality-review-governance
+    embedded_artifacts:
+      - security-reliability-risk-artifact
+    artifact_contracts:
+      - evidence-delivery-artifact
+    trace_contracts:
+      - team-trace-evidence
+      - team-station-handoff-packet
 ---
 
 # Team Specialist Security Reliability — Risk Evidence
@@ -59,37 +74,23 @@ Return these fields:
 - Validation route: command, review focus, or manual check.
 - Blocker status: blocked, unverified, closed-with-director-risk, or not-applicable.
 
-## Team-Native Trace Fields
+## Trace And Handoff Contract
 
-Every specialist output must include these fields so the captain can prove role separation and execution routing:
+Every output inherits shared Team-Native trace rules instead of duplicating the
+field list inside this role skill.
 
-- `authorization_source`: Director prompt, captain board row, interface approval event, prior approved plan, or blocked/unverified source.
-- `authorization_target`: exact target such as file allowlist, station, protected action, command, tool, or external resource.
-- `authorization_scope`: concrete allowed operation boundary, including files, directories, generated copies, memory cards, commands, protected actions, or none.
-- `authorization_phase`: plan-only, implementation-change-delivery, captain-integration, validation, review, memory-docs, memory-commit, git, release, deployment, install, external-mutation, or blocked.
-- `authorization_evidence`: prompt excerpt, board row, approval UI event, command confirmation, or missing evidence reason.
-- `authorization_expiry`: current turn, current dispatch wave, named file set, named command, named protected action, explicit revocation, or blocked.
-- `authorization_resolution_state`: authorized, no-write, scope-mismatch, phase-mismatch, expired, unverified, blocked, or revoked.
-- `platform_mode_observed`: observed platform mode or capability context, recorded only as context and never as authorization.
-- `specialist_skill`: the exact specialist skill producing the artifact.
-- `domain_label`: the domain label used for this station.
-- `requested_execution_channel`: the requested channel before capability evaluation.
-- `channel_capability`: available, conditional, unavailable, or unverified.
-- `channel_invocation_status`: not-started, requested, running, returned, unavailable, blocked, or not-authorized.
-- `execution_channel`: native platform channel, project custom agent, tool/MCP, command evidence, browser evidence, external research, isolated change delivery, text change delivery, protected captain channel, or blocked.
-- `delivery_artifact`: intent, scope, architecture, change, validation, review, security, memory, documentation, completion, external research, or evidence artifact.
-- `delivery_artifact_status`: pending, returned, integrated, blocked, unverified, closed-with-director-risk, or not-applicable.
-- `station_lifecycle_state`: assigned, retained, reused, handoff-required, closed, replaced, blocked, or not-applicable.
-- `retention_reason`: why the same specialist channel may continue, or why retention is not allowed.
-- `conversation_health`: clear, needs-handoff, stale, over-budget, role-conflict, or blocked.
-- `reuse_count`: number of same-role reuse decisions for this station and delivery artifact.
-- `handoff_summary`: required when context is long, stale, or the station is replaced.
-- `closure_reason`: completed delivery, context stale, role conflict, independent opinion required, blocked, or not-applicable.
-- `closeout_lane`: light, standard, release-grade, or not-applicable.
-- `yellow_classification`: fix-this-cycle, residual-accepted, deferred-follow-up, local-customization, informational, or not-applicable.
-- `yellow_resolution_state`: fixed, deferred, accepted-residual, escalated-blocked, escalated-red, or not-applicable.
-- `repair_loop_count`: number of attempts for the same symptom family, file region, or operator path.
-- `no_captain_authoring`: true, blocked, unverified, or closed-with-director-risk with reason.
+1. Receive `operation_mode`, `operation_mode_reason`, `role_id`,
+   `role_instance_id`, and `exclusive_task_scope` from the station handoff
+   packet.
+2. Verify `role_id` matches this skill's `metadata.relations.role_id` before
+   producing an artifact.
+3. Include the authorization, channel, lifecycle, delivery, and blocker fields
+   required by `team-trace-evidence` and `team-station-handoff-packet`.
+4. Use only this skill's `metadata.relations.artifact_contracts` and
+   `metadata.relations.trace_contracts` as the output contract source.
+5. If the handoff packet is missing role identity fields, return blocked or
+   unverified evidence instead of inventing defaults.
+
 ## Gotchas
 
 - Do not require heavyweight scans for purely textual governance edits unless risk evidence points there.

@@ -25,11 +25,10 @@ semantics, `team-station-handoff-packet` for specialist startup payloads, and
 
 Captain flow: intake -> board -> assigned stations -> channel decision -> artifacts -> validation/review -> integration -> audit -> report. Specialist station assignment is mandatory once Team-Native mode is active. Platform runners are channels, not role sources.
 
-The board is the first executable Team-Native state. It is not a recap created
-after the captain has already read broadly, implemented, reviewed, validated, or
-claimed completion. If a station cannot start, the board keeps that station as
-standby, blocked, unverified, unavailable, or not-authorized with the smallest
-unblock condition.
+The board is the first executable Team-Native state, not a recap after broad
+reading, implementation, review, validation, or completion claims. Stations that
+cannot start remain standby, blocked, unverified, unavailable, or
+not-authorized with the smallest unblock condition.
 
 ## Formal Team Skill Sources
 
@@ -43,7 +42,12 @@ Choose exactly one board shape before dispatch.
 - Full board: build, fix, debug, test, audit, commit prep, handoff, skill/rule update, behavior docs, memory update, or cross-file work.
 - Experiment board: sandbox/prototype work with discard and upgrade rules.
 
-Do not dispatch until the selected board exists.
+Choose `operation_mode` before board shape. `daily` may use a lightweight board
+only for reduced routine evidence and must record `operation_mode_reason`.
+`full` is required for implementation, repair, bottom-layer refactor, cross-file
+governance, specialist skill rewrites, Doctor/Audit changes, commit/release/deploy
+preparation, external-state readiness, or any source/workflow/public-contract
+impact. Do not dispatch until the selected operation mode and board exist.
 
 ## Board State
 
@@ -58,13 +62,15 @@ formal-readonly or formal-write promotion -> wave-gated station dispatch ->
 returned delivery artifacts -> review/validation/memory states -> completion
 audit.
 
-Exact formal board lifecycle: draft -> formal-readonly or formal-write promotion -> wave-gated station dispatch -> returned delivery artifacts -> review/validation/memory states -> completion audit.
+Formal board lifecycle is wave-gated from promotion to completion audit.
 
 ## Board Header
 
 Every board begins with:
 
 ```text
+Operation mode: daily / full
+Operation mode reason:
 Board template:
 Board state: draft / formal-readonly / formal-write
 Task type:
@@ -105,16 +111,21 @@ Dispatch wave:
 Previous-wave input:
 Next-wave start condition:
 Formal evidence eligibility: formal / draft-input-only / not-eligible / blocked
+Operation mode:
+Operation mode reason:
 Authorization source; Authorization target; Authorization scope; Authorization phase; Authorization evidence; Authorization expiry; Authorization resolution state; Platform mode observed:
 Platform capability route: native / adapter / conditional / unavailable
 Specialist role source:
 Assigned specialist skill:
+Role ID:
+Role instance ID:
+Exclusive task scope:
 Loaded skill refs:
 Handoff packet ID:
 Domain label:
 Requested execution channel:
-Channel capability: available / conditional / unavailable / unverified
-Channel invocation status: not-started / requested / running / returned / unavailable / blocked / not-authorized
+channel_capability / Channel capability: available / conditional / unavailable / unverified
+channel_invocation_status / Channel invocation status: not-started / requested / running / returned / unavailable / blocked / not-authorized
 Execution channel:
 Station lifecycle state: assigned / standby / retained / reused / handoff-required / closed / replaced / blocked / not-applicable
 Retention reason:
@@ -125,11 +136,11 @@ Closure reason:
 Deep read scope:
 Captain verify read scope:
 Unread scope:
-Startup started at:
-First response deadline:
-Last progress at:
-Timeout action:
-Standby reason:
+startup_started_at / Startup started at:
+first_response_deadline / First response deadline:
+last_progress_at / Last progress at:
+timeout_action / Timeout action:
+standby_reason / Standby reason:
 Closeout lane: light / standard / release-grade / not-applicable
 Yellow classification: fix-this-cycle / residual-accepted / deferred-follow-up / local-customization / informational / not-applicable
 Yellow resolution state: fixed / deferred / accepted-residual / escalated-blocked / escalated-red / not-applicable
@@ -147,7 +158,9 @@ Captain authored specialist content: false / blocked / unverified / closed-with-
 Missing evidence state:
 ```
 
-`formal` requires a formal station, open wave, assigned skill, owner, artifact format, and no forbidden boundary. `draft-input-only` cannot satisfy acceptance.
+`formal` requires a formal station, operation mode, open wave, assigned skill,
+`role_id`, `role_instance_id`, owner, artifact format, and no forbidden
+boundary. `draft-input-only` cannot satisfy acceptance.
 
 ## Wave Dispatch Rules
 
@@ -165,17 +178,29 @@ release, or governance decisions.
 ## Specialist Lifecycle Rules
 
 Do not close and reopen specialists mechanically. Retain only when the same
-station, role, delivery artifact, dispatch wave, and role boundary continue.
+station, `role_id`, `role_instance_id`, delivery artifact, dispatch wave, and
+role boundary continue.
 Record station lifecycle state, retention reason, conversation health, reuse
 count, handoff summary when needed, startup thresholds, and closure reason.
 Valid lifecycle decisions are `assigned`, `standby`, `retained`, `reused`,
 `handoff-required`, `replaced`, `closed`, and `blocked`.
 
-Never retain across implementation/review, validation repair, memory attribution/protected memory mutation, completion/final acceptance, or other role-exclusive boundaries.
+Never retain across different `role_id` values, implementation/review,
+validation repair, memory attribution/protected memory mutation,
+completion/final acceptance, or other role-exclusive boundaries. In the same
+task trace, a role instance with `exclusive_task_scope: task` must not hold more
+than one `role_id`.
 
 ## Fast Closeout Lane
 
-Closeout lanes are `light`, `standard`, and `release-grade`. `light` fits docs, generated-copy sync, Yellow drift, or low-risk governance wording with scope/impact, change or sync delivery, validation, and completion audit. `standard` covers policies, skills, matrices, audit logic, workflow semantics, memory/docs impact, and public contracts with separated memory/docs, validation, review, and completion. `release-grade` adds release completion and security/reliability for commit, tag, release, deployment, install, external mutation, credentials, or operator readiness.
+Closeout lanes are `light`, `standard`, and `release-grade`; they sit inside
+`operation_mode` and do not replace it. `light` fits docs, generated-copy sync,
+Yellow drift, or low-risk governance wording. `standard` covers policies,
+skills, matrices, audit logic, workflow semantics, memory/docs impact, and
+public contracts with separated memory/docs, validation, review, and completion.
+`release-grade` adds release completion and security/reliability for commit,
+tag, release, deployment, install, external mutation, credentials, or operator
+readiness.
 
 ## Yellow Classification Rules
 
@@ -187,6 +212,9 @@ Every specialist receives one station and one responsibility:
 
 ```text
 Role:
+Role ID:
+Role instance ID:
+Exclusive task scope:
 One concrete task:
 Allowed inputs:
 Allowed tools:
@@ -219,9 +247,7 @@ Implementation work uses only these forms:
 | Text change delivery artifact | Return proposed edits with paths, rationale, tests | Write files, claim integration or review acceptance |
 | Captain substitute authoring risk record | Record no route and Director risk closure | Treat substitute authoring as integration or full completion |
 
-Direct implementation authoring is blocked first; it becomes closed-with-director-risk only when no isolated change delivery or text change delivery artifact can be produced and the Director explicitly accepts that exact non-full-team case. Captain protected integration is not a change delivery form.
-
-Executable template rule: direct only when no isolated change delivery or text change delivery artifact can be produced and Director explicitly accepts the non-full-team risk state.
+Executable template rule: direct only when no isolated change delivery or text change delivery artifact can be produced and Director explicitly accepts the non-full-team risk state. Captain protected integration is not a change delivery form.
 
 Change delivery artifact:
 
@@ -264,9 +290,14 @@ The captain may use `direct` only for protected captain action, tool-only direct
 
 ## Integration Authorization
 
-Formal team completion requires all four artifact classes: implementation change delivery, memory/docs delivery artifact, review delivery artifact, and validation delivery artifact. Each artifact and formal station must carry the authorization fields from the board. If any artifact, scoped authorization field, or independent review is missing, mark `blocked`, `unverified`, or `closed-with-director-risk`. The captain may own protected integration and final delivery but not substitute complete team execution.
+Formal team completion requires all four artifact classes: implementation change
+delivery, memory/docs delivery artifact, review delivery artifact, and
+validation delivery artifact. Each artifact and station carries board
+authorization fields. Missing artifacts, scoped authorization, or independent
+review become `blocked`, `unverified`, or `closed-with-director-risk`;
+closed-with-director-risk is not full team completion.
 
-Implementation change delivery, memory/docs delivery artifact, review delivery artifact, and validation delivery artifact are the minimum full-team evidence set. closed-with-director-risk is not full team completion.
+Implementation change delivery, memory delivery, review, and validation artifacts are the minimum full-team evidence set.
 
 ## Workflow Entry Contract
 
@@ -274,4 +305,9 @@ Workflow and command entries load `programming-team-governance`, `delegation-str
 
 ## Completion Rules
 
-A task may be reported complete only when applicable stations are done, blocked, unverified, or risk-closed without confusing those states with complete; implementation was not self-reviewed; direct exceptions are recorded; generated-copy sync evidence exists when needed; memory/git/release/external state stays captain-owned; implementation change delivery, memory delivery, review, and validation artifacts exist before full team completion; residual memory, validation, review, or trace gaps are named as risk.
+A task may be reported complete only when applicable stations are done, blocked,
+unverified, or risk-closed without confusing those states with complete;
+implementation was not self-reviewed; direct exceptions are recorded;
+memory/git/release/external state stays captain-owned; implementation change
+delivery, memory delivery, review, and validation artifacts exist; residual
+memory, validation, review, sync, or trace gaps are named as risk.

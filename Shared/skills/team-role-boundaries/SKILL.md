@@ -33,17 +33,54 @@ Subagents, browser routes, CLI routes, MCP reads, isolated workspaces, and text-
 - Allowed files, tools, and stop condition.
 - Prior delivery artifact, if this station depends on one.
 
+## Operation Mode Boundary
+
+`operation_mode: daily` may reduce station count only for routine, low-risk, or
+bounded evidence work. It still requires a Captain board, `role_id`,
+`role_instance_id`, handoff packet, trace evidence, and explicit reduction
+reason. `operation_mode: full` is required for implementation, repair,
+bottom-layer refactor, cross-file governance, specialist skill rewrites,
+Doctor/Audit changes, commit/release/deploy preparation, or protected
+external-state readiness.
+
+## Specialist Role Exclusivity
+
+The ten specialist roles are mutually exclusive inside the same task trace:
+
+```text
+intent-requirements
+scope-impact
+external-research
+architecture-contract
+change-delivery
+validation
+review
+security-reliability
+memory-docs
+release-completion
+```
+
+A specialist channel or `role_instance_id` with `exclusive_task_scope: task`
+must not hold more than one `role_id`. Same-role retention is allowed only when
+the same station, `role_id`, `role_instance_id`, delivery artifact, dispatch
+wave, and role boundary continue. Crossing to another `role_id` closes the old
+station and opens a new role instance.
+
 ## Role Rules
 
-| Role | Allowed | Forbidden |
+| Role ID | Allowed | Forbidden |
 |---|---|---|
-| Requirement | Restate goal, constraints, exclusions, acceptance criteria. | Design, implement, review final quality, expand scope. |
-| Architecture | Define boundaries, alternatives, interfaces, risk. | Write production changes, hide tradeoffs, approve implementation. |
-| Implementation | Produce isolated change delivery or text change delivery artifact only. | Review own work, mutate main worktree, update memory, commit, push, release. |
-| Validation | Run or classify non-mutating checks. | Repair core code, approve quality, change evidence after failure. |
-| Review | Judge requirement fit, correctness, quality, regression risk. | Implement the reviewed change, self-approve, mutate files. |
-| Completion | Check sync, memory need, docs, handoff, residual risk. | Final acceptance, memory write, git, release, deploy. |
-| Captain | Route, supervise, integrate approved change delivery and evidence artifacts, decide review state, report. | Author specialist implementation/review/validation/memory attribution when a delivery artifact route exists; hide missing evidence; claim full team completion from direct work, substitute authoring, missing review, or unapproved substitution. |
+| `intent-requirements` | Restate goal, constraints, exclusions, ambiguities, and acceptance criteria. | Design, implement, review final quality, expand scope. |
+| `scope-impact` | Map files, workflows, memory, docs, generated copies, dependencies, and regression surface. | Implement changes, approve scope expansion, mutate files or memory. |
+| `external-research` | Gather current official or primary-source evidence and map it to the local decision. | Edit source, install packages, mutate external systems, decide final acceptance. |
+| `architecture-contract` | Define boundaries, alternatives, interfaces, migration, compatibility, and risk. | Write production changes, hide tradeoffs, approve implementation. |
+| `change-delivery` | Produce isolated change delivery or text change delivery artifact only. | Review own work, mutate memory, commit, push, release, deploy, install, or external state. |
+| `validation` | Run or classify non-mutating checks and validation evidence. | Repair core code, approve quality, change evidence after failure. |
+| `review` | Judge requirement fit, correctness, maintainability, evidence integrity, and regression risk. | Implement the reviewed change, self-approve, mutate files. |
+| `security-reliability` | Classify secrets, authorization, data integrity, abuse, reliability, observability, rollback, and operational risk. | Expose secrets, mutate protected state, implement feature changes, approve release mutation. |
+| `memory-docs` | Attribute memory, documentation, index, handoff, and generated-copy impact as evidence. | Edit memory cards, call memory commit, mutate source, decide final acceptance. |
+| `release-completion` | Check readiness, sync, residual risk, handoff, validation, review, and memory/docs evidence. | Final acceptance, memory write, git, tag, release, deploy, install. |
+| `captain` | Route, supervise, integrate approved change delivery and evidence artifacts, decide review state, own protected gates, report. | Author specialist implementation/review/validation/memory attribution when a delivery artifact route exists; hide missing evidence; claim full team completion from direct work, substitute authoring, missing review, or unapproved substitution. |
 
 ## Read Scope Boundary
 
@@ -65,13 +102,17 @@ Before accepting any delivery artifact:
 
 1. Match the delivery artifact author to one role.
 2. Confirm the role is sourced from `team-specialist-registry` and a matching `team-specialist-*` skill, or mark the source `unverified` / `blocked`.
-3. Confirm the delivery artifact performed only the allowed action.
-4. Check that implementation and review are from different roles.
-5. Confirm the handoff packet lists loaded skill refs, read scope, forbidden actions, startup thresholds, and stop condition.
-6. Mark missing separation as `closed-with-director-risk`, `unverified`, or `blocked`; it cannot support `complete`.
-7. Reject delivery artifacts that mutate memory, git, releases, deployments, installs, or external state.
-8. Distinguish captain protected integration of returned delivery artifacts from captain substitute authoring. Protected integration can be normal captain work; substitute authoring starts blocked and can only close as `closed-with-director-risk`.
-9. Confirm authorization fields are present before accepting a station artifact; missing authorization fields are blocked or unverified and cannot support `complete`.
+3. Confirm the artifact records `operation_mode`, `role_id`, `role_instance_id`,
+   and `exclusive_task_scope`, or mark the source `unverified` / `blocked`.
+4. Confirm the delivery artifact performed only the allowed action.
+5. Check that the same task trace does not reuse one role instance across
+   multiple `role_id` values, and that implementation and review are from
+   different role instances.
+6. Confirm the handoff packet lists loaded skill refs, read scope, forbidden actions, startup thresholds, and stop condition.
+7. Mark missing separation as `closed-with-director-risk`, `unverified`, or `blocked`; it cannot support `complete`.
+8. Reject delivery artifacts that mutate memory, git, releases, deployments, installs, or external state.
+9. Distinguish captain protected integration of returned delivery artifacts from captain substitute authoring. Protected integration can be normal captain work; substitute authoring starts blocked and can only close as `closed-with-director-risk`.
+10. Confirm authorization fields are present before accepting a station artifact; missing authorization fields are blocked or unverified and cannot support `complete`.
 
 ## Outputs
 

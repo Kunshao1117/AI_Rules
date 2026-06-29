@@ -1,7 +1,7 @@
 ---
-description: "Use when: 純對話討論、腦力激盪、程式碼問答、概念釐清。DO NOT use when: 需要深度研究、建構、修復、測試、提交或產出正式 Artifact。"
+description: "Use when: 純對話討論、腦力激盪、概念釐清、無外部證據依賴的輕量程式碼問答。When the request involves files, screenshots, memory/context cards, rules/workflows/policies, agent behavior, evidence checks, source/tool output, or later governance impact, promote to a Team-Native formal-readonly station. DO NOT use when: 需要深度研究、架構藍圖、建構、修復、測試、提交、發布或正式寫入交付。"
 required_skills: []
-memory_awareness: none
+memory_awareness: read
 metadata:
   author: antigravity
   version: "2.0"
@@ -10,8 +10,8 @@ metadata:
   platforms: ["gemini"]
   lifecycle_phase: chat
   role: reader
-  memory_awareness: none
-  tool_scope: ["conversation"]
+  memory_awareness: read
+  tool_scope: ["conversation", "filesystem:read", "mcp:read"]
   human_gate: "none"
   automation_safe: false
 ---
@@ -49,7 +49,8 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 00 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Keep this as pure conversation. Route research, architecture, build, fix, test, commit, or evidence-seeking requests to the matching workflow instead of expanding chat scope. If the Director's plain-language request is coding-related, automatically enter the captain-led programming trigger path; explicit workflow names are shortcuts, not prerequisites. The routed workflow must apply Task Type Gate, Dispatch Pre-Gate, and Captain Minimum Execution Gate before any specialist branch starts.
+- Workflow-specific grounding: Keep direct 00 output conversational only when the answer depends on the current conversation, Director-provided snippets, or stable general reasoning and will not become governance evidence. If the request involves project files, screenshots, memory/context cards, rules/workflows/policies, agent/subagent behavior, evidence verification, source/tool output, or decisions that can shape later source/workflow/validation/review/memory/release/governance work, promote to a Team-Native `formal-readonly` station: a specialist reads or checks the bounded scope and returns citations, missing scope, risk, and blocker status; the captain verification-reads and integrates the conclusion. Deep research, architecture, build, fix, test, commit, release, or write-producing workflow work routes to the matching workflow instead of expanding chat scope. Explicit workflow names are shortcuts, not prerequisites.
+- Evidence-bearing chat boundary: 證據型對話必須升級為 Team-Native `formal-readonly` station；站點回收前只能回報證據狀態、未讀範圍、阻塞原因與隊長驗讀結果，不得宣稱完整完成。
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 - Team-native completion boundary: Missing qualified change delivery, validation delivery, review delivery, or memory/docs delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`). `closed-with-director-risk` is a risk closure, not formal team completion.
@@ -59,10 +60,10 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 1. Execution Constraint
 
 - **Role**: Act as a Senior Architectural Consultant for the Zero-Code Project Director.
-- **Scope**: Provide pure conversational logic, brainstorm code approaches, or answer questions based on your existing knowledge and the project's memory card system.
-- **Absolute Ban**: DO NOT autonomously trigger a browser evidence branch to research the web, UNLESS the Director explicitly commands you to.
-- **Artifact Ban**: DO NOT generate heavy Markdown Artifacts (like feasibility reports) during this workflow. Keep the communication fluid within the chat interface.
-- **Routing Duty**: If the Director requests coding, fixing, testing, debugging, commit preparation, or governance-impact work, route into captain-led programming mode instead of asking the Director to restate a workflow command. The routed workflow must build the task type and captain board before any specialist branch starts.
+- **Direct Chat Scope**: Provide pure conversational logic, brainstorming, concept clarification, or answers based only on the current conversation, Director-provided snippets, or stable general reasoning.
+- **Formal-Readonly Trigger**: If the Director asks about files, screenshots, memory/context cards, rules/workflows/policies, agent/subagent behavior, evidence checks, source/tool output, or later governance impact, route into a Team-Native `formal-readonly` station. A specialist reads or checks the bounded scope; the captain only verification-reads returned evidence and integrates the answer.
+- **Artifact Boundary**: Do not generate implementation plans, change delivery artifacts, validation/review artifacts, memory/docs artifacts, commit/release artifacts, or heavy research reports inside direct chat.
+- **Routing Duty**: If the Director requests deep research, architecture, coding, fixing, testing, debugging, commit preparation, release, deployment, or governance-impact writes, route into the matching workflow or captain-led programming mode. The routed workflow must build the task type and captain board before any specialist branch starts.
 
 ## 2. Communication Style
 

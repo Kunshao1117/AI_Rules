@@ -24,6 +24,8 @@ Each task trace should contain these fields in readable Markdown or JSON:
 | `task_id` | Stable task identifier or timestamp |
 | `task_type` | discussion, exploration, blueprint, build-plan, implementation, fix-debug, validation-audit, commit-release, or handoff-skill |
 | `workflow_route` | Workflow or semantic route used as a route hint |
+| `operation_mode` | `daily` for reduced routine Team-Native work, or `full` for complete Team-Native work |
+| `operation_mode_reason` | Why the task may use daily mode, or why full mode is required |
 | `board_state` | draft or formal |
 | `implementation_authorization` | no-write, plan-only, GO-write, GO-push, release-authorized, or blocked |
 | `go_evidence` | Prompt, workflow authorization, or blocked state |
@@ -37,8 +39,11 @@ Each task trace should contain these fields in readable Markdown or JSON:
 | `platform_mode_observed` | Observed platform mode or capability context, recorded only as context and never as authorization |
 | `specialist_role_source` | `team-specialist-registry` entry and matching `team-specialist-*` skill, or blocked/unverified reason |
 | `specialist_skill` | Exact specialist child skill selected from the registry, or blocked/unverified reason |
+| `role_id` | One of the registered ten specialist roles, such as `intent-requirements`, `change-delivery`, `review`, or blocked/unverified reason |
+| `role_instance_id` | Unique role instance for this task trace; a role instance must not hold multiple `role_id` values in the same task |
+| `exclusive_task_scope` | Usually `task`, proving the specialist role instance is exclusive within the current task trace or blocked/unverified reason |
 | `loaded_skill_refs` | Skill refs or paths passed to the specialist instead of narrative-only identity |
-| `handoff_packet_id` | Station handoff packet ID, or blocked/unverified reason |
+| `handoff_packet_id` | Required for every formal station: station handoff packet ID, or blocked/unverified reason when the station cannot be dispatched |
 | `domain_label` | Domain label used for the station, such as governance rules, platform capability, testing automation, memory governance, documentation, architecture quality, or external information |
 | `requested_execution_channel` | Requested channel before capability evaluation |
 | `channel_capability` | available, conditional, unavailable, or unverified |
@@ -80,8 +85,16 @@ Each task trace should contain these fields in readable Markdown or JSON:
 | `role_separation` | Evidence that implementation and review did not share the same role |
 | `captain_protected_integration` | Integration of returned qualified delivery artifacts, or not-applicable |
 | `captain_substitute_authoring` | blocked by default; closed-with-director-risk only with case-specific Director approval and no full-team-completion claim |
-| `completion_state` | complete, closed-with-director-risk, blocked, or unverified |
+| `completion_state` | complete, closed-with-director-risk, blocked, unverified, or not-applicable |
 | `residual_risk` | Remaining blocked, unverified, or closed-with-director-risk items |
+
+## Hard Gate Requirements
+
+- Formal stations must carry `handoff_packet_id`; a narrative-only handoff is not enough.
+- `operation_mode: full`, governance-impact implementation, Doctor/Audit rule changes, routine audit rule readiness, and commit/release preparation require Team-Native trace evidence. Missing trace is a blocked Red audit finding, not a Yellow advisory.
+- A completion claim must expose parseable `stations`, `delivery_artifacts`, `role_instance_id`, `delivery_artifact_id`, and `direct_exceptions`. The values may close as blocked, unverified, closed-with-director-risk, or not-applicable only when the trace is not claiming full completion.
+- `completion_state` is limited to `complete`, `closed-with-director-risk`, `blocked`, `unverified`, or `not-applicable`. `completed`, `done`, `accepted-risk`, and other informal states must not pass as completion evidence.
+- Two or more evidence-oriented stations marked direct require station-specific `direct_exceptions`, replacement evidence, and residual state. Without them, the trace is invalid for formal acceptance.
 
 ## Audit Semantics
 
@@ -110,6 +123,28 @@ These patterns must not pass:
 - Subagent, browser, CLI, or MCP route described as the specialist role instead of the execution channel for a registered specialist.
 - Missing channel capability or channel invocation status for an applicable station.
 - Missing loaded skill refs or handoff packet for a formal specialist station.
+- Missing `handoff_packet_id` on any formal station.
+- Missing Team-Native trace evidence for `operation_mode: full`, governance-impact
+  implementation, Doctor/Audit rule changes, routine audit rule readiness, or
+  commit/release preparation.
+- `completion_state` outside `complete`, `closed-with-director-risk`,
+  `blocked`, `unverified`, or `not-applicable`.
+- A non-complete `completion_state` paired with a completion claim.
+- A completion claim without parseable `stations`, `delivery_artifacts`,
+  `role_instance_id`, `delivery_artifact_id`, and `direct_exceptions`.
+- Missing `operation_mode` or `operation_mode_reason` in a trace that claims
+  completion.
+- `operation_mode: daily` used for bottom-layer refactor, cross-file governance
+  changes, specialist skill rewrites, Doctor/Audit rule changes, commit/release
+  preparation, deployment/install/external-state readiness, or any other
+  full-only work.
+- `operation_mode: daily` described as full team completion without proving the
+  task itself did not require full station separation.
+- `operation_mode: full` missing separated change delivery, validation, review,
+  memory/docs, completion evidence, role identity evidence, or required trace
+  evidence.
+- Reusing the same `role_instance_id` or specialist channel across multiple
+  `role_id` values in the same task trace.
 - No-write or read-only work treated as a reason to skip Team-Native stations when the work can shape source, workflow, validation, review, memory, release, or governance decisions.
 - Captain broad-reading large file sets as a substitute for specialist deep-read without a direct exception and residual state.
 - Assigned stations left waiting without standby reason, first-response deadline, timeout action, or smallest unblock condition.

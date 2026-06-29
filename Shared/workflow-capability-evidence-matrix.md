@@ -33,6 +33,46 @@ result can influence later source or governance decisions. GO-backed
 implementation and protected follow-on actions use `formal-write`. No-write
 does not mean no-team; no-write is an action limit, not a no-team state.
 
+### Operation Mode Contract
+
+Team-Native records execution depth before board template, board state, closeout
+lane, or station set:
+
+```text
+operation_mode -> board_template -> board_state -> closeout_lane -> station set
+```
+
+`daily` is reduced Team-Native mode for routine checks, lightweight evidence,
+low-risk documentation alignment, generated-copy checks, or bounded governance
+drift. It still requires a Captain board, `operation_mode_reason`, `role_id`,
+`role_instance_id`, `exclusive_task_scope`, handoff packet, trace evidence, and
+explicit blocked/unverified states. `daily`
+must not be used for bottom-layer refactor, cross-file governance changes,
+specialist skill rewrites, Doctor/Audit rule changes, commit/release/deploy
+preparation, protected external-state readiness, or any full-only completion
+claim.
+
+`full` is complete Team-Native mode for implementation, repair, bottom-layer
+refactor, cross-file governance, specialist skill rewrites, Doctor/Audit
+changes, commit/release/deploy preparation, high-risk external-state work, or
+any source/workflow/public-contract impact. Full completion requires separated
+change delivery, memory/docs delivery, validation, review, completion evidence,
+role identity evidence, and required Team-Native trace.
+
+### 00 Chat Formal-Readonly Boundary
+
+00 direct chat is allowed only when the answer can be produced from the current
+conversation, Director-provided snippets, or stable general reasoning, and the
+result will not become later governance evidence. Evidence-bearing chat
+requests involving project files, screenshots, memory/context cards,
+rules/workflows/policies, agent/subagent behavior, evidence checks, source/tool
+output, or later governance impact must use a `formal-readonly` team station.
+The specialist reads or checks the bounded scope and returns citations, missing
+scope, risk, blocker status, and evidence status reporting; the captain
+verification-reads and integrates. Deep external research, architecture, build,
+fix, test, commit, release, or write-producing workflow work continues routing
+to the matching workflow. 證據型對話必須先升級為正式唯讀團隊站點；證據狀態回報不得省略。
+
 平台能力路由只能是 `native`、`adapter`、`conditional` 或 `unavailable`。`conditional` 代表該平台可能支援，但本次必須用工具可用性、正式站點、交付件格式與 Team-Native trace 證明；缺任一項時不得 routine direct，也不得宣稱完整團隊完成。`unavailable` 必須轉成阻塞、未驗證或 `closed-with-director-risk`，並列出最小補證條件。
 
 ### Team-First Dispatch Defaults
@@ -253,7 +293,7 @@ Visual verification must inspect details and prefer real information. Screenshot
 
 | 工作流 | 任務型態 | 外部接地依據 | 最低證據 | 常見路由 |
 |---|---|---|---|---|
-| 00 對話 | 純討論、概念釐清、輕量問答 | Codex 指令分層、Claude 上下文管理、Agent Skills 描述觸發 | 當前規則與已知上下文；高變動事實需轉研究 | 01、02、03、04、06、09 |
+| 00 對話 | 純討論、概念釐清、無外部證據依賴的輕量問答；檔案、截圖、記憶、規則、代理行為、證據查核或治理影響改走 `formal-readonly` | Codex 指令分層、Claude 上下文管理、Agent Skills 描述觸發、Team-First formal-readonly | 純直答需只依目前對話、提供片段或穩定常識；formal-readonly 需站點板、讀取範圍、隊員證據、引用位置、未驗證/阻塞清單、證據狀態回報與隊長驗讀結果；高變動事實需轉研究 | 01、02、03、04、06、09 |
 | 01 探索 | 網路研究、競品、可行性、反方分析 | 深度研究實務、來源可信度、資料新鮮度、Team-First formal-readonly | formal-readonly 團隊站點板、隊員技能派工包、來源層級、日期、偏誤、覆蓋缺口與未驗證項；若不開隊員，需記錄不可用通道與直接例外 | 02、03、08 |
 | 02 架構 | 純架構、重大技術轉向、系統藍圖 | ADR、C4、arc42、官方框架文件、需求對齊閘門、編程團隊治理、Team-First formal-readonly | formal-readonly 團隊站點板、需求理解回放、中立反證、決策狀態、替代方案、審查目的與狀態、需求到驗收追蹤、假設、相容性與後續建構契約 | 03、08、12 |
 | 03-1 實驗 | 沙盒 spike、丟棄式原型 | 技術 spike、原型隔離實務、編程團隊最小治理 | 最小團隊站點板、沙盒邊界、允許改動範圍、丟棄條件、升級條件、禁止生產品質聲明 | 03、11 |

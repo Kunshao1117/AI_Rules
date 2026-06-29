@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-29T12:11:52+08:00'
+last_updated: '2026-06-29T23:27:26+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-29T12:06:14+08:00'
+last_verified: '2026-06-29T23:27:26+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 8
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
+- Codex core governance now requires the Team-Native hard gate before broad reading, validation, review, memory/docs attribution, completion audit, or completion claims can count as Team-Native evidence.
 - Codex docs and core rules now describe Team-Native Core as a pre-execution state machine with formal-readonly for no-write evidence work, GO-backed formal-write for mutation, skill handoff packets, standby/nonlaunch reporting, and specialist deep-read / captain verify-read separation.
+- Codex docs now say Team-Native formal-readonly applies to evidence-bearing 00 chat, not only programming work; pure chat remains direct only when no external evidence is needed.
 - Codex source and deployed rules now place Team-Native Core and Authorization Resolution before Lifecycle; GO, approvals, sandbox/tool prompts, and skill names resolve only to scoped authorization evidence.
 - Codex source/deployed rules now say 61 shared operational skills and 78 deployed skills.
 - Codex source rules and the live project rule copy are byte-level synchronized after Team-Native lifecycle and fast-closeout updates; Director Output Contract reports red 0 / yellow 0.
@@ -63,6 +64,8 @@ metadata:
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 ## Cycle Events
+- 32: Synced Codex core source and live rules with the core-injection Team-Native hard gate before broad reading, validation, review, memory/docs attribution, completion audit, or completion claims.
+- 31: Updated Codex README to state that 00 evidence-bearing chat enters Team-Native formal-readonly, while pure chat remains direct; this aligns Codex docs with the rebuilt 00 workflow boundary.
 - 30: Synchronized Codex source/deployed core rules and README for Team-Native lifecycle, scoped authorization before Lifecycle, route-only workflow semantics, fast closeout wording, Team-First formal-readonly, handoff packets, standby or unavailable-channel reporting, and deep-read/verify-read boundaries; Doctor returned red 0 / yellow 0.
 - 29: Synced Codex source/deployed Team-Native wording to `closed-with-director-risk`, keeping protected integration distinct from captain substitute authoring.
 - 28: Removed residual captain-substitution wording from Codex README and deployed workflow skill copies.
@@ -89,6 +92,7 @@ metadata:
 - Codex 的 GO、工具提示與技能名稱現在只會變成有範圍的授權證據，不是無範圍寫入。
 - 工作流來源在 Codex 目錄，live 技能在 `.agents/skills/`。
 - Codex 編程工作流已改為團隊協作優先，主線保留寫檔與裁決責任。
+- Codex 00 證據型對話也會進 formal-readonly；純聊天才維持直接回覆。
 - 記憶讀取已對齊新版欄位。
 - 根層 README 不再由本卡追蹤。
 ## Tracked Files

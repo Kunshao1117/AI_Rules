@@ -17,6 +17,22 @@ broad reading, impact mapping, implementation, validation, review, memory
 attribution, commit preparation, release preparation, or completion claims first
 and only document the team route afterward.
 
+## Core Injection Hard Gate
+
+Core injection rules must enforce the shortest Team-Native gate before any
+skill, workflow, or platform adapter can soften it. Once Team-Native Core
+applies, broad file reading, validation, review, memory/docs attribution,
+completion audit, and completion claims may start only after the trace has a
+Captain Team Board, applicable stations, a station handoff packet, role identity
+(`role_id`, `role_instance_id`, and assigned specialist skill), and channel
+state (`requested_execution_channel`, `channel_capability`,
+`channel_invocation_status`, or an explicit standby/block state).
+
+If any gate element is missing, the station or task can only be `blocked`,
+`unverified`, or `closed-with-director-risk`. The captain must not absorb the
+work into mainline direct execution and still claim Team-Native mode, full team
+completion, or complete evidence.
+
 Root-cause guard: if a platform cannot open a specialist channel, that is a
 station state to report (`standby`, `blocked`, `unverified`,
 `not-authorized`, or `unavailable`), not permission for silent captain-direct
@@ -32,11 +48,41 @@ later source, workflow, validation, review, memory, release, or governance work.
 No-write status limits the allowed actions; it does not cancel team-mode
 station assignment.
 
+Chat-originated requests are not exempt. 00 direct chat remains available only
+for pure conversation and lightweight answers that do not require external
+evidence and will not shape later governance. If a chat request touches files,
+screenshots, memory/context cards, rules/workflows/policies, agent/subagent
+behavior, evidence checks, source/tool output, or later governance impact, it
+must enter `formal-readonly` team mode: the specialist performs bounded reading
+or checking, returns citations, missing scope, risk, blocker status, and
+evidence status reporting, and the captain only verification-reads returned
+evidence and integrates the conclusion. 證據型對話不得停留在直答模式；若隊員通道無法開啟，必須先回報 standby、blocked、unverified、unavailable 或 not-authorized。
+
 The required delivery sequence is fixed: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> station handoff packet -> execution-channel decision -> specialist startup attempt, standby, or blocked/unverified channel state -> specialist work -> captain verification-read -> recovered change delivery artifacts / evidence delivery artifacts -> independent validation and review -> captain integration -> completion audit -> report.
 
 The captain remains the only Director-facing owner, but the captain is not the default worker and must not author specialist implementation, review, validation, or memory attribution when a delivery artifact can be produced. The captain owns routing, authorization, supervision, protected integration of recovered delivery artifacts, protected memory/git/release/deploy/install gates, review-state decision, and final acceptance. All separable requirement replay, counter-evidence, impact mapping, implementation change delivery, memory delivery, validation, review, and completion audit work belongs to team stations.
 
 Explicit workflow names and Director requests for subagents are route hints. They do not replace the team board and do not authorize pre-board dispatch.
+
+## Operation Mode Rule
+
+Every Team-Native board records `operation_mode` before selecting board
+template, board state, closeout lane, or station set.
+
+```text
+operation_mode -> board_template -> board_state -> closeout_lane -> station set
+```
+
+| Operation mode | Use when | Completion boundary |
+|---|---|---|
+| `daily` | Routine inspection, lightweight evidence, low-risk documentation alignment, generated-copy checks, or bounded governance drift with no source, workflow, skill, audit-rule, release, deployment, install, external-state, or protected mutation impact. | Reduced Team-Native evidence may close daily work only. It still requires a Captain board, `role_id`, handoff packet, trace evidence, `operation_mode_reason`, and explicit blocked/unverified states. It cannot claim full team completion unless the task itself does not require full station separation. |
+| `full` | Implementation, repair, bottom-layer refactor, cross-file governance, specialist skill rewrites, Doctor/Audit changes, commit/release/deploy preparation, high-risk external state, or any work that changes source, workflow, memory/docs obligations, public contracts, generated copies, or completion semantics. | Full completion requires separated change delivery, validation, review, memory/docs, completion evidence, role identity evidence, and required trace evidence. |
+
+`daily` is a reduced Team-Native mode, not a no-team shortcut. A `daily` board
+that discovers full-only impact must promote to `full`, stop as blocked, or
+return unverified evidence with the smallest promotion path. Missing
+`operation_mode` is incomplete trace evidence; a trace that claims `complete`
+without `operation_mode` is invalid.
 
 ## Team-First Activation Rule
 
@@ -62,21 +108,24 @@ the station into main-thread direct work.
 ## Skill Handoff Packet Rule
 
 Specialist identity is not a narrative label. Every formal station must receive
-a skill handoff packet that names the assigned specialist skill, loaded skill
-references, task row, read scope, forbidden actions, output artifact format,
-startup threshold, and stop condition. The handoff packet may be produced from
+a skill handoff packet that names the operation mode, assigned role, role
+instance, assigned specialist skill, loaded skill references, task row, read
+scope, forbidden actions, output artifact format, startup threshold, and stop
+condition. The handoff packet may be produced from
 `team-station-handoff-packet` or an equivalent platform adapter, but it must be
 visible in the board or delivery trace.
 
-The packet must include these fields when applicable: `loaded_skill_refs`,
-`handoff_packet_id`, `deep_read_scope`, `captain_verify_read_scope`,
-`unread_scope`, `startup_started_at`, `first_response_deadline`,
-`last_progress_at`, `timeout_action`, and `standby_reason`.
+The packet must include these fields when applicable: `operation_mode`,
+`operation_mode_reason`, `role_id`, `role_instance_id`,
+`exclusive_task_scope`, `loaded_skill_refs`, `handoff_packet_id`,
+`deep_read_scope`, `captain_verify_read_scope`, `unread_scope`,
+`startup_started_at`, `first_response_deadline`, `last_progress_at`,
+`timeout_action`, and `standby_reason`.
 
 ## Deep-Read And Captain Verify Rule
 
-Large or numerous files should not be fully loaded by the captain when a
-bounded specialist deep-read station can inspect them first. The default split
+Large or numerous files must not be fully loaded by the captain when a
+bounded specialist deep-read station can inspect them first. The required split
 is:
 
 1. Specialist deep-read: read the assigned files or references, summarize
@@ -103,7 +152,14 @@ state is missing or inconsistent, the affected station is `no-write`,
 `unverified`, or `blocked`; it must not proceed through direct captain work or
 channel availability alone.
 
-Specialist role authority comes from `team-specialist-registry` and the matching `team-specialist-*` specialist skill. Subagents, browsers, CLI routes, MCP reads, isolated workspaces, and text-only routes are execution channels for those specialist stations; they are not role definitions and do not own governance decisions.
+Specialist role authority comes from `team-specialist-registry` and the matching
+`team-specialist-*` specialist skill. The ten specialist `role_id` values are
+`intent-requirements`, `scope-impact`, `external-research`,
+`architecture-contract`, `change-delivery`, `validation`, `review`,
+`security-reliability`, `memory-docs`, and `release-completion`. Subagents,
+browsers, CLI routes, MCP reads, isolated workspaces, and text-only routes are
+execution channels for those specialist stations; they are not role definitions
+and do not own governance decisions.
 
 Specialist station assignment is not conditional on channel availability. Once Team-Native Core applies, every applicable station must be assigned to a specialist skill before channel selection. If the requested channel cannot be invoked, the station remains on the board with `blocked`, `unverified`, or `closed-with-director-risk`; it must not disappear and must not become routine captain work.
 
@@ -118,19 +174,40 @@ Before any specialist, subagent execution channel, browser branch, CLI branch, M
 
 Pre-GO work uses a draft board. A draft board can structure planning and assumptions, but it cannot start formal specialists, satisfy validation/review/completion evidence, or support a full-team completion claim.
 
-After GO, the captain must create or promote a formal dispatch board before formal station work starts. Every applicable station records phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, evidence owner, specialist role source, assigned specialist skill, domain label, authorization source, authorization target, authorization scope, authorization phase, authorization evidence, authorization expiry, authorization resolution state, observed platform mode, requested execution channel, channel capability, channel invocation status, execution channel, delivery artifact type, delivery artifact status, role boundary, completion condition, and any direct exception.
+After GO, the captain must create or promote a formal dispatch board before formal station work starts. Every applicable station records operation mode, operation mode reason, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, evidence owner, specialist role source, assigned specialist skill, `role_id`, `role_instance_id`, `exclusive_task_scope`, domain label, authorization source, authorization target, authorization scope, authorization phase, authorization evidence, authorization expiry, authorization resolution state, observed platform mode, requested execution channel, channel capability, channel invocation status, execution channel, delivery artifact type, delivery artifact status, role boundary, completion condition, and any direct exception.
 
 The formal board opens only the current dispatch wave. Review, validation, memory/docs delivery, and completion stations that depend on a change must not start until the required change delivery artifact is returned or explicitly marked blocked, unverified, or closed-with-director-risk. A formal board is invalid when it launches all waves at once.
 
-Each delivery ledger entry records delivery artifact ID, author role, source input, integrable scope, authorization source, authorization target, authorization scope, authorization phase, authorization evidence, authorization expiry, authorization resolution state, observed platform mode, review state, validation state, memory/docs state, whether the captain authored specialist content, dispatch wave, previous-wave input, and next-wave condition. These fields make relationship checks auditable instead of relying on narrative claims.
+Each delivery ledger entry records delivery artifact ID, author role, `role_id`,
+`role_instance_id`, source input, integrable scope, authorization source,
+authorization target, authorization scope, authorization phase, authorization
+evidence, authorization expiry, authorization resolution state, observed
+platform mode, review state, validation state, memory/docs state, whether the
+captain authored specialist content, dispatch wave, previous-wave input, and
+next-wave condition. These fields make relationship checks auditable instead of
+relying on narrative claims.
 
 ## Specialist Lifecycle Rule
 
-Specialist stations are not disposable one-message helpers. A specialist channel may be retained when the station, role, delivery artifact, wave, and role boundary remain the same. Reusing the same specialist channel is forbidden when the role changes, the station crosses from implementation to review, validation failure turns into implementation, memory/docs attribution turns into protected memory mutation, or a second independent opinion is required.
+Specialist stations are not disposable one-message helpers. A specialist channel
+may be retained only when the same `role_id`, `role_instance_id`, station,
+delivery artifact, wave, and role boundary remain the same. In the same task
+trace or Captain Team Board, one specialist channel or role instance must not
+hold more than one `role_id`. Reusing the same specialist channel is forbidden
+when the role changes, the station crosses from implementation to review,
+validation failure turns into implementation, memory/docs attribution turns into
+protected memory mutation, completion audit turns into final acceptance, or a
+second independent opinion is required.
 
 Every formal station records the specialist lifecycle state: `assigned`, `retained`, `reused`, `handoff-required`, `closed`, `replaced`, or `blocked`. The board also records retention reason, conversation health, reuse count, handoff summary, role-boundary check, and closure reason.
 
-Lifecycle decisions are soft-budgeted instead of hard-closing every channel. If the same role can continue with clear context, the station may be retained. If the captain or specialist must reconstruct too much prior context, the station becomes `handoff-required`. If the handoff summary is insufficient, the station is `replaced`. If a role boundary would be crossed, the old station is `closed` and a new independent station is opened in a later eligible wave.
+Lifecycle decisions are soft-budgeted inside a single role instead of
+hard-closing every channel. If the same `role_id` and delivery artifact can
+continue with clear context, the station may be retained. If the captain or
+specialist must reconstruct too much prior context, the station becomes
+`handoff-required`. If the handoff summary is insufficient, the station is
+`replaced`. If a role boundary or `role_id` would be crossed, the old station is
+`closed` and a new independent role instance is opened in a later eligible wave.
 
 ## Fast Closeout Rule
 
@@ -142,7 +219,14 @@ Closeout is risk-tiered so Team-Native Core stays rigorous without mechanical al
 | `standard` | Multi-file policies, skills, matrices, audit rules, workflow semantics, or memory/docs impact | scope/impact, change delivery, memory/docs, validation, independent review, completion audit |
 | `release-grade` | Commit, tag, release, deployment, install, external state, credentials, or public operator readiness | standard lane plus release completion and security/reliability |
 
-Fast closeout never lowers the completion bar. It only reduces unnecessary station churn. A light lane may use fewer stations only when the board records why review or memory/docs is not applicable, or records the missing station as blocked, unverified, or closed-with-director-risk. Any source, workflow, governance, generated-copy, memory, or public-contract write promotes the lane to at least `standard` unless the board records a concrete reason.
+Fast closeout never lowers the completion bar and does not replace
+`operation_mode`. It only reduces unnecessary station churn inside the selected
+mode. A light lane may use fewer stations only when the board records why review
+or memory/docs is not applicable, or records the missing station as blocked,
+unverified, or closed-with-director-risk. Any source, workflow, governance,
+generated-copy, memory, or public-contract write promotes the lane to at least
+`standard` and normally requires `operation_mode: full` unless the board records
+a concrete non-full reason and does not claim full team completion.
 
 ## Yellow Signal Rule
 
@@ -175,6 +259,12 @@ Full team completion requires:
 4. Validation delivery artifact from a route that did not repair the implementation.
 5. Completion audit covering scope, sync, docs, memory, drift, and residual risk.
 
+`operation_mode: daily` can close daily work only within its reduced scope. It
+must not be reported as full team completion for full-only work. `operation_mode:
+full` is required for bottom-layer refactor, cross-file governance changes,
+specialist skill rewrites, Doctor/Audit rule changes, release preparation, or
+protected external-state readiness.
+
 Captain protected integration means integrating returned, qualified delivery artifacts into the main worktree and remains normal captain work; it can support `complete` when implementation, memory/docs, review, validation, completion, and trace evidence are all present. Captain substitute authoring means the captain creates specialist content because no qualified change delivery route exists; it starts as blocked, may be closed-with-director-risk only when the Director explicitly accepts that exact case, and must not be described as full team completion.
 
 If any required delivery artifact or independent review is missing, the task can only finish as blocked, unverified, or closed-with-director-risk. It must not be described as full team completion.
@@ -204,6 +294,14 @@ MCP tools are evidence or protected-action tools invoked by the captain path. MC
 Team-Native Core needs two kinds of verification:
 
 1. Static governance checks: policy, skill, workflow, matrix, and documentation semantics.
-2. Execution trace checks: a task-level board/delivery trace showing draft/formal board state, dispatch waves, previous-wave input, next-wave conditions, authorization source/target/scope/phase/evidence/expiry/resolution state, observed platform mode, delivery artifact IDs, author roles, source inputs, integrable scopes, delivery artifact classes, review/validation/memory-docs states, captain authoring state, role boundaries, direct exceptions, and completion state.
+2. Execution trace checks: a task-level board/delivery trace showing operation
+mode, operation mode reason, draft/formal board state, dispatch waves,
+previous-wave input, next-wave conditions, authorization
+source/target/scope/phase/evidence/expiry/resolution state, observed platform
+mode, specialist role source, `role_id`, `role_instance_id`,
+`exclusive_task_scope`, delivery artifact IDs, author roles, source inputs,
+integrable scopes, delivery artifact classes, review/validation/memory-docs
+states, captain authoring state, role boundaries, direct exceptions, and
+completion state.
 
 When execution trace evidence is required and absent, validation is unverified or blocked.

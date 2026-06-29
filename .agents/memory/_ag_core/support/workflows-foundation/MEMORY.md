@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 基礎與討論建構工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-29T07:04:04+08:00'
+last_updated: '2026-06-29T13:50:50+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T21:54:14+08:00'
+last_verified: '2026-06-29T13:50:50+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 19
+cycle_event_count: 20
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core.support.workflows-foundation — Antigravity Foundation Workflow Memory
 
 ## Current Truth
@@ -44,6 +45,7 @@ metadata:
 - Antigravity build workflow now uses the MCP Memory Evidence Matrix for memory-state evidence and project-local migration routing.
 - This child card owns Antigravity shared gates and foundation workflows for chat, exploration, build, and experiment work.
 - These workflow files translate shared semantics into Antigravity-facing workflow entries.
+- Antigravity 00 chat is direct only for pure conversation with no external evidence dependency; files, screenshots, memory cards, rules, agent behavior, tool output, or governance-impact questions enter Team-Native formal-readonly and require returned evidence plus captain verify-read.
 - Build and experiment boundaries must remain distinct.
 - Antigravity build planning now requires change intent classification, patch-stack risk, and real-information visual evidence requirements in validation plans.
 - Antigravity build planning now requires the shared intent alignment gate, including blueprint adoption status, requirement-to-task trace, acceptance matrix, and drift audit rules.
@@ -54,6 +56,7 @@ metadata:
 - Keep shared gate fragments aligned with platform governance.
 
 ## Cycle Events
+- 20: Rebuilt the Antigravity 00 chat workflow boundary so pure chat stays direct, while evidence-bearing discussion promotes to Team-Native formal-readonly with read scope, evidence status, and captain verify-read before the final answer.
 - 19: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 18: Synced Antigravity foundation workflows with Team-Native specialist registry and change delivery artifact terminology.
 - 17: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
@@ -91,6 +94,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Antigravity 基礎工作流與共享閘門。
+- Antigravity 00 入口現在只讓純聊天直接回覆；需要檔案、截圖、記憶、規則、工具輸出或治理證據時要升級 formal-readonly。
 - 藍圖、建構與實驗入口需宣告團隊證據站點與主線直做例外。
 - 建構與實驗邊界要維持清楚。
 

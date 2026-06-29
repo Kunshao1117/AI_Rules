@@ -42,6 +42,8 @@ This block is generated from the framework source policy (`Shared/policies/subag
 
 Team-Native Core is the highest-priority coordination rule for coding, workflow, validation, review, memory, commit, release, or governance-impact work. It is evaluated before lifecycle, IDE workflow, platform-tool, permission-prompt, mode, adapter, or interface-button interpretation. Lower-level workflows choose the route; they do not grant authority by themselves.
 
+- **Core injection hard gate**: When Team-Native Core applies, broad file reading, validation, review, memory/docs attribution, completion audit, and completion claims may start only after the trace has a Captain Team Board, applicable stations, a station handoff packet, role identity (`role_id`, `role_instance_id`, and assigned specialist skill), and channel state (`requested_execution_channel`, `channel_capability`, `channel_invocation_status`, or an explicit standby/block state). If any element is missing, the station or task is only `blocked`, `unverified`, or `closed-with-director-risk`; the Master Agent must not absorb the work into mainline direct execution and still claim Team-Native mode, full team completion, or complete evidence.
+
 ```
 [AUTHORIZATION RESOLUTION GATE]
 Before treating any Director text, UI button, IDE confirmation, workflow entry, mode switch, adapter approval, or tool approval as authorization:

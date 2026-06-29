@@ -1,8 +1,8 @@
 ---
 name: 00_chat
-description: "Use when: 純對話討論、腦力激盪、程式碼問答、概念釐清。DO NOT use when: 需要深度研究、建構、修復、測試、提交或產出正式 Artifact。"
+description: "Use when: 純對話討論、腦力激盪、概念釐清、無外部證據依賴的輕量程式碼問答。When the request involves files, screenshots, memory/context cards, rules/workflows/policies, agent behavior, evidence checks, source/tool output, or later governance impact, promote to a Team-Native formal-readonly station. DO NOT use when: 需要深度研究、架構藍圖、建構、修復、測試、提交、發布或正式寫入交付。"
 required_skills: []
-memory_awareness: none
+memory_awareness: read
 user-invocable: true
 metadata:
   author: antigravity
@@ -12,8 +12,8 @@ metadata:
   platforms: ["claude"]
   lifecycle_phase: chat
   role: reader
-  memory_awareness: none
-  tool_scope: ["conversation"]
+  memory_awareness: read
+  tool_scope: ["conversation", "filesystem:read", "mcp:read"]
   human_gate: "none"
   automation_safe: false
 ---
@@ -52,7 +52,8 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 00 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Keep this as pure conversation. Route research, architecture, build, fix, test, commit, or evidence-seeking requests to the matching workflow instead of expanding chat scope. If the Director's plain-language request is coding-related, automatically enter the captain-led programming trigger path; explicit command names are shortcuts, not prerequisites. The routed workflow must apply Task Type Gate, Dispatch Pre-Gate, and Captain Minimum Execution Gate before any specialist branch starts.
+- Workflow-specific grounding: Keep direct 00 output conversational only when the answer depends on the current conversation, Director-provided snippets, or stable general reasoning and will not become governance evidence. If the request involves project files, screenshots, memory/context cards, rules/workflows/policies, agent/subagent behavior, evidence verification, source/tool output, or decisions that can shape later source/workflow/validation/review/memory/release/governance work, promote to a Team-Native `formal-readonly` station: a specialist reads or checks the bounded scope and returns citations, missing scope, risk, and blocker status; the captain verification-reads and integrates the conclusion. Deep research, architecture, build, fix, test, commit, release, or write-producing workflow work routes to the matching workflow instead of expanding chat scope. Explicit command names are shortcuts, not prerequisites.
+- Evidence-bearing chat boundary: 證據型對話必須升級為 Team-Native `formal-readonly` station；站點回收前只能回報證據狀態、未讀範圍、阻塞原因與隊長驗讀結果，不得宣稱完整完成。
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
 - Team-native completion boundary: Missing qualified change delivery, validation delivery, review delivery, or memory/docs delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`). `closed-with-director-risk` is a risk closure, not formal team completion.
@@ -61,25 +62,29 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 1. Execution Constraints (執行約束)
 
-- **Absolute Ban**: DO NOT write, modify, or delete any source code files.
-- **Absolute Ban**: DO NOT generate implementation plans or formal artifacts.
-- **Memory**: This workflow does NOT interact with memory cards.
+- **Direct Chat Ban**: DO NOT write, modify, or delete any source, memory, git, release, deployment, install, credential, or external-state target.
+- **Direct Chat Ban**: DO NOT generate implementation plans, change delivery artifacts, validation artifacts, review artifacts, memory/docs artifacts, commit plans, or release artifacts.
+- **Formal-Readonly Exception**: If the Director asks about files, screenshots, memory/context cards, rules/workflows/policies, agent/subagent behavior, evidence checks, source/tool output, or later governance impact, route into a Team-Native `formal-readonly` station. The specialist performs bounded read/check work; the captain only verification-reads returned evidence and integrates the answer.
+- **Memory**: Direct chat does not mutate memory. Memory-related questions are read-only evidence work; memory writes require the matching protected workflow and gate.
 
 ## 2. Interaction Protocol (互動協議)
 
 [INTENT GATE] Classify Director input:
-- IF (input is a question about code logic or architecture):
-  - Answer directly. Use `Read` tool to read relevant files if needed.
-  - Use code blocks and diagrams to clarify complex concepts.
-- IF (input is a brainstorming or ideation session):
-  - Engage as a collaborative partner.
-  - Provide multiple perspectives and trade-offs.
+- IF (input is pure conversation, brainstorming, concept clarification, or code explanation based only on current chat/provided snippets):
+  - Answer directly and conversationally.
   - Use Traditional Chinese for all outputs.
-- IF (input requires deeper research or code generation):
+- IF (input asks to inspect, compare, verify, or summarize project files, screenshots, memory/context cards, rules/workflows/policies, agent/subagent behavior, evidence chains, previous tool output, or governance implications):
+  - Use a Team-Native `formal-readonly` station with bounded read scope.
+  - The specialist returns evidence with citations, unresolved scope, risk, and blocker status.
+  - The captain verification-reads selected evidence and integrates the conclusion.
+- IF (input requires deeper research, architecture, code generation, repair, debugging, testing, commit, release, deployment, or protected mutation):
   - Route to the appropriate command or captain-led programming mode instead of asking the Director to restate the command:
     - 研究型 → `/01_explore`
+    - 架構型 → `/02_blueprint`
     - 建構型 → `/03_build`
     - 修復型 → `/04_fix`
+    - 測試型 → `/06_test`
+    - 提交型 → `/09_commit`
 
 ## 3. Output Format (輸出規範)
 
@@ -91,4 +96,4 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## [SECURITY & COMPLIANCE]
 - **Role**: Reader — no disk writes, no source code modifications.
-- **Memory**: none — this workflow does not interact with memory cards.
+- **Memory**: read-only when evidence-bearing chat requires memory/context inspection; no memory mutation.

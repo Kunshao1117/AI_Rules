@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-29T12:13:33+08:00'
+last_updated: '2026-06-29T21:51:46+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-29T11:30:08+08:00'
+last_verified: '2026-06-29T21:49:40+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 23
+cycle_event_count: 25
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,6 +35,7 @@ metadata:
 
 ## Current Truth
 - Role-boundary and delivery artifact skills now carry Team-First read-scope separation: specialist deep-read evidence, captain verify-read state, unread scope, and non-complete outcomes for missing route evidence.
+- Role-boundary governance now requires operation mode, ten registered role IDs, `role_instance_id`, and `exclusive_task_scope` evidence before accepting specialist artifacts.
 - Team-Native Core files moved to `_shared.team-native-core`; this card now keeps skill-factory governance plus remaining delegation reference ownership.
 - Shared skill forging is framework-source only unless the Director explicitly supplies the AI_Rules source root; downstream projects default to project-derived skills.
 - This child card owns Shared delegation strategy and skill-factory governance files.
@@ -49,6 +50,8 @@ metadata:
 - Do not duplicate full skill templates in memory; use tracked references as the source of truth for skill formatting and delegation procedures.
 
 ## Cycle Events
+- 25: Expanded role-boundary governance from legacy role groups to the ten registered role IDs and added security/reliability handoff support.
+- 24: Added Wave 1 role-boundary checkpoint for operation mode, role identity, task-scope exclusivity, and same-task role-instance separation.
 - 23: Updated role-boundary and delivery-adjacent skill governance for Team-First handoff packets, deep-read/verify-read separation, and no silent captain substitution.
 - 22: Added scoped authorization fields to change, memory/docs, validation, review, and role-boundary delivery artifact contracts; synced deployed skill copies.
 - 21: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
@@ -79,6 +82,7 @@ metadata:
 ## 中文摘要
 - 此子卡負責委派策略與技能工廠治理。
 - 交付件邊界技能現在要求範圍式授權欄位，缺欄位不能支撐完成。
+- 角色邊界現在也要檢查 daily/full 模式、角色編號、角色實例與任務內互斥範圍。
 - 委派策略已從可選分支改為團隊證據站點優先。
 - 技能模板與長規則仍保留在來源參考檔。
 

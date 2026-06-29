@@ -25,6 +25,36 @@ Long-lived preferences should move into `.agents/context/**/CONTEXT.md`, not
 memory cards. Stable context that becomes a repeatable procedure can be promoted
 to a project skill through the skill forge workflow.
 
+## Skill Relation Metadata
+
+agentskills.io compatibility still depends on `name` and `description`. AI_Rules
+may add optional `metadata.relations` for machine-checkable skill trees. Missing
+relations are not a generic skill failure, but Team-Native specialist role skills
+use them as governance evidence.
+
+```yaml
+metadata:
+  relations:
+    role_id: change-delivery
+    role_layer: specialist
+    parent_skill: team-specialist-registry
+    support_skills:
+      - team-role-boundaries
+      - team-change-delivery-artifact
+    embedded_artifacts: []
+    artifact_contracts:
+      - change-delivery-artifact
+    trace_contracts:
+      - Shared/policies/team-trace-evidence.md
+      - team-station-handoff-packet
+```
+
+`support_skills` are skills a handoff packet may load with the role.
+`embedded_artifacts` are role-owned evidence formats that do not need a separate
+artifact skill. `artifact_contracts` are external delivery or completion
+contracts. `trace_contracts` point to the shared trace and handoff evidence
+rules instead of repeating long trace field lists inside every role skill.
+
 ## Skill Trigger Contract
 
 Codex primarily sees `name` and `description` before a skill is loaded. A skill
@@ -71,6 +101,11 @@ Platform entries must also preserve Team-First startup semantics: no-write work
 uses a formal-readonly board when it can influence later source work; write work
 uses a formal-write board after scoped GO; every formal station receives a
 handoff packet with loaded skill refs and startup monitoring fields.
+Platform entries must preserve `operation_mode`: `daily` is reduced Team-Native
+mode for routine low-risk evidence, while `full` is required for implementation,
+repair, bottom-layer refactor, cross-file governance, specialist skill rewrites,
+Doctor/Audit changes, commit/release/deploy preparation, or protected
+external-state readiness.
 Platform entries must not weaken the shared contract by replacing
 implementation change delivery, memory delivery, review, or validation delivery artifacts with
 generic main-thread handling.
@@ -110,3 +145,9 @@ Skill quality checks should treat trigger quality as a first-class signal:
 - High-risk release, deployment, or mutation skills must name their public
   trigger terms explicitly.
 - Workflow and operational skills should not mix responsibilities.
+- Team-Native specialist role skills should expose `metadata.relations` with
+  `role_id`, `role_layer`, `parent_skill`, `support_skills`,
+  `embedded_artifacts`, `artifact_contracts`, and `trace_contracts`.
+- Team-Native governance text should distinguish `operation_mode: daily` from
+  `operation_mode: full`; daily mode must not be used for full-only work or to
+  claim full team completion.

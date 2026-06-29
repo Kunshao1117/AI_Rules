@@ -2022,6 +2022,63 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         }
     }
 
+    function Add-ProgrammingTeamAmbiguousPositiveFindings {
+        param(
+            [string[]]$RelativePaths
+        )
+
+        $ambiguousPattern = '(?i)(需要時|必要時|視情況|若可行|如可行|可視情況|可自行|可選|可以不|可不|應考慮|應視|may optionally|as needed|if needed|when needed|where possible|if possible|\boptional(?:ly)?\b|\bcan\b|\bshould\b|\bmay\b)'
+        $riskPattern = '(?i)(跳過|略過|主線直做|直做|不開|不啟動|完成|通過|啟動|派工|降級|驗收|skip|bypass|\bdirect\b|\bcomplete(?:d)?\b|completion|dispatch|spawn|delegate|degrade|launch)'
+        $protectivePattern = '(?i)(不得|不可|不能|不代表|不是|不應|禁止|必須|仍需|仍須|需先|需記錄|must|must not|do not|not|blocked|unverified|non-complete|requires|required|allowed only when|only when|only after|only for|formal-readonly|formal-write|GO-backed|can shape|can influence|can safely|may appear|optionally prompting)'
+
+        foreach ($relativePath in $RelativePaths) {
+            $fullPath = Join-Path $RepoRoot $relativePath
+            if (-not (Test-Path -LiteralPath $fullPath -PathType Leaf)) { continue }
+
+            $lineNumber = 0
+            Get-Content -LiteralPath $fullPath -Encoding UTF8 | ForEach-Object {
+                $lineNumber++
+                if (($_ -match $ambiguousPattern) -and ($_ -match $riskPattern) -and ($_ -notmatch $protectivePattern)) {
+                    Add-ProgrammingTeamFinding -Severity 'Red' -File $relativePath -Line $lineNumber -Reason '模糊允許詞靠近高風險團隊動作' -Text $_
+                }
+            }
+        }
+    }
+
+    function Test-ProgrammingTeamChatReadonlyContent {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $hasEvidenceChat = $Content -match '證據型對話|evidence-bearing chat|evidence verification|evidence checks|evidence chains|證據查核'
+        $hasFormalReadonly = $Content -match 'formal-readonly|formal readonly|正式.{0,80}(唯讀|無寫入)'
+        $hasEvidenceScope = $Content -match 'project files|screenshots|memory/context cards|rules/workflows/policies|agent/subagent behavior|source/tool output|檔案|截圖|記憶|脈絡|規則|工作流|政策|代理|子代理'
+        $hasEvidenceStatus = $Content -match 'Evidence status|證據狀態|missing scope|unresolved scope|未讀範圍|阻塞'
+        $hasCaptainVerifyRead = $Content -match 'captain verification-reads|隊長驗讀|captain verify-read'
+        $hasNonCompleteBoundary = $Content -match '不得宣稱完整完成|not complete|not full team completion|closed-with-director-risk|完整完成'
+
+        return ($hasEvidenceChat -and $hasFormalReadonly -and $hasEvidenceScope -and $hasEvidenceStatus -and $hasCaptainVerifyRead -and $hasNonCompleteBoundary)
+    }
+
+    function Test-ProgrammingTeamChannelMonitoringContent {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $requiredFields = @(
+            'channel_capability',
+            'channel_invocation_status',
+            'startup_started_at',
+            'first_response_deadline',
+            'last_progress_at',
+            'timeout_action',
+            'standby_reason'
+        )
+
+        foreach ($field in $requiredFields) {
+            if ($Content -notmatch [regex]::Escape($field)) { return $false }
+        }
+        return $true
+    }
+
     function Test-ProgrammingTeamArtifactSetContent {
         param([string]$Content)
         if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
@@ -2282,12 +2339,30 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         }
     }
 
+    $channelMonitoringRequiredPaths = @(
+        'Shared\policies\team-trace-evidence.md',
+        'Shared\skills\team-task-board\SKILL.md',
+        'Shared\skills\team-station-handoff-packet\SKILL.md',
+        '.agents\shared\policies\team-trace-evidence.md',
+        '.agents\skills\team-task-board\SKILL.md',
+        '.agents\skills\team-station-handoff-packet\SKILL.md'
+    )
+
+    foreach ($relPath in $channelMonitoringRequiredPaths) {
+        $content = Get-ProgrammingTeamContent -Path (Join-Path $RepoRoot $relPath)
+        if ($null -eq $content) { continue }
+        if (-not (Test-ProgrammingTeamChannelMonitoringContent -Content $content)) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '隊員通道監控欄位不完整' -Text 'required: channel_capability, channel_invocation_status, startup_started_at, first_response_deadline, last_progress_at, timeout_action, standby_reason'
+        }
+    }
+
     $formalDispatchNegativeChecks = @(
         [PSCustomObject]@{ Pattern = '(?i)(draft board|草案(任務|派工)?板).{0,140}(may|can|allowed|允許|可以|可|直接|立即).{0,100}(dispatch|spawn|start|open|啟動|開啟|派工|開出).{0,80}(specialist|subagent|branch|隊員|分支|子代理)'; Reason = '草案板不得啟動正式隊員' },
         [PSCustomObject]@{ Pattern = '(?i)(draft evidence|草案證據|草案包證據).{0,140}(satisf(y|ies)|counts? as|eligible|pass(es)?|滿足|算作|可作為|通過|符合).{0,100}(formal acceptance|formal evidence|正式驗收|正式證據|正式接受)'; Reason = '草案證據不得滿足正式驗收' },
         [PSCustomObject]@{ Pattern = '(?i)(post-board|after board|任務板後|建板後|隊長任務板後).{0,180}(all-at-once|all at once|dispatch all|spawn all|一次(開|啟動|派出|派工).{0,30}(全部|所有)|全部(隊員|分支|子代理).{0,30}一次(開|啟動|派出|派工))'; Reason = '正式板後不得一次啟動全部隊員，必須逐波次派工' },
         [PSCustomObject]@{ Pattern = '(?i)(complete-with-accepted-risk|已接受風險完成|accepted-risk[^.\r\n]{0,100}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)|已接受風險[^。\r\n]{0,100}(完整完成|完整團隊完成|完成))'; Reason = '已接受風險不得宣稱完整完成，需改為 closed-with-director-risk 的非完整流程關閉' },
         [PSCustomObject]@{ Pattern = '(?i)(closed-with-director-risk|總監風險關閉)[^.\r\n。]{0,120}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '總監風險關閉不得宣稱完整完成' },
+        [PSCustomObject]@{ Pattern = '(?i)(standby|待命).{0,160}(\bcomplete\b|completed|full team completion|formal completion evidence|完整完成|完整團隊完成|已完成|已回收|已整合|正式完成證據|驗收通過)'; Reason = '待命狀態不得當成完成證據' },
         [PSCustomObject]@{ Pattern = '(?i)(review|validation|審查|驗證).{0,120}(before|prior to|earlier than|早於|先於).{0,100}(change delivery|implementation change delivery|變更交付件|實作變更交付)'; Reason = '審查或驗證不得早於變更交付件' },
         [PSCustomObject]@{ Pattern = '(?i)(same wave|同一波|同波).{0,180}(implementation|change delivery|實作|變更交付).{0,180}(review|審查).{0,120}(same deliverable|same artifact|同一交付物|同一交付件)'; Reason = '同一波不得同時啟動實作與同交付物審查' },
         [PSCustomObject]@{ Pattern = '(?i)(captain|隊長).{0,100}(author(s|ed|ing)?|create(s|d|ing)?|produce(s|d|ing)?|\bimplement(s|ed|ing)?\b|substitut(e|es|ed|ing|ion)?|創作|產出|實作|替代|代工).{0,140}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '隊長創作或隊長替代不得宣稱 complete' },
@@ -2411,7 +2486,34 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         if ($content -match 'Director must.*restate|must manually name|必須手動|手動指定') {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '聊天或探勘入口不得要求總監手動重述工作流名稱才觸發治理' -Text $relPath
         }
+        if ($relPath -match '00') {
+            if (-not (Test-ProgrammingTeamChatReadonlyContent -Content $content)) {
+                Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '00 入口缺少證據型對話升級為 formal-readonly 的硬閘門' -Text '00 evidence-bearing chat must require formal-readonly station, evidence status reporting, and captain verify-read'
+            }
+            if ($content -match '(?i)Answer directly\..{0,120}(Read|讀取|read relevant files)|直接回答.{0,120}(Read|讀取|讀檔)') {
+                Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '00 入口不得保留先直接讀檔回答的舊語義' -Text $relPath
+            }
+            if ($content -notmatch 'memory_awareness:\s*read') {
+                Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '00 證據型對話入口必須具備唯讀記憶意識' -Text 'missing memory_awareness: read'
+            }
+            if ($content -notmatch 'filesystem:read') {
+                Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '00 證據型對話入口必須允許唯讀檔案採證範圍' -Text 'missing filesystem:read'
+            }
+        }
     }
+
+    Add-ProgrammingTeamAmbiguousPositiveFindings -RelativePaths @(
+        'Shared\policies\subagent-invocation.md',
+        'Shared\policies\team-native-core.md',
+        'Shared\workflow-capability-evidence-matrix.md',
+        'Shared\platform-capability-matrix.md',
+        'Shared\skills\programming-team-governance\SKILL.md',
+        'Shared\skills\team-task-board\SKILL.md',
+        'Shared\skills\team-station-handoff-packet\SKILL.md',
+        'Codex\.agents\workflow-skills\00-chat-聊天\SKILL.md',
+        'Claude\.claude\commands\00_chat(討論)\SKILL.md',
+        'Antigravity\.agents\workflows\00_chat(討論).md'
+    )
 
     $workflowChecks = @(
         'Codex\.agents\workflow-skills\02-blueprint-架構\SKILL.md',
@@ -2481,6 +2583,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         [PSCustomObject]@{ Pattern = '(?i)(post-board|after board|任務板後|建板後|隊長任務板後).{0,180}(all-at-once|all at once|dispatch all|spawn all|一次(開|啟動|派出|派工).{0,30}(全部|所有)|全部(隊員|分支|子代理).{0,30}一次(開|啟動|派出|派工))'; Reason = '工作流入口不得允許建板後一次全派' },
         [PSCustomObject]@{ Pattern = '(?i)(complete-with-accepted-risk|已接受風險完成|accepted-risk[^.\r\n]{0,100}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)|已接受風險[^。\r\n]{0,100}(完整完成|完整團隊完成|完成))'; Reason = '工作流入口不得把已接受風險宣稱為完整完成' },
         [PSCustomObject]@{ Pattern = '(?i)(closed-with-director-risk|總監風險關閉)[^.\r\n。]{0,120}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '工作流入口不得把總監風險關閉宣稱為完整完成' },
+        [PSCustomObject]@{ Pattern = '(?i)(standby|待命).{0,160}(\bcomplete\b|completed|full team completion|formal completion evidence|完整完成|完整團隊完成|已完成|已回收|已整合|正式完成證據|驗收通過)'; Reason = '工作流入口不得把待命狀態當成完成證據' },
         [PSCustomObject]@{ Pattern = '(?i)(review|validation|審查|驗證).{0,120}(before|prior to|earlier than|早於|先於).{0,100}(change delivery|implementation change delivery|變更交付件|實作變更交付)'; Reason = '工作流入口不得允許審查或驗證早於變更交付件' },
         [PSCustomObject]@{ Pattern = '(?i)(same wave|同一波|同波).{0,180}(implementation|change delivery|實作|變更交付).{0,180}(review|審查).{0,120}(same deliverable|same artifact|同一交付物|同一交付件)'; Reason = '工作流入口不得允許同波啟動實作與同交付物審查' },
         [PSCustomObject]@{ Pattern = '(?i)(captain|隊長).{0,100}(author(s|ed|ing)?|create(s|d|ing)?|produce(s|d|ing)?|\bimplement(s|ed|ing)?\b|substitut(e|es|ed|ing|ion)?|創作|產出|實作|替代|代工).{0,140}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '工作流入口不得允許隊長創作或替代後宣稱 complete' },
@@ -3390,18 +3493,54 @@ function Measure-TeamNativeCoreSemantics {
         return (Get-Content -LiteralPath $path -Raw -Encoding UTF8)
     }
 
+    function Test-TeamNativeFrontmatterField {
+        param(
+            [string]$Frontmatter,
+            [string]$Field
+        )
+
+        if ([string]::IsNullOrWhiteSpace($Frontmatter)) { return $false }
+        $pattern = '(?m)^\s+' + [regex]::Escape($Field) + '\s*:'
+        return ($Frontmatter -match $pattern)
+    }
+
+    function Test-TeamNativeFrontmatterFieldValue {
+        param(
+            [string]$Frontmatter,
+            [string]$Field,
+            [string]$ExpectedValue
+        )
+
+        if ([string]::IsNullOrWhiteSpace($Frontmatter)) { return $false }
+        $pattern = '(?m)^\s+' + [regex]::Escape($Field) + '\s*:\s*' + [regex]::Escape($ExpectedValue) + '\s*$'
+        return ($Frontmatter -match $pattern)
+    }
+
+    function Get-TeamNativeFrontmatterFieldValue {
+        param(
+            [string]$Frontmatter,
+            [string]$Field
+        )
+
+        if ([string]::IsNullOrWhiteSpace($Frontmatter)) { return '' }
+        $pattern = '(?m)^\s+' + [regex]::Escape($Field) + '\s*:\s*(?<value>[^\r\n#]+?)\s*$'
+        $match = [regex]::Match($Frontmatter, $pattern)
+        if (-not $match.Success) { return '' }
+        return $match.Groups['value'].Value.Trim().Trim('"', "'")
+    }
+
     $coreChecks = @(
         [PSCustomObject]@{
             Path = 'Shared\policies\team-native-core.md'
             Severity = 'Red'
             Label = 'Team-Native Core 政策缺少核心狀態機'
-            Patterns = @('Team-Native Core', 'Station-First Rule', 'Strict State Machine', 'Completion Rule', 'Platform Adapter Contract', 'Trace Requirement', 'direct', 'text change delivery artifact', 'closed-with-director-risk', 'unverified', 'blocked')
+            Patterns = @('Team-Native Core', 'Station-First Rule', 'Strict State Machine', 'Completion Rule', 'Platform Adapter Contract', 'Trace Requirement', 'operation_mode', 'operation_mode_reason', 'daily', 'full', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'direct', 'text change delivery artifact', 'closed-with-director-risk', 'unverified', 'blocked')
         },
         [PSCustomObject]@{
             Path = 'Shared\policies\team-trace-evidence.md'
             Severity = 'Red'
             Label = 'Team trace 證據契約缺少最小欄位'
-            Patterns = @('Team Trace Evidence Contract', 'Minimal Trace Fields', 'task_id', 'task_type', 'workflow_route', 'board_state', 'implementation_authorization', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed', 'specialist_skill', 'domain_label', 'requested_execution_channel', 'channel_capability', 'channel_invocation_status', 'execution_channel', 'delivery_artifact', 'delivery_artifact_status', 'no_captain_authoring', 'stations', 'waves', 'delivery_artifacts', 'direct_exceptions', 'role_separation', 'completion_state')
+            Patterns = @('Team Trace Evidence Contract', 'Minimal Trace Fields', 'task_id', 'task_type', 'workflow_route', 'operation_mode', 'operation_mode_reason', 'board_state', 'implementation_authorization', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'specialist_skill', 'loaded_skill_refs', 'handoff_packet_id', 'domain_label', 'requested_execution_channel', 'channel_capability', 'channel_invocation_status', 'execution_channel', 'delivery_artifact', 'delivery_artifact_id', 'delivery_artifact_status', 'no_captain_authoring', 'stations', 'waves', 'delivery_artifacts', 'direct_exceptions', 'role_separation', 'completion_state')
         },
         [PSCustomObject]@{
             Path = 'Shared\policies\authorization-resolution.md'
@@ -3437,7 +3576,7 @@ function Measure-TeamNativeCoreSemantics {
             Path = 'Shared\skills\team-task-board\SKILL.md'
             Severity = 'Red'
             Label = '團隊任務板缺少平台能力或授權解析欄位'
-            Patterns = @('Platform capability route', 'native / adapter / conditional / unavailable', 'Required Team-Native trace evidence', 'Authorization source', 'Authorization target', 'Authorization scope', 'Authorization phase', 'Authorization evidence', 'Authorization expiry', 'Authorization resolution state', 'Platform mode observed', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed')
+            Patterns = @('Platform capability route', 'native / adapter / conditional / unavailable', 'operation_mode', 'operation_mode_reason', 'daily', 'full', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'Required Team-Native trace evidence', 'Authorization source', 'Authorization target', 'Authorization scope', 'Authorization phase', 'Authorization evidence', 'Authorization expiry', 'Authorization resolution state', 'Platform mode observed', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\delegation-strategy\SKILL.md'
@@ -3479,7 +3618,7 @@ function Measure-TeamNativeCoreSemantics {
             Path = 'Shared\skills\team-role-boundaries\SKILL.md'
             Severity = 'Red'
             Label = '角色邊界缺少授權欄位檢查'
-            Patterns = @('authorization fields', 'blocked or unverified', 'complete')
+            Patterns = @('operation_mode', 'daily', 'full', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'authorization fields', 'blocked or unverified', 'complete')
         }
     )
 
@@ -3500,34 +3639,40 @@ function Measure-TeamNativeCoreSemantics {
     $sharedSkillsRoot = Join-Path $RepoRoot 'Shared\skills'
     $skillIndexRelativePath = 'Shared\skills\_index.md'
     $skillIndexContent = Get-TeamNativeContent -RelativePath $skillIndexRelativePath
-    $requiredTeamTraceFields = @(
-        'authorization_source',
-        'authorization_target',
-        'authorization_scope',
-        'authorization_phase',
-        'authorization_evidence',
-        'authorization_expiry',
-        'authorization_resolution_state',
-        'platform_mode_observed',
-        'specialist_skill',
-        'domain_label',
-        'requested_execution_channel',
-        'channel_capability',
-        'channel_invocation_status',
-        'execution_channel',
-        'delivery_artifact',
-        'delivery_artifact_status',
-        'station_lifecycle_state',
-        'retention_reason',
-        'conversation_health',
-        'reuse_count',
-        'handoff_summary',
-        'closure_reason',
-        'closeout_lane',
-        'yellow_classification',
-        'yellow_resolution_state',
-        'repair_loop_count',
-        'no_captain_authoring'
+    $expectedSpecialistRoles = @(
+        [PSCustomObject]@{ SkillName = 'team-specialist-intent-requirements'; RoleId = 'intent-requirements' },
+        [PSCustomObject]@{ SkillName = 'team-specialist-scope-impact'; RoleId = 'scope-impact' },
+        [PSCustomObject]@{ SkillName = 'team-specialist-external-research'; RoleId = 'external-research' },
+        [PSCustomObject]@{ SkillName = 'team-specialist-architecture-contract'; RoleId = 'architecture-contract' },
+        [PSCustomObject]@{ SkillName = 'team-specialist-change-delivery'; RoleId = 'change-delivery' },
+        [PSCustomObject]@{ SkillName = 'team-specialist-validation'; RoleId = 'validation' },
+        [PSCustomObject]@{ SkillName = 'team-specialist-review'; RoleId = 'review' },
+        [PSCustomObject]@{ SkillName = 'team-specialist-security-reliability'; RoleId = 'security-reliability' },
+        [PSCustomObject]@{ SkillName = 'team-specialist-memory-docs'; RoleId = 'memory-docs' },
+        [PSCustomObject]@{ SkillName = 'team-specialist-release-completion'; RoleId = 'release-completion' }
+    )
+    $expectedSkillNames = @($expectedSpecialistRoles | ForEach-Object { $_.SkillName })
+    $expectedRoleIds = @($expectedSpecialistRoles | ForEach-Object { $_.RoleId })
+    $requiredRoleHandoffFields = @(
+        'operation_mode',
+        'operation_mode_reason',
+        'role_id',
+        'role_instance_id',
+        'exclusive_task_scope'
+    )
+    $requiredRelationFields = @(
+        'relations',
+        'role_id',
+        'role_layer',
+        'parent_skill',
+        'support_skills',
+        'embedded_artifacts',
+        'artifact_contracts',
+        'trace_contracts'
+    )
+    $requiredTraceContractRefs = @(
+        'team-trace-evidence',
+        'team-station-handoff-packet'
     )
 
     $parentSkillName = 'team-specialist-registry'
@@ -3536,10 +3681,35 @@ function Measure-TeamNativeCoreSemantics {
         Add-TeamNativeFinding -Severity 'Red' -File ("Shared\skills\{0}\SKILL.md" -f $parentSkillName) -Line 1 -Reason '專家角色母技能不存在' -Text $parentSkillName
     } else {
         $parentContent = Get-Content -LiteralPath $parentSkillPath -Raw -Encoding UTF8
-        foreach ($field in $requiredTeamTraceFields) {
-            if ($parentContent -notmatch [regex]::Escape($field)) {
-                Add-TeamNativeFinding -Severity 'Yellow' -File ("Shared\skills\{0}\SKILL.md" -f $parentSkillName) -Line 1 -Reason '專家角色母技能缺少新版任務軌跡欄位提示' -Text "missing field: $field"
+        $parentFrontmatter = Get-FrontmatterBlock -Path $parentSkillPath
+        if (-not (Test-TeamNativeFrontmatterFieldValue -Frontmatter $parentFrontmatter -Field 'role_layer' -ExpectedValue 'registry')) {
+            Add-TeamNativeFinding -Severity 'Red' -File ("Shared\skills\{0}\SKILL.md" -f $parentSkillName) -Line 1 -Reason '專家角色母技能缺少 registry 關係層級' -Text 'metadata.relations.role_layer must be registry'
+        }
+        foreach ($skillName in $expectedSkillNames) {
+            if ($parentFrontmatter -notmatch [regex]::Escape($skillName)) {
+                Add-TeamNativeFinding -Severity 'Red' -File ("Shared\skills\{0}\SKILL.md" -f $parentSkillName) -Line 1 -Reason '專家角色母技能缺少十角色子技能支援清單' -Text "missing support skill: $skillName"
             }
+        }
+        foreach ($role in $expectedSpecialistRoles) {
+            if ($parentContent -notmatch [regex]::Escape($role.RoleId)) {
+                Add-TeamNativeFinding -Severity 'Red' -File ("Shared\skills\{0}\SKILL.md" -f $parentSkillName) -Line 1 -Reason '專家角色母技能缺少十角色路由列' -Text "missing role_id: $($role.RoleId)"
+            }
+        }
+        foreach ($field in $requiredRoleHandoffFields) {
+            if ($parentContent -notmatch [regex]::Escape($field)) {
+                Add-TeamNativeFinding -Severity 'Red' -File ("Shared\skills\{0}\SKILL.md" -f $parentSkillName) -Line 1 -Reason '專家角色母技能缺少角色身份交接欄位' -Text "missing field: $field"
+            }
+        }
+        foreach ($traceRef in $requiredTraceContractRefs) {
+            if ($parentFrontmatter -notmatch [regex]::Escape($traceRef)) {
+                Add-TeamNativeFinding -Severity 'Red' -File ("Shared\skills\{0}\SKILL.md" -f $parentSkillName) -Line 1 -Reason '專家角色母技能缺少 trace/handoff 契約引用' -Text "missing contract ref: $traceRef"
+            }
+        }
+        if ($parentContent -notmatch '(?m)^##\s+Trace And Handoff Contract\s*$') {
+            Add-TeamNativeFinding -Severity 'Red' -File ("Shared\skills\{0}\SKILL.md" -f $parentSkillName) -Line 1 -Reason '專家角色母技能缺少主技能帶子技能交接契約章節' -Text 'missing Trace And Handoff Contract'
+        }
+        if ($parentContent -match '(?m)^##\s+Team-Native Trace Fields\s*$') {
+            Add-TeamNativeFinding -Severity 'Red' -File ("Shared\skills\{0}\SKILL.md" -f $parentSkillName) -Line 1 -Reason '專家角色母技能仍保留舊 trace 欄位重複章節' -Text 'remove duplicated Team-Native Trace Fields'
         }
     }
 
@@ -3556,13 +3726,22 @@ function Measure-TeamNativeCoreSemantics {
         $specialistSkillDirs = @(Get-ChildItem -LiteralPath $sharedSkillsRoot -Directory -ErrorAction SilentlyContinue | Where-Object { ($_.Name -match '^team-specialist-') -and ($_.Name -ne $parentSkillName) } | Sort-Object Name)
     }
 
-    if (@($specialistSkillDirs).Count -lt 10) {
-        Add-TeamNativeFinding -Severity 'Red' -File 'Shared\skills' -Line 1 -Reason '團隊專家子技能數量不足' -Text ("found {0}, required 10 team-specialist-* skills" -f @($specialistSkillDirs).Count)
+    $actualSpecialistNames = @($specialistSkillDirs | ForEach-Object { $_.Name })
+    foreach ($role in $expectedSpecialistRoles) {
+        if ($actualSpecialistNames -notcontains $role.SkillName) {
+            Add-TeamNativeFinding -Severity 'Red' -File 'Shared\skills' -Line 1 -Reason '團隊專家子技能缺少預期十角色之一' -Text ("missing skill: {0}" -f $role.SkillName)
+        }
+    }
+    foreach ($actualName in $actualSpecialistNames) {
+        if ($expectedSkillNames -notcontains $actualName) {
+            Add-TeamNativeFinding -Severity 'Red' -File 'Shared\skills' -Line 1 -Reason '團隊專家子技能超出十角色契約' -Text ("unexpected skill: {0}" -f $actualName)
+        }
     }
 
-    foreach ($dir in $specialistSkillDirs) {
-        $skillName = $dir.Name
-        $skillPath = Join-Path $dir.FullName 'SKILL.md'
+    $declaredRoleIds = New-Object System.Collections.Generic.List[string]
+    foreach ($role in $expectedSpecialistRoles) {
+        $skillName = $role.SkillName
+        $skillPath = Join-Path $sharedSkillsRoot (Join-Path $skillName 'SKILL.md')
         $relativeSkillPath = "Shared\skills\$skillName\SKILL.md"
         if (-not (Test-Path -LiteralPath $skillPath -PathType Leaf)) {
             Add-TeamNativeFinding -Severity 'Red' -File $relativeSkillPath -Line 1 -Reason '團隊專家子技能缺少 SKILL.md' -Text $skillName
@@ -3570,15 +3749,60 @@ function Measure-TeamNativeCoreSemantics {
         }
 
         $skillContent = Get-Content -LiteralPath $skillPath -Raw -Encoding UTF8
-        foreach ($field in $requiredTeamTraceFields) {
-            if ($skillContent -notmatch [regex]::Escape($field)) {
-                Add-TeamNativeFinding -Severity 'Yellow' -File $relativeSkillPath -Line 1 -Reason '團隊專家子技能缺少新版任務軌跡欄位提示' -Text "missing field: $field"
+        $skillFrontmatter = Get-FrontmatterBlock -Path $skillPath
+        foreach ($field in $requiredRelationFields) {
+            if (-not (Test-TeamNativeFrontmatterField -Frontmatter $skillFrontmatter -Field $field)) {
+                Add-TeamNativeFinding -Severity 'Red' -File $relativeSkillPath -Line 1 -Reason '團隊專家子技能缺少關係 metadata 欄位' -Text "missing metadata.relations field: $field"
             }
+        }
+        $declaredRoleId = Get-TeamNativeFrontmatterFieldValue -Frontmatter $skillFrontmatter -Field 'role_id'
+        if ($declaredRoleId) {
+            $declaredRoleIds.Add($declaredRoleId)
+        }
+        if ($declaredRoleId -ne $role.RoleId) {
+            Add-TeamNativeFinding -Severity 'Red' -File $relativeSkillPath -Line 1 -Reason '團隊專家子技能 role_id 與十角色表不一致' -Text ("expected {0}, actual {1}" -f $role.RoleId, $declaredRoleId)
+        }
+        if (-not (Test-TeamNativeFrontmatterFieldValue -Frontmatter $skillFrontmatter -Field 'role_layer' -ExpectedValue 'specialist')) {
+            Add-TeamNativeFinding -Severity 'Red' -File $relativeSkillPath -Line 1 -Reason '團隊專家子技能缺少 specialist 關係層級' -Text 'metadata.relations.role_layer must be specialist'
+        }
+        if (-not (Test-TeamNativeFrontmatterFieldValue -Frontmatter $skillFrontmatter -Field 'parent_skill' -ExpectedValue $parentSkillName)) {
+            Add-TeamNativeFinding -Severity 'Red' -File $relativeSkillPath -Line 1 -Reason '團隊專家子技能未連回角色母技能' -Text "metadata.relations.parent_skill must be $parentSkillName"
+        }
+        foreach ($traceRef in $requiredTraceContractRefs) {
+            if ($skillFrontmatter -notmatch [regex]::Escape($traceRef)) {
+                Add-TeamNativeFinding -Severity 'Red' -File $relativeSkillPath -Line 1 -Reason '團隊專家子技能缺少 trace/handoff 契約引用' -Text "missing contract ref: $traceRef"
+            }
+        }
+        foreach ($field in $requiredRoleHandoffFields) {
+            if ($skillContent -notmatch [regex]::Escape($field)) {
+                Add-TeamNativeFinding -Severity 'Red' -File $relativeSkillPath -Line 1 -Reason '團隊專家子技能缺少角色身份交接欄位' -Text "missing field: $field"
+            }
+        }
+        if ($skillContent -notmatch '(?m)^##\s+Trace And Handoff Contract\s*$') {
+            Add-TeamNativeFinding -Severity 'Red' -File $relativeSkillPath -Line 1 -Reason '團隊專家子技能缺少主技能帶子技能交接契約章節' -Text 'missing Trace And Handoff Contract'
+        }
+        if ($skillContent -match '(?m)^##\s+Team-Native Trace Fields\s*$') {
+            Add-TeamNativeFinding -Severity 'Red' -File $relativeSkillPath -Line 1 -Reason '團隊專家子技能仍保留舊 trace 欄位重複章節' -Text 'remove duplicated Team-Native Trace Fields'
         }
 
         if (($null -ne $skillIndexContent) -and ($skillIndexContent -notmatch [regex]::Escape($skillName))) {
             Add-TeamNativeFinding -Severity 'Red' -File $skillIndexRelativePath -Line 1 -Reason '技能索引缺少團隊專家子技能登記' -Text $skillName
         }
+    }
+
+    foreach ($roleId in $expectedRoleIds) {
+        if (@($declaredRoleIds.ToArray()) -notcontains $roleId) {
+            Add-TeamNativeFinding -Severity 'Red' -File 'Shared\skills' -Line 1 -Reason '十角色 role_id 集合不完整' -Text ("missing role_id: {0}" -f $roleId)
+        }
+    }
+    foreach ($declaredRoleId in @($declaredRoleIds.ToArray() | Sort-Object -Unique)) {
+        if ($expectedRoleIds -notcontains $declaredRoleId) {
+            Add-TeamNativeFinding -Severity 'Red' -File 'Shared\skills' -Line 1 -Reason '十角色 role_id 集合出現未登記值' -Text ("unexpected role_id: {0}" -f $declaredRoleId)
+        }
+    }
+    $duplicateRoleIds = @($declaredRoleIds.ToArray() | Group-Object | Where-Object { $_.Count -gt 1 } | ForEach-Object { $_.Name })
+    foreach ($duplicateRoleId in $duplicateRoleIds) {
+        Add-TeamNativeFinding -Severity 'Red' -File 'Shared\skills' -Line 1 -Reason '十角色 role_id 不得重複' -Text ("duplicate role_id: {0}" -f $duplicateRoleId)
     }
 
     if ($null -ne $skillIndexContent) {
@@ -3592,10 +3816,61 @@ function Measure-TeamNativeCoreSemantics {
         if (@($indexedSpecialistNames).Count -lt 10) {
             Add-TeamNativeFinding -Severity 'Red' -File $skillIndexRelativePath -Line 1 -Reason '技能索引登記的團隊專家子技能數量不足' -Text ("indexed {0}, required 10 team-specialist-* skills" -f @($indexedSpecialistNames).Count)
         }
+        foreach ($expectedSkillName in $expectedSkillNames) {
+            if ($indexedSpecialistNames -notcontains $expectedSkillName) {
+                Add-TeamNativeFinding -Severity 'Red' -File $skillIndexRelativePath -Line 1 -Reason '技能索引缺少預期十角色子技能' -Text $expectedSkillName
+            }
+        }
+        foreach ($indexedSkillName in $indexedSpecialistNames) {
+            if ($expectedSkillNames -notcontains $indexedSkillName) {
+                Add-TeamNativeFinding -Severity 'Red' -File $skillIndexRelativePath -Line 1 -Reason '技能索引出現十角色契約外的團隊專家子技能' -Text $indexedSkillName
+            }
+        }
         foreach ($skillName in $indexedSpecialistNames) {
             $skillPath = Join-Path $sharedSkillsRoot (Join-Path $skillName 'SKILL.md')
             if (-not (Test-Path -LiteralPath $skillPath -PathType Leaf)) {
                 Add-TeamNativeFinding -Severity 'Red' -File ("Shared\skills\{0}\SKILL.md" -f $skillName) -Line 1 -Reason '技能索引登記的團隊專家子技能不存在' -Text $skillName
+            }
+        }
+    }
+
+    $operationModeContractChecks = @(
+        [PSCustomObject]@{
+            Path = 'Shared\workflow-capability-evidence-matrix.md'
+            Label = '工作流證據矩陣缺少日常/完整模式路由鏈'
+            Patterns = @('operation_mode', 'daily', 'full', 'board_template', 'board_state', 'closeout_lane', 'station set', 'operation_mode_reason', 'role_id', 'role_instance_id', 'exclusive_task_scope')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\platform-capability-matrix.md'
+            Label = '平台能力矩陣缺少日常/完整模式與角色身份欄位'
+            Patterns = @('operation_mode', 'daily', 'full', 'operation_mode_reason', 'role_id', 'role_instance_id', 'exclusive_task_scope')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skill-governance.md'
+            Label = '技能治理契約缺少角色關係 metadata 或日常/完整模式期望'
+            Patterns = @('metadata.relations', 'role_id', 'role_layer', 'parent_skill', 'support_skills', 'embedded_artifacts', 'artifact_contracts', 'trace_contracts', 'operation_mode: daily', 'operation_mode: full')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\team-station-handoff-packet\SKILL.md'
+            Label = '隊員交接包缺少操作模式或角色身份欄位'
+            Patterns = @('operation_mode', 'operation_mode_reason', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'team-specialist-security-reliability')
+        },
+        [PSCustomObject]@{
+            Path = 'Shared\skills\team-role-boundaries\SKILL.md'
+            Label = '角色邊界缺少十角色完整定義'
+            Patterns = @($expectedRoleIds + @('captain', 'operation_mode: daily', 'operation_mode: full', 'exclusive_task_scope'))
+        }
+    )
+
+    foreach ($check in $operationModeContractChecks) {
+        $content = Get-TeamNativeContent -RelativePath $check.Path
+        if ($null -eq $content) {
+            Add-TeamNativeFinding -Severity 'Red' -File $check.Path -Line 1 -Reason '必要檔案不存在' -Text $check.Label
+            continue
+        }
+        foreach ($pattern in $check.Patterns) {
+            if ($content -notmatch [regex]::Escape($pattern)) {
+                Add-TeamNativeFinding -Severity 'Red' -File $check.Path -Line 1 -Reason $check.Label -Text "missing pattern: $pattern"
             }
         }
     }
@@ -3827,6 +4102,125 @@ function Measure-TeamTraceEvidence {
         return ''
     }
 
+    function Test-TeamTraceEvidenceValue {
+        param(
+            [string]$Value,
+            [switch]$AllowNonApplicable
+        )
+
+        if ([string]::IsNullOrWhiteSpace($Value)) { return $false }
+        $normalized = $Value.Trim().Trim('"', "'").Trim([char]96).Trim()
+        $normalized = ($normalized -replace '[,\]\}]\s*$', '').Trim()
+        if (-not $normalized) { return $false }
+        if ($AllowNonApplicable -and ($normalized -match '(?i)^(none|n/a|not-applicable|not applicable|無|不適用)$')) {
+            return $true
+        }
+
+        return ($normalized -notmatch '(?i)^(null|none|n/a|not-applicable|not applicable|missing|empty|blocked|unverified|\[\]|\{\}|無|未提供|不適用)$')
+    }
+
+    function Test-TeamTraceFieldHasValue {
+        param(
+            [string]$Content,
+            [string]$Field,
+            [switch]$AllowNonApplicable
+        )
+
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+        $escaped = [regex]::Escape($Field)
+        $patterns = @(
+            "(?im)^\s*[""']?$escaped[""']?\s*[:=]\s*(?<value>[^\r\n]+)",
+            "(?im)^\s*[-*]\s*$escaped\s*[:=]\s*(?<value>[^\r\n]+)"
+        )
+        foreach ($pattern in $patterns) {
+            foreach ($match in [regex]::Matches($Content, $pattern)) {
+                if (Test-AuditLineIsNegative -Line $match.Value) { continue }
+                if (Test-TeamTraceEvidenceValue -Value $match.Groups['value'].Value -AllowNonApplicable:$AllowNonApplicable) {
+                    return $true
+                }
+            }
+        }
+
+        $blockPattern = "(?ims)^\s*[""']?$escaped[""']?\s*[:=]\s*(?:\r?\n(?<block>(?:\s*[-*]\s+.+|\s+[-*{].+|\s{2,}.+)(?:\r?\n|$)){1,12})"
+        $blockMatch = [regex]::Match($Content, $blockPattern)
+        if ($blockMatch.Success) {
+            return (Test-TeamTraceEvidenceValue -Value $blockMatch.Groups['block'].Value -AllowNonApplicable:$AllowNonApplicable)
+        }
+
+        return $false
+    }
+
+    function Get-TeamTracePositiveLineCount {
+        param(
+            [string]$Content,
+            [string]$Pattern
+        )
+
+        if ([string]::IsNullOrWhiteSpace($Content)) { return 0 }
+        $count = 0
+        foreach ($line in ($Content -split "\r?\n")) {
+            if (($line -match $Pattern) -and (-not (Test-AuditLineIsNegative -Line $line))) {
+                $count++
+            }
+        }
+
+        return $count
+    }
+
+    function Test-TeamTraceUnsafeCaptainAuthoring {
+        param(
+            [string]$Content
+        )
+
+        $captainAuthoringFields = @(
+            'captain_substitute_authoring',
+            'captain substitute authoring',
+            'captain_authored',
+            'captain authored'
+        )
+        $noCaptainAuthoringFields = @(
+            'no_captain_authoring',
+            'no captain authoring'
+        )
+        $safeValuePattern = '(?i)^(false|none|n/a|not-applicable|not applicable|blocked|unverified|closed-with-director-risk|no|無|不適用|阻塞|未驗證|總監風險關閉)$'
+        $unsafeValuePattern = '(?i)^(true|yes|actual|confirmed|present|captain-authored|captain authored|captain-substituted|captain substituted|substitute-authoring|substitute authoring|substitution|substituted|代工|替代|替代創作|隊長代工|隊長替代)$'
+
+        foreach ($field in $captainAuthoringFields) {
+            $value = Get-TeamTraceFieldValue -Content $Content -Fields @($field)
+            if (-not $value) { continue }
+
+            $normalized = ($value -split '[;,]')[0].Trim().Trim('"', "'").Trim([char]96).Trim()
+            if (-not $normalized) { continue }
+            if ($normalized -match $safeValuePattern) { continue }
+            if ($normalized -match $unsafeValuePattern) { return $true }
+        }
+
+        foreach ($field in $noCaptainAuthoringFields) {
+            $value = Get-TeamTraceFieldValue -Content $Content -Fields @($field)
+            if (-not $value) { continue }
+
+            $normalized = ($value -split '[;,]')[0].Trim().Trim('"', "'").Trim([char]96).Trim()
+            if (-not $normalized) { continue }
+            if ($normalized -match $unsafeValuePattern) { continue }
+            if ($normalized -match $safeValuePattern) { return $true }
+        }
+
+        return $false
+    }
+
+    $registeredRoleIds = @(
+        'intent-requirements',
+        'scope-impact',
+        'external-research',
+        'architecture-contract',
+        'change-delivery',
+        'validation',
+        'review',
+        'security-reliability',
+        'memory-docs',
+        'release-completion'
+    )
+
     $traceFiles = @()
     if (Test-Path -LiteralPath $TeamTraceRoot -PathType Container) {
         $traceFiles = @(Get-ChildItem -LiteralPath $TeamTraceRoot -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in @('.md', '.json', '.txt') })
@@ -3868,6 +4262,8 @@ function Measure-TeamTraceEvidence {
         'task_type',
         'workflow_route',
         'board_state',
+        'operation_mode',
+        'operation_mode_reason',
         'implementation_authorization',
         'go_evidence',
         'authorization_source',
@@ -3878,11 +4274,21 @@ function Measure-TeamTraceEvidence {
         'authorization_expiry',
         'authorization_resolution_state',
         'platform_mode_observed',
+        'role_id',
+        'role_instance_id',
+        'exclusive_task_scope',
         'specialist_skill',
+        'loaded_skill_refs',
+        'handoff_packet_id',
         'domain_label',
         'requested_execution_channel',
         'channel_capability',
         'channel_invocation_status',
+        'startup_started_at',
+        'first_response_deadline',
+        'last_progress_at',
+        'timeout_action',
+        'standby_reason',
         'execution_channel',
         'station_lifecycle_state',
         'retention_reason',
@@ -3895,6 +4301,7 @@ function Measure-TeamTraceEvidence {
         'yellow_resolution_state',
         'repair_loop_count',
         'delivery_artifact',
+        'delivery_artifact_id',
         'delivery_artifact_status',
         'no_captain_authoring',
         'stations',
@@ -3909,6 +4316,8 @@ function Measure-TeamTraceEvidence {
     $validCount = 0
     foreach ($file in $traceFiles) {
         $content = Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8
+        $hardTracePattern = '(?i)\boperation_mode\b\s*[:=]\s*["'']?full\b|governance-impact|governance impact|Doctor/Audit|audit rules|routine audit|commit-release|commit/release|治理影響|巡檢規則|提交發布準備|提交發布'
+        $requiresHardTrace = Test-TeamTracePositiveLine -Content $content -Pattern $hardTracePattern
         $missing = @()
         foreach ($field in $requiredFields) {
             if ($content -notmatch [regex]::Escape($field)) {
@@ -3920,7 +4329,7 @@ function Measure-TeamTraceEvidence {
         if (@($missing).Count -eq 0) {
             $validCount++
         } else {
-            $severity = if ($RequireTeamTrace) { 'Red' } else { 'Yellow' }
+            $severity = if ($RequireTeamTrace -or $requiresHardTrace) { 'Red' } else { 'Yellow' }
             Add-TeamTraceFinding -Severity $severity -File $rel -Line 1 -Reason 'Team-Native trace 欄位不完整' -Text ("missing: {0}" -f ($missing -join ', '))
         }
 
@@ -3940,6 +4349,24 @@ function Measure-TeamTraceEvidence {
         $hasFormalReadonlyTrace = $content -match '(?i)formal-readonly|formal readonly|Team-First.{0,120}(read[- ]?only|readonly|唯讀)|正式.{0,80}(唯讀|無寫入)'
         if ($isNoWriteTrace -and $isExplorationTrace -and (-not $hasFormalReadonlyTrace)) {
             Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '無寫入探索缺少 Team-First formal-readonly' -Text 'no-write exploration must still record a formal-readonly team route'
+        }
+
+        $operationMode = Get-TeamTraceFieldValue -Content $content -Fields @('operation_mode', 'operation mode', '操作模式')
+        if ($operationMode -and ($operationMode -notmatch '^(daily|full)$')) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'Team-Native trace 的 operation_mode 不是 daily 或 full' -Text ("operation_mode: {0}" -f $operationMode)
+        }
+        $fullOnlyTracePattern = '(?i)(implementation|repair|bottom-layer refactor|cross-file governance|specialist skill rewrite|governance-impact|governance impact|Doctor/Audit|audit rules|routine audit|commit-release|commit/release|release|deploy|protected mutation|實作|修復|底層重構|跨檔治理|治理影響|專家技能改寫|巡檢規則|巡檢|提交發布準備|提交發布|發布|部署|保護狀態)'
+        if (($operationMode -eq 'daily') -and (Test-TeamTracePositiveLine -Content $content -Pattern $fullOnlyTracePattern)) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'full-only 任務軌跡不得使用 daily 模式' -Text 'use operation_mode: full for implementation, bottom-layer refactor, Doctor/Audit, release, deploy, or protected mutation work'
+        }
+
+        $roleId = Get-TeamTraceFieldValue -Content $content -Fields @('role_id', 'role id', '角色代號')
+        if ($roleId -and ($registeredRoleIds -notcontains $roleId) -and ($roleId -notmatch '^(blocked|unverified|not-applicable|closed-with-director-risk)$')) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'Team-Native trace 使用未登記的 role_id' -Text ("role_id: {0}" -f $roleId)
+        }
+        $exclusiveTaskScope = Get-TeamTraceFieldValue -Content $content -Fields @('exclusive_task_scope', 'exclusive task scope', '互斥任務範圍')
+        if ($exclusiveTaskScope -and ($exclusiveTaskScope -notmatch '^(task|blocked|unverified|not-applicable|closed-with-director-risk)$')) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'Team-Native trace 的 exclusive_task_scope 不是 task 或誠實阻塞狀態' -Text ("exclusive_task_scope: {0}" -f $exclusiveTaskScope)
         }
 
         $noWriteNoTeamPattern = '(?i)(no-write|read-only|無寫入|唯讀).{0,160}(no-team|no team|without team|skip team|不用(團隊|隊員)|不需要(團隊|隊員)|無團隊)'
@@ -3962,12 +4389,41 @@ function Measure-TeamTraceEvidence {
             Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊員通道未嘗試啟動也未回報' -Text 'not-started requires standby, blocked, unverified, unavailable, not-authorized, or a concrete reason'
         }
 
+        $hasUnavailableChannel = $content -match '(?im)^\s*[-*]?\s*["'']?channel_capability["'']?\s*[:=]\s*["'']?(unavailable|conditional)\b|^\s*[-*]?\s*["'']?channel_invocation_status["'']?\s*[:=]\s*["'']?(not-started|unavailable|blocked|not-authorized|standby)\b'
+        if ($hasUnavailableChannel) {
+            $monitoringFields = @(
+                'startup_started_at',
+                'first_response_deadline',
+                'last_progress_at',
+                'timeout_action',
+                'standby_reason'
+            )
+            $missingMonitoringFields = @()
+            foreach ($field in $monitoringFields) {
+                if ($content -notmatch [regex]::Escape($field)) {
+                    $missingMonitoringFields += $field
+                }
+            }
+            if (@($missingMonitoringFields).Count -gt 0) {
+                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊員通道不可用或未啟動時缺少監控欄位' -Text ("missing: {0}" -f ($missingMonitoringFields -join ', '))
+            }
+        }
+
         $hasStandbyTrace = $content -match '(?i)\bstandby\b|待命'
         if ($isNoWriteTrace -and $isExplorationTrace -and (-not $hasStandbyTrace)) {
             Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '無寫入探索缺少隊員 standby 狀態' -Text 'formal-readonly traces must preserve specialist standby or a blocked/unverified equivalent'
         }
 
+        $standbyCompletionPattern = '(?i)(\bstandby\b|待命).{0,160}(\bcomplete\b|completed|full team completion|formal completion evidence|完整完成|完整團隊完成|已完成|已回收|已整合|正式完成證據|驗收通過)'
+        if (Test-TeamTracePositiveLine -Content $content -Pattern $standbyCompletionPattern) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '待命狀態不得當成完成證據' -Text 'standby is a non-executed lifecycle state, not returned evidence or completion'
+        }
+
         $isFormalOrApplicableTrace = $content -match '(?i)\bboard_state\b\s*[:=]\s*["'']?formal\b|\bapplicability\b\s*[:=]\s*["'']?applicable\b|formal evidence eligibility|正式證據'
+        if ($isFormalOrApplicableTrace -and ($content -notmatch [regex]::Escape('handoff_packet_id'))) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '正式站點缺少 handoff_packet_id' -Text 'formal stations must carry a handoff packet id or an explicit blocked/unverified reason'
+        }
+
         $hasSkillDispatchPackage = $content -match '(?i)skill dispatch package|specialist dispatch package|技能派工包|隊員派工包|Allowed inputs.{0,200}Allowed tools.{0,200}Forbidden actions.{0,200}Output artifact format.{0,200}Stop condition'
         if ($isFormalOrApplicableTrace -and (-not $hasSkillDispatchPackage)) {
             Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '正式站點缺少技能派工包' -Text 'formal station dispatch must include inputs, tools, forbidden actions, artifact format, and stop condition'
@@ -3987,6 +4443,15 @@ function Measure-TeamTraceEvidence {
         $hasAcceptedRiskCompletion = Test-TeamTracePositiveLine -Content $content -Pattern $acceptedRiskCompletionPattern
         $hasDirectorRiskClose = Test-TeamTracePositiveLine -Content $content -Pattern $directorRiskClosePattern
 
+        $completionState = Get-TeamTraceFieldValue -Content $content -Fields @('completion_state', 'completion state', '完成狀態')
+        $normalizedCompletionState = $completionState.Trim().ToLowerInvariant()
+        $allowedCompletionStates = @('complete', 'closed-with-director-risk', 'blocked', 'unverified', 'not-applicable')
+        if ($normalizedCompletionState -and ($allowedCompletionStates -notcontains $normalizedCompletionState)) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'Team-Native trace 使用未登記的 completion_state' -Text ("completion_state: {0}" -f $completionState)
+        }
+        if ($completeClaim -and $normalizedCompletionState -and ($normalizedCompletionState -ne 'complete')) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '非完成狀態不得伴隨完整完成宣稱' -Text ("completion_state: {0}" -f $completionState)
+        }
         if ($hasAcceptedRiskCompletion -or ($completeClaim -and $hasAcceptedRisk)) {
             Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡含已接受風險但宣稱 complete' -Text 'accepted-risk is not full completion; use closed-with-director-risk only as non-complete closure'
         }
@@ -4001,6 +4466,24 @@ function Measure-TeamTraceEvidence {
             [PSCustomObject]@{ Name = '驗證交付件'; Pattern = '(?i)delivery_artifacts?.{0,100}validation|\bvalidation[-_ ]delivery( artifact)?\b|驗證交付件' }
         )
         if ($completeClaim) {
+            $completeEvidenceFields = @(
+                [PSCustomObject]@{ Field = 'handoff_packet_id'; Label = 'handoff_packet_id'; AllowNonApplicable = $false },
+                [PSCustomObject]@{ Field = 'role_instance_id'; Label = 'role_instance_id'; AllowNonApplicable = $false },
+                [PSCustomObject]@{ Field = 'delivery_artifact_id'; Label = 'delivery_artifact_id'; AllowNonApplicable = $false },
+                [PSCustomObject]@{ Field = 'stations'; Label = 'stations'; AllowNonApplicable = $false },
+                [PSCustomObject]@{ Field = 'delivery_artifacts'; Label = 'delivery_artifacts'; AllowNonApplicable = $false },
+                [PSCustomObject]@{ Field = 'direct_exceptions'; Label = 'direct_exceptions'; AllowNonApplicable = $true }
+            )
+            $missingCompleteEvidence = @()
+            foreach ($evidenceField in $completeEvidenceFields) {
+                if (-not (Test-TeamTraceFieldHasValue -Content $content -Field $evidenceField.Field -AllowNonApplicable:([bool]$evidenceField.AllowNonApplicable))) {
+                    $missingCompleteEvidence += $evidenceField.Label
+                }
+            }
+            if (@($missingCompleteEvidence).Count -gt 0) {
+                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡宣稱完整完成但缺少可解析必要證據' -Text ("missing: {0}" -f ($missingCompleteEvidence -join ', '))
+            }
+
             $missingArtifacts = @()
             foreach ($artifact in $artifactChecks) {
                 if (-not (Test-TeamTracePositiveLine -Content $content -Pattern $artifact.Pattern)) {
@@ -4012,8 +4495,7 @@ function Measure-TeamTraceEvidence {
             }
         }
 
-        $captainAuthoringPattern = '(?i)\bno_captain_authoring\b\s*[:=]\s*["'']?(false|blocked|unverified|accepted-risk)\b|captain.{0,80}(authoring|authored|create|created|produce|produced|implement|implemented|substitution|substituted)|protected captain channel|隊長.{0,80}(創作|產出|實作|替代|代工)'
-        if ($completeClaim -and (Test-TeamTracePositiveLine -Content $content -Pattern $captainAuthoringPattern)) {
+        if ($completeClaim -and (Test-TeamTraceUnsafeCaptainAuthoring -Content $content)) {
             Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊長創作或隊長替代卻宣稱 complete' -Text 'captain may integrate returned artifacts, but cannot author or substitute the main deliverable and claim completion'
         }
 
@@ -4021,6 +4503,13 @@ function Measure-TeamTraceEvidence {
         $reviewer = Get-TeamTraceFieldValue -Content $content -Fields @('reviewer', 'review_owner', 'review_specialist', 'review_delivery_owner', '審查者')
         if (($implementer) -and ($reviewer) -and ($implementer.Trim().ToLowerInvariant() -eq $reviewer.Trim().ToLowerInvariant())) {
             Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '審查者與實作者相同' -Text ("reviewer/implementer: {0}" -f $reviewer)
+        }
+
+        $evidenceDirectPattern = '(?i)(validation|review|external-research|scope-impact|security-reliability|memory-docs|release-completion|evidence|驗證|審查|證據|外部研究|範圍|影響|安全|記憶|文件|收尾).{0,180}(\bdirect\b|主線直做)|(\bdirect\b|主線直做).{0,180}(validation|review|external-research|scope-impact|security-reliability|memory-docs|release-completion|evidence|驗證|審查|證據|外部研究|範圍|影響|安全|記憶|文件|收尾)'
+        $evidenceDirectCount = Get-TeamTracePositiveLineCount -Content $content -Pattern $evidenceDirectPattern
+        $hasConcreteDirectExceptions = Test-TeamTracePositiveLine -Content $content -Pattern '(?i)\bdirect_exceptions\b.{0,240}(exception|replacement evidence|residual state|closed-with-director-risk|blocked|unverified|例外|替代證據|殘留狀態|風險關閉|阻塞|未驗證)'
+        if (($evidenceDirectCount -ge 2) -and (-not $hasConcreteDirectExceptions)) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '兩個以上證據站點 direct 但缺少 direct_exceptions' -Text 'multi-direct evidence stations require station-specific exceptions, replacement evidence, and residual state'
         }
 
         $selfReviewPattern = '(?i)\bself[-_ ]review\b\s*[:=]\s*["'']?(true|yes|same|failed|invalid)\b|\brole_separation\b\s*[:=]\s*["'']?(false|failed|invalid|same)\b|reviewer.{0,80}(same as|same).{0,80}implementer|審查者.{0,80}(同|相同).{0,80}實作者'

@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-29T12:12:21+08:00'
+last_updated: '2026-06-29T13:50:50+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-29T11:30:08+08:00'
+last_verified: '2026-06-29T13:50:50+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 17
+cycle_event_count: 18
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -45,6 +45,7 @@ metadata:
 - Codex condense workflow now uses the MCP memory evidence contract to separate source memory from project context evidence.
 - This child card owns Codex shared gates and general workflow skills.
 - Workflow skills must preserve Codex progressive loading, Director gates, and Traditional Chinese trigger language.
+- Codex 00 chat is direct only for pure conversation with no external evidence dependency; files, screenshots, memory cards, rules, agent behavior, tool output, or governance-impact questions enter Team-Native formal-readonly and require returned evidence plus captain verify-read.
 - Test workflow evidence must match the target interface surface.
 - Codex test workflow now requires visual detail-observation notes and real-information-first evidence before fallback fake data.
 
@@ -53,6 +54,7 @@ metadata:
 - Do not write source or memory from read-only flows without the appropriate GO gate.
 
 ## Cycle Events
+- 18: Rebuilt the Codex 00 chat boundary so pure chat stays direct, while evidence-bearing discussion promotes to Team-Native formal-readonly with filesystem/MCP read scope, evidence status, and captain verify-read before the final answer.
 - 17: Updated Codex general workflows for Team-First formal-readonly routing, handoff packet refs, standby state, and deep-read/verify-read fields.
 - 16: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 15: Synced Codex general workflows with Team-Native specialist registry and change delivery artifact terminology.
@@ -88,6 +90,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Codex 一般工作流技能與共用閘門。
+- Codex 00 入口現在只讓純聊天直接回覆；需要檔案、截圖、記憶、規則、工具輸出或治理證據時要升級 formal-readonly。
 - 實驗與測試入口保留快速試錯，但必須宣告最小團隊站點與主線直做例外。
 - 測試證據要依介面型態選擇。
 
