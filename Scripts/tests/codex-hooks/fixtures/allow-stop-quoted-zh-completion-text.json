@@ -1,0 +1,12 @@
+{
+  "name": "allow-stop-quoted-zh-completion-text",
+  "event": "Stop",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "",
+  "payload": {
+    "hook_event_name": "Stop",
+    "response": "引用：\"已完成，Doctor 通過\"。這是測試文字，不是本輪完成宣稱。",
+    "cwd": "D:\\AI_Rules",
+    "stop_hook_active": false
+  }
+}

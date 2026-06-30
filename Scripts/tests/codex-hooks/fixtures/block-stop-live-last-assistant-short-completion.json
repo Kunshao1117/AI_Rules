@@ -1,0 +1,12 @@
+{
+  "name": "block-stop-live-last-assistant-short-completion",
+  "event": "Stop",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "decision.*block",
+  "payload": {
+    "hook_event_name": "Stop",
+    "last_assistant_message": "this task is complete.",
+    "cwd": "D:\\AI_Rules",
+    "stop_hook_active": false
+  }
+}

@@ -4,7 +4,7 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-30T13:07:24+08:00'
+last_updated: '2026-06-30T16:00:06+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 10
+cycle_event_count: 11
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _system.scripts — Repository Script Governance Memory
 ## Current Truth
 - Audit and Skills-Sync now include workflow-orchestration and workflow-orchestration-scenarios as shared governance references, checking workflow-entry coverage, scenario templates, source/deployed drift, Team-Native semantics, and mixed completion/non-completion wording.
@@ -48,6 +47,7 @@ metadata:
 - Keep script behavior aligned with protected memory and project-skill directories.
 - Do not use this card as a substitute for reading the current script implementation before edits.
 ## Cycle Events
+- 41: Added Doctor/Audit required-fixture coverage for the 11 Stop hook live-message, mixed-completion, read-only report, Chinese state, and no-artifact regression cases so future deletion is caught before commit.
 - 40: Hardened Doctor/Audit Codex hook stability checks for transcript fixture support, source/deployed parity, required fixture coverage, tracked fixture governance, exact write target matching, same-record protected authorization, partial protected-action authorization, and completion overclaim checks; final Doctor returned Red 0 / Yellow 0.
 - 39: Added Codex hook governance checks and fixture coverage to Doctor/Audit for Team-Native hook usability.
 - 38: Wave 6C added Doctor/Audit and Skills-Sync coverage for workflow orchestration scenarios, task-board templates, deployed scenario reference drift, and mixed completion-state wording.

@@ -1,0 +1,12 @@
+{
+  "name": "block-stop-short-all-set",
+  "event": "Stop",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "decision.*block",
+  "payload": {
+    "hook_event_name": "Stop",
+    "response": "all set.",
+    "cwd": "D:\\AI_Rules",
+    "stop_hook_active": false
+  }
+}

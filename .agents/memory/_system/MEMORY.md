@@ -4,7 +4,7 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-30T13:39:01+08:00'
+last_updated: '2026-06-30T16:00:06+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 13
+cycle_event_count: 14
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -54,6 +54,7 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 14: Recorded the 2026-06-30 Stop hook completion-claim repair changelog update, including 52 hook fixtures and Doctor required-fixture coverage for the 11 new Stop regression cases.
 - 13: Recorded the 2026-06-30 Codex hook stability changelog entry and cleared the CHANGELOG staleness warning after reading the current entry.
 - 12: Recorded the 2026-06-30 Team-Native workflow orchestration changelog entry and cleared the CHANGELOG staleness warning after reading the current entry.
 - 11: Documented the 00 evidence-bearing chat boundary in root README: pure chat remains direct, but evidence-dependent discussion uses Team-Native formal-readonly stations to reduce captain context pollution and preserve looped evidence.

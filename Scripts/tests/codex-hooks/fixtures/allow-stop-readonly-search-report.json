@@ -1,0 +1,12 @@
+{
+  "name": "allow-stop-readonly-search-report",
+  "event": "Stop",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "",
+  "payload": {
+    "hook_event_name": "Stop",
+    "response": "Hook search completed; read-only report only, no source changes.",
+    "cwd": "D:\\AI_Rules",
+    "stop_hook_active": false
+  }
+}

@@ -291,6 +291,7 @@ function Get-HookActionText {
         'user_prompt',
         'request',
         'message',
+        'last_assistant_message',
         'response',
         'output',
         'content'
@@ -1006,7 +1007,59 @@ function Test-IsCurrentCompletionReferenceLine {
     if ([string]::IsNullOrWhiteSpace($Line)) { return $true }
     $trimmed = $Line.Trim()
     if ($trimmed -match '^(>|`{3}|//|#)') { return $true }
-    return $trimmed -match '(?i)(fixture|test string|test text|expectedOutputRegex|forbiddenOutputRegex|regex|pattern|example|sample|quote|quoted|literal|引用|測試|說明文字|說明|範例)'
+    return $trimmed -match '(?i)(fixture|test string|test text|test case|expectedOutputRegex|forbiddenOutputRegex|regex|pattern|example|sample|quote|quoted|literal|引用|測試文字|測試字串|測試案例|說明文字|範例)'
+}
+
+function Remove-QuotedCompletionSegments {
+    param([string]$Line)
+
+    if ([string]::IsNullOrWhiteSpace($Line)) { return '' }
+    $completionTermPattern = '(?:complete|completed|done|passed|ready|all\s+set|' +
+        [regex]::Escape((New-UnicodeString -Codes @(0x5DF2, 0x5B8C, 0x6210))) + '|' +
+        [regex]::Escape((New-UnicodeString -Codes @(0x5B8C, 0x6210))) + '|' +
+        [regex]::Escape((New-UnicodeString -Codes @(0x901A, 0x904E))) + '|' +
+        [regex]::Escape((New-UnicodeString -Codes @(0x53EF, 0x63D0, 0x4EA4))) + ')'
+    $sanitized = [regex]::Replace($Line, '"[^"\r\n]*' + $completionTermPattern + '[^"\r\n]*"', ' ', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    $sanitized = [regex]::Replace($sanitized, "'[^'\r\n]*" + $completionTermPattern + "[^'\r\n]*'", ' ', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    $sanitized = [regex]::Replace($sanitized, '`[^`\r\n]*' + $completionTermPattern + '[^`\r\n]*`', ' ', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    return $sanitized
+}
+
+function Remove-NegatedCompletionSegments {
+    param([string]$Line)
+
+    if ([string]::IsNullOrWhiteSpace($Line)) { return '' }
+    $sanitized = [regex]::Replace($Line, '\b(?:not|never|no|without)\b.{0,50}\b(?:complete|completed|done|ready|passed)\b', ' ', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    $sanitized = [regex]::Replace($sanitized, '\b(?:cannot|can''t|do\s+not|don''t|must\s+not|should\s+not)\b.{0,80}\b(?:claim|declare|call|report|mark)?\b.{0,30}\b(?:complete|completed|done|ready|passed)\b', ' ', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    $zhNegatedCompletionTerms = @(
+        (New-UnicodeString -Codes @(0x672A, 0x5B8C, 0x6210)),
+        (New-UnicodeString -Codes @(0x5C1A, 0x672A, 0x5B8C, 0x6210)),
+        (New-UnicodeString -Codes @(0x4E0D, 0x5BA3, 0x7A31, 0x5B8C, 0x6210)),
+        (New-UnicodeString -Codes @(0x4E0D, 0x80FD, 0x5BA3, 0x7A31, 0x5B8C, 0x6210)),
+        (New-UnicodeString -Codes @(0x7121, 0x6CD5, 0x5BA3, 0x7A31, 0x5B8C, 0x6210))
+    )
+    foreach ($term in $zhNegatedCompletionTerms) {
+        $sanitized = $sanitized.Replace($term, ' ')
+    }
+    return $sanitized
+}
+
+function Test-IsReadonlyReportOnlyLine {
+    param([string]$Line)
+
+    if ([string]::IsNullOrWhiteSpace($Line)) { return $false }
+    $hasReadonlyReport = $Line -match '(?i)\b(read-only|readonly|search|searched|scan|scanned|inspection|inspect|lookup|report|findings|grep|rg)\b'
+    $hasCompletionWord = $Line -match '(?i)(\bcomplete\b|\bcompleted\b|\bdone\b|\bpassed\b|all\s+set)'
+    if (-not ($hasReadonlyReport -and $hasCompletionWord)) { return $false }
+
+    $hasCompletionTarget = $Line -match '(?i)\b(Wave\s+\d+|Team-Native|implementation|source|change|changes|build|fix|commit|Doctor|Audit|validation|tests?|checks?|fixtures?)\b'
+    if (-not $hasCompletionTarget) { return $true }
+
+    $hasNegatedWorkTarget = $Line -match '(?i)\b(no|not|without|missing)\b.{0,50}\b(source|implementation|change|changes|commit|write|mutation)\b'
+    $hasHighRiskPassClaim = $Line -match '(?i)\b(validation\s+passed|Doctor/Audit\s+passed|ready\s+(?:to|for)\s+commit|tests?\s+passed|checks?\s+passed|fixtures?\s+passed)\b'
+    $hasHighRiskCompletionClaim = $Line -match '(?i)\b(Wave\s+\d+|Team-Native|source|implementation|change|changes|build|fix|commit|Doctor|Audit|validation|tests?|checks?|fixtures?)\b.{0,80}\b(complete|completed|done|passed|ready)\b'
+    if ($hasHighRiskCompletionClaim) { return $false }
+    return ($hasNegatedWorkTarget -and (-not $hasHighRiskPassClaim))
 }
 
 function Test-ClaimsCompletion {
@@ -1025,6 +1078,7 @@ function Test-ClaimsCompletion {
         ('\bDoctor\b.{0,80}' + (New-UnicodeString -Codes @(0x901A, 0x904E))),
         ((New-UnicodeString -Codes @(0x5DF2, 0x5B8C, 0x6210)) + '.{0,80}\bDoctor\b.{0,80}' + (New-UnicodeString -Codes @(0x901A, 0x904E))),
         '^\s*(?:complete|completed|done|passed)\s*[.!]?\s*$',
+        '^\s*all\s+set\s*[.!]?\s*$',
         'Wave\s+\d+.{0,80}(complete|completed|done|passed|ready)',
         '\b(?:this|current|the)\s+(?:turn|task|work|implementation|fix|change)\s+is\s+(?:complete|completed|done|ready)\b',
         (New-UnicodeString -Codes @(0x672C, 0x8F2A, 0x5DF2, 0x5B8C, 0x6210)),
@@ -1037,6 +1091,10 @@ function Test-ClaimsCompletion {
 
     foreach ($line in @($Text -split "`r?`n")) {
         if (Test-IsCurrentCompletionReferenceLine -Line $line) { continue }
+        $line = Remove-QuotedCompletionSegments -Line $line
+        if (Test-IsReadonlyReportOnlyLine -Line $line) { continue }
+        $line = Remove-NegatedCompletionSegments -Line $line
+        if ([string]::IsNullOrWhiteSpace($line)) { continue }
         foreach ($pattern in $completionPatterns) {
             if ($line -match ('(?i)' + $pattern)) { return $true }
         }
@@ -1155,6 +1213,7 @@ function Test-HasNonCompleteClosureState {
 
     if ([string]::IsNullOrWhiteSpace($Text)) { return $false }
     $englishPattern = '(?i)\b(?:completion_state|review_state|validation_state|memory_docs_state|memory_delivery_state|review_delivery_state|validation_delivery_state|blocker_status|status|state)\s*[:=]\s*(?:blocked|unverified|partial-evidence|closed-with-director-risk|not-complete|incomplete)\b'
+    $englishStatePattern = '(?i)\b(?:blocked|unverified|partial-evidence|closed-with-director-risk|not-complete|incomplete)\b'
     $zhStateKeys = @(
         (New-UnicodeString -Codes @(0x5B8C, 0x6210, 0x72C0, 0x614B)),
         (New-UnicodeString -Codes @(0x6536, 0x5C3E, 0x72C0, 0x614B)),
@@ -1189,7 +1248,7 @@ function Test-HasNonCompleteClosureState {
                 break
             }
         }
-        if (($line -match $englishPattern) -or ($hasZhKey -and $hasZhState)) {
+        if (($line -match $englishPattern) -or ($hasZhKey -and ($hasZhState -or ($line -match $englishStatePattern)))) {
             return $true
         }
     }
@@ -1325,9 +1384,8 @@ switch ($eventName) {
         }
     }
     'Stop' {
-        $stopActive = Get-HookProperty -Object $payload -Name 'stop_hook_active'
-        if (($stopActive -ne $true) -and (Test-ClaimsCompletion -Text $actionText) -and (-not (Test-HasFullArtifactSet -Text $currentText)) -and (-not (Test-HasNonCompleteClosureState -Text $currentText))) {
-            Exit-Block -EventName 'Stop' -Reason 'Completion claim requires recovered implementation, review, and validation delivery artifacts or an explicit blocked/unverified/closed-with-director-risk state.'
+        if ((Test-ClaimsCompletion -Text $actionText) -and (-not (Test-HasFullArtifactSet -Text $currentText)) -and (-not (Test-HasNonCompleteClosureState -Text $currentText))) {
+            Exit-Block -EventName 'Stop' -Reason 'Completion claim requires recovered implementation, memory/docs, review, and validation delivery artifacts or an explicit blocked/unverified/closed-with-director-risk state.'
         }
     }
 }

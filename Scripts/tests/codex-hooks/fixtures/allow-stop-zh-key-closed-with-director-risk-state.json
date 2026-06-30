@@ -1,0 +1,12 @@
+{
+  "name": "allow-stop-zh-key-closed-with-director-risk-state",
+  "event": "Stop",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "",
+  "payload": {
+    "hook_event_name": "Stop",
+    "response": "完成狀態：closed-with-director-risk；審查交付件仍未回收。",
+    "cwd": "D:\\AI_Rules",
+    "stop_hook_active": false
+  }
+}

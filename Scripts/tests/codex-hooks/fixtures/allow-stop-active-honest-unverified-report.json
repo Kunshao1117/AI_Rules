@@ -1,0 +1,12 @@
+{
+  "name": "allow-stop-active-honest-unverified-report",
+  "event": "Stop",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "",
+  "payload": {
+    "hook_event_name": "Stop",
+    "last_assistant_message": "目前沒有足夠證據，completion_state: unverified，不能宣稱完成。",
+    "cwd": "D:\\AI_Rules",
+    "stop_hook_active": true
+  }
+}

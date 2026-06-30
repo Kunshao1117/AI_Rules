@@ -2252,8 +2252,13 @@ function Measure-CodexHookGovernance {
             'allow-stop-full-artifacts.json',
             'allow-stop-zh-not-complete-state.json',
             'allow-stop-honest-unverified-report.json',
+            'allow-stop-active-honest-unverified-report.json',
+            'allow-stop-negated-incomplete-sentence.json',
             'block-stop-captain-broad-read-full-completion.json',
             'block-stop-readonly-claims-source-complete.json',
+            'allow-stop-quoted-zh-completion-text.json',
+            'allow-stop-readonly-search-report.json',
+            'allow-stop-zh-key-closed-with-director-risk-state.json',
             'allow-pretool-readonly-transcript-pollution.json',
             'block-pretool-write-transcript-fake-board.json',
             'block-pretool-current-dangerous-bypass.json',
@@ -2265,6 +2270,12 @@ function Measure-CodexHookGovernance {
             'block-pretool-write-prefix-target.json',
             'block-stop-missing-all-artifacts-fake-complete.json',
             'block-stop-negated-unverified-fake-complete.json',
+            'block-stop-active-short-completion.json',
+            'block-stop-live-last-assistant-short-completion.json',
+            'block-stop-mixed-complete-with-negative-test.json',
+            'block-stop-readonly-plus-source-complete.json',
+            'block-stop-short-all-set.json',
+            'block-stop-zh-test-passed-no-artifacts.json',
             'allow-pretool-protected-git-apply-authorized.json'
         )
         foreach ($requiredFixtureName in $requiredFixtureNames) {

@@ -4,7 +4,7 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-30T13:07:11+08:00'
+last_updated: '2026-06-30T16:00:06+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 12
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
@@ -42,6 +41,7 @@ metadata:
 - Evidence-bearing chat, broad reads, validation, review, memory/docs attribution, commit/release preparation, and completion audit route through formal-readonly or formal-write; pure chat and tiny orientation stay direct only while non-mutating.
 - Codex project-level hooks provide Team-Native guardrails for micro-read allowance, broad-read Captain-Lite hints, scoped write target matching, protected mutation authorization, and completion-claim artifact checks.
 - Hooks Stability guards separate current payload evidence from historical transcript text, require same-record protected authorization, require every detected protected action to have complete authorization, avoid release/deploy false positives from filenames, enforce exact normalized write-target matching, and gate completion claims on delivery artifacts or explicit non-complete state.
+- Stop hook completion checks inspect Codex live `last_assistant_message`, block short generic or mixed completion claims, keep the completion gate active during Stop-hook continuations, and allow explicit blocked/unverified/closed-with-director-risk or read-only search report states.
 - Codex documentation and core rules use `closed-with-director-risk` for Director-closed non-complete cases and must not present missing specialist delivery as full team completion.
 - Codex workflow entries load shared workflow orchestration, platform matrices, specialist role skills, team task-board templates, change delivery artifacts, and MCP memory evidence contracts before relying on evidence.
 - Director-facing Codex output must stay Traditional Chinese and follow the Director-readable output contract.
@@ -52,6 +52,7 @@ metadata:
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 ## Cycle Events
+- 37: Stop hook repair added Codex live last-assistant-message coverage, short generic and mixed completion-claim blocking, active Stop continuation blocking, negated incomplete/read-only report exceptions, Chinese-key non-complete state handling, explicit memory/docs wording in the Stop block reason, and 52 passing hook fixtures; source/deployed hook hash parity verified.
 - 36: Hooks Stability Implementation accepted with source/deployed hook and config hash parity, 41 fixture cases, Doctor Red 0 / Yellow 0, same-record protected authorization, per-action protected authorization coverage, exact write target matching, and a nonblocking deploy.patch dedicated-fixture gap.
 - 35: Added Codex project-level hook source and Team-Native gate behavior for Captain-Lite reads, scoped writes, protected mutations, and completion artifact checks.
 - 34: Wave 6B added workflow-orchestration grounding to Codex workflow entries and source/deployed drift checks.

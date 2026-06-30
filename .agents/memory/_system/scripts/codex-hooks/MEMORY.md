@@ -4,19 +4,19 @@ scopePath: Scripts/tests/codex-hooks/
 description: >-
   專案記憶：Codex hooks 測試 runner 與 Team-Native gate fixtures。Use when: task touches
   Codex hook validation.
-last_updated: '2026-06-30T13:09:28+08:00'
+last_updated: '2026-06-30T16:00:06+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-30T09:44:06+08:00'
+last_verified: '2026-06-30T15:13:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 2
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,13 +35,14 @@ metadata:
 # _system.scripts.codex-hooks — Codex Hook Fixture Memory
 ## Current Truth
 - This child card owns the Codex hook fixture runner and JSON fixtures under `Scripts/tests/codex-hooks/`.
-- The fixtures validate Team-Native hook outcomes across 41 cases for prompt hints, read-only allowance, broad-read Captain-Lite context, scoped writes, out-of-scope writes, current payload versus historical transcript separation, same-record protected authorization, multi-protected partial authorization, release/deploy filename false positives, exact write target matching, protected mutation blocks, specialist lifecycle events, and completion artifact gates.
+- The fixtures validate Team-Native hook outcomes across 52 cases for prompt hints, read-only allowance, broad-read Captain-Lite context, scoped writes, out-of-scope writes, current payload versus historical transcript separation, same-record protected authorization, multi-protected partial authorization, release/deploy filename false positives, exact write target matching, protected mutation blocks, specialist lifecycle events, live Stop payload coverage, short and mixed completion-claim blocks, non-complete state exceptions, read-only report exceptions, and completion artifact gates.
 - The fixture runner supports inline transcript text, temporary transcript path injection, raw hook input, expected and forbidden regex assertions, and temporary transcript cleanup.
 - Hook behavior is coupled to Codex hook source files and Team-Native Core governance; review those cards when fixture expectations change.
 ## Active Constraints
 - Keep fixtures deterministic and offline; they must not require real git mutation, memory mutation, deployment, release, network calls, or credentials.
 - Fixture names describe allow, block, or context outcomes; live platform testing is still required when platform hook behavior changes.
 ## Cycle Events
+- 03: Added 11 Stop hook fixtures for live last_assistant_message payloads, active Stop continuation blocking, short all-set completion claims, mixed completion claims with negated tests or read-only text, negated incomplete sentences, Chinese quoted completion text, read-only search reports, Chinese-key English non-complete states, and Chinese test-passed blocking; fixture runner passed 52 cases.
 - 02: Hooks Stability Implementation finalized 41 fixtures for current payload evidence separation, transcript pollution, same-record protected authorization, multi-protected partial authorization, release/deploy filename false positives, exact write target matching, and completion claim boundaries; final hook/config hash parity, fixture runner, Doctor, review, and validation passed with a nonblocking deploy.patch dedicated-fixture gap.
 - 01: Created fixture ownership for the Hooks-Usability closeout after Codex hook tests became versioned governance assets.
 ## Archive Index
@@ -67,10 +68,15 @@ metadata:
 - Scripts/tests/codex-hooks/fixtures/allow-pretool-specialist-deep-read-formal-readonly.json
 - Scripts/tests/codex-hooks/fixtures/allow-pretool-with-board.json
 - Scripts/tests/codex-hooks/fixtures/allow-pretool-write-authorized.json
+- Scripts/tests/codex-hooks/fixtures/allow-stop-active-honest-unverified-report.json
 - Scripts/tests/codex-hooks/fixtures/allow-stop-blocked-state.json
 - Scripts/tests/codex-hooks/fixtures/allow-stop-full-artifacts.json
 - Scripts/tests/codex-hooks/fixtures/allow-stop-honest-unverified-report.json
+- Scripts/tests/codex-hooks/fixtures/allow-stop-negated-incomplete-sentence.json
 - Scripts/tests/codex-hooks/fixtures/allow-stop-quoted-completion-text.json
+- Scripts/tests/codex-hooks/fixtures/allow-stop-quoted-zh-completion-text.json
+- Scripts/tests/codex-hooks/fixtures/allow-stop-readonly-search-report.json
+- Scripts/tests/codex-hooks/fixtures/allow-stop-zh-key-closed-with-director-risk-state.json
 - Scripts/tests/codex-hooks/fixtures/allow-stop-zh-not-complete-state.json
 - Scripts/tests/codex-hooks/fixtures/allow-subagent-stop-zh-report.json
 - Scripts/tests/codex-hooks/fixtures/allow-user-prompt.json
@@ -90,13 +96,19 @@ metadata:
 - Scripts/tests/codex-hooks/fixtures/block-pretool-write-out-of-scope.json
 - Scripts/tests/codex-hooks/fixtures/block-pretool-write-prefix-target.json
 - Scripts/tests/codex-hooks/fixtures/block-pretool-write-transcript-fake-board.json
+- Scripts/tests/codex-hooks/fixtures/block-stop-active-short-completion.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-captain-broad-read-full-completion.json
+- Scripts/tests/codex-hooks/fixtures/block-stop-live-last-assistant-short-completion.json
+- Scripts/tests/codex-hooks/fixtures/block-stop-mixed-complete-with-negative-test.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-missing-all-artifacts-fake-complete.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-missing-artifacts.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-missing-memory-docs.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-negated-unverified-fake-complete.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-readonly-claims-source-complete.json
+- Scripts/tests/codex-hooks/fixtures/block-stop-readonly-plus-source-complete.json
+- Scripts/tests/codex-hooks/fixtures/block-stop-short-all-set.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-zh-completion.json
+- Scripts/tests/codex-hooks/fixtures/block-stop-zh-test-passed-no-artifacts.json
 - Scripts/tests/codex-hooks/fixtures/block-trust-bypass.json
 - Scripts/tests/codex-hooks/fixtures/context-pretool-captain-broad-read-no-board.json
 - Scripts/tests/codex-hooks/fixtures/context-subagent-start.json

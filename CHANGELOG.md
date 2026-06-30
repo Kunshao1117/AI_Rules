@@ -9,11 +9,13 @@ All notable changes to this project will be documented in this file.
 ### feat
 - **Codex hooks 團隊硬閘門** — 新增 Codex 專案層 hooks 與 Team-Native gate，覆蓋提示送出、工具使用、權限請求、隊員啟停與完成宣稱邊界。
 - **Captain-Lite 讀取模型** — 核心規範新增小型唯讀、廣泛讀取、專家深讀與保護操作分層，避免 hooks 無端攔截正常探索，同時防止讀取結果被誤宣稱為完成證據。
-- **Hooks fixture 回歸套件** — 新增 Codex hooks fixture runner 與 41 個案例，覆蓋範圍式寫入、保護操作授權、歷史對話污染、危險繞過、完成過度宣稱與隊員生命週期。
+- **Hooks fixture 回歸套件** — 新增 Codex hooks fixture runner 與 52 個案例，覆蓋範圍式寫入、保護操作授權、歷史對話污染、危險繞過、完成過度宣稱、停止階段活體訊息與隊員生命週期。
 
 ### fix
 - **Doctor/Audit hooks 檢查** — 管理器巡檢納入 hooks 設定、來源與部署副本雜湊、fixture 追蹤、受保護操作授權與完成交付件檢查。
 - **記憶歸屬收斂** — 新增 hooks 測試子記憶卡並更新相關核心、共享、腳本與發布記憶卡，讓提交前檢查可追溯 hooks 穩定性變更。
+- **Stop hook 完成宣稱防線** — 修正 Codex 停止階段未讀取最新助理訊息的缺口，讓短句完成宣稱、混合完成宣稱與停止階段續跑仍需交付件證據，同時保留未驗證、阻塞、總監風險關閉與唯讀搜尋回報出口。
+- **Doctor Stop fixture 覆蓋同步** — 將新增的 11 個 Stop hook 回歸案例納入管理器巡檢必要清單，避免後續刪除活體訊息、混合宣稱或中文狀態案例時漏過提交前檢查。
 
 ## [2026-06-30] Team-Native 工作流編排落地
 
