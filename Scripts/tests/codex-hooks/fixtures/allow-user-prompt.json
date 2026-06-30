@@ -1,0 +1,12 @@
+{
+  "name": "allow-user-prompt",
+  "event": "UserPromptSubmit",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "Team-Native route hint",
+  "payload": {
+    "hook_event_name": "UserPromptSubmit",
+    "prompt": "GO Wave 7A Implementation",
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

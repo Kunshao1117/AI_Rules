@@ -4,7 +4,7 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-30T03:23:25+08:00'
+last_updated: '2026-06-30T13:07:24+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 6
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _system.scripts — Repository Script Governance Memory
 ## Current Truth
 - Audit and Skills-Sync now include workflow-orchestration and workflow-orchestration-scenarios as shared governance references, checking workflow-entry coverage, scenario templates, source/deployed drift, Team-Native semantics, and mixed completion/non-completion wording.
+- Doctor/Audit now checks Codex project-level hook governance, including hook config/script source-deployed parity, encoded command decoding, transcript-capable fixture runner support, fixture entrypoint presence, tracked-fixture coverage, Captain-Lite read coverage, current/historical evidence separation, tool behavior classification, exact scoped write target matching, protected mutation authorization, and completion artifact requirements.
 - This child card owns root PowerShell deployment, audit, memory migration, skill sync, and platform sync scripts.
 - Doctor/Audit now enforces Team-Native core ordering, scoped authorization fields, role identity, loaded skill refs, handoff packets, full-only trace mode, strict trace parameters, delivery artifact IDs, multi-direct exceptions, and captain-authoring safety.
 - Governance Doctor rejects no-write/read-only work being treated as no-team, missing formal-readonly routing, unreported not-started specialist channels, missing standby state, and captain large-file deep-read substitution.
@@ -46,6 +48,8 @@ metadata:
 - Keep script behavior aligned with protected memory and project-skill directories.
 - Do not use this card as a substitute for reading the current script implementation before edits.
 ## Cycle Events
+- 40: Hardened Doctor/Audit Codex hook stability checks for transcript fixture support, source/deployed parity, required fixture coverage, tracked fixture governance, exact write target matching, same-record protected authorization, partial protected-action authorization, and completion overclaim checks; final Doctor returned Red 0 / Yellow 0.
+- 39: Added Codex hook governance checks and fixture coverage to Doctor/Audit for Team-Native hook usability.
 - 38: Wave 6C added Doctor/Audit and Skills-Sync coverage for workflow orchestration scenarios, task-board templates, deployed scenario reference drift, and mixed completion-state wording.
 - 37: Wave 6B follow-up added Doctor coverage for source/deployed workflow entry drift across Codex, Claude, and Antigravity after independent review found a deployment false negative.
 - 36: Wave 6B updated Audit and Skills-Sync checks for workflow-orchestration coverage; Doctor and Check passed after sync.
@@ -83,4 +87,5 @@ metadata:
 ## Relations
 - _system (parent card: repository governance)
 - _shared (shared governance source)
+- _system.scripts.codex-hooks (child card: Codex hook fixture tests)
 - _vscode_extension.release (related manager entrypoint ownership)

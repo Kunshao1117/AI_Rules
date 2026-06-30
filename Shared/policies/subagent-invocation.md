@@ -59,6 +59,8 @@ Team-Native Core 對唯讀探索、架構藍圖、廣泛讀檔、外部研究、
 
 反證、影響面、驗證、審查與收尾稽核預設不由主代理包辦；只要可被安全界定，就必須使用證據分支、瀏覽器分支、CLI 分支、MCP 直連證據、隔離變更交付分支或文字變更交付件。若兩個以上證據型站點適用卻全部主線直做，必須逐站留下具體例外與替代證據。
 
+Captain-Lite 讀取只允許主代理做小型唯讀定位，例如單檔讀取、窄範圍搜尋、狀態檢查或 hash 比對。倉庫級檔案列表、遞迴搜尋、大範圍 grep、外部研究彙整或大型文件深讀，預設是隊員深讀站點；要成為完成證據，必須具備 deep_read_scope、派工包、角色識別、隊員技能與通道狀態。若主代理因通道限制直接深讀，必須在任務板留下 direct exception，並把完成狀態降為 unverified、blocked 或 closed-with-director-risk，除非總監逐案接受該風險。
+
 ### Delegation Gate
 
 主代理在任何編程相關任務中，必須先建立 `programming-team-governance` 與 `team-task-board` 定義的隊長團隊站點板，再對每個適用站點判斷角色與執行模式。研究、測試、除錯、健檢、實驗、建構/修復後驗證、提交前掃描、交接與技能鍛造都屬於必須評估的站點化工作。站點不得只標為「啟用中」、「必要時」或大小型標籤；每個站點必須落到 `direct`、`evidence branch`、`browser branch`、`CLI branch`、`MCP direct`、`isolated change delivery`、`text change delivery artifact`、`blocked` 或 `not-applicable`，並記錄證據負責人、角色邊界、完成條件與主線直做例外。Delegation Gate 的輸出只能是下列其中之一：
@@ -197,7 +199,7 @@ This block is generated from the framework source policy (`Shared/policies/subag
 - **Fake-team guard**: If two or more evidence-oriented stations are marked direct, the board is invalid unless every direct station carries a concrete exception, replacement evidence, and blocked, unverified, or closed-with-director-risk state.
 - **Role-exclusivity guard**: A specialist must not both implement and review the same deliverable; role conflicts must be marked closed-with-director-risk, unverified, or blocked.
 - **Change delivery boundary**: Implementation specialists may only produce change delivery artifacts with memory impact inside a governed isolated workspace or as text-only change delivery artifacts. The main Codex agent reviews and integrates into the main worktree.
-- **Captain minimum execution gate**: The main Codex agent keeps Director communication, GO interpretation, main-worktree integration, review-state decision, memory/git/release/deploy/install ownership, and final acceptance; counter-evidence, impact map, testing, review, and completion audit do not stay direct unless the board records a concrete exception and replacement evidence.
+- **Captain minimum execution gate**: The main Codex agent keeps Director communication, GO interpretation, main-worktree integration, review-state decision, memory/git/release/deploy/install ownership, and final acceptance; counter-evidence, impact map, broad read, testing, review, and completion audit do not stay direct unless the board records a concrete exception and replacement evidence.
 - **Integration authorization**: Full team completion requires all four artifacts: implementation change delivery, memory/docs delivery, review delivery, and validation delivery. Missing delivery artifacts must be marked blocked, unverified, or closed-with-director-risk; that state is not full team completion. Captain substitute authoring starts blocked, requires case-specific Director risk closure, and is not full team completion.
 - **Main-agent accountability**: The main Codex agent remains the only integrator and Director-facing owner. It must review evidence output before using it and must not delegate GO gates, commits, pushes, deployments, installs, memory commits, or external state changes.
 - **Review-state boundary**: Codex evidence branches support review evidence, but the main Codex agent decides review lifecycle status through `quality-review-governance`.

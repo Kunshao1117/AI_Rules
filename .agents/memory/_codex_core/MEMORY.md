@@ -4,7 +4,7 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-30T02:43:36+08:00'
+last_updated: '2026-06-30T13:07:11+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 10
+cycle_event_count: 12
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,36 +35,25 @@ metadata:
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
-- Codex core governance now requires the Team-Native hard gate before broad reading, validation, review, memory/docs attribution, completion audit, or completion claims can count as Team-Native evidence.
-- Codex docs and core rules now describe Team-Native Core as a pre-execution state machine with formal-readonly for no-write evidence work, GO-backed formal-write for mutation, skill handoff packets, standby/nonlaunch reporting, and specialist deep-read / captain verify-read separation.
-- Codex docs now say Team-Native formal-readonly applies to evidence-bearing 00 chat, not only programming work; pure chat remains direct only when no external evidence is needed.
-- Codex source and deployed rules now place Team-Native Core and Authorization Resolution before Lifecycle; GO, approvals, sandbox/tool prompts, and skill names resolve only to scoped authorization evidence.
-- Codex workflow entries and deployed skill copies now reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
-- Codex source rules and the live project rule copy are byte-level synchronized after Team-Native lifecycle and fast-closeout updates; Director Output Contract reports red 0 / yellow 0.
-- Codex source and deployed rules now receive the Team-Native Core policy block with native, adapter, conditional, and unavailable platform route semantics.
-- Codex source and deployed rules now use `closed-with-director-risk` for Director-closed non-complete missing implementation-channel cases.
-- Codex workflows now load specialist-role skills and use change delivery artifact semantics for implementation stations.
-- Codex source rules and deployed references require formal Captain Team Board fields, wave-gated dispatch, draft-board limits, and captain-owned protected state.
-- Codex core rules require the Director to talk to the captain only, one bounded task per role-exclusive specialist, no captain-authored primary implementation/review/validation/memory attribution, and four-delivery-artifact completion before full team completion.
-- Codex workflow entries load team-task-board as the team-board template source.
-- Codex source and deployed core rules now share the updated subagent policy block for board-first captain-led dispatch.
-- Codex coding workflows require task type classification, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` for non-complete captain substitute authoring before any specialist branch or subagent starts.
-- Codex core rules and README describe the main agent as engineering captain; coding-related work automatically enters captain-led mode and explicit workflow names are shortcuts.
-- Codex build, fix, and handoff workflows now reference the shared MCP memory evidence contract before relying on memory state.
-- Codex workflow skills read workflow grounding and platform capability matrices from deployed `.agents/shared/` paths.
-- Codex Edition is the OpenAI Codex adapter for the AI_Rules governance framework.
-- Codex uses `.codex/AGENTS.md` as the project governance document and `.agents/skills/` as the live skill directory.
-- Codex workflow skills are sourced from `Codex/.agents/workflow-skills/` and merged into `.agents/skills/`; Director-facing output must follow the Traditional Chinese and Director-readable contracts.
-- Codex must not claim automatic subagent use unless the workflow gate or Director explicitly requires it.
-- Codex coding workflows route through programming-team-governance stations with separate applicability and execution-mode reporting before planning, execution, validation, review, or completion.
-- Codex core identity uses captain accountability: the main agent owns writes, gates, memory, git, release, and final acceptance while evidence-oriented stations default to team evidence.
-- Codex build owns same-turn design-to-build contracts; blueprint is reserved for pure architecture, initialization, or major pivots.
+- Codex Edition is the OpenAI Codex adapter for the AI_Rules governance framework, using `.codex/AGENTS.md` for project governance and `.agents/skills/` for live skills.
+- Codex source workflow skills are sourced from `Codex/.agents/workflow-skills/` and merged into `.agents/skills/`.
+- Codex source and deployed rules put Team-Native Core and Authorization Resolution before lifecycle, workflow names, GO text, sandbox prompts, and tool approvals.
+- Team-Native Codex work requires captain-led boards, role-exclusive stations, handoff packets, channel state, protected captain integration, and separated change, memory/docs, review, and validation artifacts before full completion.
+- Evidence-bearing chat, broad reads, validation, review, memory/docs attribution, commit/release preparation, and completion audit route through formal-readonly or formal-write; pure chat and tiny orientation stay direct only while non-mutating.
+- Codex project-level hooks provide Team-Native guardrails for micro-read allowance, broad-read Captain-Lite hints, scoped write target matching, protected mutation authorization, and completion-claim artifact checks.
+- Hooks Stability guards separate current payload evidence from historical transcript text, require same-record protected authorization, require every detected protected action to have complete authorization, avoid release/deploy false positives from filenames, enforce exact normalized write-target matching, and gate completion claims on delivery artifacts or explicit non-complete state.
+- Codex documentation and core rules use `closed-with-director-risk` for Director-closed non-complete cases and must not present missing specialist delivery as full team completion.
+- Codex workflow entries load shared workflow orchestration, platform matrices, specialist role skills, team task-board templates, change delivery artifacts, and MCP memory evidence contracts before relying on evidence.
+- Director-facing Codex output must stay Traditional Chinese and follow the Director-readable output contract.
+- The captain owns main-worktree writes, gates, memory, git, release, and final acceptance; specialists and hooks provide evidence or guardrails, not final authority.
 ## Active Constraints
 - Keep Codex framework versioning separate from VS Code extension versioning.
 - Keep root README ownership in `_system`, not this card.
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 ## Cycle Events
+- 36: Hooks Stability Implementation accepted with source/deployed hook and config hash parity, 41 fixture cases, Doctor Red 0 / Yellow 0, same-record protected authorization, per-action protected authorization coverage, exact write target matching, and a nonblocking deploy.patch dedicated-fixture gap.
+- 35: Added Codex project-level hook source and Team-Native gate behavior for Captain-Lite reads, scoped writes, protected mutations, and completion artifact checks.
 - 34: Wave 6B added workflow-orchestration grounding to Codex workflow entries and source/deployed drift checks.
 - 33: Wave 6A updated all 17 Codex workflow entries with operation_mode, daily/full modes, direct/formal-readonly/formal-write boundaries, board triggers, and specialist lifecycle semantics; deployed workflow skill hashes were verified in sync.
 - 32: Synced Codex core source and live rules with the core-injection Team-Native hard gate before broad reading, validation, review, memory/docs attribution, completion audit, or completion claims.
@@ -104,6 +93,10 @@ metadata:
 - Codex/global/config.toml
 - Codex/.codex/AGENTS.md
 - Codex/.codex/config.toml
+- Codex/.codex/hooks.json
+- Codex/.codex/hooks/team-native-gate.ps1
+- .codex/hooks.json
+- .codex/hooks/team-native-gate.ps1
 - Codex/.codex/VERSION
 - Codex/.gitignore
 - Codex/.agents/workflow-skills/02-blueprint-架構/SKILL.md

@@ -1,0 +1,15 @@
+{
+  "name": "allow-pretool-readonly-rg-no-board",
+  "event": "PreToolUse",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "",
+  "payload": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "rg -n \"Team-Native\" Shared/policies/team-native-core.md"
+    },
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

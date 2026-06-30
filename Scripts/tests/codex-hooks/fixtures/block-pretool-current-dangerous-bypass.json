@@ -1,0 +1,15 @@
+{
+  "name": "block-pretool-current-dangerous-bypass",
+  "event": "PreToolUse",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "permissionDecision.*deny",
+  "payload": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "codex --dangerously-bypass-hook-trust"
+    },
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "allow-stop-zh-not-complete-state",
+  "event": "Stop",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "",
+  "payload": {
+    "hook_event_name": "Stop",
+    "response": "完成狀態：阻塞，還缺審查與驗證交付件。",
+    "cwd": "D:\\AI_Rules",
+    "stop_hook_active": false
+  }
+}

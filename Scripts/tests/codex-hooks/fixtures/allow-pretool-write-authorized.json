@@ -1,0 +1,19 @@
+{
+  "name": "allow-pretool-write-authorized",
+  "event": "PreToolUse",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "",
+  "payload": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "apply_patch",
+    "tool_input": {
+      "patch": "*** Begin Patch\n*** Update File: README.md\n@@\n+change\n*** End Patch"
+    },
+    "team_native_trace": "Captain Team Board: formal-write\nstation_id: change-delivery-station\nhandoff_packet_id: hooks-write-001\nrole_id: change-delivery\nrole_instance_id: change-delivery-001\nassigned specialist skill: team-specialist-change-delivery\nrequested_execution_channel: text-change-delivery\nchannel_capability: available\nchannel_invocation_status: returned\nexclusive_task_scope: hook usability fixture write\nimplementation change delivery",
+    "authorization_evidence": "Director GO Wave Hooks-Usability Implementation",
+    "authorization_scope": "README.md test patch",
+    "authorization_target": "README.md",
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

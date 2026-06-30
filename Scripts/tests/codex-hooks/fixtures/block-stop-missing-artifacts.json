@@ -1,0 +1,12 @@
+{
+  "name": "block-stop-missing-artifacts",
+  "event": "Stop",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "decision.*block",
+  "payload": {
+    "hook_event_name": "Stop",
+    "response": "Wave 7A completed. Team-Native implementation is done.",
+    "cwd": "D:\\AI_Rules",
+    "stop_hook_active": false
+  }
+}

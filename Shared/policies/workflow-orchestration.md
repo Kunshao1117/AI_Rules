@@ -57,6 +57,14 @@ skill trigger, Antigravity workflow button, Claude command, platform mode,
 approval prompt, or available channel can route the work, but it cannot grant
 unbounded write authority or protected follow-on authority.
 
+Small read-only probes are permitted before the formal board only when needed
+to identify the route or locate the right files. They must stay narrow and
+non-mutating. Broad reads, recursive scans, repository-wide grep, validation,
+review, implementation, memory/docs attribution, and completion claims require
+the formal sequence above. If a hook lets a broad read proceed for context
+recovery, it is still only read-only context until a specialist deep-read
+station or a recorded direct exception turns it into evidence.
+
 ## Board-State Boundary
 
 | Board state | Allowed orchestration | Forbidden shortcut |

@@ -1,0 +1,12 @@
+{
+  "name": "context-subagent-start",
+  "event": "SubagentStart",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "Specialist branches must not mutate",
+  "payload": {
+    "hook_event_name": "SubagentStart",
+    "agent_type": "worker",
+    "prompt": "Review Wave 7A changes",
+    "cwd": "D:\\AI_Rules"
+  }
+}

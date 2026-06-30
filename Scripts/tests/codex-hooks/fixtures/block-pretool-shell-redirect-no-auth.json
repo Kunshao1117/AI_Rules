@@ -1,0 +1,15 @@
+{
+  "name": "block-pretool-shell-redirect-no-auth",
+  "event": "PreToolUse",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "permissionDecision.*deny",
+  "payload": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "echo changed > README.md"
+    },
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

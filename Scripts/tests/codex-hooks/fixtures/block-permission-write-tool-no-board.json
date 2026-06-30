@@ -1,0 +1,15 @@
+{
+  "name": "block-permission-write-tool-no-board",
+  "event": "PermissionRequest",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "behavior.*deny",
+  "payload": {
+    "hook_event_name": "PermissionRequest",
+    "tool_name": "apply_patch",
+    "tool_input": {
+      "patch": "*** Begin Patch\n*** Update File: README.md\n@@\n+change\n*** End Patch"
+    },
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

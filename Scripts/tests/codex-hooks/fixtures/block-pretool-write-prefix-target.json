@@ -1,0 +1,19 @@
+{
+  "name": "block-pretool-write-prefix-target",
+  "event": "PreToolUse",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "scoped write authorization evidence that matches every current target path",
+  "payload": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "apply_patch",
+    "tool_input": {
+      "patch": "*** Begin Patch\n*** Update File: foo.ts\n@@\n+change\n*** End Patch"
+    },
+    "team_native_trace": "Captain Team Board: formal-write\nstation_id: change-delivery-station\nhandoff_packet_id: hooks-write-prefix-001\nrole_id: change-delivery\nrole_instance_id: change-delivery-prefix-001\nassigned specialist skill: team-specialist-change-delivery\nrequested_execution_channel: text-change-delivery\nchannel_capability: available\nchannel_invocation_status: returned\nexclusive_task_scope: src/foo.ts only\nimplementation change delivery",
+    "authorization_evidence": "Director GO scoped basename fixture",
+    "authorization_scope": "src/foo.ts only",
+    "authorization_target": "src/foo.ts",
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

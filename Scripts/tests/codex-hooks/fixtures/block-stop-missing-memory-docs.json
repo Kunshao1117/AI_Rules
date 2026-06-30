@@ -1,0 +1,12 @@
+{
+  "name": "block-stop-missing-memory-docs",
+  "event": "Stop",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "decision.*block",
+  "payload": {
+    "hook_event_name": "Stop",
+    "response": "Wave 7A completed. implementation change delivery, review delivery, and validation delivery are present.",
+    "cwd": "D:\\AI_Rules",
+    "stop_hook_active": false
+  }
+}

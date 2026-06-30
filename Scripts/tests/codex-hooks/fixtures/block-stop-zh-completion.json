@@ -1,0 +1,7 @@
+{
+  "name": "block-stop-zh-completion",
+  "event": "Stop",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "decision.*block",
+  "rawInput": "{\"hook_event_name\":\"Stop\",\"response\":\"\\u5df2\\u5b8c\\u6210\\uff0cDoctor \\u901a\\u904e\",\"cwd\":\"D:\\\\AI_Rules\",\"stop_hook_active\":false}"
+}

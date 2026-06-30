@@ -4,7 +4,7 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-06-30T03:23:16+08:00'
+last_updated: '2026-06-30T09:49:01+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 9
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,28 +31,26 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared — Shared Governance Memory
 
 ## Current Truth
-- Wave 6B/6C introduced shared workflow orchestration and scenario playbooks as the cross-platform sequence and example layer for workflow route, authorization, operation mode, board state, dispatch waves, handoff packets, delivery artifacts, route-back, and completion closeout.
-- Shared skill governance now lists `team-station-handoff-packet` and documents that large skills may split stable subinstructions into references, with station packets passing only the concrete skill refs needed by a specialist.
-- Shared skill governance now defines optional `metadata.relations` for role skills: `role_id`, role layer, parent skill, support skills, embedded artifacts, artifact contracts, and trace contracts.
-- Team-Native Core governance moved to child card `_shared.team-native-core`, which owns shared team policy, platform route states, team trace evidence, and team completion contracts.
-- Shared team governance now uses direct-renamed task-board and delivery-artifact skill names; specialist assignment is mandatory before execution-channel availability is evaluated.
-- Captain Trigger Gate and Captain Team Board route explicit workflows plus natural-language coding intent into the default team collaboration model; Shared now owns 61 operational skills.
-- Memory MCP tool contract defines project-local migration tools, read-only MCP evidence, mutating memory gates, and Gateway execution rules for workflows.
-- Shared governance references deployed to `.agents/shared/` include platform/workflow matrices, skill governance, subagent policy, MCP opt-in snippets, and 61 operational skills.
-- `Shared/project-tools/` is the source for restricted project-local tools deployed to downstream `.agents/tools/`; Traditional Chinese PowerShell tools use UTF-8 BOM for Windows PowerShell 5.1.
-- Memory governance now uses schema v2 with Current Truth, Active Constraints, Cycle Events, Archive Index, and 中文摘要.
-- Project context lives in `.agents/context/`, is not source memory, and uses separate approval.
-- Shared subagent policy is vendor-neutral; evidence branches provide review evidence but do not own final review lifecycle status.
-- Workflow matrix governs programming team routing, audit depth, visual evidence, intent alignment, review lifecycle, and minimum sufficient complexity.
-- Skill governance requires coding workflow/command entries to preserve four formal delivery artifacts; memory/docs delivery artifacts include `memory_impact` and `memory_delivery`, and non-complete risk closure remains `closed-with-director-risk`, not completion.
+- Shared owns cross-platform governance sources, operational skills, policy references, project tools, workflow matrices, and source memory contracts.
+- Workflow orchestration and scenarios define the route, authorization, operation mode, board state, dispatch wave, handoff, delivery artifact, route-back, and closeout sequence.
+- Narrow pre-board read-only probes are allowed only for orientation; broad reads, recursive scans, validation, review, memory/docs attribution, writes, and completion claims require the formal Team-Native sequence.
+- Team-Native Core governance lives in `_shared.team-native-core`, which owns team policy, route states, trace evidence, and full completion contracts.
+- Shared skill governance supports role metadata, station handoff references, task-board templates, delivery artifacts, and reference splitting for large skills.
+- Captain Trigger Gate and Captain Team Board route explicit workflows plus natural-language coding intent into the default team collaboration model.
+- Memory MCP tool contract separates read-only evidence, mutating memory gates, Gateway execution, project-local migration tools, and source memory from project context.
+- Shared governance references deploy to `.agents/shared/`; restricted project-local tools deploy from `Shared/project-tools/`.
+- Shared policies keep vendor-neutral evidence-branch semantics: specialists provide evidence, while the captain owns final review-state and protected action decisions.
+- Coding workflow and command entries preserve four formal delivery artifacts and use `closed-with-director-risk` for non-complete risk closure.
 ## Active Constraints
 - Do not put platform-specific tool calls in Shared skill bodies unless the section is explicitly an adapter note.
 - Do not list directories under Tracked Files; put card navigation in Relations, and treat cards above 8 tracked files as split candidates.
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
 ## Cycle Events
+- 34: Added hook-guided Captain-Lite read scenario and narrow pre-board read allowance while preserving formal-readonly evidence and protected authorization gates.
 - 33: Wave 6C added workflow orchestration scenarios, task-board scenario templates, deployed references, Doctor coverage, and completion/non-completion semantic separation.
 - 32: Wave 6B added the shared workflow orchestration policy to Shared governance, deployed references, workflow entries, and Doctor coverage.
 - 31: Added Wave 1 skill relation metadata contract for Team-Native role skills; actual specialist skill rewriting remains a later wave.

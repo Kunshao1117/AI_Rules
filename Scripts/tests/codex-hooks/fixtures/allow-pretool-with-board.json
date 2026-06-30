@@ -1,0 +1,29 @@
+{
+  "name": "allow-pretool-with-board",
+  "event": "PreToolUse",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "",
+  "payload": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "git push origin main"
+    },
+    "team_native_trace": "Captain Team Board: formal-write\nstation_id: release-station\nhandoff_packet_id: wave-7a-release\nrole_id: team-specialist-release-completion\nrole_instance_id: release-001\nassigned specialist skill: team-specialist-release-completion\nrequested_execution_channel: native-subagent\nchannel_capability: available\nchannel_invocation_status: completed\nprotected_action: git push origin main\nimplementation change delivery\nreview delivery\nvalidation delivery",
+    "protected_authorization": {
+      "authorization_source": "Director GO PUSH fixture",
+      "authorization_target": "git push origin main",
+      "authorization_scope": "git push origin main during current fixture task",
+      "authorization_phase": "protected mutation fixture validation",
+      "authorization_evidence": "Director GO PUSH",
+      "authorization_expiry": "current task only",
+      "authorization_resolution_state": "scoped",
+      "authorized_action": "git push"
+    },
+    "authorization_scope": "git push origin main",
+    "authorization_target": "git push origin main",
+    "completion_state": "ready",
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

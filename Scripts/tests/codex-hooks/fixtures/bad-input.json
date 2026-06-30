@@ -1,0 +1,7 @@
+{
+  "name": "bad-input",
+  "event": "PreToolUse",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "not valid JSON",
+  "rawInput": "{not-json"
+}

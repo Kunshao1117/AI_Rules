@@ -1,0 +1,12 @@
+{
+  "name": "allow-stop-quoted-completion-text",
+  "event": "Stop",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "",
+  "payload": {
+    "hook_event_name": "Stop",
+    "response": "Fixture quote only: \"Wave 7A completed. Team-Native implementation is done.\" This is test text, not a current-turn completion claim.",
+    "cwd": "D:\\AI_Rules",
+    "stop_hook_active": false
+  }
+}

@@ -4,7 +4,7 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-06-30T03:23:20+08:00'
+last_updated: '2026-06-30T09:46:36+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 5
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,9 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.team-native-core — Team-Native Core Governance Memory
 ## Current Truth
 - Workflow orchestration is now the shared sequence layer between workflow routing and Team-Native station execution; Team-Native Core remains the hard gate.
+- Captain-Lite Reading Model separates micro-read probes from evidence: broad captain reads need specialist deep-read evidence or a recorded direct exception before completion claims.
+- Protected mutations now require explicit protected authorization evidence for current phase, target, scope, and closure state; a general formal-write board is not enough.
 - Workflow orchestration scenarios provide non-authorizing examples for formal-readonly evidence, blueprint-to-build, change-to-validation/review/memory, failed validation route-back, audit fan-out, commit-preflight blockers, and source/deployed sync.
 - Team-Native Core is an execution precondition: when it applies, the next valid runtime state is a Captain Team Board with applicable stations, handoff packets, channel states, and formal-readonly/formal-write mode before broad reading or protected work.
 - Authorization Resolution is a shared pre-write gate: GO, interface approvals, platform prompts, modes, and workflow names resolve into scoped fields used by boards, traces, artifacts, and completion gates.
@@ -48,6 +51,7 @@ metadata:
 - Keep platform-specific tool names in adapter sections or platform-specific files.
 - Do not copy raw task traces into source memory; keep only stable governance facts.
 ## Cycle Events
+- 26: Added Captain-Lite Reading Model and protected mutation authorization semantics to Team-Native Core policy.
 - 25: Wave 6C added non-authorizing workflow scenario playbooks, task-board reusable templates, and explicit separation between full completion and non-complete states.
 - 24: Wave 6B added Shared/policies/workflow-orchestration.md, wired it into shared policies, workflow entries, deployed copies, and Doctor/Audit checks.
 - 23: Compacted active Team-Native governance memory after commit preflight reported the active card line limit.

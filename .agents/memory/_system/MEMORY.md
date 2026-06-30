@@ -4,7 +4,7 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-30T03:38:00+08:00'
+last_updated: '2026-06-30T13:39:01+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 12
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,31 +35,18 @@ metadata:
 # _system — Repository Governance Memory
 
 ## Current Truth
-- Root documentation now says Team-Native Core is a pre-execution state machine: applicable coding, architecture, broad-read, validation, review, memory, commit, release, and governance tasks must enter a board/station/handoff/channel state before captain broad reading or completion claims.
-- Root documentation now extends Team-Native mode beyond programming-only work: pure 00 chat stays direct, while evidence-bearing chat about files, screenshots, memory, rules, agent behavior, tool output, or governance impact enters formal-readonly with specialist evidence and captain verify-read.
-- Root documentation now states that GO, interface buttons, platform permission prompts, modes, and workflow commands must resolve to scoped authorization evidence; workflow routes and modes are not standalone authorization.
-- Changelog includes the 2026-06-29 Team-Native scoped authorization refactor entry for core priority, authorization policy, artifact fields, audit hardening, and platform documentation sync.
-- Changelog includes the 2026-06-30 Team-Native workflow orchestration entry for daily/full modes, conversation/read-only/write boundaries, transitions, lifecycle rules, task-board triggers, and Doctor coverage.
-- Repository-level governance documentation now describes delivery-artifact-driven Team-Native workflow: the captain boards, dispatches, supervises, integrates returned qualified artifacts, decides, and reports, but does not author primary implementation, review, validation, or memory attribution.
-- Root documentation and changelog now frame team collaboration as Team-Native Core with platform route states and task trace evidence.
-- Root documentation distinguishes platform route states from manual setup status; unavailable is the route state for missing station capability.
-- Root README platform table now reflects 61 shared operational skills for Antigravity, Claude, and Codex; Codex deployed skill count is 78.
-- Root documentation and changelog now describe Team-Native specialist roles, change delivery artifacts, completion evidence, and `closed-with-director-risk` as non-complete risk closure instead of captain direct implementation with optional helpers.
-- Root documentation distinguishes protected captain integration of returned artifacts from captain substitute authoring; substitute authoring cannot support `complete`.
-- Root documentation and changelog now describe team-task-board as the template source and refresh counts to 61 shared operational skills and 78 Codex deployed skills.
-- Root documentation and changelog describe captain-minimal team coding with task type classification, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, 05 condense coverage, automatic triggers, and no pre-board specialist branches.
-- Root documentation and changelog describe governed team collaboration with role boundaries, isolated change delivery, Doctor semantic coverage, experiment minimum governance, and refreshed 61/78 skill counts.
-- Root documentation and changelog describe the team-first evidence model: main-agent accountability for writes and gates, evidence branches by default for evidence-oriented stations, and all-direct boards rejected without concrete exceptions.
-- Changelog includes the 2026-06-29 pre-commit governance convergence for exact-hash deployment drift checks and memory health convergence.
-- Root documentation describes shared matrix source paths and their deployed `.agents/shared/` paths.
-- Root documentation describes downstream project-local tools under `.agents/tools/` and labels source-manager commands as framework-source-only paths.
-- Changelog covers AI Rules Manager token-stable Doctor checks, project skill discovery repair, shared skill margin, MCP memory tool governance, Traditional Chinese tool output, and cross-platform alignment.
 - AI_Rules is the source repository for Antigravity, Claude Edition, and Codex Edition governance.
+- Root documentation and changelog now frame Team-Native Core as a pre-execution state machine for coding, architecture, broad-read, validation, review, memory, commit, release, and governance-impact work.
+- Pure 00 chat stays direct, while evidence-bearing chat about files, screenshots, memory, rules, agent behavior, tool output, or governance impact enters formal-readonly with specialist evidence and captain verify-read.
+- GO, interface buttons, platform prompts, modes, and workflow commands resolve only to scoped authorization evidence; workflow routes and modes are not standalone authorization.
+- Repository-level governance uses delivery-artifact-driven Team-Native workflow: the captain boards, dispatches, supervises, integrates returned artifacts, decides, and reports without authoring primary implementation, review, validation, or memory attribution.
+- Root documentation distinguishes platform route states from manual setup status, protected integration from captain substitute authoring, and `closed-with-director-risk` from completion.
+- Root README platform counts currently describe 61 shared operational skills and 78 Codex deployed skills.
+- Changelog includes the 2026-06-29 scoped authorization and pre-commit governance entries plus the 2026-06-30 workflow orchestration and Codex hook stability entries.
+- Root documentation describes shared matrix deployment paths, downstream project-local tools under `.agents/tools/`, and framework-source-only manager commands.
 - Director-facing output must use Traditional Chinese unless a lower-level artifact explicitly requires another language.
 - Root repository work, git status, commit, tag, and push operations use `D:\AI_Rules` as the baseline.
-- The shared source memory store is `.agents/memory/`; project context is `.agents/context/`.
-- The PowerShell deployment implementation moved to child card `_system.scripts` for file ownership.
-- Root documentation and changelog describe deep audit, change intent, visual evidence, requirement alignment, neutral challenge, traceability, drift-audit, engineering review, and review-state governance.
+- Source memory lives in `.agents/memory/`; project context lives in `.agents/context/`; root PowerShell implementation ownership moved to `_system.scripts`.
 
 ## Active Constraints
 - Do not commit, push, tag, publish, install, upgrade, or mutate external state without explicit Director approval.
@@ -67,6 +54,7 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 13: Recorded the 2026-06-30 Codex hook stability changelog entry and cleared the CHANGELOG staleness warning after reading the current entry.
 - 12: Recorded the 2026-06-30 Team-Native workflow orchestration changelog entry and cleared the CHANGELOG staleness warning after reading the current entry.
 - 11: Documented the 00 evidence-bearing chat boundary in root README: pure chat remains direct, but evidence-dependent discussion uses Team-Native formal-readonly stations to reduce captain context pollution and preserve looped evidence.
 - 10: Documented Team-First runtime-state semantics, formal-readonly/formal-write split, station handoff packets, standby, unavailable-channel reporting, and deep-read/verify-read boundaries in root README.

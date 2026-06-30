@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 > 語彙說明：本文件保留歷史版本語境；舊條目中的 patch、packet、補丁、封包、隊長代工與 accepted-risk 不得解讀為現行正向規範。現行正向規範只使用交付件、任務軌跡帳本、逐波派工、隊長只整合已回收交付件，以及缺交付件即阻塞、未驗證或總監風險關閉但非完整。
 
+## [2026-06-30] Codex hooks 穩定性與團隊硬閘門
+
+### feat
+- **Codex hooks 團隊硬閘門** — 新增 Codex 專案層 hooks 與 Team-Native gate，覆蓋提示送出、工具使用、權限請求、隊員啟停與完成宣稱邊界。
+- **Captain-Lite 讀取模型** — 核心規範新增小型唯讀、廣泛讀取、專家深讀與保護操作分層，避免 hooks 無端攔截正常探索，同時防止讀取結果被誤宣稱為完成證據。
+- **Hooks fixture 回歸套件** — 新增 Codex hooks fixture runner 與 41 個案例，覆蓋範圍式寫入、保護操作授權、歷史對話污染、危險繞過、完成過度宣稱與隊員生命週期。
+
+### fix
+- **Doctor/Audit hooks 檢查** — 管理器巡檢納入 hooks 設定、來源與部署副本雜湊、fixture 追蹤、受保護操作授權與完成交付件檢查。
+- **記憶歸屬收斂** — 新增 hooks 測試子記憶卡並更新相關核心、共享、腳本與發布記憶卡，讓提交前檢查可追溯 hooks 穩定性變更。
+
 ## [2026-06-30] Team-Native 工作流編排落地
 
 ### feat

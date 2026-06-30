@@ -1,0 +1,15 @@
+{
+  "name": "block-apply-patch-no-board",
+  "event": "PreToolUse",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "permissionDecision.*deny",
+  "payload": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "apply_patch",
+    "tool_input": {
+      "patch": "*** Begin Patch\n*** Update File: README.md\n@@\n+change\n*** End Patch"
+    },
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

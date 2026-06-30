@@ -1,0 +1,16 @@
+{
+  "name": "block-pretool-write-draft-board",
+  "event": "PreToolUse",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "permissionDecision.*deny",
+  "payload": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "apply_patch",
+    "tool_input": {
+      "patch": "*** Begin Patch\n*** Update File: README.md\n@@\n+change\n*** End Patch"
+    },
+    "transcript": "draft board only\nrole_id: change-delivery\nrole_instance_id: draft-001\nassigned specialist skill: team-specialist-change-delivery\nrequested_execution_channel: native-subagent\nchannel_capability: available\nchannel_invocation_status: draft\nauthorization_scope: draft-only",
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

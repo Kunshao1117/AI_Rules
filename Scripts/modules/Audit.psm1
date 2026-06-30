@@ -1948,6 +1948,418 @@ function Test-AuditFileHashEqual {
     return $sourceHash -eq $targetHash
 }
 
+function Measure-CodexHookGovernance {
+    <#
+    .SYNOPSIS
+        檢查 Codex project-level hooks 是否提供 Team-Native 最小硬閘門。
+    #>
+    param(
+        [string]$RepoRoot = ".",
+        [string]$TargetRoot = "."
+    )
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
+    $results = New-Object System.Collections.ArrayList
+
+    function Add-CodexHookFinding {
+        param(
+            [string]$Severity,
+            [string]$File,
+            [int]$Line,
+            [string]$Reason,
+            [string]$Text
+        )
+
+        $null = $results.Add([PSCustomObject]@{
+            Severity = $Severity
+            File     = $File
+            Line     = $Line
+            Reason   = $Reason
+            Text     = $Text
+        })
+    }
+
+    function Get-CodexHookDisplayPath {
+        param([string]$Path)
+
+        return (Get-AuditRelativePath -RepoRoot $RepoRoot -Path $Path)
+    }
+
+    function Get-CodexHookPropertyText {
+        param(
+            [object]$Object,
+            [string]$Name
+        )
+
+        if ($null -eq $Object) { return '' }
+        $property = $Object.PSObject.Properties[$Name]
+        if ($null -eq $property) { return '' }
+        if ($null -eq $property.Value) { return '' }
+        return [string]$property.Value
+    }
+
+    function Get-CodexHookCommandText {
+        param([object]$Handler)
+
+        $texts = New-Object System.Collections.Generic.List[string]
+        foreach ($propertyName in @('command', 'commandWindows')) {
+            $value = Get-CodexHookPropertyText -Object $Handler -Name $propertyName
+            if (-not $value) { continue }
+            $texts.Add($value)
+
+            $match = [regex]::Match($value, '(?i)-EncodedCommand\s+([A-Za-z0-9+/=]+)')
+            if ($match.Success) {
+                try {
+                    $decoded = [Text.Encoding]::Unicode.GetString([Convert]::FromBase64String($match.Groups[1].Value))
+                    $texts.Add($decoded)
+                } catch {
+                    $texts.Add("encoded-command-decode-failed: $($_.Exception.Message)")
+                }
+            }
+        }
+        return (@($texts.ToArray()) -join "`n")
+    }
+
+    function Read-CodexHookConfig {
+        param(
+            [string]$Path,
+            [string]$Label
+        )
+
+        if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $null }
+        try {
+            return (Get-Content -LiteralPath $Path -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop)
+        } catch {
+            Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $Path) -Line 1 -Reason ("Codex hook 設定不是有效 JSON ({0})" -f $Label) -Text $_.Exception.Message
+            return $null
+        }
+    }
+
+    function Test-CodexHookConfig {
+        param(
+            [object]$Config,
+            [string]$ConfigPath,
+            [string]$Label
+        )
+
+        if ($null -eq $Config) { return }
+
+        $relative = Get-CodexHookDisplayPath -Path $ConfigPath
+        $hooksProperty = $Config.PSObject.Properties['hooks']
+        if ($null -eq $hooksProperty) {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook 設定缺少 hooks 根節點 ({0})" -f $Label) -Text 'missing hooks'
+            return
+        }
+
+        $hooksObject = $hooksProperty.Value
+        $requiredEvents = @('UserPromptSubmit', 'PreToolUse', 'PermissionRequest', 'SubagentStart', 'SubagentStop', 'Stop')
+        $allowedEvents = $requiredEvents
+        $eventNames = @($hooksObject.PSObject.Properties | ForEach-Object { $_.Name })
+
+        foreach ($requiredEvent in $requiredEvents) {
+            if ($eventNames -notcontains $requiredEvent) {
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook 缺少必要事件 ({0})" -f $Label) -Text $requiredEvent
+            }
+        }
+
+        foreach ($eventProperty in $hooksObject.PSObject.Properties) {
+            $eventName = $eventProperty.Name
+            if ($allowedEvents -notcontains $eventName) {
+                Add-CodexHookFinding -Severity 'Yellow' -File $relative -Line 1 -Reason ("Codex hook 使用未登記事件 ({0})" -f $Label) -Text $eventName
+            }
+
+            $groups = @($eventProperty.Value)
+            if ($groups.Count -eq 0) {
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook 事件缺少 handler 群組 ({0})" -f $Label) -Text $eventName
+                continue
+            }
+
+            foreach ($group in $groups) {
+                $hooksListProperty = $group.PSObject.Properties['hooks']
+                if ($null -eq $hooksListProperty) {
+                    Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook 事件缺少 hooks handler ({0})" -f $Label) -Text $eventName
+                    continue
+                }
+
+                foreach ($handler in @($hooksListProperty.Value)) {
+                    $type = Get-CodexHookPropertyText -Object $handler -Name 'type'
+                    $command = Get-CodexHookPropertyText -Object $handler -Name 'command'
+                    $commandWindows = Get-CodexHookPropertyText -Object $handler -Name 'commandWindows'
+                    $statusMessage = Get-CodexHookPropertyText -Object $handler -Name 'statusMessage'
+                    $commandText = Get-CodexHookCommandText -Handler $handler
+
+                    if ($type -ne 'command') {
+                        Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook handler 不是 command 類型 ({0})" -f $Label) -Text ("{0}: {1}" -f $eventName, $type)
+                    }
+                    if (-not $command) {
+                        Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook handler 缺少 command ({0})" -f $Label) -Text $eventName
+                    }
+                    if (-not $commandWindows) {
+                        Add-CodexHookFinding -Severity 'Yellow' -File $relative -Line 1 -Reason ("Codex hook handler 缺少 Windows 命令覆寫 ({0})" -f $Label) -Text $eventName
+                    }
+                    if ($commandText -notmatch '\.codex[\\\/]hooks[\\\/]team-native-gate\.ps1') {
+                        Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook handler 未指向 Team-Native gate 腳本 ({0})" -f $Label) -Text $eventName
+                    }
+                    if ($commandText -notmatch 'git\s+rev-parse\s+--show-toplevel') {
+                        Add-CodexHookFinding -Severity 'Yellow' -File $relative -Line 1 -Reason ("Codex hook handler 未以 git 根目錄解析專案 hook ({0})" -f $Label) -Text $eventName
+                    }
+                    if ($commandText -match '--dangerously-bypass-hook-trust') {
+                        Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook handler 嘗試繞過 hook 信任 ({0})" -f $Label) -Text $eventName
+                    }
+                    if (-not $statusMessage) {
+                        Add-CodexHookFinding -Severity 'Yellow' -File $relative -Line 1 -Reason ("Codex hook handler 缺少狀態訊息 ({0})" -f $Label) -Text $eventName
+                    }
+
+                    $timeoutProperty = $handler.PSObject.Properties['timeout']
+                    if ($null -eq $timeoutProperty) {
+                        Add-CodexHookFinding -Severity 'Yellow' -File $relative -Line 1 -Reason ("Codex hook handler 缺少 timeout，會落回較長預設值 ({0})" -f $Label) -Text $eventName
+                    } else {
+                        $timeoutValue = 0
+                        if ([int]::TryParse([string]$timeoutProperty.Value, [ref]$timeoutValue)) {
+                            if ($timeoutValue -gt 30) {
+                                Add-CodexHookFinding -Severity 'Yellow' -File $relative -Line 1 -Reason ("Codex hook timeout 過長 ({0})" -f $Label) -Text ("{0}: {1}" -f $eventName, $timeoutValue)
+                            }
+                        } else {
+                            Add-CodexHookFinding -Severity 'Yellow' -File $relative -Line 1 -Reason ("Codex hook timeout 不是數字 ({0})" -f $Label) -Text ("{0}: {1}" -f $eventName, $timeoutProperty.Value)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function Test-CodexHookScript {
+        param(
+            [string]$Path,
+            [string]$Label
+        )
+
+        if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return }
+        $relative = Get-CodexHookDisplayPath -Path $Path
+        $content = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+        $requiredPatterns = @(
+            @{ Pattern = 'permissionDecision'; Severity = 'Red'; Reason = 'hook 腳本缺少工具前拒絕輸出' },
+            @{ Pattern = 'PermissionRequest'; Severity = 'Red'; Reason = 'hook 腳本缺少授權請求事件處理' },
+            @{ Pattern = 'SubagentStop'; Severity = 'Red'; Reason = 'hook 腳本缺少隊員結束事件處理' },
+            @{ Pattern = 'Stop'; Severity = 'Red'; Reason = 'hook 腳本缺少完成宣稱事件處理' },
+            @{ Pattern = 'transcript_path'; Severity = 'Yellow'; Reason = 'hook 腳本缺少 transcript 輔助查證' },
+            @{ Pattern = 'Get-HistoricalTranscriptReferenceText'; Severity = 'Red'; Reason = 'hook 腳本缺少歷史 transcript 參照分層' },
+            @{ Pattern = 'Get-CurrentStructuredEvidenceText'; Severity = 'Red'; Reason = 'hook 腳本缺少當前結構化證據分層' },
+            @{ Pattern = 'Get-HookActionText'; Severity = 'Red'; Reason = 'hook 腳本缺少動作文字與證據文字分離' },
+            @{ Pattern = 'Get-HookToolBehavior'; Severity = 'Red'; Reason = 'hook 腳本缺少工具行為分類' },
+            @{ Pattern = 'Test-HasReadOnlyCommand'; Severity = 'Red'; Reason = 'hook 腳本缺少唯讀命令放行分類' },
+            @{ Pattern = 'Test-HasBroadReadCommand'; Severity = 'Yellow'; Reason = 'hook 腳本缺少隊長大量讀檔提示分類' },
+            @{ Pattern = 'Test-HasShellWriteSignal'; Severity = 'Red'; Reason = 'hook 腳本缺少 shell 寫入訊號分類' },
+            @{ Pattern = 'Test-HasScopedWriteAuthorization'; Severity = 'Red'; Reason = 'hook 腳本缺少寫入範圍授權分類' },
+            @{ Pattern = 'Test-ActionWithinScopedWriteAuthorization'; Severity = 'Red'; Reason = 'hook 腳本缺少實際寫入目標與授權範圍比對' },
+            @{ Pattern = 'Get-HookExplicitAuthorizedWritePaths'; Severity = 'Red'; Reason = 'hook 腳本缺少明確授權檔案解析' },
+            @{ Pattern = 'Test-HookNormalizedPathEqual'; Severity = 'Red'; Reason = 'hook 腳本缺少正規化精確路徑比對' },
+            @{ Pattern = 'Get-HookActionTargetPaths'; Severity = 'Red'; Reason = 'hook 腳本缺少寫入目標抽取' },
+            @{ Pattern = 'Test-HasProtectedAuthorizationEvidence'; Severity = 'Red'; Reason = 'hook 腳本缺少保護操作授權分類' },
+            @{ Pattern = 'Get-HookProtectedMutationKeys'; Severity = 'Red'; Reason = 'hook 腳本缺少保護操作動作鍵解析' },
+            @{ Pattern = 'Test-IsCurrentCompletionReferenceLine'; Severity = 'Red'; Reason = 'hook 腳本缺少完成字眼引用排除' },
+            @{ Pattern = 'Test-IsNegatedArtifactLine'; Severity = 'Red'; Reason = 'hook 腳本缺少否定交付件語境排除' },
+            @{ Pattern = 'Test-IsNegatedClosureStateLine'; Severity = 'Red'; Reason = 'hook 腳本缺少否定降級狀態排除' },
+            @{ Pattern = 'Test-HasPositiveArtifactMention'; Severity = 'Red'; Reason = 'hook 腳本缺少正向交付件狀態檢查' },
+            @{ Pattern = 'sed'; Severity = 'Yellow'; Reason = 'hook 腳本缺少 sed in-place 寫入偵測提示' },
+            @{ Pattern = 'tee'; Severity = 'Yellow'; Reason = 'hook 腳本缺少 tee 寫入偵測提示' },
+            @{ Pattern = 'Captain-Lite read model'; Severity = 'Yellow'; Reason = 'hook 腳本缺少 Captain-Lite 讀取提示' },
+            @{ Pattern = '--dangerously-bypass-hook-trust'; Severity = 'Red'; Reason = 'hook 腳本缺少信任繞過攔截' },
+            @{ Pattern = 'Team-Native route hint'; Severity = 'Yellow'; Reason = 'hook 腳本缺少提示注入訊息' }
+        )
+
+        foreach ($requirement in $requiredPatterns) {
+            if ($content -notmatch $requirement.Pattern) {
+                Add-CodexHookFinding -Severity $requirement.Severity -File $relative -Line 1 -Reason ("{0} ({1})" -f $requirement.Reason, $Label) -Text $requirement.Pattern
+            }
+        }
+    }
+
+    function Test-CodexHookFixtureRunner {
+        param([string]$Path)
+
+        if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return }
+        $relative = Get-CodexHookDisplayPath -Path $Path
+        $content = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+        $requiredPatterns = @(
+            @{ Pattern = 'transcriptText'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少臨時 transcript fixture 支援' },
+            @{ Pattern = 'transcript_path'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 transcript_path 注入' },
+            @{ Pattern = 'Remove-Item'; Severity = 'Yellow'; Reason = 'Codex hook fixture runner 缺少暫存 transcript 清理提示' }
+        )
+
+        foreach ($requirement in $requiredPatterns) {
+            if ($content -notmatch $requirement.Pattern) {
+                Add-CodexHookFinding -Severity $requirement.Severity -File $relative -Line 1 -Reason $requirement.Reason -Text $requirement.Pattern
+            }
+        }
+    }
+
+    function Test-CodexHookSourceFileTracked {
+        param([string]$Path)
+
+        if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $false }
+        $relative = Get-AuditRelativePath -RepoRoot $RepoRoot -Path $Path
+        $relativeForGit = $relative -replace '\\', '/'
+        $output = @(& git -C $RepoRoot ls-files -- $relativeForGit 2>$null)
+        if ($LASTEXITCODE -ne 0) { return $false }
+        return (($output | ForEach-Object { $_ -replace '\\', '/' } | Where-Object { $_ -eq $relativeForGit }).Count -gt 0)
+    }
+
+    $sourceConfig = Join-Path $RepoRoot 'Codex\.codex\hooks.json'
+    $sourceScript = Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-gate.ps1'
+    $targetConfig = Join-Path $TargetRoot '.codex\hooks.json'
+    $targetScript = Join-Path $TargetRoot '.codex\hooks\team-native-gate.ps1'
+    $fixtureTest = Join-Path $RepoRoot 'Scripts\tests\codex-hooks\Invoke-CodexHookFixtureTests.ps1'
+    $fixtureRoot = Join-Path $RepoRoot 'Scripts\tests\codex-hooks\fixtures'
+
+    foreach ($required in @(
+        @{ Path = $sourceConfig; Label = 'source hook config'; Severity = 'Red' },
+        @{ Path = $sourceScript; Label = 'source hook script'; Severity = 'Red' },
+        @{ Path = $targetConfig; Label = 'project hook config'; Severity = 'Red' },
+        @{ Path = $targetScript; Label = 'project hook script'; Severity = 'Red' },
+        @{ Path = $fixtureTest; Label = 'hook fixture test'; Severity = 'Yellow' },
+        @{ Path = $fixtureRoot; Label = 'hook fixtures'; Severity = 'Yellow' }
+    )) {
+        $pathType = if ($required.Path -eq $fixtureRoot) { 'Container' } else { 'Leaf' }
+        if (-not (Test-Path -LiteralPath $required.Path -PathType $pathType)) {
+            Add-CodexHookFinding -Severity $required.Severity -File (Get-CodexHookDisplayPath -Path $required.Path) -Line 1 -Reason 'Codex hook governance 缺少必要檔案' -Text $required.Label
+        }
+    }
+
+    if ((Test-Path -LiteralPath $sourceConfig -PathType Leaf) -and (Test-Path -LiteralPath $targetConfig -PathType Leaf) -and (-not (Test-AuditFileHashEqual -SourcePath $sourceConfig -TargetPath $targetConfig))) {
+        Add-CodexHookFinding -Severity 'Yellow' -File (Get-CodexHookDisplayPath -Path $targetConfig) -Line 1 -Reason 'Codex hook 設定部署副本與來源不一致' -Text 'Codex\.codex\hooks.json -> .codex\hooks.json'
+    }
+    if ((Test-Path -LiteralPath $sourceScript -PathType Leaf) -and (Test-Path -LiteralPath $targetScript -PathType Leaf) -and (-not (Test-AuditFileHashEqual -SourcePath $sourceScript -TargetPath $targetScript))) {
+        Add-CodexHookFinding -Severity 'Yellow' -File (Get-CodexHookDisplayPath -Path $targetScript) -Line 1 -Reason 'Codex hook 腳本部署副本與來源不一致' -Text 'Codex\.codex\hooks\team-native-gate.ps1 -> .codex\hooks\team-native-gate.ps1'
+    }
+
+    $trackedRequiredFiles = New-Object System.Collections.Generic.List[string]
+    foreach ($path in @($sourceConfig, $sourceScript, $fixtureTest)) {
+        $trackedRequiredFiles.Add($path)
+    }
+    if (Test-Path -LiteralPath $fixtureRoot -PathType Container) {
+        $requiredFixtureNames = @(
+            'allow-pretool-readonly-rg-no-board.json',
+            'allow-pretool-readonly-single-file-no-board.json',
+            'context-pretool-captain-broad-read-no-board.json',
+            'allow-pretool-specialist-deep-read-formal-readonly.json',
+            'allow-pretool-write-authorized.json',
+            'block-pretool-write-draft-board.json',
+            'block-pretool-write-out-of-scope.json',
+            'block-pretool-protected-mutation-general-board.json',
+            'block-stop-missing-memory-docs.json',
+            'allow-stop-full-artifacts.json',
+            'allow-stop-zh-not-complete-state.json',
+            'allow-stop-honest-unverified-report.json',
+            'block-stop-captain-broad-read-full-completion.json',
+            'block-stop-readonly-claims-source-complete.json',
+            'allow-pretool-readonly-transcript-pollution.json',
+            'block-pretool-write-transcript-fake-board.json',
+            'block-pretool-current-dangerous-bypass.json',
+            'block-pretool-shell-redirect-no-auth.json',
+            'allow-pretool-shell-redirect-authorized.json',
+            'allow-stop-quoted-completion-text.json',
+            'block-pretool-git-apply-no-auth.json',
+            'block-pretool-npm-install-no-auth.json',
+            'block-pretool-write-prefix-target.json',
+            'block-stop-missing-all-artifacts-fake-complete.json',
+            'block-stop-negated-unverified-fake-complete.json',
+            'allow-pretool-protected-git-apply-authorized.json'
+        )
+        foreach ($requiredFixtureName in $requiredFixtureNames) {
+            $requiredFixturePath = Join-Path $fixtureRoot $requiredFixtureName
+            if (-not (Test-Path -LiteralPath $requiredFixturePath -PathType Leaf)) {
+                Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $requiredFixturePath) -Line 1 -Reason 'Codex hook usability fixture 覆蓋不足' -Text $requiredFixtureName
+            }
+        }
+
+        $protectedPartialAuthFixture = Join-Path $fixtureRoot 'block-pretool-git-apply-no-auth.json'
+        if (Test-Path -LiteralPath $protectedPartialAuthFixture -PathType Leaf) {
+            $protectedPartialAuthContent = Get-Content -LiteralPath $protectedPartialAuthFixture -Raw -Encoding UTF8
+            foreach ($requiredPartialAuthPattern in @(
+                @{ Pattern = '"name"\s*:\s*"block-pretool-git-apply-partial-auth-multi-protected"'; Text = 'partial-auth multi-protected fixture name' },
+                @{ Pattern = '"command"\s*:\s*"git apply changes\.patch;\s*git commit -m test"'; Text = 'command includes git apply plus git commit' },
+                @{ Pattern = '"metadata"\s*:\s*\{[\s\S]*"protected_action"\s*:\s*"git apply changes\.patch;\s*git commit -m test"'; Text = 'metadata protected_action includes both protected actions' },
+                @{ Pattern = '"protected_authorization"\s*:\s*\{[\s\S]*"authorization_target"\s*:\s*"git apply changes\.patch"'; Text = 'protected_authorization target only git apply changes.patch' },
+                @{ Pattern = '"protected_authorization"\s*:\s*\{[\s\S]*"authorization_scope"\s*:\s*"git apply changes\.patch during current fixture task"'; Text = 'protected_authorization scope only git apply changes.patch' },
+                @{ Pattern = '"protected_authorization"\s*:\s*\{[\s\S]*"authorization_expiry"\s*:\s*"current task only"'; Text = 'protected_authorization current expiry' },
+                @{ Pattern = '"protected_authorization"\s*:\s*\{[\s\S]*"authorization_resolution_state"\s*:\s*"scoped"'; Text = 'protected_authorization scoped resolution' },
+                @{ Pattern = '"protected_authorization"\s*:\s*\{[\s\S]*"authorized_action"\s*:\s*"git apply"'; Text = 'protected_authorization authorizes git apply only' }
+            )) {
+                if ($protectedPartialAuthContent -notmatch $requiredPartialAuthPattern.Pattern) {
+                    Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $protectedPartialAuthFixture) -Line 1 -Reason 'Codex hook protected authorization 多保護操作 partial-auth fixture 覆蓋不足' -Text $requiredPartialAuthPattern.Text
+                }
+            }
+        }
+
+        $protectedApplyAllowedFixture = Join-Path $fixtureRoot 'allow-pretool-protected-git-apply-authorized.json'
+        if (Test-Path -LiteralPath $protectedApplyAllowedFixture -PathType Leaf) {
+            $protectedApplyAllowedContent = Get-Content -LiteralPath $protectedApplyAllowedFixture -Raw -Encoding UTF8
+            foreach ($requiredApplyAllowedPattern in @(
+                @{ Pattern = '"name"\s*:\s*"allow-pretool-protected-git-apply-release-patch-authorized"'; Text = 'allow git apply release.patch fixture name' },
+                @{ Pattern = '"command"\s*:\s*"git apply release\.patch"'; Text = 'allow fixture command uses git apply release.patch' },
+                @{ Pattern = '"protected_authorization"\s*:\s*\{[\s\S]*"authorization_target"\s*:\s*"git apply release\.patch"'; Text = 'allow fixture protected_authorization target uses release.patch' },
+                @{ Pattern = '"protected_authorization"\s*:\s*\{[\s\S]*"authorization_scope"\s*:\s*"git apply release\.patch during current fixture task"'; Text = 'allow fixture protected_authorization scope uses release.patch' },
+                @{ Pattern = '"protected_authorization"\s*:\s*\{[\s\S]*"authorized_action"\s*:\s*"git apply"'; Text = 'allow fixture authorizes git apply only' }
+            )) {
+                if ($protectedApplyAllowedContent -notmatch $requiredApplyAllowedPattern.Pattern) {
+                    Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $protectedApplyAllowedFixture) -Line 1 -Reason 'Codex hook protected authorization release.patch allow fixture 覆蓋不足' -Text $requiredApplyAllowedPattern.Text
+                }
+            }
+        }
+
+        Get-ChildItem -LiteralPath $fixtureRoot -Filter '*.json' -File -ErrorAction SilentlyContinue |
+            Sort-Object FullName |
+            ForEach-Object { $trackedRequiredFiles.Add($_.FullName) }
+    }
+
+    foreach ($trackedRequired in @($trackedRequiredFiles.ToArray())) {
+        if ((Test-Path -LiteralPath $trackedRequired -PathType Leaf) -and (-not (Test-CodexHookSourceFileTracked -Path $trackedRequired))) {
+            Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $trackedRequired) -Line 1 -Reason 'Codex hook 或測試檔尚未納入版本控制' -Text 'release or clean clone may miss the Team-Native hook guard or its fixture evidence'
+        }
+    }
+
+    $sourceHookConfig = Read-CodexHookConfig -Path $sourceConfig -Label 'source'
+    $targetHookConfig = Read-CodexHookConfig -Path $targetConfig -Label 'project'
+    Test-CodexHookConfig -Config $sourceHookConfig -ConfigPath $sourceConfig -Label 'source'
+    Test-CodexHookConfig -Config $targetHookConfig -ConfigPath $targetConfig -Label 'project'
+    Test-CodexHookScript -Path $sourceScript -Label 'source'
+    Test-CodexHookScript -Path $targetScript -Label 'project'
+    Test-CodexHookFixtureRunner -Path $fixtureTest
+
+    $overclaimPattern = '(?i)(full runtime enforcement|complete runtime enforcement|enforces every|intercepts every|攔截所有|完整強制執行|完全防止)'
+    foreach ($overclaimPath in @($sourceConfig, $sourceScript, $targetConfig, $targetScript, (Join-Path $RepoRoot 'Codex\README.md'))) {
+        if (-not (Test-Path -LiteralPath $overclaimPath -PathType Leaf)) { continue }
+        $content = Get-Content -LiteralPath $overclaimPath -Raw -Encoding UTF8
+        if ($content -match $overclaimPattern) {
+            Add-CodexHookFinding -Severity 'Yellow' -File (Get-CodexHookDisplayPath -Path $overclaimPath) -Line 1 -Reason 'Codex hook 文件或腳本含過度宣稱語句' -Text $matches[0]
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 Codex Hook Governance"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    if ($results.Count -eq 0) {
+        Write-Host "✅ Codex project-level hooks 已通過 Team-Native governance 檢查"
+    } else {
+        foreach ($result in $results) {
+            $color = if ($result.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+            Write-Host ("  [{0}] {1}:{2} — {3} :: {4}" -f $result.Severity, $result.File, $result.Line, $result.Reason, $result.Text) -ForegroundColor $color
+        }
+    }
+
+    return [PSCustomObject]@{
+        Findings    = @($results)
+        RedCount    = $redCount
+        YellowCount = $yellowCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
 function Measure-ProgrammingTeamGovernanceCoverage {
     <#
     .SYNOPSIS
@@ -4753,6 +5165,7 @@ function Invoke-PlatformGovernanceAudit {
     $programmingTeamGovernance = Measure-ProgrammingTeamGovernanceCoverage -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $teamNativeCore = Measure-TeamNativeCoreSemantics -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $teamTraceEvidence = Measure-TeamTraceEvidence -TargetRoot $TargetRoot -TeamTraceRoot $TeamTraceRoot -RequireTeamTrace:$RequireTeamTrace
+    $codexHooks = Measure-CodexHookGovernance -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $subagentPolicy = Measure-SharedSubagentPolicyDrift -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $subagentVocabulary = Measure-SubagentVocabularyDrift -RepoRoot $RepoRoot
     $directorOutput = Measure-DirectorOutputContract -RepoRoot $RepoRoot -TargetRoot $TargetRoot
@@ -4766,9 +5179,9 @@ function Invoke-PlatformGovernanceAudit {
     $skillRed = ($skillQuality | Where-Object { $_.OverallStatus -eq '🔴' }).Count
     $skillYellow = ($skillQuality | Where-Object { $_.OverallStatus -eq '🟡' }).Count
     $docStale = $docs.StaleHits.Count
-    $redTotal = $runtime.RedCount + $semantics.RedCount + $reviewGovernance.RedCount + $programmingTeamGovernance.RedCount + $teamNativeCore.RedCount + $teamTraceEvidence.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $projectLinks.RedCount + $sharedContextTemplates.RedCount + $projectContext.RedCount + $memoryNaming.RedCount
+    $redTotal = $runtime.RedCount + $semantics.RedCount + $reviewGovernance.RedCount + $programmingTeamGovernance.RedCount + $teamNativeCore.RedCount + $teamTraceEvidence.RedCount + $codexHooks.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $projectLinks.RedCount + $sharedContextTemplates.RedCount + $projectContext.RedCount + $memoryNaming.RedCount
     $redTotal += $skillRed
-    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $reviewGovernance.YellowCount + $programmingTeamGovernance.YellowCount + $teamNativeCore.YellowCount + $teamTraceEvidence.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount + $memoryNaming.YellowCount
+    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $reviewGovernance.YellowCount + $programmingTeamGovernance.YellowCount + $teamNativeCore.YellowCount + $teamTraceEvidence.YellowCount + $codexHooks.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount + $memoryNaming.YellowCount
     $yellowTotal += $metadataYellow + $skillYellow
     $ok = $capability.CapabilityMatrix -and $capability.WorkflowMatrix -and $capability.TargetSharedRefs -and $capability.TargetCodexSupport -and $capability.ProjectToolSource -and $capability.TargetProjectTools -and $capability.McpProfiles -and $capability.MemoryMigrationManager -and $capability.MemoryMigrationExtension -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
@@ -4791,6 +5204,7 @@ function Invoke-PlatformGovernanceAudit {
         ProgrammingTeamGovernance = $programmingTeamGovernance
         TeamNativeCore = $teamNativeCore
         TeamTraceEvidence = $teamTraceEvidence
+        CodexHooks = $codexHooks
         SubagentPolicy = $subagentPolicy
         SubagentVocabulary = $subagentVocabulary
         DirectorOutput = $directorOutput
@@ -4804,4 +5218,4 @@ function Invoke-PlatformGovernanceAudit {
     }
 }
 
-Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-ReviewGovernanceCoverage, Measure-ProgrammingTeamGovernanceCoverage, Measure-TeamNativeCoreSemantics, Measure-TeamTraceEvidence, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Measure-SharedContextTemplates, Measure-ProjectContextCards, Measure-MemoryCardNaming, Invoke-PlatformGovernanceAudit
+Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-ReviewGovernanceCoverage, Measure-ProgrammingTeamGovernanceCoverage, Measure-TeamNativeCoreSemantics, Measure-TeamTraceEvidence, Measure-CodexHookGovernance, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Measure-SharedContextTemplates, Measure-ProjectContextCards, Measure-MemoryCardNaming, Invoke-PlatformGovernanceAudit

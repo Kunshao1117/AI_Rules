@@ -1,0 +1,26 @@
+{
+  "name": "allow-pretool-protected-git-apply-release-patch-authorized",
+  "event": "PreToolUse",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "",
+  "payload": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "git apply release.patch"
+    },
+    "team_native_trace": "Captain Team Board: formal-write\nstation_id: change-delivery-station\nhandoff_packet_id: hooks-protected-apply-001\nrole_id: change-delivery\nrole_instance_id: change-delivery-protected-001\nassigned specialist skill: team-specialist-change-delivery\nrequested_execution_channel: isolated-change-delivery\nchannel_capability: available\nchannel_invocation_status: returned\nimplementation change delivery",
+    "protected_authorization": {
+      "authorization_source": "Director GO protected git apply release.patch fixture",
+      "authorization_target": "git apply release.patch",
+      "authorization_scope": "git apply release.patch during current fixture task",
+      "authorization_phase": "protected mutation fixture validation",
+      "authorization_evidence": "Director GO protected git apply release.patch fixture",
+      "authorization_expiry": "current task only",
+      "authorization_resolution_state": "scoped",
+      "authorized_action": "git apply"
+    },
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

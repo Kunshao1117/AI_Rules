@@ -145,6 +145,27 @@ If the captain must deep-read the whole scope directly because no channel can
 open, the station records a direct exception and the completion state cannot
 claim full team separation unless the Director closes that named risk.
 
+### Captain-Lite Reading Model
+
+Hooks and workflow adapters must separate reading from completion evidence:
+
+- Micro-read: bounded single-file reads, narrow searches, status checks, hashes,
+  and small diff inspection are limited to read-only probes without a complete
+  board. They do not authorize writes and do not become completion evidence by
+  themselves.
+- Captain broad-read: repository-wide file lists, recursive scans, broad grep,
+  or large file sweeps are permitted only as read-only context recovery. The
+  captain must route the result to a formal-readonly specialist deep-read
+  station or record a direct exception before making completion claims.
+- Specialist deep-read: broad reads become qualified evidence only when the
+  trace names `deep_read_scope`, handoff packet, `role_id`,
+  `role_instance_id`, assigned specialist skill, requested execution channel,
+  channel capability, and channel invocation status.
+- Protected mutation: git, memory commit, release, deploy, install, destructive
+  file operations, package publication, or external-state mutation require a
+  protected authorization record for the current phase, target, scope, and
+  closure state. A general formal-write board is not enough.
+
 Authorization is resolved by `authorization-resolution.md` before any write,
 protected integration, memory, git, release, deployment, install, MCP mutation,
 or external-state mutation. Workflow names are route hints only, not

@@ -1,0 +1,16 @@
+{
+  "name": "block-fake-role-only",
+  "event": "PreToolUse",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "permissionDecision.*deny",
+  "payload": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "git push origin main"
+    },
+    "transcript": "role_id: team-specialist-release-completion",
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

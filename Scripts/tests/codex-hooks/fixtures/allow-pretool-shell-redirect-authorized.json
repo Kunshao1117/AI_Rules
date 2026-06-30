@@ -1,0 +1,19 @@
+{
+  "name": "allow-pretool-shell-redirect-authorized",
+  "event": "PreToolUse",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "",
+  "payload": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "echo changed > README.md"
+    },
+    "team_native_trace": "Captain Team Board: formal-write\nstation_id: change-delivery-station\nhandoff_packet_id: hooks-write-redirect-001\nrole_id: change-delivery\nrole_instance_id: change-delivery-redirect-001\nassigned specialist skill: team-specialist-change-delivery\nrequested_execution_channel: isolated-change-delivery\nchannel_capability: available\nchannel_invocation_status: returned\nimplementation change delivery",
+    "authorization_evidence": "Director GO scoped shell write fixture",
+    "authorization_scope": "README.md shell redirect fixture",
+    "authorization_target": "README.md",
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

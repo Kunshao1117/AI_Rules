@@ -195,6 +195,32 @@ non-complete state: use blocked or unverified when source/deployed sync cannot b
 Invalid shortcut: claiming deployed behavior changed when only source files were
 updated.
 
+## Scenario 8: Hook-Guided Captain-Lite Read
+
+Use when a platform hook must avoid blocking useful orientation reads while
+still preventing unauthorized writes and false completion claims.
+
+```text
+trigger: Model performs a small read, broad read, write, protected mutation, or completion claim.
+workflow_route: current workflow route or formal-readonly if the route is still being located.
+operation_mode: daily for bounded orientation; full for governance-impact or source-impact work.
+board_state: no board for micro-read only; formal-readonly for broad evidence; formal-write for scoped writes.
+dispatch wave: micro-probe, specialist deep-read, scoped change, then validation/review/memory.
+previous-wave input: user request and any hook context warning.
+next-wave start condition: route found, board opened, or action blocked/unverified.
+handoff_packet_id: required before specialist deep-read or write station.
+channel_capability: recorded for specialist deep-read and later stations.
+channel_invocation_status: running, returned, blocked, unavailable, or not-authorized.
+delivery artifact: read evidence, change delivery, validation delivery, review delivery, memory/docs delivery.
+route-back: broad read without deep-read evidence routes back to formal-readonly; unauthorized write routes back to authorization resolution.
+completion state: blocked or unverified if the model only performed captain broad-read or lacks delivery artifacts.
+```
+
+Invalid shortcut: treating a hook warning as permission to complete, or treating
+a formal-write board as authorization for git, memory commit, release, deploy,
+install, destructive file operations, package publication, or external-state
+mutation without a protected authorization record.
+
 ## Anti-Examples
 
 - Draft board dispatches formal specialists.

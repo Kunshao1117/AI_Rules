@@ -142,6 +142,8 @@ Step 2: workflow-skills/ → .agents/skills/  （17 套工作流技能）
 | **Review governance coverage** | Doctor 檢查審查治理共用技能、工作流矩陣、子代理政策與 02/03/04/08/09/10 入口是否保留審查狀態與 evidence branch 邊界 |
 | **Captain-led programming governance coverage** | Doctor 檢查隊長制編程治理共用技能、團隊任務板模板、隊長任務板、角色邊界、隔離變更交付、文字變更交付、證據負責人、主線直做例外、全主線假團隊防線、00/01 自動轉向、三平台 workflow 接入與部署後 shared skill / shared reference hash 是否一致；也會檢查 draft-to-formal board lifecycle、dispatch wave、previous-wave input、next-wave start condition、formal evidence eligibility，並攔截草案板派工、草案證據冒充正式驗收與一次開全部隊員 |
 | **Team-Native Core coverage** | Doctor 檢查 Team-Native Core 政策、任務軌跡契約、conditional 平台路由、Team-Native trace 驗收與部署後共用參考；嚴格模式可要求任務軌跡 |
+| **Codex project-level hook governance** | Doctor 檢查 Codex 專案 hook 設定、Team-Native gate 腳本、來源與部署副本一致性、事件覆蓋、命令型 handler、短 timeout、Windows 編碼命令、fixture 測試入口、Captain-Lite 讀取模型、唯讀/廣泛讀取/寫入/保護操作/完成宣稱分級，以及信任繞過攔截；此層是專案 hook guardrail，不宣稱能取代模型規範或平台信任設定 |
+| **Codex hook fixture validation** | Doctor 會確認 fixture 測試入口與必要案例存在並納入版本控制；實際行為驗證仍需執行 hook fixture 測試，確認放行、提示與拒絕案例都符合預期 |
 | **孤兒偵測** | 加入 `-RemoveOrphans` 可自動清除源碼已刪除的殘留技能 |
 
 ---
