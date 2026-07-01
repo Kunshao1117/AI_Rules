@@ -1673,7 +1673,20 @@ function Test-IsCurrentCompletionReferenceLine {
     if ([string]::IsNullOrWhiteSpace($Line)) { return $true }
     $trimmed = $Line.Trim()
     if ($trimmed -match '^(>|`{3}|//|#)') { return $true }
-    return $trimmed -match '(?i)(fixture|test string|test text|test case|expectedOutputRegex|forbiddenOutputRegex|regex|pattern|example|sample|quote|quoted|literal|引用|測試文字|測試字串|測試案例|說明文字|範例)'
+    $englishReferencePattern = '(?i)(fixture|test string|test text|test case|expectedOutputRegex|forbiddenOutputRegex|regex|pattern|example|sample|quote|quoted|literal)'
+    if ($trimmed -match $englishReferencePattern) { return $true }
+    $zhReferenceSignals = @(
+        (New-UnicodeString -Codes @(0x5F15, 0x7528)),
+        (New-UnicodeString -Codes @(0x6E2C, 0x8A66, 0x6587, 0x5B57)),
+        (New-UnicodeString -Codes @(0x6E2C, 0x8A66, 0x5B57, 0x4E32)),
+        (New-UnicodeString -Codes @(0x6E2C, 0x8A66, 0x6848, 0x4F8B)),
+        (New-UnicodeString -Codes @(0x8AAA, 0x660E, 0x6587, 0x5B57)),
+        (New-UnicodeString -Codes @(0x7BC4, 0x4F8B))
+    )
+    foreach ($signal in $zhReferenceSignals) {
+        if ($trimmed.Contains($signal)) { return $true }
+    }
+    return $false
 }
 
 function Remove-QuotedCompletionSegments {

@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-01T22:32:40+08:00'
+last_updated: '2026-07-01T23:42:59+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T22:31:58+08:00'
+last_verified: '2026-07-01T23:42:59+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 13
+cycle_event_count: 14
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -43,6 +43,7 @@ metadata:
 - Hooks Stability guards separate current payload evidence from historical transcript text, require same-record protected authorization, require every detected protected action to have complete authorization, avoid release/deploy false positives from filenames, enforce exact normalized write-target matching, and gate completion claims on delivery artifacts or explicit non-complete state.
 - Codex write-capable and protected hook authorization now requires current structured Team-Native payload fields; historical transcript text and text-only trace blobs are diagnostic only and cannot authorize writes.
 - Codex hook completion checks include Unicode-built Chinese completion patterns so Windows PowerShell encoding does not corrupt Chinese fixture behavior.
+- Codex hook reference-line detection keeps English reference markers in ASCII regex and builds Chinese reference markers through `New-UnicodeString` codepoints instead of direct Chinese regex literals.
 - Stop hook completion checks inspect Codex live `last_assistant_message`, block short generic or mixed completion claims, keep the completion gate active during Stop-hook continuations, and allow explicit blocked/unverified/closed-with-director-risk or read-only search report states.
 - Codex hook blocks now return diagnostic guidance with allowed and forbidden next steps, inject natural-language binding context for everyday governance prompts, block post-block tool/channel retries unless an explicit non-complete state is reported, and avoid treating read-only mentions of `Deploy.ps1` as deployment actions.
 - Codex protected write and protected mutation hooks now require scoped protected authorization plus a trusted tool execution envelope and matching trusted execution receipt with the same envelope id or nonce, allowed decision, matching action/target/scope, trusted issuer/source, verified or signed signature state, and fresh nonce; model-filled, assistant-authored, transcript, user-supplied, self-reported, missing-issuer, unsigned, stale, replayed, only-envelope, only-receipt, or mismatched receipt evidence fails closed.
@@ -62,6 +63,7 @@ metadata:
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 - Codex workflow entries must cite the deployed shared language policy before applying workflow-specific output, handoff, memory-language, or change-description rules.
 ## Cycle Events
+- 48: Removed direct Chinese regex literals from Codex hook reference-line detection, preserved source/deployed hook parity, and validated 58 hook fixtures across powershell.exe and pwsh.exe plus Doctor.
 - 47: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 46: Recorded Codex language-governance grounding across core rules and selected workflow entries with deployed policy citation.
 - 45: Recorded non-hook Codex core hardening that makes Team-Native mode default-on for applicable work and forbids captain substitute authoring from supporting full completion.
