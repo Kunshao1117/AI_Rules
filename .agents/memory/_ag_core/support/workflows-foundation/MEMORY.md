@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 基礎與討論建構工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-01T09:38:43+08:00'
+last_updated: '2026-07-01T22:32:14+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T09:32:41+08:00'
+last_verified: '2026-07-01T22:31:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 22
+cycle_event_count: 23
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -57,6 +57,7 @@ metadata:
 - Keep shared gate fragments aligned with platform governance.
 
 ## Cycle Events
+- 24: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 23: Updated Antigravity foundation workflow memory after authorization binding hardening; GO is scope-bound, build/fix execution must route through formal write stations, and captain integration cannot substitute for missing change delivery.
 - 22: Wave 6B added workflow-orchestration grounding to Antigravity foundation workflow entries.
 - 21: Wave 6A updated Antigravity chat, explore, blueprint, build, and experiment workflow entries with daily/full mode boundaries, pure-conversation/direct limits, formal-readonly/formal-write routing, and specialist lifecycle rules.

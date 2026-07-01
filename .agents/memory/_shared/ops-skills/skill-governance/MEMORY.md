@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-01T20:14:29+08:00'
+last_updated: '2026-07-01T22:33:09+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T20:10:40+08:00'
+last_verified: '2026-07-01T22:31:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 13
+cycle_event_count: 14
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -56,6 +56,7 @@ metadata:
 - Do not copy platform core language paragraphs as the only language source for skill creation, skill updates, trigger text, handoffs, or generated documentation.
 
 ## Cycle Events
+- 32: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 31: Added skill-governance memory for shared language-policy citation across skill factory and deployed skill language decisions.
 - 30: Recorded delivery-artifact hardening so change, memory/docs, review, validation, and role-boundary artifacts require scoped authorization and cannot mutate memory or substitute for completion when blocked.
 - 29: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform skill sync, and commit-preflight stale blocker cleanup.

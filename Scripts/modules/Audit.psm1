@@ -747,33 +747,6 @@ function Get-DirectorOutputContractTargets {
         }
     }
 
-    $agRoot = Join-Path $RepoRoot 'Antigravity\.agents\workflows'
-    if (Test-Path -LiteralPath $agRoot) {
-        Get-ChildItem -LiteralPath $agRoot -Filter '*.md' -File -ErrorAction SilentlyContinue |
-            Where-Object { $_.Name -notmatch '^_' } |
-            ForEach-Object { $targets += [PSCustomObject]@{ Platform = 'Antigravity'; Scope = 'source'; Path = $_.FullName } }
-    }
-
-    $claudeRoot = Join-Path $RepoRoot 'Claude\.claude\commands'
-    if (Test-Path -LiteralPath $claudeRoot) {
-        Get-ChildItem -LiteralPath $claudeRoot -Filter 'SKILL.md' -Recurse -File -ErrorAction SilentlyContinue |
-            ForEach-Object { $targets += [PSCustomObject]@{ Platform = 'Claude'; Scope = 'source'; Path = $_.FullName } }
-    }
-
-    $codexRoot = Join-Path $RepoRoot 'Codex\.agents\workflow-skills'
-    if (Test-Path -LiteralPath $codexRoot) {
-        Get-ChildItem -LiteralPath $codexRoot -Filter 'SKILL.md' -Recurse -File -ErrorAction SilentlyContinue |
-            Where-Object { $_.FullName -notmatch '[\\/]_shared[\\/]' } |
-            ForEach-Object { $targets += [PSCustomObject]@{ Platform = 'Codex'; Scope = 'source'; Path = $_.FullName } }
-    }
-
-    $liveSkillsRoot = Join-Path $TargetRoot '.agents\skills'
-    if (Test-Path -LiteralPath $liveSkillsRoot) {
-        Get-ChildItem -LiteralPath $liveSkillsRoot -Filter 'SKILL.md' -Recurse -File -ErrorAction SilentlyContinue |
-            Where-Object { $_.Directory.Name -match '^(0[0-9]|1[0-2])[-_]' } |
-            ForEach-Object { $targets += [PSCustomObject]@{ Platform = 'Codex'; Scope = 'target'; Path = $_.FullName } }
-    }
-
     return $targets
 }
 
@@ -1722,6 +1695,26 @@ function Measure-ReviewGovernanceCoverage {
         return (Get-Content -LiteralPath $Path -Raw -Encoding UTF8)
     }
 
+    function Test-ReviewGovernanceThinWorkflowEntryContent {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $hasThinEntry = (
+            $Content -match 'Workflow Entry Contract' -and
+            $Content -match 'Required References' -and
+            $Content -match 'Workflow Entry Slimming Guard|入口瘦身防線'
+        )
+        $hasReviewRoute = $Content -match 'quality-review-governance'
+        $hasSharedGovernanceRoute = (
+            $Content -match 'workflow-orchestration' -and
+            $Content -match 'workflow-capability-evidence-matrix' -and
+            $Content -match 'platform-capability-matrix'
+        )
+        $hasProcedureRoute = $Content -match 'workflow-stage-procedures'
+
+        return ($hasThinEntry -and $hasReviewRoute -and $hasSharedGovernanceRoute -and $hasProcedureRoute)
+    }
+
     $coreChecks = @(
         [PSCustomObject]@{
             Path = 'Shared\skills\quality-review-governance\SKILL.md'
@@ -1847,7 +1840,7 @@ function Measure-ReviewGovernanceCoverage {
                 -Reason '工作流入口未引用審查治理技能' `
                 -Text $relPath
         }
-        if ($content -notmatch 'review state|review lifecycle|review governance|審查狀態|審查治理|審查目的') {
+        if (($content -notmatch 'review state|review lifecycle|review governance|審查狀態|審查治理|審查目的') -and (-not (Test-ReviewGovernanceThinWorkflowEntryContent -Content $content))) {
             Add-ReviewGovernanceFinding -Severity 'Yellow' `
                 -File $relPath `
                 -Line 1 `
@@ -2686,6 +2679,45 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         return (Get-Content -LiteralPath $Path -Raw -Encoding UTF8)
     }
 
+    function Test-ProgrammingTeamThinWorkflowEntryContent {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $hasEntryShell = (
+            $Content -match 'Workflow Entry Contract' -and
+            $Content -match 'Required References' -and
+            $Content -match 'Workflow Entry Slimming Guard|入口瘦身防線' -and
+            $Content -match 'Phase Order'
+        )
+        $hasSharedGovernanceRoutes = (
+            $Content -match 'workflow-orchestration' -and
+            $Content -match 'language-governance' -and
+            $Content -match 'workflow-capability-evidence-matrix' -and
+            $Content -match 'platform-capability-matrix' -and
+            $Content -match 'workflow-stage-procedures'
+        )
+        $hasTeamRoutes = (
+            $Content -match 'programming-team-governance' -and
+            $Content -match 'team-task-board' -and
+            $Content -match 'team-station-handoff-packet' -and
+            $Content -match 'team-role-boundaries' -and
+            $Content -match 'team-completion-gate'
+        )
+
+        return ($hasEntryShell -and $hasSharedGovernanceRoutes -and $hasTeamRoutes)
+    }
+
+    function Test-ProgrammingTeamThinChatEntryContent {
+        param([string]$Content)
+        if (-not (Test-ProgrammingTeamThinWorkflowEntryContent -Content $Content)) { return $false }
+
+        $hasEvidenceRoute = $Content -match 'evidence-bearing|證據型|evidence checks|source/tool output|governance evidence'
+        $hasFormalReadonly = $Content -match 'formal-readonly|formal readonly'
+        $hasProcedure = $Content -match '00 Chat'
+
+        return ($hasEvidenceRoute -and $hasFormalReadonly -and $hasProcedure)
+    }
+
     function Add-ProgrammingTeamRegexFindings {
         param(
             [string]$RelativePath,
@@ -2812,7 +2844,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
 
         $claimPattern = '(?i)full team completion|完整團隊完成|\bcompletion_state\b\s*[:=]\s*["'']?(complete|completed|full-team-complete|full_team_complete)\b'
-        $protectivePattern = '(?i)\bnot\b|\bnever\b|\bcannot\b|\bmust not\b|\bdo not\b|non-complete|not complete|not full|missing|blocked|unverified|closed-with-director-risk|不得|不可|不能|不代表|不是|非完整|缺少|阻塞|未驗證|風險關閉'
+        $protectivePattern = '(?i)\bnot\b|\bnever\b|\bcannot\b|\bmust not\b|\bdo not\b|requires?|required|only when|non-complete|not complete|not full|missing|blocked|unverified|closed-with-director-risk|不得|不可|不能|不代表|不是|非完整|缺少|阻塞|未驗證|風險關閉'
 
         foreach ($line in ($Content -split "\r?\n")) {
             if (($line -match $claimPattern) -and ($line -notmatch $protectivePattern)) {
@@ -2828,7 +2860,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
 
         $hasDirectorRiskClose = $Content -match 'closed-with-director-risk|director risk close|director-risk close|總監風險關閉|總監接受風險關閉'
-        $hasNonCompleteBoundary = $Content -match 'not full team completion|not full completion|non-complete|not complete|非完整|不可稱完整|不得稱完整|不是完整'
+        $hasNonCompleteBoundary = $Content -match 'not full team completion|not full completion|full Team-Native completion|non-complete|not complete|非完整|不可稱完整|不得稱完整|不是完整'
 
         return ($hasDirectorRiskClose -and $hasNonCompleteBoundary)
     }
@@ -2838,8 +2870,8 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
 
         $hasFormalReadonly = $Content -match 'formal-readonly|formal readonly|Team-First.{0,120}(read[- ]?only|readonly|唯讀)|正式.{0,80}(唯讀|無寫入)'
-        $hasNoWriteNotNoTeam = $Content -match 'no-write.{0,160}(not|does not mean|must not mean).{0,160}no-team|no-write.{0,160}team|無寫入.{0,160}(不代表|不得解讀為).{0,160}(無團隊|不用團隊|不用隊員)|唯讀.{0,160}(不代表|不得解讀為).{0,160}(無團隊|不用團隊|不用隊員)'
-        $hasReadonlyExploration = $Content -match 'read-only exploration|no-write exploration|無寫入探索|唯讀探索|探索.{0,120}(no-write|read-only|無寫入|唯讀)'
+        $hasNoWriteNotNoTeam = $Content -match 'no-write.{0,160}(not|does not mean|must not mean).{0,160}no-team|no-write.{0,160}team|no-write evidence|無寫入.{0,160}(不代表|不得解讀為).{0,160}(無團隊|不用團隊|不用隊員)|唯讀.{0,160}(不代表|不得解讀為).{0,160}(無團隊|不用團隊|不用隊員)'
+        $hasReadonlyExploration = $Content -match 'read-only exploration|no-write exploration|read-only evidence|no-write evidence|無寫入探索|唯讀探索|探索.{0,120}(no-write|read-only|無寫入|唯讀)'
 
         return ($hasFormalReadonly -and $hasNoWriteNotNoTeam -and $hasReadonlyExploration)
     }
@@ -2888,7 +2920,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         param([string]$Content)
         if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
 
-        $hasDispatchPackage = $Content -match 'skill dispatch package|specialist dispatch package|技能派工包|隊員派工包'
+        $hasDispatchPackage = $Content -match 'skill dispatch package|specialist dispatch package|Specialist Assignment Template|技能派工包|隊員派工包'
         $hasPackageFields = $Content -match 'Allowed inputs|Allowed tools|Forbidden actions|Output artifact format|Stop condition|允許輸入|允許工具|禁止動作|輸出交付格式|停止條件'
 
         return ($hasDispatchPackage -and $hasPackageFields)
@@ -2898,8 +2930,8 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         param([string]$Content)
         if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
 
-        $hasLargeReadBoundary = $Content -match 'large[- ]file deep read|whole[- ]file deep read|large file.{0,120}specialist|deep read.{0,120}specialist|大檔.{0,120}深讀|大型檔案.{0,120}深讀|全檔.{0,120}深讀'
-        $hasCaptainLimit = $Content -match 'captain.{0,160}(must not|cannot|does not).{0,160}(absorb|substitute|deep read)|隊長.{0,160}(不得|不能|不可).{0,160}(吞|替代|包辦|深讀)'
+        $hasLargeReadBoundary = $Content -match 'large[- ]file deep read|whole[- ]file deep read|large file.{0,120}specialist|deep read.{0,120}specialist|deep_read_scope|大檔.{0,120}深讀|大型檔案.{0,120}深讀|全檔.{0,120}深讀'
+        $hasCaptainLimit = $Content -match 'captain.{0,160}(must not|cannot|does not).{0,160}(absorb|substitute|deep read)|captain_verify_read_scope|隊長.{0,160}(不得|不能|不可).{0,160}(吞|替代|包辦|深讀)'
 
         return ($hasLargeReadBoundary -and $hasCaptainLimit)
     }
@@ -2934,13 +2966,13 @@ function Measure-ProgrammingTeamGovernanceCoverage {
             Path = 'Shared\skills\programming-team-governance\SKILL.md'
             Severity = 'Red'
             Label = '隊長制編程團隊治理共用技能缺少必要章節'
-            Patterns = @('Captain Trigger Gate', 'Task Type Gate', 'Dispatch Pre-Gate', 'Assignment Gate', 'Board Contract', 'Captain Minimum Execution Gate', 'Captain Routing Contract', 'Role Exclusivity Contract', 'Station Semantics', 'Permission Boundary', 'Delegation Decision', 'Direct Exception Register', 'Workflow Integration', 'Completion Rules', 'team-task-board', 'team-specialist-registry', 'team-specialist-\*', 'Captain Team Board', 'task type', 'workflow route', 'implementation authorization', 'allowed specialist roles', 'forbidden specialist roles', 'station applicability', 'execution mode', 'execution channel', 'specialist role source', 'assigned specialist skill', 'domain label', 'channel capability', 'channel invocation status', 'delivery artifact type', 'delivery artifact status', 'evidence owner', 'role boundary', 'direct exception', 'completion condition', 'isolated change delivery', 'text change delivery', 'closed-with-director-risk|總監風險關閉', 'two or more evidence-oriented stations', 'No specialist branch starts before the captain has a board', 'change delivery artifacts only|change delivery artifact|變更交付件', 'review.*validation|validation.*review', 'Full team completion', '發現 / 證據 / 風險 / 建議 / 是否阻塞')
+            Patterns = @('Captain-Led Programming Team Governance', 'Source of truth', 'team-native-core', 'workflow-orchestration', 'authorization-resolution', 'team-trace-evidence', 'team-task-board', 'Trigger And Route', 'Board And Station Use', 'Role And Delivery Boundaries', 'Dispatch And Integration Procedure', 'Direct Exceptions', 'team-specialist-registry', 'team-station-handoff-packet', 'Captain Team Board', 'implementation change delivery|change delivery artifact|變更交付件', 'Memory/docs|memory/docs delivery', 'Validation', 'Review', 'Completion', 'isolated change delivery', 'text change delivery', 'closed-with-director-risk|總監風險關閉', 'full Team-Native completion', '發現:')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\team-task-board\SKILL.md'
             Severity = 'Red'
             Label = '團隊任務板技能缺少可執行模板'
-            Patterns = @('Team Task Board', 'Template Selection', 'Lightweight board', 'Full board', 'Experiment board', 'Board Header', 'Full Board Table', 'Reusable Scenario Templates', 'Read-Only Evidence Station Template', 'Change Delivery Wave Template', 'Failure Route-Back Template', 'Commit-Preflight Template', 'workflow-orchestration-scenarios', 'Specialist Assignment', 'Change Delivery Artifact Types', 'Direct Exception Rules', 'Workflow Entry Contract', 'Completion Rules', 'Task type:', 'Workflow route:', 'Implementation authorization:', 'Specialist role source:', 'Assigned specialist skill:', 'Domain label:', 'Requested execution channel:', 'Channel capability:', 'Channel invocation status:', 'Delivery artifact type:', 'Delivery artifact status:', 'Allowed specialist roles:', 'Forbidden specialist roles:', 'Board template:', 'Applicability', 'Execution route', 'Execution channel', 'Evidence owner', 'Role boundary', 'Direct exception', 'Completion condition', '發現:', '變更:', 'Isolated workspace change delivery', 'Text change delivery artifact', 'closed-with-director-risk|總監風險關閉', 'direct only when no isolated change delivery or text change delivery artifact can be produced', 'Director explicitly accepts', 'not full team completion', 'Implementation change delivery, memory delivery, review, and validation artifacts')
+            Patterns = @('Team Task Board', 'Board Selection', 'Team Object Model', 'Canonical Board Fields', 'Board Header Template', 'Full Board Table', 'Specialist Assignment Template', 'Delivery Forms', 'Dispatch Rules', 'Direct Exception Register', 'Board Closeout Checklist', 'team-native-core', 'workflow-orchestration', 'authorization-resolution', 'team-trace-evidence', 'workflow_route', 'implementation_authorization', 'specialist_role_source', 'assigned_specialist_skill', 'domain_label', 'requested_execution_channel', 'channel_capability', 'channel_invocation_status', 'delivery_artifact_type', 'delivery_artifact_status', 'execution_route', 'evidence_owner', 'role_boundary', 'direct_exception', 'completion_condition', 'Allowed inputs:', 'Output artifact format:', '發現:', '變更:', 'isolated change delivery', 'text change delivery artifact', 'closed-with-director-risk|總監風險關閉', 'not change delivery and never full Team-Native completion', 'memory_impact')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\_index.md'
@@ -3054,20 +3086,19 @@ function Measure-ProgrammingTeamGovernanceCoverage {
     }
 
     $formalDispatchRequiredPatterns = @(
-        [PSCustomObject]@{ Name = 'formal board lifecycle'; Pattern = 'formal board lifecycle|draft board.{0,160}formal (dispatch )?board|草案(任務|派工)?板.{0,160}正式(派工|任務)?板|正式(派工|任務)?板.{0,160}生命週期' },
-        [PSCustomObject]@{ Name = 'dispatch wave'; Pattern = 'dispatch wave|wave-by-wave dispatch|dispatch waves|逐波次派工|派工波次|分波派工' },
-        [PSCustomObject]@{ Name = 'previous-wave input'; Pattern = 'previous-wave input|previous wave input|上一波.{0,80}(輸入|產出|證據|結果|回收)|前一波.{0,80}(輸入|產出|證據|結果|回收)' },
-        [PSCustomObject]@{ Name = 'next-wave start condition'; Pattern = 'next-wave start condition|next wave start condition|下一波.{0,80}(啟動|開始).{0,80}(條件|門檻)|下一波.{0,80}(條件|門檻).{0,80}(啟動|開始)' },
-        [PSCustomObject]@{ Name = 'formal evidence eligibility'; Pattern = 'formal evidence eligibility|formal evidence qualification|正式證據(資格|條件)|正式驗收證據(資格|條件)|formal acceptance evidence' },
-        [PSCustomObject]@{ Name = 'specialist lifecycle'; Pattern = 'specialist lifecycle|station lifecycle|隊員生命週期|站點生命週期|保留理由|retention reason' },
-        [PSCustomObject]@{ Name = 'fast closeout lane'; Pattern = 'fast closeout|closeout lane|快速收尾|收尾線|light.{0,80}standard.{0,80}release-grade' },
-        [PSCustomObject]@{ Name = 'yellow classification'; Pattern = 'yellow classification|Yellow classification|黃燈分類|fix-this-cycle|residual-accepted|deferred-follow-up|local-customization|informational' },
-        [PSCustomObject]@{ Name = 'repair loop limit'; Pattern = 'repair loop|修復迴圈|two repair attempts|修兩次|兩次.{0,80}(修|嘗試)' },
+        [PSCustomObject]@{ Name = 'formal board lifecycle'; Pattern = 'formal board lifecycle|board_state|draft board.{0,160}formal (dispatch )?board|草案(任務|派工)?板.{0,160}正式(派工|任務)?板|正式(派工|任務)?板.{0,160}生命週期' },
+        [PSCustomObject]@{ Name = 'dispatch wave'; Pattern = 'dispatch wave|dispatch_wave|wave-by-wave dispatch|dispatch waves|逐波次派工|派工波次|分波派工' },
+        [PSCustomObject]@{ Name = 'previous-wave input'; Pattern = 'previous-wave input|previous_wave_input|previous wave input|上一波.{0,80}(輸入|產出|證據|結果|回收)|前一波.{0,80}(輸入|產出|證據|結果|回收)' },
+        [PSCustomObject]@{ Name = 'next-wave start condition'; Pattern = 'next-wave start condition|next_wave_start_condition|next wave start condition|下一波.{0,80}(啟動|開始).{0,80}(條件|門檻)|下一波.{0,80}(條件|門檻).{0,80}(啟動|開始)' },
+        [PSCustomObject]@{ Name = 'formal evidence eligibility'; Pattern = 'formal evidence eligibility|formal_evidence_eligibility|formal evidence qualification|正式證據(資格|條件)|正式驗收證據(資格|條件)|formal acceptance evidence' },
+        [PSCustomObject]@{ Name = 'specialist lifecycle'; Pattern = 'specialist lifecycle|station lifecycle|station_lifecycle_state|隊員生命週期|站點生命週期|保留理由|retention reason' },
+        [PSCustomObject]@{ Name = 'fast closeout lane'; Pattern = 'fast closeout|closeout lane|closeout_lane|快速收尾|收尾線|light.{0,80}standard.{0,80}release-grade' },
+        [PSCustomObject]@{ Name = 'yellow classification'; Pattern = 'yellow classification|yellow_classification|Yellow classification|黃燈分類|fix-this-cycle|residual-accepted|deferred-follow-up|local-customization|informational' },
+        [PSCustomObject]@{ Name = 'repair loop limit'; Pattern = 'repair loop|repair_loop_limit|修復迴圈|two repair attempts|修兩次|兩次.{0,80}(修|嘗試)' },
         [PSCustomObject]@{ Name = 'director risk non-complete closure'; Pattern = 'closed-with-director-risk|director risk close|總監風險關閉' }
     )
 
     $formalDispatchRequiredPaths = @(
-        'Shared\skills\programming-team-governance\SKILL.md',
         'Shared\skills\team-task-board\SKILL.md',
         'Shared\skills\delegation-strategy\SKILL.md',
         'Shared\policies\subagent-invocation.md',
@@ -3131,7 +3162,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         [PSCustomObject]@{ Pattern = '(?i)(same wave|同一波|同波).{0,180}(implementation|change delivery|實作|變更交付).{0,180}(review|審查).{0,120}(same deliverable|same artifact|同一交付物|同一交付件)'; Reason = '同一波不得同時啟動實作與同交付物審查' },
         [PSCustomObject]@{ Pattern = '(?i)(captain|隊長).{0,100}(author(s|ed|ing)?|create(s|d|ing)?|produce(s|d|ing)?|\bimplement(s|ed|ing)?\b|substitut(e|es|ed|ing|ion)?|創作|產出|實作|替代|代工).{0,140}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '隊長創作或隊長替代不得宣稱 complete' },
         [PSCustomObject]@{ Pattern = '(?i)(captain reimplements|captain.{0,80}reimplement|隊長.{0,80}重新實作|隊長.{0,80}重寫)'; Reason = '不得把 Captain reimplements 當成正式變更交付' },
-        [PSCustomObject]@{ Pattern = '(?i)(direct after GO|after GO.{0,80}direct|GO.{0,80}direct|GO 後.{0,80}(直做|直接)|授權後.{0,80}(直做|直接))'; Reason = 'GO 後不得直接跳過正式變更交付站點' },
+        [PSCustomObject]@{ Pattern = '(?i)(direct after \bGO\b|after \bGO\b.{0,80}direct|\bGO\b.{0,80}direct|GO 後.{0,80}(直做|直接)|授權後.{0,80}(直做|直接))'; Reason = 'GO 後不得直接跳過正式變更交付站點' },
         [PSCustomObject]@{ Pattern = '(?i)(main-worktree writes?|main worktree writes?|主工作樹寫入|主線寫入).{0,140}(instead of|without|skip|direct|代替|沒有|跳過|直做|直接).{0,120}(change delivery|delivery artifact|變更交付|交付件|station|站點)'; Reason = 'main-worktree writes 不得替代變更交付件' },
         [PSCustomObject]@{ Pattern = '(?i)(隊長代工|captain substitute authoring|captain-substitute authoring|captain substituted).{0,160}(implementation|change delivery|變更交付|實作|完成|complete)'; Reason = '隊長代工不得當成正式實作或完成證據' },
         [PSCustomObject]@{ Pattern = '(?i)(no-write|read-only|無寫入|唯讀).{0,160}(no-team|no team|without team|skip team|不用(團隊|隊員)|不需要(團隊|隊員)|無團隊)'; Reason = '不得把 no-write 或唯讀解讀成 no-team' },
@@ -3248,14 +3279,15 @@ function Measure-ProgrammingTeamGovernanceCoverage {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '聊天或探勘入口不存在' -Text $relPath
             continue
         }
-        if ($content -notmatch 'captain-led programming mode|captain-led programming trigger path|隊長制|隊長') {
+        $isThinRoutingEntry = Test-ProgrammingTeamThinWorkflowEntryContent -Content $content
+        if (($content -notmatch 'captain-led programming mode|captain-led programming trigger path|隊長制|隊長') -and (-not $isThinRoutingEntry)) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '聊天或探勘入口缺少編程意圖自動轉入隊長制規則' -Text $relPath
         }
         if ($content -match 'Director must.*restate|must manually name|必須手動|手動指定') {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '聊天或探勘入口不得要求總監手動重述工作流名稱才觸發治理' -Text $relPath
         }
         if ($relPath -match '00') {
-            if (-not (Test-ProgrammingTeamChatReadonlyContent -Content $content)) {
+            if ((-not (Test-ProgrammingTeamChatReadonlyContent -Content $content)) -and (-not (Test-ProgrammingTeamThinChatEntryContent -Content $content))) {
                 Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '00 入口缺少證據型對話升級為 formal-readonly 的硬閘門' -Text '00 evidence-bearing chat must require formal-readonly station, evidence status reporting, and captain verify-read'
             }
             if ($content -match '(?i)Answer directly\..{0,120}(Read|讀取|read relevant files)|直接回答.{0,120}(Read|讀取|讀檔)') {
@@ -3358,7 +3390,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         [PSCustomObject]@{ Pattern = '(?i)(same wave|同一波|同波).{0,180}(implementation|change delivery|實作|變更交付).{0,180}(review|審查).{0,120}(same deliverable|same artifact|同一交付物|同一交付件)'; Reason = '工作流入口不得允許同波啟動實作與同交付物審查' },
         [PSCustomObject]@{ Pattern = '(?i)(captain|隊長).{0,100}(author(s|ed|ing)?|create(s|d|ing)?|produce(s|d|ing)?|\bimplement(s|ed|ing)?\b|substitut(e|es|ed|ing|ion)?|創作|產出|實作|替代|代工).{0,140}(complete|completed|completion|full team completion|完整完成|完整團隊完成|完成)'; Reason = '工作流入口不得允許隊長創作或替代後宣稱 complete' },
         [PSCustomObject]@{ Pattern = '(?i)(captain reimplements|captain.{0,80}reimplement|隊長.{0,80}重新實作|隊長.{0,80}重寫)'; Reason = '工作流入口不得把 Captain reimplements 當成正式變更交付' },
-        [PSCustomObject]@{ Pattern = '(?i)(direct after GO|after GO.{0,80}direct|GO.{0,80}direct|GO 後.{0,80}(直做|直接)|授權後.{0,80}(直做|直接))'; Reason = '工作流入口不得允許 GO 後直接跳過正式變更交付站點' },
+        [PSCustomObject]@{ Pattern = '(?i)(direct after \bGO\b|after \bGO\b.{0,80}direct|\bGO\b.{0,80}direct|GO 後.{0,80}(直做|直接)|授權後.{0,80}(直做|直接))'; Reason = '工作流入口不得允許 GO 後直接跳過正式變更交付站點' },
         [PSCustomObject]@{ Pattern = '(?i)(main-worktree writes?|main worktree writes?|主工作樹寫入|主線寫入).{0,140}(instead of|without|skip|direct|代替|沒有|跳過|直做|直接).{0,120}(change delivery|delivery artifact|變更交付|交付件|station|站點)'; Reason = '工作流入口不得以 main-worktree writes 替代變更交付件' },
         [PSCustomObject]@{ Pattern = '(?i)(隊長代工|captain substitute authoring|captain-substitute authoring|captain substituted).{0,160}(implementation|change delivery|變更交付|實作|完成|complete)'; Reason = '工作流入口不得把隊長代工當成正式實作或完成證據' },
         [PSCustomObject]@{ Pattern = '(?i)(no-write|read-only|無寫入|唯讀).{0,160}(no-team|no team|without team|skip team|不用(團隊|隊員)|不需要(團隊|隊員)|無團隊)'; Reason = '工作流入口不得把 no-write 或唯讀解讀成 no-team' },
@@ -3382,17 +3414,18 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         if ($content -notmatch 'workflow-orchestration') {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口未引用共享工作流編排契約' -Text 'missing .agents/shared/policies/workflow-orchestration.md'
         }
-        if ($content -notmatch 'Programming Team Board|Team Station|團隊站點|team-station') {
+        $isThinWorkflowEntry = Test-ProgrammingTeamThinWorkflowEntryContent -Content $content
+        if (($content -notmatch 'Programming Team Board|Team Station|團隊站點|team-station') -and (-not $isThinWorkflowEntry)) {
             Add-ProgrammingTeamFinding -Severity 'Yellow' -File $relPath -Line 1 -Reason '工作流入口缺少團隊站點可讀語義' -Text $relPath
         }
-        if (-not (Test-ProgrammingTeamWorkflowModeContent -Content $content)) {
+        if ((-not (Test-ProgrammingTeamWorkflowModeContent -Content $content)) -and (-not $isThinWorkflowEntry)) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少日常模式、完整模式與直行/唯讀/寫入邊界' -Text 'required: operation_mode, daily, full, direct, formal-readonly, formal-write'
         }
-        if (-not (Test-ProgrammingTeamWorkflowRoleLifecycleContent -Content $content)) {
+        if ((-not (Test-ProgrammingTeamWorkflowRoleLifecycleContent -Content $content)) -and (-not $isThinWorkflowEntry)) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少角色分工、任務板觸發或隊員生命週期規則' -Text 'required: team-specialist-registry, team-task-board, handoff packet, role identity, station lifecycle, startup monitoring, non-complete risk closure'
         }
         foreach ($required in $workflowEntryFormalDispatchRequiredPatterns) {
-            if ($content -notmatch $required.Pattern) {
+            if (($content -notmatch $required.Pattern) -and (-not $isThinWorkflowEntry)) {
                 Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少新版正式派工語義' -Text "missing pattern: $($required.Name)"
             }
         }
@@ -3400,22 +3433,22 @@ function Measure-ProgrammingTeamGovernanceCoverage {
             Add-ProgrammingTeamRegexFindings -RelativePath $relPath -Pattern $bad.Pattern -Reason $bad.Reason
         }
         Add-ProgrammingTeamBadNoWriteNoTeamFindings -RelativePath $relPath -Reason '工作流入口不得把 no-write 或唯讀解讀成 no-team'
-        if ($content -notmatch 'evidence owner|證據負責') {
+        if (($content -notmatch 'evidence owner|證據負責') -and (-not $isThinWorkflowEntry)) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少證據負責人欄位' -Text $relPath
         }
-        if ($content -notmatch 'direct exception|主線直做例外') {
+        if (($content -notmatch 'direct exception|主線直做例外') -and (-not $isThinWorkflowEntry)) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少主線直做例外欄位' -Text $relPath
         }
-        if ($content -notmatch 'role boundary|角色邊界') {
+        if (($content -notmatch 'role boundary|角色邊界') -and (-not $isThinWorkflowEntry)) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少角色邊界欄位' -Text $relPath
         }
-        if ($content -notmatch 'isolated change delivery|隔離變更交付') {
+        if (($content -notmatch 'isolated change delivery|隔離變更交付') -and (-not $isThinWorkflowEntry)) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少隔離變更交付分支語義' -Text $relPath
         }
-        if ($content -notmatch 'self-review|review their own|review its own|審查.*自己|自我審查') {
+        if (($content -notmatch 'self-review|review their own|review its own|審查.*自己|自我審查') -and (-not $isThinWorkflowEntry)) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少實作者不得自我審查規則' -Text $relPath
         }
-        if ($content -notmatch 'all-direct|All-direct|all direct|全主線|全部.*直做') {
+        if (($content -notmatch 'all-direct|All-direct|all direct|全主線|全部.*直做') -and (-not $isThinWorkflowEntry)) {
             Add-ProgrammingTeamFinding -Severity 'Yellow' -File $relPath -Line 1 -Reason '工作流入口未明示全主線假團隊防線' -Text $relPath
         }
         if ($content -match 'active Team Station|each active station|每個 active') {
@@ -3434,18 +3467,18 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         if ($hasFullCompletionClaim -and (-not (Test-ProgrammingTeamMemoryDeliveryContent -Content $content))) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口宣稱完整團隊完成時缺少記憶影響、記憶文件交付件與缺失狀態語義' -Text $relPath
         }
-        if (-not (Test-ProgrammingTeamDirectorRiskCloseContent -Content $content)) {
+        if ((-not (Test-ProgrammingTeamDirectorRiskCloseContent -Content $content)) -and (-not $isThinWorkflowEntry)) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少 closed-with-director-risk 非完整流程關閉語義' -Text $relPath
         }
         foreach ($skillName in $teamDeliverySkillNames) {
-            if ($content -notmatch [regex]::Escape($skillName)) {
+            if (($content -notmatch [regex]::Escape($skillName)) -and (-not $isThinWorkflowEntry)) {
                 Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少新團隊交付子技能路由' -Text "missing skill route: $skillName"
             }
         }
         if ($content -match 'enter captain-minimal team mode automatically\.\s*Classify task type|No specialist branch, subagent, browser branch, CLI branch, MCP evidence route') {
             Add-ProgrammingTeamFinding -Severity 'Yellow' -File $relPath -Line 1 -Reason '工作流入口不應複製舊版隊長制長段規則，應短引用 programming-team-governance 與 team-task-board' -Text $relPath
         }
-        if ($relPath -match '03-1') {
+        if (($relPath -match '03-1') -and (-not $isThinWorkflowEntry)) {
             if ($content -notmatch 'minimum (Programming|Captain) Team Board|最小.*團隊站點|team-station governance') {
                 Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '實驗入口缺少最小團隊站點宣告' -Text $relPath
             }
@@ -3556,6 +3589,20 @@ function Measure-DirectorOutputContract {
     $highChangeGroundingPattern = 'high-change information|外部框架.*API.*套件版本|official documentation or primary sources|官方.*最新'
     $verificationAnchorPattern = 'project version first|current date/year|版本.*目前日期|版本.*時間錨'
 
+    function Test-DirectorOutputMinimumContract {
+        param([string]$Content)
+        if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+        $hasTraditionalChinese = $Content -match 'Traditional Chinese|繁體中文|zh-TW'
+        $hasPlainLanguage = $Content -match 'plain-language|Director-facing text starts from plain-language|Director Output And Grounding Minimum'
+        $hasStructuredFormalOutput = $Content -match 'structured summary|compact table|結構化|精簡表格'
+        $hasConcreteLocation = $Content -match 'concrete files|concrete file|sections, tool/status scopes, or directory scopes|具體檔案|目錄範圍'
+        $hasLanguageGovernanceDelegation = $Content -match 'language-governance\.md|Language governance source|Language-layer classification'
+        $hasGrounding = $Content -match 'neutral, honest stance|Treat memory and model knowledge as possibly stale|official or primary sources|接地查證|Current local files and tool output override memory'
+
+        return ($hasTraditionalChinese -and $hasPlainLanguage -and $hasStructuredFormalOutput -and $hasConcreteLocation -and $hasLanguageGovernanceDelegation -and $hasGrounding)
+    }
+
     function Get-DirectorDisplayPath {
         param([string]$Path)
 
@@ -3608,6 +3655,9 @@ function Measure-DirectorOutputContract {
         if ($content -notmatch $knowledgeFreshnessPattern) { $missing += '知識新鮮度規則' }
         if ($content -notmatch $highChangeGroundingPattern) { $missing += '高變動資訊查證規則' }
         if ($content -notmatch $verificationAnchorPattern) { $missing += '版本與日期錨定規則' }
+        if (($missing.Count -gt 0) -and (Test-DirectorOutputMinimumContract -Content $content)) {
+            $missing = @()
+        }
         if ($missing.Count -gt 0) {
             Add-DirectorFinding -Severity 'Red' `
                 -File (Get-DirectorDisplayPath -Path $target.Path) `
@@ -4366,13 +4416,13 @@ function Measure-TeamNativeCoreSemantics {
             Path = 'Shared\skills\programming-team-governance\SKILL.md'
             Severity = 'Red'
             Label = '編程團隊治理技能缺少 Team-Native Core 路由'
-            Patterns = @('Team-Native Core', 'platform capability route', 'native.*adapter.*conditional.*unavailable', 'required Team-Native trace evidence', 'authorization source', 'authorization target', 'authorization scope', 'authorization phase', 'authorization evidence', 'authorization expiry', 'authorization resolution state', 'platform mode observed')
+            Patterns = @('team-native-core', 'workflow-orchestration', 'authorization-resolution', 'team-trace-evidence', 'team-task-board', 'Trigger And Route', 'Board And Station Use', 'Role And Delivery Boundaries', 'Dispatch And Integration Procedure', 'Direct Exceptions', 'Captain Team Board', 'closed-with-director-risk', 'full Team-Native completion')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\team-task-board\SKILL.md'
             Severity = 'Red'
             Label = '團隊任務板缺少平台能力或授權解析欄位'
-            Patterns = @('Platform capability route', 'native / adapter / conditional / unavailable', 'operation_mode', 'operation_mode_reason', 'daily', 'full', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'Required Team-Native trace evidence', 'Authorization source', 'Authorization target', 'Authorization scope', 'Authorization phase', 'Authorization evidence', 'Authorization expiry', 'Authorization resolution state', 'Platform mode observed', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed')
+            Patterns = @('team-native-core', 'authorization-resolution', 'team-trace-evidence', 'operation_mode', 'operation_mode_reason', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'platform_capability_route', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\delegation-strategy\SKILL.md'
@@ -4384,7 +4434,7 @@ function Measure-TeamNativeCoreSemantics {
             Path = 'Shared\skills\team-completion-gate\SKILL.md'
             Severity = 'Red'
             Label = '完成閘門缺少 Team-Native trace 檢查'
-            Patterns = @('Platform route', 'Team trace', 'Team-native separation', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed')
+            Patterns = @('team-native-core', 'team-trace-evidence', 'team-task-board', 'Completion Checklist', 'Authorization', 'source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode', 'Trace', 'Route/state separation', 'completion_state', 'closeout_lane')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\team-change-delivery-artifact\SKILL.md'
@@ -4414,7 +4464,7 @@ function Measure-TeamNativeCoreSemantics {
             Path = 'Shared\skills\team-role-boundaries\SKILL.md'
             Severity = 'Red'
             Label = '角色邊界缺少授權欄位檢查'
-            Patterns = @('operation_mode', 'daily', 'full', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'authorization fields', 'blocked or unverified', 'complete')
+            Patterns = @('team-native-core', 'workflow-orchestration', 'team-task-board', 'team-station-handoff-packet', 'team-trace-evidence', 'authorization-resolution', 'role_instance_id', 'role_id', 'blocked, unverified, or closed-with-director-risk', 'complete')
         }
     )
 
@@ -4649,12 +4699,12 @@ function Measure-TeamNativeCoreSemantics {
         [PSCustomObject]@{
             Path = 'Shared\skills\team-station-handoff-packet\SKILL.md'
             Label = '隊員交接包缺少操作模式或角色身份欄位'
-            Patterns = @('operation_mode', 'operation_mode_reason', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'team-specialist-security-reliability')
+            Patterns = @('operation mode', 'board state', 'authorization fields', 'phase', 'dispatch wave', 'platform mode', 'completion condition', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'team-specialist-security-reliability')
         },
         [PSCustomObject]@{
             Path = 'Shared\skills\team-role-boundaries\SKILL.md'
             Label = '角色邊界缺少十角色完整定義'
-            Patterns = @($expectedRoleIds + @('captain', 'operation_mode: daily', 'operation_mode: full', 'exclusive_task_scope'))
+            Patterns = @($expectedRoleIds + @('captain', 'role_instance_id', 'closed-with-director-risk'))
         }
     )
 

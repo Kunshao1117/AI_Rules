@@ -18,157 +18,43 @@ metadata:
   automation_safe: false
 ---
 
+## Workflow Entry Contract
 
-## 總監可讀輸出契約（Director-Readable Output Contract）
+This Claude command entry is a thin route entry. It selects workflow row `04`, applies the platform adapter, and points to shared procedures when details are needed. It does not grant write, memory, git, release, deployment, install, credential, or external-state authority.
 
-Director-facing output MUST use a context-sensitive plain-language structure before technical details:
+## Required References
 
-- Routine discussion, short status updates, and simple judgments may use concise paragraphs or short lists.
-- Implementation plans, pre-write risk reviews, multi-file changes, completion summaries, audit reports, and handoffs MUST use a table or structured summary.
-- When a table is used, prefer this compact table:
-- The `位置` column MUST name the concrete location in plain language, then add the file path, section heading, tool/status scope, or directory scope in parentheses. If the item is not a single file, say so explicitly, e.g. `工作區狀態（git status）`, `管理器巡檢工具（框架來源倉庫限定：Scripts/AI-RulesManager.ps1）`, or `規則與技能範圍（部署後：.codex、.agents/skills；框架來源倉庫限定：Codex/.codex、Shared/skills）`.
-- Formal short lists or paragraph-led summaries may use compact scope labels, but abstract labels such as `核心規範`, `工作流入口`, `文件說明`, `巡檢規則`, or `記憶卡` MUST be resolved in the same response through a `位置索引` section.
-- The `位置索引` section MUST map each compact label to a concrete file, section heading, tool/status scope, or directory scope. Do not leave compact labels as unexplained categories.
+Before broad reading, station work, validation, review, memory/docs, completion, or any write path:
 
-| 事項 | 位置 | 影響 | 狀態 |
-|---|---|---|---|
+1. Read `.agents/shared/policies/workflow-orchestration.md` for route, authorization, operation mode, board, wave, artifact, and completion order.
+2. Read `.agents/shared/policies/language-governance.md` for Director-facing language, exact-evidence preservation, and change-description rules.
+3. Read `.agents/shared/workflow-capability-evidence-matrix.md` and use workflow row `04` as the minimum evidence contract.
+4. Read `.agents/shared/platform-capability-matrix.md` and apply only this platform's adapter semantics.
+5. When editing workflow entries, skills, shared policies, or governance boundaries, read `.agents/shared/skill-governance.md` before changing placement or wording.
+6. When a concrete phase checklist is needed, read `.agents/shared/workflow-stage-procedures.md` and use section `04 Fix`. Do not copy that procedure back into this entry.
+7. For Team-Native work, load `.claude/skills/programming-team-governance/SKILL.md`, `.claude/skills/team-task-board/SKILL.md`, `.claude/skills/team-station-handoff-packet/SKILL.md`, `.claude/skills/team-role-boundaries/SKILL.md`, and `.claude/skills/team-completion-gate/SKILL.md`; load delivery-artifact skills only when their stations apply.
+8. When memory evidence applies, use `.claude/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is `未驗證` or `阻塞`.
 
-Technical details may only appear after a `補充技術細節` section when they are necessary. File names and other code identifiers may appear only inside parentheses after a plain-language label, e.g. `建構流程規則（03-build-建構/SKILL.md）`. Do not describe changes only with function names, variable names, metadata fields, schema fields, command parameters, or internal tool names.
+## 入口瘦身防線（Workflow Entry Slimming Guard）
 
-技術詞彙翻譯閘門（Technical Vocabulary Translation Gate）:
-- Director-facing text MUST NOT contain bare code identifiers. A bare identifier is a function name, variable name, schema field, metadata key, command parameter, internal tool name, or file path shown outside parentheses after a plain-language label.
-- Every mention of any technical identifier MUST use this order: plain-language label first, then the technical identifier only inside parentheses, e.g. `建構流程規則（03-build-建構/SKILL.md）`.
-- Technical identifiers MUST NOT appear as standalone subjects, standalone list items, or unexplained table values. If the exact identifier is not needed for location, omit it.
-- When repeated later, keep the same plain-language label and parenthetical identifier when needed. Do not switch back to the bare code name.
+- This entry owns route selection, workflow-specific phase order, minimum load gates, the matching evidence-matrix row, and platform adapter reference only.
+- Do not add copied Team-Native policy, board field lists, delivery artifact schemas, completion checklists, specialist lifecycle details, or full stage playbooks here.
+- Put durable governance in shared policies, reusable operating procedure in shared skills or references, and workflow stage details in `.agents/shared/workflow-stage-procedures.md`.
+- If a source/deployed pair exists, update both sides and verify hash or content parity before any completion claim.
+- If the target file already has worktree changes, read the current diff and integrate the still-valid section instead of appending a duplicate rule block.
 
-中立誠實協作與知識新鮮度契約（Neutral Honest Collaboration and Freshness Gate）:
-- Maintain a neutral, honest stance: do not optimize for pleasing, flattering, appeasing, or automatically agreeing with the Director. Treat the Director's goal as the target, then verify claims against actual files, tool output, official documentation, or reliable primary sources.
-- Support proposals when evidence and feasibility align. If evidence conflicts with the proposal, respond with: `我看到的事實` / `可能問題` / `建議做法`.
-- Do not object merely to appear critical. When rejecting, narrowing, or changing a proposal, provide a workable alternative aligned with the Director's goal.
-- Treat memory and internal model knowledge as possibly stale. Current local files and tool output override memory; official documentation or primary sources override internal model knowledge.
-- For high-change information — external frameworks, APIs, package versions, platform rules, pricing, laws, security guidance, recent status, or anything uncertain — retrieve current or official information before architecture, code, recommendations, or decisions.
-- Anchor verification with the project version first. If no version is available, use the current date/year as the time anchor. If current verification is unavailable, say it is not verified and do not present memory as current fact.
+## Phase Order
 
-> [LOAD SKILL] If this fix touches plugin / extension / VSIX / GitHub Release / version bump / tag / update reminder, read `.claude/skills/plugin-release-governance/SKILL.md` before diagnosing release impact.
-> [LOAD SKILL] If this fix touches UI, high-change frameworks, MCP, VS Code extension APIs, generated UI references, design DNA, real data, runtime behavior, operator-visible output, or mobile/responsive behavior, read `.claude/skills/ai-dev-quality-gate/SKILL.md` before diagnosing quality impact.
-> [LOAD SKILL] If this fix touches governance, public contracts, release/plugin behavior, security, cross-module logic, repeated fragile code, or a choice between a direct temporary fix and structural repair, read `.claude/skills/quality-review-governance/SKILL.md` and report review purpose, review state, evidence status, Director risk-closed but not complete (`closed-with-director-risk`) items, and blockers.
-> [LOAD SKILL] If this fix may change user experience, product behavior, design DNA, acceptance defaults, or existing preferences, read `.claude/skills/project-context-protocol/SKILL.md` and relevant `.agents/context/**/CONTEXT.md` cards before diagnosing impact.
+- Workflow row: `04`.
+- Procedure reference: `04 Fix` in `.agents/shared/workflow-stage-procedures.md`.
+- Route summary: Start from symptom and root cause; plan regression evidence; repair only the scoped cause after GO.
+- Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
+- Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
+- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
 
-## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
+## Completion Boundary
 
-- Before broad reading, station work, validation, review, memory/docs, completion, or any write path, read .agents/shared/policies/workflow-orchestration.md and use it as the shared route -> authorization -> operation_mode -> board -> wave -> artifact -> completion order.
-- Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 04 row as the minimum external grounding and evidence contract.
-- Workflow-specific grounding: Separate symptom, confirmed root cause, review purpose/state when required, repair scope, regression evidence, and the conditions that route back to debug or test.
-- Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
-- Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.claude/skills/programming-team-governance/SKILL.md`, `.claude/skills/team-task-board/SKILL.md`, `.claude/skills/team-role-boundaries/SKILL.md`, `.claude/skills/team-change-delivery-artifact/SKILL.md`, `.claude/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.claude/skills/team-validation-delivery-artifact/SKILL.md`, `.claude/skills/team-review-delivery-artifact/SKILL.md`, `.claude/skills/team-completion-gate/SKILL.md`. Treat this command as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, performs protected integration of returned and qualified delivery artifacts within the authorized scope, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not treat GO as bulk main-worktree write permission and must not author primary implementation, review, validation, or memory attribution.
-
-## Team-Native workflow mode / role / board / specialist lifecycle
-
-- `operation_mode` must be selected before board template, board state, closeout lane, or station set. `daily` is allowed only for bounded routine evidence, low-risk documentation alignment, generated-copy checks, or automation-safe inspection with no source, workflow, public-contract, or protected-state change. `full` is required for implementation, repair, bottom-layer refactor, cross-file governance, specialist skill rewrites, Doctor/Audit changes, commit/release/deploy preparation, protected external-state readiness, or any source/workflow/public-contract impact.
-- Direct / formal-readonly / formal-write boundary:
-  - `direct` is allowed only for the workflow's explicitly permitted pure conversation, tiny factual, tool-only, protected captain gate, or direct-answer step; pure conversation and direct answers must not mutate files, memory, git, release, deploy, install, credentials, or external state.
-  - `formal-readonly` is required before broad reading, research, impact mapping, validation planning, review evidence, memory/docs attribution, or any no-write work that can shape source, workflow, validation, review, memory, release, or governance decisions.
-  - `formal-write` requires scoped GO-backed authorization and is limited to the named station, phase, file set, command, or tool call. Natural-language approval must first bind to that current visible scope. Reader-only workflows must route write needs to the matching build, fix, skill-forge, or commit workflow instead of self-authorizing writes.
-- Role split and board trigger: before specialist, browser, CLI, MCP, isolated change delivery, text change delivery artifact, validation, review, memory/docs, or completion work starts, create or promote the Captain Team Board from `programming-team-governance` and `team-task-board`. Select roles from `team-specialist-registry`; every station records `role_id`, `role_instance_id`, `exclusive_task_scope`, assigned specialist skill, evidence owner, role boundary, direct exception, and completion condition. Every formal station receives a `team-station-handoff-packet` with Allowed inputs, Allowed tools, Forbidden actions, Output artifact format, Stop condition, loaded skill refs, read scope, startup monitoring, and blocker state.
-- Change and evidence delivery: implementation work uses an implementation change delivery artifact from `team-change-delivery-artifact`; memory impact and memory/docs attribution use a memory/docs delivery artifact from `team-memory-docs-delivery-artifact`; validation uses a validation delivery artifact from `team-validation-delivery-artifact`; review uses a review delivery artifact from `team-review-delivery-artifact`; completion uses `team-completion-gate`. Review and validation wait for a returned, blocked, unverified, or `closed-with-director-risk` change delivery artifact. Missing implementation, memory/docs, review, validation delivery artifacts, or Team-Native trace are blocked or unverified evidence, not completion.
-- Specialist lifecycle: every formal station records station lifecycle state: `assigned`, `standby`, `retained`, `reused`, `handoff-required`, `replaced`, `closed`, or `blocked`. Retain or reuse only when the same station, `role_id`, `role_instance_id`, delivery artifact, dispatch wave, and role boundary continue. Cross implementation/review, validation/repair, memory attribution/protected memory mutation, completion/final acceptance, or any different `role_id` by closing or replacing the prior station. Record retention reason, conversation health, reuse count, handoff summary, closure reason, `startup_started_at`, `first_response_deadline`, `last_progress_at`, `timeout_action`, and `standby_reason`. `standby` is a waiting state, not returned evidence; `closed-with-director-risk` is a non-complete closure state, not full team completion.
-
-- MCP memory evidence must follow .agents/skills/memory-ops/references/memory-mcp-tool-contract.md and the MCP Memory Evidence Matrix in .agents/shared/workflow-capability-evidence-matrix.md; use read-only cartridge-system tools for status/evidence, use project-local tools for main-file migration, and mark missing MCP evidence as 未驗證 or 阻塞.
-
-# [SKILL: /fix — 修復計畫與執行]
-
----
-
-## STAGE 1 — PLAN (修復計畫)
-
-### 0. Memory Recall (記憶載入)
-
-> [LOAD SKILL] Read `.agents/skills/memory-ops/SKILL.md` before proceeding.
-
-- Check the memory index for cards relevant to the bug's module.
-- Load relevant active memory main files. Check `## Current Truth`, `## Active Constraints`, `## Cycle Events`, and `## Relations` for existing context and cascade impact.
-
-### 1. Current State Constraint
-
-- [CONSTRAINT] Use loaded memory cards' `## Tracked Files` to navigate to relevant files. Use `Read` tool.
-- [FORBIDDEN] DO NOT guess file paths blindly.
-
-### 1.5. Impact Analysis (影響分析)
-
-> [LOAD SKILL] Read `.agents/skills/impact-test-strategy/SKILL.md`.
-
-1. Map target file(s) to owning module(s) via memory cards.
-2. Identify affected modules through `## Relations`.
-3. Classify risk level (High / Medium / Low).
-4. Classify the repair intent as emergency temporary fix, root-cause repair, local refinement, or structural refactor; if this is not a root-cause repair, record the unresolved risk and follow-up route.
-5. Identify temporary-fix stack risk: repeated symptom family, repeated file region, repeated operator path, or previous temporary stopgap in the current cycle.
-6. Identify original failure reproduction path, real operation surface, operator-tool discovery result, data source, executable validation path, retry or equivalent-path strategy, and hard blocker status.
-7. Include impact report in repair plan (§3).
-
-### 2. Minimal Impact Principle (最小影響原則)
-
-- Identify the exact root cause.
-- [FORBIDDEN] STRICTLY FORBIDDEN from refactoring adjacent code or changing architecture. Modify ONLY the precise lines necessary to resolve the issue.
-- If the exact root cause is not known, the plan must label the work as an emergency temporary fix and cannot present it as a completed repair.
-- If temporary-fix stack risk is present, route to root-cause repair or blueprint/refactor unless the Director explicitly accepts a temporary unresolved-risk marker.
-
-### 3. Repair Plan Generation (修復計畫產出)
-
-- **Enter Plan Mode** (`EnterPlanMode`). Use `TodoWrite` to track fix steps.
-- Draft plan in chat with structure:
-  1. 【故障根因白話文翻譯】
-  2. 【變更意圖分類】(Emergency temporary fix / root-cause repair / local refinement / structural refactor, temporary-fix stack risk, escalation trigger, unresolved-risk marker when applicable)
-  3. 【審查目的與狀態】(Review purpose, lifecycle state, evidence status, Director risk-closed but not complete (`closed-with-director-risk`) item, blocker, and minimum sufficient complexity decision when applicable)
-  4. 【影響分析】(Risk level + affected modules from §1.5)
-  5. 【修改範圍】(Exact files to be touched)
-  6. 【實作邏輯對照】(Before / After diff)
-  7. 【連帶影響評估】
-  8. 【真實回歸驗證】(Original failure path, real operation surface, operator tools searched, data source, executable evidence, transient retry plan, equivalent real-path alternative, blocker status, why mock-only evidence is insufficient when applicable, and visual detail/real-information evidence when UI is affected)
-
-### 4. Halt & Eject
-
-- [HALT] STAGE 1 has NO permission to write source files. `ExitPlanMode` is NOT called here.
-- Output:「[修復計畫擬定] 請總監審閱上方計畫。確認修復方向無誤後，請輸入 GO 啟動 scope-bound 修復變更交付站點。」
-- **HALT. Wait for GO.**
-
----
-
-## STAGE 2 — EXECUTE (修復執行)
-
-> Begins only after Director gives scoped GO tied to the approved repair plan, station, file set, command, or current blocker.
-
-### 5. Confirm Change Delivery Artifacts & Integrate Fix
-
-- Call `ExitPlanMode` only after the formal Programming Team Board has scope-bound GO-write authorization, dispatch wave, previous-wave input, next-wave start condition, and formal evidence eligibility recorded. GO-write is not blanket permission for unspecified files or phases.
-- Before any protected main-worktree integration, create or confirm the fix change delivery artifact route from `team-task-board`: governed isolated change delivery artifact when available, otherwise text change delivery artifact. Captain direct fixing is not a change delivery substitute; if no qualified delivery route exists, mark the station blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`), with the missing isolation condition recorded on the board.
-- Assign one bounded implementation specialist for the repair. The specialist may produce only the change delivery artifact and must stay strictly limited to the files listed in `【修改範圍】`; no scope creep, memory writes, git operations, release actions, or self-review.
-- Dispatch separate regression validation and review delivery artifacts only after the fix change delivery artifact is returned. Review and validation owners must not be the implementation specialist who authored the fix delivery artifact.
-- The captain performs protected integration only for returned and qualified fix change delivery artifacts that have separate review and validation delivery artifacts, after memory/docs delivery disposition is recorded, and applies `[SEC SILENT GATE]` before each integrated write.
-
-### 6. Regression Test (回歸測試)
-
-> [LOAD SKILL] Re-confirm `.agents/skills/impact-test-strategy/SKILL.md` is loaded.
-
-- Run tests scoped to affected modules via `Bash` tool. Apply `[LINTER GATE]`.
-- Verify the original bug is resolved through the real failure path whenever available: UI flow, request, command, query, log, scheduled job, plugin host, preview, sandbox, dry-run, or recorded real-source replay.
-- Before declaring the real failure path unavailable, search and try available operator tools and entries. Transient server, browser, desktop-control, tool connection, timeout, or readiness failures require retry or an equivalent real-path alternative.
-- If the failure path remains blocked, report searched entries, attempted tools, retry count or unsafe-retry reason, equivalent alternatives considered, and the smallest missing condition.
-- If only mock, fixture, static screenshot, or unit evidence is available for a behavior-dependent bug, report validation as failed or blocked instead of complete.
-- Verify no regression introduced.
-
-### 7. Memory/Docs Delivery Integration (記憶文件交付整合)
-
-> [LOAD SKILL] Re-confirm `.agents/skills/memory-ops/SKILL.md` is loaded.
-
-- Integrate only returned memory/docs delivery artifacts for modified files: keep only still-valid facts in `## Current Truth`, add one short English fix event to `## Cycle Events`, and stop for compaction if the card is already due. Missing memory attribution is blocked or unverified.
-- Apply `[EXIT HOLD GATE]` before reporting completion.
-- Report completion in Traditional Chinese with business-level summary.
-
----
-
-## [SECURITY & COMPLIANCE]
-- **Stage 1 Role**: Reader — no disk writes.
-- **Stage 2 Role**: Captain/SRE — protected main-worktree integration is limited to approved fix change delivery artifacts.
-- **Memory**: full — memory/docs delivery artifacts are required before protected memory writes; the captain must not author memory attribution.
-- Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).
+- Report evidence status as `足夠證據`, `部分證據`, `未驗證`, `阻塞`, or `不適用` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
+- Full team completion requires separated implementation change delivery, memory/docs delivery, validation delivery, review delivery, source/deployed parity when relevant, and completion audit evidence.
+- Missing delivery artifacts, missing parity, unavailable channels, or Director-accepted residual risk must be reported as `blocked`, `unverified`, or `closed-with-director-risk`, not `complete`.
+- This entry must stay thin. If more procedure detail is needed, add or update the shared reference instead of expanding this file.

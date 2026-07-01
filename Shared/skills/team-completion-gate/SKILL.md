@@ -9,7 +9,7 @@ description: >
   memory commit, git commit, push, tag, release, 實作、修測試、提交或發布。
 metadata:
   author: antigravity
-  version: "1.0"
+  version: "1.1"
   origin: framework
   kind: operational
   memory_awareness: read
@@ -20,46 +20,79 @@ metadata:
 
 ## Purpose
 
-Decide whether a captain-led task can be reported complete. This gate checks evidence completeness and names any blocked, unverified, or closed-with-director-risk area.
+Use this skill to decide whether a captain-led task may be reported complete, or
+must instead be reported as blocked, unverified, or closed-with-director-risk.
+It checks evidence completeness; it does not implement fixes, mutate memory,
+stage, commit, push, tag, release, deploy, or install.
 
-Completion order is governed by `Shared/policies/workflow-orchestration.md`.
-This gate only closes after the route, authorization, operation mode, board,
-dispatch waves, delivery artifacts, validation, review, and memory/docs states
-are present or honestly blocked.
+Read these sources first:
+
+| Need | Source |
+|---|---|
+| Full completion boundary and captain substitute-authoring limits | `Shared/policies/team-native-core.md` |
+| Workflow closeout order and dispatch-wave sequencing | `Shared/policies/workflow-orchestration.md` |
+| Scope-bound authorization for each protected phase | `Shared/policies/authorization-resolution.md` |
+| Required trace evidence and invalid completion patterns | `Shared/policies/team-trace-evidence.md` |
+| Board field list and board-facing checklist | `Shared/skills/team-task-board/SKILL.md` |
+| Role separation checks | `Shared/skills/team-role-boundaries/SKILL.md` |
 
 ## Inputs
 
 - Director request, approved plan, and scope limits.
-- Scoped authorization ledger from the formal board and delivery artifacts.
-- Implementation change delivery artifact, if source changed.
-- Memory/docs delivery artifact, if source changed.
-- Validation delivery artifact, if validation applies.
-- Review delivery artifact, if review applies.
-- Sync, generated-copy, or deployment-copy evidence when relevant.
+- Board row with authorization, station, channel, delivery, and completion
+  states.
+- Implementation change delivery artifact when source changed.
+- Memory/docs delivery artifact when source or durable docs changed.
+- Validation delivery artifact when validation applies.
+- Independent review delivery artifact when review applies.
+- Sync or parity evidence when generated/deployed copies are touched.
+- Residual-risk notes from blocked, unverified, or risk-closed stations.
 
 ## Completion Checklist
 
-| Check | Complete when |
+| Check | Complete only when |
 |---|---|
-| Scope | Changed files match the approved scope and exclusions. |
-| Authorization | Authorization source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode are present and match the actual work. |
-| Change delivery | Implementation change delivery artifact exists. Captain protected integration means protective adoption or merge of a returned qualified artifact only; captain rewrite, reimplementation, or substitute authoring is blocked or closed-with-director-risk and is not complete. |
-| Memory delivery | Memory/docs delivery artifact exists with `memory_impact` and `memory_delivery`, or is blocked, unverified, or `closed-with-director-risk` with reason. |
-| Validation | Non-mutating evidence is passed, blocked, or unverified with reason. |
-| Review | Independent review exists from a reviewer who did not author the change. Missing independent review blocks full completion. |
-| Sync | Generated or deployed copies are checked when applicable. |
-| Residual risk | Remaining uncertainty is named in the final delivery artifact. |
-| Platform route | native, adapter, conditional, or unavailable route is recorded for delegated evidence and change delivery stations. |
-| Specialist source | Applicable specialist roles cite `team-specialist-registry` and matching `team-specialist-*` skills, or missing role evidence is blocked, unverified, or closed-with-director-risk. |
-| Specialist lifecycle | Retained or reused specialists stayed inside the same role, station, delivery artifact, and role boundary; handoff or replacement is recorded when context is stale or independence is required. |
-| Closeout lane | Light, standard, or release-grade closeout lane is recorded and matches the risk surface; omitted stations are not-applicable, blocked, unverified, or closed-with-director-risk with reason. |
-| Yellow findings | Yellow items in the current closeout are classified, fixed, deferred, accepted as residual, or escalated; repeated repair loops stop after two attempts. |
-| Team-native separation | Implementation change delivery, memory delivery, validation, and review are separated. Missing separation is blocked, unverified, or closed-with-director-risk and cannot be complete. |
-| Team trace | Required team trace evidence is present, or missing trace evidence is named as blocked, unverified, or closed-with-director-risk. |
-| Channel status | Applicable stations record assigned specialist skill, domain label, requested execution channel, channel capability, channel invocation status, delivery artifact type, and delivery artifact status. |
-| Route/state separation | Execution route fields contain actual channels or delivery forms; blocked, unverified, standby, unavailable, not-authorized, and closed-with-director-risk appear only in state fields. |
-| Captain read split | Broad or large-file evidence comes from specialist deep-read plus captain verify-read, or the direct exception is recorded and the task is not complete. |
-| Source/deployed parity | Generated or deployed copies have source/deployed pair, sync direction, and hash or content parity evidence. |
+| Scope | Actual changes match the approved scope and exclusions. |
+| Authorization | Every write/protected phase has source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode. |
+| Change delivery | A returned implementation change delivery artifact exists, or the missing route is not being claimed as complete. |
+| Memory/docs delivery | Memory/docs impact is delivered, or the absence is explicitly blocked/unverified/risk closed. |
+| Validation | Non-mutating validation passed, or blocked/unverified reason and smallest next validation path are named. |
+| Review | Independent review exists from a role that did not author the change; missing independent review blocks full completion. |
+| Role separation | Implementation, validation, review, memory/docs, and completion boundaries remain separate. |
+| Captain integration | Captain work is protective adoption/merge of returned qualified artifacts, not primary reauthoring. |
+| Trace | Required board, station, handoff, role, channel, delivery, and completion trace exists or missing parts are named as non-complete. |
+| Route/state separation | Routes/channels/forms are not mixed with blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk states. |
+| Sync | Source/deployed or generated/runtime pairs have sync direction and parity evidence when relevant. |
+| Residual risk | Remaining uncertainty is visible in the final report. |
+
+## Completion States
+
+Use exactly one:
+
+| State | Meaning |
+|---|---|
+| `complete` | Scope, authorization, separated delivery artifacts, validation, independent review, completion evidence, and required trace are present. |
+| `closed-with-director-risk` | The Director explicitly closes a named residual risk; this is not full completion. |
+| `blocked` | A required tool, authorization, delivery artifact, validation path, review, memory/docs disposition, or sync condition is unavailable. |
+| `unverified` | Evidence is absent or incomplete but the task can still be reported honestly without claiming completion. |
+
+Informal states such as done, completed, acceptable, or accepted-risk do not
+replace the completion state. Review accepted-risk is a review lifecycle state,
+not a Team-Native completion state.
+
+## Closeout Lanes
+
+Use the closeout lane from the board:
+
+| Lane | Applies to | Completion note |
+|---|---|---|
+| `light` | Low-risk docs, generated-copy sync, or wording drift with reduced station set. | Reduced stations need explicit not-applicable, blocked, unverified, or risk-closed reasons. |
+| `standard` | Policies, skills, matrices, audit rules, workflow semantics, memory/docs impact, or public contracts. | Requires separated delivery, validation, review, memory/docs disposition, and completion audit unless honestly closed non-complete. |
+| `release-grade` | Commit, tag, release, deployment, install, external mutation, credentials, or operator readiness. | Requires standard lane plus release/security readiness evidence. |
+
+A source, workflow, governance, generated-copy, memory, or public-contract write
+promotes the lane to at least standard unless the board records a concrete
+non-full reason and does not claim full completion.
 
 ## Output
 
@@ -68,41 +101,18 @@ are present or honestly blocked.
 檔案:
 證據:
 風險:
-authorization_source:
-authorization_target:
-authorization_scope:
-authorization_phase:
-authorization_evidence:
-authorization_expiry:
-authorization_resolution_state:
-platform_mode_observed:
 審查需求:
 是否阻塞:
 completion_state:
 closeout_lane:
-station_lifecycle_state:
-yellow_classification:
-yellow_resolution_state:
-repair_loop_count:
-source_deployed_pair:
-sync_direction:
-sync_evidence:
+residual_risk:
 ```
 
-Valid `completion_state` values:
-
-- `complete`
-- `closed-with-director-risk`
-- `blocked`
-- `unverified`
-
-`complete` requires scoped authorization fields, separated change delivery, memory/docs delivery, validation, independent review, completion evidence, specialist role evidence, channel status evidence, and required trace evidence. If any authorization field, implementation change delivery, memory/docs delivery, review delivery, validation delivery, route, separation, specialist source, channel status, independent review, validation, or trace is missing, use `closed-with-director-risk`, `blocked`, or `unverified`. `closed-with-director-risk` means the Director closes a named risk even though team completion is incomplete; it is never `complete`. Captain protected integration of returned artifacts may be part of `complete`, but captain substitute authoring cannot produce `complete`.
-
-Light closeout can be complete only when its reduced station set is justified by the actual risk surface. If source, workflow, governance, generated-copy, memory, public-contract, release, deployment, or external-state impact exists, the lane must be standard or release-grade unless the board records a concrete exception. Unclassified Yellow findings, unresolved completion-relevant Yellow findings, or a third repair attempt on the same symptom block `complete`.
-
-Route/state mixing, captain broad-read substitution without a direct exception,
-or missing source/deployed parity blocks `complete`.
+Detailed authorization, board, trace, source/deployed, and station lifecycle
+fields stay in `team-task-board` and `team-trace-evidence`.
 
 ## Forbidden Actions
 
-Do not implement fixes, change review results, mutate memory, stage, commit, push, tag, release, deploy, or hide missing authorization or evidence behind a completion claim.
+Do not implement fixes, repair validation failures, change review results,
+mutate memory, call memory commit, stage, commit, push, tag, release, deploy,
+install, or hide missing authorization/evidence behind a completion claim.

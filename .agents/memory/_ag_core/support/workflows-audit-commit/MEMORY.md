@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 健檢與提交工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-30T02:44:27+08:00'
+last_updated: '2026-07-01T22:32:11+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-30T02:30:00+08:00'
+last_verified: '2026-07-01T22:31:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 20
+cycle_event_count: 21
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -56,6 +56,7 @@ metadata:
 - Do not commit, push, tag, or release without explicit Director approval.
 
 ## Cycle Events
+- 22: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 21: Wave 6B added workflow-orchestration grounding to Antigravity audit/commit/closeout workflow entries.
 
 - 20: Wave 6A updated Antigravity audit, commit, routine, handoff, and skill-forge workflow entries with Team-Native mode, role split, board trigger, and specialist lifecycle rules.

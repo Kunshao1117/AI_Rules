@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-01T09:38:01+08:00'
+last_updated: '2026-07-01T22:55:34+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-01T09:32:41+08:00'
+last_verified: '2026-07-01T22:54:48+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 17
+cycle_event_count: 18
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _system.scripts — Repository Script Governance Memory
 ## Current Truth
 - Doctor and Deploy Audit now fail closed when the governance audit returns Red findings or a failed result; hook source/deployed drift and core policy drift are Red for hard-policy pairs.
@@ -53,6 +52,7 @@ metadata:
 - Keep script behavior aligned with protected memory and project-skill directories.
 - Do not use this card as a substitute for reading the current script implementation before edits.
 ## Cycle Events
+- 48: Updated Audit checks to accept thin workflow and core entries that cite shared source-of-truth policies, verify current Team-Native split ownership, and avoid false GO matches inside governance wording.
 - 47: Updated script memory after governance fail-closed hardening: Doctor, Deploy Audit, and manager Doctor paths treat failed audits, hook source/deployed drift, diagnostic prompt gaps, natural-language binding gaps, and fixture shell/UTF-8 gaps as governed findings instead of advisory noise.
 - 46: Added Doctor/Audit coverage for envelope-plus-receipt matching, same identity or nonce, allowed receipt decision, matching action/target/scope, only-envelope denial, only-receipt denial, and mismatched receipt denial.
 - 45: Added Doctor/Audit checks for trusted tool execution envelope and receipt evidence, protected mutation fixture content, invalid-payload fail-closed behavior, self-reported envelope denial, route/state separation, and scoped Director risk-close evidence.

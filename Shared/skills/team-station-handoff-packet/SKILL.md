@@ -7,7 +7,7 @@ description: >
   DO NOT use when: 純對話、沒有團隊站點、或最終隊長裁決。
 metadata:
   author: antigravity
-  version: "1.0"
+  version: "1.1"
   origin: framework
   kind: operational
   style: hybrid
@@ -15,90 +15,62 @@ metadata:
   tool_scope: ["filesystem:read"]
 ---
 
-# Team Station Handoff Packet — Specialist Startup Contract
+# Team Station Handoff Packet
 
 ## Purpose
 
-This skill defines the handoff packet that turns a board station into a bounded
-specialist assignment for one substation task. The packet is the contract
-between the captain board and one registered role instance assigned to one
-concrete task. It prevents vague delegation, records startup monitoring, and
-preserves role boundaries when a station is retained, put on standby, replaced,
-or closed.
+This skill turns one board row into one bounded specialist assignment. It is an
+operating wrapper around the board; it is not a second board template and does
+not repeat the full board field list.
 
-Use this with `programming-team-governance`, `team-task-board`,
-`team-specialist-registry`, and `team-role-boundaries`. A handoff packet is not
-authorization for protected mutation. It carries only the authorization already
-resolved by the board.
+Read these sources first:
 
-Station startup follows `Shared/policies/workflow-orchestration.md`. The packet
-must be issued only after the workflow route, authorization state, operation
-mode, board state, dispatch wave, previous-wave input, next-wave start
-condition, and formal evidence eligibility are known.
+| Need | Source |
+|---|---|
+| Team-Native station-first rule, handoff packet rule, role separation, and completion boundary | `Shared/policies/team-native-core.md` |
+| Board fields and station row template | `Shared/skills/team-task-board/SKILL.md` |
+| Workflow sequence, board state, and dispatch waves | `Shared/policies/workflow-orchestration.md` |
+| Authorization scope carried by the packet | `Shared/policies/authorization-resolution.md` |
+| Role identity and boundary checks | `Shared/skills/team-role-boundaries/SKILL.md` |
+| Trace audit fields | `Shared/policies/team-trace-evidence.md` |
 
-## Trigger Conditions
+The packet carries resolved board scope. It never creates write authorization,
+protected mutation authority, final review state, or final acceptance.
 
-Use this skill after a Captain Team Board exists and before opening, retaining,
-or replacing any formal specialist station.
+## When To Issue A Packet
 
-Do not use it to authorize writes, replace the board, decide final review
-state, or mutate memory, git, release, deployment, install, or external state.
+Issue a packet after a Captain Team Board exists and before opening, retaining,
+replacing, or resuming a formal specialist station.
 
-## Procedure
+Do not issue a packet when:
 
-### 1. Build The Packet
+- no formal station exists;
+- the station has no resolved applicability, wave, or role boundary;
+- the work would mutate source, memory, git, release, deployment, install, or
+  external state without a matching formal-write authorization record;
+- the packet would bundle multiple roles, tasks, output formats, or stop
+  conditions.
 
-Create one packet per substation task inside one formal station. One packet
-must contain exactly one role, one concrete task, one output artifact format,
-and one stop condition. Do not bundle multiple roles, multiple tasks, multiple
-output formats, or multiple stop conditions into one packet. Do not reuse a
-packet across role-exclusive boundaries or across different `role_id` values.
-In the same task trace, a `role_instance_id` with `exclusive_task_scope: task`
-must not hold more than one `role_id` or more than one substation task. Do not
-reuse a packet across implementation to review, validation failure to repair,
-memory attribution to memory mutation, or completion audit to final acceptance.
+## Packet Construction
 
-`handoff_packet_id` is the canonical field name. `dispatch_packet_id` must be used
-only as a legacy alias in returned artifacts; new traces use
-`handoff_packet_id`.
+One packet contains exactly one role, one concrete task, one output artifact
+format, and one stop condition. Split work into separate substation tasks when
+any of those changes.
 
-`formal-readonly` packets must assign only read-only evidence work. If the
-station needs source, memory, git, release, deployment, install, or external
-mutation, the packet is blocked until a write-capable formal board and matching
-authorization exist.
-
-Required fields:
+Required packet overlay:
 
 ```text
 handoff_packet_id:
-operation_mode:
-operation_mode_reason:
-board_state:
-task_type:
-workflow_route:
-execution_route:
-station_state:
-evidence_state:
+board_id:
 station_family:
 formal_station:
 substation_task:
 member_assignment:
-station:
 role_id:
 role_instance_id:
 exclusive_task_scope:
 assigned_specialist_skill:
 loaded_skill_refs:
-specialist_role_source:
-authorization_source:
-authorization_target:
-authorization_scope:
-authorization_phase:
-authorization_evidence:
-authorization_expiry:
-authorization_resolution_state:
-platform_mode_observed:
-domain_label:
 one_concrete_task:
 allowed_inputs:
 read_scope:
@@ -112,38 +84,32 @@ requested_execution_channel:
 channel_capability:
 channel_invocation_status:
 execution_channel:
-delivery_artifact:
-source_deployed_pair:
-sync_direction:
-sync_evidence:
-startup_started_at:
-first_response_deadline:
-first_response_at:
-last_progress_at:
-startup_decision:
-timeout_action:
-standby_reason:
-resume_condition:
-output_artifact_format:
 delivery_artifact_type:
 integrable_scope:
 review_dependency:
 validation_dependency:
 memory_docs_dependency:
+startup_started_at:
+first_response_deadline:
+last_progress_at:
+timeout_action:
+standby_reason:
+resume_condition:
+output_artifact_format:
 stop_condition:
 handoff_summary:
 ```
 
-`station` is allowed only as a legacy alias for `formal_station`; new packets must
-use `station_family`, `formal_station`, `substation_task`, and
-`member_assignment` as separate fields.
+The packet inherits operation mode, board state, authorization fields, phase,
+dispatch wave, platform mode, and completion condition from the board row in
+`team-task-board`. Do not duplicate the complete board field set here.
 
-### 2. Pass Skills As References
+`handoff_packet_id` is canonical. `dispatch_packet_id` may appear only as a
+legacy alias in returned artifacts.
 
-`loaded_skill_refs` must list concrete skill names or paths that the specialist
-must read. Use direct skill references over free-form role descriptions.
+## Loaded Skill References
 
-Minimum refs:
+Use concrete skill names or paths instead of free-form role descriptions.
 
 | Substation task need | Required skill refs |
 |---|---|
@@ -158,122 +124,68 @@ Minimum refs:
 | Completion | `team-specialist-release-completion`, `team-completion-gate` |
 | External research | `team-specialist-external-research`, relevant official-docs skill if available |
 
-### 3. Split Deep Read From Verify Read
+## Deep Read And Verify Read
 
-Assign broad, repetitive, or large-file inspection to `deep_read_scope`.
-Assign captain verification to the minimum risky snippets in
+Assign broad, repetitive, external, or large-file inspection to
+`deep_read_scope`. Assign captain verification to the minimum risky snippets in
 `captain_verify_read_scope`. If either side cannot read a relevant area, record
-it in `unread_scope`.
+it in `unread_scope` and return blocked or unverified instead of filling the gap
+with captain substitute work.
 
-### 4. Set Startup Monitoring
+Deep read may discover scope gaps, but it does not authorize expansion. The
+specialist reports the gap and stops unless the board is updated.
 
-Every packet records:
+## Startup Monitoring
 
-- `startup_started_at`: local timestamp when the channel is requested.
-- `first_response_deadline`: expected first useful return or heartbeat.
-- `last_progress_at`: latest returned progress evidence.
-- `timeout_action`: standby, replace, mark blocked, mark unverified, or ask
-  Director.
+Record startup monitoring for every packet:
 
-Required first-response monitoring defaults:
-
-| Station type | Required threshold |
+| Station type | First useful response default |
 |---|---|
 | Small read-only evidence | 2 to 5 minutes |
 | Broad file or external research | 5 to 12 minutes |
 | Isolated change delivery | 10 to 20 minutes |
-| Validation command branch | command timeout plus 2 minutes |
+| Validation command branch | Command timeout plus 2 minutes |
 
-Thresholds are monitoring defaults, not automatic failure claims. If the task
-needs longer setup, record the reason in `standby_reason`.
+Thresholds are monitoring defaults, not automatic failure claims. If setup
+needs longer, record the reason in `standby_reason`.
 
-### 5. Accept Returned Artifacts
+Valid timeout actions are standby, replace, blocked, unverified, or ask the
+Director.
 
-Before accepting a returned artifact, the captain verify-reads the packet, the
-artifact, and enough source or policy material named in
-`captain_verify_read_scope` to decide whether the artifact is integrable,
-blocked, unverified, or closed-with-director-risk.
+## Artifact Acceptance
 
-Evidence delivery artifacts include:
+Before accepting a returned artifact, verify-read the packet, the returned
+artifact, and enough cited source or policy material to decide whether the
+artifact is integrable, blocked, unverified, or closed-with-director-risk.
 
-```text
-handoff_packet_id:
-substation_task:
-member_assignment:
-specialist_deep_read_evidence:
-發現:
-證據:
-風險:
-建議:
-是否阻塞:
-```
-
-Change delivery artifacts include:
+Returned artifacts must include:
 
 ```text
 handoff_packet_id:
 substation_task:
 member_assignment:
 specialist_deep_read_evidence:
-變更:
-檔案:
-證據:
-風險:
-memory_impact:
-審查需求:
-是否阻塞:
 ```
 
-Memory/docs delivery artifacts include:
-
-```text
-handoff_packet_id:
-substation_task:
-member_assignment:
-specialist_deep_read_evidence:
-memory_impact:
-status: memory_delivery / blocked / unverified / closed-with-director-risk
-memory_delivery:
-證據:
-風險:
-是否阻塞:
-```
+Then use the matching delivery format from `team-task-board` or the dedicated
+delivery artifact skill.
 
 ## Gotchas
 
-- A station is a work container, not a member. A member assignment is one
-  registered role instance bound to one substation task.
-- A subagent, browser, command, or MCP route is an execution channel, not the
-  specialist role.
-- An execution channel cannot become `specialist_role_source`, and channel
-  availability cannot relax the selected role boundary.
-- `blocked`, `unverified`, `standby`, `unavailable`, `not-authorized`, and
-  `closed-with-director-risk` are states. They must not be used as
-  `execution_route` or `execution_channel`.
-- `operation_mode` controls execution depth before board template, board state,
-  closeout lane, or station set. `daily` is reduced Team-Native mode, not a
-  no-team route.
-- `role_id`, `role_instance_id`, and `exclusive_task_scope` prove role identity
-  and same-task exclusivity. A role instance cannot become a second specialist
-  role inside the same task.
-- Standby means the station is assigned but not yet evidence-complete.
-- A packet without loaded skill references is not a formal Team-First handoff.
-- A packet with more than one role, concrete task, output artifact format, or
-  stop condition is not a valid specialist handoff; split it into substation
-  tasks.
-- A captain deep-reading everything is a captain direct-exception record, not
-  full team separation.
-- Deep-read does not authorize scope expansion. If the specialist discovers
-  required material outside the packet, it must report the gap and stop or ask
-  for a packet update.
-- Captain verification-read is not substitute authoring. Missing work routes
-  back to an eligible station or becomes blocked, unverified, or
-  closed-with-director-risk.
+- A station is a work container; a member assignment is one role instance bound
+  to one substation task.
+- A subagent, browser, command, MCP route, platform adapter, isolated workspace,
+  or text artifact is an execution channel, not a specialist role.
+- Channel unavailability never relaxes role boundaries or authorization scope.
+- Standby means assigned but not evidence-complete.
+- A packet without loaded skill references is not a formal handoff.
+- Captain verify-read is not implementation, validation, review, memory/docs
+  attribution, or completion evidence.
+- Missing work routes back to an eligible station or closes as blocked,
+  unverified, or closed-with-director-risk.
 
 ## Constraints
 
-- This skill is read-only.
-- It does not authorize source writes, memory writes, commits, pushes, releases,
-  deployments, installs, or mutating MCP calls.
-- It does not replace `team-task-board`; it fills the station handoff and
-  startup-monitor fields inside that board.
+This skill is read-only. It does not authorize source writes, memory writes,
+commits, pushes, tags, releases, deployments, installs, mutating MCP calls, or
+external state changes.

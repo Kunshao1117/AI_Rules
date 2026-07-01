@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 提交、巡檢與技能鍛造工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-01T18:26:15+08:00'
-status: stale
-staleness: 20
+last_updated: '2026-07-01T22:33:00+08:00'
+status: stable
+staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T18:20:23+08:00'
+last_verified: '2026-07-01T22:31:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 21
+cycle_event_count: 22
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,16 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-<!-- CARTRIDGE_SYSTEM_WARNING_START -->
-
-> [!CAUTION]
-> 🟠 **系統強制攔截**：此記憶已過期失真！
-> 追蹤檔案異動：`Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md`、`Codex/.agents/workflow-skills/12-skill-forge-技能鍛造/SKILL.md`（2026-07-01T20:18:29+08:00）
-> AI 嚴禁基於此記憶施工，必須優先閱讀最新原始碼並更新此記憶卡。
-> staleness: 20 | threshold: 🟠 顯著過期
-
-<!-- CARTRIDGE_SYSTEM_WARNING_END -->
-
 # _codex_core.support.workflows-release — Codex Release and Governance Workflow Memory
 
 ## Current Truth
@@ -65,6 +55,7 @@ metadata:
 - Do not let automation-safe routine inspection perform writes.
 
 ## Cycle Events
+- 22: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 21: Recorded release-side workflow hardening so commit, routine, handoff, and skill-forge evidence uses formal team routing while protected mutations stay captain-owned.
 - 20: Wave 6B added workflow-orchestration grounding to Codex release/closeout workflow entries and synced deployed .agents/skills copies.
 - 19: Wave 6A updated Codex build, fix, commit, routine, handoff, and skill-forge workflow entries with Team-Native operation mode, board trigger, role identity, handoff packet, and specialist lifecycle coverage.

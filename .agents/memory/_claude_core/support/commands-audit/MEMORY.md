@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/08_audit(健檢)/
 description: >-
   專案記憶：Claude 健檢主指令與三階段子指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-30T02:44:01+08:00'
+last_updated: '2026-07-01T22:32:27+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-30T02:30:00+08:00'
+last_verified: '2026-07-01T22:31:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 18
+cycle_event_count: 19
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -55,6 +55,7 @@ metadata:
 - Do not claim full coverage from sampled evidence; report coverage denominators and sampling limits.
 
 ## Cycle Events
+- 20: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 19: Wave 6B added workflow-orchestration grounding to Claude audit commands and synced affected .claude/skills copies.
 
 - 18: Wave 6A updated Claude audit command entries with Team-Native mode, role split, board trigger, handoff packet, and specialist lifecycle rules.

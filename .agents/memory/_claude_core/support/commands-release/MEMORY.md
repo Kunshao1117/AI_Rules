@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 紀錄、巡檢與技能鍛造指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-30T02:44:06+08:00'
+last_updated: '2026-07-01T22:32:34+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-30T02:30:00+08:00'
+last_verified: '2026-07-01T22:31:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 18
+cycle_event_count: 19
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -53,6 +53,7 @@ metadata:
 - Do not let routine inspection mutate source or memory without a write gate.
 
 ## Cycle Events
+- 20: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 19: Wave 6B added workflow-orchestration grounding to Claude release/closeout commands and synced affected .claude/skills copies.
 
 - 18: Wave 6A updated Claude build, fix, commit, routine, handoff, and skill-forge command entries with Team-Native operation mode, board trigger, role identity, handoff packet, and specialist lifecycle coverage.

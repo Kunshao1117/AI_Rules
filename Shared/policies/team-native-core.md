@@ -31,6 +31,30 @@ gate; workflow orchestration defines the route -> authorization ->
 operation_mode -> board_state -> dispatch wave -> delivery artifact -> closeout
 order used by workflow entries and stations.
 
+## Core Boundary And Policy Placement Rule
+
+Team-Native Core owns the always-on safety invariants: board-first activation,
+role separation, captain thin-context limits, delivery artifact requirements,
+authorization handoff to the authorization policy, and non-complete states for
+missing evidence. It must stay short enough to load as a core guard. Long
+workflow recipes, board field catalogs, scenario examples, platform-specific
+adapter steps, and tool recipes belong in shared policies, workflow matrices,
+team skills, or skill `references/` files.
+
+When a rule is needed across workflows but is too detailed for the core, place
+the canonical contract in `Shared/policies/` and cite it from platform core or
+workflow entries. When a rule is operational and only needed after a skill is
+loaded, place it in a shared skill or that skill's references. When a fact is
+project-specific, place it in memory. When a stable preference or design DNA is
+needed, place it in project context. Core text must not grow by copying those
+layers back into always-on instructions.
+
+Condensing Team-Native text is allowed only when executable defenses remain:
+required gates, forbidden shortcuts, evidence requirements, blocked/unverified
+states, and source/deployed sync obligations must survive the rewrite. Removing
+duplicate examples is good; deleting the guard that made a rule enforceable is
+not.
+
 ## Core Injection Hard Gate
 
 Core injection rules must enforce the shortest Team-Native gate before any
@@ -91,6 +115,14 @@ captain must not force the Director to use artificial channel words when the
 visible context is enough, and must not infer hidden write, hidden cleanup,
 later-phase, or protected-state authority when the visible context is not
 enough.
+
+Before any station edits a file with existing worktree changes, the trace must
+show that the current diff and target section were read. The station must merge
+or rewrite the relevant section in place when the existing change is still
+reasonable. It must not create a duplicate policy block, append a bypass
+paragraph, invent a sidecar file, or overwrite another change to avoid
+integration. If the current diff conflicts with the authorized task, the station
+is blocked, unverified, or needs a narrower Director decision.
 
 ## Operation Mode Rule
 
@@ -280,18 +312,24 @@ Before any specialist, subagent execution channel, browser branch, CLI branch, M
 
 Pre-GO work uses a draft board. A draft board can structure planning and assumptions, but it cannot start formal specialists, satisfy validation/review/completion evidence, or support a full-team completion claim.
 
-After GO, the captain must create or promote a formal dispatch board before formal station work starts. Every applicable station records operation mode, operation mode reason, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, evidence owner, specialist role source, assigned specialist skill, `role_id`, `role_instance_id`, `exclusive_task_scope`, domain label, authorization source, authorization target, authorization scope, authorization phase, authorization evidence, authorization expiry, authorization resolution state, observed platform mode, requested execution channel, channel capability, channel invocation status, execution channel, delivery artifact type, delivery artifact status, role boundary, completion condition, and any direct exception.
+After GO, the captain must create or promote a formal dispatch board before
+formal station work starts. Every applicable station records the canonical
+station and trace fields defined by `team-task-board` and
+`team-trace-evidence`. Core minimums are operation mode, board state, dispatch
+wave, formal evidence eligibility, specialist role source, role identity,
+authorization resolution, channel state, delivery artifact status, role
+boundary, completion condition, and any direct exception. The full field catalog
+must not be duplicated in core policy text.
 
 The formal board opens only the current dispatch wave. Review, validation, memory/docs delivery, and completion stations that depend on a change must not start until the required change delivery artifact is returned or explicitly marked blocked, unverified, or closed-with-director-risk. A formal board is invalid when it launches all waves at once.
 
-Each delivery ledger entry records delivery artifact ID, author role, `role_id`,
-`role_instance_id`, source input, integrable scope, authorization source,
-authorization target, authorization scope, authorization phase, authorization
-evidence, authorization expiry, authorization resolution state, observed
-platform mode, review state, validation state, memory/docs state, whether the
-captain authored specialist content, dispatch wave, previous-wave input, and
-next-wave condition. These fields make relationship checks auditable instead of
-relying on narrative claims.
+Each delivery ledger entry records the canonical delivery trace fields defined
+by `team-task-board` and `team-trace-evidence`. Core minimums are delivery
+artifact ID, author role, role identity, source input, integrable scope,
+authorization resolution, review state, validation state, memory/docs state,
+captain authoring state, dispatch wave, previous-wave input, and next-wave
+condition. Detailed field catalogs stay in the referenced board and trace
+sources instead of being repeated here.
 
 The board must keep the topology explicit when work is split or reduced:
 station family, formal station, sub-station task, member allocation, execution

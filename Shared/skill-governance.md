@@ -17,6 +17,7 @@ of treating a platform core rule as their only source.
 | Layer | Purpose | Put Here | Do Not Put Here |
 |---|---|---|---|
 | Core rules | Always-on safety baseline | GO gates, no silent install, no blanket staging, protected project identity | Long playbooks, tool recipes, examples |
+| Shared policies | Cross-platform governance contracts | Ownership boundaries, precedence, authorization semantics, source/deployed sync, trace expectations | Workflow-specific recipes, long examples, platform-only implementation details |
 | Workflow / command entry | Task routing and lifecycle phase selection | Build/fix/commit/audit stage order, explicit load gates | Full implementation recipes shared across platforms |
 | Shared skills | On-demand operational knowledge | Repeatable procedures, team-station governance, tool playbooks, release steps, test recipes | Non-negotiable safety rules that must apply before skill load |
 | Memory | Project-specific facts and decisions | Current architecture, version choices, repo lessons, module ownership | Generic procedure that should apply to many projects |
@@ -25,6 +26,11 @@ of treating a platform core rule as their only source.
 Rules that must be obeyed even when no skill triggers stay in core rules.
 Details that are only needed for a task should move into Shared skills or their
 references.
+Shared policies are the home for reusable governance contracts that must be
+available to multiple workflows, skills, or platforms but are too detailed for
+always-on platform core. Platform core files may cite those policies, but they
+must not absorb policy playbooks, field catalogs, scenario examples, or tool
+recipes.
 When a skill grows beyond the quality gate or begins compressing multiple role
 identities into one file, split stable details into `references/` and pass the
 relevant reference paths through the station handoff packet. Do not keep
@@ -32,6 +38,57 @@ shrinking text until role meaning changes.
 Long-lived preferences should move into `.agents/context/**/CONTEXT.md`, not
 memory cards. Stable context that becomes a repeatable procedure can be promoted
 to a project skill through the skill forge workflow.
+
+## Boundary And Deduplication Defenses
+
+Governance content must use the smallest durable home that still preserves the
+executable guard:
+
+- Always-on core keeps short non-negotiable gates and cites shared policies for
+  details.
+- Shared policies keep cross-workflow contracts, precedence, and invalid
+  patterns.
+- Workflow entries keep route order, load gates, and task-specific evidence
+  expectations.
+- Skills keep operational procedures, artifact formats, tool recipes, and
+  references loaded on demand.
+- Memory keeps source-backed project facts and active constraints.
+- Project context keeps long-lived preferences and design or acceptance DNA.
+
+If a paragraph duplicates a canonical policy, replace it with a reference unless
+the local file owns a stricter or more specific rule. If examples, scenarios,
+field catalogs, or platform recipes make a policy or skill hard to scan, move
+them into a `references/` file or cite the existing canonical source. Condensing
+is valid only when MUST rules, forbidden shortcuts, required evidence, blocked
+states, and source/deployed sync obligations remain executable. Do not shorten a
+file by deleting the guard that made the rule enforceable.
+
+## Existing Change Integration Defense
+
+Before editing a governance, workflow, skill, memory, or context file that
+already has worktree changes, the change owner must read the current diff and
+the target section from the file, then integrate with the still-valid parts.
+Valid integration edits rewrite or merge the target section. Invalid edits add a
+parallel section, repeat the same rule under a new heading, create a sidecar file
+to avoid the dirty section, or overwrite another change without evidence that it
+is obsolete. If the existing diff conflicts with the requested change, stop as
+blocked or ask for a scope decision instead of hiding the conflict in another
+patch.
+
+## Source/Deployed Pair Contract
+
+Shared governance sources live under `Shared/` in the framework source tree.
+Runtime copies under `.agents/`, `.claude/`, `Codex/.codex/`, or other deployed
+targets are deployment outputs unless a task explicitly names them as the source
+repair target. Governance, workflow, skill, and public-contract changes must
+record the source/deployed pair strategy before completion:
+
+- Source-first is the normal path.
+- Deployed-first emergency repair must be backfilled to source before it can be
+  complete.
+- Updating only a deployed copy is an invalid completion for framework-level
+  governance.
+- Missing parity evidence is blocked or unverified, not a harmless warning.
 
 ## Skill Relation Metadata
 

@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 測試、巡檢、交接與技能鍛造工作流。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-01T09:38:47+08:00'
+last_updated: '2026-07-01T22:32:18+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T09:32:41+08:00'
+last_verified: '2026-07-01T22:31:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 20
+cycle_event_count: 21
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core.support.workflows-operations — Antigravity Operations Workflow Memory
 
 ## Current Truth
@@ -55,6 +54,7 @@ metadata:
 - Keep handoff and routine workflows from mutating source or memory without the appropriate gate.
 
 ## Cycle Events
+- 21: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 20: Updated Antigravity operations workflow memory after scope-bound authorization hardening; test and other evidence workflows cannot self-authorize repairs and must route source changes back to formal write/change-delivery stations.
 - 19: Wave 6B added workflow-orchestration grounding to Antigravity operational workflow entries.
 - 18: Wave 6A updated Antigravity fix, condense, test, and debug workflow entries with Team-Native operation mode, board trigger, role identity, handoff packet, and specialist lifecycle coverage.

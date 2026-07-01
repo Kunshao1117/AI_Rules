@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-01T20:14:49+08:00'
+last_updated: '2026-07-01T22:32:40+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T20:10:40+08:00'
+last_verified: '2026-07-01T22:31:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 12
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -62,6 +62,7 @@ metadata:
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 - Codex workflow entries must cite the deployed shared language policy before applying workflow-specific output, handoff, memory-language, or change-description rules.
 ## Cycle Events
+- 47: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 46: Recorded Codex language-governance grounding across core rules and selected workflow entries with deployed policy citation.
 - 45: Recorded non-hook Codex core hardening that makes Team-Native mode default-on for applicable work and forbids captain substitute authoring from supporting full completion.
 - 44: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform core-rule sync, and commit-preflight stale blocker cleanup.

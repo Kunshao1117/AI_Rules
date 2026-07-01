@@ -7,7 +7,7 @@ description: >
   DO NOT use when: pure discussion, non-coding answers, or when team mode is not active.
 metadata:
   author: antigravity
-  version: "1.1"
+  version: "1.2"
   origin: framework
   kind: operational
   memory_awareness: none
@@ -18,21 +18,22 @@ metadata:
 
 ## Purpose
 
-Reusable Team Task Board, station, artifact, handoff packet, standby, and
-completion templates. Use `programming-team-governance` for semantics,
-`team-station-handoff-packet` for startup payloads, and `delegation-strategy`
-for channel selection. Platform runners are channels, not role sources.
-Stations are work containers, not people. Team members are assigned to
-substation tasks through registered roles, and execution channels never become
-role sources.
+This skill owns the reusable Captain Team Board, station rows, board field list,
+delivery-form choices, direct-exception register, and board-facing closeout
+checklist. Other Team-Native skills reference this file instead of duplicating
+the board fields.
 
-The shared entry sequence is owned by
-`Shared/policies/workflow-orchestration.md`. This skill owns the board and
-station templates used after the workflow route, authorization, operation mode,
-board state, and dispatch wave are selected.
+Source of truth chain:
 
-The board is the first executable Team-Native state, not a recap. Stations that
-cannot start remain standby, blocked, unverified, unavailable, or not-authorized.
+| Need | Source |
+|---|---|
+| Team-Native priority, station-first rule, delivery sequence, and completion boundary | `Shared/policies/team-native-core.md` |
+| Workflow route, operation mode, board state, dispatch waves, and source/deployed sync | `Shared/policies/workflow-orchestration.md` |
+| Authorization fields and natural-language binding | `Shared/policies/authorization-resolution.md` |
+| Full trace field audit and invalid trace patterns | `Shared/policies/team-trace-evidence.md` |
+| Role boundary checks | `Shared/skills/team-role-boundaries/SKILL.md` |
+| Station handoff payloads | `Shared/skills/team-station-handoff-packet/SKILL.md` |
+| Completion gate | `Shared/skills/team-completion-gate/SKILL.md` |
 
 ## Team Object Model
 
@@ -40,126 +41,178 @@ Record these objects separately before dispatch:
 
 | Object | Meaning | Boundary |
 |---|---|---|
-| `station_family` | Capability family such as implementation, review, validation, memory/docs, or completion. | A family only groups explicitly assigned formal stations and substation tasks; it does not authorize work by itself. |
-| `formal_station` | Governed board row owning applicability, state, dependencies, and acceptance condition. | A station is a work container, not a team member. |
+| `station_family` | Capability family such as requirement, impact, implementation, review, validation, memory/docs, or completion. | Groups assigned formal stations only; does not authorize work. |
+| `formal_station` | Governed board row owning applicability, state, dependencies, and completion condition. | A station is a work container, not a person. |
 | `substation_task` | One concrete task inside a formal station. | Smallest dispatchable unit. |
 | `member_assignment` | One registered role instance assigned to one substation task. | A member assignment is not a station and cannot hold multiple task-scoped roles. |
-| `execution_channel` | Read-only evidence branch, browser evidence branch, CLI evidence branch, MCP read branch, platform adapter, isolated workspace, text artifact, or protected captain gate. | A channel is not a role source and does not change role boundaries. |
-| `delivery_artifact` | The returned evidence, change delivery, memory/docs attribution, validation, review, or completion artifact. | An artifact is evidence for a task; it is not final captain acceptance. |
+| `execution_channel` | Read-only evidence branch, browser evidence branch, CLI evidence branch, MCP read branch, platform adapter, isolated workspace, text artifact, or protected captain gate. | A channel is not a role source. |
+| `delivery_artifact` | Returned evidence, change delivery, memory/docs attribution, validation, review, or completion artifact. | Evidence for a task; not final captain acceptance. |
 
-Do not collapse these objects. A station is not a member, a member assignment is
-not a station, and an execution channel is not a specialist role source.
+Do not collapse these objects. Reduction is allowed only at substation task or
+member-count level while preserving station families, formal stations, role
+boundaries, artifact types, and completion evidence.
 
-## Template Selection
+## Board Selection
 
-Choose exactly one board shape before dispatch: Lightweight board for
-explanation, read-only inspection, narrow sync, or low-risk Yellow drift; Full
-board for build, fix, debug, test, audit, commit prep, handoff, skill/rule
-update, behavior docs, memory update, or cross-file work; Experiment board for
-sandbox/prototype work with discard and upgrade rules.
+Choose operation mode before board shape.
 
-Choose `operation_mode` before board shape. `daily` may use a lightweight board
-only for reduced routine evidence and must record `operation_mode_reason`.
-`full` is required for implementation, repair, bottom-layer refactor, cross-file
-governance, specialist skill rewrites, Doctor/Audit changes, commit/release/deploy
-preparation, external-state readiness, or any source/workflow/public-contract
-impact. Do not dispatch until the selected operation mode and board exist.
+| Board shape | Use when | Boundary |
+|---|---|---|
+| Lightweight board | Explanation, read-only inspection, narrow generated-copy sync, or low-risk Yellow drift. | Must still record operation mode, reduced station reason, and blocked/unverified/not-applicable states. |
+| Full board | Build, fix, debug, test, audit, commit prep, handoff, skill/rule update, memory/docs impact, behavior docs, or cross-file work. | Required for source/workflow/public-contract impact. |
+| Experiment board | Sandbox/prototype work. | Must record discard/upgrade route and cannot imply production completion. |
 
-## Board State
+Board state values are `draft`, `formal-readonly`, and `formal-write`.
+`draft` cannot dispatch formal specialists or satisfy acceptance.
+`formal-readonly` can run no-write evidence, deep-read, research, validation
+planning, review evidence, and standby stations. `formal-write` requires
+scope-bound authorization for the named phase, file set, station, command, or
+protected action.
 
-A board is `draft`, `formal-readonly`, or `formal-write`. `draft` is pre-GO
-planning. `formal-readonly` covers no-write evidence, deep-read, research,
-validation planning, review evidence, and standby. `formal-write` is GO-backed
-dispatch for change delivery, protected adoption/merge, memory/docs, validation,
-review, completion, commit prep, or release prep. Lifecycle: draft ->
-formal-readonly or formal-write -> wave-gated dispatch -> artifacts ->
-review/validation/memory states -> protected adoption/merge decisions ->
-completion audit.
+## Canonical Board Fields
 
-Formal board lifecycle is wave-gated from promotion to completion audit.
+Every formal station records the board field set below. Keep this long list here
+and reference it from other skills.
 
-## Board Header
+```text
+board_id
+board_template
+board_state
+task_type
+workflow_route
+operation_mode
+operation_mode_reason
+closeout_lane
+yellow_classification
+yellow_resolution_state
+repair_loop_limit
+phase
+dispatch_wave
+previous_wave_input
+next_wave_start_condition
+formal_evidence_eligibility
+implementation_authorization
+go_evidence
+authorization_source
+authorization_target
+authorization_scope
+authorization_phase
+authorization_evidence
+authorization_expiry
+authorization_resolution_state
+platform_mode_observed
+platform_capability_route
+station_family
+formal_station
+substation_task
+member_assignment
+applicability
+station_state
+evidence_state
+station_lifecycle_state
+retention_reason
+conversation_health
+reuse_count
+handoff_summary
+closure_reason
+role_id
+role_instance_id
+exclusive_task_scope
+specialist_role_source
+assigned_specialist_skill
+loaded_skill_refs
+domain_label
+handoff_packet_id
+requested_execution_channel
+channel_capability
+channel_invocation_status
+execution_route
+execution_channel
+evidence_owner
+role_boundary
+direct_exception
+replacement_evidence
+deep_read_scope
+captain_verify_read_scope
+unread_scope
+allowed_inputs
+allowed_tools
+forbidden_actions
+output_artifact_format
+stop_condition
+startup_started_at
+first_response_deadline
+first_response_at
+last_progress_at
+timeout_action
+standby_reason
+resume_condition
+delivery_artifact_type
+delivery_artifact_id
+delivery_artifact_status
+author_role
+source_input
+integrable_scope
+captain_authored
+review_state
+validation_state
+memory_docs_state
+completion_condition
+completion_state
+source_deployed_pair
+sync_direction
+sync_evidence
+```
 
-Every board begins with compact fields: Board template:, Task type:, Workflow route:, Execution route:, Implementation authorization:, Channel capability:, Channel invocation status:, Delivery artifact status:, Allowed specialist roles:, Forbidden specialist roles:, Specialist role source:, Assigned specialist skill:, Domain label:, Requested execution channel:, Delivery artifact type:, Applicability, Execution channel, Evidence owner, Role boundary, Direct exception, Completion condition.
+Trace audit fields that are not board-facing stay in
+`Shared/policies/team-trace-evidence.md`.
+
+## Board Header Template
+
+```text
+Board template:
+Board state:
+Task type:
+Workflow route:
+Operation mode:
+Implementation authorization:
+Authorization scope:
+Phase:
+Dispatch wave:
+Allowed specialist roles:
+Forbidden specialist roles:
+Direct exceptions:
+Completion condition:
+```
 
 ## Full Board Table
 
-Full Board Table columns are Station family, Formal station, Substation task,
-Applicability, Execution channel or delivery form, Station state, Evidence
-state, Evidence owner, Role boundary, Direct exception record, and Completion
-condition. Required station families are Requirement replay, Counter-evidence,
-Impact map, Plan authorization, Implementation, Memory delivery, Short-loop
-validation, Review, and Completion. Valid execution channels or delivery forms
-are `read-only evidence branch`, `browser evidence branch`, `CLI evidence
-branch`, `MCP read branch`, `isolated change delivery`, `text change delivery
-artifact`, and `captain protective adoption/merge of returned qualified
-artifacts`. State values such as `blocked`, `unverified`, `standby`,
-`not-authorized`, `unavailable`, `closed-with-director-risk`, and
-`not-applicable` are not execution channels or delivery forms.
+| Station family | Formal station | Substation task | Applicability | Execution channel or delivery form | Station state | Evidence state | Evidence owner | Role boundary | Direct exception record | Completion condition |
+|---|---|---|---|---|---|---|---|---|---|---|
 
-## Required Team-Native Trace Evidence
+Default station families are requirement replay, counter-evidence, impact map,
+plan authorization, implementation, memory/docs delivery, validation, review,
+and completion. Omit a family only by marking it not-applicable, blocked,
+unverified, or closed-with-director-risk with a reason.
 
-Every applicable formal station records: Phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, repair loop limit, operation_mode,
-operation_mode_reason, role_id, role_instance_id, exclusive_task_scope,
-Authorization source, Authorization target, Authorization scope, Authorization phase, Authorization evidence, Authorization expiry, Authorization resolution state, Platform mode observed, authorization_source, authorization_target,
-authorization_scope, authorization_phase, authorization_evidence,
-authorization_expiry, authorization_resolution_state, platform_mode_observed,
-Platform capability route: native / adapter / conditional / unavailable,
-Specialist role source, Assigned specialist skill, Station family, Formal
-station, Substation task, Member assignment, Loaded skill refs, Handoff packet
-ID, Domain label, Requested execution channel, channel_capability / Channel
-capability, channel_invocation_status / Channel invocation status:, execution_route
-/ Execution route, Execution channel, station/evidence state, lifecycle, Deep
-read scope, Captain verify read scope, Unread scope, startup_started_at,
-first_response_deadline, last_progress_at, timeout_action, standby_reason,
-Closeout lane, Yellow classification, Yellow resolution state, Delivery artifact
-ID/type/status, Source/deployed pair, Sync direction, and Sync evidence.
+Valid execution channels or delivery forms are:
 
-`formal` requires a formal station, operation mode, open wave, assigned skill,
-`role_id`, `role_instance_id`, owner, artifact format, and no forbidden
-boundary. `draft-input-only` cannot satisfy acceptance.
+- `read-only evidence branch`
+- `browser evidence branch`
+- `CLI evidence branch`
+- `MCP read branch`
+- `isolated change delivery`
+- `text change delivery artifact`
+- `captain protective adoption/merge of returned qualified artifacts`
+- `protected captain gate`
 
-## Reusable Scenario Templates
+State values such as `blocked`, `unverified`, `standby`, `unavailable`,
+`not-authorized`, `not-applicable`, and `closed-with-director-risk` are not
+execution channels.
 
-Short board-fill examples only; detailed examples live in
-`Shared/policies/workflow-orchestration-scenarios.md` and are non-authorizing.
+## Specialist Assignment Template
 
-Templates: Read-Only Evidence Station Template (`formal-readonly` evidence
-returns/blocks), Change Delivery Wave Template (`full`, scoped `formal-write`,
-change delivery -> memory/docs plus validation -> independent review ->
-completion audit), Failure Route-Back Template (finding station routes; it does
-not repair), and Commit-Preflight Template (scan is `formal-readonly`; repairs,
-sync, and memory phase need scoped `formal-write`).
-
-## Wave Dispatch Rules
-
-The captain dispatches only the current open wave. Later waves wait for prior output or an honest blocked/unverified/risk state. Review and validation of a change start only after change delivery exists or is honestly blocked. Completion starts after review, validation, memory/docs, and change delivery states exist.
-
-`formal-readonly` stations can open without GO-write when they are strictly
-read-only and have a handoff packet. `formal-write` stations require scoped
-authorization for the write, protected adoption/merge, memory, git, release,
-deployment, install, or external-mutation phase.
-
-No-write does not mean no-team. Read-only exploration still uses
-`formal-readonly` when it can shape source, workflow, validation, review, memory,
-release, or governance decisions.
-
-## Specialist Lifecycle Rules
-
-Retain only when station, `role_id`, `role_instance_id`, delivery artifact, dispatch wave, and role boundary continue. Record lifecycle state, retention reason, conversation health, reuse count, handoff summary when needed, startup thresholds, and closure reason. Valid lifecycle decisions are `assigned`, `standby`, `retained`, `reused`, `handoff-required`, `replaced`, `closed`, and `blocked`. Never retain across role-exclusive boundaries; one task-scoped role instance holds one `role_id`.
-
-## Fast Closeout Lane
-
-Closeout lanes sit inside `operation_mode`: `light` for docs/generated-copy sync/low-risk wording, `standard` for policies, skills, matrices, audit logic, workflow semantics, memory/docs, and public contracts, and `release-grade` for commit, tag, release, deployment, install, external mutation, credentials, or operator readiness.
-
-## Yellow Classification Rules
-
-Every Yellow finding records classification and resolution state. Yellow affecting trace evidence, independent review, validation, memory/docs attribution, public contract, deployment sync, or release readiness becomes blocked, unverified, or Red. After two attempts for the same symptom, route to root-cause repair, structural refactor, blocked, unverified, or closed-with-director-risk.
-
-## Specialist Assignment
-
-Every specialist receives one substation task inside one formal station family
-and one responsibility:
+Use one assignment per substation task:
 
 ```text
 Station family:
@@ -178,13 +231,23 @@ Output artifact format:
 Stop condition:
 ```
 
-This is the skill dispatch package for one substation task. Large-file deep read
-must be assigned as a bounded specialist substation task; the captain must not absorb, substitute, or deep read large files as the team evidence source.
-Required boundary: large-file deep read must route to a bounded specialist or be marked blocked/unverified.
+The station handoff packet may add read scope, startup monitoring, dependencies,
+and channel state. Do not copy the whole board field list into the packet.
 
-Evidence delivery artifact format:
+## Delivery Forms
+
+Implementation work uses one of these forms:
+
+| Form | Meaning | Boundary |
+|---|---|---|
+| Isolated change delivery | Specialist modifies an isolated copy and returns diff/evidence. | No main worktree write, self-review, memory mutation, git, release, deploy, install, or external mutation. |
+| Text change delivery artifact | Specialist returns proposed edits with paths, rationale, evidence, risk, and memory impact. | No integration claim or review acceptance. |
+| Captain substitute-authoring risk record | No qualified delivery route exists and the Director explicitly closes that risk. | Not change delivery and never full Team-Native completion. |
+
+Board-facing artifact formats:
 
 ```text
+Evidence delivery:
 發現:
 證據:
 風險:
@@ -192,69 +255,66 @@ Evidence delivery artifact format:
 是否阻塞:
 ```
 
-## Change Delivery Artifact Types
+```text
+Implementation change delivery:
+變更:
+檔案:
+證據:
+風險:
+memory_impact:
+審查需求:
+是否阻塞:
+```
 
-Implementation work uses only these forms: Isolated workspace change delivery
-(modify isolated copy and return diff summary; no main worktree, self-review,
-memory, commit, push, or release), Text change delivery artifact (return
-proposed edits with paths, rationale, tests; no write, integration claim, or
-review acceptance), and Captain substitute-authoring risk record, not change
-delivery (record no route and Director risk closure; never protective adoption,
-change delivery, or full completion).
+```text
+Memory/docs delivery:
+memory_impact:
+status: memory_delivery / blocked / unverified / closed-with-director-risk
+memory_delivery:
+證據:
+風險:
+是否阻塞:
+```
 
-Executable template rule: a captain direct-exception route may appear only when
-no isolated change delivery or text change delivery artifact can be produced,
-and even then this is an exception that must be recorded as blocked,
-unverified, or closed-with-director-risk unless the Director explicitly accepts
-captain substitute authoring as a non-full-team risk state. Captain protective
-adoption/merge is only protective adoption or merge of returned qualified
-artifacts and is not a change delivery form.
+Detailed validation, review, memory/docs, and completion artifact rules stay in
+their dedicated skills.
 
-Change delivery artifact fields: `delivery_artifact_id`, authorization_fields,
-`author_role`, `source_input`, `integrable_scope`, 變更:, 檔案:, 證據:, 風險:,
-`memory_impact`, `review_state`, `validation_state`, `memory_docs_state`,
-`captain_authored`, 審查需求:, 是否阻塞:.
+## Dispatch Rules
 
-Memory/docs delivery artifact fields: `memory_impact`, authorization_fields,
-status: memory_delivery / blocked / unverified / closed-with-director-risk,
-`memory_delivery`, 證據:, 風險:, 是否阻塞:.
+Open only the current dispatch wave. Later waves wait for prior output or an
+honest blocked/unverified/risk state. Review and validation of a change start
+only after change delivery exists or is explicitly blocked/unverified/risk
+closed. Completion starts after implementation, memory/docs, validation, and
+review states exist.
 
-Validation identifies command, browser path, MCP read, or blocked condition; validation specialists do not repair implementation.
+`formal-readonly` stations can open without write authorization when they are
+strictly read-only and have a handoff packet. `formal-write` stations require
+scope-bound authorization for the write, protected adoption/merge, memory, git,
+release, deployment, install, or external-mutation phase.
 
-## Direct Exception Rules
+## Direct Exception Register
 
-The captain may record a Direct exception route only for a protected
-captain-owned gate, tool-only status action, hot-path validation command with no
-independent evidence value, captain protective adoption/merge of returned
-qualified artifacts, or captain substitute authoring closed-with-director-risk.
-Executable template rule: direct only when no isolated change delivery or text change delivery artifact can be produced. If two or more evidence stations use
-captain direct-exception routes, each needs a station-specific exception,
-replacement evidence, residual state, and not full team completion. Anchors:
-Direct Exception Rules; Direct exception; Completion condition; Implementation
-change delivery, memory delivery, review, and validation artifacts.
+A direct exception is allowed only for protected captain-owned gates, tool-only
+status actions, hot-path validation with no independent evidence value,
+protective adoption/merge of returned qualified artifacts, or
+Director-accepted captain substitute authoring recorded as non-complete risk.
 
-## Protective Adoption And Completion Authorization
+If two or more evidence-oriented stations use direct exceptions, each row must
+name a station-specific reason, replacement evidence, residual state, and why
+full Team-Native completion is not being claimed.
 
-Formal team completion requires implementation change delivery, memory/docs
-delivery artifact, review delivery artifact, validation delivery artifact, board
-authorization fields, and independent review. Missing implementation,
-memory/docs, review, or validation delivery becomes `blocked`, `unverified`, or
-`closed-with-director-risk`; closed-with-director-risk is not full team
-completion. Implementation change delivery, memory delivery, review, and validation artifacts are the minimum full-team evidence set. Captain protective
-adoption/merge can integrate returned qualified artifacts; it cannot replace the
-specialist artifact itself.
+## Board Closeout Checklist
 
-## Workflow Entry Contract
+Before the board supports any completion claim, check:
 
-Workflow entries load `programming-team-governance`, `delegation-strategy`, this skill, `team-specialist-registry`, applicable `team-specialist-*`, role-boundary, delivery, validation, review, memory/docs, and completion skills. Workflow name is only a route hint.
-
-## Completion Rules
-
-A task may be reported complete only when all applicable stations have returned
-qualified artifacts, implementation was not self-reviewed, captain
-direct-exception records are recorded, memory/git/release/external state stays
-captain-owned, and
-implementation change delivery, memory delivery, review, and validation
-artifacts exist. If any station is blocked, unverified, or risk-closed, report
-that non-complete state and name residual memory, validation, review, sync, or
-trace gaps as risk.
+- Scope matches the approved file set and exclusions.
+- Authorization fields are present for every write/protected phase.
+- Implementation change delivery, memory/docs delivery, validation, and review
+  states are present or honestly blocked/unverified/risk closed.
+- Implementation and review are not owned by the same role instance.
+- Captain protective adoption did not become substitute authoring.
+- Route fields contain routes/channels/forms, while blocked/unverified/standby
+  and closed-with-director-risk remain state values.
+- Source/deployed pairs have sync direction and parity evidence when applicable.
+- Completion state follows `team-completion-gate` and trace evidence follows
+  `Shared/policies/team-trace-evidence.md`.

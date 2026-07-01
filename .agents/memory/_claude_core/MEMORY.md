@@ -4,19 +4,19 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-01T20:13:03+08:00'
+last_updated: '2026-07-01T22:32:22+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T20:10:40+08:00'
+last_verified: '2026-07-01T22:31:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 9
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -53,6 +53,7 @@ metadata:
 - Split command child cards before adding another broad Claude command cycle.
 - Claude commands and skills must cite the shared language policy instead of treating core identity language text as the sole source.
 ## Cycle Events
+- 10: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 9: Recorded Claude core language-governance source split between platform mandates and shared classification policy.
 - 8: Recorded non-hook core hardening so applicable Claude work defaults to captain-led Team-Native mode before evidence or protected closeout work.
 - 7: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform core-rule sync, and commit-preflight stale blocker cleanup.

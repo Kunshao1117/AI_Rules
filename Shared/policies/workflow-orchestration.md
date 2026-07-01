@@ -18,6 +18,7 @@ Team-Native station execution.
 | `Shared/policies/language-governance.md` | Audience-layer language classification, Director-facing language rules, exact-evidence preservation, and source/deployed language-policy parity. |
 | `Shared/policies/workflow-orchestration.md` | Workflow entry sequence, transition rules, dispatch waves, and missing-evidence routing. |
 | `Shared/policies/workflow-orchestration-scenarios.md` | Non-authorizing scenario playbooks that show how workflows cooperate without copying rules into entries. |
+| `Shared/skill-governance.md` | Governance layer placement, skill boundaries, deduplication defenses, and source/deployed skill governance. |
 | `Shared/workflow-capability-evidence-matrix.md` | Per-workflow route, evidence expectations, and next workflow suggestions. |
 | `Shared/platform-capability-matrix.md` | Platform capability translation for Codex, Claude, and Antigravity. |
 | `Shared/skills/team-task-board/SKILL.md` | Board templates, station fields, delivery artifact formats, direct exceptions, and completion checklist. |
@@ -41,6 +42,7 @@ preparation, or completion claims:
 Director instruction
 -> workflow route
 -> authorization resolution
+-> existing worktree change integration gate when the target file is dirty
 -> operation_mode
 -> board_template
 -> board_state
@@ -116,12 +118,11 @@ formal evidence. The packet names the assigned specialist skill, role identity,
 loaded skill refs, read scope, forbidden actions, output artifact format, stop
 condition, startup monitoring, and standby reason when applicable.
 
-The board records requested execution channel, channel capability, channel
-invocation status, execution channel, delivery artifact type, delivery artifact
-status, evidence owner, role boundary, direct exception, and completion
-condition. Missing channel capability is not a reason to erase a station; it is
-blocked, unverified, standby, unavailable, not-authorized, or
-closed-with-director-risk.
+Board field requirements stay in `Shared/skills/team-task-board/SKILL.md`, and
+task trace audit fields stay in `Shared/policies/team-trace-evidence.md`.
+Workflow entries must cite those sources instead of copying the full board or
+trace field list. Missing channel capability is not a reason to erase a station;
+it is recorded as station or evidence state, never as an execution route.
 
 ## Workflow Family Presets
 
@@ -154,14 +155,21 @@ apply the matching preset below:
 ## Source/Deployed Sync Rule
 
 Framework source files are the source of truth. Deployed project copies are
-runtime copies. Governance, workflow, hook, skill, or public-contract changes
-must record `source_deployed_pair`, `sync_direction`, and `sync_evidence`.
+runtime copies. Governance, workflow, skill, shared policy, generated-copy,
+public-contract, and hook changes must record `source_deployed_pair`,
+`sync_direction`, and `sync_evidence` when a runtime copy exists.
 
 The normal direction is source first, then deployed copy. If a deployed copy is
 patched first during emergency repair, the task must record `sync_direction:
 deployed-to-source-backfill` and backfill the source before completion. Hash or
 content parity is required before any completion claim. Missing parity is Red,
 blocked, or unverified, not a Yellow advisory.
+
+Changing only a deployed copy is invalid completion for framework governance.
+When the current wave is intentionally source-only, the report must name the
+deployed pair and record the sync strategy as pending, blocked, unverified, or
+not-applicable. A later deploy/sync wave must compare content or hashes rather
+than relying on narrative claims.
 
 ## Invalid Orchestration Patterns
 
@@ -176,10 +184,16 @@ closed-with-director-risk, not as complete:
 - Closed-with-director-risk is not full team completion and must not be
   reported as `complete`.
 - Review or validation starts before the relevant change delivery artifact state.
-- Same-wave implementation and same-deliverable review are allowed.
+- Same-wave implementation and same-deliverable review are forbidden.
 - The captain authors specialist implementation, validation, review, or memory attribution and then claims complete.
 - A captain deep read of large files replaces specialist deep-read without direct exception and residual state.
 - Implementation falls back to routine captain direct work without isolated change delivery, text change delivery artifact, or Director risk closure.
+- A dirty target file is modified without reading the current diff and target
+  section first.
+- A new sidecar file, duplicate heading, or append-only paragraph is used to
+  avoid integrating an existing change in the authorized target.
+- Workflow entries or policies copy the full team-task-board field list instead
+  of citing `team-task-board` and `team-trace-evidence`.
 - `blocked`, `unverified`, `standby`, `not-authorized`, `unavailable`, or
   `closed-with-director-risk` is used as an execution route instead of a state.
 - Source/deployed pairs are changed without recorded sync direction and parity
@@ -193,12 +207,14 @@ Workflow entries must keep a short reference block only:
 2. Use the scenario playbooks only as non-authorizing examples when a concrete
    flow is needed.
 3. Read the matching workflow evidence matrix row.
-4. Read the deployed language governance policy before applying workflow-specific
+4. Read the skill governance contract when editing workflow entries, skills, or
+   shared governance boundaries.
+5. Read the deployed language governance policy before applying workflow-specific
    output-language, audience-layer, handoff, or change-description rules.
-5. Apply the platform capability matrix.
-6. Build or promote the Captain Team Board before broad evidence, change
+6. Apply the platform capability matrix.
+7. Build or promote the Captain Team Board before broad evidence, change
    delivery, validation, review, memory/docs, or completion work.
-7. Route missing stations, handoff packets, channel states, or delivery
+8. Route missing stations, handoff packets, channel states, or delivery
    artifacts to blocked, unverified, standby, or closed-with-director-risk.
 
 The detailed board field list stays in `team-task-board`, detailed trace fields

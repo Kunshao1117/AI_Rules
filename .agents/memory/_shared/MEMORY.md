@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-01T20:13:41+08:00'
+last_updated: '2026-07-01T22:33:05+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T20:10:40+08:00'
+last_verified: '2026-07-01T22:31:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 12
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -54,6 +54,7 @@ metadata:
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
 - Keep the framework language policy and deployed runtime copy content-identical; workflow, skill, matrix, and platform adapter entries must cite the shared policy instead of treating platform core language text as the sole source.
 ## Cycle Events
+- 40: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 39: Added shared language governance policy and deployed copy as the source for language-layer classification and exact-evidence rules.
 - 38: Recorded shared workflow orchestration hardening so default-on Team-Native routing, no-write team boards, source/deployed parity, and route/state separation are mandatory shared governance.
 - 37: Updated Shared memory for Team-Native authorization binding, source/deployed parity, and post-hook-block stop behavior across shared policies, workflow orchestration, and deployed governance references.
@@ -87,6 +88,7 @@ metadata:
 - 超過 8 個追蹤檔是拆卡建議，不是自動阻擋。
 ## Tracked Files
 - Shared/policies/workflow-orchestration.md
+- Shared/workflow-stage-procedures.md
 - Shared/policies/language-governance.md
 - .agents/shared/policies/language-governance.md
 - Shared/policies/workflow-orchestration-scenarios.md

@@ -116,6 +116,28 @@ expansion is visible and explicitly authorized. It must not create hidden
 authority for unrelated files, hidden cleanup, memory, git, release,
 deployment, install, credentials, external mutation, or later phases.
 
+## Existing Worktree Change Gate
+
+Existing dirty files are not write authorization. When the authorized target is
+already modified in the worktree, the station must resolve a second integration
+gate before writing:
+
+1. Read the current diff for the target file.
+2. Read the target section from the current file, not only the planned patch.
+3. Classify the existing change as compatible, conflicting, obsolete, or
+   unrelated.
+4. Integrate compatible changes by editing the same section, preserving the
+   still-valid semantics.
+5. Stop as blocked or ask for a narrowed decision when the existing change
+   conflicts with the requested scope.
+
+The gate forbids append-only patches that duplicate an existing rule, parallel
+headings that avoid the target section, sidecar files created to dodge a dirty
+file, and overwrites that discard another change without evidence. A sidecar or
+new policy file is authorized only when the current scope names it or the
+canonical boundary requires it and the source/deployed pair strategy is
+recorded.
+
 ## Non-Authorizing Signals
 
 These signals route the work only; they do not authorize writes or protected
@@ -133,7 +155,8 @@ actions:
   the displayed operation inside its target, scope, phase, and expiry.
 - Channel availability is not authorization. A usable subagent, browser, CLI, MCP,
   isolated workspace, or text route still needs scope-bound authorization.
-- Existing dirty worktree state is not authorization to modify those files.
+- Existing dirty worktree state is not authorization to modify those files, and
+  a dirty authorized target still must pass the Existing Worktree Change Gate.
 - Project initialization, framework deployment, or generated-copy presence is not
   authorization to sync or overwrite files.
 - `GO`, `continue`, and approval prompts authorize only the current visible

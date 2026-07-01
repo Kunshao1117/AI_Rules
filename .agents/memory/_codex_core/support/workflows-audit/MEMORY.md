@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 健檢主工作流與三階段子工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-01T18:26:06+08:00'
+last_updated: '2026-07-01T22:32:48+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T18:20:23+08:00'
+last_verified: '2026-07-01T22:31:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 21
+cycle_event_count: 22
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -57,6 +57,7 @@ metadata:
 - Do not claim full coverage from sampled evidence; Phase 3 must report coverage denominators and sampling limits.
 
 ## Cycle Events
+- 22: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 21: Recorded audit workflow hardening so read-only evidence, broad reads, validation planning, and review evidence require formal team routing before coverage or completion claims.
 - 20: Wave 6B added workflow-orchestration grounding to Codex audit workflow entries and synced deployed .agents/skills copies.
 - 19: Wave 6A updated Codex audit workflow entries with Team-Native mode, role split, board trigger, handoff packet, and specialist lifecycle rules.

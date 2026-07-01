@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-07-01T20:14:05+08:00'
+last_updated: '2026-07-01T22:55:44+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-01T20:10:40+08:00'
+last_verified: '2026-07-01T22:54:48+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 13
+cycle_event_count: 15
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -39,7 +39,6 @@ metadata:
 - Captain deep-read substitution is a hard exception path: the captain may integrate returned artifacts and verify-read bounded scope, but broad reading or specialist replacement requires recorded exception evidence.
 - Protected mutations now require explicit protected authorization evidence for current phase, target, scope, and closure state; a general formal-write board is not enough.
 - Source/deployed parity is part of the Team-Native trace contract for shared governance and skill files; sync direction and sync evidence must be recorded when both copies exist.
-- Workflow orchestration scenarios provide non-authorizing examples for formal-readonly evidence, blueprint-to-build, change-to-validation/review/memory, failed validation route-back, audit fan-out, commit-preflight blockers, and source/deployed sync.
 - Team-Native Core is a default-on execution precondition for applicable work: the next valid runtime state is a Captain Team Board with applicable stations, handoff packets, channel states, and formal-readonly/formal-write mode before broad reading or protected work.
 - Authorization Resolution is a shared pre-write gate: GO, interface approvals, platform prompts, modes, and workflow names resolve into scoped fields used by boards, traces, artifacts, and completion gates.
 - Full work uses operation mode `full`; `daily` is reduced routine evidence only and cannot cover implementation, bottom-layer refactor, cross-file governance, Doctor/Audit changes, release/deploy preparation, or public-contract impact.
@@ -63,6 +62,8 @@ metadata:
 - Do not copy raw task traces into source memory; keep only stable governance facts.
 - Do not use platform core language mandates as the sole authority for Team-Native handoffs, workflow output, memory language, or change-description wording.
 ## Cycle Events
+- 37: Recorded validation repair for second-wave slimming: subagent policy now states review-state boundary, and Audit accepts thin workflow/core entries through shared source-of-truth checks.
+- 36: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 35: Recorded matrix language-governance grounding so workflow and platform entries cite the shared policy instead of platform-core-only language rules.
 - 34: Recorded non-hook Team-Native core hardening so applicable work is default-on team mode, station assignment precedes channel selection, and no-write work still requires formal team evidence.
 - 33: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform core-rule sync, and commit-preflight stale blocker cleanup.
@@ -77,8 +78,7 @@ metadata:
 - 24: Wave 6B added Shared/policies/workflow-orchestration.md, wired it into shared policies, workflow entries, deployed copies, and Doctor/Audit checks.
 - 23: Compacted active Team-Native governance memory after commit preflight reported the active card line limit.
 ## Archive Index
-- archive-002.md — Team-Native operation-mode and formal-readonly events 16-19 compacted on 2026-06-30.
-- archive-001.md — Older cycle events 1-15 compacted from the active card.
+- archive-001.md / archive-002.md — Older cycle events 1-19 compacted from the active card.
 ## Evidence Base
 - source: Shared Team-Native policies, platform matrix, workflow matrix, specialist registry, ten specialist skills, and Audit module.
 - tool: commit preflight identified active-card compaction due on 2026-06-30.
