@@ -48,7 +48,7 @@ Director instruction
 -> station handoff packet
 -> channel capability and channel invocation status
 -> returned delivery artifact or blocked/unverified/standby state
--> captain verify-read and integration decision
+-> captain verify-read and protected adoption/merge decision
 -> validation, review, memory/docs, completion audit
 ```
 
@@ -71,7 +71,7 @@ station or a recorded direct exception turns it into evidence.
 |---|---|---|
 | `draft board` | Pre-GO planning, candidate station list, assumptions, and proposed dispatch waves. | Draft board cannot dispatch, spawn, or open formal specialists. Draft evidence cannot satisfy formal evidence eligibility. |
 | `formal-readonly` | Read-only evidence, source/doc deep-read, external research, validation planning, review evidence, and standby stations. | No-write does not mean no-team. Read-only work cannot write source, memory, git, release, deployment, install, or external state. |
-| `formal-write` | GO-backed change delivery, captain protected integration, validation, review, memory/docs delivery, and completion audit inside the authorized scope. | Formal-write is not blanket authority; each phase keeps its own authorization source, target, scope, evidence, expiry, and resolution state. |
+| `formal-write` | GO-backed change delivery, captain protected adoption/merge of returned qualified artifacts, validation, review, memory/docs delivery, and completion audit inside the authorized scope. | Formal-write is not blanket authority; each phase keeps its own authorization source, target, scope, evidence, expiry, and resolution state. |
 
 ## Operation Mode
 
@@ -142,6 +142,18 @@ apply the matching preset below:
 | 10 routine | 08, 04, 02, or 12 | Anomaly, drift, or rule gap is found. | Routine inspection does not write fixes. |
 | 09 commit | 03, 04, 05, 06, 08, or 11 | Preflight finds source, memory, validation, audit, or handoff gaps. | Commit flow does not hide blockers or complete unfinished work. |
 
+## Source/Deployed Sync Rule
+
+Framework source files are the source of truth. Deployed project copies are
+runtime copies. Governance, workflow, hook, skill, or public-contract changes
+must record `source_deployed_pair`, `sync_direction`, and `sync_evidence`.
+
+The normal direction is source first, then deployed copy. If a deployed copy is
+patched first during emergency repair, the task must record `sync_direction:
+deployed-to-source-backfill` and backfill the source before completion. Hash or
+content parity is required before any completion claim. Missing parity is Red,
+blocked, or unverified, not a Yellow advisory.
+
 ## Invalid Orchestration Patterns
 
 These patterns must be treated as Red, blocked, unverified, or
@@ -159,6 +171,10 @@ closed-with-director-risk, not as complete:
 - The captain authors specialist implementation, validation, review, or memory attribution and then claims complete.
 - A captain deep read of large files replaces specialist deep-read without direct exception and residual state.
 - Implementation falls back to routine captain direct work without isolated change delivery, text change delivery artifact, or Director risk closure.
+- `blocked`, `unverified`, `standby`, `not-authorized`, `unavailable`, or
+  `closed-with-director-risk` is used as an execution route instead of a state.
+- Source/deployed pairs are changed without recorded sync direction and parity
+  evidence.
 
 ## Entry Minimum Reference
 

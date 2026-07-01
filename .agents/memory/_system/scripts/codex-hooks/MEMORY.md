@@ -4,19 +4,19 @@ scopePath: Scripts/tests/codex-hooks/
 description: >-
   專案記憶：Codex hooks 測試 runner 與 Team-Native gate fixtures。Use when: task touches
   Codex hook validation.
-last_updated: '2026-06-30T16:00:06+08:00'
+last_updated: '2026-07-01T09:38:15+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-30T15:13:00+08:00'
+last_verified: '2026-07-01T09:32:41+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 3
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,25 +35,29 @@ metadata:
 # _system.scripts.codex-hooks — Codex Hook Fixture Memory
 ## Current Truth
 - This child card owns the Codex hook fixture runner and JSON fixtures under `Scripts/tests/codex-hooks/`.
-- The fixtures validate Team-Native hook outcomes across 52 cases for prompt hints, read-only allowance, broad-read Captain-Lite context, scoped writes, out-of-scope writes, current payload versus historical transcript separation, same-record protected authorization, multi-protected partial authorization, release/deploy filename false positives, exact write target matching, protected mutation blocks, specialist lifecycle events, live Stop payload coverage, short and mixed completion-claim blocks, non-complete state exceptions, read-only report exceptions, and completion artifact gates.
-- The fixture runner supports inline transcript text, temporary transcript path injection, raw hook input, expected and forbidden regex assertions, and temporary transcript cleanup.
+- The fixtures validate Team-Native hook outcomes across 53 cases for prompt hints, read-only allowance, broad-read Captain-Lite context, scoped writes, out-of-scope writes, current payload versus historical transcript separation, same-record protected authorization, multi-protected partial authorization, release/deploy filename false positives, exact write target matching, protected mutation blocks, specialist lifecycle events, live Stop payload coverage, short and mixed completion-claim blocks, non-complete state exceptions, read-only report exceptions, completion artifact gates, and Chinese natural-language scope binding.
+- The fixture runner supports inline transcript text, temporary transcript path injection, raw hook input, expected and forbidden regex assertions, temporary transcript cleanup, selectable shell execution, default Windows PowerShell plus PowerShell 7 matrix coverage, and UTF-8 console setup when supported.
+- The fixture runner supports `expectedDiagnosticLabels` checks for hook block output labels: governance hard gate, blocked action, reason, missing evidence, allowed next steps, and forbidden next steps.
+- Shell resolution is application-only: the runner ignores function/alias shadowing, validates concrete executable paths, warns and skips missing shells in non-strict mode, and blocks missing shells when strict shell coverage is required.
+- The structured-payload fixtures cover text-only trace denial, missing role identity, fake transcript board denial, protected authorization scope, and literal Chinese completion claims; the Chinese natural-language binding fixture is now a tracked fixture file.
+- Existing tracked fixtures now cover everyday-language prompts (`go` plus Chinese "so what"), natural-language no-scope write denial, post-block retry/tool-switch denial, explicit blocked-state allowance, and read-only commands that mention `Scripts/Deploy.ps1`.
+- Protected mutation fixtures now require scope-bound `protected_authorization`, a trusted tool execution envelope, and a matching trusted execution receipt with the same envelope id or nonce, allowed decision, matching action/target/scope, trusted issuer/source, verified or signed signature state, and fresh nonce.
+- Existing and newly tracked fixtures cover allow, only-envelope block, only-receipt block, mismatched receipt block, non-allowed decision block, model/self-reported-looking envelope block, and Chinese natural-language prompt binding.
 - Hook behavior is coupled to Codex hook source files and Team-Native Core governance; review those cards when fixture expectations change.
 ## Active Constraints
-- Keep fixtures deterministic and offline; they must not require real git mutation, memory mutation, deployment, release, network calls, or credentials.
-- Fixture names describe allow, block, or context outcomes; live platform testing is still required when platform hook behavior changes.
+- Keep fixtures deterministic and offline; fixture names describe allow, block, or context outcomes, and live platform testing is still required when platform hook behavior changes.
 ## Cycle Events
-- 03: Added 11 Stop hook fixtures for live last_assistant_message payloads, active Stop continuation blocking, short all-set completion claims, mixed completion claims with negated tests or read-only text, negated incomplete sentences, Chinese quoted completion text, read-only search reports, Chinese-key English non-complete states, and Chinese test-passed blocking; fixture runner passed 52 cases.
-- 02: Hooks Stability Implementation finalized 41 fixtures for current payload evidence separation, transcript pollution, same-record protected authorization, multi-protected partial authorization, release/deploy filename false positives, exact write target matching, and completion claim boundaries; final hook/config hash parity, fixture runner, Doctor, review, and validation passed with a nonblocking deploy.patch dedicated-fixture gap.
-- 01: Created fixture ownership for the Hooks-Usability closeout after Codex hook tests became versioned governance assets.
+- 09: Added the Chinese natural-language prompt binding fixture to tracked ownership and updated fixture memory to 53 cases after the runner passed the Windows PowerShell and PowerShell 7 shell matrix.
+- 08: Tightened protected mutation fixtures so a scoped authorization must be paired with a trusted tool execution envelope and a matching trusted execution receipt; only-envelope, only-receipt, mismatched receipt, non-allowed decision, and model-filled cases stay blocked.
+- 06: Added diagnostic-label fixture assertions plus natural-language prompt, post-block retry denial, blocked-state allowance, and read-only Deploy.ps1 path coverage; fixture runner passed 52 cases across Windows PowerShell and PowerShell 7.
+- 05: Hardened shell resolution to require application executable paths, prevent function/alias shadowing, and distinguish non-strict shell skips from strict shell blockers.
+- 04: Added shell-matrix and UTF-8 fixture runner coverage, then repurposed tracked fixtures to cover structured-payload requirements, fake transcript distrust, missing role identity, and Chinese completion detection while keeping Red drift under tracked fixture ownership.
 ## Archive Index
-- None yet.
+- None.
 ## Evidence Base
-- source:Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1 — fixture runner.
-- source:Scripts/tests/codex-hooks/fixtures/*.json — allow, block, and context fixtures.
-- source:Codex/.codex/hooks/team-native-gate.ps1; tool:Codex hook fixture runner; director:2026-06-30 GO Hooks-Usability Closeout.
+- source:Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1; source:Scripts/tests/codex-hooks/fixtures/*.json; source:Codex/.codex/hooks/team-native-gate.ps1; tool:Codex hook fixture runner; director:2026-06-30 GO Hooks-Usability Closeout.
 ## Read Contract
-- Read this card when changing Codex hook fixture runner, fixture cases, hook live-test expectations, or Doctor checks for hook fixtures.
-- Also read `_codex_core` for hook source files and `_shared.team-native-core` for Team-Native semantics.
+- Read this card when changing Codex hook fixture runner, fixture cases, hook live-test expectations, Doctor checks for hook fixtures, `_codex_core` hook source files, or `_shared.team-native-core` semantics.
 ## Conflicts and Supersession
 - None.
 ## 中文摘要
@@ -80,6 +84,7 @@ metadata:
 - Scripts/tests/codex-hooks/fixtures/allow-stop-zh-not-complete-state.json
 - Scripts/tests/codex-hooks/fixtures/allow-subagent-stop-zh-report.json
 - Scripts/tests/codex-hooks/fixtures/allow-user-prompt.json
+- Scripts/tests/codex-hooks/fixtures/allow-user-prompt-zh-natural-binding.json
 - Scripts/tests/codex-hooks/fixtures/bad-input.json
 - Scripts/tests/codex-hooks/fixtures/block-apply-patch-no-board.json
 - Scripts/tests/codex-hooks/fixtures/block-bash-write-no-board.json
@@ -112,7 +117,3 @@ metadata:
 - Scripts/tests/codex-hooks/fixtures/block-trust-bypass.json
 - Scripts/tests/codex-hooks/fixtures/context-pretool-captain-broad-read-no-board.json
 - Scripts/tests/codex-hooks/fixtures/context-subagent-start.json
-## Relations
-- _system.scripts (parent), _codex_core (hook source), _shared.team-native-core (semantics)
-## Applicable Skills
-- memory-ops for fixture ownership and stale state; memory-arch if fixture groups split.

@@ -53,7 +53,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Use explore-plan-implement-verify sequencing. Define acceptance evidence, operator-tool discovery, retry strategy, and blocked validation rules before writes.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/team-change-delivery-artifact/SKILL.md`, `.agents/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.agents/skills/team-validation-delivery-artifact/SKILL.md`, `.agents/skills/team-review-delivery-artifact/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, integrates returned delivery artifacts into the main worktree, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not author primary implementation, review, validation, or memory attribution.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/team-change-delivery-artifact/SKILL.md`, `.agents/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.agents/skills/team-validation-delivery-artifact/SKILL.md`, `.agents/skills/team-review-delivery-artifact/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, performs protected integration of returned and qualified delivery artifacts within the authorized scope, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not treat GO as bulk main-worktree write permission and must not author primary implementation, review, validation, or memory attribution.
 
 ## Team-Native workflow mode / role / board / specialist lifecycle
 
@@ -70,7 +70,7 @@ Technical details may only appear after a `補充技術細節` section when they
 # [WORKFLOW: BUILD — EXECUTE (建構執行)]
 
 
-> **前置條件**: 本工作流須由 `/03_build(設計到建構合約)` 的 GO 授權後方可執行。
+> **前置條件**: 本工作流須由 `/03_build(設計到建構合約)` 的 scope-bound GO 授權後方可執行，且授權必須綁定目前可見計畫、站點、檔案範圍、命令或阻塞點。
 
 ## 0. Precondition Check（前置條件確認）
 
@@ -82,10 +82,10 @@ Technical details may only appear after a `補充技術細節` section when they
 
 ## 1. Change Delivery Artifact Dispatch And Integration（變更交付件派工與整合）
 
-- 呼叫 `task_boundary` 切換至 `EXECUTION` 模式前，必須確認 正式 Captain Team Board 已標記 GO-write authorization、派工波次、前一波輸入、下一波啟動條件與正式證據資格。
-- 任何主工作區寫入前，先依 `team-task-board` 建立或確認實作變更交付件路徑：有受治理隔離區時使用 isolated change delivery artifact；沒有隔離區時使用 text change delivery artifact。隊長不得以直接寫入替代變更交付件；缺少合格交付路徑時只能標示阻塞、未驗證或總監風險關閉但非完整（`closed-with-director-risk`），並記錄缺少隔離變更交付路徑的原因。
+- 呼叫 `task_boundary` 切換至 `EXECUTION` 模式前，必須確認正式 Captain Team Board 已標記 scope-bound GO-write authorization、派工波次、前一波輸入、下一波啟動條件與正式證據資格；GO-write 不是未限檔案或未限階段的批次寫入權。
+- 任何保護性主工作區合入前，先依 `team-task-board` 建立或確認實作變更交付件路徑：有受治理隔離區時使用 isolated change delivery artifact；沒有隔離區時使用 text change delivery artifact。隊長不得以直接寫入替代變更交付件；缺少合格交付路徑時只能標示阻塞、未驗證或總監風險關閉但非完整（`closed-with-director-risk`），並記錄缺少隔離變更交付路徑的原因。
 - 每個實作隊員只負責一個明確任務，只能產出變更交付件；不得擴張需求、審查自己的產出、更新記憶、stage、commit、push、release、deploy、install 或改動外部狀態。
-- 隊長只整合已回收、已有記憶文件交付處置，且已有獨立審查交付件與驗證交付件的變更交付件；整合順序仍依賴者先於被依賴者（底層模組先整合，上層模組後整合）。
+- 隊長只保護性合入已回收、合格、已有記憶文件交付處置，且已有獨立審查交付件與驗證交付件的變更交付件；合入順序仍依賴者先於被依賴者（底層模組先合入，上層模組後合入）。
 
 // turbo
 
@@ -93,14 +93,14 @@ Technical details may only appear after a `補充技術細節` section when they
 
 [MEM ARCHIVE GATE] For every [NEW] file in implementation_plan.md:
 - Require a returned memory/docs delivery artifact that names the target memory card, tracked files, schema v2 sections, Traditional Chinese keywords, and any archive or split requirement.
-- The captain integrates only that returned memory/docs delivery artifact; the captain must not author the memory attribution.
+- The captain uses only that returned memory/docs delivery artifact as attribution input; the captain must not author the memory attribution.
 - HALT CHECK: If the memory/docs delivery artifact is missing or incomplete, [HALT] and output: 「🔴 [MEM HALT] 新建模組缺少合格記憶文件交付件。」 Do NOT proceed to §3.
 
 ## 3. Modified File Memory/Docs Delivery Integration（修改檔案記憶文件交付整合）
 
 [MEM UPDATE GATE] For every [MODIFY] file in implementation_plan.md:
 - Require a returned memory/docs delivery artifact that identifies the affected active memory main file, still-valid truth changes, cycle event text, archive impact, and sync requirement.
-- The captain integrates only returned memory/docs delivery artifacts and must not create memory attribution directly.
+- The captain uses only returned memory/docs delivery artifacts as attribution input and must not create memory attribution directly.
 - HALT CHECK: If the memory/docs delivery artifact is missing or incomplete, [HALT] and output: 「🔴 [MEM HALT] 修改檔案缺少合格記憶文件交付件。」 Do NOT proceed to §4.
 
 ## 4. Unit Test Generation（單元測試熔斷器）
@@ -140,6 +140,6 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > Inherits: `.agents/workflows/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Captain/SRE` | 主工作區寫入僅限整合已回收變更交付件；實作隊員只產出隔離或文字變更交付件。
+- **Role**: `Captain/SRE` | 保護性主工作區合入僅限已回收且合格的變更交付件；實作隊員只產出隔離或文字變更交付件。
 - **Memory Update**: MANDATORY — §2 與 §3 必須整合已回收記憶文件交付件；隊長不得自行產生記憶歸因。違反即 HALT。
 - Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).

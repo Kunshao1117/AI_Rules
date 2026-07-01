@@ -3,8 +3,10 @@
   "event": "PreToolUse",
   "expectedExitCode": 0,
   "expectedOutputRegex": "permissionDecision.*deny",
+  "expectedDiagnosticLabels": true,
   "payload": {
     "hook_event_name": "PreToolUse",
+    "prompt": "所以呢?",
     "tool_name": "apply_patch",
     "tool_input": {
       "patch": "*** Begin Patch\n*** Update File: README.md\n@@\n+change\n*** End Patch"

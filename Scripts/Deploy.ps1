@@ -179,7 +179,7 @@ function Invoke-PlatformDeploy {
                     Invoke-DocScan    -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Invoke-HealthAudit -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Measure-SkillQuality -SkillsRoot (Join-Path $TargetPath ".agents\skills")
-                    Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $TargetPath -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot
+                    return (Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $TargetPath -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot)
                 }
             }
         }
@@ -200,7 +200,7 @@ function Invoke-PlatformDeploy {
                     Invoke-DocScan    -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Invoke-HealthAudit -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Measure-SkillQuality -SkillsRoot (Join-Path $TargetPath ".claude\skills")
-                    Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $TargetPath -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot
+                    return (Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $TargetPath -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot)
                 }
             }
         }
@@ -221,7 +221,7 @@ function Invoke-PlatformDeploy {
                     Invoke-DocScan    -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Invoke-HealthAudit -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
                     Measure-SkillQuality -SkillsRoot (Join-Path $TargetPath ".agents\skills")
-                    Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $TargetPath -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot
+                    return (Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $TargetPath -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot)
                 }
             }
         }
@@ -282,11 +282,21 @@ function Show-Menu {
     }
 
     if ($selectedPlatform -eq "All") {
+        $auditFailures = 0
         foreach ($p in @("Antigravity", "Claude", "Codex")) {
-            Invoke-PlatformDeploy -PlatformName $p -DeployMode $selectedMode -TargetPath $selectedTarget
+            $audit = Invoke-PlatformDeploy -PlatformName $p -DeployMode $selectedMode -TargetPath $selectedTarget
+            if (($selectedMode -eq "Audit") -and $audit -and (-not $audit.Passed)) {
+                $auditFailures++
+            }
+        }
+        if (($selectedMode -eq "Audit") -and ($auditFailures -gt 0)) {
+            exit 1
         }
     } else {
-        Invoke-PlatformDeploy -PlatformName $selectedPlatform -DeployMode $selectedMode -TargetPath $selectedTarget
+        $audit = Invoke-PlatformDeploy -PlatformName $selectedPlatform -DeployMode $selectedMode -TargetPath $selectedTarget
+        if (($selectedMode -eq "Audit") -and $audit -and (-not $audit.Passed)) {
+            exit 1
+        }
     }
 }
 
@@ -310,11 +320,21 @@ if ($Action -eq "Audit") {
 if ($Platform -and $Mode) {
     # 參數模式
     if ($Platform -eq "All") {
+        $auditFailures = 0
         foreach ($p in @("Antigravity", "Claude", "Codex")) {
-            Invoke-PlatformDeploy -PlatformName $p -DeployMode $Mode -TargetPath $Target
+            $audit = Invoke-PlatformDeploy -PlatformName $p -DeployMode $Mode -TargetPath $Target
+            if (($Mode -eq "Audit") -and $audit -and (-not $audit.Passed)) {
+                $auditFailures++
+            }
+        }
+        if (($Mode -eq "Audit") -and ($auditFailures -gt 0)) {
+            exit 1
         }
     } else {
-        Invoke-PlatformDeploy -PlatformName $Platform -DeployMode $Mode -TargetPath $Target
+        $audit = Invoke-PlatformDeploy -PlatformName $Platform -DeployMode $Mode -TargetPath $Target
+        if (($Mode -eq "Audit") -and $audit -and (-not $audit.Passed)) {
+            exit 1
+        }
     }
 } else {
     # 選單模式

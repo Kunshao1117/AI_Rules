@@ -2,14 +2,28 @@
   "name": "block-fake-role-only",
   "event": "PreToolUse",
   "expectedExitCode": 0,
-  "expectedOutputRegex": "permissionDecision.*deny",
+  "expectedOutputRegex": "tool_payload_evidence_gap|structured Team-Native payload",
   "payload": {
     "hook_event_name": "PreToolUse",
-    "tool_name": "Bash",
+    "tool_name": "apply_patch",
     "tool_input": {
-      "command": "git push origin main"
+      "patch": "*** Begin Patch\n*** Update File: README.md\n@@\n+change\n*** End Patch"
     },
-    "transcript": "role_id: team-specialist-release-completion",
+    "captain_team_board": {
+      "board_state": "formal-write",
+      "task_type": "missing role fixture"
+    },
+    "team_native_trace": "Captain Team Board: formal-write",
+    "station_id": "change-delivery-station",
+    "handoff_packet_id": "hooks-write-missing-role-001",
+    "role_instance_id": "change-delivery-missing-role-001",
+    "assigned_specialist_skill": "team-specialist-change-delivery",
+    "requested_execution_channel": "text-change-delivery",
+    "channel_capability": "available",
+    "channel_invocation_status": "returned",
+    "authorization_evidence": "Director GO missing role fixture",
+    "authorization_scope": "README.md missing role fixture",
+    "authorization_target": "README.md",
     "cwd": "D:\\AI_Rules",
     "permission_mode": "default"
   }

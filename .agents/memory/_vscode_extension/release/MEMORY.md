@@ -4,19 +4,19 @@ scopePath: Extensions/vscode-ai-rules-manager/
 description: >-
   專案記憶：VS Code 管理器外掛封裝、資源、發布與後端入口。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-06-30T09:46:36+08:00'
+last_updated: '2026-07-01T09:39:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T19:45:58+08:00'
+last_verified: '2026-07-01T09:32:41+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 8
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,13 +31,14 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _vscode_extension.release — VS Code Extension Release Memory
 
 ## Current Truth
 - AI Rules Manager v0.1.19 packages Doctor token stability, project skill discovery repair, shared skill margin, and updated release documentation.
 - The manager backend reports and applies shared governance reference deployment during project rule synchronization.
 - The manager backend Doctor description now includes Codex project-level hook governance and Captain-Lite reading model coverage.
+- The manager backend Doctor now exits nonzero when governance audit returns Red findings or a failed result, so Audit/Doctor cannot silently pass failed Team-Native hard gates.
+- Manager entrypoint changes in this cycle are governance fail-closed behavior only; they do not imply a VSIX version bump, tag, release, install, or publication without a separate Director gate.
 - The manager backend forwards optional Team-Native trace requirements into governance Doctor.
 - This child card owns VS Code extension package metadata, lockfile, README, resources, release workflow, and manager backend entrypoint.
 - VSIX release assets are produced through GitHub Release tags and the release workflow.
@@ -49,6 +50,8 @@ metadata:
 - Do not silently publish or install VSIX packages.
 
 ## Cycle Events
+- 10: Recorded manager-entrypoint fail-closed alignment with root Doctor and Deploy Audit; no VSIX version bump, tag, release, install, or publication was authorized by this memory update.
+- 09: Hardened the manager backend Doctor path to fail closed on failed governance audit results, aligning VS Code manager entrypoint behavior with root Doctor and Deploy Audit.
 - 08: Updated Doctor description to include Codex project-level hook governance and Captain-Lite read checks.
 - 07: Added RequireTeamTrace and TeamTraceRoot forwarding to the manager backend Doctor path.
 - 06: Bumped AI Rules Manager to v0.1.19 for Doctor token stability and project skill discovery repair.

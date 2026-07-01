@@ -4,24 +4,24 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 一般討論、探索、實驗、濃縮與測試指令。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-06-30T02:43:57+08:00'
+last_updated: '2026-07-01T09:38:51+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-30T02:30:00+08:00'
+last_verified: '2026-07-01T09:32:41+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 18
+cycle_event_count: 20
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: active
+compaction_status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core.support.commands-general — Claude General Commands Memory
 
 ## Current Truth
@@ -45,6 +46,7 @@ metadata:
 - This child card owns Claude shared command gates and general command entries.
 - General commands must stay aligned with shared workflow semantics and Claude permission behavior.
 - Claude 00 chat is direct only for pure conversation with no external evidence dependency; files, screenshots, memory cards, rules, agent behavior, tool output, or governance-impact questions enter Team-Native formal-readonly and require returned evidence plus captain verify-read.
+- Claude command names and natural-language approvals are route intent plus scope-bound evidence only; write authority requires the matching formal write station and GO-backed scope.
 - Test commands must select evidence by interface surface rather than assuming browser-only proof.
 - Claude test command now requires visual detail-observation notes and real-information-first evidence before fallback fake data.
 
@@ -53,6 +55,7 @@ metadata:
 - Do not write source or memory from read-only command flows without the appropriate gate.
 
 ## Cycle Events
+- 20: Updated Claude general command memory after scope-bound authorization hardening; command names and casual approval language no longer imply blanket write authority, and read-only/test flows must route fixes to formal write stations.
 - 19: Wave 6B added workflow-orchestration grounding to Claude general commands and synced affected .claude/skills copies.
 - 18: Wave 6A updated Claude chat, explore, blueprint, experiment, condense, test, and debug command entries with daily/full mode boundaries, pure-conversation/direct limits, formal-readonly/formal-write routing, and specialist lifecycle rules.
 - 17: Rebuilt the Claude 00 chat command boundary so pure chat stays direct, while evidence-bearing discussion promotes to Team-Native formal-readonly with read scope, evidence status, and captain verify-read before the final answer.

@@ -5,7 +5,7 @@
   "expectedOutputRegex": "",
   "payload": {
     "hook_event_name": "Stop",
-    "response": "Wave 7A completed? No. completion_state: blocked because the review station found a defect.",
+    "response": "鉤子擋下 apply_patch；completion_state: blocked，原因是 tool_payload_evidence_gap。未實作，未驗證。",
     "cwd": "D:\\AI_Rules",
     "stop_hook_active": false
   }

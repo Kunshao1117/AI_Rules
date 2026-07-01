@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 > 語彙說明：本文件保留歷史版本語境；舊條目中的 patch、packet、補丁、封包、隊長代工與 accepted-risk 不得解讀為現行正向規範。現行正向規範只使用交付件、任務軌跡帳本、逐波派工、隊長只整合已回收交付件，以及缺交付件即阻塞、未驗證或總監風險關閉但非完整。
 
+## [2026-07-01] Team-Native 授權綁定與巡檢閉鎖
+
+### fix
+- **範圍式授權綁定** — 補強日常語句、介面同意與 GO 的可見範圍綁定規則，避免被擴張成未限範圍寫入。
+- **治理巡檢失敗閉鎖** — 強化管理器巡檢與稽核入口，讓 Team-Native 硬閘門失敗不能靜默通過。
+- **Codex hook 回歸覆蓋** — 補齊授權、保護操作、停止階段與中文自然語句綁定案例。
+- **跨平台代理同步** — 同步 Antigravity、Claude、Codex 入口、共用政策、技能與記憶歸屬。
+
 ## [2026-06-30] Codex hooks 穩定性與團隊硬閘門
 
 ### feat

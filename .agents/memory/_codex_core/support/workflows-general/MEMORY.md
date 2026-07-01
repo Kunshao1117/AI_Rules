@@ -4,24 +4,24 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-30T02:43:42+08:00'
+last_updated: '2026-07-01T09:38:55+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-30T02:30:00+08:00'
+last_verified: '2026-07-01T09:32:41+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 19
+cycle_event_count: 21
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: active
+compaction_status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core.support.workflows-general — Codex General Workflow Memory
 
 ## Current Truth
@@ -46,6 +47,7 @@ metadata:
 - This child card owns Codex shared gates and general workflow skills.
 - Workflow skills must preserve Codex progressive loading, Director gates, and Traditional Chinese trigger language.
 - Codex 00 chat is direct only for pure conversation with no external evidence dependency; files, screenshots, memory cards, rules, agent behavior, tool output, or governance-impact questions enter Team-Native formal-readonly and require returned evidence plus captain verify-read.
+- Codex workflow names and natural-language approvals are route intent plus scope-bound evidence only; write authority requires the matching formal write station and GO-backed scope.
 - Test workflow evidence must match the target interface surface.
 - Codex test workflow now requires visual detail-observation notes and real-information-first evidence before fallback fake data.
 
@@ -54,6 +56,7 @@ metadata:
 - Do not write source or memory from read-only flows without the appropriate GO gate.
 
 ## Cycle Events
+- 21: Updated Codex general workflow memory after scope-bound authorization hardening; workflow names and casual approval language no longer imply blanket write authority, and read-only/test flows must route fixes to formal write stations.
 - 20: Wave 6B added workflow-orchestration grounding to Codex general workflow entries and synced deployed .agents/skills copies.
 - 19: Wave 6A updated Codex chat, explore, blueprint, experiment, condense, test, and debug workflow entries with daily/full mode boundaries, pure-conversation/direct limits, formal-readonly/formal-write routing, and specialist lifecycle rules.
 - 18: Rebuilt the Codex 00 chat boundary so pure chat stays direct, while evidence-bearing discussion promotes to Team-Native formal-readonly with filesystem/MCP read scope, evidence status, and captain verify-read before the final answer.

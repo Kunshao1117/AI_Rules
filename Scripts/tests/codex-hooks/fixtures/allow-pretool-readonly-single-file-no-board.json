@@ -7,7 +7,7 @@
     "hook_event_name": "PreToolUse",
     "tool_name": "PowerShell",
     "tool_input": {
-      "command": "Get-Content -Path Shared/policies/team-native-core.md"
+      "command": "git diff --name-only -- Scripts/Deploy.ps1"
     },
     "cwd": "D:\\AI_Rules",
     "permission_mode": "default"

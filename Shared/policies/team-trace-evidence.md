@@ -52,7 +52,17 @@ Each task trace should contain these fields in readable Markdown or JSON:
 | `requested_execution_channel` | Requested channel before capability evaluation |
 | `channel_capability` | available, conditional, unavailable, or unverified |
 | `channel_invocation_status` | not-started, requested, running, returned, unavailable, blocked, or not-authorized |
-| `execution_channel` | Native subagent, project custom agent, tool/MCP, command evidence, browser evidence, external research, isolated change delivery, text change delivery, protected captain channel, or blocked |
+| `execution_route` | Actual channel or delivery form; never a status value such as blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk |
+| `execution_channel` | Native subagent, project custom agent, tool/MCP, command evidence, browser evidence, external research, isolated change delivery, text change delivery, protected captain channel, or direct captain protected integration |
+| `tool_execution_envelope` | Structured carrier passed to a tool layer, or blocked/unverified reason when no envelope is available. |
+| `tool_execution_envelope_trust` | trusted, untrusted, blocked, unverified, or not-applicable. |
+| `tool_envelope_issuer` | Trusted issuer identity, or blocked/unverified reason. |
+| `tool_envelope_signature` | Signature or verification reference, or blocked/unverified reason. |
+| `tool_envelope_nonce` | Fresh nonce or replay-protection reference, or blocked/unverified reason. |
+| `execution_receipt` | Tool-layer receipt naming envelope or nonce, action, decision, reason, resulting state, and delivery artifact status. |
+| `execution_receipt_decision` | allowed, blocked, unverified, not-authorized, or not-applicable. |
+| `station_state` | assigned, standby, running, returned, blocked, unverified, closed-with-director-risk, or not-applicable |
+| `evidence_state` | pending, returned, accepted, rejected, blocked, unverified, closed-with-director-risk, or not-applicable |
 | `station_lifecycle_state` | assigned, standby, retained, reused, handoff-required, closed, replaced, blocked, or not-applicable |
 | `retention_reason` | Why the same specialist channel may continue, or why retention is not allowed |
 | `conversation_health` | clear, needs-handoff, stale, over-budget, role-conflict, or blocked |
@@ -87,10 +97,14 @@ Each task trace should contain these fields in readable Markdown or JSON:
 | `delivery_artifacts` | Change delivery, memory/docs delivery, review, validation, evidence delivery, and completion artifact status |
 | `direct_exceptions` | Station-specific direct exception, replacement evidence, and residual state |
 | `role_separation` | Evidence that implementation and review did not share the same role |
-| `captain_protected_integration` | Integration of returned qualified delivery artifacts, or not-applicable |
+| `captain_protected_integration` | Protective adoption or merge of returned qualified delivery artifacts, or not-applicable |
 | `captain_substitute_authoring` | blocked by default; closed-with-director-risk only with case-specific Director approval and no full-team-completion claim |
 | `completion_state` | complete, closed-with-director-risk, blocked, unverified, or not-applicable |
+| `risk_close_evidence` | Current, explicit, scope-bound Director risk close evidence when `closed-with-director-risk` is used. |
 | `residual_risk` | Remaining blocked, unverified, or closed-with-director-risk items |
+| `source_deployed_pair` | Source file and deployed copy pair when a generated/runtime copy is affected |
+| `sync_direction` | source-to-deployed, deployed-to-source-backfill, not-applicable, blocked, or unverified |
+| `sync_evidence` | Hash, content parity, diff summary, or blocked/unverified reason for the pair |
 
 ## Hard Gate Requirements
 
@@ -99,6 +113,21 @@ Each task trace should contain these fields in readable Markdown or JSON:
 - A completion claim must expose parseable `stations`, `delivery_artifacts`, `role_instance_id`, `delivery_artifact_id`, and `direct_exceptions`. The values may close as blocked, unverified, closed-with-director-risk, or not-applicable only when the trace is not claiming full completion.
 - `completion_state` is limited to `complete`, `closed-with-director-risk`, `blocked`, `unverified`, or `not-applicable`. `completed`, `done`, `accepted-risk`, and other informal states must not pass as completion evidence.
 - Two or more evidence-oriented stations marked direct require station-specific `direct_exceptions`, replacement evidence, and residual state. Without them, the trace is invalid for formal acceptance.
+- `execution_route` and `execution_channel` must not contain state values.
+  Missing route capability belongs in `station_state`, `evidence_state`,
+  `authorization_resolution_state`, or `completion_state`.
+- Write-capable or protected mutation traces must include a trusted
+  `tool_execution_envelope`, trusted issuer, signature, nonce, and matching
+  `execution_receipt`; missing or untrusted envelope evidence keeps the action
+  blocked or unverified.
+- Invalid payload fail-closed evidence is required when a malformed or
+  unverifiable tool payload is part of the trace. A trace must not recover
+  authority from model-filled envelope text, historical transcript text, or a
+  text-only trace.
+- `closed-with-director-risk` requires `risk_close_evidence` that is current,
+  explicit, and scope-bound. It remains non-complete.
+- Source/deployed changes require `source_deployed_pair`, `sync_direction`, and
+  `sync_evidence`; missing parity blocks completion.
 
 ## Audit Semantics
 
@@ -153,12 +182,34 @@ These patterns must not pass:
 - Captain broad-reading large file sets as a substitute for specialist deep-read without a direct exception and residual state.
 - Assigned stations left waiting without standby reason, first-response deadline, timeout action, or smallest unblock condition.
 - Tool or subagent unavailability removing an applicable specialist station instead of marking it blocked, unverified, or closed-with-director-risk.
+- `blocked`, `unverified`, `standby`, `not-authorized`, `unavailable`, or
+  `closed-with-director-risk` placed in `execution_route`, `execution_channel`,
+  execution mode, or platform route fields.
 - Missing authorization source, target, scope, phase, evidence, expiry, resolution state, or observed platform mode for any trace claiming write, integration, memory, git, release, deployment, install, or external-mutation authority.
 - Treating a workflow name as authorization instead of a route hint.
+- Treating natural-language words such as `GO`, "continue", "fix this",
+  "so what now?", or "do that" as write or protected-action authorization when
+  the current visible target, scope, phase, and expiry cannot be bound.
 - Treating an interface approval button as authorization beyond the displayed target, scope, phase, and expiry.
 - Treating platform mode, sandbox state, local shell access, or channel availability as authorization.
 - Reusing implementation authorization as captain integration, memory, git, release, deployment, install, or external-mutation authorization.
 - Continuing after authorization expiry, scope mismatch, or phase mismatch without a new scope-bound authorization record.
+- Continuing after a hook or platform guard block by retrying with another tool,
+  switching channels, or using historical transcript text as substitute board,
+  station, role, channel, target, scope, phase, expiry, or authorization
+  evidence.
+- Treating a `tool_execution_envelope` or `execution_receipt` as a new
+  authorization source instead of a carrier and receipt for existing
+  scope-bound authorization.
+- Treating a model-filled, untrusted, unsigned, missing nonce, stale nonce, or
+  unknown issuer envelope as authorization for protected mutation.
+- Missing trusted issuer, signature, nonce, or execution receipt on a
+  write-capable or protected mutation trace.
+- Invalid payload not fail-closed for write-capable or protected mutation work.
+- `closed-with-director-risk` without current, explicit, scope-bound
+  `risk_close_evidence`.
+- Post-block bypass hard block missing after a blocked action is followed by a
+  retry, alternate tool, channel switch, or transcript substitution attempt.
 - Retaining a specialist channel while crossing from implementation to review, validation repair, protected memory mutation, final acceptance, or another role-exclusive station.
 - Replacing or closing a specialist channel without a closure reason when the task claims formal completion.
 - Treating light closeout as permission to skip required change delivery, validation, review, memory/docs, or completion evidence.

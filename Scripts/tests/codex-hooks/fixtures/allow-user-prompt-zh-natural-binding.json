@@ -1,5 +1,5 @@
 {
-  "name": "allow-user-prompt",
+  "name": "allow-user-prompt-zh-natural-binding",
   "event": "UserPromptSubmit",
   "expectedExitCode": 0,
   "expectedOutputRegex": "natural-language instructions are valid.*current visible plan or station.*file set.*command",

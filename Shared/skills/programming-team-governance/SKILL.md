@@ -26,15 +26,11 @@ classifies, boards, dispatches, supervises, integrates, adjudicates, and reports
 
 Specialist roles come from `team-specialist-registry` plus matching `team-specialist-*`. `team-task-board` owns board, station, artifact, change delivery, and completion templates. Routes are `native`, `adapter`, `conditional`, or `unavailable`; missing route evidence is `blocked`, `unverified`, or `closed-with-director-risk`.
 
-Workflow sequence belongs to `Shared/policies/workflow-orchestration.md`; this
-skill applies team semantics after board and wave order are selected.
-
-Team-Native mode is a runtime state machine, not a reminder paragraph. Once the
-trigger fires, the captain's next action is to create or reuse the board,
-assign applicable stations, prepare handoff packets, and record channel status.
-Broad reading, impact mapping, implementation, validation, review, memory
-attribution, commit prep, release prep, and completion claims cannot happen
-first and be retrofitted into a team trace later.
+Workflow sequence belongs to `Shared/policies/workflow-orchestration.md`; after
+route and wave selection, the captain creates or reuses the board, assigns
+stations, prepares handoff packets, and records channel status before broad
+reading, impact mapping, implementation, validation, review, memory attribution,
+commit prep, release prep, or completion claims.
 
 ## Captain Trigger Gate
 
@@ -61,13 +57,11 @@ change delivery, parallel evidence, validation, review, or completion audit.
 
 Before the board, the captain may only bootstrap workflow/skill, rules, request, status, and memory/context index. Broad reading, impact mapping, counter-evidence, review, and audit are stations. Director requests for team mode or specialist channels force board creation first.
 
-Team-First activation means the captain attempts to assign and open applicable
-stations before broad context-heavy reading. If the requested execution channel
-cannot start, record channel capability, invocation status, standby/block state,
-and the smallest unblock condition before direct main-thread work continues.
-Channel failure preserves the station; it does not erase the station. The
-captain reports unavailable, not-authorized, blocked, unverified, or standby
-before absorbing any narrow residual work into protected direct handling.
+Team-First activation assigns applicable stations before broad context-heavy
+reading. If a requested channel cannot start, record capability, invocation
+status, standby/block state, and the smallest unblock condition; channel failure
+preserves the station and is reported as unavailable, not-authorized, blocked,
+unverified, or standby before any narrow captain-gate handling continues.
 
 ## Assignment Gate
 
@@ -121,9 +115,9 @@ Route map: architecture -> blueprint; construction -> build; bugs -> fix; valida
 
 ## Captain Minimum Execution Gate
 
-Captain-only duties are Director communication, task type and board ownership, GO interpretation, main-worktree integration of returned change delivery artifacts, review lifecycle decision, memory/git/release/deploy/install gates, mutating MCP gates, and final acceptance.
+Captain-only duties are Director communication, task type and board ownership, GO interpretation, protective adoption or merge of returned qualified change delivery artifacts into the main worktree, review lifecycle decision, memory/git/release/deploy/install gates, mutating MCP gates, and final acceptance.
 
-The captain does not author separable implementation, review, validation, or memory attribution as a normal route. Implementation uses isolated change delivery, then text change delivery, then `blocked`. Captain substitute authoring requires Director `closed-with-director-risk` and is not Full team completion.
+The captain does not author, rewrite, or primarily implement separable implementation, review, validation, or memory attribution as a normal route. Implementation uses isolated change delivery, then precise text change delivery, then `blocked`. Captain substitute authoring requires Director `closed-with-director-risk` and is not Full team completion.
 
 Counter-evidence, impact map, review, validation, and completion audit default to bounded evidence when useful. If two or more evidence-oriented stations resolve to `direct`, each needs a concrete exception, replacement evidence, and `closed-with-director-risk`, `unverified`, or `blocked`.
 
@@ -135,7 +129,7 @@ Same specialist cannot implement and review the same deliverable. If independent
 
 ## Station Semantics
 
-Requirement playback stays protected direct only when facts are complete.
+Requirement playback stays captain-owned only for Director communication and requirement clarification when facts are complete; it must not include implementation, validation substitute work, or change delivery.
 Counter-evidence, impact map, deep file reads, and broad exploration route to
 read-only evidence/CLI/MCP/browser stations under `formal-readonly`.
 Authorization planning is protected captain work. Implementation is isolated or
@@ -190,7 +184,7 @@ Use `delegation-strategy` after the board. Dispatch order: captain-only gates, p
 
 ## Direct Exception Register
 
-Direct handling is for protected captain duties: returned artifact integration, GO/review/acceptance gates, Director communication, final acceptance, hot-path validation, no independent evidence value, or Director-accepted captain substitute authoring recorded as `closed-with-director-risk`. Generic size, speed, convenience, or cost labels fail the board.
+Protected captain handling is limited to returned artifact integration, GO/review/acceptance gates, Director communication, final acceptance, hot-path validation, no independent evidence value, or Director-accepted captain substitute authoring recorded as `closed-with-director-risk`. Generic size, speed, convenience, or cost labels fail the board.
 
 ## Required Delivery Artifacts
 
@@ -208,6 +202,6 @@ Coding workflow entries load this skill, `team-task-board`, `delegation-strategy
 
 ## Completion Rules
 
-Before completion, compare request, approved plan, scoped authorization fields, implementation change delivery, memory/docs delivery, review, validation, source changes, docs, and memory. Reject missing execution modes, self-review, specialist mutation of protected state, captain-direct implementation without Director-accepted `closed-with-director-risk` or `blocked`, two or more evidence-oriented stations resolving to direct without concrete exceptions, missing authorization fields, and missing implementation change delivery, memory/docs delivery, review, or validation artifacts.
+Before completion, compare request, approved plan, authorization fields, implementation change delivery, memory/docs delivery, review, validation, source changes, docs, and memory. Reject missing execution modes, self-review, protected-state mutation by specialists, captain-direct implementation without Director-accepted `closed-with-director-risk` or `blocked`, two or more direct evidence stations without exceptions, missing authorization, or missing implementation, memory/docs, review, or validation artifacts.
 
-Full team completion is allowed only when scoped authorization fields, implementation change delivery, memory delivery, independent review, validation evidence, completion evidence, and required Team-Native trace evidence exist. Missing authorization, separation, route evidence, trace evidence, independent review, validation, or delivery artifacts may be reported only as `closed-with-director-risk`, `unverified`, or `blocked`, and `closed-with-director-risk` is not complete.
+Full team completion requires authorization fields, implementation change delivery, memory delivery, independent review, validation evidence, completion evidence, and required Team-Native trace evidence. Missing authorization, separation, route evidence, trace evidence, independent review, validation, or delivery artifacts may be reported only as `closed-with-director-risk`, `unverified`, or `blocked`; `closed-with-director-risk` is not complete.

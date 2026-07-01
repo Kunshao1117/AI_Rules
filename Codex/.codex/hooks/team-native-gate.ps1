@@ -16,6 +16,10 @@ function Read-HookInputText {
 function ConvertFrom-HookJson {
     param([string]$Text)
 
+    if ($null -ne $Text) {
+        $Text = $Text.TrimStart([char]0xFEFF)
+    }
+
     if ([string]::IsNullOrWhiteSpace($Text)) {
         return [PSCustomObject]@{ __parse_error = 'empty input' }
     }
@@ -25,6 +29,33 @@ function ConvertFrom-HookJson {
     } catch {
         return [PSCustomObject]@{ __parse_error = $_.Exception.Message }
     }
+}
+
+function Get-HookHostVerifiedToolLayerEvidence {
+    $json = $env:CODEX_HOOK_HOST_VERIFIED_TOOL_LAYER_EVIDENCE_JSON
+    if (-not [string]::IsNullOrWhiteSpace($json)) {
+        $evidence = ConvertFrom-HookJson -Text $json
+        if (-not (Get-HookProperty -Object $evidence -Name '__parse_error')) {
+            return $evidence
+        }
+    }
+
+    $path = $env:CODEX_HOOK_HOST_VERIFIED_TOOL_LAYER_EVIDENCE_PATH
+    if (-not [string]::IsNullOrWhiteSpace($path)) {
+        try {
+            if (Test-Path -LiteralPath $path -PathType Leaf) {
+                $fileJson = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+                $evidence = ConvertFrom-HookJson -Text $fileJson
+                if (-not (Get-HookProperty -Object $evidence -Name '__parse_error')) {
+                    return $evidence
+                }
+            }
+        } catch {
+            return $null
+        }
+    }
+
+    return $null
 }
 
 function Get-HookDebugMarkerPath {
@@ -247,11 +278,29 @@ function Get-CurrentStructuredEvidenceText {
         'team_board',
         'board',
         'station',
+        'station_id',
         'handoff',
+        'handoff_packet_id',
         'role',
+        'role_id',
+        'role_instance_id',
+        'assigned_specialist_skill',
         'channel',
+        'requested_execution_channel',
+        'channel_capability',
+        'channel_invocation_status',
+        'execution_channel',
+        'station_state',
+        'evidence_state',
+        'station_channel_state',
+        'native_subagent_authorization_state',
+        'captain_supervision_state',
+        'tool_payload_evidence_gap',
         'completion_state',
         'delivery_artifacts',
+        'delivery_artifact_id',
+        'delivery_artifact_type',
+        'delivery_artifact_status',
         'implementation_delivery',
         'change_delivery',
         'memory_delivery',
@@ -259,6 +308,17 @@ function Get-CurrentStructuredEvidenceText {
         'review_delivery',
         'validation_delivery',
         'direct_exceptions',
+        'deep_read_scope',
+        'captain_verify_read_scope',
+        'unread_scope',
+        'director_risk_close_evidence',
+        'director_risk_close_scope',
+        'director_risk_close_target',
+        'director_risk_close_authorization',
+        'risk_close_evidence',
+        'risk_close_scope',
+        'risk_close_target',
+        'risk_closure_evidence',
         'metadata'
     )
 
@@ -305,6 +365,218 @@ function Get-HookActionText {
     return (@($items.ToArray()) -join "`n")
 }
 
+function Add-HookObjectRecordValues {
+    param(
+        [object]$Value,
+        [object]$Records
+    )
+
+    if ($null -eq $Value) { return }
+    if ($Value -is [string]) { return }
+
+    if (($Value -is [System.Collections.IDictionary]) -or ($Value -is [System.Management.Automation.PSCustomObject])) {
+        $Records.Add($Value)
+        return
+    }
+
+    if ($Value -is [System.Collections.IEnumerable]) {
+        foreach ($entry in $Value) {
+            if (($entry -is [System.Collections.IDictionary]) -or ($entry -is [System.Management.Automation.PSCustomObject])) {
+                $Records.Add($entry)
+            }
+        }
+    }
+}
+
+function Get-HookToolEnvelopeCandidateRecords {
+    param([object]$Payload)
+
+    $records = New-Object System.Collections.Generic.List[object]
+    foreach ($field in @(
+        'tool_execution_envelope',
+        'tool_envelope',
+        'execution_envelope',
+        'permission_request_envelope',
+        'permission_envelope',
+        'runtime_envelope',
+        'tool_payload_envelope'
+    )) {
+        Add-HookObjectRecordValues -Value (Get-HookProperty -Object $Payload -Name $field) -Records $records
+    }
+
+    return @($records.ToArray())
+}
+
+function Get-HookExecutionReceiptCandidateRecords {
+    param([object]$Payload)
+
+    $records = New-Object System.Collections.Generic.List[object]
+    foreach ($field in @(
+        'tool_execution_receipt',
+        'tool_receipt',
+        'execution_receipt',
+        'permission_request_receipt',
+        'permission_receipt',
+        'runtime_receipt',
+        'tool_payload_receipt'
+    )) {
+        Add-HookObjectRecordValues -Value (Get-HookProperty -Object $Payload -Name $field) -Records $records
+    }
+
+    return @($records.ToArray())
+}
+
+function Test-HookToolEnvelopeTrusted {
+    param([object]$Record)
+
+    if ($null -eq $Record) { return $false }
+
+    $recordText = (@(Get-NamedStringLeafValues -Value $Record -Prefix 'tool_envelope') -join ' ')
+    if ($recordText -match '(?i)\b(untrusted|unverified|model|assistant|self[-_ ]?reported|self[-_ ]?asserted|self[-_ ]?filled|synthetic|transcript|conversation|user[-_ ]?supplied|user[-_ ]?provided|false)\b') {
+        return $false
+    }
+
+    $hostVerifiedText = Get-HookRecordFieldValue -Record $Record -Names @(
+        'host_platform_verified_receipt',
+        'host_platform_verified_envelope',
+        'host_verified_receipt',
+        'host_verified_envelope',
+        'platform_verified_receipt',
+        'platform_verified_envelope',
+        'tool_layer_host_verified',
+        'tool_layer_platform_verified'
+    )
+    $hostVerificationSourceText = Get-HookRecordFieldValue -Record $Record -Names @(
+        'host_verification_source',
+        'platform_verification_source',
+        'host_receipt_verified_by',
+        'platform_receipt_verified_by',
+        'host_envelope_verified_by',
+        'platform_envelope_verified_by',
+        'verification_authority',
+        'verified_by_host',
+        'verified_by_platform'
+    )
+    $hostVerificationScopeText = Get-HookRecordFieldValue -Record $Record -Names @(
+        'host_verification_scope',
+        'platform_verification_scope',
+        'verification_scope',
+        'receipt_verification_scope',
+        'envelope_verification_scope'
+    )
+    if ([string]::IsNullOrWhiteSpace($hostVerifiedText) -or
+        [string]::IsNullOrWhiteSpace($hostVerificationSourceText) -or
+        [string]::IsNullOrWhiteSpace($hostVerificationScopeText)) {
+        return $false
+    }
+
+    $hostVerifiedLooksPositive = ($hostVerifiedText -notmatch '(?i)\b(false|no|not[-_ ]?verified|unverified|missing|none|unknown|self[-_ ]?reported|self[-_ ]?asserted|self[-_ ]?filled)\b') -and
+        ($hostVerifiedText -match '(?i)\b(true|verified|host[-_ ]?verified|platform[-_ ]?verified|valid)\b')
+    $hostVerificationSourceLooksHostOnly = ($hostVerificationSourceText -notmatch '(?i)\b(model|assistant|self[-_ ]?reported|self[-_ ]?asserted|self[-_ ]?filled|synthetic|transcript|conversation|user[-_ ]?supplied|user[-_ ]?provided)\b') -and
+        ($hostVerificationSourceText -match '(?i)\b(codex[-_ ]?host|codex[-_ ]?platform|platform[-_ ]?host|platform[-_ ]?runtime|tool[-_ ]?host|runtime[-_ ]?host|permission[-_ ]?system)\b')
+    $hostVerificationScopeLooksToolLayer = ($hostVerificationScopeText -notmatch '(?i)\b(model|assistant|self[-_ ]?reported|self[-_ ]?asserted|self[-_ ]?filled|transcript|conversation|user[-_ ]?supplied|user[-_ ]?provided)\b') -and
+        ($hostVerificationScopeText -match '(?i)\b(tool[-_ ]?execution[-_ ]?envelope|tool[-_ ]?execution[-_ ]?receipt|tool[-_ ]?envelope|tool[-_ ]?receipt|permission[-_ ]?envelope|permission[-_ ]?receipt|runtime[-_ ]?envelope|runtime[-_ ]?receipt|tool[-_ ]?layer)\b')
+    if (-not ($hostVerifiedLooksPositive -and $hostVerificationSourceLooksHostOnly -and $hostVerificationScopeLooksToolLayer)) {
+        return $false
+    }
+
+    $trustedIssuerText = Get-HookRecordFieldValue -Record $Record -Names @(
+        'trusted_issuer',
+        'trusted issuer',
+        'tool_layer_trusted_issuer',
+        'runtime_trusted_issuer',
+        'trusted_issuer_source'
+    )
+    $sourceText = Get-HookRecordFieldValue -Record $Record -Names @(
+        'receipt_source',
+        'source',
+        'source_type',
+        'authority_source',
+        'issued_by',
+        'verified_by',
+        'runtime_source'
+    )
+    $trustText = Get-HookRecordFieldValue -Record $Record -Names @(
+        'trusted',
+        'is_trusted',
+        'trust',
+        'trust_state',
+        'trust_status',
+        'platform_trust',
+        'runtime_trust',
+        'hook_trust',
+        'verification_state'
+    )
+    $signatureText = Get-HookRecordFieldValue -Record $Record -Names @(
+        'signature',
+        'signature_state',
+        'signature_status',
+        'signature_verification',
+        'signature_verified',
+        'receipt_signature',
+        'envelope_signature',
+        'platform_signature',
+        'runtime_signature',
+        'signed_by'
+    )
+    $nonceText = Get-HookRecordFieldValue -Record $Record -Names @(
+        'nonce_state',
+        'nonce_status',
+        'freshness',
+        'freshness_state',
+        'freshness_status',
+        'nonce',
+        'nonce_value',
+        'receipt_nonce',
+        'envelope_nonce',
+        'runtime_nonce'
+    )
+    $combined = ("{0} {1} {2} {3} {4}" -f $trustedIssuerText, $sourceText, $trustText, $signatureText, $nonceText).Trim()
+    if ([string]::IsNullOrWhiteSpace($combined)) { return $false }
+
+    if ([string]::IsNullOrWhiteSpace($trustedIssuerText) -or
+        [string]::IsNullOrWhiteSpace($sourceText) -or
+        [string]::IsNullOrWhiteSpace($trustText) -or
+        [string]::IsNullOrWhiteSpace($signatureText) -or
+        [string]::IsNullOrWhiteSpace($nonceText)) {
+        return $false
+    }
+
+    $trustedIssuerLooksToolLayer = $trustedIssuerText -match '(?i)\b(codex[-_ ]?tool[-_ ]?layer|tool[-_ ]?layer|codex[-_ ]?runtime|codex[-_ ]?host|platform[-_ ]?runtime|hook[-_ ]?runner|tool[-_ ]?runner|permission[-_ ]?system)\b'
+    $sourceLooksRuntime = $sourceText -match '(?i)\b(codex[-_ ]?tool[-_ ]?layer|tool[-_ ]?layer|codex[-_ ]?runtime|codex[-_ ]?host|platform[-_ ]?runtime|hook[-_ ]?runner|tool[-_ ]?runner|permission[-_ ]?system)\b'
+    $trustLooksPositive = $trustText -match '(?i)\b(true|trusted|verified|valid)\b'
+    $signatureLooksPositive = $signatureText -match '(?i)\b(verified|signed|valid)\b'
+    $nonceLooksFresh = ($nonceText -notmatch '(?i)\b(missing|empty|null|none|stale|expired|replay(?:ed)?|reused|invalid)\b') -and
+        ($nonceText -match '(?i)\b(fresh|current|valid)\b')
+    return ($trustedIssuerLooksToolLayer -and $sourceLooksRuntime -and $trustLooksPositive -and $signatureLooksPositive -and $nonceLooksFresh)
+}
+
+function Get-HookTrustedToolEnvelopeRecords {
+    param([object]$Payload)
+
+    $trustedRecords = New-Object System.Collections.Generic.List[object]
+    foreach ($record in @(Get-HookToolEnvelopeCandidateRecords -Payload $Payload)) {
+        if (Test-HookToolEnvelopeTrusted -Record $record) {
+            $trustedRecords.Add($record)
+        }
+    }
+
+    return @($trustedRecords.ToArray())
+}
+
+function Get-HookTrustedExecutionReceiptRecords {
+    param([object]$Payload)
+
+    $trustedRecords = New-Object System.Collections.Generic.List[object]
+    foreach ($record in @(Get-HookExecutionReceiptCandidateRecords -Payload $Payload)) {
+        if (Test-HookToolEnvelopeTrusted -Record $record) {
+            $trustedRecords.Add($record)
+        }
+    }
+
+    return @($trustedRecords.ToArray())
+}
+
 function Write-HookJson {
     param([hashtable]$Object)
 
@@ -335,11 +607,84 @@ function Exit-AllowWithSystemMessage {
     exit 0
 }
 
+function New-HookDiagnosticReason {
+    param(
+        [string]$Reason,
+        [string]$ActionType,
+        [string]$BlockType,
+        [string]$ReasonCode,
+        [string[]]$MissingFields
+    )
+
+    if ([string]::IsNullOrWhiteSpace($ActionType)) {
+        $ActionType = 'governance-gated action'
+    }
+    if ([string]::IsNullOrWhiteSpace($BlockType)) {
+        $BlockType = 'Team-Native hard gate'
+    }
+    if ([string]::IsNullOrWhiteSpace($Reason)) {
+        $Reason = 'No detailed reason was supplied by the guard.'
+    }
+    if ([string]::IsNullOrWhiteSpace($ReasonCode)) {
+        $ReasonCode = Get-HookReasonCode -Reason $Reason
+    }
+    if (($null -eq $MissingFields) -or ($MissingFields.Count -eq 0)) {
+        $MissingFields = @(
+            'captain_team_board/team_board/board/team_native_trace',
+            'station_id',
+            'handoff_packet_id',
+            'role_id',
+            'role_instance_id',
+            'assigned_specialist_skill',
+            'requested_execution_channel',
+            'channel_capability',
+            'channel_invocation_status',
+            'authorization_target',
+            'authorization_scope',
+            'authorization_phase',
+            'authorization_expiry',
+            'delivery_artifacts'
+        )
+    }
+
+    return (@(
+        'Governance hard gate hit. Treat this as designed policy enforcement, not a tool failure.',
+        ('Block type: {0}.' -f $BlockType),
+        ('Blocked action: {0}.' -f $ActionType),
+        ('Reason code: {0}.' -f $ReasonCode),
+        ('Reason: {0}' -f $Reason),
+        ('Missing structured fields: {0}.' -f (@($MissingFields) -join ', ')),
+        'Missing evidence must be supplied in the current structured payload; historical transcript text is diagnostic only.',
+        'Allowed next steps: stop the current action; report completion_state: blocked, validation_state: unverified, or closed-with-director-risk when explicitly scope-bound; bind any ordinary Director wording to the current visible plan, station, file set, command, authorization phase, and expiry before retrying the work.',
+        'Forbidden next steps: do not retry with another tool, do not switch channels, do not use transcript text or prior assistant claims as authorization, do not treat a transcript as a permission source, do not claim completion, and do not perform memory, git, release, deploy, install, credential, or external-state mutation.'
+    ) -join ' ')
+}
+
+function Get-HookReasonCode {
+    param([string]$Reason)
+
+    if ([string]::IsNullOrWhiteSpace($Reason)) { return 'TN-HOOK-GOVERNANCE-GATE' }
+    if ($Reason -match '(?i)not valid JSON|empty or not valid JSON|parse') { return 'TN-HOOK-INVALID-INPUT' }
+    if ($Reason -match '(?i)structured Team-Native payload|tool_payload_evidence_gap') { return 'TN-HOOK-STRUCTURED-PAYLOAD-MISSING' }
+    if ($Reason -match '(?i)scoped write authorization|target path|current target') { return 'TN-HOOK-WRITE-SCOPE-MISMATCH' }
+    if ($Reason -match '(?i)Write-capable') { return 'TN-HOOK-WRITE-EVIDENCE-MISSING' }
+    if ($Reason -match '(?i)bypass permission mode') { return 'TN-HOOK-PROTECTED-BYPASS-UNAUTHORIZED' }
+    if ($Reason -match '(?i)host/platform verified|tool-layer envelope is unverified|tool-layer receipt is unverified') { return 'TN-HOOK-TOOL-LAYER-RECEIPT-UNVERIFIED' }
+    if ($Reason -match '(?i)Protected mutation requires explicit protected authorization|protected authorization evidence') { return 'TN-HOOK-PROTECTED-AUTH-MISSING' }
+    if ($Reason -match '(?i)trust bypass') { return 'TN-HOOK-TRUST-BYPASS' }
+    if ($Reason -match '(?i)retrying with another tool|switching channels|policy block') { return 'TN-HOOK-POST-BLOCK-BYPASS' }
+    if ($Reason -match '(?i)closed-with-director-risk') { return 'TN-HOOK-RISK-CLOSE-EVIDENCE-MISSING' }
+    if ($Reason -match '(?i)Completion claim|delivery artifacts') { return 'TN-HOOK-COMPLETION-ARTIFACTS-MISSING' }
+    return 'TN-HOOK-GOVERNANCE-GATE'
+}
+
 function Exit-Block {
     param(
         [string]$EventName,
         [string]$Reason
     )
+
+    $diagnosticReason = New-HookDiagnosticReason -Reason $Reason -ActionType $EventName
 
     switch ($EventName) {
         'PreToolUse' {
@@ -347,7 +692,7 @@ function Exit-Block {
                 hookSpecificOutput = @{
                     hookEventName            = 'PreToolUse'
                     permissionDecision       = 'deny'
-                    permissionDecisionReason = $Reason
+                    permissionDecisionReason = $diagnosticReason
                 }
             }
             exit 0
@@ -358,7 +703,7 @@ function Exit-Block {
                     hookEventName = 'PermissionRequest'
                     decision      = @{
                         behavior = 'deny'
-                        message  = $Reason
+                        message  = $diagnosticReason
                     }
                 }
             }
@@ -367,19 +712,19 @@ function Exit-Block {
         'Stop' {
             Write-HookJson @{
                 decision = 'block'
-                reason   = $Reason
+                reason   = $diagnosticReason
             }
             exit 0
         }
         'SubagentStop' {
             Write-HookJson @{
                 decision = 'block'
-                reason   = $Reason
+                reason   = $diagnosticReason
             }
             exit 0
         }
         default {
-            [Console]::Error.WriteLine($Reason)
+            [Console]::Error.WriteLine($diagnosticReason)
             exit 2
         }
     }
@@ -400,6 +745,84 @@ function Test-HasTeamNativeEvidence {
     $hasChannelStatus = $Text -match '(?i)\bchannel_invocation_status\b'
 
     return ($hasBoard -and $hasStation -and $hasHandoff -and $hasRoleId -and $hasRoleInstance -and $hasSkill -and $hasRequestedChannel -and $hasChannelCapability -and $hasChannelStatus)
+}
+
+function Test-HookStructuredFieldHasConcreteValue {
+    param(
+        [object]$Payload,
+        [string[]]$Fields
+    )
+
+    $invalidValues = @(
+        '',
+        'none',
+        'null',
+        '[]',
+        '{}',
+        'missing',
+        'not set',
+        'not-set',
+        'n/a',
+        'na',
+        'not applicable',
+        'not-applicable',
+        'unavailable',
+        'not-authorized',
+        'blocked',
+        'unverified',
+        'standby',
+        'closed-with-director-risk'
+    )
+
+    foreach ($field in $Fields) {
+        $value = Get-HookProperty -Object $Payload -Name $field
+        if ($null -eq $value) { continue }
+        foreach ($item in @(Get-StringLeafValues -Value $value)) {
+            $text = ([string]$item).Trim()
+            if ([string]::IsNullOrWhiteSpace($text)) { continue }
+            if ($invalidValues -contains $text.ToLowerInvariant()) { continue }
+            return $true
+        }
+    }
+
+    foreach ($record in @(Get-HookTrustedToolEnvelopeRecords -Payload $Payload)) {
+        foreach ($field in $Fields) {
+            $value = Get-HookRecordFieldValue -Record $record -Names @($field)
+            if ([string]::IsNullOrWhiteSpace($value)) { continue }
+            foreach ($item in @(Get-StringLeafValues -Value $value)) {
+                $text = ([string]$item).Trim()
+                if ([string]::IsNullOrWhiteSpace($text)) { continue }
+                if ($invalidValues -contains $text.ToLowerInvariant()) { continue }
+                return $true
+            }
+        }
+    }
+
+    return $false
+}
+
+function Test-HasStructuredTeamNativePayload {
+    param([object]$Payload)
+
+    $requirements = @(
+        @{ Label = 'board'; Fields = @('captain_team_board', 'team_board', 'board', 'team_native_trace') },
+        @{ Label = 'station_id'; Fields = @('station_id') },
+        @{ Label = 'handoff_packet_id'; Fields = @('handoff_packet_id') },
+        @{ Label = 'role_id'; Fields = @('role_id') },
+        @{ Label = 'role_instance_id'; Fields = @('role_instance_id') },
+        @{ Label = 'assigned_specialist_skill'; Fields = @('assigned_specialist_skill') },
+        @{ Label = 'requested_execution_channel'; Fields = @('requested_execution_channel') },
+        @{ Label = 'channel_capability'; Fields = @('channel_capability') },
+        @{ Label = 'channel_invocation_status'; Fields = @('channel_invocation_status') }
+    )
+
+    foreach ($requirement in $requirements) {
+        if (-not (Test-HookStructuredFieldHasConcreteValue -Payload $Payload -Fields $requirement.Fields)) {
+            return $false
+        }
+    }
+
+    return $true
 }
 
 function Test-IsWriteToolName {
@@ -434,8 +857,10 @@ function Test-HasProtectedMutation {
         '(?i)\bcargo\s+(?:add|install)\b',
         '(?i)\bgo\s+get\b',
         '(?i)\bdotnet\s+add\s+(?:[^\s]+\s+)?package\b',
-        '(?i)\bDeploy\.ps1\b',
-        '(?i)\binstall\.ps1\b',
+        '(?im)^\s*(?:&\s*)?(?:\.\\|\.\/)?(?:Scripts[\\\/])?Deploy\.ps1\b',
+        '(?i)\b(?:powershell|pwsh)(?:\.exe)?\b[^\r\n;|&]*\b-File\s+["'']?[^"''\r\n;|&]*\bDeploy\.ps1\b',
+        '(?im)^\s*(?:&\s*)?(?:\.\\|\.\/)?(?:Codex[\\\/])?install\.ps1\b',
+        '(?i)\b(?:powershell|pwsh)(?:\.exe)?\b[^\r\n;|&]*\b-File\s+["'']?[^"''\r\n;|&]*\binstall\.ps1\b',
         '(?i)\bmemory_commit\b',
         '(?i)\bcartridge-system__memory_commit\b',
         '(?i)\brequest_plugin_install\b',
@@ -481,7 +906,8 @@ function Get-HookProtectedMutationKeys {
         @{ Pattern = '(?i)\bdotnet\s+add\s+(?:[^\s]+\s+)?package\b'; Key = 'dotnet add package' },
         @{ Pattern = '(?i)\bmemory_commit\b|\bcartridge-system__memory_commit\b'; Key = 'memory_commit' },
         @{ Pattern = '(?i)\brequest_plugin_install\b'; Key = 'request_plugin_install' },
-        @{ Pattern = '(?i)\bDeploy\.ps1\b|(?m)^\s*(?:mcp__\S*(?:deploy)\S*|deploy)\s*$'; Key = 'deploy' },
+        @{ Pattern = '(?im)^\s*(?:&\s*)?(?:\.\\|\.\/)?(?:Scripts[\\\/])?Deploy\.ps1\b|(?i)\b(?:powershell|pwsh)(?:\.exe)?\b[^\r\n;|&]*\b-File\s+["'']?[^"''\r\n;|&]*\bDeploy\.ps1\b|(?m)^\s*(?:mcp__\S*(?:deploy)\S*|deploy)\s*$'; Key = 'deploy' },
+        @{ Pattern = '(?im)^\s*(?:&\s*)?(?:\.\\|\.\/)?(?:Codex[\\\/])?install\.ps1\b|(?i)\b(?:powershell|pwsh)(?:\.exe)?\b[^\r\n;|&]*\b-File\s+["'']?[^"''\r\n;|&]*\binstall\.ps1\b'; Key = 'install' },
         @{ Pattern = '(?i)\bgh\s+release\b|(?m)^\s*(?:mcp__\S*(?:release)\S*|release)\s*$'; Key = 'release' },
         @{ Pattern = '(?i)\b(?:npm|pnpm)\s+publish\b|\byarn\s+npm\s+publish\b|(?m)^\s*(?:mcp__\S*(?:publish)\S*|publish)\s*$'; Key = 'publish' }
     )
@@ -619,24 +1045,7 @@ function Get-HookProtectedAuthorizationRecords {
 
     $records = New-Object System.Collections.Generic.List[object]
     $value = Get-HookProperty -Object $Payload -Name 'protected_authorization'
-    if ($null -eq $value) { return @() }
-
-    if ($value -is [string]) { return @() }
-    if ($value -is [System.Collections.IDictionary]) {
-        $records.Add($value)
-        return @($records.ToArray())
-    }
-    if ($value -is [System.Management.Automation.PSCustomObject]) {
-        $records.Add($value)
-        return @($records.ToArray())
-    }
-    if ($value -is [System.Collections.IEnumerable]) {
-        foreach ($entry in $value) {
-            if (($entry -is [System.Collections.IDictionary]) -or ($entry -is [System.Management.Automation.PSCustomObject])) {
-                $records.Add($entry)
-            }
-        }
-    }
+    Add-HookObjectRecordValues -Value $value -Records $records
 
     return @($records.ToArray())
 }
@@ -806,15 +1215,223 @@ function Test-HookProtectedAuthorizationRecordMatchesAction {
     return $false
 }
 
+function Get-HookNormalizedRecordFieldValues {
+    param(
+        [object]$Record,
+        [string[]]$Names
+    )
+
+    $values = New-Object System.Collections.Generic.List[string]
+    foreach ($name in $Names) {
+        $value = Get-HookRecordFieldValue -Record $Record -Names @($name)
+        if ([string]::IsNullOrWhiteSpace($value)) { continue }
+        foreach ($item in @(Get-StringLeafValues -Value $value)) {
+            $text = ([string]$item).Trim().Trim('"', "'", '`').Trim()
+            if ([string]::IsNullOrWhiteSpace($text)) { continue }
+            $values.Add($text.ToLowerInvariant())
+        }
+    }
+
+    return @($values.ToArray() | Select-Object -Unique)
+}
+
+function Test-HookRecordSetsIntersect {
+    param(
+        [string[]]$Left,
+        [string[]]$Right
+    )
+
+    foreach ($leftValue in @($Left)) {
+        if ([string]::IsNullOrWhiteSpace($leftValue)) { continue }
+        foreach ($rightValue in @($Right)) {
+            if ([string]::IsNullOrWhiteSpace($rightValue)) { continue }
+            if ($leftValue -eq $rightValue) { return $true }
+        }
+    }
+
+    return $false
+}
+
+function Test-HookEnvelopeReceiptIdentityMatch {
+    param(
+        [object]$Envelope,
+        [object]$Receipt
+    )
+
+    $envelopeIds = @(Get-HookNormalizedRecordFieldValues -Record $Envelope -Names @(
+        'envelope_id',
+        'tool_execution_envelope_id',
+        'execution_envelope_id',
+        'tool_envelope_id',
+        'id'
+    ))
+    $receiptEnvelopeIds = @(Get-HookNormalizedRecordFieldValues -Record $Receipt -Names @(
+        'envelope_id',
+        'tool_execution_envelope_id',
+        'execution_envelope_id',
+        'receipt_envelope_id',
+        'tool_envelope_id',
+        'envelope'
+    ))
+    if (($envelopeIds.Count -gt 0) -and ($receiptEnvelopeIds.Count -gt 0) -and
+        (Test-HookRecordSetsIntersect -Left $envelopeIds -Right $receiptEnvelopeIds)) {
+        return $true
+    }
+
+    $envelopeNonces = @(Get-HookNormalizedRecordFieldValues -Record $Envelope -Names @(
+        'nonce',
+        'nonce_value',
+        'envelope_nonce',
+        'runtime_nonce'
+    ))
+    $receiptNonces = @(Get-HookNormalizedRecordFieldValues -Record $Receipt -Names @(
+        'nonce',
+        'nonce_value',
+        'receipt_nonce',
+        'envelope_nonce',
+        'runtime_nonce'
+    ))
+    if (($envelopeNonces.Count -gt 0) -and ($receiptNonces.Count -gt 0) -and
+        (Test-HookRecordSetsIntersect -Left $envelopeNonces -Right $receiptNonces)) {
+        return $true
+    }
+
+    return $false
+}
+
+function Test-HookReceiptDecisionAllows {
+    param([object]$Receipt)
+
+    $decisionText = Get-HookRecordFieldValue -Record $Receipt -Names @(
+        'decision',
+        'receipt_decision',
+        'execution_receipt_decision',
+        'permission_decision',
+        'permissionDecision',
+        'authorization_decision',
+        'outcome',
+        'status'
+    )
+    if ([string]::IsNullOrWhiteSpace($decisionText)) { return $false }
+    if ($decisionText -match '(?i)\b(deny|denied|block|blocked|reject|rejected|not[-_ ]?authorized|unauthorized|forbidden|failed|failure|error)\b') {
+        return $false
+    }
+
+    return ($decisionText -match '(?i)\b(allow|allowed|approved|permitted)\b')
+}
+
+function Get-HookReceiptActionScopeText {
+    param([object]$Receipt)
+
+    $parts = New-Object System.Collections.Generic.List[string]
+    foreach ($field in @(
+        'action',
+        'action_key',
+        'requested_action',
+        'receipt_action',
+        'execution_action',
+        'tool_action',
+        'authorized_action',
+        'protected_action',
+        'command',
+        'target',
+        'action_target',
+        'receipt_target',
+        'authorization_target',
+        'authorized_target',
+        'protected_target',
+        'scope',
+        'receipt_scope',
+        'authorization_scope',
+        'authorized_scope',
+        'protected_scope'
+    )) {
+        $value = Get-HookRecordFieldValue -Record $Receipt -Names @($field)
+        if (-not [string]::IsNullOrWhiteSpace($value)) {
+            $parts.Add($value)
+        }
+    }
+
+    return (@($parts.ToArray()) -join ' ').Trim()
+}
+
+function Test-HookReceiptMatchesActionAndScope {
+    param(
+        [object]$Receipt,
+        [object]$AuthorizationRecord,
+        [object]$ActionRequirement
+    )
+
+    $receiptText = Get-HookReceiptActionScopeText -Receipt $Receipt
+    if ([string]::IsNullOrWhiteSpace($receiptText)) { return $false }
+
+    $key = [string]$ActionRequirement.Key
+    if ([string]::IsNullOrWhiteSpace($key)) { return $false }
+    if (-not (Test-HookTextContainsLiteral -Text $receiptText -Needle $key)) {
+        return $false
+    }
+
+    foreach ($token in @($ActionRequirement.DetailTokens)) {
+        if (-not (Test-HookTextContainsLiteral -Text $receiptText -Needle $token)) {
+            return $false
+        }
+    }
+
+    $authorizationTargetScope = @(
+        (Get-HookRecordFieldValue -Record $AuthorizationRecord -Names @('authorization_target')),
+        (Get-HookRecordFieldValue -Record $AuthorizationRecord -Names @('authorization_scope'))
+    ) -join ' '
+    if ([string]::IsNullOrWhiteSpace($authorizationTargetScope)) { return $false }
+    if (-not (Test-HookTextContainsLiteral -Text $authorizationTargetScope -Needle $key)) {
+        return $false
+    }
+    foreach ($token in @($ActionRequirement.DetailTokens)) {
+        if (-not (Test-HookTextContainsLiteral -Text $authorizationTargetScope -Needle $token)) {
+            return $false
+        }
+    }
+
+    return $true
+}
+
+function Test-HookProtectedAuthorizationHasMatchingToolReceipt {
+    param(
+        [object[]]$TrustedEnvelopes,
+        [object[]]$TrustedReceipts,
+        [object]$AuthorizationRecord,
+        [object]$ActionRequirement
+    )
+
+    foreach ($envelope in @($TrustedEnvelopes)) {
+        foreach ($receipt in @($TrustedReceipts)) {
+            if (-not (Test-HookEnvelopeReceiptIdentityMatch -Envelope $envelope -Receipt $receipt)) { continue }
+            if (-not (Test-HookReceiptDecisionAllows -Receipt $receipt)) { continue }
+            if (-not (Test-HookReceiptMatchesActionAndScope -Receipt $receipt -AuthorizationRecord $AuthorizationRecord -ActionRequirement $ActionRequirement)) { continue }
+            return $true
+        }
+    }
+
+    return $false
+}
+
 function Test-HasProtectedAuthorizationEvidence {
     param(
         [string]$ActionText,
         [string]$EvidenceText,
-        [object]$Payload
+        [object]$Payload,
+        [object]$HostVerifiedToolLayerEvidence
     )
 
     $requirements = @(Get-HookProtectedActionRequirements -ActionText $ActionText)
     if ($requirements.Count -eq 0) { return $false }
+
+    if ($null -eq $HostVerifiedToolLayerEvidence) { return $false }
+
+    $trustedToolEnvelopeRecords = @(Get-HookTrustedToolEnvelopeRecords -Payload $HostVerifiedToolLayerEvidence)
+    if ($trustedToolEnvelopeRecords.Count -eq 0) { return $false }
+
+    $trustedExecutionReceiptRecords = @(Get-HookTrustedExecutionReceiptRecords -Payload $HostVerifiedToolLayerEvidence)
+    if ($trustedExecutionReceiptRecords.Count -eq 0) { return $false }
 
     $records = @(Get-HookProtectedAuthorizationRecords -Payload $Payload)
     if ($records.Count -eq 0) { return $false }
@@ -822,7 +1439,8 @@ function Test-HasProtectedAuthorizationEvidence {
     foreach ($requirement in $requirements) {
         $isCovered = $false
         foreach ($record in $records) {
-            if (Test-HookProtectedAuthorizationRecordMatchesAction -Record $record -ActionRequirement $requirement) {
+            if ((Test-HookProtectedAuthorizationRecordMatchesAction -Record $record -ActionRequirement $requirement) -and
+                (Test-HookProtectedAuthorizationHasMatchingToolReceipt -TrustedEnvelopes $trustedToolEnvelopeRecords -TrustedReceipts $trustedExecutionReceiptRecords -AuthorizationRecord $record -ActionRequirement $requirement)) {
                 $isCovered = $true
                 break
             }
@@ -998,7 +1616,22 @@ function Test-IsGovernancePrompt {
     param([string]$Text)
 
     if ([string]::IsNullOrWhiteSpace($Text)) { return $false }
-    return $Text -match '(?i)(GO\b|Wave\s+\d+|implementation|fix|build|audit|Doctor|commit|push|release|deploy|memory|hook|Team-Native|subagent|workflow|governance)'
+    $englishSignal = $Text -match '(?i)(GO\b|continue|do\s+that|as\s+planned|what\s+now|Wave\s+\d+|implementation|fix|repair|build|audit|Doctor|commit|push|release|deploy|memory|hook|Team-Native|subagent|workflow|governance)'
+    $zhSignals = @(
+        (New-UnicodeString -Codes @(0x7E7C, 0x7E8C)),
+        (New-UnicodeString -Codes @(0x4FEE, 0x6B63)),
+        (New-UnicodeString -Codes @(0x4FEE, 0x5FA9)),
+        (New-UnicodeString -Codes @(0x5EFA, 0x69CB)),
+        (New-UnicodeString -Codes @(0x9A57, 0x8B49)),
+        (New-UnicodeString -Codes @(0x9264, 0x5B50)),
+        (New-UnicodeString -Codes @(0x5718, 0x968A)),
+        (New-UnicodeString -Codes @(0x5DE5, 0x4F5C, 0x6D41)),
+        (New-UnicodeString -Codes @(0x6240, 0x4EE5, 0x5462))
+    )
+    foreach ($signal in $zhSignals) {
+        if ($Text.Contains($signal)) { return $true }
+    }
+    return $englishSignal
 }
 
 function Test-IsCurrentCompletionReferenceLine {
@@ -1081,6 +1714,10 @@ function Test-ClaimsCompletion {
         '^\s*all\s+set\s*[.!]?\s*$',
         'Wave\s+\d+.{0,80}(complete|completed|done|passed|ready)',
         '\b(?:this|current|the)\s+(?:turn|task|work|implementation|fix|change)\s+is\s+(?:complete|completed|done|ready)\b',
+        (New-UnicodeString -Codes @(0x5DF2, 0x5B8C, 0x6210)),
+        ((New-UnicodeString -Codes @(0x6E2C, 0x8A66)) + '.{0,20}' + (New-UnicodeString -Codes @(0x901A, 0x904E))),
+        ((New-UnicodeString -Codes @(0x6AA2, 0x67E5)) + '.{0,20}' + (New-UnicodeString -Codes @(0x901A, 0x904E))),
+        ((New-UnicodeString -Codes @(0x9A57, 0x8B49)) + '.{0,20}' + (New-UnicodeString -Codes @(0x901A, 0x904E))),
         (New-UnicodeString -Codes @(0x672C, 0x8F2A, 0x5DF2, 0x5B8C, 0x6210)),
         (New-UnicodeString -Codes @(0x4FEE, 0x5FA9, 0x5DF2, 0x5B8C, 0x6210)),
         (New-UnicodeString -Codes @(0x8B8A, 0x66F4, 0x5DF2, 0x5B8C, 0x6210)),
@@ -1255,6 +1892,103 @@ function Test-HasNonCompleteClosureState {
     return $false
 }
 
+function Test-HasClosedWithDirectorRiskState {
+    param([string]$Text)
+
+    if ([string]::IsNullOrWhiteSpace($Text)) { return $false }
+    $zhRiskClosed = (New-UnicodeString -Codes @(0x98A8, 0x96AA, 0x95DC, 0x9589))
+    foreach ($line in @($Text -split "`r?`n")) {
+        if (Test-IsCurrentCompletionReferenceLine -Line $line) { continue }
+        if (Test-IsNegatedClosureStateLine -Line $line) { continue }
+        if (($line -match '(?i)\bclosed-with-director-risk\b') -or $line.Contains($zhRiskClosed)) {
+            return $true
+        }
+    }
+    return $false
+}
+
+function Test-HasDirectorRiskCloseEvidence {
+    param([string]$Text)
+
+    if ([string]::IsNullOrWhiteSpace($Text)) { return $false }
+
+    $hasExplicitRiskCloseField = $Text -match '(?i)(director_risk_close_evidence|director_risk_close_authorization|risk_close_evidence|risk_closure_evidence)'
+    $hasDirector = $Text -match '(?i)\bDirector\b'
+    if (-not $hasDirector) {
+        $hasDirector = $Text.Contains((New-UnicodeString -Codes @(0x7E3D, 0x76E3)))
+    }
+
+    $hasRiskClose = $Text -match '(?i)(closed-with-director-risk|risk[- ]?close|risk[- ]?closure|accepted\s+risk|explicitly\s+accepted|GO\s+RISK)'
+    $zhRiskCloseTerms = @(
+        (New-UnicodeString -Codes @(0x98A8, 0x96AA, 0x95DC, 0x9589)),
+        (New-UnicodeString -Codes @(0x63A5, 0x53D7, 0x98A8, 0x96AA)),
+        (New-UnicodeString -Codes @(0x9010, 0x6848, 0x95DC, 0x9589))
+    )
+    foreach ($term in $zhRiskCloseTerms) {
+        if ($Text.Contains($term)) {
+            $hasRiskClose = $true
+            break
+        }
+    }
+
+    $hasScope = $Text -match '(?i)(director_risk_close_scope|risk_close_scope|risk_close_target|authorization_scope|authorization_target|authorized_files|scope[- ]?bound|current\s+(task|phase|turn)|this\s+(task|phase|turn)|station_id|handoff_packet_id)'
+    $zhScopeTerms = @(
+        (New-UnicodeString -Codes @(0x7BC4, 0x570D)),
+        (New-UnicodeString -Codes @(0x76EE, 0x6A19)),
+        (New-UnicodeString -Codes @(0x672C, 0x6B21)),
+        (New-UnicodeString -Codes @(0x7576, 0x524D))
+    )
+    foreach ($term in $zhScopeTerms) {
+        if ($Text.Contains($term)) {
+            $hasScope = $true
+            break
+        }
+    }
+
+    return ($hasExplicitRiskCloseField -and $hasDirector -and $hasRiskClose -and $hasScope)
+}
+
+function Test-HasPostBlockBypassAttempt {
+    param([string]$Text)
+
+    if ([string]::IsNullOrWhiteSpace($Text)) { return $false }
+    $hasBlockReference = $Text -match '(?i)(hook|gate|guard|blocked|denied|permission|PreToolUse|authorization|tool_payload_evidence_gap|policy enforcement)'
+    $zhBlockSignals = @(
+        (New-UnicodeString -Codes @(0x9264, 0x5B50)),
+        (New-UnicodeString -Codes @(0x9598, 0x9580)),
+        (New-UnicodeString -Codes @(0x64CB, 0x4E0B)),
+        (New-UnicodeString -Codes @(0x88AB, 0x64CB)),
+        (New-UnicodeString -Codes @(0x963B, 0x64CB)),
+        (New-UnicodeString -Codes @(0x6388, 0x6B0A))
+    )
+    foreach ($signal in $zhBlockSignals) {
+        if ($Text.Contains($signal)) {
+            $hasBlockReference = $true
+            break
+        }
+    }
+
+    $hasBypassIntent = $Text -match '(?i)(retry|try again|use another tool|switch tools|switch channel|different tool|work around|bypass|use transcript|historical transcript|prior message)'
+    $hasToolBypassIntent = $Text -match '(?i)\b(use|try|retry|switch to|fall back to|fallback to|run|call)\b.{0,80}\b(shell redirect|git apply|apply_patch|Out-File|Set-Content)\b|\b(shell redirect|git apply|apply_patch|Out-File|Set-Content)\b.{0,80}\b(instead|to bypass|work around|after (?:the )?block)'
+    $zhBypassSignals = @(
+        (New-UnicodeString -Codes @(0x63DB, 0x5DE5, 0x5177)),
+        (New-UnicodeString -Codes @(0x63DB, 0x901A, 0x9053)),
+        (New-UnicodeString -Codes @(0x91CD, 0x8A66)),
+        (New-UnicodeString -Codes @(0x7E5E, 0x904E)),
+        (New-UnicodeString -Codes @(0x7E5E, 0x958B)),
+        (New-UnicodeString -Codes @(0x7528, 0x5C0D, 0x8A71)),
+        (New-UnicodeString -Codes @(0x7528, 0x6B77, 0x53F2))
+    )
+    foreach ($signal in $zhBypassSignals) {
+        if ($Text.Contains($signal)) {
+            $hasBypassIntent = $true
+            break
+        }
+    }
+
+    return ($hasBlockReference -and ($hasBypassIntent -or $hasToolBypassIntent))
+}
+
 function New-UnicodeString {
     param([int[]]$Codes)
 
@@ -1301,12 +2035,30 @@ Write-HookDebugSnapshot -EventName $eventName -InputText $inputText -Payload $pa
 
 $parseError = Get-HookProperty -Object $payload -Name '__parse_error'
 if ($parseError) {
-    Exit-AllowWithSystemMessage -Message ("Team-Native hook input was not valid JSON; hook evidence is unverified: {0}" -f $parseError)
+    $parseReason = "Team-Native hook input was empty or not valid JSON; fail-closed governance events require current structured evidence before action: $parseError"
+    switch ($eventName) {
+        'PreToolUse' {
+            Exit-Block -EventName 'PreToolUse' -Reason $parseReason
+        }
+        'PermissionRequest' {
+            Exit-Block -EventName 'PermissionRequest' -Reason $parseReason
+        }
+        'Stop' {
+            Exit-Block -EventName 'Stop' -Reason $parseReason
+        }
+        'UserPromptSubmit' {
+            Exit-AllowWithContext -EventName 'UserPromptSubmit' -Message ("Team-Native hook input was not valid JSON; governance evidence is unverified and cannot authorize writes or completion claims: {0}" -f $parseError)
+        }
+        default {
+            Exit-AllowWithSystemMessage -Message ("Team-Native hook input was not valid JSON; hook evidence is unverified: {0}" -f $parseError)
+        }
+    }
 }
 
 $actionText = Get-HookActionText -Payload $payload
 $evidenceText = Get-CurrentStructuredEvidenceText -Payload $payload
 $transcriptText = Get-HistoricalTranscriptReferenceText -Payload $payload
+$hostVerifiedToolLayerEvidence = Get-HookHostVerifiedToolLayerEvidence
 $currentText = ($actionText + "`n" + $evidenceText).Trim()
 $diagnosticText = ($currentText + "`n" + $transcriptText).Trim()
 $toolName = Get-HookProperty -Object $payload -Name 'tool_name'
@@ -1322,22 +2074,28 @@ $permissionMode = Get-HookProperty -Object $payload -Name 'permission_mode'
 $repoRoot = Get-HookProperty -Object $payload -Name 'cwd'
 $toolBehavior = Get-HookToolBehavior -ToolName $toolName -ActionText $actionText
 $hasTeamNativeEvidence = Test-HasTeamNativeEvidence -Text $evidenceText
+$hasStructuredTeamNativePayload = Test-HasStructuredTeamNativePayload -Payload $payload
 $hasProtectedMutation = ($toolBehavior -eq 'protected-mutation')
 $hasWriteCapableAction = ($toolBehavior -eq 'write-capable')
 $hasReadOnlyCommand = (($toolBehavior -eq 'read-only') -or ($toolBehavior -eq 'broad-read'))
 $hasBroadReadCommand = ($toolBehavior -eq 'broad-read')
 $hasSpecialistDeepReadEvidence = Test-HasSpecialistDeepReadEvidence -Text $evidenceText
-$hasProtectedAuthorizationEvidence = Test-HasProtectedAuthorizationEvidence -ActionText $actionText -EvidenceText $evidenceText -Payload $payload
+$hasProtectedAuthorizationEvidence = Test-HasProtectedAuthorizationEvidence -ActionText $actionText -EvidenceText $evidenceText -Payload $payload -HostVerifiedToolLayerEvidence $hostVerifiedToolLayerEvidence
 $hasScopedWriteAuthorization = Test-HasScopedWriteAuthorization -Text $evidenceText
 $hasActionWithinScopedWriteAuthorization = Test-ActionWithinScopedWriteAuthorization -ActionText $actionText -EvidenceText $evidenceText -RepoRoot $repoRoot
+$hasHostVerifiedToolEnvelope = (($null -ne $hostVerifiedToolLayerEvidence) -and (@(Get-HookTrustedToolEnvelopeRecords -Payload $hostVerifiedToolLayerEvidence).Count -gt 0))
+$hasHostVerifiedExecutionReceipt = (($null -ne $hostVerifiedToolLayerEvidence) -and (@(Get-HookTrustedExecutionReceiptRecords -Payload $hostVerifiedToolLayerEvidence).Count -gt 0))
 
 switch ($eventName) {
     'UserPromptSubmit' {
         if ((Test-IsGovernancePrompt -Text $actionText) -and (-not $hasTeamNativeEvidence)) {
-            Exit-AllowWithContext -EventName 'UserPromptSubmit' -Message 'Team-Native route hint: governance-impact, coding, validation, review, memory, commit, release, and broad file work require a Captain Team Board, station handoff, role identity, channel state, and recovered delivery artifacts before completion claims.'
+            Exit-AllowWithContext -EventName 'UserPromptSubmit' -Message 'Team-Native route hint: natural-language instructions are valid. Treat ordinary wording such as GO, continue, so what, or fix it as route intent; bind it to the current action, current visible plan or station, file set, command, authorization phase, and expiry before any write or protected action. Do not require the Director to say internal channel names. Governance-impact, coding, validation, review, memory, commit, release, and broad file work still require a Captain Team Board, station handoff, role identity, channel state, and recovered delivery artifacts before completion claims.'
         }
     }
     'PreToolUse' {
+        if (($hasWriteCapableAction -or $hasProtectedMutation) -and (-not $hasStructuredTeamNativePayload)) {
+            Exit-Block -EventName 'PreToolUse' -Reason 'Write or protected mutation requires current structured Team-Native payload fields. Transcript text and text-only team_native_trace are diagnostic only; record tool_payload_evidence_gap until board, station, handoff, role, specialist skill, requested channel, channel capability, and invocation status are available.'
+        }
         if ($hasWriteCapableAction -and (-not $hasTeamNativeEvidence)) {
             Exit-Block -EventName 'PreToolUse' -Reason 'Write-capable tool requested before a complete Team-Native board, handoff, role identity, and channel state are visible.'
         }
@@ -1346,6 +2104,9 @@ switch ($eventName) {
         }
         if ($hasProtectedMutation -and (-not $hasTeamNativeEvidence)) {
             Exit-Block -EventName 'PreToolUse' -Reason 'Protected mutation requested before Team-Native board or channel evidence is visible. Open or recover the formal station evidence first.'
+        }
+        if ($hasProtectedMutation -and (-not ($hasHostVerifiedToolEnvelope -and $hasHostVerifiedExecutionReceipt))) {
+            Exit-Block -EventName 'PreToolUse' -Reason 'Protected mutation requires host/platform verified tool-layer envelope and execution receipt; tool-layer envelope/receipt was not provided by host/platform verified channel. Payload self-asserted issuer, signature, nonce, host_verified_*, trusted_issuer, tool_execution_envelope, or tool_execution_receipt fields cannot authorize protected mutation.'
         }
         if (($permissionMode -eq 'bypassPermissions') -and $hasProtectedMutation -and (-not $hasProtectedAuthorizationEvidence)) {
             Exit-Block -EventName 'PreToolUse' -Reason 'Protected mutation under bypass permission mode is not allowed without explicit Team-Native closure evidence.'
@@ -1361,6 +2122,9 @@ switch ($eventName) {
         }
     }
     'PermissionRequest' {
+        if (($hasWriteCapableAction -or $hasProtectedMutation) -and (-not $hasStructuredTeamNativePayload)) {
+            Exit-Block -EventName 'PermissionRequest' -Reason 'Write or protected mutation permission requires current structured Team-Native payload fields. Transcript text and text-only team_native_trace are diagnostic only; record tool_payload_evidence_gap until board, station, handoff, role, specialist skill, requested channel, channel capability, and invocation status are available.'
+        }
         if ($hasWriteCapableAction -and (-not $hasTeamNativeEvidence)) {
             Exit-Block -EventName 'PermissionRequest' -Reason 'Write-capable tool permission request lacks a complete Team-Native board, handoff, role identity, and channel state.'
         }
@@ -1369,6 +2133,9 @@ switch ($eventName) {
         }
         if ($hasProtectedMutation -and (-not $hasTeamNativeEvidence)) {
             Exit-Block -EventName 'PermissionRequest' -Reason 'Permission request lacks visible Team-Native board, role, channel, and authorization evidence for the protected mutation.'
+        }
+        if ($hasProtectedMutation -and (-not ($hasHostVerifiedToolEnvelope -and $hasHostVerifiedExecutionReceipt))) {
+            Exit-Block -EventName 'PermissionRequest' -Reason 'Protected mutation permission requires host/platform verified tool-layer envelope and execution receipt; tool-layer envelope/receipt was not provided by host/platform verified channel. Payload self-asserted issuer, signature, nonce, host_verified_*, trusted_issuer, tool_execution_envelope, or tool_execution_receipt fields cannot authorize protected mutation.'
         }
         if ($hasProtectedMutation -and (-not $hasProtectedAuthorizationEvidence)) {
             Exit-Block -EventName 'PermissionRequest' -Reason 'Protected mutation permission requires explicit protected authorization evidence for the current phase, target, and closure state.'
@@ -1384,6 +2151,12 @@ switch ($eventName) {
         }
     }
     'Stop' {
+        if (Test-HasPostBlockBypassAttempt -Text $actionText) {
+            Exit-Block -EventName 'Stop' -Reason 'A hook or policy block cannot be followed by retrying with another tool, switching channels, or using transcript text as substitute authorization. Report blocked or unverified with missing structured evidence instead.'
+        }
+        if ((Test-HasClosedWithDirectorRiskState -Text $currentText) -and (-not (Test-HasDirectorRiskCloseEvidence -Text $evidenceText))) {
+            Exit-Block -EventName 'Stop' -Reason 'closed-with-director-risk requires current explicit scope-bound Director risk close evidence in structured payload fields; assistant text alone cannot close the risk.'
+        }
         if ((Test-ClaimsCompletion -Text $actionText) -and (-not (Test-HasFullArtifactSet -Text $currentText)) -and (-not (Test-HasNonCompleteClosureState -Text $currentText))) {
             Exit-Block -EventName 'Stop' -Reason 'Completion claim requires recovered implementation, memory/docs, review, and validation delivery artifacts or an explicit blocked/unverified/closed-with-director-risk state.'
         }

@@ -86,10 +86,11 @@ Technical details may only appear after a `補充技術細節` section when they
 - Classify the target surface before selecting evidence: web/browser, desktop GUI, IDE/plugin panel, terminal/CLI/TUI, or mixed surface.
 - Classify the real operation surface before selecting evidence: web, desktop GUI, CLI/TUI, backend service, database, scheduled job, automation, IDE/plugin, scraper/data sync, AI/model feature, cloud/deployment, or mixed surface.
 - Inventory operator-capable verification entries before selecting evidence: project scripts, app routes, browser control, desktop GUI control, terminal commands, plugin host commands, direct requests, logs, databases, dry-run, preview, sandbox, recorded real-source replay, or read-only production checks.
-- Select evidence level from the preceding **[GOVERNANCE DEPTH / 治理深度判定]** summary, or infer it when the Director invokes testing directly:
+- Select or infer only the validation evidence level from the preceding depth summary; for a standalone Director test request, infer only the validation evidence level from the target and available operation surface:
   - Minimum evidence: targeted proof for a lightweight change, with the selected evidence matching the interface surface.
   - Enhanced evidence: real rendered or executed evidence across the affected states for medium features and all user-visible UI changes.
   - Exemption evidence: allowed only when the target has no UI, no user-visible output, and no interface adaptation impact; state the reason instead of collecting visual evidence.
+- Evidence-level selection never grants write authorization. Any repair, source change, workflow change, or generated-copy change found during testing must route back to a GO-backed formal change delivery station.
 - Evidence type MUST match the interface surface and the real operation surface. Missing required evidence means the result is failed or blocked, not complete.
 - Visual evidence MUST include detail-observation notes: text clipping, long labels, alignment, spacing, borders, overlap, focus/disabled states, loading, empty, error, and feedback states relevant to the surface.
 - Visual evidence MUST prefer real information: real pages, real data, real account state, current responses/logs, or an equivalent real path before fallback fake data.

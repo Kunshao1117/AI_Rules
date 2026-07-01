@@ -4,24 +4,24 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-06-30T09:46:36+08:00'
+last_updated: '2026-07-01T09:37:26+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-06-30T03:21:47+08:00'
+last_verified: '2026-07-01T09:32:41+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 6
+cycle_event_count: 12
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: active
+compaction_status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -35,8 +35,11 @@ metadata:
 # _shared.team-native-core — Team-Native Core Governance Memory
 ## Current Truth
 - Workflow orchestration is now the shared sequence layer between workflow routing and Team-Native station execution; Team-Native Core remains the hard gate.
+- Route and state are separated: blocked, unverified, standby, not-authorized, and `closed-with-director-risk` are station or evidence states, not fallback execution routes.
 - Captain-Lite Reading Model separates micro-read probes from evidence: broad captain reads need specialist deep-read evidence or a recorded direct exception before completion claims.
+- Captain deep-read substitution is a hard exception path: the captain may integrate returned artifacts and verify-read bounded scope, but broad reading or specialist replacement requires recorded exception evidence.
 - Protected mutations now require explicit protected authorization evidence for current phase, target, scope, and closure state; a general formal-write board is not enough.
+- Source/deployed parity is part of the Team-Native trace contract for shared governance and skill files; sync direction and sync evidence must be recorded when both copies exist.
 - Workflow orchestration scenarios provide non-authorizing examples for formal-readonly evidence, blueprint-to-build, change-to-validation/review/memory, failed validation route-back, audit fan-out, commit-preflight blockers, and source/deployed sync.
 - Team-Native Core is an execution precondition: when it applies, the next valid runtime state is a Captain Team Board with applicable stations, handoff packets, channel states, and formal-readonly/formal-write mode before broad reading or protected work.
 - Authorization Resolution is a shared pre-write gate: GO, interface approvals, platform prompts, modes, and workflow names resolve into scoped fields used by boards, traces, artifacts, and completion gates.
@@ -45,12 +48,21 @@ metadata:
 - Full team completion requires implementation change delivery, memory/docs delivery, independent review delivery, validation delivery, completion evidence, and required Team-Native trace evidence.
 - The captain owns protected integration and final acceptance, but unavailable specialist routes remain blocked, unverified, or `closed-with-director-risk`; they do not become routine direct work.
 - Evidence-bearing 00 chat is Team-Native formal-readonly work with bounded specialist evidence, citations, missing-scope reporting, evidence status, and captain verify-read.
+- Natural-language Director instructions are valid only after the current action, target, visible context, authorization phase, and expiry are bound; everyday words such as GO or follow-up prompts do not authorize hidden file sets, protected state, or unrelated stations.
+- Hook-blocked actions must stop as blocked, unverified, or `closed-with-director-risk`; retrying with another tool, changing channels, or using transcript text as current authorization is a governance violation.
+- Tool execution envelopes and execution receipts are carriers and return records, not authorization sources; write-capable or protected mutation traces require trusted issuer, signature, nonce, matching scope-bound authorization, the same envelope id or nonce across envelope and receipt, allowed receipt decision, matching action/target/scope, and fail-closed handling for malformed or unverifiable payloads.
+- Route fields name actual execution channels or delivery forms; blocked, unverified, standby, not-authorized, unavailable, and `closed-with-director-risk` belong in state fields and cannot act as fallback routes.
 ## Active Constraints
 - Do not describe missing platform capability as routine direct work.
 - Do not claim `complete` without separated delivery artifact classes, independent review, validation, memory/docs disposition, and trace evidence.
 - Keep platform-specific tool names in adapter sections or platform-specific files.
 - Do not copy raw task traces into source memory; keep only stable governance facts.
 ## Cycle Events
+- 31: Updated shared Team-Native memory after hook and workflow hardening: natural-language authorization must bind to the visible scope, hook blocks are stop states instead of retry prompts, route fields cannot carry blocked states, and tool envelope/receipt records remain carriers rather than authorization sources.
+- 30: Clarified protected mutation matching so trusted envelope evidence and trusted receipt evidence must share envelope identity or nonce and match action, target, scope, decision, and authorization before any protected operation can proceed.
+- 29: Added trusted tool execution envelope and receipt rules, invalid-payload fail-closed semantics, route/state separation, current scoped Director risk-close evidence, and post-block bypass hard-block requirements to shared Team-Native policies and trace evidence.
+- 28: Added natural-language authorization binding and post-hook-block stop-state rules to shared authorization, Team-Native Core, trace evidence, Codex hooks, fixture runner coverage, and Doctor checks.
+- 27: Hardened route/state separation, captain deep-read limits, source/deployed sync evidence, and task-board templates so blocked or unverified states cannot act as fallback routes.
 - 26: Added Captain-Lite Reading Model and protected mutation authorization semantics to Team-Native Core policy.
 - 25: Wave 6C added non-authorizing workflow scenario playbooks, task-board reusable templates, and explicit separation between full completion and non-complete states.
 - 24: Wave 6B added Shared/policies/workflow-orchestration.md, wired it into shared policies, workflow entries, deployed copies, and Doctor/Audit checks.

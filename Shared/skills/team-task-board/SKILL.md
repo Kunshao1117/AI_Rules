@@ -51,10 +51,11 @@ impact. Do not dispatch until the selected operation mode and board exist.
 A board is `draft`, `formal-readonly`, or `formal-write`. `draft` is pre-GO
 planning. `formal-readonly` covers no-write evidence, deep-read, research,
 validation planning, review evidence, and standby. `formal-write` is GO-backed
-dispatch for change delivery, protected integration, memory/docs, validation,
+dispatch for change delivery, protected adoption/merge, memory/docs, validation,
 review, completion, commit prep, or release prep. Lifecycle: draft ->
 formal-readonly or formal-write -> wave-gated dispatch -> artifacts ->
-review/validation/memory states -> completion audit.
+review/validation/memory states -> protected adoption/merge decisions ->
+completion audit.
 
 Formal board lifecycle is wave-gated from promotion to completion audit.
 
@@ -69,9 +70,15 @@ Board template:
 Board state: draft / formal-readonly / formal-write
 Task type:
 Workflow route:
+Execution route:
+Station state:
+Evidence state:
 Implementation authorization:
 Authorization source; Authorization target; Authorization scope; Authorization phase; Authorization evidence; Authorization expiry; Authorization resolution state; Platform mode observed:
 Platform capability route: native / adapter / conditional / unavailable
+Source/deployed pair:
+Sync direction: source-to-deployed / deployed-to-source-backfill / not-applicable / blocked / unverified
+Sync evidence:
 Delivery sequence state:
 GO evidence:
 Specialist role source: team-specialist-registry + team-specialist-*
@@ -88,12 +95,7 @@ Completion state: complete / blocked / unverified / closed-with-director-risk
 
 ## Full Board Table
 
-Full Board Table columns are Station, Applicability, Execution mode, Evidence owner, Role boundary, Direct exception, and Completion condition. Required
-stations are Requirement replay, Counter-evidence, Impact map, Plan
-authorization, Implementation, Memory delivery, Short-loop validation, Review,
-and Completion. Valid modes are `direct`, `evidence branch`, `browser branch`,
-`CLI branch`, `MCP direct`, `isolated change delivery`, `text change delivery
-artifact`, `blocked`, and `not-applicable`.
+Full Board Table columns are Station, Applicability, Execution route, Station state, Evidence state, Evidence owner, Role boundary, Direct exception, and Completion condition. Required stations are Requirement replay, Counter-evidence, Impact map, Plan authorization, Implementation, Memory delivery, Short-loop validation, Review, and Completion. Valid routes are `direct`, `evidence branch`, `browser branch`, `CLI branch`, `MCP direct`, `isolated change delivery`, `text change delivery artifact`, and protected captain integration. State values such as `blocked`, `unverified`, `standby`, `not-authorized`, `unavailable`, `closed-with-director-risk`, and `not-applicable` are not execution routes.
 
 ## Required Team-Native Trace Evidence
 
@@ -113,14 +115,17 @@ Specialist role source:
 Assigned specialist skill:
 Role ID:
 Role instance ID:
-Exclusive task scope:
+exclusive_task_scope / Exclusive task scope:
 Loaded skill refs:
 Handoff packet ID:
 Domain label:
 Requested execution channel:
 channel_capability / Channel capability: available / conditional / unavailable / unverified
 channel_invocation_status / Channel invocation status: not-started / requested / running / returned / unavailable / blocked / not-authorized
+execution_route / Execution route:
 Execution channel:
+station_state / Station state:
+evidence_state / Evidence state:
 Station lifecycle state: assigned / standby / retained / reused / handoff-required / closed / replaced / blocked / not-applicable
 Retention reason:
 Conversation health: clear / needs-handoff / stale / over-budget / role-conflict / blocked
@@ -150,6 +155,9 @@ Validation state:
 Memory/docs state:
 Captain authored specialist content: false / blocked / unverified / closed-with-director-risk
 Missing evidence state:
+Source/deployed pair:
+Sync direction:
+Sync evidence:
 ```
 
 `formal` requires a formal station, operation mode, open wave, assigned skill,
@@ -170,12 +178,12 @@ Short board-fill examples only; detailed examples live in
 
 ## Wave Dispatch Rules
 
-The captain dispatches only the current open wave. Later waves start after prior output is present or honestly marked and the next-wave start condition is satisfied. Review and validation judging a change start only after the change delivery artifact is returned, blocked, unverified, or closed-with-director-risk. Completion starts after review, validation, memory/docs, and change delivery states exist.
+The captain dispatches only the current open wave. Later waves wait for prior output or an honest blocked/unverified/risk state. Review and validation of a change start only after change delivery exists or is honestly blocked. Completion starts after review, validation, memory/docs, and change delivery states exist.
 
 `formal-readonly` stations can open without GO-write when they are strictly
 read-only and have a handoff packet. `formal-write` stations require scoped
-authorization for the write, integration, memory, git, release, deployment,
-install, or external-mutation phase.
+authorization for the write, protected adoption/merge, memory, git, release,
+deployment, install, or external-mutation phase.
 
 No-write does not mean no-team. Read-only exploration still uses
 `formal-readonly` when it can shape source, workflow, validation, review, memory,
@@ -183,34 +191,15 @@ release, or governance decisions.
 
 ## Specialist Lifecycle Rules
 
-Do not close and reopen specialists mechanically. Retain only when the same
-station, `role_id`, `role_instance_id`, delivery artifact, dispatch wave, and
-role boundary continue.
-Record station lifecycle state, retention reason, conversation health, reuse
-count, handoff summary when needed, startup thresholds, and closure reason.
-Valid lifecycle decisions are `assigned`, `standby`, `retained`, `reused`,
-`handoff-required`, `replaced`, `closed`, and `blocked`.
-
-Never retain across different `role_id` values, implementation/review,
-validation repair, memory attribution/protected memory mutation,
-completion/final acceptance, or other role-exclusive boundaries. In the same
-task trace, a role instance with `exclusive_task_scope: task` must not hold more
-than one `role_id`.
+Retain only when station, `role_id`, `role_instance_id`, delivery artifact, dispatch wave, and role boundary continue. Record lifecycle state, retention reason, conversation health, reuse count, handoff summary when needed, startup thresholds, and closure reason. Valid lifecycle decisions are `assigned`, `standby`, `retained`, `reused`, `handoff-required`, `replaced`, `closed`, and `blocked`. Never retain across role-exclusive boundaries; one task-scoped role instance holds one `role_id`.
 
 ## Fast Closeout Lane
 
-Closeout lanes are `light`, `standard`, and `release-grade`; they sit inside
-`operation_mode` and do not replace it. `light` fits docs, generated-copy sync,
-Yellow drift, or low-risk governance wording. `standard` covers policies,
-skills, matrices, audit logic, workflow semantics, memory/docs impact, and
-public contracts with separated memory/docs, validation, review, and completion.
-`release-grade` adds release completion and security/reliability for commit,
-tag, release, deployment, install, external mutation, credentials, or operator
-readiness.
+Closeout lanes sit inside `operation_mode`: `light` for docs/generated-copy sync/low-risk wording, `standard` for policies, skills, matrices, audit logic, workflow semantics, memory/docs, and public contracts, and `release-grade` for commit, tag, release, deployment, install, external mutation, credentials, or operator readiness.
 
 ## Yellow Classification Rules
 
-Every Yellow finding records classification and resolution state: `fix-this-cycle`, `residual-accepted`, `deferred-follow-up`, `local-customization`, or `informational`; resolution is fixed, deferred, accepted-residual, escalated-blocked, or escalated-red. Yellow affecting trace evidence, independent review, validation, memory/docs attribution, public contract, deployment sync, or release readiness becomes blocked, unverified, or Red. After two attempts for the same symptom, stop and route to root-cause repair, structural refactor, blocked, unverified, or closed-with-director-risk.
+Every Yellow finding records classification and resolution state. Yellow affecting trace evidence, independent review, validation, memory/docs attribution, public contract, deployment sync, or release readiness becomes blocked, unverified, or Red. After two attempts for the same symptom, route to root-cause repair, structural refactor, blocked, unverified, or closed-with-director-risk.
 
 ## Specialist Assignment
 
@@ -251,9 +240,9 @@ Implementation work uses only these forms:
 |---|---|---|
 | Isolated workspace change delivery | Modify isolated copy and return diff summary | Modify main worktree, self-review, memory, commit, push, release |
 | Text change delivery artifact | Return proposed edits with paths, rationale, tests | Write files, claim integration or review acceptance |
-| Captain substitute authoring risk record | Record no route and Director risk closure | Treat substitute authoring as integration or full completion |
+| Captain substitute authoring risk record | Record no route and Director risk closure | Treat substitute authoring as integration, change delivery, or full completion |
 
-Executable template rule: direct only when no isolated change delivery or text change delivery artifact can be produced and Director explicitly accepts the non-full-team risk state. Captain protected integration is not a change delivery form.
+Executable template rule: direct only when no isolated change delivery or text change delivery artifact can be produced, and even then this is an exception that must be recorded as blocked, unverified, or closed-with-director-risk unless the Director explicitly accepts captain substitute authoring as a non-full-team risk state. Captain protected integration is only protective adoption or merge of returned qualified artifacts and is not a change delivery form.
 
 Change delivery artifact:
 
@@ -296,18 +285,11 @@ The captain may use `direct` only for protected captain action, tool-only direct
 
 ## Integration Authorization
 
-Formal team completion requires all four artifact classes: implementation change
-delivery, memory/docs delivery artifact, review delivery artifact, and
-validation delivery artifact. Each artifact and station carries board
-authorization fields. Missing artifacts, scoped authorization, or independent
-review become `blocked`, `unverified`, or `closed-with-director-risk`;
-closed-with-director-risk is not full team completion.
-
-Implementation change delivery, memory delivery, review, and validation artifacts are the minimum full-team evidence set.
+Formal team completion requires implementation change delivery, memory/docs delivery artifact, review delivery artifact, validation delivery artifact, board authorization fields, and independent review. Missing implementation, memory/docs, review, or validation delivery becomes `blocked`, `unverified`, or `closed-with-director-risk`; closed-with-director-risk is not full team completion. Implementation change delivery, memory delivery, review, and validation artifacts are the minimum full-team evidence set.
 
 ## Workflow Entry Contract
 
-Workflow and command entries load `programming-team-governance`, `delegation-strategy`, this skill, `team-specialist-registry`, applicable `team-specialist-*`, and six formal team subskills: `team-role-boundaries`, `team-change-delivery-artifact`, `team-memory-docs-delivery-artifact`, `team-validation-delivery-artifact`, `team-review-delivery-artifact`, and `team-completion-gate`. Workflow name is only a route hint.
+Workflow and command entries load `programming-team-governance`, `delegation-strategy`, this skill, `team-specialist-registry`, applicable `team-specialist-*`, `team-role-boundaries`, `team-change-delivery-artifact`, `team-memory-docs-delivery-artifact`, `team-validation-delivery-artifact`, `team-review-delivery-artifact`, and `team-completion-gate`. Workflow name is only a route hint.
 
 ## Completion Rules
 

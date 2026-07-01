@@ -66,9 +66,19 @@ evidence and integrates the conclusion. 證據型對話不得停留在直答模�
 
 The required delivery sequence is fixed: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> station handoff packet -> execution-channel decision -> specialist startup attempt, standby, or blocked/unverified channel state -> specialist work -> captain verification-read -> recovered change delivery artifacts / evidence delivery artifacts -> independent validation and review -> captain integration -> completion audit -> report.
 
-The captain remains the only Director-facing owner, but the captain is not the default worker and must not author specialist implementation, review, validation, or memory attribution when a delivery artifact can be produced. The captain owns routing, authorization, supervision, protected integration of recovered delivery artifacts, protected memory/git/release/deploy/install gates, review-state decision, and final acceptance. All separable requirement replay, counter-evidence, impact mapping, implementation change delivery, memory delivery, validation, review, and completion audit work belongs to team stations.
+The captain remains the only Director-facing owner, but the captain is not the default worker and must not author specialist implementation, review, validation, or memory attribution when a delivery artifact can be produced. The captain owns routing, authorization, supervision, protective adoption or merge of recovered qualified delivery artifacts, protected memory/git/release/deploy/install gates, review-state decision, and final acceptance. All separable requirement replay, counter-evidence, impact mapping, implementation change delivery, memory delivery, validation, review, and completion audit work belongs to team stations.
 
 Explicit workflow names and Director requests for subagents are route hints. They do not replace the team board and do not authorize pre-board dispatch.
+
+Natural-language Director instructions are first-class route and intent signals,
+but they are not magic words. The captain binds everyday phrases such as
+"continue", "fix that first", "go back and repair this", "so what now?", or
+`GO` to the current visible plan, station, blocker, diff, command, file set, or
+protected action. If the current target, phase, scope, or expiry cannot be
+resolved, the station remains plan-only, no-write, blocked, or unverified. The
+captain must not force the Director to use artificial channel words when the
+visible context is enough, and must not infer hidden write or protected-state
+authority when the visible context is not enough.
 
 ## Operation Mode Rule
 
@@ -110,6 +120,22 @@ the formal team state for no-write work. If no execution channel can be opened,
 the station is recorded as `blocked`, `unverified`, or `standby` with a smallest
 unblock condition. The captain reports the unavailable route before absorbing
 the station into main-thread direct work.
+
+### Route And State Separation
+
+Execution route fields may name only an actual channel or delivery form: native
+subagent, project custom agent, adapter, browser evidence, command evidence, MCP
+read, external research, isolated change delivery, text change delivery artifact,
+protected captain channel, or direct captain protected integration. `blocked`,
+`unverified`, `standby`, `not-authorized`, `unavailable`, and
+`closed-with-director-risk` are station, evidence, authorization, or completion
+states only. They must not be stored as `execution_route`, `execution_channel`,
+platform route, or execution mode.
+
+When a route cannot run, keep the attempted or requested route visible and move
+the failure to `station_state`, `evidence_state`, `authorization_resolution_state`,
+or `completion_state`. A missing or unavailable route never becomes routine
+captain work, and it never supports a complete claim.
 
 ## Skill Handoff Packet Rule
 
@@ -157,6 +183,11 @@ Hooks and workflow adapters must separate reading from completion evidence:
   or large file sweeps are permitted only as read-only context recovery. The
   captain must route the result to a formal-readonly specialist deep-read
   station or record a direct exception before making completion claims.
+- Captain hard budget: the captain may perform only micro-read and verify-read
+  by default. If the captain fully reads broad, recursive, or large-file scope
+  without a prior specialist deep-read artifact, the trace records a direct
+  exception and the result is blocked, unverified, or closed-with-director-risk,
+  not full Team-Native completion.
 - Specialist deep-read: broad reads become qualified evidence only when the
   trace names `deep_read_scope`, handoff packet, `role_id`,
   `role_instance_id`, assigned specialist skill, requested execution channel,
@@ -214,6 +245,44 @@ captain authored specialist content, dispatch wave, previous-wave input, and
 next-wave condition. These fields make relationship checks auditable instead of
 relying on narrative claims.
 
+## Tool Execution Envelope Rule
+
+Tool layers may receive a `tool_execution_envelope` only as a structured carrier
+for the current Team-Native board, station, handoff packet, role, channel
+capability, authorization scope, and delivery status. The envelope is not a new
+authorization source. It must mirror the current formal trace instead of
+expanding it.
+
+A tool execution envelope used for write-capable or protected mutation work
+must include the current board and station identifiers, `handoff_packet_id`,
+`role_id`, `role_instance_id`, assigned specialist skill,
+`requested_execution_channel`, `channel_capability`,
+`channel_invocation_status`, authorization source, authorization target,
+authorization scope, authorization phase, authorization evidence,
+authorization expiry, authorization resolution state, delivery artifact ID,
+delivery artifact type, delivery artifact status, trusted issuer, signature,
+nonce, and issued-at evidence.
+
+A trusted envelope is one verified by the tool layer as coming from a trusted
+issuer, with a valid signature and fresh nonce. Model-filled envelopes,
+assistant-authored JSON, transcript text, or text-only `team_native_trace`
+payloads are untrusted unless the platform verifies the trusted issuer,
+signature, and nonce. Untrusted envelopes can explain context, but they cannot
+authorize source writes, protected integration, memory, git, release,
+deployment, install, MCP mutation, or external-state mutation.
+
+Each tool action returns an `execution_receipt` that names the envelope or
+nonce, requested action, allow/block decision, reason, resulting state, and
+delivery artifact status. A receipt records execution evidence; it cannot
+retroactively authorize a missing phase.
+
+Invalid payload fail-closed rule: malformed payloads, missing envelopes, missing
+trusted issuer, missing signature, missing nonce, stale nonce, scope mismatch,
+or absent execution receipt keep write-capable and protected actions blocked or
+unverified. After a block, any retry, channel switch, transcript substitution,
+or alternate-tool attempt is a post-block bypass hard block unless current
+scope-bound evidence or Director risk close evidence is supplied.
+
 ## Specialist Lifecycle Rule
 
 Specialist stations are not disposable one-message helpers. A specialist channel
@@ -267,7 +336,7 @@ Team-Native Core keeps these states because they preserve completion honesty:
 
 | State | Allowed use | Required evidence |
 |---|---|---|
-| `direct` | Protected captain work only: Director communication, GO interpretation, main-worktree integration of returned delivery artifacts, protected memory/git/release/deploy/install gates, review-state decision, final acceptance, hot-path non-mutating validation, or no independent evidence value after scope reduction | Station name, direct exception, replacement evidence, and residual state |
+| `direct` | Protected captain work only: Director communication, GO interpretation, protective adoption or merge of returned qualified delivery artifacts into the main worktree, protected memory/git/release/deploy/install gates, review-state decision, final acceptance, hot-path non-mutating validation, or no independent evidence value after scope reduction | Station name, direct exception, replacement evidence, and residual state |
 | `text change delivery artifact` | No governed isolated workspace is available, but the implementation task is bounded, diffable, and safe to deliver as a text change delivery artifact | File scope, proposed edits, evidence, risk, memory impact, review need, blocker status |
 | `closed-with-director-risk` | The Director closes the task with a named risk even though required team separation or delivery artifacts are missing | Director risk decision, missing artifact or separation, non-complete label, and residual limitation |
 | `unverified` | Evidence is required but currently absent or incomplete | Missing evidence, attempted route or reason not attempted, and smallest verification path |
@@ -275,6 +344,12 @@ Team-Native Core keeps these states because they preserve completion honesty:
 | `not-applicable` | The station does not belong to the task | Concrete non-applicability reason |
 
 `direct`, `closed-with-director-risk`, and `text change delivery artifact` are not non-team shortcuts. They are formal station states or delivery forms with stricter evidence requirements. Review lifecycle risk states do not become Team-Native station, missing-artifact, completion, or capability states. Diff output may be used only as an implementation representation; the governance object is the change delivery artifact. `closed-with-director-risk` is never `complete`.
+
+State labels are not fallback routes. If a template, trace, hook payload,
+handoff packet, or report places `blocked`, `unverified`, `standby`,
+`not-authorized`, `unavailable`, or `closed-with-director-risk` into an
+execution route field, the station is invalid until the route field is corrected
+and the state is moved into a state field.
 
 ## Completion Rule
 
@@ -292,7 +367,7 @@ full` is required for bottom-layer refactor, cross-file governance changes,
 specialist skill rewrites, Doctor/Audit rule changes, release preparation, or
 protected external-state readiness.
 
-Captain protected integration means integrating returned, qualified delivery artifacts into the main worktree and remains normal captain work; it can support `complete` when implementation, memory/docs, review, validation, completion, and trace evidence are all present. Captain substitute authoring means the captain creates specialist content because no qualified change delivery route exists; it starts as blocked, may be closed-with-director-risk only when the Director explicitly accepts that exact case, and must not be described as full team completion.
+Captain protected integration means protectively adopting or merging returned, qualified delivery artifacts into the main worktree. It is normal captain work only when the captain follows the returned artifact scope and does not create, rewrite, or primarily implement specialist content. It can support `complete` when implementation, memory/docs, review, validation, completion, and trace evidence are all present. Captain substitute authoring means the captain creates specialist content because no qualified change delivery route exists; it starts as blocked, may be closed-with-director-risk only when the Director explicitly accepts that exact case, and must not be described as full team completion.
 
 If any required delivery artifact or independent review is missing, the task can only finish as blocked, unverified, or closed-with-director-risk. It must not be described as full team completion.
 
@@ -301,6 +376,19 @@ returned implementation change delivery artifact does not authorize captain
 integration, memory writes, memory commit, git, release, deployment, install, or
 external mutation. Each protected phase must record scope-bound authorization or
 remain blocked/unverified.
+
+When a hook or platform guard blocks an action, the block is governance
+evidence. The next valid captain response is to stop that action, report
+blocked, unverified, or closed-with-director-risk with the missing structured
+fields, and wait for scope-bound evidence or Director risk closure. The captain
+must not retry through another tool, switch channels, use transcript text as
+authorization, or claim progress as if the blocked station continued.
+
+`closed-with-director-risk` requires current, explicit, scope-bound Director
+risk close evidence. The evidence must name the residual risk, accepted scope,
+and the missing artifact, validation, review, memory/docs, receipt, trusted
+envelope, or authorization condition. It is never `complete` and never upgrades
+an untrusted tool execution envelope into protected mutation authority.
 
 ## Platform Adapter Contract
 

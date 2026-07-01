@@ -79,6 +79,8 @@ Return these fields:
 - Evidence: files read, commands used, and relevant observations.
 - Risk: known regression, ambiguity, or integration concern.
 - Memory impact: source behavior, workflow rule, public contract, governance, docs, generated copy, no durable memory fact, or unverified.
+- Source/deployed pair, sync direction, and sync evidence when generated or
+  deployed copies are affected.
 - Review need: independent review focus.
 - Blocker status: blocked, unverified, closed-with-director-risk, or not-applicable.
 
@@ -111,4 +113,7 @@ field list inside this role skill.
 
 - Write only inside the approved file scope and governed workspace.
 - No memory, git, release, deployment, install, credential, issue, pull request, cloud, or external-state mutation.
-- Stop after the change delivery artifact is ready for captain integration.
+- Do not perform deployment-copy sync yourself unless the station was explicitly
+  assigned an isolated generated-copy change delivery; otherwise propose the
+  source/deployed pair and leave integration to the captain.
+- Stop after the change delivery artifact is ready for captain protective adoption/merge or return.

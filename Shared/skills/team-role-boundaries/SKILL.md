@@ -80,7 +80,7 @@ station and opens a new role instance.
 | `security-reliability` | Classify secrets, authorization, data integrity, abuse, reliability, observability, rollback, and operational risk. | Expose secrets, mutate protected state, implement feature changes, approve release mutation. |
 | `memory-docs` | Attribute memory, documentation, index, handoff, and generated-copy impact as evidence. | Edit memory cards, call memory commit, mutate source, decide final acceptance. |
 | `release-completion` | Check readiness, sync, residual risk, handoff, validation, review, and memory/docs evidence. | Final acceptance, memory write, git, tag, release, deploy, install. |
-| `captain` | Route, supervise, integrate approved change delivery and evidence artifacts, decide review state, own protected gates, report. | Author specialist implementation/review/validation/memory attribution when a delivery artifact route exists; hide missing evidence; claim full team completion from direct work, substitute authoring, missing review, or unapproved substitution. |
+| `captain` | Route, supervise, protectively adopt or merge returned qualified change delivery and evidence artifacts, decide review state, own protected gates, report. | Author, rewrite, or primarily implement specialist implementation/review/validation/memory attribution when a delivery artifact route exists; hide missing evidence; claim full team completion from direct work, substitute authoring, missing review, or unapproved substitution. |
 
 ## Read Scope Boundary
 
@@ -95,6 +95,16 @@ verify-reads the risky or disputed regions before integration or acceptance.
 
 If no specialist route can deep-read, record a direct exception and mark the
 missing separation as blocked, unverified, or closed-with-director-risk.
+
+Captain micro-read is limited to status checks, hashes, narrow searches, small
+diffs, and acceptance-critical snippets. Repository-wide, recursive, or large
+file reads require a specialist deep-read station first. If the captain performs
+that broad read directly, the trace must record a direct exception and cannot
+claim full team separation unless the Director closes that named risk.
+
+Execution routes and states stay separate. A channel can be unavailable, but
+`unavailable` is not the channel. A station can be blocked, but `blocked` is not
+an execution route.
 
 ## Boundary Check
 
@@ -111,8 +121,12 @@ Before accepting any delivery artifact:
 6. Confirm the handoff packet lists loaded skill refs, read scope, forbidden actions, startup thresholds, and stop condition.
 7. Mark missing separation as `closed-with-director-risk`, `unverified`, or `blocked`; it cannot support `complete`.
 8. Reject delivery artifacts that mutate memory, git, releases, deployments, installs, or external state.
-9. Distinguish captain protected integration of returned delivery artifacts from captain substitute authoring. Protected integration can be normal captain work; substitute authoring starts blocked and can only close as `closed-with-director-risk`.
+9. Distinguish captain protected integration of returned delivery artifacts from captain substitute authoring. Protected integration can be normal captain work only when it protectively adopts or merges returned qualified artifacts without captain rewrite or primary implementation; substitute authoring starts blocked and can only close as `closed-with-director-risk`.
 10. Confirm authorization fields are present before accepting a station artifact; missing authorization fields are blocked or unverified and cannot support `complete`.
+11. Confirm execution route fields contain channels or delivery forms, while
+    blocked/unverified/standby/risk-closed values stay in state fields.
+12. Confirm source/deployed pairs record sync direction and parity evidence when
+    generated or deployed copies are touched.
 
 ## Outputs
 

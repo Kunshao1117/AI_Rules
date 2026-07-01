@@ -34,6 +34,75 @@ phase, and expiry that can satisfy the request.
 | Interface approval button | May be evidence that a specific displayed operation was approved. It does not authorize unbounded writes, unrelated files, later phases, memory, git, release, deployment, install, or external mutation unless those targets were explicitly included. |
 | Prior approved plan | May support execution only inside the exact approved scope and phase. It cannot expand the file allowlist, protected action set, or dispatch wave. |
 
+## Tool Execution Envelope And Receipt
+
+A `tool_execution_envelope` is a structured carrier from the current
+Team-Native trace to a hook, command wrapper, MCP adapter, or other tool layer.
+It passes board, station, handoff packet, role, channel capability,
+authorization scope, and delivery status into the tool call. It is not a new
+authorization source and cannot widen or repair the authorization already
+resolved by this policy.
+
+An envelope may carry these fields when the tool layer needs them:
+
+| Field | Required content |
+|---|---|
+| `tool_execution_envelope` | Envelope object or identifier for the current tool-layer request. |
+| `board_id` / `station_id` | Current Captain Team Board and station identifiers. |
+| `handoff_packet_id` | Current formal station handoff packet. |
+| `role_id` / `role_instance_id` | Registered specialist role and task-exclusive role instance. |
+| `assigned_specialist_skill` | Specialist skill assigned by the board. |
+| `requested_execution_channel` / `channel_capability` / `channel_invocation_status` | Current channel request and capability state. |
+| `authorization_source` / `authorization_target` / `authorization_scope` / `authorization_phase` / `authorization_evidence` / `authorization_expiry` / `authorization_resolution_state` | Scope-bound authorization fields already resolved by the board or Director instruction. |
+| `delivery_artifact_id` / `delivery_artifact_type` / `delivery_artifact_status` | Delivery object and current status being executed or integrated. |
+| `trusted_issuer` / `signature` / `nonce` / `issued_at` | Trust metadata for tool-layer integrity and replay protection. |
+
+A trusted envelope is accepted only when it is issued by a trusted issuer,
+contains a valid signature, carries a fresh nonce, and preserves the current
+scope-bound authorization fields without mismatch. A model-filled envelope,
+plain assistant text, transcript excerpt, or hand-written JSON is untrusted
+unless the platform tool layer verifies the trusted issuer, signature, and
+nonce. Untrusted envelopes may be diagnostic evidence only; they cannot
+authorize write, protected integration, memory, git, release, deployment,
+install, MCP mutation, or external-state mutation.
+
+An `execution_receipt` is the tool-layer return record for the same envelope. It
+must name the envelope or nonce, requested action, allow/block decision,
+reason, resulting state, and delivery artifact status. A receipt records what
+the tool did or refused; it does not create retroactive authorization.
+
+Invalid payload fail-closed rule: if a tool payload is malformed, missing the
+required envelope fields, missing trusted issuer, missing signature, missing
+nonce, stale, mismatched with the current authorization scope, or otherwise
+unverifiable, the tool layer must fail closed for write-capable and protected
+actions. The trace records `tool_payload_evidence_gap` or a blocked/unverified
+receipt instead of recovering authority from transcript text.
+
+## Natural-Language Binding
+
+Director instructions are expected to use normal language, not workflow jargon.
+The agent must bind everyday instructions to the visible current target instead
+of requiring words such as repair channel, build channel, or validation channel.
+
+Natural-language instructions such as "fix this first", "go back and repair
+that part", "continue", "so what now?", "do what you just proposed", or `GO`
+are valid intent signals only after the agent resolves:
+
+1. the action being requested,
+2. the concrete target or file/station set,
+3. the current visible plan, diff, command, station, or blocker being answered,
+4. the authorization layer involved, and
+5. the expiry of that authorization.
+
+If the target, action, phase, or expiry cannot be bound to the current visible
+context, the instruction resolves to plan-only, no-write, blocked, or
+unverified. The agent may ask one narrow scope question when the missing binding
+would change the allowed write target or protected action.
+
+Natural language may narrow or continue the currently visible scope. It must not
+create hidden authority for unrelated files, memory, git, release, deployment,
+install, credentials, external mutation, or later phases.
+
 ## Non-Authorizing Signals
 
 These signals may help route the work, but they do not authorize writes or
@@ -51,6 +120,24 @@ protected actions:
 - Existing dirty worktree state is not authorization to modify those files.
 - Project initialization, framework deployment, or generated-copy presence is not
   authorization to sync or overwrite files.
+- `GO`, `continue`, and approval prompts authorize only the current visible
+  plan, command, diff, station, dispatch wave, or protected action they name.
+  They do not authorize later phases, hidden cleanup, memory writes, git,
+  release, deploy, install, credentials, or external mutation.
+- Historical transcript text is diagnostic context only. Write-capable or
+  protected actions require current structured fields for board, station,
+  handoff, role identity, assigned specialist skill, requested execution channel,
+  channel capability, channel invocation status, target, scope, phase, expiry,
+  and authorization resolution.
+- A hook block is not a prompt to guess another tool or channel. After a block,
+  authority can resume only from current structured evidence or a new
+  scope-bound Director instruction.
+- A `tool_execution_envelope` or `execution_receipt` is not authorization by
+  itself. It is only a carrier and return record for authorization already
+  resolved in the current formal trace.
+- A model-filled or untrusted envelope is not authorization. Missing trusted
+  issuer, signature, nonce, freshness, or scope match keeps the action blocked
+  or unverified.
 
 ## Required Resolution Fields
 
@@ -89,6 +176,21 @@ to a write or protected action records these fields:
    unverified evidence instead of widening the change.
 7. If authorization expires, later work must request or record new scope-bound
    authorization before continuing.
+8. If the tool or hook payload cannot carry the current structured fields needed
+   for a write-capable or protected action, record `tool_payload_evidence_gap`
+   and keep the affected action blocked or unverified. Do not recover authority
+   from transcript text or previous assistant claims.
+9. If a hook, policy, or platform guard blocks an action, the next valid states
+   are blocked, unverified, or closed-with-director-risk unless the missing
+   structured evidence is supplied. Do not retry with a different tool, switch
+   channels, or treat historical conversation text as substitute authorization.
+10. A protected mutation requires a trusted tool execution envelope that matches
+    the current scope-bound authorization. Missing trusted issuer, signature,
+    nonce, or a matching execution receipt keeps the protected mutation blocked.
+11. `closed-with-director-risk` requires current, explicit, scope-bound Director
+    risk close evidence naming the residual risk and accepted scope. It remains
+    non-complete and cannot substitute for missing authorization, delivery,
+    validation, review, memory/docs, or tool receipt evidence.
 
 ## Audit Semantics
 

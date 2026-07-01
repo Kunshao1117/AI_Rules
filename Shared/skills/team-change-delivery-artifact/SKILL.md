@@ -40,7 +40,7 @@ Use `team-specialist-registry` and the matching `team-specialist-*` skill to con
 | Mode | Allowed | Forbidden |
 |---|---|---|
 | Isolated change delivery | Edit a governed isolated copy and return diff evidence. | Write main worktree, update memory, commit, push, release. |
-| Text change delivery artifact | Propose exact edits as text when isolation is unavailable. | Claim integration, run mutating commands, self-review. |
+| Text change delivery artifact | Return precise, apply-ready edits as text when isolation is unavailable. | Claim integration, run mutating commands, self-review, or ask the captain to rewrite the implementation. |
 | Captain substitute authoring risk record | State why no change delivery route exists and keep the station blocked unless the Director accepts this exact risk as `closed-with-director-risk`. | Hide missing isolation, treat substitute authoring as protected integration or routine direct work, or call it full team completion. |
 
 ## Implementation Rules
@@ -68,6 +68,9 @@ platform_mode_observed:
 author_role:
 source_input:
 integrable_scope:
+source_deployed_pair:
+sync_direction:
+sync_evidence:
 變更:
 檔案:
 證據:
@@ -83,4 +86,4 @@ captain_authored:
 
 ## Forbidden Actions
 
-Do not perform final review, final validation, memory writes, deployment-copy sync, git staging, commit, push, tag, release, install, secret handling, or external-state mutation. Do not mark the task complete, and do not describe captain substitute authoring as a change delivery artifact or as full team completion.
+Do not perform final review, final validation, memory writes, deployment-copy sync, git staging, commit, push, tag, release, install, secret handling, or external-state mutation. You may name the source/deployed pair, proposed sync direction, and expected parity evidence, but the captain owns protected adoption or merge of returned qualified artifacts and deployed-copy sync. The captain may apply this artifact precisely or return it; captain rewrite or reimplementation is substitute authoring risk. Do not mark the task complete, and do not describe captain substitute authoring as a change delivery artifact or as full team completion.

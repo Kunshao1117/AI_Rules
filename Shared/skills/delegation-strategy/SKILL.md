@@ -30,7 +30,7 @@ eligibility are established.
 
 ## Captain Trigger Gate
 
-Captain-led mode is active for code, workflow rules, skills, tests, debugging, audit, commit/release prep, source memory/docs, generated copies, public contract, or governance work. Pure conversation and small factual answers stay direct. Uncertain source/workflow/review impact enters captain-led mode.
+Captain-led mode is active for code, workflow rules, skills, tests, debugging, audit, commit/release prep, source memory/docs, generated copies, public contract, or governance work. Pure conversation and small factual answers may stay direct only when they do not touch source/workflow/review state or create evidence that gates a change. Uncertain source/workflow/review impact enters captain-led mode.
 
 ## Task Type And Dispatch Pre-Gate
 
@@ -95,22 +95,23 @@ Exact large-read rule: large-file deep read routes to a bounded specialist; the 
 
 Evaluate each station in this order:
 
-1. Director communication, GO, final acceptance, review-state decision, source-state mutation -> `direct` with protected exception.
-2. Secrets, login, credentials, external mutation, commit, push, release, deployment, install, memory write -> `direct` or `blocked`.
-3. Implementation station with governed isolated workspace -> `isolated change delivery`; captain integrates after evidence.
-4. Implementation station without isolation but bounded and diffable -> text change delivery artifact.
-5. Source, workflow, governance, docs, generated-copy, or public contract memory impact -> memory/docs delivery artifact.
-6. No isolated/text change delivery route -> `blocked`; captain substitute authoring needs Director `closed-with-director-risk`.
-7. Immediate hot-path validation after integration -> `direct` with command evidence.
-8. Browser/UI verification station? -> `browser branch`.
-9. Large CLI-only analysis station? -> `CLI branch`.
-10. Real-time tool access? -> `MCP direct`.
-11. Independent read-only evidence station after special routes are excluded? -> `evidence branch`.
-12. No independent evidence value for a non-implementation station -> `direct` with concrete direct exception.
-13. Required route unavailable -> `blocked` or `unverified`.
-14. Missing implementation, memory, review, or validation artifact before formal completion -> `blocked`, `unverified`, or `closed-with-director-risk`; do not claim full team completion.
-15. Yellow finding -> classify as `fix-this-cycle`, `residual-accepted`, `deferred-follow-up`, `local-customization`, or `informational`.
-16. Repair loop limit reached after two repair attempts for the same Yellow or validation symptom -> stop incremental repair and route to root-cause repair, structural refactor, blocked, unverified, or `closed-with-director-risk`.
+1. Director communication, GO interpretation, final acceptance, review-state decision, and protected source-state adoption or merge of returned qualified delivery artifacts -> `direct` with protected exception.
+2. Primary implementation, rewrite, validation, review, memory attribution, or source-state mutation that is not protective adoption of a returned qualified artifact -> route to the matching formal station; the captain must not absorb it as routine direct work.
+3. Secrets, login, credentials, external mutation, commit, push, release, deployment, install, memory write -> `direct` or `blocked`.
+4. Implementation station with governed isolated workspace -> `isolated change delivery`; captain integrates after evidence.
+5. Implementation station without isolation but bounded and diffable -> text change delivery artifact.
+6. Source, workflow, governance, docs, generated-copy, or public contract memory impact -> memory/docs delivery artifact.
+7. No isolated/text change delivery route -> `blocked`; captain substitute authoring needs Director `closed-with-director-risk`.
+8. Immediate hot-path validation after integration -> `direct` with command evidence.
+9. Browser/UI verification station? -> `browser branch`.
+10. Large CLI-only analysis station? -> `CLI branch`.
+11. Real-time tool access? -> `MCP direct`.
+12. Independent read-only evidence station after special routes are excluded? -> `evidence branch`.
+13. No independent evidence value for a non-implementation station -> `direct` with concrete direct exception.
+14. Required route unavailable -> `blocked` or `unverified`.
+15. Missing implementation, memory, review, or validation artifact before formal completion -> `blocked`, `unverified`, or `closed-with-director-risk`; do not claim full team completion.
+16. Yellow finding -> classify as `fix-this-cycle`, `residual-accepted`, `deferred-follow-up`, `local-customization`, or `informational`.
+17. Repair loop limit reached after two repair attempts for the same Yellow or validation symptom -> stop incremental repair and route to root-cause repair, structural refactor, blocked, unverified, or `closed-with-director-risk`.
 
 ## Guards
 

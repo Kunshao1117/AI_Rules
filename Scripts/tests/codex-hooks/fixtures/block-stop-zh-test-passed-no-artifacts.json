@@ -5,7 +5,7 @@
   "expectedOutputRegex": "decision.*block",
   "payload": {
     "hook_event_name": "Stop",
-    "response": "測試通過。",
+    "response": "已完成。測試也通過。",
     "cwd": "D:\\AI_Rules",
     "stop_hook_active": false
   }

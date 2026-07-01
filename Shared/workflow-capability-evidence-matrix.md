@@ -33,7 +33,7 @@ contract.
 
 ## Team-Native Core Evidence
 
-Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設協作模型。固定流程是總監指令 -> 隊長接收 -> 轉譯 -> 建板 -> 分派專家子技能 -> 專家工作 -> 隊長監督 -> 回收變更交付件/證據交付件 -> 獨立驗證審查 -> 隊長整合 -> 完成審計 -> 回報。隊長任務板是起點，不是完成證據本身；正式完成至少需要每個適用站點的 Team-Native trace，記錄任務類型、工作流路由、實作授權、平台能力路由、channel capability、channel invocation status、專家角色來源、執行通道、交付件編號、作者角色、來源輸入、可整合範圍、審查狀態、驗證狀態、記憶文件狀態、隊長是否創作、階段、派工波次、前一波輸入、下一波啟動條件、正式證據資格、證據負責人、角色邊界、直接例外、完成條件與缺證狀態。
+Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設協作模型。固定流程是總監指令 -> 隊長接收 -> 轉譯 -> 建板 -> 分派專家子技能 -> 專家工作 -> 隊長監督 -> 回收變更交付件/證據交付件 -> 獨立驗證審查 -> 隊長整合 -> 完成審計 -> 回報。這裡的隊長整合只指隊長保護性採納或合入已回收且合格的交付件；它不是隊長創作、重寫或主要實作。隊長任務板是起點，不是完成證據本身；正式完成至少需要每個適用站點的 Team-Native trace，記錄任務類型、工作流路由、實作授權、平台能力路由、channel capability、channel invocation status、專家角色來源、執行通道、交付件編號、作者角色、來源輸入、可整合範圍、審查狀態、驗證狀態、記憶文件狀態、隊長是否創作、階段、派工波次、前一波輸入、下一波啟動條件、正式證據資格、證據負責人、角色邊界、直接例外、完成條件與缺證狀態。
 
 Team-First activation applies before broad context collection. Read-only
 exploration, blueprint evidence, external research, impact mapping, deep file
@@ -145,9 +145,9 @@ Role boundaries are part of the evidence contract. A specialist may not both imp
 
 Natural-language programming tasks create a team task board even when no workflow command is named. The workflow command only chooses the route; it does not authorize skipping the board, collapsing roles, or claiming team completion without station evidence.
 
-The captain has minimum execution authority. The captain keeps Director communication, GO interpretation, scope arbitration, integration of returned change delivery artifacts into the main worktree, memory/git/release/deploy/install gates, review-state decision, and final acceptance. The captain must not absorb implementation, review, validation, or memory attribution details when a bounded station delivery artifact can be produced. Counter-evidence, impact, memory delivery, test, review, and completion audit should be separated into bounded station tasks whenever a route is available.
+The captain has minimum execution authority. The captain keeps Director communication, GO interpretation, scope arbitration, protective adoption or merge of returned qualified change delivery artifacts into the main worktree, memory/git/release/deploy/install gates, review-state decision, and final acceptance. The captain must not absorb implementation, review, validation, or memory attribution details when a bounded station delivery artifact can be produced. Counter-evidence, impact, memory delivery, test, review, and completion audit should be separated into bounded station tasks whenever a route is available.
 
-Formal implementation is not a normal captain-direct route. It starts as an isolated change delivery artifact, falls back to a text change delivery artifact when no governed filesystem isolation exists, and becomes `blocked` when neither delivery artifact can be produced. The implementation change delivery artifact must include memory impact. Captain protected integration means integrating returned delivery artifacts. Captain substitute authoring requires case-specific Director closure as `closed-with-director-risk` and does not count as full team completion.
+Formal implementation is not a normal captain-direct route. It starts as an isolated change delivery artifact, falls back to a text change delivery artifact when no governed filesystem isolation exists, and becomes `blocked` when neither delivery artifact can be produced. The implementation change delivery artifact must include memory impact. Captain protected integration means protective adoption or merge of returned qualified delivery artifacts only; it does not include reimplementation, rewrite, or primary implementation. Captain substitute authoring requires case-specific Director closure as `closed-with-director-risk` and does not count as full team completion.
 
 One specialist may own only one concrete station task for the same deliverable. Implementation specialists return a change delivery artifact and may not edit the main worktree directly, update memory, stage/commit/push, deploy, or review their own change. Memory delivery specialists return memory impact and memory delivery status; they do not mutate memory or claim final completion. Test specialists validate behavior and regression risk; review specialists judge requirement fit and quality; completion specialists check drift, docs, memory attribution, and unresolved items. These stations must cross-check each other rather than self-approve.
 
@@ -157,8 +157,8 @@ If no specialist route exists, no governed isolation exists for implementation c
 
 | Change delivery form | Evidence status | Use when | Completion impact |
 |---|---|---|---|
-| Isolated workspace change delivery | 足夠證據 when file scope, isolation, changed files, memory impact, and validation are visible | A fork, sandbox, checkpoint, or worktree can safely contain implementation writes | Captain integrates into the main worktree after GO and requests memory delivery, independent review, and validation delivery artifacts. |
-| Text change delivery artifact | 部分證據 until captain applies and validates it | No safe isolated filesystem exists, but the task is bounded and diffable | Captain reimplements or applies it; specialist cannot claim it is applied; memory impact remains required. |
+| Isolated workspace change delivery | 足夠證據 when file scope, isolation, changed files, memory impact, and validation are visible | A fork, sandbox, checkpoint, or worktree can safely contain implementation writes | Captain may protectively adopt or merge the returned qualified artifact into the main worktree only within scoped integration authorization, then requests memory delivery, independent review, and validation delivery artifacts. |
+| Text change delivery artifact | 部分證據 until captain applies and validates it | No safe isolated filesystem exists, but the task is bounded and diffable | Captain may apply the precise returned artifact or return it for correction; captain rewrite or reimplementation is substitute authoring risk, not a successful text-delivery path. Specialist cannot claim it is applied; memory impact remains required. |
 | Captain substitute authoring risk record | closed-with-director-risk or 未驗證 | No isolated or text change delivery can be packaged and captain must author after Director accepts this exact risk | Cannot claim full team completion. |
 
 ### Integration Authorization Matrix
@@ -215,7 +215,7 @@ Before any specialist branch starts, the captain must record task type, workflow
 
 ### Captain Minimum Execution Contract
 
-The captain keeps only the authority that cannot safely be delegated: Director communication, task board, GO interpretation, scope arbitration, main-worktree writes or change delivery integration, review-state decision, memory, git, release, deployment/install gates, and final acceptance.
+The captain keeps only the authority that cannot safely be delegated: Director communication, task board, GO interpretation, scope arbitration, protective adoption or merge of returned qualified change delivery artifacts into the main worktree, review-state decision, memory, git, release, deployment/install gates, and final acceptance.
 
 Counter-evidence, impact map, memory delivery, testing, review, and completion audit default away from the captain. Short-loop validation may stay direct only for immediate hot-path feedback after a just-written change or when the board names concrete replacement evidence. A board where counter-evidence, impact map, memory delivery, testing, review, and completion audit are all captain-direct is invalid unless every station carries a separate concrete exception and risk-closure or replacement evidence.
 
@@ -223,11 +223,11 @@ Formal dispatch is wave-gated. Same-wave stations must be independent of each ot
 
 | 站點 | 適用工作 | 預設執行模式 | 最低證據 | 不可委派 |
 |---|---|---|---|---|
-| 需求回放 | 02、03、04、08、12 及任何需求不明的編程任務 | `direct`; 矛盾檢查可用 `evidence branch` | Goal, non-goals, constraints, assumptions, success criteria | 最終需求邊界與 Director 溝通 |
+| 需求回放 | 02、03、04、08、12 及任何需求不明的編程任務 | `direct` only for captain communication and requirement clarification; no implementation, validation substitute work, or change delivery; 矛盾檢查可用 `evidence branch` | Goal, non-goals, constraints, assumptions, success criteria | 最終需求邊界與 Director 溝通 |
 | 反證 | 02、03、04、07、08、12 | `evidence branch` unless direct exception | Wrong-assumption search, missing-risk list, rejected or accepted concern | 最終計畫裁決 |
 | 影響面 | 03、04、07、08、09、12 | `evidence branch`、`CLI branch` 或 `MCP direct` | Files, memory cards, docs, sync paths, compatibility and regression surface | Scope approval and source writes |
 | 計畫授權 | 02、03、04、09、12 | `direct` | Review state, acceptance matrix, GO boundary | GO interpretation |
-| 實作 | 03、04、12 and Antigravity execute stages | `direct` only for captain integration/main-worktree writes after GO; `isolated change delivery` execution mode for implementation specialists when a governed isolated workspace exists; text change delivery artifact when filesystem isolation is unavailable | Approved file list, security gate, dirty-tree protection, change delivery artifact or text change delivery artifact when delegated | Specialists do not write the main worktree directly, update memory, stage/commit/push, or review their own change |
+| 實作 | 03、04、12 and Antigravity execute stages | protected captain integration only for adopting or merging returned qualified change delivery artifacts after scoped integration authorization; `isolated change delivery` execution mode for implementation specialists when a governed isolated workspace exists; text change delivery artifact when filesystem isolation is unavailable | Approved file list, security gate, dirty-tree protection, change delivery artifact or text change delivery artifact when delegated | Specialists do not write the main worktree directly, update memory, stage/commit/push, or review their own change |
 | 記憶交付 | 03、04、08、09、10、11、12 when source, workflow, governance, docs, generated copies, or public contract may change | `evidence branch` or `MCP direct` for attribution; `direct` only for protected memory gate | `memory_impact`, `memory_delivery`, and blocked/unverified/closed-with-director-risk status | memory_commit, final memory write approval, source writes |
 | 短迴圈驗證 | 03、04、06、07、08 | `browser branch`、`CLI branch`、`evidence branch` 或 hot-path `direct` exception | Test output, real-path attempt, blocked evidence path | Completion claim |
 | 審查 | 02、03、04、08、09、10、12 | `evidence branch` unless direct exception | Review purpose, lifecycle state, review lifecycle risk decision, blockers, independence from implementation | Final review lifecycle status |

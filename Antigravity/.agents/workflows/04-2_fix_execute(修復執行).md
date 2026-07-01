@@ -53,7 +53,7 @@ Technical details may only appear after a `補充技術細節` section when they
 - Workflow-specific grounding: Separate symptom, confirmed root cause, repair scope, regression evidence, and the conditions that route back to debug or test.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
 - Apply the platform adapter in .agents/shared/platform-capability-matrix.md; do not copy another platform's subagent, hook, checkpoint, browser, or sandbox semantics as executable instructions.
-> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/team-change-delivery-artifact/SKILL.md`, `.agents/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.agents/skills/team-validation-delivery-artifact/SKILL.md`, `.agents/skills/team-review-delivery-artifact/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, integrates returned delivery artifacts into the main worktree, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not author primary implementation, review, validation, or memory attribution.
+> [LOAD SKILL] For coding, workflow, validation, review, memory, commit, release, or governance-impact work, read `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, `.agents/skills/team-change-delivery-artifact/SKILL.md`, `.agents/skills/team-memory-docs-delivery-artifact/SKILL.md`, `.agents/skills/team-validation-delivery-artifact/SKILL.md`, `.agents/skills/team-review-delivery-artifact/SKILL.md`, `.agents/skills/team-completion-gate/SKILL.md`. Treat this workflow as a route hint, then build the Captain Team Board before specialist, browser, CLI, MCP, isolated change delivery, text change delivery, validation, review, or completion work. The board records board state, task type, workflow route, implementation authorization, allowed/forbidden specialist roles, phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, Team Station applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, and completion condition. Draft boards cannot spawn specialists or satisfy formal acceptance; formal boards dispatch wave-by-wave with no post-board all-at-once launch. Enforce no self-review, isolated/text change delivery artifacts, specialist role source, execution channel, delivery artifact, no_captain_authoring, and all-direct fake-team guard; the captain only coordinates, dispatches, supervises, performs protected integration of returned and qualified delivery artifacts within the authorized scope, owns protected memory/git/release operations, records review state from returned review artifacts, and reports to the Director; the captain must not treat GO as bulk main-worktree write permission and must not author primary implementation, review, validation, or memory attribution.
 
 ## Team-Native workflow mode / role / board / specialist lifecycle
 
@@ -81,17 +81,17 @@ Technical details may only appear after a `補充技術細節` section when they
 > [LOAD SKILL] Before integrating fix change delivery artifacts, you MUST consult:
 > `view_file .agents/skills/security-sre/SKILL.md`
 
-- [ASSERT] Confirm the Captain Team Board is updated to GO-write authorization before any main-worktree write.
+- [ASSERT] Confirm the Captain Team Board is updated to scope-bound GO-write authorization before any protected main-worktree integration; GO-write is not blanket permission for unspecified files or phases.
 - [EXECUTE] Create or confirm the fix change delivery artifact route from `team-task-board`: governed isolated change delivery artifact when available, otherwise text change delivery artifact. Captain direct fixing is not a change delivery substitute; if no qualified delivery route exists, mark the station blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`), with the missing isolation condition recorded on the board.
 - [EXECUTE] Assign one bounded implementation specialist for the repair. The specialist may produce only the fix change delivery artifact and must stay strictly limited to `implementation_plan.md`.
 - [FORBIDDEN] The implementation specialist must not touch memory, git, release, deployment, external state, or review their own fix.
-- [EXECUTE] Require implementation change delivery, memory/docs delivery, review, and validation delivery artifacts. The captain integrates only returned fix change delivery artifacts that have separate review and validation delivery artifacts into the main worktree.
+- [EXECUTE] Require implementation change delivery, memory/docs delivery, review, and validation delivery artifacts. The captain performs protected integration only for returned and qualified fix change delivery artifacts that have separate review and validation delivery artifacts.
 
 ## 3. Mandatory Distillation
 
 - [EXECUTE] Immediately after captain integration of the reviewed fix change delivery artifact:
   1. Require a returned memory/docs delivery artifact that records the fix as one short English item, identifies any still-valid truth change, and names the affected memory main file.
-  2. The captain integrates only the returned memory/docs delivery artifact; the captain must not author memory attribution directly.
+  2. The captain uses only the returned memory/docs delivery artifact as attribution input; the captain must not author memory attribution directly.
 - [EXECUTE] Execute `impact-test-strategy` skill § 3 to auto-generate a regression test for this fix.
 - [ASSERT] If the same module has surfaced the same class of bug more than twice, RECOMMEND creating a defensive skill via `/12_skill_forge`.
 
@@ -119,7 +119,7 @@ Technical details may only appear after a `補充技術細節` section when they
 
 > Inherits: `.agents/workflows/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Captain/SRE` | 主工作區寫入僅限整合已回收修復變更交付件；實作隊員只產出隔離或文字變更交付件。
+- **Role**: `Captain/SRE` | 保護性主工作區合入僅限已回收且合格的修復變更交付件；實作隊員只產出隔離或文字變更交付件。
 - **Memory Update**: After executing the fix, integrate returned memory/docs delivery artifacts for all affected active memory main files; missing delivery artifacts make the station blocked or unverified.
 
 ---

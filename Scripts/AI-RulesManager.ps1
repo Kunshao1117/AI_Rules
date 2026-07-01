@@ -258,7 +258,11 @@ function Invoke-ApplyUpdate {
 function Invoke-Doctor {
     Write-ManagerHeader "治理巡檢 Doctor"
     Write-Host "用途：檢查 Shared Skill 品質、workflow metadata、policy marker、Team-Native 專家技能、任務軌跡、Codex project-level hooks 可用性分級與 Captain-Lite 讀取模型、子代理語彙、審查治理覆蓋、下游共用參考、專案本地工具、全域規則漂移與 project skill links；不寫入檔案。"
-    $null = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot
+    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot
+    if (-not $audit.Passed) {
+        Write-Fail "Doctor 阻塞：治理巡檢存在 Red findings，請先修正。"
+        exit 1
+    }
 }
 
 function Invoke-SyncGlobal {

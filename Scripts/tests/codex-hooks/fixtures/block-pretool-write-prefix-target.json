@@ -9,7 +9,21 @@
     "tool_input": {
       "patch": "*** Begin Patch\n*** Update File: foo.ts\n@@\n+change\n*** End Patch"
     },
-    "team_native_trace": "Captain Team Board: formal-write\nstation_id: change-delivery-station\nhandoff_packet_id: hooks-write-prefix-001\nrole_id: change-delivery\nrole_instance_id: change-delivery-prefix-001\nassigned specialist skill: team-specialist-change-delivery\nrequested_execution_channel: text-change-delivery\nchannel_capability: available\nchannel_invocation_status: returned\nexclusive_task_scope: src/foo.ts only\nimplementation change delivery",
+    "captain_team_board": {
+      "board_state": "formal-write",
+      "task_type": "prefix path protection fixture"
+    },
+    "team_native_trace": "Captain Team Board: formal-write",
+    "station_id": "change-delivery-station",
+    "handoff_packet_id": "hooks-write-prefix-001",
+    "role_id": "change-delivery",
+    "role_instance_id": "change-delivery-prefix-001",
+    "assigned_specialist_skill": "team-specialist-change-delivery",
+    "requested_execution_channel": "text-change-delivery",
+    "channel_capability": "available",
+    "channel_invocation_status": "returned",
+    "delivery_artifact_type": "implementation change delivery",
+    "delivery_artifact_status": "returned",
     "authorization_evidence": "Director GO scoped basename fixture",
     "authorization_scope": "src/foo.ts only",
     "authorization_target": "src/foo.ts",

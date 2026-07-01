@@ -19,7 +19,7 @@ resolved.
 
 ## Team-Native Core Capability
 
-Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設協作模型。隊長制不是單人主線流程加上可選子代理，而是站點優先的團隊狀態機：總監指令 -> 隊長接收 -> 轉譯 -> 建板 -> 分派專家子技能 -> 專家工作 -> 隊長監督 -> 回收變更交付件/證據交付件 -> 獨立驗證審查 -> 隊長整合 -> 完成審計 -> 回報。專家角色來源是 `team-specialist-registry` 與對應 `team-specialist-*` 子技能；子代理只是平台執行通道。每個適用站點必須留下平台能力路由、channel capability、channel invocation status、交付件編號、作者角色、來源輸入、可整合範圍、審查狀態、驗證狀態、記憶文件狀態、隊長是否創作、證據負責人、角色邊界、完成條件、直接例外與 Team-Native trace；能力缺口不得降級成 routine direct，也不得宣稱完整團隊完成。
+Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設協作模型。隊長制不是單人主線流程加上可選子代理，而是站點優先的團隊狀態機：總監指令 -> 隊長接收 -> 轉譯 -> 建板 -> 分派專家子技能 -> 專家工作 -> 隊長監督 -> 回收變更交付件/證據交付件 -> 獨立驗證審查 -> 隊長整合 -> 完成審計 -> 回報。隊長整合只指保護性採納或合入已回收且合格的交付件，不是隊長創作、重寫或主要實作。專家角色來源是 `team-specialist-registry` 與對應 `team-specialist-*` 子技能；子代理只是平台執行通道。每個適用站點必須留下平台能力路由、channel capability、channel invocation status、交付件編號、作者角色、來源輸入、可整合範圍、審查狀態、驗證狀態、記憶文件狀態、隊長是否創作、證據負責人、角色邊界、完成條件、直接例外與 Team-Native trace；能力缺口不得降級成 routine direct，也不得宣稱完整團隊完成。
 
 Team-First activation is shared across platforms. Read-only exploration,
 blueprint evidence, broad file reading, external research, impact analysis,
@@ -100,9 +100,9 @@ Captain-led programming governance 的 formal board lifecycle 是 draft -> forma
 
 子代理治理語義以 `Shared/policies/subagent-invocation.md` 為唯一來源，隊長制編程團隊語義以 `Shared/skills/programming-team-governance/SKILL.md` 為唯一來源，任務板與專員指派模板以 `Shared/skills/team-task-board/SKILL.md` 為唯一來源。正式團隊專家來源固定引用 `team-specialist-registry` 與對應 `team-specialist-*` 子技能，正式團隊子技能來源固定為 `Shared/skills/team-role-boundaries/SKILL.md`、`Shared/skills/team-change-delivery-artifact/SKILL.md`、`Shared/skills/team-memory-docs-delivery-artifact/SKILL.md`、`Shared/skills/team-validation-delivery-artifact/SKILL.md`、`Shared/skills/team-review-delivery-artifact/SKILL.md` 與 `Shared/skills/team-completion-gate/SKILL.md`。平台工作流入口在隊長制編程、修復、驗證、審查、記憶、提交、交接、技能鍛造或治理影響工作中，必須載入適用的正式團隊子技能。Shared 層只描述 captain trigger gate、team station board、Delegation Gate、read-only evidence branch、isolated change delivery branch、role exclusivity、主代理整合責任、主線直做例外與回報格式；平台專用工具名稱只能出現在政策檔的平台轉譯區塊、平台專屬 workflow / command，或明確標示為對照的文件段落。
 
-證據型站點是 Team-Native Core 主幹，不是加分選項。自然語言編程任務與明示工作流都必須先形成隊長任務板；工作流指令只是路由，不是免建板、免派工或免驗證的授權。隊長任務板必須先於任一隊員啟動，且必須記錄任務類型、工作流路由、實作授權、允許角色、禁止角色、平台能力路由與 Team-Native trace。任務類型閘門、派工前置閘門、隊長最小執行權是三平台共同語義：隊長保留總監溝通、GO 判讀、主工作區整合、記憶/提交/發布閘門與最終驗收；反證、影響面、測試、審查與收尾應優先由可分離站點採證。
+證據型站點是 Team-Native Core 主幹，不是加分選項。自然語言編程任務與明示工作流都必須先形成隊長任務板；工作流指令只是路由，不是免建板、免派工或免驗證的授權。隊長任務板必須先於任一隊員啟動，且必須記錄任務類型、工作流路由、實作授權、允許角色、禁止角色、平台能力路由與 Team-Native trace。任務類型閘門、派工前置閘門、隊長最小執行權是三平台共同語義：隊長保留總監溝通、GO 判讀、已回收且合格交付件的保護性採納/合入、記憶/提交/發布閘門與最終驗收；反證、影響面、測試、審查與收尾應優先由可分離站點採證。
 
-一隊員只承接一個具體站點任務。實作隊員只能在受治理隔離邊界內產出變更交付件，或在無檔案隔離能力時產出文字變更交付件；變更交付件必須包含記憶影響欄位。記憶交付必須另成交付件，並包含記憶影響、記憶交付或阻塞、未驗證、風險關閉非完整狀態。實作隊員不能直接改主工作區、不能更新記憶、不能提交，也不能審查自己的變更交付件。測試、審查與收尾隊員必須互驗變更交付件、記憶交付、驗證證據、偏移與未完成項，且審查/驗證不得早於變更交付件。隊長只保留總監溝通、GO 解讀、已回收變更交付件的主工作區整合、受保護狀態動作、審查狀態裁決與最終交付；不得吸收實作、審查、驗證或記憶歸因細節任務。完整團隊完成需要實作變更交付件、記憶文件交付件、獨立審查交付件、驗證交付件齊全；任一缺失時必須標示阻塞、未驗證或 closed-with-director-risk。若缺少可用隊員、缺少隔離變更交付能力、缺少文字變更交付件，流程必須預設標示為阻塞；只有總監逐案明示關閉風險時，才可標示隊長替代創作的 closed-with-director-risk，且不得宣稱完整團隊完成。若兩個以上證據型站點標為主線直做，必須逐站留下具體例外、替代證據，並標示阻塞、未驗證或風險關閉；否則該流程只能標示為未驗證或阻塞。實作與審查角色不得自審；隔離變更交付與文字變更交付件不得直接污染主工作區。
+一隊員只承接一個具體站點任務。實作隊員只能在受治理隔離邊界內產出變更交付件，或在無檔案隔離能力時產出文字變更交付件；變更交付件必須包含記憶影響欄位。記憶交付必須另成交付件，並包含記憶影響、記憶交付或阻塞、未驗證、風險關閉非完整狀態。實作隊員不能直接改主工作區、不能更新記憶、不能提交，也不能審查自己的變更交付件。測試、審查與收尾隊員必須互驗變更交付件、記憶交付、驗證證據、偏移與未完成項，且審查/驗證不得早於變更交付件。隊長只保留總監溝通、GO 解讀、已回收且合格交付件的保護性採納/合入、受保護狀態動作、審查狀態裁決與最終交付；不得吸收實作、審查、驗證或記憶歸因細節任務，也不得把重寫或主要實作包裝成隊長整合。完整團隊完成需要實作變更交付件、記憶文件交付件、獨立審查交付件、驗證交付件齊全；任一缺失時必須標示阻塞、未驗證或 closed-with-director-risk。若缺少可用隊員、缺少隔離變更交付能力、缺少文字變更交付件，流程必須預設標示為阻塞；只有總監逐案明示關閉風險時，才可標示隊長替代創作的 closed-with-director-risk，且不得宣稱完整團隊完成。若兩個以上證據型站點標為主線直做，必須逐站留下具體例外、替代證據，並標示阻塞、未驗證或風險關閉；否則該流程只能標示為未驗證或阻塞。實作與審查角色不得自審；隔離變更交付與文字變更交付件不得直接污染主工作區。
 
 快速收尾線同樣是平台中立語義。`light` 只適用於文件、同步、黃燈漂移或低風險治理文字；`standard` 適用於多檔規範、技能、矩陣、巡檢與記憶文件影響；`release-grade` 適用於提交、標籤、發布、部署、安裝、外部狀態、憑證或操作者就緒。Yellow 必須分類為本輪修、殘留接受、延後追蹤、本地客製或資訊性；影響完成證據的 Yellow 必須升級為阻塞、未驗證或 Red，不能用平台差異包裝成通過。
 

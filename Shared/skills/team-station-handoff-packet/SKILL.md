@@ -72,6 +72,9 @@ operation_mode_reason:
 board_state:
 task_type:
 workflow_route:
+execution_route:
+station_state:
+evidence_state:
 station:
 role_id:
 role_instance_id:
@@ -101,6 +104,9 @@ requested_execution_channel:
 channel_capability:
 channel_invocation_status:
 execution_channel:
+source_deployed_pair:
+sync_direction:
+sync_evidence:
 startup_started_at:
 first_response_deadline:
 first_response_at:
@@ -218,6 +224,9 @@ memory_delivery:
 
 - A subagent, browser, command, or MCP route is an execution channel, not the
   specialist role.
+- `blocked`, `unverified`, `standby`, `unavailable`, `not-authorized`, and
+  `closed-with-director-risk` are states. They must not be used as
+  `execution_route` or `execution_channel`.
 - `operation_mode` controls execution depth before board template, board state,
   closeout lane, or station set. `daily` is reduced Team-Native mode, not a
   no-team route.
