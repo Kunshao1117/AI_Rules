@@ -4,14 +4,14 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-01T09:37:39+08:00'
+last_updated: '2026-07-01T20:13:41+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T09:32:41+08:00'
+last_verified: '2026-07-01T20:10:40+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -40,18 +40,22 @@ metadata:
 - Narrow pre-board read-only probes are allowed only for orientation; broad reads, recursive scans, validation, review, memory/docs attribution, writes, and completion claims require the formal Team-Native sequence.
 - Team-Native Core governance lives in `_shared.team-native-core`, which owns team policy, route states, trace evidence, and full completion contracts.
 - Shared skill governance supports role metadata, station handoff references, task-board templates, delivery artifacts, and reference splitting for large skills.
-- Captain Trigger Gate and Captain Team Board route explicit workflows plus natural-language coding intent into the default team collaboration model.
+- Captain Trigger Gate and Captain Team Board make applicable coding, workflow, validation, review, memory, commit, release, or governance-impact work default to the team collaboration model.
 - Memory MCP tool contract separates read-only evidence, mutating memory gates, Gateway execution, project-local migration tools, and source memory from project context.
 - Shared governance references deploy to `.agents/shared/`; restricted project-local tools deploy from `Shared/project-tools/`.
 - Shared policies keep vendor-neutral evidence-branch semantics: specialists provide evidence, while the captain owns final review-state and protected action decisions.
 - Coding workflow and command entries preserve four formal delivery artifacts and use `closed-with-director-risk` for non-complete risk closure.
 - Shared authorization and Team-Native policies bind everyday Director language to the current visible target and require hook-blocked actions to stop as blocked or unverified instead of retrying through alternate tools.
 - Shared workflow orchestration treats source/deployed parity as part of closeout evidence and requires state labels to stay separate from execution routes.
+- Language governance is now a shared policy source for audience-layer classification, exact-evidence preservation, Director-facing change descriptions, and source/deployed language-policy parity.
 ## Active Constraints
 - Do not put platform-specific tool calls in Shared skill bodies unless the section is explicitly an adapter note.
 - Do not list directories under Tracked Files; put card navigation in Relations, and treat cards above 8 tracked files as split candidates.
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
+- Keep the framework language policy and deployed runtime copy content-identical; workflow, skill, matrix, and platform adapter entries must cite the shared policy instead of treating platform core language text as the sole source.
 ## Cycle Events
+- 39: Added shared language governance policy and deployed copy as the source for language-layer classification and exact-evidence rules.
+- 38: Recorded shared workflow orchestration hardening so default-on Team-Native routing, no-write team boards, source/deployed parity, and route/state separation are mandatory shared governance.
 - 37: Updated Shared memory for Team-Native authorization binding, source/deployed parity, and post-hook-block stop behavior across shared policies, workflow orchestration, and deployed governance references.
 - 36: Added shared natural-language authorization binding and hook-block stop rules, then synced deployed shared policy copies with hash parity.
 - 35: Added source/deployed sync parity to workflow orchestration and trace evidence, refreshed shared subagent policy marker blocks, and kept state labels out of execution-route fields.
@@ -62,8 +66,6 @@ metadata:
 - 30: Added Team-First handoff packet skill to the shared skill index and updated skill governance for reference splitting plus station handoff references.
 - 29: Updated source/deployed skill governance contract for four formal delivery artifacts, memory/docs delivery fields, and non-complete `closed-with-director-risk` semantics.
 - 28: Updated Shared skill index for direct-renamed team task board and delivery artifact skills, plus assignment/channel separation semantics.
-- 27: Recorded Team-Native specialist registry, change delivery artifact semantics, 61 shared skills, and source/deployed sync.
-- 26: Split Team-Native Core policy, trace evidence, route semantics, and team completion ownership into `_shared.team-native-core`.
 ## Archive Index
 - archive-003.md — Older cycle events 14-22 compacted from the active card.
 - archive-001.md — Legacy _shared card preserved before schema v2 compaction on 2026-06-04.
@@ -85,6 +87,8 @@ metadata:
 - 超過 8 個追蹤檔是拆卡建議，不是自動阻擋。
 ## Tracked Files
 - Shared/policies/workflow-orchestration.md
+- Shared/policies/language-governance.md
+- .agents/shared/policies/language-governance.md
 - Shared/policies/workflow-orchestration-scenarios.md
 - Shared/skill-governance.md
 - Shared/mcp-profiles/README.md
@@ -108,12 +112,6 @@ metadata:
 - Shared/project-tools/modules/Memory-Migration.psm1
 - .agents/memory/_shared/archive-001.md
 ## Relations
-- _system (deployment and sync engine memory)
-- _codex_core (Codex platform adapter memory)
-- _claude_core (Claude platform adapter memory)
-- _ag_core (Antigravity platform adapter memory)
-- _shared.ops-skills (child card for general operational skills)
-- _shared.team-native-core (child card for Team-Native Core governance)
+- _system (deployment and sync engine memory); _codex_core / _claude_core / _ag_core (platform adapter memory); _shared.ops-skills and _shared.team-native-core (child governance cards)
 ## Applicable Skills
-- memory-ops — Use when updating this card.
-- memory-arch — Use for Shared child-card splitting.
+- memory-ops for updates; memory-arch for Shared child-card splitting.

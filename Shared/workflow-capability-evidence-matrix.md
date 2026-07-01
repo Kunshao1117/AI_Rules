@@ -11,12 +11,17 @@ Concrete workflow cooperation examples live in
 non-authorizing playbooks and must not replace this matrix or the orchestration
 contract.
 
+Language and audience-layer classification for workflow output, handoff text,
+memory language, skill trigger language, and change descriptions is governed by
+`Shared/policies/language-governance.md`; workflow rows cite that policy instead
+of using platform core rules as the sole source.
+
 ## Evidence Status
 
 | 狀態 | 意義 | 使用邊界 |
 |---|---|---|
 | 足夠證據 | 已有官方文件、現有來源、工具輸出或真實操作證據支撐 | 可作為工作流判定依據 |
-| 部分證據 | 有合理證據，但缺少完整操作、版本、權限或環境確認 | 可提出建議，不可宣稱已完成高風險驗證 |
+| 部分證據 | 有合理證據，但缺少完整操作、版本、權限或環境確認 | 只能提出已標示缺口的建議，不可宣稱已完成高風險驗證 |
 | 未驗證 | 有檢查需求，但目前沒有足夠資料或工具結果 | 必須標明缺口與最小補證路徑 |
 | 阻塞 | 缺少憑證、授權、登入、外部服務、硬體或高風險操作批准 | 不得給綠燈；只能列出阻塞條件 |
 | 不適用 | 專案型態或任務意圖不需要該檢查 | 必須附上判定依據 |
@@ -33,7 +38,7 @@ contract.
 
 ## Team-Native Core Evidence
 
-Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設協作模型。固定流程是總監指令 -> 隊長接收 -> 轉譯 -> 建板 -> 分派專家子技能 -> 專家工作 -> 隊長監督 -> 回收變更交付件/證據交付件 -> 獨立驗證審查 -> 隊長整合 -> 完成審計 -> 回報。這裡的隊長整合只指隊長保護性採納或合入已回收且合格的交付件；它不是隊長創作、重寫或主要實作。隊長任務板是起點，不是完成證據本身；正式完成至少需要每個適用站點的 Team-Native trace，記錄任務類型、工作流路由、實作授權、平台能力路由、channel capability、channel invocation status、專家角色來源、執行通道、交付件編號、作者角色、來源輸入、可整合範圍、審查狀態、驗證狀態、記憶文件狀態、隊長是否創作、階段、派工波次、前一波輸入、下一波啟動條件、正式證據資格、證據負責人、角色邊界、直接例外、完成條件與缺證狀態。
+Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設協作模型；Team-Native / subagent team mode 對每個適用任務預設開啟。固定流程是總監指令 -> 隊長接收 -> 轉譯 -> 建板 -> 分派專家子技能 -> 專家工作 -> 隊長監督 -> 回收變更交付件/證據交付件 -> 獨立驗證審查 -> 隊長整合 -> 完成審計 -> 回報。這裡的隊長整合只指隊長保護性採納或合入已回收且合格的交付件；它不是隊長創作、重寫或主要實作。隊長任務板是起點，不是完成證據本身；正式完成至少需要每個適用站點的 Team-Native trace，記錄任務類型、工作流路由、實作授權、平台能力路由、channel capability、channel invocation status、專家角色來源、執行通道、交付件編號、作者角色、來源輸入、可整合範圍、審查狀態、驗證狀態、記憶文件狀態、隊長是否創作、階段、派工波次、前一波輸入、下一波啟動條件、正式證據資格、證據負責人、角色邊界、直接例外、完成條件與缺證狀態。
 
 工作流採證必須保留 Team-Native 拓撲：任務板 -> 站點族群 -> 正式站點 -> 子站點任務 -> 隊員配置 -> 執行通道 -> 交付件。多隊員不等於多子代理；隊員可以映射到子代理、瀏覽器、CLI、MCP 讀取、隔離工作區或文字變更交付路徑。隊長薄上下文只允許微讀、格式檢查、有限驗讀與保護性採納；不得用驗讀名義深讀、補實作、補審查、補驗證或補記憶歸因。
 
@@ -43,6 +48,9 @@ reading, validation planning, and review evidence use `formal-readonly` when the
 result can influence later source or governance decisions. GO-backed
 implementation and protected follow-on actions use `formal-write`. No-write
 does not mean no-team; no-write is an action limit, not a no-team state.
+Team-Native / subagent team mode is the starting state for applicable work;
+missing channel capability must be recorded as standby, blocked, unverified,
+unavailable, or closed-with-director-risk instead of treated as an opt-out.
 
 ### Operation Mode Contract
 
@@ -88,7 +96,7 @@ to the matching workflow. 證據型對話必須先升級為正式唯讀團隊站
 
 ### Team-First Dispatch Defaults
 
-Team-First 是所有編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設運行方式。隊長先建立或沿用正式團隊站點，再決定哪些站點啟動；隊員可以待命，但待命不是證據，只有波次開啟、範圍明確、交付件返回後才形成正式 evidence。
+Team-First 是所有編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設運行方式；Team-Native / subagent team mode 在適用任務上預設開啟。隊長先建立或沿用正式團隊站點，再決定哪些站點啟動；隊員可以待命，但待命不是證據，只有波次開啟、範圍明確、交付件返回後才形成正式 evidence。
 
 | Team-First 模式 | 啟動條件 | 最低證據 | 不可宣稱 |
 |---|---|---|---|
@@ -112,7 +120,7 @@ Team-First 是所有編程、工作流、驗證、審查、記憶、提交、交
 
 ## Captain-Led Programming Team Governance Matrix
 
-Coding-related natural-language requests and explicit workflow commands automatically enter Team-Native Core before implementation, repair, debugging, testing, audit, experiment writes, commit preparation, handoff, or skill creation work. Explicit workflow commands are route hints only; they are not prerequisites and do not replace the team task board. The captain builds a team-station board from `programming-team-governance` and `team-task-board` before planning, broad reading, execution, validation, review, or completion. Team-First dispatch means applicable read-only stations start as `formal-readonly` by default; write stations start only as GO-backed `formal-write`.
+Coding-related natural-language requests and explicit workflow commands automatically enter Team-Native Core before implementation, repair, debugging, testing, audit, experiment writes, commit preparation, handoff, or skill creation work; Team-Native / subagent team mode is default-on for that scope. Explicit workflow commands are route hints only; they are not prerequisites and do not replace the team task board. The captain builds a team-station board from `programming-team-governance` and `team-task-board` before planning, broad reading, execution, validation, review, or completion. Team-First dispatch means applicable read-only stations start as `formal-readonly` by default; write stations start only as GO-backed `formal-write`.
 
 Formal team collaboration uses `team-specialist-registry`, applicable `team-specialist-*` skills, and six fixed child skills as official sources: `team-role-boundaries`, `team-change-delivery-artifact`, `team-memory-docs-delivery-artifact`, `team-validation-delivery-artifact`, `team-review-delivery-artifact`, and `team-completion-gate`. Workflow entries that touch source, workflow rules, governance, memory, docs tied to behavior, generated copies, validation, review, commit prep, handoff, or skill creation must load the applicable child skills. They must not replace these sources with route-specific judgment.
 
@@ -153,7 +161,7 @@ Role boundaries are part of the evidence contract. A specialist may not both imp
 
 Natural-language programming tasks create a team task board even when no workflow command is named. The workflow command only chooses the route; it does not authorize skipping the board, collapsing roles, or claiming team completion without station evidence.
 
-The captain has minimum execution authority. The captain keeps Director communication, GO interpretation, scope arbitration, protective adoption or merge of returned qualified change delivery artifacts into the main worktree, memory/git/release/deploy/install gates, review-state decision, and final acceptance. Thin captain context is limited to micro-read, delivery artifact format checks, limited verify-read, and protected adoption. The captain must not absorb implementation, review, validation, or memory attribution details when a bounded station delivery artifact can be produced. Counter-evidence, impact, memory delivery, test, review, and completion audit should be separated into bounded station tasks whenever a route is available.
+The captain has minimum execution authority. The captain keeps Director communication, GO interpretation, scope arbitration, protective adoption or merge of returned qualified change delivery artifacts into the main worktree, memory/git/release/deploy/install gates, review-state decision, and final acceptance. Thin captain context is limited to micro-read, delivery artifact format checks, limited verify-read, and protected adoption. The captain must not absorb implementation, review, validation, or memory attribution details when a bounded station delivery artifact can be produced. Counter-evidence, impact, memory delivery, test, review, and completion audit must be separated into bounded station tasks whenever a route is available.
 
 Formal implementation is not a normal captain-direct route. It starts as an isolated change delivery artifact, falls back to a text change delivery artifact when no governed filesystem isolation exists, and becomes `blocked` when neither delivery artifact can be produced. The implementation change delivery artifact must include memory impact. Captain protected integration means protective adoption or merge of returned qualified delivery artifacts only; it does not include reimplementation, rewriting, reauthoring, 補實作, 補審查, 補驗證, 補記憶歸因, or primary implementation. Captain substitute authoring requires case-specific Director closure as `closed-with-director-risk` and does not count as full team completion.
 
@@ -174,8 +182,8 @@ If no specialist route exists, no governed isolation exists for implementation c
 
 | Change delivery form | Evidence status | Use when | Completion impact |
 |---|---|---|---|
-| Isolated workspace change delivery | 足夠證據 when file scope, isolation, changed files, memory impact, and validation are visible | A fork, sandbox, checkpoint, or worktree can safely contain implementation writes | Captain may protectively adopt or merge the returned qualified artifact into the main worktree only within scoped integration authorization, then requests memory delivery, independent review, and validation delivery artifacts. |
-| Text change delivery artifact | 部分證據 until captain applies and validates it | No safe isolated filesystem exists, but the task is bounded and diffable | Captain may apply the precise returned artifact or return it for correction; captain rewrite or reimplementation is substitute authoring risk, not a successful text-delivery path. Specialist cannot claim it is applied; memory impact remains required. |
+| Isolated workspace change delivery | 足夠證據 when file scope, isolation, changed files, memory impact, and validation are visible | A fork, sandbox, checkpoint, or worktree can safely contain implementation writes | Captain can protectively adopt or merge the returned qualified artifact into the main worktree only within scoped integration authorization, then requests memory delivery, independent review, and validation delivery artifacts. |
+| Text change delivery artifact | 部分證據 until captain applies and validates it | No safe isolated filesystem exists, but the task is bounded and diffable | Captain can apply only the precise returned artifact or return it for correction; captain rewrite or reimplementation is substitute authoring risk, not a successful text-delivery path. Specialist cannot claim it is applied; memory impact remains required. |
 | Captain substitute authoring risk record | closed-with-director-risk or 未驗證 | No isolated or text change delivery can be packaged and captain must author after Director accepts this exact risk | Cannot claim full team completion. |
 
 ### Integration Authorization Matrix
@@ -234,7 +242,7 @@ Before any specialist branch starts, the captain must record task type, workflow
 
 The captain keeps only the authority that cannot safely be delegated: Director communication, task board, GO interpretation, scope arbitration, protective adoption or merge of returned qualified change delivery artifacts into the main worktree, review-state decision, memory, git, release, deployment/install gates, and final acceptance.
 
-Counter-evidence, impact map, memory delivery, testing, review, and completion audit default away from the captain. Short-loop validation may stay direct only for immediate hot-path feedback after a just-written change or when the board names concrete replacement evidence. A board where counter-evidence, impact map, memory delivery, testing, review, and completion audit are all captain-direct is invalid unless every station carries a separate concrete exception and risk-closure or replacement evidence.
+Counter-evidence, impact map, memory delivery, testing, review, and completion audit default away from the captain. Short-loop validation can stay direct only for immediate hot-path feedback after a just-written change or when the board names concrete replacement evidence. A board where counter-evidence, impact map, memory delivery, testing, review, and completion audit are all captain-direct is invalid unless every station carries a separate concrete exception and risk-closure or replacement evidence.
 
 Formal dispatch is wave-gated. Same-wave stations must be independent of each other. Post-board all-at-once dispatch is invalid because review, validation, and completion stations often depend on prior change delivery or evidence delivery artifacts. Review and validation of a change must not start before the related change delivery artifact exists or is explicitly recorded as blocked, unverified, or closed-with-director-risk.
 
@@ -250,7 +258,7 @@ Formal dispatch is wave-gated. Same-wave stations must be independent of each ot
 | 審查 | 02、03、04、08、09、10、12 | `evidence branch` unless direct exception | Review purpose, lifecycle state, review lifecycle risk decision, blockers, independence from implementation | Final review lifecycle status |
 | 收尾 | 03、04、09、10、11、12 | `evidence branch` for drift/docs checks; `direct` for memory/git/release ownership | Docs, memory, drift audit, sync evidence, unresolved items, cross-check against test and review delivery artifacts | memory_commit, commit, push, release, deployment |
 
-Each row also requires a platform capability route: `native`, `adapter`, `conditional`, or `unavailable`, plus specialist role source and execution channel. Evidence branches may support the board when the station is read-only, independently bounded, and useful as a separate evidence delivery artifact; the main thread may wait for the delivery artifact when the station is required. Isolated change delivery branches may support implementation when the platform provides a governed isolated workspace and the captain can inspect and integrate the change delivery; text change delivery artifacts are the fallback when filesystem isolation is unavailable but a bounded diffable task still exists. Memory delivery must remain coupled to source delivery through its own delivery artifact. Missing station evidence, missing specialists, missing isolation, missing text change delivery route, missing Team-Native trace, missing independent review, or missing memory delivery must be reported as 未驗證, closed-with-director-risk, or 阻塞, not silently downgraded or described as full team completion / 完整團隊完成.
+Each row also requires a platform capability route: `native`, `adapter`, `conditional`, or `unavailable`, plus specialist role source and execution channel. Evidence branches support the board only when the station is read-only, independently bounded, and useful as a separate evidence delivery artifact; the main thread waits for the delivery artifact when the station is required. Isolated change delivery branches support implementation only when the platform provides a governed isolated workspace and the captain can inspect and integrate the change delivery; text change delivery artifacts are the fallback when filesystem isolation is unavailable but a bounded diffable task still exists. Memory delivery must remain coupled to source delivery through its own delivery artifact. Missing station evidence, missing specialists, missing isolation, missing text change delivery route, missing Team-Native trace, missing independent review, or missing memory delivery must be reported as 未驗證, closed-with-director-risk, or 阻塞, not silently downgraded or described as full team completion / 完整團隊完成.
 
 ## Change Intent Classification Matrix
 
@@ -298,7 +306,7 @@ Review state is mandatory for governance, workflow, public contract, release/plu
 
 ## Visual Evidence Governance Matrix
 
-Visual verification must inspect details and prefer real information. Screenshots are visible-state evidence only; they do not prove data correctness, persistence, business logic, permissions, integrations, or post-action side effects.
+Visual verification must inspect details and must prioritize real information. Screenshots are visible-state evidence only; they do not prove data correctness, persistence, business logic, permissions, integrations, or post-action side effects.
 
 | 原則 | 必須做到 | 不可宣稱 |
 |---|---|---|
@@ -312,7 +320,7 @@ Visual verification must inspect details and prefer real information. Screenshot
 | 介面類型 | 最低證據 | 補充要求 |
 |---|---|---|
 | 純文件或純規則 | Source read, semantic search, and rule consistency evidence | Do not claim product UI validation |
-| 元件或頁面樣式 | Real rendered screenshots across required sizes plus detail-observation notes | Screenshots should use real-information pages first; fake data is fallback only |
+| 元件或頁面樣式 | Real rendered screenshots across required sizes plus detail-observation notes | Screenshots must use real-information pages first; fake data is fallback only |
 | 互動流程 | User-path evidence, before/after state, failure or blocked states, and detail checks after action | Include focus, disabled, confirmation, validation, toast/message, and feedback states where relevant |
 | 資料驅動畫面 | Real-data normal state plus empty/loading/error or blocked-state evidence | If fake data is used, label why and what remains unverified |
 | 視覺回歸高風險 | Before/after comparison, difference explanation, and acceptance rationale | Detail-level deltas must be named, not summarized as only overall direction |
@@ -354,7 +362,7 @@ Memory cards must record incomplete evidence as partial, pending review, conflic
 
 ## MCP Memory Evidence Matrix
 
-The detailed tool contract lives in `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md`. Workflows may use filesystem evidence when MCP is unavailable, but missing MCP evidence must be reported as 未驗證 or 阻塞 when it affects the decision.
+The detailed tool contract lives in `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md`. Workflows can use filesystem evidence when MCP is unavailable, but missing MCP evidence must be reported as 未驗證 or 阻塞 when it affects the decision.
 
 | 工作流 | 實際位置 | 最低 MCP 記憶證據 | 會寫入的 MCP 閘門 |
 |---|---|---|---|

@@ -13,6 +13,14 @@ Team-Native Core has the highest governance priority whenever a task touches
 source, workflow, validation, review, memory, commit, release, deployment,
 install, project governance, generated copies, or public contracts.
 
+Team-Native / subagent team mode is default-on at the authorization layer. A
+coding, workflow, validation, review, memory, commit, release, handoff,
+skill-forge, or governance-impact request enters board-first routing before any
+write or protected authorization is consumed. Authorization decides the allowed
+target, scope, phase, and expiry; it does not decide whether team mode exists.
+Missing channel capability must be represented as station state, not as
+authorization to skip Team-Native mode.
+
 When route hints, platform modes, approval UI, tool capability, or prior
 conversation state conflict with Team-Native Core, Team-Native Core wins and
 the authorization must be resolved by this policy.
@@ -29,10 +37,10 @@ phase, and expiry that can satisfy the request.
 
 | Signal | Authorization meaning |
 |---|---|
-| Explicit Director instruction | May authorize only the currently visible named target, scope, phase, expiry, and action. Ambiguous text is narrowed to the safest no-write or plan-only interpretation. |
-| Captain board authorization | May authorize station work only when the board records the target, scope, phase, evidence, and expiry. |
-| Interface approval button | May be evidence that a specific displayed operation was approved. It does not authorize unbounded writes, unrelated files, hidden cleanup, later phases, memory, git, release, deployment, install, or external mutation unless those targets were explicitly included. |
-| Prior approved plan | May support execution only inside the exact approved scope and phase. It cannot expand the file allowlist, protected action set, or dispatch wave. |
+| Explicit Director instruction | Authorizes only the currently visible named target, scope, phase, expiry, and action. Ambiguous text is narrowed to the safest no-write or plan-only interpretation. |
+| Captain board authorization | Authorizes station work only when the board records the target, scope, phase, evidence, and expiry. |
+| Interface approval button | Is evidence only for the specific displayed operation inside its target, scope, phase, and expiry. It does not authorize unbounded writes, unrelated files, hidden cleanup, later phases, memory, git, release, deployment, install, or external mutation unless those targets were explicitly included. |
+| Prior approved plan | Supports execution only inside the exact approved scope and phase. It cannot expand the file allowlist, protected action set, or dispatch wave. |
 
 ## Tool Execution Envelope And Receipt
 
@@ -110,11 +118,14 @@ deployment, install, credentials, external mutation, or later phases.
 
 ## Non-Authorizing Signals
 
-These signals may help route the work, but they do not authorize writes or
-protected actions:
+These signals route the work only; they do not authorize writes or protected
+actions:
 
 - Workflow names are route hints only. A workflow name is not authorization.
 - A request for subagents, a specialist, or a team mode is not authorization by itself.
+- A request for Team-Native / subagent team mode turns on the team route, but
+  still does not authorize writes, protected phases, hidden cleanup, or
+  unscoped dispatch.
 - Platform mode is not authorization. It is recorded only as observed capability context.
 - Platform mode is capability context only. Plan mode, agent mode, auto-approval,
   trusted workspace, sandbox-disabled state, or local shell access is not authorization.

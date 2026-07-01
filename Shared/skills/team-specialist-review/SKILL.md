@@ -70,7 +70,7 @@ Return these fields:
 - Findings: concrete issues or no findings.
 - Evidence: files, sections, or outputs supporting the finding.
 - Risk: regression, maintainability, requirement drift, or missing evidence.
-- Recommendation: accepted, fix-required, closed-with-director-risk, blocked, or unverified.
+- Required disposition: accepted, fix-required, closed-with-director-risk, blocked, or unverified.
 - Blocker status: blocked, unverified, closed-with-director-risk, or not-applicable.
 
 ## Trace And Handoff Contract
@@ -93,7 +93,7 @@ field list inside this role skill.
 ## Gotchas
 
 - Validation passing does not replace review.
-- Review suggestions are text only unless the captain routes a new change-delivery station.
+- Review remediation requests are text only unless the captain routes a new change-delivery station.
 - Do not convert missing validation into acceptance.
 - Director override does not turn compromised independence, missing review delivery, captain-authored substitutes, or closed-with-director-risk into full team completion.
 

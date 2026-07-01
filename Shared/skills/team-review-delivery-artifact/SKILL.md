@@ -35,7 +35,7 @@ Give an independent review judgment. The reviewer checks whether the change deli
 1. Requirement fit: Does the change satisfy the approved request and exclusions?
 2. Correctness: Does the behavior or instruction make sense in the actual files?
 3. Quality: Is the solution minimal, maintainable, and consistent with local patterns?
-4. Regression risk: What could break or drift?
+4. Regression risk: What must be treated as possible breakage or drift?
 5. Evidence integrity: Are validation, memory delivery, and sync claims supported?
 6. Role integrity: Does the specialist role trace back to `team-specialist-registry` and the matching `team-specialist-*` skill, and is any subagent only an execution channel?
 7. Wave integrity: Did review start after the relevant change delivery artifact was returned or explicitly marked blocked, unverified, or closed-with-director-risk?
@@ -75,4 +75,4 @@ Valid `review_state` values:
 
 ## Forbidden Actions
 
-Do not review your own implementation, edit files under review, run mutating tools, update memory, stage, commit, push, release, deploy, or convert missing validation into acceptance. Captain substitute authoring can be reviewed only as blocked, unverified, or closed-with-director-risk evidence; it cannot be upgraded into full team completion.
+Do not review your own implementation, edit files under review, run mutating tools, update memory, stage, commit, push, release, deploy, or convert missing validation into acceptance. Captain substitute authoring must be reviewed only as blocked, unverified, or closed-with-director-risk evidence; it cannot be upgraded into full team completion.

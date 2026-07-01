@@ -19,7 +19,7 @@
 ├── Check 5: 所有受影響記憶卡時間戳已更新（staleness = 0）？
 │   └── NO → [HALT]「🔴 [完成中止（COMPLETION HALT）] 記憶卡時間戳未同步，請執行記憶提交工具（memory_commit）。」
 ├── Check 6: 技能蒸餾偵測 — 本次工作是否存在跨模組重複操作模式（2+ 次出現的操作序列）？
-│   ├── 偵測到 → 非阻斷性建議：「💡 [SKILL DISTILL] 建議執行 /12_skill_forge 萃取可重用技能。」
+│   ├── 偵測到 → [HALT]「🔴 [SKILL DISTILL GATE] 偵測到可重用操作模式，必須轉入 /12_skill_forge 或由總監明確關閉本風險後才能結案。」
 │   └── 未偵測到 → 靜默通過
 ├── Check 7: 文件同步 — 本次修改是否影響公共介面、架構或工作流？
 │   ├── YES → 檢查相關 README.md / CHANGELOG.md / docs/ 是否需要更新

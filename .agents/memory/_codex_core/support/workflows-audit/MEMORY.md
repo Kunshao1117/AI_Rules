@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 健檢主工作流與三階段子工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-06-30T02:43:45+08:00'
+last_updated: '2026-07-01T18:26:06+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-30T02:30:00+08:00'
+last_verified: '2026-07-01T18:20:23+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 19
+cycle_event_count: 21
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,6 +36,7 @@ metadata:
 ## Current Truth
 - Codex audit workflow entries and subflows now reference workflow-orchestration as the shared board/wave/artifact sequence contract.
 - Codex audit workflows now load `team-station-handoff-packet` and treat audit evidence, inventories, broad reads, validation planning, and review evidence as `formal-readonly` stations unless a separate GO-backed `formal-write` repair route exists.
+- Codex audit workflows now require formal team routing before broad evidence, coverage, validation planning, review evidence, or completion claims; missing evidence cannot be reported as green.
 - Codex audit workflows now inherit Programming Team Board entry requirements and are covered by Audit.psm1 checks for formal dispatch and wave-gated evidence semantics.
 - Codex audit workflows now inherit team-task-board references through the shared workflow entry contract and keep review/validation delivery artifacts role-bound.
 - Codex audit workflows now load captain governance with task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` requirements.
@@ -56,6 +57,7 @@ metadata:
 - Do not claim full coverage from sampled evidence; Phase 3 must report coverage denominators and sampling limits.
 
 ## Cycle Events
+- 21: Recorded audit workflow hardening so read-only evidence, broad reads, validation planning, and review evidence require formal team routing before coverage or completion claims.
 - 20: Wave 6B added workflow-orchestration grounding to Codex audit workflow entries and synced deployed .agents/skills copies.
 - 19: Wave 6A updated Codex audit workflow entries with Team-Native mode, role split, board trigger, handoff packet, and specialist lifecycle rules.
 - 18: Updated Codex audit workflows for Team-First formal-readonly evidence routing, handoff packet refs, standby state, and deep-read/verify-read fields.

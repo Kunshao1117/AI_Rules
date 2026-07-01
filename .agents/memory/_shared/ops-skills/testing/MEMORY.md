@@ -4,24 +4,24 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-28T01:14:16+08:00'
+last_updated: '2026-07-01T18:26:30+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T01:14:16+08:00'
+last_verified: '2026-07-01T18:20:23+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: ready
+compaction_status: stable
 metadata:
   author: antigravity
   version: '1.0'
@@ -40,6 +40,7 @@ metadata:
 - Testing facts must stay tied to project surface type and current tool availability.
 - Browser and test automation skills now require detail-observation notes for visual validation.
 - Browser-testing governance now prevents required browser evidence branches from silently downgrading to main-thread browser tooling without a concrete direct exception.
+- Testing and browser automation evidence cannot silently downgrade to captain-direct work; missing real-information proof keeps completion blocked or unverified.
 - Visual evidence must prefer real pages, real data, real account state, current responses/logs, or equivalent real paths before fake-data fallback.
 - Single-run test output belongs in task reports or logs unless it becomes a stable validation route.
 
@@ -48,6 +49,7 @@ metadata:
 - Use project-surface evidence requirements from the workflow matrix before declaring behavior verified.
 
 ## Cycle Events
+- 05: Recorded testing-skill hardening so browser and automation evidence cannot silently downgrade to captain direct work and real-information proof remains required before completion claims.
 - 04: Aligned testing and browser evidence memory with captain-led evidence station rules.
 - 03: Added browser-branch direct-exception boundaries for team-first evidence station governance.
 - 02: Added visual detail observation and real-information priority to browser and test automation evidence strategy.

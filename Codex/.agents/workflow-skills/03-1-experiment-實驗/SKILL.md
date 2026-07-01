@@ -1,6 +1,6 @@
 ---
 name: "03-1-experiment-實驗"
-description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，保留最小團隊治理但允許跳過正式品質與記憶收尾。DO NOT use when: 生產建構、正式修復或需提交發布。"
+description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，保留最小團隊治理；正式品質、測試與記憶收尾只能降級為明確處置，不得無記錄跳過。DO NOT use when: 生產建構、正式修復或需提交發布。"
 required_skills: [programming-team-governance, team-specialist-registry, team-task-board, team-station-handoff-packet, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 metadata:
   author: antigravity
@@ -80,9 +80,9 @@ Use this skill when the user asks to run the migrated source command `03-1_exper
 
 [EXPERIMENT MODE ACTIVE] Formal quality, test, and memory completion gates are reduced, not erased.
 
-- Dirty code, hardcoded values, and placeholder logic are PERMITTED.
-- No linter runs, no test generation, no memory card updates.
-- `Write`/`Edit` tools may be used IMMEDIATELY without planning phase.
+- Dirty code, hardcoded values, and placeholder logic are sandbox-only exceptions and MUST be recorded as experiment-only.
+- Linter runs, test generation, and memory card updates that are not executed MUST be recorded in the minimum delivery artifact ledger with reason.
+- `Write`/`Edit` tools MUST NOT run until the minimum Captain Team Board and scoped formal-write sandbox station are recorded.
 - Before writing, output a minimum Captain Team Board with applicability, execution mode, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, direct exception, completion condition, and the minimum delivery artifact ledger: implementation change delivery, memory delivery disposition, review disposition, and validation disposition:
   - Requirement playback: `direct`; evidence owner is captain; role boundary is requirement only; direct exception is Director-facing scope lock.
   - Impact map: `evidence branch`, `CLI branch`, `browser branch`, `direct` with concrete exception, or `blocked`; role boundary is architecture or impact only; name sandbox files, memory/docs touched, and external-risk assumptions.
@@ -93,9 +93,9 @@ Use this skill when the user asks to run the migrated source command `03-1_exper
 
 ## 1. Sandbox Execution (沙盒直接執行，非隊長主線代工)
 
-- Read Director's request. Begin coding immediately.
+- Read Director's request, output the minimum Captain Team Board, then code only inside the scoped sandbox write station.
 - Use `Bash` tool for quick test runs if needed.
-- No `EnterPlanMode` required. No formal review gate, but the minimum team-station declaration is required.
+- Full planning mode is not required for throwaway sandbox work, but the minimum team-station declaration is required before writes and production review remains blocked until `/03_build`.
 
 ## 2. Completion (完成)
 
@@ -105,7 +105,7 @@ Use this skill when the user asks to run the migrated source command `03-1_exper
 ---
 
 ## [SECURITY & COMPLIANCE]
-- **Role**: Writer/SRE — full permissions, all gates bypassed.
+- **Role**: Writer/SRE — sandbox write permission applies only after the minimum team-station gate and scoped formal-write authorization; protected gates are not bypassed.
 - **Memory**: none — sandbox output is not tracked.
  Experiment completion requires a minimum delivery artifact set: implementation change delivery, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation change delivery, memory/docs delivery, review, and validation delivery artifacts.
 - Experiment completion requires a minimum delivery artifact set: implementation change delivery, memory delivery disposition, review disposition, and validation disposition; promotion to production requires the full implementation change delivery, memory/docs delivery, review, and validation delivery artifacts.

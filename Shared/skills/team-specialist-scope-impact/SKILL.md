@@ -47,14 +47,14 @@ memory ownership, documentation surfaces, and regression risk.
 
 1. Read the board row, allowed file list, and changed-file list when available.
 2. Search only the relevant source tree for references, generated copies, and matching skill or workflow entries.
-3. Identify whether memory or docs may need a separate delivery station.
+3. Identify whether memory or docs require a separate delivery station.
 
 ### Step 2: Map impact
 
 Return an evidence artifact with these fields:
 
 - Role: scope impact.
-- In-scope files: concrete files or directories the station may touch or inspect.
+- In-scope files: concrete files or directories the station is authorized to touch or inspect.
 - Out-of-scope files: known exclusions and protected areas.
 - Dependency surface: callers, references, copied files, generated files, docs, and memory ownership.
 - Regression surface: workflows, tests, commands, UI paths, or governance checks likely affected.

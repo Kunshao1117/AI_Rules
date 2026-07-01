@@ -1,6 +1,6 @@
 # Team-Native Core Policy
 
-此檔定義 AI_Rules 的團隊原生核心。Team-Native Core 是跨平台治理主幹，不是單一子代理功能、單一工作流、或單一技能。
+此檔定義 AI_Rules 的團隊原生核心。Team-Native Core 是跨平台治理主幹；Team-Native / subagent team mode 在適用任務上預設開啟，不是單一子代理功能、單一工作流、或單一技能。
 
 ## Core Contract
 
@@ -9,6 +9,14 @@ hints, platform modes, approval UI, tool capability, and prior conversation stat
 must be interpreted through Team-Native Core before source, workflow,
 validation, review, memory, commit, release, deployment, install, project
 governance, generated-copy, or public-contract work proceeds.
+
+Team-Native / subagent team mode is default-on for every applicable task. The
+default state is board-first station assignment, not captain-direct execution. A
+platform that lacks native subagents remains in Team-Native mode through
+adapters, evidence branches, CLI/MCP/browser channels, isolated/text change
+delivery, or explicit standby/block states. Turning it off requires a concrete
+`not-applicable` finding or scope-bound Director risk closure; missing channel
+capability is not an opt-out.
 
 Team-Native Core is an execution precondition, not advisory prose. When it
 applies, the next valid runtime state is a Captain Team Board with applicable
@@ -28,7 +36,7 @@ order used by workflow entries and stations.
 Core injection rules must enforce the shortest Team-Native gate before any
 skill, workflow, or platform adapter can soften it. Once Team-Native Core
 applies, broad file reading, validation, review, memory/docs attribution,
-completion audit, and completion claims may start only after the trace has a
+completion audit, and completion claims are forbidden until the trace has a
 Captain Team Board, applicable stations, a station handoff packet, role identity
 (`role_id`, `role_instance_id`, and assigned specialist skill), and channel
 state (`requested_execution_channel`, `channel_capability`,
@@ -42,9 +50,11 @@ completion, or complete evidence.
 Root-cause guard: if a platform cannot open a specialist channel, that is a
 station state to report (`standby`, `blocked`, `unverified`,
 `not-authorized`, or `unavailable`), not permission for silent captain-direct
-work. The captain may continue direct work only after the board names the
-missing route, replacement evidence, residual risk, and smallest unblock
-condition.
+work. The captain must keep the station blocked, unverified, standby,
+not-authorized, or unavailable unless the board names the missing route,
+replacement evidence, residual risk, and smallest unblock condition; even then,
+captain-direct continuation is a recorded direct exception, not proof that team
+mode was off.
 
 Team-Native Core applies when a task touches source, workflow, validation, review, memory, commit, release, deployment, install, project governance, generated copies, or public contracts.
 
@@ -132,10 +142,11 @@ public-contract work must not be reduced into routine captain-direct work.
 
 ## Team-First Activation Rule
 
-When Team-Native Core applies, the captain must attempt team activation before
-doing broad context-heavy work. The minimum activation is a board row for each
-applicable station, a selected specialist skill, and an attempted execution
-channel or an explicit standby/block record.
+When Team-Native Core applies, Team-Native / subagent team mode is already on.
+The captain must create or reuse a team board before doing broad context-heavy
+work. The minimum activation is a board row for each applicable station, a
+selected specialist skill, and an attempted execution channel or an explicit
+standby/block record.
 
 Board states are:
 
@@ -148,8 +159,9 @@ Board states are:
 The captain must not treat `formal-readonly` as weaker than team mode. It is
 the formal team state for no-write work. If no execution channel can be opened,
 the station is recorded as `blocked`, `unverified`, or `standby` with a smallest
-unblock condition. The captain reports the unavailable route before absorbing
-the station into main-thread direct work.
+unblock condition. The captain must not absorb the station into main-thread
+direct work unless the board records a direct exception, replacement evidence,
+residual risk, and non-complete or risk-closed state.
 
 ### Route And State Separation
 
@@ -359,7 +371,7 @@ Closeout is risk-tiered so Team-Native Core stays rigorous without mechanical al
 
 Fast closeout never lowers the completion bar and does not replace
 `operation_mode`. It only reduces unnecessary station churn inside the selected
-mode. A light lane may use fewer stations only when the board records why review
+mode. A light lane uses fewer stations only when the board records why review
 or memory/docs is not applicable, or records the missing station as blocked,
 unverified, or closed-with-director-risk. Any source, workflow, governance,
 generated-copy, memory, or public-contract write promotes the lane to at least
@@ -442,13 +454,16 @@ an untrusted tool execution envelope into protected mutation authority.
 
 ## Platform Adapter Contract
 
-Team-Native Core is platform-neutral. Platforms may differ in native capability:
+Team-Native Core is platform-neutral. Platforms differ in native capability, but
+platform difference never turns off default team mode:
 
-- Codex maps stations to native subagents, project custom agents, browser/terminal/MCP evidence, isolated workspaces, or text change delivery artifacts when available.
-- Claude maps stations to built-in/custom/plugin subagents, description-driven delegation, hooks/checkpoints, command evidence, isolated workspaces, or text change delivery artifacts when available.
-- Antigravity / Gemini maps stations through Gemini/Antigravity adapters, browser-capable agents, CLI evidence, plugin adapters, or text change delivery artifacts when available.
+- Codex maps stations to native subagents, project custom agents, browser/terminal/MCP evidence, isolated workspaces, or text change delivery artifacts; unavailable channels become standby, blocked, or unverified station states.
+- Claude maps stations to built-in/custom/plugin subagents, description-driven delegation, hooks/checkpoints, command evidence, isolated workspaces, or text change delivery artifacts; unavailable channels become standby, blocked, or unverified station states.
+- Antigravity / Gemini maps stations through Gemini/Antigravity adapters, browser-capable agents, CLI evidence, plugin adapters, or text change delivery artifacts; unavailable channels become standby, blocked, or unverified station states.
 
-Missing platform capability is not normal direct work. It is blocked, unverified, or closed-with-director-risk with evidence.
+Missing platform capability is not normal direct work and not a switch that turns
+off team mode. It is blocked, unverified, or closed-with-director-risk with
+evidence.
 
 ## MCP Boundary
 

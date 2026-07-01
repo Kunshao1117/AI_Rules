@@ -15,6 +15,7 @@ Team-Native station execution.
 |---|---|
 | `Shared/policies/team-native-core.md` | Highest-priority Team-Native gate, operation mode, station-first rule, and completion boundary. |
 | `Shared/policies/authorization-resolution.md` | Scope-bound authorization fields and phase-specific write gates. |
+| `Shared/policies/language-governance.md` | Audience-layer language classification, Director-facing language rules, exact-evidence preservation, and source/deployed language-policy parity. |
 | `Shared/policies/workflow-orchestration.md` | Workflow entry sequence, transition rules, dispatch waves, and missing-evidence routing. |
 | `Shared/policies/workflow-orchestration-scenarios.md` | Non-authorizing scenario playbooks that show how workflows cooperate without copying rules into entries. |
 | `Shared/workflow-capability-evidence-matrix.md` | Per-workflow route, evidence expectations, and next workflow suggestions. |
@@ -56,6 +57,14 @@ Workflow route is not authorization. A workflow name, slash command, Codex
 skill trigger, Antigravity workflow button, Claude command, platform mode,
 approval prompt, or available channel can route the work, but it cannot grant
 unbounded write authority or protected follow-on authority.
+
+Team-Native / subagent team mode is default-on for every workflow entry that
+triggers Team-Native Core. The workflow route must create or promote the
+board-first path before broad evidence, change delivery, validation, review,
+memory/docs, protected action, or completion work. Missing specialist channel
+capability becomes standby, blocked, unverified, unavailable, or
+closed-with-director-risk station state; it does not downgrade the workflow to
+captain-direct execution.
 
 Small read-only probes are permitted before the formal board only when needed
 to identify the route or locate the right files. They must stay narrow and
@@ -178,16 +187,18 @@ closed-with-director-risk, not as complete:
 
 ## Entry Minimum Reference
 
-Workflow entries should keep a short reference block only:
+Workflow entries must keep a short reference block only:
 
 1. Read the deployed workflow orchestration contract.
 2. Use the scenario playbooks only as non-authorizing examples when a concrete
    flow is needed.
 3. Read the matching workflow evidence matrix row.
-4. Apply the platform capability matrix.
-5. Build or promote the Captain Team Board before broad evidence, change
+4. Read the deployed language governance policy before applying workflow-specific
+   output-language, audience-layer, handoff, or change-description rules.
+5. Apply the platform capability matrix.
+6. Build or promote the Captain Team Board before broad evidence, change
    delivery, validation, review, memory/docs, or completion work.
-6. Route missing stations, handoff packets, channel states, or delivery
+7. Route missing stations, handoff packets, channel states, or delivery
    artifacts to blocked, unverified, standby, or closed-with-director-risk.
 
 The detailed board field list stays in `team-task-board`, detailed trace fields

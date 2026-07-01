@@ -32,7 +32,7 @@ authorization for protected mutation. It carries only the authorization already
 resolved by the board.
 
 Station startup follows `Shared/policies/workflow-orchestration.md`. The packet
-can be issued only after the workflow route, authorization state, operation
+must be issued only after the workflow route, authorization state, operation
 mode, board state, dispatch wave, previous-wave input, next-wave start
 condition, and formal evidence eligibility are known.
 
@@ -58,11 +58,11 @@ must not hold more than one `role_id` or more than one substation task. Do not
 reuse a packet across implementation to review, validation failure to repair,
 memory attribution to memory mutation, or completion audit to final acceptance.
 
-`handoff_packet_id` is the canonical field name. `dispatch_packet_id` may appear
+`handoff_packet_id` is the canonical field name. `dispatch_packet_id` must be used
 only as a legacy alias in returned artifacts; new traces use
 `handoff_packet_id`.
 
-`formal-readonly` packets may assign only read-only evidence work. If the
+`formal-readonly` packets must assign only read-only evidence work. If the
 station needs source, memory, git, release, deployment, install, or external
 mutation, the packet is blocked until a write-capable formal board and matching
 authorization exist.
@@ -134,14 +134,14 @@ stop_condition:
 handoff_summary:
 ```
 
-`station` may appear as a legacy alias for `formal_station`; new packets must
-prefer `station_family`, `formal_station`, `substation_task`, and
+`station` is allowed only as a legacy alias for `formal_station`; new packets must
+use `station_family`, `formal_station`, `substation_task`, and
 `member_assignment` as separate fields.
 
 ### 2. Pass Skills As References
 
 `loaded_skill_refs` must list concrete skill names or paths that the specialist
-must read. Prefer direct skill references over free-form role descriptions.
+must read. Use direct skill references over free-form role descriptions.
 
 Minimum refs:
 
@@ -175,9 +175,9 @@ Every packet records:
 - `timeout_action`: standby, replace, mark blocked, mark unverified, or ask
   Director.
 
-Recommended first-response threshold:
+Required first-response monitoring defaults:
 
-| Station type | Suggested threshold |
+| Station type | Required threshold |
 |---|---|
 | Small read-only evidence | 2 to 5 minutes |
 | Broad file or external research | 5 to 12 minutes |

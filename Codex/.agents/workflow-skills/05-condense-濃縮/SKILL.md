@@ -50,6 +50,7 @@ Technical details may only appear after a `補充技術細節` section when they
 ## 工作流外部接地與證據矩陣（Workflow Grounding Contract）
 
 - Before broad reading, station work, validation, review, memory/docs, completion, or any write path, read .agents/shared/policies/workflow-orchestration.md and use it as the shared route -> authorization -> operation_mode -> board -> wave -> artifact -> completion order.
+- Before applying workflow-specific language, output-layer, memory-language, handoff, or change-description rules, read .agents/shared/policies/language-governance.md; this workflow cites the center policy and does not use platform core files as the sole language source.
 - Before applying this workflow, read .agents/shared/workflow-capability-evidence-matrix.md and use the 05 row as the minimum external grounding and evidence contract.
 - Workflow-specific grounding: Separate permanent current truth from temporary observations, and keep project context preferences out of source memory unless GO CONTEXT is granted.
 - Evidence status must be reported as 足夠證據, 部分證據, 未驗證, 阻塞, or 不適用 when the result depends on sources, tools, runtime behavior, platform capability, or external state.
@@ -78,7 +79,7 @@ Use this skill when the user asks to run the migrated source command `05_condens
 # [SKILL: /05_condense — 專案濃縮初始化]
 
 > 靈感來源：Codex `/init` 指令。
-> 在全新部署或長期缺乏初始記憶的專案上，主動掃描代碼庫，自動萃取並寫入兩層持久化上下文。
+> 在全新部署或長期缺乏初始記憶的專案上，先掃描代碼庫並輸出預覽；只有在總監 GO、正式寫入站點、記憶提交閘門成立後，才能寫入兩層持久化上下文。
 
 ## 0. Precondition Check（前置條件確認）
 
@@ -156,6 +157,6 @@ DO NOT proceed until Director provides explicit GO approval.
 ---
 
 ## [SECURITY & COMPLIANCE]
-- **Role**: Writer/SRE — 允許寫入 AGENTS.md 和記憶卡。
+- **Role**: Writer/SRE — 只有在總監 GO、正式寫入站點、記憶提交閘門成立後，才能寫入 AGENTS.md 和記憶卡。
 - **Memory**: full — §4 Path B 強制執行記憶卡寫入與 memory_commit。
 - Formal team completion requires implementation change delivery, memory/docs delivery, review, and validation delivery artifacts with Team-Native trace; missing delivery artifacts must be marked blocked, unverified, or Director risk-closed but not complete (`closed-with-director-risk`).

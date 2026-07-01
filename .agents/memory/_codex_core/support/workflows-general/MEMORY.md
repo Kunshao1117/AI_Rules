@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-01T15:40:39+08:00'
-status: stable
-staleness: 0
+last_updated: '2026-07-01T18:26:10+08:00'
+status: stale
+staleness: 10
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T13:45:49+08:00'
+last_verified: '2026-07-01T18:20:23+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 22
+cycle_event_count: 20
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,21 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+<!-- CARTRIDGE_SYSTEM_WARNING_START -->
+
+> [!CAUTION]
+> 🟠 **系統強制攔截**：此記憶已過期失真！
+> 追蹤檔案異動：`Codex/.agents/workflow-skills/05-condense-濃縮/SKILL.md`（2026-07-01T20:18:29+08:00）
+> AI 嚴禁基於此記憶施工，必須優先閱讀最新原始碼並更新此記憶卡。
+> staleness: 10 | threshold: 🟠 顯著過期
+
+<!-- CARTRIDGE_SYSTEM_WARNING_END -->
+
 # _codex_core.support.workflows-general — Codex General Workflow Memory
 
 ## Current Truth
 - Codex workflow entries now read the deployed workflow-orchestration contract before broad reading, station work, validation, review, memory/docs, write paths, or completion.
-- Codex general, explore, experiment, condense, and test workflows now load `team-station-handoff-packet` and route no-write exploration, broad reading, validation planning, review evidence, and standby through `formal-readonly`; GO-backed mutation uses `formal-write`.
+- Codex general, explore, experiment, condense, and test workflows default source-shaping or evidence-bearing work to Team-Native formal evidence; no-write exploration, broad reading, validation planning, review evidence, and standby route through `formal-readonly`, while GO-backed mutation uses `formal-write`.
 - Codex general and experiment workflows now record draft/formal board semantics, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once launch.
 - Codex experiment and general workflow entries now explicitly load team-task-board and use template references instead of duplicating full team rules inline.
 - Codex chat, explore, experiment, condense, and test workflows now route coding intent through task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` rules.
@@ -52,10 +62,11 @@ metadata:
 - Codex test workflow now requires visual detail-observation notes and real-information-first evidence before fallback fake data.
 
 ## Active Constraints
-- Do not invoke Codex subagents unless the workflow gate or Director explicitly allows it.
+- Build the formal board first; if Codex subagent channels are unavailable, mark blocked or unverified instead of treating absence as direct completion.
 - Do not write source or memory from read-only flows without the appropriate GO gate.
 
 ## Cycle Events
+- 23: Recorded general workflow hardening so chat, explore, experiment, condense, and test routes use Team-Native formal evidence for source-shaping work instead of advisory-only reminders.
 - 22: Updated Codex experiment workflow wording so sandbox direct execution is explicitly an experiment lane, not captain mainline substitute authoring.
 - 21: Updated Codex general workflow memory after scope-bound authorization hardening; workflow names and casual approval language no longer imply blanket write authority, and read-only/test flows must route fixes to formal write stations.
 - 20: Wave 6B added workflow-orchestration grounding to Codex general workflow entries and synced deployed .agents/skills copies.
@@ -75,9 +86,6 @@ metadata:
 - 06: Added applicability/execution-mode Programming Team Board reporting to Codex experiment and test workflows and synced deployed skill copies.
 - 05: Added detail observation and real-information priority to the Codex test workflow evidence branch.
 - 04: Added MCP memory evidence contract reference to the Codex condense workflow.
-- 03: Updated Codex general workflow output examples and synced _shared support deployment.
-- 02: Aligned general Codex workflow grounding paths to deployed .agents/shared governance references.
-- 01: Split Codex general workflow ownership out of the support parent card.
 
 ## Archive Index
 - Parent archive remains at .agents/memory/_codex_core/support/archive-001.md.

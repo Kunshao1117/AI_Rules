@@ -36,7 +36,7 @@ commit prep, release prep, or completion claims.
 
 Captain-led mode starts for semantic coding triggers, file impact triggers, risk triggers, or explicit workflow triggers. Examples: build, fix, debug, test, audit, commit, release, handoff, skill/rule update, source files, workflow files, policies, memory, docs, generated copies, public contracts, and cross-platform drift.
 
-Workflow names are route hints, not authorization. When source, workflow, validation, review, memory, or release may change, enter captain-led mode.
+Workflow names are route hints, not authorization. When there is any possibility that source, workflow, validation, review, memory, or release changes, enter captain-led mode.
 
 ## Task Type Gate
 
@@ -55,7 +55,7 @@ No specialist branch starts before the captain has a board. The board must
 exist before specialist channels, browser/CLI/MCP evidence, isolated or text
 change delivery, parallel evidence, validation, review, or completion audit.
 
-Before the board, the captain may only bootstrap workflow/skill, rules, request, status, and memory/context index. Broad reading, impact mapping, counter-evidence, review, and audit are stations. Director requests for team mode or specialist channels force board creation first.
+Before the board, the captain is limited to bootstrapping only workflow/skill, rules, request, status, and memory/context index. Broad reading, impact mapping, counter-evidence, review, and audit are stations. Director requests for team mode or specialist channels force board creation first.
 
 Team-First activation assigns applicable stations before broad context-heavy
 reading. If a requested channel cannot start, record capability, invocation
@@ -75,7 +75,7 @@ satisfy acceptance.
 
 For no-write exploration, blueprint, broad file read, research, validation
 planning, or review evidence, the captain creates or promotes a
-`formal-readonly` board. `formal-readonly` can assign specialists, open
+`formal-readonly` board. `formal-readonly` is permitted to assign specialists, open
 read-only execution channels, and keep specialists on standby, but it cannot
 authorize source, memory, git, release, deployment, install, or external-state
 writes.
@@ -119,7 +119,7 @@ Captain-only duties are Director communication, task type and board ownership, G
 
 The captain does not author, rewrite, or primarily implement separable implementation, review, validation, or memory attribution as a normal route. Implementation uses isolated change delivery, then precise text change delivery, then `blocked`. Captain substitute authoring requires Director `closed-with-director-risk` and is not Full team completion.
 
-Counter-evidence, impact map, review, validation, and completion audit default to bounded evidence when useful. If two or more evidence-oriented stations resolve to `direct`, each needs a concrete exception, replacement evidence, and `closed-with-director-risk`, `unverified`, or `blocked`.
+Counter-evidence, impact map, review, validation, and completion audit MUST default to bounded evidence. A station can avoid split evidence only when the board records a concrete direct exception and replacement evidence. If two or more evidence-oriented stations resolve to `direct`, each needs a concrete exception, replacement evidence, and `closed-with-director-risk`, `unverified`, or `blocked`.
 
 ## Role Exclusivity Contract
 
@@ -139,7 +139,7 @@ routes to evidence. Completion audit checks docs, memory, sync, drift, handoff,
 and final claims.
 
 No-write does not mean no-team. Read-only exploration still uses
-`formal-readonly` when it can shape source, workflow, validation, review, memory,
+`formal-readonly` whenever it is relevant to source, workflow, validation, review, memory,
 release, or governance decisions. Large-file deep read routes to a bounded
 specialist; the captain must not absorb, substitute, or deep read large files as
 the team evidence source.
@@ -204,4 +204,4 @@ Coding workflow entries load this skill, `team-task-board`, `delegation-strategy
 
 Before completion, compare request, approved plan, authorization fields, implementation change delivery, memory/docs delivery, review, validation, source changes, docs, and memory. Reject missing execution modes, self-review, protected-state mutation by specialists, captain-direct implementation without Director-accepted `closed-with-director-risk` or `blocked`, two or more direct evidence stations without exceptions, missing authorization, or missing implementation, memory/docs, review, or validation artifacts.
 
-Full team completion requires authorization fields, implementation change delivery, memory delivery, independent review, validation evidence, completion evidence, and required Team-Native trace evidence. Missing authorization, separation, route evidence, trace evidence, independent review, validation, or delivery artifacts may be reported only as `closed-with-director-risk`, `unverified`, or `blocked`; `closed-with-director-risk` is not complete.
+Full team completion requires authorization fields, implementation change delivery, memory delivery, independent review, validation evidence, completion evidence, and required Team-Native trace evidence. Missing authorization, separation, route evidence, trace evidence, independent review, validation, or delivery artifacts must be reported only as `closed-with-director-risk`, `unverified`, or `blocked`; `closed-with-director-risk` is not complete.

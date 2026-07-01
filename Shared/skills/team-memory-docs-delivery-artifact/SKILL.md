@@ -2,7 +2,7 @@
 name: team-memory-docs-delivery-artifact
 description: >
   [Infra] Memory and documentation delivery artifact boundary for source changes.
-  Use when: a code, skill, workflow, docs, or governance change may require
+  Use when: a code, skill, workflow, docs, or governance change requires
   .agents/memory card updates, memory audit evidence, or explicit no-memory
   exception; when separating source delivery work from memory commit authority;
   記憶文件交付件、記憶影響、記憶交付提案、來源變更歸卡。DO NOT use when: pure memory architecture
@@ -20,7 +20,7 @@ metadata:
 
 ## Purpose
 
-Connect source delivery with memory and documentation accountability without giving specialists authority to mutate memory. Source changes may create memory obligations; the captain owns the memory gate.
+Connect source delivery with memory and documentation accountability without giving specialists authority to mutate memory. Source changes must be checked for memory obligations; the captain owns the memory gate.
 
 ## Inputs
 
@@ -47,7 +47,7 @@ Connect source delivery with memory and documentation accountability without giv
 3. Use read-only memory tools only during diagnosis.
 4. Stop before memory mutation unless the workflow is in memory phase and Director authorization exists.
 5. Report blocked memory obligations as residual risk, not success.
-6. Tie the memory/docs decision to a delivery artifact ID, source input, and memory/docs state so the captain can integrate the ledger without inventing attribution.
+6. Tie the memory/docs decision to a delivery artifact ID, source input, and memory/docs state so the captain integrates the ledger without inventing attribution.
 7. Treat missing or mismatched authorization fields as `memory-unverified` or `memory-blocked-by-scope`.
 
 ## Output

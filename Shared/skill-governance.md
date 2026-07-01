@@ -7,6 +7,10 @@ without forcing every rule into always-on context.
 Workflow entries and team skills reference
 `Shared/policies/workflow-orchestration.md` for sequence semantics instead of
 copying the full board, wave, channel, and completion playbook into every skill.
+Language and audience-layer classification for skills, triggers, handoffs,
+memory text, and generated documentation is governed by
+`Shared/policies/language-governance.md`; skills must cite that policy instead
+of treating a platform core rule as their only source.
 
 ## Skill Placement Contract
 

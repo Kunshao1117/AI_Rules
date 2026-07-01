@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 品質閘門、安全可靠性與 UI/UX 標準技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-06-29T07:04:57+08:00'
+last_updated: '2026-07-01T18:26:23+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T19:45:58+08:00'
+last_verified: '2026-07-01T18:20:23+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 8
+cycle_event_count: 9
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.ops-skills.quality-ui — Quality and UI Skills Memory
 
 ## Current Truth
@@ -43,6 +44,7 @@ metadata:
 - Quality review governance now defines correctness, high quality, rigor, review timing, review lifecycle states, evidence branch boundaries, and minimum sufficient complexity.
 - Quality review governance now follows the active Programming Team Board; review evidence stations default to read-only evidence unless a concrete direct exception is recorded.
 - AI development and intent alignment gates now escalate heavy, structural, governance, public-contract, release, security, cross-module, and repeated fragile-code work into review-state reporting.
+- AI development quality gates now require real evidence for governance, workflow, public-contract, security, release, or repeated fragile work before completion claims.
 - AI development quality guidance keeps additional token margin so managed cache and source checkouts remain inside the Shared skill quality limit.
 - High-change security or accessibility guidance must be grounded in current official sources before decisions.
 
@@ -51,6 +53,7 @@ metadata:
 - Keep Director-facing design and quality summaries in Traditional Chinese.
 
 ## Cycle Events
+- 09: Recorded quality-gate hardening so governance, workflow, public-contract, security, release, or repeated-fragile work escalates to review-state evidence instead of lightweight completion.
 - 08: Added independent-review and role-separation enforcement to quality-review-governance.
 - 07: Aligned quality-review-governance with team-first evidence stations and all-direct review-board rejection.
 - 06: Compressed ai-dev-quality-gate with extra token margin after managed cache CRLF checkout exposed line-ending-sensitive estimates.

@@ -99,6 +99,7 @@ Record the result in `metadata.style` field.
 4. AI_Rules governance fields MUST live under `metadata`, not as extra top-level fields.
 5. Frontmatter MUST include `metadata.origin` (`framework` for Shared, `project` for project-derived) and `metadata.style` from Step 1.5.
 6. `description` MUST include English + Chinese keywords for IDE trigger matching and explicit `Use when:` / `DO NOT use when:` boundaries.
+7. Read `.agents/shared/policies/language-governance.md` before choosing instruction, interface, bridge, trigger, handoff, or generated documentation language; do not copy platform core language paragraphs as the skill source.
 
 ### Step 3: Create Directory Structure
 

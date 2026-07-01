@@ -39,7 +39,7 @@ Use only after the captain assigns an implementation station with approved
 file scope, expected behavior, and a governed workspace or text-only delivery
 route.
 
-Use to create a change delivery artifact that the captain can inspect,
+Use to create a change delivery artifact that the captain must be able to inspect,
 integrate, validate, and route for independent review.
 
 ## Procedure
@@ -56,7 +56,7 @@ Target path is inside the assigned workspace and allowed scope?
 ├── YES -> Continue.
 Plaintext credential would be added?
 ├── YES and no [SUDO] -> HALT and report secret risk.
-├── YES with [SUDO] -> Record override and still avoid writing protected secrets when possible.
+├── YES with [SUDO] -> Record override and do not write protected secrets.
 └── NO -> Continue.
 Protected state requested: memory, git, release, deploy, install, external mutation?
 ├── YES -> HALT and route back to captain.

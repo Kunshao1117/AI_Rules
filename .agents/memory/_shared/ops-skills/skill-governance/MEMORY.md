@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-01T15:38:02+08:00'
+last_updated: '2026-07-01T20:14:29+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T15:24:48+08:00'
+last_verified: '2026-07-01T20:10:40+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 27
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -42,17 +42,22 @@ metadata:
 - Shared skill forging is framework-source only unless the Director explicitly supplies the AI_Rules source root; downstream projects default to project-derived skills.
 - The compatibility-named implementation delivery skill now uses change delivery artifact semantics; the old primary delivery wording is no longer the governing model.
 - Delivery artifact boundary skills now require scoped authorization fields before change, memory/docs, validation, review, or role-boundary acceptance can support completion.
+- Change, memory/docs, review, validation, and role-boundary artifacts now require scoped authorization and current station evidence; blocked artifacts cannot mutate memory or substitute for completion.
 - Delegation strategy, programming-team governance, and team-task-board are now tracked by `_shared.team-native-core` and were verified below the shared-skill quality token gate in this refactor.
 - Skill creation and delegation rules must stay compatible with Codex native skill loading and cross-platform governance.
 - This child card tracks source skill files and their deployed root skill copies when those deployed copies are active project inputs.
 - Team task-board, handoff packet, role-boundary, and specialist registry templates now model station families, formal stations, substation tasks, specialist assignments, execution channels, and delivery artifacts as separate objects.
 - Handoff packets are scoped to one substation task, one role, one concrete task, one output format, and one stop condition; vague multi-role delegation is invalid.
 - Role-boundary and registry templates now make captain deep-read substitution, captain repair of specialist work, self-review, self-validation, and memory-attribution replacement non-complete outcomes.
+- Skill governance and skill factory rules now route instruction, interface, bridge, trigger, handoff, memory, and generated-document language choices through the shared language governance policy.
 
 ## Active Constraints
 - Do not duplicate full skill templates in memory; use tracked references as the source of truth for skill formatting and delegation procedures.
+- Do not copy platform core language paragraphs as the only language source for skill creation, skill updates, trigger text, handoffs, or generated documentation.
 
 ## Cycle Events
+- 31: Added skill-governance memory for shared language-policy citation across skill factory and deployed skill language decisions.
+- 30: Recorded delivery-artifact hardening so change, memory/docs, review, validation, and role-boundary artifacts require scoped authorization and cannot mutate memory or substitute for completion when blocked.
 - 29: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform skill sync, and commit-preflight stale blocker cleanup.
 - 28: Updated team skill templates for station-family topology, one-substation-task handoff packets, multi-specialist defaults, and hard captain non-authoring boundaries.
 - 27: Updated skill-governance memory after Team-Native skill hardening: delivery artifact skills separate route from state, require current station evidence, and record source/deployed sync instead of allowing blocked states or transcript text to stand in for authority.
@@ -64,10 +69,6 @@ metadata:
 - 21: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 20: Recorded that the three compressed team-governance skills moved under `_shared.team-native-core` ownership and passed the quality token gate.
 - 19: Retired stale deployed hared path references and recorded change delivery artifact semantics for implementation delivery.
-- 18: Moved Team-Native Core policy and team station files to `_shared.team-native-core`.
-- 17: Verified final Doctor/Audit green after four-delivery-artifact Doctor checks, compressed captain skills, and deployed skill sync.
-- 16: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
-- 15: Added formal team specialist routing with implementation change delivery, memory delivery, review, and validation artifacts; refreshed 50/67 skill facts after source/deployed sync.
 
 ## Archive Index
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
@@ -108,12 +109,10 @@ metadata:
 - Shared/skills/skill-factory/references/skill-style-guide.md
 - Shared/skills/skill-factory/references/skill-template.md
 - Shared/skills/skill-factory/SKILL.md
+- .agents/skills/skill-factory/SKILL.md
 
 ## Relations
-- _shared.ops-skills (parent card: operational-skill family index)
-- _shared (Shared governance parent)
-- _shared.team-native-core (Team-Native Core governance and station files)
+- _shared.ops-skills (parent card), _shared (Shared governance parent), and _shared.team-native-core (Team-Native Core governance and station files)
 
 ## Applicable Skills
-- memory-ops — Use when updating this child card.
-- memory-arch — Use when adjusting child-card topology.
+- memory-ops for updates; memory-arch for child-card topology changes.

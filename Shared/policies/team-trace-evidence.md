@@ -15,13 +15,20 @@ interface approval buttons, platform modes, and channel availability are recorde
 as evidence or context only; none of them authorizes unbounded writes or
 protected follow-on phases by itself.
 
-## Recommended Location
+Because Team-Native / subagent team mode is default-on for applicable work, a
+trace must show either formal station assignment and channel state, or an
+explicit standby, blocked, unverified, not-applicable, or Director-risk-closed
+state. Missing subagent, browser, CLI, MCP, isolation, or text-delivery
+capability is trace evidence to record; it is not permission to omit the station
+or claim captain-direct completion.
 
-Task traces should be written under `.agents/logs/team-traces/` when the active workflow permits log output. Logs are task evidence, not source memory. Durable source facts still belong in `.agents/memory/` after the memory phase.
+## Required Location
+
+Task traces must be written under `.agents/logs/team-traces/` when the active workflow permits log output. Logs are task evidence, not source memory. Durable source facts still belong in `.agents/memory/` after the memory phase.
 
 ## Minimal Trace Fields
 
-Each task trace should contain these fields in readable Markdown or JSON:
+Each task trace must contain these fields in readable Markdown or JSON:
 
 | Field | Required content |
 |---|---|
@@ -29,7 +36,7 @@ Each task trace should contain these fields in readable Markdown or JSON:
 | `task_type` | discussion, exploration, blueprint, build-plan, implementation, fix-debug, validation-audit, commit-release, or handoff-skill |
 | `workflow_route` | Workflow or semantic route used as a route hint |
 | `operation_mode` | `daily` for reduced routine Team-Native work, or `full` for complete Team-Native work |
-| `operation_mode_reason` | Why the task may use daily mode, or why full mode is required |
+| `operation_mode_reason` | Why daily mode is allowed, or why full mode is required |
 | `board_state` | draft or formal |
 | `implementation_authorization` | no-write, plan-only, GO-write, GO-push, release-authorized, or blocked |
 | `go_evidence` | Prompt, workflow authorization, or blocked state |
@@ -131,7 +138,7 @@ Each task trace should contain these fields in readable Markdown or JSON:
 
 ## Audit Semantics
 
-The trace audit is read-only. It should classify evidence as:
+The trace audit is read-only. It must classify evidence as:
 
 | Result | Meaning |
 |---|---|
@@ -182,6 +189,9 @@ These patterns must not pass:
 - Captain broad-reading large file sets as a substitute for specialist deep-read without a direct exception and residual state.
 - Assigned stations left waiting without standby reason, first-response deadline, timeout action, or smallest unblock condition.
 - Tool or subagent unavailability removing an applicable specialist station instead of marking it blocked, unverified, or closed-with-director-risk.
+- Team-Native / subagent team mode treated as opt-in instead of default-on for
+  applicable coding, workflow, validation, review, memory, commit, release,
+  handoff, skill-forge, or governance-impact work.
 - `blocked`, `unverified`, `standby`, `not-authorized`, `unavailable`, or
   `closed-with-director-risk` placed in `execution_route`, `execution_channel`,
   execution mode, or platform route fields.

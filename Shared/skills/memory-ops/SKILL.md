@@ -17,6 +17,7 @@ metadata:
 # Memory Skill Operations (記憶技能操作指引)
 
 Read `references/memory-template.md` when creating/upgrading a card schema. Read `references/memory-mcp-tool-contract.md` when choosing local tools or cartridge-system MCP. Read `../memory-arch/references/memory-quality-migration-blueprint.md` for full-card standardization.
+Read `.agents/shared/policies/language-governance.md` for memory body, trigger, description, handoff, and `## 中文摘要` language classification; this skill only adds memory-specific schema rules.
 
 ## HITL Boundary
 
@@ -121,7 +122,7 @@ Before adding any frontmatter `dependencies` entry, ask:
 - Parent/child memory card relationships default to `## Relations`; do not add them to `dependencies` unless staleness propagation is truly required.
 - Do not add `dependencies` merely to make context look more complete.
 
-Flow: check granularity/compaction, call `memory_read(moduleName)`, write the full active main file, then call `memory_commit(moduleName, projectRoot)`. Keep body facts short and English; Chinese belongs in description, triggers, and `## 中文摘要`.
+Flow: check granularity/compaction, call `memory_read(moduleName)`, write the full active main file, then call `memory_commit(moduleName, projectRoot)`. Under the language governance policy, keep body facts short and stable; Chinese-facing text belongs in description, triggers, and `## 中文摘要`.
 
 ### Legacy Fallback (舊版備用)
 

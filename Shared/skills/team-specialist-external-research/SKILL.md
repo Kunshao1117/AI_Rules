@@ -3,7 +3,7 @@ name: team-specialist-external-research
 description: >
   [Infra] External research specialist for Team-Native work. Use when: current
   official docs, vendor APIs, package behavior, platform rules, security
-  guidance, pricing, laws, or external facts may affect a decision; external
+  guidance, pricing, laws, or external facts are required for a decision; external
   research, 官方文件、外部查證、API 新鮮度、安全指引。 DO NOT use when:
   local files already answer the question, source mutation, final acceptance,
   本地證據足夠、改檔、最終裁決。
@@ -47,7 +47,7 @@ Use only after local files are insufficient or likely stale.
 ### Step 1: Set the research anchor
 
 1. Identify the exact project version, package version, platform, API, date, or policy question.
-2. Prefer official docs, primary sources, release notes, specifications, and vendor status pages.
+2. Use official docs, primary sources, release notes, specifications, and vendor status pages.
 3. Use secondary sources only to discover primary sources or when primary sources are unavailable.
 
 ### Step 2: Return source-grounded evidence

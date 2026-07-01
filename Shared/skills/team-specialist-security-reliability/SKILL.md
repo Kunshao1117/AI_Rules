@@ -35,7 +35,7 @@ metadata:
 
 ## Trigger Conditions
 
-Use when a change may affect credentials, auth, permissions, data integrity,
+Use when a change touches or has plausible impact on credentials, auth, permissions, data integrity,
 abuse resistance, runtime stability, observability, rollback, or operational
 failure handling.
 
@@ -49,7 +49,7 @@ Use before integration when the risk surface is unclear or high consequence.
 [SECURITY RELIABILITY GATE]
 Plaintext credential, token, password, or private key found in proposed content?
 ├── YES and no [SUDO] -> HALT and report secret risk.
-├── YES with [SUDO] -> Record override and recommend environment-backed handling.
+├── YES with [SUDO] -> Record override and require environment-backed handling.
 └── NO -> Continue.
 Change touches auth, permissions, data integrity, network, release, or external service?
 ├── YES -> Require explicit risk evidence and mitigation.
@@ -59,7 +59,7 @@ Change touches auth, permissions, data integrity, network, release, or external 
 ### Step 2: Classify risks
 
 1. Check secret handling, input validation, authorization, data loss, availability, observability, and rollback.
-2. Prefer current local files, tool output, and official docs for high-change rules.
+2. Use current local files, tool output, and official docs for high-change rules.
 3. Mark unavailable scans, credentials, services, or logs as blocked or unverified.
 4. Keep recommendations actionable and bounded to the assigned station.
 

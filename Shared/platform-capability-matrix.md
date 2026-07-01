@@ -7,6 +7,11 @@ This matrix translates platform capability and channel semantics after the
 route, authorization, board state, dispatch wave, and artifact sequence are
 resolved.
 
+Language and audience-layer classification is governed by
+`Shared/policies/language-governance.md`. Platform core files may keep bootstrap
+and Director-facing Traditional Chinese mandates, but complete language
+classification is shared policy, not a platform-core-only rule.
+
 ## Capability Levels
 
 | Level | 定義 |
@@ -19,7 +24,7 @@ resolved.
 
 ## Team-Native Core Capability
 
-Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設協作模型。隊長制不是單人主線流程加上可選子代理，而是站點優先的團隊狀態機：總監指令 -> 隊長接收 -> 轉譯 -> 建板 -> 分派專家子技能 -> 專家工作 -> 隊長監督 -> 回收變更交付件/證據交付件 -> 獨立驗證審查 -> 隊長整合 -> 完成審計 -> 回報。隊長整合只指保護性採納或合入已回收且合格的交付件，不是隊長創作、重寫或主要實作。專家角色來源是 `team-specialist-registry` 與對應 `team-specialist-*` 子技能；子代理只是平台執行通道。每個適用站點必須留下平台能力路由、channel capability、channel invocation status、交付件編號、作者角色、來源輸入、可整合範圍、審查狀態、驗證狀態、記憶文件狀態、隊長是否創作、證據負責人、角色邊界、完成條件、直接例外與 Team-Native trace；能力缺口不得降級成 routine direct，也不得宣稱完整團隊完成。
+Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設協作模型；Team-Native / subagent team mode 對每個適用任務預設開啟。隊長制不是單人主線流程加上可選子代理，而是站點優先的團隊狀態機：總監指令 -> 隊長接收 -> 轉譯 -> 建板 -> 分派專家子技能 -> 專家工作 -> 隊長監督 -> 回收變更交付件/證據交付件 -> 獨立驗證審查 -> 隊長整合 -> 完成審計 -> 回報。隊長整合只指保護性採納或合入已回收且合格的交付件，不是隊長創作、重寫或主要實作。專家角色來源是 `team-specialist-registry` 與對應 `team-specialist-*` 子技能；子代理只是平台執行通道。每個適用站點必須留下平台能力路由、channel capability、channel invocation status、交付件編號、作者角色、來源輸入、可整合範圍、審查狀態、驗證狀態、記憶文件狀態、隊長是否創作、證據負責人、角色邊界、完成條件、直接例外與 Team-Native trace；能力缺口不得降級成 routine direct，也不得宣稱完整團隊完成。
 
 三平台共同的團隊拓撲是：任務板 -> 站點族群 -> 正式站點 -> 子站點任務 -> 隊員配置 -> 執行通道 -> 交付件。多隊員不等於多子代理；平台可把隊員映射到子代理、自訂代理、瀏覽器、CLI、MCP 讀取、隔離工作區或文字交付通道。縮減只能發生在子站點任務或隊員數層，不能刪除站點族群、正式站點、角色邊界、驗證、審查、記憶文件或完成稽核。
 
@@ -46,7 +51,7 @@ source/workflow/public-contract impact.
 
 隊員生命週期是三平台代理共同語義。平台可以保留或重用同一子代理、CLI、瀏覽器、MCP、隔離工作區或文字交付通道，但只能在同一站點、同一 `role_id`、同一 `role_instance_id`、同一交付件與同一角色邊界內。同一任務中的 `exclusive_task_scope: task` 角色實例不得承擔第二個 `role_id`。正式 trace 必須記錄 operation mode、role identity、station lifecycle state、retention reason、conversation health、reuse count、handoff summary、closure reason、closeout lane、Yellow classification、Yellow resolution state 與 repair loop count。跨越實作/審查、驗證/修復、記憶歸因/記憶寫入、收尾/最終裁決、不同 `role_id` 或需要第二意見時，平台必須關閉或替換通道。
 
-Team-First 派工模式是三平台共用能力層。探索、架構、測試、健檢、提交掃描、交接、技能設計、治理影響、廣泛讀檔與反證站點優先開 `formal-readonly`；來源、文件、工作流、部署副本、生成副本或技能內容寫入只能在 GO-backed `formal-write` 站點中發生。隊員可被保留為 standby，但 standby 只記錄觸發條件與允許範圍，不是證據。遇到大檔、多檔或外部長文件時，平台必須先指派有界隊員深讀並回傳引用位置；若通道不可用，必須記錄不可用原因、待命理由、最小補證條件與隊長驗讀範圍。隊長薄上下文只允許微讀、交付件格式檢查、有限驗讀與保護性採納；不得用驗讀名義深讀、補實作、補審查、補驗證或補記憶歸因，也不得以單一摘要宣稱全量讀畢。
+Team-First 派工模式是三平台共用能力層。探索、架構、測試、健檢、提交掃描、交接、技能設計、治理影響、廣泛讀檔與反證站點必須預設開 `formal-readonly`；來源、文件、工作流、部署副本、生成副本或技能內容寫入只能在 GO-backed `formal-write` 站點中發生。隊員可被保留為 standby，但 standby 只記錄觸發條件與允許範圍，不是證據。遇到大檔、多檔或外部長文件時，平台必須先指派有界隊員深讀並回傳引用位置；若通道不可用，必須記錄不可用原因、待命理由、最小補證條件與隊長驗讀範圍，不得把通道缺口視為 team mode 關閉。隊長薄上下文只允許微讀、交付件格式檢查、有限驗讀與保護性採納；不得用驗讀名義深讀、補實作、補審查、補驗證或補記憶歸因，也不得以單一摘要宣稱全量讀畢。
 
 ## Scoped Authorization Semantics
 
@@ -102,7 +107,7 @@ Captain-led programming governance 的 formal board lifecycle 是 draft -> forma
 
 子代理治理語義以 `Shared/policies/subagent-invocation.md` 為唯一來源，隊長制編程團隊語義以 `Shared/skills/programming-team-governance/SKILL.md` 為唯一來源，任務板與專員指派模板以 `Shared/skills/team-task-board/SKILL.md` 為唯一來源。正式團隊專家來源固定引用 `team-specialist-registry` 與對應 `team-specialist-*` 子技能，正式團隊子技能來源固定為 `Shared/skills/team-role-boundaries/SKILL.md`、`Shared/skills/team-change-delivery-artifact/SKILL.md`、`Shared/skills/team-memory-docs-delivery-artifact/SKILL.md`、`Shared/skills/team-validation-delivery-artifact/SKILL.md`、`Shared/skills/team-review-delivery-artifact/SKILL.md` 與 `Shared/skills/team-completion-gate/SKILL.md`。平台工作流入口在隊長制編程、修復、驗證、審查、記憶、提交、交接、技能鍛造或治理影響工作中，必須載入適用的正式團隊子技能。Shared 層只描述 captain trigger gate、team station board、Delegation Gate、read-only evidence branch、isolated change delivery branch、role exclusivity、主代理整合責任、主線直做例外與回報格式；平台專用工具名稱只能出現在政策檔的平台轉譯區塊、平台專屬 workflow / command，或明確標示為對照的文件段落。
 
-證據型站點是 Team-Native Core 主幹，不是加分選項。自然語言編程任務與明示工作流都必須先形成隊長任務板；工作流指令只是路由，不是免建板、免派工或免驗證的授權。隊長任務板必須先於任一隊員啟動，且必須記錄任務類型、工作流路由、實作授權、允許角色、禁止角色、平台能力路由與 Team-Native trace。任務類型閘門、派工前置閘門、隊長最小執行權是三平台共同語義：隊長保留總監溝通、GO 判讀、已回收且合格交付件的保護性採納/合入、記憶/提交/發布閘門與最終驗收；反證、影響面、測試、審查與收尾應優先由可分離站點採證。
+證據型站點是 Team-Native Core 主幹，不是加分選項。Team-Native / subagent team mode 在自然語言編程任務與明示工作流中預設開啟，且都必須先形成隊長任務板；工作流指令只是路由，不是免建板、免派工或免驗證的授權。隊長任務板必須先於任一隊員啟動，且必須記錄任務類型、工作流路由、實作授權、允許角色、禁止角色、平台能力路由與 Team-Native trace。任務類型閘門、派工前置閘門、隊長最小執行權是三平台共同語義：隊長保留總監溝通、GO 判讀、已回收且合格交付件的保護性採納/合入、記憶/提交/發布閘門與最終驗收；反證、影響面、測試、審查與收尾必須預設由可分離站點採證。
 
 任務板必須保留站點族群、正式站點、子站點任務、隊員配置、執行通道與交付件，不得只以「多代理」「簡單任務」「隊長已看過」替代。速度、方便、成本、任務小、通道麻煩或平台能力缺口，都不是縮減成隊長直做的有效理由。治理、工作流、鉤子、驗證、記憶、發布、部署、安裝、受保護狀態與公開契約工作不得用簡單任務縮減成完整完成。
 

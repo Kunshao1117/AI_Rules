@@ -54,7 +54,7 @@ Check mutates source, memory, git, release, deployment, install, or external sta
 ├── YES and no [SUDO] -> HALT and return blocked.
 ├── YES with [SUDO] -> Record override request and route mutation back to captain.
 └── NO -> Continue.
-Validation result can be reproduced or clearly classified?
+Validation result is reproducible or clearly classified?
 ├── NO -> Return unverified with smallest next evidence path.
 └── YES -> Continue.
 ```
@@ -97,7 +97,7 @@ field list inside this role skill.
 
 ## Gotchas
 
-- Formatting, snapshot updates, migrations, and generators may mutate files.
+- Formatting, snapshot updates, migrations, and generators are mutating operations.
 - Passing syntax checks do not prove requirement fit.
 - Manual classification must name why automation was unavailable.
 - Failed, blocked, or unverifiable validation cannot be reported as full team completion.

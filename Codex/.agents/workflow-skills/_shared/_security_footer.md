@@ -22,6 +22,13 @@
 └── [SUDO] 偵測到？→ 豁免所有角色限制，但必須在操作記錄中標記。
 ```
 
+## Tool Scope Cross-Validation（工具範圍交叉驗證）
+
+When a skill's `tool_scope` declares permitted tool categories, the Agent MUST verify that these do not exceed the workflow's role permissions before tool use.
+
+- Scope exceeds workflow role permission? → [HALT]「🔴 [ROLE HALT] 工具範圍超出工作流角色權限，禁止執行。」
+- Skills loaded within `Reader` or `Reader/Memory` workflows MUST NOT use filesystem write or terminal write scoped tools unless a separately authorized `formal-write` station exists.
+
 ## Security Compliance Inheritance（安全合規繼承）
 
 各工作流在 SKILL.md 底部加入以下格式繼承本閘門：

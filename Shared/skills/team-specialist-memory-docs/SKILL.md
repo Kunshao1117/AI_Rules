@@ -35,8 +35,8 @@ metadata:
 ## Trigger Conditions
 
 Use when source, skill, workflow, governance, public contract, documentation,
-index, generated copy, or release-prep changes may need memory or docs
-attribution.
+index, generated copy, or release-prep changes require memory or docs
+attribution assessment.
 
 Use to produce a memory and documentation delivery artifact for captain-owned
 integration.
@@ -70,8 +70,8 @@ Return these fields:
 - Role: memory docs.
 - Memory impact: required, not-required, blocked-by-scope, card-missing, or unverified.
 - Docs impact: required, not-required, blocked, or unverified.
-- Suggested memory note: concise proposed text or no-change statement.
-- Suggested docs or index action: exact target or no-change statement.
+- Required memory note decision: concise proposed text or no-change statement.
+- Required docs or index action: exact target or no-change statement.
 - Evidence: files, memory cards, or searches checked.
 - Blocker status: blocked, unverified, closed-with-director-risk, or not-applicable.
 
@@ -96,7 +96,7 @@ field list inside this role skill.
 
 - Task traces and raw logs are not durable source memory.
 - Project context requires separate authorization from source memory.
-- A source change can be delivered while memory remains blocked only if the captain reports the residual risk.
+- A source change with blocked memory must report the residual risk if it is delivered before memory closure.
 
 ## Constraints
 

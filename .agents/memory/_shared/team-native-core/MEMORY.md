@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-07-01T15:38:04+08:00'
+last_updated: '2026-07-01T20:14:05+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-01T15:24:48+08:00'
+last_verified: '2026-07-01T20:10:40+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 14
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -40,7 +40,7 @@ metadata:
 - Protected mutations now require explicit protected authorization evidence for current phase, target, scope, and closure state; a general formal-write board is not enough.
 - Source/deployed parity is part of the Team-Native trace contract for shared governance and skill files; sync direction and sync evidence must be recorded when both copies exist.
 - Workflow orchestration scenarios provide non-authorizing examples for formal-readonly evidence, blueprint-to-build, change-to-validation/review/memory, failed validation route-back, audit fan-out, commit-preflight blockers, and source/deployed sync.
-- Team-Native Core is an execution precondition: when it applies, the next valid runtime state is a Captain Team Board with applicable stations, handoff packets, channel states, and formal-readonly/formal-write mode before broad reading or protected work.
+- Team-Native Core is a default-on execution precondition for applicable work: the next valid runtime state is a Captain Team Board with applicable stations, handoff packets, channel states, and formal-readonly/formal-write mode before broad reading or protected work.
 - Authorization Resolution is a shared pre-write gate: GO, interface approvals, platform prompts, modes, and workflow names resolve into scoped fields used by boards, traces, artifacts, and completion gates.
 - Full work uses operation mode `full`; `daily` is reduced routine evidence only and cannot cover implementation, bottom-layer refactor, cross-file governance, Doctor/Audit changes, release/deploy preparation, or public-contract impact.
 - Specialist roles come from `team-specialist-registry` plus ten child skills; child skills carry role IDs, parent/support skill relations, artifact contracts, and shared trace/handoff references.
@@ -55,12 +55,16 @@ metadata:
 - The captain thin-context rule limits captain work to Director communication, board ownership, dispatch, supervision, format checks, bounded verify-read, protected adoption or merge of qualified artifacts, protected gates, and reporting.
 - Captain substitute authoring, broad deep-read replacement, self-review, self-validation, or memory attribution replacement can only close as blocked, unverified, or `closed-with-director-risk`; it cannot support `complete`.
 - Station reduction is valid only at substation-task or specialist-count level with replacement evidence and residual risk; convenience, speed, cost, or small-task reasoning is not a valid downgrade for governance, workflow, hook, validation, memory, or release surfaces.
+- Platform and workflow matrices now cite the shared language governance policy for language and audience-layer classification while platform core files keep only bootstrap and Director-facing mandates.
 ## Active Constraints
 - Do not describe missing platform capability as routine direct work.
 - Do not claim `complete` without separated delivery artifact classes, independent review, validation, memory/docs disposition, and trace evidence.
 - Keep platform-specific tool names in adapter sections or platform-specific files.
 - Do not copy raw task traces into source memory; keep only stable governance facts.
+- Do not use platform core language mandates as the sole authority for Team-Native handoffs, workflow output, memory language, or change-description wording.
 ## Cycle Events
+- 35: Recorded matrix language-governance grounding so workflow and platform entries cite the shared policy instead of platform-core-only language rules.
+- 34: Recorded non-hook Team-Native core hardening so applicable work is default-on team mode, station assignment precedes channel selection, and no-write work still requires formal team evidence.
 - 33: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform core-rule sync, and commit-preflight stale blocker cleanup.
 - 32: Added thin-captain, team-topology, multi-specialist default, and hard reduction rules to shared Team-Native policies and matrices; captain substitute authoring remains non-complete.
 - 31: Updated shared Team-Native memory after hook and workflow hardening: natural-language authorization must bind to the visible scope, hook blocks are stop states instead of retry prompts, route fields cannot carry blocked states, and tool envelope/receipt records remain carriers rather than authorization sources.
@@ -72,9 +76,6 @@ metadata:
 - 25: Wave 6C added non-authorizing workflow scenario playbooks, task-board reusable templates, and explicit separation between full completion and non-complete states.
 - 24: Wave 6B added Shared/policies/workflow-orchestration.md, wired it into shared policies, workflow entries, deployed copies, and Doctor/Audit checks.
 - 23: Compacted active Team-Native governance memory after commit preflight reported the active card line limit.
-- 22: Promoted the Team-Native hard gate into shared core policy and trace contract; Doctor/Audit strict trace checks now treat missing required trace for full, governance-impact, Doctor/Audit, routine-audit, or commit/release readiness as Red evidence.
-- 21: Completed Wave 3 Doctor/Audit contract checks for operation mode, ten role IDs, specialist relation metadata, trace/handoff references, and role identity trace fields; source Doctor and Deploy Audit returned red 0 with deployment-drift yellows only.
-- 20: Completed Wave 2 role-skill refactor: ten specialist child skills now expose relation metadata, registry carries child-skill routing, and duplicated trace field lists were replaced with shared trace and handoff contract references.
 ## Archive Index
 - archive-002.md — Team-Native operation-mode and formal-readonly events 16-19 compacted on 2026-06-30.
 - archive-001.md — Older cycle events 1-15 compacted from the active card.
@@ -83,8 +84,7 @@ metadata:
 - tool: commit preflight identified active-card compaction due on 2026-06-30.
 - director: 2026-06-30 GO authorized compaction of the four blocking memory cards.
 ## Read Contract
-- Read this card when touching Team-Native Core policy, subagent policy, task board, platform matrix, workflow matrix, specialist skills, or Doctor team governance checks.
-- Read `_shared` for parent Shared governance navigation and `_system.scripts` for root PowerShell implementation details.
+- Read this card when touching Team-Native Core policy, subagent policy, task board, platform/workflow matrix, specialist skills, or Doctor team governance checks; read `_shared` for parent navigation and `_system.scripts` for root PowerShell implementation details.
 ## Conflicts and Supersession
 - Supersedes older memory wording that framed team collaboration as optional helper branches.
 ## 中文摘要

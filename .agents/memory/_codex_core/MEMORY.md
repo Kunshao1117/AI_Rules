@@ -4,14 +4,14 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-01T15:37:41+08:00'
+last_updated: '2026-07-01T20:14:49+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T15:24:48+08:00'
+last_verified: '2026-07-01T20:10:40+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -37,7 +37,7 @@ metadata:
 - Codex Edition is the OpenAI Codex adapter for the AI_Rules governance framework, using `.codex/AGENTS.md` for project governance and `.agents/skills/` for live skills.
 - Codex source workflow skills are sourced from `Codex/.agents/workflow-skills/` and merged into `.agents/skills/`.
 - Codex source and deployed rules put Team-Native Core and Authorization Resolution before lifecycle, workflow names, GO text, sandbox prompts, and tool approvals.
-- Team-Native Codex work requires captain-led boards, role-exclusive stations, handoff packets, channel state, protected captain integration, and separated change, memory/docs, review, and validation artifacts before full completion.
+- Applicable Codex coding, workflow, validation, review, memory, commit, release, or governance-impact work defaults to captain-led Team-Native mode with boards, role-exclusive stations, handoff packets, channel state, protected captain integration, and separated delivery artifacts before full completion.
 - Evidence-bearing chat, broad reads, validation, review, memory/docs attribution, commit/release preparation, and completion audit route through formal-readonly or formal-write; pure chat and tiny orientation stay direct only while non-mutating.
 - Codex project-level hooks provide Team-Native guardrails for micro-read allowance, broad-read Captain-Lite hints, scoped write target matching, protected mutation authorization, and completion-claim artifact checks.
 - Hooks Stability guards separate current payload evidence from historical transcript text, require same-record protected authorization, require every detected protected action to have complete authorization, avoid release/deploy false positives from filenames, enforce exact normalized write-target matching, and gate completion claims on delivery artifacts or explicit non-complete state.
@@ -54,12 +54,16 @@ metadata:
 - Codex entry governance now summarizes thin-captain limits, no captain substitute authoring, the Team-Native object topology, multi-specialist separation from native subagents, and hard station-reduction rules.
 - Codex hook diagnostics now expose blocked action context, missing evidence categories, trusted and untrusted fields, allowed next steps, forbidden next steps, and minimum unblock conditions.
 - Codex completion-claim hooks require structured delivery artifact evidence for implementation, memory/docs, review, and validation; text-only artifact naming is blocked.
+- Codex core keeps bootstrap and Director-facing Traditional Chinese mandates, while complete language-layer classification and exact-evidence rules come from the shared language governance policy.
 ## Active Constraints
 - Keep Codex framework versioning separate from VS Code extension versioning.
 - Keep root README ownership in `_system`, not this card.
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
+- Codex workflow entries must cite the deployed shared language policy before applying workflow-specific output, handoff, memory-language, or change-description rules.
 ## Cycle Events
+- 46: Recorded Codex language-governance grounding across core rules and selected workflow entries with deployed policy citation.
+- 45: Recorded non-hook Codex core hardening that makes Team-Native mode default-on for applicable work and forbids captain substitute authoring from supporting full completion.
 - 44: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform core-rule sync, and commit-preflight stale blocker cleanup.
 - 43: Updated Codex core memory after entry-governance and hook hardening: thin-captain rules, Team-Native object topology, multi-specialist/subagent separation, structured completion evidence, and clearer hook diagnostics are now current.
 - 42: Updated Codex core memory after Team-Native authorization binding hardening: captain wording now means protected integration of recovered artifacts, hooks require current structured evidence plus trusted envelope/receipt records for protected mutations, and natural-language prompts stay bound to the visible target.
@@ -70,8 +74,6 @@ metadata:
 - 36: Hooks Stability Implementation accepted with source/deployed hook and config hash parity, 41 fixture cases, Doctor Red 0 / Yellow 0, same-record protected authorization, per-action protected authorization coverage, exact write target matching, and a nonblocking deploy.patch dedicated-fixture gap.
 - 35: Added Codex project-level hook source and Team-Native gate behavior for Captain-Lite reads, scoped writes, protected mutations, and completion artifact checks.
 - 34: Wave 6B added workflow-orchestration grounding to Codex workflow entries and source/deployed drift checks.
-- 33: Wave 6A updated all 17 Codex workflow entries with operation_mode, daily/full modes, direct/formal-readonly/formal-write boundaries, board triggers, and specialist lifecycle semantics; deployed workflow skill hashes were verified in sync.
-- 32: Synced Codex core source and live rules with the core-injection Team-Native hard gate before broad reading, validation, review, memory/docs attribution, completion audit, or completion claims.
 ## Archive Index
 - archive-003.md — Older cycle events 13-22 compacted from the active card.
 - archive-001.md — Legacy _codex_core card preserved before schema v2 compaction on 2026-06-04.
@@ -113,7 +115,4 @@ metadata:
 - Codex/.agents/workflow-skills/11-handoff-交接/SKILL.md
 - .agents/memory/_codex_core/archive-001.md
 ## Relations
-- _system (root governance and deployment memory)
-- _shared (Shared operational skills)
-- _map (memory navigation index)
-- _codex_core.support (child card for support workflow skills)
+- _system (root governance and deployment memory); _shared (Shared operational skills); _map (memory navigation index); _codex_core.support (support workflow child card)

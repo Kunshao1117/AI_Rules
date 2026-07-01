@@ -48,7 +48,7 @@ Decision rules:
 1. If the task is implementation work and no escalation factor can be ruled out, default to Medium feature.
 2. If any heavy factor is present, do not downgrade below Heavy change unless the plan explicitly scopes it out.
 3. If claiming Lightweight change, list the absence of escalation factors and the narrow validation evidence.
-4. The agent may choose higher depth, but not lower depth to save time.
+4. Higher depth is allowed only to increase assurance; lower depth must not be chosen to save time.
 
 ### 1.5 Change Intent Classification Gate
 
@@ -58,7 +58,7 @@ Before production build, fix, test, or audit work writes files or declares compl
 | --- | --- | --- |
 | Emergency patch | A temporary stopgap is needed to isolate a confirmed acute failure or unblock operation. | Reproduced symptom, smallest safe scope, rollback/follow-up path, and unresolved-root-cause marker when root cause remains open. |
 | Root-cause repair | A confirmed defect, regression, or invariant violation is being fixed. | Symptom, cause, repair scope, regression path, affected ownership, and real-path evidence when observable. |
-| Local refinement | Behavior should stay the same while local readability, naming, documentation, tests, or small boundaries improve. | Behavior-unchanged rationale, affected scope, targeted validation, and no hidden user-visible/data/public-interface impact. |
+| Local refinement | Behavior must stay the same while local readability, naming, documentation, tests, or small boundaries improve. | Behavior-unchanged rationale, affected scope, targeted validation, and no hidden user-visible/data/public-interface impact. |
 | Structural refactor | Module boundaries, shared contracts, repeated patch stacks, or systemic maintainability risk are corrected. | Dependency impact, compatibility/migration path, regression matrix, memory/docs impact, and visual/real evidence for user-visible surfaces. |
 
 Patch-stack escalation:
@@ -79,15 +79,15 @@ Report review purpose, lifecycle state, evidence status, accepted risk, and bloc
 Before implementing against a framework, plugin platform, MCP protocol, or browser API:
 
 1. Identify the project's locked version from package files, memory cards, or config.
-2. Prefer latest stable guidance only when compatible with that version.
+2. Use latest stable guidance only when compatible with that version.
 3. Verify uncertain or high-change APIs through official docs, Context7, or primary sources before coding.
 4. Record version assumptions when they affect implementation choices.
 
-Do not use model memory as the source of truth for APIs that may have changed.
+Do not use model memory as the source of truth for high-change or uncertain APIs.
 
 ### 2.5 Real Execution Evidence Gate
 
-Production build, fix, test, and audit work defaults to real verification. If behavior can be started, called, queried, observed, logged, or inspected, try that path before claiming completion.
+Production build, fix, test, and audit work defaults to real verification. If behavior can be started, called, queried, observed, logged, or inspected, attempt that path before claiming completion.
 
 Classify the real-world operation surface before choosing evidence:
 
@@ -110,7 +110,7 @@ Verification method discovery:
 2. Choose the closest operator-capable path, then add lower-level evidence only when useful.
 3. Search docs, scripts, routes, task files, and platform notes before marking a path unavailable.
 4. Retry warmup, stale controller, timeout, rate-limit, or delayed readiness failures when safe.
-5. If the primary tool is unavailable, try an equivalent real path: alternate controller, command, request, read-only DB check, log, sandbox, preview, dry-run, or recorded real-source replay.
+5. If the primary tool is unavailable, attempt an equivalent real path: alternate controller, command, request, read-only DB check, log, sandbox, preview, dry-run, or recorded real-source replay.
 6. Blocked reports list search scope, tools tried, retry status, alternatives, and the smallest missing condition.
 
 Evidence levels:
@@ -190,7 +190,7 @@ Do not force every interface into web responsive rules. Match the evidence to th
 Visual detail and real-information requirements:
 
 1. Visual validation must inspect text clipping, alignment, spacing, border breaks, overlap, focus/disabled state, loading flicker, empty/error state, density, and hierarchy. "Looks fine overall" is not enough.
-2. Prefer real data, account state, current API responses, logs, production-like records, or an equivalent real path. Fake, fixture, seeded, mock, or idealized data is fallback only.
+2. Use real data, account state, current API responses, logs, production-like records, or an equivalent real path. Fake, fixture, seeded, mock, or idealized data is fallback only.
 3. Use fake data only when real information is unavailable, blocked, unsafe, broken, or unauthorized; report why, remaining risk, and unsupported completion claims.
 4. Pair screenshots with relevant states: normal, loading, empty, error, permission/disabled, and before/after interaction.
 5. For refactors or broad UI work, compare before/after and name detail-level differences.
