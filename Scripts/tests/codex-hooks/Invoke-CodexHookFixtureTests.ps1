@@ -323,13 +323,18 @@ foreach ($fixtureFile in $fixtures) {
         $diagnosticLabels = @(
             'Governance hard gate hit',
             'Block type:',
+            'Current action:',
             'Blocked action:',
             'Reason code:',
             'Reason:',
             'Missing structured fields:',
+            'Missing evidence categories:',
+            'Trusted fields:',
+            'Untrusted fields:',
             'Missing evidence',
             'Allowed next steps:',
-            'Forbidden next steps:'
+            'Forbidden next steps:',
+            'Minimum unblock conditions:'
         )
         $caseMissingDiagnosticLabel = $false
         foreach ($diagnosticLabel in $diagnosticLabels) {

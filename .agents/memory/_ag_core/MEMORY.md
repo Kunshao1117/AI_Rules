@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-01T09:37:17+08:00'
+last_updated: '2026-07-01T15:37:12+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T09:32:41+08:00'
+last_verified: '2026-07-01T15:24:48+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 5
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core — Antigravity Memory
 
 ## Current Truth
@@ -44,12 +43,15 @@ metadata:
 - Antigravity workflow entries and deployed workflow copies now reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
 - Antigravity docs and workflows cover real execution evidence, deep audit, memory migration tools, change intent, visual evidence, intent alignment, and review governance.
 - Antigravity platform behavior must stay semantically aligned with Claude and Codex while keeping platform-specific routes in adapter files.
+- Antigravity README now frames captain work as communication, authorization resolution, board ownership, dispatch, supervision, bounded verify-read, protected adoption or merge, state decision, and reporting; it no longer presents captain work as primary implementation, self-review, or routine main-worktree authoring.
 ## Active Constraints
 - Do not duplicate root system ownership in this card.
 - Keep Antigravity-specific workflow facts here and shared operational details in Shared skills.
 - Do not track `.agents/memory/_map` or `.agents/memory/_system` source copies here.
 - Split workflow child cards before adding another broad Antigravity workflow cycle.
 ## Cycle Events
+- 7: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform core-rule sync, and commit-preflight stale blocker cleanup.
+- 6: Updated Antigravity README memory after public wording was tightened so captain integration means protected adoption or merge of qualified artifacts, not captain substitute authoring.
 - 5: Updated Antigravity core memory after route/state and captain-supervision hardening; captain wording now means protected integration and gate ownership, not primary authoring or routine write substitution.
 - 4: Regenerated the shared subagent policy block in Antigravity core rules after Team-Native route/state and hook payload evidence hardening.
 - 3: Wave 6B added workflow-orchestration grounding to Antigravity workflow entries and source/deployed drift checks.

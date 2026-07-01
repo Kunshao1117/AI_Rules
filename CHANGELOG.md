@@ -6,10 +6,16 @@ All notable changes to this project will be documented in this file.
 
 ## [2026-07-01] Team-Native 授權綁定與巡檢閉鎖
 
+### feat
+- **隊長薄上下文邊界** — 明確隊長只做微讀、格式檢查、有限驗讀與保護性採納，禁止補實作、補審查、補驗證或補記憶歸因後宣稱完整團隊完成。
+- **團隊拓撲硬化** — 將 Team-Native 軌跡固定為任務板、站點族群、正式站點、子站點任務、隊員配置、執行通道與交付件，避免用多代理或隊長處理取代角色與證據。
+- **縮減邊界收斂** — 明確縮減只能落在子站點任務或隊員數層，不能刪除站點、角色邊界、驗證、審查、記憶文件與完成稽核。
+
 ### fix
 - **範圍式授權綁定** — 補強日常語句、介面同意與 GO 的可見範圍綁定規則，避免被擴張成未限範圍寫入。
 - **治理巡檢失敗閉鎖** — 強化管理器巡檢與稽核入口，讓 Team-Native 硬閘門失敗不能靜默通過。
-- **Codex hook 回歸覆蓋** — 補齊授權、保護操作、停止階段與中文自然語句綁定案例。
+- **Codex hook 完成證據** — 停止階段改以結構化且已回收的實作、記憶文件、審查與驗證交付件判定完成宣稱，並補齊授權來源、目標、範圍、階段、期限與解析狀態要求。
+- **Codex hook 回歸覆蓋** — 補齊中文口語路由、中文與空白路徑、Windows 路徑前綴陷阱、含 BOM 中文完成宣稱、純文字交付件宣稱與授權欄位案例；5 個新增 fixture 納入本輪提交候選清單。
 - **跨平台代理同步** — 同步 Antigravity、Claude、Codex 入口、共用政策、技能與記憶歸屬。
 
 ## [2026-06-30] Codex hooks 穩定性與團隊硬閘門
@@ -29,7 +35,7 @@ All notable changes to this project will be documented in this file.
 
 ### feat
 - **工作流編排契約** — 新增共用工作流編排政策與情境劇本，明確日常模式、完整模式、純對話、唯讀、寫入、轉場、隊員生命週期與任務板觸發條件。
-- **任務板模板強化** — 團隊任務板補齊流程範例、協作轉場劇本、完成狀態、缺件處理、隊長整合邊界與正式站點欄位。
+- **任務板模板強化** — 團隊任務板補齊流程範例、協作轉場劇本、完成狀態、缺件處理、隊長保護性採納或合入邊界與正式站點欄位。
 - **三平台入口同步** — Antigravity、Claude、Codex 的 17 個工作流入口同步 Team-Native 編排層，避免工作流只引用角色技能但缺少實際流程。
 
 ### fix
@@ -144,7 +150,7 @@ All notable changes to this project will be documented in this file.
 - **Experiment boundary** — 三平台實驗入口保留快速試錯，但最小治理宣告改為 Captain Team Board，並加入角色邊界、隔離變更交付條件、不能自我審查與不能宣稱團隊協作的全主線例外。
 - **Condense boundary** — 三平台 05 濃縮入口納入隊長最小執行權與 Captain Team Board，掃描、萃取、審查與收尾稽核不得繞過團隊派工；AGENTS、CLAUDE 與記憶寫入仍由隊長保護整合。
 - **Doctor semantic coverage** — 巡檢模組改抓隊長觸發、任務類型、派工前置、隊長最小執行權、角色邊界、隔離變更交付、文字變更交付、總監風險關閉但非完整、自我審查、00/01 自動轉向與實驗邊界，避免舊版只檢查 Full B 字串造成假綠燈。
-- **Documentation alignment** — 根文件與三平台文件改以隊長制團隊協作描述編程治理，明確區分主代理整合責任、唯讀證據分支與隔離變更交付分支。
+- **Documentation alignment** — 根文件與三平台文件改以隊長制團隊協作描述編程治理，明確區分主代理保護性採納或合入責任、唯讀證據分支與隔離變更交付分支。
 
 ## [2026-06-27] 受治理 Full B 編程團隊治理
 
@@ -455,7 +461,7 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-22] 三平台子代理治理建構
 
 ### feat
-- **Delegation Gate semantic core** — `Shared/policies/subagent-invocation.md` 改為 vendor-neutral 的 Delegation Gate / evidence branch 模型，Shared 層只描述委派判斷、唯讀邊界、主代理整合責任與固定證據交付件格式。
+- **Delegation Gate semantic core** — `Shared/policies/subagent-invocation.md` 改為 vendor-neutral 的 Delegation Gate / evidence branch 模型，Shared 層只描述委派判斷、唯讀邊界、主代理保護性採納或合入責任與固定證據交付件格式。
 - **Platform adapter translation** — Antigravity / Gemini、Claude Code、Codex 三平台入口改為各自轉譯 Shared 語義，不再把任一平台的子代理工具名硬寫成共用規則。
 - **Subagent vocabulary drift audit** — Doctor 新增語彙漂移檢查，Shared 技能中的未標註平台工具名會以 Red 阻斷，並攔截 Codex workflow 殘留的 Claude 舊式 Agent subagent_type 語法。
 - **Shared vocabulary hardening** — `delegation-strategy` 與 CLI prompt skeleton 移除平台專屬狀態檔與硬編工具名，browser Auto-Pass 明確不得略過 Director GO / HITL gate。

@@ -27,6 +27,8 @@
     "authorization_evidence": "Director GO scoped basename fixture",
     "authorization_scope": "src/foo.ts only",
     "authorization_target": "src/foo.ts",
+    "authorization_phase": "current formal-write fixture phase",
+    "authorization_expiry": "current task only",
     "cwd": "D:\\AI_Rules",
     "permission_mode": "default"
   }

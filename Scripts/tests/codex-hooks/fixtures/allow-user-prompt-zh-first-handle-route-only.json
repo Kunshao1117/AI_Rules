@@ -1,0 +1,12 @@
+{
+  "name": "allow-user-prompt-zh-first-handle-route-only",
+  "event": "UserPromptSubmit",
+  "expectedExitCode": 0,
+  "expectedOutputRegex": "route hint.*natural-language instructions are valid.*before any write or protected action",
+  "payload": {
+    "hook_event_name": "UserPromptSubmit",
+    "prompt": "先處理這個，繼續，回去修正。",
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-07-01T09:37:26+08:00'
+last_updated: '2026-07-01T15:38:04+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-01T09:32:41+08:00'
+last_verified: '2026-07-01T15:24:48+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 12
+cycle_event_count: 14
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared.team-native-core — Team-Native Core Governance Memory
 ## Current Truth
 - Workflow orchestration is now the shared sequence layer between workflow routing and Team-Native station execution; Team-Native Core remains the hard gate.
@@ -52,12 +51,18 @@ metadata:
 - Hook-blocked actions must stop as blocked, unverified, or `closed-with-director-risk`; retrying with another tool, changing channels, or using transcript text as current authorization is a governance violation.
 - Tool execution envelopes and execution receipts are carriers and return records, not authorization sources; write-capable or protected mutation traces require trusted issuer, signature, nonce, matching scope-bound authorization, the same envelope id or nonce across envelope and receipt, allowed receipt decision, matching action/target/scope, and fail-closed handling for malformed or unverifiable payloads.
 - Route fields name actual execution channels or delivery forms; blocked, unverified, standby, not-authorized, unavailable, and `closed-with-director-risk` belong in state fields and cannot act as fallback routes.
+- Team-Native topology now separates Captain Team Board, station family, formal station, substation task, specialist assignment, execution channel, and delivery artifact; multi-specialist defaults do not depend on native subagent availability.
+- The captain thin-context rule limits captain work to Director communication, board ownership, dispatch, supervision, format checks, bounded verify-read, protected adoption or merge of qualified artifacts, protected gates, and reporting.
+- Captain substitute authoring, broad deep-read replacement, self-review, self-validation, or memory attribution replacement can only close as blocked, unverified, or `closed-with-director-risk`; it cannot support `complete`.
+- Station reduction is valid only at substation-task or specialist-count level with replacement evidence and residual risk; convenience, speed, cost, or small-task reasoning is not a valid downgrade for governance, workflow, hook, validation, memory, or release surfaces.
 ## Active Constraints
 - Do not describe missing platform capability as routine direct work.
 - Do not claim `complete` without separated delivery artifact classes, independent review, validation, memory/docs disposition, and trace evidence.
 - Keep platform-specific tool names in adapter sections or platform-specific files.
 - Do not copy raw task traces into source memory; keep only stable governance facts.
 ## Cycle Events
+- 33: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform core-rule sync, and commit-preflight stale blocker cleanup.
+- 32: Added thin-captain, team-topology, multi-specialist default, and hard reduction rules to shared Team-Native policies and matrices; captain substitute authoring remains non-complete.
 - 31: Updated shared Team-Native memory after hook and workflow hardening: natural-language authorization must bind to the visible scope, hook blocks are stop states instead of retry prompts, route fields cannot carry blocked states, and tool envelope/receipt records remain carriers rather than authorization sources.
 - 30: Clarified protected mutation matching so trusted envelope evidence and trusted receipt evidence must share envelope identity or nonce and match action, target, scope, decision, and authorization before any protected operation can proceed.
 - 29: Added trusted tool execution envelope and receipt rules, invalid-payload fail-closed semantics, route/state separation, current scoped Director risk-close evidence, and post-block bypass hard-block requirements to shared Team-Native policies and trace evidence.

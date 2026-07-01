@@ -35,6 +35,8 @@ contract.
 
 Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交接、技能鍛造與治理影響工作的預設協作模型。固定流程是總監指令 -> 隊長接收 -> 轉譯 -> 建板 -> 分派專家子技能 -> 專家工作 -> 隊長監督 -> 回收變更交付件/證據交付件 -> 獨立驗證審查 -> 隊長整合 -> 完成審計 -> 回報。這裡的隊長整合只指隊長保護性採納或合入已回收且合格的交付件；它不是隊長創作、重寫或主要實作。隊長任務板是起點，不是完成證據本身；正式完成至少需要每個適用站點的 Team-Native trace，記錄任務類型、工作流路由、實作授權、平台能力路由、channel capability、channel invocation status、專家角色來源、執行通道、交付件編號、作者角色、來源輸入、可整合範圍、審查狀態、驗證狀態、記憶文件狀態、隊長是否創作、階段、派工波次、前一波輸入、下一波啟動條件、正式證據資格、證據負責人、角色邊界、直接例外、完成條件與缺證狀態。
 
+工作流採證必須保留 Team-Native 拓撲：任務板 -> 站點族群 -> 正式站點 -> 子站點任務 -> 隊員配置 -> 執行通道 -> 交付件。多隊員不等於多子代理；隊員可以映射到子代理、瀏覽器、CLI、MCP 讀取、隔離工作區或文字變更交付路徑。隊長薄上下文只允許微讀、格式檢查、有限驗讀與保護性採納；不得用驗讀名義深讀、補實作、補審查、補驗證或補記憶歸因。
+
 Team-First activation applies before broad context collection. Read-only
 exploration, blueprint evidence, external research, impact mapping, deep file
 reading, validation planning, and review evidence use `formal-readonly` when the
@@ -105,7 +107,7 @@ Team-First 是所有編程、工作流、驗證、審查、記憶、提交、交
 |---|---|---|
 | 00 到 12 工作流名稱 | 選擇任務型態、載入相關技能、套用最低證據矩陣 | 授權寫檔、改記憶、提交、推送、發布、部署或啟動無範圍隊員 |
 | 平台指令或按鈕 | 形成可記錄的路由證據，並在範圍明確時成為該範圍的授權證據 | 把按鈕同意擴張成未列檔案、未列命令或跨站點批次改動 |
-| GO 或同意語句 | 啟動上一個明確計畫、站點、命令、檔案清單或工具呼叫 | 取代 protected gate、獨立審查、驗證、memory/docs delivery、git/release 明確清單 |
+| GO 或同意語句 | 啟動上一個明確計畫、站點、命令、檔案清單、範圍、階段、期限或工具呼叫 | 取代 protected gate、擴張到未顯示範圍、獨立審查、驗證、memory/docs delivery、git/release 明確清單 |
 | automation-safe trigger | 啟動唯讀巡檢或報告路由 | 執行寫入、同步、提交、安裝、部署或外部狀態變更 |
 
 ## Captain-Led Programming Team Governance Matrix
@@ -135,6 +137,12 @@ absorb, substitute, or deep read large files as the team evidence source.
 
 The board is a governance trace, not a size label. Every station must separate applicability from execution mode; applicable stations must resolve to `direct`, `evidence branch`, `browser branch`, `CLI branch`, `MCP direct`, `isolated change delivery`, `text change delivery artifact`, `blocked`, or `not-applicable`. Every applicable station must also name the platform capability route, Team-Native trace, specialist role source, domain label, execution channel, delivery artifact, evidence owner, role boundary, completion condition, and any direct exception. Each specialist receives one concrete station task; bundled multi-role assignments are invalid unless split or closed by the Director as `closed-with-director-risk`, which is not complete.
 
+Formal station records must keep topology fields separate: station family,
+formal station, sub-station task, member allocation, execution channel, and
+delivery artifact. Reducing member count does not remove station family,
+formal station, role boundary, authorization, validation, review, or memory/docs
+obligations.
+
 Evidence-oriented stations default to team evidence. When two or more evidence-oriented stations resolve to `direct`, every direct evidence station must carry a concrete direct exception, replacement evidence, and `closed-with-director-risk`, `unverified`, or `blocked`. All-direct evidence boards are invalid without those station-level exceptions. The threshold is two direct evidence stations, not a majority or all-direct board.
 
 Role boundaries are part of the evidence contract. A specialist may not both implement and review the same deliverable. Implementation specialists produce change delivery artifacts only, including memory impact. Memory delivery specialists produce memory/docs delivery artifacts only. Test, review, and completion specialists cross-check the change delivery, memory delivery, validation evidence, drift, and remaining work. If independent role separation or independent review cannot be produced, mark the station `closed-with-director-risk`, `unverified`, or `blocked`; it cannot support `complete`.
@@ -145,13 +153,22 @@ Role boundaries are part of the evidence contract. A specialist may not both imp
 
 Natural-language programming tasks create a team task board even when no workflow command is named. The workflow command only chooses the route; it does not authorize skipping the board, collapsing roles, or claiming team completion without station evidence.
 
-The captain has minimum execution authority. The captain keeps Director communication, GO interpretation, scope arbitration, protective adoption or merge of returned qualified change delivery artifacts into the main worktree, memory/git/release/deploy/install gates, review-state decision, and final acceptance. The captain must not absorb implementation, review, validation, or memory attribution details when a bounded station delivery artifact can be produced. Counter-evidence, impact, memory delivery, test, review, and completion audit should be separated into bounded station tasks whenever a route is available.
+The captain has minimum execution authority. The captain keeps Director communication, GO interpretation, scope arbitration, protective adoption or merge of returned qualified change delivery artifacts into the main worktree, memory/git/release/deploy/install gates, review-state decision, and final acceptance. Thin captain context is limited to micro-read, delivery artifact format checks, limited verify-read, and protected adoption. The captain must not absorb implementation, review, validation, or memory attribution details when a bounded station delivery artifact can be produced. Counter-evidence, impact, memory delivery, test, review, and completion audit should be separated into bounded station tasks whenever a route is available.
 
-Formal implementation is not a normal captain-direct route. It starts as an isolated change delivery artifact, falls back to a text change delivery artifact when no governed filesystem isolation exists, and becomes `blocked` when neither delivery artifact can be produced. The implementation change delivery artifact must include memory impact. Captain protected integration means protective adoption or merge of returned qualified delivery artifacts only; it does not include reimplementation, rewrite, or primary implementation. Captain substitute authoring requires case-specific Director closure as `closed-with-director-risk` and does not count as full team completion.
+Formal implementation is not a normal captain-direct route. It starts as an isolated change delivery artifact, falls back to a text change delivery artifact when no governed filesystem isolation exists, and becomes `blocked` when neither delivery artifact can be produced. The implementation change delivery artifact must include memory impact. Captain protected integration means protective adoption or merge of returned qualified delivery artifacts only; it does not include reimplementation, rewriting, reauthoring, 補實作, 補審查, 補驗證, 補記憶歸因, or primary implementation. Captain substitute authoring requires case-specific Director closure as `closed-with-director-risk` and does not count as full team completion.
 
 One specialist may own only one concrete station task for the same deliverable. Implementation specialists return a change delivery artifact and may not edit the main worktree directly, update memory, stage/commit/push, deploy, or review their own change. Memory delivery specialists return memory impact and memory delivery status; they do not mutate memory or claim final completion. Test specialists validate behavior and regression risk; review specialists judge requirement fit and quality; completion specialists check drift, docs, memory attribution, and unresolved items. These stations must cross-check each other rather than self-approve.
 
 If no specialist route exists, no governed isolation exists for implementation change delivery, no memory/docs delivery artifact can be produced, or the captain must perform work normally assigned to independent evidence stations, record `blocked`, `unverified`, or `closed-with-director-risk` with the concrete reason. Do not report "full team completed" unless implementation change delivery, memory delivery, independent review, validation, and completion evidence are actually separated. Director-accepted captain substitute authoring remains incomplete team execution.
+
+### Reduction Boundary Matrix
+
+| Reduction target | Allowed | Forbidden |
+|---|---|---|
+| Sub-station task | Merge or split adjacent bounded tasks when role exclusivity, evidence ownership, and delivery artifact type remain intact | Merge implementation with review, validation with repair, or memory attribution with memory mutation |
+| Member count | Use one member for one concrete role-bound sub-task when the board records why one member is sufficient | Treat one member as permission to remove station families, review, validation, memory/docs, or completion audit |
+| Execution channel | Swap to another governed channel when authorization, role identity, and delivery artifact contract remain the same | Treat unavailable channels as routine captain-direct work |
+| Governance/workflow/hook/validation/memory/release work | No reduction to captain-direct completion | Use speed, convenience, cost, task size, or "simple task" as a downgrade reason |
 
 ### Change Delivery Artifact Type Matrix
 

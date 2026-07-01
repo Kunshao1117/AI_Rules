@@ -268,9 +268,13 @@ function Get-CurrentStructuredEvidenceText {
     $trustedFields = @(
         'team_native_trace',
         'team_native_evidence',
+        'authorization_source',
         'authorization_evidence',
         'authorization_scope',
         'authorization_target',
+        'authorization_phase',
+        'authorization_expiry',
+        'authorization_resolution_state',
         'authorized_action',
         'authorized_files',
         'protected_authorization',
@@ -639,24 +643,34 @@ function New-HookDiagnosticReason {
             'requested_execution_channel',
             'channel_capability',
             'channel_invocation_status',
+            'authorization_evidence',
             'authorization_target',
             'authorization_scope',
             'authorization_phase',
             'authorization_expiry',
+            'authorization_resolution_state',
+            'host_verified_tool_layer_envelope',
+            'host_verified_tool_layer_receipt',
             'delivery_artifacts'
+            'completion_evidence'
         )
     }
 
     return (@(
         'Governance hard gate hit. Treat this as designed policy enforcement, not a tool failure.',
         ('Block type: {0}.' -f $BlockType),
+        ('Current action: {0}.' -f $ActionType),
         ('Blocked action: {0}.' -f $ActionType),
         ('Reason code: {0}.' -f $ReasonCode),
         ('Reason: {0}' -f $Reason),
         ('Missing structured fields: {0}.' -f (@($MissingFields) -join ', ')),
-        'Missing evidence must be supplied in the current structured payload; historical transcript text is diagnostic only.',
+        'Missing evidence categories: task board, station, station handoff packet, role identity, channel state, scope-bound authorization, host/platform verified tool-layer envelope/receipt, delivery artifacts, completion evidence.',
+        'Trusted fields: current structured payload fields for Team-Native board, station, handoff, role, channel, authorization target/scope/phase/expiry, structured delivery artifacts, completion state, and host/platform verified tool-layer envelope/receipt supplied through the hook host evidence channel.',
+        'Untrusted fields: prompt, user_prompt, response, output, content, last_assistant_message, transcript, conversation_history, history, messages, text-only team_native_trace, and self-asserted tool envelope/receipt or protected authorization without host/platform verified receipt.',
+        'Missing evidence must be supplied in the current structured payload; natural-language GO, continue, fix it, handle this first, or historical transcript text is route/binding context only.',
         'Allowed next steps: stop the current action; report completion_state: blocked, validation_state: unverified, or closed-with-director-risk when explicitly scope-bound; bind any ordinary Director wording to the current visible plan, station, file set, command, authorization phase, and expiry before retrying the work.',
-        'Forbidden next steps: do not retry with another tool, do not switch channels, do not use transcript text or prior assistant claims as authorization, do not treat a transcript as a permission source, do not claim completion, and do not perform memory, git, release, deploy, install, credential, or external-state mutation.'
+        'Forbidden next steps: do not retry with another tool, do not switch channels, do not use transcript text or prior assistant claims as authorization, do not treat a transcript as a permission source, do not claim completion, and do not perform memory, git, release, deploy, install, credential, or external-state mutation.',
+        'Minimum unblock conditions: provide current structured task board, station, handoff packet, role identity, channel state, scope-bound authorization target/scope/phase/expiry, trusted tool-layer envelope and receipt when protected mutation is requested, structured delivery artifacts with returned status, and explicit completion evidence for the current phase.'
     ) -join ' ')
 }
 
@@ -936,7 +950,7 @@ function Test-HasShellWriteSignal {
 
     $writePatterns = @(
         '(?i)\b(?:Set-Content|Add-Content|Out-File|New-Item|Remove-Item|Move-Item|Copy-Item|Rename-Item)\b',
-        '(?i)\btee\b(?:\s+-(?:a|-append|i))*\s+["'']?[^"''\s|;&]+["'']?',
+        '(?i)\btee\b(?:\s+-(?:a|-append|i))*\s+(?:"[^"\r\n]+"|''[^''\r\n]+''|[^"''\s|;&]+)',
         '(?i)\bsed\b[^\r\n]*\s-i(?:\s|$)',
         '(?i)\bperl\b[^\r\n]*\s-pi(?:\s|$)',
         '(?i)\bopen\s*\(\s*["''][^"'']+["'']\s*,\s*["''][^"'']*[wax+][^"'']*["'']',
@@ -950,9 +964,16 @@ function Test-HasShellWriteSignal {
         if ($Text -match $pattern) { return $true }
     }
 
-    $redirectPattern = '(?m)(?:^|[\s|;&])(?:\d?>{1,2}|>{1,2})\s*(?!&\d)(["'']?)([^"''\s|;&]+)\1'
+    $redirectPattern = '(?m)(?:^|[\s|;&])(?:\d?>{1,2}|>{1,2})\s*(?!&\d)(?:"([^"\r\n]+)"|''([^''\r\n]+)''|([^"''\s\r\n|;&]+))'
     foreach ($match in [regex]::Matches($Text, $redirectPattern)) {
-        if (-not (Test-IsIgnoredShellWriteTarget -Target $match.Groups[2].Value)) {
+        $targetValue = ''
+        for ($groupIndex = 1; $groupIndex -lt $match.Groups.Count; $groupIndex++) {
+            if (-not [string]::IsNullOrWhiteSpace($match.Groups[$groupIndex].Value)) {
+                $targetValue = $match.Groups[$groupIndex].Value
+                break
+            }
+        }
+        if (-not (Test-IsIgnoredShellWriteTarget -Target $targetValue)) {
             return $true
         }
     }
@@ -1500,7 +1521,7 @@ function Get-HookExplicitAuthorizedWritePaths {
     $paths = New-Object System.Collections.Generic.List[string]
     if ([string]::IsNullOrWhiteSpace($EvidenceText)) { return @() }
 
-    $pathPattern = '(?i)(?:[A-Za-z]:)?(?:\.{1,2}[\\/])?(?:[A-Za-z0-9_. -]+[\\/])+[A-Za-z0-9_. -]+|(?<![\w.-])[A-Za-z0-9_.-]+\.[A-Za-z0-9][A-Za-z0-9._-]*(?![\w.-])'
+    $pathPattern = '(?i)(?:[A-Za-z]:)?(?:\.{1,2}[\\/])?(?:[\p{L}\p{N}_. ()-]+[\\/])+[\p{L}\p{N}_. ()-]+|(?<![\w.-])[\p{L}\p{N}_.-]+\.[\p{L}\p{N}][\p{L}\p{N}._-]*(?![\w.-])'
     foreach ($line in @($EvidenceText -split "`r?`n")) {
         $match = [regex]::Match($line, '(?i)^\s*(?:authorized_files?|authorization_target|target_files?|write_scope|file_scope)(?:[.\w\[\]-]*)?\s*:\s*(.+?)\s*$')
         if (-not $match.Success) { continue }
@@ -1554,8 +1575,8 @@ function Get-HookActionTargetPaths {
 
     $commandPatterns = @(
         '(?i)\b(?:Set-Content|Add-Content|Out-File|New-Item|Remove-Item|Move-Item|Copy-Item|Rename-Item)\b[^\r\n]*?\s-(?:LiteralPath|Path|FilePath|Destination)\s+["'']?([^"''`\r\n]+?)["'']?(?:\s|$)',
-        '(?m)(?:^|[\s|;&])(?:\d?>{1,2}|>{1,2})\s*(?!&\d)(["'']?)([^"''`\s\r\n|;&]+)\1',
-        '(?i)\btee\b(?:\s+-(?:a|-append|i))*\s+(["'']?)([^"''`\s\r\n|;&]+)\1',
+        '(?m)(?:^|[\s|;&])(?:\d?>{1,2}|>{1,2})\s*(?!&\d)(?:"([^"\r\n]+)"|''([^''\r\n]+)''|([^"''`\s\r\n|;&]+))',
+        '(?i)\btee\b(?:\s+-(?:a|-append|i))*\s+(?:"([^"\r\n]+)"|''([^''\r\n]+)''|([^"''`\s\r\n|;&]+))',
         '(?i)\bopen\s*\(\s*["'']([^"'']+)["'']\s*,\s*["''][^"'']*[wax+][^"'']*["'']',
         '(?i)\bPath\s*\(\s*["'']([^"'']+)["'']\s*\)\.write_(?:text|bytes)\s*\(',
         '(?i)\b(?:fs\.)?(?:writeFileSync|writeFile|appendFileSync|appendFile)\s*\(\s*["'']([^"'']+)["'']',
@@ -1565,7 +1586,14 @@ function Get-HookActionTargetPaths {
     )
     foreach ($pattern in $commandPatterns) {
         foreach ($match in [regex]::Matches($Text, $pattern)) {
-            $targetValue = $match.Groups[$match.Groups.Count - 1].Value
+            $targetValue = ''
+            for ($groupIndex = $match.Groups.Count - 1; $groupIndex -ge 1; $groupIndex--) {
+                if (-not [string]::IsNullOrWhiteSpace($match.Groups[$groupIndex].Value)) {
+                    $targetValue = $match.Groups[$groupIndex].Value
+                    break
+                }
+            }
+            if ([string]::IsNullOrWhiteSpace($targetValue)) { continue }
             if (Test-IsIgnoredShellWriteTarget -Target $targetValue) { continue }
             $target = Convert-HookPathToken -Path $targetValue -RepoRoot $RepoRoot
             if ($target) { $targets.Add($target) }
@@ -1580,8 +1608,11 @@ function Test-HasScopedWriteAuthorization {
 
     if ([string]::IsNullOrWhiteSpace($Text)) { return $false }
     $hasAuthorization = $Text -match '(?i)(authorization_evidence|scoped authorization|authorization_scope|Director GO|authorized_action|authorized_files)'
-    $hasScope = $Text -match '(?i)(authorization_scope|authorization_target|authorized_action|authorized_files|exclusive_task_scope)'
-    return ($hasAuthorization -and $hasScope)
+    $hasScope = $Text -match '(?i)(authorization_scope|authorized_files|exclusive_task_scope)'
+    $hasTarget = $Text -match '(?i)(authorization_target|authorized_action|authorized_files)'
+    $hasPhase = $Text -match '(?i)(authorization_phase|current\s+phase|phase[- ]?bound|formal[- ]?write|current\s+visible\s+plan|current\s+station)'
+    $hasExpiry = $Text -match '(?i)(authorization_expiry|current\s+(task|phase|turn)|this\s+(task|phase|turn)|task\s+only|phase\s+only|scoped\s+to\s+current|expires?\s+at)'
+    return ($hasAuthorization -and $hasScope -and $hasTarget -and $hasPhase -and $hasExpiry)
 }
 
 function Test-ActionWithinScopedWriteAuthorization {
@@ -1626,6 +1657,8 @@ function Test-IsGovernancePrompt {
         (New-UnicodeString -Codes @(0x9264, 0x5B50)),
         (New-UnicodeString -Codes @(0x5718, 0x968A)),
         (New-UnicodeString -Codes @(0x5DE5, 0x4F5C, 0x6D41)),
+        (New-UnicodeString -Codes @(0x5148, 0x8655, 0x7406)),
+        (New-UnicodeString -Codes @(0x56DE, 0x53BB, 0x4FEE, 0x6B63)),
         (New-UnicodeString -Codes @(0x6240, 0x4EE5, 0x5462))
     )
     foreach ($signal in $zhSignals) {
@@ -1826,6 +1859,103 @@ function Test-HasPositiveArtifactMention {
         }
     }
     return $false
+}
+
+function Get-HookStructuredDeliveryRecords {
+    param([object]$Value)
+
+    $records = New-Object System.Collections.Generic.List[object]
+    Add-HookObjectRecordValues -Value $Value -Records $records
+    return @($records.ToArray())
+}
+
+function Test-HookStructuredDeliveryRecordPositive {
+    param([object]$Record)
+
+    if ($null -eq $Record) { return $false }
+    if ($Record -is [string]) { return $false }
+
+    $statusText = Get-HookRecordFieldValue -Record $Record -Names @(
+        'delivery_artifact_status',
+        'artifact_status',
+        'delivery_status',
+        'status',
+        'state'
+    )
+    if ([string]::IsNullOrWhiteSpace($statusText)) { return $false }
+    if ($statusText -match '(?i)\b(missing|without|absent|unavailable|not[-_ ]?returned|not[-_ ]?provided|blocked|unverified|draft|pending|failed|failure|none|null|unknown)\b') {
+        return $false
+    }
+    if ($statusText -notmatch '(?i)\b(returned|present|provided|ready|complete|completed|validated|passed|available|recovered|delivered|accepted)\b') {
+        return $false
+    }
+
+    $idText = Get-HookRecordFieldValue -Record $Record -Names @(
+        'delivery_artifact_id',
+        'artifact_id',
+        'delivery_id',
+        'id'
+    )
+    if ([string]::IsNullOrWhiteSpace($idText)) { return $false }
+    if ($idText -match '(?i)\b(missing|none|null|unknown|unavailable)\b') { return $false }
+
+    return $true
+}
+
+function Test-HookStructuredDeliveryRecordMatchesType {
+    param(
+        [object]$Record,
+        [string]$ArtifactPattern
+    )
+
+    if (-not (Test-HookStructuredDeliveryRecordPositive -Record $Record)) { return $false }
+    $typeText = Get-HookRecordFieldValue -Record $Record -Names @(
+        'delivery_artifact_type',
+        'artifact_type',
+        'delivery_type',
+        'type',
+        'kind',
+        'role_id'
+    )
+    $recordText = (@(Get-NamedStringLeafValues -Value $Record -Prefix 'delivery') -join "`n")
+    return (($typeText -match $ArtifactPattern) -or ($recordText -match $ArtifactPattern))
+}
+
+function Test-HookStructuredDeliveryFieldPresent {
+    param(
+        [object]$Payload,
+        [string[]]$FieldNames,
+        [string]$ArtifactPattern
+    )
+
+    foreach ($fieldName in @($FieldNames)) {
+        $value = Get-HookProperty -Object $Payload -Name $fieldName
+        foreach ($record in @(Get-HookStructuredDeliveryRecords -Value $value)) {
+            if (Test-HookStructuredDeliveryRecordPositive -Record $record) {
+                return $true
+            }
+        }
+    }
+
+    $deliveryArtifacts = Get-HookProperty -Object $Payload -Name 'delivery_artifacts'
+    foreach ($record in @(Get-HookStructuredDeliveryRecords -Value $deliveryArtifacts)) {
+        if (Test-HookStructuredDeliveryRecordMatchesType -Record $record -ArtifactPattern $ArtifactPattern) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
+function Test-HasStructuredFullDeliveryArtifactSet {
+    param([object]$Payload)
+
+    $hasImplementation = Test-HookStructuredDeliveryFieldPresent -Payload $Payload -FieldNames @('implementation_delivery', 'change_delivery') -ArtifactPattern '(?i)(implementation change delivery|change delivery|implementation)'
+    $hasMemoryDocs = Test-HookStructuredDeliveryFieldPresent -Payload $Payload -FieldNames @('memory_docs_delivery', 'memory_delivery') -ArtifactPattern '(?i)(memory/docs delivery|memory delivery|memory-docs delivery|docs delivery|memory_docs|memory)'
+    $hasReview = Test-HookStructuredDeliveryFieldPresent -Payload $Payload -FieldNames @('review_delivery') -ArtifactPattern '(?i)(review delivery|review)'
+    $hasValidation = Test-HookStructuredDeliveryFieldPresent -Payload $Payload -FieldNames @('validation_delivery') -ArtifactPattern '(?i)(validation delivery|validation)'
+
+    return ($hasImplementation -and $hasMemoryDocs -and $hasReview -and $hasValidation)
 }
 
 function Test-HasFullArtifactSet {
@@ -2157,8 +2287,8 @@ switch ($eventName) {
         if ((Test-HasClosedWithDirectorRiskState -Text $currentText) -and (-not (Test-HasDirectorRiskCloseEvidence -Text $evidenceText))) {
             Exit-Block -EventName 'Stop' -Reason 'closed-with-director-risk requires current explicit scope-bound Director risk close evidence in structured payload fields; assistant text alone cannot close the risk.'
         }
-        if ((Test-ClaimsCompletion -Text $actionText) -and (-not (Test-HasFullArtifactSet -Text $currentText)) -and (-not (Test-HasNonCompleteClosureState -Text $currentText))) {
-            Exit-Block -EventName 'Stop' -Reason 'Completion claim requires recovered implementation, memory/docs, review, and validation delivery artifacts or an explicit blocked/unverified/closed-with-director-risk state.'
+        if ((Test-ClaimsCompletion -Text $actionText) -and (-not (Test-HasStructuredFullDeliveryArtifactSet -Payload $payload)) -and (-not (Test-HasNonCompleteClosureState -Text $currentText))) {
+            Exit-Block -EventName 'Stop' -Reason 'Completion claim requires structured, recovered implementation, memory/docs, review, and validation delivery artifacts with returned status or an explicit blocked/unverified/closed-with-director-risk state.'
         }
     }
 }

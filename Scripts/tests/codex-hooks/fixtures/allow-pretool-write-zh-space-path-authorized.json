@@ -1,5 +1,5 @@
 {
-  "name": "allow-pretool-write-authorized",
+  "name": "allow-pretool-write-zh-space-path-authorized",
   "event": "PreToolUse",
   "expectedExitCode": 0,
   "expectedOutputRegex": "",
@@ -7,26 +7,26 @@
     "hook_event_name": "PreToolUse",
     "tool_name": "apply_patch",
     "tool_input": {
-      "patch": "*** Begin Patch\n*** Update File: README.md\n@@\n+change\n*** End Patch"
+      "patch": "*** Begin Patch\n*** Update File: 測試 資料/中文 路徑.md\n@@\n+change\n*** End Patch"
     },
     "captain_team_board": {
       "board_state": "formal-write",
-      "task_type": "hook usability fixture write"
+      "task_type": "Chinese path and space path fixture"
     },
     "team_native_trace": "Captain Team Board: formal-write",
     "station_id": "change-delivery-station",
-    "handoff_packet_id": "hooks-write-001",
+    "handoff_packet_id": "hooks-write-zh-space-001",
     "role_id": "change-delivery",
-    "role_instance_id": "change-delivery-001",
+    "role_instance_id": "change-delivery-zh-space-001",
     "assigned_specialist_skill": "team-specialist-change-delivery",
     "requested_execution_channel": "text-change-delivery",
     "channel_capability": "available",
     "channel_invocation_status": "returned",
     "delivery_artifact_type": "implementation change delivery",
     "delivery_artifact_status": "returned",
-    "authorization_evidence": "Director GO Wave Hooks-Usability Implementation",
-    "authorization_scope": "README.md test patch",
-    "authorization_target": "README.md",
+    "authorization_evidence": "Director GO scoped Chinese path fixture",
+    "authorization_scope": "測試 資料/中文 路徑.md only",
+    "authorization_target": "測試 資料/中文 路徑.md",
     "authorization_phase": "current formal-write fixture phase",
     "authorization_expiry": "current task only",
     "cwd": "D:\\AI_Rules",

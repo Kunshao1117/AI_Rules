@@ -87,7 +87,7 @@ Technical details may only appear after a `補充技術細節` section when they
   - Review and completion: `not-applicable` for production acceptance, with promotion route to `/03_build`; role boundary is review/completion only and cannot be performed by the implementation specialist for the same deliverable.
 - Record sandbox boundary, allowed change scope, discard conditions, promotion criteria, and whether any evidence-oriented station was skipped. All-direct experiment boards require concrete direct exceptions and cannot claim team collaboration.
 
-## 1. Execution (直接執行)
+## 1. Sandbox Execution (沙盒直接執行，非隊長主線代工)
 
 - Read Director's request. Begin coding immediately.
 - Use `Bash` tool for quick test runs if needed.

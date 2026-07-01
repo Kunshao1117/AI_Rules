@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-01T09:37:11+08:00'
+last_updated: '2026-07-01T15:37:41+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T09:32:41+08:00'
+last_verified: '2026-07-01T15:24:48+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 14
+cycle_event_count: 12
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -51,12 +51,17 @@ metadata:
 - Codex workflow entries load shared workflow orchestration, platform matrices, specialist role skills, team task-board templates, change delivery artifacts, and MCP memory evidence contracts before relying on evidence.
 - Director-facing Codex output must stay Traditional Chinese and follow the Director-readable output contract.
 - The captain owns Director-facing accountability, protected integration, protected memory/git/release gates, final review-state decisions, and final acceptance; implementation, review, validation, and memory/docs facts must come from separated delivery artifacts unless explicitly closed as blocked, unverified, or `closed-with-director-risk`.
+- Codex entry governance now summarizes thin-captain limits, no captain substitute authoring, the Team-Native object topology, multi-specialist separation from native subagents, and hard station-reduction rules.
+- Codex hook diagnostics now expose blocked action context, missing evidence categories, trusted and untrusted fields, allowed next steps, forbidden next steps, and minimum unblock conditions.
+- Codex completion-claim hooks require structured delivery artifact evidence for implementation, memory/docs, review, and validation; text-only artifact naming is blocked.
 ## Active Constraints
 - Keep Codex framework versioning separate from VS Code extension versioning.
 - Keep root README ownership in `_system`, not this card.
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - This card still needs a later child-card split if all workflow skills become actively edited again.
 ## Cycle Events
+- 44: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform core-rule sync, and commit-preflight stale blocker cleanup.
+- 43: Updated Codex core memory after entry-governance and hook hardening: thin-captain rules, Team-Native object topology, multi-specialist/subagent separation, structured completion evidence, and clearer hook diagnostics are now current.
 - 42: Updated Codex core memory after Team-Native authorization binding hardening: captain wording now means protected integration of recovered artifacts, hooks require current structured evidence plus trusted envelope/receipt records for protected mutations, and natural-language prompts stay bound to the visible target.
 - 41: Tightened Codex protected mutation hooks so trusted envelope and trusted execution receipt evidence must match by identity or nonce and by action, target, scope, decision, and authorization before protected operations can proceed.
 - 39: Added Codex hook diagnostic block reasons, natural-language prompt binding, post-block retry denial, Deploy.ps1 read-only false-positive coverage, fixture diagnostic-label assertions, and Doctor green validation.
@@ -67,10 +72,6 @@ metadata:
 - 34: Wave 6B added workflow-orchestration grounding to Codex workflow entries and source/deployed drift checks.
 - 33: Wave 6A updated all 17 Codex workflow entries with operation_mode, daily/full modes, direct/formal-readonly/formal-write boundaries, board triggers, and specialist lifecycle semantics; deployed workflow skill hashes were verified in sync.
 - 32: Synced Codex core source and live rules with the core-injection Team-Native hard gate before broad reading, validation, review, memory/docs attribution, completion audit, or completion claims.
-- 31: Updated Codex README to state that 00 evidence-bearing chat enters Team-Native formal-readonly, while pure chat remains direct; this aligns Codex docs with the rebuilt 00 workflow boundary.
-- 30: Synchronized Codex source/deployed core rules and README for Team-Native lifecycle, scoped authorization before Lifecycle, route-only workflow semantics, fast closeout wording, Team-First formal-readonly, handoff packets, standby or unavailable-channel reporting, and deep-read/verify-read boundaries; Doctor returned red 0 / yellow 0.
-- 29: Synced Codex source/deployed Team-Native wording to `closed-with-director-risk`, keeping protected integration distinct from captain substitute authoring.
-- 28: Removed residual captain-substitution wording from Codex README and deployed workflow skill copies.
 ## Archive Index
 - archive-003.md — Older cycle events 13-22 compacted from the active card.
 - archive-001.md — Legacy _codex_core card preserved before schema v2 compaction on 2026-06-04.
@@ -90,7 +91,6 @@ metadata:
 - 工作流來源在 Codex 目錄，live 技能在 `.agents/skills/`。
 - Codex 編程工作流已改為團隊協作優先，隊長只做受保護整合、裁決與收尾閘門，不替代隊員產出主要交付件。
 - Codex 00 證據型對話也會進 formal-readonly；純聊天才維持直接回覆。
-- 記憶讀取已對齊新版欄位。
 - 根層 README 不再由本卡追蹤。
 ## Tracked Files
 - Codex/VERSION

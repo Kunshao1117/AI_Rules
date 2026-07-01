@@ -73,12 +73,14 @@ Explicit workflow names and Director requests for subagents are route hints. The
 Natural-language Director instructions are first-class route and intent signals,
 but they are not magic words. The captain binds everyday phrases such as
 "continue", "fix that first", "go back and repair this", "so what now?", or
-`GO` to the current visible plan, station, blocker, diff, command, file set, or
+`GO`, plus interface approvals and permission buttons, to the current visible
+plan, station, blocker, diff, command, file set, scope, phase, expiry, or
 protected action. If the current target, phase, scope, or expiry cannot be
 resolved, the station remains plan-only, no-write, blocked, or unverified. The
 captain must not force the Director to use artificial channel words when the
-visible context is enough, and must not infer hidden write or protected-state
-authority when the visible context is not enough.
+visible context is enough, and must not infer hidden write, hidden cleanup,
+later-phase, or protected-state authority when the visible context is not
+enough.
 
 ## Operation Mode Rule
 
@@ -99,6 +101,34 @@ that discovers full-only impact must promote to `full`, stop as blocked, or
 return unverified evidence with the smallest promotion path. Missing
 `operation_mode` is incomplete trace evidence; a trace that claims `complete`
 without `operation_mode` is invalid.
+
+## Team Topology And Reduction Rule
+
+Team-Native work decomposes in this order: Captain Team Board -> station family
+-> formal station -> sub-station task -> member allocation -> execution channel
+-> delivery artifact. A station family groups related work such as scope,
+implementation, validation, review, memory/docs, or completion. A formal
+station is the authorized unit. A sub-station task is the smallest bounded
+piece that one member can perform without crossing role boundaries. Member
+allocation decides how many people or channels are assigned to that bounded
+task. Execution channels are only routes for assigned members; they do not
+create roles, authorization, or completion evidence by themselves.
+
+Multiple members does not mean multiple subagents. A member can be a native
+subagent, project custom agent, browser branch, CLI branch, MCP read path,
+isolated workspace, text change delivery path, or other governed channel. The
+board records the member role, role instance, assigned specialist skill,
+sub-station task, channel request, channel capability, channel invocation
+status, delivery artifact type, and delivery artifact status.
+
+Reduction is allowed only at the sub-station task or member-count layer after
+the formal station family remains visible. The captain may merge adjacent
+sub-station tasks only when role exclusivity, delivery artifact ownership,
+review independence, validation independence, and memory/docs attribution remain
+intact. Speed, convenience, cost, small task size, lack of preference, or "the
+captain already saw it" are not valid reduction reasons. Governance, workflow,
+hook, validation, memory, release, deployment, install, protected-state, or
+public-contract work must not be reduced into routine captain-direct work.
 
 ## Team-First Activation Rule
 
@@ -188,6 +218,12 @@ Hooks and workflow adapters must separate reading from completion evidence:
   without a prior specialist deep-read artifact, the trace records a direct
   exception and the result is blocked, unverified, or closed-with-director-risk,
   not full Team-Native completion.
+- Thin captain context is a hard cap, not a style preference. The captain's
+  default context actions are micro-read, delivery artifact format checks,
+  limited verify-read of cited or changed snippets, and protected adoption of
+  returned qualified artifacts. The captain must not use verify-read as a
+  reason to deep-read entire files, reconstruct missing specialist work, or fill
+  implementation, review, validation, or memory/docs gaps.
 - Specialist deep-read: broad reads become qualified evidence only when the
   trace names `deep_read_scope`, handoff packet, `role_id`,
   `role_instance_id`, assigned specialist skill, requested execution channel,
@@ -244,6 +280,12 @@ platform mode, review state, validation state, memory/docs state, whether the
 captain authored specialist content, dispatch wave, previous-wave input, and
 next-wave condition. These fields make relationship checks auditable instead of
 relying on narrative claims.
+
+The board must keep the topology explicit when work is split or reduced:
+station family, formal station, sub-station task, member allocation, execution
+channel, and returned delivery artifact are separate fields. Collapsing member
+count does not collapse station families. A one-member station can still be
+valid; a no-station captain shortcut is not valid for Team-Native completion.
 
 ## Tool Execution Envelope Rule
 
@@ -368,6 +410,14 @@ specialist skill rewrites, Doctor/Audit rule changes, release preparation, or
 protected external-state readiness.
 
 Captain protected integration means protectively adopting or merging returned, qualified delivery artifacts into the main worktree. It is normal captain work only when the captain follows the returned artifact scope and does not create, rewrite, or primarily implement specialist content. It can support `complete` when implementation, memory/docs, review, validation, completion, and trace evidence are all present. Captain substitute authoring means the captain creates specialist content because no qualified change delivery route exists; it starts as blocked, may be closed-with-director-risk only when the Director explicitly accepts that exact case, and must not be described as full team completion.
+
+Rewriting, reauthoring, refactoring beyond the returned artifact, filling
+missing implementation, adding unreturned review conclusions, inventing
+validation evidence, or adding memory/docs attribution are captain substitute
+authoring. These actions cannot support `complete`, even when the final text or
+diff looks correct. They require a blocked, unverified, or
+closed-with-director-risk record unless a qualified station returns the missing
+delivery artifact.
 
 If any required delivery artifact or independent review is missing, the task can only finish as blocked, unverified, or closed-with-director-risk. It must not be described as full team completion.
 

@@ -4,19 +4,19 @@ scopePath: Scripts/tests/codex-hooks/
 description: >-
   專案記憶：Codex hooks 測試 runner 與 Team-Native gate fixtures。Use when: task touches
   Codex hook validation.
-last_updated: '2026-07-01T09:38:15+08:00'
+last_updated: '2026-07-01T13:45:49+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-01T09:32:41+08:00'
+last_verified: '2026-07-01T13:45:49+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 6
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,23 +35,18 @@ metadata:
 # _system.scripts.codex-hooks — Codex Hook Fixture Memory
 ## Current Truth
 - This child card owns the Codex hook fixture runner and JSON fixtures under `Scripts/tests/codex-hooks/`.
-- The fixtures validate Team-Native hook outcomes across 53 cases for prompt hints, read-only allowance, broad-read Captain-Lite context, scoped writes, out-of-scope writes, current payload versus historical transcript separation, same-record protected authorization, multi-protected partial authorization, release/deploy filename false positives, exact write target matching, protected mutation blocks, specialist lifecycle events, live Stop payload coverage, short and mixed completion-claim blocks, non-complete state exceptions, read-only report exceptions, completion artifact gates, and Chinese natural-language scope binding.
-- The fixture runner supports inline transcript text, temporary transcript path injection, raw hook input, expected and forbidden regex assertions, temporary transcript cleanup, selectable shell execution, default Windows PowerShell plus PowerShell 7 matrix coverage, and UTF-8 console setup when supported.
-- The fixture runner supports `expectedDiagnosticLabels` checks for hook block output labels: governance hard gate, blocked action, reason, missing evidence, allowed next steps, and forbidden next steps.
+- The fixtures validate Team-Native hook outcomes across 58 cases for prompt hints, read-only allowance, broad-read Captain-Lite context, scoped writes, out-of-scope writes, current payload versus historical transcript separation, same-record protected authorization, multi-protected partial authorization, release/deploy filename false positives, exact write target matching, protected mutation blocks, specialist lifecycle events, live Stop payload coverage, short and mixed completion-claim blocks, non-complete state exceptions, read-only report exceptions, structured completion artifact gates, Chinese natural-language scope binding, Chinese and space-containing paths, Windows prefix traps, and BOM Chinese completion text.
 - Shell resolution is application-only: the runner ignores function/alias shadowing, validates concrete executable paths, warns and skips missing shells in non-strict mode, and blocks missing shells when strict shell coverage is required.
-- The structured-payload fixtures cover text-only trace denial, missing role identity, fake transcript board denial, protected authorization scope, and literal Chinese completion claims; the Chinese natural-language binding fixture is now a tracked fixture file.
-- Existing tracked fixtures now cover everyday-language prompts (`go` plus Chinese "so what"), natural-language no-scope write denial, post-block retry/tool-switch denial, explicit blocked-state allowance, and read-only commands that mention `Scripts/Deploy.ps1`.
 - Protected mutation fixtures now require scope-bound `protected_authorization`, a trusted tool execution envelope, and a matching trusted execution receipt with the same envelope id or nonce, allowed decision, matching action/target/scope, trusted issuer/source, verified or signed signature state, and fresh nonce.
-- Existing and newly tracked fixtures cover allow, only-envelope block, only-receipt block, mismatched receipt block, non-allowed decision block, model/self-reported-looking envelope block, and Chinese natural-language prompt binding.
+- The fixture runner and hook diagnostics now require write authorization to include current target, scope, phase, and expiry; text-only references to four delivery artifact names are blocked unless structured delivery artifact evidence is present.
+- The current fixture matrix passed 58 fixtures across Windows PowerShell and PowerShell 7, for 116 passing cases.
 - Hook behavior is coupled to Codex hook source files and Team-Native Core governance; review those cards when fixture expectations change.
 ## Active Constraints
 - Keep fixtures deterministic and offline; fixture names describe allow, block, or context outcomes, and live platform testing is still required when platform hook behavior changes.
 ## Cycle Events
+- 10: Added structured completion, Chinese/space path, Windows prefix-trap, BOM Chinese completion, and route-only natural-language fixtures; runner passed 58 fixtures across Windows PowerShell and PowerShell 7.
 - 09: Added the Chinese natural-language prompt binding fixture to tracked ownership and updated fixture memory to 53 cases after the runner passed the Windows PowerShell and PowerShell 7 shell matrix.
 - 08: Tightened protected mutation fixtures so a scoped authorization must be paired with a trusted tool execution envelope and a matching trusted execution receipt; only-envelope, only-receipt, mismatched receipt, non-allowed decision, and model-filled cases stay blocked.
-- 06: Added diagnostic-label fixture assertions plus natural-language prompt, post-block retry denial, blocked-state allowance, and read-only Deploy.ps1 path coverage; fixture runner passed 52 cases across Windows PowerShell and PowerShell 7.
-- 05: Hardened shell resolution to require application executable paths, prevent function/alias shadowing, and distinguish non-strict shell skips from strict shell blockers.
-- 04: Added shell-matrix and UTF-8 fixture runner coverage, then repurposed tracked fixtures to cover structured-payload requirements, fake transcript distrust, missing role identity, and Chinese completion detection while keeping Red drift under tracked fixture ownership.
 ## Archive Index
 - None.
 ## Evidence Base
@@ -72,6 +67,7 @@ metadata:
 - Scripts/tests/codex-hooks/fixtures/allow-pretool-specialist-deep-read-formal-readonly.json
 - Scripts/tests/codex-hooks/fixtures/allow-pretool-with-board.json
 - Scripts/tests/codex-hooks/fixtures/allow-pretool-write-authorized.json
+- Scripts/tests/codex-hooks/fixtures/allow-pretool-write-zh-space-path-authorized.json
 - Scripts/tests/codex-hooks/fixtures/allow-stop-active-honest-unverified-report.json
 - Scripts/tests/codex-hooks/fixtures/allow-stop-blocked-state.json
 - Scripts/tests/codex-hooks/fixtures/allow-stop-full-artifacts.json
@@ -85,6 +81,7 @@ metadata:
 - Scripts/tests/codex-hooks/fixtures/allow-subagent-stop-zh-report.json
 - Scripts/tests/codex-hooks/fixtures/allow-user-prompt.json
 - Scripts/tests/codex-hooks/fixtures/allow-user-prompt-zh-natural-binding.json
+- Scripts/tests/codex-hooks/fixtures/allow-user-prompt-zh-first-handle-route-only.json
 - Scripts/tests/codex-hooks/fixtures/bad-input.json
 - Scripts/tests/codex-hooks/fixtures/block-apply-patch-no-board.json
 - Scripts/tests/codex-hooks/fixtures/block-bash-write-no-board.json
@@ -101,17 +98,20 @@ metadata:
 - Scripts/tests/codex-hooks/fixtures/block-pretool-write-out-of-scope.json
 - Scripts/tests/codex-hooks/fixtures/block-pretool-write-prefix-target.json
 - Scripts/tests/codex-hooks/fixtures/block-pretool-write-transcript-fake-board.json
+- Scripts/tests/codex-hooks/fixtures/block-pretool-write-windows-prefix-trap.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-active-short-completion.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-captain-broad-read-full-completion.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-live-last-assistant-short-completion.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-mixed-complete-with-negative-test.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-missing-all-artifacts-fake-complete.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-missing-artifacts.json
+- Scripts/tests/codex-hooks/fixtures/block-stop-bom-zh-completion-no-artifacts.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-missing-memory-docs.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-negated-unverified-fake-complete.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-readonly-claims-source-complete.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-readonly-plus-source-complete.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-short-all-set.json
+- Scripts/tests/codex-hooks/fixtures/block-stop-text-only-full-artifacts.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-zh-completion.json
 - Scripts/tests/codex-hooks/fixtures/block-stop-zh-test-passed-no-artifacts.json
 - Scripts/tests/codex-hooks/fixtures/block-trust-bypass.json

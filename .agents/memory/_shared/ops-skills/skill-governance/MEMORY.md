@@ -4,14 +4,14 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-01T09:37:53+08:00'
+last_updated: '2026-07-01T15:38:02+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T09:32:41+08:00'
+last_verified: '2026-07-01T15:24:48+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared.ops-skills.skill-governance — Skill Governance Memory
 
 ## Current Truth
@@ -41,17 +40,21 @@ metadata:
 - Role-boundary governance now requires operation mode, ten registered role IDs, `role_instance_id`, and `exclusive_task_scope` evidence before accepting specialist artifacts.
 - Team-Native Core files moved to `_shared.team-native-core`; this card now keeps skill-factory governance plus remaining delegation reference ownership.
 - Shared skill forging is framework-source only unless the Director explicitly supplies the AI_Rules source root; downstream projects default to project-derived skills.
-- This child card owns Shared delegation strategy and skill-factory governance files.
 - The compatibility-named implementation delivery skill now uses change delivery artifact semantics; the old primary delivery wording is no longer the governing model.
 - Delivery artifact boundary skills now require scoped authorization fields before change, memory/docs, validation, review, or role-boundary acceptance can support completion.
 - Delegation strategy, programming-team governance, and team-task-board are now tracked by `_shared.team-native-core` and were verified below the shared-skill quality token gate in this refactor.
 - Skill creation and delegation rules must stay compatible with Codex native skill loading and cross-platform governance.
 - This child card tracks source skill files and their deployed root skill copies when those deployed copies are active project inputs.
+- Team task-board, handoff packet, role-boundary, and specialist registry templates now model station families, formal stations, substation tasks, specialist assignments, execution channels, and delivery artifacts as separate objects.
+- Handoff packets are scoped to one substation task, one role, one concrete task, one output format, and one stop condition; vague multi-role delegation is invalid.
+- Role-boundary and registry templates now make captain deep-read substitution, captain repair of specialist work, self-review, self-validation, and memory-attribution replacement non-complete outcomes.
 
 ## Active Constraints
 - Do not duplicate full skill templates in memory; use tracked references as the source of truth for skill formatting and delegation procedures.
 
 ## Cycle Events
+- 29: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform skill sync, and commit-preflight stale blocker cleanup.
+- 28: Updated team skill templates for station-family topology, one-substation-task handoff packets, multi-specialist defaults, and hard captain non-authoring boundaries.
 - 27: Updated skill-governance memory after Team-Native skill hardening: delivery artifact skills separate route from state, require current station evidence, and record source/deployed sync instead of allowing blocked states or transcript text to stand in for authority.
 - 26: Updated team board, handoff, role-boundary, completion, specialist change-delivery, and change-artifact skills for execution-route fields, station/evidence states, captain deep-read limits, and source/deployed sync evidence.
 - 25: Expanded role-boundary governance from legacy role groups to the ten registered role IDs and added security/reliability handoff support.
@@ -65,8 +68,6 @@ metadata:
 - 17: Verified final Doctor/Audit green after four-delivery-artifact Doctor checks, compressed captain skills, and deployed skill sync.
 - 16: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
 - 15: Added formal team specialist routing with implementation change delivery, memory delivery, review, and validation artifacts; refreshed 50/67 skill facts after source/deployed sync.
-- 09-14: Hardened board templates, direct exceptions, four-delivery-artifact completion, captain protected integration risk, and compressed governance skills under quality limits.
-- 04-08: Earlier Full B and captain-led governance hardening added station state separation, team-first evidence defaults, role separation, and task-type dispatch gates.
 
 ## Archive Index
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
@@ -88,7 +89,6 @@ metadata:
 - 交付件邊界技能現在要求範圍式授權欄位，缺欄位不能支撐完成。
 - 角色邊界現在也要檢查 daily/full 模式、角色編號、角色實例與任務內互斥範圍。
 - 委派策略已從可選分支改為團隊證據站點優先。
-- 技能模板與長規則仍保留在來源參考檔。
 
 ## Tracked Files
 - Shared/skills/team-review-delivery-artifact/SKILL.md

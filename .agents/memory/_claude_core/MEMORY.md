@@ -4,19 +4,19 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-01T09:37:21+08:00'
+last_updated: '2026-07-01T15:37:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T09:32:41+08:00'
+last_verified: '2026-07-01T15:24:48+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 5
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
@@ -44,12 +43,15 @@ metadata:
 - Claude command entries and deployed command copies now reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
 - Claude memory operations use shared `.agents/memory/`; the deprecated `claude-edition-rules` card is historical only.
 - Claude command entries carry Director-readable output, neutral collaboration, freshness, memory, context, deep audit, migration, change intent, visual evidence, intent alignment, and review governance.
+- Claude README now frames captain work as communication, authorization resolution, board ownership, dispatch, supervision, bounded verify-read, protected adoption or merge, state decision, and reporting; it no longer presents captain work as primary implementation, self-review, or routine main-worktree authoring.
 ## Active Constraints
 - Do not restore `.claude/agents/memory/` as a storage path.
 - Keep Claude command entrypoints concise; shared operational detail belongs in Shared skills.
 - Keep Claude source ownership out of the deprecated historical card.
 - Split command child cards before adding another broad Claude command cycle.
 ## Cycle Events
+- 7: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform core-rule sync, and commit-preflight stale blocker cleanup.
+- 6: Updated Claude README memory after public wording was tightened so captain integration means protected adoption or merge of qualified artifacts, not captain substitute authoring.
 - 5: Updated Claude core memory after route/state and captain-supervision hardening; captain wording now means protected integration and gate ownership, not primary authoring or routine write substitution.
 - 4: Regenerated the shared subagent policy block in Claude core rules after Team-Native route/state and hook payload evidence hardening.
 - 3: Wave 6B added workflow-orchestration grounding to Claude command entries and source/deployed drift checks.

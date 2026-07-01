@@ -4,19 +4,19 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-01T09:37:57+08:00'
+last_updated: '2026-07-01T15:38:08+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-01T09:32:41+08:00'
+last_verified: '2026-07-01T15:24:48+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 15
+cycle_event_count: 17
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -44,6 +44,8 @@ metadata:
 - Changelog includes the 2026-06-29 scoped authorization and pre-commit governance entries plus the 2026-06-30 workflow orchestration and Codex hook stability entries.
 - Root documentation describes shared matrix deployment paths, downstream project-local tools under `.agents/tools/`, and framework-source-only manager commands.
 - Root documentation and changelog now describe Team-Native authorization binding, captain protected integration, hook-block stop behavior, and GO as scoped evidence rather than blanket write permission.
+- Root documentation now treats captain integration as protected adoption or merge of returned qualified artifacts; historical wording that implied captain main-worktree authoring, self-review, or direct implementation is corrected.
+- The changelog includes the Team-Native thin-captain, multi-specialist, hook diagnostics, and structured completion-evidence hardening entry as a governance wording correction, not runtime completion evidence.
 - Director-facing output must use Traditional Chinese unless a lower-level artifact explicitly requires another language.
 - Root repository work, git status, commit, tag, and push operations use `D:\AI_Rules` as the baseline.
 - Source memory lives in `.agents/memory/`; project context lives in `.agents/context/`; root PowerShell implementation ownership moved to `_system.scripts`.
@@ -54,6 +56,8 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 17: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform sync, changelog precision, and commit-preflight stale blocker cleanup.
+- 16: Recorded the 2026-07-01 Team-Native thin-captain and multi-specialist documentation hardening; root docs and changelog now avoid wording that implies captain authoring, self-review, or blanket GO authority.
 - 15: Recorded the 2026-07-01 Team-Native authorization binding and governance fail-closed changelog entry; root docs now frame captain work as protected integration plus gates, with everyday Director wording bound to the current visible target.
 - 14: Recorded the 2026-06-30 Stop hook completion-claim repair changelog update, including 52 hook fixtures and Doctor required-fixture coverage for the 11 new Stop regression cases.
 - 13: Recorded the 2026-06-30 Codex hook stability changelog entry and cleared the CHANGELOG staleness warning after reading the current entry.

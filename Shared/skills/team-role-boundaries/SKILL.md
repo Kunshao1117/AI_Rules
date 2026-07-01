@@ -4,7 +4,7 @@ description: >
   [Infra] Role boundary guard for captain-led team work. Use when: a task needs
   requirement, architecture, implementation, validation, review, completion, or
   captain responsibilities separated; when checking self-review, role leakage,
-  direct exceptions, specialist delivery artifact scope, 團隊角色邊界、角色越界、自我審查、
+  captain direct-exception records, specialist delivery artifact scope, 團隊角色邊界、角色越界、自我審查、
   隊長與隊員責任切分。DO NOT use when: pure discussion, single-person
   non-source answers, 純討論、非編程問答，or replacing the team board.
 metadata:
@@ -24,7 +24,9 @@ Keep team stations role-exclusive. This skill defines what each role may do, wha
 
 Use `programming-team-governance` for captain-led trigger rules, `team-specialist-registry` plus the matching `team-specialist-*` skill for role identity, and `team-task-board` for board and delivery artifact templates.
 
-Subagents, browser routes, CLI routes, MCP reads, isolated workspaces, and text-only routes are execution channels. They do not define the role and cannot override the registered specialist boundary.
+Evidence branches, browser routes, CLI routes, MCP reads, platform adapters,
+isolated workspaces, and text-only routes are execution channels. They do not
+define the role and cannot override the registered specialist boundary.
 
 ## Inputs
 
@@ -80,7 +82,7 @@ station and opens a new role instance.
 | `security-reliability` | Classify secrets, authorization, data integrity, abuse, reliability, observability, rollback, and operational risk. | Expose secrets, mutate protected state, implement feature changes, approve release mutation. |
 | `memory-docs` | Attribute memory, documentation, index, handoff, and generated-copy impact as evidence. | Edit memory cards, call memory commit, mutate source, decide final acceptance. |
 | `release-completion` | Check readiness, sync, residual risk, handoff, validation, review, and memory/docs evidence. | Final acceptance, memory write, git, tag, release, deploy, install. |
-| `captain` | Route, supervise, protectively adopt or merge returned qualified change delivery and evidence artifacts, decide review state, own protected gates, report. | Author, rewrite, or primarily implement specialist implementation/review/validation/memory attribution when a delivery artifact route exists; hide missing evidence; claim full team completion from direct work, substitute authoring, missing review, or unapproved substitution. |
+| `captain` | Route, supervise, narrow verify-read risky snippets, protectively adopt or merge returned qualified change delivery and evidence artifacts, decide review state, own protected gates, report. | Deep-read assigned specialist scope as the evidence source; author, rewrite, supplement, or primarily implement specialist implementation/review/validation/memory attribution when a delivery artifact route exists; convert verify-read into reimplementation, review, validation, or memory attribution; hide missing evidence; claim full team completion from captain substitute or direct-exception work, missing review, or unapproved substitution. |
 
 ## Read Scope Boundary
 
@@ -91,16 +93,36 @@ verify-reads the risky or disputed regions before integration or acceptance.
 | Read role | Allowed | Forbidden |
 |---|---|---|
 | Specialist deep-read | Read assigned scope, cite exact evidence, identify unread scope, summarize contradictions. | Decide final acceptance, expand scope silently, mutate files. |
-| Captain verify-read | Inspect high-risk snippets, changed regions, disputed claims, and acceptance-critical evidence. | Replace every specialist deep-read with uncontrolled broad main-thread loading when a station channel exists. |
+| Captain verify-read | Inspect high-risk snippets, changed regions, disputed claims, and acceptance-critical evidence. | Replace specialist deep-read with broad main-thread loading; supplement missing specialist work; reimplement, re-review, revalidate, or perform memory attribution under the name of verification. |
 
-If no specialist route can deep-read, record a direct exception and mark the
-missing separation as blocked, unverified, or closed-with-director-risk.
+If no specialist route can deep-read, record a captain direct-exception record
+and mark the missing separation as blocked, unverified, or
+closed-with-director-risk.
 
 Captain micro-read is limited to status checks, hashes, narrow searches, small
 diffs, and acceptance-critical snippets. Repository-wide, recursive, or large
 file reads require a specialist deep-read station first. If the captain performs
-that broad read directly, the trace must record a direct exception and cannot
-claim full team separation unless the Director closes that named risk.
+that broad read through the captain path, the trace must record a captain
+direct-exception record and cannot claim full team separation unless the
+Director closes that named risk. Required boundary: `large-file deep read must route to a bounded specialist or be marked blocked/unverified`.
+
+## Captain Hard Boundary
+
+The captain must not convert supervision into specialist work:
+
+1. No captain deep-read: broad, recursive, repetitive, or large-file reads that
+   create evidence must be assigned to an eligible specialist substation task.
+2. No captain backfill: missing implementation, review, validation, memory/docs
+   attribution, or completion evidence routes back to an eligible station or is
+   recorded as `blocked`, `unverified`, or `closed-with-director-risk`.
+3. No verification laundering: captain verify-read cannot become
+   reimplementation, independent review, validation rerun, memory attribution,
+   or source-of-truth evidence authoring.
+4. No hidden substitution: captain substitute authoring requires explicit
+   Director risk closure and still cannot support full team completion.
+5. No channel-based role override: an evidence branch, browser route, CLI
+   route, MCP read, platform adapter, or isolated workspace is only an execution
+   channel and cannot justify collapsing role separation.
 
 Execution routes and states stay separate. A channel can be unavailable, but
 `unavailable` is not the channel. A station can be blocked, but `blocked` is not
@@ -121,12 +143,16 @@ Before accepting any delivery artifact:
 6. Confirm the handoff packet lists loaded skill refs, read scope, forbidden actions, startup thresholds, and stop condition.
 7. Mark missing separation as `closed-with-director-risk`, `unverified`, or `blocked`; it cannot support `complete`.
 8. Reject delivery artifacts that mutate memory, git, releases, deployments, installs, or external state.
-9. Distinguish captain protected integration of returned delivery artifacts from captain substitute authoring. Protected integration can be normal captain work only when it protectively adopts or merges returned qualified artifacts without captain rewrite or primary implementation; substitute authoring starts blocked and can only close as `closed-with-director-risk`.
+9. Distinguish captain protective adoption/merge of returned delivery artifacts from captain substitute authoring. Protective adoption/merge can be normal captain work only when it adopts or merges returned qualified artifacts without captain rewrite or primary implementation; substitute authoring starts blocked and can only close as `closed-with-director-risk`.
 10. Confirm authorization fields are present before accepting a station artifact; missing authorization fields are blocked or unverified and cannot support `complete`.
 11. Confirm execution route fields contain channels or delivery forms, while
     blocked/unverified/standby/risk-closed values stay in state fields.
 12. Confirm source/deployed pairs record sync direction and parity evidence when
     generated or deployed copies are touched.
+13. Confirm captain verify-read stayed narrow and did not become specialist
+    deep-read, reimplementation, review, validation, or memory/docs attribution.
+14. Confirm any captain substitute-authoring exception is explicitly recorded as
+    `closed-with-director-risk`, `blocked`, or `unverified`, not `complete`.
 
 ## Outputs
 

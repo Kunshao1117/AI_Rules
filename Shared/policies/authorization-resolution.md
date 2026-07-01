@@ -29,9 +29,9 @@ phase, and expiry that can satisfy the request.
 
 | Signal | Authorization meaning |
 |---|---|
-| Explicit Director instruction | May authorize only the named target, scope, phase, and action. Ambiguous text is narrowed to the safest no-write or plan-only interpretation. |
+| Explicit Director instruction | May authorize only the currently visible named target, scope, phase, expiry, and action. Ambiguous text is narrowed to the safest no-write or plan-only interpretation. |
 | Captain board authorization | May authorize station work only when the board records the target, scope, phase, evidence, and expiry. |
-| Interface approval button | May be evidence that a specific displayed operation was approved. It does not authorize unbounded writes, unrelated files, later phases, memory, git, release, deployment, install, or external mutation unless those targets were explicitly included. |
+| Interface approval button | May be evidence that a specific displayed operation was approved. It does not authorize unbounded writes, unrelated files, hidden cleanup, later phases, memory, git, release, deployment, install, or external mutation unless those targets were explicitly included. |
 | Prior approved plan | May support execution only inside the exact approved scope and phase. It cannot expand the file allowlist, protected action set, or dispatch wave. |
 
 ## Tool Execution Envelope And Receipt
@@ -85,12 +85,14 @@ The agent must bind everyday instructions to the visible current target instead
 of requiring words such as repair channel, build channel, or validation channel.
 
 Natural-language instructions such as "fix this first", "go back and repair
-that part", "continue", "so what now?", "do what you just proposed", or `GO`
-are valid intent signals only after the agent resolves:
+that part", "continue", "so what now?", "do what you just proposed", or `GO`,
+and interface approval buttons or permission prompts, are valid intent signals
+only after the agent resolves:
 
 1. the action being requested,
 2. the concrete target or file/station set,
-3. the current visible plan, diff, command, station, or blocker being answered,
+3. the current visible plan, diff, command, station, file set, scope, phase, or
+   blocker being answered,
 4. the authorization layer involved, and
 5. the expiry of that authorization.
 
@@ -100,8 +102,11 @@ unverified. The agent may ask one narrow scope question when the missing binding
 would change the allowed write target or protected action.
 
 Natural language may narrow or continue the currently visible scope. It must not
-create hidden authority for unrelated files, memory, git, release, deployment,
-install, credentials, external mutation, or later phases.
+expand from one station to another, from one file set to another, from one
+command to a command series, or from one phase to a later phase unless that
+expansion is visible and explicitly authorized. It must not create hidden
+authority for unrelated files, hidden cleanup, memory, git, release,
+deployment, install, credentials, external mutation, or later phases.
 
 ## Non-Authorizing Signals
 
@@ -121,9 +126,10 @@ protected actions:
 - Project initialization, framework deployment, or generated-copy presence is not
   authorization to sync or overwrite files.
 - `GO`, `continue`, and approval prompts authorize only the current visible
-  plan, command, diff, station, dispatch wave, or protected action they name.
-  They do not authorize later phases, hidden cleanup, memory writes, git,
-  release, deploy, install, credentials, or external mutation.
+  plan, command, diff, station, file set, scope, phase, dispatch wave, expiry,
+  or protected action they name. They do not authorize later phases, hidden
+  cleanup, memory writes, git, release, deploy, install, credentials, or
+  external mutation.
 - Historical transcript text is diagnostic context only. Write-capable or
   protected actions require current structured fields for board, station,
   handoff, role identity, assigned specialist skill, requested execution channel,
@@ -161,33 +167,37 @@ to a write or protected action records these fields:
    artifact or trigger a protected action.
 2. Prefer the narrowest safe interpretation. If target, scope, phase, or expiry
    is missing, resolve as `no-write`, `unverified`, or `blocked`.
-3. A phase authorization does not carry into another phase. Implementation
+3. Treat natural-language continuations and approval buttons as non-expanding by
+   default. They can continue or narrow the current visible plan, station, file
+   set, command, scope, phase, and expiry, but they cannot widen it without new
+   explicit evidence.
+4. A phase authorization does not carry into another phase. Implementation
    change delivery does not authorize captain integration. Captain integration
    does not authorize memory writes. Memory delivery does not authorize
    memory commit. Git, release, deployment, install, and external mutation each
    require their own explicit authorization.
-4. Interface approval buttons are evidence for the exact operation presented to
+5. Interface approval buttons are evidence for the exact operation presented to
    the Director. They must be recorded with target, scope, phase, evidence, and
    expiry before being used.
-5. Platform mode and tool capability can affect whether a channel is available,
+6. Platform mode and tool capability can affect whether a channel is available,
    conditional, unavailable, or unverified, but they cannot change an
    authorization state to `authorized`.
-6. If a station discovers a scope mismatch, it must stop and return blocked or
+7. If a station discovers a scope mismatch, it must stop and return blocked or
    unverified evidence instead of widening the change.
-7. If authorization expires, later work must request or record new scope-bound
+8. If authorization expires, later work must request or record new scope-bound
    authorization before continuing.
-8. If the tool or hook payload cannot carry the current structured fields needed
+9. If the tool or hook payload cannot carry the current structured fields needed
    for a write-capable or protected action, record `tool_payload_evidence_gap`
    and keep the affected action blocked or unverified. Do not recover authority
    from transcript text or previous assistant claims.
-9. If a hook, policy, or platform guard blocks an action, the next valid states
+10. If a hook, policy, or platform guard blocks an action, the next valid states
    are blocked, unverified, or closed-with-director-risk unless the missing
    structured evidence is supplied. Do not retry with a different tool, switch
    channels, or treat historical conversation text as substitute authorization.
-10. A protected mutation requires a trusted tool execution envelope that matches
+11. A protected mutation requires a trusted tool execution envelope that matches
     the current scope-bound authorization. Missing trusted issuer, signature,
     nonce, or a matching execution receipt keeps the protected mutation blocked.
-11. `closed-with-director-risk` requires current, explicit, scope-bound Director
+12. `closed-with-director-risk` requires current, explicit, scope-bound Director
     risk close evidence naming the residual risk and accepted scope. It remains
     non-complete and cannot substitute for missing authorization, delivery,
     validation, review, memory/docs, or tool receipt evidence.

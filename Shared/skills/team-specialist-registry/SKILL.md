@@ -38,16 +38,20 @@ metadata:
 Use after the captain has a Team-Native board and needs a station-specific
 specialist role.
 
-Use this registry to choose exactly one primary specialist for one station.
-Use the chosen child skill for the station procedure, role identity, support
-skills, artifact contracts, trace contracts, and output format.
+Use this registry to choose exactly one primary specialist for one substation
+task. Use the chosen child skill for the substation task procedure, role
+identity, support skills, artifact contracts, trace contracts, and output
+format. A station family may contain multiple substation tasks and multiple
+member assignments, but each member assignment can hold only one substation task
+inside the same task trace.
 
 Before starting the station, create a handoff packet with
 `team-station-handoff-packet` or an equivalent platform adapter. The packet
 must include `operation_mode`, `operation_mode_reason`, `role_id`,
-`role_instance_id`, `exclusive_task_scope`, the assigned specialist skill,
-loaded skill refs, read scope, forbidden actions, output format, startup
-threshold, standby reason when applicable, and timeout action.
+`role_instance_id`, `exclusive_task_scope`, `station_family`,
+`formal_station`, `substation_task`, `member_assignment`, the assigned
+specialist skill, loaded skill refs, read scope, forbidden actions, output
+format, startup threshold, standby reason when applicable, and timeout action.
 
 ## Procedure
 
@@ -58,8 +62,8 @@ threshold, standby reason when applicable, and timeout action.
 Board exists?
 ├── NO -> HALT and ask the captain to create or promote the board.
 ├── YES -> Continue.
-Station has one concrete task?
-├── NO -> HALT and split the station.
+Substation task has one concrete task?
+├── NO -> HALT and split the station family into separate substation tasks.
 ├── YES -> Continue.
 Director prompt contains [SUDO]?
 ├── YES -> Record override, keep protected-state boundaries, and continue only inside the assigned station.
@@ -81,16 +85,27 @@ Director prompt contains [SUDO]?
 | Memory, docs, index, handoff, generated-copy attribution | `memory-docs` | `team-specialist-memory-docs` | Memory and documentation delivery status |
 | Completion, release readiness, residual risk, final delivery artifact check | `release-completion` | `team-specialist-release-completion` | Completion readiness evidence |
 
-### Step 3: Preserve role boundaries
+### Step 3: Preserve role boundaries and member assignments
 
-1. Assign one specialist to one station only.
-2. Set `role_id` from the registry row and require a fresh `role_instance_id`
-   whenever the station crosses to another role.
-3. Do not let one `role_instance_id` with `exclusive_task_scope: task` hold
-   more than one `role_id`.
-4. Do not let the change-delivery specialist review the same deliverable.
-5. Keep memory mutation, git mutation, release mutation, deployment, install, and final acceptance on the captain path.
-6. Return blocked, unverified, or closed-with-director-risk when the required role cannot be separated.
+1. A station family may have multiple substation tasks and multiple member
+   assignments by default.
+2. Assign exactly one primary specialist to one substation task only.
+3. Bind each `member_assignment` and `role_instance_id` to one substation task
+   inside the same task trace.
+4. Set `role_id` from the registry row and require a fresh `role_instance_id`
+   whenever the station crosses to another role or the member assignment changes.
+5. Do not let one `role_instance_id` with `exclusive_task_scope: task` hold
+   more than one `role_id` or more than one substation task.
+6. Do not let the change-delivery specialist review, validate, or perform
+   memory/docs attribution for the same deliverable.
+7. Keep implementation, review, validation, and memory/docs attribution on
+   different role instances for the same deliverable.
+8. Keep memory mutation, git mutation, release mutation, deployment, install,
+   and final acceptance on the captain-owned protected gate.
+9. Return blocked, unverified, or closed-with-director-risk when the required
+   role or member separation cannot be preserved.
+10. Treat subagents, browsers, commands, MCP reads, isolated workspaces, and
+    text-only paths as execution channels only; they are not role sources.
 
 ## Trace And Handoff Contract
 
@@ -98,7 +113,9 @@ The registry assigns role identity; shared trace files define the full field set
 
 1. Select exactly one registry row for each station.
 2. Copy the row's `role_id` into the handoff packet.
-3. Require `role_instance_id` and `exclusive_task_scope` before station startup.
+3. Require `station_family`, `formal_station`, `substation_task`,
+   `member_assignment`, `role_instance_id`, and `exclusive_task_scope` before
+   station startup.
 4. Load the child skill named in the row and the child skill's
    `metadata.relations.support_skills`.
 5. Use `team-trace-evidence` and `team-station-handoff-packet` for the complete
@@ -108,6 +125,10 @@ The registry assigns role identity; shared trace files define the full field set
 
 - Do not route by broad title alone. Match the station need and forbidden actions.
 - Do not collapse validation and review into one role when the deliverable changed.
+- Do not collapse implementation, review, validation, and memory/docs
+  attribution into one member assignment for the same deliverable.
+- Do not treat a station family as a team member or an execution channel as a
+  role source.
 - Do not treat this registry as permission to start a specialist before the board exists.
 
 ## Constraints

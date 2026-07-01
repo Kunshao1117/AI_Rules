@@ -20,10 +20,11 @@ metadata:
 ## Purpose
 
 This skill defines the handoff packet that turns a board station into a bounded
-specialist assignment. The packet is the contract between the captain board and
-one specialist station. It prevents vague delegation, records startup
-monitoring, and preserves role boundaries when a station is retained, put on
-standby, replaced, or closed.
+specialist assignment for one substation task. The packet is the contract
+between the captain board and one registered role instance assigned to one
+concrete task. It prevents vague delegation, records startup monitoring, and
+preserves role boundaries when a station is retained, put on standby, replaced,
+or closed.
 
 Use this with `programming-team-governance`, `team-task-board`,
 `team-specialist-registry`, and `team-role-boundaries`. A handoff packet is not
@@ -47,12 +48,15 @@ state, or mutate memory, git, release, deployment, install, or external state.
 
 ### 1. Build The Packet
 
-Create one packet per station. Do not bundle multiple roles into one packet.
-Do not reuse a packet across role-exclusive boundaries or across different
-`role_id` values. In the same task trace, a `role_instance_id` with
-`exclusive_task_scope: task` must not hold more than one `role_id`. Do not reuse
-a packet across implementation to review, validation failure to repair, memory
-attribution to memory mutation, or completion audit to final acceptance.
+Create one packet per substation task inside one formal station. One packet
+must contain exactly one role, one concrete task, one output artifact format,
+and one stop condition. Do not bundle multiple roles, multiple tasks, multiple
+output formats, or multiple stop conditions into one packet. Do not reuse a
+packet across role-exclusive boundaries or across different `role_id` values.
+In the same task trace, a `role_instance_id` with `exclusive_task_scope: task`
+must not hold more than one `role_id` or more than one substation task. Do not
+reuse a packet across implementation to review, validation failure to repair,
+memory attribution to memory mutation, or completion audit to final acceptance.
 
 `handoff_packet_id` is the canonical field name. `dispatch_packet_id` may appear
 only as a legacy alias in returned artifacts; new traces use
@@ -75,6 +79,10 @@ workflow_route:
 execution_route:
 station_state:
 evidence_state:
+station_family:
+formal_station:
+substation_task:
+member_assignment:
 station:
 role_id:
 role_instance_id:
@@ -104,6 +112,7 @@ requested_execution_channel:
 channel_capability:
 channel_invocation_status:
 execution_channel:
+delivery_artifact:
 source_deployed_pair:
 sync_direction:
 sync_evidence:
@@ -125,6 +134,10 @@ stop_condition:
 handoff_summary:
 ```
 
+`station` may appear as a legacy alias for `formal_station`; new packets must
+prefer `station_family`, `formal_station`, `substation_task`, and
+`member_assignment` as separate fields.
+
 ### 2. Pass Skills As References
 
 `loaded_skill_refs` must list concrete skill names or paths that the specialist
@@ -132,7 +145,7 @@ must read. Prefer direct skill references over free-form role descriptions.
 
 Minimum refs:
 
-| Station | Required skill refs |
+| Substation task need | Required skill refs |
 |---|---|
 | Requirement | `team-specialist-intent-requirements`, `team-role-boundaries` |
 | Scope or impact | `team-specialist-scope-impact`, `team-role-boundaries` |
@@ -185,6 +198,8 @@ Evidence delivery artifacts include:
 
 ```text
 handoff_packet_id:
+substation_task:
+member_assignment:
 specialist_deep_read_evidence:
 發現:
 證據:
@@ -197,6 +212,8 @@ Change delivery artifacts include:
 
 ```text
 handoff_packet_id:
+substation_task:
+member_assignment:
 specialist_deep_read_evidence:
 變更:
 檔案:
@@ -211,6 +228,8 @@ Memory/docs delivery artifacts include:
 
 ```text
 handoff_packet_id:
+substation_task:
+member_assignment:
 specialist_deep_read_evidence:
 memory_impact:
 status: memory_delivery / blocked / unverified / closed-with-director-risk
@@ -222,8 +241,12 @@ memory_delivery:
 
 ## Gotchas
 
+- A station is a work container, not a member. A member assignment is one
+  registered role instance bound to one substation task.
 - A subagent, browser, command, or MCP route is an execution channel, not the
   specialist role.
+- An execution channel cannot become `specialist_role_source`, and channel
+  availability cannot relax the selected role boundary.
 - `blocked`, `unverified`, `standby`, `unavailable`, `not-authorized`, and
   `closed-with-director-risk` are states. They must not be used as
   `execution_route` or `execution_channel`.
@@ -235,8 +258,11 @@ memory_delivery:
   role inside the same task.
 - Standby means the station is assigned but not yet evidence-complete.
 - A packet without loaded skill references is not a formal Team-First handoff.
-- A captain deep-reading everything is a direct exception, not full team
-  separation.
+- A packet with more than one role, concrete task, output artifact format, or
+  stop condition is not a valid specialist handoff; split it into substation
+  tasks.
+- A captain deep-reading everything is a captain direct-exception record, not
+  full team separation.
 - Deep-read does not authorize scope expansion. If the specialist discovers
   required material outside the packet, it must report the gap and stop or ask
   for a packet update.
