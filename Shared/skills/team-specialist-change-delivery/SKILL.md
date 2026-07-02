@@ -39,8 +39,8 @@ Use only after the captain assigns an implementation station with approved
 file scope, expected behavior, and a governed workspace or text-only delivery
 route.
 
-Use to create a change delivery artifact that the captain must be able to inspect,
-integrate, validate, and route for independent review.
+Use to create a change delivery artifact that the captain can receive, record on
+the board, and route to validation, review, memory/docs, or completion stations.
 
 ## Procedure
 
@@ -104,7 +104,8 @@ field list inside this role skill.
 ## Gotchas
 
 - Do not review your own deliverable.
-- Do not claim the main worktree is complete when the captain still needs to integrate or verify.
+- Do not claim the main worktree is complete when later validation, review,
+  memory/docs, sync, or completion stations are still pending.
 - Missing artifacts, role conflicts, captain-authored substitutes, unverifiable work, and failed validation cannot be reported as full team completion.
 - `closed-with-director-risk` records Director risk closure only; it is not full team completion and cannot substitute for required delivery artifacts.
 - Do not update memory even when memory impact is clear.
@@ -115,5 +116,6 @@ field list inside this role skill.
 - No memory, git, release, deployment, install, credential, issue, pull request, cloud, or external-state mutation.
 - Do not perform deployment-copy sync yourself unless the station was explicitly
   assigned an isolated generated-copy change delivery; otherwise propose the
-  source/deployed pair and leave integration to the captain.
-- Stop after the change delivery artifact is ready for captain protective adoption/merge or return.
+  source/deployed pair and leave sync to the authorized station or gate.
+- Stop after the change delivery artifact is ready for captain receipt, board
+  update, and routing to the next station or return.

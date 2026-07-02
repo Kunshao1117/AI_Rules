@@ -4,19 +4,19 @@ scopePath: Scripts/tests/codex-hooks/
 description: >-
   專案記憶：Codex hooks 測試 runner 與 Team-Native gate fixtures。Use when: task touches
   Codex hook validation.
-last_updated: '2026-07-02T09:27:26+08:00'
+last_updated: '2026-07-02T15:03:08+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-01T13:45:49+08:00'
+last_verified: '2026-07-02T15:00:23+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 5
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -38,11 +38,11 @@ metadata:
 - Shell resolution is application-only: the runner ignores function/alias shadowing, validates concrete executable paths, warns and skips missing shells in non-strict mode, and blocks missing shells when strict shell coverage is required.
 - Protected mutation fixtures now require scope-bound `protected_authorization`, a trusted tool execution envelope, and a matching trusted execution receipt; hook diagnostics require current write target, scope, phase, expiry, and structured delivery artifact evidence.
 - The fixture runner supports `scenarioCode`, `expectedReasonCodeRegex`, `expectedDecision`, and `expectedDiagnosticLabels` assertions so blocked write, post-block bypass, and natural-language route cases prove both human diagnostics and machine reason-code contracts.
-- The current fixture matrix passed 58 fixtures across Windows PowerShell and PowerShell 7, for 116 passing cases.
-- Hook behavior is coupled to Codex hook source files and Team-Native Core governance; review those cards when fixture expectations change.
+- Hook behavior is coupled to Codex hook source files and Team-Native Core governance; the fixture runner treats `Codex/.codex/hooks.delete` as the renamed-hook marker and keeps project `.codex/hooks.json` absent while the marker is active.
 ## Active Constraints
 - Keep fixtures deterministic and offline; fixture names describe allow, block, or context outcomes, and live platform testing is still required when platform hook behavior changes.
 ## Cycle Events
+- 13: Recorded fixture runner support for the Codex `hooks.delete` renamed-hook marker and project hook config absence guard.
 - 12: Compacted active Codex hook fixture memory after commit preflight reported the active-card line limit, preserving the latest fixture assertion contract.
 - 11: Added scenario codes, expected hook reason-code regexes, expected decisions, and diagnostic-label checks to the fixture runner and key prompt/write/Stop fixtures.
 - 10: Added structured completion, Chinese/space path, Windows prefix-trap, BOM Chinese completion, and route-only natural-language fixtures; runner passed 58 fixtures across Windows PowerShell and PowerShell 7.

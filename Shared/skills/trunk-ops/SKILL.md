@@ -56,7 +56,7 @@ Have test framework name ready?
 
 ```
 Director provides fix ID?
-├── [SUDO] → Skip validation, execute directly.
+├── [SUDO] → Record override/risk-closure request; do not skip validation or execute directly.
 ├── Yes → Proceed to step 2
 └── No → Ask Director for fix ID（必須由總監提供）
 ```

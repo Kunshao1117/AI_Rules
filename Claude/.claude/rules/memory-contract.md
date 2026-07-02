@@ -65,7 +65,7 @@ Checkpoint 格式規範（寫入時參考）：
 
 ```
 [EXIT HOLD GATE] Before reporting task completion:
-├── Director prompt contains [SUDO]? → Clear hold. Allow completion.
+├── Director prompt contains [SUDO]? → Record override/risk-closure request only; keep the exit hold and memory/source attribution gates active. [SUDO] does not authorize completion claims.
 ├── Were any source files CREATED in this session?
 │   └── YES → Find or create a matching .agents/memory/ card.
 │             [HALT if no card]「🔴 [MEM HALT] 新建模組尚未建立記憶卡。請先執行記憶歸卡。」

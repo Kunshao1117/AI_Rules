@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-02T09:30:35+08:00'
+last_updated: '2026-07-02T15:02:43+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-01T22:54:48+08:00'
+last_verified: '2026-07-02T15:00:23+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 20
+cycle_event_count: 22
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -49,11 +49,15 @@ metadata:
 - Project rule sync and platform deploy scripts copy restricted project-local tools and shared governance references into downstream `.agents/` locations.
 - Audit now formats Director-facing missing-field and Team Trace diagnostics as Traditional Chinese meaning plus exact machine token, uses Chinese-first Doctor section headings, and keeps machine identifiers unchanged for precision.
 - Audit now checks Codex hook fixture machine contracts for `scenarioCode`, `expectedReasonCodeRegex`, `expectedDecision`, diagnostic-label expectations, and static payload guards for GO follow-up prompts, blocked `apply_patch`, post-block `rawInput`, tool-switch intent, and completion claims.
+- Audit now recognizes captain coordination and authorized change-application wording: `captain_coordination_read_scope` replaces captain verify-read fields, and implementation direct checks look for explicit change-application gates rather than captain integration.
+- Audit now accepts `Codex/.codex/hooks.delete` as the source renamed-hook marker and reports project `.codex/hooks.json` restoration as hook config drift while the marker is active.
 ## Active Constraints
 - Do not mutate external repositories or deployment targets without explicit Director approval.
 - Keep script behavior aligned with protected memory and project-skill directories.
 - Do not use this card as a substitute for reading the current script implementation before edits.
 ## Cycle Events
+- 52: Recorded Audit support for the Codex `hooks.delete` renamed-hook marker and old project hook config drift detection.
+- 51: Recorded Audit governance updates for `captain_coordination_read_scope`, authorized change-application gates, and Team Trace protected-action pattern coverage.
 - 50: Restored static fixture payload guards after structured contract checks so natural-language prompt, blocked apply_patch, and post-block bypass fixtures still prove their original risk payloads.
 - 49: Added Director-readable Audit output formatting and hook fixture contract checks for scenario codes, reason-code regex, expected decisions, and diagnostic labels.
 - 48: Updated Audit checks to accept thin workflow and core entries that cite shared source-of-truth policies, verify current Team-Native split ownership, and avoid false GO matches inside governance wording.

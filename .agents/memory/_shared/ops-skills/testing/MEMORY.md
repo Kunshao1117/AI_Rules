@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-01T18:26:30+08:00'
+last_updated: '2026-07-02T14:02:21+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -43,12 +43,14 @@ metadata:
 - Testing and browser automation evidence cannot silently downgrade to captain-direct work; missing real-information proof keeps completion blocked or unverified.
 - Visual evidence must prefer real pages, real data, real account state, current responses/logs, or equivalent real paths before fake-data fallback.
 - Single-run test output belongs in task reports or logs unless it becomes a stable validation route.
+- Test-pattern and Trunk operations now treat [SUDO] as an override/risk-closure request only; it cannot skip mock checks, authorize real network calls, or bypass validation.
 
 ## Active Constraints
 - Do not turn one-time test output into permanent memory.
 - Use project-surface evidence requirements from the workflow matrix before declaring behavior verified.
 
 ## Cycle Events
+- 06: Recorded testing-skill hardening so [SUDO] cannot skip mock checks, authorize real network calls, or bypass validation.
 - 05: Recorded testing-skill hardening so browser and automation evidence cannot silently downgrade to captain direct work and real-information proof remains required before completion claims.
 - 04: Aligned testing and browser evidence memory with captain-led evidence station rules.
 - 03: Added browser-branch direct-exception boundaries for team-first evidence station governance.

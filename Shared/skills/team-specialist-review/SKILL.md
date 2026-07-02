@@ -47,7 +47,7 @@ Use only when the reviewer did not author the same deliverable.
 [REVIEW INDEPENDENCE GATE]
 Reviewer authored or materially edited the deliverable?
 ├── YES and no [SUDO] -> HALT and mark review blocked.
-├── YES with [SUDO] -> Record director-risk closure request, mark independence compromised, and return closed-with-director-risk. This does not restore independent review or qualify as full team completion.
+├── YES with [SUDO] -> Record override/risk-closure request and mark independence compromised. Return closed-with-director-risk only with explicit Director risk closure; otherwise blocked or unverified. This does not restore independent review, skip review, or support complete.
 └── NO -> Continue.
 Director request, scope, and change delivery artifact available?
 ├── NO -> Return unverified with missing evidence.
@@ -70,7 +70,8 @@ Return these fields:
 - Findings: concrete issues or no findings.
 - Evidence: files, sections, or outputs supporting the finding.
 - Risk: regression, maintainability, requirement drift, or missing evidence.
-- Required disposition: accepted, fix-required, closed-with-director-risk, blocked, or unverified.
+- Review lifecycle disposition: accepted, accepted-risk, fix-required, blocked, or unverified.
+- Director risk closure: closed-with-director-risk only when the Director explicitly closes missing independence/evidence risk; it is not review acceptance and cannot support complete.
 - Blocker status: blocked, unverified, closed-with-director-risk, or not-applicable.
 
 ## Trace And Handoff Contract
@@ -95,7 +96,7 @@ field list inside this role skill.
 - Validation passing does not replace review.
 - Review remediation requests are text only unless the captain routes a new change-delivery station.
 - Do not convert missing validation into acceptance.
-- Director override does not turn compromised independence, missing review delivery, captain-authored substitutes, or closed-with-director-risk into full team completion.
+- Director override or [SUDO] only records override/risk-closure request; it does not turn compromised independence, missing review delivery, captain-authored substitutes, or closed-with-director-risk into full team completion.
 
 ## Constraints
 

@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 發布治理、結構化推理與技術堆疊協議技能。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-06-15T02:53:20+08:00'
+last_updated: '2026-07-02T14:02:05+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -37,12 +37,14 @@ metadata:
 - This child card owns Shared plugin release governance, structured reasoning, and tech-stack protocol skills.
 - Release decisions and technology recommendations require current evidence when the external ecosystem may have changed.
 - The card records ownership, not the latest external platform facts.
+- Tech-stack protocol now treats [SUDO] as an override/risk-closure request only; `_system` memory, scoped authorization, Team-Native, validation, review, and protected gates remain active.
 
 ## Active Constraints
 - Do not skip current official-source verification for high-change stack, release, or platform guidance.
 - Keep release playbooks and protocol details in the tracked source files.
 
 ## Cycle Events
+- 02: Recorded tech-stack protocol hardening so [SUDO] cannot bypass `_system` memory or protected-action gates.
 - 01: Split release, reasoning, and tech-stack protocol ownership out of the broad Shared operational skills card.
 
 ## Archive Index

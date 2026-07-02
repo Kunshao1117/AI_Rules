@@ -2447,26 +2447,39 @@ function Measure-CodexHookGovernance {
     }
 
     $sourceConfig = Join-Path $RepoRoot 'Codex\.codex\hooks.json'
+    $sourceDisabledConfig = Join-Path $RepoRoot 'Codex\.codex\hooks.delete'
     $sourceScript = Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-gate.ps1'
     $targetConfig = Join-Path $TargetRoot '.codex\hooks.json'
     $targetScript = Join-Path $TargetRoot '.codex\hooks\team-native-gate.ps1'
     $fixtureTest = Join-Path $RepoRoot 'Scripts\tests\codex-hooks\Invoke-CodexHookFixtureTests.ps1'
     $fixtureRoot = Join-Path $RepoRoot 'Scripts\tests\codex-hooks\fixtures'
+    $hasSourceHookConfig = Test-Path -LiteralPath $sourceConfig -PathType Leaf
+    $hasSourceDisabledConfig = Test-Path -LiteralPath $sourceDisabledConfig -PathType Leaf
+    $hasTargetHookConfig = Test-Path -LiteralPath $targetConfig -PathType Leaf
 
-    foreach ($required in @(
-        @{ Path = $sourceConfig; Label = 'source hook config'; Severity = 'Red' },
+    $requiredHookFiles = @(
         @{ Path = $sourceScript; Label = 'source hook script'; Severity = 'Red' },
-        @{ Path = $targetConfig; Label = 'project hook config'; Severity = 'Red' },
         @{ Path = $targetScript; Label = 'project hook script'; Severity = 'Red' },
         @{ Path = $fixtureTest; Label = 'hook fixture test'; Severity = 'Yellow' },
         @{ Path = $fixtureRoot; Label = 'hook fixtures'; Severity = 'Yellow' }
-    )) {
+    )
+    if (-not ($hasSourceHookConfig -or $hasSourceDisabledConfig)) {
+        $requiredHookFiles += @{ Path = $sourceConfig; Label = 'source hook config or renamed marker'; Severity = 'Red' }
+    }
+    if ((-not $hasSourceDisabledConfig) -and (-not $hasTargetHookConfig)) {
+        $requiredHookFiles += @{ Path = $targetConfig; Label = 'project hook config'; Severity = 'Red' }
+    }
+
+    foreach ($required in $requiredHookFiles) {
         $pathType = if ($required.Path -eq $fixtureRoot) { 'Container' } else { 'Leaf' }
         if (-not (Test-Path -LiteralPath $required.Path -PathType $pathType)) {
             Add-CodexHookFinding -Severity $required.Severity -File (Get-CodexHookDisplayPath -Path $required.Path) -Line 1 -Reason 'Codex hook governance 缺少必要檔案' -Text $required.Label
         }
     }
 
+    if ($hasSourceDisabledConfig -and $hasTargetHookConfig) {
+        Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $targetConfig) -Line 1 -Reason 'Codex hook 設定仍使用舊 project 檔名' -Text 'source uses Codex\.codex\hooks.delete renamed-hook marker; do not restore .codex\hooks.json'
+    }
     if ((Test-Path -LiteralPath $sourceConfig -PathType Leaf) -and (Test-Path -LiteralPath $targetConfig -PathType Leaf) -and (-not (Test-AuditFileHashEqual -SourcePath $sourceConfig -TargetPath $targetConfig))) {
         Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $targetConfig) -Line 1 -Reason 'Codex hook 設定部署副本與來源不一致' -Text 'Codex\.codex\hooks.json -> .codex\hooks.json'
     }
@@ -2797,9 +2810,11 @@ function Measure-CodexHookGovernance {
         }
     }
 
-    $sourceHookConfig = Read-CodexHookConfig -Path $sourceConfig -Label 'source'
-    $targetHookConfig = Read-CodexHookConfig -Path $targetConfig -Label 'project'
-    Test-CodexHookConfig -Config $sourceHookConfig -ConfigPath $sourceConfig -Label 'source'
+    $sourceHookConfigPath = if ($hasSourceHookConfig) { $sourceConfig } elseif ($hasSourceDisabledConfig) { $sourceDisabledConfig } else { $sourceConfig }
+    $sourceHookConfigLabel = if ($sourceHookConfigPath -eq $sourceDisabledConfig) { 'source renamed-hook marker' } else { 'source' }
+    $sourceHookConfig = Read-CodexHookConfig -Path $sourceHookConfigPath -Label $sourceHookConfigLabel
+    $targetHookConfig = if ($hasSourceDisabledConfig) { $null } else { Read-CodexHookConfig -Path $targetConfig -Label 'project' }
+    Test-CodexHookConfig -Config $sourceHookConfig -ConfigPath $sourceHookConfigPath -Label $sourceHookConfigLabel
     Test-CodexHookConfig -Config $targetHookConfig -ConfigPath $targetConfig -Label 'project'
     Test-CodexHookScript -Path $sourceScript -Label 'source'
     Test-CodexHookScript -Path $targetScript -Label 'project'
@@ -2985,10 +3000,10 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         $hasFormalReadonly = $Content -match 'formal-readonly|formal readonly|正式.{0,80}(唯讀|無寫入)'
         $hasEvidenceScope = $Content -match 'project files|screenshots|memory/context cards|rules/workflows/policies|agent/subagent behavior|source/tool output|檔案|截圖|記憶|脈絡|規則|工作流|政策|代理|子代理'
         $hasEvidenceStatus = $Content -match 'Evidence status|證據狀態|missing scope|unresolved scope|未讀範圍|阻塞'
-        $hasCaptainVerifyRead = $Content -match 'captain verification-reads|隊長驗讀|captain verify-read'
+        $hasCaptainCoordinationBoundary = $Content -match 'captain.{0,160}(receive|receives|receipt|board|status|blocker|conflict|authorization).{0,160}(validation|review|memory)|隊長.{0,160}(接收|任務板|彙整|阻塞|衝突|授權).{0,160}(驗證|審查|記憶)'
         $hasNonCompleteBoundary = $Content -match '不得宣稱完整完成|not complete|not full team completion|closed-with-director-risk|完整完成'
 
-        return ($hasEvidenceChat -and $hasFormalReadonly -and $hasEvidenceScope -and $hasEvidenceStatus -and $hasCaptainVerifyRead -and $hasNonCompleteBoundary)
+        return ($hasEvidenceChat -and $hasFormalReadonly -and $hasEvidenceScope -and $hasEvidenceStatus -and $hasCaptainCoordinationBoundary -and $hasNonCompleteBoundary)
     }
 
     function Test-ProgrammingTeamChannelMonitoringContent {
@@ -3127,7 +3142,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
 
         $hasLargeReadBoundary = $Content -match 'large[- ]file deep read|whole[- ]file deep read|large file.{0,120}specialist|deep read.{0,120}specialist|deep_read_scope|大檔.{0,120}深讀|大型檔案.{0,120}深讀|全檔.{0,120}深讀'
-        $hasCaptainLimit = $Content -match 'captain.{0,160}(must not|cannot|does not).{0,160}(absorb|substitute|deep read)|captain_verify_read_scope|隊長.{0,160}(不得|不能|不可).{0,160}(吞|替代|包辦|深讀)'
+        $hasCaptainLimit = $Content -match 'captain.{0,160}(only|owns|responsible|must not|cannot|does not).{0,160}(receive|receipt|board|status|blocker|authorization|absorb|substitute|deep read)|隊長.{0,160}(只|不得|不能|不可).{0,160}(接收|任務板|彙整|阻塞|授權|吞|替代|包辦|深讀)'
 
         return ($hasLargeReadBoundary -and $hasCaptainLimit)
     }
@@ -3140,9 +3155,9 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         if (-not $hasImplementationDirect) { return $true }
 
         $hasDirectorRiskCloseRoute = $Content -match 'closed-with-director-risk|Director.{0,120}(close|accept).{0,80}risk.{0,120}(not full|non-complete|not complete)|總監.{0,80}(風險關閉|接受風險).{0,80}(非完整|不可稱完整|不得稱完整)'
-        $hasCaptainIntegrationRoute = $Content -match 'captain.{0,120}integrat.{0,120}(returned )?change delivery artifact|隊長.{0,80}(整合|集成).{0,80}變更交付件'
+        $hasAuthorizedChangeApplicationRoute = $Content -match 'authorized change-application|change-application gate|authorized gate.{0,120}(apply|application)|change delivery station.{0,120}(apply|application)|明確授權.{0,80}(gate|閘門).{0,80}(套用|應用)|變更站.{0,80}(套用|應用)|授權後.{0,80}(變更站|gate|閘門).{0,80}(套用|應用)'
 
-        return ($hasDirectorRiskCloseRoute -or $hasCaptainIntegrationRoute)
+        return ($hasDirectorRiskCloseRoute -or $hasAuthorizedChangeApplicationRoute)
     }
 
     $coreChecks = @(
@@ -3248,7 +3263,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         }
 
         if (($check.Path -in @('Shared\skills\programming-team-governance\SKILL.md', 'Shared\skills\team-task-board\SKILL.md', 'Shared\skills\delegation-strategy\SKILL.md', 'Shared\workflow-capability-evidence-matrix.md')) -and (-not (Test-ProgrammingTeamImplementationDirectBounded -Content $content))) {
-            Add-ProgrammingTeamFinding -Severity 'Red' -File $check.Path -Line 1 -Reason '實作站點 direct 必須限於隊長整合變更交付件或總監風險關閉' -Text 'implementation direct must not be unrestricted captain implementation'
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $check.Path -Line 1 -Reason '實作站點 direct 必須限於明確授權 gate 套用變更交付件或總監風險關閉' -Text 'implementation direct must not be unrestricted captain implementation'
         }
 
         if (($check.Path -in @('Shared\skills\programming-team-governance\SKILL.md', 'Shared\skills\team-task-board\SKILL.md', 'Shared\policies\subagent-invocation.md', 'Shared\platform-capability-matrix.md', 'Shared\workflow-capability-evidence-matrix.md')) -and (-not (Test-ProgrammingTeamDirectorRiskCloseContent -Content $content))) {
@@ -3484,7 +3499,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         }
         if ($relPath -match '00') {
             if ((-not (Test-ProgrammingTeamChatReadonlyContent -Content $content)) -and (-not (Test-ProgrammingTeamThinChatEntryContent -Content $content))) {
-                Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '00 入口缺少證據型對話升級為 formal-readonly 的硬閘門' -Text '00 evidence-bearing chat must require formal-readonly station, evidence status reporting, and captain verify-read'
+                Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '00 入口缺少證據型對話升級為 formal-readonly 的硬閘門' -Text '00 evidence-bearing chat must require formal-readonly station, evidence status reporting, and station-delivery/captain coordination boundary'
             }
             if ($content -match '(?i)Answer directly\..{0,120}(Read|讀取|read relevant files)|直接回答.{0,120}(Read|讀取|讀檔)') {
                 Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '00 入口不得保留先直接讀檔回答的舊語義' -Text $relPath
@@ -5512,7 +5527,7 @@ function Measure-TeamTraceEvidence {
         $isNewToolEnvelopeTraceByDate = $traceDateText -match '(?i)\b(2026-06-30|2026-0[7-9]|2026-1[0-2]|202[7-9]-)\b'
         $requiresToolEnvelopeEvidence = (Test-TeamTracePositiveLine -Content $content -Pattern $toolEnvelopePolicyPattern) -or $isNewToolEnvelopeTraceByDate
 
-        $protectedToolTracePattern = '(?i)(protected mutation|protected integration|memory-commit|memory commit|git|release|deployment|deploy|install|external-mutation|external mutation|write-capable|source write|apply_patch|Set-Content|Out-File|保護操作|保護狀態|寫入|提交|發布|部署|安裝)'
+        $protectedToolTracePattern = '(?i)(protected mutation|authorized change-application|change-application|change application|memory-commit|memory commit|git|release|deployment|deploy|install|external-mutation|external mutation|write-capable|source write|apply_patch|Set-Content|Out-File|保護操作|保護狀態|寫入|提交|發布|部署|安裝)'
         if (Test-TeamTracePositiveLine -Content $content -Pattern $protectedToolTracePattern) {
             $toolEvidenceFields = @(
                 'tool_execution_envelope',
@@ -5707,7 +5722,7 @@ function Measure-TeamTraceEvidence {
         }
 
         if ($completeClaim -and (Test-TeamTraceUnsafeCaptainAuthoring -Content $content)) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊長創作或隊長替代卻宣稱 complete' -Text '隊長可以整合已回傳交付件，但不能自己創作或替代主要交付物後宣稱 completion。'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊長創作或隊長替代卻宣稱 complete' -Text '已回傳交付件只能由變更站或明確授權 gate 套用；隊長不能自己創作或替代主要交付物後宣稱 completion。'
         }
 
         $implementer = Get-TeamTraceFieldValue -Content $content -Fields @('implementer', 'implementation_owner', 'implementation_specialist', 'change_delivery_owner', 'change_owner', '實作者')

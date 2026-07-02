@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-01T22:33:09+08:00'
+last_updated: '2026-07-02T14:02:18+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -31,12 +31,13 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.ops-skills.skill-governance — Skill Governance Memory
 
 ## Current Truth
 - Team board, handoff, role-boundary, completion, specialist change-delivery, and change-artifact skills now use route/state separation and source/deployed sync fields instead of treating blocked states as execution modes.
 - Delivery artifact skills now require current structured station evidence; transcript text, previous assistant claims, and model-filled trust records cannot substitute for role, channel, authorization, or source/deployed evidence.
-- Role-boundary and delivery artifact skills now carry Team-First read-scope separation: specialist deep-read evidence, captain verify-read state, unread scope, and non-complete outcomes for missing route evidence.
+- Role-boundary and delivery artifact skills now carry Team-First read-scope separation: specialist deep-read evidence, captain coordination read scope, unread scope, and non-complete outcomes for missing route evidence.
 - Role-boundary governance now requires operation mode, ten registered role IDs, `role_instance_id`, and `exclusive_task_scope` evidence before accepting specialist artifacts.
 - Team-Native Core files moved to `_shared.team-native-core`; this card now keeps skill-factory governance plus remaining delegation reference ownership.
 - Shared skill forging is framework-source only unless the Director explicitly supplies the AI_Rules source root; downstream projects default to project-derived skills.
@@ -48,7 +49,7 @@ metadata:
 - This child card tracks source skill files and their deployed root skill copies when those deployed copies are active project inputs.
 - Team task-board, handoff packet, role-boundary, and specialist registry templates now model station families, formal stations, substation tasks, specialist assignments, execution channels, and delivery artifacts as separate objects.
 - Handoff packets are scoped to one substation task, one role, one concrete task, one output format, and one stop condition; vague multi-role delegation is invalid.
-- Role-boundary and registry templates now make captain deep-read substitution, captain repair of specialist work, self-review, self-validation, and memory-attribution replacement non-complete outcomes.
+- Role-boundary and registry templates now make captain deep-read substitution, captain repair of specialist work, self-review, self-validation, and memory-attribution replacement non-complete outcomes; captain receipt is not implementation, validation, review, or memory/docs evidence.
 - Skill governance and skill factory rules now route instruction, interface, bridge, trigger, handoff, memory, and generated-document language choices through the shared language governance policy.
 
 ## Active Constraints
@@ -56,6 +57,7 @@ metadata:
 - Do not copy platform core language paragraphs as the only language source for skill creation, skill updates, trigger text, handoffs, or generated documentation.
 
 ## Cycle Events
+- 33: Recorded team skill hardening so handoff packets use `captain_coordination_read_scope`, captain receipt is not evidence, and Director-facing field summaries lead with Traditional Chinese meaning.
 - 32: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 31: Added skill-governance memory for shared language-policy citation across skill factory and deployed skill language decisions.
 - 30: Recorded delivery-artifact hardening so change, memory/docs, review, validation, and role-boundary artifacts require scoped authorization and cannot mutate memory or substitute for completion when blocked.
@@ -68,8 +70,6 @@ metadata:
 - 23: Updated role-boundary and delivery-adjacent skill governance for Team-First handoff packets, deep-read/verify-read separation, and no silent captain substitution.
 - 22: Added scoped authorization fields to change, memory/docs, validation, review, and role-boundary delivery artifact contracts; synced deployed skill copies.
 - 21: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
-- 20: Recorded that the three compressed team-governance skills moved under `_shared.team-native-core` ownership and passed the quality token gate.
-- 19: Retired stale deployed hared path references and recorded change delivery artifact semantics for implementation delivery.
 
 ## Archive Index
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.

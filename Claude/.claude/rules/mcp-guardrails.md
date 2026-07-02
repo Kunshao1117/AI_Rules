@@ -18,7 +18,7 @@ When tools are provided through Multi-MCP Gateway:
 ├── Is the action purely READ-ONLY (list, get, search, query)?
 │   └── YES → Check §2 Permission Matrix. If 🟢 LOW → Proceed silently.
 ├── Does the Director prompt contain [SUDO]?
-│   └── YES → Skip gate entirely.
+│   └── YES → Record override/risk-closure request only; keep this gate, scoped authorization, Team-Native, validation, review, and protected gates active. [SUDO] does not authorize unconstrained execution.
 ├── Is the action STATE-MUTATING (write, update, delete, deploy, push)?
 │   └── YES → Output Justification Block FIRST:
 │         【操作理由】為什麼需要執行此操作（商業語言描述）

@@ -2,12 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-> 語彙說明：本文件保留歷史版本語境；舊條目中的 patch、packet、補丁、封包、隊長代工與 accepted-risk 不得解讀為現行正向規範。現行正向規範只使用交付件、任務軌跡帳本、逐波派工、隊長只整合已回收交付件，以及缺交付件即阻塞、未驗證或總監風險關閉但非完整。
+> 語彙說明：本文件保留歷史版本語境；舊條目中的 patch、packet、補丁、封包、隊長代工與 accepted-risk 不得解讀為現行正向規範。現行正向規範只使用交付件、任務軌跡帳本、逐波派工、隊長接收站點交付與彙整狀態、授權後變更由變更站或明確授權 gate 套用，以及缺交付件即阻塞、未驗證或總監風險關閉但非完整。
 
 ## [2026-07-01] Team-Native 授權綁定與巡檢閉鎖
 
 ### feat
-- **隊長薄上下文邊界** — 明確隊長只做微讀、格式檢查、有限驗讀與保護性採納，禁止補實作、補審查、補驗證或補記憶歸因後宣稱完整團隊完成。
+- **隊長薄上下文邊界** — 明確隊長只做微讀、格式檢查、接收站點交付、更新任務板與彙整狀態；阻塞、衝突與授權由隊長處理，正式驗證、審查、記憶文件判讀由對應站點交付，禁止補實作、補審查、補驗證或補記憶歸因後宣稱完整團隊完成。
 - **團隊拓撲硬化** — 將 Team-Native 軌跡固定為任務板、站點族群、正式站點、子站點任務、隊員配置、執行通道與交付件，避免用多代理或隊長處理取代角色與證據。
 - **縮減邊界收斂** — 明確縮減只能落在子站點任務或隊員數層，不能刪除站點、角色邊界、驗證、審查、記憶文件與完成稽核。
 
@@ -35,7 +35,7 @@ All notable changes to this project will be documented in this file.
 
 ### feat
 - **工作流編排契約** — 新增共用工作流編排政策與情境劇本，明確日常模式、完整模式、純對話、唯讀、寫入、轉場、隊員生命週期與任務板觸發條件。
-- **任務板模板強化** — 團隊任務板補齊流程範例、協作轉場劇本、完成狀態、缺件處理、隊長保護性採納或合入邊界與正式站點欄位。
+- **任務板模板強化** — 團隊任務板補齊流程範例、協作轉場劇本、完成狀態、缺件處理、隊長接收交付與授權處理邊界、授權後變更套用 gate 與正式站點欄位。
 - **三平台入口同步** — Antigravity、Claude、Codex 的 17 個工作流入口同步 Team-Native 編排層，避免工作流只引用角色技能但缺少實際流程。
 
 ### fix
@@ -46,7 +46,7 @@ All notable changes to this project will be documented in this file.
 
 ### feat
 - **Team-First 正式狀態機** — 將探索、架構、廣泛讀檔、外部研究、審查與驗證規劃收斂為正式唯讀板；寫入工作則必須使用 GO 支撐的正式寫入板。
-- **隊員派工包** — 新增隊員派工包技能，要求每個正式站點攜帶技能引用、深讀範圍、隊長驗讀範圍、啟動期限、待命原因與輸出格式。
+- **隊員派工包** — 新增隊員派工包技能，要求每個正式站點攜帶技能引用、深讀範圍、隊長接收交付所需的協調範圍、啟動期限、待命原因與輸出格式。
 
 ### fix
 - **隊長主線直做防線** — 巡檢補強 no-write 不等於 no-team、隊員 standby/nonlaunch 回報、缺派工包與隊長大量深讀替代隊員等檢查。
@@ -72,7 +72,7 @@ All notable changes to this project will be documented in this file.
 ## [2026-06-28] 團隊原生交付件驅動收斂
 
 ### fix
-- **Delivery-artifact governance** — 三平台工作流來源與根文件收斂為交付件驅動語義；隊長只協調、派工、監督、整合已回收交付件與回報，不產出主要實作、審查、驗證或記憶歸因。
+- **Delivery-artifact governance** — 三平台工作流來源與根文件收斂為交付件驅動語義；隊長只協調、派工、監督、接收站點交付、更新任務板、彙整狀態與回報，不產出主要實作、審查、驗證或記憶歸因。
 - **Wave and evidence ordering** — 正式入口明確要求任務軌跡帳本與逐波派工；審查與驗證交付件不得早於變更交付件，自審不得完成審查。
 - **Risk closure wording** — 缺合格交付件只能標示阻塞、未驗證或總監風險關閉但非完整；已接受風險不得宣稱完整完成。
 
@@ -120,7 +120,7 @@ All notable changes to this project will be documented in this file.
 
 ### fix
 - **Doctor semantic coverage** — 巡檢新增正式派工生命週期、波次派工、上一波輸入、下一波啟動條件與正式證據資格檢查，並攔截草案證據冒充正式驗收。
-- **Documentation alignment** — 根文件與三平台文件同步說明主線只整合與保護性寫入，隊員依正式派工板逐波次啟動。
+- **Documentation alignment** — 根文件與三平台文件同步說明授權後變更由變更站或明確授權 gate 套用，隊員依正式派工板逐波次啟動。
 
 ## [2026-06-28] 隊長制團隊任務包模板化
 
@@ -128,7 +128,7 @@ All notable changes to this project will be documented in this file.
 - **Team task package** — 新增團隊任務包共用技能，集中保存輕量任務板、完整任務板、實驗任務板、專員任務包、證據交付件、隔離變更交付件、文字變更交付件、直接處理例外與收尾檢查表。
 - **Workflow template references** — Codex workflow、Claude command 與 Antigravity workflow 入口改為載入隊長制編程治理與團隊任務包，不再在每個入口複製長段任務板規則。
 - **Patch packet contract** — 歷史紀錄：當時以補丁與任務包描述實作隊員輸出；現行規範只承認受治理隔離變更交付件或文字變更交付件，缺交付路徑只能總監風險關閉但非完整。
-- **GO execution routing** — 三平台建構、修復與提交入口明確改為 GO 後先派實作變更交付件、審查交付件、驗證交付件或收尾證據交付件；隊長只整合已回收變更交付件並保留記憶、Git 與發布閘門。
+- **GO execution routing** — 三平台建構、修復與提交入口明確改為 GO 後先派實作變更交付件、審查交付件、驗證交付件或收尾證據交付件；隊長接收交付並處理授權邊界，實際變更由變更站或明確授權 gate 套用，記憶、Git 與發布閘門保持獨立。
 
 ### fix
 - **Captain scope reduction** — 隊長制編程治理改回語義核心，只負責觸發、角色邊界、隊長最小執行權與完成誠實性；任務板與專員包模板交由團隊任務包維護。
@@ -140,17 +140,17 @@ All notable changes to this project will be documented in this file.
 ### feat
 - **Captain trigger gate** — 編程、修改、除錯、測試、審查、記憶、提交、發布或治理影響任務會依語意自動進入隊長制，不再要求總監手動指定工作流或要求子代理。
 - **Task type and dispatch pre-gate** — 隊長制啟動後必須先判斷任務類型、工作流路由、實作授權、允許角色與禁止角色，再建立隊長任務板；任何隊員、子代理、瀏覽器分支、CLI 分支或隔離變更交付不得早於任務板啟動。
-- **Captain minimum execution gate** — 歷史紀錄：當時仍保留部分隊長主線整合與驗收語氣；現行規範已收斂為隊長只協調、派工、監督、整合已回收交付件與回報，隊長代工不得稱完整完成。
+- **Captain minimum execution gate** — 歷史紀錄：當時仍保留部分隊長主線處理與驗收語氣；現行規範已收斂為隊長只協調、派工、監督、接收交付、更新任務板、彙整狀態與回報，隊長代工不得稱完整完成。
 - **Captain team board** — 團隊站點板升級為隊長任務板，每站必須標示是否適用、執行模式、證據負責人、角色邊界、主線直做例外與完成條件。
 - **Role exclusivity** — 新增嚴格角色互斥：提出需求者不實作，架構者不偷改需求，實作者不能審查自己的交付物，審查者不能同時實作同一交付物。
-- **Isolated patch branch** — 歷史紀錄：當時以 patch packet 描述隔離實作分支；現行規範改稱受治理隔離變更交付件，且主工作區只能整合已回收交付件。
+- **Isolated patch branch** — 歷史紀錄：當時以 patch packet 描述隔離實作分支；現行規範改稱受治理隔離變更交付件，且主工作區只能透過授權 gate 套用已回收交付件。
 - **00/01 trigger routing** — 對話與探勘入口新增編程意圖轉向規則；普通自然語言要求只要涉及編程，就轉入隊長制編程模式。
 
 ### fix
 - **Experiment boundary** — 三平台實驗入口保留快速試錯，但最小治理宣告改為 Captain Team Board，並加入角色邊界、隔離變更交付條件、不能自我審查與不能宣稱團隊協作的全主線例外。
-- **Condense boundary** — 三平台 05 濃縮入口納入隊長最小執行權與 Captain Team Board，掃描、萃取、審查與收尾稽核不得繞過團隊派工；AGENTS、CLAUDE 與記憶寫入仍由隊長保護整合。
+- **Condense boundary** — 三平台 05 濃縮入口納入隊長最小執行權與 Captain Team Board，掃描、萃取、審查與收尾稽核不得繞過團隊派工；AGENTS、CLAUDE 與記憶寫入仍需依對應授權 gate 與站點交付處理。
 - **Doctor semantic coverage** — 巡檢模組改抓隊長觸發、任務類型、派工前置、隊長最小執行權、角色邊界、隔離變更交付、文字變更交付、總監風險關閉但非完整、自我審查、00/01 自動轉向與實驗邊界，避免舊版只檢查 Full B 字串造成假綠燈。
-- **Documentation alignment** — 根文件與三平台文件改以隊長制團隊協作描述編程治理，明確區分主代理保護性採納或合入責任、唯讀證據分支與隔離變更交付分支。
+- **Documentation alignment** — 根文件與三平台文件改以隊長制團隊協作描述編程治理，明確區分隊長接收交付與狀態彙整責任、授權後變更套用 gate、唯讀證據分支與隔離變更交付分支。
 
 ## [2026-06-27] 受治理 Full B 編程團隊治理
 
@@ -164,7 +164,7 @@ All notable changes to this project will be documented in this file.
 ### fix
 - **Station state hardening** — 團隊站點板改為分離「是否適用」與「執行模式」，禁止只用啟用中、必要時或大小型判斷作為最終結果。
 - **Delegation route order** — 委派策略先判斷主線不可委派責任、憑證與外部狀態邊界，再判斷瀏覽器、CLI 與 MCP 特殊證據路徑，最後才落到一般唯讀 evidence branch。
-- **Core accountability wording** — 三平台核心規則從「主代理處理所有事情」改為「主代理負責整合、寫入、審查狀態、記憶與交付」，避免壓過團隊站點板。
+- **Core accountability wording** — 三平台核心規則從「主代理處理所有事情」改為「隊長接收交付、更新任務板、彙整狀態並處理阻塞、衝突與授權」，避免壓過團隊站點板。
 - **Review and browser branch boundaries** — 審查治理與瀏覽器測試技能不再把證據分支描述為可選 fallback；必要分支不可用時必須標示未驗證、阻塞或具體主線直做例外。
 - **Experiment minimum governance** — 三平台實驗入口保留快速試錯，但必須先列最小團隊站點、沙盒邊界、允許改動範圍、丟棄條件、升級條件、證據負責人與主線直做例外。
 - **Codex skill count wording** — 修正 Codex 核心規範中的共用技能數字，讓來源規範與部署後 43/60 技能統計一致。
@@ -461,7 +461,7 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-22] 三平台子代理治理建構
 
 ### feat
-- **Delegation Gate semantic core** — `Shared/policies/subagent-invocation.md` 改為 vendor-neutral 的 Delegation Gate / evidence branch 模型，Shared 層只描述委派判斷、唯讀邊界、主代理保護性採納或合入責任與固定證據交付件格式。
+- **Delegation Gate semantic core** — `Shared/policies/subagent-invocation.md` 改為 vendor-neutral 的 Delegation Gate / evidence branch 模型，Shared 層只描述委派判斷、唯讀邊界、隊長接收交付與授權處理責任，以及固定證據交付件格式。
 - **Platform adapter translation** — Antigravity / Gemini、Claude Code、Codex 三平台入口改為各自轉譯 Shared 語義，不再把任一平台的子代理工具名硬寫成共用規則。
 - **Subagent vocabulary drift audit** — Doctor 新增語彙漂移檢查，Shared 技能中的未標註平台工具名會以 Red 阻斷，並攔截 Codex workflow 殘留的 Claude 舊式 Agent subagent_type 語法。
 - **Shared vocabulary hardening** — `delegation-strategy` 與 CLI prompt skeleton 移除平台專屬狀態檔與硬編工具名，browser Auto-Pass 明確不得略過 Director GO / HITL gate。

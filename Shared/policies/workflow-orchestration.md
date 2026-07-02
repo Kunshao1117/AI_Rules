@@ -34,9 +34,9 @@ completion states, or override this contract.
 
 ## Entry Sequence
 
-Every workflow entry follows this sequence before broad reading, validation,
-review, implementation, memory/docs attribution, commit preparation, release
-preparation, or completion claims:
+Every workflow entry follows this sequence before broad reading, fix, build,
+validation, review, implementation, memory/docs attribution, commit preparation,
+release preparation, or completion claims:
 
 ```text
 Director instruction
@@ -51,7 +51,7 @@ Director instruction
 -> station handoff packet
 -> channel capability and channel invocation status
 -> returned delivery artifact or blocked/unverified/standby state
--> captain verify-read and protected adoption/merge decision
+-> captain receipt, board update, blocker/conflict/authorization handling
 -> validation, review, memory/docs, completion audit
 ```
 
@@ -62,8 +62,9 @@ unbounded write authority or protected follow-on authority.
 
 Team-Native / subagent team mode is default-on for every workflow entry that
 triggers Team-Native Core. The workflow route must create or promote the
-board-first path before broad evidence, change delivery, validation, review,
-memory/docs, protected action, or completion work. Missing specialist channel
+board-first path before governance, workflow, fix, build, broad evidence, change
+delivery, validation, review, memory/docs, protected action, or completion work;
+the Director does not need to say "啟動團隊模式". Missing specialist channel
 capability becomes standby, blocked, unverified, unavailable, or
 closed-with-director-risk station state; it does not downgrade the workflow to
 captain-direct execution.
@@ -82,7 +83,7 @@ station or a recorded direct exception turns it into evidence.
 |---|---|---|
 | `draft board` | Pre-GO planning, candidate station list, assumptions, and proposed dispatch waves. | Draft board cannot dispatch, spawn, or open formal specialists. Draft evidence cannot satisfy formal evidence eligibility. |
 | `formal-readonly` | Read-only evidence, source/doc deep-read, external research, validation planning, review evidence, and standby stations. | No-write does not mean no-team. Read-only work cannot write source, memory, git, release, deployment, install, or external state. |
-| `formal-write` | GO-backed change delivery, captain protected adoption/merge of returned qualified artifacts, validation, review, memory/docs delivery, and completion audit inside the authorized scope. | Formal-write is not blanket authority; each phase keeps its own authorization source, target, scope, evidence, expiry, and resolution state. |
+| `formal-write` | GO-backed change delivery, authorized change application, validation, review, memory/docs delivery, and completion audit inside the authorized scope. | Formal-write is not blanket authority; each phase keeps its own authorization source, target, scope, evidence, expiry, and resolution state. |
 
 ## Operation Mode
 
@@ -186,12 +187,18 @@ closed-with-director-risk, not as complete:
 - Review or validation starts before the relevant change delivery artifact state.
 - Same-wave implementation and same-deliverable review are forbidden.
 - The captain authors specialist implementation, validation, review, or memory attribution and then claims complete.
+- While member work is running, the captain performs parallel reads, duplicate
+  scans, re-checks, substitute validation, substitute review, memory/docs
+  attribution, or rewrites member findings as captain-owned evidence, unless the
+  board records a blocker, artifact receipt, conflict, or authorization reason
+  plus residual state.
 - A captain deep read of large files replaces specialist deep-read without direct exception and residual state.
 - Implementation falls back to routine captain direct work without isolated change delivery, text change delivery artifact, or Director risk closure.
 - A dirty target file is modified without reading the current diff and target
   section first.
-- A new sidecar file, duplicate heading, or append-only paragraph is used to
-  avoid integrating an existing change in the authorized target.
+- An already modified section is adjusted by adding a sidecar file, duplicate
+  heading, append-only paragraph, repeated clause, or stacked patch layer instead
+  of integrating the change in place.
 - Workflow entries or policies copy the full team-task-board field list instead
   of citing `team-task-board` and `team-trace-evidence`.
 - `blocked`, `unverified`, `standby`, `not-authorized`, `unavailable`, or

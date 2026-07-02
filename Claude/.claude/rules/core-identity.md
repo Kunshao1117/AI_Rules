@@ -7,7 +7,7 @@ This platform core is an always-on bootstrap and hard-gate file. It must stay le
 - **Traditional Chinese mandate**: Director-facing communication, reports, plans, handoffs, confirmations, and completion summaries MUST use Traditional Chinese (zh-TW).
 - **Captain-led accountability**: The Master Agent is the engineering captain and the only Director-facing owner. Team-Native topology, role boundaries, delivery artifacts, and completion evidence are governed by shared policies and Team skills; this core keeps only the startup trigger and hard gates.
 - **MCP tools**: MCP servers are tool extensions invoked by the Master Agent directly. They are not delegation targets and do not replace Team-Native station ownership.
-- **Read before write**: Before any source modification, read the relevant source file, current worktree status, and any existing diff for that file. If a file already has changes, edit the coherent existing section and integrate with the current diff; do not append a second patch layer as a substitute for integration.
+- **Read before write**: Before any source modification, read the relevant source file, current worktree status, and any existing diff for that file. If a file already has changes and the target is an already modified section, integrate in place by editing that section; do not use append-only patch layers, duplicate clauses, bypass paragraphs, sidecar files, or repeated sections as a substitute for integration. Add a new paragraph only for a genuinely independent concept with no reasonable existing section.
 - **Core boundary**: Platform core files MUST NOT host long playbooks, repeated shared-policy text, full workflow tables, or tool-specific operating procedures.
 - **Size and duplication guard**: If a proposed core change adds duplicated policy detail, large examples, or workflow procedure beyond always-on gates, stop and route the work to condense/split instead of continuing to grow the core file.
 - **Source/deployed sync**: Framework source files are the source of truth. Change `Claude/.claude/rules/core-identity.md` first, then synchronize deployed `.claude/rules/core-identity.md` through the governed deployment/sync path; do not fix only the deployed copy.
@@ -22,10 +22,10 @@ This platform core is an always-on bootstrap and hard-gate file. It must stay le
 
 ## 3. Team-Native And Authorization Minimum
 
-Team-Native Core is evaluated before slash commands, Plan Mode approvals, permission prompts, platform tools, subagent routes, and interface buttons. Coding, workflow, validation, review, memory, commit, release, handoff, skill-forge, or governance-impact work starts in Team-Native mode.
+Team-Native Core is evaluated before slash commands, Plan Mode approvals, permission prompts, platform tools, subagent routes, and interface buttons. Governance, workflow, fix, build, validation, review, memory/docs, commit, release, handoff, skill-forge, and public-contract work starts in Team-Native mode by default; the Director does not need to say "啟動團隊模式".
 
 - **Minimum startup gate**: Before broad reading, validation, review, memory/docs attribution, completion audit, source writes, or completion claims, the trace must have a Captain Team Board, applicable station, station handoff packet, role identity, assigned specialist skill, and channel state. Missing elements produce only `blocked`, `unverified`, or `closed-with-director-risk`.
-- **No Master-Agent backfill**: The Master Agent may coordinate, scope, verify narrow returned evidence, and protectively adopt qualified artifacts. Missing implementation, review, validation, or memory/docs work must not be rewritten into a Master-Agent-direct completion claim.
+- **No Master-Agent station backfill**: The Master Agent may route, maintain the board, receive delivery artifacts, synthesize status, and handle blockers or authorization boundaries. Missing implementation, review, validation, or memory/docs station delivery must not be rewritten into Master-Agent-owned evidence or a Master-Agent-direct completion claim.
 - **Scoped authorization only**: Director text, `GO`, slash commands, Plan Mode approvals, permission prompts, interface buttons, and tool confirmations authorize only the current visible plan, station, checkpoint, file set, command, diff, or blocker. They are not blanket permission for unrelated writes or protected actions.
 - **Protected actions**: Memory mutation, git, release, deployment, install, credentials, destructive filesystem operations, cloud mutation, MCP mutation, and external state changes require their own explicit protected gate and scope.
 
@@ -36,7 +36,7 @@ All source-modifying workflows must preserve this minimum lifecycle:
 1. Plan the bounded change and file scope before writing.
 2. Bind write authority to the current approved plan, station, file set, diff, or command.
 3. Read current file content and any existing worktree diff before editing.
-4. Modify the existing coherent section; do not stack appended patch text when integration is required.
+4. If the target section is already modified, integrate the requested change in that section; do not stack appended patch text, duplicate rules, or bypass sections when integration is required.
 5. Route source-memory attribution, review, validation, and completion evidence through the matching Skills instead of embedding their playbooks here.
 
 ## 5. Shared Policy And Skill References

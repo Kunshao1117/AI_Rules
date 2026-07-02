@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Static rules can prove that the framework text is present. They cannot prove that a specific task actually followed the required sequence: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> execution-channel decision -> specialist work or blocked/unverified channel state -> captain supervision -> recovered change delivery artifacts / evidence delivery artifacts -> independent validation and review -> captain integration -> completion audit -> report. Team trace evidence fills that gap.
+Static rules can prove that the framework text is present. They cannot prove that a specific task actually followed the required sequence: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> execution-channel decision -> specialist work or blocked/unverified channel state -> captain supervision -> returned change delivery artifacts / evidence delivery artifacts -> captain receipt and board update -> independent validation and review -> completion audit -> report. Team trace evidence fills that gap.
 
 `Shared/policies/workflow-orchestration.md` owns the runtime sequence that this
 trace records: route -> authorization -> operation_mode -> board -> dispatch
@@ -30,6 +30,12 @@ Task traces must be written under `.agents/logs/team-traces/` when the active wo
 
 Each task trace must contain these fields in readable Markdown or JSON:
 
+Canonical field names remain English for machine trace stability. Director-facing
+summaries and reports must show the Traditional Chinese meaning first and keep
+the canonical field in parentheses, such as `站點狀態（station_state）`.
+Raw English-only field lists are acceptable only inside machine-readable trace
+payloads or policy tables, not as the Director-facing explanation.
+
 | Field | Required content |
 |---|---|
 | `task_id` | Stable task identifier or timestamp |
@@ -43,7 +49,7 @@ Each task trace must contain these fields in readable Markdown or JSON:
 | `authorization_source` | Director prompt, captain board row, interface approval event, prior approved plan, or blocked/unverified source |
 | `authorization_target` | Exact target of the authorization, such as file allowlist, station, protected action, or external resource |
 | `authorization_scope` | Concrete allowed operation boundary, including files, directories, generated copies, memory cards, commands, release actions, or none |
-| `authorization_phase` | plan-only, implementation-change-delivery, captain-integration, validation, review, memory-docs, memory-commit, git, release, deployment, install, external-mutation, or blocked |
+| `authorization_phase` | plan-only, implementation-change-delivery, change-application, validation, review, memory-docs, memory-commit, git, release, deployment, install, external-mutation, or blocked |
 | `authorization_evidence` | Prompt excerpt, board row, approval UI event, command confirmation, or missing evidence reason |
 | `authorization_expiry` | Current turn, current dispatch wave, named file set, named command, named protected action, explicit revocation, or blocked/unverified expiry |
 | `authorization_resolution_state` | authorized, no-write, scope-mismatch, phase-mismatch, expired, unverified, blocked, or revoked |
@@ -60,7 +66,7 @@ Each task trace must contain these fields in readable Markdown or JSON:
 | `channel_capability` | available, conditional, unavailable, or unverified |
 | `channel_invocation_status` | not-started, requested, running, returned, unavailable, blocked, or not-authorized |
 | `execution_route` | Actual channel or delivery form; never a status value such as blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk |
-| `execution_channel` | Native subagent, project custom agent, tool/MCP, command evidence, browser evidence, external research, isolated change delivery, text change delivery, protected captain channel, or direct captain protected integration |
+| `execution_channel` | Native subagent, project custom agent, tool/MCP, command evidence, browser evidence, external research, isolated change delivery, text change delivery, protected captain gate, or authorized change-application gate |
 | `tool_execution_envelope` | Structured carrier passed to a tool layer, or blocked/unverified reason when no envelope is available. |
 | `tool_execution_envelope_trust` | trusted, untrusted, blocked, unverified, or not-applicable. |
 | `tool_envelope_issuer` | Trusted issuer identity, or blocked/unverified reason. |
@@ -77,7 +83,7 @@ Each task trace must contain these fields in readable Markdown or JSON:
 | `handoff_summary` | Required when a station is retained across a long conversation or replaced |
 | `closure_reason` | Completed delivery, context stale, role conflict, independent opinion required, blocked, or not-applicable |
 | `deep_read_scope` | Files, docs, logs, or external sources assigned to specialist deep-read |
-| `captain_verify_read_scope` | Narrow scope the captain verified before integration or acceptance |
+| `captain_coordination_read_scope` | Narrow coordination read scope for artifact receipt, board maintenance, blocker handling, conflict resolution, or authorization boundaries; it is not validation, review, memory/docs attribution, or completion evidence |
 | `unread_scope` | Relevant scope not read by the specialist or captain |
 | `startup_started_at` | Local timestamp when the station channel was requested |
 | `first_response_deadline` | Expected first useful response or heartbeat deadline |
@@ -93,7 +99,7 @@ Each task trace must contain these fields in readable Markdown or JSON:
 | `delivery_artifact_status` | pending, returned, integrated, blocked, unverified, closed-with-director-risk, or not-applicable |
 | `author_role` | Registered specialist role that authored the delivery artifact, or blocked/unverified reason |
 | `source_input` | Prior delivery artifact, approved plan, file scope, trace entry, or blocked input used by this station |
-| `integrable_scope` | Exact scope the captain may integrate from this delivery artifact; use none when it is evidence-only or blocked |
+| `integrable_scope` | Exact scope the authorized change-application gate may apply from this delivery artifact; use none when it is evidence-only or blocked |
 | `review_state` | not-started, pending, accepted, fix-required, blocked, unverified, accepted-risk, or not-applicable. accepted-risk is a review lifecycle judgment only; it is not a Team-Native station status, delivery artifact status, or completion status |
 | `validation_state` | not-started, pending, passed, failed, blocked, unverified, or not-applicable |
 | `memory_docs_state` | not-started, memory_delivery, blocked, unverified, closed-with-director-risk, or not-applicable |
@@ -104,7 +110,8 @@ Each task trace must contain these fields in readable Markdown or JSON:
 | `delivery_artifacts` | Change delivery, memory/docs delivery, review, validation, evidence delivery, and completion artifact status |
 | `direct_exceptions` | Station-specific direct exception, replacement evidence, and residual state |
 | `role_separation` | Evidence that implementation and review did not share the same role |
-| `captain_protected_integration` | Protective adoption or merge of returned qualified delivery artifacts, or not-applicable |
+| `captain_artifact_receipt_risk` | Legacy-risk field; use only to record not-applicable or a non-complete blocked/unverified risk when old captain artifact-application wording appears in a trace |
+| `captain_context_burden` | none, coordination-only, or direct-exception; records whether the captain avoided parallel reads, duplicate scans, re-checks, substitute validation/review, memory/docs attribution, and rewriting member findings as captain-owned evidence |
 | `captain_substitute_authoring` | blocked by default; closed-with-director-risk only with case-specific Director approval and no full-team-completion claim |
 | `completion_state` | complete, closed-with-director-risk, blocked, unverified, or not-applicable |
 | `risk_close_evidence` | Current, explicit, scope-bound Director risk close evidence when `closed-with-director-risk` is used. |
@@ -116,6 +123,15 @@ Each task trace must contain these fields in readable Markdown or JSON:
 ## Hard Gate Requirements
 
 - Formal stations must carry `handoff_packet_id`; a narrative-only handoff is not enough.
+- Formal station startup is complete only when the handoff packet or
+  board-linked handoff evidence includes `handoff_packet_id`, `role_id`,
+  `role_instance_id`, `assigned_specialist_skill`, `read_scope`,
+  `allowed_tools`, `forbidden_actions`, channel state
+  (`requested_execution_channel`, `channel_capability`, and
+  `channel_invocation_status`, or an explicit blocked/unverified reason),
+  `delivery_artifact_type`, and `stop_condition`. Missing any of these keeps
+  the station blocked or unverified and cannot support a complete Team-Native
+  trace.
 - `operation_mode: full`, governance-impact implementation, Doctor/Audit rule changes, routine audit rule readiness, and commit/release preparation require Team-Native trace evidence. Missing trace is a blocked Red audit finding, not a Yellow advisory.
 - A completion claim must expose parseable `stations`, `delivery_artifacts`, `role_instance_id`, `delivery_artifact_id`, and `direct_exceptions`. The values may close as blocked, unverified, closed-with-director-risk, or not-applicable only when the trace is not claiming full completion.
 - `completion_state` is limited to `complete`, `closed-with-director-risk`, `blocked`, `unverified`, or `not-applicable`. `completed`, `done`, `accepted-risk`, and other informal states must not pass as completion evidence.
@@ -158,12 +174,17 @@ These patterns must not pass:
 - Two or more evidence-oriented stations marked direct without station-specific exception, replacement evidence, and residual state.
 - Missing previous-wave input or next-wave start condition on a formal board.
 - Captain substitute authoring described as full team completion.
-- Captain substitute authoring recorded as protected integration.
+- Captain substitute authoring recorded as change delivery, validation, review,
+  memory/docs evidence, or completion evidence.
 - Missing independent review described as complete instead of blocked, unverified, or closed-with-director-risk.
 - Subagent, browser, CLI, or MCP route described as the specialist role instead of the execution channel for a registered specialist.
 - Missing channel capability or channel invocation status for an applicable station.
 - Missing loaded skill refs or handoff packet for a formal specialist station.
 - Missing `handoff_packet_id` on any formal station.
+- Formal specialist station dispatched without the startup-complete handoff
+  payload for role identity, assigned skill, read scope, tool permissions and
+  prohibitions, channel state, delivery artifact type, and stop condition, then
+  counted as complete trace evidence.
 - Missing Team-Native trace evidence for `operation_mode: full`, governance-impact
   implementation, Doctor/Audit rule changes, routine audit rule readiness, or
   commit/release preparation.
@@ -186,7 +207,11 @@ These patterns must not pass:
 - Reusing the same `role_instance_id` or specialist channel across multiple
   `role_id` values in the same task trace.
 - No-write or read-only work treated as a reason to skip Team-Native stations when the work can shape source, workflow, validation, review, memory, release, or governance decisions.
-- Captain broad-reading large file sets as a substitute for specialist deep-read without a direct exception and residual state.
+- Captain broad-reading large file sets, running duplicate scans, re-checking,
+  substitute-validating, substitute-reviewing, or rewriting member output as
+  captain evidence while a member station is running, except for blocker,
+  board, artifact receipt, conflict, or authorization handling with a direct
+  exception and residual state.
 - Assigned stations left waiting without standby reason, first-response deadline, timeout action, or smallest unblock condition.
 - Tool or subagent unavailability removing an applicable specialist station instead of marking it blocked, unverified, or closed-with-director-risk.
 - Team-Native / subagent team mode treated as opt-in instead of default-on for
@@ -202,7 +227,7 @@ These patterns must not pass:
   the current visible target, scope, phase, and expiry cannot be bound.
 - Treating an interface approval button as authorization beyond the displayed target, scope, phase, and expiry.
 - Treating platform mode, sandbox state, local shell access, or channel availability as authorization.
-- Reusing implementation authorization as captain integration, memory, git, release, deployment, install, or external-mutation authorization.
+- Reusing implementation authorization as change application, memory, git, release, deployment, install, or external-mutation authorization.
 - Continuing after authorization expiry, scope mismatch, or phase mismatch without a new scope-bound authorization record.
 - Continuing after a hook or platform guard block by retrying with another tool,
   switching channels, or using historical transcript text as substitute board,

@@ -95,4 +95,4 @@ field list inside this role skill.
 
 - Read-only station.
 - No source, memory, git, release, deployment, install, or external-state mutation.
-- The captain decides final scope and integration.
+- The captain decides final scope and change-application routing.

@@ -57,6 +57,15 @@ One packet contains exactly one role, one concrete task, one output artifact
 format, and one stop condition. Split work into separate substation tasks when
 any of those changes.
 
+Before the captain starts a specialist channel, the packet must be
+startup-complete: `handoff_packet_id`, `role_id`, `role_instance_id`,
+`assigned_specialist_skill`, `read_scope`, `allowed_tools`,
+`forbidden_actions`, channel state (`requested_execution_channel`,
+`channel_capability`, and `channel_invocation_status`, or an explicit
+blocked/unverified reason), `delivery_artifact_type`, and `stop_condition` must
+be present. If any item is missing, do not dispatch it as formal work; record the
+station as blocked or unverified.
+
 Required packet overlay:
 
 ```text
@@ -76,7 +85,7 @@ allowed_inputs:
 read_scope:
 allowed_paths_or_resources:
 deep_read_scope:
-captain_verify_read_scope:
+captain_coordination_read_scope:
 unread_scope:
 allowed_tools:
 forbidden_actions:
@@ -107,6 +116,11 @@ dispatch wave, platform mode, and completion condition from the board row in
 `handoff_packet_id` is canonical. `dispatch_packet_id` may appear only as a
 legacy alias in returned artifacts.
 
+Director-facing packet summaries must lead with the Traditional Chinese meaning
+and place the canonical field in parentheses, such as
+`讀取範圍（read_scope）` or `停止條件（stop_condition）`. Keep raw canonical
+keys inside packet payloads and evidence tables, not as the primary explanation.
+
 ## Loaded Skill References
 
 Use concrete skill names or paths instead of free-form role descriptions.
@@ -124,13 +138,15 @@ Use concrete skill names or paths instead of free-form role descriptions.
 | Completion | `team-specialist-release-completion`, `team-completion-gate` |
 | External research | `team-specialist-external-research`, relevant official-docs skill if available |
 
-## Deep Read And Verify Read
+## Deep Read And Captain Coordination Read
 
 Assign broad, repetitive, external, or large-file inspection to
-`deep_read_scope`. Assign captain verification to the minimum risky snippets in
-`captain_verify_read_scope`. If either side cannot read a relevant area, record
-it in `unread_scope` and return blocked or unverified instead of filling the gap
-with captain substitute work.
+`deep_read_scope`. Use `captain_coordination_read_scope` for the captain's
+minimum coordination read needed to receive artifacts, maintain
+the board, resolve blockers/conflicts, or confirm authorization boundaries. It
+is not validation, review, memory/docs attribution, or completion evidence. If
+either side cannot read a relevant area, record it in `unread_scope` and return
+blocked or unverified instead of filling the gap with captain substitute work.
 
 Deep read may discover scope gaps, but it does not authorize expansion. The
 specialist reports the gap and stops unless the board is updated.
@@ -154,9 +170,11 @@ Director.
 
 ## Artifact Acceptance
 
-Before accepting a returned artifact, verify-read the packet, the returned
-artifact, and enough cited source or policy material to decide whether the
-artifact is integrable, blocked, unverified, or closed-with-director-risk.
+Before receiving a returned artifact, check the packet, the returned artifact,
+and only the minimum cited source or policy material needed to decide whether
+the artifact should be routed onward, marked blocked/unverified, or returned for
+scope clarification. Formal validation, review, and memory/docs interpretation
+belong to their stations.
 
 Returned artifacts must include:
 
@@ -179,8 +197,8 @@ delivery artifact skill.
 - Channel unavailability never relaxes role boundaries or authorization scope.
 - Standby means assigned but not evidence-complete.
 - A packet without loaded skill references is not a formal handoff.
-- Captain verify-read is not implementation, validation, review, memory/docs
-  attribution, or completion evidence.
+- Captain coordination read is not implementation, validation, review,
+  memory/docs attribution, or completion evidence.
 - Missing work routes back to an eligible station or closes as blocked,
   unverified, or closed-with-director-risk.
 

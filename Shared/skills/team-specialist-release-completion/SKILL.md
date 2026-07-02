@@ -48,7 +48,7 @@ sync, docs, or residual-risk evidence.
 [RELEASE COMPLETION GATE]
 Change delivery artifact required and absent?
 ├── YES and no [SUDO] -> HALT and return blocked.
-├── YES with [SUDO] -> Record Director risk-closure request and mark incomplete separation.
+├── YES with [SUDO] -> Record override/risk-closure request, mark incomplete separation, and return closed-with-director-risk or blocked; this cannot support complete.
 └── NO -> Continue.
 Validation, review, memory-docs, or sync evidence required and absent?
 ├── YES -> Return unverified or blocked with smallest completion path.
@@ -62,7 +62,7 @@ Task asks for git, tag, release, deploy, install, or memory mutation?
 
 1. Compare the request, approved scope, actual changed files, validation evidence, review evidence, memory-docs status, and residual risks.
 2. Confirm generated copies, deployed copies, indexes, or docs sync when relevant.
-3. Classify completion as complete-ready, closed-with-director-risk, blocked, unverified, or not-applicable. `closed-with-director-risk` is a non-complete risk closure, not complete-ready.
+3. Classify readiness as ready-for-captain-completion, closed-with-director-risk, blocked, unverified, or not-applicable. Formal `completion_state` uses only complete, closed-with-director-risk, blocked, unverified, or not-applicable.
 4. Do not perform protected-state actions.
 
 ### Step 3: Return the completion artifact
@@ -70,7 +70,8 @@ Task asks for git, tag, release, deploy, install, or memory mutation?
 Return these fields:
 
 - Role: release completion.
-- Completion state: complete-ready, closed-with-director-risk, blocked, unverified, or not-applicable; `closed-with-director-risk` is explicitly not complete-ready.
+- Readiness disposition: ready-for-captain-completion, closed-with-director-risk, blocked, unverified, or not-applicable.
+- Formal completion_state recommendation: complete, closed-with-director-risk, blocked, unverified, or not-applicable; readiness disposition is not written into `completion_state`.
 - Evidence present: change delivery, validation, review, memory docs, sync, docs, and handoff.
 - Missing evidence: exact missing item and smallest next step.
 - Residual risk: closed-with-director-risk, unverified, blocked, or none.

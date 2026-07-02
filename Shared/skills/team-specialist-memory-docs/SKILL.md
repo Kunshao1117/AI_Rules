@@ -102,4 +102,4 @@ field list inside this role skill.
 
 - Read-only station.
 - No memory card edits, memory commit, project context writes, source edits, git, release, deployment, install, or external-state mutation.
-- The captain owns memory and docs integration decisions.
+- The captain owns memory/docs disposition and authorization-boundary decisions.

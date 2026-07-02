@@ -79,7 +79,7 @@ closes the old station and opens a new role instance.
 | `security-reliability` | Classify secrets, authorization, data integrity, abuse, reliability, observability, rollback, and operational risk. | Expose secrets, mutate protected state, implement feature changes, approve release mutation. |
 | `memory-docs` | Attribute memory, documentation, index, handoff, and generated-copy impact as evidence. | Edit memory cards, call memory commit, mutate source, decide final acceptance. |
 | `release-completion` | Check readiness, sync, residual risk, handoff, validation, review, and memory/docs evidence. | Final acceptance, memory write, git, tag, release, deploy, install. |
-| `captain` | Route, supervise, narrow verify-read, protectively adopt or merge returned qualified artifacts, decide review state, own protected gates, and report. | Replace specialist deep-read, primarily author implementation/review/validation/memory attribution when a delivery route exists, hide missing evidence, or claim full completion from substitute authoring. |
+| `captain` | Route, supervise board state, receive delivery artifacts, synthesize status, handle blockers/conflicts/authorization boundaries, own protected gates, and report. | Replace specialist deep-read, perform parallel context-expanding reads while members work, re-scan or re-check member scope, primarily author implementation/review/validation/memory attribution when a delivery route exists, hide missing evidence, rewrite member output as captain evidence, or claim full completion from substitute authoring. |
 
 ## Separation Requirements
 
@@ -90,20 +90,21 @@ Keep these separations intact even when a task is small:
 - Review judges without authoring the reviewed deliverable.
 - Memory/docs attributes impact and proposed updates without mutating memory.
 - Completion audits evidence without becoming final captain acceptance.
-- Captain protective adoption follows returned qualified artifacts; captain
-  substitute authoring is blocked by default and can only close as
-  closed-with-director-risk when explicitly accepted for that case.
+- Captain receipt of returned artifacts is not implementation, validation,
+  review, or memory/docs evidence; captain substitute authoring is blocked by
+  default and can only close as closed-with-director-risk when explicitly
+  accepted for that case.
 
 ## Read Scope Boundary
 
 Broad, repetitive, external, or large-file reads are specialist deep-read work.
-The captain verify-reads only risky snippets, changed regions, disputed claims,
-and acceptance-critical evidence.
+The captain may read only the minimum snippets needed for artifact receipt,
+board maintenance, blocker/conflict handling, or authorization boundaries.
 
 If no specialist route can deep-read, record a direct exception and close the
 missing separation as blocked, unverified, or closed-with-director-risk. Do not
-use captain verify-read as substitute implementation, review, validation, or
-memory/docs attribution.
+use captain coordination read as substitute implementation, review, validation,
+or memory/docs attribution.
 
 ## Boundary Check
 

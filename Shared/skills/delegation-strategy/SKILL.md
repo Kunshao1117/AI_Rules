@@ -48,9 +48,13 @@ Formal dispatch fields include phase, dispatch wave, previous-wave input, next-w
 
 ## Captain Minimum Execution Gate
 
-The captain keeps Director communication, GO interpretation, protected integration, memory, git, release, deploy/install gates, review-state decision, and final acceptance. Gate ownership is not permission to absorb implementation, review, validation, or memory attribution.
+The captain keeps Director communication, scope-bound authorization interpretation, board maintenance,
+delivery receipt, blocker/conflict/authorization handling, memory, git,
+release, deploy/install gates, and final reporting. Gate
+ownership is not permission to absorb implementation, review, validation, or
+memory attribution.
 
-Implementation does not default to the captain. Route to isolated change delivery, then text change delivery artifact, then `blocked`. Captain substitute authoring needs case-specific Director `closed-with-director-risk` and is not full team completion. Captain protected integration of returned delivery artifacts remains normal.
+Implementation does not default to the captain. Route to isolated change delivery, then text change delivery artifact, then `blocked`. Captain substitute authoring needs case-specific Director `closed-with-director-risk` and is not full team completion. Captain receipt of returned delivery artifacts is normal; change application belongs to the authorized station or gate and must not become captain-authored evidence.
 
 Evidence stations do not default to the captain. Counter-evidence, impact map, validation, review, and completion audit route to bounded evidence/CLI/browser/MCP paths unless a direct exception is recorded.
 
@@ -95,10 +99,10 @@ Exact large-read rule: large-file deep read routes to a bounded specialist; the 
 
 Evaluate each station in this order:
 
-1. Director communication, GO interpretation, final acceptance, review-state decision, and protected source-state adoption or merge of returned qualified delivery artifacts -> `direct` with protected exception.
-2. Primary implementation, rewrite, validation, review, memory attribution, or source-state mutation that is not protective adoption of a returned qualified artifact -> route to the matching formal station; the captain must not absorb it as routine direct work.
+1. 總監溝通、scope-bound approval interpretation、final reporting、board maintenance、delivery receipt、blocker/conflict/authorization handling -> captain coordination lane; use a protected captain gate only for a separately authorized protected phase.
+2. Primary implementation, rewrite, validation, review, memory attribution, or source-state mutation that is not an authorized change-delivery station or change-application gate -> route to the matching formal station; the captain must not absorb it as routine direct work.
 3. Secrets, login, credentials, external mutation, commit, push, release, deployment, install, memory write -> `direct` or `blocked`.
-4. Implementation station with governed isolated workspace -> `isolated change delivery`; captain integrates after evidence.
+4. Implementation station with governed isolated workspace -> `isolated change delivery`; change application waits for scoped authorization and later station routing.
 5. Implementation station without isolation but bounded and diffable -> text change delivery artifact.
 6. Source, workflow, governance, docs, generated-copy, or public contract memory impact -> memory/docs delivery artifact.
 7. No isolated/text change delivery route -> `blocked`; captain substitute authoring needs Director `closed-with-director-risk`.
@@ -127,7 +131,7 @@ Lifecycle Guard: retained specialists remain valid only inside the same role and
 
 ## Change Delivery Boundary
 
-Use isolated or text change delivery only when scope is explicit, roles are separated, protected state is forbidden, and captain inspection precedes integration. If any condition is missing, mark the implementation station `blocked` or Director-risk closed.
+Use isolated or text change delivery only when scope is explicit, roles are separated, protected state is forbidden, and captain receipt precedes authorized change-application routing. If any condition is missing, mark the implementation station `blocked` or Director-risk closed.
 
 Required fields:
 
@@ -155,7 +159,7 @@ Shared skills describe Team-Native Core intent, not vendor tools. Platforms map 
 
 ## Direct Exception Contract
 
-`direct` requires station, exception reason, replacement evidence, and residual `closed-with-director-risk`, `unverified`, or `blocked` state. Valid exceptions are GO interpretation, main-worktree integration of returned delivery artifacts, memory/git/release/deploy/install ownership, secret/login boundary, hot-path feedback, no independent evidence value, or Director-accepted captain substitute authoring.
+`direct` requires station, exception reason, replacement evidence, and residual `closed-with-director-risk`, `unverified`, or `blocked` state. Valid exceptions are scope-bound authorization interpretation, board maintenance, delivery receipt, blocker/conflict/authorization handling, memory/git/release/deploy/install ownership, secret/login boundary, hot-path feedback, no independent evidence value, or Director-accepted captain substitute authoring.
 
 ## Integration Authorization Contract
 
@@ -173,6 +177,8 @@ Every delegated branch names specialist skill, domain label, requested channel, 
 是否阻塞:
 ```
 
-The captain reviews and integrates artifacts. Evidence branches cannot decide GO, memory commit, commit, push, release, deployment, or mutating MCP actions.
+The captain receives artifacts, updates the board, and routes them onward.
+Evidence branches cannot decide GO, memory commit, commit, push, release,
+deployment, or mutating MCP actions.
 
 Evidence branches can support `quality-review-governance` and review lifecycle evidence, but they cannot decide final review state, quality acceptance, GO gates, or release readiness. Review delivery still needs a role-separated reviewer artifact when completion depends on review.

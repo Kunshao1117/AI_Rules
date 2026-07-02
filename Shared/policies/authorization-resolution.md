@@ -1,7 +1,7 @@
 # Authorization Resolution Policy
 
 This policy defines how Team-Native Core resolves authorization before write,
-protected integration, memory, git, release, deployment, install, MCP mutation,
+change application, memory, git, release, deployment, install, MCP mutation,
 or external-state mutation work begins.
 
 Authorization is scope-bound evidence. It is not inferred from a workflow name,
@@ -10,16 +10,17 @@ platform mode, channel availability, or a general request to use an agent.
 ## Priority Contract
 
 Team-Native Core has the highest governance priority whenever a task touches
-source, workflow, validation, review, memory, commit, release, deployment,
-install, project governance, generated copies, or public contracts.
+source, workflow, fix, build, validation, review, memory/docs, commit, release,
+deployment, install, project governance, generated copies, or public contracts.
 
 Team-Native / subagent team mode is default-on at the authorization layer. A
-coding, workflow, validation, review, memory, commit, release, handoff,
-skill-forge, or governance-impact request enters board-first routing before any
-write or protected authorization is consumed. Authorization decides the allowed
-target, scope, phase, and expiry; it does not decide whether team mode exists.
-Missing channel capability must be represented as station state, not as
-authorization to skip Team-Native mode.
+governance, workflow, fix, build, validation, review, memory/docs, commit,
+release, handoff, skill-forge, or public-contract request enters board-first
+routing before any write or protected authorization is consumed, without waiting
+for the Director to say "啟動團隊模式". Authorization decides the allowed target,
+scope, phase, and expiry; it does not decide whether team mode exists. Missing
+channel capability must be represented as station state, not as authorization to
+skip Team-Native mode.
 
 When route hints, platform modes, approval UI, tool capability, or prior
 conversation state conflict with Team-Native Core, Team-Native Core wins and
@@ -71,7 +72,7 @@ scope-bound authorization fields without mismatch. A model-filled envelope,
 plain assistant text, transcript excerpt, or hand-written JSON is untrusted
 unless the platform tool layer verifies the trusted issuer, signature, and
 nonce. Untrusted envelopes may be diagnostic evidence only; they cannot
-authorize write, protected integration, memory, git, release, deployment,
+authorize write, change application, memory, git, release, deployment,
 install, MCP mutation, or external-state mutation.
 
 An `execution_receipt` is the tool-layer return record for the same envelope. It
@@ -126,17 +127,19 @@ gate before writing:
 2. Read the target section from the current file, not only the planned patch.
 3. Classify the existing change as compatible, conflicting, obsolete, or
    unrelated.
-4. Integrate compatible changes by editing the same section, preserving the
+4. If the requested change touches an already modified section, integrate
+   compatible changes by editing that same section in place, preserving the
    still-valid semantics.
 5. Stop as blocked or ask for a narrowed decision when the existing change
    conflicts with the requested scope.
 
 The gate forbids append-only patches that duplicate an existing rule, parallel
-headings that avoid the target section, sidecar files created to dodge a dirty
-file, and overwrites that discard another change without evidence. A sidecar or
-new policy file is authorized only when the current scope names it or the
-canonical boundary requires it and the source/deployed pair strategy is
-recorded.
+headings that avoid the target section, stacked patch layers, bypass paragraphs,
+sidecar files created to dodge a dirty file, repeated clauses, and overwrites
+that discard another change without evidence. A new section, sidecar, or policy
+file is authorized only when the current scope names it or the canonical
+boundary requires a genuinely independent concept with no reasonable existing
+section, and the source/deployed pair strategy is recorded.
 
 ## Non-Authorizing Signals
 
@@ -189,7 +192,7 @@ to a write or protected action records these fields:
 | `authorization_source` | Director prompt, captain board row, interface approval event, prior approved plan, or blocked/unverified source. |
 | `authorization_target` | Exact target of the authorization, such as file allowlist, station, protected action, or external resource. |
 | `authorization_scope` | Concrete allowed operation boundary, including files, directories, generated copies, memory cards, commands, release actions, or none. |
-| `authorization_phase` | plan-only, implementation-change-delivery, captain-integration, validation, review, memory-docs, memory-commit, git, release, deployment, install, external-mutation, or blocked. |
+| `authorization_phase` | plan-only, implementation-change-delivery, change-application, validation, review, memory-docs, memory-commit, git, release, deployment, install, external-mutation, or blocked. |
 | `authorization_evidence` | Prompt excerpt, board row, approval UI event, command confirmation, or missing evidence reason. |
 | `authorization_expiry` | When the authorization ends: current turn, current dispatch wave, named file set, named command, named protected action, or explicit revocation. |
 | `authorization_resolution_state` | authorized, no-write, scope-mismatch, phase-mismatch, expired, unverified, blocked, or revoked. |
@@ -206,7 +209,7 @@ to a write or protected action records these fields:
    set, command, scope, phase, and expiry, but they cannot widen it without new
    explicit evidence.
 4. A phase authorization does not carry into another phase. Implementation
-   change delivery does not authorize captain integration. Captain integration
+   change delivery does not authorize change application. Change application
    does not authorize memory writes. Memory delivery does not authorize
    memory commit. Git, release, deployment, install, and external mutation each
    require their own explicit authorization.
@@ -243,5 +246,5 @@ target, scope, phase, evidence, expiry, resolution state, and observed platform
 mode are present and consistent with the actual work.
 
 Missing or inconsistent authorization fields make the affected write,
-integration, memory, git, release, deployment, install, or external mutation
+change application, memory, git, release, deployment, install, or external mutation
 claim `unverified` or `blocked`.

@@ -6,7 +6,7 @@ description: >
   delivery artifact, or captain substitute authoring risk record; when checking that implementers
   did not review, validate, mutate memory, or touch git/release state; 變更交付件、
   隔離變更交付形式、文字變更交付、隊員實作交付。DO NOT use when: review, validation,
-  completion, direct captain integration, 審查、驗證、收尾或隊長主線整合。
+  completion, captain substitute authoring, 審查、驗證、收尾或隊長替代創作。
 metadata:
   author: antigravity
   version: "1.0"
@@ -20,7 +20,7 @@ metadata:
 
 ## Purpose
 
-Constrain implementation specialists to change delivery. The implementer changes only the assigned implementation surface and returns a change delivery artifact for captain review and integration. Diff text is only a representation format; the governing object is the change delivery artifact.
+Constrain implementation specialists to change delivery. The implementer changes only the assigned implementation surface and returns a change delivery artifact for captain receipt, board update, and routing to later stations. Diff text is only a representation format; the governing object is the change delivery artifact.
 
 Use `team-role-boundaries` to check role separation and `team-task-board` for board state.
 Use `team-memory-docs-delivery-artifact` to attach memory impact evidence to source changes.
@@ -41,7 +41,7 @@ Use `team-specialist-registry` and the matching `team-specialist-*` skill to con
 |---|---|---|
 | Isolated change delivery | Edit a governed isolated copy and return diff evidence. | Write main worktree, update memory, commit, push, release. |
 | Text change delivery artifact | Return precise, apply-ready edits as text when isolation is unavailable. | Claim integration, run mutating commands, self-review, or ask the captain to rewrite the implementation. |
-| Captain substitute authoring risk record | State why no change delivery route exists and keep the station blocked unless the Director accepts this exact risk as `closed-with-director-risk`. | Hide missing isolation, treat substitute authoring as protected integration or routine direct work, or call it full team completion. |
+| Captain substitute authoring risk record | State why no change delivery route exists and keep the station blocked unless the Director accepts this exact risk as `closed-with-director-risk`. | Hide missing isolation, treat substitute authoring as change delivery or routine direct work, or call it full team completion. |
 
 ## Implementation Rules
 
@@ -86,4 +86,4 @@ captain_authored:
 
 ## Forbidden Actions
 
-Do not perform final review, final validation, memory writes, deployment-copy sync, git staging, commit, push, tag, release, install, secret handling, or external-state mutation. You may name the source/deployed pair, proposed sync direction, and expected parity evidence, but the captain owns protected adoption or merge of returned qualified artifacts and deployed-copy sync. The captain may apply this artifact precisely or return it; captain rewrite or reimplementation is substitute authoring risk. Do not mark the task complete, and do not describe captain substitute authoring as a change delivery artifact or as full team completion.
+Do not perform final review, final validation, memory writes, deployment-copy sync, git staging, commit, push, tag, release, install, secret handling, or external-state mutation. You may name the source/deployed pair, proposed sync direction, and expected parity evidence, but deployed-copy sync and any protected follow-on phase need their own scoped station or gate. The captain may receive this artifact, maintain the board, handle blockers, and route it onward; captain rewrite or reimplementation is substitute authoring risk. Do not mark the task complete, and do not describe captain substitute authoring as a change delivery artifact or as full team completion.

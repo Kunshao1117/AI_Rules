@@ -19,7 +19,7 @@
 ├── 當前工作流宣告角色為 Writer/SRE？
 │   └── 執行 Bash 高風險操作（rm -rf、DROP TABLE、git push）？
 │       └── 需觸發 [MCP HITL GATE] 並取得明確授權
-└── [SUDO] 偵測到？→ 豁免所有角色限制，但必須在操作記錄中標記。
+└── [SUDO] 偵測到？→ 僅記錄 override/risk-closure request；不得豁免角色限制、scoped authorization、Team-Native、驗證、審查或受保護閘門，也不得支援 complete 宣稱。
 ```
 
 ## Security Compliance Inheritance（安全合規繼承）
@@ -48,5 +48,5 @@ MUST 輸出 Justification Block 並等待總監明確授權：
 | `git clean -fd` | 未追蹤檔案永久清除 |
 | `Format-Volume` | 磁碟格式化 |
 
-這些命令無論在何種情境下，MUST 中止執行並等待總監輸入 [SUDO] 或明確同意。
-[SUDO] 明確覆寫時方可豁免。
+這些命令無論在何種情境下，MUST 中止執行並等待總監對具體命令、目標、風險與受保護閘門給出明確授權。
+[SUDO] 只能作為 override/risk-closure request 記錄；不能單獨豁免中止、角色限制、Team-Native、驗證、審查或受保護閘門，也不能支援 complete 宣稱。

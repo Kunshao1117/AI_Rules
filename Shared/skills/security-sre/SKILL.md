@@ -3,7 +3,8 @@ name: security-sre
 description: >
   [Quality] Zero-trust validation, credential isolation, and structured logging standards.
   Use when: 建構或修改後端 API 端點、設計認證/授權流程、處理機敏資訊（密碼/API key/環境變數）的場景。
-  DO NOT use when: 純前端 UI 開發（用 ui-ux-standards）、讀取或審查程式碼而不寫入、/03-1_experiment 沙盒模式。
+  DO NOT use when: 純前端 UI 開發（用 ui-ux-standards）、讀取或審查程式碼而不寫入。03-1 /
+  03-1-experiment-實驗 仍需本技能處理真實 API/DB/credential 風險，但不得宣稱 production-ready。
 metadata:
   author: antigravity
   version: "5.2"
@@ -19,8 +20,8 @@ metadata:
 
 ```
 [VALIDATION GATE] For EVERY API route or DB write operation:
-├── [SUDO] detected? → Skip validation requirement.
-├── Active workflow is /03_sketch? → Skip.
+├── [SUDO] detected? → Record override/risk-closure request; do not skip validation.
+├── Active workflow is 03-1 / 03-1-experiment-實驗? → Continue for real API/DB writes; mark output prototype-only and do not claim production security readiness.
 ├── Zod/Joi schema defined for this endpoint's payload?
 │   ├── YES → Proceed silently.
 │   └── NO  → [HALT] 「🔴 [SEC HALT] API 端點 {path} 缺少 Schema 驗證。」

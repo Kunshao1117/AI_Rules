@@ -4,7 +4,7 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-01T22:32:22+08:00'
+last_updated: '2026-07-02T14:00:59+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
@@ -38,13 +39,13 @@ metadata:
 - Claude core governance evaluates Team-Native Core and Authorization Resolution before lifecycle; permission prompts, Plan Mode approval, slash commands, and GO are scoped authorization evidence only.
 - Applicable Claude governance work defaults to captain-led Team-Native mode before evidence, validation, review, memory, commit, release, or governance-impact work.
 - Evidence-bearing 00 chat enters Team-Native formal-readonly; pure chat stays direct only when no external evidence is needed.
-- Coding commands enter captain-led mode with a formal dispatch board, wave-gated delegation, role-exclusive specialists, change delivery artifacts, protected captain integration, protected memory/git/release gates, and final acceptance.
+- Coding commands enter captain-led mode with a formal dispatch board, wave-gated delegation, role-exclusive specialists, change delivery artifacts, captain delivery receipt, authorized change-application gates, protected memory/git/release gates, and final reporting.
 - Full team completion requires implementation change delivery, memory/docs delivery, independent review delivery, validation delivery, and trace evidence; `closed-with-director-risk` is non-complete risk closure.
 - The generated shared subagent policy block now carries the hook payload evidence gap, route/state separation, and captain supervision wording shared with Antigravity and Codex core rules.
 - Claude command entries and deployed command copies now reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
 - Claude memory operations use shared `.agents/memory/`; the deprecated `claude-edition-rules` card is historical only.
 - Claude command entries carry Director-readable output, neutral collaboration, freshness, memory, context, deep audit, migration, change intent, visual evidence, intent alignment, and review governance.
-- Claude README now frames captain work as communication, authorization resolution, board ownership, dispatch, supervision, bounded verify-read, protected adoption or merge, state decision, and reporting; it no longer presents captain work as primary implementation, self-review, or routine main-worktree authoring.
+- Claude README now frames captain work as communication, authorization resolution, board ownership, dispatch, supervision, delivery receipt, board/status synthesis, blocker or authorization handling, and reporting; it no longer presents captain work as primary implementation, self-review, or routine main-worktree authoring.
 - Claude core keeps platform startup and Director-facing Traditional Chinese mandates, while complete language-layer classification is delegated to the shared language governance policy.
 ## Active Constraints
 - Do not restore `.claude/agents/memory/` as a storage path.
@@ -53,6 +54,7 @@ metadata:
 - Split command child cards before adding another broad Claude command cycle.
 - Claude commands and skills must cite the shared language policy instead of treating core identity language text as the sole source.
 ## Cycle Events
+- 11: Recorded Claude core/rules hardening so [SUDO] no longer clears memory, security, or MCP holds and captain work is delivery receipt/status synthesis rather than integration evidence.
 - 10: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 9: Recorded Claude core language-governance source split between platform mandates and shared classification policy.
 - 8: Recorded non-hook core hardening so applicable Claude work defaults to captain-led Team-Native mode before evidence or protected closeout work.
@@ -81,7 +83,7 @@ metadata:
 - Claude Edition 的 active source owner 是本卡。
 - Claude 的 permission prompt、Plan Mode 同意、Slash Command 與 GO 現在都必須限縮到明示範圍。
 - Claude 00 證據型對話會進 formal-readonly；純聊天才直接回覆。
-- Claude 指令流程已改為團隊協作優先，隊長保留受保護整合與裁決責任，不取代隊員主要交付件。
+- Claude 指令流程已改為團隊協作優先，隊長負責接收交付、彙整狀態與受保護閘門，不取代隊員主要交付件。
 - Claude 記憶路徑固定使用 `.agents/memory/`；舊 Claude 規範卡是歷史索引。
 ## Tracked Files
 - Claude/install.ps1

@@ -4,7 +4,7 @@ scopePath: Claude/.claude/
 description: >-
   專案記憶：Claude 規則、設定與支援專案檔。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-15T02:54:22+08:00'
+last_updated: '2026-07-02T14:01:07+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -31,11 +31,13 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core.support.rules-settings — Claude Rules and Settings Memory
 
 ## Current Truth
 - This child card owns Claude support rules, local settings template, gitignore, and VS Code settings.
 - Rules and settings are support artifacts and must remain compatible with shared governance.
+- Claude support rules now treat [SUDO] as an override/risk-closure request only; it cannot skip security, MCP, memory/source attribution, validation, review, or protected gates.
 - Deprecated `claude-edition-rules` remains historical and is not an active source owner.
 
 ## Active Constraints
@@ -43,6 +45,7 @@ metadata:
 - Check shared policy drift when editing Claude support rules.
 
 ## Cycle Events
+- 02: Recorded Claude support-rule hardening so [SUDO] cannot clear memory/source attribution holds or bypass security and MCP guardrails.
 - 01: Split Claude rules and settings ownership out of the support parent card.
 
 ## Archive Index

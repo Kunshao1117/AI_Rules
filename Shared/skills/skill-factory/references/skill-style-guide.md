@@ -104,7 +104,7 @@ metadata:
 | ----------------- | :-------------: | :-----------: | :------------------: |
 | code fence 閘門   |  ✅ 必備（≥1）  | ✅ 限決策節點 |       ❌ 禁止        |
 | HALT 停機指令     |     ✅ 必備     | ✅ 限決策節點 |       ❌ 禁止        |
-| `[SUDO]` 豁免路徑 |     ✅ 必備     |    ✅ 必備    |      ❌ 不適用       |
+| `[SUDO]` request-record / risk-closure request（仍需 scoped authorization、Team-Native、validation、review、protected gates；不支援 `complete` 宣稱） |     ✅ 必備     |    ✅ 必備    |      ❌ 不適用       |
 | 食譜步驟          |      可有       |    ✅ 主體    |       ✅ 主體        |
 | 踩坑點            |     ✅ 可有     |    ✅ 可有    |       ✅ 可有        |
 | 結果解讀表        |     ✅ 可有     |    ✅ 可有    |       ✅ 可有        |

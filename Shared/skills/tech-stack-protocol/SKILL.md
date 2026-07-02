@@ -65,7 +65,7 @@ Once the active `_system` memory main file is generated:
 
 ```
 [STACK FREEZE GATE] Before ANY new dependency introduction:
-├── [SUDO] detected? → Allow. Log warning.
+├── [SUDO] detected? → Record override/risk-closure request; continue this gate and all scoped authorization, Team-Native, validation, review, and protected-action gates.
 ├── Active workflow is /03-1_experiment? → Allow. Sandbox exemption.
 ├── Is this a core framework, language, or ORM replacement?
 │   ├── NO (utility packages, dev tools, minor libs) → Proceed silently.

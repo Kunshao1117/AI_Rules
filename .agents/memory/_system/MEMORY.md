@@ -4,7 +4,7 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-01T15:38:08+08:00'
+last_updated: '2026-07-02T14:02:42+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -31,20 +31,21 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _system — Repository Governance Memory
 
 ## Current Truth
 - AI_Rules is the source repository for Antigravity, Claude Edition, and Codex Edition governance.
 - Root documentation and changelog now frame Team-Native Core as a pre-execution state machine for coding, architecture, broad-read, validation, review, memory, commit, release, and governance-impact work.
-- Pure 00 chat stays direct, while evidence-bearing chat about files, screenshots, memory, rules, agent behavior, tool output, or governance impact enters formal-readonly with specialist evidence and captain verify-read.
+- Pure 00 chat stays direct, while evidence-bearing chat about files, screenshots, memory, rules, agent behavior, tool output, or governance impact enters formal-readonly with specialist evidence and captain coordination read limited to receipt, board, blocker, or authorization needs.
 - GO, interface buttons, platform prompts, modes, and workflow commands resolve only to scoped authorization evidence; workflow routes and modes are not standalone authorization.
-- Repository-level governance uses delivery-artifact-driven Team-Native workflow: the captain boards, dispatches, supervises, integrates returned artifacts, decides, and reports without authoring primary implementation, review, validation, or memory attribution.
-- Root documentation distinguishes platform route states from manual setup status, protected integration from captain substitute authoring, and `closed-with-director-risk` from completion.
+- Repository-level governance uses delivery-artifact-driven Team-Native workflow: the captain boards, dispatches, supervises, receives station delivery, updates board state, handles blockers/authorization, and reports without authoring primary implementation, review, validation, or memory attribution.
+- Root documentation distinguishes platform route states from manual setup status, authorized change application from captain substitute authoring, and `closed-with-director-risk` from completion.
 - Root README platform counts currently describe 61 shared operational skills and 78 Codex deployed skills.
 - Changelog includes the 2026-06-29 scoped authorization and pre-commit governance entries plus the 2026-06-30 workflow orchestration and Codex hook stability entries.
 - Root documentation describes shared matrix deployment paths, downstream project-local tools under `.agents/tools/`, and framework-source-only manager commands.
-- Root documentation and changelog now describe Team-Native authorization binding, captain protected integration, hook-block stop behavior, and GO as scoped evidence rather than blanket write permission.
-- Root documentation now treats captain integration as protected adoption or merge of returned qualified artifacts; historical wording that implied captain main-worktree authoring, self-review, or direct implementation is corrected.
+- Root documentation and changelog now describe Team-Native authorization binding, captain receipt/status synthesis, authorized change application, hook-block stop behavior, and GO as scoped evidence rather than blanket write permission.
+- Root documentation now treats captain work as delivery receipt, board/status synthesis, blocker and authorization handling, protected gates, and reporting; historical wording that implied captain main-worktree authoring, self-review, or direct implementation is corrected.
 - The changelog includes the Team-Native thin-captain, multi-specialist, hook diagnostics, and structured completion-evidence hardening entry as a governance wording correction, not runtime completion evidence.
 - Director-facing output must use Traditional Chinese unless a lower-level artifact explicitly requires another language.
 - Root repository work, git status, commit, tag, and push operations use `D:\AI_Rules` as the baseline.
@@ -56,6 +57,7 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 18: Recorded root documentation/changelog hardening so captain work is receipt and status synthesis, while actual change application requires an authorized station or gate.
 - 17: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform sync, changelog precision, and commit-preflight stale blocker cleanup.
 - 16: Recorded the 2026-07-01 Team-Native thin-captain and multi-specialist documentation hardening; root docs and changelog now avoid wording that implies captain authoring, self-review, or blanket GO authority.
 - 15: Recorded the 2026-07-01 Team-Native authorization binding and governance fail-closed changelog entry; root docs now frame captain work as protected integration plus gates, with everyday Director wording bound to the current visible target.

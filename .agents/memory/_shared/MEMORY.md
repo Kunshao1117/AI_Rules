@@ -4,7 +4,7 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-02T09:13:23+08:00'
+last_updated: '2026-07-02T14:01:48+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared — Shared Governance Memory
 ## Current Truth
 - Shared owns cross-platform governance sources, operational skills, policy references, project tools, workflow matrices, and source memory contracts.
@@ -39,10 +40,10 @@ metadata:
 - Narrow pre-board read-only probes are allowed only for orientation; broad reads, recursive scans, validation, review, memory/docs attribution, writes, and completion claims require the formal Team-Native sequence.
 - Team-Native Core governance lives in `_shared.team-native-core`, which owns team policy, route states, trace evidence, and full completion contracts.
 - Shared skill governance supports role metadata, station handoff references, task-board templates, delivery artifacts, and reference splitting for large skills.
-- Captain Trigger Gate and Captain Team Board make applicable coding, workflow, validation, review, memory, commit, release, or governance-impact work default to the team collaboration model.
+- Captain Trigger Gate and Captain Team Board make applicable governance, workflow, fix, build, validation, review, memory/docs, commit, release, handoff, skill-forge, or public-contract work default to the team collaboration model.
 - Memory MCP tool contract separates read-only evidence, mutating memory gates, Gateway execution, project-local migration tools, and source memory from project context.
 - Shared governance references deploy to `.agents/shared/`; restricted project-local tools deploy from `Shared/project-tools/`.
-- Shared policies keep vendor-neutral evidence-branch semantics: specialists provide evidence, while the captain owns final review-state and protected action decisions.
+- Shared policies keep vendor-neutral evidence-branch semantics: specialists provide evidence, while the captain owns delivery receipt, board/status synthesis, blocker/authorization handling, and protected action decisions.
 - Coding workflow and command entries preserve four formal delivery artifacts and use `closed-with-director-risk` for non-complete risk closure.
 - Shared authorization and Team-Native policies bind everyday Director language to the current visible target and require hook-blocked actions to stop as blocked or unverified instead of retrying through alternate tools.
 - Shared workflow orchestration treats source/deployed parity as part of closeout evidence and requires state labels to stay separate from execution routes.
@@ -54,6 +55,7 @@ metadata:
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
 - Keep the framework language policy and deployed runtime copy content-identical; workflow, skill, matrix, and platform adapter entries must cite the shared policy instead of treating platform core language text as the sole source.
 ## Cycle Events
+- 43: Recorded shared matrix/orchestration hardening so captain work is delivery receipt and state synthesis, with authorized change application separated from captain-owned evidence.
 - 42: Compacted active Shared governance memory after commit preflight reported the active-card line limit, preserving the latest Director-facing field display fact.
 - 41: Added Director-facing raw-field display guidance to language governance: show Traditional Chinese meaning first and keep canonical identifiers in parentheses.
 - 40: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
@@ -67,8 +69,6 @@ metadata:
 - 32: Wave 6B added the shared workflow orchestration policy to Shared governance, deployed references, workflow entries, and Doctor coverage.
 - 31: Added Wave 1 skill relation metadata contract for Team-Native role skills; actual specialist skill rewriting remains a later wave.
 - 30: Added Team-First handoff packet skill to the shared skill index and updated skill governance for reference splitting plus station handoff references.
-- 29: Updated source/deployed skill governance contract for four formal delivery artifacts, memory/docs delivery fields, and non-complete `closed-with-director-risk` semantics.
-- 28: Updated Shared skill index for direct-renamed team task board and delivery artifact skills, plus assignment/channel separation semantics.
 ## Archive Index
 - archive-003.md — Older cycle events 14-22 compacted from the active card.
 - archive-001.md — Legacy _shared card preserved before schema v2 compaction on 2026-06-04.
@@ -85,7 +85,7 @@ metadata:
 ## 中文摘要
 - Shared 是 61 套共用技能與政策的唯一來源。
 - 技能治理總規格已加入角色技能關係 metadata；十角色技能本體尚未在 Wave 1 改寫。
-- 編程治理已改為團隊協作優先，證據型站點不能無理由全部退回主線直做。
+- 編程治理已改為團隊協作優先，隊長接收交付並彙整狀態，證據型站點不能無理由全部退回主線直做。
 - 記憶治理使用新版主卡加歸檔模型，專案脈絡與原始碼記憶分層管理。
 - 超過 8 個追蹤檔是拆卡建議，不是自動阻擋。
 ## Tracked Files

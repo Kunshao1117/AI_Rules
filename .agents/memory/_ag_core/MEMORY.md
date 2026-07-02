@@ -4,7 +4,7 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-01T22:32:06+08:00'
+last_updated: '2026-07-02T14:00:33+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core — Antigravity Memory
 
 ## Current Truth
@@ -53,6 +54,7 @@ metadata:
 - Split workflow child cards before adding another broad Antigravity workflow cycle.
 - Antigravity workflows and skills must cite the shared language policy instead of treating core identity language text as the sole source.
 ## Cycle Events
+- 11: Recorded Antigravity rule hardening so [SUDO] records override/risk-closure only, keeps memory/MCP/security gates active, and read-before-write forbids stacked patch layers.
 - 10: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 9: Recorded Antigravity core language-governance source split between platform mandates and shared classification policy.
 - 8: Recorded non-hook core hardening so applicable Antigravity work defaults to captain-led Team-Native mode and missing specialist evidence remains blocked or unverified.

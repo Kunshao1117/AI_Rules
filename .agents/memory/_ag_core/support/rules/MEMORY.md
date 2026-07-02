@@ -4,7 +4,7 @@ scopePath: Antigravity/.agents/rules/
 description: >-
   專案記憶：Antigravity 支援規則檔。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-06-28T14:15:56+08:00'
+last_updated: '2026-07-02T14:00:38+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -43,6 +43,7 @@ metadata:
 - Check shared policy drift when editing these support rules.
 
 ## Cycle Events
+- 04: Recorded Antigravity support-rule hardening so [SUDO] no longer skips security or quality gates and experiment output stays prototype-only when validation is incomplete.
 - 03: Corrected Antigravity source and deployed rule sentinel skill count to 50 shared operational skills.
 - 02: Updated Antigravity rule entrypoints to prefer deployed .agents/shared references.
 - 01: Split Antigravity rules ownership out of the support parent card.

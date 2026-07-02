@@ -71,7 +71,7 @@ Include in `implementation_plan.md`:
 
 ```
 [IMPACT GATE] Before proceeding to code modification:
-├── [SUDO] detected? → Allow blind edits. Skip impact check.
+├── [SUDO] detected? → Record override/risk-closure request; do not allow blind edits or skip impact evidence.
 ├── affected_modules[] array length > 0?
 │   ├── YES → Proceed with modification.
 │   └── NO  → [HALT] 「🔴 [IMPACT HALT] 影響範圍分析結果為空。請先確認波及模組。」

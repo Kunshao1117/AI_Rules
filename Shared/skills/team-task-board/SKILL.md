@@ -80,6 +80,9 @@ first and keep the exact field in parentheses, for example
 `任務板狀態（board_state）`, `正式站點（formal_station）`, or
 `交付件狀態（delivery_artifact_status）`. These labels are display aids only;
 do not translate, rename, or derive new canonical machine fields from them.
+This applies to board headers, station tables, closeout reports, and handoff
+summaries. A raw canonical field list may remain in this source section, but the
+Director-facing summary must not be English-code-first.
 
 ```text
 board_id
@@ -140,7 +143,7 @@ role_boundary
 direct_exception
 replacement_evidence
 deep_read_scope
-captain_verify_read_scope
+captain_coordination_read_scope
 unread_scope
 allowed_inputs
 allowed_tools
@@ -210,7 +213,7 @@ Valid execution channels or delivery forms are:
 - `MCP read branch`
 - `isolated change delivery`
 - `text change delivery artifact`
-- `captain protective adoption/merge of returned qualified artifacts`
+- `authorized change-application gate`
 - `protected captain gate`
 
 State values such as `blocked`, `unverified`, `standby`, `unavailable`,
@@ -240,6 +243,12 @@ Stop condition:
 
 The station handoff packet may add read scope, startup monitoring, dependencies,
 and channel state. Do not copy the whole board field list into the packet.
+Before dispatch, pair this assignment with a startup-complete handoff packet
+containing `handoff_packet_id`, `role_id`, `role_instance_id`,
+`assigned_specialist_skill`, `read_scope`, `allowed_tools`, `forbidden_actions`,
+channel state, `delivery_artifact_type`, and `stop_condition`. Missing startup
+data keeps the station blocked or unverified and cannot support a complete team
+trace.
 
 ## Delivery Forms
 
@@ -294,17 +303,21 @@ only after change delivery exists or is explicitly blocked/unverified/risk
 closed. Completion starts after implementation, memory/docs, validation, and
 review states exist.
 
+Large-file deep read routes to a bounded specialist station. The captain must not absorb, substitute, or deep read large files as the team evidence source;
+when no route exists, record blocked or unverified with the smallest unblock
+condition.
+
 `formal-readonly` stations can open without write authorization when they are
 strictly read-only and have a handoff packet. `formal-write` stations require
-scope-bound authorization for the write, protected adoption/merge, memory, git,
+scope-bound authorization for the write, change application, memory, git,
 release, deployment, install, or external-mutation phase.
 
 ## Direct Exception Register
 
 A direct exception is allowed only for protected captain-owned gates, tool-only
-status actions, hot-path validation with no independent evidence value,
-protective adoption/merge of returned qualified artifacts, or
-Director-accepted captain substitute authoring recorded as non-complete risk.
+status actions, hot-path status checks with no independent evidence value,
+blocker/conflict/authorization handling, or Director-accepted captain substitute
+authoring recorded as non-complete risk.
 
 If two or more evidence-oriented stations use direct exceptions, each row must
 name a station-specific reason, replacement evidence, residual state, and why
@@ -319,7 +332,8 @@ Before the board supports any completion claim, check:
 - Implementation change delivery, memory/docs delivery, validation, and review
   states are present or honestly blocked/unverified/risk closed.
 - Implementation and review are not owned by the same role instance.
-- Captain protective adoption did not become substitute authoring.
+- Captain receipt or status synthesis did not become substitute implementation,
+  validation, review, or memory/docs attribution.
 - Route fields contain routes/channels/forms, while blocked/unverified/standby
   and closed-with-director-risk remain state values.
 - Source/deployed pairs have sync direction and parity evidence when applicable.

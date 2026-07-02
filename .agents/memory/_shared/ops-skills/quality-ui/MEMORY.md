@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 品質閘門、安全可靠性與 UI/UX 標準技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-01T18:26:23+08:00'
+last_updated: '2026-07-02T14:02:01+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -47,12 +47,14 @@ metadata:
 - AI development quality gates now require real evidence for governance, workflow, public-contract, security, release, or repeated fragile work before completion claims.
 - AI development quality guidance keeps additional token margin so managed cache and source checkouts remain inside the Shared skill quality limit.
 - High-change security or accessibility guidance must be grounded in current official sources before decisions.
+- Security/SRE now treats [SUDO] as an override/risk-closure request only; 03-1 experiment work still requires real API/DB/credential risk handling and cannot claim production security readiness.
 
 ## Active Constraints
 - Do not use this card as evidence that a specific product screen or security control passed validation.
 - Keep Director-facing design and quality summaries in Traditional Chinese.
 
 ## Cycle Events
+- 10: Recorded security-SRE hardening so [SUDO] cannot skip validation and experiment work remains prototype-only for production security claims.
 - 09: Recorded quality-gate hardening so governance, workflow, public-contract, security, release, or repeated-fragile work escalates to review-state evidence instead of lightweight completion.
 - 08: Added independent-review and role-separation enforcement to quality-review-governance.
 - 07: Aligned quality-review-governance with team-first evidence stations and all-direct review-board rejection.

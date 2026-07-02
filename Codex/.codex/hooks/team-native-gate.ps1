@@ -313,7 +313,7 @@ function Get-CurrentStructuredEvidenceText {
         'validation_delivery',
         'direct_exceptions',
         'deep_read_scope',
-        'captain_verify_read_scope',
+        'captain_coordination_read_scope',
         'unread_scope',
         'director_risk_close_evidence',
         'director_risk_close_scope',

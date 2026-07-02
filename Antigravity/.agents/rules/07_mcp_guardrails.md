@@ -21,7 +21,7 @@ When tools are provided through Multi-MCP Gateway:
 ├── Is the MCP action purely READ-ONLY (e.g., list, get, search, query docs)?
 │   └── YES → Check §2 Tool-Level Permission Matrix for override. If 🟢 LOW → Skip gate. Proceed silently.
 ├── Does the Director prompt contain [SUDO]?
-│   └── YES → Skip this gate entirely. Proceed without constraints.
+│   └── YES → Record override/risk-closure request only; keep this gate, scoped authorization, Team-Native, validation, review, and protected gates active. [SUDO] does not authorize unconstrained execution.
 ├── Is the action STATE-MUTATING (e.g., write, update, delete, deploy, push)?
 │   └── YES → Agent MUST first output a Justification Block:
 │         【操作理由】為什麼需要執行此操作（商業語言描述）

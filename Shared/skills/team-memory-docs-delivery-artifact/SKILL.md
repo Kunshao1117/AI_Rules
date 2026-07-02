@@ -47,7 +47,7 @@ Connect source delivery with memory and documentation accountability without giv
 3. Use read-only memory tools only during diagnosis.
 4. Stop before memory mutation unless the workflow is in memory phase and Director authorization exists.
 5. Report blocked memory obligations as residual risk, not success.
-6. Tie the memory/docs decision to a delivery artifact ID, source input, and memory/docs state so the captain integrates the ledger without inventing attribution.
+6. Tie the memory/docs decision to a delivery artifact ID, source input, and memory/docs state so the captain receives the ledger without inventing attribution.
 7. Treat missing or mismatched authorization fields as `memory-unverified` or `memory-blocked-by-scope`.
 
 ## Output

@@ -6,8 +6,8 @@
 
 Team-Native Core is the highest-priority governance spine for team work. Route
 hints, platform modes, approval UI, tool capability, and prior conversation state
-must be interpreted through Team-Native Core before source, workflow,
-validation, review, memory, commit, release, deployment, install, project
+must be interpreted through Team-Native Core before source, workflow, fix, build,
+validation, review, memory/docs, commit, release, deployment, install, project
 governance, generated-copy, or public-contract work proceeds.
 
 Team-Native / subagent team mode is default-on for every applicable task. The
@@ -80,7 +80,7 @@ replacement evidence, residual risk, and smallest unblock condition; even then,
 captain-direct continuation is a recorded direct exception, not proof that team
 mode was off.
 
-Team-Native Core applies when a task touches source, workflow, validation, review, memory, commit, release, deployment, install, project governance, generated copies, or public contracts.
+Team-Native Core applies when a task touches source, workflow, fix, build, validation, review, memory/docs, commit, release, deployment, install, project governance, generated copies, or public contracts.
 
 Team-Native Core also applies to read-only exploration, blueprinting, broad file
 inspection, external research, or impact analysis when the result can shape
@@ -98,9 +98,9 @@ or checking, returns citations, missing scope, risk, blocker status, and
 evidence status reporting, and the captain only verification-reads returned
 evidence and integrates the conclusion. 證據型對話不得停留在直答模式；若隊員通道無法開啟，必須先回報 standby、blocked、unverified、unavailable 或 not-authorized。
 
-The required delivery sequence is fixed: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> station handoff packet -> execution-channel decision -> specialist startup attempt, standby, or blocked/unverified channel state -> specialist work -> captain verification-read -> recovered change delivery artifacts / evidence delivery artifacts -> independent validation and review -> captain integration -> completion audit -> report.
+The required delivery sequence is fixed: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> station handoff packet -> execution-channel decision -> specialist startup attempt, standby, or blocked/unverified channel state -> specialist work -> returned change delivery artifacts / evidence delivery artifacts -> captain receipt and board update -> independent validation, review, and memory/docs stations -> completion audit -> report.
 
-The captain remains the only Director-facing owner, but the captain is not the default worker and must not author specialist implementation, review, validation, or memory attribution when a delivery artifact can be produced. The captain owns routing, authorization, supervision, protective adoption or merge of recovered qualified delivery artifacts, protected memory/git/release/deploy/install gates, review-state decision, and final acceptance. All separable requirement replay, counter-evidence, impact mapping, implementation change delivery, memory delivery, validation, review, and completion audit work belongs to team stations.
+The captain remains the only Director-facing owner, but the captain is not the default worker and must not author specialist implementation, review, validation, or memory attribution when a delivery artifact can be produced. The captain owns routing, authorization boundaries, board supervision, station handoff, delivery receipt, status synthesis, blocker handling, protected memory/git/release/deploy/install gates, and Director-facing reporting. All separable requirement replay, counter-evidence, impact mapping, implementation change delivery, memory delivery, validation, review, and completion audit work belongs to team stations.
 
 Explicit workflow names and Director requests for subagents are route hints. They do not replace the team board and do not authorize pre-board dispatch.
 
@@ -117,12 +117,14 @@ later-phase, or protected-state authority when the visible context is not
 enough.
 
 Before any station edits a file with existing worktree changes, the trace must
-show that the current diff and target section were read. The station must merge
-or rewrite the relevant section in place when the existing change is still
-reasonable. It must not create a duplicate policy block, append a bypass
-paragraph, invent a sidecar file, or overwrite another change to avoid
-integration. If the current diff conflicts with the authorized task, the station
-is blocked, unverified, or needs a narrower Director decision.
+show that the current diff and target section were read. If the requested change
+touches an already modified section, the station must merge or rewrite that
+section in place while preserving still-valid semantics. It must not create a
+duplicate policy block, append a bypass paragraph, stack a new patch layer,
+invent a sidecar file, or overwrite another change to avoid integration. A new
+section is allowed only for a genuinely independent concept with no reasonable
+existing section. If the current diff conflicts with the authorized task, the
+station is blocked, unverified, or needs a narrower Director decision.
 
 ## Operation Mode Rule
 
@@ -186,7 +188,7 @@ Board states are:
 |---|---|---|
 | `draft` | Pre-GO planning, candidate stations, assumptions, and scope shaping | No write authority and no formal specialist evidence |
 | `formal-readonly` | Read-only exploration, counter-evidence, impact mapping, document or file deep-read, external research, validation planning, review evidence, and standby specialist preparation | No source, memory, git, release, deployment, install, or external-state writes |
-| `formal-write` | GO-backed implementation change delivery, captain integration, validation, review, memory/docs delivery, completion audit, and protected follow-on gates | Only the scoped target, phase, station, files, commands, or tool calls resolved by authorization |
+| `formal-write` | GO-backed implementation change delivery, authorized change application, validation, review, memory/docs delivery, completion audit, and protected follow-on gates | Only the scoped target, phase, station, files, commands, or tool calls resolved by authorization |
 
 The captain must not treat `formal-readonly` as weaker than team mode. It is
 the formal team state for no-write work. If no execution channel can be opened,
@@ -200,7 +202,7 @@ residual risk, and non-complete or risk-closed state.
 Execution route fields may name only an actual channel or delivery form: native
 subagent, project custom agent, adapter, browser evidence, command evidence, MCP
 read, external research, isolated change delivery, text change delivery artifact,
-protected captain channel, or direct captain protected integration. `blocked`,
+protected captain gate, or authorized change-application gate. `blocked`,
 `unverified`, `standby`, `not-authorized`, `unavailable`, and
 `closed-with-director-risk` are station, evidence, authorization, or completion
 states only. They must not be stored as `execution_route`, `execution_channel`,
@@ -224,11 +226,11 @@ visible in the board or delivery trace.
 The packet must include these fields when applicable: `operation_mode`,
 `operation_mode_reason`, `role_id`, `role_instance_id`,
 `exclusive_task_scope`, `loaded_skill_refs`, `handoff_packet_id`,
-`deep_read_scope`, `captain_verify_read_scope`, `unread_scope`,
+`deep_read_scope`, `captain_coordination_read_scope`, `unread_scope`,
 `startup_started_at`, `first_response_deadline`, `last_progress_at`,
 `timeout_action`, and `standby_reason`.
 
-## Deep-Read And Captain Verify Rule
+## Deep-Read And Captain Context Rule
 
 Large or numerous files must not be fully loaded by the captain when a
 bounded specialist deep-read station can inspect them first. The required split
@@ -236,14 +238,23 @@ is:
 
 1. Specialist deep-read: read the assigned files or references, summarize
    evidence, unresolved scope, and exact citations.
-2. Captain verify-read: inspect the highest-risk snippets, changed regions, or
-   disputed claims before integration or final acceptance.
+2. Captain coordination read: inspect only the minimum snippets needed to
+   receive the artifact, maintain the board, resolve blocker/authorization
+   conflicts, or decide which station should handle a disputed claim.
 3. Unread scope: list any relevant file, section, document, or external source
    not read by either party.
 
 If the captain must deep-read the whole scope directly because no channel can
 open, the station records a direct exception and the completion state cannot
 claim full team separation unless the Director closes that named risk.
+
+While a member station is running, the captain must not perform context-expanding
+parallel reads, duplicate scans, re-checks, substitute validation, substitute
+review, memory/docs attribution, or rewrite member findings as captain-owned
+evidence. Allowed captain actions during member work are limited to unblocking
+the station, maintaining the board, receiving returned artifacts, and resolving
+conflicts or authorization scope. Any broader captain context work is a direct
+exception and cannot support full Team-Native completion.
 
 ### Captain-Lite Reading Model
 
@@ -257,17 +268,18 @@ Hooks and workflow adapters must separate reading from completion evidence:
   or large file sweeps are permitted only as read-only context recovery. The
   captain must route the result to a formal-readonly specialist deep-read
   station or record a direct exception before making completion claims.
-- Captain hard budget: the captain may perform only micro-read and verify-read
+- Captain hard budget: the captain may perform only micro-read and coordination
+  read
   by default. If the captain fully reads broad, recursive, or large-file scope
   without a prior specialist deep-read artifact, the trace records a direct
   exception and the result is blocked, unverified, or closed-with-director-risk,
   not full Team-Native completion.
 - Thin captain context is a hard cap, not a style preference. The captain's
   default context actions are micro-read, delivery artifact format checks,
-  limited verify-read of cited or changed snippets, and protected adoption of
-  returned qualified artifacts. The captain must not use verify-read as a
-  reason to deep-read entire files, reconstruct missing specialist work, or fill
-  implementation, review, validation, or memory/docs gaps.
+  receipt of returned artifacts, board updates, blocker handling, and
+  authorization-boundary decisions. The captain must not use coordination read
+  as a reason to deep-read entire files, reconstruct missing specialist work, or
+  fill implementation, review, validation, or memory/docs gaps.
 - Specialist deep-read: broad reads become qualified evidence only when the
   trace names `deep_read_scope`, handoff packet, `role_id`,
   `role_instance_id`, assigned specialist skill, requested execution channel,
@@ -278,7 +290,7 @@ Hooks and workflow adapters must separate reading from completion evidence:
   closure state. A general formal-write board is not enough.
 
 Authorization is resolved by `authorization-resolution.md` before any write,
-protected integration, memory, git, release, deployment, install, MCP mutation,
+change application, memory, git, release, deployment, install, MCP mutation,
 or external-state mutation. Workflow names are route hints only, not
 authorization. Interface approval buttons may be recorded as authorization
 evidence for the exact displayed target, scope, phase, and expiry, but they do
@@ -360,7 +372,7 @@ issuer, with a valid signature and fresh nonce. Model-filled envelopes,
 assistant-authored JSON, transcript text, or text-only `team_native_trace`
 payloads are untrusted unless the platform verifies the trusted issuer,
 signature, and nonce. Untrusted envelopes can explain context, but they cannot
-authorize source writes, protected integration, memory, git, release,
+authorize source writes, change application, memory, git, release,
 deployment, install, MCP mutation, or external-state mutation.
 
 Each tool action returns an `execution_receipt` that names the envelope or
@@ -428,7 +440,7 @@ Team-Native Core keeps these states because they preserve completion honesty:
 
 | State | Allowed use | Required evidence |
 |---|---|---|
-| `direct` | Protected captain work only: Director communication, GO interpretation, protective adoption or merge of returned qualified delivery artifacts into the main worktree, protected memory/git/release/deploy/install gates, review-state decision, final acceptance, hot-path non-mutating validation, or no independent evidence value after scope reduction | Station name, direct exception, replacement evidence, and residual state |
+| `direct` | Protected captain work only: Director communication, GO interpretation, board maintenance, delivery receipt, blocker/authorization handling, protected memory/git/release/deploy/install gates, final Director-facing acceptance/reporting, hot-path non-mutating status checks with no independent evidence value, or no independent evidence value after scope reduction | Station name, direct exception, replacement evidence, and residual state |
 | `text change delivery artifact` | No governed isolated workspace is available, but the implementation task is bounded, diffable, and safe to deliver as a text change delivery artifact | File scope, proposed edits, evidence, risk, memory impact, review need, blocker status |
 | `closed-with-director-risk` | The Director closes the task with a named risk even though required team separation or delivery artifacts are missing | Director risk decision, missing artifact or separation, non-complete label, and residual limitation |
 | `unverified` | Evidence is required but currently absent or incomplete | Missing evidence, attempted route or reason not attempted, and smallest verification path |
@@ -459,7 +471,15 @@ full` is required for bottom-layer refactor, cross-file governance changes,
 specialist skill rewrites, Doctor/Audit rule changes, release preparation, or
 protected external-state readiness.
 
-Captain protected integration means protectively adopting or merging returned, qualified delivery artifacts into the main worktree. It is normal captain work only when the captain follows the returned artifact scope and does not create, rewrite, or primarily implement specialist content. It can support `complete` when implementation, memory/docs, review, validation, completion, and trace evidence are all present. Captain substitute authoring means the captain creates specialist content because no qualified change delivery route exists; it starts as blocked, may be closed-with-director-risk only when the Director explicitly accepts that exact case, and must not be described as full team completion.
+Change application is owned by the authorized change-delivery station or by a
+recorded protected gate that applies the returned artifact without rewriting it.
+The captain may receive the artifact, maintain the board, handle conflicts, and
+report status, but must not turn artifact receipt into implementation, review,
+validation, or memory/docs evidence. Captain substitute authoring means the
+captain creates specialist content because no qualified change delivery route
+exists; it starts as blocked, may be closed-with-director-risk only when the
+Director explicitly accepts that exact case, and must not be described as full
+team completion.
 
 Rewriting, reauthoring, refactoring beyond the returned artifact, filling
 missing implementation, adding unreturned review conclusions, inventing

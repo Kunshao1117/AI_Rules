@@ -19,7 +19,7 @@ metadata:
 ## Purpose
 
 Use this skill as the on-demand operating guide for captain-led Team-Native
-work. It tells the captain how to route, board, dispatch, supervise, integrate,
+work. It tells the captain how to route, board, dispatch, supervise, receive,
 and report without copying the hard rules into every workflow or specialist
 skill.
 
@@ -35,6 +35,11 @@ Source of truth:
 
 This skill adds operational sequence and editing hygiene only. If a hard rule is
 already in a policy, cite the policy instead of restating it here.
+
+Director-facing plans, board summaries, dispatch summaries, and closeout reports
+must describe the Traditional Chinese meaning first and keep the canonical field
+code in parentheses when field names are needed. Do not present raw English-only
+board, trace, or handoff field lists as the primary explanation.
 
 ## Trigger And Route
 
@@ -100,9 +105,9 @@ authorization.
 ## Role And Delivery Boundaries
 
 Use `team-role-boundaries` plus `team-specialist-registry` for role identity.
-The captain owns routing, authorization interpretation, supervision, protective
-adoption or merge of returned qualified artifacts, review-state decision,
-protected memory/git/release/deploy/install gates, and final reporting.
+The captain owns routing, authorization interpretation, supervision, delivery
+receipt, board status synthesis, blocker/conflict handling, protected
+memory/git/release/deploy/install gates, and final Director-facing reporting.
 
 Specialists own bounded delivery artifacts only:
 
@@ -124,23 +129,29 @@ full Team-Native completion.
 1. Load the workflow and policy refs needed for the task.
 2. Run the already-changed-file integration guard.
 3. Build or promote the board through `team-task-board`.
-4. Prepare station handoff packets with loaded skill refs, read scope, allowed
-   tools, forbidden actions, output artifact format, startup monitoring, and
-   stop condition.
+4. Prepare station handoff packets before dispatch. They must include
+   `handoff_packet_id`, `role_id`, `role_instance_id`,
+   `assigned_specialist_skill`, `read_scope`, `allowed_tools`,
+   `forbidden_actions`, channel state, `delivery_artifact_type`, and
+   `stop_condition`, plus loaded skill refs, dependencies, startup monitoring,
+   and output format. Missing startup data keeps the station blocked or
+   unverified.
 5. Dispatch only the current eligible wave. Later waves wait for returned,
    blocked, unverified, or risk-closed input from previous waves.
-6. Accept artifacts only after bounded captain verify-read of the cited source,
-   policy, or diff regions.
-7. Integrate only returned qualified artifacts inside the authorized scope.
+6. Receive artifacts, update the board, and route formal checking to validation,
+   review, memory/docs, or completion stations as applicable.
+7. Apply changes only through the authorized change-delivery station or
+   change-application gate; the captain must not rewrite returned artifacts as
+   captain-owned evidence.
 8. Run validation, independent review, memory/docs disposition, and completion
    gate as separate states before claiming completion.
 
 ## Direct Exceptions
 
 Direct captain handling is limited to Director communication, authorization
-interpretation, protective adoption/merge of returned artifacts, protected
-state gates, review-state decision, final acceptance, tool-only status checks,
-or hot-path non-mutating validation with no independent evidence value.
+interpretation, board maintenance, delivery receipt, blocker/conflict handling,
+protected state gates, final Director-facing reporting, tool-only status checks,
+or hot-path non-mutating status checks with no independent evidence value.
 
 Every direct exception must name the station, reason, replacement evidence, and
 residual state. Generic speed, convenience, small task size, or channel friction

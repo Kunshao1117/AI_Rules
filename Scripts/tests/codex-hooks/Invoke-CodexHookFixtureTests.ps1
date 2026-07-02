@@ -22,6 +22,11 @@ $hookPath = Join-Path $RepoRoot '.codex\hooks\team-native-gate.ps1'
 $sourceHookPath = Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-gate.ps1'
 $hookConfigPath = Join-Path $RepoRoot '.codex\hooks.json'
 $sourceHookConfigPath = Join-Path $RepoRoot 'Codex\.codex\hooks.json'
+$sourceHookConfigMarkerPath = Join-Path $RepoRoot 'Codex\.codex\hooks.delete'
+$sourceHookConfigIsRenamedMarker = Test-Path -LiteralPath $sourceHookConfigMarkerPath -PathType Leaf
+if ($sourceHookConfigIsRenamedMarker) {
+    $sourceHookConfigPath = $sourceHookConfigMarkerPath
+}
 
 if (-not (Test-Path -LiteralPath $hookPath -PathType Leaf)) {
     throw "Hook script missing: $hookPath"
@@ -29,18 +34,26 @@ if (-not (Test-Path -LiteralPath $hookPath -PathType Leaf)) {
 if (-not (Test-Path -LiteralPath $sourceHookPath -PathType Leaf)) {
     throw "Source hook script missing: $sourceHookPath"
 }
-if (-not (Test-Path -LiteralPath $hookConfigPath -PathType Leaf)) {
+if ((-not $sourceHookConfigIsRenamedMarker) -and (-not (Test-Path -LiteralPath $hookConfigPath -PathType Leaf))) {
     throw "Project hook config missing: $hookConfigPath"
 }
 if (-not (Test-Path -LiteralPath $sourceHookConfigPath -PathType Leaf)) {
     throw "Source hook config missing: $sourceHookConfigPath"
 }
+if ($sourceHookConfigIsRenamedMarker -and (Test-Path -LiteralPath $hookConfigPath -PathType Leaf)) {
+    throw "Project hook config should stay absent while source uses renamed marker: $hookConfigPath"
+}
 if (-not (Test-Path -LiteralPath $fixtureRoot -PathType Container)) {
     throw "Fixture directory missing: $fixtureRoot"
 }
 
-$hookConfig = Get-Content -LiteralPath $hookConfigPath -Raw -Encoding UTF8 | ConvertFrom-Json
+$hookConfig = if (Test-Path -LiteralPath $hookConfigPath -PathType Leaf) {
+    Get-Content -LiteralPath $hookConfigPath -Raw -Encoding UTF8 | ConvertFrom-Json
+} else {
+    $null
+}
 $sourceHookConfig = Get-Content -LiteralPath $sourceHookConfigPath -Raw -Encoding UTF8 | ConvertFrom-Json
+$effectiveHookConfig = if ($null -ne $hookConfig) { $hookConfig } else { $sourceHookConfig }
 $requiredEvents = @('UserPromptSubmit', 'PreToolUse', 'PermissionRequest', 'SubagentStart', 'SubagentStop', 'Stop')
 
 function Test-FixtureFileHashEqual {
@@ -105,7 +118,7 @@ function Get-DecodedHookCommandText {
 }
 
 foreach ($requiredEvent in $requiredEvents) {
-    if ($null -eq $hookConfig.hooks.PSObject.Properties[$requiredEvent]) {
+    if ($null -eq $effectiveHookConfig.hooks.PSObject.Properties[$requiredEvent]) {
         throw "Project hook config missing event: $requiredEvent"
     }
     if ($null -eq $sourceHookConfig.hooks.PSObject.Properties[$requiredEvent]) {
@@ -113,7 +126,7 @@ foreach ($requiredEvent in $requiredEvents) {
     }
 }
 
-if (-not (Test-FixtureFileHashEqual -SourcePath $sourceHookConfigPath -TargetPath $hookConfigPath)) {
+if ((-not $sourceHookConfigIsRenamedMarker) -and (-not (Test-FixtureFileHashEqual -SourcePath $sourceHookConfigPath -TargetPath $hookConfigPath))) {
     throw "Hook source/deployed config mismatch: Codex\.codex\hooks.json -> .codex\hooks.json"
 }
 if (-not (Test-FixtureFileHashEqual -SourcePath $sourceHookPath -TargetPath $hookPath)) {
@@ -123,7 +136,7 @@ Write-Host "[OK] hook source/deployed sync"
 Assert-HookScriptAsciiOnly -HookScriptPaths @($sourceHookPath, $hookPath)
 Write-Host "[OK] hook script ASCII guard"
 
-foreach ($eventProperty in $hookConfig.hooks.PSObject.Properties) {
+foreach ($eventProperty in $effectiveHookConfig.hooks.PSObject.Properties) {
     foreach ($group in @($eventProperty.Value)) {
         foreach ($handler in @($group.hooks)) {
             if ($handler.type -ne 'command') {
@@ -136,7 +149,11 @@ foreach ($eventProperty in $hookConfig.hooks.PSObject.Properties) {
         }
     }
 }
-Write-Host "[OK] hooks.json"
+if ($sourceHookConfigIsRenamedMarker) {
+    Write-Host "[OK] hooks.delete renamed-hook marker"
+} else {
+    Write-Host "[OK] hooks.json"
+}
 
 $fixtures = @(Get-ChildItem -LiteralPath $fixtureRoot -Filter '*.json' -File | Sort-Object Name)
 if ($fixtures.Count -eq 0) {

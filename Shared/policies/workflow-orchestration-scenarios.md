@@ -93,7 +93,7 @@ trigger: Change delivery artifact returned, blocked, unverified, or closed-with-
 workflow_route: 03 or 04 -> 06, review, memory/docs, completion, then 09.
 operation_mode: full.
 board_state: formal-write for integration, then eligible validation/review/memory stations.
-dispatch wave 1: captain protected integration of returned change delivery artifact.
+dispatch wave 1: authorized change application or receipt of returned change delivery artifact.
 previous-wave input: change delivery artifact and scoped authorization.
 next-wave start condition: integrated change or recorded blocked/unverified state.
 dispatch wave 2: validation and memory/docs attribution.

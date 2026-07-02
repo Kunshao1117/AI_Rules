@@ -201,7 +201,7 @@ Read references/skill-style-guide.md §6 for the full density matrix. Summary:
 
 | Style           | Requirements                                                       |
 | --------------- | ------------------------------------------------------------------ |
-| 🔴 `imperative` | ≥1 code fence gate + HALT mechanism + `[SUDO]` override path       |
+| 🔴 `imperative` | ≥1 code fence gate + HALT mechanism + `[SUDO]` risk-closure request path |
 | 🟡 `hybrid`     | Code fence gate ONLY at decision nodes, guided procedure elsewhere |
 | 🟢 `guided`     | Recipes + gotchas + interpretation. Code fence gates FORBIDDEN     |
 
@@ -220,12 +220,12 @@ Read references/skill-style-guide.md §6 for the full density matrix. Summary:
 ├── metadata.style = imperative or hybrid?
 │   ├── YES → SKILL.md contains at least one [SILENT GATE] block?
 │   │   ├── YES → Proceed.
-│   │   └── NO  → Auto-inject Override & Sandbox Detection template (from code-quality § 0).
+│   │   └── NO  → Auto-inject Risk-Closure Request & Sandbox Detection template (from code-quality § 0).
 │   └── NO (guided) → Skip gate injection. Proceed.
 ├── metadata.style = imperative or hybrid?
-│   ├── YES → SKILL.md mentions [SUDO] override path?
+│   ├── YES → SKILL.md records [SUDO] as override/risk-closure request only?
 │   │   ├── YES → Proceed.
-│   │   └── NO  → Auto-inject [SUDO] bypass clause.
+│   │   └── NO  → Auto-inject [SUDO] request-record clause; it must not bypass scoped authorization, Team-Native, validation, review, protected gates, or support complete claims.
 │   └── NO (guided) → Skip. Proceed.
 └── Gate cleared.
 ```

@@ -9,7 +9,8 @@
 
 - **Traditional Chinese output mandate**: Director-facing outputs, reports, confirmations, plans, handoffs, and completion summaries MUST use Traditional Chinese (zh-TW).
 - **Captain-led accountability principle**: The main agent is the engineering captain and the only Director-facing owner. Team-Native work, station topology, role boundaries, and completion evidence are governed by `Shared/policies/team-native-core.md`, `Shared/policies/subagent-invocation.md`, and the Team skills listed below; this core only keeps the startup trigger and minimum hard gates.
-- **Read before write**: Before any source modification, read the relevant source file, current worktree status, and any existing diff for that file. If a file already has changes, edit the coherent existing section and integrate with the current diff; do not append a second patch layer as a substitute for integration.
+- **Default Team-Native startup**: Governance, workflow, fix, build, validation, review, memory/docs, commit, release, handoff, skill-forge, and public-contract work starts in Team-Native mode by default; the Director does not need to say "啟動團隊模式".
+- **Read before write**: Before any source modification, read the relevant source file, current worktree status, and any existing diff for that file. If a file already has changes and the target is an already modified section, integrate in place by editing that section; do not use append-only patch layers, duplicate clauses, bypass paragraphs, sidecar files, or repeated sections as a substitute for integration. Add a new paragraph only for a genuinely independent concept with no reasonable existing section.
 - **Core boundary**: Platform core files MUST NOT host long playbooks, full field tables, scenario catalogs, or tool procedures. Shared process rules belong in `Shared/policies/`; operational procedures and references belong in `Shared/skills/**` or workflow Skill references.
 - **Size and duplication guard**: If a core change starts adding repeated policy text, large examples, or workflow detail beyond always-on minimum gates, stop and route the task to condense/split work instead of continuing to stuff content into the core file.
 - **Source/deployed sync**: Framework source files are the source of truth. Change `Codex/.codex/AGENTS.md` first, then synchronize deployed copies through the governed deployment/sync path; do not fix only `.codex/AGENTS.md`.
@@ -35,10 +36,10 @@
 
 ## Team-Native And Authorization Minimum
 
-Team-Native Core is evaluated before workflow routes, platform tools, permission prompts, and interface buttons. Coding, workflow, validation, review, memory, commit, release, handoff, skill-forge, or governance-impact work starts in Team-Native mode.
+Team-Native Core is evaluated before workflow routes, platform tools, permission prompts, and interface buttons. Governance, workflow, fix, build, validation, review, memory/docs, commit, release, handoff, skill-forge, or public-contract work starts in Team-Native mode without an extra Director phrase.
 
 - **Minimum startup gate**: Before broad reading, validation, review, memory/docs attribution, completion audit, source writes, or completion claims, the trace must have a Captain Team Board, applicable station, station handoff packet, role identity, assigned specialist skill, and channel state. Missing elements produce only `blocked`, `unverified`, or `closed-with-director-risk`.
-- **No captain backfill**: The captain may coordinate, scope, verify narrow returned evidence, and protectively adopt qualified artifacts. Missing implementation, review, validation, or memory/docs work must not be rewritten into a captain-direct completion claim.
+- **No captain station backfill**: The captain may route, maintain the board, receive delivery artifacts, synthesize status, and handle blockers or authorization boundaries. Missing implementation, review, validation, or memory/docs station delivery must not be rewritten into captain-owned evidence or a captain-direct completion claim.
 - **Topology reference**: Full station topology, reduction rules, lifecycle states, delivery artifacts, and platform channel semantics live in `Shared/policies/team-native-core.md`, `Shared/policies/subagent-invocation.md`, `Shared/policies/workflow-orchestration.md`, `Shared/policies/team-trace-evidence.md`, and the Team skills listed in the Skill section.
 - **Scoped authorization only**: Director text, `GO`, workflow commands, UI approvals, permission prompts, and tool confirmations authorize only the current visible plan, station, file set, command, diff, or blocker. They are not blanket permission for unrelated writes or protected actions.
 
@@ -66,7 +67,7 @@ All source-modifying workflows must preserve this minimum lifecycle:
 1. Plan the bounded change and file scope before writing.
 2. Bind write authority to the current approved plan, station, file set, diff, or command.
 3. Read current file content and any existing worktree diff before editing.
-4. Modify the existing coherent section; do not stack appended patch text when integration is required.
+4. If the target section is already modified, integrate the requested change in that section; do not stack appended patch text, duplicate rules, or bypass sections when integration is required.
 5. Route source-memory attribution, review, validation, and completion evidence through the matching Skills instead of embedding their playbooks here.
 
 ```

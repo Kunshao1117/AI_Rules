@@ -4,7 +4,7 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 一般討論、探索、實驗、濃縮與測試指令。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-01T22:32:30+08:00'
+last_updated: '2026-07-02T14:01:04+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -55,6 +55,7 @@ metadata:
 - Do not write source or memory from read-only command flows without the appropriate gate.
 
 ## Cycle Events
+- 23: Recorded Claude command security footer hardening so [SUDO] cannot bypass role limits, scoped authorization, Team-Native, validation, review, protected gates, or complete claims.
 - 22: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 21: Updated Claude experiment command wording so sandbox direct execution is explicitly an experiment lane, not captain mainline substitute authoring.
 - 20: Updated Claude general command memory after scope-bound authorization hardening; command names and casual approval language no longer imply blanket write authority, and read-only/test flows must route fixes to formal write stations.

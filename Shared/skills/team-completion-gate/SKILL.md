@@ -59,7 +59,7 @@ Read these sources first:
 | Validation | Non-mutating validation passed, or blocked/unverified reason and smallest next validation path are named. |
 | Review | Independent review exists from a role that did not author the change; missing independent review blocks full completion. |
 | Role separation | Implementation, validation, review, memory/docs, and completion boundaries remain separate. |
-| Captain integration | Captain work is protective adoption/merge of returned qualified artifacts, not primary reauthoring. |
+| Captain boundary | Captain work is routing, delivery receipt, board/status synthesis, blocker/conflict/authorization handling, protected gates, and Director-facing reporting; it is not implementation, validation, review, or memory/docs attribution evidence. |
 | Trace | Required board, station, handoff, role, channel, delivery, and completion trace exists or missing parts are named as non-complete. |
 | Route/state separation | Routes/channels/forms are not mixed with blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk states. |
 | Sync | Source/deployed or generated/runtime pairs have sync direction and parity evidence when relevant. |
