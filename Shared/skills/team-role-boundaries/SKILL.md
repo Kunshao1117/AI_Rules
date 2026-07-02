@@ -38,8 +38,9 @@ Read these sources first:
 
 - Director request and approved scope.
 - Captain board row for the station.
-- Handoff packet with loaded skill refs, allowed tools, forbidden actions, read
-  scope, and stop condition.
+- Handoff packet with station mode, context visibility, handoff ownership,
+  loaded skill refs, allowed tools, forbidden actions, read scope, and stop
+  condition.
 - Prior delivery artifact when the station depends on one.
 
 ## Specialist Role Exclusivity
@@ -65,6 +66,10 @@ Retain or reuse a role instance only when the same station, role, delivery
 artifact, dispatch wave, and role boundary continue. Crossing to another role
 closes the old station and opens a new role instance.
 
+Changing `station_mode`, changing `handoff_ownership`, or moving from
+specialist deep-read to captain-owned gate closes the old role instance unless
+the same role, station, delivery artifact, wave, and boundary remain intact.
+
 ## Role Rules
 
 | Role ID | Allowed | Forbidden |
@@ -73,13 +78,13 @@ closes the old station and opens a new role instance.
 | `scope-impact` | Map files, workflows, memory, docs, generated copies, dependencies, and regression surface. | Implement changes, approve scope expansion, mutate files or memory. |
 | `external-research` | Gather current official or primary-source evidence and map it to the local decision. | Edit source, install packages, mutate external systems, decide final acceptance. |
 | `architecture-contract` | Define boundaries, alternatives, interfaces, migration, compatibility, and risk. | Write production changes, hide tradeoffs, approve implementation. |
-| `change-delivery` | Produce isolated change delivery or text change delivery artifact only. | Review own work, mutate memory, commit, push, release, deploy, install, or external state. |
+| `change-delivery` | Produce isolated or text change delivery artifacts, or own a scoped `change-application` station that applies a returned artifact to the main worktree when `station_mode: change-application`, `handoff_ownership: station-owned`, and authorization phase is `change-application`. | Review own work, write outside the exact station scope, mutate memory, commit, push, release, deploy, install, or external state. |
 | `validation` | Run or classify non-mutating checks and validation evidence. | Repair implementation, approve quality, change evidence after failure. |
 | `review` | Judge requirement fit, correctness, maintainability, evidence integrity, and regression risk. | Implement the reviewed change, self-approve, mutate files. |
 | `security-reliability` | Classify secrets, authorization, data integrity, abuse, reliability, observability, rollback, and operational risk. | Expose secrets, mutate protected state, implement feature changes, approve release mutation. |
 | `memory-docs` | Attribute memory, documentation, index, handoff, and generated-copy impact as evidence. | Edit memory cards, call memory commit, mutate source, decide final acceptance. |
 | `release-completion` | Check readiness, sync, residual risk, handoff, validation, review, and memory/docs evidence. | Final acceptance, memory write, git, tag, release, deploy, install. |
-| `captain` | Route, supervise board state, receive delivery artifacts, synthesize status, handle blockers/conflicts/authorization boundaries, own protected gates, and report. | Replace specialist deep-read, perform parallel context-expanding reads while members work, re-scan or re-check member scope, primarily author implementation/review/validation/memory attribution when a delivery route exists, hide missing evidence, rewrite member output as captain evidence, or claim full completion from substitute authoring. |
+| `captain` | Route, supervise board state, receive delivery artifacts, synthesize status, handle blockers/conflicts/authorization boundaries, own protected gates only when the platform cannot delegate that gate to a station, and report. | Replace specialist deep-read, perform parallel context-expanding reads while members work, re-scan or re-check member scope, enter a protected captain gate while a station-owned `change-application` route is available, primarily author implementation/review/validation/memory attribution when a delivery route exists, hide missing evidence, rewrite member output as captain evidence, or claim full completion from substitute authoring. |
 
 ## Separation Requirements
 
@@ -90,6 +95,9 @@ Keep these separations intact even when a task is small:
 - Review judges without authoring the reviewed deliverable.
 - Memory/docs attributes impact and proposed updates without mutating memory.
 - Completion audits evidence without becoming final captain acceptance.
+- Main-worktree change application is a formal implementation station when
+  station-owned; it must not become captain work unless the platform cannot
+  delegate the physical write and the board records a protected captain gate.
 - Captain receipt of returned artifacts is not implementation, validation,
   review, or memory/docs evidence; captain substitute authoring is blocked by
   default and can only close as closed-with-director-risk when explicitly
@@ -119,11 +127,15 @@ Before accepting a delivery artifact:
 5. Reject artifacts that mutate memory, git, releases, deployments, installs, or
    external state.
 6. Confirm authorization fields exist for any write-capable or protected phase.
-7. Keep execution routes/channels separate from blocked, unverified, standby,
+7. Confirm `station_mode`, `context_visibility`, and `handoff_ownership` are
+   present for every applicable formal station.
+8. Reject artifacts that rely on missing lifecycle or visibility fields while
+   claiming `complete`.
+9. Keep execution routes/channels separate from blocked, unverified, standby,
    unavailable, not-authorized, and closed-with-director-risk states.
-8. Confirm source/deployed pairs record sync direction and parity evidence when
+10. Confirm source/deployed pairs record sync direction and parity evidence when
    generated or deployed copies are touched.
-9. Mark missing separation as blocked, unverified, or closed-with-director-risk;
+11. Mark missing separation as blocked, unverified, or closed-with-director-risk;
    it cannot support `complete`.
 
 ## Output

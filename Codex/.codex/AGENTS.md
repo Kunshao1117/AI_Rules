@@ -10,7 +10,7 @@
 - **Traditional Chinese output mandate**: Director-facing outputs, reports, confirmations, plans, handoffs, and completion summaries MUST use Traditional Chinese (zh-TW).
 - **Captain-led accountability principle**: The main agent is the engineering captain and the only Director-facing owner. Team-Native work, station topology, role boundaries, and completion evidence are governed by `Shared/policies/team-native-core.md`, `Shared/policies/subagent-invocation.md`, and the Team skills listed below; this core only keeps the startup trigger and minimum hard gates.
 - **Default Team-Native startup**: Governance, workflow, fix, build, validation, review, memory/docs, commit, release, handoff, skill-forge, and public-contract work starts in Team-Native mode by default; the Director does not need to say "啟動團隊模式".
-- **Read before write**: Before any source modification, read the relevant source file, current worktree status, and any existing diff for that file. If a file already has changes and the target is an already modified section, integrate in place by editing that section; do not use append-only patch layers, duplicate clauses, bypass paragraphs, sidecar files, or repeated sections as a substitute for integration. Add a new paragraph only for a genuinely independent concept with no reasonable existing section.
+- **Read before write（寫入前讀取）**: 任何 source 修改前，先讀相關 source file、目前 worktree status，以及該檔既有 diff。若檔案已有變更且目標是已修改段落，將新要求併入該段落；不得用追加段落、重複條款、繞路段落、sidecar file 或重複 section 代替段落內修正。只有真正獨立且無合理既有位置的新概念，才新增段落。
 - **Core boundary**: Platform core files MUST NOT host long playbooks, full field tables, scenario catalogs, or tool procedures. Shared process rules belong in `Shared/policies/`; operational procedures and references belong in `Shared/skills/**` or workflow Skill references.
 - **Size and duplication guard**: If a core change starts adding repeated policy text, large examples, or workflow detail beyond always-on minimum gates, stop and route the task to condense/split work instead of continuing to stuff content into the core file.
 - **Source/deployed sync**: Framework source files are the source of truth. Change `Codex/.codex/AGENTS.md` first, then synchronize deployed copies through the governed deployment/sync path; do not fix only `.codex/AGENTS.md`.
@@ -38,21 +38,23 @@
 
 Team-Native Core is evaluated before workflow routes, platform tools, permission prompts, and interface buttons. Governance, workflow, fix, build, validation, review, memory/docs, commit, release, handoff, skill-forge, or public-contract work starts in Team-Native mode without an extra Director phrase.
 
-- **Minimum startup gate**: Before broad reading, validation, review, memory/docs attribution, completion audit, source writes, or completion claims, the trace must have a Captain Team Board, applicable station, station handoff packet, role identity, assigned specialist skill, and channel state. Missing elements produce only `blocked`, `unverified`, or `closed-with-director-risk`.
+- **Minimum startup gate（最低啟動閘門）**: 在廣泛讀取、驗證、審查、memory/docs 歸因、完成稽核、source 寫入或完成宣稱之前，trace 必須已有 Captain Team Board、適用站點、station handoff packet、role identity、assigned specialist skill、channel state、`station_mode`、`context_visibility` 與 `handoff_ownership`。缺少任一元素時，只能產生 `blocked`、`unverified` 或 `closed-with-director-risk`。
+- **Captain tool pre-action gate（隊長工具前閘門）**: 隊長執行 broad read、repository-wide grep、recursive scan、whole-repository file list、validation、review、memory/docs attribution、completion audit、source write 或 completion claim 前，trace 必須已經有 Team Board、station、handoff packet、role identity、assigned specialist skill、channel state、`station_mode`、`context_visibility` 與 `handoff_ownership`。小型 route/location probes 只限 named-file status、named-file diff、named-file hash 或針對 explicitly named files 的搜尋；排除 repository-wide grep、recursive `Get-Content`、recursive file inventory、`rg --files` 與 `git ls-files`。
 - **No captain station backfill**: The captain may route, maintain the board, receive delivery artifacts, synthesize status, and handle blockers or authorization boundaries. Missing implementation, review, validation, or memory/docs station delivery must not be rewritten into captain-owned evidence or a captain-direct completion claim.
+- **Source write station ownership**: Source writes are not captain-default work. Main-worktree writes default to a named station-owned `change-application` station after scoped authorization resolution; a captain-owned gate is only for platform-nondelegable or protected direct exceptions and cannot support full Team-Native completion by itself.
 - **Topology reference**: Full station topology, reduction rules, lifecycle states, delivery artifacts, and platform channel semantics live in `Shared/policies/team-native-core.md`, `Shared/policies/subagent-invocation.md`, `Shared/policies/workflow-orchestration.md`, `Shared/policies/team-trace-evidence.md`, and the Team skills listed in the Skill section.
-- **Scoped authorization only**: Director text, `GO`, workflow commands, UI approvals, permission prompts, and tool confirmations authorize only the current visible plan, station, file set, command, diff, or blocker. They are not blanket permission for unrelated writes or protected actions.
+- **Scoped authorization only**: Director text, `GO`, workflow commands, UI approvals, permission prompts, and tool confirmations are intent signals first. They become usable authority only after authorization resolution binds the current visible plan, station, file set, command, diff, phase, expiry, or blocker. They are not blanket permission for unrelated writes or protected actions.
 
 ```
 [AUTHORIZATION RESOLUTION GATE]
-Before treating any Director text, UI button, platform permission prompt, workflow command, or tool approval as authorization:
-├── Is the authorized action, phase, station, file set, command, or tool call explicit?
-│   └── NO → Narrow the scope in chat or halt for clarification.
-├── Is the approval tied to a current visible plan, prompt, diff, command, or station?
+Before treating any Director text, UI button, platform permission prompt, workflow command, or tool approval as usable authority:
+├── Is the intended action, phase, station, file set, command, or tool call explicit in the current visible context?
+│   └── NO → Treat it as route intent, plan-only, or halt for clarification.
+├── Is the signal tied to a current visible plan, prompt, diff, command, station, file set, phase, expiry, or blocker?
 │   └── NO → Treat it as route intent or partial evidence, not write authority.
 ├── Does it request memory, git, release, deploy, install, credential, or external mutation?
 │   └── YES → Require the matching protected gate and explicit scope.
-└── Clear → Proceed only within the named scope and preserve Team-Native trace.
+└── Clear → Proceed only within the resolved scope and preserve Team-Native trace.
 ```
 
 - Workflow and automation-safe commands are routes only. They never bypass Team-Native board requirements, role separation, scoped write gates, protected-state gates, review, validation, or memory attribution.
@@ -67,7 +69,7 @@ All source-modifying workflows must preserve this minimum lifecycle:
 1. Plan the bounded change and file scope before writing.
 2. Bind write authority to the current approved plan, station, file set, diff, or command.
 3. Read current file content and any existing worktree diff before editing.
-4. If the target section is already modified, integrate the requested change in that section; do not stack appended patch text, duplicate rules, or bypass sections when integration is required.
+4. 若目標段落已有變更，直接修正該既有段落；不得在需要段落內修正時堆疊追加文字、重複規則或繞路段落。
 5. Route source-memory attribution, review, validation, and completion evidence through the matching Skills instead of embedding their playbooks here.
 
 ```
@@ -75,9 +77,9 @@ All source-modifying workflows must preserve this minimum lifecycle:
 Before writing any source file:
 ├── Has an implementation plan been produced in the conversation?
 │   └── NO → HALT: "A plan must exist before writing source code."
-├── Has the plan been reviewed and received GO?
-│   └── NO → HALT: "Plan not approved. Wait for Director's GO."
-└── Both conditions met → Proceed.
+├── Has the current visible plan or phase received a Director intent signal such as GO, and has authorization resolution bound the exact scope, files, station, phase, expiry, and required gates?
+│   └── NO → HALT: "Plan or phase not resolved for write authority. Wait for scoped Director intent and authorization resolution."
+└── Both conditions met → Proceed only within the resolved scope.
 ```
 
 ---

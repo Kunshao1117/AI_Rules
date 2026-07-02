@@ -59,6 +59,7 @@ any of those changes.
 
 Before the captain starts a specialist channel, the packet must be
 startup-complete: `handoff_packet_id`, `role_id`, `role_instance_id`,
+`station_mode`, `context_visibility`, `handoff_ownership`,
 `assigned_specialist_skill`, `read_scope`, `allowed_tools`,
 `forbidden_actions`, channel state (`requested_execution_channel`,
 `channel_capability`, and `channel_invocation_status`, or an explicit
@@ -73,6 +74,7 @@ handoff_packet_id:
 board_id:
 station_family:
 formal_station:
+station_mode:
 substation_task:
 member_assignment:
 role_id:
@@ -80,12 +82,14 @@ role_instance_id:
 exclusive_task_scope:
 assigned_specialist_skill:
 loaded_skill_refs:
+handoff_ownership:
 one_concrete_task:
 allowed_inputs:
 read_scope:
 allowed_paths_or_resources:
 deep_read_scope:
 captain_coordination_read_scope:
+context_visibility:
 unread_scope:
 allowed_tools:
 forbidden_actions:
@@ -112,6 +116,17 @@ handoff_summary:
 The packet inherits operation mode, board state, authorization fields, phase,
 dispatch wave, platform mode, and completion condition from the board row in
 `team-task-board`. Do not duplicate the complete board field set here.
+
+The packet is not startup-complete when `station_mode`, `context_visibility`, or
+`handoff_ownership` is missing for an applicable formal station. Missing fields
+keep the station blocked or unverified and cannot support a complete trace.
+
+For `station_mode: change-application`, the packet must also prove
+`handoff_ownership: station-owned` by default, authorization phase
+`change-application`, exact source file allowlist, dirty-diff read requirement,
+and forbidden protected actions. `handoff_ownership: captain-owned-gate` is
+allowed only when the platform cannot delegate the physical write or protected
+tool call and the board records the direct exception.
 
 `handoff_packet_id` is canonical. `dispatch_packet_id` may appear only as a
 legacy alias in returned artifacts.
@@ -160,6 +175,7 @@ Record startup monitoring for every packet:
 | Small read-only evidence | 2 to 5 minutes |
 | Broad file or external research | 5 to 12 minutes |
 | Isolated change delivery | 10 to 20 minutes |
+| Authorized change-application | 5 to 15 minutes |
 | Validation command branch | Command timeout plus 2 minutes |
 
 Thresholds are monitoring defaults, not automatic failure claims. If setup
@@ -199,6 +215,9 @@ delivery artifact skill.
 - A packet without loaded skill references is not a formal handoff.
 - Captain coordination read is not implementation, validation, review,
   memory/docs attribution, or completion evidence.
+- A main-worktree write packet is not captain-owned by default; it is a
+  station-owned `change-application` packet unless platform capability blocks
+  delegation and the board explicitly routes to a protected captain gate.
 - Missing work routes back to an eligible station or closes as blocked,
   unverified, or closed-with-director-risk.
 

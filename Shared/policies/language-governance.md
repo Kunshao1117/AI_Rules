@@ -52,6 +52,14 @@ references.
 - Do not write in engineering shorthand and translate afterward. Design the
   Director-facing explanation in Traditional Chinese from the start.
 
+## 總監可讀規劃用語（Director-Facing Planning Vocabulary）
+
+- 總監可讀的計劃、藍圖、任務板、站點報告、治理規則、交接、完成摘要與風險說明，在描述唯讀證據處理或寫入階段時，不得使用總監指定禁用詞。
+- 唯讀證據處理依情境使用 `統整`、`彙整`、`歸納` 或 `收束`。這些詞只描述證據處理，不暗示 source mutation。
+- 正式寫入階段依情境使用 `套用`、`寫入`、`同步` 或 `變更套用 gate`。這些詞必須有 resolved scope、station ownership、file allowlist、authorization state 與 validation route。
+- 總監可讀文字必須中文先行。英文只可作為 canonical identifiers、file names、command tokens、evidence excerpts 或 exact platform/tool labels，且需搭配繁中說明。
+- 若精確證據本身含有總監指定禁用詞，優先用 file/line evidence 加繁中描述，不在總監可讀 prose 重複該詞；除非總監明確要求 exact quote。
+
 ## Workflow And Skill Reference Rule
 
 - Before a workflow or skill applies a language, output-layer, memory-language,

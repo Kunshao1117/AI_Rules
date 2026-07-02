@@ -49,6 +49,7 @@ Director instruction
 -> station set
 -> dispatch wave
 -> station handoff packet
+-> station mode, context visibility, and handoff ownership recorded
 -> channel capability and channel invocation status
 -> returned delivery artifact or blocked/unverified/standby state
 -> captain receipt, board update, blocker/conflict/authorization handling
@@ -70,12 +71,21 @@ closed-with-director-risk station state; it does not downgrade the workflow to
 captain-direct execution.
 
 Small read-only probes are permitted before the formal board only when needed
-to identify the route or locate the right files. They must stay narrow and
-non-mutating. Broad reads, recursive scans, repository-wide grep, validation,
-review, implementation, memory/docs attribution, and completion claims require
-the formal sequence above. If a hook lets a broad read proceed for context
-recovery, it is still only read-only context until a specialist deep-read
-station or a recorded direct exception turns it into evidence.
+to identify the route or locate explicitly named files. They must stay narrow,
+non-mutating, and non-evidence-producing: named-file status, named-file diff,
+named-file hash, or a search constrained to explicitly named files. Small
+probes explicitly exclude repository-wide grep, `git grep` or `rg` against the
+repository root, recursive `Get-Content`, recursive `Get-ChildItem` used as a
+file inventory, `rg --files`, `git ls-files`, whole-repository file lists,
+validation, review, implementation, memory/docs attribution, and completion
+claims.
+
+Broad reads, recursive scans, repository-wide grep, validation, review,
+implementation, memory/docs attribution, and completion claims require the
+formal sequence above before the captain starts or treats output as evidence.
+If a hook or platform supplies broad context before that trace exists, it
+remains non-authorizing route context until a specialist station returns
+evidence or the board records a direct exception with residual state.
 
 ## Board-State Boundary
 
@@ -83,7 +93,7 @@ station or a recorded direct exception turns it into evidence.
 |---|---|---|
 | `draft board` | Pre-GO planning, candidate station list, assumptions, and proposed dispatch waves. | Draft board cannot dispatch, spawn, or open formal specialists. Draft evidence cannot satisfy formal evidence eligibility. |
 | `formal-readonly` | Read-only evidence, source/doc deep-read, external research, validation planning, review evidence, and standby stations. | No-write does not mean no-team. Read-only work cannot write source, memory, git, release, deployment, install, or external state. |
-| `formal-write` | GO-backed change delivery, authorized change application, validation, review, memory/docs delivery, and completion audit inside the authorized scope. | Formal-write is not blanket authority; each phase keeps its own authorization source, target, scope, evidence, expiry, and resolution state. |
+| `formal-write` | Resolved-scope change delivery, authorized change application, validation, review, memory/docs delivery, and completion audit inside the authorized scope. | Formal-write is not blanket authority; each phase keeps its own authorization source, target, scope, evidence, expiry, and resolution state. |
 
 ## Operation Mode
 
@@ -119,6 +129,11 @@ formal evidence. The packet names the assigned specialist skill, role identity,
 loaded skill refs, read scope, forbidden actions, output artifact format, stop
 condition, startup monitoring, and standby reason when applicable.
 
+The handoff record must include `station_mode`, `context_visibility`, and
+`handoff_ownership` for every applicable formal station. Missing lifecycle or
+visibility fields keep the station blocked or unverified and cannot support
+completion claims.
+
 Board field requirements stay in `Shared/skills/team-task-board/SKILL.md`, and
 task trace audit fields stay in `Shared/policies/team-trace-evidence.md`.
 Workflow entries must cite those sources instead of copying the full board or
@@ -134,7 +149,7 @@ apply the matching preset below:
 |---|---|---|
 | Intake and exploration | 00, 01 | Direct only for pure conversation. Evidence-bearing work upgrades to formal-readonly with bounded source, research, or counter-evidence stations. |
 | Architecture and diagnosis | 02, 07 | Formal-readonly for intent, counter-evidence, architecture, impact, and root-cause evidence. Route to build, fix, experiment, or audit when writes or broader evidence are needed. |
-| Change production | 03-1, 03, 04, 12 | Formal-write only after scoped GO. Implementation produces a change delivery artifact, then validation, review, memory/docs, and completion run in later eligible waves. |
+| Change production | 03-1, 03, 04, 12 | Formal-write only after scoped authorization resolution. Implementation produces a change delivery artifact, then validation, review, memory/docs, and completion run in later eligible waves. |
 | Validation and audit | 06, 08, 08-1, 08-2, 08-3, 10 | Read-only validation/audit stations do not repair core code. Failed validation routes back to fix, debug, build, or audit; audit report follows inventory and logic evidence. |
 | Knowledge and closeout | 05, 09, 11 | Source memory/docs, commit prep, and handoff use evidence and completion stations. Commit, push, release, deployment, and memory commit remain separate protected phases. |
 
@@ -205,6 +220,8 @@ closed-with-director-risk, not as complete:
   `closed-with-director-risk` is used as an execution route instead of a state.
 - Source/deployed pairs are changed without recorded sync direction and parity
   evidence.
+- Formal station work claims completion without `station_mode`,
+  `context_visibility`, and `handoff_ownership`.
 
 ## Entry Minimum Reference
 

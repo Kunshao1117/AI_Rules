@@ -20,7 +20,7 @@ metadata:
 ## HITL Boundary
 
 - Read-only browser inspection, screenshots, accessibility checks, and test result reporting proceed silently only when they remain non-mutating.
-- Applying browser evidence branch proposed code changes, writing files, updating memory, installing packages, pushing commits, or modifying external services requires Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Applying browser evidence branch proposed code changes, writing files, updating memory, installing packages, pushing commits, or modifying external services requires a scope-bound Director intent signal, authorization resolution, the matching protected gate, and an `[MCP HITL GATE]` justification block when the platform requires it.
 - Discovery of browser or MCP tool schemas is not permission to execute mutating tools.
 
 ## Trigger Conditions (觸發條件)
@@ -65,12 +65,12 @@ When requesting a browser evidence branch:
 After a browser evidence branch returns required change items:
 （瀏覽器證據分支回傳必須處理的變更項目後）
 
-1. Master Agent must not apply proposed changes unless the governing workflow is already in a writable phase and Director `GO` has been granted.
-   （主代理只有在可寫階段且已取得 GO 時，才能套用變更）
+1. Browser evidence branch must not apply proposed changes. If the result requires source modification, return failure evidence and route the item to the responsible change-delivery station or authorized change-application gate.
+   （瀏覽器證據分支不得套用變更；若結果需要修改來源，回傳失敗證據並路由到變更站點或已授權的變更套用 gate）
 2. Run automated tests if project has them.
    （如有自動測試則執行）
-3. **Auto-Pass**: Linter + Tests pass 100% -> additional human review is skipped only after required Director `GO` / HITL gates are already satisfied.
-   （全通過時只允許略過額外人工審查；既有 GO / HITL 閘門仍必須滿足，且不得自行授權寫入）
+3. **Auto-Pass**: Linter + Tests pass 100% -> additional human review is skipped only after required authorization resolution, protected gates, and HITL gates are already satisfied.
+   （全通過時只允許略過額外人工審查；必要的授權解析、protected gates 與 HITL gates 仍必須滿足，且不得自行授權寫入）
 4. **Visual Authorization Gate**: UI changes MUST conclude with `/06_test` for visual verification.
    （UI 變更必須以視覺測試收尾）
 
@@ -125,8 +125,8 @@ Operator-path retention:
 
 ## Constraints (約束)
 
-- Browser evidence branch output is read-only evidence; Master Agent performs all physical writes.
-  （證據分支輸出為唯讀證據，實際寫入由主代理執行）
+- Browser evidence branch output is read-only evidence. Failed browser verification may create a required-change item, but source modification must return to a change-delivery station or authorized change-application gate; the main thread must not perform direct repair from browser failure evidence.
+  （瀏覽器證據分支輸出為唯讀證據；驗證失敗只能產生必修項目並回到變更站點或已授權的變更套用 gate，主線不得依瀏覽器失敗證據直接修補）
 - Server must be running and warmed up before requesting browser verification.
   （啟動瀏覽器驗證前確保伺服器已運行）
 

@@ -45,7 +45,7 @@ Record these objects separately before dispatch:
 | `formal_station` | Governed board row owning applicability, state, dependencies, and completion condition. | A station is a work container, not a person. |
 | `substation_task` | One concrete task inside a formal station. | Smallest dispatchable unit. |
 | `member_assignment` | One registered role instance assigned to one substation task. | A member assignment is not a station and cannot hold multiple task-scoped roles. |
-| `execution_channel` | Read-only evidence branch, browser evidence branch, CLI evidence branch, MCP read branch, platform adapter, isolated workspace, text artifact, or protected captain gate. | A channel is not a role source. |
+| `execution_channel` | Read-only evidence branch, browser evidence branch, CLI evidence branch, MCP read branch, platform adapter, isolated workspace, text artifact, station-owned authorized change-application gate, or captain-owned protected gate. | A channel is not a role source. |
 | `delivery_artifact` | Returned evidence, change delivery, memory/docs attribution, validation, review, or completion artifact. | Evidence for a task; not final captain acceptance. |
 
 Do not collapse these objects. Reduction is allowed only at substation task or
@@ -120,6 +120,7 @@ applicability
 station_state
 evidence_state
 station_lifecycle_state
+station_mode
 retention_reason
 conversation_health
 reuse_count
@@ -133,6 +134,7 @@ assigned_specialist_skill
 loaded_skill_refs
 domain_label
 handoff_packet_id
+handoff_ownership
 requested_execution_channel
 channel_capability
 channel_invocation_status
@@ -144,6 +146,7 @@ direct_exception
 replacement_evidence
 deep_read_scope
 captain_coordination_read_scope
+context_visibility
 unread_scope
 allowed_inputs
 allowed_tools
@@ -176,6 +179,26 @@ sync_evidence
 
 Trace audit fields that are not board-facing stay in
 `Shared/policies/team-trace-evidence.md`.
+
+`station_mode` records the station posture: `read-only`, `change-delivery`,
+`change-application`, `validation`, `review`, `memory-docs`, `completion`,
+`protected-gate`, or `not-applicable`.
+
+`context_visibility` records who actually saw the assigned scope:
+`specialist-deep-read`, `captain-coordination-only`, `shared-visible`,
+`unread`, or `not-applicable`.
+
+`handoff_ownership` records who owns the current handoff state:
+`station-owned`, `captain-owned-gate`, `returned-to-captain`, `reassigned`,
+`blocked`, `unverified`, or `not-applicable`.
+
+For main-worktree change application, `station-owned` is the default owner.
+`captain-owned-gate` is valid only when the platform cannot delegate the
+physical write or protected tool call to a station and the board records the
+direct exception.
+
+Missing any of these fields on an applicable formal station keeps the station
+blocked or unverified and cannot support `complete`.
 
 ## Board Header Template
 
@@ -213,8 +236,8 @@ Valid execution channels or delivery forms are:
 - `MCP read branch`
 - `isolated change delivery`
 - `text change delivery artifact`
-- `authorized change-application gate`
-- `protected captain gate`
+- `station-owned authorized change-application gate`
+- `captain-owned protected gate`
 
 State values such as `blocked`, `unverified`, `standby`, `unavailable`,
 `not-authorized`, `not-applicable`, and `closed-with-director-risk` are not
@@ -227,6 +250,9 @@ Use one assignment per substation task:
 ```text
 Station family:
 Formal station:
+Station mode:
+Context visibility:
+Handoff ownership:
 Substation task:
 Member assignment:
 Role:
@@ -245,6 +271,7 @@ The station handoff packet may add read scope, startup monitoring, dependencies,
 and channel state. Do not copy the whole board field list into the packet.
 Before dispatch, pair this assignment with a startup-complete handoff packet
 containing `handoff_packet_id`, `role_id`, `role_instance_id`,
+`station_mode`, `context_visibility`, `handoff_ownership`,
 `assigned_specialist_skill`, `read_scope`, `allowed_tools`, `forbidden_actions`,
 channel state, `delivery_artifact_type`, and `stop_condition`. Missing startup
 data keeps the station blocked or unverified and cannot support a complete team
@@ -257,7 +284,8 @@ Implementation work uses one of these forms:
 | Form | Meaning | Boundary |
 |---|---|---|
 | Isolated change delivery | Specialist modifies an isolated copy and returns diff/evidence. | No main worktree write, self-review, memory mutation, git, release, deploy, install, or external mutation. |
-| Text change delivery artifact | Specialist returns proposed edits with paths, rationale, evidence, risk, and memory impact. | No integration claim or review acceptance. |
+| Text change delivery artifact | 隊員回傳 proposed edits，包含 paths、rationale、evidence、risk、memory impact。 | 不可宣稱已套用、不可宣稱審查接受。 |
+| Authorized change-application gate | 隊員持有 `station_mode: change-application` 的正式站點，依已回傳交付件或明確 scope 套用主工作區 source 變更。 | 必須有 formal-write、authorization phase `change-application`、精確檔案 allowlist、dirty diff read、`handoff_ownership: station-owned`；不可自我審查、改記憶、同步 deployed、git、release、deploy、install 或外部狀態。 |
 | Captain substitute-authoring risk record | No qualified delivery route exists and the Director explicitly closes that risk. | Not change delivery and never full Team-Native completion. |
 
 Board-facing artifact formats:
@@ -312,12 +340,17 @@ strictly read-only and have a handoff packet. `formal-write` stations require
 scope-bound authorization for the write, change application, memory, git,
 release, deployment, install, or external-mutation phase.
 
+Change application defaults to a station-owned gate. Route it to a protected
+captain gate only when the platform cannot delegate the physical write or
+protected tool call; the board must record the platform limitation, exact scope,
+source artifact, direct exception, and residual state.
+
 ## Direct Exception Register
 
-A direct exception is allowed only for protected captain-owned gates, tool-only
-status actions, hot-path status checks with no independent evidence value,
-blocker/conflict/authorization handling, or Director-accepted captain substitute
-authoring recorded as non-complete risk.
+A direct exception is allowed only for protected captain-owned gates that cannot
+be delegated by the platform, tool-only status actions, hot-path status checks
+with no independent evidence value, blocker/conflict/authorization handling, or
+Director-accepted captain substitute authoring recorded as non-complete risk.
 
 If two or more evidence-oriented stations use direct exceptions, each row must
 name a station-specific reason, replacement evidence, residual state, and why
@@ -329,6 +362,8 @@ Before the board supports any completion claim, check:
 
 - Scope matches the approved file set and exclusions.
 - Authorization fields are present for every write/protected phase.
+- Applicable formal stations include `station_mode`, `context_visibility`, and
+  `handoff_ownership`; missing fields block `complete`.
 - Implementation change delivery, memory/docs delivery, validation, and review
   states are present or honestly blocked/unverified/risk closed.
 - Implementation and review are not owned by the same role instance.

@@ -12,7 +12,7 @@ metadata:
   role: writer
   memory_awareness: full
   tool_scope: ["filesystem:write", "terminal:test", "mcp:cartridge-system"]
-  human_gate: "GO required before writes"
+  human_gate: "scope-bound intent signal plus authorization resolution required before writes"
   automation_safe: false
 ---
 
@@ -39,16 +39,16 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Do not add copied Team-Native policy, board field lists, delivery artifact schemas, completion checklists, specialist lifecycle details, or full stage playbooks here.
 - Put durable governance in shared policies, reusable operating procedure in shared skills or references, and workflow stage details in `.agents/shared/workflow-stage-procedures.md`.
 - If a source/deployed pair exists, update both sides and verify hash or content parity before any completion claim.
-- If the target file already has worktree changes, read the current diff and integrate the still-valid section instead of appending a duplicate rule block.
+- 若目標檔案已有 worktree changes，先讀 current diff，將仍有效的要求併入既有段落，不得追加重複 rule block。
 
 ## Phase Order
 
 - Workflow row: `04`.
 - Procedure reference: `04 Fix` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Start from symptom and root cause; plan regression evidence; repair only the scoped cause after GO.
+- Route summary: Start from symptom and root cause; plan regression evidence; repair only the scoped cause after scoped authorization resolution.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a scope-bound intent signal has been resolved to the visible plan, station, file set, command, phase, expiry, and any required protected gate.
 
 ## Completion Boundary
 

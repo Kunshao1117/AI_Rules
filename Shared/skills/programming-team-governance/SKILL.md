@@ -57,10 +57,11 @@ memory/docs attribution, commit prep, release prep, or completion claims:
 4. Create or reuse the Captain Team Board from `team-task-board`.
 5. Assign stations and role-exclusive specialists before choosing execution channels.
 
-## 已變更檔案整合防線
+## 已變更檔案併修防線
 
-Before changing an already modified file, the captain or change-delivery station
-must run this guard:
+Before changing an already modified file, the role instance holding the current
+write station must run this guard. If the captain is the actor, record it as a
+direct exception or captain-owned gate, not default station work:
 
 1. Read the current diff and nearby source context for every file in the allowed
    scope.
@@ -140,9 +141,11 @@ full Team-Native completion.
    blocked, unverified, or risk-closed input from previous waves.
 6. Receive artifacts, update the board, and route formal checking to validation,
    review, memory/docs, or completion stations as applicable.
-7. Apply changes only through the authorized change-delivery station or
-   change-application gate; the captain must not rewrite returned artifacts as
-   captain-owned evidence.
+7. Apply changes only through a station-owned authorized change-application
+   station held by a named role instance, or through a recorded captain-owned
+   gate when the platform cannot delegate the write or a protected direct
+   exception applies; the captain must not rewrite returned artifacts as
+   captain-owned evidence or full completion.
 8. Run validation, independent review, memory/docs disposition, and completion
    gate as separate states before claiming completion.
 

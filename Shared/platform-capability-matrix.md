@@ -59,8 +59,9 @@ Captain-led programming governance is a `conditional` platform capability:
 平台能力路由必須先證明 Team-Native trace、Captain Team Board、assigned
 specialist skill、channel capability、channel invocation status（通道啟動狀態）、
 formal evidence eligibility、previous-wave input、next-wave start condition、
-specialist lifecycle、fast closeout lane、yellow classification、repair loop
-limit、operation_mode_reason、role_id、role_instance_id 與 exclusive_task_scope。
+specialist lifecycle、station_mode、context_visibility、handoff_ownership、
+fast closeout lane、yellow classification、repair loop limit、
+operation_mode_reason、role_id、role_instance_id 與 exclusive_task_scope。
 缺少這些證據時只能回報 unavailable、blocked、unverified 或
 closed-with-director-risk，不得 routine direct；不允許先開代理後補板，也不得宣稱
 完整團隊完成 / full team completion。
@@ -72,10 +73,10 @@ Large-file deep read routes to a bounded specialist station; the captain must no
 |---|---|---|
 | 任務板優先 (Board first) | source、workflow、validation、review、memory、commit、release、deploy、install、generated-copy 或 public-contract 工作都從 Captain Team Board 開始。 | `team-native-core.md` |
 | 操作模式 (Operation mode) | `daily` 是縮減證據模式；implementation、repair、cross-file governance、public-contract impact 與 protected readiness 需要 `full`。 | `team-native-core.md` |
-| 交接包 (Handoff packet) | 每個正式站點都需要 role identity、loaded skill refs、read scope、allowed tools、forbidden actions、channel state 與 stop condition。 | `team-station-handoff-packet` |
+| 交接包 (Handoff packet) | 每個正式站點都需要 role identity、loaded skill refs、read scope、station mode、context visibility、handoff ownership、allowed tools、forbidden actions、channel state 與 stop condition。 | `team-station-handoff-packet` |
 | 角色邊界 (Role boundary) | 一個 task-scoped role instance 只承接一個註冊 `role_id`；implementation、validation、review、memory/docs、completion 必須分離。 | `team-role-boundaries` |
-| 交付件 (Delivery artifact) | Implementation 只回傳 isolated change delivery 或 text change delivery artifact，並附 `memory_impact`；不得自審或改 protected state。 | `team-change-delivery-artifact` |
-| 隊長邊界 (Captain boundary) | 隊長負責派工、任務板維護、交付接收、阻塞/授權處理、狀態彙整與總監回報；正式檢查、validation、review、memory/docs 解讀留給各站點。 | `team-native-core.md` |
+| 交付件 (Delivery artifact) | Implementation 預設回傳 isolated change delivery 或 text change delivery artifact，並附 `memory_impact`；主工作區寫入必須另走具名 station-owned change-application 站點或已記錄 direct exception，不得自審或改 protected state。 | `team-change-delivery-artifact` |
+| 隊長邊界 (Captain boundary) | 隊長負責派工、任務板維護、交付接收、阻塞/授權處理、狀態彙整與總監回報；不得重寫隊員交付件當作自己實作，正式檢查、validation、review、memory/docs 解讀留給各站點。 | `team-native-core.md` |
 | 完成誠實性 (Completion honesty) | 缺 route、handoff、artifact、validation、review、memory/docs 或 parity evidence 時，只能以 `blocked`、`unverified` 或 `closed-with-director-risk` 關閉，不是 complete。 | `team-completion-gate` |
 
 派工前置閘門 / 任務類型閘門（Captain Trigger Gate）要求每個隊員派工包保留
@@ -103,13 +104,13 @@ authorization_resolution_state
 platform_mode_observed
 ```
 
-| 授權訊號 (Signal) | 授權範圍 (Authorizes) | 不授權項目 (Does not authorize) |
+| 授權訊號 (Signal) | 解析後可用範圍 (Resolved use) | 不授權項目 (Does not authorize) |
 |---|---|---|
 | 總監文字 (Director text) | 明名的可見計畫、站點、檔案集合、命令、階段、範圍與當前期限。 | 隱藏清理、無關檔案、後續階段或未明名 protected actions。 |
 | UI 同意 / 權限提示 | 畫面上精確顯示的 operation、path、command、tool 或 prompt scope。 | 其他工具、其他路徑、命令串或外部副作用。 |
 | Workflow / skill route | 工作流選擇、證據矩陣列與站點模板。 | 寫入權、protected mutation，或跳過 board/review/validation gates。 |
 | 平台模式 (Platform mode) | sandbox、approval、plan 或 agent mode 等能力脈絡。 | 平台模式本身不構成授權。 |
-| `GO` / continue | 目前可見的計畫、diff、命令、檔案集合、站點或阻塞點。 | Memory、git、release、deploy、install、credentials，或任何未限範圍的後續階段。 |
+| `GO` / continue | 作為目前可見計畫、diff、命令、檔案集合、站點或阻塞點的同意訊號；仍需 authorization resolution 後才可進入對應階段。 | Memory、git、release、deploy、install、credentials、protected gates、未顯示範圍、後續階段或 blanket write authority。 |
 
 Protected phases 彼此獨立。Implementation change delivery 不會授權 change application、memory write、memory commit、git、release、deploy、install、credential use、mutating MCP 或外部變更。
 
@@ -125,8 +126,8 @@ Protected phases 彼此獨立。Implementation change delivery 不會授權 chan
 | 操作者路徑證據 (Operator path evidence) | `adapter`: IDE、browser-capable agent、Gemini CLI、Gateway、logs。 | `native` + `adapter`: shell、hooks、browser、MCP、plugin host。 | `native` + `adapter`: terminal、browser、MCP、plugin host、preview/deploy tools。 |
 | 隊長制治理 (Captain-led governance) | `adapter` + `conditional`: 透過 IDE/workflow adapters 先建板。 | `native` + `adapter` + `conditional`: 透過 commands、subagents、hooks 先建板。 | `native` + `adapter` + `conditional`: 透過 skills、subagents、terminal、browser、MCP 先建板。 |
 | 子代理 / 通道 (Subagents / channels) | `adapter` + `conditional`: 建板後使用 Gemini 或 Antigravity adapters。 | `native` + `conditional`: 建板後使用 built-in、custom 或 plugin subagents。 | `native` + `conditional`: 建板後使用 Codex native 或 project agents。 |
-| 自動化安全工作流 (Automation-safe workflow) | `adapter`: metadata 與 workflow gate。 | `adapter`: metadata 與 slash-command gate。 | `native`: Automations 只適用唯讀路由；寫入仍需 GO。 |
-| 權限模型 (Permission model) | `adapter`: Role Lock Gate、`GO`、`[SUDO]` 請求紀錄。 | `native` + `adapter`: permission prompts 加 framework gates。 | `native` + `adapter`: approval/sandbox prompts 加 framework gates。 |
+| 自動化安全工作流 (Automation-safe workflow) | `adapter`: metadata 與 workflow gate。 | `adapter`: metadata 與 slash-command gate。 | `native`: Automations 只適用唯讀路由；任何寫入需完成 scoped authorization resolution。 |
+| 權限模型 (Permission model) | `adapter`: Role Lock Gate、intent signal、`[SUDO]` 請求紀錄。 | `native` + `adapter`: permission prompts 加 framework gates。 | `native` + `adapter`: approval/sandbox prompts 加 framework gates。 |
 | 記憶系統 (Memory system) | `adapter`: 共用 `.agents/memory/` 語義。 | `adapter`: 共用 `.agents/memory/` 語義。 | `adapter`: 共用 `.agents/memory/` 語義。 |
 
 記憶語義不因平台分叉。記憶卡品質欄位、證據狀態、衝突處理、替換規則與 mutation gates 是共用規則；平台差異只限 read/write tools、prompts 與 evidence collection routes。
@@ -140,7 +141,7 @@ Protected phases 彼此獨立。Implementation change delivery 不會授權 chan
 | 外部接地 (External grounding) | Search、browser agent、visual artifacts。 | Plan mode、subagents、batch reads、commands。 | Skills、official docs、sandbox/approval transcript、tools。 |
 | 操作證據 (Operator evidence) | Screenshots、recordings、IDE-visible state、logs。 | Tests、hooks、checkpoints、permission context。 | Terminal、browser、MCP、background tasks、sandbox/approval evidence。 |
 | 深層健檢證據 (Deep audit evidence) | Browser/visual/IDE evidence 對照盤點。 | Subagent、hook、command evidence 對照 endpoints。 | Skill、terminal、browser、MCP evidence 對照 endpoints。 |
-| 委派邊界 (Delegation boundary) | Board-first；read-only 與 adapter branches 不改 main worktree。 | Board-first；subagents/hooks 不取代 GO 或 captain decision。 | Board-first；subagents/tools 回傳 evidence 或 artifacts 供整合。 |
+| 委派邊界 (Delegation boundary) | Board-first；read-only 與 adapter branches 不改 main worktree。 | Board-first；subagents/hooks 不取代 GO 或 captain decision。 | Board-first；subagents/tools 回傳 evidence 或 artifacts 供隊長統整與路由；主工作區寫入預設由具名 station-owned change-application 站點承接，captain-owned gate 只限平台不可委派或 protected direct exception。 |
 | 缺證處理 (Missing evidence) | 記錄 search scope、alternate path 與 blocker。 | 記錄 permission、hook、credential 或 artifact gap。 | 記錄 tool、sandbox、login 或 artifact gap。 |
 
 ## 共用子代理呼叫政策 (Shared Subagent Invocation Policy)
@@ -161,7 +162,7 @@ Protected phases 彼此獨立。Implementation change delivery 不會授權 chan
 - Antigravity / Gemini: Gemini or Antigravity adapters, browser-capable agents,
   CLI evidence, plugin adapters, or text change delivery.
 
-MCP 仍是 captain-path tool surface。會變更狀態的 MCP 呼叫，需遵守與其他 mutation 相同的 GO、HITL、authorization 與 protected-action gates。
+MCP 仍是 captain-path tool surface。會變更狀態的 MCP 呼叫，需遵守與其他 mutation 相同的 intent signal、HITL、authorization resolution 與 protected-action gates。
 
 ## 共用語彙邊界 (Shared Vocabulary Boundary)
 
@@ -186,7 +187,7 @@ metadata:
   role: writer
   memory_awareness: full
   tool_scope: ["filesystem:write", "terminal:test", "mcp:cartridge-system"]
-  human_gate: "GO required before writes"
+  human_gate: "scope-bound intent signal plus authorization resolution required before writes"
   automation_safe: false
 ```
 
@@ -200,7 +201,7 @@ metadata:
 | `role` | 權限角色，例如 `reader`、`analyst`、`planner`、`worker`、`writer` 或 `sre`。 |
 | `memory_awareness` | `none`、`read` 或 `full`。 |
 | `tool_scope` | 最小必要工具域。 |
-| `human_gate` | 人類確認規則，例如 `none` 或 `GO required before writes`。 |
+| `human_gate` | 人類確認規則，例如 `none` 或 `scope-bound intent signal plus authorization resolution required before writes`。 |
 | `automation_safe` | `true` 只適用 automation-safe 唯讀工作流；寫入工作流是 `false`。 |
 
 ### 工具範圍語彙 (Tool Scope Vocabulary)
@@ -208,11 +209,12 @@ metadata:
 | 範圍 (Scope) | 含義 (Meaning) |
 |---|---|
 | `filesystem:read` | 只讀檔。 |
-| `filesystem:write` | 符合 human gate 與 authorization scope 後才可寫檔。 |
+| `filesystem:write` | 只有具名 station-owned authorized change-application 站點，或明確記錄的 captain-owned protected/direct exception gate，且符合 resolved scope、authorization phase、dirty-tree guard 與 protected gate 後才可寫主工作區。 |
+| `filesystem:write:isolated` | 只允許在受治理 fork、沙盒、隔離工作樹或指定 generated-copy 區域寫入；不得改主工作區。 |
 | `filesystem:write:logs` | 只寫 `.agents/logs/` 中繼報告。 |
 | `git:write` | 只有明確 git 授權與精確範圍後，才可 stage、commit 或 push。 |
 | `mcp:read` | 讀取 MCP resources、prompts、schemas 或 read-only state。 |
-| `mcp:<server>` | 使用指定 MCP server；mutating tools 仍需 GO / HITL gates。 |
+| `mcp:<server>` | 使用指定 MCP server；mutating tools 仍需 scope-bound intent signal / HITL gates、authorization resolution 與對應 protected gate。 |
 
 `lifecycle_phase: experiment` 是唯一 rapid-prototype 例外。它可在 discard/upgrade boundary 內使用 sandbox writes，但仍是 `automation_safe: false`，且不得暗示 production completion。
 
@@ -226,4 +228,4 @@ metadata:
 - `Shared/mcp-profiles/` 只提供 opt-in snippets。
 - MCP discovery 只能證明工具存在，不授權執行。
 - Gateway calls 必須包含 `workspace`；cartridge-system calls 也必須包含 `projectRoot`。
-- Automation-safe workflows 只能讀取 MCP resources/prompts/tool schemas。Mutating tools 必須停在對應 GO / HITL gate。
+- Automation-safe workflows 只能讀取 MCP resources/prompts/tool schemas。Mutating tools 必須停在對應 scope-bound intent signal / HITL gate，並完成 authorization resolution。

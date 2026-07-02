@@ -44,7 +44,7 @@ payloads or policy tables, not as the Director-facing explanation.
 | `operation_mode` | `daily` for reduced routine Team-Native work, or `full` for complete Team-Native work |
 | `operation_mode_reason` | Why daily mode is allowed, or why full mode is required |
 | `board_state` | draft or formal |
-| `implementation_authorization` | no-write, plan-only, GO-write, GO-push, release-authorized, or blocked |
+| `implementation_authorization` | no-write, plan-only, scope-resolved-write, scope-resolved-push, release-authorized, or blocked |
 | `go_evidence` | Prompt, workflow authorization, or blocked state |
 | `authorization_source` | Director prompt, captain board row, interface approval event, prior approved plan, or blocked/unverified source |
 | `authorization_target` | Exact target of the authorization, such as file allowlist, station, protected action, or external resource |
@@ -66,7 +66,7 @@ payloads or policy tables, not as the Director-facing explanation.
 | `channel_capability` | available, conditional, unavailable, or unverified |
 | `channel_invocation_status` | not-started, requested, running, returned, unavailable, blocked, or not-authorized |
 | `execution_route` | Actual channel or delivery form; never a status value such as blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk |
-| `execution_channel` | Native subagent, project custom agent, tool/MCP, command evidence, browser evidence, external research, isolated change delivery, text change delivery, protected captain gate, or authorized change-application gate |
+| `execution_channel` | Native subagent, project custom agent, tool/MCP, command evidence, browser evidence, external research, isolated change delivery, text change delivery, station-owned authorized change-application gate, or protected captain gate |
 | `tool_execution_envelope` | Structured carrier passed to a tool layer, or blocked/unverified reason when no envelope is available. |
 | `tool_execution_envelope_trust` | trusted, untrusted, blocked, unverified, or not-applicable. |
 | `tool_envelope_issuer` | Trusted issuer identity, or blocked/unverified reason. |
@@ -77,6 +77,9 @@ payloads or policy tables, not as the Director-facing explanation.
 | `station_state` | assigned, standby, running, returned, blocked, unverified, closed-with-director-risk, or not-applicable |
 | `evidence_state` | pending, returned, accepted, rejected, blocked, unverified, closed-with-director-risk, or not-applicable |
 | `station_lifecycle_state` | assigned, standby, retained, reused, handoff-required, closed, replaced, blocked, or not-applicable |
+| `station_mode` | Station posture: `read-only`, `change-delivery`, `change-application`, `validation`, `review`, `memory-docs`, `completion`, `protected-gate`, or `not-applicable` |
+| `handoff_ownership` | Current handoff owner: `station-owned`, `captain-owned-gate`, `returned-to-captain`, `reassigned`, `blocked`, `unverified`, or `not-applicable` |
+| `context_visibility` | Scope visibility: `specialist-deep-read`, `captain-coordination-only`, `shared-visible`, `unread`, or `not-applicable` |
 | `retention_reason` | Why the same specialist channel may continue, or why retention is not allowed |
 | `conversation_health` | clear, needs-handoff, stale, over-budget, role-conflict, or blocked |
 | `reuse_count` | Number of times the same specialist channel was reused for the same role and delivery artifact |
@@ -99,7 +102,7 @@ payloads or policy tables, not as the Director-facing explanation.
 | `delivery_artifact_status` | pending, returned, integrated, blocked, unverified, closed-with-director-risk, or not-applicable |
 | `author_role` | Registered specialist role that authored the delivery artifact, or blocked/unverified reason |
 | `source_input` | Prior delivery artifact, approved plan, file scope, trace entry, or blocked input used by this station |
-| `integrable_scope` | Exact scope the authorized change-application gate may apply from this delivery artifact; use none when it is evidence-only or blocked |
+| `integrable_scope` | Exact scope the station-owned authorized change-application gate may apply from this delivery artifact; use none when it is evidence-only or blocked |
 | `review_state` | not-started, pending, accepted, fix-required, blocked, unverified, accepted-risk, or not-applicable. accepted-risk is a review lifecycle judgment only; it is not a Team-Native station status, delivery artifact status, or completion status |
 | `validation_state` | not-started, pending, passed, failed, blocked, unverified, or not-applicable |
 | `memory_docs_state` | not-started, memory_delivery, blocked, unverified, closed-with-director-risk, or not-applicable |
@@ -129,9 +132,12 @@ payloads or policy tables, not as the Director-facing explanation.
   `allowed_tools`, `forbidden_actions`, channel state
   (`requested_execution_channel`, `channel_capability`, and
   `channel_invocation_status`, or an explicit blocked/unverified reason),
+  `station_mode`, `context_visibility`, `handoff_ownership`,
   `delivery_artifact_type`, and `stop_condition`. Missing any of these keeps
   the station blocked or unverified and cannot support a complete Team-Native
   trace.
+- Any completion claim missing `station_mode`, `context_visibility`, or
+  `handoff_ownership` for an applicable formal station is invalid.
 - `operation_mode: full`, governance-impact implementation, Doctor/Audit rule changes, routine audit rule readiness, and commit/release preparation require Team-Native trace evidence. Missing trace is a blocked Red audit finding, not a Yellow advisory.
 - A completion claim must expose parseable `stations`, `delivery_artifacts`, `role_instance_id`, `delivery_artifact_id`, and `direct_exceptions`. The values may close as blocked, unverified, closed-with-director-risk, or not-applicable only when the trace is not claiming full completion.
 - `completion_state` is limited to `complete`, `closed-with-director-risk`, `blocked`, `unverified`, or `not-applicable`. `completed`, `done`, `accepted-risk`, and other informal states must not pass as completion evidence.
@@ -143,6 +149,12 @@ payloads or policy tables, not as the Director-facing explanation.
   `tool_execution_envelope`, trusted issuer, signature, nonce, and matching
   `execution_receipt`; missing or untrusted envelope evidence keeps the action
   blocked or unverified.
+- Main-worktree source writes through change application must record
+  `station_mode: change-application`, `handoff_ownership: station-owned`,
+  authorization phase `change-application`, exact file allowlist, dirty-diff
+  read evidence, and forbidden protected actions. A protected captain gate for
+  the same write requires evidence that the platform cannot delegate the
+  physical write or protected tool call.
 - Invalid payload fail-closed evidence is required when a malformed or
   unverifiable tool payload is part of the trace. A trace must not recover
   authority from model-filled envelope text, historical transcript text, or a
@@ -181,6 +193,18 @@ These patterns must not pass:
 - Missing channel capability or channel invocation status for an applicable station.
 - Missing loaded skill refs or handoff packet for a formal specialist station.
 - Missing `handoff_packet_id` on any formal station.
+- Missing `station_mode`, `context_visibility`, or `handoff_ownership` on an
+  applicable formal station.
+- A completion claim that relies on captain coordination read while
+  `context_visibility` does not show specialist deep-read, shared-visible
+  evidence, or an accepted non-complete risk state.
+- Reusing a role instance after `handoff_ownership` changes across station owner
+  classes.
+- Main-worktree source changes made by a member station without
+  `station_mode: change-application`, `handoff_ownership: station-owned`, exact
+  file allowlist, and change-application authorization.
+- Protected captain gate used for source change while a station-owned
+  change-application route is available.
 - Formal specialist station dispatched without the startup-complete handoff
   payload for role identity, assigned skill, read scope, tool permissions and
   prohibitions, channel state, delivery artifact type, and stop condition, then
@@ -207,7 +231,7 @@ These patterns must not pass:
 - Reusing the same `role_instance_id` or specialist channel across multiple
   `role_id` values in the same task trace.
 - No-write or read-only work treated as a reason to skip Team-Native stations when the work can shape source, workflow, validation, review, memory, release, or governance decisions.
-- Captain broad-reading large file sets, running duplicate scans, re-checking,
+- Captain repository-scale reading large file sets, running duplicate scans, re-checking,
   substitute-validating, substitute-reviewing, or rewriting member output as
   captain evidence while a member station is running, except for blocker,
   board, artifact receipt, conflict, or authorization handling with a direct
@@ -220,7 +244,7 @@ These patterns must not pass:
 - `blocked`, `unverified`, `standby`, `not-authorized`, `unavailable`, or
   `closed-with-director-risk` placed in `execution_route`, `execution_channel`,
   execution mode, or platform route fields.
-- Missing authorization source, target, scope, phase, evidence, expiry, resolution state, or observed platform mode for any trace claiming write, integration, memory, git, release, deployment, install, or external-mutation authority.
+- Missing authorization source, target, scope, phase, evidence, expiry, resolution state, or observed platform mode for any trace claiming write, change-application, memory, git, release, deployment, install, or external-mutation authority.
 - Treating a workflow name as authorization instead of a route hint.
 - Treating natural-language words such as `GO`, "continue", "fix this",
   "so what now?", or "do that" as write or protected-action authorization when

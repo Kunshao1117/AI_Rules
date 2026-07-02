@@ -60,7 +60,7 @@ Read these sources first:
 | Review | Independent review exists from a role that did not author the change; missing independent review blocks full completion. |
 | Role separation | Implementation, validation, review, memory/docs, and completion boundaries remain separate. |
 | Captain boundary | Captain work is routing, delivery receipt, board/status synthesis, blocker/conflict/authorization handling, protected gates, and Director-facing reporting; it is not implementation, validation, review, or memory/docs attribution evidence. |
-| Trace | Required board, station, handoff, role, channel, delivery, and completion trace exists or missing parts are named as non-complete. |
+| Trace | Required board, station, handoff, role, channel, `station_mode`, `context_visibility`, `handoff_ownership`, delivery, and completion trace exists or missing parts are named as non-complete. |
 | Route/state separation | Routes/channels/forms are not mixed with blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk states. |
 | Sync | Source/deployed or generated/runtime pairs have sync direction and parity evidence when relevant. |
 | Residual risk | Remaining uncertainty is visible in the final report. |
@@ -71,7 +71,7 @@ Use exactly one:
 
 | State | Meaning |
 |---|---|
-| `complete` | Scope, authorization, separated delivery artifacts, validation, independent review, completion evidence, and required trace are present. |
+| `complete` | Scope, authorization, separated delivery artifacts, validation, independent review, station lifecycle fields, completion evidence, and required trace are present. |
 | `closed-with-director-risk` | The Director explicitly closes a named residual risk; this is not full completion. |
 | `blocked` | A required tool, authorization, delivery artifact, validation path, review, memory/docs disposition, or sync condition is unavailable. |
 | `unverified` | Evidence is absent or incomplete but the task can still be reported honestly without claiming completion. |
@@ -105,6 +105,9 @@ non-full reason and does not claim full completion.
 是否阻塞:
 completion_state:
 closeout_lane:
+station_mode:
+context_visibility:
+handoff_ownership:
 residual_risk:
 ```
 

@@ -31,6 +31,7 @@ Use `team-specialist-registry` and the matching `team-specialist-*` skill to con
 - Formal board implementation row.
 - Approved scope and file allowlist.
 - Authorization source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode.
+- Station mode, handoff ownership, and execution channel.
 - Required behavior change.
 - Existing source context read before writing.
 - Test or validation expectations, if provided.
@@ -39,18 +40,24 @@ Use `team-specialist-registry` and the matching `team-specialist-*` skill to con
 
 | Mode | Allowed | Forbidden |
 |---|---|---|
-| Isolated change delivery | Edit a governed isolated copy and return diff evidence. | Write main worktree, update memory, commit, push, release. |
-| Text change delivery artifact | Return precise, apply-ready edits as text when isolation is unavailable. | Claim integration, run mutating commands, self-review, or ask the captain to rewrite the implementation. |
-| Captain substitute authoring risk record | State why no change delivery route exists and keep the station blocked unless the Director accepts this exact risk as `closed-with-director-risk`. | Hide missing isolation, treat substitute authoring as change delivery or routine direct work, or call it full team completion. |
+| Isolated change delivery | Edit only a governed isolated copy and return diff evidence. | Write main worktree, update memory, commit, push, release, or claim the change is applied to source. |
+| Text change delivery artifact | 無隔離環境時，回傳可由後續具名 station-owned change-application gate 處理的精準文字改動。 | 宣稱已套用、執行突變命令、自我審查，或要求隊長重寫實作。 |
+| Authorized change-application station | Apply a returned change artifact or explicitly scoped source change to the main worktree when `station_mode: change-application`, `handoff_ownership: station-owned`, authorization phase `change-application`, exact file allowlist, and dirty-diff read are present. | Write outside scope, change deployed copies unless assigned, self-review, mutate memory, git, release, deploy, install, credentials, or external state. |
+| Captain substitute authoring risk record | State why no governed delivery route exists and keep the station blocked unless the Director accepts this exact risk as `closed-with-director-risk`. | Hide missing isolation, treat substitute authoring as change delivery or routine direct work, or call it full team completion. |
 
 ## Implementation Rules
 
 1. Read the target files before editing.
-2. Modify only files explicitly assigned by the board.
-3. Confirm the assigned authorization scope and phase match the artifact being produced.
-4. Keep changes minimal and tied to the approved requirement.
-5. Do not add unrelated cleanup, formatting, or generated output.
-6. Stop after producing the change delivery artifact.
+2. Read the existing diff for every target file before editing.
+3. Modify only files explicitly assigned by the board.
+4. Confirm the assigned authorization scope and phase match the artifact being produced or applied.
+5. For main-worktree source writes, confirm `station_mode: change-application`,
+   `handoff_ownership: station-owned`, exact file allowlist, and forbidden
+   protected actions before writing.
+6. Keep changes minimal and tied to the approved requirement.
+7. Do not add unrelated cleanup, formatting, or generated output.
+8. Stop after producing the change delivery artifact or change-application
+   receipt for captain receipt.
 
 ## Output
 
@@ -65,6 +72,9 @@ authorization_evidence:
 authorization_expiry:
 authorization_resolution_state:
 platform_mode_observed:
+station_mode:
+handoff_ownership:
+execution_channel:
 author_role:
 source_input:
 integrable_scope:
@@ -86,4 +96,4 @@ captain_authored:
 
 ## Forbidden Actions
 
-Do not perform final review, final validation, memory writes, deployment-copy sync, git staging, commit, push, tag, release, install, secret handling, or external-state mutation. You may name the source/deployed pair, proposed sync direction, and expected parity evidence, but deployed-copy sync and any protected follow-on phase need their own scoped station or gate. The captain may receive this artifact, maintain the board, handle blockers, and route it onward; captain rewrite or reimplementation is substitute authoring risk. Do not mark the task complete, and do not describe captain substitute authoring as a change delivery artifact or as full team completion.
+Do not perform final review, final validation, memory writes, deployment-copy sync, unauthorized main-worktree writes, git staging, commit, push, tag, release, install, secret handling, or external-state mutation. Authorized change-application stations may write only the exact source paths named by the formal-write station and must return a receipt rather than a completion claim. You may name the source/deployed pair, proposed sync direction, and expected parity evidence, but deployed-copy sync and any protected follow-on phase need their own scoped station or gate. Text and isolated artifacts are inputs to a station-owned authorized change-application gate. The captain may receive this artifact, maintain the board, handle blockers, and route it onward; captain rewrite, reimplementation, or hand-edited replacement is substitute authoring risk. Do not mark the task complete, and do not describe captain substitute authoring as a change delivery artifact or as full team completion.

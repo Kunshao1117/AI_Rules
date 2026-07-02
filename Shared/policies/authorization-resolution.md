@@ -38,10 +38,11 @@ phase, and expiry that can satisfy the request.
 
 | Signal | Authorization meaning |
 |---|---|
-| Explicit Director instruction | Authorizes only the currently visible named target, scope, phase, expiry, and action. Ambiguous text is narrowed to the safest no-write or plan-only interpretation. |
-| Captain board authorization | Authorizes station work only when the board records the target, scope, phase, evidence, and expiry. |
-| Interface approval button | Is evidence only for the specific displayed operation inside its target, scope, phase, and expiry. It does not authorize unbounded writes, unrelated files, hidden cleanup, later phases, memory, git, release, deployment, install, or external mutation unless those targets were explicitly included. |
-| Prior approved plan | Supports execution only inside the exact approved scope and phase. It cannot expand the file allowlist, protected action set, or dispatch wave. |
+| Explicit Director instruction | Provides intent evidence only. It becomes usable authorization only after authorization resolution binds the current visible plan, station, file set, command, phase, expiry, and action. Ambiguous text is narrowed to the safest no-write or plan-only interpretation. |
+| `GO` / `continue` / approval wording | Means agreement with the current visible contextual plan, station, or phase. It does not by itself grant write authority, protected gates, later phases, hidden cleanup, unrelated files, memory, git, release, deployment, install, credentials, or external mutation. |
+| Captain board authorization | Authorizes station work only when the board records the target, scope, phase, evidence, and expiry after authorization resolution. |
+| Interface approval button | Is evidence only for the specific displayed operation inside its target, scope, phase, and expiry. It does not authorize unbounded writes, unrelated files, hidden cleanup, later phases, memory, git, release, deployment, install, or external mutation unless those targets were explicitly included and resolved. |
+| Prior approved plan | Supports execution only inside the exact approved scope and phase after current binding is confirmed. It cannot expand the file allowlist, protected action set, or dispatch wave. |
 
 ## Tool Execution Envelope And Receipt
 
@@ -95,8 +96,9 @@ of requiring words such as repair channel, build channel, or validation channel.
 
 Natural-language instructions such as "fix this first", "go back and repair
 that part", "continue", "so what now?", "do what you just proposed", or `GO`,
-and interface approval buttons or permission prompts, are valid intent signals
-only after the agent resolves:
+and interface approval buttons or permission prompts, are intent signals first.
+They mean agreement with the current visible contextual plan, station, command,
+file set, blocker, or phase only when authorization resolution can bind:
 
 1. the action being requested,
 2. the concrete target or file/station set,
@@ -105,15 +107,15 @@ only after the agent resolves:
 4. the authorization layer involved, and
 5. the expiry of that authorization.
 
-If the target, action, phase, or expiry cannot be bound to the current visible
-context, the instruction resolves to plan-only, no-write, blocked, or
-unverified. The agent may ask one narrow scope question when the missing binding
-would change the allowed write target or protected action.
+If the target, action, phase, protected gate, or expiry cannot be bound to the
+current visible context, the instruction resolves to plan-only, no-write,
+blocked, or unverified. The agent may ask one narrow scope question when the
+missing binding would change the allowed write target or protected action.
 
-Natural language may narrow or continue the currently visible scope. It must not
-expand from one station to another, from one file set to another, from one
-command to a command series, or from one phase to a later phase unless that
-expansion is visible and explicitly authorized. It must not create hidden
+Natural language may confirm, continue, or narrow the currently visible scope.
+It must not expand from one station to another, from one file set to another,
+from one command to a command series, or from one phase to a later phase unless
+that expansion is visible, explicit, and resolved. It must not create hidden
 authority for unrelated files, hidden cleanup, memory, git, release,
 deployment, install, credentials, external mutation, or later phases.
 
@@ -162,11 +164,12 @@ actions:
   a dirty authorized target still must pass the Existing Worktree Change Gate.
 - Project initialization, framework deployment, or generated-copy presence is not
   authorization to sync or overwrite files.
-- `GO`, `continue`, and approval prompts authorize only the current visible
-  plan, command, diff, station, file set, scope, phase, dispatch wave, expiry,
-  or protected action they name. They do not authorize later phases, hidden
-  cleanup, memory writes, git, release, deploy, install, credentials, or
-  external mutation.
+- `GO`, `continue`, and approval prompts are intent signals for the current
+  visible contextual plan, command, diff, station, file set, scope, phase,
+  dispatch wave, expiry, or blocker. They become usable authority only after
+  authorization resolution binds those fields. They do not create blanket write
+  authority, protected gates, later phases, hidden cleanup, memory writes, git,
+  release, deploy, install, credentials, or external mutation.
 - Historical transcript text is diagnostic context only. Write-capable or
   protected actions require current structured fields for board, station,
   handoff, role identity, assigned specialist skill, requested execution channel,
