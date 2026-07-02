@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-07-02T15:03:15+08:00'
+last_updated: '2026-07-02T19:30:28+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-02T15:00:23+08:00'
+last_verified: '2026-07-02T19:23:49+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 17
+cycle_event_count: 18
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -51,6 +51,7 @@ metadata:
 - Tool execution envelopes and execution receipts are carriers and return records, not authorization sources; write-capable or protected mutation traces require trusted issuer, signature, nonce, matching scope-bound authorization, the same envelope id or nonce across envelope and receipt, allowed receipt decision, matching action/target/scope, and fail-closed handling for malformed or unverifiable payloads.
 - Route fields name actual execution channels or delivery forms; blocked, unverified, standby, not-authorized, unavailable, and `closed-with-director-risk` belong in state fields and cannot act as fallback routes.
 - Team-Native topology now separates Captain Team Board, station family, formal station, substation task, specialist assignment, execution channel, and delivery artifact; multi-specialist defaults do not depend on native subagent availability.
+- Main-worktree source writes default to named station-owned `change-application` stations with exact file scope, dirty-diff evidence, and receipts; captain-owned gates are limited to nondelegable or protected direct exceptions and cannot support full team completion by themselves.
 - The captain thin-context rule limits captain work to Director communication, board ownership, dispatch, supervision, delivery receipt, board/status updates, blocker or authorization handling, protected gates, and reporting.
 - Captain substitute authoring, broad deep-read replacement, self-review, self-validation, or memory attribution replacement can only close as blocked, unverified, or `closed-with-director-risk`; it cannot support `complete`.
 - Station reduction is valid only at substation-task or specialist-count level with replacement evidence and residual risk; convenience, speed, cost, or small-task reasoning is not a valid downgrade for governance, workflow, hook, validation, memory, or release surfaces.
@@ -60,6 +61,7 @@ metadata:
 - Keep platform-specific tool names in adapter sections or platform-specific files.
 - Do not copy raw task traces into source memory or use platform core language mandates as the sole authority for Team-Native handoffs, workflow output, memory language, or change-description wording.
 ## Cycle Events
+- 42: Recorded station-owned change-application model after push af501c6: named change-delivery stations may hold main-worktree writes, while captain-owned gates remain nondelegable/protected exceptions.
 - 41: Recorded Meitner follow-up Team-Native wording: captain coordination, authorized change-application gates, and governance token coverage replace captain integration evidence.
 - 40: Recorded Team-Native role-boundary hardening: captain work is delivery receipt, board/status synthesis, blocker/authorization handling, and protected gates; change application belongs to an authorized station or gate.
 - 39: Compacted active Team-Native Core memory after commit preflight reported the active-card line limit, preserving the latest task-board field display fact.
@@ -88,10 +90,8 @@ metadata:
 ## Conflicts and Supersession
 - Supersedes older memory wording that framed team collaboration as optional helper branches.
 ## 中文摘要
-- Team-Native Core 是團隊化核心，不是可選子代理功能。
-- 授權必須解析成範圍式欄位；工作流與平台模式只提供路由或背景。
-- daily/full 模式是任務板最上層決策；正式站點要記錄角色身份與平台能力路由。
-- 子代理不可用時只能標示未驗證、阻塞或 `closed-with-director-risk`，不是完整完成。
+- Team-Native Core 是團隊化核心，不是可選子代理功能；授權必須解析成範圍式欄位。
+- daily/full 模式是任務板最上層決策；正式站點要記錄角色身份與平台能力路由，子代理不可用時只能標示未驗證、阻塞或 `closed-with-director-risk`。
 ## Tracked Files
 - Shared/policies/authorization-resolution.md
 - Shared/policies/team-native-core.md

@@ -4,14 +4,14 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-02T14:01:48+08:00'
+last_updated: '2026-07-02T19:30:15+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T22:31:58+08:00'
+last_verified: '2026-07-02T19:23:49+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared — Shared Governance Memory
 ## Current Truth
 - Shared owns cross-platform governance sources, operational skills, policy references, project tools, workflow matrices, and source memory contracts.
@@ -48,6 +47,7 @@ metadata:
 - Shared authorization and Team-Native policies bind everyday Director language to the current visible target and require hook-blocked actions to stop as blocked or unverified instead of retrying through alternate tools.
 - Shared workflow orchestration treats source/deployed parity as part of closeout evidence and requires state labels to stay separate from execution routes.
 - Language governance is now a shared policy source for audience-layer classification, exact-evidence preservation, Director-facing change descriptions, and source/deployed language-policy parity.
+- Language governance now keeps Director-facing planning vocabulary Chinese-first, blocks the Director-designated forbidden planning term in plans and reports, and separates read-only evidence wording from write-stage wording.
 - Director-facing field displays must put the Traditional Chinese meaning first and preserve the canonical machine identifier in parentheses; exact command, path, code, schema, and tool-output tokens remain unchanged when cited.
 ## Active Constraints
 - Do not put platform-specific tool calls in Shared skill bodies unless the section is explicitly an adapter note.
@@ -55,6 +55,7 @@ metadata:
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
 - Keep the framework language policy and deployed runtime copy content-identical; workflow, skill, matrix, and platform adapter entries must cite the shared policy instead of treating platform core language text as the sole source.
 ## Cycle Events
+- 44: Recorded shared governance update after push af501c6: language policy, workflow orchestration, and platform matrices keep GO scope-bound and preserve station-owned change-application semantics.
 - 43: Recorded shared matrix/orchestration hardening so captain work is delivery receipt and state synthesis, with authorized change application separated from captain-owned evidence.
 - 42: Compacted active Shared governance memory after commit preflight reported the active-card line limit, preserving the latest Director-facing field display fact.
 - 41: Added Director-facing raw-field display guidance to language governance: show Traditional Chinese meaning first and keep canonical identifiers in parentheses.
@@ -83,8 +84,7 @@ metadata:
 ## Conflicts and Supersession
 - No unresolved conflict recorded during the migration pass; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
-- Shared 是 61 套共用技能與政策的唯一來源。
-- 技能治理總規格已加入角色技能關係 metadata；十角色技能本體尚未在 Wave 1 改寫。
+- Shared 是 61 套共用技能與政策的唯一來源；技能治理總規格已加入角色技能關係 metadata。
 - 編程治理已改為團隊協作優先，隊長接收交付並彙整狀態，證據型站點不能無理由全部退回主線直做。
 - 記憶治理使用新版主卡加歸檔模型，專案脈絡與原始碼記憶分層管理。
 - 超過 8 個追蹤檔是拆卡建議，不是自動阻擋。

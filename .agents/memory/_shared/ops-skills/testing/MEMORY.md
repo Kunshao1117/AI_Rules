@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-02T14:02:21+08:00'
+last_updated: '2026-07-02T19:30:23+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T18:20:23+08:00'
+last_verified: '2026-07-02T19:23:49+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 5
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared.ops-skills.testing — Testing Skills Memory
 
 ## Current Truth
 - Browser and validation evidence remain specialist evidence stations under captain-led boards; required evidence can stay direct only with a recorded direct exception.
+- Browser-testing governance now aligns direct browser/tool handling with Team-Native station ownership and requires a concrete direct exception when a required browser evidence branch cannot run independently.
 - This child card owns Shared testing, browser evidence, performance, accessibility, and regression strategy skills.
 - Testing facts must stay tied to project surface type and current tool availability.
 - Browser and test automation skills now require detail-observation notes for visual validation.
@@ -50,6 +50,7 @@ metadata:
 - Use project-surface evidence requirements from the workflow matrix before declaring behavior verified.
 
 ## Cycle Events
+- 07: Recorded browser-testing governance alignment after push af501c6: required browser evidence remains station-owned unless a concrete direct exception is recorded.
 - 06: Recorded testing-skill hardening so [SUDO] cannot skip mock checks, authorize real network calls, or bypass validation.
 - 05: Recorded testing-skill hardening so browser and automation evidence cannot silently downgrade to captain direct work and real-information proof remains required before completion claims.
 - 04: Aligned testing and browser evidence memory with captain-led evidence station rules.

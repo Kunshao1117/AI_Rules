@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-02T15:02:34+08:00'
+last_updated: '2026-07-02T19:30:10+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-02T15:00:23+08:00'
+last_verified: '2026-07-02T19:23:49+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 15
+cycle_event_count: 16
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -33,9 +33,9 @@ metadata:
 ---
 # _codex_core — Codex Edition Memory
 ## Current Truth
-- Codex Edition is the OpenAI Codex adapter for the AI_Rules governance framework, using `.codex/AGENTS.md` for project governance and `.agents/skills/` for live skills.
-- Codex source workflow skills are sourced from `Codex/.agents/workflow-skills/` and merged into `.agents/skills/`.
+- Codex Edition is the OpenAI Codex adapter for AI_Rules governance, using `.codex/AGENTS.md` for project rules; workflow skills come from `Codex/.agents/workflow-skills/` and merge into `.agents/skills/`.
 - Codex source and deployed rules put Team-Native Core and Authorization Resolution before lifecycle, workflow names, GO text, sandbox prompts, and tool approvals.
+- Codex core now states source writes are not captain-default work: main-worktree writes default to named station-owned `change-application` stations, while captain-owned gates are limited to platform-nondelegable or protected direct exceptions.
 - Applicable Codex coding, workflow, validation, review, memory, commit, release, or governance-impact work defaults to captain-led Team-Native mode with boards, role-exclusive stations, handoff packets, channel state, captain delivery receipt, authorized change-application gates, and separated delivery artifacts before full completion.
 - Evidence-bearing chat, broad reads, validation, review, memory/docs attribution, commit/release preparation, and completion audit route through formal-readonly or formal-write; pure chat and tiny orientation stay direct only while non-mutating.
 - Codex project-level hooks provide Team-Native guardrails for micro-read allowance, broad-read Captain-Lite hints, scoped write target matching, protected mutation authorization, and completion-claim artifact checks.
@@ -61,6 +61,7 @@ metadata:
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
 - Codex workflow entries must cite the deployed shared language policy before applying workflow-specific output, handoff, memory-language, or change-description rules.
 ## Cycle Events
+- 52: Recorded Codex core change-application governance after push af501c6: source writes default to station-owned stations, captain-owned gates stay exceptional, and GO remains scope-bound.
 - 51: Recorded the Codex `hooks.delete` renamed-hook marker and project `.codex/hooks.json` absence contract after Audit and fixture runner support landed.
 - 50: Recorded Codex coordination-boundary hardening: hooks and docs now use `captain_coordination_read_scope`, captain receipt/status synthesis, and authorized change-application gates instead of captain integration evidence.
 - 49: Compacted active Codex core memory after commit preflight reported the active-card line limit, without changing current governance facts.
@@ -95,7 +96,6 @@ metadata:
 - 工作流來源在 Codex 目錄，live 技能在 `.agents/skills/`。
 - Codex 編程工作流已改為團隊協作優先，隊長只做接收交付、狀態彙整、阻塞/授權處理與受保護閘門，不替代隊員產出主要交付件。
 - Codex 00 證據型對話也會進 formal-readonly；純聊天才維持直接回覆。
-- 根層 README 不再由本卡追蹤。
 ## Tracked Files
 - Codex/VERSION
 - Codex/README.md
