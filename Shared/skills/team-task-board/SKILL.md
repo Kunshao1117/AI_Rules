@@ -74,6 +74,13 @@ protected action.
 Every formal station records the board field set below. Keep this long list here
 and reference it from other skills.
 
+Director-facing display must not expose this as a raw English-only field list.
+When showing board fields to the Director, write the Traditional Chinese meaning
+first and keep the exact field in parentheses, for example
+`任務板狀態（board_state）`, `正式站點（formal_station）`, or
+`交付件狀態（delivery_artifact_status）`. These labels are display aids only;
+do not translate, rename, or derive new canonical machine fields from them.
+
 ```text
 board_id
 board_template

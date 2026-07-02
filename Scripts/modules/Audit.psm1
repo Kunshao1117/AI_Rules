@@ -12,6 +12,155 @@
 
 using module ".\Core.psm1"
 
+function Format-AuditFieldDisplay {
+    param([string]$Field)
+
+    $fieldText = ([string]$Field).Trim()
+    if (-not $fieldText) { return '' }
+    if ($fieldText -match '[（(].+[）)]') { return $fieldText }
+
+    if ($fieldText -match '\s+or\s+') {
+        $parts = $fieldText -split '\s+or\s+'
+        return ((@($parts) | ForEach-Object { Format-AuditFieldDisplay -Field $_ }) -join ' 或 ')
+    }
+
+    $fieldLabels = @{
+        'task_id' = '任務代號'
+        'task_type' = '任務類型'
+        'workflow_route' = '工作流路由'
+        'phase' = '階段'
+        'dispatch_wave' = '派工波次'
+        'previous_wave_input' = '前一波輸入'
+        'next_wave_start_condition' = '下一波啟動條件'
+        'formal_evidence_eligibility' = '正式證據資格'
+        'go_evidence' = 'GO 授權證據'
+        'operation_mode' = '操作模式'
+        'operation_mode_reason' = '操作模式理由'
+        'station_state' = '站點狀態'
+        'evidence_state' = '證據狀態'
+        'source_input' = '來源輸入'
+        'integrable_scope' = '可整合範圍'
+        'review_state' = '審查狀態'
+        'validation_state' = '驗證狀態'
+        'memory_docs_state' = '記憶文件狀態'
+        'captain_authored' = '隊長代工狀態'
+        'evidence_owner' = '證據負責人'
+        'role_boundary' = '角色邊界'
+        'direct_exception' = '直行例外'
+        'completion_condition' = '完成條件'
+        'delivery_artifact_type' = '交付件類型'
+        'assigned_specialist_skill' = '指派專家技能'
+        'specialist_role_source' = '專家角色來源'
+        'allowed_inputs' = '允許輸入'
+        'allowed_tools' = '允許工具'
+        'forbidden_actions' = '禁止動作'
+        'output_artifact_format' = '輸出交付件格式'
+        'stop_condition' = '停止條件'
+        'channel_capability' = '通道能力'
+        'channel_invocation_status' = '通道啟動狀態'
+        'startup_started_at' = '啟動開始時間'
+        'first_response_deadline' = '首次回應期限'
+        'last_progress_at' = '最後進度時間'
+        'timeout_action' = '逾時處置'
+        'standby_reason' = '待命原因'
+        'tool_execution_envelope' = '工具執行信封'
+        'tool_execution_envelope_trust' = '工具執行信封信任狀態'
+        'tool_envelope_issuer' = '工具信封簽發者'
+        'tool_envelope_signature' = '工具信封簽章'
+        'tool_envelope_nonce' = '工具信封 nonce'
+        'execution_receipt' = '執行回執'
+        'execution_receipt_decision' = '執行回執決策'
+        'source_deployed_pair' = '來源與部署副本配對'
+        'sync_direction' = '同步方向'
+        'sync_evidence' = '同步證據'
+        'current_diff_evidence' = '目前差異證據'
+        'target_section_evidence' = '目標段落證據'
+        'integration_strategy' = '整合策略'
+        'existing_change_classification' = '既有變更分類'
+        'existing_change_owner' = '既有變更負責人'
+        'scenarioCode' = '測試場景代碼'
+        'expectedDecision' = '預期決策'
+        'expectedReasonCodeRegex' = '預期原因碼規則'
+        'expectedDiagnosticLabels' = '預期診斷標籤'
+        'authorization_source' = '授權來源'
+        'authorization_target' = '授權目標'
+        'authorization_scope' = '授權範圍'
+        'authorization_phase' = '授權階段'
+        'authorization_evidence' = '授權證據'
+        'authorization_expiry' = '授權期限'
+        'authorization_resolution_state' = '授權解析狀態'
+        'platform_mode_observed' = '平台模式觀察'
+        'specialist_skill' = '專家技能'
+        'loaded_skill_refs' = '已載入技能參照'
+        'domain_label' = '領域標籤'
+        'requested_execution_channel' = '請求執行通道'
+        'execution_channel' = '執行通道'
+        'execution_route' = '執行路由'
+        'platform_route' = '平台路由'
+        'execution mode' = '執行模式'
+        'execution_mode' = '執行模式'
+        'implementation_authorization' = '實作授權'
+        'implementer' = '實作者'
+        'reviewer' = '審查者'
+        'board_state' = '任務板狀態'
+        'role_id' = '角色代號'
+        'role_instance_id' = '角色實例代號'
+        'exclusive_task_scope' = '互斥任務範圍'
+        'handoff_packet_id' = '交接包代號'
+        'station_lifecycle_state' = '站點生命週期狀態'
+        'retention_reason' = '保留理由'
+        'conversation_health' = '對話健康狀態'
+        'reuse_count' = '重用次數'
+        'handoff_summary' = '交接摘要'
+        'closure_reason' = '關閉理由'
+        'closeout_lane' = '收尾路徑'
+        'yellow_classification' = '黃燈分類'
+        'yellow_resolution_state' = '黃燈處理狀態'
+        'repair_loop_count' = '修復迴圈次數'
+        'delivery_artifact' = '交付件'
+        'delivery_artifact_id' = '交付件代號'
+        'delivery_artifact_status' = '交付件狀態'
+        'no_captain_authoring' = '無隊長代工證據'
+        'stations' = '站點清單'
+        'waves' = '波次清單'
+        'delivery_artifacts' = '交付件清單'
+        'direct_exceptions' = '直行例外'
+        'role_separation' = '角色分離'
+        'completion_state' = '完成狀態'
+        'risk_close_evidence' = '風險關閉證據'
+        'residual_risk' = '殘留風險'
+        'dirty_target' = '目標既有變更'
+        'existing_worktree_changes' = '現有工作樹變更'
+        'existing_diff' = '既有 diff'
+        'modified_target' = '已修改目標'
+        'target_dirty' = '目標 dirty 狀態'
+        'worktree_dirty' = '工作樹 dirty 狀態'
+        'metadata.author' = '中繼資料作者'
+        'metadata.version' = '中繼資料版本'
+        'metadata.origin' = '中繼資料來源'
+        'metadata.kind' = '中繼資料類型'
+        'metadata.style' = '中繼資料風格'
+        'metadata.memory_awareness' = '中繼資料記憶意識'
+        'metadata.tool_scope' = '中繼資料工具範圍'
+        'metadata.relations' = '中繼資料關係'
+        'memory_impact' = '記憶影響'
+        'review_need' = '審查需求'
+        'blocker_status' = '阻塞狀態'
+    }
+
+    if ($fieldLabels.ContainsKey($fieldText)) {
+        return ("{0}（{1}）" -f $fieldLabels[$fieldText], $fieldText)
+    }
+
+    return ("必要欄位（{0}）" -f $fieldText)
+}
+
+function Format-AuditFieldListDisplay {
+    param([object[]]$Fields)
+
+    return ((@($Fields) | ForEach-Object { Format-AuditFieldDisplay -Field ([string]$_) } | Where-Object { $_ }) -join ', ')
+}
+
 # ══════════════════════════════════════════════════════════
 # Invoke-DocScan — 倉庫狀態掃描
 # ══════════════════════════════════════════════════════════
@@ -519,7 +668,7 @@ function Measure-SkillQuality {
             Write-Host "  ⚠ 禁用詞：$($r.ForbiddenWords -join ', ')" -ForegroundColor Yellow
         }
         if ($r.MissingFields.Count -gt 0) {
-            Write-Host "  ⚠ 缺少欄位：$($r.MissingFields -join ', ')" -ForegroundColor Yellow
+            Write-Host "  ⚠ 缺少欄位：$(Format-AuditFieldListDisplay -Fields $r.MissingFields)" -ForegroundColor Yellow
         }
         if ($r.TriggerIssues.Count -gt 0) {
             Write-Host "  ⚠ 觸發品質：$($r.TriggerIssues -join '；')" -ForegroundColor Yellow
@@ -871,7 +1020,7 @@ function Measure-WorkflowMetadata {
     $safeCount = ($results | Where-Object { $_.AutomationSafe }).Count
 
     Write-Host ""
-    Write-Host "📊 Workflow Metadata v2"
+    Write-Host "📊 工作流中繼資料（Workflow Metadata v2）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "掃描 workflow/command：$($results.Count)"
     Write-Host "🟢 完整：$passCount  🟡 觸發警告：$warnCount  🔴 缺漏：$failCount  automation-safe：$safeCount"
@@ -880,7 +1029,7 @@ function Measure-WorkflowMetadata {
         $safeText = if ($r.AutomationSafe) { 'safe' } else { 'manual' }
         Write-Host ("{0,-12} {1,-38} {2} {3}" -f $r.Platform, $r.Name, $r.Status, $safeText)
         if ($r.MissingFields.Count -gt 0) {
-            Write-Host "  ⚠ 缺少欄位：$($r.MissingFields -join ', ')" -ForegroundColor Yellow
+            Write-Host "  ⚠ 缺少欄位：$(Format-AuditFieldListDisplay -Fields $r.MissingFields)" -ForegroundColor Yellow
         }
         if ($r.TriggerIssues.Count -gt 0) {
             Write-Host "  ⚠ 觸發品質：$($r.TriggerIssues -join '；')" -ForegroundColor Yellow
@@ -1167,7 +1316,7 @@ function Measure-RuntimeGlobalDrift {
     $greenCount = ($results | Where-Object { $_.Severity -eq 'Green' }).Count
 
     Write-Host ""
-    Write-Host "📊 Runtime Global Drift"
+    Write-Host "📊 執行環境全域規則漂移（Runtime Global Drift）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "🟢 Green：$greenCount  🟡 Yellow：$yellowCount  🔴 Red：$redCount"
     foreach ($result in $results | Sort-Object Platform) {
@@ -1312,7 +1461,7 @@ function Measure-SharedSubagentPolicyDrift {
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Shared Subagent Policy Drift"
+    Write-Host "📊 共用子代理政策漂移（Shared Subagent Policy Drift）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
     foreach ($finding in $results | Sort-Object Severity, Platform, Scope, File) {
@@ -1442,7 +1591,7 @@ function Measure-SubagentVocabularyDrift {
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Subagent Vocabulary Drift"
+    Write-Host "📊 子代理語彙漂移（Subagent Vocabulary Drift）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
     foreach ($finding in $results | Sort-Object Severity, Scope, File, Line) {
@@ -1634,7 +1783,7 @@ function Measure-GovernanceSemantics {
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Governance Semantics"
+    Write-Host "📊 治理語義（Governance Semantics）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
     foreach ($finding in $results | Sort-Object Severity, File, Line) {
@@ -1894,7 +2043,7 @@ function Measure-ReviewGovernanceCoverage {
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Review Governance Coverage"
+    Write-Host "📊 審查治理覆蓋（Review Governance Coverage）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
     foreach ($finding in $results | Sort-Object Severity, File, Reason) {
@@ -2131,6 +2280,13 @@ function Measure-CodexHookGovernance {
         if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return }
         $relative = Get-CodexHookDisplayPath -Path $Path
         $content = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+        $nonAsciiMatch = [regex]::Match($content, '[^\x00-\x7F]')
+        if ($nonAsciiMatch.Success) {
+            $line = (($content.Substring(0, $nonAsciiMatch.Index) -split "\r?\n").Count)
+            $codePoint = [int][char]$nonAsciiMatch.Value[0]
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line $line -Reason ("hook 腳本含 raw non-ASCII/CJK literal ({0})" -f $Label) -Text ("U+{0:X4}; use New-UnicodeString codepoints for non-ASCII markers" -f $codePoint)
+        }
+
         $requiredPatterns = @(
             @{ Pattern = 'permissionDecision'; Severity = 'Red'; Reason = 'hook 腳本缺少工具前拒絕輸出' },
             @{ Pattern = 'PermissionRequest'; Severity = 'Red'; Reason = 'hook 腳本缺少授權請求事件處理' },
@@ -2230,6 +2386,51 @@ function Measure-CodexHookGovernance {
         foreach ($requirement in $requiredPatterns) {
             if ($content -notmatch $requirement.Pattern) {
                 Add-CodexHookFinding -Severity $requirement.Severity -File $relative -Line 1 -Reason $requirement.Reason -Text $requirement.Pattern
+            }
+        }
+    }
+
+    function Test-CodexHookFixtureStructuredContract {
+        param(
+            [string]$Path,
+            [string]$ExpectedDecision = '',
+            [string]$ScenarioCodePattern = '',
+            [switch]$RequireReasonCodeRegex,
+            [switch]$RequireDiagnosticLabels
+        )
+
+        if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return }
+        $relative = Get-CodexHookDisplayPath -Path $Path
+        try {
+            $fixture = Get-Content -LiteralPath $Path -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
+        } catch {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 不是有效 JSON' -Text $_.Exception.Message
+            return
+        }
+
+        $scenarioCode = Get-CodexHookPropertyText -Object $fixture -Name 'scenarioCode'
+        if (($scenarioCode -notmatch '^[A-Za-z0-9._:-]+$') -or ($ScenarioCodePattern -and ($scenarioCode -notmatch $ScenarioCodePattern))) {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 ASCII scenarioCode 機器合約' -Text (Format-AuditFieldDisplay -Field 'scenarioCode')
+        }
+
+        if ($ExpectedDecision) {
+            $actualDecision = Get-CodexHookPropertyText -Object $fixture -Name 'expectedDecision'
+            if ($actualDecision -ne $ExpectedDecision) {
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 expectedDecision 機器合約' -Text ("{0}: {1}" -f (Format-AuditFieldDisplay -Field 'expectedDecision'), $ExpectedDecision)
+            }
+        }
+
+        if ($RequireReasonCodeRegex) {
+            $reasonCodeRegex = Get-CodexHookPropertyText -Object $fixture -Name 'expectedReasonCodeRegex'
+            if (($reasonCodeRegex -notmatch '^[\x20-\x7E]+$') -or ($reasonCodeRegex -notmatch 'TN-HOOK-[A-Z0-9-]+')) {
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 expectedReasonCodeRegex 原因碼機器合約' -Text ("{0}: TN-HOOK-*" -f (Format-AuditFieldDisplay -Field 'expectedReasonCodeRegex'))
+            }
+        }
+
+        if ($RequireDiagnosticLabels) {
+            $diagnosticProperty = $fixture.PSObject.Properties['expectedDiagnosticLabels']
+            if (($null -eq $diagnosticProperty) -or (-not [bool]$diagnosticProperty.Value)) {
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少診斷標籤機器合約' -Text ("{0}: true" -f (Format-AuditFieldDisplay -Field 'expectedDiagnosticLabels'))
             }
         }
     }
@@ -2474,11 +2675,12 @@ function Measure-CodexHookGovernance {
                 Reason = 'Codex hook 被擋後繞路與中文完成宣稱 fixture 覆蓋不足'
                 Patterns = @(
                     @{ Pattern = '"name"\s*:\s*"block-stop-zh-completion"'; Text = 'zh completion fixture name' },
-                    @{ Pattern = 'decision\.\*block'; Text = 'zh completion fixture expects Stop block' },
-                    @{ Pattern = 'u9264.{0,20}u5b50.{0,20}u64cb.{0,20}u4e0b|apply_patch'; Text = 'zh completion fixture references prior hook block' },
-                    @{ Pattern = 'u63db.{0,20}u5de5.{0,20}u5177|Set-Content|another tool'; Text = 'zh completion fixture covers post-block alternate tool intent' },
-                    @{ Pattern = 'u5df2.{0,20}u5b8c.{0,20}u6210|Doctor'; Text = 'zh completion fixture covers completion claim' },
-                    @{ Pattern = '"expectedDiagnosticLabels"\s*:\s*true'; Text = 'zh completion fixture requires diagnostic labels' }
+                    @{ Pattern = '"expectedOutputRegex"\s*:\s*"decision\.\*block"'; Text = 'zh completion fixture expects Stop block' },
+                    @{ Pattern = '"expectedDiagnosticLabels"\s*:\s*true'; Text = 'zh completion fixture requires diagnostic labels' },
+                    @{ Pattern = '"rawInput"\s*:'; Text = 'zh completion fixture uses rawInput' },
+                    @{ Pattern = '\\u9264.{0,40}\\u5b50.{0,40}\\u64cb.{0,40}\\u4e0b|apply_patch'; Text = 'zh completion fixture references prior hook block or apply_patch' },
+                    @{ Pattern = '\\u63db.{0,40}\\u5de5.{0,40}\\u5177|Set-Content|another tool'; Text = 'zh completion fixture covers post-block alternate tool intent' },
+                    @{ Pattern = '\\u5df2.{0,40}\\u5b8c.{0,40}\\u6210|Doctor'; Text = 'zh completion fixture covers completion claim' }
                 )
             },
             [PSCustomObject]@{
@@ -2511,10 +2713,11 @@ function Measure-CodexHookGovernance {
 
         $naturalPromptFixture = Join-Path $fixtureRoot 'allow-user-prompt.json'
         if (Test-Path -LiteralPath $naturalPromptFixture -PathType Leaf) {
+            Test-CodexHookFixtureStructuredContract -Path $naturalPromptFixture -ScenarioCodePattern '(route-hint|natural)'
             $naturalPromptContent = Get-Content -LiteralPath $naturalPromptFixture -Raw -Encoding UTF8
             foreach ($requiredNaturalPromptPattern in @(
-                @{ Pattern = '"prompt"\s*:\s*"[^"]*(?:GO|go)[^"]*(?:所以呢\?|所以呢？)'; Text = 'natural-language prompt includes GO plus Chinese so-what wording' },
-                @{ Pattern = '"expectedOutputRegex"\s*:\s*"natural-language instructions are valid'; Text = 'natural-language binding context output is expected' }
+                @{ Pattern = '"expectedOutputRegex"\s*:\s*"natural-language instructions are valid'; Text = 'natural-language binding context output is expected' },
+                @{ Pattern = '"prompt"\s*:\s*"[^"]*GO[^"]*\u6240\u4ee5\u5462(\?|\uff1f)'; Text = 'natural-language prompt keeps GO plus follow-up wording' }
             )) {
                 if ($naturalPromptContent -notmatch $requiredNaturalPromptPattern.Pattern) {
                     Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $naturalPromptFixture) -Line 1 -Reason 'Codex hook 自然語言提示 fixture 覆蓋不足' -Text $requiredNaturalPromptPattern.Text
@@ -2524,12 +2727,12 @@ function Measure-CodexHookGovernance {
 
         $zhNaturalPromptFixture = Join-Path $fixtureRoot 'allow-user-prompt-zh-natural-binding.json'
         if (Test-Path -LiteralPath $zhNaturalPromptFixture -PathType Leaf) {
+            Test-CodexHookFixtureStructuredContract -Path $zhNaturalPromptFixture -ScenarioCodePattern '(route-hint|natural-binding)'
             $zhNaturalPromptContent = Get-Content -LiteralPath $zhNaturalPromptFixture -Raw -Encoding UTF8
             foreach ($requiredZhNaturalPromptPattern in @(
-                @{ Pattern = 'Windows PowerShell 中文提示'; Text = 'fixture covers Windows PowerShell Chinese prompt text' },
-                @{ Pattern = 'GO，所以呢？回去修正'; Text = 'fixture covers natural GO, so-what, and go-back-fix wording' },
                 @{ Pattern = 'current visible plan or station'; Text = 'fixture expects visible plan or station binding guidance' },
-                @{ Pattern = 'file set.\*command|file set.*command'; Text = 'fixture expects file set and command binding guidance' }
+                @{ Pattern = 'file set.\*command|file set.*command'; Text = 'fixture expects file set and command binding guidance' },
+                @{ Pattern = 'Windows PowerShell \u4e2d\u6587\u63d0\u793a\uff1aGO\uff0c\u6240\u4ee5\u5462\uff1f\u56de\u53bb\u4fee\u6b63'; Text = 'zh natural-language prompt keeps exact Director wording' }
             )) {
                 if ($zhNaturalPromptContent -notmatch $requiredZhNaturalPromptPattern.Pattern) {
                     Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $zhNaturalPromptFixture) -Line 1 -Reason 'Codex hook 中文自然語言提示 fixture 覆蓋不足' -Text $requiredZhNaturalPromptPattern.Text
@@ -2539,10 +2742,12 @@ function Measure-CodexHookGovernance {
 
         $diagnosticBlockFixture = Join-Path $fixtureRoot 'block-apply-patch-no-board.json'
         if (Test-Path -LiteralPath $diagnosticBlockFixture -PathType Leaf) {
+            Test-CodexHookFixtureStructuredContract -Path $diagnosticBlockFixture -ExpectedDecision 'deny' -ScenarioCodePattern '(apply-patch|structured)' -RequireReasonCodeRegex -RequireDiagnosticLabels
             $diagnosticBlockContent = Get-Content -LiteralPath $diagnosticBlockFixture -Raw -Encoding UTF8
             foreach ($requiredDiagnosticBlockPattern in @(
                 @{ Pattern = '"expectedDiagnosticLabels"\s*:\s*true'; Text = 'diagnostic labels are required on a blocked write fixture' },
-                @{ Pattern = '"prompt"\s*:\s*"所以呢\?"'; Text = 'natural-language no-scope prompt is present on blocked write fixture' }
+                @{ Pattern = '"tool_name"\s*:\s*"apply_patch"'; Text = 'blocked write fixture calls apply_patch' },
+                @{ Pattern = '"patch"\s*:\s*"\*\*\* Begin Patch'; Text = 'blocked write fixture carries patch payload' }
             )) {
                 if ($diagnosticBlockContent -notmatch $requiredDiagnosticBlockPattern.Pattern) {
                     Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $diagnosticBlockFixture) -Line 1 -Reason 'Codex hook 拒絕診斷 fixture 覆蓋不足' -Text $requiredDiagnosticBlockPattern.Text
@@ -2552,16 +2757,7 @@ function Measure-CodexHookGovernance {
 
         $postBlockFixture = Join-Path $fixtureRoot 'block-stop-zh-completion.json'
         if (Test-Path -LiteralPath $postBlockFixture -PathType Leaf) {
-            $postBlockContent = Get-Content -LiteralPath $postBlockFixture -Raw -Encoding UTF8
-            foreach ($requiredPostBlockPattern in @(
-                @{ Pattern = '"expectedDiagnosticLabels"\s*:\s*true'; Text = 'post-block Stop fixture requires diagnostic labels' },
-                @{ Pattern = 'apply_patch'; Text = 'post-block Stop fixture names the blocked write tool' },
-                @{ Pattern = '(?:換工具|\\\\u63db\\\\u5de5\\\\u5177)'; Text = 'post-block Stop fixture includes Chinese switch-tool wording' }
-            )) {
-                if ($postBlockContent -notmatch $requiredPostBlockPattern.Pattern) {
-                    Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $postBlockFixture) -Line 1 -Reason 'Codex hook 被擋後繞路 fixture 覆蓋不足' -Text $requiredPostBlockPattern.Text
-                }
-            }
+            Test-CodexHookFixtureStructuredContract -Path $postBlockFixture -ExpectedDecision 'block' -ScenarioCodePattern '(post-block|bypass)' -RequireReasonCodeRegex -RequireDiagnosticLabels
         }
 
         $blockedStateFixture = Join-Path $fixtureRoot 'allow-stop-blocked-state.json'
@@ -2622,7 +2818,7 @@ function Measure-CodexHookGovernance {
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Codex Hook Governance"
+    Write-Host "📊 掛鉤治理（Codex Hook Governance）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     if ($results.Count -eq 0) {
         Write-Host "✅ Codex project-level hooks 已通過 Team-Native governance 檢查"
@@ -3120,16 +3316,16 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         $content = Get-ProgrammingTeamContent -Path (Join-Path $RepoRoot $relPath)
         if ($null -eq $content) { continue }
         if (-not (Test-ProgrammingTeamFirstReadonlyContent -Content $content)) {
-            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少 Team-First formal-readonly 與 no-write 不等於 no-team 語義' -Text 'read-only exploration still requires a formal-readonly team route'
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少 Team-First formal-readonly 與 no-write 不等於 no-team 語義' -Text '唯讀探索仍需要正式唯讀團隊路由（read-only exploration / formal-readonly）。'
         }
         if (-not (Test-ProgrammingTeamStandbyContent -Content $content)) {
-            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少隊員 standby 與未啟動狀態回報語義' -Text 'non-launched specialist routes must be recorded as standby, blocked, unverified, unavailable, or not-authorized'
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少隊員 standby 與未啟動狀態回報語義' -Text '未啟動的隊員路由必須記錄為 standby、blocked、unverified、unavailable 或 not-authorized。'
         }
         if (-not (Test-ProgrammingTeamDispatchPackageContent -Content $content)) {
-            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少技能派工包欄位要求' -Text 'specialist dispatch must include inputs, tools, forbidden actions, artifact format, and stop condition'
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少技能派工包欄位要求' -Text '隊員派工必須包含輸入、工具、禁止動作、交付件格式與停止條件（inputs / tools / forbidden actions / artifact format / stop condition）。'
         }
         if (-not (Test-ProgrammingTeamLargeReadBoundaryContent -Content $content)) {
-            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少大檔深讀不得由隊長包辦的界線' -Text 'large-file deep read must route to a bounded specialist or be marked blocked/unverified'
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少大檔深讀不得由隊長包辦的界線' -Text '大檔深讀必須交給有界隊員站點，或標記為 blocked / unverified。'
         }
     }
 
@@ -3146,7 +3342,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         $content = Get-ProgrammingTeamContent -Path (Join-Path $RepoRoot $relPath)
         if ($null -eq $content) { continue }
         if (-not (Test-ProgrammingTeamChannelMonitoringContent -Content $content)) {
-            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '隊員通道監控欄位不完整' -Text 'required: channel_capability, channel_invocation_status, startup_started_at, first_response_deadline, last_progress_at, timeout_action, standby_reason'
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '隊員通道監控欄位不完整' -Text ("缺少必要欄位：{0}" -f (Format-AuditFieldListDisplay -Fields @('channel_capability', 'channel_invocation_status', 'startup_started_at', 'first_response_deadline', 'last_progress_at', 'timeout_action', 'standby_reason')))
         }
     }
 
@@ -3532,7 +3728,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Programming Team Governance"
+    Write-Host "📊 編程團隊治理（Programming Team Governance）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
     foreach ($finding in $results | Sort-Object Severity, File, Line) {
@@ -3747,7 +3943,7 @@ function Measure-DirectorOutputContract {
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Director Output Contract"
+    Write-Host "📊 總監可讀輸出契約（Director Output Contract）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
     foreach ($finding in $results | Sort-Object Severity, File, Reason) {
@@ -3920,7 +4116,7 @@ function Measure-ProjectSkillLinks {
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Project Skill Links"
+    Write-Host "📊 專案技能連結（Project Skill Links）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
     foreach ($finding in $results | Sort-Object Severity, DiscoveryRoot, Link) {
@@ -4063,7 +4259,7 @@ function Measure-ProjectContextCards {
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Project Context Cards"
+    Write-Host "📊 專案脈絡卡（Project Context Cards）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
     foreach ($finding in $results | Sort-Object Severity, File, Reason) {
@@ -4183,7 +4379,7 @@ function Measure-MemoryCardNaming {
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Memory Card Naming, Structure, and Quality"
+    Write-Host "📊 記憶卡命名、結構與品質（Memory Card Naming, Structure, and Quality）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
     foreach ($finding in $results | Sort-Object Severity, File, Reason) {
@@ -4271,7 +4467,7 @@ function Measure-SharedContextTemplates {
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Shared Context Templates"
+    Write-Host "📊 共用脈絡模板（Shared Context Templates）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
     foreach ($finding in $results | Sort-Object Severity, File, Reason) {
@@ -4806,6 +5002,7 @@ function Measure-TeamNativeCoreSemantics {
         [PSCustomObject]@{ Source = 'Shared\policies\authorization-resolution.md'; Target = '.agents\shared\policies\authorization-resolution.md'; Severity = 'Red' },
         [PSCustomObject]@{ Source = 'Shared\policies\workflow-orchestration.md'; Target = '.agents\shared\policies\workflow-orchestration.md'; Severity = 'Red' },
         [PSCustomObject]@{ Source = 'Shared\policies\workflow-orchestration-scenarios.md'; Target = '.agents\shared\policies\workflow-orchestration-scenarios.md'; Severity = 'Yellow' },
+        [PSCustomObject]@{ Source = 'Shared\policies\language-governance.md'; Target = '.agents\shared\policies\language-governance.md'; Severity = 'Red' },
         [PSCustomObject]@{ Source = 'Shared\policies\subagent-invocation.md'; Target = '.agents\shared\policies\subagent-invocation.md'; Severity = 'Red' },
         [PSCustomObject]@{ Source = 'Shared\policies\team-native-core.md'; Target = '.agents\shared\policies\team-native-core.md'; Severity = 'Red' },
         [PSCustomObject]@{ Source = 'Shared\policies\team-trace-evidence.md'; Target = '.agents\shared\policies\team-trace-evidence.md'; Severity = 'Red' }
@@ -4865,7 +5062,7 @@ function Measure-TeamNativeCoreSemantics {
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Team-Native Core Semantics"
+    Write-Host "📊 團隊原生核心語義（Team-Native Core Semantics）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
     foreach ($finding in $results | Sort-Object Severity, File, Reason) {
@@ -5114,13 +5311,13 @@ function Measure-TeamTraceEvidence {
 
     if (@($traceFiles).Count -eq 0) {
         if ($RequireTeamTrace) {
-            Add-TeamTraceFinding -Severity 'Red' -File (Get-AuditRelativePath -RepoRoot $TargetRoot -Path $TeamTraceRoot) -Line 1 -Reason '要求 Team-Native trace，但找不到任務軌跡檔' -Text 'missing team trace evidence'
+            Add-TeamTraceFinding -Severity 'Red' -File (Get-AuditRelativePath -RepoRoot $TargetRoot -Path $TeamTraceRoot) -Line 1 -Reason '要求 Team-Native trace，但找不到任務軌跡檔' -Text '缺少 Team-Native 任務軌跡證據（team trace evidence）。'
         }
 
         $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
         $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
         Write-Host ""
-        Write-Host "📊 Team Trace Evidence"
+        Write-Host "📊 團隊軌跡證據（Team Trace Evidence）"
         Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         if ($RequireTeamTrace) {
             Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
@@ -5200,7 +5397,10 @@ function Measure-TeamTraceEvidence {
         'role_separation',
         'completion_state',
         'risk_close_evidence',
-        'residual_risk'
+        'residual_risk',
+        'source_deployed_pair',
+        'sync_direction',
+        'sync_evidence'
     )
 
     $validCount = 0
@@ -5220,16 +5420,16 @@ function Measure-TeamTraceEvidence {
             $validCount++
         } else {
             $severity = if ($RequireTeamTrace -or $requiresHardTrace) { 'Red' } else { 'Yellow' }
-            Add-TeamTraceFinding -Severity $severity -File $rel -Line 1 -Reason 'Team-Native trace 欄位不完整' -Text ("missing: {0}" -f ($missing -join ', '))
+            Add-TeamTraceFinding -Severity $severity -File $rel -Line 1 -Reason 'Team-Native trace 欄位不完整' -Text ("缺少：{0}" -f (Format-AuditFieldListDisplay -Fields $missing))
         }
 
         $legacyTracePattern = '補丁包|implementation patch|text patch|captain substitution accepted-risk|patch packet|delivery packet|補丁封包|舊封包'
         $newTracePattern = 'authorization_source|authorization_target|authorization_scope|authorization_phase|authorization_evidence|authorization_expiry|authorization_resolution_state|platform_mode_observed|specialist_skill|domain_label|requested_execution_channel|channel_capability|channel_invocation_status|execution_channel|delivery_artifact|delivery_artifact_status|no_captain_authoring'
         if (Test-TeamTracePositiveLine -Content $content -Pattern $legacyTracePattern) {
             $legacyText = if ($content -match $newTracePattern) {
-                'legacy patch/packet wording present alongside current trace fields'
+                '舊式 patch/packet 字眼與新版 trace 欄位同時出現；只能作遺留偵測，不能當完成證據。'
             } else {
-                'use specialist_skill/domain_label/requested_execution_channel/channel_capability/channel_invocation_status/delivery_artifact/no_captain_authoring'
+                '請補新版 trace 欄位：專家技能（specialist_skill）、領域標籤（domain_label）、請求執行通道（requested_execution_channel）、通道能力（channel_capability）、通道啟動狀態（channel_invocation_status）、交付件（delivery_artifact）、無隊長代工證據（no_captain_authoring）。'
             }
             Add-TeamTraceFinding -Severity 'Yellow' -File $rel -Line 1 -Reason 'Team-Native trace 使用舊補丁、packet 或隊長代工語義，只能作遺留偵測' -Text $legacyText
         }
@@ -5238,25 +5438,25 @@ function Measure-TeamTraceEvidence {
         $isExplorationTrace = $content -match '(?i)\btask_type\b\s*[:=]\s*["'']?(exploration|discussion|validation-audit)\b|read-only exploration|no-write exploration|無寫入探索|唯讀探索|探索'
         $hasFormalReadonlyTrace = $content -match '(?i)formal-readonly|formal readonly|Team-First.{0,120}(read[- ]?only|readonly|唯讀)|正式.{0,80}(唯讀|無寫入)'
         if ($isNoWriteTrace -and $isExplorationTrace -and (-not $hasFormalReadonlyTrace)) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '無寫入探索缺少 Team-First formal-readonly' -Text 'no-write exploration must still record a formal-readonly team route'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '無寫入探索缺少 Team-First formal-readonly' -Text '無寫入探索仍必須記錄正式唯讀團隊路由（no-write / formal-readonly）。'
         }
 
         $operationMode = Get-TeamTraceFieldValue -Content $content -Fields @('operation_mode', 'operation mode', '操作模式')
         if ($operationMode -and ($operationMode -notmatch '^(daily|full)$')) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'Team-Native trace 的 operation_mode 不是 daily 或 full' -Text ("operation_mode: {0}" -f $operationMode)
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'Team-Native trace 的 operation_mode 不是 daily 或 full' -Text ("{0}: {1}" -f (Format-AuditFieldDisplay -Field 'operation_mode'), $operationMode)
         }
         $fullOnlyTracePattern = '(?i)(implementation|repair|bottom-layer refactor|cross-file governance|specialist skill rewrite|governance-impact|governance impact|Doctor/Audit|audit rules|routine audit|commit-release|commit/release|release|deploy|protected mutation|實作|修復|底層重構|跨檔治理|治理影響|專家技能改寫|巡檢規則|巡檢|提交發布準備|提交發布|發布|部署|保護狀態)'
         if (($operationMode -eq 'daily') -and (Test-TeamTracePositiveLine -Content $content -Pattern $fullOnlyTracePattern)) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'full-only 任務軌跡不得使用 daily 模式' -Text 'use operation_mode: full for implementation, bottom-layer refactor, Doctor/Audit, release, deploy, or protected mutation work'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'full-only 任務軌跡不得使用 daily 模式' -Text '此任務需使用完整模式：操作模式（operation_mode）: full；適用於 implementation、bottom-layer refactor、Doctor/Audit、release、deploy、protected mutation。'
         }
 
         $roleId = Get-TeamTraceFieldValue -Content $content -Fields @('role_id', 'role id', '角色代號')
         if ($roleId -and ($registeredRoleIds -notcontains $roleId) -and ($roleId -notmatch '^(blocked|unverified|not-applicable|closed-with-director-risk)$')) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'Team-Native trace 使用未登記的 role_id' -Text ("role_id: {0}" -f $roleId)
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'Team-Native trace 使用未登記的 role_id' -Text ("{0}: {1}" -f (Format-AuditFieldDisplay -Field 'role_id'), $roleId)
         }
         $exclusiveTaskScope = Get-TeamTraceFieldValue -Content $content -Fields @('exclusive_task_scope', 'exclusive task scope', '互斥任務範圍')
         if ($exclusiveTaskScope -and ($exclusiveTaskScope -notmatch '^(task|blocked|unverified|not-applicable|closed-with-director-risk)$')) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'Team-Native trace 的 exclusive_task_scope 不是 task 或誠實阻塞狀態' -Text ("exclusive_task_scope: {0}" -f $exclusiveTaskScope)
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'Team-Native trace 的 exclusive_task_scope 不是 task 或誠實阻塞狀態' -Text ("{0}: {1}" -f (Format-AuditFieldDisplay -Field 'exclusive_task_scope'), $exclusiveTaskScope)
         }
 
         $noWriteNoTeamPattern = '(?i)(no-write|read-only|無寫入|唯讀).{0,160}(no-team|no team|without team|skip team|不用(團隊|隊員)|不需要(團隊|隊員)|無團隊)'
@@ -5269,14 +5469,14 @@ function Measure-TeamTraceEvidence {
             }
         }
         if ($hasBadNoWriteNoTeamTrace) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡把 no-write 或唯讀解讀成 no-team' -Text 'no-write controls mutation only; it does not remove formal team stations'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡把 no-write 或唯讀解讀成 no-team' -Text '唯讀或無寫入狀態（no-write）只限制變更動作，不代表可以移除正式團隊站點（formal team stations）。'
         }
 
         $hasNotStartedChannel = $content -match '(?im)^\s*[-*]?\s*["'']?channel_invocation_status["'']?\s*[:=]\s*["'']?not-started\b'
         $hasChannelAttemptOrClosure = $content -match '(?im)^\s*[-*]?\s*["'']?channel_invocation_status["'']?\s*[:=]\s*["'']?(requested|running|returned|unavailable|blocked|not-authorized)\b'
         $hasNotStartedExplanation = $content -match '(?i)(not-started|未啟動).{0,200}(reason|because|blocked|unverified|unavailable|not-authorized|standby|原因|阻塞|未驗證|不可用|未授權|待命)'
         if ($hasNotStartedChannel -and (-not $hasChannelAttemptOrClosure) -and (-not $hasNotStartedExplanation)) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊員通道未嘗試啟動也未回報' -Text 'not-started requires standby, blocked, unverified, unavailable, not-authorized, or a concrete reason'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊員通道未嘗試啟動也未回報' -Text '通道狀態 not-started 必須附上 standby、blocked、unverified、unavailable、not-authorized 或具體原因。'
         }
 
         $hasUnavailableChannel = $content -match '(?im)^\s*[-*]?\s*["'']?channel_capability["'']?\s*[:=]\s*["'']?(unavailable|conditional)\b|^\s*[-*]?\s*["'']?channel_invocation_status["'']?\s*[:=]\s*["'']?(not-started|unavailable|blocked|not-authorized|standby)\b'
@@ -5295,7 +5495,7 @@ function Measure-TeamTraceEvidence {
                 }
             }
             if (@($missingMonitoringFields).Count -gt 0) {
-                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊員通道不可用或未啟動時缺少監控欄位' -Text ("missing: {0}" -f ($missingMonitoringFields -join ', '))
+                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊員通道不可用或未啟動時缺少監控欄位' -Text ("缺少：{0}" -f (Format-AuditFieldListDisplay -Fields $missingMonitoringFields))
             }
         }
 
@@ -5303,7 +5503,7 @@ function Measure-TeamTraceEvidence {
         foreach ($routeField in @('execution_route', 'execution_channel', 'platform_route', 'execution mode', 'execution_mode')) {
             $routeValue = Get-TeamTraceFieldValue -Content $content -Fields @($routeField)
             if ($routeValue -and ($routeValue.Trim().ToLowerInvariant() -match $stateValuePattern)) {
-                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '路由欄位混入狀態值' -Text ("{0}: {1}" -f $routeField, $routeValue)
+                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '路由欄位混入狀態值' -Text ("{0}: {1}" -f (Format-AuditFieldDisplay -Field $routeField), $routeValue)
             }
         }
 
@@ -5336,62 +5536,105 @@ function Measure-TeamTraceEvidence {
                 } else {
                     '舊版保護或寫入型任務缺少工具執行信封或回執證據，列為遺留非阻塞'
                 }
-                Add-TeamTraceFinding -Severity $toolEnvelopeSeverity -File $rel -Line 1 -Reason $toolEnvelopeReason -Text ("missing: {0}" -f ($missingToolEvidenceFields -join ', '))
+                Add-TeamTraceFinding -Severity $toolEnvelopeSeverity -File $rel -Line 1 -Reason $toolEnvelopeReason -Text ("缺少：{0}" -f (Format-AuditFieldListDisplay -Fields $missingToolEvidenceFields))
             }
 
             $envelopeTrust = Get-TeamTraceFieldValue -Content $content -Fields @('tool_execution_envelope_trust', 'tool envelope trust')
             if ($requiresToolEnvelopeEvidence -and $envelopeTrust -and ($envelopeTrust.Trim().ToLowerInvariant() -notmatch '^(trusted|blocked|unverified|not-applicable)$')) {
-                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '工具執行信封信任狀態不可授權保護操作' -Text ("tool_execution_envelope_trust: {0}" -f $envelopeTrust)
+                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '工具執行信封信任狀態不可授權保護操作' -Text ("{0}: {1}" -f (Format-AuditFieldDisplay -Field 'tool_execution_envelope_trust'), $envelopeTrust)
+            }
+        }
+
+        $dirtyTargetFields = @('dirty_target', 'existing_worktree_changes', 'existing_diff', 'modified_target', 'target_dirty', 'worktree_dirty')
+        $dirtyTargetPositiveValuePattern = '(?i)^(true|yes|present|detected|dirty|modified|existing|required)$'
+        $dirtyTargetClearValuePattern = '(?i)^(false|no|none|n/a|not-applicable|not applicable|absent|clean|clear|not detected|not present|no existing diff|checked clean)$'
+        $dirtyTargetPattern = '(?i)\b(dirty target|existing worktree changes|existing diff|modified target|target dirty|worktree dirty)\b'
+        $dirtyTargetClearLinePattern = '(?i)(\b(no existing diff|existing diff absent|without existing diff)\b|\b(no dirty target|no target dirty|no worktree dirty|no modified target|no existing worktree changes)\b|\b(dirty target|existing worktree changes|existing diff|modified target|target dirty|worktree dirty)\b\s*(?::|=)?\s*(is\s+|was\s+|checked\s+)?(false|no|none|not-applicable|not applicable|absent|clean|clear|not detected|not present|checked clean)\b)'
+        $hasDirtyTargetTrace = $false
+        foreach ($dirtyField in $dirtyTargetFields) {
+            $dirtyValue = Get-TeamTraceFieldValue -Content $content -Fields @($dirtyField)
+            if (-not $dirtyValue) { continue }
+            if ($dirtyValue -match $dirtyTargetClearValuePattern) { continue }
+            if ($dirtyValue -match $dirtyTargetPositiveValuePattern) {
+                $hasDirtyTargetTrace = $true
+                break
+            }
+        }
+        if (-not $hasDirtyTargetTrace) {
+            foreach ($line in ($content -split "\r?\n")) {
+                if ($line -notmatch $dirtyTargetPattern) { continue }
+                if (Test-AuditLineIsNegative -Line $line) { continue }
+                if ($line -match $dirtyTargetClearLinePattern) { continue }
+                $hasDirtyTargetTrace = $true
+                break
+            }
+        }
+        if ($hasDirtyTargetTrace) {
+            $missingDirtyTargetFields = @()
+            foreach ($dirtyEvidenceField in @('current_diff_evidence', 'target_section_evidence', 'integration_strategy')) {
+                if (-not (Test-TeamTraceFieldHasValue -Content $content -Field $dirtyEvidenceField)) {
+                    $missingDirtyTargetFields += $dirtyEvidenceField
+                }
+            }
+            $hasExistingChangeIdentity = (
+                (Test-TeamTraceFieldHasValue -Content $content -Field 'existing_change_classification') -or
+                (Test-TeamTraceFieldHasValue -Content $content -Field 'existing_change_owner')
+            )
+            if (-not $hasExistingChangeIdentity) {
+                $missingDirtyTargetFields += 'existing_change_classification or existing_change_owner'
+            }
+            if (@($missingDirtyTargetFields).Count -gt 0) {
+                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'dirty target trace 缺少既有變更整合證據' -Text ("缺少：{0}" -f (Format-AuditFieldListDisplay -Fields $missingDirtyTargetFields))
             }
         }
 
         $untrustedEnvelopeAuthPattern = '(?i)(tool_execution_envelope_trust|tool execution envelope trust).{0,80}(untrusted|model-filled|unsigned|missing nonce|unknown issuer).{0,180}(authorized|allowed|protected mutation|write|complete|授權|允許|保護操作|寫入|完成)'
         if (Test-TeamTracePositiveLine -Content $content -Pattern $untrustedEnvelopeAuthPattern) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '不可信或模型自填信封不得授權保護操作' -Text 'trusted issuer, signature, and nonce are required before protected mutation'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '不可信或模型自填信封不得授權保護操作' -Text '保護操作必須有可信簽發者（trusted issuer）、簽章（signature）與 nonce。'
         }
 
         $invalidPayloadPattern = '(?i)(invalid payload|malformed payload|parse error|__parse_error|無效 payload|無效酬載)'
         $failClosedPattern = '(?i)(fail-closed|fail closed|blocked|not-authorized|unverified|tool_payload_evidence_gap|硬阻擋|阻塞|未授權|未驗證)'
         if ((Test-TeamTracePositiveLine -Content $content -Pattern $invalidPayloadPattern) -and (-not (Test-TeamTracePositiveLine -Content $content -Pattern $failClosedPattern))) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'invalid payload 未 fail-closed' -Text 'invalid payload fail-closed evidence is required'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'invalid payload 未 fail-closed' -Text '無效 payload 必須有 fail-closed 證據（invalid payload fail-closed）。'
         }
 
         $postBlockBypassPattern = '(?i)(post-block|after block|after a block|被擋後|阻擋後).{0,180}(retry|try again|alternate tool|another tool|switch tool|switch channel|bypass|transcript|換工具|換通道|繞路|重試)'
         $postBlockHardBlockPattern = '(?i)(post-block bypass hard block|blocked|not-authorized|tool_payload_evidence_gap|硬阻擋|阻塞|未授權)'
         if ((Test-TeamTracePositiveLine -Content $content -Pattern $postBlockBypassPattern) -and (-not (Test-TeamTracePositiveLine -Content $content -Pattern $postBlockHardBlockPattern))) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '被擋後繞路缺少硬阻擋狀態' -Text 'post-block bypass hard block is required'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '被擋後繞路缺少硬阻擋狀態' -Text '被擋後繞路必須有硬阻擋證據（post-block bypass hard block）。'
         }
 
         $hasStandbyTrace = $content -match '(?i)\bstandby\b|待命'
         if ($isNoWriteTrace -and $isExplorationTrace -and (-not $hasStandbyTrace)) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '無寫入探索缺少隊員 standby 狀態' -Text 'formal-readonly traces must preserve specialist standby or a blocked/unverified equivalent'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '無寫入探索缺少隊員 standby 狀態' -Text '正式唯讀軌跡（formal-readonly）必須保留隊員待命（standby），或 blocked / unverified 等等價狀態。'
         }
 
         $standbyCompletionPattern = '(?i)(\bstandby\b|待命).{0,160}(\bcomplete\b|completed|full team completion|formal completion evidence|完整完成|完整團隊完成|已完成|已回收|已整合|正式完成證據|驗收通過)'
         if (Test-TeamTracePositiveLine -Content $content -Pattern $standbyCompletionPattern) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '待命狀態不得當成完成證據' -Text 'standby is a non-executed lifecycle state, not returned evidence or completion'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '待命狀態不得當成完成證據' -Text '待命狀態（standby）是未執行的生命週期狀態，不能當 returned evidence 或 completion。'
         }
 
         $isFormalOrApplicableTrace = $content -match '(?i)\bboard_state\b\s*[:=]\s*["'']?formal\b|\bapplicability\b\s*[:=]\s*["'']?applicable\b|formal evidence eligibility|正式證據'
         if ($isFormalOrApplicableTrace -and ($content -notmatch [regex]::Escape('handoff_packet_id'))) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '正式站點缺少 handoff_packet_id' -Text 'formal stations must carry a handoff packet id or an explicit blocked/unverified reason'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '正式站點缺少 handoff_packet_id' -Text '正式站點必須帶有交接包代號（handoff_packet_id），或明確標記 blocked / unverified 原因。'
         }
 
         $hasSkillDispatchPackage = $content -match '(?i)skill dispatch package|specialist dispatch package|技能派工包|隊員派工包|Allowed inputs.{0,200}Allowed tools.{0,200}Forbidden actions.{0,200}Output artifact format.{0,200}Stop condition'
         if ($isFormalOrApplicableTrace -and (-not $hasSkillDispatchPackage)) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '正式站點缺少技能派工包' -Text 'formal station dispatch must include inputs, tools, forbidden actions, artifact format, and stop condition'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '正式站點缺少技能派工包' -Text '正式站點派工必須包含允許輸入（allowed_inputs）、允許工具（allowed_tools）、禁止動作（forbidden_actions）、輸出交付件格式（output_artifact_format）與停止條件（stop_condition）。'
         }
 
         $captainLargeReadPattern = '(?i)(captain|隊長).{0,120}(read|loaded|absorbed|deep read|完整讀|全量讀|吞|深讀).{0,120}(large file|whole file|full file|大檔|大型檔案|全檔|整份)'
         if (Test-TeamTracePositiveLine -Content $content -Pattern $captainLargeReadPattern) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊長完整吞大檔替代隊員深讀' -Text 'large-file deep read must be a bounded specialist station or an honest blocked/unverified state'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊長完整吞大檔替代隊員深讀' -Text '隊長不能用完整讀取大檔替代隊員深讀；應改成有界隊員站點，或誠實標記 blocked / unverified。'
         }
 
         $ambiguousCaptainImplementationPatterns = @(
-            [PSCustomObject]@{ Pattern = '(?i)(captain reimplements|captain.{0,80}reimplement|隊長.{0,80}重新實作|隊長.{0,80}重寫)'; Reason = '任務軌跡出現 Captain reimplements 模糊語義'; Text = 'captain reimplementation is not a qualified change delivery artifact' },
-            [PSCustomObject]@{ Pattern = '(?i)(\bdirect\b\s+after\s+\bGO\b|after\s+\bGO\b.{0,80}\bdirect\b|\bGO\b.{0,80}\bdirect\b|GO 後.{0,80}(直做|直接)|授權後.{0,80}(直做|直接))'; Reason = '任務軌跡出現 GO 後直做模糊語義'; Text = 'GO must bind a formal station and scoped artifact route, not direct implementation' },
-            [PSCustomObject]@{ Pattern = '(?i)(main-worktree writes?|main worktree writes?|主工作樹寫入|主線寫入).{0,140}(instead of|without|skip|direct|代替|沒有|跳過|直做|直接).{0,120}(change delivery|delivery artifact|變更交付|交付件|station|站點)'; Reason = '任務軌跡以 main-worktree writes 替代變更交付'; Text = 'main-worktree integration can only integrate returned delivery artifacts or explicit non-complete risk closure' },
-            [PSCustomObject]@{ Pattern = '(?i)(隊長代工|captain substitute authoring|captain-substitute authoring|captain substituted).{0,160}(implementation|change delivery|變更交付|實作|完成|complete)'; Reason = '任務軌跡把隊長代工混入正式實作'; Text = 'captain substitute authoring is blocked, unverified, or closed-with-director-risk, not full completion' }
+            [PSCustomObject]@{ Pattern = '(?i)(captain reimplements|captain.{0,80}reimplement|隊長.{0,80}重新實作|隊長.{0,80}重寫)'; Reason = '任務軌跡出現 Captain reimplements 模糊語義'; Text = '隊長重新實作不是合格變更交付件（change delivery artifact）。' },
+            [PSCustomObject]@{ Pattern = '(?i)(\bdirect\b\s+after\s+\bGO\b|after\s+\bGO\b.{0,80}\bdirect\b|\bGO\b.{0,80}\bdirect\b|GO 後.{0,80}(直做|直接)|授權後.{0,80}(直做|直接))'; Reason = '任務軌跡出現 GO 後直做模糊語義'; Text = 'GO 必須綁定正式站點與有範圍的交付路由，不能直接實作（direct implementation）。' },
+            [PSCustomObject]@{ Pattern = '(?i)(main-worktree writes?|main worktree writes?|主工作樹寫入|主線寫入).{0,140}(instead of|without|skip|direct|代替|沒有|跳過|直做|直接).{0,120}(change delivery|delivery artifact|變更交付|交付件|station|站點)'; Reason = '任務軌跡以 main-worktree writes 替代變更交付'; Text = '主工作樹整合只能整合已回傳交付件，或明確走非完整風險關閉（closed-with-director-risk）。' },
+            [PSCustomObject]@{ Pattern = '(?i)(隊長代工|captain substitute authoring|captain-substitute authoring|captain substituted).{0,160}(implementation|change delivery|變更交付|實作|完成|complete)'; Reason = '任務軌跡把隊長代工混入正式實作'; Text = '隊長代工只能標記 blocked、unverified 或 closed-with-director-risk，不能當完整完成。' }
         )
         foreach ($ambiguousPattern in $ambiguousCaptainImplementationPatterns) {
             if (Test-TeamTracePositiveLine -Content $content -Pattern $ambiguousPattern.Pattern) {
@@ -5412,19 +5655,19 @@ function Measure-TeamTraceEvidence {
         $normalizedCompletionState = $completionState.Trim().ToLowerInvariant()
         $allowedCompletionStates = @('complete', 'closed-with-director-risk', 'blocked', 'unverified', 'not-applicable')
         if ($normalizedCompletionState -and ($allowedCompletionStates -notcontains $normalizedCompletionState)) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'Team-Native trace 使用未登記的 completion_state' -Text ("completion_state: {0}" -f $completionState)
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'Team-Native trace 使用未登記的 completion_state' -Text ("{0}: {1}" -f (Format-AuditFieldDisplay -Field 'completion_state'), $completionState)
         }
         if ($completeClaim -and $normalizedCompletionState -and ($normalizedCompletionState -ne 'complete')) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '非完成狀態不得伴隨完整完成宣稱' -Text ("completion_state: {0}" -f $completionState)
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '非完成狀態不得伴隨完整完成宣稱' -Text ("{0}: {1}" -f (Format-AuditFieldDisplay -Field 'completion_state'), $completionState)
         }
         if ($hasAcceptedRiskCompletion -or ($completeClaim -and $hasAcceptedRisk)) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡含已接受風險但宣稱 complete' -Text 'accepted-risk is not full completion; use closed-with-director-risk only as non-complete closure'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡含已接受風險但宣稱 complete' -Text '已接受風險（accepted-risk）不是完整完成；只能用 closed-with-director-risk 作為非完整關閉狀態。'
         }
         if ($completeClaim -and $hasDirectorRiskClose) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡把總監風險關閉宣稱為完整完成' -Text 'closed-with-director-risk is a non-complete closure state'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡把總監風險關閉宣稱為完整完成' -Text '總監風險關閉（closed-with-director-risk）是非完整關閉狀態，不是 complete。'
         }
         if ($hasDirectorRiskClose -and (-not (Test-TeamTraceFieldHasValue -Content $content -Field 'risk_close_evidence'))) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'closed-with-director-risk 缺少當前且範圍綁定的總監風險關閉證據' -Text 'risk_close_evidence must name current Director decision, residual risk, and accepted scope'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'closed-with-director-risk 缺少當前且範圍綁定的總監風險關閉證據' -Text '風險關閉證據（risk_close_evidence）必須交代本次 Director 決策、殘留風險（residual_risk）與接受範圍。'
         }
 
         $artifactChecks = @(
@@ -5449,7 +5692,7 @@ function Measure-TeamTraceEvidence {
                 }
             }
             if (@($missingCompleteEvidence).Count -gt 0) {
-                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡宣稱完整完成但缺少可解析必要證據' -Text ("missing: {0}" -f ($missingCompleteEvidence -join ', '))
+                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡宣稱完整完成但缺少可解析必要證據' -Text ("缺少：{0}" -f (Format-AuditFieldListDisplay -Fields $missingCompleteEvidence))
             }
 
             $missingArtifacts = @()
@@ -5459,30 +5702,30 @@ function Measure-TeamTraceEvidence {
                 }
             }
             if (@($missingArtifacts).Count -gt 0) {
-                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡宣稱完整完成但缺少必要交付件' -Text ("missing: {0}" -f ($missingArtifacts -join ', '))
+                Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡宣稱完整完成但缺少必要交付件' -Text ("缺少交付件：{0}" -f ($missingArtifacts -join ', '))
             }
         }
 
         if ($completeClaim -and (Test-TeamTraceUnsafeCaptainAuthoring -Content $content)) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊長創作或隊長替代卻宣稱 complete' -Text 'captain may integrate returned artifacts, but cannot author or substitute the main deliverable and claim completion'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊長創作或隊長替代卻宣稱 complete' -Text '隊長可以整合已回傳交付件，但不能自己創作或替代主要交付物後宣稱 completion。'
         }
 
         $implementer = Get-TeamTraceFieldValue -Content $content -Fields @('implementer', 'implementation_owner', 'implementation_specialist', 'change_delivery_owner', 'change_owner', '實作者')
         $reviewer = Get-TeamTraceFieldValue -Content $content -Fields @('reviewer', 'review_owner', 'review_specialist', 'review_delivery_owner', '審查者')
         if (($implementer) -and ($reviewer) -and ($implementer.Trim().ToLowerInvariant() -eq $reviewer.Trim().ToLowerInvariant())) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '審查者與實作者相同' -Text ("reviewer/implementer: {0}" -f $reviewer)
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '審查者與實作者相同' -Text ("審查者/實作者（reviewer/implementer）: {0}" -f $reviewer)
         }
 
         $evidenceDirectPattern = '(?i)(validation|review|external-research|scope-impact|security-reliability|memory-docs|release-completion|evidence|驗證|審查|證據|外部研究|範圍|影響|安全|記憶|文件|收尾).{0,180}(\bdirect\b|主線直做)|(\bdirect\b|主線直做).{0,180}(validation|review|external-research|scope-impact|security-reliability|memory-docs|release-completion|evidence|驗證|審查|證據|外部研究|範圍|影響|安全|記憶|文件|收尾)'
         $evidenceDirectCount = Get-TeamTracePositiveLineCount -Content $content -Pattern $evidenceDirectPattern
         $hasConcreteDirectExceptions = Test-TeamTracePositiveLine -Content $content -Pattern '(?i)\bdirect_exceptions\b.{0,240}(exception|replacement evidence|residual state|closed-with-director-risk|blocked|unverified|例外|替代證據|殘留狀態|風險關閉|阻塞|未驗證)'
         if (($evidenceDirectCount -ge 2) -and (-not $hasConcreteDirectExceptions)) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '兩個以上證據站點 direct 但缺少 direct_exceptions' -Text 'multi-direct evidence stations require station-specific exceptions, replacement evidence, and residual state'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '兩個以上證據站點 direct 但缺少 direct_exceptions' -Text '多個 direct 證據站點必須逐站記錄直行例外（direct_exceptions）、替代證據與殘留狀態。'
         }
 
         $selfReviewPattern = '(?i)\bself[-_ ]review\b\s*[:=]\s*["'']?(true|yes|same|failed|invalid)\b|\brole_separation\b\s*[:=]\s*["'']?(false|failed|invalid|same)\b|reviewer.{0,80}(same as|same).{0,80}implementer|審查者.{0,80}(同|相同).{0,80}實作者'
         if (Test-TeamTracePositiveLine -Content $content -Pattern $selfReviewPattern) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡顯示自審或角色分離失敗' -Text 'implementation and review must be separate delivery artifacts'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡顯示自審或角色分離失敗' -Text '實作與審查必須是分離的交付件（implementation / review delivery artifacts）。'
         }
 
         $changeDeliveryPattern = '(?i)\b(change|implementation)[-_ ]delivery( artifact)?\b|變更交付件|實作變更交付'
@@ -5492,53 +5735,53 @@ function Measure-TeamTraceEvidence {
         $reviewIndex = Get-TeamTraceFirstPositiveIndex -Content $content -Pattern $reviewDeliveryPattern
         $validationIndex = Get-TeamTraceFirstPositiveIndex -Content $content -Pattern $validationDeliveryPattern
         if (($reviewIndex -ge 0) -and (($changeIndex -lt 0) -or ($reviewIndex -lt $changeIndex))) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '審查交付件早於或缺少變更交付件' -Text 'review must start after the implementation change delivery artifact exists'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '審查交付件早於或缺少變更交付件' -Text '審查必須在實作變更交付件存在後開始（review after implementation change delivery artifact）。'
         }
         if (($validationIndex -ge 0) -and (($changeIndex -lt 0) -or ($validationIndex -lt $changeIndex))) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '驗證交付件早於或缺少變更交付件' -Text 'validation must start after the implementation change delivery artifact exists'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '驗證交付件早於或缺少變更交付件' -Text '驗證必須在實作變更交付件存在後開始（validation after implementation change delivery artifact）。'
         }
 
         $postBoardAllAtOncePattern = '(?i)(post-board|after board|任務板後|建板後|隊長任務板後).{0,180}(all-at-once|all at once|dispatch all|spawn all|一次(開|啟動|派出|派工).{0,30}(全部|所有)|全部(隊員|分支|子代理).{0,30}一次(開|啟動|派出|派工))'
         if (Test-TeamTracePositiveLine -Content $content -Pattern $postBoardAllAtOncePattern) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '建板後一次全開' -Text 'formal board dispatch must proceed wave by wave'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '建板後一次全開' -Text '正式任務板派工必須逐波進行（wave by wave），不能建板後一次全開。'
         }
 
         $sameWaveReviewPattern = '(?i)(same wave|同一波|同波|wave\s*\d+|第.{0,6}波).{0,180}(implementation|change delivery|實作|變更交付).{0,180}(review|審查).{0,120}(same deliverable|same artifact|同一交付物|同一交付件)'
         if (Test-TeamTracePositiveLine -Content $content -Pattern $sameWaveReviewPattern) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '同一波同時開實作與同交付物審查' -Text 'review of the same deliverable must wait for a returned change delivery artifact'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '同一波同時開實作與同交付物審查' -Text '同一交付件的審查必須等變更交付件回傳後才能開始（review waits for returned change delivery artifact）。'
         }
 
         $invalidLifecycleRetentionPattern = '(?i)(station_lifecycle_state|隊員狀態).{0,80}(retained|reused|保留|重用).{0,200}(implementation.{0,80}review|review.{0,80}implementation|validation.{0,80}repair|memory.{0,80}(write|mutation)|completion.{0,80}final acceptance|實作.{0,80}審查|審查.{0,80}實作|驗證.{0,80}修復|記憶歸因.{0,80}記憶寫入|收尾.{0,80}最終裁決)'
         if (Test-TeamTracePositiveLine -Content $content -Pattern $invalidLifecycleRetentionPattern) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊員生命週期跨越角色互斥邊界' -Text 'retained/reused specialists must stay inside the same role and delivery artifact'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '隊員生命週期跨越角色互斥邊界' -Text '保留或重用隊員時，必須留在同一角色與同一交付件範圍內（same role / delivery artifact）。'
         }
 
         $yellowMentionPattern = '(?i)\byellow\b|黃燈'
         $yellowClassificationPattern = '(?i)\byellow_classification\b|fix-this-cycle|residual-accepted|deferred-follow-up|local-customization|informational|黃燈分類'
         if ((Test-TeamTracePositiveLine -Content $content -Pattern $yellowMentionPattern) -and (-not (Test-TeamTracePositiveLine -Content $content -Pattern $yellowClassificationPattern))) {
-            Add-TeamTraceFinding -Severity 'Yellow' -File $rel -Line 1 -Reason '任務軌跡提到黃燈但缺少黃燈分類' -Text 'classify Yellow findings before closeout'
+            Add-TeamTraceFinding -Severity 'Yellow' -File $rel -Line 1 -Reason '任務軌跡提到黃燈但缺少黃燈分類' -Text '收尾前必須分類黃燈（yellow_classification）。'
         }
 
         $repairLoopValue = Get-TeamTraceFieldValue -Content $content -Fields @('repair_loop_count', 'repair_attempts', '修復迴圈')
         $repairLoopNumber = 0
         if (($repairLoopValue) -and ([int]::TryParse(($repairLoopValue -replace '[^0-9]', ''), [ref]$repairLoopNumber)) -and ($repairLoopNumber -gt 2) -and $completeClaim) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '同一症狀修復迴圈超過兩次仍宣稱 complete' -Text 'third repair attempt must route to root-cause repair, structural refactor, blocked, unverified, or closed-with-director-risk'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '同一症狀修復迴圈超過兩次仍宣稱 complete' -Text '第三次同症狀修復必須轉入根因修復、結構重構、blocked、unverified 或 closed-with-director-risk。'
         }
     }
 
     if ($RequireTeamTrace -and $validCount -eq 0) {
-        Add-TeamTraceFinding -Severity 'Red' -File (Get-AuditRelativePath -RepoRoot $TargetRoot -Path $TeamTraceRoot) -Line 1 -Reason '要求 Team-Native trace，但沒有完整軌跡檔' -Text 'no complete team trace found'
+        Add-TeamTraceFinding -Severity 'Red' -File (Get-AuditRelativePath -RepoRoot $TargetRoot -Path $TeamTraceRoot) -Line 1 -Reason '要求 Team-Native trace，但沒有完整軌跡檔' -Text '沒有找到完整 Team-Native 任務軌跡檔（complete team trace）。'
     }
 
     $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
     $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
 
     Write-Host ""
-    Write-Host "📊 Team Trace Evidence"
+    Write-Host "📊 團隊軌跡證據（Team Trace Evidence）"
     Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    Write-Host "Trace root：$TeamTraceRoot"
-    Write-Host "Trace files：$(@($traceFiles).Count)"
-    Write-Host "Complete traces：$validCount"
+    Write-Host "軌跡根目錄（Trace root）：$TeamTraceRoot"
+    Write-Host "軌跡檔案數（Trace files）：$(@($traceFiles).Count)"
+    Write-Host "完整軌跡數（Complete traces）：$validCount"
     Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
     foreach ($finding in $results | Sort-Object Severity, File, Reason) {
         $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }

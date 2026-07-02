@@ -4,7 +4,7 @@ scopePath: Scripts/tests/codex-hooks/
 description: >-
   專案記憶：Codex hooks 測試 runner 與 Team-Native gate fixtures。Use when: task touches
   Codex hook validation.
-last_updated: '2026-07-01T13:45:49+08:00'
+last_updated: '2026-07-02T09:27:26+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,24 +31,24 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _system.scripts.codex-hooks — Codex Hook Fixture Memory
 ## Current Truth
 - This child card owns the Codex hook fixture runner and JSON fixtures under `Scripts/tests/codex-hooks/`.
 - The fixtures validate Team-Native hook outcomes across 58 cases for prompt hints, read-only allowance, broad-read Captain-Lite context, scoped writes, out-of-scope writes, current payload versus historical transcript separation, same-record protected authorization, multi-protected partial authorization, release/deploy filename false positives, exact write target matching, protected mutation blocks, specialist lifecycle events, live Stop payload coverage, short and mixed completion-claim blocks, non-complete state exceptions, read-only report exceptions, structured completion artifact gates, Chinese natural-language scope binding, Chinese and space-containing paths, Windows prefix traps, and BOM Chinese completion text.
 - Shell resolution is application-only: the runner ignores function/alias shadowing, validates concrete executable paths, warns and skips missing shells in non-strict mode, and blocks missing shells when strict shell coverage is required.
-- Protected mutation fixtures now require scope-bound `protected_authorization`, a trusted tool execution envelope, and a matching trusted execution receipt with the same envelope id or nonce, allowed decision, matching action/target/scope, trusted issuer/source, verified or signed signature state, and fresh nonce.
-- The fixture runner and hook diagnostics now require write authorization to include current target, scope, phase, and expiry; text-only references to four delivery artifact names are blocked unless structured delivery artifact evidence is present.
+- Protected mutation fixtures now require scope-bound `protected_authorization`, a trusted tool execution envelope, and a matching trusted execution receipt; hook diagnostics require current write target, scope, phase, expiry, and structured delivery artifact evidence.
+- The fixture runner supports `scenarioCode`, `expectedReasonCodeRegex`, `expectedDecision`, and `expectedDiagnosticLabels` assertions so blocked write, post-block bypass, and natural-language route cases prove both human diagnostics and machine reason-code contracts.
 - The current fixture matrix passed 58 fixtures across Windows PowerShell and PowerShell 7, for 116 passing cases.
 - Hook behavior is coupled to Codex hook source files and Team-Native Core governance; review those cards when fixture expectations change.
 ## Active Constraints
 - Keep fixtures deterministic and offline; fixture names describe allow, block, or context outcomes, and live platform testing is still required when platform hook behavior changes.
 ## Cycle Events
+- 12: Compacted active Codex hook fixture memory after commit preflight reported the active-card line limit, preserving the latest fixture assertion contract.
+- 11: Added scenario codes, expected hook reason-code regexes, expected decisions, and diagnostic-label checks to the fixture runner and key prompt/write/Stop fixtures.
 - 10: Added structured completion, Chinese/space path, Windows prefix-trap, BOM Chinese completion, and route-only natural-language fixtures; runner passed 58 fixtures across Windows PowerShell and PowerShell 7.
 - 09: Added the Chinese natural-language prompt binding fixture to tracked ownership and updated fixture memory to 53 cases after the runner passed the Windows PowerShell and PowerShell 7 shell matrix.
 - 08: Tightened protected mutation fixtures so a scoped authorization must be paired with a trusted tool execution envelope and a matching trusted execution receipt; only-envelope, only-receipt, mismatched receipt, non-allowed decision, and model-filled cases stay blocked.
 ## Archive Index
-- None.
 ## Evidence Base
 - source:Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1; source:Scripts/tests/codex-hooks/fixtures/*.json; source:Codex/.codex/hooks/team-native-gate.ps1; tool:Codex hook fixture runner; director:2026-06-30 GO Hooks-Usability Closeout.
 ## Read Contract

@@ -38,6 +38,14 @@ references.
 - When technical identifiers are necessary, introduce the business or governance
   meaning first, then include the exact identifier as supporting evidence,
   location, or precision.
+- Raw machine field lists are not Director-readable explanations. For
+  Director-facing field display, write the Traditional Chinese meaning first
+  and keep the canonical identifier in parentheses, such as
+  `任務板狀態（board_state）`; do not translate or rename canonical machine
+  fields.
+- Commands, paths, code identifiers, schema fields, and exact tool output remain
+  exact when cited; add Traditional Chinese explanation around them instead of
+  changing the token text.
 - Change descriptions in plans, task summaries, and completion reports must
   name the functional or governance behavior first. A file path or code
   identifier alone is not an acceptable change description.

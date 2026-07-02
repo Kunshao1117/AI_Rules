@@ -4,7 +4,7 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-01T22:55:34+08:00'
+last_updated: '2026-07-02T09:30:35+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 18
+cycle_event_count: 20
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -47,11 +47,15 @@ metadata:
 - Governance Doctor covers draft/formal board lifecycle, dispatch waves, formal evidence eligibility, specialist lifecycle fields, closeout lanes, Yellow classification/resolution, repair loop counts, and deployed-copy drift closure.
 - The platform governance audit entrypoint explicitly passes strict trace parameters; public PowerShell entrypoints must preserve UTF-8 compatibility for Windows PowerShell 5.1.
 - Project rule sync and platform deploy scripts copy restricted project-local tools and shared governance references into downstream `.agents/` locations.
+- Audit now formats Director-facing missing-field and Team Trace diagnostics as Traditional Chinese meaning plus exact machine token, uses Chinese-first Doctor section headings, and keeps machine identifiers unchanged for precision.
+- Audit now checks Codex hook fixture machine contracts for `scenarioCode`, `expectedReasonCodeRegex`, `expectedDecision`, diagnostic-label expectations, and static payload guards for GO follow-up prompts, blocked `apply_patch`, post-block `rawInput`, tool-switch intent, and completion claims.
 ## Active Constraints
 - Do not mutate external repositories or deployment targets without explicit Director approval.
 - Keep script behavior aligned with protected memory and project-skill directories.
 - Do not use this card as a substitute for reading the current script implementation before edits.
 ## Cycle Events
+- 50: Restored static fixture payload guards after structured contract checks so natural-language prompt, blocked apply_patch, and post-block bypass fixtures still prove their original risk payloads.
+- 49: Added Director-readable Audit output formatting and hook fixture contract checks for scenario codes, reason-code regex, expected decisions, and diagnostic labels.
 - 48: Updated Audit checks to accept thin workflow and core entries that cite shared source-of-truth policies, verify current Team-Native split ownership, and avoid false GO matches inside governance wording.
 - 47: Updated script memory after governance fail-closed hardening: Doctor, Deploy Audit, and manager Doctor paths treat failed audits, hook source/deployed drift, diagnostic prompt gaps, natural-language binding gaps, and fixture shell/UTF-8 gaps as governed findings instead of advisory noise.
 - 46: Added Doctor/Audit coverage for envelope-plus-receipt matching, same identity or nonce, allowed receipt decision, matching action/target/scope, only-envelope denial, only-receipt denial, and mismatched receipt denial.

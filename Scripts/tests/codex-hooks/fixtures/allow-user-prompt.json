@@ -1,5 +1,6 @@
 {
   "name": "allow-user-prompt",
+  "scenarioCode": "route-hint-natural-language-user-prompt",
   "event": "UserPromptSubmit",
   "expectedExitCode": 0,
   "expectedOutputRegex": "natural-language instructions are valid.*current visible plan or station.*file set.*command",

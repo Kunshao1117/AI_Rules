@@ -1,8 +1,11 @@
 {
   "name": "block-apply-patch-no-board",
+  "scenarioCode": "pretool-apply-patch-no-structured-board",
   "event": "PreToolUse",
   "expectedExitCode": 0,
   "expectedOutputRegex": "permissionDecision.*deny",
+  "expectedReasonCodeRegex": "Reason code:\\s*TN-HOOK-STRUCTURED-PAYLOAD-MISSING",
+  "expectedDecision": "deny",
   "expectedDiagnosticLabels": true,
   "payload": {
     "hook_event_name": "PreToolUse",

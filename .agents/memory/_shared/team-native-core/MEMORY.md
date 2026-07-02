@@ -4,7 +4,7 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-07-01T22:55:44+08:00'
+last_updated: '2026-07-02T09:27:22+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 15
+cycle_event_count: 17
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -54,14 +54,14 @@ metadata:
 - The captain thin-context rule limits captain work to Director communication, board ownership, dispatch, supervision, format checks, bounded verify-read, protected adoption or merge of qualified artifacts, protected gates, and reporting.
 - Captain substitute authoring, broad deep-read replacement, self-review, self-validation, or memory attribution replacement can only close as blocked, unverified, or `closed-with-director-risk`; it cannot support `complete`.
 - Station reduction is valid only at substation-task or specialist-count level with replacement evidence and residual risk; convenience, speed, cost, or small-task reasoning is not a valid downgrade for governance, workflow, hook, validation, memory, or release surfaces.
-- Platform and workflow matrices now cite the shared language governance policy for language and audience-layer classification while platform core files keep only bootstrap and Director-facing mandates.
+- Platform and workflow matrices cite shared language governance for language layers, while team task-board canonical fields stay exact and Director-facing display shows Chinese meaning first with the field in parentheses.
 ## Active Constraints
-- Do not describe missing platform capability as routine direct work.
-- Do not claim `complete` without separated delivery artifact classes, independent review, validation, memory/docs disposition, and trace evidence.
+- Do not describe missing platform capability as routine direct work or claim `complete` without separated delivery artifacts, independent review, validation, memory/docs disposition, and trace evidence.
 - Keep platform-specific tool names in adapter sections or platform-specific files.
-- Do not copy raw task traces into source memory; keep only stable governance facts.
-- Do not use platform core language mandates as the sole authority for Team-Native handoffs, workflow output, memory language, or change-description wording.
+- Do not copy raw task traces into source memory or use platform core language mandates as the sole authority for Team-Native handoffs, workflow output, memory language, or change-description wording.
 ## Cycle Events
+- 39: Compacted active Team-Native Core memory after commit preflight reported the active-card line limit, preserving the latest task-board field display fact.
+- 38: Added task-board Director-facing field display guidance so canonical board fields are shown as Chinese meaning plus exact identifier, without renaming machine fields.
 - 37: Recorded validation repair for second-wave slimming: subagent policy now states review-state boundary, and Audit accepts thin workflow/core entries through shared source-of-truth checks.
 - 36: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 35: Recorded matrix language-governance grounding so workflow and platform entries cite the shared policy instead of platform-core-only language rules.
@@ -116,4 +116,4 @@ metadata:
 - Shared/skills/team-specialist-release-completion/SKILL.md
 - Shared/skills/team-specialist-external-research/SKILL.md
 ## Relations
-- _shared (parent Shared governance memory); _shared.ops-skills.skill-governance (skill factory and non-core skill governance); _system.scripts (Doctor and deployment script implementation)
+- _shared (parent Shared governance); _shared.ops-skills.skill-governance (skill governance); _system.scripts (Doctor/deploy scripts)

@@ -19,11 +19,15 @@ if (-not $RepoRoot) {
 
 $fixtureRoot = Join-Path $RepoRoot 'Scripts\tests\codex-hooks\fixtures'
 $hookPath = Join-Path $RepoRoot '.codex\hooks\team-native-gate.ps1'
+$sourceHookPath = Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-gate.ps1'
 $hookConfigPath = Join-Path $RepoRoot '.codex\hooks.json'
 $sourceHookConfigPath = Join-Path $RepoRoot 'Codex\.codex\hooks.json'
 
 if (-not (Test-Path -LiteralPath $hookPath -PathType Leaf)) {
     throw "Hook script missing: $hookPath"
+}
+if (-not (Test-Path -LiteralPath $sourceHookPath -PathType Leaf)) {
+    throw "Source hook script missing: $sourceHookPath"
 }
 if (-not (Test-Path -LiteralPath $hookConfigPath -PathType Leaf)) {
     throw "Project hook config missing: $hookConfigPath"
@@ -50,6 +54,30 @@ function Test-FixtureFileHashEqual {
     $sourceHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $SourcePath).Hash
     $targetHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $TargetPath).Hash
     return ($sourceHash -eq $targetHash)
+}
+
+function Assert-HookScriptAsciiOnly {
+    param([string[]]$HookScriptPaths)
+
+    $findings = New-Object System.Collections.Generic.List[string]
+    foreach ($hookScriptPath in $HookScriptPaths) {
+        $text = Get-Content -LiteralPath $hookScriptPath -Raw -Encoding UTF8
+        $lines = $text -split "`r?`n"
+        for ($lineIndex = 0; $lineIndex -lt $lines.Count; $lineIndex++) {
+            $line = $lines[$lineIndex]
+            for ($charIndex = 0; $charIndex -lt $line.Length; $charIndex++) {
+                $codePoint = [int][char]$line[$charIndex]
+                if ($codePoint -le 0x7F) { continue }
+
+                $relativePath = Resolve-Path -LiteralPath $hookScriptPath -Relative
+                $findings.Add(("{0}:{1}:{2}: U+{3:X4}" -f $relativePath, ($lineIndex + 1), ($charIndex + 1), $codePoint))
+            }
+        }
+    }
+
+    if ($findings.Count -gt 0) {
+        throw ("Hook script contains raw non-ASCII/CJK literal characters; use code-point construction instead. Findings: {0}" -f (@($findings.ToArray()) -join '; '))
+    }
 }
 
 function Get-DecodedHookCommandText {
@@ -88,10 +116,12 @@ foreach ($requiredEvent in $requiredEvents) {
 if (-not (Test-FixtureFileHashEqual -SourcePath $sourceHookConfigPath -TargetPath $hookConfigPath)) {
     throw "Hook source/deployed config mismatch: Codex\.codex\hooks.json -> .codex\hooks.json"
 }
-if (-not (Test-FixtureFileHashEqual -SourcePath (Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-gate.ps1') -TargetPath $hookPath)) {
+if (-not (Test-FixtureFileHashEqual -SourcePath $sourceHookPath -TargetPath $hookPath)) {
     throw "Hook source/deployed script mismatch: Codex\.codex\hooks\team-native-gate.ps1 -> .codex\hooks\team-native-gate.ps1"
 }
 Write-Host "[OK] hook source/deployed sync"
+Assert-HookScriptAsciiOnly -HookScriptPaths @($sourceHookPath, $hookPath)
+Write-Host "[OK] hook script ASCII guard"
 
 foreach ($eventProperty in $hookConfig.hooks.PSObject.Properties) {
     foreach ($group in @($eventProperty.Value)) {
@@ -215,6 +245,81 @@ function Set-FixtureProcessEncoding {
     }
 }
 
+function Add-FixtureDecisionValues {
+    param(
+        [object]$Value,
+        [System.Collections.Generic.List[string]]$Values,
+        [bool]$CollectAllLeaves = $false
+    )
+
+    if ($null -eq $Value) { return }
+
+    if ($Value -is [string]) {
+        if ($CollectAllLeaves -and $Value.Length -gt 0) {
+            $Values.Add($Value)
+        }
+        return
+    }
+
+    if ($Value -is [System.Management.Automation.PSCustomObject]) {
+        foreach ($property in $Value.PSObject.Properties) {
+            Add-FixtureDecisionValues -Value $property.Value -Values $Values -CollectAllLeaves:($CollectAllLeaves -or ($property.Name -match '(?i)decision'))
+        }
+        return
+    }
+
+    if ($Value -is [System.Collections.IDictionary]) {
+        foreach ($key in $Value.Keys) {
+            Add-FixtureDecisionValues -Value $Value[$key] -Values $Values -CollectAllLeaves:($CollectAllLeaves -or ([string]$key -match '(?i)decision'))
+        }
+        return
+    }
+
+    if ($Value -is [System.Collections.IEnumerable]) {
+        foreach ($entry in $Value) {
+            Add-FixtureDecisionValues -Value $entry -Values $Values -CollectAllLeaves:$CollectAllLeaves
+        }
+        return
+    }
+
+    if ($CollectAllLeaves) {
+        $Values.Add([string]$Value)
+    }
+}
+
+function Get-FixtureOutputDecisionValues {
+    param([string]$OutputText)
+
+    $values = New-Object System.Collections.Generic.List[string]
+    foreach ($candidate in @($OutputText) + @($OutputText -split "`r?`n")) {
+        if ([string]::IsNullOrWhiteSpace($candidate)) { continue }
+        $trimmed = $candidate.Trim()
+        if (-not $trimmed.StartsWith('{')) { continue }
+        try {
+            $json = $trimmed | ConvertFrom-Json -ErrorAction Stop
+        } catch {
+            continue
+        }
+        Add-FixtureDecisionValues -Value $json -Values $values
+    }
+
+    return @($values.ToArray() | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) } | Select-Object -Unique)
+}
+
+function Test-FixtureOutputDecision {
+    param(
+        [string]$OutputText,
+        [string]$ExpectedDecision
+    )
+
+    foreach ($decisionValue in @(Get-FixtureOutputDecisionValues -OutputText $OutputText)) {
+        if ($decisionValue -eq $ExpectedDecision) { return $true }
+    }
+
+    $escapedDecision = [regex]::Escape($ExpectedDecision)
+    return ($OutputText -match ('(?i)\b(permissionDecision|decision|execution_receipt_decision|receipt_decision)\b.{0,120}\b' + $escapedDecision + '\b'))
+}
+
 $failures = New-Object System.Collections.Generic.List[string]
 $tempTranscriptPaths = New-Object System.Collections.Generic.List[string]
 $tempHostEvidencePaths = New-Object System.Collections.Generic.List[string]
@@ -228,7 +333,10 @@ foreach ($fixtureFile in $fixtures) {
     $eventName = [string]$fixture.event
     $expectedExitCode = [int]$fixture.expectedExitCode
     $expectedOutputRegex = [string]$fixture.expectedOutputRegex
+    $expectedReasonCodeRegex = [string]$fixture.expectedReasonCodeRegex
+    $expectedDecision = [string]$fixture.expectedDecision
     $forbiddenOutputRegex = [string]$fixture.forbiddenOutputRegex
+    $scenarioCode = [string]$fixture.scenarioCode
     $expectedDiagnosticLabels = $false
     $expectedDiagnosticLabelsProperty = $fixture.PSObject.Properties['expectedDiagnosticLabels']
     if ($null -ne $expectedDiagnosticLabelsProperty) {
@@ -317,6 +425,14 @@ foreach ($fixtureFile in $fixtures) {
     }
     if ($forbiddenOutputRegex -and ($outputText -match $forbiddenOutputRegex)) {
         $failures.Add(("{0}/{1}: output matched forbidden /{2}/. Output: {3}" -f $fixtureShell.Label, $fixtureFile.Name, $forbiddenOutputRegex, $outputText))
+        continue
+    }
+    if ($expectedReasonCodeRegex -and ($outputText -notmatch $expectedReasonCodeRegex)) {
+        $failures.Add(("{0}/{1}: output did not match expected reason code /{2}/. Scenario: {3}. Output: {4}" -f $fixtureShell.Label, $fixtureFile.Name, $expectedReasonCodeRegex, $scenarioCode, $outputText))
+        continue
+    }
+    if ($expectedDecision -and (-not (Test-FixtureOutputDecision -OutputText $outputText -ExpectedDecision $expectedDecision))) {
+        $failures.Add(("{0}/{1}: output did not carry expected decision '{2}'. Scenario: {3}. Output: {4}" -f $fixtureShell.Label, $fixtureFile.Name, $expectedDecision, $scenarioCode, $outputText))
         continue
     }
     if ($expectedDiagnosticLabels) {

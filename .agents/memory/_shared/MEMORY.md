@@ -4,7 +4,7 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-01T22:33:05+08:00'
+last_updated: '2026-07-02T09:13:23+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 13
+cycle_event_count: 15
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,7 +32,6 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 # _shared — Shared Governance Memory
-
 ## Current Truth
 - Shared owns cross-platform governance sources, operational skills, policy references, project tools, workflow matrices, and source memory contracts.
 - Workflow orchestration and scenarios define the route, authorization, operation mode, board state, dispatch wave, handoff, delivery artifact, route-back, and closeout sequence.
@@ -48,12 +47,15 @@ metadata:
 - Shared authorization and Team-Native policies bind everyday Director language to the current visible target and require hook-blocked actions to stop as blocked or unverified instead of retrying through alternate tools.
 - Shared workflow orchestration treats source/deployed parity as part of closeout evidence and requires state labels to stay separate from execution routes.
 - Language governance is now a shared policy source for audience-layer classification, exact-evidence preservation, Director-facing change descriptions, and source/deployed language-policy parity.
+- Director-facing field displays must put the Traditional Chinese meaning first and preserve the canonical machine identifier in parentheses; exact command, path, code, schema, and tool-output tokens remain unchanged when cited.
 ## Active Constraints
 - Do not put platform-specific tool calls in Shared skill bodies unless the section is explicitly an adapter note.
 - Do not list directories under Tracked Files; put card navigation in Relations, and treat cards above 8 tracked files as split candidates.
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
 - Keep the framework language policy and deployed runtime copy content-identical; workflow, skill, matrix, and platform adapter entries must cite the shared policy instead of treating platform core language text as the sole source.
 ## Cycle Events
+- 42: Compacted active Shared governance memory after commit preflight reported the active-card line limit, preserving the latest Director-facing field display fact.
+- 41: Added Director-facing raw-field display guidance to language governance: show Traditional Chinese meaning first and keep canonical identifiers in parentheses.
 - 40: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 39: Added shared language governance policy and deployed copy as the source for language-layer classification and exact-evidence rules.
 - 38: Recorded shared workflow orchestration hardening so default-on Team-Native routing, no-write team boards, source/deployed parity, and route/state separation are mandatory shared governance.
@@ -115,5 +117,3 @@ metadata:
 - .agents/memory/_shared/archive-001.md
 ## Relations
 - _system (deployment and sync engine memory); _codex_core / _claude_core / _ag_core (platform adapter memory); _shared.ops-skills and _shared.team-native-core (child governance cards)
-## Applicable Skills
-- memory-ops for updates; memory-arch for Shared child-card splitting.

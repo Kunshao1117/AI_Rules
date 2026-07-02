@@ -4,7 +4,7 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-01T23:42:59+08:00'
+last_updated: '2026-07-02T09:13:14+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 14
+cycle_event_count: 15
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,7 +32,6 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 # _codex_core — Codex Edition Memory
-
 ## Current Truth
 - Codex Edition is the OpenAI Codex adapter for the AI_Rules governance framework, using `.codex/AGENTS.md` for project governance and `.agents/skills/` for live skills.
 - Codex source workflow skills are sourced from `Codex/.agents/workflow-skills/` and merged into `.agents/skills/`.
@@ -45,7 +44,7 @@ metadata:
 - Codex hook completion checks include Unicode-built Chinese completion patterns so Windows PowerShell encoding does not corrupt Chinese fixture behavior.
 - Codex hook reference-line detection keeps English reference markers in ASCII regex and builds Chinese reference markers through `New-UnicodeString` codepoints instead of direct Chinese regex literals.
 - Stop hook completion checks inspect Codex live `last_assistant_message`, block short generic or mixed completion claims, keep the completion gate active during Stop-hook continuations, and allow explicit blocked/unverified/closed-with-director-risk or read-only search report states.
-- Codex hook blocks now return diagnostic guidance with allowed and forbidden next steps, inject natural-language binding context for everyday governance prompts, block post-block tool/channel retries unless an explicit non-complete state is reported, and avoid treating read-only mentions of `Deploy.ps1` as deployment actions.
+- Codex hook blocks return diagnostic guidance with action context, missing evidence categories, allowed and forbidden next steps, natural-language binding context, post-block retry denial, and read-only `Deploy.ps1` false-positive protection.
 - Codex protected write and protected mutation hooks now require scoped protected authorization plus a trusted tool execution envelope and matching trusted execution receipt with the same envelope id or nonce, allowed decision, matching action/target/scope, trusted issuer/source, verified or signed signature state, and fresh nonce; model-filled, assistant-authored, transcript, user-supplied, self-reported, missing-issuer, unsigned, stale, replayed, only-envelope, only-receipt, or mismatched receipt evidence fails closed.
 - Codex hook invalid-payload handling returns the same governance diagnostic block shape as other hard gates, so agents should treat malformed tool payloads as designed policy enforcement rather than tool failure.
 - Codex documentation and core rules use `closed-with-director-risk` for Director-closed non-complete cases and must not present missing specialist delivery as full team completion.
@@ -53,16 +52,15 @@ metadata:
 - Director-facing Codex output must stay Traditional Chinese and follow the Director-readable output contract.
 - The captain owns Director-facing accountability, protected integration, protected memory/git/release gates, final review-state decisions, and final acceptance; implementation, review, validation, and memory/docs facts must come from separated delivery artifacts unless explicitly closed as blocked, unverified, or `closed-with-director-risk`.
 - Codex entry governance now summarizes thin-captain limits, no captain substitute authoring, the Team-Native object topology, multi-specialist separation from native subagents, and hard station-reduction rules.
-- Codex hook diagnostics now expose blocked action context, missing evidence categories, trusted and untrusted fields, allowed next steps, forbidden next steps, and minimum unblock conditions.
 - Codex completion-claim hooks require structured delivery artifact evidence for implementation, memory/docs, review, and validation; text-only artifact naming is blocked.
 - Codex core keeps bootstrap and Director-facing Traditional Chinese mandates, while complete language-layer classification and exact-evidence rules come from the shared language governance policy.
 ## Active Constraints
 - Keep Codex framework versioning separate from VS Code extension versioning.
 - Keep root README ownership in `_system`, not this card.
 - Keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
-- This card still needs a later child-card split if all workflow skills become actively edited again.
 - Codex workflow entries must cite the deployed shared language policy before applying workflow-specific output, handoff, memory-language, or change-description rules.
 ## Cycle Events
+- 49: Compacted active Codex core memory after commit preflight reported the active-card line limit, without changing current governance facts.
 - 48: Removed direct Chinese regex literals from Codex hook reference-line detection, preserved source/deployed hook parity, and validated 58 hook fixtures across powershell.exe and pwsh.exe plus Doctor.
 - 47: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 46: Recorded Codex language-governance grounding across core rules and selected workflow entries with deployed policy citation.
