@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-03T21:01:20+08:00'
+last_updated: '2026-07-03T22:25:02+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T20:57:12+08:00'
+last_verified: '2026-07-03T22:23:45+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 21
+cycle_event_count: 22
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,6 +34,7 @@ metadata:
 # _codex_core — Codex Edition Memory
 ## Current Truth
 - Codex Edition is the OpenAI Codex adapter for AI_Rules governance, using `.codex/AGENTS.md` for project rules; 62 shared skills plus 17 workflow skills from `Codex/.agents/workflow-skills/` merge into `.agents/skills/` for a 79-skill deployed total.
+- Codex bootstrap now uses Codex-specific initialization signals, not `.agents/` alone; `Codex/install.ps1` validates branch/ref, fixed GitHub ZIP source, target/receipt paths, optional ZIP SHA256, receipt, and fail-closed download/deploy flow.
 - Codex governed user requests automatically activate Team mode, including governance, workflow, fix, build, debug, test, audit, skill, memory/docs, commit, handoff, source, public-contract, or team/subagent/delegation dispatch.
 - Without a current governed user request, AI must not self-start Team mode or team work from prior context, workflow names, source impact, platform tools, permission prompts, or tool approvals alone.
 - In active Team mode, the Codex mainline automatically serves as captain and must stay within captain authority: communication, authorization resolution, board ownership, dispatch, supervision, delivery receipt, state synthesis, blockers/protected gates, and reporting.
@@ -58,6 +59,7 @@ metadata:
 - Codex workflow skill totals exclude the `_shared` support directory because it has no `SKILL.md`.
 - Do not restore or track repo-managed Codex hook files until a scoped rebuild is authorized.
 ## Cycle Events
+- 58: Hardened Codex bootstrap and installer trust boundaries: initialization now depends on Codex-specific signals, and installer downloads record receipt/hash/source evidence with optional SHA256 verification.
 - 57: Recorded Codex dual-gate update: core and README cite Director-readable output and external grounding evidence before completion or commit readiness.
 - 56: Corrected Team mode truth: governed user requests auto-activate Team mode, Codex mainline serves as captain, and absent current governed requests cannot self-start team work.
 - 52-55: Consolidated Codex skill-count correction, native/project agent wording, repo-managed Hooks rebuild-pending state, thin 07/11 route entries, scope-bound formal-write gates, and station-owned source-write governance.
@@ -93,8 +95,7 @@ metadata:
 - Codex 是 OpenAI Codex 平台適配層。
 - Codex 技能數量 current truth 是 62 套共用技能 + 17 套工作流技能 = 79；`_shared` 支援目錄不計入技能數。
 - Codex 的 GO、工具提示與技能名稱只會變成有範圍的授權證據；子代理語彙是 native subagents 或專案自訂代理，不承諾固定 `.codex/agents/*.toml` 路徑。
-- Codex 受治理使用者請求會自動啟動 Team mode；沒有目前受治理使用者請求時，AI 不能自行啟動團隊工作。
-- Team mode 啟動後 Codex 主線自動擔任隊長，但只能做隊長職權內的協調、派工、接收、彙整與受保護閘門處理。
+- Codex 受治理使用者請求會自動啟動 Team mode；主線擔任隊長但只做協調、派工、接收、彙整與受保護閘門處理。
 - `03-1` 會自動進入 reduced/minimal experiment Team mode；sandbox writes 不等於 production completion。
 - 主工作區實作 primary 是具名 station-owned `change-delivery`；`change-application` 只作 returned artifact / integration / sync fallback。
 - Codex 總監輸出需繁中語義先行；高變動或外部事實要走 external grounding evidence gate。

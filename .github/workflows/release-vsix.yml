@@ -3,7 +3,7 @@ name: Release VSIX
 on:
   push:
     tags:
-      - "v*"
+      - "v[0-9]*.[0-9]*.[0-9]*"
   workflow_dispatch:
     inputs:
       tag:
@@ -20,10 +20,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Validate release ref
+        id: ref
+        shell: bash
+        env:
+          REQUESTED_TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          set -euo pipefail
+          tag="${REQUESTED_TAG}"
+
+          if [[ ! "${tag}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Release ref must be an explicit tag like v1.2.3. Got: ${tag}"
+            exit 1
+          fi
+
+          echo "tag=${tag}" >> "${GITHUB_OUTPUT}"
+
       - name: Checkout release tag
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.inputs.tag || github.ref_name }}
+          ref: ${{ steps.ref.outputs.tag }}
           fetch-depth: 0
 
       - name: Setup Node
@@ -36,9 +52,11 @@ jobs:
       - name: Verify tag matches extension version
         id: version
         shell: bash
+        env:
+          TAG_NAME: ${{ steps.ref.outputs.tag }}
         run: |
           set -euo pipefail
-          tag="${{ github.event.inputs.tag || github.ref_name }}"
+          tag="${TAG_NAME}"
           version="$(node -p "require('./Extensions/vscode-ai-rules-manager/package.json').version")"
           expected="v${version}"
 

@@ -10,12 +10,14 @@ If you are running as an OpenAI Codex agent:
 
 Before answering ANY queries in ANY new conversation, silently check the current workspace:
 
-1. Does the directory `.codex/` exist in the project root?
-2. Does `.agents/` directory exist in the project root?
+1. Does `.codex/AGENTS.md` exist in the project root?
+2. If not, does `.codex/` contain another documented Codex initialization sentinel produced by this framework?
 
-**If YES to either** → The project is initialized. Proceed normally with the Director's request.
+`.agents/` alone is not a Codex initialization signal; it may belong to shared governance, another platform, or a partial deployment.
 
-**If NO to both** → The project is uninitialized. Do not install automatically. Output the governed install prompt in §2 and wait for Director approval.
+**If YES to either Codex signal** → The project is initialized. Proceed normally with the Director's request.
+
+**If NO to both Codex signals** → The project is uninitialized. Do not install automatically. Output the governed install prompt in §2 and wait for Director approval.
 
 ## 2. Governed Bootstrapping (授權式全域武裝機制)
 
@@ -27,15 +29,34 @@ HALT. Execute the following command only after the Director explicitly inputs `G
 
 ```powershell
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$u = 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1'
-$f = "$env:TEMP\ag_codex_install.ps1"
-$wc = New-Object Net.WebClient
-$bytes = $wc.DownloadData($u)
-$text = [Text.Encoding]::UTF8.GetString($bytes)
-$text = $text.TrimStart([char]0xFEFF)
-[IO.File]::WriteAllText($f, $text, (New-Object Text.UTF8Encoding $true))
-& $f -Target (Get-Location).Path
-Remove-Item $f
+$owner = 'Kunshao1117'
+$repo = 'AI_Rules'
+$ref = 'main'
+$expectedInstallSha256 = ''
+if ($ref -notmatch '^[A-Za-z0-9._-]+$' -or $ref.Contains('..')) { throw "Unsafe Codex install ref: $ref" }
+$u = "https://raw.githubusercontent.com/$owner/$repo/$ref/Codex/install.ps1"
+$uri = [Uri]$u
+if ($uri.Scheme -ne 'https' -or $uri.Host -ne 'raw.githubusercontent.com' -or $uri.AbsolutePath -ne "/$owner/$repo/$ref/Codex/install.ps1") { throw "Unexpected Codex install source: $u" }
+$f = Join-Path $env:TEMP 'ag_codex_install.ps1'
+$receipt = Join-Path $env:TEMP 'ag_codex_install.receipt.json'
+try {
+    $wc = New-Object Net.WebClient
+    $bytes = $wc.DownloadData($u)
+    $actualInstallSha256 = [BitConverter]::ToString([Security.Cryptography.SHA256]::Create().ComputeHash($bytes)).Replace('-', '').ToLowerInvariant()
+    if ($expectedInstallSha256 -and $actualInstallSha256 -ne $expectedInstallSha256.ToLowerInvariant()) { throw "Codex install script SHA256 mismatch." }
+    $text = [Text.Encoding]::UTF8.GetString($bytes)
+    $text = $text.TrimStart([char]0xFEFF)
+    [IO.File]::WriteAllText($f, $text, (New-Object Text.UTF8Encoding $true))
+    [pscustomobject]@{ source = $u; sha256 = $actualInstallSha256; bytes = $bytes.Length; downloadedAt = (Get-Date).ToUniversalTime().ToString('o') } |
+        ConvertTo-Json | Set-Content -LiteralPath $receipt -Encoding UTF8
+    & $f -Target (Get-Location).Path -Branch $ref
+} catch {
+    [pscustomobject]@{ source = $u; error = $_.Exception.Message; failedAt = (Get-Date).ToUniversalTime().ToString('o') } |
+        ConvertTo-Json | Set-Content -LiteralPath $receipt -Encoding UTF8
+    throw
+} finally {
+    Remove-Item $f -Force -ErrorAction SilentlyContinue
+}
 ```
 
 After successful deployment, output in Traditional Chinese:
@@ -51,15 +72,34 @@ HALT. Execute the following command only after the Director explicitly inputs `G
 
 ```powershell
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$u = 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1'
-$f = "$env:TEMP\ag_codex_install.ps1"
-$wc = New-Object Net.WebClient
-$bytes = $wc.DownloadData($u)
-$text = [Text.Encoding]::UTF8.GetString($bytes)
-$text = $text.TrimStart([char]0xFEFF)
-[IO.File]::WriteAllText($f, $text, (New-Object Text.UTF8Encoding $true))
-& $f -Target (Get-Location).Path -Mode Upgrade
-Remove-Item $f
+$owner = 'Kunshao1117'
+$repo = 'AI_Rules'
+$ref = 'main'
+$expectedInstallSha256 = ''
+if ($ref -notmatch '^[A-Za-z0-9._-]+$' -or $ref.Contains('..')) { throw "Unsafe Codex install ref: $ref" }
+$u = "https://raw.githubusercontent.com/$owner/$repo/$ref/Codex/install.ps1"
+$uri = [Uri]$u
+if ($uri.Scheme -ne 'https' -or $uri.Host -ne 'raw.githubusercontent.com' -or $uri.AbsolutePath -ne "/$owner/$repo/$ref/Codex/install.ps1") { throw "Unexpected Codex install source: $u" }
+$f = Join-Path $env:TEMP 'ag_codex_install.ps1'
+$receipt = Join-Path $env:TEMP 'ag_codex_install.receipt.json'
+try {
+    $wc = New-Object Net.WebClient
+    $bytes = $wc.DownloadData($u)
+    $actualInstallSha256 = [BitConverter]::ToString([Security.Cryptography.SHA256]::Create().ComputeHash($bytes)).Replace('-', '').ToLowerInvariant()
+    if ($expectedInstallSha256 -and $actualInstallSha256 -ne $expectedInstallSha256.ToLowerInvariant()) { throw "Codex install script SHA256 mismatch." }
+    $text = [Text.Encoding]::UTF8.GetString($bytes)
+    $text = $text.TrimStart([char]0xFEFF)
+    [IO.File]::WriteAllText($f, $text, (New-Object Text.UTF8Encoding $true))
+    [pscustomobject]@{ source = $u; sha256 = $actualInstallSha256; bytes = $bytes.Length; downloadedAt = (Get-Date).ToUniversalTime().ToString('o') } |
+        ConvertTo-Json | Set-Content -LiteralPath $receipt -Encoding UTF8
+    & $f -Target (Get-Location).Path -Mode Upgrade -Branch $ref
+} catch {
+    [pscustomobject]@{ source = $u; error = $_.Exception.Message; failedAt = (Get-Date).ToUniversalTime().ToString('o') } |
+        ConvertTo-Json | Set-Content -LiteralPath $receipt -Encoding UTF8
+    throw
+} finally {
+    Remove-Item $f -Force -ErrorAction SilentlyContinue
+}
 ```
 
 The Upgrade mode compares all framework files against source (SHA256 diff), reports changes, and applies updates. Project memory (`.agents/memory/`) and project skills (`.agents/project_skills/`) are **protected and will NOT be overwritten**.

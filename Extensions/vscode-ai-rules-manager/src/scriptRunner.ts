@@ -6,6 +6,7 @@ import * as vscode from "vscode";
 const DEFAULT_REPO_URL = "https://github.com/Kunshao1117/AI_Rules.git";
 const MANAGED_REPO_DIR = "AI_Rules";
 const MANAGED_BRANCH = "main";
+const TRUSTED_REPO_URLS_KEY = "trustedRepoUrls";
 
 export type ManagerAction =
   | "Check"
@@ -148,11 +149,13 @@ export class ScriptRunner {
   }
 
   private async ensureManagedRepoRoot(repoUrl: string): Promise<RepoResolution> {
+    const trustedRepoUrl = await this.resolveTrustedRepoUrl(repoUrl);
     const storageRoot = this.context.globalStorageUri.fsPath;
     const managedRoot = path.join(storageRoot, MANAGED_REPO_DIR);
     this.assertManagedPath(storageRoot, managedRoot);
 
     if (fs.existsSync(managedRoot) && !this.isUsableManagedRepo(managedRoot)) {
+      this.assertManagedPath(storageRoot, managedRoot);
       this.output.show(true);
       this.output.appendLine(`AI_Rules 管理快取不完整，將重新建立：${managedRoot}`);
       fs.rmSync(managedRoot, { recursive: true, force: true });
@@ -160,7 +163,7 @@ export class ScriptRunner {
 
     if (!fs.existsSync(managedRoot)) {
       const answer = await vscode.window.showWarningMessage(
-        `目前專案不是 AI_Rules repo。是否要從 ${repoUrl} 建立 AI_Rules 管理快取？`,
+        `目前專案不是 AI_Rules repo。是否要從 ${trustedRepoUrl} 建立 AI_Rules 管理快取？`,
         { modal: true },
         "建立快取"
       );
@@ -169,10 +172,10 @@ export class ScriptRunner {
       }
 
       fs.mkdirSync(storageRoot, { recursive: true });
-      await this.runGit(["clone", repoUrl, managedRoot], storageRoot);
+      await this.runGit(["clone", trustedRepoUrl, managedRoot], storageRoot);
     }
 
-    await this.alignManagedRepoRoot(managedRoot, repoUrl);
+    await this.alignManagedRepoRoot(storageRoot, managedRoot, trustedRepoUrl);
 
     if (!this.hasManagerScript(managedRoot)) {
       throw new Error(`AI_Rules 管理快取已對齊遠端，但找不到 Scripts\\AI-RulesManager.ps1：${managedRoot}`);
@@ -181,33 +184,105 @@ export class ScriptRunner {
     return { repoRoot: managedRoot, managed: true };
   }
 
+  private async resolveTrustedRepoUrl(repoUrl: string): Promise<string> {
+    const normalized = this.normalizeRepoUrl(repoUrl);
+    if (normalized === DEFAULT_REPO_URL) return normalized;
+
+    const trusted = this.context.globalState.get<string[]>(TRUSTED_REPO_URLS_KEY, []);
+    if (trusted.includes(normalized)) return normalized;
+
+    const answer = await vscode.window.showWarningMessage(
+      `aiRules.repoUrl 指向非預設來源：${normalized}。信任後才會允許 extension 對此來源的管理快取執行 clone/fetch/reset/clean。`,
+      { modal: true },
+      "信任此來源"
+    );
+    if (answer !== "信任此來源") {
+      throw new Error(`尚未信任 AI_Rules 來源，已停止管理快取 Git 操作：${normalized}`);
+    }
+
+    await this.context.globalState.update(TRUSTED_REPO_URLS_KEY, [...trusted, normalized]);
+    return normalized;
+  }
+
+  private normalizeRepoUrl(repoUrl: string): string {
+    const value = repoUrl.trim();
+    let parsed: URL;
+
+    try {
+      parsed = new URL(value);
+    } catch {
+      throw new Error(`aiRules.repoUrl 必須是 HTTPS GitHub repository URL：${repoUrl}`);
+    }
+
+    const repoPath = parsed.pathname.replace(/\/+$/, "");
+    if (
+      parsed.protocol !== "https:" ||
+      parsed.hostname.toLowerCase() !== "github.com" ||
+      parsed.username ||
+      parsed.password ||
+      parsed.search ||
+      parsed.hash ||
+      !/^\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+(?:\.git)?$/.test(repoPath)
+    ) {
+      throw new Error(`aiRules.repoUrl 必須是無憑證、無查詢參數的 GitHub HTTPS repository URL：${repoUrl}`);
+    }
+
+    return `https://github.com${repoPath.endsWith(".git") ? repoPath : `${repoPath}.git`}`;
+  }
+
   private hasManagerScript(repoRoot: string): boolean {
     return fs.existsSync(path.join(repoRoot, "Scripts", "AI-RulesManager.ps1"));
   }
 
   private isUsableManagedRepo(repoRoot: string): boolean {
-    return fs.existsSync(path.join(repoRoot, ".git")) && this.hasManagerScript(repoRoot);
+    const gitDir = path.join(repoRoot, ".git");
+    try {
+      return fs.statSync(gitDir).isDirectory() && this.hasManagerScript(repoRoot);
+    } catch {
+      return false;
+    }
   }
 
   private assertManagedPath(storageRoot: string, managedRoot: string): void {
-    const storage = path.resolve(storageRoot);
-    const managed = path.resolve(managedRoot);
+    const expectedManagedRoot = path.join(storageRoot, MANAGED_REPO_DIR);
+    if (path.resolve(managedRoot) !== path.resolve(expectedManagedRoot)) {
+      throw new Error(`AI_Rules 管理快取路徑不符合預期：${managedRoot}`);
+    }
+
+    const storage = this.realPathOrResolved(storageRoot);
+    const managed = fs.existsSync(path.resolve(managedRoot))
+      ? this.realPathOrResolved(managedRoot)
+      : path.join(storage, MANAGED_REPO_DIR);
     const relative = path.relative(storage, managed);
     if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) {
       throw new Error(`AI_Rules 管理快取路徑不安全：${managedRoot}`);
     }
   }
 
-  private async alignManagedRepoRoot(managedRoot: string, repoUrl: string): Promise<void> {
+  private realPathOrResolved(value: string): string {
+    const resolved = path.resolve(value);
+    return fs.existsSync(resolved) ? fs.realpathSync.native(resolved) : resolved;
+  }
+
+  private async alignManagedRepoRoot(storageRoot: string, managedRoot: string, repoUrl: string): Promise<void> {
+    this.assertManagedPath(storageRoot, managedRoot);
+    if (!this.isUsableManagedRepo(managedRoot)) {
+      throw new Error(`AI_Rules 管理快取不是標準 Git repository，已停止 destructive Git 操作：${managedRoot}`);
+    }
+
     this.output.show(true);
     this.output.appendLine(`→ AI_Rules 管理快取會自動對齊遠端版本庫：${repoUrl}#${MANAGED_BRANCH}`);
     try {
       await this.runGit(["remote", "set-url", "origin", repoUrl], managedRoot);
       await this.runGit(["fetch", "origin", MANAGED_BRANCH, "--prune"], managedRoot);
+      this.assertManagedPath(storageRoot, managedRoot);
       await this.runGit(["reset", "--hard"], managedRoot);
+      this.assertManagedPath(storageRoot, managedRoot);
       await this.runGit(["clean", "-fdx"], managedRoot);
       await this.runGit(["checkout", "-B", MANAGED_BRANCH, `origin/${MANAGED_BRANCH}`], managedRoot);
+      this.assertManagedPath(storageRoot, managedRoot);
       await this.runGit(["reset", "--hard", `origin/${MANAGED_BRANCH}`], managedRoot);
+      this.assertManagedPath(storageRoot, managedRoot);
       await this.runGit(["clean", "-fdx"], managedRoot);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);

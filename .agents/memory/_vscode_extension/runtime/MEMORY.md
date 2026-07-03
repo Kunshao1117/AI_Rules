@@ -4,19 +4,19 @@ scopePath: Extensions/vscode-ai-rules-manager/src/
 description: >-
   專案記憶：VS Code 管理器外掛 runtime TypeScript 來源。Use when: task touches this split
   memory scope or its tracked files.
-last_updated: '2026-06-15T13:22:48+08:00'
+last_updated: '2026-07-03T22:24:30+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-15T13:21:00+08:00'
+last_verified: '2026-07-03T22:23:45+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 3
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _vscode_extension.runtime — VS Code Extension Runtime Memory
 
 ## Current Truth
@@ -40,13 +39,16 @@ metadata:
 - This child card owns VS Code extension TypeScript runtime source files.
 - The extension UI delegates governed actions to repository PowerShell scripts.
 - User-level settings remain the trusted source for repository root, repository URL, and PowerShell executable overrides.
+- Managed `repoUrl` values are normalized to GitHub HTTPS URLs; non-default sources require explicit user trust before clone/fetch/reset/clean, and destructive Git steps re-check the managed cache path and `.git` directory.
 
 ## Active Constraints
 - Do not let workspace settings override trusted source or executable settings.
+- Do not run managed-cache destructive Git operations for an untrusted non-default repository URL.
 - Preview failures must stop before confirmation or apply phases.
 - Do not silently install or update VSIX packages from runtime UI behavior.
 
 ## Cycle Events
+- 04: Hardened managed repository trust: non-default `repoUrl` now requires explicit trust, and destructive Git operations re-check the managed cache path and Git directory before reset/clean.
 - 03: Updated sync coverage and project sync runtime text to include project-local tools.
 - 02: Added VS Code commands for sync coverage checks and memory main-file migration.
 - 01: Split VS Code extension runtime source ownership out of the extension parent card.
