@@ -32,15 +32,15 @@ Use `.agents/context/` for:
 
 Do not use project context for source ownership, dependency staleness, implementation evidence, temporary task notes, or executable skills.
 
-Do not write long-lived preferences, design DNA, acceptance defaults, or product direction into source memory. If a workflow discovers a reusable preference, report it as candidate project context and wait for `GO CONTEXT` before persistence.
+Do not write long-lived preferences, design DNA, acceptance defaults, or product direction into source memory. If a workflow discovers a reusable preference, report it as candidate project context and wait for `GO CONTEXT`; authorization resolution must still bind that token to the specific context card or scope before persistence.
 
 ## Layer Boundary
 
 | Layer | Location | Purpose | Write Gate |
 |---|---|---|---|
-| Source memory | `.agents/memory/` | Source ownership, Current Truth, Active Constraints, Cycle Events, Archive Index, Relations, staleness | workflow GO + memory commit phase |
-| Project context | `.agents/context/` | Long-lived preferences, design DNA, acceptance defaults | `GO CONTEXT` |
-| Project skills | `.agents/project_skills/` | Reusable project-specific execution procedure | skill forge GO |
+| Source memory | `.agents/memory/` | Source ownership, Current Truth, Active Constraints, Cycle Events, Archive Index, Relations, staleness | Scope-bound workflow intent after authorization resolution + memory protected gate |
+| Project context | `.agents/context/` | Long-lived preferences, design DNA, acceptance defaults | `GO CONTEXT` after authorization resolution binds the context scope |
+| Project skills | `.agents/project_skills/` | Reusable project-specific execution procedure | Skill-forge approval token after authorization resolution and matching protected gate |
 | Process evidence | task report, screenshots, test output | Per-task proof and temporary observations | no persistence by default |
 
 Project context cards use `CONTEXT.md`, not `SKILL.md`, so they are not executable skills.
@@ -97,12 +97,14 @@ If a candidate context conflicts with the current instruction, the current instr
 
 ## Write Approval
 
-Do not permanently write or upgrade context without explicit approval.
+Do not permanently write or upgrade context without explicit scope-bound approval resolved against the target context card.
 
 Accepted approval phrases:
 
 - `GO CONTEXT`
-- `GO DNA` for design DNA only; treat it as `GO CONTEXT` internally.
+- `GO DNA` for design DNA only; treat it as the same scope-bound context gate as `GO CONTEXT` internally.
+
+These tokens are project-context approval signals only. They do not authorize memory, source, git, release, deploy, install, credential, external mutation, or unrelated context writes.
 
 Without approval, completion reports may propose candidate context only. Candidate context must include evidence and the source task that produced it.
 

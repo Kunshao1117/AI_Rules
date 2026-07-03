@@ -24,7 +24,8 @@ metadata:
 ## HITL Boundary
 
 - Read-only framework detection and flaky-test recommendations may proceed silently.
-- Installing upload tooling, modifying CI configuration, applying generated fixes, or changing remote Trunk settings requires Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Installing upload tooling, modifying CI configuration, applying generated fixes, changing remote Trunk settings, or uploading test data is a protected phase. A `GO` phrase is only a scope-bound Director intent signal; before mutation or upload, authorization resolution must bind the visible plan, station, file set, exact command/tool call, phase, expiry, and required protected gate.
+- `[MCP HITL GATE]` records justification and human-in-the-loop evidence. It does not replace authorization resolution, and install, CI-write, source-fix, remote-setting mutation, and upload are separate protected phases.
 - Discovery of Trunk tool schemas is not permission to execute mutating tools.
 
 ## Recipe 1: Test Framework Detection（測試框架偵測）
@@ -47,7 +48,7 @@ Have test framework name ready?
    - `testFramework`: required — one of: jest, vitest, playwright, pytest, mocha, cypress, etc.
    - `ciProvider`: optional — one of: github, gitlab, circleci, buildkite, jenkins, etc.
    - `orgSlug`: optional — Trunk organization slug（非 GitHub org slug）
-2. Follow returned instructions to:
+2. Treat returned instructions as plan material until each protected phase is separately authorized. Follow returned instructions only within the resolved scope to:
    - Install trunk analytics CLI
    - Add upload step to CI pipeline
    - Verify first upload
@@ -57,7 +58,7 @@ Have test framework name ready?
 ```
 Director provides fix ID?
 ├── [SUDO] → Record override/risk-closure request; do not skip validation or execute directly.
-├── Yes → Proceed to step 2
+├── Yes → Proceed to step 2 for recommendation retrieval only; fix ID is not source-write authority
 └── No → Ask Director for fix ID（必須由總監提供）
 ```
 

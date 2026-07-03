@@ -1,5 +1,5 @@
 ---
-description: "Use when: 已有 09-1 掃描與 GO，要執行 commit、push、tag 或 Release 同步。DO NOT use when: 只想查看狀態或尚未通過提交前掃描。"
+description: "Use when: 已有 09-1 掃描與當前階段授權解析，要執行 commit、push、tag 或 Release 同步。DO NOT use when: 只想查看狀態或尚未通過提交前掃描。"
 required_skills: [programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 metadata:
   author: antigravity
@@ -11,7 +11,7 @@ metadata:
   role: sre
   memory_awareness: read
   tool_scope: ["filesystem:write", "git:write", "terminal:read"]
-  human_gate: "GO required before changelog write, commit, or push"
+  human_gate: "Scope-bound intent signal plus authorization resolution required for each protected phase"
   automation_safe: false
 ---
 
@@ -44,11 +44,13 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `09`.
 - Procedure reference: `09 Commit` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Execute commit-related protected phases only with explicit protected authorization and visible preflight evidence.
-- Confirm exact protected authorization for each commit, push, tag, release, deployment, or memory commit phase.
+- Route summary: Execute commit-related protected phases only after authorization resolution binds the visible plan, station, file set, command, phase, expiry, required protected gate, and visible preflight evidence.
+- Treat Director `GO` text as an intent signal only; it becomes usable authority only inside the resolved visible scope.
+- Treat changelog/source write, memory mutation, git commit, push, tag, and release/deploy/install as separate protected phases; a single intent signal cannot authorize multiple phases at once.
+- Confirm exact protected authorization for each source-write, changelog, memory mutation, commit, push, tag, release, deployment, or install phase.
 - Use pre-commit buffer and source/deployed parity evidence before mutating git state.
-- Update changelog or release notes only when that file set is explicitly authorized.
+- Update changelog or release notes only when that file set and phase are explicitly bound by authorization resolution.
 - Run the completion gate and report any protected phase that remains blocked or unverified.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

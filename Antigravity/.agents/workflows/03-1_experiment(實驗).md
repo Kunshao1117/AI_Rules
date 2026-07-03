@@ -12,7 +12,7 @@ metadata:
   role: writer
   memory_awareness: none
   tool_scope: ["filesystem:write", "terminal:manual"]
-  human_gate: "Director invocation required"
+  human_gate: "Scope-bound intent signal plus authorization resolution required before experiment writes"
   automation_safe: false
 ---
 
@@ -49,7 +49,7 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Declare sandbox scope, discard condition, promotion condition, and allowed shortcuts before writing.
 - Keep experiment writes out of production quality, release, memory, and completion claims.
 - Mark skipped lint, tests, review, validation, and memory/docs as experiment-only dispositions.
-- Promote to 03 only with a production plan and new scoped GO.
+- Promote to 03 only with a production plan plus a new scope-bound intent signal resolved through authorization resolution to the visible production scope.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

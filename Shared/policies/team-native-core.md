@@ -238,7 +238,10 @@ The packet must include these fields when applicable: `operation_mode`,
 `station_mode`, `context_visibility`, `handoff_ownership`,
 `deep_read_scope`, `captain_coordination_read_scope`, `unread_scope`,
 `startup_started_at`, `first_response_deadline`, `last_progress_at`,
-`timeout_action`, and `standby_reason`.
+`heartbeat_state`, `status_probe_state`, `soft_timeout_at`,
+`hard_timeout_at`, `status_probe_resume_state`, `status_probe_resume_sent_at`,
+`late_result_policy`, `cancellation_state`, `timeout_action`, and
+`standby_reason`.
 
 ## Deep-Read And Captain Context Rule
 
@@ -417,6 +420,28 @@ protected memory mutation, completion audit turns into final acceptance, or a
 second independent opinion is required.
 
 Every formal station records the specialist lifecycle state: `assigned`, `retained`, `reused`, `handoff-required`, `closed`, `replaced`, or `blocked`. The board also records retention reason, conversation health, reuse count, handoff summary, role-boundary check, and closure reason.
+
+Channel wait timeouts are observability signals, not delivery failure,
+cancellation, or rejection. Before a captain replaces a slow specialist
+channel, the trace must show a status probe or an explicit reason the probe
+cannot be sent. When a specialist receives a status probe, the specialist must
+pause the current action, report where work stopped, whether it is blocked, and
+whether it is safe to continue, then wait. The specialist may resume only after
+the captain sends an explicit resume message for that channel. A channel that
+responds to the probe is non-terminal and remains `awaiting-resume` until the
+explicit captain resume message changes it to running, extension-requested, or
+blocked according to the response. A channel that does not
+respond is unresponsive or unobservable; it is not treated as failed unless a
+hard timeout, explicit cancellation, or returned failure artifact exists.
+
+Replacement does not cancel the original channel. The board must record the new
+channel generation, replacement reason, whether the original channel was
+cancelled, and the late-result policy. If the original channel later returns an
+artifact, the captain must receive it, compare it with any replacement artifact,
+and record a receipt decision such as accepted, superseded, rejected, duplicate,
+conflict-review, blocked, or unverified. Completion claims require every opened
+channel to have a terminal closure, late-result disposition, or visible
+non-complete residual state.
 
 Every applicable formal station records `station_mode`, `context_visibility`,
 and `handoff_ownership`. These fields decide whether a station is only

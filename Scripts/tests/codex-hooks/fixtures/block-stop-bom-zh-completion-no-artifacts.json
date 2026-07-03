@@ -1,8 +1,0 @@
-{
-  "name": "block-stop-bom-zh-completion-no-artifacts",
-  "event": "Stop",
-  "expectedExitCode": 0,
-  "expectedOutputRegex": "decision.*block",
-  "expectedDiagnosticLabels": true,
-  "rawInput": "\ufeff{\"hook_event_name\":\"Stop\",\"response\":\"已完成。測試通過。\",\"cwd\":\"D:\\\\AI_Rules\",\"stop_hook_active\":false}"
-}

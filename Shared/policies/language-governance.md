@@ -52,6 +52,27 @@ references.
 - Do not write in engineering shorthand and translate afterward. Design the
   Director-facing explanation in Traditional Chinese from the start.
 
+## Captain Integration And Director Output Gate
+
+- Team-member delivery artifacts, board fields, trace fields, handoff packets,
+  channel states, and specialist output templates are internal evidence
+  artifacts. They are not Director-facing reports.
+- Before any Director-facing status, plan, handoff, review, risk explanation,
+  or completion report, the captain must synthesize received artifacts into
+  Traditional Chinese meaning-first prose. Do not paste or lightly wrap internal
+  artifacts, English field tables, English workflow phrases, or specialist raw
+  output as the main body.
+- Technical tokens may be preserved only as identifiers for paths, commands,
+  schema fields, tool labels, state values, or exact evidence. Place them after
+  the Traditional Chinese meaning, usually in parentheses or evidence
+  references.
+- Director-facing tables must use Traditional Chinese column labels as primary
+  labels. If a canonical token is required, attach it after the Chinese label,
+  such as `完成狀態（completion_state）`.
+- If Director-facing output is English-led, artifact-led, raw-field-led, or
+  lacks captain synthesis, it fails the Director-facing output gate and must be
+  rewritten or reported as non-complete by the relevant completion gate.
+
 ## 總監可讀規劃用語（Director-Facing Planning Vocabulary）
 
 - 總監可讀的計劃、藍圖、任務板、站點報告、治理規則、交接、完成摘要與風險說明，在描述唯讀證據處理或寫入階段時，不得使用總監指定禁用詞。

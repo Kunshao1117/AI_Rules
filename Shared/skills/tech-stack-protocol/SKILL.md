@@ -20,14 +20,15 @@ metadata:
 ## HITL Boundary
 
 - Read-only tech stack discovery, dependency inspection, and MCP schema discovery may proceed silently.
-- Writing `_system` memory, changing dependency files, installing packages, changing MCP config, or calling `memory_commit` requires Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Writing `_system` memory, changing dependency files, installing packages, changing MCP config, or calling `memory_commit` is a protected phase. A `GO` phrase is only a scope-bound Director intent signal; before mutation, authorization resolution must bind the visible plan, station, file set, exact command/tool call, phase, expiry, and required protected gate.
+- `[MCP HITL GATE]` records justification and human-in-the-loop evidence. It does not replace authorization resolution, and install, dependency-file write, MCP config mutation, and memory commit are separate protected phases.
 - Discovery of memory or MCP tool schemas is not permission to execute mutating tools.
 
 ## 1. Project Exploration (探勘狀態)
 
 ```
 Project state?
-├── No active `_system` memory main file exists → Execute Phase 1/2/3 below
+├── No active `_system` memory main file exists → Execute Phase 1/2/3 discovery below; write `_system` only after authorization resolution
 └── `_system` exists with populated tech stack → Skip to §2 Locked State
 ```
 
@@ -80,7 +81,7 @@ Once the active `_system` memory main file is generated:
 
 ## 3. Self-Mutation Protocol (自體突變)
 
-Triggered by confirmed `/02_blueprint` pivot:
+Triggered by a confirmed `/02_blueprint` pivot with authorization resolution for the self-mutation phase, file set, commands, expiry, and required protected gates:
 
 1. Rewrite the active `_system` memory main file
 2. Generate new initialization scripts (`package.json` etc.)
@@ -93,6 +94,6 @@ When the active `_system` memory main file contains an `## MCP Servers` section:
 - Adding/removing follows the same governance as framework changes:
   - Routine additions: `/08_audit` auto-handles
   - Architectural pivots (replacing core MCP): Requires `/02_blueprint`
-- Record changes in the active `_system` memory main file under `## MCP Servers`
+- Record changes in the active `_system` memory main file under `## MCP Servers` only within the authorized `_system` memory-write and memory-commit phases
 - Config location: `~/.gemini/antigravity/mcp_config.json` (global) or `.gemini/settings.json` (project)
 - **Operational procedures**: Each MCP has its own skill (see `_index.md` routing table)

@@ -16,7 +16,7 @@ of treating a platform core rule as their only source.
 
 | Layer | Purpose | Put Here | Do Not Put Here |
 |---|---|---|---|
-| Core rules | Always-on safety baseline | GO gates, no silent install, no blanket staging, protected project identity | Long playbooks, tool recipes, examples |
+| Core rules | Always-on safety baseline | Scope-bound intent signals, protected gates, no silent install, no blanket staging, protected project identity | Long playbooks, tool recipes, examples |
 | Shared policies | Cross-platform governance contracts | Ownership boundaries, precedence, authorization semantics, source/deployed sync, trace expectations | Workflow-specific recipes, long examples, platform-only implementation details |
 | Workflow / command entry | Task routing and lifecycle phase selection | Build/fix/commit/audit stage order, explicit load gates | Full implementation recipes shared across platforms |
 | Shared skills | On-demand operational knowledge | Repeatable procedures, team-station governance, tool playbooks, release steps, test recipes | Non-negotiable safety rules that must apply before skill load |
@@ -164,7 +164,8 @@ the formal team child skills when applicable: `team-role-boundaries`,
 `team-validation-delivery-artifact`, `team-review-delivery-artifact`, and `team-completion-gate`.
 Platform entries must also preserve Team-First startup semantics: no-write work
 uses a formal-readonly board when it can influence later source work; write work
-uses a formal-write board after scoped GO; every formal station receives a
+uses a formal-write board after authorization resolution binds a scope-bound
+Director intent signal; every formal station receives a
 handoff packet with loaded skill refs and startup monitoring fields.
 Platform entries must preserve `operation_mode`: `daily` is reduced Team-Native
 mode for routine low-risk evidence, while `full` is required for implementation,

@@ -13,7 +13,7 @@ metadata:
   role: reader
   memory_awareness: read
   tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
-  human_gate: "GO required before writes"
+  human_gate: "none; write proposals must route to the owning workflow for scope-bound intent signal plus authorization resolution"
   automation_safe: true
 ---
 
@@ -46,11 +46,11 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `10`.
 - Procedure reference: `10 Routine` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Stay read-only, inspect bounded drift and health signals, and route any write proposal to the owning workflow with scoped GO.
+- Route summary: Stay read-only, inspect bounded drift and health signals, and route any write proposal to the owning workflow; routine does not request write authorization.
 - Stay read-only and automation-safe.
 - Check drift, skill quality, workflow metadata, source/deployed consistency, memory health, MCP profile surfaces, and documented counts.
 - Report exact findings, skipped scope, proposed routes, and evidence status.
-- Route any write proposal to build, fix, audit, skill-forge, or commit prep with scoped GO.
+- Route any write proposal to build, fix, audit, skill-forge, or commit prep; the owning workflow must handle scope-bound intent signal plus authorization resolution.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Do not enter `formal-write` from routine; `formal-write` belongs to the owning workflow after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

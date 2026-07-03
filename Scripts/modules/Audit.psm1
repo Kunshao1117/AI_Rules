@@ -62,6 +62,19 @@ function Format-AuditFieldDisplay {
         'first_response_deadline' = '首次回應期限'
         'last_progress_at' = '最後進度時間'
         'timeout_action' = '逾時處置'
+        'status_probe_state' = '狀態探針狀態'
+        'status_probe_sent_at' = '狀態探針送出時間'
+        'status_probe_response_at' = '狀態探針回應時間'
+        'status_probe_pause_report' = '狀態探針暫停回報'
+        'status_probe_resume_state' = '狀態探針恢復狀態'
+        'status_probe_resume_sent_at' = '狀態探針恢復送出時間'
+        'late_result_policy' = '晚到結果政策'
+        'late_result_window' = '晚到結果接收窗口'
+        'receipt_decision' = '回執決策'
+        'receipt_decision_reason' = '回執決策理由'
+        'cancellation_state' = '取消狀態'
+        'final_channel_closure_reason' = '最終通道關閉理由'
+        'replacement_reason' = '替換理由'
         'standby_reason' = '待命原因'
         'tool_execution_envelope' = '工具執行信封'
         'tool_execution_envelope_trust' = '工具執行信封信任狀態'
@@ -1610,7 +1623,7 @@ function Measure-SubagentVocabularyDrift {
 function Measure-GovernanceSemantics {
     <#
     .SYNOPSIS
-        檢查治理語義：GO gate、舊路徑、自動安裝、automation-safe mutation、MCP HITL 邊界。
+        檢查治理語義：分相授權、GO blanket 授權、舊路徑、自動安裝、automation-safe mutation、MCP HITL 邊界。
     .PARAMETER RepoRoot
         AI_Rules 倉庫根目錄
     #>
@@ -1673,6 +1686,14 @@ function Measure-GovernanceSemantics {
         [PSCustomObject]@{
             Pattern = '(?i)(button|buttons|click|confirmation|confirm|consent|按鈕|點擊|確認|同意).{0,100}(\b(equals?|is|counts?\s+as)\b|等於|代表|視為).{0,100}(unscoped|any scope|all files|blanket|without scope|無範圍|不限範圍|所有檔案|任意寫入|全域寫入|無清單寫入).{0,80}(write|mutation|寫入|變更)?'
             Reason = '不得正向宣稱按鈕同意等於無範圍寫入'
+        },
+        [PSCustomObject]@{
+            Pattern = '(?i)(single|same|one|blanket|unscoped|單一|同一個|一次|全域|無範圍).{0,80}\bGO\b.{0,180}(changelog|CHANGELOG\.md|source write|memory|git\s+commit|commit|git\s+push|push|release|deploy|install|變更紀錄|來源寫入|記憶|提交|推送|發布|部署|安裝).{0,180}(authori[sz]e|permission|gate|covers?|授權|涵蓋|允許)'
+            Reason = '單一 GO 不得 blanket 授權多個保護階段'
+        },
+        [PSCustomObject]@{
+            Pattern = '(?i)(workflow route|workflow_route|workflow command|工作流路由|工作流指令).{0,120}(authori[sz]es?|permission|covers?|allows?|授權|允許|涵蓋).{0,160}(changelog|source write|memory mutation|git commit|git push|release|deploy|install|保護操作|保護階段)'
+            Reason = 'workflow route 不得作為保護階段授權'
         }
     )
 
@@ -1694,6 +1715,87 @@ function Measure-GovernanceSemantics {
     }
 
     $mutationPattern = '(?i)(\bwrite_to_file\b|\breplace_file_content\b|\bmemory_commit\b|\bgit\s+add\b|\bgit\s+commit\b|\bgit\s+push\b|\bdeploy\b|\binstall\b|\bdelete\b|\bremove-item\b|\bnew-item\b|\bset-content\b|\badd-content\b|\bout-file\b|\bcreate_[a-z0-9_]+\b|\bupdate_[a-z0-9_]+\b|\bpush_files\b|\bapply_migration\b|\bmerge_branch\b|\breset_branch\b|\bdelete_branch\b|\bresolve\b)'
+    $protectedPhaseAuthorizationSignals = @(
+        [PSCustomObject]@{
+            Label = 'scope-bound intent signal'
+            Pattern = '(?is)(scope[- ]bound|scoped|scope-bound|範圍綁定|有範圍|綁定範圍).{0,240}(intent signal|Director intent|GO|authorization evidence|意圖訊號|總監意圖|授權證據)|(intent signal|Director intent|GO|authorization evidence|意圖訊號|總監意圖|授權證據).{0,240}(scope[- ]bound|scoped|scope-bound|範圍綁定|有範圍|綁定範圍)'
+        },
+        [PSCustomObject]@{
+            Label = 'authorization resolution'
+            Pattern = '(?i)authorization resolution|authorization_resolution|authorization_resolution_state|授權解析'
+        },
+        [PSCustomObject]@{
+            Label = 'protected gate'
+            Pattern = '(?i)protected gate|protected authorization|protected-state gate|protected phase gate|保護.{0,40}(gate|閘門|授權)|對應.{0,80}(gate|閘門)'
+        },
+        [PSCustomObject]@{
+            Label = 'separate protected phase'
+            Pattern = '(?is)(each|own|respective|per[- ]phase|phase[- ]specific|separate|dedicated|individual|各自|分相|逐相|每個|每一個|單獨|分別|獨立).{0,220}(phase|protected phase|gate|authorization|階段|保護階段|閘門|授權)|(phase|protected phase|階段|保護階段).{0,220}(each|own|respective|separate|dedicated|individual|各自|分相|逐相|單獨|分別|獨立)'
+        }
+    )
+    $protectedPhaseChecks = @(
+        [PSCustomObject]@{
+            Label = 'changelog/source write'
+            OperationPattern = '(?i)(CHANGELOG\.md|changelog write|source write|write_to_file|replace_file_content|set-content|add-content|out-file)'
+            PhasePattern = '(?i)(CHANGELOG\.md|changelog write|source write|source[- ]write|source mutation|filesystem write|變更紀錄|來源寫入|檔案寫入)'
+        },
+        [PSCustomObject]@{
+            Label = 'memory mutation'
+            OperationPattern = '(?i)(\bmemory_commit\b|memory mutation phase|memory write phase|memory mutation station|memory write station|記憶(提交|寫入|突變)(階段|站點|station)|\.agents[\\/]memory.{0,80}(write|mutation|commit|寫入|提交|突變))'
+            PhasePattern = '(?i)(memory mutation|memory write|memory_commit|memory phase|記憶(提交|寫入|變更|突變)|記憶階段)'
+        },
+        [PSCustomObject]@{
+            Label = 'git commit'
+            OperationPattern = '(?i)\bgit\s+commit\b'
+            PhasePattern = '(?i)(git commit|commit phase|提交階段|提交授權)'
+        },
+        [PSCustomObject]@{
+            Label = 'push'
+            OperationPattern = '(?i)(\bgit\s+push\b|\bpush_files\b)'
+            PhasePattern = '(?i)(git push|push phase|push_files|推送階段|推送授權)'
+        },
+        [PSCustomObject]@{
+            Label = 'release/deploy/install'
+            OperationPattern = '(?i)(\bgh\s+release\b|\bgit\s+tag\b|\b(vercel|wrangler|netlify)\s+deploy\b|\b(npm|pnpm|yarn|bun)\s+install\b|release/deploy/install phase|release phase|deploy phase|install phase|發布階段|部署階段|安裝階段)'
+            PhasePattern = '(?i)(release|deploy|deployment|install|release/deploy/install|發布|部署|安裝)'
+        }
+    )
+
+    function Test-GovernancePositiveLineMatch {
+        param(
+            [string[]]$Lines,
+            [string]$Pattern
+        )
+
+        foreach ($line in @($Lines)) {
+            if (($line -match $Pattern) -and (-not (Test-AuditLineIsNegative -Line $line))) {
+                return $true
+            }
+        }
+
+        return $false
+    }
+
+    function Get-MissingProtectedPhaseSignals {
+        param(
+            [string]$Content,
+            [string]$PhasePattern
+        )
+
+        $missing = New-Object System.Collections.Generic.List[string]
+        if ($Content -notmatch $PhasePattern) {
+            $missing.Add('phase label')
+        }
+
+        foreach ($signal in $protectedPhaseAuthorizationSignals) {
+            if ($Content -notmatch $signal.Pattern) {
+                $missing.Add($signal.Label)
+            }
+        }
+
+        return @($missing.ToArray())
+    }
+
     foreach ($target in (Get-WorkflowAuditTargets -RepoRoot $RepoRoot)) {
         $content = Get-Content -LiteralPath $target.Path -Raw -Encoding UTF8
         $lines = Get-Content -LiteralPath $target.Path -Encoding UTF8
@@ -1751,12 +1853,17 @@ function Measure-GovernanceSemantics {
             }
         }
 
-        if (($content -match 'CHANGELOG\.md') -and ($content -match 'git\s+commit|git\s+push') -and ($humanGate -notmatch 'changelog write')) {
-            Add-GovernanceFinding -Severity 'Yellow' `
-                -File (Get-AuditRelativePath -RepoRoot $RepoRoot -Path $target.Path) `
-                -Line 1 `
-                -Reason 'commit workflow 應明示 GO gate 同時涵蓋 changelog write、commit、push' `
-                -Text $target.Name
+        foreach ($phaseCheck in $protectedPhaseChecks) {
+            if (-not (Test-GovernancePositiveLineMatch -Lines $lines -Pattern $phaseCheck.OperationPattern)) { continue }
+
+            $missingPhaseSignals = Get-MissingProtectedPhaseSignals -Content $content -PhasePattern $phaseCheck.PhasePattern
+            if (@($missingPhaseSignals).Count -gt 0) {
+                Add-GovernanceFinding -Severity 'Red' `
+                    -File (Get-AuditRelativePath -RepoRoot $RepoRoot -Path $target.Path) `
+                    -Line 1 `
+                    -Reason ("protected phase `{0}` 缺少分相授權語意" -f $phaseCheck.Label) `
+                    -Text ("缺少：{0}" -f ($missingPhaseSignals -join ', '))
+            }
         }
     }
 
@@ -2093,7 +2200,7 @@ function Test-AuditFileHashEqual {
 function Measure-CodexHookGovernance {
     <#
     .SYNOPSIS
-        檢查 Codex project-level hooks 是否提供 Team-Native 最小硬閘門。
+        檢查 Codex repo-managed hooks 移除／rebuild pending 狀態，或在重建後執行完整 Team-Native hook governance 檢查。
     #>
     param(
         [string]$RepoRoot = ".",
@@ -2450,9 +2557,47 @@ function Measure-CodexHookGovernance {
     $sourceDisabledConfig = Join-Path $RepoRoot 'Codex\.codex\hooks.delete'
     $sourceScript = Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-gate.ps1'
     $targetConfig = Join-Path $TargetRoot '.codex\hooks.json'
+    $targetDisabledConfig = Join-Path $TargetRoot '.codex\hooks.delete'
     $targetScript = Join-Path $TargetRoot '.codex\hooks\team-native-gate.ps1'
     $fixtureTest = Join-Path $RepoRoot 'Scripts\tests\codex-hooks\Invoke-CodexHookFixtureTests.ps1'
     $fixtureRoot = Join-Path $RepoRoot 'Scripts\tests\codex-hooks\fixtures'
+    $sourceHookDirectory = Join-Path $RepoRoot 'Codex\.codex\hooks'
+    $targetHookDirectory = Join-Path $TargetRoot '.codex\hooks'
+    $fixtureTestRoot = Join-Path $RepoRoot 'Scripts\tests\codex-hooks'
+
+    $repoManagedHookArtifacts = @(
+        @{ Path = $sourceConfig; PathType = 'Leaf' },
+        @{ Path = $sourceDisabledConfig; PathType = 'Leaf' },
+        @{ Path = $sourceHookDirectory; PathType = 'Container' },
+        @{ Path = $targetConfig; PathType = 'Leaf' },
+        @{ Path = $targetDisabledConfig; PathType = 'Leaf' },
+        @{ Path = $targetHookDirectory; PathType = 'Container' },
+        @{ Path = $fixtureTestRoot; PathType = 'Container' }
+    )
+    $hasRepoManagedHookArtifact = $false
+    foreach ($artifact in $repoManagedHookArtifacts) {
+        if (Test-Path -LiteralPath $artifact.Path -PathType $artifact.PathType) {
+            $hasRepoManagedHookArtifact = $true
+            break
+        }
+    }
+    if (-not $hasRepoManagedHookArtifact) {
+        Write-Host ""
+        Write-Host "📊 掛鉤治理（Codex Hook Governance）"
+        Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        Write-Host "ℹ️ Codex repo-managed hooks 已移除；狀態為 Hooks removed / rebuild pending"
+
+        return [PSCustomObject]@{
+            Findings       = @($results)
+            Status         = 'RemovedRebuildPending'
+            Skipped        = $true
+            RebuildPending = $true
+            RedCount       = 0
+            YellowCount    = 0
+            Passed         = $true
+        }
+    }
+
     $hasSourceHookConfig = Test-Path -LiteralPath $sourceConfig -PathType Leaf
     $hasSourceDisabledConfig = Test-Path -LiteralPath $sourceDisabledConfig -PathType Leaf
     $hasTargetHookConfig = Test-Path -LiteralPath $targetConfig -PathType Leaf
@@ -2845,10 +2990,13 @@ function Measure-CodexHookGovernance {
     }
 
     return [PSCustomObject]@{
-        Findings    = @($results)
-        RedCount    = $redCount
-        YellowCount = $yellowCount
-        Passed      = ($redCount -eq 0)
+        Findings       = @($results)
+        Status         = 'Checked'
+        Skipped        = $false
+        RebuildPending = $false
+        RedCount       = $redCount
+        YellowCount    = $yellowCount
+        Passed         = ($redCount -eq 0)
     }
 }
 
@@ -3799,6 +3947,80 @@ function Measure-DirectorOutputContract {
     $knowledgeFreshnessPattern = 'memory and internal model knowledge as possibly stale|內建知識.*過時|記憶.*過時'
     $highChangeGroundingPattern = 'high-change information|外部框架.*API.*套件版本|official documentation or primary sources|官方.*最新'
     $verificationAnchorPattern = 'project version first|current date/year|版本.*目前日期|版本.*時間錨'
+    $directorLanguageGateChecks = @{
+        captain_translation = [PSCustomObject]@{
+            Label = '隊長接收交付件後的繁中轉譯 gate'
+            Pattern = '(?is)((隊長|主代理|captain|main agent).{0,260}(接收|receive|receipt|收到|收取|彙整|整合|synthesi[sz]e|integrat).{0,260}(交付件|artifacts?|隊員|specialist).{0,260}(繁中|中文|Traditional Chinese|zh-TW|meaning-first|意義先行|總監可讀|Director-facing))|((隊長|主代理|captain|main agent).{0,260}(總監|Director).{0,200}(輸出|回報|報告|output|report).{0,260}(轉成|轉譯|重寫|摘要|整合|彙整|synthesi[sz]e|rewrite|translate).{0,180}(繁中|中文|Traditional Chinese|zh-TW|meaning-first|意義先行))|((隊員|specialist|交付件|delivery artifact).{0,220}(不得|禁止|不可|must not|cannot|Do not).{0,220}(原文|raw|直接貼|paste|外貼).{0,180}(總監|Director))'
+        }
+        english_led = [PSCustomObject]@{
+            Label = '禁止英文主導總監輸出'
+            Pattern = '(?is)((英文主導|英文欄位主導|English-led|English dominant|English-only).{0,260}(總監|Director|輸出|output|complete|completion|gate|閘門|完成).{0,260}(禁止|不得|不可|不通過|fail|blocked|blocks?|gate|閘門|完成))|((總監|Director).{0,220}(輸出|output|report).{0,260}(英文主導|English-led|English-only|raw English))|((Director-facing output|總監輸出|總監可讀).{0,260}(English-led|英文主導|英文欄位主導|English-only).{0,260}(blocks?|blocked|fail|不通過|阻塞|不得|不可|不能))'
+        }
+        raw_internal_artifact = [PSCustomObject]@{
+            Label = '禁止 raw internal artifact 或 raw field list 外貼'
+            Pattern = '(?is)((不得|禁止|不可|must not|cannot|Do not).{0,260}(raw internal artifact|raw artifact|raw field list|raw English-only field list|原樣貼|原文貼上|直接貼|外貼|內部.*(交付件|欄位|schema|任務板|board)|internal artifacts?|English field tables?|specialist raw output).{0,260}(總監|Director|輸出|output|main body|主體))|((internal|內部|board-facing|delivery artifacts?|artifacts?|交付件|欄位|schema|field).{0,220}(不是|not|are not).{0,180}(總監|Director).{0,160}(報告|輸出|reports?|template|模板))|((Director-facing output|總監輸出|總監可讀).{0,240}(raw-artifact-led|raw-field-led|artifact-led|raw field|raw artifact|原樣貼|欄位主導).{0,240}(blocks?|fail|不通過|阻塞|不得|不可|不能))|((internal delivery artifacts?|內部交付件).{0,200}(synthesi[sz]ed rather than pasted|轉譯|整合|彙整|不得原樣|不得貼|不是原樣))'
+        }
+        evidence_integrity = [PSCustomObject]@{
+            Label = '隊長摘要不得改寫證據來源與狀態結論'
+            Pattern = '(?is)((隊長|captain).{0,220}(可|may).{0,120}(重寫|轉譯|摘要|synthesi[sz]e|rewrite|translate).{0,240}(不得|不可|不能|must not|cannot).{0,260}(證據來源|evidence source|角色歸屬|role attribution|驗證|validation|審查|review|風險|risk))|((證據來源|evidence source).{0,180}(角色歸屬|role attribution).{0,180}(驗證|validation).{0,180}(審查|review).{0,180}(風險|risk).{0,180}(不得|不可|不能|must not|cannot).{0,120}(改寫|alter|rewrite))'
+        }
+        completion_fail_gate = [PSCustomObject]@{
+            Label = '總監輸出語言治理完成門檻'
+            Pattern = '(?is)((completion gate|完成門檻|完成閘門|completion claim|完成宣稱).{0,260}(英文主導|English-led|English-only|raw artifact|raw field list|原樣貼|未整合|unsynthesized|隊員交付件).{0,260}(fail|blocked|blocks?|不通過|阻塞|Red|不得|不可|不能|must not|cannot))|((Director-facing output governance|總監輸出門檻|總監可讀輸出).{0,600}(English-led|英文主導|raw-artifact-led|raw-field-led|unsynthesized|未整合).{0,220}(blocks?\s+`?complete`?|阻塞|不通過|不得完整完成))|((English-led|英文主導|raw-artifact-led|raw-field-led|unsynthesized|未整合).{0,180}(blocks?\s+`?complete`?|阻塞|不通過|不得完整完成))'
+        }
+    }
+    $directorLanguageGateTargets = @(
+        [PSCustomObject]@{
+            Scope = 'language-governance-source'
+            Path = Join-Path $RepoRoot 'Shared\policies\language-governance.md'
+            Checks = @('captain_translation', 'english_led', 'raw_internal_artifact', 'evidence_integrity')
+        },
+        [PSCustomObject]@{
+            Scope = 'language-governance-target'
+            Path = Join-Path $TargetRoot '.agents\shared\policies\language-governance.md'
+            Checks = @('captain_translation', 'english_led', 'raw_internal_artifact', 'evidence_integrity')
+        },
+        [PSCustomObject]@{
+            Scope = 'subagent-invocation-source'
+            Path = Join-Path $RepoRoot 'Shared\policies\subagent-invocation.md'
+            Checks = @('captain_translation', 'raw_internal_artifact', 'evidence_integrity')
+        },
+        [PSCustomObject]@{
+            Scope = 'subagent-invocation-target'
+            Path = Join-Path $TargetRoot '.agents\shared\policies\subagent-invocation.md'
+            Checks = @('captain_translation', 'raw_internal_artifact', 'evidence_integrity')
+        },
+        [PSCustomObject]@{
+            Scope = 'completion-gate-source'
+            Path = Join-Path $RepoRoot 'Shared\skills\team-completion-gate\SKILL.md'
+            Checks = @('english_led', 'raw_internal_artifact', 'completion_fail_gate')
+        },
+        [PSCustomObject]@{
+            Scope = 'completion-gate-target'
+            Path = Join-Path $TargetRoot '.agents\skills\team-completion-gate\SKILL.md'
+            Checks = @('english_led', 'raw_internal_artifact', 'completion_fail_gate')
+        },
+        [PSCustomObject]@{
+            Scope = 'team-task-board-source'
+            Path = Join-Path $RepoRoot 'Shared\skills\team-task-board\SKILL.md'
+            Checks = @('raw_internal_artifact')
+        },
+        [PSCustomObject]@{
+            Scope = 'team-task-board-target'
+            Path = Join-Path $TargetRoot '.agents\skills\team-task-board\SKILL.md'
+            Checks = @('raw_internal_artifact')
+        },
+        [PSCustomObject]@{
+            Scope = 'team-specialist-registry-source'
+            Path = Join-Path $RepoRoot 'Shared\skills\team-specialist-registry\SKILL.md'
+            Checks = @('raw_internal_artifact')
+        },
+        [PSCustomObject]@{
+            Scope = 'team-specialist-registry-target'
+            Path = Join-Path $TargetRoot '.agents\skills\team-specialist-registry\SKILL.md'
+            Checks = @('raw_internal_artifact')
+        }
+    )
 
     function Test-DirectorOutputMinimumContract {
         param([string]$Content)
@@ -3845,6 +4067,24 @@ function Measure-DirectorOutputContract {
         })
     }
 
+    function Test-DirectorLanguageGateContent {
+        param(
+            [string]$Content,
+            [string[]]$CheckNames
+        )
+
+        $missing = New-Object System.Collections.Generic.List[string]
+        foreach ($checkName in @($CheckNames)) {
+            if (-not $directorLanguageGateChecks.ContainsKey($checkName)) { continue }
+            $check = $directorLanguageGateChecks[$checkName]
+            if ($Content -notmatch $check.Pattern) {
+                $missing.Add($check.Label)
+            }
+        }
+
+        return @($missing.ToArray())
+    }
+
     foreach ($target in (Get-DirectorOutputContractTargets -RepoRoot $RepoRoot -TargetRoot $TargetRoot)) {
         $content = Get-Content -LiteralPath $target.Path -Raw -Encoding UTF8
         $missing = @()
@@ -3873,6 +4113,23 @@ function Measure-DirectorOutputContract {
             Add-DirectorFinding -Severity 'Red' `
                 -File (Get-DirectorDisplayPath -Path $target.Path) `
                 -Reason ("{0}/{1} 缺少總監可讀輸出契約：{2}" -f $target.Platform, $target.Scope, ($missing -join ', '))
+        }
+    }
+
+    foreach ($gateTarget in $directorLanguageGateTargets) {
+        if (-not (Test-Path -LiteralPath $gateTarget.Path)) {
+            Add-DirectorFinding -Severity 'Red' `
+                -File (Get-DirectorDisplayPath -Path $gateTarget.Path) `
+                -Reason ("缺少總監輸出語言治理檢查目標：{0}" -f $gateTarget.Scope)
+            continue
+        }
+
+        $content = Get-Content -LiteralPath $gateTarget.Path -Raw -Encoding UTF8
+        $missing = Test-DirectorLanguageGateContent -Content $content -CheckNames $gateTarget.Checks
+        if (@($missing).Count -gt 0) {
+            Add-DirectorFinding -Severity 'Red' `
+                -File (Get-DirectorDisplayPath -Path $gateTarget.Path) `
+                -Reason ("{0} 缺少總監輸出語言治理硬閘門：{1}" -f $gateTarget.Scope, ($missing -join ', '))
         }
     }
 
@@ -4335,6 +4592,18 @@ function Measure-MemoryCardNaming {
         })
     }
 
+    function Get-MarkdownSectionBody {
+        param(
+            [string]$Content,
+            [string]$Heading
+        )
+
+        $pattern = "(?ms)^##\s+$([regex]::Escape($Heading))\s*\r?\n(?<body>.*?)(?=^##\s+|\z)"
+        $match = [regex]::Match($Content, $pattern)
+        if ($match.Success) { return $match.Groups['body'].Value }
+        return $null
+    }
+
     if (-not (Test-Path -LiteralPath $memoryRoot -PathType Container)) {
         Add-MemoryNamingFinding -Severity 'Yellow' -File '.agents/memory/' -Reason '尚未建立專案記憶目錄'
     } else {
@@ -4385,6 +4654,34 @@ function Measure-MemoryCardNaming {
             foreach ($section in $qualitySections) {
                 if ($content -notmatch "(?m)^##\s+$([regex]::Escape($section))\s*$") {
                     Add-MemoryNamingFinding -Severity 'Yellow' -File $relative -Reason "作用中記憶主檔缺少內容品質段落：$section"
+                }
+            }
+
+            $trackedBody = Get-MarkdownSectionBody -Content $content -Heading 'Tracked Files'
+            if ($null -ne $trackedBody) {
+                $trackedEntries = @(
+                    $trackedBody -split '\r?\n' |
+                        Where-Object {
+                            ($_ -match '^\s*-\s+\S') -and
+                            ($_ -notmatch '(?i)\b(none|n/a|navigation only|nav only)\b|無追蹤|導覽|索引')
+                        }
+                )
+
+                if ($trackedEntries.Count -eq 0) {
+                    $childCardDirs = @(
+                        Get-ChildItem -LiteralPath $dir.FullName -Directory -ErrorAction SilentlyContinue |
+                            Where-Object {
+                                (Test-Path -LiteralPath (Join-Path $_.FullName 'MEMORY.md') -PathType Leaf) -or
+                                (Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md') -PathType Leaf)
+                            }
+                    )
+                    $relationsBody = Get-MarkdownSectionBody -Content $content -Heading 'Relations'
+                    $hasChildRelations = ($relationsBody -and ($relationsBody -match '(?i)child|children|child card|子卡|parent|parent card|navigation|導覽|index|索引'))
+                    $hasNavigationEvidence = ($content -match '(?i)navigation|navigation-only|index|map|parent card|child card|導覽|索引|父卡|子卡')
+
+                    if (-not (($childCardDirs.Count -gt 0) -and $hasChildRelations -and $hasNavigationEvidence)) {
+                        Add-MemoryNamingFinding -Severity 'Yellow' -File $relative -Reason 'Tracked Files 為空，但缺少父索引導覽與子卡承接證據'
+                    }
                 }
             }
         }
@@ -4579,25 +4876,25 @@ function Measure-TeamNativeCoreSemantics {
             Path = 'Shared\policies\workflow-orchestration.md'
             Severity = 'Red'
             Label = '工作流編排契約缺少 Team-Native 站點編排正本語義'
-            Patterns = @('Workflow Orchestration Contract', 'Source-Of-Truth Chain', 'workflow-orchestration-scenarios', 'non-authorizing examples', 'operation_mode', 'daily', 'full', 'draft board', 'formal-readonly', 'formal-write', 'dispatch wave', 'previous-wave input', 'next-wave start condition', 'formal evidence eligibility', 'handoff packet', 'channel capability', 'channel invocation status', 'station lifecycle|Station Handoff', 'closed-with-director-risk', 'not full team completion|not as `complete`')
+            Patterns = @('Workflow Orchestration Contract', 'Source-Of-Truth Chain', 'workflow-orchestration-scenarios', 'non-authorizing examples', 'operation_mode', 'daily', 'full', 'draft board', 'formal-readonly', 'formal-write', 'dispatch wave', 'previous-wave input', 'next-wave start condition', 'formal evidence eligibility', 'handoff packet', 'channel capability', 'channel invocation status', 'station lifecycle|Station Handoff', 'pause.{0,80}report|pause-and-report|pause and report|暫停.{0,80}回報', 'status_probe_resume_state|awaiting-resume|等待恢復', 'cancellation_state|cancellation-pending|取消待決', 'late_result_policy|late-result-pending|晚到結果待決', 'receipt decision|receipt_decision|回執決策', 'closed-with-director-risk', 'not full team completion|not as `complete`')
         },
         [PSCustomObject]@{
             Path = 'Shared\policies\workflow-orchestration-scenarios.md'
             Severity = 'Red'
             Label = '工作流情境範例缺少 Team-Native 轉場樣本'
-            Patterns = @('Workflow Orchestration Scenarios', 'not authorization', 'Scenario Format', 'Read-Only Evidence Station', 'Blueprint To Build', 'Build Or Fix To Validation', 'Failed Validation Route-Back', 'Audit Fan-Out', 'Commit-Preflight Blocker', 'Generated Or Deployed Copy Sync', 'workflow_route', 'operation_mode', 'board_state', 'dispatch wave', 'previous-wave input', 'next-wave start condition', 'handoff_packet_id', 'channel_capability', 'channel_invocation_status', 'delivery artifact', 'blocked', 'unverified', 'closed-with-director-risk', 'not full team completion', 'Anti-Examples')
+            Patterns = @('Workflow Orchestration Scenarios', 'not authorization', 'Scenario Format', 'Read-Only Evidence Station', 'Blueprint To Build', 'Build Or Fix To Validation', 'Failed Validation Route-Back', 'Audit Fan-Out', 'Commit-Preflight Blocker', 'Generated Or Deployed Copy Sync', 'workflow_route', 'operation_mode', 'board_state', 'dispatch wave', 'previous-wave input', 'next-wave start condition', 'handoff_packet_id', 'channel_capability', 'channel_invocation_status', 'pause-and-report|pause and report|暫停並回報', 'resume|恢復|繼續', 'wait timeout|timeout|逾時', 'replacement|替換', 'late result|late-result|晚到結果', 'delivery artifact', 'blocked', 'unverified', 'closed-with-director-risk', 'not full team completion', 'Anti-Examples')
         },
         [PSCustomObject]@{
             Path = 'Shared\policies\team-native-core.md'
             Severity = 'Red'
             Label = 'Team-Native Core 政策缺少核心狀態機'
-            Patterns = @('Team-Native Core', 'Station-First Rule', 'Strict State Machine', 'Completion Rule', 'Platform Adapter Contract', 'Trace Requirement', 'operation_mode', 'operation_mode_reason', 'daily', 'full', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'direct', 'text change delivery artifact', 'closed-with-director-risk', 'unverified', 'blocked', 'Tool Execution Envelope Rule', 'tool_execution_envelope', 'execution_receipt', 'trusted issuer', 'signature', 'nonce', 'model-filled', 'protected mutation', 'risk close evidence', 'post-block bypass hard block', 'invalid payload fail-closed')
+            Patterns = @('Team-Native Core', 'Station-First Rule', 'Strict State Machine', 'Completion Rule', 'Platform Adapter Contract', 'Trace Requirement', 'operation_mode', 'operation_mode_reason', 'daily', 'full', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'direct', 'text change delivery artifact', 'pause.{0,80}report|pause-and-report|pause and report|暫停.{0,80}回報', 'status_probe_resume_state|awaiting-resume|等待恢復', 'cancellation_state|cancellation-pending|取消待決', 'late_result_policy|late-result-pending|晚到結果待決', 'receipt decision|receipt_decision|回執決策', '(replacement|replacing).{0,140}(does not|doesn''t|not|不是|不會|不得).{0,80}(cancel|cancellation|取消)|(替換|換員).{0,140}(不是|不會|不得|不代表).{0,80}取消', '(timeout|逾時).{0,140}(does not|doesn''t|not|不是|不會|不得).{0,80}(failure|fail|失敗)', 'closed-with-director-risk', 'unverified', 'blocked', 'Tool Execution Envelope Rule', 'tool_execution_envelope', 'execution_receipt', 'trusted issuer', 'signature', 'nonce', 'model-filled', 'protected mutation', 'risk close evidence', 'post-block bypass hard block', 'invalid payload fail-closed')
         },
         [PSCustomObject]@{
             Path = 'Shared\policies\team-trace-evidence.md'
             Severity = 'Red'
             Label = 'Team trace 證據契約缺少最小欄位'
-            Patterns = @('Team Trace Evidence Contract', 'Minimal Trace Fields', 'task_id', 'task_type', 'workflow_route', 'operation_mode', 'operation_mode_reason', 'board_state', 'implementation_authorization', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'specialist_skill', 'loaded_skill_refs', 'handoff_packet_id', 'domain_label', 'requested_execution_channel', 'channel_capability', 'channel_invocation_status', 'execution_route', 'execution_channel', 'station_state', 'evidence_state', 'tool_execution_envelope', 'tool_execution_envelope_trust', 'tool_envelope_issuer', 'tool_envelope_signature', 'tool_envelope_nonce', 'execution_receipt', 'execution_receipt_decision', 'delivery_artifact', 'delivery_artifact_id', 'delivery_artifact_status', 'risk_close_evidence', 'no_captain_authoring', 'stations', 'waves', 'delivery_artifacts', 'direct_exceptions', 'role_separation', 'completion_state', 'invalid payload fail-closed', 'post-block bypass hard block')
+            Patterns = @('Team Trace Evidence Contract', 'Minimal Trace Fields', 'task_id', 'task_type', 'workflow_route', 'operation_mode', 'operation_mode_reason', 'board_state', 'implementation_authorization', 'authorization_source', 'authorization_target', 'authorization_scope', 'authorization_phase', 'authorization_evidence', 'authorization_expiry', 'authorization_resolution_state', 'platform_mode_observed', 'role_id', 'role_instance_id', 'exclusive_task_scope', 'specialist_skill', 'loaded_skill_refs', 'handoff_packet_id', 'domain_label', 'requested_execution_channel', 'channel_capability', 'channel_invocation_status', 'startup_started_at', 'first_response_deadline', 'last_progress_at', 'timeout_action', 'status_probe_state', 'status_probe_sent_at', 'status_probe_response_at', 'status_probe_pause_report', 'status_probe_resume_state', 'status_probe_resume_sent_at', 'late_result_policy', 'late_result_window', 'cancellation_state', 'execution_route', 'execution_channel', 'station_state', 'evidence_state', 'station_lifecycle_state', 'receipt_decision', 'receipt_decision_reason', 'final_channel_closure_reason', 'tool_execution_envelope', 'tool_execution_envelope_trust', 'tool_envelope_issuer', 'tool_envelope_signature', 'tool_envelope_nonce', 'execution_receipt', 'execution_receipt_decision', 'delivery_artifact', 'delivery_artifact_id', 'delivery_artifact_status', 'risk_close_evidence', 'no_captain_authoring', 'stations', 'waves', 'delivery_artifacts', 'direct_exceptions', 'role_separation', 'completion_state', 'invalid payload fail-closed', 'post-block bypass hard block')
         },
         [PSCustomObject]@{
             Path = 'Shared\policies\authorization-resolution.md'
@@ -5423,6 +5720,8 @@ function Measure-TeamTraceEvidence {
         $content = Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8
         $hardTracePattern = '(?i)\boperation_mode\b\s*[:=]\s*["'']?full\b|governance-impact|governance impact|Doctor/Audit|audit rules|routine audit|commit-release|commit/release|治理影響|巡檢規則|提交發布準備|提交發布'
         $requiresHardTrace = Test-TeamTracePositiveLine -Content $content -Pattern $hardTracePattern
+        $completeClaimPattern = '(?i)\bcompletion_state\b\s*[:=]\s*["'']?(complete|completed|full-team-complete|full_team_complete)\b|full team completion|完整團隊完成|完整完成'
+        $completeClaim = Test-TeamTracePositiveLine -Content $content -Pattern $completeClaimPattern
         $missing = @()
         foreach ($field in $requiredFields) {
             if ($content -notmatch [regex]::Escape($field)) {
@@ -5431,6 +5730,42 @@ function Measure-TeamTraceEvidence {
         }
 
         $rel = Get-AuditRelativePath -RepoRoot $TargetRoot -Path $file.FullName
+        if ($completeClaim) {
+            $statusLifecycleContextPattern = '(?i)(status probe|status_probe|生命探針|狀態探針|pause.{0,80}report|暫停.{0,80}回報|awaiting-resume|等待恢復|resume-sent|恢復送出)'
+            $replacementLifecycleContextPattern = '(?i)(replacement|replaced|replaces_channel_run_id|replacement_reason|替換|換員)'
+            $lateLifecycleContextPattern = '(?i)(late result|late-result|late_result|return_timing\s*[:=]\s*["'']?late\b|晚到結果|遲到結果)'
+            $closureLifecycleContextPattern = '(?i)(channel_run_id|channel_generation|final channel closure|final_channel_closure_reason|通道關閉)'
+
+            $conditionalLifecycleFields = @()
+            if (Test-TeamTracePositiveLine -Content $content -Pattern $statusLifecycleContextPattern) {
+                $conditionalLifecycleFields += @('status_probe_state', 'status_probe_sent_at')
+                if (Test-TeamTracePositiveLine -Content $content -Pattern '(?i)(responded|response|paused|pause.{0,80}report|暫停.{0,80}回報|回應)') {
+                    $conditionalLifecycleFields += @('status_probe_response_at', 'status_probe_pause_report')
+                }
+                if (Test-TeamTracePositiveLine -Content $content -Pattern '(?i)(resume|resumed|awaiting-resume|resume-sent|繼續|恢復|等待恢復)') {
+                    $conditionalLifecycleFields += @('status_probe_resume_state')
+                    if ($content -notmatch [regex]::Escape('status_probe_resume_sent_at')) {
+                        $missing += 'status_probe_resume_sent_at'
+                    }
+                }
+            }
+            if (Test-TeamTracePositiveLine -Content $content -Pattern $replacementLifecycleContextPattern) {
+                $conditionalLifecycleFields += @('channel_generation', 'replacement_reason', 'late_result_policy', 'cancellation_state')
+            }
+            if (Test-TeamTracePositiveLine -Content $content -Pattern $lateLifecycleContextPattern) {
+                $conditionalLifecycleFields += @('late_result_policy', 'late_result_window', 'receipt_decision', 'receipt_decision_reason')
+            }
+            if (Test-TeamTracePositiveLine -Content $content -Pattern $closureLifecycleContextPattern) {
+                $conditionalLifecycleFields += @('final_channel_closure_reason')
+            }
+
+            foreach ($field in ($conditionalLifecycleFields | Select-Object -Unique)) {
+                if ($content -notmatch [regex]::Escape($field)) {
+                    $missing += $field
+                }
+            }
+        }
+
         if (@($missing).Count -eq 0) {
             $validCount++
         } else {
@@ -5630,6 +5965,34 @@ function Measure-TeamTraceEvidence {
             Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '待命狀態不得當成完成證據' -Text '待命狀態（standby）是未執行的生命週期狀態，不能當 returned evidence 或 completion。'
         }
 
+        $statusProbePattern = '(?i)(status probe|status_probe|生命探針|狀態探針)'
+        $pauseAndReportPattern = '(?is)(status_probe_pause_report|pause.{0,160}(report|tell|state|wait)|report.{0,160}(current position|where|blocked|safe to continue)|暫停.{0,160}(回報|說明|等待)|回報.{0,160}(讀到哪裡|目前位置|是否卡住|安全繼續))'
+        $resumeAuthorizationPattern = '(?i)(status_probe_resume_state|status_probe_resume_sent_at|captain resume|explicit resume|明確 resume|隊長.*(resume|恢復|繼續)|收到.*繼續)'
+        if ($completeClaim -and (Test-TeamTracePositiveLine -Content $content -Pattern $statusProbePattern) -and (-not (Test-TeamTracePositiveLine -Content $content -Pattern $pauseAndReportPattern))) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '狀態探針缺少 pause-and-report 處置' -Text '狀態探針必須暫停目前動作並回報讀到哪裡、是否卡住、是否安全繼續。'
+        }
+        if ($completeClaim -and (Test-TeamTracePositiveLine -Content $content -Pattern $statusProbePattern) -and (Test-TeamTracePositiveLine -Content $content -Pattern '(?i)(continued|proceeded|resumed|繼續|恢復)') -and (-not (Test-TeamTracePositiveLine -Content $content -Pattern $resumeAuthorizationPattern))) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '狀態探針後恢復缺少隊長明確 resume' -Text '狀態探針後只能在隊長明確 resume / 繼續後恢復工作。'
+        }
+
+        $timeoutAsTerminalFailurePattern = '(?i)(wait timeout|timeout_action|timeout|逾時).{0,160}(failure|failed|cancel(?:led|ed|lation)?|reject(?:ed)?|失敗|取消|拒絕)'
+        $timeoutAsPausePattern = '(?i)(wait timeout|timeout_action|timeout|逾時).{0,180}(pause-and-report|pause and report|standby|awaiting-resume|blocked|unverified|暫停並回報|待命|等待恢復|阻塞|未驗證)'
+        if ($completeClaim -and (Test-TeamTracePositiveLine -Content $content -Pattern $timeoutAsTerminalFailurePattern) -and (-not (Test-TeamTracePositiveLine -Content $content -Pattern $timeoutAsPausePattern))) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'wait 逾時被誤判為 failure/cancel/reject' -Text 'wait timeout 只是生命週期待決訊號，必須回報並等待後續決策，不能等同 failure、cancel 或 reject。'
+        }
+
+        $replacementCancellationPattern = '(?i)(replacement|replaced|replacing|替換|換員).{0,140}(cancellation|cancelled|canceled|cancel|取消)'
+        $replacementNotCancellationPattern = '(?is)(replacement|replaced|replacing|替換|換員).{0,180}(does not|doesn''t|not|without|不是|不會|不得|不代表|非).{0,120}(cancellation|cancel|cancelled|canceled|取消)|cancellation_state\s*[:=]\s*["'']?(not-requested|unavailable|not-applicable)'
+        if ($completeClaim -and (Test-TeamTracePositiveLine -Content $content -Pattern $replacementCancellationPattern) -and (-not (Test-TeamTracePositiveLine -Content $content -Pattern $replacementNotCancellationPattern))) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'replacement 被誤記為 cancellation' -Text 'replacement 是隊員替換或通道路由調整，不是 cancellation；需要保留原站點狀態與替換理由。'
+        }
+
+        $lateResultPattern = '(?i)(late result|late-result|late_result|晚到結果|遲到結果)'
+        $lateReceiptDecisionPattern = '(?i)(receipt_decision|receipt_decision_reason|receipt decision|accepted|integrated|superseded-by-replacement|rejected-scope|duplicate|conflict-review|blocked|unverified|回執決策|接收決策)'
+        if ($completeClaim -and (Test-TeamTracePositiveLine -Content $content -Pattern $lateResultPattern) -and (-not (Test-TeamTracePositiveLine -Content $content -Pattern $lateReceiptDecisionPattern))) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'late result 缺少 receipt decision' -Text '晚到結果必須記錄接收決策（receipt decision），例如 accepted-late、rejected-late、superseded 或 ignored-with-reason。'
+        }
+
         $isFormalOrApplicableTrace = $content -match '(?i)\bboard_state\b\s*[:=]\s*["'']?formal\b|\bapplicability\b\s*[:=]\s*["'']?applicable\b|formal evidence eligibility|正式證據'
         if ($isFormalOrApplicableTrace -and ($content -notmatch [regex]::Escape('handoff_packet_id'))) {
             Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '正式站點缺少 handoff_packet_id' -Text '正式站點必須帶有交接包代號（handoff_packet_id），或明確標記 blocked / unverified 原因。'
@@ -5680,6 +6043,10 @@ function Measure-TeamTraceEvidence {
         }
         if ($completeClaim -and $hasDirectorRiskClose) {
             Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡把總監風險關閉宣稱為完整完成' -Text '總監風險關閉（closed-with-director-risk）是非完整關閉狀態，不是 complete。'
+        }
+        $pendingLifecyclePattern = '(?i)\b(awaiting-resume|cancellation-pending|late-result-pending)\b|等待恢復|取消待決|晚到結果待決'
+        if ($completeClaim -and (Test-TeamTracePositiveLine -Content $content -Pattern $pendingLifecyclePattern)) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '待決生命週期狀態被 complete 隱藏' -Text 'awaiting-resume、cancellation-pending 與 late-result-pending 是未決狀態，不能被 completion_state: complete 覆蓋。'
         }
         if ($hasDirectorRiskClose -and (-not (Test-TeamTraceFieldHasValue -Content $content -Field 'risk_close_evidence'))) {
             Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'closed-with-director-risk 缺少當前且範圍綁定的總監風險關閉證據' -Text '風險關閉證據（risk_close_evidence）必須交代本次 Director 決策、殘留風險（residual_risk）與接受範圍。'

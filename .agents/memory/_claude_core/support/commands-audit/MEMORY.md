@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/08_audit(健檢)/
 description: >-
   專案記憶：Claude 健檢主指令與三階段子指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-01T22:32:27+08:00'
+last_updated: '2026-07-03T13:40:53+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T22:31:58+08:00'
+last_verified: '2026-07-03T04:26:23+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 19
+cycle_event_count: 21
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -48,6 +48,8 @@ metadata:
 - Claude-specific subagent, hook, permission, and checkpoint semantics are platform translation details, not memory format differences.
 - Claude audit command now inventories change intent, patch-stack risk, visual detail evidence, and real-information priority when applicable.
 - Claude audit entry and subcommands now carry review_state, review lifecycle mapping, and accepted-risk reporting through quality-review-governance.
+- Batch 4B updated 08 audit main command and 08-1/08-2/08-3 subcommands to the same scope-bound intent signal, authorization resolution, and protected-gate write semantics.
+- Claude audit remains evidence and reporting oriented: it does not directly repair source; any write or memory mutation must route through a separately protected phase.
 
 ## Active Constraints
 - Do not mark missing evidence as passed.
@@ -55,6 +57,7 @@ metadata:
 - Do not claim full coverage from sampled evidence; report coverage denominators and sampling limits.
 
 ## Cycle Events
+- 21: Batch 4B recorded audit command semantics for 08 and 08-1/08-2/08-3; audit remains non-repair and writes require a later protected phase.
 - 20: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 19: Wave 6B added workflow-orchestration grounding to Claude audit commands and synced affected .claude/skills copies.
 
@@ -96,6 +99,7 @@ metadata:
 - 此子卡負責 Claude 健檢主指令與三階段子指令。
 - 健檢指令需呈現團隊證據負責與全主線例外，不能只標示直做或委派。
 - 平台能力是轉譯層，不是記憶格式差異。
+- Batch 4B 已完成 08 audit 主命令與 08-1/08-2/08-3 子命令的同類授權語意修補；健檢仍不直接修復，寫入需另走受保護階段。
 
 ## Tracked Files
 - Claude/.claude/commands/08_audit(健檢)/08-1_infra/SKILL.md

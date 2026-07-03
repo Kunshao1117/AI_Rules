@@ -71,10 +71,10 @@ Use when architecture output is accepted and the Director wants implementation.
 trigger: Blueprint or architecture contract is ready for implementation.
 workflow_route: 02 -> 03 or 03-1.
 operation_mode: full.
-board_state: draft for implementation plan, then formal-write after scoped GO.
+board_state: draft for implementation plan, then formal-write only after authorization resolution binds the Director intent signal to the implementation phase or file/station scope.
 dispatch wave 1: requirement replay, scope impact, architecture boundary.
 previous-wave input: approved blueprint, assumptions, acceptance evidence.
-next-wave start condition: scoped GO names the phase, files, or station.
+next-wave start condition: authorization resolution names and binds the phase, files, station, and any expiry.
 dispatch wave 2: implementation change delivery.
 handoff_packet_id: one packet for the change-delivery station.
 delivery artifact: implementation change delivery artifact with memory_impact.
@@ -116,7 +116,7 @@ Use when test, browser, MCP, or manual validation finds a failure.
 trigger: validation_state is failed, blocked, or unverified.
 workflow_route: 06 -> 04, 07, 03, or 08.
 operation_mode: full when source/workflow impact exists.
-board_state: formal-readonly for diagnosis, formal-write only after scoped repair GO.
+board_state: formal-readonly for diagnosis, formal-write only after authorization resolution binds the repair scope.
 dispatch wave: diagnosis first; repair starts only after root cause or repair scope is clear.
 previous-wave input: failing command, browser path, MCP read, or manual blocker evidence.
 next-wave start condition: root cause found, missing implementation identified, or blocker removed.
@@ -220,6 +220,31 @@ Invalid shortcut: treating a hook warning as permission to complete, or treating
 a formal-write board as authorization for git, memory commit, release, deploy,
 install, destructive file operations, package publication, or external-state
 mutation without a protected authorization record.
+
+## Scenario 9: Channel Life Probe Transition
+
+Use when a running specialist channel receives a status probe, resume, wait
+timeout, replacement, or late result.
+
+```text
+trigger: Director or captain sends a status probe to a running channel.
+workflow_route: current workflow route; no new authorization is granted.
+operation_mode: inherits the active station.
+board_state: keep the current formal-readonly or formal-write state.
+dispatch wave: pause-and-report, resume, wait timeout, replacement, late result.
+previous-wave input: active handoff packet and channel_invocation_status: running.
+next-wave start condition: captain resume, hard timeout evidence, replacement decision, or late-result receipt decision.
+handoff_packet_id: keep the original packet; replacement gets its own packet.
+channel_capability: unchanged unless replacement records a new capability.
+channel_invocation_status: status-probed, paused, resumed, timeout, replacement-running, returned-late.
+delivery artifact: pause report with read position, blocker state, safe-to-continue state, or late artifact receipt decision.
+route-back: timeout routes to blocked/unverified; replacement records cancellation and late-result policy.
+completion state: not complete while status_probe_resume_state: awaiting-resume, cancellation_state: cancellation-pending, or late_result_policy: late-result-pending.
+```
+
+Invalid shortcut: continuing after pause-and-report without resume, treating
+wait timeout as cancellation without evidence, or hiding a late result after a
+replacement channel starts.
 
 ## Anti-Examples
 

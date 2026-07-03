@@ -23,8 +23,9 @@ back into platform entries.
    evidence or source-impacting work.
 3. Use `formal-readonly` for evidence, research, impact mapping, validation
    planning, review evidence, memory/docs attribution, and broad reads.
-4. Use `formal-write` only after scoped GO for the named station, phase, file
-   set, or command.
+4. Use `formal-write` only after a scope-bound intent signal is resolved
+   through authorization resolution to the visible plan, file set, station,
+   phase, expiry, and required protected gate.
 5. Keep implementation, validation, review, memory/docs, and completion as
    separate delivery states. Missing states are blocked, unverified, or
    closed-with-director-risk, not complete.
@@ -72,7 +73,8 @@ back into platform entries.
 - Keep experiment writes out of production quality claims.
 - Mark skipped lint, tests, review, validation, and memory/docs as experiment
   dispositions.
-- Promote to `03` only with a new production plan and scoped GO.
+- Promote to `03` only with a new production plan and a scope-bound intent
+  signal resolved through authorization resolution.
 
 ## 03 Build
 
@@ -81,8 +83,8 @@ back into platform entries.
 - Produce a design-to-build contract before writes: requirement trace, review
   state when required, architecture boundary, change intent, real validation
   path, file sets, memory/docs impact, and drift audit rule.
-- After scoped GO, open implementation change delivery only for the named
-  scope.
+- After a scope-bound intent signal is resolved through authorization
+  resolution, open implementation change delivery only for the named scope.
 - Validation, review, memory/docs, and completion run after change delivery is
   returned, blocked, unverified, or risk-closed.
 
@@ -95,8 +97,9 @@ back into platform entries.
 - Plan regression evidence before writes, including real-path validation when
   behavior depends on runtime state, external systems, persistence, UI, or
   operator-visible output.
-- After scoped GO, repair only the named cause and route failed validation back
-  to diagnosis or a new fix station.
+- After a scope-bound intent signal is resolved through authorization
+  resolution, repair only the named cause and route failed validation back to
+  diagnosis or a new fix station.
 
 ## 05 Condense
 
@@ -174,7 +177,8 @@ back into platform entries.
   memory health, MCP profile surfaces, and documented counts.
 - Report exact findings and proposed routes. Do not apply fixes.
 - Any write proposal routes to build, fix, audit, skill-forge, or commit prep
-  with scoped GO.
+  and waits for a scope-bound intent signal resolved through authorization
+  resolution.
 
 ## 11 Handoff
 

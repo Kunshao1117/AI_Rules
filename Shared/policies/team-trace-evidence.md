@@ -65,6 +65,10 @@ payloads or policy tables, not as the Director-facing explanation.
 | `requested_execution_channel` | Requested channel before capability evaluation |
 | `channel_capability` | available, conditional, unavailable, or unverified |
 | `channel_invocation_status` | not-started, requested, running, returned, unavailable, blocked, or not-authorized |
+| `channel_run_id` | Unique identifier for one concrete execution-channel attempt, including native subagent, adapter, CLI, browser, MCP read, isolated workspace, text artifact, or change-application gate |
+| `channel_generation` | Original or replacement generation number for the same station and role instance |
+| `replaces_channel_run_id` | Prior channel run replaced by this run, or not-applicable |
+| `replacement_reason` | Why a replacement channel was opened, such as unresponsive, hard-timeout, role-boundary, stale context, blocked route, or not-applicable |
 | `execution_route` | Actual channel or delivery form; never a status value such as blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk |
 | `execution_channel` | Native subagent, project custom agent, tool/MCP, command evidence, browser evidence, external research, isolated change delivery, text change delivery, station-owned authorized change-application gate, or protected captain gate |
 | `tool_execution_envelope` | Structured carrier passed to a tool layer, or blocked/unverified reason when no envelope is available. |
@@ -90,8 +94,27 @@ payloads or policy tables, not as the Director-facing explanation.
 | `unread_scope` | Relevant scope not read by the specialist or captain |
 | `startup_started_at` | Local timestamp when the station channel was requested |
 | `first_response_deadline` | Expected first useful response or heartbeat deadline |
+| `first_response_at` | Local timestamp when the first useful response or heartbeat arrived, or not-returned |
 | `last_progress_at` | Latest progress evidence timestamp or blocked reason |
+| `heartbeat_state` | not-required, pending, received, overdue, unavailable, or not-applicable |
+| `status_probe_state` | not-sent, sent, paused-reported, responded-paused, awaiting-resume, responded-extension-requested, responded-blocked, unresponsive, unavailable, or not-applicable |
+| `status_probe_sent_at` | Local timestamp when the captain asked the channel for status after uncertainty or timeout, or not-applicable |
+| `status_probe_response_at` | Local timestamp when the channel responded to the status probe, or not-returned |
+| `status_probe_pause_report` | Specialist report after a status probe: current stop point, blocker state, and whether continuing is safe, or not-applicable |
+| `status_probe_resume_state` | not-required, awaiting-captain-resume, resume-sent, resumed, blocked, unavailable, or not-applicable |
+| `status_probe_resume_sent_at` | Local timestamp when the captain explicitly sent resume to the probed channel, or not-returned |
+| `soft_timeout_at` | Local timestamp for the monitoring timeout that triggers a status probe or standby decision |
+| `hard_timeout_at` | Local timestamp after which the station may close, cancel, replace, or remain non-complete with residual risk |
 | `timeout_action` | standby, replace, blocked, unverified, Director input, or not-applicable |
+| `late_result_policy` | receive-and-compare, accept-until-hard-timeout, ignore-after-cancelled, blocked, unverified, or not-applicable |
+| `late_result_window` | Time or condition under which a late artifact from the original channel must still be received |
+| `cancellation_state` | not-requested, requested, acknowledged, ignored, unavailable, or not-applicable |
+| `returned_at` | Local timestamp when a delivery artifact was returned, or not-returned |
+| `return_timing` | on-time, late, not-returned, or not-applicable |
+| `receipt_decision` | accepted, integrated, superseded-by-replacement, rejected-scope, duplicate, conflict-review, blocked, unverified, or not-applicable |
+| `receipt_decision_reason` | Why the returned or late artifact was accepted, superseded, rejected, marked duplicate, or routed to conflict review |
+| `conflict_with_artifact_id` | Artifact ID that conflicts with this returned artifact, or not-applicable |
+| `final_channel_closure_reason` | Completed delivery, superseded, cancelled, hard-timeout, role conflict, blocked, unverified, Director risk close, or not-applicable |
 | `standby_reason` | Why an assigned station is waiting for dispatch wave, prior input, channel warmup, or external unblock |
 | `closeout_lane` | light, standard, release-grade, or not-applicable |
 | `yellow_classification` | fix-this-cycle, residual-accepted, deferred-follow-up, local-customization, informational, or not-applicable |
@@ -136,6 +159,27 @@ payloads or policy tables, not as the Director-facing explanation.
   `delivery_artifact_type`, and `stop_condition`. Missing any of these keeps
   the station blocked or unverified and cannot support a complete Team-Native
   trace.
+- A wait timeout or missing first response is not failure evidence by itself.
+  Before opening a replacement due to slow or unknown progress, the trace must
+  record `status_probe_state`, `status_probe_sent_at`, and the response or the
+  reason status probing is unavailable. Missing probe evidence keeps the
+  original channel unverified, not failed.
+- A status probe pauses the probed specialist channel. A responding specialist
+  must record `status_probe_pause_report` with the current stop point, blocker
+  state, and safe-to-continue judgment, then wait for
+  `status_probe_resume_state: resume-sent` and `status_probe_resume_sent_at`
+  before resuming. Work performed after a probe response without explicit
+  captain resume evidence is not valid specialist delivery evidence.
+- Replacement does not cancel the replaced channel. Any replacement must record
+  `channel_generation`, `replaces_channel_run_id`, `replacement_reason`,
+  `late_result_policy`, and `cancellation_state`; otherwise the station cannot
+  support `complete`.
+- Late returned artifacts must be received into the trace with `returned_at`,
+  `return_timing`, `receipt_decision`, and `receipt_decision_reason`. Ignoring a
+  late artifact without cancellation or hard-timeout evidence blocks completion.
+- A completion claim must show every opened channel has a terminal
+  `final_channel_closure_reason`, accepted late-result disposition, or an
+  honest blocked/unverified/closed-with-director-risk residual state.
 - Any completion claim missing `station_mode`, `context_visibility`, or
   `handoff_ownership` for an applicable formal station is invalid.
 - `operation_mode: full`, governance-impact implementation, Doctor/Audit rule changes, routine audit rule readiness, and commit/release preparation require Team-Native trace evidence. Missing trace is a blocked Red audit finding, not a Yellow advisory.
@@ -237,6 +281,21 @@ These patterns must not pass:
   board, artifact receipt, conflict, or authorization handling with a direct
   exception and residual state.
 - Assigned stations left waiting without standby reason, first-response deadline, timeout action, or smallest unblock condition.
+- Treating a `wait_agent`, CLI, browser, MCP, adapter, or platform wait timeout
+  as specialist failure, cancellation, rejection, or absence without a status
+  probe, hard timeout, explicit cancellation, or returned failure artifact.
+- Continuing a probed specialist channel after it reports status without
+  recording the pause report and an explicit captain resume message for that
+  channel.
+- Replacing a slow channel without `channel_generation`,
+  `replaces_channel_run_id`, `replacement_reason`, `late_result_policy`, and
+  `cancellation_state`.
+- Ignoring a late returned artifact from an original channel instead of
+  recording a receipt decision, duplicate/superseded judgment, or conflict
+  review route.
+- Claiming completion while any opened channel remains running, unknown,
+  unresponsive, or late-result-pending without a terminal closure or visible
+  non-complete residual state.
 - Tool or subagent unavailability removing an applicable specialist station instead of marking it blocked, unverified, or closed-with-director-risk.
 - Team-Native / subagent team mode treated as opt-in instead of default-on for
   applicable coding, workflow, validation, review, memory, commit, release,

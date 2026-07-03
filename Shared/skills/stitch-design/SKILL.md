@@ -20,7 +20,8 @@ metadata:
 ## HITL Boundary
 
 - Read-only tools (`list`, `get`, `search`, `query`, status/health checks) may proceed silently.
-- State-mutating tools (`create`, `update`, `write`, `delete`, `deploy`, `push`, `apply`, `reset`, `resolve`) require Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- State-mutating, external-state, write, deploy, push, delete, reset, or resolve operations require a scope-bound intent signal from the Director; authorization resolution must bind it to the visible plan, command/tool, phase, expiry, and target external state before the matching protected gate can pass.
+- `[MCP HITL GATE]` is an additional execution gate for MCP calls; it does not replace authorization resolution or authorize a separate protected phase.
 - Discovery of tool schemas is not permission to execute mutating tools.
 
 ## Trigger Conditions (觸發條件)

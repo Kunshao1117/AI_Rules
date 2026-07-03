@@ -4,19 +4,19 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-02T14:00:59+08:00'
+last_updated: '2026-07-03T13:40:49+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T22:31:58+08:00'
+last_verified: '2026-07-03T12:33:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 10
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
@@ -46,7 +45,10 @@ metadata:
 - Claude memory operations use shared `.agents/memory/`; the deprecated `claude-edition-rules` card is historical only.
 - Claude command entries carry Director-readable output, neutral collaboration, freshness, memory, context, deep audit, migration, change intent, visual evidence, intent alignment, and review governance.
 - Claude README now frames captain work as communication, authorization resolution, board ownership, dispatch, supervision, delivery receipt, board/status synthesis, blocker or authorization handling, and reporting; it no longer presents captain work as primary implementation, self-review, or routine main-worktree authoring.
+- Claude README now consistently documents 62 shared/Claude operational skills across the public problem list, architecture diagram, skills section, comparison table, and project tree.
 - Claude core keeps platform startup and Director-facing Traditional Chinese mandates, while complete language-layer classification is delegated to the shared language governance policy.
+- Batch 4B completed Claude command metadata/route-summary authorization semantics for the core-tracked 02/03/04/07/11 command scope: legacy `GO required`, `scoped GO`, `after GO`, and `GO tied` wording converged to scope-bound intent signals, authorization resolution, and protected gates.
+- Batch 4B verified 17 source/deployed Claude command pairs in parity; Hooks remain paused and excluded from this batch; `git diff --check` passed with LF/CRLF warnings only.
 ## Active Constraints
 - Do not restore `.claude/agents/memory/` as a storage path.
 - Keep Claude command entrypoints concise; shared operational detail belongs in Shared skills.
@@ -54,6 +56,8 @@ metadata:
 - Split command child cards before adding another broad Claude command cycle.
 - Claude commands and skills must cite the shared language policy instead of treating core identity language text as the sole source.
 ## Cycle Events
+- 13: Recorded Claude README skill-count stale repair: public documentation now uses 62 skills across the problem list, architecture diagram, skills section, comparison table, and project tree; no compaction needed.
+- 12: Batch 4B recorded Claude README and command metadata/route-summary semantics plus 17 source/deployed command-pair parity for the 02/03/04/07/11 core command scope; Hooks stayed paused.
 - 11: Recorded Claude core/rules hardening so [SUDO] no longer clears memory, security, or MCP holds and captain work is delivery receipt/status synthesis rather than integration evidence.
 - 10: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 9: Recorded Claude core language-governance source split between platform mandates and shared classification policy.
@@ -85,6 +89,7 @@ metadata:
 - Claude 00 證據型對話會進 formal-readonly；純聊天才直接回覆。
 - Claude 指令流程已改為團隊協作優先，隊長負責接收交付、彙整狀態與受保護閘門，不取代隊員主要交付件。
 - Claude 記憶路徑固定使用 `.agents/memory/`；舊 Claude 規範卡是歷史索引。
+- Batch 4B 已完成本卡追蹤範圍內 Claude 指令 metadata/route summary 的授權語意修補，核對 17 組 source/deployed command pair 一致，且 Claude README 技能數量已統一為 62 套；Hooks 仍暫停、不列入本批。
 ## Tracked Files
 - Claude/install.ps1
 - Claude/README.md

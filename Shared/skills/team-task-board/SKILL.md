@@ -18,10 +18,8 @@ metadata:
 
 ## Purpose
 
-This skill owns the reusable Captain Team Board, station rows, board field list,
-delivery-form choices, direct-exception register, and board-facing closeout
-checklist. Other Team-Native skills reference this file instead of duplicating
-the board fields.
+This skill owns the reusable Captain Team Board fields, station rows,
+delivery-form choices, direct-exception register, and closeout checklist.
 
 Source of truth chain:
 
@@ -37,7 +35,7 @@ Source of truth chain:
 
 ## Team Object Model
 
-Record these objects separately before dispatch:
+Record these objects separately:
 
 | Object | Meaning | Boundary |
 |---|---|---|
@@ -48,13 +46,12 @@ Record these objects separately before dispatch:
 | `execution_channel` | Read-only evidence branch, browser evidence branch, CLI evidence branch, MCP read branch, platform adapter, isolated workspace, text artifact, station-owned authorized change-application gate, or captain-owned protected gate. | A channel is not a role source. |
 | `delivery_artifact` | Returned evidence, change delivery, memory/docs attribution, validation, review, or completion artifact. | Evidence for a task; not final captain acceptance. |
 
-Do not collapse these objects. Reduction is allowed only at substation task or
-member-count level while preserving station families, formal stations, role
-boundaries, artifact types, and completion evidence.
+Do not collapse them. Reduction is allowed only at substation task or member
+count while preserving station families, roles, artifact types, and evidence.
 
 ## Board Selection
 
-Choose operation mode before board shape.
+Choose operation mode first.
 
 | Board shape | Use when | Boundary |
 |---|---|---|
@@ -74,15 +71,10 @@ protected action.
 Every formal station records the board field set below. Keep this long list here
 and reference it from other skills.
 
-Director-facing display must not expose this as a raw English-only field list.
-When showing board fields to the Director, write the Traditional Chinese meaning
-first and keep the exact field in parentheses, for example
-`任務板狀態（board_state）`, `正式站點（formal_station）`, or
-`交付件狀態（delivery_artifact_status）`. These labels are display aids only;
-do not translate, rename, or derive new canonical machine fields from them.
-This applies to board headers, station tables, closeout reports, and handoff
-summaries. A raw canonical field list may remain in this source section, but the
-Director-facing summary must not be English-code-first.
+Director-facing display uses Traditional Chinese meaning first with the exact
+field in parentheses, such as `任務板狀態（board_state）`. Display labels must
+not translate, rename, or derive new machine fields; Director summaries must
+not be English-code-first.
 
 ```text
 board_id
@@ -138,6 +130,10 @@ handoff_ownership
 requested_execution_channel
 channel_capability
 channel_invocation_status
+channel_run_id
+channel_generation
+replaces_channel_run_id
+replacement_reason
 execution_route
 execution_channel
 evidence_owner
@@ -157,9 +153,26 @@ startup_started_at
 first_response_deadline
 first_response_at
 last_progress_at
+heartbeat_state
+status_probe_state
+status_probe_sent_at
+status_probe_response_at
+status_probe_resume_state
+status_probe_resume_sent_at
+soft_timeout_at
+hard_timeout_at
 timeout_action
+late_result_policy
+late_result_window
+cancellation_state
 standby_reason
 resume_condition
+returned_at
+return_timing
+receipt_decision
+receipt_decision_reason
+conflict_with_artifact_id
+final_channel_closure_reason
 delivery_artifact_type
 delivery_artifact_id
 delivery_artifact_status
@@ -265,6 +278,11 @@ Allowed tools:
 Forbidden actions:
 Output artifact format:
 Stop condition:
+Channel run ID:
+Channel generation:
+Status probe state:
+Status probe resume state:
+Late result policy:
 ```
 
 The station handoff packet may add read scope, startup monitoring, dependencies,
@@ -289,6 +307,10 @@ Implementation work uses one of these forms:
 | Captain substitute-authoring risk record | No qualified delivery route exists and the Director explicitly closes that risk. | Not change delivery and never full Team-Native completion. |
 
 Board-facing artifact formats:
+
+These artifact formats are for task-board and station delivery only. Do not
+paste them verbatim into Director-facing output; translate and integrate them
+through `Shared/policies/language-governance.md`.
 
 ```text
 Evidence delivery:
@@ -345,6 +367,12 @@ captain gate only when the platform cannot delegate the physical write or
 protected tool call; the board must record the platform limitation, exact scope,
 source artifact, direct exception, and residual state.
 
+Status probes separate monitoring from failure. Timeout opens probe/standby;
+the probed member pauses, reports position/blocker/safe-to-continue, and stays
+`awaiting-resume` until `status_probe_resume_state` plus
+`status_probe_resume_sent_at` are recorded. Replacement needs generation,
+reason, cancellation state, late-result policy, and receipt decisions.
+
 ## Direct Exception Register
 
 A direct exception is allowed only for protected captain-owned gates that cannot
@@ -369,6 +397,12 @@ Before the board supports any completion claim, check:
 - Implementation and review are not owned by the same role instance.
 - Captain receipt or status synthesis did not become substitute implementation,
   validation, review, or memory/docs attribution.
+- Board-facing artifact formats were not pasted verbatim into Director-facing
+  output; captain summaries follow `Shared/policies/language-governance.md`.
+- Opened channels have probe/resume, replacement, cancellation, late-result,
+  and receipt evidence when those lifecycle states apply.
+- No running, unknown, unresponsive, late-result-pending, or cancellation-pending
+  channel is hidden behind a `complete` claim.
 - Route fields contain routes/channels/forms, while blocked/unverified/standby
   and closed-with-director-risk remain state values.
 - Source/deployed pairs have sync direction and parity evidence when applicable.

@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-02T14:00:33+08:00'
+last_updated: '2026-07-03T13:40:29+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T22:31:58+08:00'
+last_verified: '2026-07-03T12:33:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 10
+cycle_event_count: 13
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core — Antigravity Memory
 
 ## Current Truth
@@ -43,6 +42,8 @@ metadata:
 - Full team completion requires implementation change delivery, memory/docs delivery, independent review delivery, validation delivery, and trace evidence; `closed-with-director-risk` is non-complete risk closure.
 - The generated shared subagent policy block now carries the hook payload evidence gap, route/state separation, and captain supervision wording shared with Claude and Codex core rules.
 - Antigravity workflow entries and deployed workflow copies now reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
+- The 2026-07-03 workflow authorization-semantics repair preserved verified source/deployed parity across 18/18 Antigravity workflow pairs.
+- Antigravity README now documents 62 on-demand operational skills across `Shared/skills` and deployed `.agents/skills` references.
 - Antigravity docs and workflows cover real execution evidence, deep audit, memory migration tools, change intent, visual evidence, intent alignment, and review governance.
 - Antigravity platform behavior must stay semantically aligned with Claude and Codex while keeping platform-specific routes in adapter files.
 - Antigravity README now frames captain work as communication, authorization resolution, board ownership, dispatch, supervision, bounded verify-read, protected adoption or merge, state decision, and reporting; it no longer presents captain work as primary implementation, self-review, or routine main-worktree authoring.
@@ -54,6 +55,8 @@ metadata:
 - Split workflow child cards before adding another broad Antigravity workflow cycle.
 - Antigravity workflows and skills must cite the shared language policy instead of treating core identity language text as the sole source.
 ## Cycle Events
+- 13: Recorded the 2026-07-03 Antigravity README skill-total correction from 61 to 62 across the problem statement, architecture diagram, skill-system summary, and project tree references.
+- 12: Recorded the 2026-07-03 Antigravity workflow authorization-semantics repair and README verification: scope-bound intent signals, protected gates, routine read-only owner routing, commit-scan owner routing, and 18/18 source/deployed workflow parity.
 - 11: Recorded Antigravity rule hardening so [SUDO] records override/risk-closure only, keeps memory/MCP/security gates active, and read-before-write forbids stacked patch layers.
 - 10: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 9: Recorded Antigravity core language-governance source split between platform mandates and shared classification policy.
@@ -82,6 +85,7 @@ metadata:
 ## 中文摘要
 - Antigravity 是 Gemini 平台適配層。
 - Antigravity 的 workflow 按鈕、IDE 確認、task_boundary 模式與 GO 現在都必須限縮到明示範圍。
+- 2026-07-03 工作流授權語意修補後，18/18 source/deployed workflow pair 已驗證一致。
 - Antigravity 00 證據型對話會進 formal-readonly；純聊天才直接回覆。
 - Antigravity 工作流已改為團隊協作優先，隊長保留受保護整合與裁決責任，不取代隊員主要交付件。
 - 本卡不追蹤根層系統卡或地圖卡來源；後續廣泛修改前應拆子卡。

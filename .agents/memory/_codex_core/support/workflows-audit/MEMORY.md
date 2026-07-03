@@ -4,7 +4,7 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 健檢主工作流與三階段子工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-01T22:32:48+08:00'
+last_updated: '2026-07-03T13:41:10+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -31,11 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core.support.workflows-audit — Codex Audit Workflow Memory
 
 ## Current Truth
 - Codex audit workflow entries and subflows now reference workflow-orchestration as the shared board/wave/artifact sequence contract.
-- Codex audit workflows now load `team-station-handoff-packet` and treat audit evidence, inventories, broad reads, validation planning, and review evidence as `formal-readonly` stations unless a separate GO-backed `formal-write` repair route exists.
+- Codex audit workflows now load `team-station-handoff-packet` and treat audit evidence, inventories, broad reads, validation planning, and review evidence as `formal-readonly` stations unless a separately authorized `formal-write` repair route with resolved scope exists.
 - Codex audit workflows now require formal team routing before broad evidence, coverage, validation planning, review evidence, or completion claims; missing evidence cannot be reported as green.
 - Codex audit workflows now inherit Programming Team Board entry requirements and are covered by Audit.psm1 checks for formal dispatch and wave-gated evidence semantics.
 - Codex audit workflows now inherit team-task-board references through the shared workflow entry contract and keep review/validation delivery artifacts role-bound.

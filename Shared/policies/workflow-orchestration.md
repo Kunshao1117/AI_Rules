@@ -51,6 +51,7 @@ Director instruction
 -> station handoff packet
 -> station mode, context visibility, and handoff ownership recorded
 -> channel capability and channel invocation status
+-> first response, status probe pause report, captain resume, timeout, replacement, cancellation, and late-result policy recorded when applicable
 -> returned delivery artifact or blocked/unverified/standby state
 -> captain receipt, board update, blocker/conflict/authorization handling
 -> validation, review, memory/docs, completion audit
@@ -140,6 +141,14 @@ Workflow entries must cite those sources instead of copying the full board or
 trace field list. Missing channel capability is not a reason to erase a station;
 it is recorded as station or evidence state, never as an execution route.
 
+生命探針轉場只記錄狀態，不授權後續動作。收到狀態探針時，工作中
+station 必須回報目前讀到的位置、是否卡住、是否可安全繼續，並進入
+`status_probe_resume_state: awaiting-resume`（等待恢復）；隊長明確恢復前
+不得繼續。若隊長改派或取消原 channel，記錄
+`cancellation_state: cancellation-pending`（取消待決），並為可能晚到的
+artifact 記錄 `late_result_policy: late-result-pending`（晚到結果待決），
+直到 receipt decision 決定接收、拒收、比對或封存。
+
 ## Workflow Family Presets
 
 Workflow entries keep their specific row in the workflow evidence matrix, then
@@ -197,6 +206,14 @@ closed-with-director-risk, not as complete:
 - No-write or read-only work is described as no-team, without-team, or skip-team.
 - Post-board all-at-once dispatch starts all stations at once.
 - Standby is treated as returned evidence, validation, review, or completion.
+- A wait timeout is treated as failure, cancellation, rejection, or absence
+  without status-probe evidence, hard-timeout evidence, explicit cancellation,
+  or returned failure artifact.
+- A probed channel continues work after status response without a pause report
+  and explicit captain resume message for the same channel.
+- A replacement channel silently cancels or hides the original channel instead
+  of recording replacement reason, cancellation state, late-result policy, and
+  receipt decision for any late artifact.
 - Closed-with-director-risk is not full team completion and must not be
   reported as `complete`.
 - Review or validation starts before the relevant change delivery artifact state.

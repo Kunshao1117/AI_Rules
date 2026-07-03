@@ -1,5 +1,5 @@
 ---
-description: "Use when: 已有 /04-1_fix_plan 核准 GO，要執行修復寫入、記憶更新與回歸測試。DO NOT use when: 尚未完成修復計畫或未取得 GO。"
+description: "Use when: 已有 /04-1_fix_plan 修復計畫，且範圍綁定的意圖訊號已完成授權解析，要執行修復寫入、記憶更新與回歸測試。DO NOT use when: 尚未完成修復計畫或尚未將意圖訊號解析到可見範圍。"
 required_skills: [memory-ops, security-sre, test-patterns, impact-test-strategy, ai-dev-quality-gate, trunk-ops, programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 memory_awareness: full
 metadata:
@@ -12,7 +12,7 @@ metadata:
   role: writer
   memory_awareness: full
   tool_scope: ["filesystem:write", "terminal:test", "mcp:cartridge-system"]
-  human_gate: "GO required before writes"
+  human_gate: "Scope-bound intent signal plus authorization resolution required before writes"
   automation_safe: false
 ---
 
@@ -45,11 +45,11 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `04`.
 - Procedure reference: `04 Fix` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Execute the named repair only after scoped GO, then revalidate and route failed checks back to diagnosis or a new fix station.
-- Confirm scoped GO, root cause or repair target, allowed files, and protected-action exclusions.
+- Route summary: Execute the named repair only after authorization resolution binds the visible repair scope, then revalidate and route failed checks back to diagnosis or a new fix station.
+- Confirm authorization resolution, root cause or repair target, allowed files, phase, expiry, and protected-action exclusions.
 - Apply or deliver only the named repair through a change delivery artifact.
 - Record distilled repair lessons and memory/docs impact without mutating memory unless separately authorized.
 - Run the planned regression route; failed validation returns to 07, 04, or 03 instead of being repaired inside validation.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

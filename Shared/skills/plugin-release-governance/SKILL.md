@@ -23,7 +23,11 @@ metadata:
 - Read-only inspection of package versions, changelog text, release workflows,
   and existing VSIX assets may proceed normally.
 - Version bumps, changelog writes, package builds, commits, tag pushes, release
-  updates, and artifact uploads require the active workflow's GO gate.
+  updates, and artifact uploads are separate protected release phases. Each
+  phase requires its own current, scope-bound protected authorization that names
+  the action, target files or artifact, command or tool, and expiry. A GO for
+  one phase does not authorize later commit, push, tag, release update, or
+  upload phases.
 - Do not silently install, download, or replace a user's extension. Update
   reminders may open the release page only after user confirmation.
 
@@ -49,7 +53,9 @@ Load this skill when a task touches any of these:
 4. Do not commit VSIX artifacts unless the repository explicitly tracks release
    binaries.
 5. Prefer tag-driven release: commit first, then push a matching `vX.Y.Z` tag so
-   CI can build and upload the release asset.
+   CI can build and upload the release asset; each commit, push, tag, release
+   update, and artifact upload still needs its own scope-bound protected
+   authorization.
 6. Release notes should come from the project changelog when available, not only
    from generated compare links.
 

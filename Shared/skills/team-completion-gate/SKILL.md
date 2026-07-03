@@ -35,6 +35,7 @@ Read these sources first:
 | Required trace evidence and invalid completion patterns | `Shared/policies/team-trace-evidence.md` |
 | Board field list and board-facing checklist | `Shared/skills/team-task-board/SKILL.md` |
 | Role separation checks | `Shared/skills/team-role-boundaries/SKILL.md` |
+| Director-facing language and captain synthesis gate | `Shared/policies/language-governance.md` |
 
 ## Inputs
 
@@ -60,6 +61,8 @@ Read these sources first:
 | Review | Independent review exists from a role that did not author the change; missing independent review blocks full completion. |
 | Role separation | Implementation, validation, review, memory/docs, and completion boundaries remain separate. |
 | Captain boundary | Captain work is routing, delivery receipt, board/status synthesis, blocker/conflict/authorization handling, protected gates, and Director-facing reporting; it is not implementation, validation, review, or memory/docs attribution evidence. |
+| Director-facing output governance | Final Director-facing output is Traditional Chinese meaning-first, internal delivery artifacts are synthesized rather than pasted, and technical tokens appear only as supporting evidence, paths, commands, schema fields, tool labels, state values, or exact evidence. English-led, raw-artifact-led, raw-field-led, or unsynthesized output blocks `complete`. |
+| Channel lifecycle | Every opened channel has first-response, status-probe, explicit pause/status response, captain resume message, timeout, replacement, cancellation, late-result, receipt-decision, and final-closure evidence when applicable. Wait timeouts are not treated as failure, probed members do not continue without captain resume, and replacements do not silently cancel original channels. |
 | Trace | Required board, station, handoff, role, channel, `station_mode`, `context_visibility`, `handoff_ownership`, delivery, and completion trace exists or missing parts are named as non-complete. |
 | Route/state separation | Routes/channels/forms are not mixed with blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk states. |
 | Sync | Source/deployed or generated/runtime pairs have sync direction and parity evidence when relevant. |
@@ -71,7 +74,7 @@ Use exactly one:
 
 | State | Meaning |
 |---|---|
-| `complete` | Scope, authorization, separated delivery artifacts, validation, independent review, station lifecycle fields, completion evidence, and required trace are present. |
+| `complete` | Scope, authorization, separated delivery artifacts, validation, independent review, Director-facing output governance, channel lifecycle closure including status-probe pause/resume evidence, station lifecycle fields, completion evidence, and required trace are present. |
 | `closed-with-director-risk` | The Director explicitly closes a named residual risk; this is not full completion. |
 | `blocked` | A required tool, authorization, delivery artifact, validation path, review, memory/docs disposition, or sync condition is unavailable. |
 | `unverified` | Evidence is absent or incomplete but the task can still be reported honestly without claiming completion. |
@@ -101,6 +104,9 @@ non-full reason and does not claim full completion.
 檔案:
 證據:
 風險:
+總監輸出門檻:
+內部交付件轉譯:
+通道生命週期:
 審查需求:
 是否阻塞:
 completion_state:

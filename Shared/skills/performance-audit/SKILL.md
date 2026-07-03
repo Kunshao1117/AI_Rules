@@ -17,8 +17,9 @@ metadata:
 
 ## HITL Boundary
 
-- Running read-only performance scans with existing local tools or `npx` may proceed silently.
-- Installing global tooling, writing report artifacts into the project, changing CI/deployment settings, or uploading performance data requires Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Running read-only performance scans with existing local tools may proceed silently. `npx` is read-only only when it does not install or mutate project files.
+- Installing tooling, writing report artifacts into the project, changing CI/deployment settings, or uploading performance data is a protected phase. A `GO` phrase is only a scope-bound Director intent signal; before mutation or upload, authorization resolution must bind the visible plan, station, file set, exact command/tool call, phase, expiry, and required protected gate.
+- `[MCP HITL GATE]` records justification and human-in-the-loop evidence. It does not replace authorization resolution, and install, report-artifact write, CI/deploy mutation, and external upload are separate protected phases.
 - Discovery of browser or MCP tool schemas is not permission to execute mutating tools.
 
 ## Trigger Conditions (觸發條件)
@@ -33,13 +34,13 @@ metadata:
 
 ```
 npx lighthouse
-# 若要 npm install -g lighthouse，需先通過 HITL Boundary
+# 若要 npm install -g lighthouse，需先通過獨立 install protected phase 的 authorization resolution
 ```
 
 ### Execution (執行)
 
 1. Start the development server（確保開發伺服器運行中）
-2. Run Lighthouse via terminal:
+2. Run Lighthouse via terminal. If `--output-path` writes inside the project, first resolve the report-artifact write phase:
    ```powershell
    npx lighthouse http://localhost:3000 --output=json --output-path=./lighthouse-report.json --chrome-flags="--headless"
    ```

@@ -20,7 +20,8 @@ Read `references/memory-quality-migration-blueprint.md` when designing or review
 ## HITL Boundary
 
 - Read-only memory topology inspection may proceed silently.
-- Creating, splitting, moving, or rewriting memory cards, and any `memory_commit` call, requires Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Creating, splitting, moving, or rewriting memory cards, and any `memory_commit` call, is a protected phase. A `GO` phrase is only a scope-bound Director intent signal; before mutation, authorization resolution must bind the visible plan, station, file set, exact command/tool call, phase, expiry, and required protected gate.
+- `[MCP HITL GATE]` records justification and human-in-the-loop evidence. It does not replace authorization resolution, and topology writes do not authorize the separate memory-commit phase.
 - Discovery of memory tool schemas is not permission to execute mutating memory tools.
 
 ## 1. Creating New Memory (建立新記憶)
@@ -40,7 +41,7 @@ New module identified by /02_blueprint or /08_audit?
 │   ⇒ If yes, add a `dependencies` field only for those upstream cards
 │   ⇒ Also add dependencies for direct technical decision coupling when upstream staleness requires review
 │   ⇒ Record the dependency reason in ## Current Truth or ## Active Constraints
-└── Step 4: Call memory_commit(moduleName, projectRoot)
+└── Step 4: In the separately authorized memory-commit phase, call memory_commit(moduleName, projectRoot)
     ⇒ Registers card in index + validates structure. When routed through Gateway, use `gateway__call_tool` with explicit `workspace` and `projectRoot`.
 ```
 
@@ -152,7 +153,7 @@ Source memory cards should record source ownership, Current Truth, Active Constr
 If a task discovers a reusable preference:
 
 1. Propose it as candidate project context.
-2. Wait for explicit `GO CONTEXT` before writing `.agents/context/**/CONTEXT.md`.
+2. Wait for authorization resolution of a scope-bound `GO CONTEXT` persistent-write phase before writing `.agents/context/**/CONTEXT.md`.
 3. Do not call `memory_commit`; project context does not participate in source memory staleness.
 
 ### Granularity Advisory (粒度建議)
@@ -179,7 +180,7 @@ Main cards MUST preserve only currently valid facts. Historical repair detail be
 - **Main card**: schema v2 active memory main file containing English `## Current Truth`, `## Active Constraints`, `## Cycle Events`, `## Archive Index`, `## Evidence Base`, `## Read Contract`, `## Conflicts and Supersession`, `## 中文摘要`, and `## Tracked Files`. The canonical filename is `MEMORY.md`; `SKILL.md` is legacy compatibility only.
 - **Child card**: narrower ownership card created when a main card exceeds hard limits, mixes concerns, or file-count warnings reveal real maintenance difficulty.
 - **Archive volume**: historical long-form record created during compaction or lazy upgrade. It is not part of normal startup loading.
-- **Root index card**: map/navigation only. If it grows past 8 KB, move details into child cards or archive volumes.
+- **Root index card**: map/navigation only. If it grows past 8 KB, move details into child cards or archive volumes. A root or parent index may keep `## Tracked Files` empty only when `## Relations` points to child cards that own the concrete files; do not re-add broad tracked ownership to a navigation-only parent after splitting.
 
 ## 3. Splitting Memory Cards (拆分操作步驟)
 
@@ -191,17 +192,18 @@ Need to split a memory card?
 │   ⇒ Analyze trackedFiles distribution, Current Truth, Cycle Events, and Archive Index
 ├── Step 2: Propose split strategy to Director
 │   ⇒ Explain which current truths stay in the parent, which move to child cards, and which history moves to archive volumes
-├── Step 3: Execute after Director approves
+├── Step 3: Execute after authorization resolution binds the approved split plan, file set, phase, expiry, and protected gates
 │   ├── Promote the original card to parent (retain shared current truth + scopePath)
 │   ├── Create child card subdirectories under parent (each with scopePath + specific decisions)
 │   ├── Add parent/child navigation under ## Relations
+│   ├── Move concrete ## Tracked Files ownership to the child cards when the parent becomes navigation-only
 │   ├── Move superseded or verbose history into archive volumes
 │   └── write_to_file to update the parent active memory main file (trim to current shared portions only)
 ├── Step 4: Plugin auto scan + refresh
 │   ⇒ Index and file watchers update automatically
-├── Step 5: Call memory_commit for EACH new child card
+├── Step 5: In the authorized memory-commit phase, call memory_commit for EACH new child card
 │   ⇒ Each child card must be individually committed
-└── Step 6: Call memory_commit for the parent card
+└── Step 6: In the authorized memory-commit phase, call memory_commit for the parent card
     ⇒ Parent card's trimmed content must also be committed
 ```
 
@@ -220,11 +222,11 @@ Compaction due?
 ├── Step 5: Move historical cycle detail into archive-001.md / archive-002.md / ...
 ├── Step 6: Update ## Archive Index with volume path and scope
 ├── Step 7: Reset ## Cycle Events for the next cycle
-└── Step 8: Call memory_commit after the active memory main file is updated
+└── Step 8: Call memory_commit after the active memory main file is updated and the memory-commit phase is authorized
     ⇒ If the split also changed main-file naming or index topology, verify with read-only memory audit or workspace brief after any authorized reindex
 ```
 
-Do not add event 31. If the card is too contradictory to summarize safely, stop at a compaction plan and ask for Director approval.
+Do not add event 31. If the card is too contradictory to summarize safely, stop at a compaction plan and ask for scoped Director intent; execution still requires authorization resolution.
 
 ## 4. Static Container Cards (靜態收容卡匣)
 
@@ -237,5 +239,5 @@ Do not add event 31. If the card is too contradictory to summarize safely, stop 
 ### Green Channel & Staleness Privilege (過期放寬特權)
 這類帶底線的收容卡匣若因鎖定檔或靜態資源更新而產生卡匣過期警報（Staleness > 0），AI 具有特權：
 - **跳過繁瑣檢視**：在確認該異動無視野安全風險後，可合法略過 `memory-ops` 原有之 6 步檢索流程。
-- **單步核銷**：直接發動 `memory_commit` 單步歸卡以快速核銷警報。
-- **風險邊界**：此特權只適用於已確認無視野安全風險的靜態收容卡匣歸卡階段；`memory_commit` 仍是會寫檔的高風險工具，不得在討論、規劃或唯讀盤點階段呼叫。
+- **單步核銷**：在已解析授權的 memory-commit phase 中發動 `memory_commit` 單步歸卡以快速核銷警報。
+- **風險邊界**：此特權只適用於已確認無視野安全風險且已綁定模組、命令、phase、expiry 與 protected gate 的靜態收容卡匣歸卡階段；`memory_commit` 仍是會寫檔的高風險工具，不得在討論、規劃或唯讀盤點階段呼叫。

@@ -4,7 +4,7 @@ scopePath: Extensions/vscode-ai-rules-manager/
 description: >-
   專案記憶：VS Code 管理器外掛封裝、資源、發布與後端入口。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-01T09:39:00+08:00'
+last_updated: '2026-07-03T13:41:56+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 10
+cycle_event_count: 11
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,7 +36,7 @@ metadata:
 ## Current Truth
 - AI Rules Manager v0.1.19 packages Doctor token stability, project skill discovery repair, shared skill margin, and updated release documentation.
 - The manager backend reports and applies shared governance reference deployment during project rule synchronization.
-- The manager backend Doctor description now includes Codex project-level hook governance and Captain-Lite reading model coverage.
+- The manager backend Doctor description now reports Codex repo-managed hooks removal or rebuild-pending state and Captain-Lite reading model coverage.
 - The manager backend Doctor now exits nonzero when governance audit returns Red findings or a failed result, so Audit/Doctor cannot silently pass failed Team-Native hard gates.
 - Manager entrypoint changes in this cycle are governance fail-closed behavior only; they do not imply a VSIX version bump, tag, release, install, or publication without a separate Director gate.
 - The manager backend forwards optional Team-Native trace requirements into governance Doctor.
@@ -50,6 +50,7 @@ metadata:
 - Do not silently publish or install VSIX packages.
 
 ## Cycle Events
+- 11: Recorded manager Doctor wording after repo-managed Codex Hooks removal: Doctor reports hook removal or rebuild-pending state, without authorizing VSIX version bump, tag, release, install, or publication.
 - 10: Recorded manager-entrypoint fail-closed alignment with root Doctor and Deploy Audit; no VSIX version bump, tag, release, install, or publication was authorized by this memory update.
 - 09: Hardened the manager backend Doctor path to fail closed on failed governance audit results, aligning VS Code manager entrypoint behavior with root Doctor and Deploy Audit.
 - 08: Updated Doctor description to include Codex project-level hook governance and Captain-Lite read checks.
@@ -78,6 +79,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 VS Code 外掛封裝、資源、發布流程與管理器入口。
+- 管理器 Doctor 文案已改為回報 Codex hooks 移除或待重建狀態；這不是發布新版 VSIX 的授權。
 - 版本與 VSIX 發布仍需明確治理。
 
 ## Tracked Files

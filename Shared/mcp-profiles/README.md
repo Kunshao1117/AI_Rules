@@ -44,7 +44,7 @@ args = ["-y", "multi-mcp-gateway"]
 
 - Read-only automation may inspect MCP resources, prompts, schemas, and health/status tools.
 - Discovery of MCP resources, prompts, or tool schemas is not permission to execute mutating tools.
-- Any MCP tool that writes files, changes cloud resources, opens PRs, commits code, or mutates memory requires `GO`.
+- Any MCP tool that writes files, changes cloud resources, opens PRs, commits code, or mutates memory requires authorization resolution bound to the visible plan, station, file set, command, phase, or expiry, plus the matching protected gate.
 - cartridge-system calls must include `projectRoot` in downstream parameters.
 - Gateway calls must include explicit `workspace`.
 
@@ -54,6 +54,6 @@ For project memory work, follow the deployed contract at `.agents/skills/memory-
 
 - Project-local file migration starts from `.agents/tools/Memory-Migration.ps1`; downstream projects should not look for the framework source manager unless they are the AI_Rules source repository.
 - Read-only MCP evidence includes workspace brief, memory list/read/status/dependency/audit/graph, commit preflight, and project context inspection tools.
-- Mutating MCP operations such as memory commit or memory reindex require Director GO and an MCP HITL gate.
+- Mutating MCP operations such as memory commit or memory reindex require authorization resolution for the scope-bound Director intent signal, the matching memory protected gate, and an MCP HITL gate. MCP HITL is an additional execution gate, not a substitute for authorization resolution.
 - If cartridge-system is accessed through Multi-MCP Gateway, call the downstream tool through the real gateway execution entrypoint with explicit `workspace`, and include explicit `projectRoot` in cartridge-system arguments.
 - Missing MCP support is an unverified or blocked evidence path, not permission to hand-edit memory indexes or batch-rename cards.

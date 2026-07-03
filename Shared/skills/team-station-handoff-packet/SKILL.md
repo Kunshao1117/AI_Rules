@@ -96,6 +96,9 @@ forbidden_actions:
 requested_execution_channel:
 channel_capability:
 channel_invocation_status:
+channel_run_id:
+channel_generation:
+replaces_channel_run_id:
 execution_channel:
 delivery_artifact_type:
 integrable_scope:
@@ -105,7 +108,18 @@ memory_docs_dependency:
 startup_started_at:
 first_response_deadline:
 last_progress_at:
+heartbeat_state:
+status_probe_state:
+status_probe_sent_at:
+status_probe_response_at:
+status_probe_resume_state:
+status_probe_resume_sent_at:
+soft_timeout_at:
+hard_timeout_at:
 timeout_action:
+late_result_policy:
+late_result_window:
+cancellation_state:
 standby_reason:
 resume_condition:
 output_artifact_format:
@@ -184,6 +198,24 @@ needs longer, record the reason in `standby_reason`.
 Valid timeout actions are standby, replace, blocked, unverified, or ask the
 Director.
 
+The first response deadline and soft timeout are monitoring thresholds, not
+failure declarations. When a channel is slow or unknown, send a status probe if
+the platform permits it. A member that receives a status probe must immediately
+pause its current action, report the exact current position, whether it is
+blocked, and whether continuing is safe, then wait for an explicit captain
+resume message. If the channel responds, keep the same role instance active and
+update progress, extension, blocked state, or resume decision from that
+response. The member may continue only after the captain records the response
+and sends the explicit resume message. If the channel does not respond, record
+it as unresponsive, blocked, or unverified and only then decide whether to open
+a replacement.
+
+Replacement opens a new channel generation. It does not cancel the original
+channel unless cancellation is explicitly requested and acknowledged. Each
+packet must name the late-result policy and late-result window so a late
+artifact can still be received, compared with replacement output, and assigned
+a receipt decision.
+
 ## Artifact Acceptance
 
 Before receiving a returned artifact, check the packet, the returned artifact,
@@ -204,6 +236,11 @@ specialist_deep_read_evidence:
 Then use the matching delivery format from `team-task-board` or the dedicated
 delivery artifact skill.
 
+Late returned artifacts are still artifacts. Accepting, integrating,
+superseding, rejecting, marking duplicate, or routing them to conflict review
+requires a recorded receipt decision and reason. Do not silently drop a late
+artifact merely because a replacement channel already returned.
+
 ## Gotchas
 
 - A station is a work container; a member assignment is one role instance bound
@@ -212,6 +249,12 @@ delivery artifact skill.
   or text artifact is an execution channel, not a specialist role.
 - Channel unavailability never relaxes role boundaries or authorization scope.
 - Standby means assigned but not evidence-complete.
+- A wait timeout means status is unknown; it is not a failure, cancellation, or
+  rejection without probe, hard-timeout, or explicit returned evidence.
+- A status probe is a pause point. A responding member must not continue work
+  until the captain sends an explicit resume message for that same role
+  instance and channel.
+- Replacement is not cancellation; late returns still need a receipt decision.
 - A packet without loaded skill references is not a formal handoff.
 - Captain coordination read is not implementation, validation, review,
   memory/docs attribution, or completion evidence.

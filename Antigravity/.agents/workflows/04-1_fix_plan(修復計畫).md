@@ -12,7 +12,7 @@ metadata:
   role: planner
   memory_awareness: full
   tool_scope: ["filesystem:read", "terminal:read"]
-  human_gate: "GO required before writes"
+  human_gate: "Scope-bound intent signal plus authorization resolution required before writes"
   automation_safe: false
 ---
 
@@ -45,11 +45,11 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `04`.
 - Procedure reference: `04 Fix` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Plan from symptom, root cause, impact, and regression route; stop for GO before repair.
+- Route summary: Plan from symptom, root cause, impact, and regression route; stop at a scoped repair plan and do not open write repair until authorization resolution binds the visible scope.
 - Start with symptom, reproduction or observed failure, affected scope, and candidate root causes.
 - Classify the change as emergency temporary fix, root-cause repair, local refinement, or structural refactor.
 - Plan regression and real-path validation before writes when behavior depends on runtime, persistence, UI, external systems, or operator-visible output.
-- Stop with a scoped repair plan and do not self-authorize the execute phase.
+- Stop with a scoped repair plan; do not open write repair until authorization resolution binds the visible repair plan, station, file set, phase, expiry, and required protected gate.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

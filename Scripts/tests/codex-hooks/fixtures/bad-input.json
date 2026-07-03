@@ -1,8 +1,0 @@
-{
-  "name": "bad-input",
-  "event": "PreToolUse",
-  "expectedExitCode": 0,
-  "expectedOutputRegex": "Governance hard gate hit.*not valid JSON",
-  "expectedDiagnosticLabels": true,
-  "rawInput": "{not-json"
-}

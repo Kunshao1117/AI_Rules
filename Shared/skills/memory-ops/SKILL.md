@@ -17,42 +17,43 @@ metadata:
 # Memory Skill Operations (記憶技能操作指引)
 
 Read `references/memory-template.md` when creating/upgrading a card schema. Read `references/memory-mcp-tool-contract.md` when choosing local tools or cartridge-system MCP. Read `../memory-arch/references/memory-quality-migration-blueprint.md` for full-card standardization.
-Read `.agents/shared/policies/language-governance.md` for memory body, trigger, description, handoff, and `## 中文摘要` language classification; this skill only adds memory-specific schema rules.
+Read `.agents/shared/policies/language-governance.md` for memory body, triggers, descriptions, handoffs, and `## 中文摘要`; this skill only adds memory schema rules.
 
 ## HITL Boundary
 
 - Read-only memory listing, dependency checks, staleness inspection, and schema discovery may proceed silently.
-- Writing memory card files, replacing card content, repairing indexes, or calling `memory_commit` requires Director `GO` and an `[MCP HITL GATE]` justification block before execution.
+- Memory card writes/replacements, index repair, and `memory_commit` are protected phases. `GO` is only scope-bound Director intent; mutation requires authorization resolution bound to the visible plan, station, file set, exact command/tool call, phase, expiry, and protected gate.
+- `[MCP HITL GATE]` records justification and HITL evidence; it does not replace authorization resolution or let source-write approval authorize memory commit.
 - Discovery of memory tool schemas is not permission to execute mutating memory tools.
 
 ## 1. Core Mandate (支配規則)
 
-Project context is not source memory. Files under `.agents/context/**/CONTEXT.md` are governed by `project-context-protocol`, require `GO CONTEXT` for persistent writes, and must never be synchronized through `memory_commit`.
+Project context is not source memory. Files under `.agents/context/**/CONTEXT.md` follow `project-context-protocol`, require authorization resolution for a scope-bound `GO CONTEXT` persistent-write phase, and must never sync through `memory_commit`.
 
-Active memory cards are source memory, not executable skills. The canonical target filename for active memory card main files is `MEMORY.md`; `SKILL.md` under `.agents/memory/` is a legacy compatibility name and migration source only. Until cartridge-system support for `MEMORY.md` is confirmed and the project migration is explicitly applied, existing project memory cards may remain on `SKILL.md`. Do not hand-rename active memory cards; use the governed memory main-file migration tool and keep archive volumes (`archive-*.md`) unchanged.
+Active memory cards are source memory, not executable skills. The canonical active main filename is `MEMORY.md`; `.agents/memory/**/SKILL.md` is legacy compatibility/migration source only. Until cartridge-system `MEMORY.md` support is confirmed and migration is applied, existing cards may remain on `SKILL.md`. Do not hand-rename cards; use the governed migration tool and leave archive volumes (`archive-*.md`) unchanged.
 
 ### Memory Admission Rules
 
-Write permanent source memory only for current source ownership, verified source facts, active constraints, stable validation routes, and concise cycle events. Keep task notes, screenshots, raw test output, audit logs, failed attempts, unverified guesses, and one-off observations in reports or `.agents/logs/`.
+Write permanent source memory only for source ownership, verified facts, active constraints, stable validation routes, and concise cycle events. Keep task notes, screenshots, raw outputs, audit logs, failed attempts, guesses, and one-off observations in reports or `.agents/logs/`.
 
-Long-lived preferences, design DNA, acceptance defaults, and product direction belong in project context. If a fact is partially verified, mark that state and record missing evidence instead of presenting it as current truth.
+Long-lived preferences, design DNA, acceptance defaults, and product direction belong in project context. Mark partially verified facts and missing evidence instead of presenting them as truth.
 
 ### Quality Standard
 
-New and standardized active cards should carry content quality metadata: quality version, memory kind, verification status, last verified timestamp, and valid scope. Active cards also include `## Evidence Base`, `## Read Contract`, and `## Conflicts and Supersession`.
+New and standardized active cards should carry quality metadata: quality version, memory kind, verification status, last verified timestamp, and valid scope. Active cards also include `## Evidence Base`, `## Read Contract`, and `## Conflicts and Supersession`.
 
 If old content conflicts, stop at a conflict report or mark the card conflict/pending review. Do not silently choose the convenient fact.
 
-Gateway calls MUST use the real downstream execution entrypoint. Discovery only reveals names/schemas; real cartridge-system execution needs explicit `workspace` and downstream `projectRoot`. Inspect schema before guessing arguments.
+Gateway calls MUST use the real downstream execution entrypoint; discovery reveals only names/schemas. Cartridge-system execution needs explicit `workspace` and downstream `projectRoot`; inspect schema before guessing arguments.
 
 All memory card **writes and updates** MUST follow the **two-step flow**:
 
 1. Use native tools to write the full active memory main file (`SKILL.md` during legacy compatibility; `MEMORY.md` after migration).
-2. Call `cartridge-system__memory_commit` to sync metadata, staleness, and index.
+2. In the separately authorized memory-commit phase, call `cartridge-system__memory_commit` to sync metadata, staleness, and index.
 
-**Commit Obligation (歸卡義務)**: Skipping step 2 is FORBIDDEN. A card written without `memory_commit` is incomplete and fails the Completion Gate.
+**Commit Obligation (歸卡義務)**: Skipping step 2 after an authorized memory card write is FORBIDDEN. A card written without `memory_commit` is incomplete and fails the Completion Gate.
 
-**High-Risk Tool Boundary**: `cartridge-system__memory_commit` writes files and index metadata. It is FORBIDDEN during discussion, planning, testing, or read-only audit. Call it only after the active main file is updated and the workflow is in the memory commit phase.
+**High-Risk Tool Boundary**: `cartridge-system__memory_commit` writes files and index metadata. It is FORBIDDEN during discussion, planning, testing, or read-only audit. Call it only after the active main file is updated and authorization resolution binds the memory-commit phase, exact module, project root, command/tool call, expiry, and protected gate.
 
 > **Legacy**: `memory_update(mode: replace)` is still available as a fallback but NOT recommended.
 > **Deprecated**: `memory_update(mode: patch)` and `memory_update(mode: append)` are deprecated due to high error rates in Markdown merging.
@@ -91,7 +92,7 @@ When a memory cartridge has staleness > 0, you **MUST NOT** simply call `memory_
 2. Call `memory_read(moduleName)` and compare memory against current source.
 3. Update current truth, constraints, tracked files, archive pointers, and one cycle event as needed.
 4. If the card is legacy or over limits, lazy-upgrade or compact before writing.
-5. Write the full active memory main file, then call `memory_commit(moduleName, projectRoot)`.
+5. Write the full active memory main file, then call `memory_commit(moduleName, projectRoot)` only in the authorized memory-commit phase.
 
 > **FORBIDDEN**: Calling `memory_commit` without Steps 1–5. Staleness reset is a side effect, not the goal.
 
@@ -99,12 +100,14 @@ When a memory cartridge has staleness > 0, you **MUST NOT** simply call `memory_
 
 ## 4. Updating Memory (更新記憶)
 
-After modifying source files tracked by a memory skill, you **MUST** update the corresponding memory card.
+After modifying tracked source files, you **MUST** route the corresponding memory-card update through protected memory-write and memory-commit phases.
 
 > **Path Baseline Rule (v4.1)**: All paths listed under `## Tracked Files` MUST be relative to the
 > **project root directory**, NOT to any subdirectory.
 > Correct: `src/index.ts` | Wrong: `swarm-mcp/src/index.ts` (subdirectory-relative)
 > `memory_commit` will report `[PATH_ABSOLUTE]` or `[PATH_TRAVERSAL]` violations in the `warnings` field.
+
+When parent and child card `scopePath` prefixes overlap, assign file ownership to the most specific child card that explicitly owns the file. A navigation-only parent/index card may keep `## Tracked Files` empty only when `## Relations` points to child cards that carry the concrete tracked files; otherwise an empty tracked-file list is a metadata gap, not a valid ownership state.
 
 ### Mandatory Flow (強制流程 — 不可略過)
 
@@ -122,7 +125,7 @@ Before adding any frontmatter `dependencies` entry, ask:
 - Parent/child memory card relationships default to `## Relations`; do not add them to `dependencies` unless staleness propagation is truly required.
 - Do not add `dependencies` merely to make context look more complete.
 
-Flow: check granularity/compaction, call `memory_read(moduleName)`, write the full active main file, then call `memory_commit(moduleName, projectRoot)`. Under the language governance policy, keep body facts short and stable; Chinese-facing text belongs in description, triggers, and `## 中文摘要`.
+Flow: check granularity/compaction, call `memory_read(moduleName)`, write the full active main file, then call `memory_commit(moduleName, projectRoot)` only in a separately authorized memory-commit phase. Keep body facts short/stable under language governance; Chinese-facing text belongs in description, triggers, and `## 中文摘要`.
 
 ### Legacy Fallback (舊版備用)
 
@@ -150,7 +153,8 @@ When a workflow creates new source files, attribute them to memory cards BEFORE 
 New source file created?
 ├── Step 1: Call memory_list to get all cards with scopePath
 ├── Step 2: Match new file path against scopePath prefixes
-│   ├── Match found → Add file to that card's ## Tracked Files + memory_commit
+│   ├── Multiple matches → choose the most specific child owner; do not add broad ownership back to navigation-only parents
+│   ├── Match found → Add file to that card's ## Tracked Files + authorized memory_commit phase
 │   └── No match → Step 3
 └── Step 3: HALT and propose to Director:
     ├── Option A: Expand nearest card's scopePath to cover the new file
@@ -175,7 +179,7 @@ When modifying, fixing, or repairing staleness on a legacy card, organically upg
 
 ### Controlled Standardization Migration
 
-Use controlled standardization only when the Director authorizes a full active-card rebuild. Inventory the card, archive old long-form content when needed, extract valid facts, rebuild with quality metadata and sections, then call `memory_commit`. Archive volumes are history and must not be bulk-rewritten into the active template.
+Use controlled standardization only when authorization resolution binds scope-bound Director intent to a full active-card rebuild plan, file set, phase, expiry, and protected gates. Inventory the card, archive old long-form content when needed, extract valid facts, rebuild with quality metadata/sections, then call `memory_commit` only in the separately authorized memory-commit phase. Archive volumes are history; do not bulk-rewrite them into the active template.
 
 <!-- NOTE: Creation, Tree Topology, and Splitting operations have been migrated to the memory-arch skill. -->
 
@@ -190,14 +194,14 @@ If this heading contains extra characters, the system reports `[HEADING_TYPO]` a
 
 ## 4.8 Main File Naming Migration
 
-- Use the deployed project-local memory migration tool to inventory or rename active memory main files. In downstream projects, the first expected entrypoint is `.agents/tools/Memory-Migration.ps1`; do not assume the target project contains a local `Scripts/` directory.
-- Run dry-run first through the project-local tool: `powershell -NoProfile -ExecutionPolicy Bypass -File .\.agents\tools\Memory-Migration.ps1`. If missing, treat it as a framework sync gap and ask the Director to resync through the manager or configured source repository. Do not hand-rename active cards.
-- Apply mode requires explicit Director authorization and both `-Apply` and `-ConfirmApply`: `powershell -NoProfile -ExecutionPolicy Bypass -File .\.agents\tools\Memory-Migration.ps1 -Apply -ConfirmApply`.
-- If you are inside the AI_Rules framework source repository, the source-manager equivalent remains `.\Scripts\AI-RulesManager.ps1 -Action MemoryMigration -Target .`; this is a source repository maintenance path, not the downstream project default.
-- Dry-run mode is safe and may be used to report legacy `SKILL.md` cards, existing `MEMORY.md` cards, conflicts, archive volumes, and legacy path references.
-- Apply mode must stop if a card directory contains both `SKILL.md` and `MEMORY.md`; do not merge or guess the winner automatically.
-- After an authorized apply run, verify engine state through MCP when available: run memory reindex, then confirm with read-only workspace or memory audit evidence. If the engine is missing or cannot verify `MEMORY.md`, report the migration as partially verified.
-- Current project memory cards must not be renamed as a side effect of updating this skill.
+- Use project-local `.agents/tools/Memory-Migration.ps1` to inventory/rename active memory main files. Downstream uses that entrypoint first; do not assume local `Scripts/`.
+- Dry-run first: `powershell -NoProfile -ExecutionPolicy Bypass -File .\.agents\tools\Memory-Migration.ps1`. If missing, report a framework sync gap and request manager/source resync; do not hand-rename cards.
+- Apply requires authorization resolution bound to Director intent, command, target root, phase, expiry, and protected gate, plus `-Apply` and `-ConfirmApply`: `powershell -NoProfile -ExecutionPolicy Bypass -File .\.agents\tools\Memory-Migration.ps1 -Apply -ConfirmApply`.
+- In the AI_Rules source repo, the source-manager path is `Scripts/AI-RulesManager.ps1 -Action MemoryMigration -Target .`; this is maintenance, not downstream default.
+- Dry-run may report legacy `SKILL.md`, existing `MEMORY.md`, conflicts, archive volumes, and legacy path references.
+- Apply must stop if a card directory contains both `SKILL.md` and `MEMORY.md`; do not merge or guess.
+- After authorized apply, verify engine state through MCP when available: run `memory_reindex` only if separately authorized, then confirm by read-only workspace/memory audit evidence. If unavailable or unable to verify `MEMORY.md`, report partial verification; use `memory_commit` only when the memory workflow separately requires it.
+- Updating this skill must not rename current project memory cards.
 
 ## 5. System Memory (系統記憶)
 

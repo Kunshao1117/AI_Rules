@@ -48,7 +48,7 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Route summary: Declare sandbox scope, discard or promotion condition, allowed shortcuts, and no production completion claim.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a scope-bound Director intent signal passes authorization resolution and binds the explicit phase, file set, command, or required protected gate.
 
 ## Completion Boundary
 

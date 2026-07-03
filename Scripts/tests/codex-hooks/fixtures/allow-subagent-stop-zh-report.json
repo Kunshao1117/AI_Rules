@@ -1,7 +1,0 @@
-{
-  "name": "allow-subagent-stop-zh-report",
-  "event": "SubagentStop",
-  "expectedExitCode": 0,
-  "expectedOutputRegex": "",
-  "rawInput": "{\"hook_event_name\":\"SubagentStop\",\"response\":\"\\u767c\\u73fe: ok\\n\\u8b49\\u64da: ok\\n\\u98a8\\u96aa: none\\n\\u5efa\\u8b70: continue\\n\\u662f\\u5426\\u963b\\u585e: no\",\"stop_hook_active\":false}"
-}

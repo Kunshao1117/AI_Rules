@@ -11,7 +11,7 @@ metadata:
   role: writer
   memory_awareness: full
   tool_scope: ["filesystem:read", "filesystem:write", "mcp:cartridge-system"]
-  human_gate: "Director invocation required"
+  human_gate: "Scope-bound intent signal plus authorization resolution required before memory/context writes"
   automation_safe: false
 ---
 
@@ -51,4 +51,4 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Write memory or context only under the matching protected authorization and follow the memory/context procedure.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

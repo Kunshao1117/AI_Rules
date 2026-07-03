@@ -13,7 +13,7 @@ metadata:
   role: writer
   memory_awareness: full
   tool_scope: ["filesystem:write", "mcp:cartridge-system"]
-  human_gate: "GO required before writes"
+  human_gate: "Scope-bound intent signal plus authorization resolution required before each write or protected phase"
   automation_safe: false
 ---
 
@@ -49,8 +49,9 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Route summary: Place skill content in the right governance layer, keep trigger language in frontmatter, and validate source/deployed sync.
 - Decide whether content belongs in core, shared policy, workflow entry, operational skill, reference file, memory, or project context.
 - Keep trigger language in frontmatter description and move long examples, templates, and procedures into references.
-- Stop for Director review before source writes when skill design or governance placement is still open.
+- Stop for Director review before source writes when skill design, governance placement, file scope, phase, expiry, or required protected gate is still open.
 - Validate naming, description specificity, boundary language, metadata, source/deployed sync, and memory/docs impact.
-- Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
+- Treat workflow names, slash commands, skill triggers, workflow buttons, Director `GO` text, and natural-language requests as routing or intent signals only.
+- Require authorization resolution before source write, memory mutation, project-context mutation, git, release, deploy, install, credential, or external-state phases; bind the visible plan, station, file set, command, phase, expiry, and matching protected gate.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

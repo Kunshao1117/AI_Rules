@@ -14,7 +14,7 @@ metadata:
   role: sre
   memory_awareness: read
   tool_scope: ["filesystem:write", "git:write", "terminal:read"]
-  human_gate: "GO required before changelog write, commit, or push"
+  human_gate: "scope-bound intent signal plus authorization resolution required before each changelog/source write, git commit, or protected phase"
   automation_safe: false
 ---
 
@@ -47,10 +47,13 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `09`.
 - Procedure reference: `09 Commit` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Scan readiness and blockers; commit, push, tag, release, deployment, and memory commit remain separate protected phases.
-- Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
+- Route summary: Scan readiness and blockers; changelog/source write, memory mutation, git commit, push, tag, release, deployment, and install remain separate protected phases.
+- Treat workflow names, slash commands, skill triggers, workflow buttons, natural-language requests, and Director `GO` as routing or intent signals only.
+- Director `GO` becomes usable authority only after authorization resolution binds the current visible plan, station, file set, command, phase, expiry, and any required protected gate.
+- Changelog/source write requires its own scope-bound intent signal plus authorization resolution for the active station, file set, command, phase, expiry, and protected gate.
+- Git commit requires a separate scope-bound intent signal plus authorization resolution for the exact staged file set, commit command, git phase, expiry, and protected gate.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after authorization resolution binds the active station, file set, command, phase, expiry, and required gate.
 
 ## Completion Boundary
 

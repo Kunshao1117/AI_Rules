@@ -65,6 +65,8 @@ metadata:
 - `Relations`: AI navigation context. Use for parent cards, child cards, related modules, recommended reading, historical source cards, and split-out modules.
 - `Applicable Skills`: Operational guidance only. Skills listed here are not memory dependencies.
 
+Navigation-only parent/index cards may leave `## Tracked Files` empty only when `## Read Contract` states the card is for navigation and `## Relations` lists child cards that own the concrete tracked files. Do not invent a new `memory_kind` for this state until local and cartridge-system audit schemas explicitly support it; use clear body evidence instead.
+
 Do **not** put these into `dependencies`:
 
 - Parent cards or child cards by default（父卡 / 子卡預設不是 dependencies）

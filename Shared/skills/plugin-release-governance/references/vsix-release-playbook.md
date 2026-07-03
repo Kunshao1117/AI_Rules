@@ -35,13 +35,22 @@ installable release.
 
 ## Release Sync
 
-Recommended release path:
+Recommended release path, with authorization resolved separately for each
+protected phase. Do not batch these into one active-workflow GO; before each
+protected action, bind the exact action, files or artifact, command or tool, and
+expiry.
 
-1. Stage only the approved source, docs, workflow, and memory files.
-2. Commit with a Traditional Chinese conventional commit message.
-3. Push the branch.
-4. Create and push a matching `vX.Y.Z` tag.
-5. Confirm GitHub Actions created or updated the Release.
+1. Stage only the approved source, docs, workflow, and memory files after a
+   staging authorization names the exact paths.
+2. Commit with a Traditional Chinese conventional commit message only after a
+   commit authorization names the message and staged scope.
+3. Push the branch only after a branch-push authorization names the remote and
+   branch.
+4. Create and push a matching `vX.Y.Z` tag only after tag authorization names
+   the exact tag and target commit.
+5. Confirm GitHub Actions created or updated the Release. Any manual Release
+   update or asset upload requires its own Release or artifact-upload
+   authorization.
 6. Confirm the release run does not show GitHub Actions Node 20 deprecation
    warnings.
 7. Confirm the release asset name, version, and notes match the changelog.

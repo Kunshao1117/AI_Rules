@@ -14,7 +14,7 @@ metadata:
   role: writer
   memory_awareness: full
   tool_scope: ["filesystem:write", "terminal:test", "mcp:cartridge-system"]
-  human_gate: "GO required before writes"
+  human_gate: "scope-bound intent signal plus authorization resolution required before writes"
   automation_safe: false
 ---
 
@@ -47,10 +47,10 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `03`.
 - Procedure reference: `03 Build` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Produce the design-to-build contract before writes; after scoped GO, route through change delivery and later validation/review/memory states.
+- Route summary: Produce the design-to-build contract before writes; after authorization resolution binds the visible scope and protected change-application phase, route through change delivery and later validation/review/memory states.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a scope-bound intent signal has been resolved through authorization resolution to the visible plan, file set, station, command, phase, expiry, and required protected gate.
 
 ## Completion Boundary
 

@@ -52,4 +52,4 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Route failed validation to 04, 07, 03, or 08; the validation station does not repair the implementation it validates.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

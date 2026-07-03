@@ -69,6 +69,14 @@ closes the old station and opens a new role instance.
 Changing `station_mode`, changing `handoff_ownership`, or moving from
 specialist deep-read to captain-owned gate closes the old role instance unless
 the same role, station, delivery artifact, wave, and boundary remain intact.
+Status probes, heartbeats, replacement channels, and late-result receipt do not
+change role identity. A status probe pauses the current role instance until the
+member reports position, blocker state, and safe-to-continue state and the
+captain sends an explicit resume message. A responding slow channel may continue
+only inside the same role and station after that resume message. A replacement
+channel must use a new channel generation, and it cannot use the original
+channel's unfinished artifact as independent review, validation, memory/docs,
+or completion evidence.
 
 ## Role Rules
 
@@ -133,9 +141,17 @@ Before accepting a delivery artifact:
    claiming `complete`.
 9. Keep execution routes/channels separate from blocked, unverified, standby,
    unavailable, not-authorized, and closed-with-director-risk states.
-10. Confirm source/deployed pairs record sync direction and parity evidence when
+10. Confirm timeout handling did not convert an unknown channel into failure,
+    cancellation, or rejection without status probe, hard-timeout, cancellation,
+    or returned failure evidence.
+11. Confirm replacement and late-return decisions stay inside the same role
+    boundary and do not create self-review or validation repair.
+12. Confirm a responding probed channel paused, reported status, and resumed
+    only after an explicit captain resume message for the same role instance and
+    channel.
+13. Confirm source/deployed pairs record sync direction and parity evidence when
    generated or deployed copies are touched.
-11. Mark missing separation as blocked, unverified, or closed-with-director-risk;
+14. Mark missing separation as blocked, unverified, or closed-with-director-risk;
    it cannot support `complete`.
 
 ## Output

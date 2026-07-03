@@ -42,7 +42,7 @@ review, memory, release, or governance decisions.
 No-write does not mean no-team. Read-only exploration still uses
 `formal-readonly` when it can shape later source or governance decisions.
 
-The board records task type, workflow route, implementation authorization, allowed specialist roles, forbidden specialist roles, station applicability, execution mode, evidence owner, role boundary, direct exception, completion condition, and platform route. A draft board cannot start formal specialists or satisfy formal acceptance. The formal board lifecycle is draft -> GO-backed formal promotion -> wave-gated station dispatch -> returned delivery artifacts -> review/validation/memory states -> completion audit.
+The board records task type, workflow route, implementation authorization, allowed specialist roles, forbidden specialist roles, station applicability, execution mode, evidence owner, role boundary, direct exception, completion condition, and platform route. A draft board cannot start formal specialists or satisfy formal acceptance. The formal board lifecycle is draft -> authorization-resolved formal promotion -> wave-gated station dispatch -> returned delivery artifacts -> review/validation/memory states -> completion audit.
 
 Formal dispatch fields include phase, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, specialist lifecycle, closeout lane, Yellow classification, repair loop count, and closed-with-director-risk.
 
@@ -178,7 +178,7 @@ Every delegated branch names specialist skill, domain label, requested channel, 
 ```
 
 The captain receives artifacts, updates the board, and routes them onward.
-Evidence branches cannot decide GO, memory commit, commit, push, release,
+Evidence branches cannot decide authorization resolution, memory commit, commit, push, release,
 deployment, or mutating MCP actions.
 
-Evidence branches can support `quality-review-governance` and review lifecycle evidence, but they cannot decide final review state, quality acceptance, GO gates, or release readiness. Review delivery still needs a role-separated reviewer artifact when completion depends on review.
+Evidence branches can support `quality-review-governance` and review lifecycle evidence, but they cannot decide final review state, quality acceptance, authorization gates, or release readiness. Review delivery still needs a role-separated reviewer artifact when completion depends on review.

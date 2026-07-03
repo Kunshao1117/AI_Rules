@@ -12,7 +12,7 @@ metadata:
   role: sre
   memory_awareness: read
   tool_scope: ["filesystem:write", "git:write", "terminal:read"]
-  human_gate: "GO required before changelog write, commit, or push"
+  human_gate: "scope-bound intent signal plus authorization resolution required for each source write, memory mutation, git, release, deployment, install, or external mutation phase"
   automation_safe: false
 ---
 
@@ -45,10 +45,11 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `09`.
 - Procedure reference: `09 Commit` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Scan readiness and blockers; commit, push, tag, release, deployment, and memory commit remain separate protected phases.
+- Route summary: Scan readiness, organize evidence, and surface blockers; changelog/source write, memory mutation, git commit/push, tag/release, deployment, install, and external mutation remain separate protected phases.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- A commit workflow may scan and organize evidence, but no `GO`, approval wording, route trigger, or summary substitutes for phase-specific authorization.
+- Use `formal-write` only after a scope-bound Director intent signal passes authorization resolution and binds the visible scope, explicit phase, expiry, file set, command, and required protected gate for the current source write, memory mutation, git, release, deployment, install, or external mutation phase.
 
 ## Completion Boundary
 

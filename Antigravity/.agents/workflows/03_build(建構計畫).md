@@ -12,7 +12,7 @@ metadata:
   role: planner
   memory_awareness: read
   tool_scope: ["filesystem:read", "terminal:read"]
-  human_gate: "GO required before writes"
+  human_gate: "Scope-bound intent signal plus authorization resolution required before writes"
   automation_safe: false
 ---
 
@@ -45,11 +45,11 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `03`.
 - Procedure reference: `03 Build` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Produce the design-to-build contract before writes; after scoped GO, route through change delivery and later validation/review/memory states.
+- Route summary: Produce the design-to-build contract before writes; after authorization resolution binds the visible plan, station, and file scope, route through change delivery and later validation/review/memory states.
 - Reject sandbox/prototype intent to 03-1 before production build handling.
 - Prepare the design-to-build contract: requirement trace, review state when required, architecture boundary, change intent, real validation path, file set, memory/docs impact, and drift audit rule.
-- Stop for scoped GO tied to the visible plan, station, file set, command, or protected phase.
-- After GO, open implementation change delivery only for the named scope; validation, review, memory/docs, and completion follow returned delivery state.
+- Stop for a scope-bound intent signal and authorization resolution tied to the visible plan, station, file set, command, phase, expiry, and any required protected gate.
+- After authorization resolution, open implementation change delivery only for the named scope; validation, review, memory/docs, and completion follow returned delivery state.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

@@ -85,6 +85,12 @@ Director prompt contains [SUDO]?
 | Memory, docs, index, handoff, generated-copy attribution | `memory-docs` | `team-specialist-memory-docs` | Memory and documentation delivery status |
 | Completion, release readiness, residual risk, final delivery artifact check | `release-completion` | `team-specialist-release-completion` | Completion readiness evidence |
 
+Team-specialist return fields are internal evidence schema for board and trace
+use, not Director-facing report templates. The captain must convert received
+specialist artifacts into a Traditional Chinese, meaning-first summary under
+`Shared/policies/language-governance.md`, while preserving evidence source,
+role ownership, and verification state.
+
 ### Step 3: Preserve role boundaries and member assignments
 
 1. A station family may have multiple substation tasks and multiple member

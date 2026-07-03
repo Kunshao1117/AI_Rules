@@ -1,5 +1,5 @@
 ---
-description: "Use when: 已有 /03_build 設計到建構合約並取得 GO，要執行建構寫入、記憶歸卡與驗證測試。DO NOT use when: 尚未完成建構合約或未取得 GO。"
+description: "Use when: 已有 /03_build 設計到建構合約，且範圍綁定的意圖訊號已完成授權解析，要執行建構寫入、記憶歸卡與驗證測試。DO NOT use when: 尚未完成建構合約或尚未將意圖訊號解析到可見範圍。"
 required_skills: [memory-ops, security-sre, code-quality, test-patterns, ai-dev-quality-gate, trunk-ops, programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 memory_awareness: full
 metadata:
@@ -12,7 +12,7 @@ metadata:
   role: writer
   memory_awareness: full
   tool_scope: ["filesystem:write", "terminal:test", "mcp:cartridge-system"]
-  human_gate: "GO required before writes"
+  human_gate: "Scope-bound intent signal plus authorization resolution required before writes"
   automation_safe: false
 ---
 
@@ -45,11 +45,11 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `03`.
 - Procedure reference: `03 Build` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Execute only after scoped GO, collect change delivery, then route memory/docs, validation, review, and completion as later states.
-- Confirm scoped GO, allowed file set, phase, and protected-action exclusions.
+- Route summary: Execute only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate, collect change delivery, then route memory/docs, validation, review, and completion as later states.
+- Confirm authorization resolution, allowed file set, phase, expiry, and protected-action exclusions.
 - Dispatch or produce the implementation change delivery artifact for the named scope only.
 - Record memory/docs impact and source/deployed sync direction before completion claims.
 - Run validation, review, memory/docs, and completion after change delivery is returned, blocked, unverified, or risk-closed.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

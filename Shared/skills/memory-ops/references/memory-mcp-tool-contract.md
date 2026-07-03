@@ -6,11 +6,11 @@ This reference defines how AI_Rules workflows choose between project-local memor
 
 | 類別 | 工具或位置 | 安全邊界 | 使用時機 |
 |---|---|---|---|
-| Project-local migration tool | `.agents/tools/Memory-Migration.ps1` | Dry-run is read-only; apply mode requires Director GO and explicit apply flags | Active memory main-file naming migration and conflict inventory inside downstream projects |
+| Project-local migration tool | `.agents/tools/Memory-Migration.ps1` | Dry-run is read-only; apply mode requires authorization resolution bound to the migration scope, explicit apply flags, and the matching protected gate | Active memory main-file naming migration and conflict inventory inside downstream projects |
 | Framework source manager | `Scripts/AI-RulesManager.ps1` | Framework source repository only; do not assume downstream projects have this file | Source-maintenance checks, deployment, sync, and framework-owned migration entrypoints |
 | Read-only memory MCP | `workspace_brief`, `memory_list`, `memory_read`, `memory_status`, `memory_deps`, `memory_audit`, `memory_graph`, `commit_preflight` | May be used for evidence without mutating memory | Startup, workflow evidence, stale diagnosis, audit, routine inspection, handoff, and commit preflight |
-| Read-only context MCP | `project_context_status`, `context_inventory`, `context_audit`, `context_diff`, `context_plan`, `project_context_list`, `project_context_read`, `project_context_validate` | Project context reads are evidence only; persistent context writes still require GO CONTEXT | Separating source memory from project preferences, design DNA, and acceptance defaults |
-| Mutating memory MCP | `memory_commit`, `memory_reindex` | Requires Director GO and an MCP HITL gate; never use during discussion, planning, testing, or read-only audit | Commit a memory card after the active main file is already written; rebuild index after authorized migration |
+| Read-only context MCP | `project_context_status`, `context_inventory`, `context_audit`, `context_diff`, `context_plan`, `project_context_list`, `project_context_read`, `project_context_validate` | Project context reads are evidence only; persistent context writes still require `GO CONTEXT` resolved to the context scope | Separating source memory from project preferences, design DNA, and acceptance defaults |
+| Mutating memory MCP | `memory_commit`, `memory_reindex` | Requires authorization resolution for the scope-bound Director intent signal, the matching memory protected gate, and an MCP HITL gate; MCP HITL is additional and never replaces authorization resolution | Commit a memory card after the active main file is already written; rebuild index after authorized migration |
 
 ## Gateway Execution Rule
 
@@ -22,7 +22,7 @@ When cartridge-system is routed through Multi-MCP Gateway, schema discovery is n
 |---|---|---|
 | 03 Build | Read relevant card status and ownership before writes; use dependency evidence when indirect staleness is reported | Memory writes happen only after source changes land and card content is updated |
 | 04 Fix | Read ownership, status, and dependency evidence before root-cause repair; record only verified durable facts | Do not use `memory_commit` as a staleness reset shortcut |
-| 05 Condense | Use workspace and context inventory evidence to separate source facts from preferences and temporary observations | `_system` or context writes require the matching GO gate |
+| 05 Condense | Use workspace and context inventory evidence to separate source facts from preferences and temporary observations | `_system` or context writes require authorization resolution and the matching memory/context protected gate; context writes preserve `GO CONTEXT` or `GO DNA` when applicable |
 | 08 Audit | Use workspace brief, memory audit, context audit, and graph evidence when available; missing tools become unverified or blocked findings | Audit writes only intermediate logs unless a later workflow updates source memory |
 | 09 Commit | Run commit preflight or equivalent memory status evidence before commit/push | Dirty memory or unattributed files block commit until resolved or explicitly overridden |
 | 10 Routine | Use read-only workspace, memory, context, and sync integrity evidence only | Routine inspection is automation-safe only while no mutating MCP call is made |
@@ -32,7 +32,7 @@ When cartridge-system is routed through Multi-MCP Gateway, schema discovery is n
 ## Main-File Migration Flow
 
 1. Use the project-local migration tool dry-run to inventory legacy main files, canonical main files, conflicts, archives, and old path references.
-2. Apply migration only after Director GO and explicit apply flags.
+2. Apply migration only after authorization resolution binds the migration scope and explicit apply flags.
 3. After authorized migration, run the MCP reindex path when available.
 4. Verify with read-only memory audit or workspace brief.
 5. If MCP support is missing, report migration as partially verified and list the missing engine evidence. Do not silently fall back to manual batch rename.
@@ -42,4 +42,4 @@ When cartridge-system is routed through Multi-MCP Gateway, schema discovery is n
 - Missing project-local tool: framework sync gap or blocked state; do not hand-rename.
 - Missing MCP server: unverified evidence path; continue only with clearly labeled filesystem evidence.
 - MCP schema mismatch: inspect schema before calling; if still unclear, mark blocked.
-- Mutating MCP requested without GO: halt at MCP HITL gate.
+- Mutating MCP requested without authorization resolution or the matching protected gate: halt before MCP HITL; MCP HITL alone is insufficient.

@@ -139,14 +139,23 @@ full Team-Native completion.
    unverified.
 5. Dispatch only the current eligible wave. Later waves wait for returned,
    blocked, unverified, or risk-closed input from previous waves.
-6. Receive artifacts, update the board, and route formal checking to validation,
+6. Supervise channel lifecycle without treating wait timeouts as failures. If a
+   channel misses its first response or soft timeout, send a status probe when
+   possible. A probed member must pause current action, report current position,
+   blocker state, and safe-to-continue state, then wait. The captain must record
+   that response and send an explicit resume message before the responding
+   channel continues inside the same role and station. Unresponsive channels may
+   be marked blocked/unverified and replaced with a recorded late-result policy.
+   Replacement does not cancel the original channel unless cancellation is
+   explicit, and late artifacts still require a receipt decision.
+7. Receive artifacts, update the board, and route formal checking to validation,
    review, memory/docs, or completion stations as applicable.
-7. Apply changes only through a station-owned authorized change-application
+8. Apply changes only through a station-owned authorized change-application
    station held by a named role instance, or through a recorded captain-owned
    gate when the platform cannot delegate the write or a protected direct
    exception applies; the captain must not rewrite returned artifacts as
    captain-owned evidence or full completion.
-8. Run validation, independent review, memory/docs disposition, and completion
+9. Run validation, independent review, memory/docs disposition, and completion
    gate as separate states before claiming completion.
 
 ## Direct Exceptions

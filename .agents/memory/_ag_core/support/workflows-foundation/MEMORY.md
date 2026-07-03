@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 基礎與討論建構工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-02T14:00:55+08:00'
+last_updated: '2026-07-03T13:40:37+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T22:31:58+08:00'
+last_verified: '2026-07-03T05:44:38+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 23
+cycle_event_count: 20
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,13 +31,14 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core.support.workflows-foundation — Antigravity Foundation Workflow Memory
 
 ## Current Truth
 - Antigravity foundation workflow entries now reference workflow-orchestration before evidence-bearing work, station work, write paths, or completion.
 - Antigravity foundation and experiment workflows now record draft/formal board semantics, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once launch.
 - Antigravity build planning now says later execution performs authorized change application and memory filing, not unbounded physical direct writing.
-- Antigravity build/fix planning and execution now require workflow-orchestration grounding, scope-bound GO, and formal write stations before any source or generated-copy change; captain direct authoring cannot replace missing change delivery.
+- Antigravity build/fix planning and execution now require workflow-orchestration grounding, a scope-bound intent signal resolved by authorization resolution, and formal write stations before any source or generated-copy change; captain direct authoring cannot replace missing change delivery.
 - Antigravity experiment and foundation workflows now explicitly load team-task-board and use template references instead of duplicating full team rules inline.
 - Antigravity chat, explore, build planning, experiment, and condense workflows now route coding intent through task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` rules.
 - Antigravity chat and explore now route coding intent into captain-led mode, and experiment uses a minimum Captain Team Board with role boundary and isolated change delivery conditions.
@@ -57,9 +58,10 @@ metadata:
 - Keep shared gate fragments aligned with platform governance.
 
 ## Cycle Events
+- 26: Recorded the 2026-07-03 foundation workflow authorization-semantics repair; scope-bound intent signals require authorization resolution and the affected source/deployed workflow pairs were included in the 18/18 parity verification.
 - 25: Recorded Antigravity shared security footer hardening so [SUDO] records override/risk-closure only and cannot override role, Team-Native, validation/review, protected gates, or complete claims.
 - 24: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
-- 23: Updated Antigravity foundation workflow memory after authorization binding hardening; GO is scope-bound, build/fix execution must route through formal write stations, and captain integration cannot substitute for missing change delivery.
+- 23: Updated Antigravity foundation workflow memory after authorization binding hardening; scope-bound intent signals require authorization resolution, build/fix execution must route through formal write stations, and captain integration cannot substitute for missing change delivery.
 - 22: Wave 6B added workflow-orchestration grounding to Antigravity foundation workflow entries.
 - 21: Wave 6A updated Antigravity chat, explore, blueprint, build, and experiment workflow entries with daily/full mode boundaries, pure-conversation/direct limits, formal-readonly/formal-write routing, and specialist lifecycle rules.
 - 20: Rebuilt the Antigravity 00 chat workflow boundary so pure chat stays direct, while evidence-bearing discussion promotes to Team-Native formal-readonly with read scope, evidence status, and captain verify-read before the final answer.
@@ -75,11 +77,7 @@ metadata:
 - 10: Upgraded Antigravity foundation workflows for automatic captain trigger and experiment minimum governance.
 - 09: Hardened Antigravity foundation workflow boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.
 - 08: Added applicability/execution-mode Programming Team Board reporting to Antigravity blueprint, build, and experiment foundation workflows and synced deployed workflow copies.
-- 07: Added review-state and minimum-sufficient-complexity fields to Antigravity build planning.
-- 06: Added intent-alignment requirements to the Antigravity build planning workflow.
-- 05: Added change intent and real-information visual evidence requirements to the Antigravity build planning workflow.
-- 04: Added MCP memory evidence contract reference to the Antigravity build workflow.
-- 03: Updated Antigravity foundation workflow output examples with source-only labels.
+- 03-07: Added foundation output, MCP memory evidence, change-intent/visual-evidence, intent-alignment, and review-state coverage.
 ## Archive Index
 - Parent archive remains at .agents/memory/_ag_core/support/archive-001.md.
 
@@ -99,6 +97,7 @@ metadata:
 - 此子卡負責 Antigravity 基礎工作流與共享閘門。
 - Antigravity 00 入口現在只讓純聊天直接回覆；需要檔案、截圖、記憶、規則、工具輸出或治理證據時要升級 formal-readonly。
 - 藍圖、建構與實驗入口需宣告團隊證據站點與主線直做例外。
+- 本批 foundation workflow source/deployed parity 已隨 18/18 workflow pair 驗證一致。
 - 建構與實驗邊界要維持清楚。
 
 ## Tracked Files

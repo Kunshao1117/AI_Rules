@@ -14,7 +14,7 @@ metadata:
   role: planner
   memory_awareness: full
   tool_scope: ["filesystem:read", "terminal:read", "mcp:cartridge-system"]
-  human_gate: "GO required before memory writes"
+  human_gate: "explicit memory-write authorization plus authorization resolution required before memory writes"
   automation_safe: false
 ---
 
@@ -50,7 +50,7 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Route summary: Replay requirements, challenge assumptions, record decisions, alternatives, compatibility, and build handoff boundaries.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a scope-bound intent signal has been resolved through authorization resolution to the visible plan, file set, station, command, phase, expiry, and required protected gate.
 
 ## Completion Boundary
 

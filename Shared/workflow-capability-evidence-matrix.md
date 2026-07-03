@@ -132,8 +132,8 @@ Team-First 是所有編程、工作流、驗證、審查、記憶、提交、交
 | 工作流訊號 | 可做 | 不可做 |
 |---|---|---|
 | 00 到 12 工作流名稱 | 選擇任務型態、載入相關技能、套用最低證據矩陣 | 授權寫檔、改記憶、提交、推送、發布、部署或啟動無範圍隊員 |
-| 平台指令或按鈕 | 形成可記錄的路由證據，並在範圍明確時成為該範圍的授權證據 | 把按鈕同意擴張成未列檔案、未列命令或跨站點批次改動 |
-| GO 或同意語句 | 表示同意目前上下文中的明確計畫、站點、命令、檔案清單、範圍、階段、期限或工具呼叫，且必須經 authorization resolution 綁定後才可進入對應站點 | 取代 protected gate、擴張到未顯示範圍、blanket write authority、獨立審查、驗證、memory/docs delivery、git/release 明確清單 |
+| 平台指令或按鈕 | 形成可記錄的路由證據，並在 authorization resolution 綁定明確範圍後成為該範圍的授權證據 | 把按鈕同意擴張成未列檔案、未列命令或跨站點批次改動 |
+| GO 或同意語句 | 表示同意目前上下文中的明確計畫、站點、命令、檔案清單、範圍、階段、期限或工具呼叫，且必須經 authorization resolution 綁定後才可進入對應站點 | 取代 matching protected gate、擴張到未顯示範圍、作為 blanket write authority，或跳過獨立審查、驗證、memory/docs delivery、git/release/deploy/install/external mutation 的明確 protected gate |
 | automation-safe trigger | 啟動唯讀巡檢或報告路由 | 執行寫入、同步、提交、安裝、部署或外部狀態變更 |
 
 ## Captain-Led Programming Team Governance Matrix
@@ -209,7 +209,7 @@ remain separate artifacts. Missing independent role separation is
 Natural-language programming tasks create a team task board even when no workflow command is named. The workflow command only chooses the route; it does not authorize skipping the board, collapsing roles, or claiming team completion without station evidence.
 
 The captain keeps only non-delegable authority: Director communication,
-GO interpretation, scope arbitration, delivery receipt, board status synthesis,
+scope-bound authorization interpretation, scope arbitration, delivery receipt, board status synthesis,
 blocker and authorization handling,
 protected memory/git/release/deploy/install gates, review-state decision, and
 final acceptance. Counter-evidence, impact, memory delivery, test, review, and
@@ -315,7 +315,7 @@ Before any specialist branch starts, the captain must record task type, workflow
 
 ### Captain Minimum Execution Contract
 
-The captain keeps only the authority that cannot safely be delegated: Director communication, task board, GO interpretation, scope arbitration, delivery receipt, status synthesis, blocker and authorization handling, memory, git, release, deployment/install gates, and final Director-facing reporting.
+The captain keeps only the authority that cannot safely be delegated: Director communication, task board, scope-bound authorization interpretation, scope arbitration, delivery receipt, status synthesis, blocker and authorization handling, memory, git, release, deployment/install gates, and final Director-facing reporting.
 
 Counter-evidence, impact map, memory delivery, testing, review, and completion
 audit default away from the captain. Short-loop validation uses a recorded
@@ -331,7 +331,7 @@ Formal dispatch is wave-gated. Same-wave stations must be independent of each ot
 | 需求回放 | 02、03、04、08、12 及任何需求不明的編程任務 | `direct` only for captain communication and requirement clarification; no implementation, validation substitute work, or change delivery; 矛盾檢查可用 `evidence branch` | Goal, non-goals, constraints, assumptions, success criteria | 最終需求邊界與 Director 溝通 |
 | 反證 | 02、03、04、07、08、12 | `evidence branch` unless direct exception | Wrong-assumption search, missing-risk list, rejected or accepted concern | 最終計畫裁決 |
 | 影響面 | 03、04、07、08、09、12 | `evidence branch`、`CLI branch` 或 `MCP direct` | Files, memory cards, docs, sync paths, compatibility and regression surface | Scope approval and source writes |
-| 計畫授權 | 02、03、04、09、12 | `direct` | Review state, acceptance matrix, GO boundary | GO interpretation |
+| 計畫授權 | 02、03、04、09、12 | `direct` | Review state, acceptance matrix, authorization boundary | Authorization interpretation |
 | 實作 | 03、04、12 and Antigravity execute stages | `isolated change delivery` or text change delivery; station-owned `change-application` applies returned qualified artifacts or scoped source changes under change-application authorization | Approved file list, security gate, dirty-tree protection, change delivery artifact, change-application receipt | Specialists do not update memory, stage/commit/push, deploy, self-review, or write main worktree outside an authorized `change-application` station |
 | 記憶交付 | 03、04、08、09、10、11、12 when source, workflow, governance, docs, generated copies, or public contract may change | `evidence branch` or `MCP direct` for attribution; `direct` only for protected memory gate | `memory_impact`, `memory_delivery`, and blocked/unverified/closed-with-director-risk status | memory_commit, final memory write approval, source writes |
 | 短迴圈驗證 | 03、04、06、07、08 | `browser branch`、`CLI branch`、`evidence branch` 或 hot-path `direct` exception | Test output, real-path attempt, blocked evidence path | Completion claim |
@@ -460,10 +460,10 @@ The detailed tool contract lives in `.agents/skills/memory-ops/references/memory
 |---|---|---|---|
 | 03 建構 | Codex: `.agents/skills/03-build-建構/SKILL.md`; Claude: `.claude/commands/03_build(建構)/SKILL.md`; Antigravity: `.agents/workflows/03_build(建構計畫).md` | Relevant ownership and staleness from memory list/status/read; dependency evidence when indirect staleness is reported; context read evidence when acceptance preferences affect implementation | Memory commit only after source changes and active memory main-file content are updated |
 | 04 修復 | Codex: `.agents/skills/04-fix-修復/SKILL.md`; Claude: `.claude/commands/04_fix(修復)/SKILL.md`; Antigravity: `.agents/workflows/04-1_fix_plan(修復計畫).md` | Ownership, status, dependency, and root-cause evidence for affected cards; unresolved memory conflicts are repair blockers | Memory commit cannot be used as a staleness reset shortcut; it follows verified card edits |
-| 05 濃縮 | Codex: `.agents/skills/05-condense-濃縮/SKILL.md`; Claude: `.claude/commands/05_condense（濃縮）/SKILL.md`; Antigravity: `.agents/workflows/05_condense(濃縮).md` | Workspace brief, memory list/read, and context inventory/status evidence to separate source facts from preferences | `_system` source-memory write requires GO; project context write requires GO CONTEXT |
+| 05 濃縮 | Codex: `.agents/skills/05-condense-濃縮/SKILL.md`; Claude: `.claude/commands/05_condense（濃縮）/SKILL.md`; Antigravity: `.agents/workflows/05_condense(濃縮).md` | Workspace brief, memory list/read, and context inventory/status evidence to separate source facts from preferences | `_system` source-memory write requires authorization resolution plus the matching memory protected gate; project context write preserves `GO CONTEXT` but still binds it to the visible context scope |
 | 08 健檢 | Codex: `.agents/skills/08-audit-健檢/SKILL.md` plus `08-1/08-2/08-3`; Claude: `.claude/commands/08_audit(健檢)/SKILL.md` plus subflows; Antigravity: `.agents/workflows/08_audit(健檢).md` plus subflows | Workspace brief, memory audit, memory graph/status, context audit, and commit preflight when relevant to governance health | Audit does not mutate memory; follow-up build/fix/commit workflows perform authorized writes |
 | 09 提交 | Codex: `.agents/skills/09-commit-紀錄總結/SKILL.md`; Claude: `.claude/commands/09_commit(紀錄)/SKILL.md`; Antigravity: `.agents/workflows/09-1_commit_scan(紀錄掃描).md` | Commit preflight or equivalent memory status evidence, dirty file list, stale/unattributed file evidence, and blockers | Commit/push are separate gates; memory commit only happens before commit after card content is edited |
-| 10 巡檢 | Codex: `.agents/skills/10-routine-巡檢/SKILL.md`; Claude: `.claude/commands/10_routine(巡檢)/SKILL.md`; Antigravity: `.agents/workflows/10_routine(巡檢).md` | Workspace brief, memory audit, context audit, sync integrity, and read-only tool availability evidence | No mutating MCP calls; any write proposal routes to build/fix/audit with GO |
+| 10 巡檢 | Codex: `.agents/skills/10-routine-巡檢/SKILL.md`; Claude: `.claude/commands/10_routine(巡檢)/SKILL.md`; Antigravity: `.agents/workflows/10_routine(巡檢).md` | Workspace brief, memory audit, context audit, sync integrity, and read-only tool availability evidence | No mutating MCP calls; any write proposal routes to build/fix/audit for authorization resolution and the matching protected gate |
 | 11 交接 | Codex: `.agents/skills/11-handoff-交接/SKILL.md`; Claude: `.claude/commands/11_handoff(交接)/SKILL.md`; Antigravity: `.agents/workflows/11_handoff(交接).md` | Workspace brief, memory list/status/read summary, stale cards, blockers, dirty files, and unresolved context evidence | Handoff does not mutate memory; pending writes are reported as next-step blockers |
 | 12 技能鍛造 | Codex: `.agents/skills/12-skill-forge-技能鍛造/SKILL.md`; Claude: `.claude/commands/12_skill_forge(技能鍛造)/SKILL.md`; Antigravity: `.agents/workflows/12_skill_forge(技能鍛造).md` | Skill ownership, memory status/read evidence for affected skill domains, context boundary evidence, and validation route evidence | New or modified skill source requires memory attribution and authorized memory commit before completion |
 
@@ -483,7 +483,7 @@ The detailed tool contract lives in `.agents/skills/memory-ops/references/memory
 ## Usage Rules
 
 - Workflow files must reference this matrix instead of copying every rule.
-- Workflow names and platform workflow commands are route declarations only; scoped authorization must come from an explicit plan, button prompt, permission prompt, command, file list, station, or protected gate.
+- Workflow names and platform workflow commands are route declarations only; scoped authorization must be bound by authorization resolution to an explicit visible plan, button prompt, permission prompt, command, file list, station, phase, expiry, or protected gate.
 - Missing tools, missing credentials, or unsupported platform features must be reported as 未驗證 or 阻塞, not treated as success.
 - Platform adapters may add stronger evidence paths, but they must not weaken the minimum evidence contract.
 - 08 remains the deep full-spectrum audit baseline; other workflows use only the row relevant to their lifecycle and do not copy 08 inventory machinery unless the audit workflow is active.

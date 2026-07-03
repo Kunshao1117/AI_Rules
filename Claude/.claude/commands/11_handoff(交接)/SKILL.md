@@ -50,7 +50,7 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Route summary: Summarize current state, dirty files, evidence, blockers, memory/context state, validation/review state, and next route.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use formal-write only after a scope-bound intent signal has been resolved through authorization resolution to the visible plan, file set, station, command, phase, expiry, and required protected gate.
 
 ## Completion Boundary
 

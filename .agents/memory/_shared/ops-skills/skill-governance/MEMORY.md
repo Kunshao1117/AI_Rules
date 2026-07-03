@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-02T19:30:19+08:00'
+last_updated: '2026-07-03T13:41:36+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-02T19:23:49+08:00'
+last_verified: '2026-07-03T11:42:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 14
+cycle_event_count: 15
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,7 +32,6 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 # _shared.ops-skills.skill-governance — Skill Governance Memory
-
 ## Current Truth
 - Team board, handoff, role-boundary, completion, specialist change-delivery, and change-artifact skills now use route/state separation and source/deployed sync fields instead of treating blocked states as execution modes.
 - Delivery artifact skills now require current structured station evidence; transcript text, previous assistant claims, and model-filled trust records cannot substitute for role, channel, authorization, or source/deployed evidence.
@@ -51,12 +50,13 @@ metadata:
 - Handoff packets are scoped to one substation task, one role, one concrete task, one output format, and one stop condition; vague multi-role delegation is invalid.
 - Role-boundary and registry templates now make captain deep-read substitution, captain repair of specialist work, self-review, self-validation, and memory-attribution replacement non-complete outcomes; captain receipt is not implementation, validation, review, or memory/docs evidence.
 - Skill governance and skill factory rules now route instruction, interface, bridge, trigger, handoff, memory, and generated-document language choices through the shared language governance policy.
+- Team task-board, handoff packet, role-boundary, completion, and programming-team governance skills now encode pause-and-report status probes, explicit resume, replacement-not-cancellation, late-result receipt decisions, and channel closeout evidence; `team-task-board` was reduced below the skill quality token threshold.
 
 ## Active Constraints
-- Do not duplicate full skill templates in memory; use tracked references as the source of truth for skill formatting and delegation procedures.
-- Do not copy platform core language paragraphs as the only language source for skill creation, skill updates, trigger text, handoffs, or generated documentation.
+- Do not duplicate full skill templates in memory or copy platform core language paragraphs as the only language source; use tracked references and shared language governance for skill formatting, delegation, triggers, handoffs, and generated docs.
 
 ## Cycle Events
+- 35: Recorded team skill lifecycle hardening: task board, handoff, role-boundary, completion, and programming-team governance now require pause-and-report probes, explicit resume, late-result receipt decisions, and channel closure evidence; team-task-board SkillQuality returned Red 0 / Yellow 0.
 - 34: Recorded team skill update after push af501c6: role boundaries, task-board, handoff, completion, and change-artifact skills keep captain receipt separate from station-owned source writes.
 - 33: Recorded team skill hardening so handoff packets use `captain_coordination_read_scope`, captain receipt is not evidence, and Director-facing field summaries lead with Traditional Chinese meaning.
 - 32: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
@@ -71,7 +71,6 @@ metadata:
 - 23: Updated role-boundary and delivery-adjacent skill governance for Team-First handoff packets, deep-read/verify-read separation, and no silent captain substitution.
 - 22: Added scoped authorization fields to change, memory/docs, validation, review, and role-boundary delivery artifact contracts; synced deployed skill copies.
 - 21: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
-
 ## Archive Index
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
 
@@ -90,8 +89,8 @@ metadata:
 ## 中文摘要
 - 此子卡負責委派策略與技能工廠治理。
 - 交付件邊界技能現在要求範圍式授權欄位，缺欄位不能支撐完成。
-- 角色邊界現在也要檢查 daily/full 模式、角色編號、角色實例與任務內互斥範圍。
-- 委派策略已從可選分支改為團隊證據站點優先。
+- 角色邊界現在也要檢查 daily/full 模式、角色編號、角色實例與任務內互斥範圍；委派策略已從可選分支改為團隊證據站點優先。
+- 團隊技能現在要求暫停式狀態探針、明確恢復、晚回接收決策與通道收束證據；`team-task-board` 已維持技能品質綠燈。
 ## Tracked Files
 - Shared/skills/team-review-delivery-artifact/SKILL.md
 - Shared/skills/team-validation-delivery-artifact/SKILL.md

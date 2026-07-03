@@ -12,7 +12,7 @@ metadata:
   role: writer
   memory_awareness: full
   tool_scope: ["filesystem:write", "mcp:cartridge-system"]
-  human_gate: "GO required before writes"
+  human_gate: "authorization resolution required before writes"
   automation_safe: false
   required_skills: ["skill-factory", "memory-ops", "project-context-protocol", programming-team-governance]
 ---
@@ -49,7 +49,7 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Route summary: Choose the right governance layer, keep trigger language in frontmatter, move long examples to references, and validate sync.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after scoped GO tied to the visible plan, station, file set, command, or protected phase.
+- Use `formal-write` only after a scope-bound Director intent signal passes authorization resolution and binds the explicit phase, file set, command, or required protected gate.
 
 ## Completion Boundary
 

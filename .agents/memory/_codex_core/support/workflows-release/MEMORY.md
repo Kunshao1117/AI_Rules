@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 提交、巡檢與技能鍛造工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-01T22:33:00+08:00'
+last_updated: '2026-07-03T13:41:18+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T22:31:58+08:00'
+last_verified: '2026-07-03T06:11:22+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 22
+cycle_event_count: 24
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,10 +31,13 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core.support.workflows-release — Codex Release and Governance Workflow Memory
 
 ## Current Truth
 - Codex commit, routine, handoff, and skill-forge workflow entries now reference workflow-orchestration before completion or protected closeout work.
+- Codex 09 source/deployed workflow entries are verified in parity at SHA256 `A0B502D10796A918845AAEACBAB498F76B2F1662B9200271BCCBD4E096BAC8DC`.
+- Codex release-side workflow metadata treats `GO` and workflow names as route or scope-bound intent signals only; source write, changelog/source write, memory mutation, git commit/push, tag/release, deployment, install, and external mutation are separate protected phases requiring authorization resolution and the matching protected gate.
 - Codex commit, routine, handoff, and skill-forge workflows now load `team-station-handoff-packet`; commit scans, release readiness evidence, routine inspection, skill-source analysis, review, validation, and memory/docs attribution start as `formal-readonly` until protected captain-owned mutation is separately authorized.
 - Codex release-side workflows require formal team evidence for commit, routine, handoff, and skill-forge conclusions; protected memory, version-control, and release mutations remain captain-owned and separately scoped.
 - Codex commit and release workflows keep memory/git/release operations captain-owned while requiring formal board fields, delivery artifact separation, and wave-gated evidence before completion claims.
@@ -51,10 +54,12 @@ metadata:
 - Codex commit and routine workflows now check review-state blockers, accepted-risk items, unverified high-risk validation, and review governance coverage before green-lighting release or routine conclusions.
 
 ## Active Constraints
-- Do not commit, push, tag, or release without explicit Director approval.
+- Do not perform source write, changelog/source write, memory mutation, git commit/push, tag/release, deployment, install, or external mutation without explicit protected-phase authorization resolved to the current scope.
 - Do not let automation-safe routine inspection perform writes.
 
 ## Cycle Events
+- 24: Recorded Codex 09 source/deployed parity at SHA256 `A0B502D10796A918845AAEACBAB498F76B2F1662B9200271BCCBD4E096BAC8DC` and the split protected-phase rule for source, changelog, memory, git, release, deploy, install, and external mutation work.
+- 23: Recorded Batch 3 release closeout authorization-resolution rule: `GO` is a scope-bound intent signal; usable authorization must bind the visible plan, station, file set, command, phase, expiry, and required protected gate before formal-write or external mutation, and memory-commit, commit, push, tag, release, and deploy remain separate protected phases.
 - 22: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 21: Recorded release-side workflow hardening so commit, routine, handoff, and skill-forge evidence uses formal team routing while protected mutations stay captain-owned.
 - 20: Wave 6B added workflow-orchestration grounding to Codex release/closeout workflow entries and synced deployed .agents/skills copies.
@@ -96,7 +101,8 @@ metadata:
 ## 中文摘要
 - 此子卡負責 Codex 提交、巡檢與技能鍛造工作流。
 - 提交、巡檢、交接與技能鍛造入口需保留團隊證據站點，但外部狀態仍由主線裁決。
-- 提交、推送與發布仍需要明確授權。
+- Codex 09 source/deployed 成對檔案已以 SHA256 `A0B502D10796A918845AAEACBAB498F76B2F1662B9200271BCCBD4E096BAC8DC` 驗證一致。
+- `GO` 不等於 blanket authorization；source write、changelog/source write、memory mutation、git commit/push、tag/release、deployment、install 與 external mutation 都是分離 protected phase，必須完成範圍解析與對應 gate 後才可執行。
 
 ## Tracked Files
 - Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md

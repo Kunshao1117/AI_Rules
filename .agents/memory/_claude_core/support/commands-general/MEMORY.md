@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 一般討論、探索、實驗、濃縮與測試指令。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-02T14:01:04+08:00'
+last_updated: '2026-07-03T13:40:58+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T22:31:58+08:00'
+last_verified: '2026-07-03T04:26:23+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 22
+cycle_event_count: 24
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,7 +32,6 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 # _claude_core.support.commands-general — Claude General Commands Memory
-
 ## Current Truth
 - Claude general command entries now reference workflow-orchestration before evidence-bearing work, station work, write paths, or completion.
 - Claude general and experiment commands now record draft/formal board semantics, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once launch.
@@ -45,16 +44,16 @@ metadata:
 - This child card owns Claude shared command gates and general command entries.
 - General commands must stay aligned with shared workflow semantics and Claude permission behavior.
 - Claude 00 chat is direct only for pure conversation with no external evidence dependency; files, screenshots, memory cards, rules, agent behavior, tool output, or governance-impact questions enter Team-Native formal-readonly and require returned evidence plus captain verify-read.
-- Claude command names and natural-language approvals are route intent plus scope-bound evidence only; write authority requires the matching formal write station and GO-backed scope.
+- Claude command names and natural-language approvals are route intent plus scope-bound evidence only; write authority requires the matching formal write station, with authorization resolution binding the visible scope and protected phase.
 - Claude experiment command wording now describes sandbox direct execution as an isolated experiment lane, not captain mainline substitute authoring or a routine direct route for production work.
 - Test commands must select evidence by interface surface rather than assuming browser-only proof.
 - Claude test command now requires visual detail-observation notes and real-information-first evidence before fallback fake data.
-
+- Batch 4B updated 00/01/03-1/05/06 formal-write semantics so writes require authorization resolution bound to the visible plan, file set, station, command, phase, expiry, and required protected gates.
 ## Active Constraints
 - Do not transfer main-agent responsibility to subagents.
 - Do not write source or memory from read-only command flows without the appropriate gate.
-
 ## Cycle Events
+- 24: Batch 4B recorded general command formal-write semantics for 00/01/03-1/05/06: scope-bound intent signal, authorization resolution, and protected gates now precede write authority.
 - 23: Recorded Claude command security footer hardening so [SUDO] cannot bypass role limits, scoped authorization, Team-Native, validation, review, protected gates, or complete claims.
 - 22: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 21: Updated Claude experiment command wording so sandbox direct execution is explicitly an experiment lane, not captain mainline substitute authoring.
@@ -78,10 +77,8 @@ metadata:
 - 03: Updated Claude general command output examples with source-only labels.
 - 02: Aligned general Claude command grounding paths to deployed .agents/shared governance references.
 - 01: Split Claude general command ownership out of the support parent card.
-
 ## Archive Index
 - Parent archive remains at .agents/memory/_claude_core/support/archive-001.md.
-
 ## Evidence Base
 - source:.agents/memory/_claude_core/support/archive-001.md — Previous support-card content preserved during migration.
 - tool:memory_audit — Granularity advisory identified this support card as broad by tracked-file count.
@@ -99,6 +96,7 @@ metadata:
 - Claude 00 指令現在只讓純聊天直接回覆；需要檔案、截圖、記憶、規則、工具輸出或治理證據時要升級 formal-readonly。
 - 實驗與測試指令需宣告最小團隊站點與主線直做例外。
 - 測試指令要依介面型態選擇證據。
+- Batch 4B 已把 00/01/03-1/05/06 的 formal-write 語意收斂為先經授權解析，綁定可見計畫、檔案集、站點、命令、階段、期限與受保護閘門。
 
 ## Tracked Files
 - Claude/.claude/commands/_shared/_completion_gate.md
