@@ -4,7 +4,7 @@ scopePath: .agents/memory/
 description: >-
   專案記憶：記憶拓樸索引與卡片導覽。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-06-15T02:27:01+08:00'
+last_updated: '2026-07-03T13:22:21+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -41,8 +41,9 @@ metadata:
 ## Active Constraints
 - Keep this card under 8 KB.
 - Do not add detailed history here.
-- Update the module table when Layer 1 memory cards are added, deprecated, or renamed.
+- Update Relations when Layer 1 memory cards are added, deprecated, or renamed.
 ## Cycle Events
+- 02: Aligned navigation wording with Relations-based card discovery.
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
 ## Archive Index
 - archive-001.md — Legacy _map card preserved before schema v2 compaction on 2026-06-04.
@@ -59,7 +60,7 @@ metadata:
 ## 中文摘要
 - 這張卡只做導航索引。
 - 不再承載歷史決策或長篇說明。
-- 新增或移除主卡時才更新表格。
+- 新增或移除主卡時才更新 Relations。
 ## Tracked Files
 - .agents/memory/_map/archive-001.md
 ## Relations

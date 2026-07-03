@@ -4,19 +4,19 @@ scopePath: Shared/skills/supabase-postgres-best-practices/references/
 description: >-
   專案記憶：Supabase Postgres 結構設計參考主題。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-06-15T02:53:35+08:00'
+last_updated: '2026-07-03T13:22:08+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: partial_evidence
-last_verified: '2026-06-15T02:47:43+08:00'
+verification_status: verified
+last_verified: '2026-07-03T13:05:08+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -44,12 +44,14 @@ metadata:
 
 ## Cycle Events
 - 01: Split schema design references out of the Supabase Postgres parent card.
+- 02: Verified all schema design tracked reference files exist.
 
 ## Archive Index
 - Parent archive remains at .agents/memory/_shared/supabase-postgres/archive-001.md.
 
 ## Evidence Base
 - source:.agents/memory/_shared/supabase-postgres/archive-001.md — Previous parent-card content preserved during migration.
+- source:Shared/skills/supabase-postgres-best-practices/references/schema-*.md — Listed tracked files exist.
 - tool:memory_audit — Granularity advisory identified this reference corpus as broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized focused child-card split.
 

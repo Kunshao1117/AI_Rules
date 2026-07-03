@@ -4,19 +4,19 @@ scopePath: .agents/memory/claude-edition-rules/
 description: >-
   專案記憶：舊 Claude 規則記憶的廢棄索引。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-15T02:27:04+08:00'
+last_updated: '2026-07-03T13:21:27+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: deprecated_index
-verification_status: partial_evidence
-last_verified: '2026-06-15T02:22:52+08:00'
+verification_status: verified
+last_verified: '2026-07-03T13:05:08+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -44,11 +44,13 @@ metadata:
 - Preserve the archive for trace-back only.
 ## Cycle Events
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
+- 02: Verified deprecated archive ownership and tracked archive file presence.
 ## Archive Index
 - archive-001.md — Legacy Claude Edition rules card preserved before deprecation on 2026-06-04.
 - archive-002.md: Pre-standardization active card snapshot created during MEMORY.md migration.
 ## Evidence Base
 - Source evidence: Previous active memory content is preserved in archive-002.md.
+- source:.agents/memory/claude-edition-rules/archive-001.md — Tracked archive file exists as deprecated historical evidence.
 - Tool evidence: cartridge-system memory_list and memory_audit identified legacy main files and missing quality metadata before migration.
 - Director evidence: 2026-06-15 GO MEMORY MIGRATE authorized active memory-card migration.
 ## Read Contract

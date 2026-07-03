@@ -4,19 +4,19 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-02T14:02:42+08:00'
+last_updated: '2026-07-03T13:22:31+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-01T15:24:48+08:00'
+last_verified: '2026-07-03T13:09:01+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 17
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,22 +31,19 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _system — Repository Governance Memory
 
 ## Current Truth
 - AI_Rules is the source repository for Antigravity, Claude Edition, and Codex Edition governance.
-- Root documentation and changelog now frame Team-Native Core as a pre-execution state machine for coding, architecture, broad-read, validation, review, memory, commit, release, and governance-impact work.
-- Pure 00 chat stays direct, while evidence-bearing chat about files, screenshots, memory, rules, agent behavior, tool output, or governance impact enters formal-readonly with specialist evidence and captain coordination read limited to receipt, board, blocker, or authorization needs.
+- Root README and platform README skill counts now describe 62 shared operational skills; Codex deployed skills total 79 from 62 shared skills plus 17 workflow skills, excluding the `_shared` support directory.
+- Root `CLAUDE.md` is an ignored live/root file and now aligns Codex Edition to v0.1.3 plus 62 shared operational skills.
+- Antigravity source sentinel `Antigravity/.agents/rules/AGENTS.md` and deployed live sentinel `.agents/rules/AGENTS.md` both describe 62 shared operational skills.
+- Root documentation frames Team-Native Core as a pre-execution state machine for coding, architecture, broad-read, validation, review, memory, commit, release, and governance-impact work.
+- Pure 00 chat stays direct; evidence-bearing chat about files, screenshots, memory, rules, agent behavior, tool output, or governance impact enters formal-readonly with specialist evidence and captain coordination limited to receipt, board, blocker, or authorization needs.
 - GO, interface buttons, platform prompts, modes, and workflow commands resolve only to scoped authorization evidence; workflow routes and modes are not standalone authorization.
 - Repository-level governance uses delivery-artifact-driven Team-Native workflow: the captain boards, dispatches, supervises, receives station delivery, updates board state, handles blockers/authorization, and reports without authoring primary implementation, review, validation, or memory attribution.
 - Root documentation distinguishes platform route states from manual setup status, authorized change application from captain substitute authoring, and `closed-with-director-risk` from completion.
-- Root README platform counts currently describe 61 shared operational skills and 78 Codex deployed skills.
-- Changelog includes the 2026-06-29 scoped authorization and pre-commit governance entries plus the 2026-06-30 workflow orchestration and Codex hook stability entries.
 - Root documentation describes shared matrix deployment paths, downstream project-local tools under `.agents/tools/`, and framework-source-only manager commands.
-- Root documentation and changelog now describe Team-Native authorization binding, captain receipt/status synthesis, authorized change application, hook-block stop behavior, and GO as scoped evidence rather than blanket write permission.
-- Root documentation now treats captain work as delivery receipt, board/status synthesis, blocker and authorization handling, protected gates, and reporting; historical wording that implied captain main-worktree authoring, self-review, or direct implementation is corrected.
-- The changelog includes the Team-Native thin-captain, multi-specialist, hook diagnostics, and structured completion-evidence hardening entry as a governance wording correction, not runtime completion evidence.
 - Director-facing output must use Traditional Chinese unless a lower-level artifact explicitly requires another language.
 - Root repository work, git status, commit, tag, and push operations use `D:\AI_Rules` as the baseline.
 - Source memory lives in `.agents/memory/`; project context lives in `.agents/context/`; root PowerShell implementation ownership moved to `_system.scripts`.
@@ -57,24 +54,11 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
-- 18: Recorded root documentation/changelog hardening so captain work is receipt and status synthesis, while actual change application requires an authorized station or gate.
+- 19: Recorded root documentation skill-count cleanup: README files, ignored live/root `CLAUDE.md`, and Antigravity source/live sentinels now use 62 shared skills; Codex deployed skill count remains 79 (62 shared + 17 workflow, excluding `_shared` support directory).
+- 18: Compacted root documentation history into Current Truth after Team-Native, formal-readonly/formal-write, scoped authorization, captain non-authoring, and current skill-count wording became the root documentation baseline.
 - 17: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform sync, changelog precision, and commit-preflight stale blocker cleanup.
 - 16: Recorded the 2026-07-01 Team-Native thin-captain and multi-specialist documentation hardening; root docs and changelog now avoid wording that implies captain authoring, self-review, or blanket GO authority.
-- 15: Recorded the 2026-07-01 Team-Native authorization binding and governance fail-closed changelog entry; root docs now frame captain work as protected integration plus gates, with everyday Director wording bound to the current visible target.
-- 14: Recorded the 2026-06-30 Stop hook completion-claim repair changelog update, including 52 hook fixtures and Doctor required-fixture coverage for the 11 new Stop regression cases.
-- 13: Recorded the 2026-06-30 Codex hook stability changelog entry and cleared the CHANGELOG staleness warning after reading the current entry.
-- 12: Recorded the 2026-06-30 Team-Native workflow orchestration changelog entry and cleared the CHANGELOG staleness warning after reading the current entry.
-- 11: Documented the 00 evidence-bearing chat boundary in root README: pure chat remains direct, but evidence-dependent discussion uses Team-Native formal-readonly stations to reduce captain context pollution and preserve looped evidence.
-- 10: Documented Team-First runtime-state semantics, formal-readonly/formal-write split, station handoff packets, standby, unavailable-channel reporting, and deep-read/verify-read boundaries in root README.
-- 09: Recorded the 2026-06-29 Team-Native scoped authorization refactor changelog entry and cleared the CHANGELOG staleness warning after reading the current entry.
-- 08: Documented scoped authorization resolution, interface-button evidence limits, workflow route-only semantics, and Team-Native priority in root README.
-- 07: Recorded the 2026-06-29 pre-commit governance convergence changelog entry after exact-hash sync and memory-health checks passed.
-- 06: Recorded the second Team-Native refactor as delivery-artifact-driven across root docs, changelog, team routes, and captain non-authoring boundaries.
-- 05: Updated root documentation and changelog to use `closed-with-director-risk` and delivery artifacts for Team-Native second refactor.
-- 04: Removed residual captain-substitution wording from root and platform README text.
-- 03: Documented Team-Native specialist registry, change delivery artifact terminology, 61 shared skills, and 78 Codex deployed skills.
-- 02: Clarified root README route wording so native, adapter, conditional, unavailable, and manual setup status are not conflated.
-- 01: Consolidated June 2026 repository governance documentation history into Current Truth after Team-Native Core documentation and trace-audit support landed.
+- 01-15: Consolidated earlier June 2026 root governance, Team-Native, scoped-authorization, workflow orchestration, and pre-commit documentation events into Current Truth and archives.
 
 ## Archive Index
 - archive-001.md — Legacy _system card identity and decisions through D39.
@@ -91,15 +75,17 @@ metadata:
 - Read `_system.scripts` before changing root PowerShell scripts.
 
 ## Conflicts and Supersession
-- No unresolved conflict recorded during this split; contradictions found later must be indexed here.
+- No unresolved root `CLAUDE.md` or Antigravity sentinel skill-count conflict remains after the 2026-07-03 documentation cleanup.
 
 ## 中文摘要
 - AI_Rules 是三平台治理框架核心庫。
+- README 與三平台 README 的技能數字 current truth 是：共用技能 62，Codex 部署技能 79。
+- 根層 `CLAUDE.md` 是 ignored live/root file，目前已對齊 Codex v0.1.3 與 62 套共用技能。
+- Antigravity source/live sentinel 目前都已對齊 62 套共用技能。
+- Codex 的 `_shared` 是支援目錄，不算 workflow skill。
 - 根層文件已明定按鈕與 GO 只能作為有範圍的授權證據，工作流與模式不是授權本身。
 - 根層文件已把編程流程改成團隊協作優先，而不是主線單人處理加可選委派。
-- 根層文件已把 00 證據型對話納入團隊 formal-readonly；純聊天才維持直接回覆。
-- 根層 Git 與發布操作以 `D:\AI_Rules` 為基準。
-- PowerShell 腳本已拆到 `_system.scripts` 子卡。
+- 根 `CLAUDE.md` 與 Antigravity sentinel 的舊版號/舊技能數字 pending 已清理。
 
 ## Tracked Files
 - .gitignore

@@ -4,7 +4,7 @@ scopePath: Extensions/vscode-ai-rules-manager/
 description: >-
   專案記憶：VS Code 管理器輔助來源。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-06-15T02:24:20+08:00'
+last_updated: '2026-07-03T13:22:26+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,14 +34,16 @@ metadata:
 # _vscode_extension.auxiliary — Extension Auxiliary Memory
 
 ## Current Truth
-- This child card owns VS Code extension auxiliary files outside the parent active source set.
+- This child card owns VS Code extension auxiliary support files outside runtime and release ownership.
 - Packaging ignore rules, license text, and TypeScript project settings affect VSIX build quality.
-- Release workflow ownership remains in the parent `_vscode_extension` card.
+- Release workflow ownership belongs to `_vscode_extension.release`; the parent `_vscode_extension` card is navigation-only.
+- Primary TypeScript runtime ownership belongs to `_vscode_extension.runtime`.
 ## Active Constraints
-- Do not duplicate release or update-reminder decisions from the parent extension card.
+- Do not duplicate release or update-reminder decisions from `_vscode_extension.release`.
 - Keep package support file changes aligned with VSIX packaging checks.
 - Split only if packaging support files grow beyond this small ownership set.
 ## Cycle Events
+- 02: Corrected release and runtime ownership references to child-card ownership.
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
 ## Archive Index
 - archive-001.md: Pre-standardization active card snapshot created during MEMORY.md migration.
@@ -56,14 +58,17 @@ metadata:
 - No unresolved conflict recorded during the migration pass; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
 - 這張子卡承接 VS Code extension 輔助檔。
-- 發布工作流與主要 TypeScript 程式仍由 extension 主卡管理。
+- 發布工作流由 release 子卡管理；父卡只做導覽。
+- 主要 TypeScript 程式由 runtime 子卡管理。
 - 修改打包支援檔時要注意 VSIX 產物。
 ## Tracked Files
 - Extensions/vscode-ai-rules-manager/.vscodeignore
 - Extensions/vscode-ai-rules-manager/LICENSE
 - Extensions/vscode-ai-rules-manager/tsconfig.json
 ## Relations
-- _vscode_extension (parent extension memory)
+- _vscode_extension (navigation-only parent extension memory)
+- _vscode_extension.runtime (primary TypeScript runtime ownership)
+- _vscode_extension.release (release workflow ownership)
 - _system (root release governance memory)
 ## Applicable Skills
 - memory-ops — Use when updating this child card.

@@ -4,19 +4,19 @@ scopePath: Claude/.claude/
 description: >-
   專案記憶：Claude 規則、設定與支援專案檔。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-02T14:01:07+08:00'
+last_updated: '2026-07-03T13:21:40+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: partial_evidence
-last_verified: '2026-06-15T02:49:33+08:00'
+verification_status: verified
+last_verified: '2026-07-03T13:05:08+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 1
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -47,12 +47,14 @@ metadata:
 ## Cycle Events
 - 02: Recorded Claude support-rule hardening so [SUDO] cannot clear memory/source attribution holds or bypass security and MCP guardrails.
 - 01: Split Claude rules and settings ownership out of the support parent card.
+- 03: Verified all Claude rules and settings tracked files exist.
 
 ## Archive Index
 - Parent archive remains at .agents/memory/_claude_core/support/archive-001.md.
 
 ## Evidence Base
 - source:.agents/memory/_claude_core/support/archive-001.md — Previous support-card content preserved during migration.
+- source:Claude/.claude/rules/* and Claude support settings files — Listed tracked files exist in the current workspace.
 - tool:memory_audit — Granularity advisory identified this support card as broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized focused child-card split.
 

@@ -4,14 +4,14 @@ scopePath: Antigravity/.agents/rules/
 description: >-
   專案記憶：Antigravity 支援規則檔。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-02T14:00:38+08:00'
+last_updated: '2026-07-03T13:22:33+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-06-28T14:13:52+08:00'
+last_verified: '2026-07-03T13:09:01+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -36,6 +36,7 @@ metadata:
 ## Current Truth
 - This child card owns Antigravity support rule files.
 - Rule files bridge shared governance into the Antigravity platform packaging area.
+- Antigravity source sentinel `Antigravity/.agents/rules/AGENTS.md` and deployed live sentinel `.agents/rules/AGENTS.md` now state 62 shared operational skills.
 - Platform-specific wording must not override shared policy without an explicit source change.
 
 ## Active Constraints
@@ -43,8 +44,9 @@ metadata:
 - Check shared policy drift when editing these support rules.
 
 ## Cycle Events
+- 05: Recorded Antigravity sentinel skill-count repair from 50 to 62 in source and deployed live rule entrypoints.
 - 04: Recorded Antigravity support-rule hardening so [SUDO] no longer skips security or quality gates and experiment output stays prototype-only when validation is incomplete.
-- 03: Corrected Antigravity source and deployed rule sentinel skill count to 50 shared operational skills.
+- 03: 當時舊口徑：曾將 Antigravity source/deployed sentinel skill count 記為 50 shared operational skills；此口徑已由 event 05 修正為 62 shared operational skills.
 - 02: Updated Antigravity rule entrypoints to prefer deployed .agents/shared references.
 - 01: Split Antigravity rules ownership out of the support parent card.
 
@@ -53,6 +55,7 @@ metadata:
 
 ## Evidence Base
 - source:.agents/memory/_ag_core/support/archive-001.md — Previous support-card content preserved during migration.
+- source:Antigravity/.agents/rules/AGENTS.md and `.agents/rules/AGENTS.md` — Sentinel skill count verified at 62 shared operational skills on 2026-07-03.
 - tool:memory_audit — Granularity advisory identified this support card as broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized focused child-card split.
 
@@ -65,6 +68,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Antigravity 支援規則檔。
+- Antigravity source/live sentinel 的共用技能數已由當時舊口徑 50 修正並驗證為 62。
 - 修改時要比對 Shared 共用政策是否漂移。
 
 ## Tracked Files
