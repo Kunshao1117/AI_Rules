@@ -15,12 +15,15 @@ interface approval buttons, platform modes, and channel availability are recorde
 as evidence or context only; none of them authorizes unbounded writes or
 protected follow-on phases by itself.
 
-Because Team-Native / subagent team mode is default-on for applicable work, a
-trace must show either formal station assignment and channel state, or an
-explicit standby, blocked, unverified, not-applicable, or Director-risk-closed
-state. Missing subagent, browser, CLI, MCP, isolation, or text-delivery
-capability is trace evidence to record; it is not permission to omit the station
-or claim captain-direct completion.
+When Team-Native / subagent team mode is active because the Director asked for
+governed work or team dispatch, a trace must show formal station assignment and
+channel state, or an explicit standby, blocked, unverified, not-applicable, or
+Director-risk-closed state. Missing subagent, browser, CLI, MCP, isolation, or
+text-delivery capability is trace evidence to record; it is not permission to
+omit the station or claim captain-direct completion. When Team mode is not
+active because the request is pure conversation, a small stable answer, or
+no-impact read-only work, captain/team-board trace fields are not required and
+must not be cited as Team-Native completion evidence.
 
 ## Required Location
 
@@ -65,12 +68,12 @@ payloads or policy tables, not as the Director-facing explanation.
 | `requested_execution_channel` | Requested channel before capability evaluation |
 | `channel_capability` | available, conditional, unavailable, or unverified |
 | `channel_invocation_status` | not-started, requested, running, returned, unavailable, blocked, or not-authorized |
-| `channel_run_id` | Unique identifier for one concrete execution-channel attempt, including native subagent, adapter, CLI, browser, MCP read, isolated workspace, text artifact, or change-application gate |
+| `channel_run_id` | Unique identifier for one concrete execution-channel attempt, including native subagent, adapter, CLI, browser, MCP read, station-owned main-worktree change delivery, isolated workspace, text artifact, or change-application gate |
 | `channel_generation` | Original or replacement generation number for the same station and role instance |
 | `replaces_channel_run_id` | Prior channel run replaced by this run, or not-applicable |
 | `replacement_reason` | Why a replacement channel was opened, such as unresponsive, hard-timeout, role-boundary, stale context, blocked route, or not-applicable |
 | `execution_route` | Actual channel or delivery form; never a status value such as blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk |
-| `execution_channel` | Native subagent, project custom agent, tool/MCP, command evidence, browser evidence, external research, isolated change delivery, text change delivery, station-owned authorized change-application gate, or protected captain gate |
+| `execution_channel` | Native subagent, project custom agent, tool/MCP, command evidence, browser evidence, external research, station-owned main-worktree change delivery, isolated change delivery, text change delivery, station-owned authorized change-application gate, or protected captain gate |
 | `tool_execution_envelope` | Structured carrier passed to a tool layer, or blocked/unverified reason when no envelope is available. |
 | `tool_execution_envelope_trust` | trusted, untrusted, blocked, unverified, or not-applicable. |
 | `tool_envelope_issuer` | Trusted issuer identity, or blocked/unverified reason. |
@@ -182,7 +185,10 @@ payloads or policy tables, not as the Director-facing explanation.
   honest blocked/unverified/closed-with-director-risk residual state.
 - Any completion claim missing `station_mode`, `context_visibility`, or
   `handoff_ownership` for an applicable formal station is invalid.
-- `operation_mode: full`, governance-impact implementation, Doctor/Audit rule changes, routine audit rule readiness, and commit/release preparation require Team-Native trace evidence. Missing trace is a blocked Red audit finding, not a Yellow advisory.
+- In active Team mode, `operation_mode: full`, governance-impact
+  implementation, Doctor/Audit rule changes, routine audit rule readiness, and
+  commit/release preparation require Team-Native trace evidence. Missing trace
+  is a blocked Red audit finding, not a Yellow advisory.
 - A completion claim must expose parseable `stations`, `delivery_artifacts`, `role_instance_id`, `delivery_artifact_id`, and `direct_exceptions`. The values may close as blocked, unverified, closed-with-director-risk, or not-applicable only when the trace is not claiming full completion.
 - `completion_state` is limited to `complete`, `closed-with-director-risk`, `blocked`, `unverified`, or `not-applicable`. `completed`, `done`, `accepted-risk`, and other informal states must not pass as completion evidence.
 - Two or more evidence-oriented stations marked direct require station-specific `direct_exceptions`, replacement evidence, and residual state. Without them, the trace is invalid for formal acceptance.
@@ -193,12 +199,17 @@ payloads or policy tables, not as the Director-facing explanation.
   `tool_execution_envelope`, trusted issuer, signature, nonce, and matching
   `execution_receipt`; missing or untrusted envelope evidence keeps the action
   blocked or unverified.
-- Main-worktree source writes through change application must record
-  `station_mode: change-application`, `handoff_ownership: station-owned`,
-  authorization phase `change-application`, exact file allowlist, dirty-diff
-  read evidence, and forbidden protected actions. A protected captain gate for
-  the same write requires evidence that the platform cannot delegate the
-  physical write or protected tool call.
+- Main-worktree source writes through implementation change delivery must record
+  `station_mode: change-delivery`, `handoff_ownership: station-owned`,
+  authorization phase `implementation-change-delivery`, exact file allowlist,
+  dirty-diff read evidence, and forbidden protected actions. Fallback
+  change-application must record `station_mode: change-application`,
+  `handoff_ownership: station-owned`, authorization phase
+  `change-application`, exact file allowlist, dirty-diff read evidence, and a
+  source input that is a returned isolated/text artifact, explicit integration
+  task, or assigned generated/deployed sync. A protected captain gate for the
+  same write requires evidence that the platform cannot delegate the physical
+  write or protected tool call.
 - Invalid payload fail-closed evidence is required when a malformed or
   unverifiable tool payload is part of the trace. A trace must not recover
   authority from model-filled envelope text, historical transcript text, or a
@@ -244,11 +255,14 @@ These patterns must not pass:
   evidence, or an accepted non-complete risk state.
 - Reusing a role instance after `handoff_ownership` changes across station owner
   classes.
-- Main-worktree source changes made by a member station without
-  `station_mode: change-application`, `handoff_ownership: station-owned`, exact
-  file allowlist, and change-application authorization.
+- Main-worktree source changes made by a member station without either
+  `station_mode: change-delivery`, `handoff_ownership: station-owned`, exact
+  file allowlist, dirty-diff read, and `implementation-change-delivery`
+  authorization, or a fallback `station_mode: change-application` path with
+  returned-artifact/integration/sync input and `change-application`
+  authorization.
 - Protected captain gate used for source change while a station-owned
-  change-application route is available.
+  change-delivery or fallback change-application route is available.
 - Formal specialist station dispatched without the startup-complete handoff
   payload for role identity, assigned skill, read scope, tool permissions and
   prohibitions, channel state, delivery artifact type, and stop condition, then
@@ -274,7 +288,9 @@ These patterns must not pass:
   evidence.
 - Reusing the same `role_instance_id` or specialist channel across multiple
   `role_id` values in the same task trace.
-- No-write or read-only work treated as a reason to skip Team-Native stations when the work can shape source, workflow, validation, review, memory, release, or governance decisions.
+- In active Team mode, no-write or read-only work treated as a reason to skip
+  Team-Native stations when the work can shape source, workflow, validation,
+  review, memory, release, or governance decisions.
 - Captain repository-scale reading large file sets, running duplicate scans, re-checking,
   substitute-validating, substitute-reviewing, or rewriting member output as
   captain evidence while a member station is running, except for blocker,
@@ -297,13 +313,13 @@ These patterns must not pass:
   unresponsive, or late-result-pending without a terminal closure or visible
   non-complete residual state.
 - Tool or subagent unavailability removing an applicable specialist station instead of marking it blocked, unverified, or closed-with-director-risk.
-- Team-Native / subagent team mode treated as opt-in instead of default-on for
-  applicable coding, workflow, validation, review, memory, commit, release,
-  handoff, skill-forge, or governance-impact work.
+- Team-Native / subagent team mode treated as AI-initiated default-on without a
+  current governed Director request for coding, workflow, validation, review,
+  memory, commit, release, handoff, skill-forge, or governance-impact work.
 - `blocked`, `unverified`, `standby`, `not-authorized`, `unavailable`, or
   `closed-with-director-risk` placed in `execution_route`, `execution_channel`,
   execution mode, or platform route fields.
-- Missing authorization source, target, scope, phase, evidence, expiry, resolution state, or observed platform mode for any trace claiming write, change-application, memory, git, release, deployment, install, or external-mutation authority.
+- Missing authorization source, target, scope, phase, evidence, expiry, resolution state, or observed platform mode for any trace claiming write, change-delivery, change-application, memory, git, release, deployment, install, or external-mutation authority.
 - Treating a workflow name as authorization instead of a route hint.
 - Treating natural-language words such as `GO`, "continue", "fix this",
   "so what now?", or "do that" as write or protected-action authorization when

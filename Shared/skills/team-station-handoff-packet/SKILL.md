@@ -135,7 +135,14 @@ The packet is not startup-complete when `station_mode`, `context_visibility`, or
 `handoff_ownership` is missing for an applicable formal station. Missing fields
 keep the station blocked or unverified and cannot support a complete trace.
 
-For `station_mode: change-application`, the packet must also prove
+For `station_mode: change-delivery`, a main-worktree implementation packet must
+prove `handoff_ownership: station-owned`, authorization phase
+`implementation-change-delivery`, exact source file allowlist, dirty-diff read
+requirement, and forbidden protected actions.
+
+For `station_mode: change-application`, the packet must prove fallback
+integration source input as a returned isolated/text artifact, explicit
+integration task, or assigned generated/deployed sync, plus
 `handoff_ownership: station-owned` by default, authorization phase
 `change-application`, exact source file allowlist, dirty-diff read requirement,
 and forbidden protected actions. `handoff_ownership: captain-owned-gate` is
@@ -258,9 +265,13 @@ artifact merely because a replacement channel already returned.
 - A packet without loaded skill references is not a formal handoff.
 - Captain coordination read is not implementation, validation, review,
   memory/docs attribution, or completion evidence.
-- A main-worktree write packet is not captain-owned by default; it is a
-  station-owned `change-application` packet unless platform capability blocks
-  delegation and the board explicitly routes to a protected captain gate.
+- A main-worktree implementation packet uses station-owned `change-delivery` as
+  the primary route when authorization phase `implementation-change-delivery`,
+  exact file allowlist, dirty diff read, and no protected actions are present;
+  `change-application` is only fallback integration for a returned
+  isolated/text artifact, explicit integration task, or assigned
+  generated/deployed sync. If platform capability blocks delegation, the board
+  must explicitly route to a protected captain gate.
 - Missing work routes back to an eligible station or closes as blocked,
   unverified, or closed-with-director-risk.
 

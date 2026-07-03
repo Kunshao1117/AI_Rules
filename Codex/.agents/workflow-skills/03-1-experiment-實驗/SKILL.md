@@ -1,6 +1,6 @@
 ---
 name: "03-1-experiment-實驗"
-description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索，保留最小團隊治理；正式品質、測試與記憶收尾只能降級為明確處置，不得無記錄跳過。DO NOT use when: 生產建構、正式修復或需提交發布。"
+description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索；03-1 是受治理 workflow，使用者要求 03-1 / experiment / sandbox prototype 時由該請求觸發 Team mode，主線擔任隊長並可使用 reduced/minimal experiment station/board。Sandbox writes 必須記錄 sandbox scope、discard condition、promotion condition、allowed shortcuts；discard/promotion/production promotion 仍需 scope-bound authorization，且不得宣稱 production completion。DO NOT use when: 生產建構、正式修復或需提交發布。"
 required_skills: [programming-team-governance, team-specialist-registry, team-task-board, team-station-handoff-packet, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
 metadata:
   author: antigravity
@@ -12,7 +12,7 @@ metadata:
   role: writer
   memory_awareness: none
   tool_scope: ["filesystem:write", "terminal:manual"]
-  human_gate: "Director invocation required"
+  human_gate: "Scope-bound intent signal plus authorization resolution required before experiment writes"
   automation_safe: false
 ---
 
@@ -45,10 +45,27 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `03-1`.
 - Procedure reference: `03-1 Experiment` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Declare sandbox scope, discard or promotion condition, allowed shortcuts, and no production completion claim.
+- Route summary: Declare sandbox boundary, allowed change scope, discard conditions, promotion criteria, allowed shortcuts, and no production completion claim.
+- `03-1` experiment is a governed workflow route: a Director request for `03-1`,
+  experiment, sandbox prototype, spike, or dirty-code prototype activates Team
+  mode; the mainline acts as captain and records the experiment board before
+  broad evidence, station work, writes, promotion, or completion claims.
+- Use a reduced/minimal experiment station/board, not a no-team path. Record
+  sandbox scope, sandbox boundary, allowed change scope, discard condition,
+  promotion condition, and allowed shortcuts before sandbox writes.
+- Sandbox writes and team artifacts are experiment-only. They do not equal
+  production source completion, memory/docs completion, validation/review
+  acceptance, release readiness, or production promotion.
+- Discard, promotion, and production promotion remain scope-bound phases.
+  Promotion to `03`/build or any formal production source/governance/public-contract
+  write requires a new visible production plan plus authorization resolution,
+  `formal-write`, station-owned `change-delivery`, validation, review, and
+  memory/docs delivery.
+- The captain may coordinate and receive artifacts but must not declare 03-1
+  dirty code or team artifacts production complete.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
-- Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after a scope-bound Director intent signal passes authorization resolution and binds the explicit phase, file set, command, or required protected gate.
+- In active Team mode, use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
+- In active Team mode, use `formal-write` only after a scope-bound Director intent signal passes authorization resolution and binds the explicit phase, file set, command, or required protected gate.
 
 ## Completion Boundary
 

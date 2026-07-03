@@ -9,22 +9,25 @@ platform mode, channel availability, or a general request to use an agent.
 
 ## Priority Contract
 
-Team-Native Core has the highest governance priority whenever a task touches
-source, workflow, fix, build, validation, review, memory/docs, commit, release,
-deployment, install, project governance, generated copies, or public contracts.
+Team-Native Core has the highest governance priority after the current Director
+request asks for governed work touching source, workflow, fix, build, debug,
+test, audit, validation, review, memory/docs, commit, release, deployment,
+install, project governance, generated copies, or public contracts.
 
-Team-Native / subagent team mode is default-on at the authorization layer. A
-governance, workflow, fix, build, validation, review, memory/docs, commit,
-release, handoff, skill-forge, or public-contract request enters board-first
-routing before any write or protected authorization is consumed, without waiting
-for the Director to say "啟動團隊模式". Authorization decides the allowed target,
-scope, phase, and expiry; it does not decide whether team mode exists. Missing
-channel capability must be represented as station state, not as authorization to
-skip Team-Native mode.
+Team-Native / subagent team mode activates at the authorization layer when the
+current Director request is governed work, or when it asks for a team, team
+member, subagent, delegation, Team-Native, or equivalent dispatch. The Director
+does not need to say a fixed phrase such as "啟動團隊模式"; workflow and skill
+names are route signals. Authorization decides the allowed target, scope, phase,
+and expiry; it does not convert route hints, platform mode, tool capability,
+source impact, or prior conversation state into Team mode without a current
+governed Director request. Missing channel capability in active Team mode must
+be represented as station state, not as authorization to skip Team-Native
+requirements.
 
-When route hints, platform modes, approval UI, tool capability, or prior
-conversation state conflict with Team-Native Core, Team-Native Core wins and
-the authorization must be resolved by this policy.
+When Team mode is active and route hints, platform modes, approval UI, tool
+capability, or prior conversation state conflict with Team-Native Core,
+Team-Native Core wins and the authorization must be resolved by this policy.
 
 Workflow routes follow `Shared/policies/workflow-orchestration.md` only after
 this policy resolves the authorized target, scope, phase, and expiry. A route

@@ -3000,6 +3000,22 @@ function Measure-CodexHookGovernance {
     }
 }
 
+function Test-ProgrammingTeamActiveTeamContext {
+    param([string]$Content)
+    if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+    $activeTeamPattern = '(?im)^\s*[-*]?\s*["'']?(team_mode|Team mode|captain-led mode)["'']?\s*[:=]\s*["'']?(active|enabled)\b|(?im)^\s*[-*]?\s*["'']?operation_mode["'']?\s*[:=]\s*["'']?(daily|full)\b|(?im)^\s*[-*]?\s*["'']?(board_state|station_mode|handoff_ownership|channel_invocation_status)["'']?\s*[:=]|(?i)(after|when|in) (Team mode|captain-led mode).{0,80}active|(?i)active Team mode|Team mode 啟動後|Team mode 已啟動|受治理請求|governed (Director|user) request|隊長任務板|Captain Team Board'
+    return ($Content -match $activeTeamPattern)
+}
+
+function Test-ProgrammingTeamInactiveTeamContext {
+    param([string]$Content)
+    if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+    $inactiveTeamPattern = '(?i)(Team mode|captain-led mode|Team-Native).{0,120}(not active|inactive|not activated|未啟動)|未啟動.{0,80}(Team mode|Team-Native|captain-led|隊長制)|no current governed Director request|without a current governed|pure conversation|small stable answer|no-impact|純對話|小型穩定|無 source/governance/evidence|不套用 captain/team-board|ordinary lifecycle|normal lifecycle|一般生命週期|普通工作流'
+    return ($Content -match $inactiveTeamPattern)
+}
+
 function Measure-ProgrammingTeamGovernanceCoverage {
     <#
     .SYNOPSIS
@@ -3111,7 +3127,9 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         $lineNumber = 0
         Get-Content -LiteralPath $fullPath -Encoding UTF8 | ForEach-Object {
             $lineNumber++
-            if (($_ -match $pattern) -and ($_ -notmatch $allowedNegative)) {
+            $activeTeamLine = Test-ProgrammingTeamActiveTeamContext -Content $_
+            $inactiveTeamLine = Test-ProgrammingTeamInactiveTeamContext -Content $_
+            if (($_ -match $pattern) -and ($_ -notmatch $allowedNegative) -and $activeTeamLine -and (-not $inactiveTeamLine)) {
                 Add-ProgrammingTeamFinding -Severity 'Red' -File $RelativePath -Line $lineNumber -Reason $Reason -Text $_
             }
         }
@@ -3228,11 +3246,11 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         param([string]$Content)
         if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
 
-        $hasFormalReadonly = $Content -match 'formal-readonly|formal readonly|Team-First.{0,120}(read[- ]?only|readonly|唯讀)|正式.{0,80}(唯讀|無寫入)'
-        $hasNoWriteNotNoTeam = $Content -match 'no-write.{0,160}(not|does not mean|must not mean).{0,160}no-team|no-write.{0,160}team|no-write evidence|無寫入.{0,160}(不代表|不得解讀為).{0,160}(無團隊|不用團隊|不用隊員)|唯讀.{0,160}(不代表|不得解讀為).{0,160}(無團隊|不用團隊|不用隊員)'
-        $hasReadonlyExploration = $Content -match 'read-only exploration|no-write exploration|read-only evidence|no-write evidence|無寫入探索|唯讀探索|探索.{0,120}(no-write|read-only|無寫入|唯讀)'
+        $hasGovernedActivation = $Content -match '(?i)(governed (Director|user) request|governed work|受治理請求|受治理工作|使用者要求.{0,120}(source|governance|workflow|fix|build|debug|test|audit|skill|memory/docs|commit|handoff|public-contract|受治理)|Team mode.{0,160}(governance|workflow|fix|build|debug|test|audit|skill|memory/docs|commit|handoff|source|public-contract|受治理)|不需要.{0,40}(固定口令|啟動團隊模式)|does not need.{0,80}(fixed phrase|fixed Team))'
+        $hasInactiveFallback = $Content -match '(?i)(When captain-led mode is not active|When Team mode is not active|Team mode 未啟動|do not create a Captain Team Board|不套用 captain/team-board|pure conversation|small stable answer|no-impact|純對話|小型穩定|無 source/governance/evidence|ordinary lifecycle|normal lifecycle|一般生命週期|普通工作流)'
+        $hasActiveFormalReadonly = $Content -match '(?i)(active Team mode|after captain-led mode is active|Team mode 已啟動|Team mode 啟動後|In active captain-led mode).{0,220}(formal-readonly|formal readonly|正式.{0,80}(唯讀|無寫入))|formal-readonly.{0,160}(Team mode (is )?active|Team mode active|Team mode 已啟動|active Team mode)'
 
-        return ($hasFormalReadonly -and $hasNoWriteNotNoTeam -and $hasReadonlyExploration)
+        return ($hasGovernedActivation -and $hasInactiveFallback -and $hasActiveFormalReadonly)
     }
 
     function Test-ProgrammingTeamStandbyContent {
@@ -3479,7 +3497,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         $content = Get-ProgrammingTeamContent -Path (Join-Path $RepoRoot $relPath)
         if ($null -eq $content) { continue }
         if (-not (Test-ProgrammingTeamFirstReadonlyContent -Content $content)) {
-            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少 Team-First formal-readonly 與 no-write 不等於 no-team 語義' -Text '唯讀探索仍需要正式唯讀團隊路由（read-only exploration / formal-readonly）。'
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少受治理請求觸發 formal-readonly 與未啟動一般生命週期語義' -Text '受治理請求會觸發 Team mode；formal-readonly 是 Team mode active 後的唯讀站點要求。未啟動 Team mode 時應走一般生命週期與範圍式授權。'
         }
         if (-not (Test-ProgrammingTeamStandbyContent -Content $content)) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '缺少隊員 standby 與未啟動狀態回報語義' -Text '未啟動的隊員路由必須記錄為 standby、blocked、unverified、unavailable 或 not-authorized。'
@@ -3524,7 +3542,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         [PSCustomObject]@{ Pattern = '(?i)(direct after \bGO\b|after \bGO\b.{0,80}direct|\bGO\b.{0,80}direct|GO 後.{0,80}(直做|直接)|授權後.{0,80}(直做|直接))'; Reason = 'GO 後不得直接跳過正式變更交付站點' },
         [PSCustomObject]@{ Pattern = '(?i)(main-worktree writes?|main worktree writes?|主工作樹寫入|主線寫入).{0,140}(instead of|without|skip|direct|代替|沒有|跳過|直做|直接).{0,120}(change delivery|delivery artifact|變更交付|交付件|station|站點)'; Reason = 'main-worktree writes 不得替代變更交付件' },
         [PSCustomObject]@{ Pattern = '(?i)(隊長代工|captain substitute authoring|captain-substitute authoring|captain substituted).{0,160}(implementation|change delivery|變更交付|實作|完成|complete)'; Reason = '隊長代工不得當成正式實作或完成證據' },
-        [PSCustomObject]@{ Pattern = '(?i)(no-write|read-only|無寫入|唯讀).{0,160}(no-team|no team|without team|skip team|不用(團隊|隊員)|不需要(團隊|隊員)|無團隊)'; Reason = '不得把 no-write 或唯讀解讀成 no-team' },
+        [PSCustomObject]@{ Pattern = '(?i)(active Team mode|Team mode active|Team mode 啟動後|Team mode 因受治理請求|active captain-led mode|captain-led mode is active|after captain-led mode is active|formal-readonly|formal team stations|正式.{0,80}(唯讀|無寫入)).{0,220}(no-write|read-only|無寫入|唯讀).{0,160}(no-team|no team|without team|skip team|不用(團隊|隊員)|不需要(團隊|隊員)|無團隊)'; Reason = 'active Team mode 中不得把 no-write 或唯讀解讀成 no-team' },
         [PSCustomObject]@{ Pattern = '(?i)(captain|隊長).{0,120}(read|loaded|absorbed|deep read|完整讀|全量讀|吞|深讀).{0,120}(large file|whole file|full file|大檔|大型檔案|全檔|整份)'; Reason = '隊長不得用完整吞大檔替代隊員深讀' }
     )
 
@@ -3532,7 +3550,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         foreach ($bad in $formalDispatchNegativeChecks) {
             Add-ProgrammingTeamRegexFindings -RelativePath $relPath -Pattern $bad.Pattern -Reason $bad.Reason
         }
-        Add-ProgrammingTeamBadNoWriteNoTeamFindings -RelativePath $relPath -Reason '不得把 no-write 或唯讀解讀成 no-team'
+        Add-ProgrammingTeamBadNoWriteNoTeamFindings -RelativePath $relPath -Reason 'active Team mode 中不得把 no-write 或唯讀解讀成 no-team'
     }
 
     Add-ProgrammingTeamRegexFindings -RelativePath 'Shared\skills\programming-team-governance\SKILL.md' `
@@ -3639,8 +3657,11 @@ function Measure-ProgrammingTeamGovernanceCoverage {
             continue
         }
         $isThinRoutingEntry = Test-ProgrammingTeamThinWorkflowEntryContent -Content $content
-        if (($content -notmatch 'captain-led programming mode|captain-led programming trigger path|隊長制|隊長') -and (-not $isThinRoutingEntry)) {
-            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '聊天或探勘入口缺少編程意圖自動轉入隊長制規則' -Text $relPath
+        $declaresTeamOrDelegation = $content -match '(?i)Team[- ]?Native|Team mode|captain-led|subagent|delegation|隊長制|隊長|子代理|團隊'
+        $hasGovernedTeamActivation = $content -match '(?i)(governed (Director|user) request|governed work|受治理請求|受治理工作|使用者要求.{0,120}(source|governance|workflow|fix|build|debug|test|audit|skill|memory/docs|commit|handoff|public-contract|受治理)|Team mode.{0,160}(governance|workflow|fix|build|debug|test|audit|skill|memory/docs|commit|handoff|source|public-contract|受治理)|不需要.{0,40}(固定口令|啟動團隊模式)|does not need.{0,80}(fixed phrase|fixed Team))'
+        $hasInactiveNoTeamBoard = $content -match '(?i)(When Team mode is not active|Team mode 未啟動|not active.{0,100}captain/team-board|不套用 captain/team-board|不建立團隊站點板|do not create a Captain Team Board|ordinary lifecycle|normal lifecycle|一般生命週期|普通工作流)'
+        if ($declaresTeamOrDelegation -and (-not $isThinRoutingEntry) -and (-not ($hasGovernedTeamActivation -and $hasInactiveNoTeamBoard))) {
+            Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason 'Team mode 或 subagent delegation 聲明缺少受治理請求觸發與未啟動不套用 team-board 語義' -Text '文件若聲明 Team mode 或 subagent delegation，必須說明受治理使用者請求會觸發 Team mode；未啟動時走一般生命週期，不要求純聊天/小問答自動轉隊長制。'
         }
         if ($content -match 'Director must.*restate|must manually name|必須手動|手動指定') {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '聊天或探勘入口不得要求總監手動重述工作流名稱才觸發治理' -Text $relPath
@@ -3752,7 +3773,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         [PSCustomObject]@{ Pattern = '(?i)(direct after \bGO\b|after \bGO\b.{0,80}direct|\bGO\b.{0,80}direct|GO 後.{0,80}(直做|直接)|授權後.{0,80}(直做|直接))'; Reason = '工作流入口不得允許 GO 後直接跳過正式變更交付站點' },
         [PSCustomObject]@{ Pattern = '(?i)(main-worktree writes?|main worktree writes?|主工作樹寫入|主線寫入).{0,140}(instead of|without|skip|direct|代替|沒有|跳過|直做|直接).{0,120}(change delivery|delivery artifact|變更交付|交付件|station|站點)'; Reason = '工作流入口不得以 main-worktree writes 替代變更交付件' },
         [PSCustomObject]@{ Pattern = '(?i)(隊長代工|captain substitute authoring|captain-substitute authoring|captain substituted).{0,160}(implementation|change delivery|變更交付|實作|完成|complete)'; Reason = '工作流入口不得把隊長代工當成正式實作或完成證據' },
-        [PSCustomObject]@{ Pattern = '(?i)(no-write|read-only|無寫入|唯讀).{0,160}(no-team|no team|without team|skip team|不用(團隊|隊員)|不需要(團隊|隊員)|無團隊)'; Reason = '工作流入口不得把 no-write 或唯讀解讀成 no-team' },
+        [PSCustomObject]@{ Pattern = '(?i)(active Team mode|Team mode active|Team mode 啟動後|Team mode 因受治理請求|active captain-led mode|captain-led mode is active|after captain-led mode is active|formal-readonly|formal team stations|正式.{0,80}(唯讀|無寫入)).{0,220}(no-write|read-only|無寫入|唯讀).{0,160}(no-team|no team|without team|skip team|不用(團隊|隊員)|不需要(團隊|隊員)|無團隊)'; Reason = '工作流入口在 active Team mode 中不得把 no-write 或唯讀解讀成 no-team' },
         [PSCustomObject]@{ Pattern = '(?i)(captain|隊長).{0,120}(read|loaded|absorbed|deep read|完整讀|全量讀|吞|深讀).{0,120}(large file|whole file|full file|大檔|大型檔案|全檔|整份)'; Reason = '工作流入口不得用隊長完整吞大檔替代隊員深讀' }
     )
 
@@ -3791,7 +3812,7 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         foreach ($bad in $workflowEntryFormalDispatchForbiddenPatterns) {
             Add-ProgrammingTeamRegexFindings -RelativePath $relPath -Pattern $bad.Pattern -Reason $bad.Reason
         }
-        Add-ProgrammingTeamBadNoWriteNoTeamFindings -RelativePath $relPath -Reason '工作流入口不得把 no-write 或唯讀解讀成 no-team'
+        Add-ProgrammingTeamBadNoWriteNoTeamFindings -RelativePath $relPath -Reason '工作流入口在 active Team mode 中不得把 no-write 或唯讀解讀成 no-team'
         if (($content -notmatch 'evidence owner|證據負責') -and (-not $isThinWorkflowEntry)) {
             Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '工作流入口缺少證據負責人欄位' -Text $relPath
         }
@@ -3837,12 +3858,20 @@ function Measure-ProgrammingTeamGovernanceCoverage {
         if ($content -match 'enter captain-minimal team mode automatically\.\s*Classify task type|No specialist branch, subagent, browser branch, CLI branch, MCP evidence route') {
             Add-ProgrammingTeamFinding -Severity 'Yellow' -File $relPath -Line 1 -Reason '工作流入口不應複製舊版隊長制長段規則，應短引用 programming-team-governance 與 team-task-board' -Text $relPath
         }
-        if (($relPath -match '03-1') -and (-not $isThinWorkflowEntry)) {
-            if ($content -notmatch 'minimum (Programming|Captain) Team Board|最小.*團隊站點|team-station governance') {
-                Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '實驗入口缺少最小團隊站點宣告' -Text $relPath
+        if ($relPath -match '03-1') {
+            $hasExperimentGovernedActivation = $content -match '(?i)(03-1|experiment|sandbox prototype|sandbox|spike|dirty-code|髒碼|原型).{0,180}(governed workflow|受治理 workflow|受治理工作|activates Team mode|觸發 Team mode|Team mode 由該請求觸發|啟動 Team mode)|使用者要求.{0,180}(03-1|experiment|sandbox|spike|prototype|原型).{0,180}(Team mode|隊長)'
+            $hasExperimentBoard = $content -match '(?i)(reduced|minimal|縮減|最小).{0,100}(experiment station/board|Team station/board|station/board|experiment board|站點|任務板|實驗板)'
+            if (-not ($hasExperimentGovernedActivation -and $hasExperimentBoard)) {
+                Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '實驗入口缺少 03-1 受治理請求觸發 Team mode 與 reduced/minimal experiment station/board 語義' -Text $relPath
+            }
+            if ($content -match '(?i)(03-1|experiment|sandbox).{0,180}(does not activate Team|does not activate Team-Native|not activate Team|本身不自動啟動|不自動啟動)|(不要求|do not require).{0,80}Captain Team Board') {
+                Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '實驗入口仍保留 03-1 非團隊執行舊語義' -Text $relPath
             }
             if ($content -notmatch 'sandbox boundary|allowed change scope|discard conditions|promotion criteria') {
                 Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '實驗入口缺少沙盒邊界、允許改動、丟棄條件或升級條件' -Text $relPath
+            }
+            if ($content -notmatch '(?i)(sandbox writes?|沙盒寫入).{0,180}(production completion|production source completion|生產.*完成|不宣稱|不得宣稱)|production completion.{0,160}(scope-bound authorization|formal-write|change-delivery|validation|review|memory/docs)') {
+                Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '實驗入口缺少 sandbox writes 不等於 production completion 與 promotion gate 語義' -Text $relPath
             }
             if ($content -match 'All quality, security, test, and memory gates are DISABLED|ALL quality, security, testing, and memory gates are \*\*DISABLED\*\*|No review gate|所有.*閘門.*停用|所有安全閘門已停用') {
                 Add-ProgrammingTeamFinding -Severity 'Red' -File $relPath -Line 1 -Reason '實驗入口不得宣稱完全停用治理' -Text $relPath
@@ -4221,6 +4250,282 @@ function Measure-DirectorOutputContract {
     foreach ($finding in $results | Sort-Object Severity, File, Reason) {
         $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
         Write-Host ("  {0} {1} — {2}" -f $finding.Severity, $finding.File, $finding.Reason) -ForegroundColor $color
+    }
+
+    return [PSCustomObject]@{
+        Results     = @($results.ToArray())
+        RedCount    = $redCount
+        YellowCount = $yellowCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
+function Test-DirectorLanguageDominance {
+    param([string]$Content)
+
+    if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+    $hasExplicitMeaningFirstRule = $Content -match '(?is)(Traditional Chinese|繁體中文|zh-TW|中文|繁中).{0,180}(meaning[- ]first|plain-language|語義先行|意義先行|中文先行|含義先行)'
+
+    $scan = [regex]::Replace($Content, '(?s)```.*?```', ' ')
+    $scan = [regex]::Replace($scan, '`[^`]+`', ' ')
+    $scan = [regex]::Replace($scan, 'https?://\S+', ' ')
+    $scan = [regex]::Replace($scan, '(?m)^\s*\|.*\|\s*$', ' ')
+    $scan = [regex]::Replace($scan, '(?m)^\s*[-*]\s*[A-Za-z0-9_.-]+\s*[:=]', ' ')
+
+    $chineseCount = [regex]::Matches($scan, '[\u4e00-\u9fff]').Count
+    $englishWordCount = [regex]::Matches($scan, '\b[A-Za-z][A-Za-z-]{2,}\b').Count
+    return (($chineseCount -gt 0) -and ((($chineseCount * 2) -ge $englishWordCount) -or $hasExplicitMeaningFirstRule))
+}
+
+function Test-RawArtifactLedOutput {
+    param([string]$Content)
+
+    if ([string]::IsNullOrWhiteSpace($Content)) { return $false }
+
+    $inFence = $false
+    $negativePattern = '(?i)(must not|cannot|do not|not |never|forbidden|fails?|blocks?|不得|不可|不能|禁止|不應|不是|不通過|阻塞|轉譯|整合|彙整|synthesi[sz]e|rewrite)'
+    $rawLeadPattern = '(?i)^\s*(handoff_packet_id|board_state|station_mode|context_visibility|handoff_ownership|delivery_artifact(_id|_status)?|author_role|source_input|integrable_scope|review_state|validation_state|memory_docs_state)\s*[:|]'
+    $rawOutputPattern = '(?i)(raw[- ]?artifact[- ]?led|raw[- ]?field[- ]?led|English-only field list|specialist raw output|隊員 raw artifact|原樣貼|原文貼上)'
+    $directorPattern = '(?i)(Director-facing|Director|總監|總監可讀|completion report|完成報告|output|report|回報)'
+
+    foreach ($line in ($Content -split "\r?\n")) {
+        if ($line -match '^\s*```') {
+            $inFence = -not $inFence
+            continue
+        }
+        if ($inFence) { continue }
+
+        $trimmed = $line.Trim()
+        if (-not $trimmed) { continue }
+        if ($trimmed -match '^(https?://|[A-Za-z]:[\\/]|[./\\][^ ]+[\\/])') { continue }
+        if ($trimmed -match '^\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?$') { continue }
+        if ($trimmed -match '^`[^`]+`$') { continue }
+
+        $isRawLed = (($trimmed -match $rawLeadPattern) -and ($trimmed -match $directorPattern)) -or ($trimmed -match $rawOutputPattern)
+        if ($isRawLed -and ($trimmed -notmatch $negativePattern)) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
+function Measure-DirectorFacingOutputQuality {
+    <#
+    .SYNOPSIS
+        檢查政策與交付文件是否具備總監可讀輸出品質治理能力。
+    #>
+    param(
+        [string]$RepoRoot = ".",
+        [string]$TargetRoot = "."
+    )
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
+    $results = New-Object System.Collections.ArrayList
+    $qualityChecks = @{
+        meaning_first = [PSCustomObject]@{
+            Label = '繁中語義先行與英文 token 證據化'
+            Pattern = '(?is)(Traditional Chinese|繁體中文|zh-TW|中文|繁中).{0,240}(meaning[- ]first|plain-language|語義先行|意義先行|中文先行|含義先行).{0,420}(technical identifiers?|technical tokens?|canonical|英文|English|token|field|path|command|exact field|identifiers?).{0,420}(supporting evidence|evidence|precision|identifier|parentheses|證據|精確|輔助|括號)|英文.{0,160}(canonical|identifier|token|field|path|command).{0,180}(證據|精確|保留)|技術.{0,160}(identifier|token|名稱|欄位).{0,220}(證據|精確|括號|輔助)|Director-facing display uses Traditional Chinese meaning first'
+        }
+        raw_artifact_synthesis = [PSCustomObject]@{
+            Label = '隊員 raw artifact 不得原貼且需隊長轉譯'
+            Pattern = '(?is)(Team-member delivery artifacts?|specialist raw output|internal delivery artifacts?|內部交付件|隊員|交付件).{0,260}(not Director-facing|not.*Director-facing|不得|不可|不能|禁止|must not|cannot|Do not|synthesi[sz]ed rather than pasted|轉譯|整合|彙整|不得原樣|不得貼).{0,260}(Director|總監|Director-facing|總監可讀|output|report)|((隊長|captain|主代理).{0,240}(synthesi[sz]e|轉譯|整合|彙整|rewrite|摘要).{0,220}(交付件|artifacts?|總監|Director))'
+        }
+        chinese_table_labels = [PSCustomObject]@{
+            Label = '總監表格欄位中文主標籤'
+            Pattern = '(?is)(Director-facing tables?|總監.{0,80}表格|總監可讀.{0,80}表格|欄位).{0,260}(Traditional Chinese|中文|繁中|Chinese).{0,220}(column labels?|欄位|primary labels?|主標籤|主 labels?)|任務板狀態（board_state）|完成狀態（completion_state）|讀取範圍（read_scope）'
+        }
+        completion_gate = [PSCustomObject]@{
+            Label = '英文主導或 raw-field-led 輸出不得宣稱 complete'
+            Pattern = '(?is)(English-led|English-only|英文主導|raw-artifact-led|raw-field-led|unsynthesized|未整合|raw field|raw artifact).{0,240}(blocks?\s+`?complete`?|complete|completion|完成|阻塞|不通過|fail|不得|不可|不能)|((completion gate|完成門檻|完成閘門).{0,260}(Director-facing output governance|總監輸出|總監可讀).{0,260}(English-led|raw-artifact-led|raw-field-led|unsynthesized|英文主導|未整合))'
+        }
+    }
+
+    $targets = @(
+        [PSCustomObject]@{ Scope = 'language-governance-source'; Path = Join-Path $RepoRoot 'Shared\policies\language-governance.md'; Checks = @('meaning_first', 'raw_artifact_synthesis', 'chinese_table_labels', 'completion_gate') },
+        [PSCustomObject]@{ Scope = 'language-governance-target'; Path = Join-Path $TargetRoot '.agents\shared\policies\language-governance.md'; Checks = @('meaning_first', 'raw_artifact_synthesis', 'chinese_table_labels', 'completion_gate') },
+        [PSCustomObject]@{ Scope = 'team-completion-gate-source'; Path = Join-Path $RepoRoot 'Shared\skills\team-completion-gate\SKILL.md'; Checks = @('meaning_first', 'raw_artifact_synthesis', 'completion_gate') },
+        [PSCustomObject]@{ Scope = 'team-completion-gate-target'; Path = Join-Path $TargetRoot '.agents\skills\team-completion-gate\SKILL.md'; Checks = @('meaning_first', 'raw_artifact_synthesis', 'completion_gate') },
+        [PSCustomObject]@{ Scope = 'team-task-board-source'; Path = Join-Path $RepoRoot 'Shared\skills\team-task-board\SKILL.md'; Checks = @('meaning_first', 'raw_artifact_synthesis', 'chinese_table_labels') },
+        [PSCustomObject]@{ Scope = 'team-task-board-target'; Path = Join-Path $TargetRoot '.agents\skills\team-task-board\SKILL.md'; Checks = @('meaning_first', 'raw_artifact_synthesis', 'chinese_table_labels') }
+    )
+
+    function Get-DirectorFacingOutputQualityPath {
+        param([string]$Path)
+        if (Test-Path -LiteralPath $Path) {
+            return (Get-AuditRelativePath -RepoRoot $RepoRoot -Path $Path)
+        }
+        return $Path
+    }
+
+    function Add-DirectorFacingOutputQualityFinding {
+        param(
+            [string]$Severity,
+            [string]$File,
+            [int]$Line,
+            [string]$Reason,
+            [string]$Text
+        )
+
+        $null = $results.Add([PSCustomObject]@{
+            Severity = $Severity
+            File     = $File
+            Line     = $Line
+            Reason   = $Reason
+            Text     = $Text
+        })
+    }
+
+    foreach ($target in $targets) {
+        $displayPath = Get-DirectorFacingOutputQualityPath -Path $target.Path
+        if (-not (Test-Path -LiteralPath $target.Path)) {
+            Add-DirectorFacingOutputQualityFinding -Severity 'Red' -File $displayPath -Line 1 -Reason ("缺少總監可讀輸出品質治理目標：{0}" -f $target.Scope) -Text $target.Path
+            continue
+        }
+
+        $content = Get-Content -LiteralPath $target.Path -Raw -Encoding UTF8
+        $missing = New-Object System.Collections.Generic.List[string]
+        foreach ($checkName in @($target.Checks)) {
+            if (-not $qualityChecks.ContainsKey($checkName)) { continue }
+            $check = $qualityChecks[$checkName]
+            if ($content -notmatch $check.Pattern) {
+                $missing.Add($check.Label)
+            }
+        }
+
+        if (@($missing).Count -gt 0) {
+            Add-DirectorFacingOutputQualityFinding -Severity 'Red' -File $displayPath -Line 1 -Reason ("{0} 缺少總監可讀輸出品質治理能力：{1}" -f $target.Scope, (($missing.ToArray()) -join ', ')) -Text '政策主體缺失。'
+        }
+
+        if (-not (Test-DirectorLanguageDominance -Content $content)) {
+            Add-DirectorFacingOutputQualityFinding -Severity 'Yellow' -File $displayPath -Line 1 -Reason ("{0} 疑似缺少繁中語義優先訊號" -f $target.Scope) -Text '此檢查只作樣式風險提示，程式碼、路徑、URL、schema 與 fenced code 已排除。'
+        }
+        if (Test-RawArtifactLedOutput -Content $content) {
+            Add-DirectorFacingOutputQualityFinding -Severity 'Yellow' -File $displayPath -Line 1 -Reason ("{0} 疑似存在 raw artifact 或 raw field 主導的總監輸出樣式" -f $target.Scope) -Text '疑似樣式問題列黃燈，需人工判讀是否為反例、schema 或內部模板。'
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 總監可讀輸出品質（Director-Facing Output Quality）"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
+    foreach ($finding in $results | Sort-Object Severity, File, Line, Reason) {
+        $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+        Write-Host ("  {0} {1}:{2} — {3}" -f $finding.Severity, $finding.File, $finding.Line, $finding.Reason) -ForegroundColor $color
+        if ($finding.Text) {
+            Write-Host ("      {0}" -f $finding.Text) -ForegroundColor DarkGray
+        }
+    }
+
+    return [PSCustomObject]@{
+        Results     = @($results.ToArray())
+        RedCount    = $redCount
+        YellowCount = $yellowCount
+        Passed      = ($redCount -eq 0)
+    }
+}
+
+function Measure-HighChangeGroundingGap {
+    <#
+    .SYNOPSIS
+        檢查高變動與外部事實接地查證治理能力是否存在。
+    #>
+    param(
+        [string]$RepoRoot = ".",
+        [string]$TargetRoot = "."
+    )
+
+    $RepoRoot = (Resolve-Path $RepoRoot).Path
+    $TargetRoot = (Resolve-Path $TargetRoot).Path
+    $results = New-Object System.Collections.ArrayList
+    $groundingChecks = @{
+        high_change_must_verify = [PSCustomObject]@{
+            Label = '高變動或外部事實必須查證'
+            Pattern = '(?is)(high-change|高變動|外部事實|external facts?|latest|current).{0,260}(verify|查證|search|browse|official|primary|轉研究|必查|must)|(高變動.{0,160}必查)|(外部.{0,120}事實.{0,160}查證)'
+        }
+        official_primary_priority = [PSCustomObject]@{
+            Label = '來源分級與官方/primary source 優先'
+            Pattern = '(?is)(official documentation|official docs|official or primary sources|primary sources?|官方文件|官方|一手來源|primary-source|來源分級|source tier|source credibility|官方優先)'
+        }
+        unverified_blocked_labels = [PSCustomObject]@{
+            Label = '未查、查不到或阻塞需明確標示'
+            Pattern = '(?is)(未驗證|阻塞|blocked|unverified|查不到|未查|missing evidence|missing tools|missing credentials|缺少資料|缺證).{0,260}(不得|不可|cannot|must not|report|標明|標示|回報|只能|not treated as success|不宣稱)'
+        }
+        model_memory_not_verified = [PSCustomObject]@{
+            Label = '不得用模型記憶宣稱已驗證'
+            Pattern = '(?is)(model knowledge|internal model knowledge|model memory|模型記憶|內建知識|memory and internal model knowledge).{0,260}(stale|possibly stale|過時|不得|不可|不能|not verified|not.*current|不能宣稱|不得宣稱)|(不得|不可|不能).{0,180}(模型|model|memory|記憶).{0,180}(已驗證|verified|current)|grounding-governance\.md'
+        }
+    }
+
+    $targets = @(
+        [PSCustomObject]@{ Scope = 'codex-core-source'; Path = Join-Path $RepoRoot 'Codex\.codex\AGENTS.md'; Checks = @('high_change_must_verify', 'official_primary_priority', 'unverified_blocked_labels', 'model_memory_not_verified') },
+        [PSCustomObject]@{ Scope = 'codex-core-target'; Path = Join-Path $TargetRoot '.codex\AGENTS.md'; Checks = @('high_change_must_verify', 'official_primary_priority', 'unverified_blocked_labels', 'model_memory_not_verified') },
+        [PSCustomObject]@{ Scope = 'grounding-governance-source'; Path = Join-Path $RepoRoot 'Shared\policies\grounding-governance.md'; Checks = @('official_primary_priority', 'unverified_blocked_labels', 'model_memory_not_verified') },
+        [PSCustomObject]@{ Scope = 'grounding-governance-target'; Path = Join-Path $TargetRoot '.agents\shared\policies\grounding-governance.md'; Checks = @('official_primary_priority', 'unverified_blocked_labels', 'model_memory_not_verified') },
+        [PSCustomObject]@{ Scope = 'workflow-evidence-matrix-source'; Path = Join-Path $RepoRoot 'Shared\workflow-capability-evidence-matrix.md'; Checks = @('high_change_must_verify', 'official_primary_priority', 'unverified_blocked_labels') },
+        [PSCustomObject]@{ Scope = 'workflow-evidence-matrix-target'; Path = Join-Path $TargetRoot '.agents\shared\workflow-capability-evidence-matrix.md'; Checks = @('high_change_must_verify', 'official_primary_priority', 'unverified_blocked_labels') },
+        [PSCustomObject]@{ Scope = 'platform-capability-matrix-source'; Path = Join-Path $RepoRoot 'Shared\platform-capability-matrix.md'; Checks = @('official_primary_priority', 'unverified_blocked_labels') },
+        [PSCustomObject]@{ Scope = 'platform-capability-matrix-target'; Path = Join-Path $TargetRoot '.agents\shared\platform-capability-matrix.md'; Checks = @('official_primary_priority', 'unverified_blocked_labels') }
+    )
+
+    function Add-HighChangeGroundingFinding {
+        param(
+            [string]$Severity,
+            [string]$File,
+            [int]$Line,
+            [string]$Reason,
+            [string]$Text
+        )
+
+        $null = $results.Add([PSCustomObject]@{
+            Severity = $Severity
+            File     = $File
+            Line     = $Line
+            Reason   = $Reason
+            Text     = $Text
+        })
+    }
+
+    foreach ($target in $targets) {
+        $displayPath = if (Test-Path -LiteralPath $target.Path) { Get-AuditRelativePath -RepoRoot $RepoRoot -Path $target.Path } else { $target.Path }
+        if (-not (Test-Path -LiteralPath $target.Path)) {
+            Add-HighChangeGroundingFinding -Severity 'Red' -File $displayPath -Line 1 -Reason ("缺少外部接地查證治理目標：{0}" -f $target.Scope) -Text $target.Path
+            continue
+        }
+
+        $content = Get-Content -LiteralPath $target.Path -Raw -Encoding UTF8
+        $missing = New-Object System.Collections.Generic.List[string]
+        foreach ($checkName in @($target.Checks)) {
+            if (-not $groundingChecks.ContainsKey($checkName)) { continue }
+            $check = $groundingChecks[$checkName]
+            if ($content -notmatch $check.Pattern) {
+                $missing.Add($check.Label)
+            }
+        }
+
+        if (@($missing).Count -gt 0) {
+            Add-HighChangeGroundingFinding -Severity 'Red' -File $displayPath -Line 1 -Reason ("{0} 缺少外部接地查證治理能力：{1}" -f $target.Scope, (($missing.ToArray()) -join ', ')) -Text '政策主體缺失。'
+        }
+    }
+
+    $redCount = ($results | Where-Object { $_.Severity -eq 'Red' }).Count
+    $yellowCount = ($results | Where-Object { $_.Severity -eq 'Yellow' }).Count
+
+    Write-Host ""
+    Write-Host "📊 高變動外部接地查證（High-Change Grounding）"
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "🔴 Red：$redCount  🟡 Yellow：$yellowCount"
+    foreach ($finding in $results | Sort-Object Severity, File, Line, Reason) {
+        $color = if ($finding.Severity -eq 'Red') { 'Red' } else { 'Yellow' }
+        Write-Host ("  {0} {1}:{2} — {3}" -f $finding.Severity, $finding.File, $finding.Line, $finding.Reason) -ForegroundColor $color
+        if ($finding.Text) {
+            Write-Host ("      {0}" -f $finding.Text) -ForegroundColor DarkGray
+        }
     }
 
     return [PSCustomObject]@{
@@ -5784,11 +6089,12 @@ function Measure-TeamTraceEvidence {
             Add-TeamTraceFinding -Severity 'Yellow' -File $rel -Line 1 -Reason 'Team-Native trace 使用舊補丁、packet 或隊長代工語義，只能作遺留偵測' -Text $legacyText
         }
 
+        $isActiveTeamTrace = (Test-ProgrammingTeamActiveTeamContext -Content $content) -and (-not (Test-ProgrammingTeamInactiveTeamContext -Content $content))
         $isNoWriteTrace = $content -match '(?i)\bimplementation_authorization\b\s*[:=]\s*["'']?(no-write|plan-only)\b|\bno-write\b|無寫入|唯讀'
         $isExplorationTrace = $content -match '(?i)\btask_type\b\s*[:=]\s*["'']?(exploration|discussion|validation-audit)\b|read-only exploration|no-write exploration|無寫入探索|唯讀探索|探索'
         $hasFormalReadonlyTrace = $content -match '(?i)formal-readonly|formal readonly|Team-First.{0,120}(read[- ]?only|readonly|唯讀)|正式.{0,80}(唯讀|無寫入)'
-        if ($isNoWriteTrace -and $isExplorationTrace -and (-not $hasFormalReadonlyTrace)) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '無寫入探索缺少 Team-First formal-readonly' -Text '無寫入探索仍必須記錄正式唯讀團隊路由（no-write / formal-readonly）。'
+        if ($isActiveTeamTrace -and $isNoWriteTrace -and $isExplorationTrace -and (-not $hasFormalReadonlyTrace)) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'active Team trace 無寫入探索缺少 formal-readonly' -Text 'Team mode active 的無寫入探索必須記錄正式唯讀團隊路由；未啟動 Team mode 的 no-write/readonly 走一般生命週期。'
         }
 
         $operationMode = Get-TeamTraceFieldValue -Content $content -Fields @('operation_mode', 'operation mode', '操作模式')
@@ -5813,13 +6119,15 @@ function Measure-TeamTraceEvidence {
         $noWriteNoTeamAllowedNegative = '(?i)(does not mean|must not mean|not equal|must not|do not|不是|不代表|不得|不可|不能|不應|禁止)'
         $hasBadNoWriteNoTeamTrace = $false
         foreach ($line in ($content -split "\r?\n")) {
-            if (($line -match $noWriteNoTeamPattern) -and ($line -notmatch $noWriteNoTeamAllowedNegative)) {
+            $activeTeamLine = Test-ProgrammingTeamActiveTeamContext -Content $line
+            $inactiveTeamLine = Test-ProgrammingTeamInactiveTeamContext -Content $line
+            if (($line -match $noWriteNoTeamPattern) -and ($line -notmatch $noWriteNoTeamAllowedNegative) -and $activeTeamLine -and (-not $inactiveTeamLine)) {
                 $hasBadNoWriteNoTeamTrace = $true
                 break
             }
         }
         if ($hasBadNoWriteNoTeamTrace) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '任務軌跡把 no-write 或唯讀解讀成 no-team' -Text '唯讀或無寫入狀態（no-write）只限制變更動作，不代表可以移除正式團隊站點（formal team stations）。'
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'active Team trace 把 no-write 或唯讀解讀成 no-team' -Text 'Team mode active 後，唯讀或無寫入狀態（no-write）只限制變更動作，不代表可以移除正式團隊站點。'
         }
 
         $hasNotStartedChannel = $content -match '(?im)^\s*[-*]?\s*["'']?channel_invocation_status["'']?\s*[:=]\s*["'']?not-started\b'
@@ -5956,8 +6264,8 @@ function Measure-TeamTraceEvidence {
         }
 
         $hasStandbyTrace = $content -match '(?i)\bstandby\b|待命'
-        if ($isNoWriteTrace -and $isExplorationTrace -and (-not $hasStandbyTrace)) {
-            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason '無寫入探索缺少隊員 standby 狀態' -Text '正式唯讀軌跡（formal-readonly）必須保留隊員待命（standby），或 blocked / unverified 等等價狀態。'
+        if ($isActiveTeamTrace -and $isNoWriteTrace -and $isExplorationTrace -and (-not $hasStandbyTrace)) {
+            Add-TeamTraceFinding -Severity 'Red' -File $rel -Line 1 -Reason 'active Team trace 無寫入探索缺少隊員 standby 狀態' -Text 'Team mode active 的 formal-readonly 軌跡必須保留隊員待命（standby），或 blocked / unverified 等等價狀態。'
         }
 
         $standbyCompletionPattern = '(?i)(\bstandby\b|待命).{0,160}(\bcomplete\b|completed|full team completion|formal completion evidence|完整完成|完整團隊完成|已完成|已回收|已整合|正式完成證據|驗收通過)'
@@ -6226,6 +6534,8 @@ function Invoke-PlatformGovernanceAudit {
     $subagentPolicy = Measure-SharedSubagentPolicyDrift -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $subagentVocabulary = Measure-SubagentVocabularyDrift -RepoRoot $RepoRoot
     $directorOutput = Measure-DirectorOutputContract -RepoRoot $RepoRoot -TargetRoot $TargetRoot
+    $directorFacingOutputQuality = Measure-DirectorFacingOutputQuality -RepoRoot $RepoRoot -TargetRoot $TargetRoot
+    $highChangeGrounding = Measure-HighChangeGroundingGap -RepoRoot $RepoRoot -TargetRoot $TargetRoot
     $projectLinks = Measure-ProjectSkillLinks -TargetRoot $TargetRoot
     $sharedContextTemplates = Measure-SharedContextTemplates -RepoRoot $RepoRoot
     $projectContext = Measure-ProjectContextCards -TargetRoot $TargetRoot
@@ -6236,9 +6546,9 @@ function Invoke-PlatformGovernanceAudit {
     $skillRed = ($skillQuality | Where-Object { $_.OverallStatus -eq '🔴' }).Count
     $skillYellow = ($skillQuality | Where-Object { $_.OverallStatus -eq '🟡' }).Count
     $docStale = $docs.StaleHits.Count
-    $redTotal = $runtime.RedCount + $semantics.RedCount + $reviewGovernance.RedCount + $programmingTeamGovernance.RedCount + $teamNativeCore.RedCount + $teamTraceEvidence.RedCount + $codexHooks.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $projectLinks.RedCount + $sharedContextTemplates.RedCount + $projectContext.RedCount + $memoryNaming.RedCount
+    $redTotal = $runtime.RedCount + $semantics.RedCount + $reviewGovernance.RedCount + $programmingTeamGovernance.RedCount + $teamNativeCore.RedCount + $teamTraceEvidence.RedCount + $codexHooks.RedCount + $subagentPolicy.RedCount + $subagentVocabulary.RedCount + $directorOutput.RedCount + $directorFacingOutputQuality.RedCount + $highChangeGrounding.RedCount + $projectLinks.RedCount + $sharedContextTemplates.RedCount + $projectContext.RedCount + $memoryNaming.RedCount
     $redTotal += $skillRed
-    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $reviewGovernance.YellowCount + $programmingTeamGovernance.YellowCount + $teamNativeCore.YellowCount + $teamTraceEvidence.YellowCount + $codexHooks.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount + $memoryNaming.YellowCount
+    $yellowTotal = $runtime.YellowCount + $semantics.YellowCount + $reviewGovernance.YellowCount + $programmingTeamGovernance.YellowCount + $teamNativeCore.YellowCount + $teamTraceEvidence.YellowCount + $codexHooks.YellowCount + $subagentPolicy.YellowCount + $subagentVocabulary.YellowCount + $directorOutput.YellowCount + $directorFacingOutputQuality.YellowCount + $highChangeGrounding.YellowCount + $projectLinks.YellowCount + $sharedContextTemplates.YellowCount + $projectContext.YellowCount + $memoryNaming.YellowCount
     $yellowTotal += $metadataYellow + $skillYellow
     $ok = $capability.CapabilityMatrix -and $capability.WorkflowMatrix -and $capability.TargetSharedRefs -and $capability.TargetCodexSupport -and $capability.ProjectToolSource -and $capability.TargetProjectTools -and $capability.McpProfiles -and $capability.MemoryMigrationManager -and $capability.MemoryMigrationExtension -and ($metadataFail -eq 0) -and ($skillRed -eq 0) -and ($docStale -eq 0) -and ($redTotal -eq 0)
 
@@ -6265,6 +6575,8 @@ function Invoke-PlatformGovernanceAudit {
         SubagentPolicy = $subagentPolicy
         SubagentVocabulary = $subagentVocabulary
         DirectorOutput = $directorOutput
+        DirectorFacingOutputQuality = $directorFacingOutputQuality
+        HighChangeGrounding = $highChangeGrounding
         ProjectLinks = $projectLinks
         SharedContextTemplates = $sharedContextTemplates
         ProjectContext = $projectContext
@@ -6275,4 +6587,4 @@ function Invoke-PlatformGovernanceAudit {
     }
 }
 
-Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-ReviewGovernanceCoverage, Measure-ProgrammingTeamGovernanceCoverage, Measure-TeamNativeCoreSemantics, Measure-TeamTraceEvidence, Measure-CodexHookGovernance, Measure-DirectorOutputContract, Measure-ProjectSkillLinks, Measure-SharedContextTemplates, Measure-ProjectContextCards, Measure-MemoryCardNaming, Invoke-PlatformGovernanceAudit
+Export-ModuleMember -Function Invoke-DocScan, Invoke-HealthAudit, Measure-SkillQuality, Measure-WorkflowMetadata, Measure-DocsConsistency, Measure-PlatformCapability, Measure-RuntimeGlobalDrift, Measure-SharedSubagentPolicyDrift, Measure-SubagentVocabularyDrift, Measure-GovernanceSemantics, Measure-ReviewGovernanceCoverage, Measure-ProgrammingTeamGovernanceCoverage, Measure-TeamNativeCoreSemantics, Measure-TeamTraceEvidence, Measure-CodexHookGovernance, Measure-DirectorOutputContract, Measure-DirectorFacingOutputQuality, Measure-HighChangeGroundingGap, Test-DirectorLanguageDominance, Test-RawArtifactLedOutput, Measure-ProjectSkillLinks, Measure-SharedContextTemplates, Measure-ProjectContextCards, Measure-MemoryCardNaming, Invoke-PlatformGovernanceAudit

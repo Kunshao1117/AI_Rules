@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 一般討論、探索、實驗、濃縮與測試指令。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-03T13:40:58+08:00'
+last_updated: '2026-07-03T21:01:39+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T04:26:23+08:00'
+last_verified: '2026-07-03T18:59:34+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 24
+cycle_event_count: 25
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,16 +34,17 @@ metadata:
 # _claude_core.support.commands-general — Claude General Commands Memory
 ## Current Truth
 - Claude general command entries now reference workflow-orchestration before evidence-bearing work, station work, write paths, or completion.
-- Claude general and experiment commands now record draft/formal board semantics, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once launch.
+- Claude general commands automatically enter Team mode for governed user requests; command names alone do not self-start team work without a current governed request.
+- In active Claude Team mode, the mainline automatically serves as captain and is limited to captain coordination, dispatch, receipt, synthesis, protected gates, and reporting.
 - Claude experiment and general commands now explicitly load team-task-board and use template references instead of duplicating full team rules inline.
-- Claude chat, explore, experiment, condense, and test commands now route coding intent through task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` rules.
-- Claude chat and explore now route coding intent into captain-led mode, and experiment uses a minimum Captain Team Board with role boundary and isolated change delivery conditions.
+- Claude `03-1` is a governed workflow: requests for `03-1`, experiment, sandbox prototype, spike, or dirty-code prototype automatically activate Team mode.
+- Claude `03-1` uses a reduced/minimal experiment station/board that records sandbox scope, allowed change scope, discard condition, promotion condition, and allowed shortcuts; sandbox writes do not equal production completion.
 - Claude experiment and test commands now load programming-team-governance and require applicability/execution-mode Programming Team Boards for coding-related validation and completion stations.
 - Claude experiment and test commands now require evidence owner, direct exception, completion condition, and all-direct fake-team guards in Programming Team Boards.
 - Claude condense command now uses the MCP memory evidence contract to separate source memory from project context evidence.
 - This child card owns Claude shared command gates and general command entries.
 - General commands must stay aligned with shared workflow semantics and Claude permission behavior.
-- Claude 00 chat is direct only for pure conversation with no external evidence dependency; files, screenshots, memory cards, rules, agent behavior, tool output, or governance-impact questions enter Team-Native formal-readonly and require returned evidence plus captain verify-read.
+- Claude 00 chat is direct only for pure conversation with no external evidence dependency; Team mode starts from a current governed request or dispatch request, not from command names alone.
 - Claude command names and natural-language approvals are route intent plus scope-bound evidence only; write authority requires the matching formal write station, with authorization resolution binding the visible scope and protected phase.
 - Claude experiment command wording now describes sandbox direct execution as an isolated experiment lane, not captain mainline substitute authoring or a routine direct route for production work.
 - Test commands must select evidence by interface surface rather than assuming browser-only proof.
@@ -53,6 +54,7 @@ metadata:
 - Do not transfer main-agent responsibility to subagents.
 - Do not write source or memory from read-only command flows without the appropriate gate.
 ## Cycle Events
+- 25: Corrected Claude `03-1` truth: governed experiment requests auto-activate Team mode, use reduced/minimal experiment boards, and keep sandbox writes separate from production completion.
 - 24: Batch 4B recorded general command formal-write semantics for 00/01/03-1/05/06: scope-bound intent signal, authorization resolution, and protected gates now precede write authority.
 - 23: Recorded Claude command security footer hardening so [SUDO] cannot bypass role limits, scoped authorization, Team-Native, validation, review, protected gates, or complete claims.
 - 22: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
@@ -90,11 +92,11 @@ metadata:
 
 ## Conflicts and Supersession
 - No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
-
 ## 中文摘要
 - 此子卡負責 Claude 一般指令與共用閘門。
 - Claude 00 指令現在只讓純聊天直接回覆；需要檔案、截圖、記憶、規則、工具輸出或治理證據時要升級 formal-readonly。
-- 實驗與測試指令需宣告最小團隊站點與主線直做例外。
+- `03-1` 是受治理 workflow；使用者要求 experiment/sandbox prototype 會自動啟動 Team mode 並使用 reduced/minimal experiment station/board，且不作 production completion claim。
+- Team mode 啟動後主線自動擔任隊長，但只能做隊長職權內工作。
 - 測試指令要依介面型態選擇證據。
 - Batch 4B 已把 00/01/03-1/05/06 的 formal-write 語意收斂為先經授權解析，綁定可見計畫、檔案集、站點、命令、階段、期限與受保護閘門。
 

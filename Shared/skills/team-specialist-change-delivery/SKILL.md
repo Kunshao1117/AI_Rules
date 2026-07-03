@@ -3,8 +3,9 @@ name: team-specialist-change-delivery
 description: >
   [Infra] Change delivery specialist for governed Team-Native implementation.
   Use when: creating a change delivery artifact in a governed fork, isolated
-  workspace, text-only delivery, or authorized main-worktree change-application
-  station for approved file scope; implement change,
+  workspace, text-only delivery, authorized main-worktree change-delivery
+  station, or fallback change-application station for approved file scope;
+  implement change,
   變更交付件、隔離工作區、文字交付、受控實作。 DO NOT use when: reviewing the
   same change, mutating memory, git, release, deployment, external state,
   自審、記憶提交、提交發布、部署。
@@ -15,7 +16,7 @@ metadata:
   kind: operational
   style: hybrid
   memory_awareness: read
-  tool_scope: ["filesystem:read", "filesystem:write:isolated", "filesystem:write:main-worktree:change-application"]
+  tool_scope: ["filesystem:read", "filesystem:write:isolated", "filesystem:write:main-worktree:change-delivery", "filesystem:write:main-worktree:change-application"]
   relations:
     role_id: change-delivery
     role_layer: specialist
@@ -37,8 +38,10 @@ metadata:
 ## Trigger Conditions
 
 Use only after the captain assigns an implementation station with approved
-file scope, expected behavior, and a governed workspace, text-only delivery
-route, or station-owned main-worktree `change-application` route.
+file scope, expected behavior, and a station-owned main-worktree
+`change-delivery` route, governed workspace, text-only delivery route, or
+fallback `change-application` route for a returned artifact, explicit
+integration task, or assigned generated/deployed sync.
 
 Use to create a change delivery artifact that the captain can receive, record on
 the board, and route to validation, review, memory/docs, or completion stations.
@@ -56,7 +59,8 @@ Target path is inside the assigned workspace or station scope?
 ├── NO -> HALT and return blocked.
 ├── YES -> Continue.
 Target path is the main worktree?
-├── YES with station_mode change-application, handoff_ownership station-owned, authorization_phase change-application, exact file allowlist, and dirty diff read -> Continue in the main worktree.
+├── YES with station_mode change-delivery, handoff_ownership station-owned, authorization_phase implementation-change-delivery, exact file allowlist, dirty diff read, and forbidden protected actions -> Continue in the main worktree.
+├── YES with station_mode change-application, handoff_ownership station-owned, authorization_phase change-application, exact file allowlist, dirty diff read, and source_input as returned artifact / explicit integration task / assigned generated-deployed sync -> Continue only for that fallback integration scope.
 ├── YES without those fields -> return a text change delivery artifact or blocked.
 └── NO -> Continue only inside the governed isolated workspace.
 Plaintext credential would be added?
@@ -118,9 +122,13 @@ field list inside this role skill.
 ## Constraints
 
 - Write only inside the approved governed isolated workspace, or inside the
-  main worktree when this role instance owns `station_mode: change-application`,
-  `handoff_ownership: station-owned`, authorization phase `change-application`,
-  and an exact file allowlist.
+  main worktree when this role instance owns either `station_mode:
+  change-delivery` with authorization phase `implementation-change-delivery`,
+  or fallback `station_mode: change-application` with authorization phase
+  `change-application` for a returned artifact, explicit integration task, or
+  assigned generated/deployed sync. Both main-worktree routes require
+  `handoff_ownership: station-owned`, an exact file allowlist, dirty-diff read,
+  and forbidden protected actions.
 - No memory, git, release, deployment, install, credential, issue, pull request, cloud, or external-state mutation.
 - Do not perform deployment-copy sync yourself unless the station was explicitly
   assigned an isolated generated-copy change delivery; otherwise propose the

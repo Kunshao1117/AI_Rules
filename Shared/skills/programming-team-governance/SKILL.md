@@ -43,13 +43,18 @@ board, trace, or handoff field lists as the primary explanation.
 
 ## Trigger And Route
 
-Enter captain-led handling when the task touches source, workflow, validation,
-review, memory/docs, commit, release, deployment, install, generated copies,
-public contracts, governance rules, or broad evidence that can shape those
-areas. Explicit workflow names are route hints, not authorization.
+Enter captain-led handling when the Director requests governed work: source,
+workflow, fix, build, debug, test, audit, validation, review, memory/docs,
+commit, handoff, release, deployment, install, generated copies, public
+contracts, governance rules, or broad evidence that can shape those areas.
+Requests for a team, team member, subagent, delegation, Team-Native, or
+equivalent dispatch also enter this path. The Director does not need to say a
+fixed Team-mode phrase. Workflow and skill names are route hints, not write or
+protected-action authorization.
 
-Before broad reading, evidence gathering, implementation, validation, review,
-memory/docs attribution, commit prep, release prep, or completion claims:
+After Team mode is active and before broad reading, evidence gathering,
+implementation, validation, review, memory/docs attribution, commit prep,
+release prep, or completion claims:
 
 1. Classify the task route and risk surface.
 2. Resolve the current authorization target, scope, phase, evidence, and expiry.
@@ -114,7 +119,7 @@ Specialists own bounded delivery artifacts only:
 
 | Work | Required delivery boundary |
 |---|---|
-| Implementation | Isolated change delivery or text change delivery artifact; no self-review, memory write, git, release, deploy, install, or external mutation. |
+| Implementation | Station-owned main-worktree `change-delivery` under `implementation-change-delivery`, or isolated change delivery / text change delivery artifact only when direct delegation is unavailable; no self-review, memory write, git, release, deploy, install, or external mutation. |
 | Memory/docs | Memory/docs delivery artifact with impact and proposed attribution; no memory mutation or final acceptance. |
 | Validation | Non-mutating validation evidence; no repair of the implementation under validation. |
 | Review | Independent review delivery artifact from a role that did not author the change. |
@@ -150,11 +155,15 @@ full Team-Native completion.
    explicit, and late artifacts still require a receipt decision.
 7. Receive artifacts, update the board, and route formal checking to validation,
    review, memory/docs, or completion stations as applicable.
-8. Apply changes only through a station-owned authorized change-application
-   station held by a named role instance, or through a recorded captain-owned
-   gate when the platform cannot delegate the write or a protected direct
-   exception applies; the captain must not rewrite returned artifacts as
-   captain-owned evidence or full completion.
+8. Apply main-worktree implementation only through a station-owned
+   `change-delivery` station held by a named role instance with authorization
+   phase `implementation-change-delivery`, exact file allowlist, dirty-diff
+   read, and forbidden protected actions. Use station-owned `change-application`
+   only as fallback integration for a returned isolated/text artifact, explicit
+   integration task, or assigned generated/deployed sync. Use a recorded
+   captain-owned gate only when the platform cannot delegate the write or a
+   protected direct exception applies; the captain must not rewrite returned
+   artifacts as captain-owned evidence or full completion.
 9. Run validation, independent review, memory/docs disposition, and completion
    gate as separate states before claiming completion.
 

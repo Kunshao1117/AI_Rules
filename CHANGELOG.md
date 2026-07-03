@@ -138,7 +138,7 @@ All notable changes to this project will be documented in this file.
 ## [2026-06-28] 隊長制編程團隊協作模式
 
 ### feat
-- **Captain trigger gate** — 編程、修改、除錯、測試、審查、記憶、提交、發布或治理影響任務會依語意自動進入隊長制，不再要求總監手動指定工作流或要求子代理。
+- **Captain trigger gate** — 歷史紀錄：當時曾採 default-on 隊長制；現行規範已改為由目前總監對 governance、workflow、fix、build、debug、test、audit、source、public-contract 或等價 source/governance/evidence-bearing work 的受治理請求觸發 Team mode，也可由團隊、隊員、subagent、delegation、Team-Native 等派工語意觸發。它不是 AI 在沒有目前使用者受治理請求時自行 default-on；Team mode 啟動也不等於寫入授權，寫入仍需 scope-bound authorization。純聊天、小型穩定問答、無 source/governance/evidence 影響可維持 direct。
 - **Task type and dispatch pre-gate** — 隊長制啟動後必須先判斷任務類型、工作流路由、實作授權、允許角色與禁止角色，再建立隊長任務板；任何隊員、子代理、瀏覽器分支、CLI 分支或隔離變更交付不得早於任務板啟動。
 - **Captain minimum execution gate** — 歷史紀錄：當時仍保留部分隊長主線處理與驗收語氣；現行規範已收斂為隊長只協調、派工、監督、接收交付、更新任務板、彙整狀態與回報，隊長代工不得稱完整完成。
 - **Captain team board** — 團隊站點板升級為隊長任務板，每站必須標示是否適用、執行模式、證據負責人、角色邊界、主線直做例外與完成條件。

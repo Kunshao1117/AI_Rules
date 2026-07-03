@@ -1,40 +1,52 @@
 # Team-Native Core Policy
 
-此檔定義 AI_Rules 的團隊原生核心。Team-Native Core 是跨平台治理主幹；Team-Native / subagent team mode 在適用任務上預設開啟，不是單一子代理功能、單一工作流、或單一技能。
+此檔定義 AI_Rules 的團隊原生核心。Team-Native Core 是使用者要求受治理工作後的跨平台團隊治理主幹；Team-Native / subagent team mode 由目前 Director 對 governance、workflow、fix、build、debug、test、audit、skill、memory/docs、commit、handoff、source、public-contract 等受治理工作的請求觸發，也可由團隊、隊員、subagent、delegation、Team-Native 或等價派工語意觸發，不是 AI 自行無請求啟動、單一子代理功能、單一工作流、或單一技能。
 
 ## Core Contract
 
-Team-Native Core is the highest-priority governance spine for team work. Route
-hints, platform modes, approval UI, tool capability, and prior conversation state
-must be interpreted through Team-Native Core before source, workflow, fix, build,
-validation, review, memory/docs, commit, release, deployment, install, project
-governance, generated-copy, or public-contract work proceeds.
+Team-Native Core is the highest-priority governance spine after the current
+Director request asks for governed work. Governed work includes governance,
+workflow, fix, build, debug, test, audit, skill, memory/docs, commit, handoff,
+source, public-contract, or equivalent source/governance/evidence-bearing work;
+requests for a team, team member, subagent, delegation, or Team-Native also
+activate Team mode. The Director does not need to use a fixed phrase such as
+"啟動團隊模式". Workflow names, platform modes, approval UI, tool capability,
+prior conversation state, or source impact are not independent triggers without
+a current governed Director request.
 
-Team-Native / subagent team mode is default-on for every applicable task. The
-default state is board-first station assignment, not captain-direct execution. A
-platform that lacks native subagents remains in Team-Native mode through
-adapters, evidence branches, CLI/MCP/browser channels, isolated/text change
-delivery, or explicit standby/block states. Turning it off requires a concrete
-`not-applicable` finding or scope-bound Director risk closure; missing channel
-capability is not an opt-out.
+When the Director request is pure conversation, a small stable answer, or work
+with no source/governance/evidence effect, Team mode can remain inactive:
+captain/team-board limits do not apply and no Captain Team Board is required.
+Normal lifecycle, scoped authorization, protected-action gates,
+read-before-write, security, and source/deployed sync rules still apply.
+Non-team work must not claim Team-Native completion, separated station evidence,
+or team review.
 
-Team-Native Core is an execution precondition, not advisory prose. When it
-applies, the next valid runtime state is a Captain Team Board with applicable
-stations, handoff packets, and channel states. The captain must not perform
-broad reading, impact mapping, implementation, validation, review, memory
-attribution, commit preparation, release preparation, or completion claims first
-and only document the team route afterward.
+When Team mode is active, the valid runtime state is board-first station
+assignment, not captain-direct execution. A platform that lacks native subagents
+remains in Team-Native mode through adapters, evidence branches,
+CLI/MCP/browser channels, station-owned main-worktree change delivery,
+isolated/text change delivery, or explicit standby/block states. Missing channel
+capability is a station state, not permission for captain-direct work.
+
+When active, Team-Native Core is an execution precondition, not advisory prose.
+The next valid runtime state is a Captain Team Board with applicable stations,
+handoff packets, and channel states. The captain must not perform broad reading,
+impact mapping, implementation, validation, review, memory attribution, commit
+preparation, release preparation, or completion claims first and only document
+the team route afterward.
 
 The shared workflow sequence is defined by
-`Shared/policies/workflow-orchestration.md`. Team-Native Core remains the hard
-gate; workflow orchestration defines the route -> authorization ->
-operation_mode -> board_state -> dispatch wave -> delivery artifact -> closeout
-order used by workflow entries and stations.
+`Shared/policies/workflow-orchestration.md`. After a governed Director request
+activates Team mode, that Team-Native gate is authoritative; workflow
+orchestration defines the route -> authorization -> operation_mode ->
+board_state -> dispatch wave -> delivery artifact -> closeout order used by
+workflow entries and stations.
 
 ## Core Boundary And Policy Placement Rule
 
-Team-Native Core owns the always-on safety invariants: board-first activation,
-role separation, captain thin-context limits, delivery artifact requirements,
+Team-Native Core owns the governed team safety invariants after activation:
+board-first activation, role separation, captain thin-context limits, delivery artifact requirements,
 authorization handoff to the authorization policy, and non-complete states for
 missing evidence. It must stay short enough to load as a core guard. Long
 workflow recipes, board field catalogs, scenario examples, platform-specific
@@ -57,9 +69,11 @@ not.
 
 ## Core Injection Hard Gate
 
-Core injection rules must enforce the shortest Team-Native gate before any
-skill, workflow, platform adapter, captain tool call, or evidence-producing
-read can soften it. Once Team-Native Core applies, broad file reading,
+After a governed Director request activates Team mode, core injection rules must
+enforce the shortest Team-Native gate before any skill, workflow, platform
+adapter, captain tool call, or evidence-producing read can soften it. When Team
+mode is not active, these captain/team-board gates are not evaluated. Once
+Team-Native Core applies, broad file reading,
 repository-wide grep, recursive scans, whole-repository file lists, validation,
 review, memory/docs attribution, completion audit, source writes, and completion
 claims are forbidden until the trace has a Captain Team Board, applicable
@@ -88,29 +102,30 @@ replacement evidence, residual risk, and smallest unblock condition; even then,
 captain-direct continuation is a recorded direct exception, not proof that team
 mode was off.
 
-Team-Native Core applies when a task touches source, workflow, fix, build, validation, review, memory/docs, commit, release, deployment, install, project governance, generated copies, or public contracts.
+Team-Native Core applies when the Director asks for governed work. When active,
+it covers source, workflow, fix, build, debug, test, audit, validation, review,
+memory/docs, commit, release, deployment, install, project governance, generated
+copies, public contracts, broad file inspection, external research, and impact
+analysis that can shape later source, workflow, validation, review, memory,
+release, or governance work.
 
-Team-Native Core also applies to read-only exploration, blueprinting, broad file
-inspection, external research, or impact analysis when the result can shape
-later source, workflow, validation, review, memory, release, or governance work.
-No-write status limits the allowed actions; it does not cancel team-mode
-station assignment.
-
-Chat-originated requests are not exempt. 00 direct chat remains available only
-for pure conversation and lightweight answers that do not require external
-evidence and will not shape later governance. If a chat request touches files,
-screenshots, memory/context cards, rules/workflows/policies, agent/subagent
-behavior, evidence checks, source/tool output, or later governance impact, it
-must enter `formal-readonly` team mode: the specialist performs bounded reading
-or checking, returns citations, missing scope, risk, blocker status, and
-evidence status reporting, and the captain only verification-reads returned
-evidence and integrates the conclusion. 證據型對話不得停留在直答模式；若隊員通道無法開啟，必須先回報 standby、blocked、unverified、unavailable 或 not-authorized。
+When Team mode is not active, pure conversation, small stable answers, and
+no-impact read-only work proceed under the normal workflow, authorization,
+protected-gate, and read-before-write rules without captain/team-board
+restrictions. If the Director later requests governed work or team mode, create
+the board before team evidence, specialist work, or team completion claims
+begin.
 
 The required delivery sequence is fixed: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> station handoff packet -> execution-channel decision -> specialist startup attempt, standby, or blocked/unverified channel state -> specialist work -> returned change delivery artifacts / evidence delivery artifacts -> captain receipt and board update -> independent validation, review, and memory/docs stations -> completion audit -> report.
 
-The captain remains the only Director-facing owner, but the captain is not the default worker and must not author specialist implementation, review, validation, or memory attribution when a delivery artifact can be produced. The captain owns routing, authorization boundaries, board supervision, station handoff, delivery receipt, status synthesis, blocker handling, protected memory/git/release/deploy/install gates, and Director-facing reporting. All separable requirement replay, counter-evidence, impact mapping, implementation change delivery, memory delivery, validation, review, and completion audit work belongs to team stations.
+The captain remains the only Director-facing owner, but the captain is not the default worker and must not author specialist implementation, review, validation, or memory attribution when a delivery artifact can be produced. The captain owns requirement intake, scope and authorization interpretation, board maintenance, dispatch, station handoff, delivery receipt, status synthesis, blocker/permission/protected-gate coordination, and Director-facing reporting. The captain must not call `apply_patch`, shell writes, editor tools, or any other source-writing tool and label that captain-authored diff as change delivery. All separable requirement replay, counter-evidence, impact mapping, implementation change delivery, memory delivery, validation, review, and completion audit work belongs to team stations.
 
-Explicit workflow names and Director requests for subagents are route hints. They do not replace the team board and do not authorize pre-board dispatch.
+Workflow and skill names are route hints. They are not write authorization and
+do not by themselves replace the team board or authorize pre-board dispatch.
+When the Director request itself is governed work, Team mode is triggered by
+that request even if no fixed Team-mode phrase is used. Director requests for
+subagents, team members, delegation, or Team-Native also activate the team
+route.
 
 Natural-language Director instructions are first-class route and intent signals,
 but they are not magic words. The captain binds everyday phrases such as
@@ -168,8 +183,9 @@ create roles, authorization, or completion evidence by themselves.
 
 Multiple members does not mean multiple subagents. A member can be a native
 subagent, project custom agent, browser branch, CLI branch, MCP read path,
-isolated workspace, text change delivery path, or other governed channel. The
-board records the member role, role instance, assigned specialist skill,
+station-owned main-worktree change delivery route, isolated workspace, text
+change delivery path, or other governed channel. The board records the member
+role, role instance, assigned specialist skill,
 sub-station task, channel request, channel capability, channel invocation
 status, delivery artifact type, and delivery artifact status.
 
@@ -182,13 +198,13 @@ captain already saw it" are not valid reduction reasons. Governance, workflow,
 hook, validation, memory, release, deployment, install, protected-state, or
 public-contract work must not be reduced into routine captain-direct work.
 
-## Team-First Activation Rule
+## Governed Team Activation Rule
 
-When Team-Native Core applies, Team-Native / subagent team mode is already on.
-The captain must create or reuse a team board before doing broad context-heavy
-work. The minimum activation is a board row for each applicable station, a
-selected specialist skill, and an attempted execution channel or an explicit
-standby/block record.
+When the Director asks for governed work or for Team-Native / subagent team
+mode, the captain must create or reuse a team board before doing broad
+context-heavy work or any team-scoped station work. The minimum activation is a
+board row for each applicable station, a selected specialist skill, and an
+attempted execution channel or an explicit standby/block record.
 
 Board states are:
 
@@ -196,7 +212,7 @@ Board states are:
 |---|---|---|
 | `draft` | Pre-GO planning, candidate stations, assumptions, and scope shaping | No write authority and no formal specialist evidence |
 | `formal-readonly` | Read-only exploration, counter-evidence, impact mapping, document or file deep-read, external research, validation planning, review evidence, and standby specialist preparation | No source, memory, git, release, deployment, install, or external-state writes |
-| `formal-write` | Resolved-scope implementation change delivery, authorized change application, validation, review, memory/docs delivery, completion audit, and protected follow-on gates | Only the scoped target, phase, station, files, commands, or tool calls resolved by authorization |
+| `formal-write` | Resolved-scope station-owned main-worktree implementation change delivery, isolated/text change delivery, authorized change application, validation, review, memory/docs delivery, completion audit, and protected follow-on gates | Only the scoped target, phase, station, files, commands, or tool calls resolved by authorization |
 
 The captain must not treat `formal-readonly` as weaker than team mode. It is
 the formal team state for no-write work. If no execution channel can be opened,
@@ -209,9 +225,9 @@ residual risk, and non-complete or risk-closed state.
 
 Execution route fields may name only an actual channel or delivery form: native
 subagent, project custom agent, adapter, browser evidence, command evidence, MCP
-read, external research, isolated change delivery, text change delivery artifact,
-captain-owned protected gate, or station-owned authorized change-application
-gate. `blocked`,
+read, external research, station-owned main-worktree change delivery, isolated
+change delivery, text change delivery artifact, captain-owned protected gate, or
+station-owned authorized change-application gate. `blocked`,
 `unverified`, `standby`, `not-authorized`, `unavailable`, and
 `closed-with-director-risk` are station, evidence, authorization, or completion
 states only. They must not be stored as `execution_route`, `execution_channel`,
@@ -327,11 +343,16 @@ Specialist role authority comes from `team-specialist-registry` and the matching
 `intent-requirements`, `scope-impact`, `external-research`,
 `architecture-contract`, `change-delivery`, `validation`, `review`,
 `security-reliability`, `memory-docs`, and `release-completion`. Subagents,
-browsers, CLI routes, MCP reads, isolated workspaces, and text-only routes are
-execution channels for those specialist stations; they are not role definitions
-and do not own governance decisions.
+browsers, CLI routes, MCP reads, main-worktree change delivery routes, isolated
+workspaces, and text-only routes are execution channels for those specialist
+stations; they are not role definitions and do not own governance decisions.
 
-Specialist station assignment is not conditional on channel availability. Once Team-Native Core applies, every applicable station must be assigned to a specialist skill before channel selection. If the requested channel cannot be invoked, the station remains on the board with `blocked`, `unverified`, or `closed-with-director-risk`; it must not disappear and must not become routine captain work.
+Specialist station assignment is not conditional on channel availability after
+Team mode is active. Every applicable active-Team station must be
+assigned to a specialist skill before channel selection. If the requested
+channel cannot be invoked, the station remains on the board with `blocked`,
+`unverified`, or `closed-with-director-risk`; it must not disappear and must not
+become routine captain work.
 
 Stations may be kept in `standby` when the specialist is assigned and the packet
 is ready but the dispatch wave has not opened, the platform channel is warming
@@ -340,7 +361,12 @@ lifecycle state, not a substitute for returned evidence.
 
 ## Station-First Rule
 
-Before any specialist, subagent execution channel, browser branch, CLI branch, MCP direct evidence, isolated change-delivery branch, text change-delivery artifact, validation, review, completion audit, commit preparation, or release preparation starts, the captain must create the Captain Team Board from `programming-team-governance` and `team-task-board`.
+After Team mode activation by a governed Director request, before any specialist, subagent execution
+channel, browser branch, CLI branch, MCP direct evidence, main-worktree
+change-delivery branch, isolated change-delivery branch, text change-delivery
+artifact, validation, review, completion audit, commit preparation, or release
+preparation starts, the captain must create the Captain Team Board from
+`programming-team-governance` and `team-task-board`.
 
 Pre-GO work uses a draft board. A draft board can structure planning and assumptions, but it cannot start formal specialists, satisfy validation/review/completion evidence, or support a full-team completion claim.
 
@@ -488,14 +514,15 @@ Team-Native Core keeps these states because they preserve completion honesty:
 
 | State | Allowed use | Required evidence |
 |---|---|---|
-| `direct` | Protected captain work only: Director communication, GO interpretation, board maintenance, delivery receipt, blocker/authorization handling, protected memory/git/release/deploy/install gates, final Director-facing acceptance/reporting, hot-path non-mutating status checks with no independent evidence value, or no independent evidence value after scope reduction | Station name, direct exception, replacement evidence, and residual state |
+| `direct` | Captain coordination work only: requirement intake, scope/authorization interpretation, board maintenance, dispatch, delivery receipt, blocker/authorization handling, protected memory/git/release/deploy/install gates, final Director-facing reporting, hot-path non-mutating status checks with no independent evidence value, or no independent evidence value after scope reduction. It never includes captain source authoring, repository-wide evidence work, implementation, review, validation, or memory/docs attribution. | Station name, direct exception, replacement evidence, and residual state |
+| `main-worktree change delivery` | A named change-delivery station directly edits the main worktree under `formal-write` scope | Station-owned handoff, authorization phase `implementation-change-delivery`, exact file allowlist, dirty-diff read, forbidden protected actions, change receipt, memory impact, review need |
 | `text change delivery artifact` | No governed isolated workspace is available, but the implementation task is bounded, diffable, and safe to deliver as a text change delivery artifact | File scope, proposed edits, evidence, risk, memory impact, review need, blocker status |
 | `closed-with-director-risk` | The Director closes the task with a named risk even though required team separation or delivery artifacts are missing | Director risk decision, missing artifact or separation, non-complete label, and residual limitation |
 | `unverified` | Evidence is required but currently absent or incomplete | Missing evidence, attempted route or reason not attempted, and smallest verification path |
 | `blocked` | A required tool, permission, credential, isolation boundary, delivery artifact, or scope-bound authorization is unavailable | Blocking condition and smallest unblock requirement |
 | `not-applicable` | The station does not belong to the task | Concrete non-applicability reason |
 
-`direct`, `closed-with-director-risk`, and `text change delivery artifact` are not non-team shortcuts. They are formal station states or delivery forms with stricter evidence requirements. Review lifecycle risk states do not become Team-Native station, missing-artifact, completion, or capability states. Diff output may be used only as an implementation representation; the governance object is the change delivery artifact. `closed-with-director-risk` is never `complete`.
+`direct`, `closed-with-director-risk`, `main-worktree change delivery`, and `text change delivery artifact` are not non-team shortcuts. They are formal station states or delivery forms with stricter evidence requirements. Review lifecycle risk states do not become Team-Native station, missing-artifact, completion, or capability states. Diff output may be used only as an implementation representation; the governance object is the change delivery artifact. `closed-with-director-risk` is never `complete`.
 
 State labels are not fallback routes. If a template, trace, hook payload,
 handoff packet, or report places `blocked`, `unverified`, `standby`,
@@ -519,17 +546,35 @@ full` is required for bottom-layer refactor, cross-file governance changes,
 specialist skill rewrites, Doctor/Audit rule changes, release preparation, or
 protected external-state readiness.
 
-Change application defaults to a station-owned authorized change-application
-station held by a named change-delivery role instance. A captain-owned gate is
-allowed only when the platform cannot delegate the write or when a protected
-direct exception applies, and it only applies the returned artifact without
-rewriting it. The captain may receive the artifact, maintain the board, handle
-conflicts, and report status, but must not turn artifact receipt into
+Station-owned main-worktree change delivery is the primary implementation path
+when `formal-write` authorization binds the named change-delivery station,
+authorization phase `implementation-change-delivery`, exact file allowlist,
+dirty-diff read, forbidden protected actions, and
+`handoff_ownership: station-owned`. The station writes the main worktree
+directly and returns a change delivery artifact or receipt with memory impact;
+review and validation inspect the resulting diff and do not re-apply it. If the
+platform can only return a forked workspace or text artifact, the artifact must
+be marked `fork-only` or `text-only`, must not be reported as applied to the
+main worktree, and cannot support a main-worktree worker-write claim.
+
+Change application is a fallback integration route, not the normal
+implementation hop. Use a station-owned authorized change-application station
+only to apply a returned isolated/text artifact, perform an explicitly scoped
+integration task, or sync an assigned generated/deployed copy. A captain-owned
+gate is allowed only when the platform cannot delegate the write or when a
+protected direct exception applies, and it only applies the returned artifact
+without rewriting it. The captain may receive the artifact, maintain the board,
+handle conflicts, and report status, but must not turn artifact receipt into
 implementation, review, validation, or memory/docs evidence. Captain substitute
 authoring means the captain creates specialist content because no qualified
 change delivery route exists; it starts as blocked, may be
 closed-with-director-risk only when the Director explicitly accepts that exact
 case, and must not be described as full team completion.
+
+Review and validation remain independent. They inspect the actual main-worktree
+diff after main-worktree change delivery or after fallback integration. If only
+a forked or text artifact exists, review and validation must say the artifact is
+not applied and cannot validate applied source.
 
 Rewriting, reauthoring, refactoring beyond the returned artifact, filling
 missing implementation, adding unreturned review conclusions, inventing
@@ -542,10 +587,11 @@ delivery artifact.
 If any required delivery artifact or independent review is missing, the task can only finish as blocked, unverified, or closed-with-director-risk. It must not be described as full team completion.
 
 Protected follow-on phases require their own authorization resolution. A
-returned implementation change delivery artifact does not authorize
-captain-owned change application, memory writes, memory commit, git, release,
-deployment, install, or external mutation. Each protected phase must record
-scope-bound authorization or remain blocked/unverified.
+returned implementation change delivery artifact or main-worktree change
+delivery receipt does not authorize captain-owned change application, memory
+writes, memory commit, git, release, deployment, install, or external mutation.
+Each protected phase must record scope-bound authorization or remain
+blocked/unverified.
 
 When a hook or platform guard blocks an action, the block is governance
 evidence. The next valid captain response is to stop that action, report
@@ -562,16 +608,17 @@ an untrusted tool execution envelope into protected mutation authority.
 
 ## Platform Adapter Contract
 
-Team-Native Core is platform-neutral. Platforms differ in native capability, but
-platform difference never turns off default team mode:
+Team-Native Core is platform-neutral. Platform differences do not activate Team
+mode without a governed Director request and do not widen captain authority.
+Once Team mode is active, platform capability only chooses a station channel or
+a blocked/unverified state:
 
-- Codex maps stations to native subagents, project custom agents, browser/terminal/MCP evidence, isolated workspaces, or text change delivery artifacts; unavailable channels become standby, blocked, or unverified station states.
-- Claude maps stations to built-in/custom/plugin subagents, description-driven delegation, hooks/checkpoints, command evidence, isolated workspaces, or text change delivery artifacts; unavailable channels become standby, blocked, or unverified station states.
-- Antigravity / Gemini maps stations through Gemini/Antigravity adapters, browser-capable agents, CLI evidence, plugin adapters, or text change delivery artifacts; unavailable channels become standby, blocked, or unverified station states.
+- Codex maps stations to native subagents, project custom agents, browser/terminal/MCP evidence, station-owned main-worktree change delivery, isolated workspaces, or text change delivery artifacts; unavailable channels become standby, blocked, or unverified station states.
+- Claude maps stations to built-in/custom/plugin subagents, description-driven delegation, hooks/checkpoints, command evidence, station-owned main-worktree change delivery, isolated workspaces, or text change delivery artifacts; unavailable channels become standby, blocked, or unverified station states.
+- Antigravity / Gemini maps stations through Gemini/Antigravity adapters, browser-capable agents, CLI evidence, plugin adapters, station-owned main-worktree change delivery, or text change delivery artifacts; unavailable channels become standby, blocked, or unverified station states.
 
-Missing platform capability is not normal direct work and not a switch that turns
-off team mode. It is blocked, unverified, or closed-with-director-risk with
-evidence.
+Missing platform capability in active Team mode is not normal direct work. It is
+blocked, unverified, or closed-with-director-risk with evidence.
 
 ## MCP Boundary
 

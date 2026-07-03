@@ -16,6 +16,11 @@ memory language, skill trigger language, and change descriptions is governed by
 `Shared/policies/language-governance.md`; workflow rows cite that policy instead
 of using platform core rules as the sole source.
 
+External grounding for outside facts, source type, freshness sensitivity, and
+no-evidence claim boundaries is governed by
+`Shared/policies/grounding-governance.md`; this matrix records compact gate
+profiles and workflow evidence expectations only.
+
 ## Evidence Status
 
 | 狀態 | 意義 | 使用邊界 |
@@ -28,19 +33,32 @@ of using platform core rules as the sole source.
 
 `closed-with-director-risk` 是流程關閉狀態，不是證據狀態、完成狀態或完整團隊完成狀態。它只表示總監逐案關閉已知風險；缺交付件、缺獨立審查、缺驗證、缺 Team-Native trace 或隊長替代創作仍不得宣稱 `complete`。
 
+## Shared Gate Profile
+
+Gate details stay in their owning policies. Workflow rows cite these profiles
+instead of pasting policy text into every workflow.
+
+| 閘門 | 主管來源 | 來源類型 | 新鮮度敏感度 | 最低工作流證據 | 禁止宣稱 |
+|---|---|---|---|---|---|
+| 總監輸出閘門 | `Shared/policies/language-governance.md` | 內部交付件、任務板欄位、工具輸出、路徑、命令與 exact evidence | 不適用；重點是受眾層與精確 token 保留 | 繁體中文 meaning-first 摘要；technical tokens 只作證據、位置或精確識別 | 不可用 raw artifact、English-led field list 或未統整內部模板當總監完成報告 |
+| 外部接地閘門 | `Shared/policies/grounding-governance.md` | 官方文件、primary source、目前本機檔案、工具輸出、runtime/browser/MCP/terminal evidence | 高變動事實、版本、價格、法規、API、人物職務、時程與外部狀態需標示日期、版本或擷取時間；穩定常識可記錄較低敏感度 | 來源類型、日期/版本/擷取方式、使用範圍、缺口與 evidence status | 不可用內部記憶或未查證常識宣稱 latest/current/verified；缺證時只能標示未驗證或阻塞 |
+| 正式證據與完成宣稱 | `Shared/policies/workflow-orchestration.md` plus `team-completion-gate` | source/deployed diff、站點交付件、驗證、審查、記憶文件、外部接地證據 | 依任務與依賴來源判定；任何外部依賴沿用外部接地閘門 | evidence status、role separation、source/deployed parity、validation/review/memory disposition | 不可從部分證據、待命站點、缺 parity、缺 validation/review 或 closed-with-director-risk 宣稱 complete |
+
 ## Platform Translation
 
 | 平台 | 採證最佳化 | 不可混用邊界 |
 |---|---|---|
 | Antigravity | 優先使用瀏覽器代理、截圖、錄影、視覺產物、IDE 工作流與終端證據 | 不把 Claude 鉤子或 Codex 原生子代理語法寫成 Antigravity 指令 |
 | Claude | 優先使用計畫模式、子代理、權限、鉤子、檢查點、批次讀取與非互動命令證據 | 不把 Claude 鉤子視為其他平台可用能力 |
-| Codex | 優先使用技能漸進載入、沙盒/審批轉錄、隊長制要求的唯讀證據分支、隔離變更交付分支、station-owned 變更套用站點、瀏覽器、終端、MCP 與背景任務證據 | 子代理不可裁決；主工作區 source 寫入只允許在已授權 `change-application` 站點內進行，否則必須標示未驗證、阻塞或具體 protected captain gate 例外 |
+| Codex | 優先使用技能漸進載入、沙盒/審批轉錄、Team mode 啟動後的唯讀證據分支、station-owned main-worktree 變更交付站點、隔離變更交付分支、fallback 變更套用站點、瀏覽器、終端、MCP 與背景任務證據 | 子代理不可裁決；主工作區 source implementation 只允許在已授權 `change-delivery` 站點內進行，`change-application` 只作 returned artifact、explicit integration task 或 assigned sync 的 fallback，否則必須標示未驗證、阻塞或具體 protected captain gate 例外 |
 
 ## Team-Native Core Evidence
 
-Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交接、
-技能鍛造與治理影響工作的預設協作模型。完整流程與欄位不在本矩陣重複，
-請引用下列來源：
+Team-Native Core 是總監要求受治理工作後的協作模型。編程、工作流、驗證、
+審查、記憶、提交、交接、技能鍛造、source 與治理影響請求本身就是
+使用者要求 Team mode 的觸發；總監不需要說固定 Team mode 口令。團隊、
+隊員、subagent、delegation、Team-Native 或等價派工請求也會觸發。完整流程
+與欄位不在本矩陣重複，請引用下列來源：
 
 - `Shared/policies/team-native-core.md`: 站點優先、operation mode、完成邊界。
 - `Shared/policies/workflow-orchestration.md`: route -> authorization ->
@@ -49,7 +67,7 @@ Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交
 - `Shared/skills/team-task-board/SKILL.md`: board 欄位、站點列與交付件格式。
 - `Shared/policies/team-trace-evidence.md`: trace 欄位、非法狀態與缺證語意。
 
-本矩陣只保留最低採證要求：適用任務先有 Captain Team Board，再做廣泛讀檔、
+本矩陣只保留最低採證要求：Team mode 啟動後，適用任務先有 Captain Team Board，再做廣泛讀檔、
 變更交付、驗證、審查、記憶歸因或完成宣稱。唯讀證據用 `formal-readonly`；
 已解析範圍且具備授權狀態的寫入站點用 `formal-write`。正式站點必須記錄
 `station_mode`、`context_visibility`、`handoff_ownership`；缺任一欄位時不得
@@ -63,8 +81,8 @@ Team-Native Core 是編程、工作流、驗證、審查、記憶、提交、交
 
 ### Operation Mode Contract
 
-Team-Native records execution depth before board template, board state, closeout
-lane, or station set:
+After Team mode is active, Team-Native records execution depth before
+board template, board state, closeout lane, or station set:
 
 ```text
 operation_mode -> board_template -> board_state -> closeout_lane -> station set
@@ -89,36 +107,35 @@ role identity evidence, and required Team-Native trace.
 
 ### 00 Chat Formal-Readonly Boundary
 
-00 direct chat is allowed only when the answer can be produced from the current
-conversation, Director-provided snippets, or stable general reasoning, and the
-result will not become later governance evidence. Evidence-bearing chat
-requests involving project files, screenshots, memory/context cards,
-rules/workflows/policies, agent/subagent behavior, evidence checks, source/tool
-output, or later governance impact must use a `formal-readonly` team station.
-The specialist reads or checks the bounded scope and returns citations, missing
-scope, risk, blocker status, and evidence status reporting; the captain receives
-the delivery, updates board/status, and handles blockers, conflicts, or
-authorization needs. Formal verification, review, or memory/docs judgment stays
-with the matching station delivery. Deep external research, architecture, build,
-fix, test, commit, release, or write-producing workflow work continues routing
-to the matching workflow. 證據型對話必須先升級為正式唯讀團隊站點；證據狀態回報不得省略。
+00 direct chat is limited to answers produced from the current conversation,
+Director-provided snippets, or stable general reasoning, and the result must not
+become later Team-Native evidence. Evidence-bearing chat requests involving
+project files, screenshots, memory/context cards, rules/workflows/policies,
+agent/subagent behavior, evidence checks, source/tool output, or later
+governance impact use normal workflow and authorization rules. After the
+Team mode is active, those requests use a `formal-readonly`
+team station. The specialist reads or checks
+the bounded scope and returns citations, missing scope, risk, blocker status,
+and evidence status reporting; the captain receives the delivery, updates
+board/status, and handles blockers, conflicts, or authorization needs. Formal
+verification, review, or memory/docs judgment stays with the matching station
+delivery.
 
 平台能力路由只能是 `native`、`adapter`、`conditional` 或 `unavailable`。
 `conditional` 需用工具可用性、正式站點、交付件格式與 Team-Native trace 證明。
 缺任一項時不得 routine direct，也不得宣稱完整團隊完成。`unavailable` 必須轉成
 阻塞、未驗證或 `closed-with-director-risk`，並列出最小補證條件。
 
-### Team-First Dispatch Defaults
+### Governed Team Dispatch Defaults
 
-Team-First 是所有編程、工作流、驗證、審查、記憶、提交、交接、
-技能鍛造與治理影響工作的預設運行方式。隊長先建立或沿用正式團隊站點，
+Team-First 在 Director 要求受治理工作或團隊派工後運行。隊長先建立或沿用正式團隊站點，
 再決定哪些站點啟動；待命不是證據，只有波次開啟、範圍明確且交付件返回後
-才形成正式 evidence。
+才形成正式 evidence。Team mode 未啟動時，不套用 captain/team-board 限制。
 
-| Team-First 模式 | 啟動條件 | 最低證據 | 不可宣稱 |
+| Governed Team 模式 | 啟動條件 | 最低證據 | 不可宣稱 |
 |---|---|---|---|
-| `formal-readonly` | 探索、架構、測試、健檢、提交掃描、交接、技能設計、治理影響、廣泛讀檔、外部研究或反證站點 | 正式站點、唯讀範圍、證據負責人、來源引用、未驗證/阻塞清單、隊長接收與任務板更新紀錄 | 不可改檔、不可改記憶、不可提交、不可把讀取摘要當成寫入授權 |
-| `formal-write` | 來源、文件、工作流、部署副本、生成副本或技能內容需要寫入 | 已解析範圍、授權狀態、精確檔案/站點範圍、隔離或文字變更交付件、station-owned authorized change-application gate、memory_impact、後續審查與驗證路徑 | 不可由工作流名稱、草案板、待命隊員、唯讀證據或單一 `GO` 自動升級 |
+| `formal-readonly` | Team mode 已由受治理請求啟動，且探索、架構、測試、健檢、提交掃描、交接、技能設計、治理影響、廣泛讀檔、外部研究或反證站點適用 | 正式站點、唯讀範圍、證據負責人、來源引用、未驗證/阻塞清單、隊長接收與任務板更新紀錄 | 不可改檔、不可改記憶、不可提交、不可把讀取摘要當成寫入授權 |
+| `formal-write` | Team mode 已由受治理請求啟動，且來源、文件、工作流、部署副本、生成副本或技能內容需要寫入 | 已解析範圍、授權狀態、精確檔案/站點範圍、station-owned main-worktree change delivery、fallback station-owned change-application、memory_impact、後續審查與驗證路徑 | 不可由工作流名稱、草案板、待命隊員、唯讀證據或單一 `GO` 自動升級 |
 | standby station | 下一波可能需要同一角色處理，但前一波輸入尚未返回 | 站點角色、觸發條件、允許範圍、不可執行狀態 | 不可當作已採證、已驗證、已審查或已完成 |
 | deep-read / verify-read | 大檔、多檔、長報告、外部文件或證據量會讓隊長完整吞讀降低可靠性 | 隊員深讀交付件、引用位置、摘要限制、隊長接收交付與任務板更新紀錄 | 隊長不得把摘要或接收動作改稱全檔已讀或全量通過 |
 | captain context freeze | 隊員工作進行中 | 隊長只維持任務板、解除阻塞、接收交付、處理衝突或授權 | 不得平行讀檔、重複掃描、重查、代驗證、代審查、代判讀記憶文件，或把隊員結果改寫成自己的證據 |
@@ -138,11 +155,14 @@ Team-First 是所有編程、工作流、驗證、審查、記憶、提交、交
 
 ## Captain-Led Programming Team Governance Matrix
 
-Coding-related requests and explicit workflow commands enter Team-Native Core
-before implementation, repair, debugging, testing, audit, experiment writes,
-commit preparation, handoff, or skill creation. Workflow commands are route
-hints only; they do not replace the team task board. Read-only stations default
-to `formal-readonly`; write stations require `formal-write` after scoped authorization resolution.
+Coding-related and governed requests trigger Team-Native Core because they are
+Director requests for governed work. Explicit workflow commands and skill names
+are route hints, not write authorization and not fixed passwords; when the
+request itself is governed work, Team mode starts before implementation,
+repair, debugging, testing, audit, experiment writes, commit preparation,
+handoff, or skill creation. Workflow commands do not replace the team task
+board. In active Team mode, read-only stations use `formal-readonly`; write
+stations require `formal-write` after scoped authorization resolution.
 
 Formal collaboration uses `team-specialist-registry`, applicable
 `team-specialist-*` skills, and the fixed child delivery skills. Workflow
@@ -206,7 +226,10 @@ remain separate artifacts. Missing independent role separation is
 
 `Shared/skills/team-task-board/SKILL.md` is the canonical source for lightweight/full/experiment board templates, specialist delivery artifact format, change delivery artifact types, memory/docs delivery artifact requirements, direct exception handling, and completion checklist. This matrix only records workflow evidence expectations and platform-independent acceptance rules.
 
-Natural-language programming tasks create a team task board even when no workflow command is named. The workflow command only chooses the route; it does not authorize skipping the board, collapsing roles, or claiming team completion without station evidence.
+Natural-language programming or governance tasks create a team task board
+because the user has requested governed work. The workflow command only chooses
+the route; it does not authorize skipping the board after activation, collapsing
+roles, or claiming team completion without station evidence.
 
 The captain keeps only non-delegable authority: Director communication,
 scope-bound authorization interpretation, scope arbitration, delivery receipt, board status synthesis,
@@ -215,23 +238,28 @@ protected memory/git/release/deploy/install gates, review-state decision, and
 final acceptance. Counter-evidence, impact, memory delivery, test, review, and
 completion audit stay in bounded station tasks whenever a route is available.
 
-Formal implementation is not a normal captain-direct route. It starts as
-isolated change delivery, falls back to text change delivery when isolation is
-unavailable, and becomes `blocked` when neither can be produced. Change
-application defaults to a station-owned authorized change-application gate or a
-scoped main-worktree write station. A protected captain gate is allowed only
-when the platform cannot delegate the physical write or protected tool call.
+In active Team mode, formal implementation is not a normal captain-direct
+route. Main-worktree implementation is owned by a named `change-delivery`
+station under `implementation-change-delivery`, exact file allowlist,
+dirty-diff read, and forbidden protected actions. Isolated or text delivery is
+used only when the platform cannot directly write the main worktree. Change
+application is a fallback station-owned gate for returned isolated/text
+artifacts, explicit integration tasks, or assigned generated/deployed sync. A
+protected captain gate is allowed only when the platform cannot delegate the
+physical write or protected tool call.
 隊長接收已回傳交付件，不構成 implementation、validation、review 或
 memory/docs evidence。若隊長路徑產生內容來取代缺失的站點交付件，屬
 substitute authoring risk，必須逐案標示 `closed-with-director-risk`；
 不得作為 full team completion。
 
 One specialist owns one concrete station task for the same deliverable.
-Implementation specialists return a change delivery artifact, or own a separate
-`change-application` station that applies a returned artifact inside the exact
+Implementation specialists either own the main-worktree `change-delivery`
+station or return an isolated/text change delivery artifact. A separate
+`change-application` station applies only a returned artifact, explicit
+integration task, or assigned generated/deployed sync inside the exact
 formal-write scope. They do not mutate memory, stage/commit/push, deploy, or
 self-review. Memory delivery, validation, review, and completion specialists
-cross-check the returned artifacts rather than self-approve.
+cross-check the returned artifacts or actual diff rather than self-approve.
 
 If a required specialist route, isolation path, memory/docs artifact, review, or
 validation cannot be produced, record `blocked`, `unverified`, or
@@ -252,9 +280,10 @@ validation, and completion evidence.
 
 | Change delivery form | Evidence status | Use when | Completion impact |
 |---|---|---|---|
+| Station-owned main-worktree change delivery | 足夠證據 after exact file allowlist, dirty-diff read, `implementation-change-delivery` authorization, change receipt, and later validation/review are visible | The platform can delegate main-worktree implementation to a formal `change-delivery` station | The station writes source changes directly and returns a change delivery artifact or receipt; protected captain gate is used only when the platform cannot delegate the physical write or protected tool call. |
 | Isolated workspace change delivery | 足夠證據 when file scope, isolation, changed files, memory impact, and validation are visible | A fork, sandbox, checkpoint, or worktree can safely contain implementation writes outside the main worktree | The station-owned authorized change-application gate applies the returned artifact only within scoped change-application authorization, then later stations handle memory delivery, independent review, and validation delivery artifacts. |
 | Text change delivery artifact | 部分證據 until a station-owned authorized change-application gate applies it and a validation station verifies it | No safe isolated filesystem exists, but the task is bounded and diffable | The station-owned authorized change-application gate can apply only the precise returned artifact or return it for correction; captain rewrite or reimplementation is substitute authoring risk, not a successful text-delivery path. Specialist cannot claim it is applied; memory impact remains required. |
-| Station-owned change application | 足夠證據 after dirty-diff read, exact file allowlist, change-application receipt, and later validation/review are visible | The platform can delegate main-worktree source writes to a formal `change-application` station | The station applies source changes; protected captain gate is used only when the platform cannot delegate the physical write or protected tool call. |
+| Station-owned change application | 足夠證據 after returned-artifact/integration/sync input, dirty-diff read, exact file allowlist, change-application receipt, and later validation/review are visible | A returned isolated/text artifact, explicit integration task, or assigned generated/deployed sync must be applied | The station applies only the fallback integration scope; protected captain gate is used only when the platform cannot delegate the physical write or protected tool call. |
 | Captain substitute authoring risk record | closed-with-director-risk or 未驗證 | No isolated or text change delivery can be packaged and captain must author after Director accepts this exact risk | Cannot claim full team completion. |
 
 ### 變更套用授權矩陣 (Change Application Authorization Matrix)
@@ -299,7 +328,19 @@ Yellow findings must be classified as `fix-this-cycle`, `residual-accepted`, `de
 
 ### Task Type And Dispatch Pre-Gate Matrix
 
-Before any specialist branch starts, the captain must record task type, workflow route, implementation authorization, allowed specialist roles, and forbidden specialist roles. Workflow commands such as `$02`, `$03`, `$04`, or `$09` are route hints only; they do not replace the board and do not permit pre-board delegation. Natural-language coding, debugging, testing, audit, skill, or governance requests still require the same station board.
+After Team mode is active, before any specialist branch starts, the
+captain must record task type, workflow route, implementation authorization,
+allowed specialist roles, and forbidden specialist roles. Workflow commands such
+as `$02`, `$03`, `$04`, or `$09` are route hints only; they do not replace the
+board and do not permit pre-board delegation after activation. Natural-language
+coding, debugging, testing, audit, skill, or governance requests require the
+same station board only in active Team mode. When Team mode is not active, they
+follow the normal lifecycle, scoped authorization, protected gates, and
+read-before-write rules without captain/team-board requirements.
+
+The following rows describe station eligibility after Team mode is
+active. Outside active Team mode, task type classification remains an ordinary
+workflow/lifecycle concern rather than a formal board requirement.
 
 | 任務類型 | 可出現隊員 | 不可出現隊員 | 最低證據 |
 |---|---|---|---|
@@ -307,7 +348,7 @@ Before any specialist branch starts, the captain must record task type, workflow
 | exploration | `formal-readonly` requirement, research, architecture, counter-evidence, review evidence | implementation and `formal-write` | research scope, source tier, non-write boundary, and deep-read/verify-read when evidence is large |
 | blueprint | `formal-readonly` requirement, architecture, counter-evidence, impact, review | implementation and `formal-write` | decisions, alternatives, compatibility, build handoff, and standby write trigger when later implementation is expected |
 | build-plan | `formal-readonly` requirement, architecture, impact, test strategy, review; standby implementation station | main-worktree implementation before resolved `formal-write` | intent boundary, acceptance matrix, validation route, and exact formal-write file scope |
-| implementation | resolved `formal-write` isolated or text implementation change delivery, memory delivery, test, review, completion | self-review and ungated scope expansion | approved file scope, change delivery evidence, memory impact, and memory delivery status |
+| implementation | resolved `formal-write` station-owned main-worktree `change-delivery` under `implementation-change-delivery`; isolated/text delivery only as fallback; memory delivery, test, review, completion | self-review and ungated scope expansion | approved file scope, dirty-diff read, change delivery evidence, fallback artifact/application evidence when used, memory impact, and memory delivery status |
 | fix-debug | `formal-readonly` impact/debug/test/review plus resolved `formal-write` repair delivery when fixing | self-review and uncontrolled writes | symptom, cause, regression route, and repair station authorization |
 | validation-audit | `formal-readonly` test, review, completion, CLI/browser/MCP evidence | source mutation unless separately authorized as `formal-write` | command/browser/MCP evidence and blocked items |
 | commit-release | `formal-readonly` memory delivery, review, completion evidence | git/release/memory mutation by specialists | dirty file list, review state, memory status, and captain-only protected action gate |
@@ -332,7 +373,7 @@ Formal dispatch is wave-gated. Same-wave stations must be independent of each ot
 | 反證 | 02、03、04、07、08、12 | `evidence branch` unless direct exception | Wrong-assumption search, missing-risk list, rejected or accepted concern | 最終計畫裁決 |
 | 影響面 | 03、04、07、08、09、12 | `evidence branch`、`CLI branch` 或 `MCP direct` | Files, memory cards, docs, sync paths, compatibility and regression surface | Scope approval and source writes |
 | 計畫授權 | 02、03、04、09、12 | `direct` | Review state, acceptance matrix, authorization boundary | Authorization interpretation |
-| 實作 | 03、04、12 and Antigravity execute stages | `isolated change delivery` or text change delivery; station-owned `change-application` applies returned qualified artifacts or scoped source changes under change-application authorization | Approved file list, security gate, dirty-tree protection, change delivery artifact, change-application receipt | Specialists do not update memory, stage/commit/push, deploy, self-review, or write main worktree outside an authorized `change-application` station |
+| 實作 | 03、04、12 and Antigravity execute stages | `station-owned main-worktree change delivery` under `implementation-change-delivery`; isolated/text change delivery when direct main-worktree delegation is unavailable; fallback `change-application` applies returned artifacts, explicit integration tasks, or assigned generated/deployed sync | Approved file list, security gate, dirty-tree protection, change delivery artifact or receipt, fallback change-application receipt when applicable | Specialists do not update memory, stage/commit/push, deploy, self-review, or write main worktree outside an authorized `change-delivery` or fallback `change-application` station |
 | 記憶交付 | 03、04、08、09、10、11、12 when source, workflow, governance, docs, generated copies, or public contract may change | `evidence branch` or `MCP direct` for attribution; `direct` only for protected memory gate | `memory_impact`, `memory_delivery`, and blocked/unverified/closed-with-director-risk status | memory_commit, final memory write approval, source writes |
 | 短迴圈驗證 | 03、04、06、07、08 | `browser branch`、`CLI branch`、`evidence branch` 或 hot-path `direct` exception | Test output, real-path attempt, blocked evidence path | Completion claim |
 | 審查 | 02、03、04、08、09、10、12 | `evidence branch` unless direct exception | Review purpose, lifecycle state, review lifecycle risk decision, blockers, independence from implementation | Final review lifecycle status |
@@ -419,10 +460,10 @@ Review state is mandatory for governance, workflow, public contract, release/plu
 
 | 工作流 | 任務型態 | 外部接地依據 | 最低證據 | 常見路由 |
 |---|---|---|---|---|
-| 00 對話 | 純討論、概念釐清、無外部證據依賴的輕量問答；檔案、截圖、記憶、規則、代理行為、證據查核或治理影響改走 `formal-readonly` | Codex 指令分層、Claude 上下文管理、Agent Skills 描述觸發、Team-First formal-readonly | 純直答需只依目前對話、提供片段或穩定常識；formal-readonly 需站點板、讀取範圍、隊員證據、引用位置、未驗證/阻塞清單、證據狀態回報與隊長接收、任務板更新紀錄；高變動事實需轉研究 | 01、02、03、04、06、09 |
-| 01 探索 | 網路研究、競品、可行性、反方分析 | 深度研究實務、來源可信度、資料新鮮度、Team-First formal-readonly | formal-readonly 團隊站點板、隊員技能派工包、來源層級、日期、偏誤、覆蓋缺口與未驗證項；若不開隊員，需記錄不可用通道與直接例外 | 02、03、08 |
-| 02 架構 | 純架構、重大技術轉向、系統藍圖 | ADR、C4、arc42、官方框架文件、需求對齊閘門、編程團隊治理、Team-First formal-readonly | formal-readonly 團隊站點板、需求理解回放、中立反證、決策狀態、替代方案、審查目的與狀態、需求到驗收追蹤、假設、相容性與後續建構契約 | 03、08、12 |
-| 03-1 實驗 | 沙盒 spike、丟棄式原型 | 技術 spike、原型隔離實務、編程團隊最小治理 | 最小團隊站點板、沙盒邊界、允許改動範圍、丟棄條件、升級條件、禁止生產品質聲明 | 03、11 |
+| 00 對話 | 純討論、概念釐清、無外部證據依賴的輕量問答；檔案、截圖、記憶、規則、代理行為、證據查核或治理影響依普通工作流處理，受治理請求啟動 Team mode 時改走 `formal-readonly` | Codex 指令分層、Claude 上下文管理、Agent Skills 描述觸發、governed Team formal-readonly | 純直答需只依目前對話、提供片段或穩定常識；Team mode active 的 formal-readonly 需站點板、讀取範圍、隊員證據、引用位置、未驗證/阻塞清單、證據狀態回報與隊長接收、任務板更新紀錄；高變動事實需轉研究 | 01、02、03、04、06、09 |
+| 01 探索 | 網路研究、競品、可行性、反方分析 | 深度研究實務、來源可信度、資料新鮮度、governed Team formal-readonly | Team mode active 時的 formal-readonly 團隊站點板、隊員技能派工包、來源層級、日期、偏誤、覆蓋缺口與未驗證項；若不開隊員，需記錄不可用通道與直接例外 | 02、03、08 |
+| 02 架構 | 純架構、重大技術轉向、系統藍圖 | ADR、C4、arc42、官方框架文件、需求對齊閘門、編程團隊治理、governed Team formal-readonly | Team mode active 時的 formal-readonly 團隊站點板、需求理解回放、中立反證、決策狀態、替代方案、審查目的與狀態、需求到驗收追蹤、假設、相容性與後續建構契約 | 03、08、12 |
+| 03-1 實驗 | 沙盒 spike、丟棄式原型 | 技術 spike、原型隔離實務、受治理 03-1 請求觸發 Team mode | 03-1 / experiment / sandbox prototype 請求本身啟動 Team mode；可用 reduced/minimal experiment station/board，但必須記錄 sandbox scope、允許改動範圍、丟棄條件、升級條件、allowed shortcuts 與 experiment-only 處置；sandbox writes 需 scope-bound authorization 且不得宣稱 production completion；promotion to 03/build 或 production source/governance/public-contract write 需新的 production scope-bound authorization、`formal-write`、station-owned `change-delivery`、validation、review、memory/docs | 03、11 |
 | 03 建構 | 正式建構、產品行為變更 | 先探索、再計畫、再實作、再驗證、需求對齊閘門、工程審查治理、編程團隊治理 | 團隊站點板、沿用藍圖狀態、審查目的與狀態、需求到任務追蹤、任務驗收矩陣、偏移稽核規則、真實驗證路徑、工具發現、阻塞條件、記憶所有權與狀態證據 | 04、06、08、09 |
 | 04 修復 | bug 修復、回歸修復 | 根因分析、缺陷管理、回歸測試、工程審查治理、編程團隊治理 | 團隊站點板、症狀、根因、審查目的與狀態、修復證據、回歸證據、受影響記憶卡狀態與依賴證據 | 06、07、09 |
 | 05 濃縮 | 專案身份、長期記憶初始化 | 上下文壓縮、長期記憶、偏好治理 | 來源依據、永久事實與暫時觀察分離、工作區與脈絡盤點證據 | 02、11、12 |

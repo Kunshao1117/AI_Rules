@@ -4,6 +4,10 @@ This policy is the AI_Rules source of truth for language selection, audience
 layer classification, exact-evidence preservation, and cross-platform language
 references.
 
+External grounding, freshness checks, source ranking, and missing-evidence
+labels are governed by `Shared/policies/grounding-governance.md`. This policy
+only governs how that evidence is expressed to each audience.
+
 ## Source Of Truth And Precedence
 
 - Framework source: `Shared/policies/language-governance.md`.
@@ -16,6 +20,9 @@ references.
 - Workflow entries, operational skills, matrices, and platform adapters must
   reference this policy instead of treating any platform core paragraph as the
   sole language source.
+- External-grounding requirements, official-source precedence, local-version
+  conflicts, and grounding completion labels belong in
+  `Shared/policies/grounding-governance.md`; do not duplicate those rules here.
 - If a task requires exact quoted evidence, command names, paths, code
   identifiers, API names, schema fields, or tool output, preserve the exact
   token text and explain it in Traditional Chinese when the explanation is
@@ -33,8 +40,13 @@ references.
 
 ## Director-Facing Text Rules
 
+- Director-facing output must begin with Traditional Chinese meaning. English,
+  identifiers, paths, commands, schema fields, state values, and exact tool
+  labels may appear only as supporting precision or evidence after the Chinese
+  meaning is clear.
 - Director-facing output must not be a raw list of file names, field names,
-  function names, command parameters, or internal tool names.
+  function names, command parameters, internal tool names, or station artifact
+  fields.
 - When technical identifiers are necessary, introduce the business or governance
   meaning first, then include the exact identifier as supporting evidence,
   location, or precision.
@@ -51,6 +63,9 @@ references.
   identifier alone is not an acceptable change description.
 - Do not write in engineering shorthand and translate afterward. Design the
   Director-facing explanation in Traditional Chinese from the start.
+- English-led summaries, column-list-led summaries, path-only summaries, or
+  canonical-field-list summaries fail the Director-readable gate even when the
+  facts are otherwise correct.
 
 ## Captain Integration And Director Output Gate
 
@@ -69,9 +84,23 @@ references.
 - Director-facing tables must use Traditional Chinese column labels as primary
   labels. If a canonical token is required, attach it after the Chinese label,
   such as `完成狀態（completion_state）`.
-- If Director-facing output is English-led, artifact-led, raw-field-led, or
-  lacks captain synthesis, it fails the Director-facing output gate and must be
-  rewritten or reported as non-complete by the relevant completion gate.
+- If Director-facing output is English-led, led by station artifacts, led by
+  canonical field lists, or lacks captain synthesis, it fails the
+  Director-facing output gate and must be rewritten or reported as non-complete
+  by the relevant completion gate.
+- Team-member delivery must not be pasted as the Director-facing body. The
+  captain must translate the artifact into Traditional Chinese meaning-first
+  status, evidence, risk, and next-step language while preserving exact tokens
+  only where they are evidence.
+- 隊長可轉譯、摘要與統整隊員交付，但不得改寫證據來源、角色歸屬、
+  驗證、審查、風險或狀態結論。If a station reports `blocked`,
+  `unverified`, `部分已查`, `未查`, `查不到`, or a source conflict, the
+  Director-facing synthesis must preserve that evidence state and explain it in
+  Traditional Chinese instead of upgrading it to verified language.
+- A completion report is blocked when its main body is led by English prose,
+  canonical field lists, raw station artifacts, or unsynthesized handoff/output
+  templates. The report may include a compact evidence table only after the
+  Chinese meaning summary.
 
 ## 總監可讀規劃用語（Director-Facing Planning Vocabulary）
 

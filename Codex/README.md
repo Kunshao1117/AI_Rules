@@ -68,8 +68,9 @@ OpenAI Codex 透過 `.agents/skills/` 目錄原生掃描操作型技能，Antigr
 | **輕量治理規則** | 所有治理規範收錄於單一 `.codex/AGENTS.md`，無需多檔案載入機制 |
 | **技能即工作流** | Codex 透過技能觸發 `$skill-name`，工作流與操作型技能統一在同一目錄 |
 | **需求對齊與反證** | 架構藍圖與建構計畫必須先回放需求、列出非目標與成功標準，再做中立反證、決策紀錄、驗收追蹤與偏移稽核 |
-| **Team-Native Core 團隊原生核心** | 開發、修改、修復、測試、除錯、健檢、提交、交接、技能鍛造，以及會影響後續建構的 00 證據型對話、探索、架構、廣泛讀檔與外部研究，都會依語意自動進入 Team-Native Core。這不是文字建議，而是前置執行狀態機：下一個合法狀態必須是隊長任務板、適用站點、隊員派工包與通道狀態。Codex 唯讀工作使用正式唯讀板，寫入工作必須進入經範圍綁定意圖訊號與授權解析綁定後的正式寫入板；每站都要記錄隊員技能引用、深讀範圍、隊長交付接收與授權處理範圍、啟動期限、待命原因或阻塞原因。00 直答只保留給不需外部證據的純聊天；涉及檔案、截圖、記憶、規則、代理行為、工具輸出或後續治理影響時，必須升級為正式唯讀團隊站點。Codex 可把站點路由到 native subagents、專案自訂代理、瀏覽器、終端、背景任務或 MCP 證據；若通道不可用，必須先回報 unavailable、blocked、unverified、not-authorized 或 standby，不得默默降級成隊長主線直做。正式團隊完成必須回收 implementation change delivery、memory/docs delivery、review、validation 四類交付件與 Team-Native trace；隊長只接收交付、維持任務板、彙整狀態、處理阻塞與授權邊界，不能先自行讀完、實作、審查或驗證再事後補團隊軌跡，也不能把 GO 當成整批未限範圍寫入 |
+| **Team-Native Core 團隊原生核心** | Team-Native 由使用者要求受治理工作觸發：governance、workflow、fix、build、debug、test、audit、skill、memory/docs、commit、handoff、source、public-contract，或要求團隊、隊員、subagent、delegation、Team-Native。使用者不需要固定口令。純對話、小型穩定問答與無 source/governance/evidence 影響的工作可維持 direct；Team mode 啟動不等於寫入授權。啟動後，下一個合法狀態必須是隊長任務板、適用站點、隊員派工包與通道狀態；Codex 主工作區 implementation 由具名 station-owned `change-delivery` 站點依 `implementation-change-delivery`、精確 allowlist、dirty diff read 與禁止受保護動作寫入，`change-application` 只作 returned artifact、明確 integration task 或 assigned generated/deployed sync 的 fallback。Codex 可把站點路由到 native subagents、專案自訂代理、瀏覽器、終端、背景任務或 MCP 證據；若通道不可用，必須先回報 unavailable、blocked、unverified、not-authorized 或 standby，不得默默降級成隊長主線直做。正式團隊完成必須回收 implementation change delivery、memory/docs delivery、review、validation 四類交付件與 Team-Native trace；隊長只接收交付、維持任務板、彙整狀態、處理阻塞與授權邊界，不能先自行讀完、實作、審查或驗證再事後補團隊軌跡，也不能把 GO 當成整批未限範圍寫入 |
 | **範圍式授權解析** | Codex approval/sandbox 提示、工具確認、GO、日常語句與 `$skill-name` 都必須收斂到目前明示的計畫、站點、命令、工具、檔案集合、差異或阻塞點；skill 只做工作流路由，介面同意可作為該提示範圍的授權證據，但不是無範圍寫入或記憶/git/release 授權 |
+| **輸出與接地雙閘門** | Codex core 只保留總監輸出繁中語義先行與高變動/外部事實接地查證的最小契約；細節引用 `Shared/policies/language-governance.md` 與 `Shared/policies/grounding-governance.md`。source/deployed sync 以 `Codex/.codex/AGENTS.md` 與 `.codex/AGENTS.md` 雜湊一致為準 |
 | **升級保護** | PROJECT IDENTITY 保護機制：升級後自動還原使用者自訂的專案身份區段 |
 
 ---
@@ -140,7 +141,7 @@ Step 2: workflow-skills/ → .agents/skills/  （17 套工作流技能）
 | **Shared policy drift** | Doctor 檢查 Codex 子代理 marker block 是否仍由框架來源 `Shared/policies/subagent-invocation.md` 生成，並確認下游 `.agents/shared/policies/subagent-invocation.md` 已部署 |
 | **Subagent vocabulary drift** | Doctor 攔截 Codex workflow 殘留的 Claude 舊式 Agent subagent_type 語法，並要求 Shared 技能使用 evidence branch / platform adapter 語彙 |
 | **Review governance coverage** | Doctor 檢查審查治理共用技能、工作流矩陣、子代理政策與 02/03/04/08/09/10 入口是否保留審查狀態與 evidence branch 邊界 |
-| **Captain-led programming governance coverage** | Doctor 檢查隊長制編程治理共用技能、團隊任務板模板、隊長任務板、角色邊界、隔離變更交付、文字變更交付、證據負責人、主線直做例外、全主線假團隊防線、00/01 自動轉向、三平台 workflow 接入與部署後 shared skill / shared reference hash 是否一致；也會檢查 draft-to-formal board lifecycle、dispatch wave、previous-wave input、next-wave start condition、formal evidence eligibility，並攔截草案板派工、草案證據冒充正式驗收與一次開全部隊員 |
+| **Captain-led programming governance coverage** | Doctor 檢查隊長制編程治理共用技能、團隊任務板模板、受治理請求觸發、隊長任務板、角色邊界、station-owned main-worktree change delivery、fallback change-application、證據負責人、主線直做例外、全主線假團隊防線、三平台 workflow 接入與部署後 shared skill / shared reference hash 是否一致；也會檢查 draft-to-formal board lifecycle、dispatch wave、previous-wave input、next-wave start condition、formal evidence eligibility，並攔截草案板派工、草案證據冒充正式驗收與一次開全部隊員 |
 | **Team-Native Core coverage** | Doctor 檢查 Team-Native Core 政策、任務軌跡契約、conditional 平台路由、Team-Native trace 驗收與部署後共用參考；嚴格模式可要求任務軌跡 |
 | **Codex repo-managed hooks removed / rebuild pending** | Doctor 現在將 repo-managed hook artifacts 全部不存在視為 Hooks removed / rebuild pending，回報 `RemovedRebuildPending`，且不再要求 `.codex/hooks*`、`Codex/.codex/hooks*`、`Scripts/tests/codex-hooks/**` 存在；未來只要任一 hook artifact 重新出現，才恢復 hook config、Team-Native gate script、來源/部署一致性與 Red/Yellow 分級檢查 |
 | **Codex hook fixture rebuild pending** | Hook fixture validation 目前停在 rebuild pending；Doctor 不再要求 fixture 測試入口或必要案例存在，也不再因已移除的 hook fixture 缺檔亮 Red/Yellow；未來重建 Hooks 時才恢復 hook config、script、fixture runner 與 fixture case 驗證 |
@@ -184,11 +185,11 @@ Codex Edition 採用單一規則檔設計，所有治理規範集中於 `AGENTS.
 
 | 技能目錄 | 觸發方式 | 功能 |
 |---------|---------|------|
-| `00-chat-聊天/` | `$00-chat-聊天` | 純對話、腦力激盪、無外部證據依賴的輕量問答；檔案、截圖、記憶、規則、代理行為或治理影響改走正式唯讀團隊站點 |
+| `00-chat-聊天/` | `$00-chat-聊天` | 純對話、腦力激盪、無外部證據依賴的輕量問答；未啟動 Team mode 時，涉及檔案、截圖、記憶、規則、代理行為或治理影響仍依一般唯讀/授權流程處理；Team mode 因受治理請求或團隊派工啟動後改走正式唯讀團隊站點 |
 | `01-explore-探索/` | `$01-explore-探索` | 可行性研究：網路研究 + 魔鬼代言人分析 |
 | `02-blueprint-架構/` | `$02-blueprint-架構` | 純架構藍圖、全系統初始化或重大技術轉向；一般功能建構不再先拆成獨立藍圖 |
 | `03-build-建構/` | `$03-build-建構` | 設計到建構合約：治理深度判定 + 架構判斷 + 建構計畫 → 範圍綁定的意圖訊號經授權解析綁定 → 正式派工板 → 第 1 波變更交付件 → 回收證據 → 達到下一波啟動條件後再派審查/驗證交付件 → 授權變更套用站點處理合格交付件 → 記憶歸卡 |
-| `03-1-experiment-實驗/` | `$03-1-experiment-實驗` | 沙盒快速實驗（保留最小團隊站點宣告） |
+| `03-1-experiment-實驗/` | `$03-1-experiment-實驗` | 沙盒快速實驗（受治理 workflow；要求 03-1/experiment/sandbox prototype 會啟動 Team mode，使用 reduced/minimal experiment station/board；sandbox 寫入與 promotion 仍需 scope-bound authorization，且不宣稱 production complete） |
 | `04-fix-修復/` | `$04-fix-修復` | 兩階段修復：診斷 → 範圍綁定的意圖訊號經授權解析綁定 → 正式派工板 → 第 1 波修復變更交付件 → 回收證據 → 達到下一波啟動條件後再派審查/回歸驗證交付件 → 授權變更套用站點處理合格交付件 → 記憶更新 |
 | `05-condense-濃縮/` | `$05-condense-濃縮` | 專案濃縮初始化（掃描 → 萃取 → 隊長任務板 → 審閱 → 寫入） |
 | `06-test-測試/` | `$06-test-測試` | 依介面類型與證據等級收集介面適配與回歸證據 |

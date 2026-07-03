@@ -11,6 +11,10 @@ Language and audience-layer classification for skills, triggers, handoffs,
 memory text, and generated documentation is governed by
 `Shared/policies/language-governance.md`; skills must cite that policy instead
 of treating a platform core rule as their only source.
+External grounding for outside facts, source type, freshness sensitivity, and
+no-evidence claim boundaries is governed by
+`Shared/policies/grounding-governance.md`; skills and workflow entries cite that
+policy instead of embedding research or verification playbooks.
 
 ## Skill Placement Contract
 
@@ -31,6 +35,11 @@ available to multiple workflows, skills, or platforms but are too detailed for
 always-on platform core. Platform core files may cite those policies, but they
 must not absorb policy playbooks, field catalogs, scenario examples, or tool
 recipes.
+Language output gates belong in `Shared/policies/language-governance.md`.
+External grounding gates belong in `Shared/policies/grounding-governance.md`.
+Workflow entries, skills, and matrices may name the gate position, source type,
+freshness sensitivity, and missing-evidence state, but must not copy the full
+policy procedure.
 When a skill grows beyond the quality gate or begins compressing multiple role
 identities into one file, split stable details into `references/` and pass the
 relevant reference paths through the station handoff packet. Do not keep
@@ -162,10 +171,11 @@ evidence or change delivery output to their native tools. Platform entries must 
 the formal team child skills when applicable: `team-role-boundaries`,
 `team-change-delivery-artifact`, `team-memory-docs-delivery-artifact`,
 `team-validation-delivery-artifact`, `team-review-delivery-artifact`, and `team-completion-gate`.
-Platform entries must also preserve Team-First startup semantics: no-write work
-uses a formal-readonly board when it can influence later source work; write work
-uses a formal-write board after authorization resolution binds a scope-bound
-Director intent signal; every formal station receives a
+Platform entries must also preserve governed Team startup semantics: governed
+Director requests activate Team mode without a fixed phrase; no-write work uses
+a formal-readonly board when it can influence later source work; write work uses
+a formal-write board after authorization resolution binds a scope-bound Director
+intent signal; every formal station receives a
 handoff packet with loaded skill refs and startup monitoring fields.
 Platform entries must preserve `operation_mode`: `daily` is reduced Team-Native
 mode for routine low-risk evidence, while `full` is required for implementation,

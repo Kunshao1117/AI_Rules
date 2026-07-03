@@ -16,6 +16,7 @@ Team-Native station execution.
 | `Shared/policies/team-native-core.md` | Highest-priority Team-Native gate, operation mode, station-first rule, and completion boundary. |
 | `Shared/policies/authorization-resolution.md` | Scope-bound authorization fields and phase-specific write gates. |
 | `Shared/policies/language-governance.md` | Audience-layer language classification, Director-facing language rules, exact-evidence preservation, and source/deployed language-policy parity. |
+| `Shared/policies/grounding-governance.md` | External grounding gate for source type, freshness sensitivity, and no-evidence claim boundaries. |
 | `Shared/policies/workflow-orchestration.md` | Workflow entry sequence, transition rules, dispatch waves, and missing-evidence routing. |
 | `Shared/policies/workflow-orchestration-scenarios.md` | Non-authorizing scenario playbooks that show how workflows cooperate without copying rules into entries. |
 | `Shared/skill-governance.md` | Governance layer placement, skill boundaries, deduplication defenses, and source/deployed skill governance. |
@@ -34,13 +35,16 @@ completion states, or override this contract.
 
 ## Entry Sequence
 
-Every workflow entry follows this sequence before broad reading, fix, build,
-validation, review, implementation, memory/docs attribution, commit preparation,
-release preparation, or completion claims:
+When Team mode is active, every workflow entry follows this team
+sequence before broad reading, fix, build, validation, review, implementation,
+memory/docs attribution, commit preparation, release preparation, or completion
+claims:
 
 ```text
 Director instruction
 -> workflow route
+-> Director-facing output gate when producing Director-visible text, governed by language-governance
+-> external grounding gate when external facts, sources, or freshness affect formal evidence, governed by grounding-governance
 -> authorization resolution
 -> existing worktree change integration gate when the target file is dirty
 -> operation_mode
@@ -62,49 +66,75 @@ skill trigger, Antigravity workflow button, Claude command, platform mode,
 approval prompt, or available channel can route the work, but it cannot grant
 unbounded write authority or protected follow-on authority.
 
-Team-Native / subagent team mode is default-on for every workflow entry that
-triggers Team-Native Core. The workflow route must create or promote the
-board-first path before governance, workflow, fix, build, broad evidence, change
-delivery, validation, review, memory/docs, protected action, or completion work;
-the Director does not need to say "啟動團隊模式". Missing specialist channel
-capability becomes standby, blocked, unverified, unavailable, or
-closed-with-director-risk station state; it does not downgrade the workflow to
-captain-direct execution.
+After routing and before accepting formal evidence or making completion claims,
+the workflow applies two thin gates by reference only. Director-facing text uses
+the output gate in `language-governance`; external claims, outside sources, and
+freshness-sensitive facts use the grounding gate in `grounding-governance`.
+This orchestration contract only records gate placement and does not copy the
+verification procedure from either policy.
 
-Small read-only probes are permitted before the formal board only when needed
-to identify the route or locate explicitly named files. They must stay narrow,
-non-mutating, and non-evidence-producing: named-file status, named-file diff,
-named-file hash, or a search constrained to explicitly named files. Small
-probes explicitly exclude repository-wide grep, `git grep` or `rg` against the
-repository root, recursive `Get-Content`, recursive `Get-ChildItem` used as a
-file inventory, `rg --files`, `git ls-files`, whole-repository file lists,
+Team-Native / subagent team mode activates when the current Director request
+asks for governed work: governance, workflow, fix, build, debug, test, audit,
+skill, memory/docs, commit, handoff, source, public-contract, or equivalent
+source/governance/evidence-bearing work. Requests for a team, team member,
+subagent, delegation, Team-Native, or equivalent dispatch also activate Team
+mode. Workflow names and skill names are route signals, not fixed passwords; if
+the request itself is governed work, Team mode is triggered by that user
+request. Workflow names, source impact, platform mode, approval prompts, or
+available channels do not activate Team mode without a current governed
+Director request and do not authorize writes or protected actions.
+
+When Team mode is not active, captain/team-board limits do not apply; normal
+lifecycle, scoped authorization, protected-action gates, read-before-write, and
+source/deployed sync rules still apply. Pure conversation, small stable
+answers, and no-impact read-only work remain outside Team mode only when they
+have no source, workflow, validation, review, memory, release, governance, or
+evidence impact.
+
+After Team mode is active, the workflow route must create or promote
+the board-first path before governance, workflow, fix, build, broad evidence,
+change delivery, validation, review, memory/docs, protected action, or
+completion work. Missing specialist channel capability becomes standby,
+blocked, unverified, unavailable, or closed-with-director-risk station state; it
+does not downgrade active Team mode to captain-direct execution.
+
+In active Team mode, small read-only probes are permitted before the formal
+board only when needed to identify the route or locate explicitly named files.
+They must stay narrow, non-mutating, and non-evidence-producing: named-file
+status, named-file diff, named-file hash, or a search constrained to explicitly
+named files. Small probes explicitly exclude repository-wide grep, `git grep`
+or `rg` against the repository root, recursive `Get-Content`, recursive
+`Get-ChildItem` used as a file inventory, `rg --files`, `git ls-files`,
+whole-repository file lists, validation, review, implementation, memory/docs
+attribution, and completion claims.
+
+In active Team mode, broad reads, recursive scans, repository-wide grep,
 validation, review, implementation, memory/docs attribution, and completion
-claims.
-
-Broad reads, recursive scans, repository-wide grep, validation, review,
-implementation, memory/docs attribution, and completion claims require the
-formal sequence above before the captain starts or treats output as evidence.
-If a hook or platform supplies broad context before that trace exists, it
-remains non-authorizing route context until a specialist station returns
-evidence or the board records a direct exception with residual state.
+claims require the formal sequence above before the captain starts or treats
+output as evidence. If a hook or platform supplies broad context before that
+trace exists, it remains non-authorizing route context until a specialist
+station returns evidence or the board records a direct exception with residual
+state.
 
 ## Board-State Boundary
+
+Board states below exist only after Team mode is active.
 
 | Board state | Allowed orchestration | Forbidden shortcut |
 |---|---|---|
 | `draft board` | Pre-GO planning, candidate station list, assumptions, and proposed dispatch waves. | Draft board cannot dispatch, spawn, or open formal specialists. Draft evidence cannot satisfy formal evidence eligibility. |
-| `formal-readonly` | Read-only evidence, source/doc deep-read, external research, validation planning, review evidence, and standby stations. | No-write does not mean no-team. Read-only work cannot write source, memory, git, release, deployment, install, or external state. |
-| `formal-write` | Resolved-scope change delivery, authorized change application, validation, review, memory/docs delivery, and completion audit inside the authorized scope. | Formal-write is not blanket authority; each phase keeps its own authorization source, target, scope, evidence, expiry, and resolution state. |
+| `formal-readonly` | Read-only evidence, source/doc deep-read, external research, validation planning, review evidence, and standby stations. | In active Team mode, no-write does not mean no-team. Read-only work cannot write source, memory, git, release, deployment, install, or external state. |
+| `formal-write` | Resolved-scope station-owned main-worktree change delivery, fallback authorized change application, validation, review, memory/docs delivery, and completion audit inside the authorized scope. | Formal-write is not blanket authority; each phase keeps its own authorization source, target, scope, evidence, expiry, and resolution state. |
 
 ## Operation Mode
 
-`operation_mode: daily` is allowed only for routine, low-risk, bounded evidence
+After Team mode is active, `operation_mode: daily` is allowed only for routine, low-risk, bounded evidence
 with no source, workflow, skill, audit-rule, public-contract, release,
 deployment, install, external-state, or protected mutation impact. A daily board
 still needs role identity, a handoff packet, channel state, and honest
 blocked/unverified state.
 
-`operation_mode: full` is required for implementation, repair, bottom-layer
+In active Team mode, `operation_mode: full` is required for implementation, repair, bottom-layer
 refactor, cross-file governance, specialist skill rewrites, Doctor/Audit
 changes, commit/release/deploy preparation, protected external-state readiness,
 or any source/workflow/public-contract impact.
@@ -151,12 +181,12 @@ artifact 記錄 `late_result_policy: late-result-pending`（晚到結果待決�
 
 ## Workflow Family Presets
 
-Workflow entries keep their specific row in the workflow evidence matrix, then
-apply the matching preset below:
+When Team mode is active, workflow entries keep their specific row in
+the workflow evidence matrix, then apply the matching preset below:
 
 | Family | Workflows | Default orchestration |
 |---|---|---|
-| Intake and exploration | 00, 01 | Direct only for pure conversation. Evidence-bearing work upgrades to formal-readonly with bounded source, research, or counter-evidence stations. |
+| Intake and exploration | 00, 01 | Direct only for pure conversation, small stable answers, or no-impact read-only work. When Team mode is active, evidence-bearing work uses formal-readonly with bounded source, research, or counter-evidence stations. |
 | Architecture and diagnosis | 02, 07 | Formal-readonly for intent, counter-evidence, architecture, impact, and root-cause evidence. Route to build, fix, experiment, or audit when writes or broader evidence are needed. |
 | Change production | 03-1, 03, 04, 12 | Formal-write only after scoped authorization resolution. Implementation produces a change delivery artifact, then validation, review, memory/docs, and completion run in later eligible waves. |
 | Validation and audit | 06, 08, 08-1, 08-2, 08-3, 10 | Read-only validation/audit stations do not repair core code. Failed validation routes back to fix, debug, build, or audit; audit report follows inventory and logic evidence. |
@@ -166,7 +196,7 @@ apply the matching preset below:
 
 | From | To | Required condition | Forbidden shortcut |
 |---|---|---|---|
-| 00 chat | 01, 02, or formal-readonly | Files, memory/context, rules, tool output, agent behavior, screenshots, or governance evidence are needed. | Do not stay direct while performing broad file reads or evidence work. |
+| 00 chat | 01, 02, or formal-readonly | Files, memory/context, rules, tool output, agent behavior, screenshots, or governance evidence are needed under an active governed request, or the task routes to another workflow under normal non-team rules. | Do not stay direct while performing broad file reads or evidence work in active Team mode. |
 | 01 explore | 02, 03-1, or 08 | Evidence is current enough to shape architecture, experiment, or audit. | Do not start build from insufficient evidence. |
 | 02 blueprint | 03, 03-1, 08, or 11 | Handoff contract, assumptions, acceptance evidence, and write boundary are clear. | Do not treat architecture output as write authorization. |
 | 03-1 experiment | 03 or 11 | Prototype is promoted or discarded with clear scope. | Do not commit or claim production quality for disposable prototype work. |
@@ -203,7 +233,8 @@ closed-with-director-risk, not as complete:
 
 - Draft board dispatches or spawns a formal specialist.
 - Draft evidence counts as formal acceptance evidence.
-- No-write or read-only work is described as no-team, without-team, or skip-team.
+- In active Team mode, no-write or read-only work is described as no-team,
+  without-team, or skip-team.
 - Post-board all-at-once dispatch starts all stations at once.
 - Standby is treated as returned evidence, validation, review, or completion.
 - A wait timeout is treated as failure, cancellation, rejection, or absence
@@ -252,10 +283,14 @@ Workflow entries must keep a short reference block only:
    shared governance boundaries.
 5. Read the deployed language governance policy before applying workflow-specific
    output-language, audience-layer, handoff, or change-description rules.
-6. Apply the platform capability matrix.
-7. Build or promote the Captain Team Board before broad evidence, change
-   delivery, validation, review, memory/docs, or completion work.
-8. Route missing stations, handoff packets, channel states, or delivery
+6. Read the deployed grounding governance policy before relying on external
+   sources, freshness-sensitive claims, or outside documentation as formal
+   evidence.
+7. Apply the platform capability matrix.
+8. When Team mode is active, build or promote the Captain Team Board
+   before broad evidence, change delivery, validation, review, memory/docs, or
+   completion work.
+9. Route missing stations, handoff packets, channel states, or delivery
    artifacts to blocked, unverified, standby, or closed-with-director-risk.
 
 The detailed board field list stays in `team-task-board`, detailed trace fields

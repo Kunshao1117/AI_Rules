@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-03T13:41:52+08:00'
+last_updated: '2026-07-03T21:01:17+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-03T12:33:00+08:00'
+last_verified: '2026-07-03T20:57:12+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 8
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -46,6 +46,10 @@ metadata:
 - Audit now recognizes captain coordination and authorized change-application wording: `captain_coordination_read_scope` replaces captain verify-read fields, and implementation direct checks look for explicit change-application gates rather than captain integration.
 - Audit includes non-Hooks Team-Native channel lifecycle checks: status probes require pause/report plus explicit captain resume, timeouts do not equal failure/cancel/reject, replacement does not equal cancellation, late results need receipt decisions, and pending lifecycle state cannot be reported complete.
 - Audit now checks active memory cards with empty `## Tracked Files`: parent/index cards avoid Yellow only when child card directories, `## Relations` child/index wording, and navigation evidence prove concrete file ownership is delegated.
+- Audit now distinguishes active Team context from inactive ordinary lifecycle: governed user requests, including `03-1` experiment requests, activate Team mode; without a current governed request, no-write exploration, no-write/no-team, and standby trace findings are not active-Team Red findings.
+- Audit checks `03-1` entries for governed-request Team mode activation, reduced/minimal experiment station/board, sandbox scope, discard/promotion conditions, allowed shortcuts, and no production completion claim.
+- Audit treats active-Team traces as captain-led: the mainline/main agent is captain, while implementation, review, validation, and memory/docs evidence stay station-owned unless explicitly closed as blocked, unverified, or Director-risk.
+- `Invoke-PlatformGovernanceAudit` still runs `Measure-SkillQuality`, now includes TeamTraceEvidence active/inactive semantics, and reports Director-facing output quality plus high-change external grounding coverage before commit readiness.
 ## Active Constraints
 - Do not mutate external repositories or deployment targets without explicit Director approval.
 - Keep script behavior aligned with protected memory and project-skill directories.
@@ -54,6 +58,8 @@ metadata:
 - Treat absent repo-managed Codex hook artifacts as rebuild pending, not a Red missing-file condition, while the rebuild-pending slot remains current.
 - Do not use full Doctor or `Measure-CodexHookGovernance` as completion evidence for non-Hooks lifecycle work while Hooks remain explicitly out of scope.
 ## Cycle Events
+- 58: Recorded Audit dual-gate coverage: Director-facing output quality and high-change external grounding checks are part of platform governance audit results.
+- 57: Corrected Audit memory: governed requests, including `03-1`, auto-activate Team mode; absent current governed requests cannot self-start team work; TeamTrace legacy partial text stays non-authorizing evidence.
 - 56: Recorded Audit memory-card parent/index ownership check: empty `## Tracked Files` is Yellow unless child card directories, Relations child/index wording, and navigation evidence prove delegated file ownership.
 - 55: Recorded non-Hooks Audit lifecycle coverage: parser/import passed, GovernanceSemantics, ProgrammingTeamGovernanceCoverage, TeamNativeCoreSemantics, TeamTraceEvidence, SharedSubagentPolicyDrift, and team-task-board SkillQuality all returned Red 0 / Yellow 0.
 - 54: Recorded repo-managed Codex Hooks removal: hook child memory card deleted, parent card owns rebuild-pending state, and Audit.psm1 missing-artifact handling stays RemovedRebuildPending with Red 0 / Yellow 0 / Passed True.
@@ -80,6 +86,10 @@ metadata:
 - repo-managed Codex Hooks 與 fixtures 已移除並待重建；Audit 保留 rebuild-pending slot，不把全數缺檔判成 Red。
 - Audit 另有非 Hooks 隊員通道生命週期檢查：探針必須暫停回報並等待恢復，晚回需要接收決策；本批未處理 Hooks。
 - Audit 會檢查父索引記憶卡空 `Tracked Files`：只有具備子卡目錄、關係段落與導覽證據時才不是黃燈。
+- Audit 現在把受治理請求與 `03-1` 實驗請求視為 Team mode 啟動來源；未有目前受治理請求時，AI 不能自行啟動團隊工作。
+- active Team trace 中主線自動擔任隊長，但不能把隊長代工當成站點交付。
+- Audit 會檢查 `03-1` 是否具備 reduced/minimal experiment board、sandbox scope、discard/promotion condition、allowed shortcuts 與不得宣稱 production completion。
+- Audit 現在也回報總監可讀輸出品質與高變動外部接地查證覆蓋，提交前缺 gate 會被攔出。
 ## Tracked Files
 - Scripts/Deploy.ps1
 - Scripts/modules/Core.psm1

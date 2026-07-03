@@ -86,13 +86,13 @@ or completion evidence.
 | `scope-impact` | Map files, workflows, memory, docs, generated copies, dependencies, and regression surface. | Implement changes, approve scope expansion, mutate files or memory. |
 | `external-research` | Gather current official or primary-source evidence and map it to the local decision. | Edit source, install packages, mutate external systems, decide final acceptance. |
 | `architecture-contract` | Define boundaries, alternatives, interfaces, migration, compatibility, and risk. | Write production changes, hide tradeoffs, approve implementation. |
-| `change-delivery` | Produce isolated or text change delivery artifacts, or own a scoped `change-application` station that applies a returned artifact to the main worktree when `station_mode: change-application`, `handoff_ownership: station-owned`, and authorization phase is `change-application`. | Review own work, write outside the exact station scope, mutate memory, commit, push, release, deploy, install, or external state. |
+| `change-delivery` | Own a scoped main-worktree `change-delivery` station when `station_mode: change-delivery`, `handoff_ownership: station-owned`, authorization phase is `implementation-change-delivery`, exact file allowlist and dirty-diff read are present; produce isolated/text change delivery artifacts when direct main-worktree delegation is unavailable; or own fallback `change-application` for a returned artifact, explicit integration task, or assigned generated/deployed sync. | Review own work, write outside the exact station scope, mutate memory, commit, push, release, deploy, install, or external state. |
 | `validation` | Run or classify non-mutating checks and validation evidence. | Repair implementation, approve quality, change evidence after failure. |
 | `review` | Judge requirement fit, correctness, maintainability, evidence integrity, and regression risk. | Implement the reviewed change, self-approve, mutate files. |
 | `security-reliability` | Classify secrets, authorization, data integrity, abuse, reliability, observability, rollback, and operational risk. | Expose secrets, mutate protected state, implement feature changes, approve release mutation. |
 | `memory-docs` | Attribute memory, documentation, index, handoff, and generated-copy impact as evidence. | Edit memory cards, call memory commit, mutate source, decide final acceptance. |
 | `release-completion` | Check readiness, sync, residual risk, handoff, validation, review, and memory/docs evidence. | Final acceptance, memory write, git, tag, release, deploy, install. |
-| `captain` | Route, supervise board state, receive delivery artifacts, synthesize status, handle blockers/conflicts/authorization boundaries, own protected gates only when the platform cannot delegate that gate to a station, and report. | Replace specialist deep-read, perform parallel context-expanding reads while members work, re-scan or re-check member scope, enter a protected captain gate while a station-owned `change-application` route is available, primarily author implementation/review/validation/memory attribution when a delivery route exists, hide missing evidence, rewrite member output as captain evidence, or claim full completion from substitute authoring. |
+| `captain` | Route, supervise board state, receive delivery artifacts, synthesize status, handle blockers/conflicts/authorization boundaries, own protected gates only when the platform cannot delegate that gate to a station, and report. | Replace specialist deep-read, perform parallel context-expanding reads while members work, re-scan or re-check member scope, enter a protected captain gate while a station-owned `change-delivery` or fallback `change-application` route is available, primarily author implementation/review/validation/memory attribution when a delivery route exists, hide missing evidence, rewrite member output as captain evidence, or claim full completion from substitute authoring. |
 
 ## Separation Requirements
 
@@ -103,9 +103,12 @@ Keep these separations intact even when a task is small:
 - Review judges without authoring the reviewed deliverable.
 - Memory/docs attributes impact and proposed updates without mutating memory.
 - Completion audits evidence without becoming final captain acceptance.
-- Main-worktree change application is a formal implementation station when
-  station-owned; it must not become captain work unless the platform cannot
-  delegate the physical write and the board records a protected captain gate.
+- Main-worktree change delivery is a formal implementation station when
+  station-owned. Fallback change application is a formal integration station
+  only for returned isolated/text artifacts, explicit integration tasks, or
+  assigned generated/deployed sync. Neither path becomes captain work unless the
+  platform cannot delegate the physical write and the board records a protected
+  captain gate.
 - Captain receipt of returned artifacts is not implementation, validation,
   review, or memory/docs evidence; captain substitute authoring is blocked by
   default and can only close as closed-with-director-risk when explicitly
