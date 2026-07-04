@@ -4,19 +4,19 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-04T22:52:16+08:00'
+last_updated: '2026-07-05T00:02:45+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: 2026-07-03T12:57:12.000Z
+last_verified: '2026-07-05T00:01:33+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 7
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _system — Repository Governance Memory
 
 ## Current Truth
@@ -48,6 +49,7 @@ metadata:
 - Root documentation distinguishes station-owned main-worktree `change-delivery` primary, fallback `change-application`, platform route states, manual setup status, captain substitute authoring, and `closed-with-director-risk` from completion.
 - Root and platform documentation now describe the dual gates: Director-facing output uses Traditional Chinese meaning-first language governance, and high-change or external facts require grounded evidence before completion claims.
 - Root documentation describes shared matrix deployment paths, downstream project-local tools under `.agents/tools/`, and framework-source-only manager commands.
+- Root README and CHANGELOG now prepare AI Rules Manager v0.2.0 / `ai-rules-manager-0.2.0.vsix` release documentation, including same-name VSIX asset rerun failure semantics.
 - Director-facing output must use Traditional Chinese unless a lower-level artifact explicitly requires another language.
 - Root repository work, git status, commit, tag, and push operations use `D:\AI_Rules` as the baseline.
 - Source memory lives in `.agents/memory/`; project context lives in `.agents/context/`; root PowerShell implementation ownership moved to `_system.scripts`.
@@ -58,6 +60,7 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
+- 22: Recorded root README and CHANGELOG v0.2.0 release-prep documentation, including explicit same-name VSIX asset rerun failure semantics.
 - 21: Recorded root documentation dual-gate update for Director-readable output and external grounding evidence before commit/release readiness.
 - 20: Corrected root Team mode truth: governed user requests auto-activate Team mode, mainline performs captain coordination only, `03-1` uses reduced experiment boards, and absent current governed requests cannot self-start team work.
 - 19: Recorded root documentation skill-count cleanup: README files, ignored live/root `CLAUDE.md`, and Antigravity source/live sentinels now use 62 shared skills; Codex deployed skill count remains 79 (62 shared + 17 workflow, excluding `_shared` support directory).
@@ -72,6 +75,8 @@ metadata:
 - archive-003.md: Pre-standardization active card snapshot created during MEMORY.md migration.
 
 ## Evidence Base
+- source:README.md — Root release section now names v0.2.0 and same-name VSIX asset rerun failure semantics.
+- source:CHANGELOG.md — AI Rules Manager v0.2.0 release-prep entry records governance readiness, runtime gate hardening, rerun semantics, and memory/docs cleanup alignment.
 - source:.agents/memory/_system/archive-003.md — Previous active card snapshot preserved.
 - tool:memory_audit — Granularity advisory identified root script ownership as a split candidate.
 - director:2026-06-15 — GO SPLIT authorized script child-card creation.
@@ -85,6 +90,7 @@ metadata:
 
 ## 中文摘要
 - AI_Rules 是三平台治理框架核心庫；README/三平台 README 目前採共用技能 62，Codex 部署技能 79。
+- 根 README 與 CHANGELOG 已準備 AI Rules Manager v0.2.0 / `ai-rules-manager-0.2.0.vsix` 發布文件，並明確同名 VSIX asset 補跑會拒絕或失敗。
 - 根層 `CLAUDE.md` 是 ignored live/root file，已對齊 Codex v0.1.3 與 62 套共用技能；Antigravity source/live sentinel 也對齊 62 套。
 - 按鈕、`GO`、workflow 與 mode 只提供範圍化授權證據，不是授權本身。
 - 受治理請求會自動進 Team mode；沒有目前受治理請求時 AI 不能自行啟動團隊工作。

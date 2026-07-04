@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 > 語彙說明：本文件保留歷史版本語境；舊條目中的 patch、packet、補丁、封包、隊長代工與 accepted-risk 不得解讀為現行正向規範。現行正向規範只使用交付件、任務軌跡帳本、逐波派工、隊長接收站點交付與彙整狀態、授權後變更由變更站或明確授權 gate 套用，以及缺交付件即阻塞、未驗證或總監風險關閉但非完整。
 
+## [2026-07-04] AI Rules Manager v0.2.0
+
+### feat
+- **Team-Native release readiness** — VSIX release prep now reflects the governed Team-Native station model, including station-owned change delivery, authorization-bound writes, release workflow scope, and separated follow-on gates for review, validation, memory/docs, git, tag, release, deploy, and install.
+- **Runtime gate hardening** — Extension packaging keeps the runtime verification gate in the prepublish path, ensuring source update execution still checks workspace trust, repository identity, managed paths, tracked clean manager scripts, explicit fetch refspecs, and readiness before spawning the manager script.
+
+### fix
+- **Release rerun semantics** — Release documentation now states that an existing same-name VSIX asset causes the workflow to reject or fail; reruns must use a new version/tag or manually delete the old asset before retrying.
+- **Memory/docs cleanup alignment** — Release notes and public docs now describe this cycle as governance and cleanup readiness, while keeping memory mutation and source-memory attribution outside the VSIX source-write station.
+
+### chore
+- **AI Rules Manager v0.2.0** — Extension manifest, lockfile, root README, and extension README are prepared for `v0.2.0` / `ai-rules-manager-0.2.0.vsix`.
+
 ## [2026-07-01] Team-Native 授權綁定與巡檢閉鎖
 
 ### feat

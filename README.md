@@ -163,7 +163,7 @@ npm run package
 
 ### GitHub Release 自動建立與附加 VSIX
 
-推送 tag `v0.1.19` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.1.19.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag。
+推送 tag `v0.2.0` 後，GitHub Actions 會自動建立 GitHub Release，打包 `ai-rules-manager-0.2.0.vsix`，附加到該 release 的 Assets，並從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介。Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 actions，避免 GitHub Actions Node 20 淘汰造成發布風險。若 tag 與 `Extensions/vscode-ai-rules-manager/package.json` 的版本不一致，workflow 會直接失敗，避免放錯插件包。需要補跑時，也可以在 GitHub Actions 頁面手動執行 workflow 並輸入 tag；若同名 VSIX asset 已存在，workflow 會拒絕或失敗，需改用新版本/tag，或先人工刪除舊 asset 後再重跑。
 
 ---
 

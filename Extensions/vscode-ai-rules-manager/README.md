@@ -38,15 +38,15 @@ npm run package
 
 ## GitHub Release
 
-推送 tag `v0.1.19` 後，GitHub Actions 會自動執行：
+推送 tag `v0.2.0` 後，GitHub Actions 會自動執行：
 
 1. `npm ci`
 2. `npm run package`
 3. 建立 GitHub Release
 4. 從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介
-5. 將 `ai-rules-manager-0.1.19.vsix` 上傳到該 release 的 Assets
+5. 將 `ai-rules-manager-0.2.0.vsix` 上傳到該 release 的 Assets
 
-Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 GitHub Actions。若 tag 與 `package.json` 版本不一致，workflow 會失敗，不會建立或更新 Release。需要補跑時，可在 GitHub Actions 頁面手動執行 workflow 並輸入 tag；若 Release 已存在，workflow 會更新簡介並覆蓋同名 VSIX asset。
+Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 GitHub Actions。若 tag 與 `package.json` 版本不一致，workflow 會失敗，不會建立或更新 Release。需要補跑時，可在 GitHub Actions 頁面手動執行 workflow 並輸入 tag；若同名 VSIX asset 已存在，workflow 會拒絕或失敗，需改用新版本/tag，或先人工刪除舊 asset 後再重跑。
 
 ## 設定
 
