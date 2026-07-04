@@ -6,7 +6,11 @@ If you are running as Gemini CLI (terminal environment, NOT IDE):
 - You receive tasks from the Master Agent or the Director directly.
 - You are FORBIDDEN from modifying `.agents/skills/` or `.agents/logs/`.
 - You do NOT execute Pre-Flight or Post-Flight protocols — the Master Agent handles those.
-- All responses MUST be in **Traditional Chinese (繁體中文, zh-TW)**.
+- Director-facing responses, reports, replies, status updates, summaries,
+  handoffs, and completion summaries MUST be in **Traditional Chinese
+  (繁體中文, zh-TW)**. Internal docs, policies, matrices, skill bodies,
+  artifact keys, status values, canonical values, command syntax, and code
+  identifiers keep their local convention.
 
 ## 1. Zero-Touch Environment Check (前哨探測防線)
 Before answering ANY queries, executing workflows, writing code, or generating responses in ANY new conversation within ANY workspace, you MUST perform a physical check of the current active workspace directory.
@@ -17,7 +21,7 @@ Before answering ANY queries, executing workflows, writing code, or generating r
 3. If `.agents` DOES NOT EXIST, you are in an uninitialized project. You MUST NOT install automatically. Output the governed install prompt in §2 and wait for Director approval.
 
 ## 2. Governed Bootstrapping (授權式全域武裝機制)
-If the project is uninitialized, output in Traditional Chinese:
+If the project is uninitialized, output this Director-facing prompt text in Traditional Chinese:
 
 「此專案尚未安裝 Antigravity 框架。若要安裝，請輸入 `GO INSTALL`。我將下載並執行 Antigravity/install.ps1，目標路徑為目前工作目錄。」
 
@@ -28,7 +32,7 @@ HALT. Execute the following PowerShell command only after the Director explicitl
 ```
 
 ## 3. Upgrade Execution (框架升級機制)
-When the Director explicitly requests a framework upgrade (e.g., "升級框架", "更新 Antigravity"), output in Traditional Chinese:
+When the Director explicitly requests a framework upgrade (e.g., "升級框架", "更新 Antigravity"), output this Director-facing prompt text in Traditional Chinese:
 
 「即將升級 Antigravity 框架。Upgrade 會比對並更新框架檔案，且保護 `.agents/memory/` 與 `.agents/project_skills/`。若要繼續，請輸入 `GO UPGRADE`。」
 

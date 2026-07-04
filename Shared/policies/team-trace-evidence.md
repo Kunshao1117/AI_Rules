@@ -1,10 +1,11 @@
 # Team Trace Evidence Contract
 
-此檔定義 Team-Native Core 的任務軌跡證據格式。它是唯讀稽核目標，不是執行器。
+This file defines the Team-Native Core task trace evidence format. It is a
+read-only audit target, not an executor.
 
 ## Purpose
 
-Static rules can prove that the framework text is present. They cannot prove that a specific task actually followed the required sequence: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> execution-channel decision -> specialist work or blocked/unverified channel state -> captain supervision -> returned change delivery artifacts / evidence delivery artifacts -> captain receipt and board update -> independent validation and review -> completion audit -> report. Team trace evidence fills that gap.
+Static rules can prove that the framework text is present. They cannot prove that a specific task actually followed the required sequence: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> execution-channel decision -> specialist work or blocked/unverified channel state -> captain supervision -> returned change delivery artifacts / evidence delivery artifacts -> captain logs received station output in the synthesis ledger and updates the board -> independent validation and review -> completion audit -> report. Team trace evidence fills that gap.
 
 `Shared/policies/workflow-orchestration.md` owns the runtime sequence that this
 trace records: route -> authorization -> operation_mode -> board -> dispatch
@@ -33,11 +34,12 @@ Task traces must be written under `.agents/logs/team-traces/` when the active wo
 
 Each task trace must contain these fields in readable Markdown or JSON:
 
-Canonical field names remain English for machine trace stability. Director-facing
-summaries and reports must show the Traditional Chinese meaning first and keep
-the canonical field in parentheses, such as `站點狀態（station_state）`.
-Raw English-only field lists are acceptable only inside machine-readable trace
-payloads or policy tables, not as the Director-facing explanation.
+Canonical field names remain English for machine trace stability.
+Director-facing summaries follow `Shared/policies/language-governance.md`; when
+a field needs display text, use a bridge label such as
+`站點狀態（station_state）`. Raw English-only field lists belong only inside
+machine-readable trace payloads or policy tables, not as the Director-facing
+explanation.
 
 | Field | Required content |
 |---|---|
@@ -46,7 +48,7 @@ payloads or policy tables, not as the Director-facing explanation.
 | `workflow_route` | Workflow or semantic route used as a route hint |
 | `operation_mode` | `daily` for reduced routine Team-Native work, or `full` for complete Team-Native work |
 | `operation_mode_reason` | Why daily mode is allowed, or why full mode is required |
-| `board_state` | draft or formal |
+| `board_state` | `draft`, `formal-readonly`, or `formal-write`; legacy `formal` must be narrowed before the trace can support completion |
 | `implementation_authorization` | no-write, plan-only, scope-resolved-write, scope-resolved-push, release-authorized, or blocked |
 | `go_evidence` | Prompt, workflow authorization, or blocked state |
 | `authorization_source` | Director prompt, captain board row, interface approval event, prior approved plan, or blocked/unverified source |
@@ -73,7 +75,7 @@ payloads or policy tables, not as the Director-facing explanation.
 | `replaces_channel_run_id` | Prior channel run replaced by this run, or not-applicable |
 | `replacement_reason` | Why a replacement channel was opened, such as unresponsive, hard-timeout, role-boundary, stale context, blocked route, or not-applicable |
 | `execution_route` | Actual channel or delivery form; never a status value such as blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk |
-| `execution_channel` | Native subagent, project custom agent, tool/MCP, command evidence, browser evidence, external research, station-owned main-worktree change delivery, isolated change delivery, text change delivery, station-owned authorized change-application gate, or protected captain gate |
+| `execution_channel` | Native subagent, project custom agent, tool/MCP, command evidence, browser evidence, external research, station-owned main-worktree change delivery, isolated change delivery, text change delivery, station-owned authorized change-application gate, or platform-nondelegable protected-action record |
 | `tool_execution_envelope` | Structured carrier passed to a tool layer, or blocked/unverified reason when no envelope is available. |
 | `tool_execution_envelope_trust` | trusted, untrusted, blocked, unverified, or not-applicable. |
 | `tool_envelope_issuer` | Trusted issuer identity, or blocked/unverified reason. |
@@ -82,10 +84,10 @@ payloads or policy tables, not as the Director-facing explanation.
 | `execution_receipt` | Tool-layer receipt naming envelope or nonce, action, decision, reason, resulting state, and delivery artifact status. |
 | `execution_receipt_decision` | allowed, blocked, unverified, not-authorized, or not-applicable. |
 | `station_state` | assigned, standby, running, returned, blocked, unverified, closed-with-director-risk, or not-applicable |
-| `evidence_state` | pending, returned, accepted, rejected, blocked, unverified, closed-with-director-risk, or not-applicable |
+| `evidence_state` | pending, returned, logged, routed-to-owner-station, blocked, unverified, closed-with-director-risk, or not-applicable |
 | `station_lifecycle_state` | assigned, standby, retained, reused, handoff-required, closed, replaced, blocked, or not-applicable |
 | `station_mode` | Station posture: `read-only`, `change-delivery`, `change-application`, `validation`, `review`, `memory-docs`, `completion`, `protected-gate`, or `not-applicable` |
-| `handoff_ownership` | Current handoff owner: `station-owned`, `captain-owned-gate`, `returned-to-captain`, `reassigned`, `blocked`, `unverified`, or `not-applicable` |
+| `handoff_ownership` | Current handoff owner: `station-owned`, `platform-nondelegable-gate`, `returned-to-captain`, `reassigned`, `blocked`, `unverified`, or `not-applicable` |
 | `context_visibility` | Scope visibility: `specialist-deep-read`, `captain-coordination-only`, `shared-visible`, `unread`, or `not-applicable` |
 | `retention_reason` | Why the same specialist channel may continue, or why retention is not allowed |
 | `conversation_health` | clear, needs-handoff, stale, over-budget, role-conflict, or blocked |
@@ -93,7 +95,7 @@ payloads or policy tables, not as the Director-facing explanation.
 | `handoff_summary` | Required when a station is retained across a long conversation or replaced |
 | `closure_reason` | Completed delivery, context stale, role conflict, independent opinion required, blocked, or not-applicable |
 | `deep_read_scope` | Files, docs, logs, or external sources assigned to specialist deep-read |
-| `captain_coordination_read_scope` | Narrow coordination read scope for artifact receipt, board maintenance, blocker handling, conflict resolution, or authorization boundaries; it is not validation, review, memory/docs attribution, or completion evidence |
+| `captain_coordination_read_scope` | Narrow coordination read scope for station-output ledgering, board maintenance, blocker handling, conflict resolution, or scope-question routing; it is not validation, review, memory/docs attribution, or completion evidence |
 | `unread_scope` | Relevant scope not read by the specialist or captain |
 | `startup_started_at` | Local timestamp when the station channel was requested |
 | `first_response_deadline` | Expected first useful response or heartbeat deadline |
@@ -104,18 +106,18 @@ payloads or policy tables, not as the Director-facing explanation.
 | `status_probe_sent_at` | Local timestamp when the captain asked the channel for status after uncertainty or timeout, or not-applicable |
 | `status_probe_response_at` | Local timestamp when the channel responded to the status probe, or not-returned |
 | `status_probe_pause_report` | Specialist report after a status probe: current stop point, blocker state, and whether continuing is safe, or not-applicable |
-| `status_probe_resume_state` | not-required, awaiting-captain-resume, resume-sent, resumed, blocked, unavailable, or not-applicable |
+| `status_probe_resume_state` | awaiting-resume, resume-sent, resumed, blocked, or unavailable; no-probe cases are represented by `status_probe_state` |
 | `status_probe_resume_sent_at` | Local timestamp when the captain explicitly sent resume to the probed channel, or not-returned |
 | `soft_timeout_at` | Local timestamp for the monitoring timeout that triggers a status probe or standby decision |
 | `hard_timeout_at` | Local timestamp after which the station may close, cancel, replace, or remain non-complete with residual risk |
-| `timeout_action` | standby, replace, blocked, unverified, Director input, or not-applicable |
-| `late_result_policy` | receive-and-compare, accept-until-hard-timeout, ignore-after-cancelled, blocked, unverified, or not-applicable |
+| `timeout_action` | standby, replace, blocked, unverified, director-input, or not-applicable |
+| `late_result_policy` | late-result-pending, receive-and-compare, accept-until-hard-timeout, ignore-after-cancelled, blocked, unverified, or not-applicable |
 | `late_result_window` | Time or condition under which a late artifact from the original channel must still be received |
-| `cancellation_state` | not-requested, requested, acknowledged, ignored, unavailable, or not-applicable |
+| `cancellation_state` | not-requested, cancellation-pending, requested, acknowledged, ignored, unavailable, or not-applicable |
 | `returned_at` | Local timestamp when a delivery artifact was returned, or not-returned |
 | `return_timing` | on-time, late, not-returned, or not-applicable |
-| `receipt_decision` | accepted, integrated, superseded-by-replacement, rejected-scope, duplicate, conflict-review, blocked, unverified, or not-applicable |
-| `receipt_decision_reason` | Why the returned or late artifact was accepted, superseded, rejected, marked duplicate, or routed to conflict review |
+| `receipt_decision` | logged, included-in-synthesis-ledger, routed-to-owner-station, superseded-by-replacement, out-of-scope, duplicate, conflict-review, blocked, unverified, or not-applicable |
+| `receipt_decision_reason` | Why the returned or late artifact was logged, included in the synthesis ledger, routed to an owner station, superseded, marked out of scope, marked duplicate, or routed to conflict review |
 | `conflict_with_artifact_id` | Artifact ID that conflicts with this returned artifact, or not-applicable |
 | `final_channel_closure_reason` | Completed delivery, superseded, cancelled, hard-timeout, role conflict, blocked, unverified, Director risk close, or not-applicable |
 | `standby_reason` | Why an assigned station is waiting for dispatch wave, prior input, channel warmup, or external unblock |
@@ -125,7 +127,7 @@ payloads or policy tables, not as the Director-facing explanation.
 | `repair_loop_count` | Number of attempts for the same symptom family, file region, or operator path |
 | `delivery_artifact` | Intent, scope, architecture, change, validation, review, memory, documentation, completion, or evidence delivery artifact |
 | `delivery_artifact_id` | Stable identifier for the recovered or missing delivery artifact |
-| `delivery_artifact_status` | pending, returned, integrated, blocked, unverified, closed-with-director-risk, or not-applicable |
+| `delivery_artifact_status` | pending, returned, logged, applied-by-owner-station, blocked, unverified, closed-with-director-risk, or not-applicable |
 | `author_role` | Registered specialist role that authored the delivery artifact, or blocked/unverified reason |
 | `source_input` | Prior delivery artifact, approved plan, file scope, trace entry, or blocked input used by this station |
 | `integrable_scope` | Exact scope the station-owned authorized change-application gate may apply from this delivery artifact; use none when it is evidence-only or blocked |
@@ -134,12 +136,12 @@ payloads or policy tables, not as the Director-facing explanation.
 | `memory_docs_state` | not-started, memory_delivery, blocked, unverified, closed-with-director-risk, or not-applicable |
 | `captain_authored` | false, blocked, unverified, or closed-with-director-risk statement; true cannot support full completion |
 | `no_captain_authoring` | true/blocked/unverified/closed-with-director-risk statement proving the captain did not author specialist implementation, review, validation, or memory attribution work |
-| `stations` | Station list with applicability, execution mode, execution channel, owner, role boundary, direct exception, and completion condition |
+| `stations` | Station list with applicability, execution route/channel, owner, role boundary, direct exception, and completion condition |
 | `waves` | Dispatch wave, previous-wave input, next-wave start condition, and formal evidence eligibility |
 | `delivery_artifacts` | Change delivery, memory/docs delivery, review, validation, evidence delivery, and completion artifact status |
-| `direct_exceptions` | Station-specific direct exception, replacement evidence, and residual state |
+| `direct_exceptions` | Station-specific direct exception, replacement evidence, and residual state. `direct` is not a station state, execution route, execution channel, platform route, or execution mode |
 | `role_separation` | Evidence that implementation and review did not share the same role |
-| `captain_artifact_receipt_risk` | Legacy-risk field; use only to record not-applicable or a non-complete blocked/unverified risk when old captain artifact-application wording appears in a trace |
+| `captain_artifact_receipt_risk` | Legacy-risk field; use only to record not-applicable or a non-complete blocked/unverified risk when old captain artifact-receipt wording appears in a trace; new traces use neutral synthesis-ledger language |
 | `captain_context_burden` | none, coordination-only, or direct-exception; records whether the captain avoided parallel reads, duplicate scans, re-checks, substitute validation/review, memory/docs attribution, and rewriting member findings as captain-owned evidence |
 | `captain_substitute_authoring` | blocked by default; closed-with-director-risk only with case-specific Director approval and no full-team-completion claim |
 | `completion_state` | complete, closed-with-director-risk, blocked, unverified, or not-applicable |
@@ -171,17 +173,27 @@ payloads or policy tables, not as the Director-facing explanation.
   must record `status_probe_pause_report` with the current stop point, blocker
   state, and safe-to-continue judgment, then wait for
   `status_probe_resume_state: resume-sent` and `status_probe_resume_sent_at`
-  before resuming. Work performed after a probe response without explicit
-  captain resume evidence is not valid specialist delivery evidence.
+  before resuming. After resume, ongoing work is recorded in
+  `station_state: running`; an extension request is recorded in
+  `status_probe_state: responded-extension-requested`. Work performed after a
+  probe response without explicit captain resume evidence is not valid
+  specialist delivery evidence.
 - Replacement does not cancel the replaced channel. Any replacement must record
   `channel_generation`, `replaces_channel_run_id`, `replacement_reason`,
   `late_result_policy`, and `cancellation_state`; otherwise the station cannot
   support `complete`.
-- Late returned artifacts must be received into the trace with `returned_at`,
-  `return_timing`, `receipt_decision`, and `receipt_decision_reason`. Ignoring a
-  late artifact without cancellation or hard-timeout evidence blocks completion.
+- Late returned artifacts must be logged into the trace with `returned_at`,
+  `return_timing`, `receipt_decision`, and `receipt_decision_reason`.
+  `ignore-after-cancelled` is valid only when cancellation is acknowledged and
+  the late-result window closes with no artifact returned. Once an artifact
+  returns, ignoring it blocks completion.
+- Late-result values use the board catalog: `late-result-pending` means no
+  ledger decision exists yet; terminal ledger decisions are `logged`,
+  `included-in-synthesis-ledger`, `routed-to-owner-station`,
+  `superseded-by-replacement`, `out-of-scope`, `duplicate`, `conflict-review`,
+  `blocked`, or `unverified`.
 - A completion claim must show every opened channel has a terminal
-  `final_channel_closure_reason`, accepted late-result disposition, or an
+  `final_channel_closure_reason`, terminal late-result ledger disposition, or an
   honest blocked/unverified/closed-with-director-risk residual state.
 - Any completion claim missing `station_mode`, `context_visibility`, or
   `handoff_ownership` for an applicable formal station is invalid.
@@ -189,12 +201,19 @@ payloads or policy tables, not as the Director-facing explanation.
   implementation, Doctor/Audit rule changes, routine audit rule readiness, and
   commit/release preparation require Team-Native trace evidence. Missing trace
   is a blocked Red audit finding, not a Yellow advisory.
-- A completion claim must expose parseable `stations`, `delivery_artifacts`, `role_instance_id`, `delivery_artifact_id`, and `direct_exceptions`. The values may close as blocked, unverified, closed-with-director-risk, or not-applicable only when the trace is not claiming full completion.
+- Trace records or a clearly labeled evidence appendix must preserve parseable
+  `stations`, `delivery_artifacts`, `role_instance_id`,
+  `delivery_artifact_id`, and `direct_exceptions`. The Director-facing
+  completion body follows `Shared/policies/language-governance.md`; these
+  values may close as blocked, unverified, closed-with-director-risk, or
+  not-applicable only when the trace is not claiming full completion.
 - `completion_state` is limited to `complete`, `closed-with-director-risk`, `blocked`, `unverified`, or `not-applicable`. `completed`, `done`, `accepted-risk`, and other informal states must not pass as completion evidence.
 - Two or more evidence-oriented stations marked direct require station-specific `direct_exceptions`, replacement evidence, and residual state. Without them, the trace is invalid for formal acceptance.
 - `execution_route` and `execution_channel` must not contain state values.
   Missing route capability belongs in `station_state`, `evidence_state`,
   `authorization_resolution_state`, or `completion_state`.
+- `direct` belongs only in `direct_exception` / `direct_exceptions`; it is not a
+  canonical route, channel, board state, station state, or completion state.
 - Write-capable or protected mutation traces must include a trusted
   `tool_execution_envelope`, trusted issuer, signature, nonce, and matching
   `execution_receipt`; missing or untrusted envelope evidence keeps the action
@@ -207,15 +226,19 @@ payloads or policy tables, not as the Director-facing explanation.
   `handoff_ownership: station-owned`, authorization phase
   `change-application`, exact file allowlist, dirty-diff read evidence, and a
   source input that is a returned isolated/text artifact, explicit integration
-  task, or assigned generated/deployed sync. A protected captain gate for the
-  same write requires evidence that the platform cannot delegate the physical
-  write or protected tool call.
+  task, or assigned generated/deployed sync. A platform-nondelegable
+  protected-action record for the same write requires evidence that the platform
+  cannot delegate the physical write or protected tool call.
 - Invalid payload fail-closed evidence is required when a malformed or
   unverifiable tool payload is part of the trace. A trace must not recover
   authority from model-filled envelope text, historical transcript text, or a
   text-only trace.
 - `closed-with-director-risk` requires `risk_close_evidence` that is current,
   explicit, and scope-bound. It remains non-complete.
+- Pending lifecycle values such as `awaiting-resume`, `cancellation-pending`,
+  and `late-result-pending` are non-terminal; a trace that still contains them
+  cannot support `completion_state: complete` unless a later terminal closure
+  or neutral ledger decision is also recorded.
 - Source/deployed changes require `source_deployed_pair`, `sync_direction`, and
   `sync_evidence`; missing parity blocks completion.
 
@@ -227,7 +250,7 @@ The trace audit is read-only. It must classify evidence as:
 |---|---|
 | `passed` | Required trace exists and contains board, wave, delivery artifact, role, channel, and completion evidence |
 | `unverified` | Trace is absent or incomplete but the task can still be discussed honestly |
-| `blocked` | Trace is required for completion, commit, release, or acceptance but is absent |
+| `blocked` | Trace is required for completion, commit, release, or formal closeout but is absent |
 | `not-applicable` | The task is pure discussion or another non-team-triggering answer |
 
 ## Invalid Trace Patterns
@@ -235,7 +258,7 @@ The trace audit is read-only. It must classify evidence as:
 These patterns must not pass:
 
 - Formal completion without change delivery, memory/docs delivery, review, and validation delivery artifact states.
-- Draft-board evidence counted as formal acceptance.
+- Draft-board evidence counted as formal evidence.
 - Implementation and review owned by the same role in any trace claiming `complete`.
 - Review or validation started before the required change delivery artifact exists, except when the station is explicitly auditing a blocked/unverified missing-artifact state.
 - Two or more evidence-oriented stations marked direct without station-specific exception, replacement evidence, and residual state.
@@ -252,7 +275,7 @@ These patterns must not pass:
   applicable formal station.
 - A completion claim that relies on captain coordination read while
   `context_visibility` does not show specialist deep-read, shared-visible
-  evidence, or an accepted non-complete risk state.
+  evidence, or a scope-bound non-complete risk-closed state.
 - Reusing a role instance after `handoff_ownership` changes across station owner
   classes.
 - Main-worktree source changes made by a member station without either
@@ -261,7 +284,7 @@ These patterns must not pass:
   authorization, or a fallback `station_mode: change-application` path with
   returned-artifact/integration/sync input and `change-application`
   authorization.
-- Protected captain gate used for source change while a station-owned
+- Platform-nondelegable protected-action record used for source change while a station-owned
   change-delivery or fallback change-application route is available.
 - Formal specialist station dispatched without the startup-complete handoff
   payload for role identity, assigned skill, read scope, tool permissions and
@@ -273,8 +296,9 @@ These patterns must not pass:
 - `completion_state` outside `complete`, `closed-with-director-risk`,
   `blocked`, `unverified`, or `not-applicable`.
 - A non-complete `completion_state` paired with a completion claim.
-- A completion claim without parseable `stations`, `delivery_artifacts`,
-  `role_instance_id`, `delivery_artifact_id`, and `direct_exceptions`.
+- A completion claim whose trace or evidence appendix lacks parseable
+  `stations`, `delivery_artifacts`, `role_instance_id`, `delivery_artifact_id`,
+  and `direct_exceptions`.
 - Missing `operation_mode` or `operation_mode_reason` in a trace that claims
   completion.
 - `operation_mode: daily` used for bottom-layer refactor, cross-file governance
@@ -291,11 +315,14 @@ These patterns must not pass:
 - In active Team mode, no-write or read-only work treated as a reason to skip
   Team-Native stations when the work can shape source, workflow, validation,
   review, memory, release, or governance decisions.
-- Captain repository-scale reading large file sets, running duplicate scans, re-checking,
-  substitute-validating, substitute-reviewing, or rewriting member output as
-  captain evidence while a member station is running, except for blocker,
-  board, artifact receipt, conflict, or authorization handling with a direct
-  exception and residual state.
+- Station-owned repository-scale evidence read is required for large file sets,
+  duplicate scans, re-checking, validation or review substitute risks,
+  memory/docs attribution, or member-output evidence expansion while a member
+  station is running. Captain coordination may only cover blocker handling,
+  board maintenance, station-output ledgering, conflict handling, or
+  scope-question routing; any direct exception remains non-complete residual
+  risk and cannot become owner evidence, validation or review evidence,
+  memory/docs attribution, or completion evidence.
 - Assigned stations left waiting without standby reason, first-response deadline, timeout action, or smallest unblock condition.
 - Treating a `wait_agent`, CLI, browser, MCP, adapter, or platform wait timeout
   as specialist failure, cancellation, rejection, or absence without a status
@@ -307,8 +334,8 @@ These patterns must not pass:
   `replaces_channel_run_id`, `replacement_reason`, `late_result_policy`, and
   `cancellation_state`.
 - Ignoring a late returned artifact from an original channel instead of
-  recording a receipt decision, duplicate/superseded judgment, or conflict
-  review route.
+  recording `returned_at`, `return_timing`, a neutral ledger decision,
+  duplicate/superseded judgment, or conflict review route.
 - Claiming completion while any opened channel remains running, unknown,
   unresponsive, or late-result-pending without a terminal closure or visible
   non-complete residual state.
@@ -344,7 +371,7 @@ These patterns must not pass:
   `risk_close_evidence`.
 - Post-block bypass hard block missing after a blocked action is followed by a
   retry, alternate tool, channel switch, or transcript substitution attempt.
-- Retaining a specialist channel while crossing from implementation to review, validation repair, protected memory mutation, final acceptance, or another role-exclusive station.
+- Retaining a specialist channel while crossing from implementation to review, validation repair, protected memory mutation, final closeout authority, or another role-exclusive station.
 - Replacing or closing a specialist channel without a closure reason when the task claims formal completion.
 - Treating light closeout as permission to skip required change delivery, validation, review, memory/docs, or completion evidence.
 - Leaving Yellow findings unclassified when they are part of the current completion or closeout claim.

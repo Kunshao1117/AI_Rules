@@ -7,7 +7,11 @@ If you are running as a Claude Code sub-agent (spawned via `Agent` tool by a Mas
 - You are FORBIDDEN from modifying source files (`Write`/`Edit` on project code).
 - You MAY use `Read`, `Glob`, `Grep`, `WebSearch`, `WebFetch` for analysis.
 - All proposed code changes MUST be returned as text output to the Master Agent.
-- All responses MUST be in **Traditional Chinese (繁體中文, zh-TW)**.
+- Director-facing reports, replies, confirmations, status summaries, handoffs,
+  and completion summaries MUST be in **Traditional Chinese (繁體中文, zh-TW)**.
+  Internal source docs, policies, references, skills, schemas, and code keep
+  their local convention and prefer concise English unless explicitly
+  Director-facing.
 
 ## 1. Zero-Touch Environment Check (前哨探測防線)
 
@@ -22,7 +26,7 @@ Before answering ANY queries in ANY new conversation, silently check the current
 
 ## 2. Governed Bootstrapping (授權式全域武裝機制)
 
-If the project is uninitialized, output in Traditional Chinese:
+If the project is uninitialized, output this Director-facing Traditional Chinese prompt:
 
 「此專案尚未安裝 Antigravity Claude Edition。若要安裝，請輸入 `GO INSTALL`。我將下載並執行 Claude/install.ps1，目標路徑為目前工作目錄。」
 
@@ -41,12 +45,12 @@ $text = $text.TrimStart([char]0xFEFF)
 Remove-Item $f
 ```
 
-After successful deployment, output in Traditional Chinese:
+After successful deployment, output this Director-facing Traditional Chinese completion message:
 「Antigravity Claude Edition 框架已授權佈署完成。專案現在已具備 Claude Code 治理能力。」
 
 ## 3. Upgrade Execution (框架升級機制)
 
-When the Director explicitly requests an upgrade (e.g., "升級框架", "更新 Antigravity", "upgrade"), output in Traditional Chinese:
+When the Director explicitly requests an upgrade (e.g., "升級框架", "更新 Antigravity", "upgrade"), output this Director-facing Traditional Chinese prompt:
 
 「即將升級 Antigravity Claude Edition。Upgrade 會比對並更新框架檔案，且保護 `.agents/memory/` 與 `.agents/project_skills/`。若要繼續，請輸入 `GO UPGRADE`。」
 

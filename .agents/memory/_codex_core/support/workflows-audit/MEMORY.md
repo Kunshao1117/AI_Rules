@@ -4,14 +4,14 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 健檢主工作流與三階段子工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-03T13:41:10+08:00'
+last_updated: '2026-07-04T22:51:34+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T22:31:58+08:00'
+last_verified: '2026-07-04T22:29:18+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -21,7 +21,7 @@ cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: active
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -35,27 +35,22 @@ metadata:
 # _codex_core.support.workflows-audit — Codex Audit Workflow Memory
 
 ## Current Truth
-- Codex audit workflow entries and subflows now reference workflow-orchestration as the shared board/wave/artifact sequence contract.
-- Codex audit workflows now load `team-station-handoff-packet` and treat audit evidence, inventories, broad reads, validation planning, and review evidence as `formal-readonly` stations unless a separately authorized `formal-write` repair route with resolved scope exists.
-- Codex audit workflows now require formal team routing before broad evidence, coverage, validation planning, review evidence, or completion claims; missing evidence cannot be reported as green.
-- Codex audit workflows now inherit Programming Team Board entry requirements and are covered by Audit.psm1 checks for formal dispatch and wave-gated evidence semantics.
-- Codex audit workflows now inherit team-task-board references through the shared workflow entry contract and keep review/validation delivery artifacts role-bound.
-- Codex audit workflows now load captain governance with task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` requirements.
-- Codex audit workflows load captain-led governance with role boundary, isolated change delivery semantics, and no-self-review rules for audit evidence stations.
-- Codex audit entry and subflows now load programming-team-governance and report applicability/execution-mode team-station board status for coding-related audit work.
-- Codex audit entry and subflows now require evidence owner, direct exception, completion condition, and all-direct fake-team guard reporting for team-station boards.
-- Codex audit entry and subflows inherit the MCP memory evidence contract and keep audit memory checks read-only.
-- This child card owns Codex audit workflow skills and three audit subphase skills.
-- Audit workflows use project-surface detection, platform capability snapshots, evidence status, and report routing.
-- Audit workflows now support quick, standard, deep, and forensic depth modes with feature, endpoint, command, job, interface, data-flow, performance, and risk inventories.
-- Codex subagents remain evidence branches only when explicitly enabled by Director or workflow gate.
-- Codex audit workflow now inventories change intent, patch-stack risk, visual detail evidence, and real-information priority when applicable.
-- Codex audit entry and report subflows now carry review_state, review lifecycle mapping, and accepted-risk reporting through quality-review-governance.
+- Audit entries and subflows reference workflow-orchestration as the shared board/wave/artifact contract.
+- Audit workflow names, skill triggers, workflow buttons, approval prompts, and `GO` are route or scope-bound intent signals only and do not grant write, memory, git, release, deployment, install, credential, or external-state authority.
+- Audit evidence, inventories, broad reads, validation planning, and review evidence load `team-station-handoff-packet` and run as `formal-readonly` unless a separately authorized `formal-write` repair route resolves scope.
+- Formal team routing is required before broad evidence, coverage, validation planning, review evidence, or completion claims; missing evidence cannot be reported as green.
+- Team-Native trace records operation mode, board state, station set, dispatch wave, handoff packet, station mode, context visibility, handoff ownership, channel state, artifact states, and authorization resolution for writes or protected phases.
+- Audit workflows inherit programming-team-governance and team-task-board requirements; Audit.psm1 checks formal dispatch and wave-gated evidence semantics.
+- Review and validation delivery artifacts stay role-bound; audit stations follow task type, dispatch pre-gate, station-owned/text change delivery, Director authorization path, `closed-with-director-risk`, isolated delivery, and no-self-review rules.
+- Audit entries and subflows report applicability/execution-mode, evidence owner, direct exception, completion condition, and all-direct fake-team guard fields.
+- Audit memory checks use the MCP memory evidence contract read-only; audit repair, memory-card write, and `memory_commit` remain separate protected phases.
+- This child card owns Codex audit workflow skills and three audit subphase skills covering project-surface detection, platform capability snapshots, quick/standard/deep/forensic inventories, evidence status, report routing, subagent evidence branches, change intent, patch-stack, visual detail, real-information priority, `review_state`, and accepted-risk reporting.
 
 ## Active Constraints
 - Do not mark missing evidence as green or complete.
 - Do not let audit subflows write source files or memory unless the governing workflow is in an approved write phase.
 - Do not claim full coverage from sampled evidence; Phase 3 must report coverage denominators and sampling limits.
+- Review and validation findings are evidence outputs, not repair authority; failed audit evidence routes to a separate formal-write or protected owner station.
 
 ## Cycle Events
 - 22: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
@@ -65,13 +60,13 @@ metadata:
 - 18: Updated Codex audit workflows for Team-First formal-readonly evidence routing, handoff packet refs, standby state, and deep-read/verify-read fields.
 - 17: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
 - 16: Synced Codex audit workflows with Team-Native specialist registry and change delivery artifact terminology.
-- 15: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
+- 15: Compressed Team-Native delegation skill wording, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
 - 14: Added formal team specialist routing with implementation change delivery, memory delivery, review, and validation artifacts; refreshed 50/67 skill facts after source/deployed sync.
 - 13: Verified Codex audit workflow entry coverage under the new formal dispatch and wave-gated evidence checks.
 - 12: Added team-task-board template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
-- 11: Updated Codex audit workflow memory for captain minimum execution and text change delivery artifact governance.
-- 10: Updated Codex audit workflows for the new captain dispatch gate.
-- 09: Aligned Codex audit workflows with captain-led team board fields and role-exclusivity guards.
+- 11: Updated Codex audit workflow memory for station-owned execution gates and text change delivery artifact governance.
+- 10: Updated Codex audit workflows for the Team-Native dispatch gate.
+- 09: Aligned Codex audit workflows with Team-Native board fields and role-exclusivity guards.
 - 08: Hardened Codex audit boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.
 - 07: Hardened Codex audit team-station reporting with applicability/execution-mode fields and synced deployed skill copies.
 - 06: Added review lifecycle mapping and review_state output to Codex audit entry and subflows.
@@ -98,8 +93,9 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Codex 健檢主工作流與三階段子工作流。
-- 健檢入口需呈現團隊證據負責與全主線例外，不能只標示直做或委派。
+- 健檢入口需呈現具名 owner station、review/validation station 與 Director authorization path，不能只標示直做或委派。
 - 缺證據不能當通過；子代理只作明確允許的證據分支。
+- 記憶寫入與 `memory_commit` 是分離 protected phase。
 
 ## Tracked Files
 - Codex/.agents/workflow-skills/08-1-infra-基礎盤點/SKILL.md

@@ -35,7 +35,8 @@ Read these sources first:
 | Trace audit fields | `Shared/policies/team-trace-evidence.md` |
 
 The packet carries resolved board scope. It never creates write authorization,
-protected mutation authority, final review state, or final acceptance.
+protected mutation authority, final review state, or final readiness or
+completion decisions.
 
 ## When To Issue A Packet
 
@@ -145,9 +146,9 @@ integration source input as a returned isolated/text artifact, explicit
 integration task, or assigned generated/deployed sync, plus
 `handoff_ownership: station-owned` by default, authorization phase
 `change-application`, exact source file allowlist, dirty-diff read requirement,
-and forbidden protected actions. `handoff_ownership: captain-owned-gate` is
-allowed only when the platform cannot delegate the physical write or protected
-tool call and the board records the direct exception.
+and forbidden protected actions. If the platform cannot delegate the physical
+write or protected tool call, set `handoff_ownership:
+platform-nondelegable-gate` and record the direct exception.
 
 `handoff_packet_id` is canonical. `dispatch_packet_id` may appear only as a
 legacy alias in returned artifacts.
@@ -221,15 +222,15 @@ Replacement opens a new channel generation. It does not cancel the original
 channel unless cancellation is explicitly requested and acknowledged. Each
 packet must name the late-result policy and late-result window so a late
 artifact can still be received, compared with replacement output, and assigned
-a receipt decision.
+a neutral ledger decision.
 
-## Artifact Acceptance
+## Artifact Routing And Ledgering
 
-Before receiving a returned artifact, check the packet, the returned artifact,
-and only the minimum cited source or policy material needed to decide whether
-the artifact should be routed onward, marked blocked/unverified, or returned for
-scope clarification. Formal validation, review, and memory/docs interpretation
-belong to their stations.
+Before logging a returned artifact, check the packet, the returned artifact, and
+only the minimum cited source or policy material needed to decide whether the
+artifact should be logged in the synthesis ledger, routed onward, marked
+blocked/unverified, or returned for scope clarification. Formal validation,
+review, and memory/docs interpretation belong to their stations.
 
 Returned artifacts must include:
 
@@ -243,10 +244,11 @@ specialist_deep_read_evidence:
 Then use the matching delivery format from `team-task-board` or the dedicated
 delivery artifact skill.
 
-Late returned artifacts are still artifacts. Accepting, integrating,
-superseding, rejecting, marking duplicate, or routing them to conflict review
-requires a recorded receipt decision and reason. Do not silently drop a late
-artifact merely because a replacement channel already returned.
+Late returned artifacts are still artifacts. Logging them, including them in
+the synthesis ledger, routing them to an owner station, superseding them,
+marking them out of scope or duplicate, or routing them to conflict review
+requires a recorded neutral ledger decision and reason. Do not silently drop a
+late artifact merely because a replacement channel already returned.
 
 ## Gotchas
 
@@ -261,7 +263,8 @@ artifact merely because a replacement channel already returned.
 - A status probe is a pause point. A responding member must not continue work
   until the captain sends an explicit resume message for that same role
   instance and channel.
-- Replacement is not cancellation; late returns still need a receipt decision.
+- Replacement is not cancellation; late returns still need a neutral ledger
+  decision.
 - A packet without loaded skill references is not a formal handoff.
 - Captain coordination read is not implementation, validation, review,
   memory/docs attribution, or completion evidence.
@@ -271,7 +274,7 @@ artifact merely because a replacement channel already returned.
   `change-application` is only fallback integration for a returned
   isolated/text artifact, explicit integration task, or assigned
   generated/deployed sync. If platform capability blocks delegation, the board
-  must explicitly route to a protected captain gate.
+  must record a platform-nondelegable protected-action record.
 - Missing work routes back to an eligible station or closes as blocked,
   unverified, or closed-with-director-risk.
 

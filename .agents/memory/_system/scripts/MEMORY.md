@@ -4,14 +4,14 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-03T21:01:17+08:00'
+last_updated: '2026-07-04T22:52:19+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-03T20:57:12+08:00'
+last_verified: '2026-07-04T21:23:13+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -21,7 +21,7 @@ cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -33,23 +33,16 @@ metadata:
 ---
 # _system.scripts — Repository Script Governance Memory
 ## Current Truth
-- Doctor and Deploy Audit now fail closed when the governance audit returns Red findings or a failed result; core policy drift remains Red for hard-policy pairs.
+- This child card owns root PowerShell deployment, audit, memory migration, skill sync, platform sync, and D0 minimal validation scripts.
+- `Scripts/tests/Validate-D0Minimal.ps1` is the D0 minimal validation route for source sentinels covering PowerShell parse/import, extension JSON/runtime gates, release workflow, installer hardening, and scriptRunner guards.
+- Doctor, Deploy Audit, and manager Doctor fail closed on governance-audit Red findings, failed audit results, and Team-Native hard-gate failures; core policy drift remains Red for hard-policy pairs.
 - Repo-managed Codex Hooks and fixtures are removed and rebuild pending; `Measure-CodexHookGovernance` reports all-absent hook artifacts as `RemovedRebuildPending`, `Skipped=True`, `RebuildPending=True`, Red 0, Yellow 0, and Passed True.
-- Audit now checks Batch 3 分相授權治理規則：workflow metadata, shared workflow-stage procedures, and governance wording must show `GO` as scope-bound intent, not blanket authorization, with formal-write/protected phases bound through authorization resolution.
-- Doctor, Deploy Audit, and manager Doctor entrypoints must not silently pass failed Team-Native hard gates; Red findings and failed audit results are blocking evidence for clean release.
-- Audit now checks trusted tool execution envelope and matching receipt semantics for protected operations: trusted issuer, signature, nonce, same envelope id or nonce, allowed receipt decision, matching action/target/scope, invalid-payload fail-closed behavior, self-reported envelope denial, only-envelope/only-receipt denial, mismatched receipt denial, and legacy trace handling that does not treat old traces as current authorization.
-- Audit and Skills-Sync now include workflow-orchestration and workflow-orchestration-scenarios as shared governance references, checking workflow-entry coverage, scenario templates, source/deployed drift, Team-Native semantics, and mixed completion/non-completion wording.
-- This child card owns root PowerShell deployment, audit, memory migration, skill sync, and platform sync scripts.
-- Doctor/Audit enforce Team-Native ordering, scoped authorization fields, role identity, loaded skill refs, handoff packets, trace parameters, delivery artifact IDs, lifecycle fields, closeout lanes, and captain-authoring safety.
-- Governance sync and Doctor include authorization-resolution policy, source/deployed drift checks, exact SHA256 comparison for deploy-copy paths, forbidden authorization semantic scans, and downstream `.agents/` shared-reference/project-tool sync.
-- Audit now formats Director-facing missing-field and Team Trace diagnostics as Traditional Chinese meaning plus exact machine token, uses Chinese-first Doctor section headings, and keeps machine identifiers unchanged for precision.
-- Audit now recognizes captain coordination and authorized change-application wording: `captain_coordination_read_scope` replaces captain verify-read fields, and implementation direct checks look for explicit change-application gates rather than captain integration.
-- Audit includes non-Hooks Team-Native channel lifecycle checks: status probes require pause/report plus explicit captain resume, timeouts do not equal failure/cancel/reject, replacement does not equal cancellation, late results need receipt decisions, and pending lifecycle state cannot be reported complete.
-- Audit now checks active memory cards with empty `## Tracked Files`: parent/index cards avoid Yellow only when child card directories, `## Relations` child/index wording, and navigation evidence prove concrete file ownership is delegated.
-- Audit now distinguishes active Team context from inactive ordinary lifecycle: governed user requests, including `03-1` experiment requests, activate Team mode; without a current governed request, no-write exploration, no-write/no-team, and standby trace findings are not active-Team Red findings.
-- Audit checks `03-1` entries for governed-request Team mode activation, reduced/minimal experiment station/board, sandbox scope, discard/promotion conditions, allowed shortcuts, and no production completion claim.
-- Audit treats active-Team traces as captain-led: the mainline/main agent is captain, while implementation, review, validation, and memory/docs evidence stay station-owned unless explicitly closed as blocked, unverified, or Director-risk.
-- `Invoke-PlatformGovernanceAudit` still runs `Measure-SkillQuality`, now includes TeamTraceEvidence active/inactive semantics, and reports Director-facing output quality plus high-change external grounding coverage before commit readiness.
+- Audit checks scope-bound Batch 3 authorization semantics, trusted tool envelope/receipt validity, formal-write/protected gates, and legacy trace non-authorization.
+- Audit and Skills-Sync cover workflow-orchestration shared references, source/deployed drift, scenario templates, Team-Native semantics, and mixed completion wording.
+- Doctor/Audit enforce Team-Native trace fields, role identity, loaded skills, handoff packets, delivery artifacts, lifecycle fields, closeout lanes, captain-authoring safety, and active-Team captain-led station ownership.
+- Governance sync and Doctor include authorization-resolution policy, exact SHA256 deploy-copy drift checks, forbidden authorization semantic scans, and downstream `.agents/` shared-reference/project-tool sync.
+- Audit reports Director-facing diagnostics in Traditional Chinese with exact machine tokens, and includes output-quality plus high-change external-grounding coverage before commit readiness.
+- Audit distinguishes active Team context from inactive ordinary lifecycle, covers `03-1` reduced/minimal experiment boards, and checks non-Hooks channel lifecycle plus empty parent/index `## Tracked Files` delegation evidence.
 ## Active Constraints
 - Do not mutate external repositories or deployment targets without explicit Director approval.
 - Keep script behavior aligned with protected memory and project-skill directories.
@@ -57,6 +50,7 @@ metadata:
 - Treat `Measure-WorkflowMetadata` and `Measure-GovernanceSemantics` Red 0 / Yellow 0 as upstream validation evidence unless the current station reruns those checks.
 - Treat absent repo-managed Codex hook artifacts as rebuild pending, not a Red missing-file condition, while the rebuild-pending slot remains current.
 - Do not use full Doctor or `Measure-CodexHookGovernance` as completion evidence for non-Hooks lifecycle work while Hooks remain explicitly out of scope.
+- Treat D0 minimal validation as source-side sentinel evidence; deployed parity still requires the governed sync/parity route.
 ## Cycle Events
 - 58: Recorded Audit dual-gate coverage: Director-facing output quality and high-change external grounding checks are part of platform governance audit results.
 - 57: Corrected Audit memory: governed requests, including `03-1`, auto-activate Team mode; absent current governed requests cannot self-start team work; TeamTrace legacy partial text stays non-authorizing evidence.
@@ -73,6 +67,7 @@ metadata:
 - archive-001.md — Older script cycle events 09-21 compacted from the active card.
 ## Evidence Base
 - source: Scripts/modules/Audit.psm1 and related root PowerShell scripts.
+- source: Scripts/tests/Validate-D0Minimal.ps1 — D0 minimal validation checks and sentinel scope.
 - tool: commit preflight identified active-card compaction due on 2026-06-30.
 - director: 2026-06-30 GO authorized compaction of the four blocking memory cards.
 ## Read Contract
@@ -99,6 +94,7 @@ metadata:
 - Scripts/modules/Platform-Antigravity.psm1
 - Scripts/modules/Platform-Claude.psm1
 - Scripts/modules/Platform-Codex.psm1
+- Scripts/tests/Validate-D0Minimal.ps1
 ## Relations
 - _system (parent card: repository governance)
 - _shared (shared governance source)

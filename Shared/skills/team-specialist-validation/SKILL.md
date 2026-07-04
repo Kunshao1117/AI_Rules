@@ -52,7 +52,7 @@ Validation target exists?
 ├── YES -> Continue.
 Check mutates source, memory, git, release, deployment, install, or external state?
 ├── YES and no [SUDO] -> HALT and return blocked.
-├── YES with [SUDO] -> Record override request and route mutation back to captain.
+├── YES with [SUDO] -> Record override request and route mutation to the owner station or Director authorization path.
 └── NO -> Continue.
 Validation result is reproducible or clearly classified?
 ├── NO -> Return unverified with smallest next evidence path.
@@ -80,8 +80,8 @@ Return these fields:
 
 ## Trace And Handoff Contract
 
-Every output inherits shared Team-Native trace rules instead of duplicating the
-field list inside this role skill.
+Every returned artifact inherits shared Team-Native trace rules instead of
+duplicating the field list inside this role skill.
 
 1. Receive `operation_mode`, `operation_mode_reason`, `role_id`,
    `role_instance_id`, and `exclusive_task_scope` from the station handoff
@@ -91,7 +91,7 @@ field list inside this role skill.
 3. Include the authorization, channel, lifecycle, delivery, and blocker fields
    required by `team-trace-evidence` and `team-station-handoff-packet`.
 4. Use only this skill's `metadata.relations.artifact_contracts` and
-   `metadata.relations.trace_contracts` as the output contract source.
+   `metadata.relations.trace_contracts` as the artifact contract source.
 5. If the handoff packet is missing role identity fields, return blocked or
    unverified evidence instead of inventing defaults.
 
@@ -108,4 +108,5 @@ field list inside this role skill.
 
 - Read-only and non-mutating station.
 - No source repair, memory writes, git, release, deployment, install, or external-state mutation.
-- Validation evidence does not decide final acceptance.
+- Validation evidence records check results only; release/completion readiness
+  and Director-facing synthesis stay with the owner stations.

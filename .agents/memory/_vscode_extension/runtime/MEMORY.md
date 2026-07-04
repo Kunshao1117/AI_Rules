@@ -4,14 +4,14 @@ scopePath: Extensions/vscode-ai-rules-manager/src/
 description: >-
   專案記憶：VS Code 管理器外掛 runtime TypeScript 來源。Use when: task touches this split
   memory scope or its tracked files.
-last_updated: '2026-07-03T22:24:30+08:00'
+last_updated: '2026-07-04T22:52:26+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T22:23:45+08:00'
+last_verified: '2026-07-04T21:36:13+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -21,7 +21,7 @@ cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -39,7 +39,8 @@ metadata:
 - This child card owns VS Code extension TypeScript runtime source files.
 - The extension UI delegates governed actions to repository PowerShell scripts.
 - User-level settings remain the trusted source for repository root, repository URL, and PowerShell executable overrides.
-- Managed `repoUrl` values are normalized to GitHub HTTPS URLs; non-default sources require explicit user trust before clone/fetch/reset/clean, and destructive Git steps re-check the managed cache path and `.git` directory.
+- Managed `repoUrl` values are normalized to GitHub HTTPS URLs; non-default sources require explicit user trust before clone/fetch/reset/clean, and destructive Git steps re-check repository identity and managed-cache path before reset/clean/origin reset.
+- D0 minimal validation asserts runtime readiness before manager spawn and checks workspace trust, repo identity, managed path, tracked-clean manager script, explicit fetch refspecs, and packaged runtime sentinels.
 
 ## Active Constraints
 - Do not let workspace settings override trusted source or executable settings.
@@ -58,6 +59,7 @@ metadata:
 
 ## Evidence Base
 - source:.agents/memory/_vscode_extension/archive-002.md — Previous active card snapshot preserved.
+- source-memory:_system.scripts — D0 minimal validation script ownership remains with `_system.scripts`; this card records scriptRunner readiness, managed repository, package runtime, and packaged VSIX sentinel constraints.
 - tool:memory_audit — Granularity advisory identified extension ownership as a split candidate.
 - director:2026-06-15 — GO SPLIT authorized runtime child-card creation.
 
@@ -71,6 +73,7 @@ metadata:
 ## 中文摘要
 - 此子卡負責 VS Code 外掛 TypeScript runtime。
 - UI 動作委派給受治理的 PowerShell 腳本。
+- D0 minimal 會檢查 runtime readiness 與 managed-cache 安全哨兵。
 
 ## Tracked Files
 - Extensions/vscode-ai-rules-manager/src/extension.ts

@@ -4,14 +4,14 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-03T21:01:13+08:00'
+last_updated: '2026-07-04T22:52:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-03T20:57:12+08:00'
+last_verified: 2026-07-03T12:57:12.000Z
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -21,7 +21,7 @@ cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -40,11 +40,11 @@ metadata:
 - Antigravity source sentinel `Antigravity/.agents/rules/AGENTS.md` and deployed live sentinel `.agents/rules/AGENTS.md` both describe 62 shared operational skills.
 - Root documentation frames Team-Native Core as automatically activated by governed user requests or team/delegation dispatch; pure conversation, small stable answers, and no-impact work can stay ordinary/direct.
 - Root documentation forbids AI from self-starting Team mode or team work without a current governed user request, including from prior context, source impact, workflow names, prompts, or tool approvals alone.
-- Root documentation states the mainline/main agent automatically serves as captain in active Team mode and stays within captain coordination, dispatch, receipt, synthesis, protected gates, and reporting.
+- Root documentation states the mainline/main agent automatically serves as Director-facing captain in active Team mode and stays within coordination only: station dispatch, board tracking, receipt, status synthesis, blocker routing, Director authorization request routing, and reporting.
 - Root documentation treats `03-1` experiment/sandbox prototype requests as governed workflow requests that auto-activate reduced/minimal experiment Team mode without production completion.
 - Pure 00 chat stays direct; evidence-bearing chat about files, screenshots, memory, rules, agent behavior, tool output, or governance impact enters formal-readonly with specialist evidence and captain coordination limited to receipt, board, blocker, or authorization needs.
 - GO, interface buttons, platform prompts, modes, and workflow commands resolve only to scoped authorization evidence; workflow routes and modes are not standalone authorization.
-- Repository-level governance uses delivery-artifact-driven Team-Native workflow: the captain boards, dispatches, supervises, receives station delivery, updates board state, handles blockers/authorization, and reports without authoring primary implementation, review, validation, broad-search evidence, or memory attribution.
+- Repository-level governance uses delivery-artifact-driven Team-Native workflow: the captain coordinates station dispatch, receives station delivery, updates board state, routes blockers/Director authorization requests, and reports without authoring primary implementation, review, validation, broad-search evidence, memory attribution, or protected-action evidence.
 - Root documentation distinguishes station-owned main-worktree `change-delivery` primary, fallback `change-application`, platform route states, manual setup status, captain substitute authoring, and `closed-with-director-risk` from completion.
 - Root and platform documentation now describe the dual gates: Director-facing output uses Traditional Chinese meaning-first language governance, and high-change or external facts require grounded evidence before completion claims.
 - Root documentation describes shared matrix deployment paths, downstream project-local tools under `.agents/tools/`, and framework-source-only manager commands.
@@ -59,7 +59,7 @@ metadata:
 
 ## Cycle Events
 - 21: Recorded root documentation dual-gate update for Director-readable output and external grounding evidence before commit/release readiness.
-- 20: Corrected root Team mode truth: governed user requests auto-activate Team mode, mainline serves as captain, `03-1` uses reduced experiment boards, and absent current governed requests cannot self-start team work.
+- 20: Corrected root Team mode truth: governed user requests auto-activate Team mode, mainline performs captain coordination only, `03-1` uses reduced experiment boards, and absent current governed requests cannot self-start team work.
 - 19: Recorded root documentation skill-count cleanup: README files, ignored live/root `CLAUDE.md`, and Antigravity source/live sentinels now use 62 shared skills; Codex deployed skill count remains 79 (62 shared + 17 workflow, excluding `_shared` support directory).
 - 18: Compacted root documentation history into Current Truth after Team-Native, formal-readonly/formal-write, scoped authorization, captain non-authoring, and current skill-count wording became the root documentation baseline.
 - 17: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform sync, changelog precision, and commit-preflight stale blocker cleanup.
@@ -84,17 +84,11 @@ metadata:
 - No unresolved root `CLAUDE.md` or Antigravity sentinel skill-count conflict remains after the 2026-07-03 documentation cleanup.
 
 ## 中文摘要
-- AI_Rules 是三平台治理框架核心庫。
-- README 與三平台 README 的技能數字 current truth 是：共用技能 62，Codex 部署技能 79。
-- 根層 `CLAUDE.md` 是 ignored live/root file，目前已對齊 Codex v0.1.3 與 62 套共用技能。
-- Antigravity source/live sentinel 目前都已對齊 62 套共用技能。
-- Codex 的 `_shared` 是支援目錄，不算 workflow skill。
-- 根層文件已明定按鈕與 GO 只能作為有範圍的授權證據，工作流與模式不是授權本身。
-- 根層文件已明定受治理使用者請求會自動啟動 Team mode；沒有目前受治理請求時 AI 不能自行啟動團隊工作。
-- 根層文件已加入總監輸出與外部接地雙閘門：繁中語義先行，高變動或外部事實需有接地證據。
-- Team mode 啟動後主線自動擔任隊長，但只能做隊長職權內工作。
-- `03-1` experiment/sandbox prototype 也是受治理 workflow，會自動進 Team mode，但 sandbox writes 不等於 production completion。
-- 根 `CLAUDE.md` 與 Antigravity sentinel 的舊版號/舊技能數字 pending 已清理。
+- AI_Rules 是三平台治理框架核心庫；README/三平台 README 目前採共用技能 62，Codex 部署技能 79。
+- 根層 `CLAUDE.md` 是 ignored live/root file，已對齊 Codex v0.1.3 與 62 套共用技能；Antigravity source/live sentinel 也對齊 62 套。
+- 按鈕、`GO`、workflow 與 mode 只提供範圍化授權證據，不是授權本身。
+- 受治理請求會自動進 Team mode；沒有目前受治理請求時 AI 不能自行啟動團隊工作。
+- Team mode 主線只做 Director-facing captain 協調、派工、接收、彙整、阻塞/授權路由與回報；`03-1` sandbox 不等於 production completion。
 
 ## Tracked Files
 - .gitignore

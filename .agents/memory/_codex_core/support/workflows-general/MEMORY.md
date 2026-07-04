@@ -4,14 +4,14 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-03T21:01:35+08:00'
+last_updated: '2026-07-04T22:51:38+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T18:52:51+08:00'
+last_verified: '2026-07-04T22:29:18+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -21,7 +21,7 @@ cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -31,34 +31,28 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core.support.workflows-general — Codex General Workflow Memory
 
 ## Current Truth
-- Codex workflow entries now read the deployed workflow-orchestration contract before broad reading, station work, validation, review, memory/docs, write paths, or completion.
-- Codex general workflows automatically enter Team mode for governed user requests; workflow names alone do not self-start team work without a current governed request.
-- In active Codex Team mode, the mainline automatically serves as captain and is limited to captain coordination, dispatch, receipt, synthesis, protected gates, and reporting.
-- Codex general and experiment workflows record draft/formal board semantics, dispatch wave, previous-wave input, next-wave start condition, formal evidence eligibility, and no post-board all-at-once launch when Team mode is active.
-- Codex experiment and general workflow entries now explicitly load team-task-board and use template references instead of duplicating full team rules inline.
-- Codex `03-1` is a governed workflow: requests for `03-1`, experiment, sandbox prototype, spike, or dirty-code prototype automatically activate Team mode.
-- Codex `03-1` uses a reduced/minimal experiment station/board that records sandbox scope, allowed change scope, discard condition, promotion condition, and allowed shortcuts; sandbox writes do not equal production completion.
-- Codex experiment and test workflows now load programming-team-governance and require applicability/execution-mode Programming Team Boards for coding-related validation and completion stations.
-- Codex experiment and test workflows now require evidence owner, direct exception, completion condition, and all-direct fake-team guards in Programming Team Boards.
-- Codex condense workflow now uses the MCP memory evidence contract to separate source memory from project context evidence.
-- This child card owns Codex shared gates and general workflow skills.
-- Workflow skills must preserve Codex progressive loading, Director gates, and Traditional Chinese trigger language.
-- Codex 00 chat is direct only for pure conversation with no external evidence dependency; files, screenshots, memory cards, rules, agent behavior, tool output, or governance-impact questions enter Team-Native formal-readonly and require returned evidence plus captain verify-read.
-- Codex workflow names, slash commands, skill triggers, workflow buttons, natural-language approvals, and `GO` are route intent or scope-bound intent signals only; write authority requires authorization resolution bound to the visible plan, station, file set, command, phase, expiry, and required protected gate.
-- Codex experiment workflow wording now describes sandbox direct execution as an isolated experiment lane, not captain mainline substitute authoring or a routine direct route for production work.
-- Test workflow evidence must match the target interface surface.
-- Codex test workflow now requires visual detail-observation notes and real-information-first evidence before fallback fake data.
+- Codex workflow entries read deployed workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
+- Governed requests activate Team mode; workflow names, slash commands, skill triggers, workflow buttons, approval prompts, and `GO` remain route or scope-bound intent signals only.
+- Write authority requires authorization resolution bound to the visible plan, owner station, file set, command, phase, expiry, and protected-action path; route signals never authorize memory, git, release, deployment, install, credentials, or external mutation.
+- In active Team mode, the Codex mainline only coordinates captain work; protected actions stay with owner stations, platform-nondelegable protected-action records, memory-docs stations, or release-completion stations.
+- General and experiment workflows record operation mode, board template/state, dispatch wave, wave sequencing, handoff packet, station mode, context visibility, handoff ownership, channel state, formal evidence eligibility, and no all-at-once launch.
+- General and experiment entries load team-task-board; experiment/test workflows load programming-team-governance and require applicability/execution-mode, evidence owner, direct exception, completion condition, and all-direct guard reporting.
+- Codex `03-1` is governed: experiment, sandbox prototype, spike, or dirty-code prototype requests use a reduced/minimal board with sandbox scope, discard/promotion conditions, allowed shortcuts, and no production completion claim.
+- Codex 00 stays direct only for pure conversation; file, screenshot, memory, rule, tool-output, agent-behavior, or governance-impact questions enter formal-readonly and require returned evidence plus captain verify-read.
+- Condense separates source memory from project context through the MCP memory evidence contract; test/review/validation evidence must match the surface, inspect returned or applied change delivery, and remain separate from the authoring station.
+- This child card owns Codex shared gates and general workflow skills, preserving progressive loading, Director gates, Traditional Chinese triggers, isolated experiment wording, and separate memory write versus `memory_commit` phases.
 
 ## Active Constraints
-- Build the formal board first; if Codex subagent channels are unavailable, mark blocked or unverified instead of treating absence as direct completion, and do not write source or memory from read-only flows because `GO` must be resolved to the current visible scope before any formal-write or protected phase.
+- Build the formal board and trace first; if station/channel evidence, review, validation, memory/docs, parity, or authorization evidence is missing, report `blocked`, `unverified`, or `closed-with-director-risk` instead of completion. Do not write source or memory from read-only flows because `GO` must be resolved to the current visible scope before any formal-write or protected phase.
 
 ## Cycle Events
 - 27: Corrected Codex `03-1` truth: governed experiment requests auto-activate Team mode, use reduced/minimal experiment boards, and keep sandbox writes separate from production completion.
-- 26: 記錄 Batch 3 Codex 一般工作流的範圍綁定意圖訊號、授權解析與分相保護閘門語意：`GO` is scope-bound intent, not blanket authorization, and `formal-write` requires resolved plan/station/file-set/command/phase/expiry/protected-gate scope.
-- 25: Recorded Codex shared security footer hardening so [SUDO] cannot bypass role limits, scoped authorization, Team-Native, validation, review, protected gates, or complete claims.
+- 26: 記錄 Batch 3 Codex 一般工作流的 scope-binding、owner station 與 protected-action path 語意：`GO` is scope-bound intent, not blanket authorization, and `formal-write` requires resolved plan/owner-station/file-set/command/phase/expiry/protected-action scope.
+- 25: Recorded Codex shared security footer hardening so [SUDO] cannot bypass role limits, scoped authorization, Team-Native, validation, review, protected-action requirements, or complete claims.
 - 24: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 23: Recorded general workflow hardening so chat, explore, experiment, condense, and test routes use Team-Native formal evidence for source-shaping work instead of advisory-only reminders.
 - 22: Updated Codex experiment workflow wording so sandbox direct execution is explicitly an experiment lane, not captain mainline substitute authoring.
@@ -73,7 +67,7 @@ metadata:
 - 13: Added formal team specialist routing with implementation change delivery, memory delivery, review, and validation artifacts; refreshed 50/67 skill facts after source/deployed sync.
 - 12: Updated Codex general/experiment workflows for minimum formal dispatch fields and verified entrypoint coverage.
 - 11: Added team-task-board template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
-- 10: Added Codex condense team-board coverage and updated general workflow memory for captain minimum execution and text change delivery artifacts.
+- 10: Added Codex condense team-board coverage and updated general workflow memory for Team-Native minimum execution and station-owned/text change delivery artifacts.
 - 9: Updated Codex general workflow routing and board rules for the new captain dispatch gate.
 - 04-08: Consolidated earlier Codex condense/test evidence, experiment/test board hardening, deployed sync, and governed-request Team routing updates.
 
@@ -95,9 +89,9 @@ metadata:
 ## 中文摘要
 - 此子卡負責 Codex 一般工作流技能與共用閘門。
 - Codex 00 入口現在只讓純聊天直接回覆；需要檔案、截圖、記憶、規則、工具輸出或治理證據時要升級 formal-readonly。
-- `GO` 只是範圍綁定的意圖訊號，不是 blanket authorization；寫入與 protected phase 要先完成 authorization resolution。
+- `GO` 只是範圍綁定的意圖訊號；寫入、protected phase 與 `memory_commit` 都要各自完成 authorization resolution。
 - `03-1` 是受治理 workflow；使用者要求 experiment/sandbox prototype 會自動啟動 Team mode 並使用 reduced/minimal experiment station/board，且不作 production completion claim。
-- Team mode 啟動後 Codex 主線自動擔任隊長，但只能做隊長職權內工作。
+- Team mode 啟動後 Codex 主線只承擔隊長協調角色：coordination、dispatch、board/channel/blocker coordination、station artifact receipt、status synthesis 與 Director-facing reporting；protected actions 由 owner station、platform-nondelegable protected-action record 或 memory-docs/release-completion station 處理。
 
 ## Tracked Files
 - Codex/.agents/workflow-skills/_shared/_completion_gate.md

@@ -1,6 +1,6 @@
 ---
 name: "00-chat-聊天"
-description: "Use when: 純對話討論、腦力激盪、概念釐清、無外部證據依賴的輕量程式碼問答。When the request involves files, screenshots, memory/context cards, rules/workflows/policies, agent behavior, evidence checks, source/tool output, or later governance impact, promote to a Team-Native formal-readonly station. DO NOT use when: 需要深度研究、架構藍圖、建構、修復、測試、提交、發布或正式寫入交付。"
+description: "Use when: 純對話討論、腦力激盪、概念釐清、無外部證據依賴的輕量程式碼問答。DO NOT use when: 需要研究、架構、建構、修復、測試、提交或正式寫入。"
 metadata:
   author: antigravity
   version: "2.0"
@@ -29,8 +29,8 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 4. Read `.agents/shared/platform-capability-matrix.md` and apply only this platform's adapter semantics.
 5. When editing workflow entries, skills, shared policies, or governance boundaries, read `.agents/shared/skill-governance.md` before changing placement or wording.
 6. When a concrete phase checklist is needed, read `.agents/shared/workflow-stage-procedures.md` and use section `00 Chat`. Do not copy that procedure back into this entry.
-7. For Team-Native work, load `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-station-handoff-packet/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, and `.agents/skills/team-completion-gate/SKILL.md`; load delivery-artifact skills only when their stations apply.
-8. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is `未驗證` or `阻塞`.
+7. For Team-Native work, load `.agents/skills/programming-team-governance/SKILL.md` first; load board, handoff, role-boundary, delivery, validation, review, memory/docs, and completion skills only for stations opened by the current board.
+8. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is `unverified` or `blocked`.
 
 ## 入口瘦身防線（Workflow Entry Slimming Guard）
 
@@ -51,7 +51,7 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 ## Completion Boundary
 
-- Report evidence status as `足夠證據`, `部分證據`, `未驗證`, `阻塞`, or `不適用` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
+- Report evidence status as `sufficient`, `partial`, `unverified`, `blocked`, or `not-applicable` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
 - Full team completion requires separated implementation change delivery, memory/docs delivery, validation delivery, review delivery, source/deployed parity when relevant, and completion audit evidence.
 - Missing delivery artifacts, missing parity, unavailable channels, or Director-accepted residual risk must be reported as `blocked`, `unverified`, or `closed-with-director-risk`, not `complete`.
 - This entry must stay thin. If more procedure detail is needed, add or update the shared reference instead of expanding this file.

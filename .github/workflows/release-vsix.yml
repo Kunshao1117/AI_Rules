@@ -11,13 +11,14 @@ on:
         required: true
         type: string
 
-permissions:
-  contents: write
+permissions: {}
 
 jobs:
   release-vsix:
     name: Build VSIX and create release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Validate release ref
@@ -39,8 +40,9 @@ jobs:
       - name: Checkout release tag
         uses: actions/checkout@v6
         with:
-          ref: ${{ steps.ref.outputs.tag }}
+          ref: refs/tags/${{ steps.ref.outputs.tag }}
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@v6
@@ -72,9 +74,82 @@ jobs:
         working-directory: Extensions/vscode-ai-rules-manager
         run: npm ci
 
+      - name: Audit dependencies
+        working-directory: Extensions/vscode-ai-rules-manager
+        run: npm run audit
+
+      - name: Compile extension
+        working-directory: Extensions/vscode-ai-rules-manager
+        run: npm run compile
+
+      - name: Verify compiled runtime
+        working-directory: Extensions/vscode-ai-rules-manager
+        run: npm run verify:runtime
+
       - name: Package VSIX
         working-directory: Extensions/vscode-ai-rules-manager
         run: npm run package
+
+      - name: Verify VSIX runtime sentinels
+        working-directory: Extensions/vscode-ai-rules-manager
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          vsix="ai-rules-manager-${VERSION}.vsix"
+
+          if [[ ! -f "${vsix}" ]]; then
+            echo "::error::VSIX not found: ${vsix}"
+            exit 1
+          fi
+
+          python3 - "${vsix}" <<'PY'
+          import sys
+          import zipfile
+
+          vsix = sys.argv[1]
+          try:
+              with zipfile.ZipFile(vsix) as archive:
+                  runtime = archive.read("extension/out/scriptRunner.js").decode("utf-8")
+          except KeyError:
+              print("::error::Missing VSIX runtime file: extension/out/scriptRunner.js")
+              sys.exit(1)
+
+          def fail(message):
+              print(f"::error::{message}")
+              sys.exit(1)
+
+          def need(needle, label):
+              if needle not in runtime:
+                  fail(f"Missing VSIX runtime sentinel: {label}")
+
+          def order(first, second, label):
+              first_index = runtime.find(first)
+              second_index = runtime.find(second)
+              if first_index < 0 or second_index < 0 or first_index >= second_index:
+                  fail(f"VSIX runtime sentinel order failed: {label}")
+
+          sentinels = [
+              ("vscode.workspace.isTrusted", "workspace trust"),
+              ("assertGitRepoIdentity", "repo identity guard"),
+              ("assertManagedPath", "managed path guard"),
+              ("assertTrackedCleanManagerScript", "tracked clean manager script"),
+              ("ls-files", "tracked manager script check"),
+              ("status", "clean manager script check"),
+              ("+refs/heads/", "explicit fetch refspec source"),
+              (":refs/remotes/origin/", "explicit fetch refspec destination"),
+              ("assertReadyToRun(source, script, target)", "readiness gate"),
+              ("cp.spawn(ps, args", "manager spawn"),
+          ]
+          for needle, label in sentinels:
+              need(needle, label)
+
+          order("assertReadyToRun(source, script, target)", "cp.spawn(ps, args", "readiness before spawn")
+          order("assertGitRepoIdentity(managedRoot, repoUrl)", "--hard", "identity before destructive reset")
+          order("assertManagedPath(storageRoot, managedRoot);", "--hard", "managed path before destructive reset")
+          print("VSIX runtime sentinel verification passed.")
+          PY
 
       - name: Build release notes
         id: notes
@@ -137,6 +212,7 @@ jobs:
         run: |
           set -euo pipefail
           vsix="Extensions/vscode-ai-rules-manager/ai-rules-manager-${VERSION}.vsix"
+          asset_name="$(basename "${vsix}")"
 
           if [[ ! -f "${vsix}" ]]; then
             echo "::error::VSIX not found: ${vsix}"
@@ -144,11 +220,23 @@ jobs:
           fi
 
           if gh release view "${TAG_NAME}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            existing_asset="$(
+              gh release view "${TAG_NAME}" \
+                --repo "${GITHUB_REPOSITORY}" \
+                --json assets \
+                --jq ".assets[] | select(.name == \"${asset_name}\") | .name"
+            )"
+
+            if [[ "${existing_asset}" == "${asset_name}" ]]; then
+              echo "::error::Release asset already exists: ${asset_name}. Refusing to overwrite."
+              exit 1
+            fi
+
             gh release edit "${TAG_NAME}" \
               --repo "${GITHUB_REPOSITORY}" \
               --title "AI Rules Manager ${TAG_NAME}" \
               --notes-file "${NOTES_FILE}"
-            gh release upload "${TAG_NAME}" "${vsix}" --repo "${GITHUB_REPOSITORY}" --clobber
+            gh release upload "${TAG_NAME}" "${vsix}" --repo "${GITHUB_REPOSITORY}"
           else
             gh release create "${TAG_NAME}" "${vsix}" \
               --repo "${GITHUB_REPOSITORY}" \

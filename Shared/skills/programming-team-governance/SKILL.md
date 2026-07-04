@@ -66,7 +66,7 @@ release prep, or completion claims:
 
 Before changing an already modified file, the role instance holding the current
 write station must run this guard. If the captain is the actor, record it as a
-direct exception or captain-owned gate, not default station work:
+direct exception or platform-nondelegable gate record, not default station work:
 
 1. Read the current diff and nearby source context for every file in the allowed
    scope.
@@ -111,19 +111,22 @@ authorization.
 ## Role And Delivery Boundaries
 
 Use `team-role-boundaries` plus `team-specialist-registry` for role identity.
-The captain owns routing, authorization interpretation, supervision, delivery
-receipt, board status synthesis, blocker/conflict handling, protected
-memory/git/release/deploy/install gates, and final Director-facing reporting.
+The captain coordinates request-to-station routing, dispatch, handoff, channel
+state, board status synthesis, station-output ledgering, blocker/conflict and
+permission routing, and final Director-facing reporting. Authorization
+decisions, protected-action execution, validation, review, memory/docs
+attribution, quality disposition, and completion evidence remain with the
+governing policy or owner station.
 
 Specialists own bounded delivery artifacts only:
 
 | Work | Required delivery boundary |
 |---|---|
 | Implementation | Station-owned main-worktree `change-delivery` under `implementation-change-delivery`, or isolated change delivery / text change delivery artifact only when direct delegation is unavailable; no self-review, memory write, git, release, deploy, install, or external mutation. |
-| Memory/docs | Memory/docs delivery artifact with impact and proposed attribution; no memory mutation or final acceptance. |
+| Memory/docs | Memory/docs delivery artifact with impact and proposed attribution; no memory mutation or final closeout decision. |
 | Validation | Non-mutating validation evidence; no repair of the implementation under validation. |
 | Review | Independent review delivery artifact from a role that did not author the change. |
-| Completion | Completion audit evidence; no protected mutation or final captain acceptance. |
+| Completion | Completion audit evidence; no protected mutation or acceptance decision. |
 
 If a delivery route is unavailable, record blocked/unverified or
 closed-with-director-risk. Do not convert the captain into the primary
@@ -152,27 +155,31 @@ full Team-Native completion.
    channel continues inside the same role and station. Unresponsive channels may
    be marked blocked/unverified and replaced with a recorded late-result policy.
    Replacement does not cancel the original channel unless cancellation is
-   explicit, and late artifacts still require a receipt decision.
-7. Receive artifacts, update the board, and route formal checking to validation,
-   review, memory/docs, or completion stations as applicable.
+   explicit, and late artifacts still require a neutral ledger decision.
+7. Log returned station output into the synthesis ledger, update the board, and
+   route formal checking to validation, review, memory/docs, or completion
+   stations as applicable.
 8. Apply main-worktree implementation only through a station-owned
    `change-delivery` station held by a named role instance with authorization
    phase `implementation-change-delivery`, exact file allowlist, dirty-diff
    read, and forbidden protected actions. Use station-owned `change-application`
    only as fallback integration for a returned isolated/text artifact, explicit
    integration task, or assigned generated/deployed sync. Use a recorded
-   captain-owned gate only when the platform cannot delegate the write or a
-   protected direct exception applies; the captain must not rewrite returned
-   artifacts as captain-owned evidence or full completion.
+   platform-nondelegable protected-action record only when the platform cannot
+   delegate the physical write or protected tool call; the captain must not
+   rewrite returned artifacts as captain-authored evidence or full completion.
 9. Run validation, independent review, memory/docs disposition, and completion
    gate as separate states before claiming completion.
 
 ## Direct Exceptions
 
-Direct captain handling is limited to Director communication, authorization
-interpretation, board maintenance, delivery receipt, blocker/conflict handling,
-protected state gates, final Director-facing reporting, tool-only status checks,
-or hot-path non-mutating status checks with no independent evidence value.
+Captain coordination-only direct exceptions are limited to Director
+communication, request-to-station translation, board maintenance,
+station-output ledgering, blocker/conflict and permission routing, final
+Director-facing reporting, tool-only status checks, or hot-path non-mutating
+status checks with no independent evidence value. They do not decide
+authorization, execute protected actions as station evidence, validate, review,
+attribute memory/docs, or decide quality disposition.
 
 Every direct exception must name the station, reason, replacement evidence, and
 residual state. Generic speed, convenience, small task size, or channel friction
@@ -183,11 +190,12 @@ is not enough.
 Return operational findings in this form:
 
 ```text
-發現:
-證據:
-風險:
-建議:
-是否阻塞:
+findings:
+evidence:
+risk:
+recommendation:
+blocking:
+status:
 ```
 
 For implementation closeout, also report changed files, de-duplication or

@@ -4,24 +4,24 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 紀錄、巡檢與技能鍛造指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-03T13:41:02+08:00'
+last_updated: '2026-07-04T22:51:26+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T04:26:23+08:00'
+last_verified: 2026-07-02T20:26:23.000Z
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 22
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: active
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -35,20 +35,20 @@ metadata:
 
 ## Current Truth
 - Claude commit, routine, handoff, and skill-forge commands now reference workflow-orchestration before completion or protected closeout work.
-- Claude commit commands treat Director `GO` as a route or intent signal only; it becomes usable authority only after authorization resolution binds the current visible plan, station, file set, command, phase, expiry, and required protected gate.
-- Claude commit commands keep memory/git/release operations Master-Agent-owned while requiring formal dispatch board fields and separated delivery artifact evidence before completion claims.
-- Claude commit command treats specialists as evidence-only for review, validation, and completion delivery artifacts; memory, git, push, and release remain captain-only mutations.
-- Claude commit and release commands now inherit team-task-board references through the shared command contract while keeping git, memory, and release ownership on the captain path.
-- Claude commit, routine, handoff, and skill-forge commands now require task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` before specialist work.
-- Claude commit, routine, and skill-forge commands keep git, memory, and release mutations on the captain while evidence stations use role-bound team branches.
-- Claude commit, routine, and skill-forge commands now load programming-team-governance with applicability/execution-mode station reporting while keeping git, memory, and release mutations on the main thread.
-- Claude commit, routine, handoff, and skill-forge commands now require evidence owner, direct exception, completion condition, and all-direct fake-team guards while keeping git, memory, and release mutations on the main thread.
+- Claude commit commands treat Director `GO` as a route or intent signal only; it becomes usable authority only after authorization resolution binds the current visible plan, station, file set, command, phase, expiry, and required protected-action gate.
+- Claude commit commands route memory/git/release operations through explicit owner stations or platform-nondelegable protected-action records while requiring formal dispatch board fields and separated delivery artifact evidence before completion claims.
+- Claude commit command treats review, validation, and completion as separated evidence roles; memory-docs, version-control, push, and release-completion mutations require the matching owner station or Director authorization path.
+- Claude commit and release commands now inherit team-task-board references through the shared command contract while keeping git, memory, and release ownership on owner-station or protected-action authorization paths.
+- Claude commit, routine, handoff, and skill-forge commands now require task type, dispatch pre-gate, Team-Native startup gate, text change delivery, and `closed-with-director-risk` before specialist work.
+- Claude commit, routine, and skill-forge commands route git, memory, and release mutations to owner stations while evidence stations use role-bound team branches.
+- Claude commit, routine, and skill-forge commands now load programming-team-governance with applicability/execution-mode station reporting while routing git, memory, and release mutations through owner stations or platform-nondelegable protected-action records.
+- Claude commit, routine, handoff, and skill-forge commands now require evidence owner, direct exception, completion condition, and all-direct fake-team guards while routing git, memory, and release mutations through owner stations or platform-nondelegable protected-action records.
 - Claude commit, routine, and skill-forge commands now use the MCP Memory Evidence Matrix for preflight, read-only routine, and skill attribution evidence.
 - This child card owns Claude commit, routine, and skill-forge command entries.
 - Commit commands separate changelog/source write, memory mutation, git commit, push, tag, release, deployment, and install into distinct protected phases; changelog/source write and git commit need separate scope-bound intent signals plus authorization resolution.
 - Routine checks are read-only unless a later gate authorizes writes.
 - Claude commit and routine commands now check review-state blockers, accepted-risk items, unverified high-risk validation, and review governance coverage before release or routine conclusions.
-- Batch 4B updated 10 routine and 12 skill-forge command metadata/route summaries to the same scope-bound intent signal, authorization resolution, and protected-gate semantics.
+- Batch 4B updated 10 routine and 12 skill-forge command metadata/route summaries to the same scope-bound intent signal, authorization resolution, and protected-action semantics.
 - `09_commit(紀錄)` was verified during Batch 4B only; its existing dirty diff is classified as a Batch 3B prior change, not a Batch 4B-owned repair event.
 
 ## Active Constraints
@@ -60,25 +60,10 @@ metadata:
 - 21: Recorded Batch 3b scope-bound GO semantics for Claude commit; upstream six-file Measure-GovernanceSemantics evidence reported Red 0 / Yellow 0 and was not rerun in this memory phase.
 - 20: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 19: Wave 6B added workflow-orchestration grounding to Claude release/closeout commands and synced affected .claude/skills copies.
-
-- 18: Wave 6A updated Claude build, fix, commit, routine, handoff, and skill-forge command entries with Team-Native operation mode, board trigger, role identity, handoff packet, and specialist lifecycle coverage.
-- 17: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
-- 16: Synced Claude release-side commands with Team-Native specialist registry and change delivery artifact terminology.
-- 15: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
-- 14: Added formal team specialist routing with implementation change delivery, memory delivery, review, and validation artifacts; refreshed 50/67 skill facts after source/deployed sync.
-- 13: Updated Claude release command memory for formal dispatch board fields and protected Master-Agent release gates.
-- 12: Tightened Claude commit command around evidence-only specialists, captain-only git/memory/release actions, and four-delivery-artifact completion.
-- 11: Added team-task-board template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
-- 10: Updated Claude release-side command memory for captain minimum execution and text change delivery artifact governance.
-- 9: Updated Claude release-side commands for the new captain dispatch gate.
-- 08: Aligned Claude release-side commands with captain-led evidence stations and mutation ownership.
-- 07: Hardened Claude release-side command boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.
-- 06: Hardened Claude commit, routine, and skill-forge team-station reporting with applicability/execution-mode fields.
-- 05: Added review-state preflight and review governance coverage to Claude commit and routine commands.
-- 04: Added MCP memory evidence contract references to Claude commit, routine, and skill-forge commands.
-- 03: Updated Claude release and skill-forge command boundaries for downstream project use.
-- 02: Aligned release Claude command grounding paths to deployed .agents/shared governance references.
-- 01: Split Claude release and governance command ownership out of the support parent card.
+- 18-16: Added Team-Native lifecycle coverage, commit-preflight ownership, and specialist registry/artifact terminology.
+- 15-12: Compressed legacy coordination wording, added formal specialist routing, release-completion owner-station gates, and protected git/memory/release handling.
+- 11-08: Added team-task-board governance, Team-Native minimum execution, dispatch gate, and role-bound owner-station mutation paths.
+- 07-01: Added direct-exception guards, station reporting, review governance, MCP memory evidence, downstream boundaries, grounding paths, and child-card split.
 
 ## Archive Index
 - Parent archive remains at .agents/memory/_claude_core/support/archive-001.md.
@@ -98,7 +83,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Claude 紀錄、巡檢與技能鍛造指令。
-- Claude commit 中的 `GO` 只是在授權解析後綁定目前可見計畫、站點、檔案、命令、階段、期限與 gate 的意圖訊號。
+- Claude commit 中的 `GO` 只是在授權解析後綁定目前可見計畫、站點、檔案、命令、階段、期限與 protected-action gate 的意圖訊號。
 - changelog/source write、memory、git commit、push、tag、release、deploy、install 與 external state 不能由單一 `GO` 一次授權。
 - Batch 4B 已完成 10/12 的同類授權語意修補；`09_commit(紀錄)` 本批只核對，既有 dirty diff 歸為 Batch 3B prior change。
 

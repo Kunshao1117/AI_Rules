@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 程式掃描、診斷與品質操作技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-02T14:01:52+08:00'
+last_updated: '2026-07-04T22:51:50+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,12 +16,12 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 2
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'

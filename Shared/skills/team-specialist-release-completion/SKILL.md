@@ -5,7 +5,7 @@ description: >
   checking completion readiness, release-prep evidence, residual risk, sync,
   review and validation delivery artifacts, handoff, 完成檢查、發布準備、殘餘風險、收尾證據。
   DO NOT use when: implementing changes, mutating git, tagging, publishing,
-  final captain acceptance, 實作、提交、打標、發布、最終裁決。
+  final completion decision, 實作、提交、打標、發布、最終裁決。
 metadata:
   author: antigravity
   version: "1.0"
@@ -54,7 +54,7 @@ Validation, review, memory-docs, or sync evidence required and absent?
 ├── YES -> Return unverified or blocked with smallest completion path.
 └── NO -> Continue.
 Task asks for git, tag, release, deploy, install, or memory mutation?
-├── YES -> Route protected action to captain.
+├── YES -> Return protected-phase routing needed; route it through an owner station or Director authorization path.
 └── NO -> Continue.
 ```
 
@@ -75,7 +75,7 @@ Return these fields:
 - Evidence present: change delivery, validation, review, memory docs, sync, docs, and handoff.
 - Missing evidence: exact missing item and smallest next step.
 - Residual risk: closed-with-director-risk, unverified, blocked, or none.
-- Captain actions needed: memory, git, tag, release, deploy, install, or final acceptance.
+- Protected phase requests needed: memory, git, tag, release, deploy, install, or final completion decision.
 - Blocker status: blocked, unverified, closed-with-director-risk, or not-applicable.
 
 ## Trace And Handoff Contract
@@ -105,4 +105,6 @@ field list inside this role skill.
 
 - Read-only station.
 - No source edits, memory writes, git, tag, release, deployment, install, or external-state mutation.
-- The captain owns final acceptance and protected completion actions.
+- This station provides readiness evidence only. Protected phase requests require
+  an owner station or Director authorization path, and final Director-facing
+  reporting remains separate from protected execution or evidence ownership.

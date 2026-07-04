@@ -116,9 +116,20 @@ restrictions. If the Director later requests governed work or team mode, create
 the board before team evidence, specialist work, or team completion claims
 begin.
 
-The required delivery sequence is fixed: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> station handoff packet -> execution-channel decision -> specialist startup attempt, standby, or blocked/unverified channel state -> specialist work -> returned change delivery artifacts / evidence delivery artifacts -> captain receipt and board update -> independent validation, review, and memory/docs stations -> completion audit -> report.
+The required delivery sequence is fixed: Director instruction -> captain intake -> translation -> board creation -> specialist station assignment -> station handoff packet -> execution-channel decision -> specialist startup attempt, standby, or blocked/unverified channel state -> specialist work -> returned change delivery artifacts / evidence delivery artifacts -> captain logs received station output in the synthesis ledger and updates the board -> independent validation, review, and memory/docs stations -> completion audit -> report.
 
-The captain remains the only Director-facing owner, but the captain is not the default worker and must not author specialist implementation, review, validation, or memory attribution when a delivery artifact can be produced. The captain owns requirement intake, scope and authorization interpretation, board maintenance, dispatch, station handoff, delivery receipt, status synthesis, blocker/permission/protected-gate coordination, and Director-facing reporting. The captain must not call `apply_patch`, shell writes, editor tools, or any other source-writing tool and label that captain-authored diff as change delivery. All separable requirement replay, counter-evidence, impact mapping, implementation change delivery, memory delivery, validation, review, and completion audit work belongs to team stations.
+The captain remains the only Director-facing owner, but the captain is an
+orchestration and summarization role, not the default worker. The captain turns
+Director requests into station tasks, coordinates dispatch, handoff, channels,
+blockers, permission questions, board state, the synthesis ledger, and
+Director-facing reporting. Authorization decisions, validation, review,
+memory/docs attribution, quality disposition, protected-action execution, and
+completion audit evidence stay with their governing policy or owner station.
+The captain must not call `apply_patch`, shell writes, editor tools, or any
+other source-writing tool and label that captain-authored diff as change
+delivery. All separable requirement replay, counter-evidence, impact mapping,
+implementation change delivery, memory delivery, validation, review, and
+completion audit work belongs to team stations.
 
 Workflow and skill names are route hints. They are not write authorization and
 do not by themselves replace the team board or authorize pre-board dispatch.
@@ -128,16 +139,17 @@ subagents, team members, delegation, or Team-Native also activate the team
 route.
 
 Natural-language Director instructions are first-class route and intent signals,
-but they are not magic words. The captain binds everyday phrases such as
-"continue", "fix that first", "go back and repair this", "so what now?", or
-`GO`, plus interface approvals and permission buttons, to the current visible
-plan, station, blocker, diff, command, file set, scope, phase, expiry, or
-protected action. If the current target, phase, scope, or expiry cannot be
-resolved, the station remains plan-only, no-write, blocked, or unverified. The
-captain must not force the Director to use artificial channel words when the
-visible context is enough, and must not infer hidden write, hidden cleanup,
-later-phase, or protected-state authority when the visible context is not
-enough.
+but they are not magic words. The authorization-resolution record binds everyday
+phrases such as "continue", "fix that first", "go back and repair this", "so
+what now?", or `GO`, plus interface approvals and permission buttons, to the
+current visible plan, station, blocker, diff, command, file set, scope, phase,
+expiry, or protected action. The captain may surface the current visible scope
+and route unresolved questions, but does not become the authorization
+interpreter. If the current target, phase, scope, or expiry cannot be resolved,
+the station remains plan-only, no-write, blocked, or unverified. The captain
+must not force the Director to use artificial channel words when the visible
+context is enough, and must not infer hidden write, hidden cleanup, later-phase,
+or protected-state authority when the visible context is not enough.
 
 Before any station edits a file with existing worktree changes, the trace must
 show that the current diff and target section were read. If the requested change
@@ -226,12 +238,15 @@ residual risk, and non-complete or risk-closed state.
 Execution route fields may name only an actual channel or delivery form: native
 subagent, project custom agent, adapter, browser evidence, command evidence, MCP
 read, external research, station-owned main-worktree change delivery, isolated
-change delivery, text change delivery artifact, captain-owned protected gate, or
-station-owned authorized change-application gate. `blocked`,
+change delivery, text change delivery artifact, platform-nondelegable
+protected-action record, or station-owned authorized change-application gate.
+`blocked`,
 `unverified`, `standby`, `not-authorized`, `unavailable`, and
 `closed-with-director-risk` are station, evidence, authorization, or completion
 states only. They must not be stored as `execution_route`, `execution_channel`,
-platform route, or execution mode.
+platform route, or execution mode. `direct` is also not an execution route or
+station state; record it only as a `direct_exception` / `direct_exceptions`
+entry with station-specific reason, replacement evidence, and residual state.
 
 When a route cannot run, keep the attempted or requested route visible and move
 the failure to `station_state`, `evidence_state`, `authorization_resolution_state`,
@@ -273,9 +288,12 @@ is:
 3. Unread scope: list any relevant file, section, document, or external source
    not read by either party.
 
-If the captain must deep-read the whole scope directly because no channel can
-open, the station records a direct exception and the completion state cannot
-claim full team separation unless the Director closes that named risk.
+If no specialist route can deep-read the whole scope, keep the station
+`blocked` or `unverified` with the smallest unblock condition. Director risk
+closure may only record `closed-with-director-risk` for the named gap; a captain
+direct read is coordination/direct-exception risk evidence only and must not be
+treated as owner evidence for implementation, validation, review, memory/docs,
+or completion.
 
 While a member station is running, the captain must not perform context-expanding
 parallel reads, duplicate scans, re-checks, substitute validation, substitute
@@ -297,23 +315,28 @@ Hooks and workflow adapters must separate reading from completion evidence:
   against the repository root, recursive `Get-Content`, recursive
   `Get-ChildItem` used as a file inventory, `rg --files`, `git ls-files`, and
   whole-repository file lists.
-- Captain repository-scale read: repository-wide file lists, recursive scans, broad grep,
-  or large file sweeps require a formal-readonly board, assigned specialist
-  deep-read station, handoff packet, role identity, assigned specialist skill,
-  channel state, and lifecycle fields before the captain starts or treats the
-  result as evidence. If a platform surfaces broad context before that trace
-  exists, it is only non-authorizing route context until a qualified station
-  returns evidence or a direct exception with residual state is recorded.
+- Station-owned repository-scale evidence read: repository-wide file lists,
+  recursive scans, broad grep, or large file sweeps require a formal-readonly
+  board, assigned specialist deep-read station, handoff packet, role identity,
+  assigned specialist skill, channel state, and lifecycle fields before the
+  station-owned read starts and before the captain may ledger returned evidence.
+  The captain's repository-scale role is limited to coordination/ledgering of
+  returned artifacts and narrow cited-snippet checks. If a platform surfaces
+  broad context before that trace exists, it is only non-authorizing route
+  context until a qualified station returns evidence or a `direct_exception`
+  record with residual state is recorded.
 - Captain hard budget: the captain may perform only micro-read and coordination
   read by default. Coordination read is limited to receiving returned artifacts,
   checking cited snippets, maintaining the board, resolving blockers, and
-  deciding authorization boundaries. It must not become repository-wide grep,
+  routing scope or authorization questions to the current policy or owner
+  station. It must not become repository-wide grep,
   recursive reading, validation, review, memory/docs attribution, or completion
   evidence.
 - Thin captain context is a hard cap, not a style preference. The captain's
   default context actions are micro-read, delivery artifact format checks,
-  receipt of returned artifacts, board updates, blocker handling, and
-  authorization-boundary decisions. The captain must not use coordination read
+  logging returned station output in the synthesis ledger, board updates,
+  blocker handling, and scope-question routing. The captain must not use
+  coordination read
   as a reason to deep-read entire files, reconstruct missing specialist work, or
   fill implementation, review, validation, or memory/docs gaps.
 - Specialist deep-read: broad reads become qualified evidence only when the
@@ -362,7 +385,7 @@ lifecycle state, not a substitute for returned evidence.
 ## Station-First Rule
 
 After Team mode activation by a governed Director request, before any specialist, subagent execution
-channel, browser branch, CLI branch, MCP direct evidence, main-worktree
+channel, browser branch, CLI branch, MCP read evidence, main-worktree
 change-delivery branch, isolated change-delivery branch, text change-delivery
 artifact, validation, review, completion audit, commit preparation, or release
 preparation starts, the captain must create the Captain Team Board from
@@ -442,7 +465,7 @@ trace or Captain Team Board, one specialist channel or role instance must not
 hold more than one `role_id`. Reusing the same specialist channel is forbidden
 when the role changes, the station crosses from implementation to review,
 validation failure turns into implementation, memory/docs attribution turns into
-protected memory mutation, completion audit turns into final acceptance, or a
+protected memory mutation, completion audit turns into final closeout authority, or a
 second independent opinion is required.
 
 Every formal station records the specialist lifecycle state: `assigned`, `retained`, `reused`, `handoff-required`, `closed`, `replaced`, or `blocked`. The board also records retention reason, conversation health, reuse count, handoff summary, role-boundary check, and closure reason.
@@ -454,25 +477,32 @@ cannot be sent. When a specialist receives a status probe, the specialist must
 pause the current action, report where work stopped, whether it is blocked, and
 whether it is safe to continue, then wait. The specialist may resume only after
 the captain sends an explicit resume message for that channel. A channel that
-responds to the probe is non-terminal and remains `awaiting-resume` until the
-explicit captain resume message changes it to running, extension-requested, or
-blocked according to the response. A channel that does not
+responds to the probe is non-terminal and remains
+`status_probe_resume_state: awaiting-resume` until the explicit captain resume
+message changes `status_probe_resume_state` to `resume-sent` and then
+`resumed`, `blocked`, or `unavailable`. Ongoing work after resume is recorded
+in `station_state: running`; an extension request is recorded in
+`status_probe_state: responded-extension-requested`. A channel that does not
 respond is unresponsive or unobservable; it is not treated as failed unless a
 hard timeout, explicit cancellation, or returned failure artifact exists.
 
 Replacement does not cancel the original channel. The board must record the new
 channel generation, replacement reason, whether the original channel was
-cancelled, and the late-result policy. If the original channel later returns an
-artifact, the captain must receive it, compare it with any replacement artifact,
-and record a receipt decision such as accepted, superseded, rejected, duplicate,
-conflict-review, blocked, or unverified. Completion claims require every opened
-channel to have a terminal closure, late-result disposition, or visible
-non-complete residual state.
+cancelled, and the late-result policy. `ignore-after-cancelled` is valid only
+when cancellation is acknowledged and the late-result window closes with no
+artifact returned. If the original channel later returns an artifact, the
+captain logs it, compares it with any replacement artifact, and records
+`returned_at`, `return_timing`, `receipt_decision`, and
+`receipt_decision_reason` as a neutral ledger decision such as logged,
+included-in-synthesis-ledger, routed-to-owner-station,
+superseded-by-replacement, duplicate, conflict-review, blocked, or unverified.
+Completion claims require every opened channel to have a terminal closure,
+late-result disposition, or visible non-complete residual state.
 
 Every applicable formal station records `station_mode`, `context_visibility`,
 and `handoff_ownership`. These fields decide whether a station is only
 read-only, owns change delivery, is under a protected gate, has specialist
-deep-read evidence, or has returned ownership to captain receipt. Missing fields
+deep-read evidence, or has returned output for captain ledgering. Missing fields
 keep the station blocked or unverified and cannot support `complete`.
 
 Lifecycle decisions are soft-budgeted inside a single role instead of
@@ -508,25 +538,32 @@ Yellow findings are classified before repair loops start. Valid Yellow classific
 
 The same Yellow finding must not create an unbounded repair loop. After two attempts on the same symptom family, file region, or operator path, the next action must be root-cause repair, structural refactor, blocked, unverified, or closed-with-director-risk. Validation and review stations report failures; they do not repair the core change they are validating or reviewing.
 
-## Strict State Machine
+## Strict State Machine And Delivery Semantics
 
-Team-Native Core keeps these states because they preserve completion honesty:
+Team-Native Core keeps these states, exception records, and delivery forms
+because they preserve completion honesty:
 
-| State | Allowed use | Required evidence |
+| Marker or state | Allowed use | Required evidence |
 |---|---|---|
-| `direct` | Captain coordination work only: requirement intake, scope/authorization interpretation, board maintenance, dispatch, delivery receipt, blocker/authorization handling, protected memory/git/release/deploy/install gates, final Director-facing reporting, hot-path non-mutating status checks with no independent evidence value, or no independent evidence value after scope reduction. It never includes captain source authoring, repository-wide evidence work, implementation, review, validation, or memory/docs attribution. | Station name, direct exception, replacement evidence, and residual state |
-| `main-worktree change delivery` | A named change-delivery station directly edits the main worktree under `formal-write` scope | Station-owned handoff, authorization phase `implementation-change-delivery`, exact file allowlist, dirty-diff read, forbidden protected actions, change receipt, memory impact, review need |
+| `direct_exception` (`direct` only as legacy shorthand inside that field) | Captain coordination work only: request intake, station-task translation, board maintenance, dispatch, handoff and channel coordination, neutral station-output ledgering, blocker/permission routing, final Director-facing reporting, hot-path non-mutating status checks with no independent evidence value, or no independent evidence value after scope reduction. It never includes authorization decisions, protected-action execution, captain source authoring, repository-wide evidence work, implementation, review, validation, memory/docs attribution, quality disposition, or completion evidence. | Station name, direct exception reason, replacement evidence, and residual state |
+| `main-worktree change delivery` | A named change-delivery station directly edits the main worktree under `formal-write` scope | Station-owned handoff, authorization phase `implementation-change-delivery`, exact file allowlist, dirty-diff read, forbidden protected actions, change ledger entry, memory impact, review need |
 | `text change delivery artifact` | No governed isolated workspace is available, but the implementation task is bounded, diffable, and safe to deliver as a text change delivery artifact | File scope, proposed edits, evidence, risk, memory impact, review need, blocker status |
 | `closed-with-director-risk` | The Director closes the task with a named risk even though required team separation or delivery artifacts are missing | Director risk decision, missing artifact or separation, non-complete label, and residual limitation |
 | `unverified` | Evidence is required but currently absent or incomplete | Missing evidence, attempted route or reason not attempted, and smallest verification path |
 | `blocked` | A required tool, permission, credential, isolation boundary, delivery artifact, or scope-bound authorization is unavailable | Blocking condition and smallest unblock requirement |
 | `not-applicable` | The station does not belong to the task | Concrete non-applicability reason |
 
-`direct`, `closed-with-director-risk`, `main-worktree change delivery`, and `text change delivery artifact` are not non-team shortcuts. They are formal station states or delivery forms with stricter evidence requirements. Review lifecycle risk states do not become Team-Native station, missing-artifact, completion, or capability states. Diff output may be used only as an implementation representation; the governance object is the change delivery artifact. `closed-with-director-risk` is never `complete`.
+`direct_exception`, `closed-with-director-risk`, `main-worktree change
+delivery`, and `text change delivery artifact` are not non-team shortcuts. They
+are exception records, formal station states, or delivery forms with stricter
+evidence requirements. Review lifecycle risk states do not become Team-Native
+station, missing-artifact, completion, or capability states. Diff output may be
+used only as an implementation representation; the governance object is the
+change delivery artifact. `closed-with-director-risk` is never `complete`.
 
 State labels are not fallback routes. If a template, trace, hook payload,
 handoff packet, or report places `blocked`, `unverified`, `standby`,
-`not-authorized`, `unavailable`, or `closed-with-director-risk` into an
+`not-authorized`, `unavailable`, `closed-with-director-risk`, or `direct` into an
 execution route field, the station is invalid until the route field is corrected
 and the state is moved into a state field.
 
@@ -551,7 +588,7 @@ when `formal-write` authorization binds the named change-delivery station,
 authorization phase `implementation-change-delivery`, exact file allowlist,
 dirty-diff read, forbidden protected actions, and
 `handoff_ownership: station-owned`. The station writes the main worktree
-directly and returns a change delivery artifact or receipt with memory impact;
+directly and returns a change delivery artifact or ledger entry with memory impact;
 review and validation inspect the resulting diff and do not re-apply it. If the
 platform can only return a forked workspace or text artifact, the artifact must
 be marked `fork-only` or `text-only`, must not be reported as applied to the
@@ -560,11 +597,12 @@ main worktree, and cannot support a main-worktree worker-write claim.
 Change application is a fallback integration route, not the normal
 implementation hop. Use a station-owned authorized change-application station
 only to apply a returned isolated/text artifact, perform an explicitly scoped
-integration task, or sync an assigned generated/deployed copy. A captain-owned
-gate is allowed only when the platform cannot delegate the write or when a
-protected direct exception applies, and it only applies the returned artifact
-without rewriting it. The captain may receive the artifact, maintain the board,
-handle conflicts, and report status, but must not turn artifact receipt into
+integration task, or sync an assigned generated/deployed copy. A
+platform-nondelegable protected-action record is allowed only when the platform
+cannot delegate the physical write or protected tool call, and it only records
+the scoped action without rewriting the returned artifact. The captain may log
+station output, maintain the board, handle conflicts, and report status, but
+must not turn station-output ledgering into
 implementation, review, validation, or memory/docs evidence. Captain substitute
 authoring means the captain creates specialist content because no qualified
 change delivery route exists; it starts as blocked, may be
@@ -588,8 +626,8 @@ If any required delivery artifact or independent review is missing, the task can
 
 Protected follow-on phases require their own authorization resolution. A
 returned implementation change delivery artifact or main-worktree change
-delivery receipt does not authorize captain-owned change application, memory
-writes, memory commit, git, release, deployment, install, or external mutation.
+delivery ledger entry does not authorize change application, memory writes,
+memory commit, git, release, deployment, install, or external mutation.
 Each protected phase must record scope-bound authorization or remain
 blocked/unverified.
 
@@ -601,7 +639,7 @@ must not retry through another tool, switch channels, use transcript text as
 authorization, or claim progress as if the blocked station continued.
 
 `closed-with-director-risk` requires current, explicit, scope-bound Director
-risk close evidence. The evidence must name the residual risk, accepted scope,
+risk close evidence. The evidence must name the residual risk, risk-closed scope,
 and the missing artifact, validation, review, memory/docs, receipt, trusted
 envelope, or authorization condition. It is never `complete` and never upgrades
 an untrusted tool execution envelope into protected mutation authority.

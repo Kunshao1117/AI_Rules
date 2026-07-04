@@ -60,8 +60,8 @@ Read these sources first:
 | Validation | Non-mutating validation passed, or blocked/unverified reason and smallest next validation path are named. |
 | Review | Independent review exists from a role that did not author the change; missing independent review blocks full completion. |
 | Role separation | Implementation, validation, review, memory/docs, and completion boundaries remain separate. |
-| Captain boundary | Captain work is routing, delivery receipt, board/status synthesis, blocker/conflict/authorization handling, protected gates, and Director-facing reporting; it is not implementation, validation, review, or memory/docs attribution evidence. |
-| Director-facing output governance | Final Director-facing output is Traditional Chinese meaning-first, internal delivery artifacts are synthesized rather than pasted, and technical tokens appear only as supporting evidence, paths, commands, schema fields, tool labels, state values, or exact evidence. English-led, raw-artifact-led, raw-field-led, or unsynthesized output blocks `complete`. |
+| Captain boundary | Captain work is routing, station-output ledgering, board/status synthesis, blocker/conflict/authorization coordination, protected phase routing, and Director-facing reporting; it is not implementation, validation, review, memory/docs attribution, protected execution, or protected evidence ownership. |
+| Director-facing report governance | Final Director-facing reports and replies have a Traditional Chinese meaning-first main body, internal delivery fields appear only in a clearly labeled evidence appendix, internal delivery artifacts are synthesized rather than pasted, and technical tokens appear only as supporting evidence, paths, commands, schema fields, tool labels, state values, or exact evidence. English-led, raw-artifact-led, raw-field-led, or unsynthesized Director-facing reports block `complete`. |
 | Channel lifecycle | Every opened channel has first-response, status-probe, explicit pause/status response, captain resume message, timeout, replacement, cancellation, late-result, receipt-decision, and final-closure evidence when applicable. Wait timeouts are not treated as failure, probed members do not continue without captain resume, and replacements do not silently cancel original channels. |
 | Trace | Required board, station, handoff, role, channel, `station_mode`, `context_visibility`, `handoff_ownership`, delivery, and completion trace exists or missing parts are named as non-complete. |
 | Route/state separation | Routes/channels/forms are not mixed with blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk states. |
@@ -74,7 +74,7 @@ Use exactly one:
 
 | State | Meaning |
 |---|---|
-| `complete` | Scope, authorization, separated delivery artifacts, validation, independent review, Director-facing output governance, channel lifecycle closure including status-probe pause/resume evidence, station lifecycle fields, completion evidence, and required trace are present. |
+| `complete` | Scope, authorization, separated delivery artifacts, validation, independent review, Director-facing report governance, channel lifecycle closure including status-probe pause/resume evidence, station lifecycle fields, completion evidence, and required trace are present. |
 | `closed-with-director-risk` | The Director explicitly closes a named residual risk; this is not full completion. |
 | `blocked` | A required tool, authorization, delivery artifact, validation path, review, memory/docs disposition, or sync condition is unavailable. |
 | `unverified` | Evidence is absent or incomplete but the task can still be reported honestly without claiming completion. |
@@ -99,16 +99,24 @@ non-full reason and does not claim full completion.
 
 ## Output
 
+The structure below is an internal completion-gate evidence artifact. It may
+inform the final Director-facing report, but the report body must be
+Traditional Chinese meaning-first. Exact internal fields and lifecycle states
+belong only in a compact evidence appendix after the summary, risk, and next
+steps. Use canonical English keys in the artifact; Chinese labels are a
+Director-facing rendering concern only.
+
 ```text
-變更:
-檔案:
-證據:
-風險:
-總監輸出門檻:
-內部交付件轉譯:
-通道生命週期:
-審查需求:
-是否阻塞:
+changes:
+files:
+evidence:
+risk:
+director_output_gate:
+internal_artifact_rendering:
+channel_lifecycle:
+review_need:
+blocking:
+status:
 completion_state:
 closeout_lane:
 station_mode:

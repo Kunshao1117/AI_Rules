@@ -60,8 +60,8 @@ routes, and artifacts are evidence. Do not collapse them.
 Execution channels include read-only evidence branch, browser evidence branch,
 CLI evidence branch, MCP read branch, platform adapter, station-owned
 main-worktree change delivery, isolated workspace, text artifact,
-station-owned authorized change-application gate, or captain-owned protected
-gate. Reduction is allowed only at substation task or member count while
+station-owned authorized change-application gate, or a platform-nondelegable
+protected-action record. Reduction is allowed only at substation task or member count while
 preserving station families, roles, artifact types, and evidence.
 
 ## Board Selection
@@ -73,12 +73,15 @@ full board for source/workflow/public-contract impact, and an experiment board
 for sandbox/prototype work. All shapes still record operation mode, reduced
 station reason, and blocked/unverified/not-applicable states when applicable.
 
-In active Team mode, board state values are `draft`, `formal-readonly`, and `formal-write`.
-`draft` cannot dispatch formal specialists or satisfy acceptance.
+In active Team mode, canonical `board_state` values are `draft`,
+`formal-readonly`, and `formal-write`.
+`draft` cannot dispatch formal specialists or satisfy formal evidence.
 `formal-readonly` can run no-write evidence, deep-read, research, validation
 planning, review evidence, and standby stations. `formal-write` requires
 scope-bound authorization for the named phase, file set, station, command, or
-protected action.
+protected action. Display labels such as "draft board" or "formal board" must
+not be written back into machine trace values; legacy `formal` must be narrowed
+to either `formal-readonly` or `formal-write`.
 
 ## Canonical Board Fields
 
@@ -128,9 +131,10 @@ applicable formal stations. Their complete value catalog lives in
 For main-worktree implementation, `station-owned` change delivery is the default
 owner. `change-application` is a fallback integration posture for returned
 isolated/text artifacts or explicitly scoped sync/application work.
-`captain-owned-gate` is valid only when the platform cannot delegate the
+`platform-nondelegable-gate` is valid only when the platform cannot delegate the
 physical write or protected tool call to a station and the board records the
-direct exception.
+direct exception. It records coordination and scope evidence; it does not
+transfer protected-action authority to the captain.
 
 Missing any of these fields on an applicable formal station keeps the station
 blocked or unverified and cannot support `complete`.
@@ -209,19 +213,35 @@ artifacts, explicit integration tasks, or assigned generated/deployed sync.
 Delivery form anchors: isolated change delivery; text change delivery artifact;
 captain substitute authoring is not change delivery and never full Team-Native completion.
 
-Board-facing artifact formats stay internal. Director-facing output translates
-and integrates them through `Shared/policies/language-governance.md`.
+Board-facing artifact formats stay internal and use canonical English keys.
+Director-facing summaries synthesize their meaning through
+`Shared/policies/language-governance.md`.
 
 ```text
-Evidence delivery:
-發現:
-Implementation change delivery:
-變更:
+artifact_type: evidence_delivery
+findings:
+evidence:
+risk:
+recommendation:
+blocking:
+status:
+artifact_type: implementation_change_delivery
+changes:
+files:
+evidence:
+risk:
 memory_impact:
-Memory/docs delivery:
+review_need:
+blocking:
+status:
+artifact_type: memory_docs_delivery
 memory_impact:
 status: memory_delivery / blocked / unverified / closed-with-director-risk
-是否阻塞:
+memory_delivery:
+evidence:
+risk:
+recommendation:
+blocking:
 ```
 
 Detailed validation, review, memory/docs, and completion artifact rules stay in
@@ -249,26 +269,37 @@ station-owned main-worktree `change-delivery` station with authorization phase
 `implementation-change-delivery`. Change application is a fallback
 station-owned gate for returned isolated/text artifacts, explicit integration
 tasks, or assigned generated/deployed-copy sync. Route either path to a
-protected captain gate only when the platform cannot delegate the physical write
-or protected tool call; the board must record the platform limitation, exact
-scope, source artifact, direct exception, and residual state. Captain
+platform-nondelegable protected-action record only when the platform cannot
+delegate the physical write or protected tool call; the board must record the
+platform limitation, exact scope, source artifact, direct exception, and
+residual state. Captain
 coordination must not call `apply_patch` or any other write tool and present the
 result as change-delivery evidence.
 
 Timeouts open probe/standby, not failure. A probed member pauses until
 `status_probe_resume_state` and `status_probe_resume_sent_at` are recorded.
 Replacement needs generation, reason, cancellation state, late-result policy,
-and receipt decisions.
+and neutral ledger decisions. A late artifact remains an artifact:
+`ignore-after-cancelled` applies only after cancellation is acknowledged and the
+late-result window closes with no artifact returned. If an artifact returns,
+record `returned_at`, `late_result_policy`, `late_result_window`,
+`return_timing`, `receipt_decision`, and `receipt_decision_reason` using the
+catalog values in `references/board-field-catalog.md`; do not silently discard
+it because a replacement already returned.
 
 ## Direct Exception Register
 
 Full register rules live in
 `references/board-templates-and-delivery.md#direct-exception-register`.
 
-A direct exception is allowed only for protected captain-owned gates that cannot
-be delegated by the platform, tool-only status actions, hot-path status checks
-with no independent evidence value, blocker/conflict/authorization handling, or
-Director-accepted captain substitute authoring recorded as non-complete risk.
+A direct exception is allowed only for platform-nondelegable protected-action
+records, tool-only status actions, hot-path status checks with no independent
+evidence value, blocker/conflict/permission routing, or Director risk-closed
+captain substitute authoring recorded as non-complete risk.
+`direct` is not a station state, execution route, execution channel, platform
+route, or execution mode. Record it only in `direct_exception` /
+`direct_exceptions` with a station-specific reason, replacement evidence, and
+residual state.
 
 If two or more evidence-oriented stations use direct exceptions, each row must
 name a station-specific reason, replacement evidence, residual state, and why

@@ -91,13 +91,60 @@ Need to load memory?
 
 ### Read-Only Governance Tools (唯讀治理工具)
 
-Use read-only tools before deciding whether memory content needs edits: `workspace_brief`, `memory_audit`, `memory_graph`, `commit_preflight`, `memory_list`, `memory_status`, `memory_read`, `memory_deps`, `project_context_status`, `context_inventory`, `context_audit`, `context_diff`, `context_plan`, `project_context_list`, `project_context_read`, and `project_context_validate`.
+Use general read-only tools before deciding whether memory content needs edits:
+`workspace_brief`, `memory_audit`, `memory_graph`, `memory_list`,
+`memory_status`, `memory_read`, `memory_deps`, `project_context_status`,
+`context_inventory`, `context_audit`, `context_diff`, `context_plan`,
+`project_context_list`, `project_context_read`, and
+`project_context_validate`.
 
-`commit_preflight` returning `blocked` because of dirty files is a governance signal, not a tool failure. Review the listed files and continue with the governed commit workflow.
+Do not call `commit_preflight` from the general pre-task, startup, read-only
+audit, planning, testing, implementation, handoff, or memory-loading path.
+`commit_preflight` is scoped to `09 Commit`, explicit commit-prep, or a
+closeout station that is preparing commit/push readiness. A dirty-file block
+from `commit_preflight` is a governed commit-workflow signal only; it must not
+interrupt non-commit work or be used as mid-task memory pressure.
 
-If read-only tools report ghost files, remove deleted paths from `## Tracked Files` during the next authorized update. If they report `needsCompaction=true`, compact or split/archive before adding another event.
+If general read-only tools report ghost files, remove deleted paths from
+`## Tracked Files` during the next authorized update. If they report
+`needsCompaction=true` or an equivalent limit breach, produce a compact packet
+and mark the memory/docs state as blocked or unverified for the memory-writing
+or commit-prep phase only. Non-commit implementation may continue, but it must
+not append another memory event until compaction is resolved.
 
 Read-only context tools are evidence for project context only. They do not permit writes to `.agents/context/**/CONTEXT.md` and are not source-memory evidence unless a source file or active card also supports the fact.
+
+### Compaction Status And Compact Packet
+
+`compaction_status` is the canonical memory-card schema field. Tool booleans
+such as `needsCompaction=true` are evidence that maps into this schema; do not
+invent alternate card fields.
+
+| `compaction_status` | Meaning | Workflow effect |
+|---|---|---|
+| `ready` | Card is inside event, line, and byte limits. | Memory updates may proceed after normal authorization. |
+| `due` | Card crossed a compaction threshold or would exceed one after the next event. | Produce a compact packet; do not append events until compaction or split/archive is authorized. |
+| `blocked` | Card is too large, contradictory, missing evidence, or unsafe to summarize without a decision. | Stop memory writes and report the blocker plus smallest Director decision needed. |
+| `legacy` | Card has not been upgraded to the current schema or cannot expose reliable counters yet. | Treat as pending lazy upgrade; produce a compact packet if writing or commit-prep depends on it. |
+
+Routine compact packet:
+
+```text
+compact_packet:
+module:
+compaction_status:
+trigger:
+evidence_source:
+current_cycle_event_count:
+line_count:
+size_bytes:
+recommended_action:
+workflow_effect:
+```
+
+The compact packet is normal workflow evidence. It replaces the legacy
+memory-halt wording and reports `blocked` or `unverified` only for the
+memory-writing, completion, or `09 Commit`/closeout phase that needs the card.
 
 ## Staleness And Dependency Repair
 
@@ -133,15 +180,19 @@ Before adding any frontmatter `dependencies` entry, ask:
 - If it is operational guidance, use `## Applicable Skills`.
 - Do not add dependencies merely to make context look complete.
 
-After commit, keep `## Current Truth` current, add at most one concise cycle
-event, and compact before event 31. `memory_commit` validates and warns only; it
+After an authorized memory commit, keep `## Current Truth` current, add at most
+one concise cycle event, and compact before event 31. If
+`compaction_status` is `due`, `blocked`, or `legacy`, produce the compact packet
+instead of appending another event. `memory_commit` validates and warns only; it
 does not rewrite or compact content for the AI.
 
 ## Enforcement Gates
 
 - Completion Gate blocks workflow completion when modified files are not
   reflected in memory cards or honestly reported as blocked/unverified.
-- Commit staleness warning halts commit preparation when memory is stale.
+- Commit staleness warning halts commit preparation when memory is stale; it
+  does not halt non-commit implementation, validation, review, or handoff
+  stations.
 - New production source files must be attributed to exactly one memory card
   before Completion Gate, or the task stops with a proposed scope/card decision.
 - Updating this skill never authorizes changes under `.agents/memory/**`.

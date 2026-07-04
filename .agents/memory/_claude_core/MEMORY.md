@@ -4,24 +4,24 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-03T21:01:24+08:00'
+last_updated: '2026-07-04T22:51:17+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T20:57:12+08:00'
+last_verified: '2026-07-04T21:22:45+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 15
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -35,53 +35,43 @@ metadata:
 
 ## Current Truth
 - Claude Edition is the Claude Code adapter for AI_Rules and uses `.claude/CLAUDE.md`, `.claude/rules/`, `.claude/commands/`, and `.claude/skills/`.
-- Claude core governance evaluates Team-Native Core and Authorization Resolution before lifecycle; permission prompts, Plan Mode approval, slash commands, and GO are scoped authorization evidence only.
-- Claude governed user requests automatically activate Team mode, including governance, workflow, fix, build, debug, test, audit, skill, memory/docs, commit, handoff, source, public-contract, or Team-Native/team/subagent/delegation dispatch; pure conversation, small stable Q&A, and no-impact work stay ordinary/direct.
-- Without a current governed user request, AI must not self-start Team mode or team work from prior context, tools, prompts, command names, or source impact alone.
-- In active Team mode, the mainline automatically serves as captain and must stay within captain authority: communication, authorization resolution, board ownership, dispatch, supervision, delivery receipt, state synthesis, blockers/protected gates, and reporting.
-- `03-1` experiment requests are governed workflow requests that auto-activate reduced/minimal experiment Team mode; sandbox writes remain experiment-only and cannot claim production completion.
-- In active Team mode, evidence, broad reads, validation, review, memory/docs attribution, source writes, commit/release preparation, and completion claims require board, station, handoff, role, skill, channel, `station_mode`, `context_visibility`, and `handoff_ownership` evidence.
-- Main-worktree implementation uses named station-owned `change-delivery` with `implementation-change-delivery`, exact allowlist, dirty diff read, and no protected actions; `change-application` is fallback for returned artifacts, explicit integration, or generated/deployed sync.
-- Full team completion requires implementation change delivery, memory/docs delivery, independent review delivery, validation delivery, and trace evidence; `closed-with-director-risk` is non-complete risk closure.
-- The generated shared subagent policy block now carries the hook payload evidence gap, route/state separation, and captain supervision wording shared with Antigravity and Codex core rules.
-- Claude command entries and deployed command copies now reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
+- Claude governance evaluates Team-Native Core and Authorization Resolution before lifecycle; permission prompts, Plan Mode approval, slash commands, and GO are scoped evidence for owner stations or protected-action paths only.
+- Governed Claude requests activate Team mode; without a current governed request, AI must not self-start team work from prior context, tools, prompts, command names, or source impact alone.
+- In active Team mode, the mainline is the Director-facing captain and is limited to coordination, dispatch, board maintenance, delivery receipt, status synthesis, blocker routing, authorization routing, and reporting.
+- Evidence, broad reads, validation, review, memory/docs attribution, source writes, commit/release prep, and completion claims require board, station, handoff, role, skill, channel, `station_mode`, `context_visibility`, and `handoff_ownership`.
+- Main-worktree implementation uses station-owned `change-delivery`; `change-application` is fallback for returned artifacts, explicit integration, or generated/deployed sync. Full completion requires implementation, memory/docs, review, validation, and trace evidence.
+- Claude command entries and deployed command copies reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
 - Claude memory operations use shared `.agents/memory/`; the deprecated `claude-edition-rules` card is historical only.
-- Claude command entries carry Director-readable output, neutral collaboration, freshness, memory, context, deep audit, migration, change intent, visual evidence, intent alignment, and review governance.
-- Claude README now frames captain work as communication, authorization resolution, board ownership, dispatch, supervision, delivery receipt, board/status synthesis, blocker or authorization handling, and reporting; it no longer presents captain work as primary implementation, self-review, or routine main-worktree authoring.
-- Claude README now consistently documents 62 shared/Claude operational skills across the public problem list, architecture diagram, skills section, comparison table, and project tree.
-- Claude core keeps platform startup and Director-facing Traditional Chinese mandates, while complete language-layer and external-grounding classification are delegated to shared policies.
-- Batch 4B completed Claude command metadata/route-summary authorization semantics for the core-tracked 02/03/04/07/11 command scope: legacy `GO required`, `scoped GO`, `after GO`, and `GO tied` wording converged to scope-bound intent signals, authorization resolution, and protected gates.
-- Batch 4B verified 17 source/deployed Claude command pairs in parity; Hooks remain paused and excluded from this batch; `git diff --check` passed with LF/CRLF warnings only.
+- Claude command entries and README carry Director-readable output, freshness/grounding, memory/context, deep audit, migration, change intent, visual evidence, intent alignment, review governance, and a 62-skill count.
+- Claude core and global bootstrap keep Director-facing output in Traditional Chinese; internal source docs, policies, references, skills, schemas, and code keep local convention and prefer concise English unless explicitly Director-facing.
+- Source/deployed parity is verified for Claude core identity, global bootstrap, and 17 command pairs in the 02/03/04/07/11 scope; Hooks remain paused and excluded.
 ## Active Constraints
 - Do not restore `.claude/agents/memory/` as a storage path.
 - Keep Claude command entrypoints concise; shared operational detail belongs in Shared skills.
 - Keep Claude source ownership out of the deprecated historical card.
 - Split command child cards before adding another broad Claude command cycle.
 - Claude commands and skills must cite the shared language policy instead of treating core identity language text as the sole source.
+- Keep this active card below `line_limit: 120`; compact before adding broad command-cycle detail.
+- After Claude framework source changes, verify source/deployed parity or report it as pending before final completion.
 ## Cycle Events
-- 15: Recorded Claude dual-gate update: core and README cite Director-readable output and external grounding evidence before completion or commit readiness.
-- 14: Corrected Team mode truth: governed user requests auto-activate Team mode, mainline serves as captain, and absent current governed requests cannot self-start team work.
-- 13: Recorded Claude README skill-count stale repair: public documentation now uses 62 skills across the problem list, architecture diagram, skills section, comparison table, and project tree; no compaction needed.
-- 12: Batch 4B recorded Claude README and command metadata/route-summary semantics plus 17 source/deployed command-pair parity for the 02/03/04/07/11 core command scope; Hooks stayed paused.
-- 10-11: Consolidated workflow slimming, shared policy citations, source/deployed parity, [SUDO] limits, and captain receipt/status synthesis wording.
-- 9: Recorded Claude core language-governance source split between platform mandates and shared classification policy.
-- 8: Recorded non-hook core hardening so applicable Claude work defaults to captain-led Team-Native mode before evidence or protected closeout work.
-- 7: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform core-rule sync, and commit-preflight stale blocker cleanup.
-- 6: Updated Claude README memory after public wording was tightened so captain integration means protected adoption or merge of qualified artifacts, not captain substitute authoring.
-- 5: Updated Claude core memory after route/state and captain-supervision hardening; captain wording now means protected integration and gate ownership, not primary authoring or routine write substitution.
-- 4: Regenerated the shared subagent policy block in Claude core rules after Team-Native route/state and hook payload evidence hardening.
-- 3: Wave 6B added workflow-orchestration grounding to Claude command entries and source/deployed drift checks.
-- 2: Wave 6A updated Claude command entries with operation_mode, daily/full modes, direct/formal-readonly/formal-write boundaries, board triggers, and specialist lifecycle semantics; source/deployed command hashes were verified in sync.
-- 01: Compacted the previous Team-Native governance cycle into archive-004 after commit preflight reported line and cycle-event limits.
+- 7: Compacted active card on 2026-07-04, preserving captain limits, source/deployed parity, language layering, and command authorization semantics.
+- 6: Recorded dual-gate output and grounding updates across core and README before completion or commit readiness.
+- 5: Corrected Team mode truth and captain boundary: governed requests activate Team mode; captain coordination cannot substitute for owner-station delivery.
+- 4: Recorded README 62-skill repair and Batch 4B command metadata/route-summary semantics with 17 source/deployed command-pair parity.
+- 3: Consolidated workflow slimming, shared policy citations, source/deployed parity, risk-closure limits, and captain receipt/status synthesis.
+- 2: Regenerated shared subagent policy and workflow-orchestration grounding for Team-Native route/state hardening.
+- 1: Compacted the previous Team-Native governance cycle into archive-004 after commit preflight reported line and cycle-event limits.
 ## Archive Index
 - archive-004.md — Team-Native hard-gate cycle events 20-31 compacted on 2026-06-30.
 - archive-003.md — Older cycle events 10-20 compacted from the active card.
 - archive-002.md — Pre-standardization active card snapshot created during MEMORY.md migration.
 - archive-001.md — Legacy _claude_core card preserved before schema v2 compaction on 2026-06-04.
 ## Evidence Base
-- Source evidence: Claude core rules, commands, README, and preserved archives.
-- Tool evidence: commit preflight identified active-card compaction due on 2026-06-30.
-- Director evidence: 2026-06-30 GO authorized compaction of the four blocking memory cards.
+- source: `Claude/.claude/rules/core-identity.md`, `.claude/rules/core-identity.md`, `Claude/global/CLAUDE.md`, and user-global `.claude/CLAUDE.md`.
+- source: `.agents/shared/policies/language-governance.md` for Director-facing zh-TW and internal English-led artifact layering.
+- tool: `Get-FileHash -Algorithm SHA256` verified Claude core source/deployed parity and global bootstrap parity on 2026-07-04.
+- tool: active-card measurement reported 127 lines before M2 compaction; `git diff/status` was reviewed before writing.
+- director: 2026-07-04 M2 scope authorized compaction of `_ag_core`, `_claude_core`, and `_codex_core` only.
 ## Read Contract
 - Read this card when the task touches Claude tracked files, governed layer, or listed relations.
 - Do not use stale or archived claims as current implementation evidence without reading the referenced source files.
@@ -89,14 +79,10 @@ metadata:
 - No unresolved conflict recorded; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
 - Claude Edition 的 active source owner 是本卡。
-- Claude 的 permission prompt、Plan Mode 同意、Slash Command 與 GO 現在都必須限縮到明示範圍。
-- Claude 受治理使用者請求會自動啟動 Team mode；沒有目前受治理使用者請求時，AI 不能自行啟動團隊工作。
-- Team mode 啟動後主線自動擔任隊長，但只能做隊長職權內的協調、派工、接收、彙整與受保護閘門處理。
-- `03-1` 會自動進入 reduced/minimal experiment Team mode；sandbox writes 不等於 production completion。
-- 主工作區實作 primary 是具名 station-owned `change-delivery`；`change-application` 只作 returned artifact / integration / sync fallback。
-- Claude 記憶路徑固定使用 `.agents/memory/`；舊 Claude 規範卡是歷史索引。
-- Batch 4B 已完成本卡追蹤範圍內 Claude 指令 metadata/route summary 的授權語意修補，核對 17 組 source/deployed command pair 一致，且 Claude README 技能數量已統一為 62 套；Hooks 仍暫停、不列入本批。
-- Claude 總監輸出需繁中語義先行；高變動或外部事實要走 external grounding evidence gate。
+- Claude 受治理請求會啟動 Team mode；主線只做 Director-facing captain 協調與授權路由。
+- Claude source/deployed parity、17 組 command pair、62 技能數、Hooks 暫停狀態已保留。
+- 總監可見輸出維持繁中；內部文件、狀態值、指令與程式識別保持本地慣例。
+- 本卡已壓到 120 行內，但仍需另行 `memory_commit`。
 ## Tracked Files
 - Claude/install.ps1
 - Claude/README.md
@@ -117,3 +103,7 @@ metadata:
 - _shared (Shared skills injected into Claude)
 - claude-edition-rules (deprecated historical archive)
 - _claude_core.support (child card for support rules and remaining commands)
+
+## Applicable Skills
+- memory-ops — Update and commit this card.
+- team-memory-docs-delivery-artifact — Report memory/docs state.

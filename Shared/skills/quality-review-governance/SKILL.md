@@ -26,7 +26,7 @@ Use this skill when the task needs a shared definition for engineering review:
 - A change touches governance, workflow rules, public contracts, release behavior, security, data/state flow, cross-module logic, or repeated fragile code.
 - A plan has competing simple and complex implementation paths.
 - A review report must explain whether the work is moving in the right direction.
-- Evidence from a delegated read-only branch needs to be integrated into a main-thread decision.
+- Evidence from a delegated read-only branch needs to be integrated into an owner-station or completion-readiness decision.
 
 ## Core Definitions
 
@@ -36,7 +36,7 @@ Use this skill when the task needs a shared definition for engineering review:
 | High Quality | Correct result plus readable structure, testability, bounded side effects, low coupling, maintainable names, and clear ownership boundaries. | More files, more abstractions, or more ceremony without reducing real risk. |
 | Rigorous | Assumptions, evidence, unverified areas, blockers, and accepted risks are explicit. Claims are tied to files, commands, docs, or observed behavior. | A confident summary without evidence or with hidden uncertainty. |
 | Review | A targeted process that reduces wrong direction, requirement drift, over-engineering, missing validation, and blast-radius risk. | Generic praise, style-only comments, or unchecked opinion. |
-| Evidence Branch | A read-only helper path that collects facts, traces, logs, docs, or alternative analysis. It supports review but does not own acceptance. | Treating a helper summary as final quality approval. |
+| Evidence Branch | A read-only helper path that collects facts, traces, logs, docs, or alternative analysis. It supports review but does not own review disposition, readiness checks, or protected mutation. | Treating a helper summary as final quality approval. |
 | Independent Review | Review by a role that did not implement the same deliverable. | A patch author approving their own change, or a reviewer editing the same deliverable and still claiming independent review. |
 
 ## Minimum Sufficient Complexity
@@ -70,7 +70,7 @@ Reject complexity when it is speculative:
 ```text
 [REVIEW TIMING GATE]
 Does the task touch governance, public contracts, shared workflows, data/state, security, release/plugin behavior, cross-module logic, repeated fragile code, or real operation evidence?
-├── YES → Produce review purpose, review state, evidence status, and acceptance evidence.
+├── YES → Produce review purpose, review state, evidence status, and review disposition evidence.
 └── NO → Targeted validation is enough; record the no-review reason when reporting.
 ```
 
@@ -102,30 +102,40 @@ Use one state at a time. Move forward only when evidence changes.
 
 ## Required Review Output
 
-When the Review Timing Gate returns YES, report these fields:
+When the Review Timing Gate returns YES, report these canonical fields:
 
-- 審查目的: what risk or decision the review is reducing.
-- 審查狀態: one lifecycle state.
-- 證據狀態: files, commands, docs, logs, or helper evidence used.
-- 發現: concrete issues, each tied to evidence.
-- 處置: required fix, accepted risk, non-issue, or blocker.
-- 驗收依據: tests, audits, real operation evidence, or stated limitation.
+- review_purpose: what risk or decision the review is reducing.
+- review_state: one lifecycle state.
+- evidence_state: files, commands, docs, logs, or helper evidence used.
+- findings: concrete issues, each tied to evidence.
+- disposition: required fix, accepted risk, non-issue, or blocker.
+- review_basis: tests, audits, real operation evidence, or stated limitation.
 
 ## Evidence Branch Boundary
 
-Review evidence follows the active Programming Team Board. Evidence-oriented review stations default to read-only evidence branches unless the board records a concrete direct exception and replacement evidence. Parallelism is useful but not required; the main thread may wait for a review evidence packet when the packet is needed to decide the review state. Evidence branches must return:
+Review evidence follows the active Programming Team Board. Evidence-oriented review stations default to read-only evidence branches unless the board records a concrete direct exception and replacement evidence. Parallelism is useful but not required; the review or completion station may wait for a review evidence packet when the packet is needed to decide the review state. Evidence branches must return:
 
 ```text
-發現 / 證據 / 風險 / 建議 / 是否阻塞
+findings:
+evidence:
+risk:
+recommendation:
+blocking:
+status:
 ```
 
-The main thread remains responsible for:
+The review station remains responsible for:
 
-- Deciding whether evidence is relevant.
-- Mapping evidence to a review lifecycle state.
-- Integrating changes into the implementation plan.
-- Performing writes, commits, deployments, installs, memory updates, and final Director-facing acceptance.
+- Determining whether review evidence is relevant.
+- Mapping evidence to the review lifecycle disposition for the reviewed deliverable.
+- Returning findings and disposition without implementing fixes or protected mutation.
 - Enforcing that implementation and review roles remain separated for the same deliverable.
+
+The completion or release station remains responsible for readiness checks
+against returned review, validation, memory/docs, sync, and authorization
+evidence. The captain synthesizes the Director-facing report and routes
+blockers; captain/orchestration-channel synthesis does not upgrade review disposition,
+perform protected mutation, or replace owner-station readiness evidence.
 
 ## Constraints
 

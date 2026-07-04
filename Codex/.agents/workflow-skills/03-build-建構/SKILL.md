@@ -1,7 +1,7 @@
 ---
 name: "03-build-建構"
-description: "Use when: 正式建構功能、設計到建構合約、實作已核准計畫、新增工具或產品行為變更、plugin/extension/插件/延伸模組、VSIX、Release/發布、version/版本、tag、update reminder/更新提醒 的建構與驗證。DO NOT use when: 純討論、沙盒實驗、或只需要不落地的純架構方案。"
-required_skills: [memory-ops, tech-stack-protocol, code-quality, security-sre, ai-dev-quality-gate, intent-alignment-gate, quality-review-governance, project-context-protocol, programming-team-governance, team-specialist-registry, team-task-board, team-station-handoff-packet, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
+description: "Use when: 正式建構功能、落地已核准計畫、新增工具或產品行為變更。DO NOT use when: 純討論、沙盒實驗或不落地架構方案。"
+required_skills: [code-quality, intent-alignment-gate]
 metadata:
   author: antigravity
   version: "2.0"
@@ -28,10 +28,11 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 2. Read `.agents/shared/policies/language-governance.md` for Director-facing language, exact-evidence preservation, and change-description rules.
 3. Read `.agents/shared/workflow-capability-evidence-matrix.md` and use workflow row `03` as the minimum evidence contract.
 4. Read `.agents/shared/platform-capability-matrix.md` and apply only this platform's adapter semantics.
-5. When editing workflow entries, skills, shared policies, or governance boundaries, read `.agents/shared/skill-governance.md` before changing placement or wording.
-6. When a concrete phase checklist is needed, read `.agents/shared/workflow-stage-procedures.md` and use section `03 Build`. Do not copy that procedure back into this entry.
-7. For Team-Native work, load `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-station-handoff-packet/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, and `.agents/skills/team-completion-gate/SKILL.md`; load delivery-artifact skills only when their stations apply.
-8. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is `未驗證` or `阻塞`.
+5. Read `.agents/shared/policies/platform-plan-mapping.md` when a platform plan surface, Codex `update_plan`, `plan-only`, or `build-plan` affects route, authorization wording, progress, or completion language.
+6. When editing workflow entries, skills, shared policies, or governance boundaries, read `.agents/shared/skill-governance.md` before changing placement or wording.
+7. When a concrete phase checklist is needed, read `.agents/shared/workflow-stage-procedures.md` and use section `03 Build`. Do not copy that procedure back into this entry.
+8. For Team-Native work, load `.agents/skills/programming-team-governance/SKILL.md` first; load board, handoff, role-boundary, delivery, validation, review, memory/docs, and completion skills only for stations opened by the current board.
+9. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is `unverified` or `blocked`.
 
 ## 入口瘦身防線（Workflow Entry Slimming Guard）
 
@@ -46,13 +47,14 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Workflow row: `03`.
 - Procedure reference: `03 Build` in `.agents/shared/workflow-stage-procedures.md`.
 - Route summary: Produce the design-to-build contract before writes; after scoped authorization resolution, route through change delivery and later validation/review/memory states.
+- Platform plan mapping: distinguish `build-plan` from `plan-only`; `build-plan` defines file sets, acceptance, validation, memory/docs, and sync expectations, but still waits for authorization resolution before implementation. Codex `update_plan` is only a visual mirror.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - Use `formal-write` only after a scope-bound intent signal has been resolved to the visible plan, station, file set, command, phase, expiry, and any required protected gate.
 
 ## Completion Boundary
 
-- Report evidence status as `足夠證據`, `部分證據`, `未驗證`, `阻塞`, or `不適用` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
+- Report evidence status as `sufficient`, `partial`, `unverified`, `blocked`, or `not-applicable` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
 - Full team completion requires separated implementation change delivery, memory/docs delivery, validation delivery, review delivery, source/deployed parity when relevant, and completion audit evidence.
 - Missing delivery artifacts, missing parity, unavailable channels, or Director-accepted residual risk must be reported as `blocked`, `unverified`, or `closed-with-director-risk`, not `complete`.
 - This entry must stay thin. If more procedure detail is needed, add or update the shared reference instead of expanding this file.

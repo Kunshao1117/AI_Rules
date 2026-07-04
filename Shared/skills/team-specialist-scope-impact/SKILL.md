@@ -4,8 +4,8 @@ description: >
   [Infra] Scope and impact specialist for Team-Native work. Use when: mapping
   affected files, workflows, skills, memory cards, docs, generated copies,
   dependencies, regression surface, impact analysis, 影響面、範圍盤點、回歸面、
-  記憶文件影響。 DO NOT use when: implementing changes, final acceptance,
-  release mutation, 實作、最終驗收、提交發布。
+  記憶文件影響。 DO NOT use when: implementing changes, release/completion
+  station decisions, release mutation, 實作、收尾裁決、提交發布。
 metadata:
   author: antigravity
   version: "1.0"
@@ -35,8 +35,8 @@ metadata:
 
 ## Trigger Conditions
 
-Use when the captain needs a bounded impact map before approving,
-integrating, validating, reviewing, or completing a change.
+Use when the board or owner station needs a bounded impact map before scoped
+routing, integration, validation, review, or completion-readiness evidence.
 
 Use for source files, workflow entries, Shared skills, deployed copies,
 memory ownership, documentation surfaces, and regression risk.
@@ -70,8 +70,8 @@ Return an evidence artifact with these fields:
 
 ## Trace And Handoff Contract
 
-Every output inherits shared Team-Native trace rules instead of duplicating the
-field list inside this role skill.
+Every returned artifact inherits shared Team-Native trace rules instead of
+duplicating the field list inside this role skill.
 
 1. Receive `operation_mode`, `operation_mode_reason`, `role_id`,
    `role_instance_id`, and `exclusive_task_scope` from the station handoff
@@ -81,7 +81,7 @@ field list inside this role skill.
 3. Include the authorization, channel, lifecycle, delivery, and blocker fields
    required by `team-trace-evidence` and `team-station-handoff-packet`.
 4. Use only this skill's `metadata.relations.artifact_contracts` and
-   `metadata.relations.trace_contracts` as the output contract source.
+   `metadata.relations.trace_contracts` as the artifact contract source.
 5. If the handoff packet is missing role identity fields, return blocked or
    unverified evidence instead of inventing defaults.
 
@@ -95,4 +95,6 @@ field list inside this role skill.
 
 - Read-only station.
 - No source, memory, git, release, deployment, install, or external-state mutation.
-- The captain decides final scope and change-application routing.
+- Final scope and change-application routing stay with the current owner
+  station or scoped Director authorization path; the captain coordinates and
+  reports.

@@ -1,7 +1,6 @@
 ---
 name: "03-1-experiment-實驗"
-description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索；03-1 是受治理 workflow，使用者要求 03-1 / experiment / sandbox prototype 時由該請求觸發 Team mode，主線擔任隊長並可使用 reduced/minimal experiment station/board。Sandbox writes 必須記錄 sandbox scope、discard condition、promotion condition、allowed shortcuts；discard/promotion/production promotion 仍需 scope-bound authorization，且不得宣稱 production completion。DO NOT use when: 生產建構、正式修復或需提交發布。"
-required_skills: [programming-team-governance, team-specialist-registry, team-task-board, team-station-handoff-packet, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
+description: "Use when: 沙盒快速實驗、髒碼原型、API spike 或可丟棄原型。DO NOT use when: 生產建構、正式修復或提交準備。"
 metadata:
   author: antigravity
   version: "2.0"
@@ -30,8 +29,8 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 4. Read `.agents/shared/platform-capability-matrix.md` and apply only this platform's adapter semantics.
 5. When editing workflow entries, skills, shared policies, or governance boundaries, read `.agents/shared/skill-governance.md` before changing placement or wording.
 6. When a concrete phase checklist is needed, read `.agents/shared/workflow-stage-procedures.md` and use section `03-1 Experiment`. Do not copy that procedure back into this entry.
-7. For Team-Native work, load `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-station-handoff-packet/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, and `.agents/skills/team-completion-gate/SKILL.md`; load delivery-artifact skills only when their stations apply.
-8. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is `未驗證` or `阻塞`.
+7. For Team-Native work, load `.agents/skills/programming-team-governance/SKILL.md` first; load board, handoff, role-boundary, delivery, validation, review, memory/docs, and completion skills only for stations opened by the current board.
+8. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is `unverified` or `blocked`.
 
 ## 入口瘦身防線（Workflow Entry Slimming Guard）
 
@@ -69,7 +68,7 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 ## Completion Boundary
 
-- Report evidence status as `足夠證據`, `部分證據`, `未驗證`, `阻塞`, or `不適用` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
+- Report evidence status as `sufficient`, `partial`, `unverified`, `blocked`, or `not-applicable` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
 - Full team completion requires separated implementation change delivery, memory/docs delivery, validation delivery, review delivery, source/deployed parity when relevant, and completion audit evidence.
 - Missing delivery artifacts, missing parity, unavailable channels, or Director-accepted residual risk must be reported as `blocked`, `unverified`, or `closed-with-director-risk`, not `complete`.
 - This entry must stay thin. If more procedure detail is needed, add or update the shared reference instead of expanding this file.

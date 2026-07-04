@@ -21,16 +21,22 @@ back into platform entries.
 2. Read `workflow-orchestration.md`, `language-governance.md`, the workflow
    evidence matrix row, and the platform capability matrix before broad
    evidence or source-impacting work.
-3. Use `formal-readonly` for evidence, research, impact mapping, validation
+3. Read `platform-plan-mapping.md` when a platform plan/checklist/progress
+   surface, `plan-only`, or `build-plan` affects routing, authorization
+   interpretation, progress reporting, or completion language.
+4. Use `formal-readonly` for evidence, research, impact mapping, validation
    planning, review evidence, memory/docs attribution, and broad reads.
-4. Use `formal-write` only after a scope-bound intent signal is resolved
+5. Use `formal-write` only after a scope-bound intent signal is resolved
    through authorization resolution to the visible plan, file set, station,
    phase, expiry, and required protected gate.
-5. Keep implementation, validation, review, memory/docs, and completion as
+6. Keep implementation, validation, review, memory/docs, and completion as
    separate delivery states. Missing states are blocked, unverified, or
    closed-with-director-risk, not complete.
-6. When a source/deployed pair exists, record sync direction and parity
+7. When a source/deployed pair exists, record sync direction and parity
    evidence before any completion claim.
+8. Use `commit_preflight` only in `09 Commit`, explicit commit-prep, or
+   closeout commit/push readiness. Other workflows use normal read-only memory
+   evidence and compact packets without interrupting non-commit work.
 
 ## 00 Chat
 
@@ -65,6 +71,9 @@ back into platform entries.
   and migration or rollback path.
 - Produce a build handoff contract only when implementation boundaries,
   validation expectations, memory/docs impact, and unresolved risks are clear.
+- Treat ordinary architecture output as `plan-only` unless it explicitly
+  becomes a `build-plan` handoff boundary for workflow `03`; neither state is
+  write authorization.
 
 ## 03-1 Experiment
 
@@ -83,6 +92,9 @@ back into platform entries.
 - Produce a design-to-build contract before writes: requirement trace, review
   state when required, architecture boundary, change intent, real validation
   path, file sets, memory/docs impact, and drift audit rule.
+- Treat that design-to-build contract as `build-plan`, not `plan-only`: it
+  defines implementation boundaries and acceptance evidence but does not grant
+  write authority, and Codex `update_plan` remains only a progress mirror.
 - After a scope-bound intent signal is resolved through authorization
   resolution, open implementation change delivery only for the named scope.
 - Validation, review, memory/docs, and completion run after change delivery is
@@ -98,8 +110,8 @@ back into platform entries.
   behavior depends on runtime state, external systems, persistence, UI, or
   operator-visible output.
 - After a scope-bound intent signal is resolved through authorization
-  resolution, repair only the named cause and route failed validation back to
-  diagnosis or a new fix station.
+  resolution, open a repair `change-delivery` station only for the named cause
+  and route failed validation back to diagnosis or a new fix station.
 
 ## 05 Condense
 
@@ -108,6 +120,9 @@ back into platform entries.
 - Read the relevant memory/context inventory before proposing durable facts.
 - Keep main cards small and archive or split when compaction thresholds are
   reached.
+- When a card reports `needsCompaction=true`, emits event 31, or lacks reliable
+  counters, produce the normal compact packet and wait for the matching memory
+  protected authorization before compacting, splitting, or archiving.
 - Memory or context mutation requires the matching protected authorization.
 
 ## 06 Test
@@ -164,10 +179,13 @@ back into platform entries.
 
 - Scan dirty files, staged files, source/deployed parity, memory status,
   validation state, review state, and unresolved blockers.
+- Run `commit_preflight` or equivalent source-memory consistency evidence only
+  in this route or an explicit commit-prep/closeout station.
 - Commit, push, tag, release, deployment, and memory commit are separate
   protected phases with separate authorization.
 - If preflight finds stale memory, missing validation, missing review, missing
-  sync, or untracked required files, route back to the owner workflow.
+  sync, compact-packet blockers, or untracked required files, route back to the
+  owner workflow.
 - Do not hide blockers inside a commit summary.
 
 ## 10 Routine

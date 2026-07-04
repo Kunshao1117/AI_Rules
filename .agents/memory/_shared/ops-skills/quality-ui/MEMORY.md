@@ -4,14 +4,14 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 品質閘門、安全可靠性與 UI/UX 標準技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-02T14:02:01+08:00'
+last_updated: '2026-07-04T22:52:02+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-01T18:20:23+08:00'
+last_verified: '2026-07-04T21:24:30+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -21,7 +21,7 @@ cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -35,23 +35,21 @@ metadata:
 # _shared.ops-skills.quality-ui — Quality and UI Skills Memory
 
 ## Current Truth
-- Quality review governance now requires independent review boundaries: implementation specialists cannot review their own deliverable, and review specialists cannot implement the same deliverable.
-- This child card owns Shared quality gate, security/SRE, UI design exploration, and UI/UX standard skills.
-- These skills define quality expectations and design constraints, not task-specific findings.
-- AI development quality gate now classifies emergency patches, root-cause repairs, local refinements, and structural refactors before production completion.
-- Interface evidence now requires detail observation and real-information priority; fake data is fallback evidence with residual risk.
-- Intent alignment gate now defines requirement playback, neutral challenge, decision trace, requirement trace, and drift audit output contracts for architecture and build workflows.
-- Quality review governance now defines correctness, high quality, rigor, review timing, review lifecycle states, evidence branch boundaries, and minimum sufficient complexity.
-- Quality review governance now follows the active Programming Team Board; review evidence stations default to read-only evidence unless a concrete direct exception is recorded.
-- AI development and intent alignment gates now escalate heavy, structural, governance, public-contract, release, security, cross-module, and repeated fragile-code work into review-state reporting.
-- AI development quality gates now require real evidence for governance, workflow, public-contract, security, release, or repeated fragile work before completion claims.
-- AI development quality guidance keeps additional token margin so managed cache and source checkouts remain inside the Shared skill quality limit.
-- High-change security or accessibility guidance must be grounded in current official sources before decisions.
-- Security/SRE now treats [SUDO] as an override/risk-closure request only; 03-1 experiment work still requires real API/DB/credential risk handling and cannot claim production security readiness.
+- This child card owns Shared quality gate, security/SRE, UI design exploration, and UI/UX standard skills; these skills define quality expectations, not task-specific findings.
+- Quality review governance requires independent review boundaries: implementation specialists cannot review their own deliverable, and review specialists cannot implement the same deliverable.
+- Quality review governance defines correctness, high quality, rigor, review timing, lifecycle states, evidence branch boundaries, and minimum sufficient complexity.
+- Quality review governance now follows the active Programming Team Board; review evidence stations default to read-only evidence unless a concrete direct exception is recorded, and evidence branches do not own review disposition, readiness checks, or protected mutation.
+- Review output uses canonical English fields internally; Director-facing review summaries must be synthesized in Traditional Chinese.
+- AI development and intent alignment gates classify change shape and escalate heavy, structural, governance, public-contract, release, security, cross-module, or repeated fragile work into review-state reporting.
+- AI development quality gates require real evidence before completion claims for governance, workflow, public-contract, security, release, or repeated fragile work, while keeping extra token margin for managed-cache and source checkout limits.
+- Intent alignment gate defines requirement playback, neutral challenge, decision trace, requirement trace, and drift audit output contracts for architecture and build workflows.
+- Interface, visual, and generated design evidence requires detail observation, real-information priority, real rendered screenshots or UI state, or clearly labeled fallback risk.
+- High-change security or accessibility guidance must be grounded in current official sources; [SUDO] remains risk-closure only and 03-1 experiments cannot claim production security readiness.
 
 ## Active Constraints
 - Do not use this card as evidence that a specific product screen or security control passed validation.
 - Keep Director-facing design and quality summaries in Traditional Chinese.
+- Captain or orchestration synthesis cannot upgrade raw evidence-branch output into independent review disposition or completion readiness.
 
 ## Cycle Events
 - 10: Recorded security-SRE hardening so [SUDO] cannot skip validation and experiment work remains prototype-only for production security claims.
@@ -69,6 +67,9 @@ metadata:
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
 
 ## Evidence Base
+- source:Shared/skills/quality-review-governance/SKILL.md — Verified canonical review fields, owner-station review disposition, evidence branch boundaries, and completion/readiness separation.
+- source:Shared/skills/browser-testing/SKILL.md — Verified visual evidence real-information priority and capture-time limitation.
+- source:Shared/policies/language-governance.md — Verified Director-facing zh-TW synthesis and internal canonical English artifact boundary.
 - source:.agents/memory/_shared/ops-skills/archive-001.md — Previous parent-card content preserved during migration.
 - tool:memory_audit — Granularity advisory identified this card as too broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized controlled child-card split.

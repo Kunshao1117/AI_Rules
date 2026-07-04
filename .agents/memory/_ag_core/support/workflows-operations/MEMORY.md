@@ -4,24 +4,24 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 測試、巡檢、交接與技能鍛造工作流。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-03T13:40:41+08:00'
+last_updated: '2026-07-04T22:51:14+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T05:44:38+08:00'
+last_verified: 2026-07-02T21:44:38.000Z
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 23
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -38,15 +38,15 @@ metadata:
 - Antigravity operational workflow entries now reference workflow-orchestration before validation, debug, memory/docs, write paths, or completion.
 - Antigravity operational workflows now inherit formal team dispatch fields and cannot claim full team completion without separated implementation change delivery, memory delivery, review, validation, and completion evidence or accepted risk.
 - Antigravity operational workflows now inherit team-task-board references through the shared workflow entry contract and keep evidence delivery artifacts role-bound.
-- Antigravity test, routine, handoff, and skill-forge workflows now require task type, dispatch pre-gate, Captain Minimum Execution Gate, text change delivery, and `closed-with-director-risk` before specialist work.
-- Antigravity test, routine, handoff, and skill-forge workflows keep writes and external state on the captain while evidence stations use role-bound team branches.
-- Antigravity test, routine, handoff, and skill-forge workflows now load programming-team-governance with applicability/execution-mode station reporting while keeping write, memory, and release decisions on the main thread.
-- Antigravity test, routine, handoff, and skill-forge workflows now require evidence owner, direct exception, completion condition, and all-direct fake-team guards while keeping write, memory, and release decisions on the main thread.
+- Antigravity test, routine, handoff, and skill-forge workflows now require task type, dispatch pre-gate, Team-Native startup gate, text change delivery, and `closed-with-director-risk` before specialist work.
+- Antigravity test, routine, handoff, and skill-forge workflows route writes and external state through owner stations or platform-nondelegable protected-action records while evidence stations use role-bound team branches.
+- Antigravity test, routine, handoff, and skill-forge workflows now load programming-team-governance with applicability/execution-mode station reporting while routing write, memory, and release decisions through owner stations or platform-nondelegable protected-action records.
+- Antigravity test, routine, handoff, and skill-forge workflows now require evidence owner, direct exception, completion condition, and all-direct fake-team guards while routing write, memory, and release decisions through owner stations or platform-nondelegable protected-action records.
 - Antigravity routine, handoff, and skill-forge workflows now use the MCP Memory Evidence Matrix for read-only governance and skill attribution evidence.
 - This child card owns Antigravity testing, routine, handoff, and skill-forge workflow entries.
 - Operational workflows must keep evidence requirements matched to Antigravity browser and visual artifact capabilities.
 - Routine inspection remains read-only; write proposals route back to the owning workflow instead of mutating source, memory, or external state.
-- Test, debug, handoff, routine, and skill-forge evidence levels do not authorize repair by themselves; source or generated-copy fixes must route through authorization resolution to a formal-write change-delivery or change-application station bound to the visible scope, phase, expiry, and protected gate.
+- Test, debug, handoff, routine, and skill-forge evidence levels do not authorize repair by themselves; source or generated-copy fixes must route through authorization resolution to a formal-write change-delivery or change-application station bound to the visible scope, phase, expiry, and protected-action gate.
 - Antigravity skill-forge treats workflow names, skill triggers, Director `GO`, and natural-language requests as route or intent signals only; source write, memory mutation, project-context mutation, git, release, deploy, install, credential, and external-state phases each require authorization resolution.
 - Antigravity test workflow now requires visual detail-observation notes and real-information-first evidence before fallback fake data.
 - Antigravity routine workflow now checks review governance coverage as part of read-only governance inspection.
@@ -60,25 +60,10 @@ metadata:
 - 22: Recorded Batch 3b scope-bound GO semantics for Antigravity skill forge; upstream six-file Measure-GovernanceSemantics evidence reported Red 0 / Yellow 0 and was not rerun in this memory phase.
 - 21: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 20: Updated Antigravity operations workflow memory after scope-bound authorization hardening; test and other evidence workflows cannot self-authorize repairs and must route source changes back to formal write/change-delivery stations.
-- 19: Wave 6B added workflow-orchestration grounding to Antigravity operational workflow entries.
-- 18: Wave 6A updated Antigravity fix, condense, test, and debug workflow entries with Team-Native operation mode, board trigger, role identity, handoff packet, and specialist lifecycle coverage.
-- 17: Reconfirmed commit-preflight ownership after Team-Native closeout; no source ownership change required.
-- 16: Synced Antigravity operational workflows with Team-Native specialist registry and change delivery artifact terminology.
-- 15: Compressed captain/main delegation skills, updated Doctor four-delivery-artifact checks, and resynced source/deployed policy markers.
-- 14: Added formal team specialist routing with implementation change delivery, memory delivery, review, and validation artifacts; refreshed 50/67 skill facts after source/deployed sync.
-- 13: Updated Antigravity operational workflow memory for formal team dispatch fields and delivery-artifact-separated completion evidence.
-- 12: Added team-task-board template governance, refreshed 50/67 skill-count facts, and verified Doctor/Audit green.
-- 11: Updated Antigravity operational workflow memory for captain minimum execution and text change delivery artifact governance.
-- 10: Updated Antigravity operational workflows for the new captain dispatch gate.
-- 09: Aligned Antigravity operational workflows with captain-led evidence stations and role-exclusivity guards.
-- 08: Hardened Antigravity operational workflow boards with evidence-owner, direct-exception, completion-condition, and all-direct guard fields.
-- 07: Hardened Antigravity test, routine, handoff, and skill-forge team-station reporting with applicability/execution-mode fields.
-- 06: Added review governance coverage to Antigravity routine workflow inspection.
-- 05: Added detail observation and real-information priority to the Antigravity test workflow evidence branch.
-- 04: Added MCP memory evidence contract references to Antigravity routine, handoff, and skill-forge workflows.
-- 03: Updated Antigravity operation workflow output examples and routine downstream scan scope.
-- 02: Aligned operational workflow grounding paths to deployed .agents/shared governance references.
-- 01: Split Antigravity operational workflow ownership out of the support parent card.
+- 19-16: Added workflow-orchestration grounding, Team-Native lifecycle coverage, commit-preflight ownership, and specialist registry/artifact terminology.
+- 15-12: Compressed legacy coordination wording, added formal specialist routing and dispatch fields, and refreshed team-task-board governance.
+- 11-08: Added Team-Native minimum execution, dispatch gate, role-bound evidence stations, direct-exception guards, and station reporting.
+- 07-01: Added routine review coverage, test evidence details, MCP memory evidence references, output examples, grounding paths, and child-card split.
 
 ## Archive Index
 - Parent archive remains at .agents/memory/_ag_core/support/archive-001.md.

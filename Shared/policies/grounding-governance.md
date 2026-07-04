@@ -83,15 +83,17 @@ If latest documentation conflicts with the project-locked version:
 
 ## Team Mode Grounding Responsibilities
 
-When Team mode is active, the captain owns routing, authorization interpretation,
-board state, receipt, and Director-facing synthesis. The captain may perform
-small coordination reads, but broad external research is a formal station task.
+When Team mode is active, the captain coordinates routing, board/channel state,
+station artifact receipt, blockers, and Director-facing synthesis.
+Authorization binding stays with `authorization-resolution.md` and scoped
+Director evidence. The captain may perform small coordination reads, but broad
+external research is a formal station task.
 
 Use an `external-research` station when external grounding affects architecture,
 implementation, validation, review, release readiness, security, compliance, or
 cost. The station records source tier, date or version, search scope, official
 or primary evidence, unresolved conflicts, and missing evidence. It does not
-edit source, decide final acceptance, or mutate external state.
+edit source, decide release/completion readiness, or mutate external state.
 
 The captain must not convert missing research into verified evidence. If the
 external-research route is unavailable, record `未查`, `查不到`, `阻塞`,

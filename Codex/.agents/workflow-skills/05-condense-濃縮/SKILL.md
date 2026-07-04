@@ -1,7 +1,7 @@
 ---
 name: "05-condense-濃縮"
 description: "Use when: 專案濃縮初始化、萃取 PROJECT IDENTITY、掃描代碼庫並寫入永久上下文。DO NOT use when: 只要讀取既有記憶或一般架構說明。"
-required_skills: [memory-ops, memory-arch, tech-stack-protocol, project-context-protocol, programming-team-governance, team-specialist-registry, team-task-board, team-station-handoff-packet, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
+required_skills: [memory-ops, memory-arch, project-context-protocol]
 metadata:
   author: antigravity
   version: "2.0"
@@ -30,8 +30,8 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 4. Read `.agents/shared/platform-capability-matrix.md` and apply only this platform's adapter semantics.
 5. When editing workflow entries, skills, shared policies, or governance boundaries, read `.agents/shared/skill-governance.md` before changing placement or wording.
 6. When a concrete phase checklist is needed, read `.agents/shared/workflow-stage-procedures.md` and use section `05 Condense`. Do not copy that procedure back into this entry.
-7. For Team-Native work, load `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-station-handoff-packet/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, and `.agents/skills/team-completion-gate/SKILL.md`; load delivery-artifact skills only when their stations apply.
-8. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is `未驗證` or `阻塞`.
+7. For Team-Native work, load `.agents/skills/programming-team-governance/SKILL.md` first; load board, handoff, role-boundary, delivery, validation, review, memory/docs, and completion skills only for stations opened by the current board.
+8. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is `unverified` or `blocked`.
 
 ## 入口瘦身防線（Workflow Entry Slimming Guard）
 
@@ -52,7 +52,7 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 ## Completion Boundary
 
-- Report evidence status as `足夠證據`, `部分證據`, `未驗證`, `阻塞`, or `不適用` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
+- Report evidence status as `sufficient`, `partial`, `unverified`, `blocked`, or `not-applicable` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
 - Full team completion requires separated implementation change delivery, memory/docs delivery, validation delivery, review delivery, source/deployed parity when relevant, and completion audit evidence.
 - Missing delivery artifacts, missing parity, unavailable channels, or Director-accepted residual risk must be reported as `blocked`, `unverified`, or `closed-with-director-risk`, not `complete`.
 - This entry must stay thin. If more procedure detail is needed, add or update the shared reference instead of expanding this file.

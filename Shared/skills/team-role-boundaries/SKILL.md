@@ -67,7 +67,7 @@ artifact, dispatch wave, and role boundary continue. Crossing to another role
 closes the old station and opens a new role instance.
 
 Changing `station_mode`, changing `handoff_ownership`, or moving from
-specialist deep-read to captain-owned gate closes the old role instance unless
+specialist deep-read to a platform-nondelegable gate record closes the old role instance unless
 the same role, station, delivery artifact, wave, and boundary remain intact.
 Status probes, heartbeats, replacement channels, and late-result receipt do not
 change role identity. A status probe pauses the current role instance until the
@@ -84,15 +84,15 @@ or completion evidence.
 |---|---|---|
 | `intent-requirements` | Restate goal, constraints, exclusions, ambiguities, and acceptance criteria. | Design, implement, review final quality, expand scope. |
 | `scope-impact` | Map files, workflows, memory, docs, generated copies, dependencies, and regression surface. | Implement changes, approve scope expansion, mutate files or memory. |
-| `external-research` | Gather current official or primary-source evidence and map it to the local decision. | Edit source, install packages, mutate external systems, decide final acceptance. |
+| `external-research` | Gather current official or primary-source evidence and map it to the local decision. | Edit source, install packages, mutate external systems, decide final closeout. |
 | `architecture-contract` | Define boundaries, alternatives, interfaces, migration, compatibility, and risk. | Write production changes, hide tradeoffs, approve implementation. |
-| `change-delivery` | Own a scoped main-worktree `change-delivery` station when `station_mode: change-delivery`, `handoff_ownership: station-owned`, authorization phase is `implementation-change-delivery`, exact file allowlist and dirty-diff read are present; produce isolated/text change delivery artifacts when direct main-worktree delegation is unavailable; or own fallback `change-application` for a returned artifact, explicit integration task, or assigned generated/deployed sync. | Review own work, write outside the exact station scope, mutate memory, commit, push, release, deploy, install, or external state. |
+| `change-delivery` | Own a scoped main-worktree `change-delivery` station when `station_mode: change-delivery`, `handoff_ownership: station-owned`, authorization phase is `implementation-change-delivery`, exact file allowlist and dirty-diff read are present; produce isolated/text change delivery artifacts when main-worktree station delegation is unavailable; or own fallback `change-application` for a returned artifact, explicit integration task, or assigned generated/deployed sync. | Review own work, write outside the exact station scope, mutate memory, commit, push, release, deploy, install, or external state. |
 | `validation` | Run or classify non-mutating checks and validation evidence. | Repair implementation, approve quality, change evidence after failure. |
 | `review` | Judge requirement fit, correctness, maintainability, evidence integrity, and regression risk. | Implement the reviewed change, self-approve, mutate files. |
 | `security-reliability` | Classify secrets, authorization, data integrity, abuse, reliability, observability, rollback, and operational risk. | Expose secrets, mutate protected state, implement feature changes, approve release mutation. |
-| `memory-docs` | Attribute memory, documentation, index, handoff, and generated-copy impact as evidence. | Edit memory cards, call memory commit, mutate source, decide final acceptance. |
-| `release-completion` | Check readiness, sync, residual risk, handoff, validation, review, and memory/docs evidence. | Final acceptance, memory write, git, tag, release, deploy, install. |
-| `captain` | Route, supervise board state, receive delivery artifacts, synthesize status, handle blockers/conflicts/authorization boundaries, own protected gates only when the platform cannot delegate that gate to a station, and report. | Replace specialist deep-read, perform parallel context-expanding reads while members work, re-scan or re-check member scope, enter a protected captain gate while a station-owned `change-delivery` or fallback `change-application` route is available, primarily author implementation/review/validation/memory attribution when a delivery route exists, hide missing evidence, rewrite member output as captain evidence, or claim full completion from substitute authoring. |
+| `memory-docs` | Attribute memory, documentation, index, handoff, and generated-copy impact as evidence. | Edit memory cards, call memory commit, mutate source, decide final closeout. |
+| `release-completion` | Check readiness, sync, residual risk, handoff, validation, review, and memory/docs evidence. | Final closeout decision, memory write, git, tag, release, deploy, install. |
+| `captain` | Translate Director requests into station tasks, coordinate dispatch, handoff, channels, board state, blockers, permission questions, synthesis ledger, and Director-facing reports. | Decide authorization, perform validation or review, produce memory/docs attribution, decide quality disposition, execute protected actions as station evidence, replace specialist deep-read, perform parallel context-expanding reads while members work, re-scan or re-check member scope, primarily author implementation/review/validation/memory attribution when a delivery route exists, hide missing evidence, rewrite member output as captain evidence, or claim full completion from substitute authoring. |
 
 ## Separation Requirements
 
@@ -102,23 +102,24 @@ Keep these separations intact even when a task is small:
 - Validation checks without repairing the implementation under validation.
 - Review judges without authoring the reviewed deliverable.
 - Memory/docs attributes impact and proposed updates without mutating memory.
-- Completion audits evidence without becoming final captain acceptance.
+- Completion audits evidence without becoming an acceptance or quality decision.
 - Main-worktree change delivery is a formal implementation station when
   station-owned. Fallback change application is a formal integration station
   only for returned isolated/text artifacts, explicit integration tasks, or
-  assigned generated/deployed sync. Neither path becomes captain work unless the
-  platform cannot delegate the physical write and the board records a protected
-  captain gate.
-- Captain receipt of returned artifacts is not implementation, validation,
-  review, or memory/docs evidence; captain substitute authoring is blocked by
+  assigned generated/deployed sync. Neither path becomes captain work; a
+  platform-nondelegable physical action requires a scoped direct-exception
+  record and still does not create captain-owned specialist evidence.
+- Captain ledgering of returned artifacts is not implementation, validation,
+  review, memory/docs evidence, or acceptance; captain substitute authoring is blocked by
   default and can only close as closed-with-director-risk when explicitly
-  accepted for that case.
+  risk-closed for that case.
 
 ## Read Scope Boundary
 
 Broad, repetitive, external, or large-file reads are specialist deep-read work.
-The captain may read only the minimum snippets needed for artifact receipt,
-board maintenance, blocker/conflict handling, or authorization boundaries.
+The captain may read only the minimum snippets needed for station-output
+ledgering, board maintenance, blocker/conflict handling, or scope-question
+routing.
 
 If no specialist route can deep-read, record a direct exception and close the
 missing separation as blocked, unverified, or closed-with-director-risk. Do not
@@ -127,7 +128,7 @@ or memory/docs attribution.
 
 ## Boundary Check
 
-Before accepting a delivery artifact:
+Before logging a station output into the synthesis ledger:
 
 1. Match the artifact author to one registered role and one role instance.
 2. Confirm the artifact cites the assigned specialist skill and handoff packet.
@@ -135,8 +136,9 @@ Before accepting a delivery artifact:
    stop condition.
 4. Confirm implementation and review of the same deliverable use different role
    instances.
-5. Reject artifacts that mutate memory, git, releases, deployments, installs, or
-   external state.
+5. Mark artifacts that mutate memory, git, releases, deployments, installs, or
+   external state outside scope as blocked or route them to the proper owner
+   station.
 6. Confirm authorization fields exist for any write-capable or protected phase.
 7. Confirm `station_mode`, `context_visibility`, and `handoff_ownership` are
    present for every applicable formal station.

@@ -4,24 +4,24 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-03T21:00:41+08:00'
+last_updated: '2026-07-04T22:51:45+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: verified
-last_verified: '2026-07-03T20:57:12+08:00'
+verification_status: partial_evidence
+last_verified: '2026-07-04T21:22:28+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 8
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -33,30 +33,24 @@ metadata:
 ---
 # _shared — Shared Governance Memory
 ## Current Truth
-- Shared owns cross-platform governance sources, operational skills, policy references, workflow matrices, restricted project tools, and source memory contracts; child cards hold narrower team-native and operational-skill details.
-- Workflow orchestration, scenarios, and authorization policy keep route, board state, operation mode, dispatch wave, handoff, delivery artifact, route-back, closeout, and source/deployed parity explicit.
-- Director wording, workflow names, GO/continue, MCP HITL, UI approvals, memory/context writes, and protected phases are intent signals until authorization resolution binds target, station, file set, command, phase, expiry, and gate.
-- Team-Native work is triggered by current user requests for governed work or team/delegation dispatch; pure conversation, small stable Q&A, and no-impact work can stay ordinary/direct.
-- Team-Native Core owns team policy, route states, trace evidence, role boundaries, channel state, station-owned `change-delivery`, fallback `change-application`, non-complete states, and completion contracts in `_shared.team-native-core`.
+- Shared owns cross-platform governance sources, language/grounding policy, memory/context governance, audit references, restricted project tools, and parent navigation for child governance cards.
+- `_shared.team-native-core` is the concrete owner for Team-Native policy, workflow orchestration/scenarios, platform plan mapping, workflow evidence references, role boundaries, station evidence, and completion contracts.
+- Director wording, workflow names, GO/continue, MCP HITL, UI approvals, memory/context writes, and protected phases remain intent signals until authorization resolution binds target, station, file set, command, phase, expiry, and gate.
+- Governed Team-Native work is triggered by current user requests for governance, workflow, source, memory/docs, commit, audit, test, build, fix, debug, handoff, public-contract, or delegation work; no-impact conversation can stay direct.
 - Language governance owns Director-facing meaning-first output and exact-evidence expression; grounding governance owns external source type, freshness sensitivity, official/primary-source precedence, local-version conflicts, and no-evidence claim boundaries.
-- Memory governance separates source memory from project context; staleness repair requires source comparison, full active card write, and separately authorized `memory_commit`, while context writes, migration/reindex, and topology changes use their own protected phases.
-- Parent/child memory ownership follows the most specific `scopePath`; navigation-only parent/index cards may keep `## Tracked Files` empty only when `Read Contract` and `Relations` identify child owners.
-- Shared references deploy to `.agents/shared/` and restricted project-local tools deploy from `Shared/project-tools/`; source/deployed parity is required before closeout.
-- Coding workflow and command entries preserve four formal delivery artifacts and use blocked, unverified, or `closed-with-director-risk` when required evidence is missing.
+- Memory governance separates source memory from project context; staleness repair requires source comparison, full active card write, and separately authorized `memory_commit`.
+- Shared references deploy to `.agents/shared/`, and restricted project-local tools deploy from `Shared/project-tools/`; source/deployed parity is required before closeout.
+- Parent cards use `Relations` for navigation when a more specific child card owns concrete tracked files.
 ## Active Constraints
 - Do not put platform-specific tool calls in Shared skill bodies unless the section is explicitly an adapter note.
 - Do not list directories under Tracked Files; put card navigation in Relations, and treat cards above 8 tracked files as split candidates.
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
-- Keep source/deployed shared docs content-identical; workflow, skill, matrix, platform adapter entries, and team artifacts must cite shared policies, synthesize Director-facing output, and treat workflow names, casual approvals, `GO`, MCP HITL, memory/context write, and other protected phases as scope-bound until authorization resolution binds target, command, phase, expiry, and matching gate.
+- Keep source/deployed shared docs content-identical; workflow, skill, matrix, platform adapter entries, platform plan mapping, workflow evidence references, and team artifacts must cite shared policies, synthesize Director-facing output, and treat workflow names, casual approvals, `GO`, MCP HITL, memory/context write, and other protected phases as scope-bound until authorization resolution binds target, command, phase, expiry, and matching gate.
 ## Cycle Events
-- 51: Recorded the dual-gate governance split: Director output is governed by language-governance, while external grounding and freshness-sensitive facts are governed by grounding-governance with source/deployed parity.
-- 50: Recorded shared memory-ops lifecycle split and governed Team mode activation semantics: stale repair reads changed source before rewriting cards, and Team mode is user-requested rather than AI-default.
-- 49: Recorded memory-governance authorization hardening across memory-ops, memory-arch, template, and language policy; memory/topology/context writes, static-card commits, and navigation-only ownership now require scoped protected phases.
-- 48: Recorded workflow orchestration channel lifecycle repair: pause-and-report probes, explicit captain resume, late-result receipt policy, and non-complete state while resume/cancellation/late-result decisions are pending.
-- 47: Recorded memory-ops skill compression with source/deployed parity; wording preserves read/write separation, two-step memory update, protected memory_commit, timestamp format, exact Tracked Files heading, and migration safety.
-- 46: Recorded Batch 4A authorization-resolution hardening across Shared governance, memory/context contracts, MCP profiles, and source/deployed pairs; GO and MCP HITL are not blanket authority, and protected phases require bound scope, target, command, phase, expiry, and matching gate.
-- 45: Recorded language-governance output gate so captain reports synthesize internal team artifacts into Traditional Chinese meaning-first Director-facing summaries instead of pasting raw artifacts.
-- 30-33: Added Team-First handoff packet skill, role-skill relation metadata, workflow orchestration policy/scenarios, deployed references, Doctor coverage, and completion/non-completion semantic separation.
+- 52: M4 compacted the parent card and removed parent tracked ownership for workflow orchestration/scenarios; `_shared.team-native-core` remains the specific owner.
+- 49-51: Recorded dual-gate language/grounding governance, memory lifecycle separation, and scoped protected phases for memory/topology/context writes.
+- 45-48: Recorded Director-facing output synthesis, authorization hardening, memory-ops compression, and channel lifecycle repair.
+- 30-44: Earlier Team-Native, workflow, Doctor, route/state, and completion-semantics events remain summarized by current truth and child cards.
 ## Archive Index
 - archive-003.md keeps older cycle events 14-22; archive-001.md / archive-002.md preserve legacy and pre-standardization active snapshots from schema v2 and MEMORY.md migration.
 ## Evidence Base
@@ -75,13 +69,11 @@ metadata:
 - 語言治理要求隊長對總監輸出先做繁中意義化摘要，不得原樣貼內部交付件或 raw artifact。
 - 父子記憶卡重疊時，具體檔案應歸最具體子卡；導覽父卡可空 `Tracked Files`，但必須用 `Read Contract` 與 `Relations` 指向子卡。
 ## Tracked Files
-- Shared/policies/workflow-orchestration.md
 - Shared/workflow-stage-procedures.md
 - Shared/policies/language-governance.md
 - .agents/shared/policies/language-governance.md
 - Shared/policies/grounding-governance.md
 - .agents/shared/policies/grounding-governance.md
-- Shared/policies/workflow-orchestration-scenarios.md
 - Shared/skill-governance.md
 - Shared/mcp-profiles/README.md
 - Shared/context/_map/CONTEXT.md
@@ -105,4 +97,6 @@ metadata:
 - Shared/project-tools/modules/Memory-Migration.psm1
 - .agents/memory/_shared/archive-001.md
 ## Relations
-- _system (deployment and sync engine memory); _codex_core / _claude_core / _ag_core (platform adapter memory); _shared.ops-skills and _shared.team-native-core (child governance cards)
+- _shared.team-native-core owns Team-Native policy, workflow orchestration/scenarios, platform plan mapping, workflow evidence references, and station/completion governance files.
+- _shared.ops-skills owns operational skill governance files under `Shared/skills/` that are not assigned to Team-Native Core.
+- _system covers deployment and sync engine memory; _codex_core, _claude_core, and _ag_core cover platform adapters.

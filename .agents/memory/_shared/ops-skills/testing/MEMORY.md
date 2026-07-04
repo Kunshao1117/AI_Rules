@@ -4,14 +4,14 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-03T13:41:44+08:00'
+last_updated: '2026-07-04T22:52:09+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-02T19:23:49+08:00'
+last_verified: '2026-07-04T21:24:30+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -21,7 +21,7 @@ cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -35,14 +35,13 @@ metadata:
 # _shared.ops-skills.testing — Testing Skills Memory
 
 ## Current Truth
-- Browser and validation evidence remain specialist evidence stations under captain-led boards; required evidence can stay direct only with a recorded direct exception.
-- Browser-testing governance now aligns direct browser/tool handling with Team-Native station ownership and requires a concrete direct exception when a required browser evidence branch cannot run independently.
+- Browser and validation evidence remain specialist evidence stations under captain-led boards; required browser evidence can stay direct only with a recorded direct exception, not a silent main-thread downgrade.
+- Browser task prompts use Traditional Chinese only for Director-facing task text; internal branch artifacts use canonical English keys and status values.
 - This child card owns Shared testing, browser evidence, performance, accessibility, and regression strategy skills.
 - Testing facts must stay tied to project surface type and current tool availability.
-- Browser and test automation skills now require detail-observation notes for visual validation.
-- Browser-testing governance now prevents required browser evidence branches from silently downgrading to main-thread browser tooling without a concrete direct exception.
+- Browser and test automation skills now require detail-observation notes, real-information priority, and capture-time limits for visual validation.
 - Testing and browser automation evidence cannot silently downgrade to captain-direct work; missing real-information proof keeps completion blocked or unverified.
-- Visual evidence must prefer real pages, real data, real account state, current responses/logs, or equivalent real paths before fake-data fallback.
+- Visual evidence must prefer real pages, real data, real account state, current responses/logs, or equivalent real paths; screenshots and DOM snapshots prove only visible capture-time state.
 - Single-run test output belongs in task reports or logs unless it becomes a stable validation route.
 - Test-pattern and Trunk operations now treat [SUDO] as an override/risk-closure request only; it cannot skip mock checks, authorize real network calls, or bypass validation.
 - Performance-audit and Trunk install, report writes, CI/deploy changes, uploads, Trunk remote settings, and source fixes are separate protected phases; Trunk fixId evidence does not authorize source writes.
@@ -51,6 +50,7 @@ metadata:
 - Do not turn one-time test output into permanent memory.
 - Use project-surface evidence requirements from the workflow matrix before declaring behavior verified.
 - Resolve each testing protected phase to its own scope, command or tool call, target, expiry, and gate before mutation.
+- Failed browser evidence may create a required-change item only; repairs return to `change-delivery` or authorized `change-application`.
 
 ## Cycle Events
 - 08: Recorded Batch 4A testing/performance/Trunk gate hardening: install, report writes, CI/deploy changes, uploads, remote settings, and source fixes are separate protected phases; fix IDs do not authorize writes.
@@ -66,6 +66,8 @@ metadata:
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
 
 ## Evidence Base
+- source:Shared/skills/browser-testing/SKILL.md — Verified current browser branch rules for canonical English artifact fields, board/channel adapter rules, approved context loading, read-only evidence, and change-delivery/change-application repair routing.
+- source:Shared/policies/language-governance.md — Verified Director-facing zh-TW and internal canonical English field boundary.
 - source:.agents/memory/_shared/ops-skills/archive-001.md — Previous parent-card content preserved during migration.
 - tool:memory_audit — Granularity advisory identified this card as too broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized controlled child-card split.

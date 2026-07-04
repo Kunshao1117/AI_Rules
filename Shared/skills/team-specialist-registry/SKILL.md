@@ -3,8 +3,8 @@ name: team-specialist-registry
 description: >
   [Infra] Team specialist role registry and role_id router for Team-Native work.
   Use when: choose one of ten specialist child skills for a station; 專家角色、
-  隊員路由、站點派工、角色代號。 DO NOT use when: pure discussion, final captain
-  acceptance, memory writes, git or release mutation.
+  隊員路由、站點派工、角色代號。 DO NOT use when: pure discussion, final
+  Director-facing synthesis, memory writes, git or release mutation.
 metadata:
   author: antigravity
   version: "1.0"
@@ -106,8 +106,11 @@ role ownership, and verification state.
    memory/docs attribution for the same deliverable.
 7. Keep implementation, review, validation, and memory/docs attribution on
    different role instances for the same deliverable.
-8. Keep memory mutation, git mutation, release mutation, deployment, install,
-   and final acceptance on the captain-owned protected gate.
+8. Route memory mutation, git mutation, release mutation, deployment, install,
+   and final completion readiness questions through the matching owner station
+   or Director authorization path. The captain coordinates and reports;
+   acceptance is not captain-owned, and this registry does not assign protected
+   execution or evidence ownership to the captain.
 9. Return blocked, unverified, or closed-with-director-risk when the required
    role or member separation cannot be preserved.
 10. Treat subagents, browsers, commands, MCP reads, isolated workspaces, and
@@ -140,5 +143,5 @@ The registry assigns role identity; shared trace files define the full field set
 ## Constraints
 
 - This registry is read-only.
-- This registry does not replace the Team-Native board, GO gate, memory gate, review-state decision, or captain final acceptance.
+- This registry does not replace the Team-Native board, GO gate, memory gate, review-state decision, final Director-facing synthesis, or completion readiness evidence.
 - Child skills must return a change delivery artifact or an evidence artifact, not a protected-state mutation.

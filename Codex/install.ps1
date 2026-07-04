@@ -26,14 +26,38 @@
     是否移除目標中已不存在於源碼的孤兒檔案（僅 Upgrade 模式）
 
 .EXAMPLE
-    # 在 IDE 終端機直接安裝（自動使用當前目錄）
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $u='https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1'; $f="$env:TEMP\ag_codex_install.ps1"; $wc=New-Object Net.WebClient; $bytes=$wc.DownloadData($u); $text=[Text.Encoding]::UTF8.GetString($bytes); $text=$text.TrimStart([char]0xFEFF); [IO.File]::WriteAllText($f,$text,(New-Object Text.UTF8Encoding $true)); & $f; Remove-Item $f
-
-    # 指定其他目錄安裝
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $u='https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1'; $f="$env:TEMP\ag_codex_install.ps1"; $wc=New-Object Net.WebClient; $bytes=$wc.DownloadData($u); $text=[Text.Encoding]::UTF8.GetString($bytes); $text=$text.TrimStart([char]0xFEFF); [IO.File]::WriteAllText($f,$text,(New-Object Text.UTF8Encoding $true)); & $f -Target "D:\MyProject"; Remove-Item $f
-
-    # 升級現有安裝
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $u='https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Codex/install.ps1'; $f="$env:TEMP\ag_codex_install.ps1"; $wc=New-Object Net.WebClient; $bytes=$wc.DownloadData($u); $text=[Text.Encoding]::UTF8.GetString($bytes); $text=$text.TrimStart([char]0xFEFF); [IO.File]::WriteAllText($f,$text,(New-Object Text.UTF8Encoding $true)); & $f -Mode Upgrade; Remove-Item $f
+    # 安全遠端啟動；可將 $installerArgs 改為 @('-Target','D:\MyProject') 或 @('-Mode','Upgrade')
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    $owner = 'Kunshao1117'
+    $repo = 'AI_Rules'
+    $ref = 'main'
+    $platformPath = 'Codex/install.ps1'
+    $expectedInstallSha256 = ''
+    $installerArgs = @()
+    if ($ref -notmatch '^[A-Za-z0-9._-]+$' -or $ref.Contains('..')) { throw "Unsafe Codex install ref: $ref" }
+    $u = "https://raw.githubusercontent.com/$owner/$repo/$ref/$platformPath"
+    $uri = [Uri]$u
+    if ($uri.Scheme -ne 'https' -or $uri.Host -ne 'raw.githubusercontent.com' -or $uri.AbsolutePath -ne "/$owner/$repo/$ref/$platformPath") { throw "Unexpected Codex install source: $u" }
+    $f = Join-Path $env:TEMP 'ag_codex_install.ps1'
+    $receipt = Join-Path $env:TEMP 'ag_codex_install.receipt.json'
+    try {
+        $wc = New-Object Net.WebClient
+        $bytes = $wc.DownloadData($u)
+        $actualInstallSha256 = [BitConverter]::ToString([Security.Cryptography.SHA256]::Create().ComputeHash($bytes)).Replace('-', '').ToLowerInvariant()
+        if ($expectedInstallSha256 -and $actualInstallSha256 -ne $expectedInstallSha256.ToLowerInvariant()) { throw "Codex install script SHA256 mismatch." }
+        $text = [Text.Encoding]::UTF8.GetString($bytes)
+        $text = $text.TrimStart([char]0xFEFF)
+        [IO.File]::WriteAllText($f, $text, (New-Object Text.UTF8Encoding $true))
+        [pscustomobject]@{ source = $u; sha256 = $actualInstallSha256; bytes = $bytes.Length; downloadedAt = (Get-Date).ToUniversalTime().ToString('o') } |
+            ConvertTo-Json | Set-Content -LiteralPath $receipt -Encoding UTF8
+        & $f @installerArgs
+    } catch {
+        [pscustomobject]@{ source = $u; error = $_.Exception.Message; failedAt = (Get-Date).ToUniversalTime().ToString('o') } |
+            ConvertTo-Json | Set-Content -LiteralPath $receipt -Encoding UTF8
+        throw
+    } finally {
+        Remove-Item -LiteralPath $f -Force -ErrorAction SilentlyContinue
+    }
 #>
 param (
     [Parameter(Mandatory = $false)]
@@ -218,7 +242,7 @@ try {
     $sourceRoot = Assert-ChildPath -Parent $tempDir -Child (Join-Path $tempDir "$repoName-$Branch") -Name "Source root"
     $deployScript = Assert-ChildPath -Parent $sourceRoot -Child (Join-Path $sourceRoot "Scripts\Deploy.ps1") -Name "Deploy script"
 
-    if (-Not (Test-Path $deployScript)) {
+    if (-Not (Test-Path -LiteralPath $deployScript)) {
         throw "找不到部署腳本，請確認分支名稱正確。"
     }
 
@@ -239,6 +263,6 @@ try {
     }
     throw
 } finally {
-    if (Test-Path $tempZip) { Remove-Item $tempZip -Force -ErrorAction SilentlyContinue }
-    if (Test-Path $tempDir) { Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue }
+    if (Test-Path -LiteralPath $tempZip) { Remove-Item -LiteralPath $tempZip -Force -ErrorAction SilentlyContinue }
+    if (Test-Path -LiteralPath $tempDir) { Remove-Item -LiteralPath $tempDir -Recurse -Force -ErrorAction SilentlyContinue }
 }

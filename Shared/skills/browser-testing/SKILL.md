@@ -35,30 +35,32 @@ metadata:
 When requesting a browser evidence branch:
 （請求瀏覽器證據分支時）
 
-1. **Task description**: MUST be in Traditional Chinese (zh-TW)
-   （任務描述必須使用繁體中文）
-2. **Platform adapter**: Use the current platform's browser-capable adapter or main-thread browser tool
-   （由目前平台轉譯為可用的瀏覽器代理、插件或主代理瀏覽器工具）
+1. **Director-facing task description**: use Traditional Chinese (zh-TW); internal artifact keys remain canonical English.
+   （對總監顯示的任務描述使用繁體中文；內部交付件欄位維持英文 canonical）
+2. **Platform adapter**: Use the current platform's browser-capable adapter or browser tool under the active board/channel rules
+   （由目前平台轉譯為可用的瀏覽器代理、插件或符合任務板/通道規則的瀏覽器工具）
 3. **Stop condition**: Explicitly define when the branch must stop and return
    （明確定義停止條件）
-4. **Return format**: Specify `發現 / 證據 / 風險 / 建議 / 是否阻塞`
-   （指定固定回報格式）
+4. **Return format**: Specify `findings / evidence / risk / recommendation / blocking / status`
+   （指定英文 canonical 回報欄位）
 5. **Allowed scope**: The branch must inspect only browser state, DOM, screenshots, accessibility tree, and test results. It cannot read/write project files unless the active platform explicitly runs it as a read-only code evidence branch.
    （只能檢查瀏覽器狀態、DOM、截圖、可及性樹與測試結果；不可寫入專案檔案）
 
 ### Step 2: Platform Adapter Notes (平台轉譯提示)
 
 - Antigravity / Gemini maps browser branch intent to its browser-capable agent or plugin adapter.
-- Claude maps browser branch intent to an allowed browser/testing subagent or main-thread browser tool, depending on project permissions.
-- Codex maps browser branch intent to native subagents when the Director explicitly asks or a workflow station requires a browser evidence branch. Direct main-thread Browser tooling is allowed only when the station is not evidence-oriented or the Programming Team Board records a concrete direct exception and replacement evidence.
-- When a browser branch is required but no browser-capable branch or equivalent tool can run, mark the station `blocked` or `unverified`; do not silently downgrade it to main-thread browsing.
+- Claude maps browser branch intent to an allowed browser/testing subagent or platform browser tool, depending on project permissions and board/channel rules.
+- Codex maps browser branch intent to native subagents when the Director explicitly asks or a workflow station requires a browser evidence branch. Direct Browser tooling is allowed only when the station is not evidence-oriented or the Programming Team Board records a concrete direct exception and replacement evidence.
+- When a browser branch is required but no browser-capable branch or equivalent tool can run, mark the station `blocked` or `unverified`; do not silently downgrade it to direct browsing.
 
 ### Step 3: Context Passing (上下文傳遞)
 
 - Browser evidence branches must be treated as not having module memory loaded.
   （瀏覽器證據分支不一定能存取模組記憶）
-- If project context or design DNA is needed, the main thread reads approved `.agents/context/**/CONTEXT.md` cards and embeds key details directly in the task description prompt.
-  （如需專案脈絡或設計 DNA，由主線讀取已核准脈絡後直接嵌入任務描述中）
+- If project context or design DNA is needed, route context loading through the
+  current board, owner station, or approved project-context protocol; the
+  browser task prompt may include only approved key details.
+  （如需專案脈絡或設計 DNA，透過目前任務板、owner station 或已核准的專案脈絡協議載入；瀏覽器任務提示只放已核准重點）
 
 ### Step 4: Auto-Arbitration Gate (自動仲裁閘門)
 
@@ -125,7 +127,7 @@ Operator-path retention:
 
 ## Constraints (約束)
 
-- Browser evidence branch output is read-only evidence. Failed browser verification may create a required-change item, but source modification must return to a change-delivery station or authorized change-application gate; the main thread must not perform direct repair from browser failure evidence.
+- Browser evidence branch artifacts are read-only evidence. Failed browser verification may create a required-change item, but source modification must return to a change-delivery station or authorized change-application gate; the coordinating channel must not perform direct repair from browser failure evidence.
   （瀏覽器證據分支輸出為唯讀證據；驗證失敗只能產生必修項目並回到變更站點或已授權的變更套用 gate，主線不得依瀏覽器失敗證據直接修補）
 - Server must be running and warmed up before requesting browser verification.
   （啟動瀏覽器驗證前確保伺服器已運行）
@@ -141,7 +143,7 @@ When Auto-Arbitration Gate FAILS, classify the error before deciding next action
 │   └── Action: Wait 3s with backoff, then retry (max 2 retries). Do not abandon the browser evidence path after a single transient failure.
 │       Counts toward Circuit Breaker (Check 0 in _completion_gate).
 ├── SEMANTIC (語意性): Wrong selector, element not found, assertion mismatch, logic error
-│   └── Action: Return structured error to Master Agent for re-planning.
+│   └── Action: Return structured error to the coordinating captain for station re-planning.
 │       Include: { errorType: "SEMANTIC", selector: "...", expected: "...", actual: "..." }
 │       Does NOT count toward Circuit Breaker retry limit.
 └── INFRASTRUCTURE (基礎設施): Server crash, port conflict, OOM, ECONNREFUSED
@@ -153,7 +155,8 @@ When Auto-Arbitration Gate FAILS, classify the error before deciding next action
 ## Done When (驗證標準)
 
 - Browser evidence branch returned successfully with report
-- All approved proposed changes applied by the Master Agent and tests pass
+- Approved proposed changes were applied by the responsible `change-delivery`
+  or authorized `change-application` station, and tests pass
 - Visual verification screenshot/recording or DOM state evidence is included in the walkthrough
 - Data-dependent or behavior-dependent UI includes a real execution signal, or is explicitly marked failed or blocked
 - Layout-affecting browser UI changes include the required web or plugin-panel evidence, or are explicitly marked pending validation

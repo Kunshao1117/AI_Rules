@@ -44,12 +44,20 @@ Give an independent review judgment. The reviewer checks whether the change deli
 
 ## Output
 
+The structure below is an internal review delivery artifact for captain receipt
+and trace evidence. It is not the Director-facing report body. When its content
+is surfaced to the Director, synthesize a Traditional Chinese meaning-first
+summary and place exact canonical fields only in a clearly labeled evidence
+appendix. Use canonical English keys in the artifact; Chinese labels are a
+Director-facing rendering concern only.
+
 ```text
-發現:
-證據:
-風險:
-建議:
-是否阻塞:
+findings:
+evidence:
+risk:
+recommendation:
+blocking:
+status:
 authorization_source:
 authorization_target:
 authorization_scope:

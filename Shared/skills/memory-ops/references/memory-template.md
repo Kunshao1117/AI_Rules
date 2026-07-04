@@ -60,7 +60,9 @@ metadata:
 - `size_limit_bytes`: Default main card hard limit is 16384 bytes.
 - `line_limit`: Default main card line limit is 120.
 - `archive_policy`: Default is volume-based archive.
-- `compaction_status`: `ready`, `due`, `blocked`, or `legacy`.
+- `compaction_status`: canonical compaction state. Use `ready`, `due`,
+  `blocked`, or `legacy`; tool booleans such as `needsCompaction=true` map into
+  this field and are not separate card schema fields.
 - `dependencies`: Machine-readable system dependencies. Use only for real import/consume relationships, direct technical decision coupling, or cases where upstream staleness must trigger review of this card.
 - `Relations`: AI navigation context. Use for parent cards, child cards, related modules, recommended reading, historical source cards, and split-out modules.
 - `Applicable Skills`: Operational guidance only. Skills listed here are not memory dependencies.
@@ -142,3 +144,30 @@ If you manually add `dependencies`, document the reason in `## Current Truth` or
 - Do not add event 31. Compact first.
 - During compaction, summarize still-valid facts into `## Current Truth`, move old detail to archive volume files such as `archive-001.md`, reset the next cycle to event 1, and update `## Archive Index`.
 - If old content is contradictory or too large to summarize safely, stop at a compaction plan and ask for Director approval.
+
+### Compaction Status Schema
+
+| `compaction_status` | Meaning | Required handling |
+|---|---|---|
+| `ready` | Active card is inside event, line, and byte limits. | Normal authorized memory updates may proceed. |
+| `due` | A tool reported `needsCompaction=true`, event count reached the limit, or the next event would exceed line/byte limits. | Emit a compact packet and compact or split/archive before appending another event. |
+| `blocked` | The card is contradictory, lacks enough evidence to summarize, or is too large to compact safely. | Stop memory writes and request the smallest Director decision or evidence needed. |
+| `legacy` | The card lacks current schema counters or has not been lazily upgraded. | Treat as readable but pending upgrade; emit a compact packet when an update or commit-prep depends on it. |
+
+Routine compact packet:
+
+```text
+compact_packet:
+module:
+compaction_status:
+trigger:
+evidence_source:
+current_cycle_event_count:
+line_count:
+size_bytes:
+recommended_action:
+workflow_effect:
+```
+
+The compact packet is normal evidence for memory-writing, completion, or
+`09 Commit`/closeout phases. It should not interrupt unrelated non-commit work.

@@ -67,8 +67,15 @@ Use `team-specialist-registry` and the matching `team-specialist-*` skill to con
 
 ## Output
 
+The structure below is an internal change delivery artifact for captain receipt
+and trace evidence. It is not the Director-facing report body. When its content
+is surfaced to the Director, synthesize a Traditional Chinese meaning-first
+summary and place exact canonical fields only in a clearly labeled evidence
+appendix. Use canonical English keys in the artifact; Chinese labels are a
+Director-facing rendering concern only.
+
 ```text
-交付形式:
+delivery_form:
 delivery_artifact_id:
 authorization_source:
 authorization_target:
@@ -87,17 +94,18 @@ integrable_scope:
 source_deployed_pair:
 sync_direction:
 sync_evidence:
-變更:
-檔案:
-證據:
-風險:
+changes:
+files:
+evidence:
+risk:
 memory_impact:
 review_state:
 validation_state:
 memory_docs_state:
 captain_authored:
-審查需求:
-是否阻塞:
+recommendation:
+blocking:
+status:
 ```
 
 ## Forbidden Actions

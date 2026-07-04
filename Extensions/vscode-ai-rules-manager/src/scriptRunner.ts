@@ -6,6 +6,8 @@ import * as vscode from "vscode";
 const DEFAULT_REPO_URL = "https://github.com/Kunshao1117/AI_Rules.git";
 const MANAGED_REPO_DIR = "AI_Rules";
 const MANAGED_BRANCH = "main";
+const MANAGER_SCRIPT_GIT_PATH = "Scripts/AI-RulesManager.ps1";
+const MANAGER_SCRIPT_RELATIVE = path.join("Scripts", "AI-RulesManager.ps1");
 const TRUSTED_REPO_URLS_KEY = "trustedRepoUrls";
 
 export type ManagerAction =
@@ -33,6 +35,7 @@ export interface RunOptions {
 interface RepoResolution {
   repoRoot: string;
   managed: boolean;
+  trustedRepoUrl: string;
 }
 
 type TrustedSettingKey = "repoRoot" | "repoUrl" | "powerShellPath";
@@ -53,9 +56,10 @@ export class ScriptRunner {
   async run(action: ManagerAction, options: RunOptions = {}): Promise<string> {
     const source = await this.resolveRepoRoot();
     const repoRoot = source.repoRoot;
-    const script = path.join(repoRoot, "Scripts", "AI-RulesManager.ps1");
+    const script = this.resolveManagerScript(repoRoot);
     const ps = this.getTrustedConfigurationString("powerShellPath", "powershell.exe") || "powershell.exe";
-    const target = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || repoRoot;
+    const target = this.resolveExecutionTarget(repoRoot);
+    await this.assertReadyToRun(source, script, target);
     const args = [
       "-NoProfile",
       "-ExecutionPolicy",
@@ -102,16 +106,23 @@ export class ScriptRunner {
   }
 
   private async resolveRepoRoot(): Promise<RepoResolution> {
+    const trustedRepoUrl = await this.resolveTrustedRepoUrl(
+      this.getTrustedConfigurationString("repoUrl", DEFAULT_REPO_URL) || DEFAULT_REPO_URL
+    );
     const configRoot = this.getTrustedConfigurationString("repoRoot");
     if (configRoot) {
-      if (this.hasManagerScript(configRoot)) return { repoRoot: configRoot, managed: false };
+      const repoRoot = this.canonicalizeExistingDirectory(configRoot, "aiRules.repoRoot");
+      if (this.hasManagerScript(repoRoot)) {
+        await this.assertGitRepoIdentity(repoRoot, trustedRepoUrl);
+        return { repoRoot, managed: false, trustedRepoUrl };
+      }
       throw new Error(`aiRules.repoRoot 無效，找不到 Scripts\\AI-RulesManager.ps1：${configRoot}`);
     }
 
-    const workspaceRoot = this.findWorkspaceRepoRoot();
-    if (workspaceRoot) return { repoRoot: workspaceRoot, managed: false };
+    const workspaceRoot = await this.findWorkspaceRepoRoot(trustedRepoUrl);
+    if (workspaceRoot) return { repoRoot: workspaceRoot, managed: false, trustedRepoUrl };
 
-    return this.ensureManagedRepoRoot(this.getTrustedConfigurationString("repoUrl", DEFAULT_REPO_URL) || DEFAULT_REPO_URL);
+    return this.ensureManagedRepoRoot(trustedRepoUrl);
   }
 
   private getTrustedConfigurationString(key: TrustedSettingKey, fallback = ""): string {
@@ -141,23 +152,32 @@ export class ScriptRunner {
     }
   }
 
-  private findWorkspaceRepoRoot(): string | undefined {
+  private async findWorkspaceRepoRoot(trustedRepoUrl: string): Promise<string | undefined> {
+    this.assertWorkspaceTrusted();
     for (const folder of vscode.workspace.workspaceFolders || []) {
-      if (this.hasManagerScript(folder.uri.fsPath)) return folder.uri.fsPath;
+      if (folder.uri.scheme !== "file") {
+        throw new Error(`AI Rules 只能對本機檔案工作區執行管理腳本：${folder.uri.toString()}`);
+      }
+
+      const repoRoot = this.canonicalizeExistingDirectory(folder.uri.fsPath, "VS Code workspace folder");
+      if (!this.hasManagerScript(repoRoot)) continue;
+
+      await this.assertGitRepoIdentity(repoRoot, trustedRepoUrl);
+      return repoRoot;
     }
     return undefined;
   }
 
   private async ensureManagedRepoRoot(repoUrl: string): Promise<RepoResolution> {
     const trustedRepoUrl = await this.resolveTrustedRepoUrl(repoUrl);
-    const storageRoot = this.context.globalStorageUri.fsPath;
+    const storageRoot = this.realPathOrResolved(this.context.globalStorageUri.fsPath);
     const managedRoot = path.join(storageRoot, MANAGED_REPO_DIR);
     this.assertManagedPath(storageRoot, managedRoot);
 
-    if (fs.existsSync(managedRoot) && !this.isUsableManagedRepo(managedRoot)) {
+    if (fs.existsSync(managedRoot) && !(await this.isVerifiableManagedRepo(managedRoot, trustedRepoUrl))) {
       this.assertManagedPath(storageRoot, managedRoot);
       this.output.show(true);
-      this.output.appendLine(`AI_Rules 管理快取不完整，將重新建立：${managedRoot}`);
+      this.output.appendLine(`AI_Rules 管理快取無法驗證，將重新建立：${managedRoot}`);
       fs.rmSync(managedRoot, { recursive: true, force: true });
     }
 
@@ -181,7 +201,8 @@ export class ScriptRunner {
       throw new Error(`AI_Rules 管理快取已對齊遠端，但找不到 Scripts\\AI-RulesManager.ps1：${managedRoot}`);
     }
 
-    return { repoRoot: managedRoot, managed: true };
+    await this.assertGitRepoIdentity(managedRoot, trustedRepoUrl);
+    return { repoRoot: managedRoot, managed: true, trustedRepoUrl };
   }
 
   private async resolveTrustedRepoUrl(repoUrl: string): Promise<string> {
@@ -231,7 +252,12 @@ export class ScriptRunner {
   }
 
   private hasManagerScript(repoRoot: string): boolean {
-    return fs.existsSync(path.join(repoRoot, "Scripts", "AI-RulesManager.ps1"));
+    try {
+      this.resolveManagerScript(repoRoot);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   private isUsableManagedRepo(repoRoot: string): boolean {
@@ -243,9 +269,19 @@ export class ScriptRunner {
     }
   }
 
+  private async isVerifiableManagedRepo(repoRoot: string, repoUrl: string): Promise<boolean> {
+    if (!this.isUsableManagedRepo(repoRoot)) return false;
+    try {
+      await this.assertGitRepoIdentity(repoRoot, repoUrl);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   private assertManagedPath(storageRoot: string, managedRoot: string): void {
     const expectedManagedRoot = path.join(storageRoot, MANAGED_REPO_DIR);
-    if (path.resolve(managedRoot) !== path.resolve(expectedManagedRoot)) {
+    if (!this.samePath(managedRoot, expectedManagedRoot)) {
       throw new Error(`AI_Rules 管理快取路徑不符合預期：${managedRoot}`);
     }
 
@@ -253,8 +289,7 @@ export class ScriptRunner {
     const managed = fs.existsSync(path.resolve(managedRoot))
       ? this.realPathOrResolved(managedRoot)
       : path.join(storage, MANAGED_REPO_DIR);
-    const relative = path.relative(storage, managed);
-    if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) {
+    if (!this.samePath(managed, path.join(storage, MANAGED_REPO_DIR)) || !this.isPathInside(storage, managed, false)) {
       throw new Error(`AI_Rules 管理快取路徑不安全：${managedRoot}`);
     }
   }
@@ -264,17 +299,163 @@ export class ScriptRunner {
     return fs.existsSync(resolved) ? fs.realpathSync.native(resolved) : resolved;
   }
 
+  private canonicalizeExistingDirectory(value: string, label: string): string {
+    const resolved = path.resolve(value);
+    let stat: fs.Stats;
+    try {
+      stat = fs.statSync(resolved);
+    } catch {
+      throw new Error(`${label} 不存在：${value}`);
+    }
+
+    if (!stat.isDirectory()) {
+      throw new Error(`${label} 不是目錄：${value}`);
+    }
+
+    return fs.realpathSync.native(resolved);
+  }
+
+  private resolveManagerScript(repoRoot: string): string {
+    const root = this.canonicalizeExistingDirectory(repoRoot, "AI_Rules repo root");
+    const expectedScript = path.join(root, MANAGER_SCRIPT_RELATIVE);
+    let stat: fs.Stats;
+    try {
+      stat = fs.statSync(expectedScript);
+    } catch {
+      throw new Error(`找不到 Scripts\\AI-RulesManager.ps1：${repoRoot}`);
+    }
+
+    if (!stat.isFile()) {
+      throw new Error(`AI_Rules 管理腳本不是檔案：${expectedScript}`);
+    }
+
+    const script = fs.realpathSync.native(expectedScript);
+    if (!this.samePath(script, expectedScript) || !this.isPathInside(root, script, false)) {
+      throw new Error(`AI_Rules 管理腳本路徑不安全：${expectedScript}`);
+    }
+
+    return script;
+  }
+
+  private resolveExecutionTarget(repoRoot: string): string {
+    this.assertWorkspaceTrusted();
+    const folders = vscode.workspace.workspaceFolders || [];
+    if (folders.length === 0) return this.canonicalizeExistingDirectory(repoRoot, "AI_Rules repo root");
+
+    const folder = folders[0];
+    if (folder.uri.scheme !== "file") {
+      throw new Error(`AI Rules 只能對本機檔案工作區執行管理腳本：${folder.uri.toString()}`);
+    }
+
+    return this.canonicalizeExistingDirectory(folder.uri.fsPath, "VS Code workspace folder");
+  }
+
+  private async assertReadyToRun(source: RepoResolution, script: string, target: string): Promise<void> {
+    this.assertWorkspaceTrusted();
+    this.resolveManagerScript(source.repoRoot);
+    this.canonicalizeExistingDirectory(target, "AI Rules 目標工作區");
+
+    if (source.managed) {
+      this.assertManagedPath(this.realPathOrResolved(this.context.globalStorageUri.fsPath), source.repoRoot);
+    }
+
+    if (!this.isPathInside(source.repoRoot, script, false)) {
+      throw new Error(`AI_Rules 管理腳本不在受信任 repo root 內：${script}`);
+    }
+
+    await this.assertGitRepoIdentity(source.repoRoot, source.trustedRepoUrl);
+    if (source.managed) {
+      await this.assertManagedRepoHead(source.repoRoot);
+    }
+  }
+
+  private assertWorkspaceTrusted(): void {
+    if (!vscode.workspace.isTrusted) {
+      throw new Error("目前 VS Code workspace 尚未受信任，已停止執行 AI_Rules 高風險管理腳本。");
+    }
+  }
+
+  private async assertGitRepoIdentity(repoRoot: string, expectedRepoUrl: string): Promise<void> {
+    const root = this.canonicalizeExistingDirectory(repoRoot, "AI_Rules repo root");
+    const topLevel = this.canonicalizeExistingDirectory(
+      await this.runGitCapture(["rev-parse", "--show-toplevel"], root),
+      "AI_Rules Git root"
+    );
+    if (!this.samePath(root, topLevel)) {
+      throw new Error(`AI_Rules repoRoot 必須等於 Git root：${repoRoot}`);
+    }
+
+    const remoteUrl = await this.runGitCapture(["remote", "get-url", "origin"], root);
+    let normalizedRemoteUrl: string;
+    try {
+      normalizedRemoteUrl = this.normalizeRepoUrl(remoteUrl);
+    } catch {
+      throw new Error(`AI_Rules repo origin 不是可信 GitHub HTTPS URL：${remoteUrl}`);
+    }
+
+    if (!this.sameRepoUrl(normalizedRemoteUrl, expectedRepoUrl)) {
+      throw new Error(`AI_Rules repo origin 與信任來源不符：${normalizedRemoteUrl}`);
+    }
+
+    this.resolveManagerScript(root);
+    await this.assertTrackedCleanManagerScript(root);
+  }
+
+  private async assertTrackedCleanManagerScript(repoRoot: string): Promise<void> {
+    try {
+      await this.runGitCapture(["ls-files", "--error-unmatch", "--", MANAGER_SCRIPT_GIT_PATH], repoRoot);
+    } catch {
+      throw new Error(`AI_Rules 管理腳本不是 Git 追蹤檔案：${MANAGER_SCRIPT_GIT_PATH}`);
+    }
+
+    const status = await this.runGitCapture(["status", "--porcelain", "--", MANAGER_SCRIPT_GIT_PATH], repoRoot);
+    if (status) {
+      throw new Error(`AI_Rules 管理腳本存在未提交變更，已停止執行：${MANAGER_SCRIPT_GIT_PATH}`);
+    }
+  }
+
+  private async assertManagedRepoHead(repoRoot: string): Promise<void> {
+    const head = await this.runGitCapture(["rev-parse", "HEAD"], repoRoot);
+    const originHead = await this.runGitCapture(["rev-parse", `origin/${MANAGED_BRANCH}`], repoRoot);
+    if (head !== originHead) {
+      throw new Error(`AI_Rules 管理快取未對齊 origin/${MANAGED_BRANCH}，已停止執行管理腳本。`);
+    }
+  }
+
+  private sameRepoUrl(left: string, right: string): boolean {
+    return left.toLowerCase() === right.toLowerCase();
+  }
+
+  private samePath(left: string, right: string): boolean {
+    return this.normalizePathForComparison(path.resolve(left)) === this.normalizePathForComparison(path.resolve(right));
+  }
+
+  private isPathInside(parent: string, child: string, allowEqual = true): boolean {
+    const relative = path.relative(parent, child);
+    if (!relative) return allowEqual;
+    return !relative.startsWith("..") && !path.isAbsolute(relative);
+  }
+
+  private normalizePathForComparison(value: string): string {
+    const normalized = path.normalize(value);
+    return process.platform === "win32" ? normalized.toLowerCase() : normalized;
+  }
+
   private async alignManagedRepoRoot(storageRoot: string, managedRoot: string, repoUrl: string): Promise<void> {
     this.assertManagedPath(storageRoot, managedRoot);
     if (!this.isUsableManagedRepo(managedRoot)) {
       throw new Error(`AI_Rules 管理快取不是標準 Git repository，已停止 destructive Git 操作：${managedRoot}`);
     }
+    await this.assertGitRepoIdentity(managedRoot, repoUrl);
 
     this.output.show(true);
     this.output.appendLine(`→ AI_Rules 管理快取會自動對齊遠端版本庫：${repoUrl}#${MANAGED_BRANCH}`);
     try {
       await this.runGit(["remote", "set-url", "origin", repoUrl], managedRoot);
-      await this.runGit(["fetch", "origin", MANAGED_BRANCH, "--prune"], managedRoot);
+      await this.runGit(
+        ["fetch", "origin", `+refs/heads/${MANAGED_BRANCH}:refs/remotes/origin/${MANAGED_BRANCH}`, "--prune"],
+        managedRoot
+      );
       this.assertManagedPath(storageRoot, managedRoot);
       await this.runGit(["reset", "--hard"], managedRoot);
       this.assertManagedPath(storageRoot, managedRoot);
@@ -284,6 +465,8 @@ export class ScriptRunner {
       await this.runGit(["reset", "--hard", `origin/${MANAGED_BRANCH}`], managedRoot);
       this.assertManagedPath(storageRoot, managedRoot);
       await this.runGit(["clean", "-fdx"], managedRoot);
+      await this.assertGitRepoIdentity(managedRoot, repoUrl);
+      await this.assertManagedRepoHead(managedRoot);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       throw new Error(`AI_Rules 管理快取無法對齊遠端版本庫，已停止避免使用舊規則同步專案。${message}`);
@@ -304,6 +487,27 @@ export class ScriptRunner {
       child.on("close", (code) => {
         if (code === 0) resolve();
         else reject(new Error(`Git 指令失敗：git ${args.join(" ")}，exit code ${code}`));
+      });
+    });
+  }
+
+  private runGitCapture(args: string[], cwd: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const child = cp.spawn("git", args, { cwd, windowsHide: true });
+      let stdout = "";
+      let stderr = "";
+      child.stdout.on("data", (chunk) => {
+        stdout += chunk.toString();
+      });
+      child.stderr.on("data", (chunk) => {
+        stderr += chunk.toString();
+      });
+      child.on("error", () => {
+        reject(new Error("找不到 Git。請先安裝 Git，或手動設定 aiRules.repoRoot 指向已存在的 AI_Rules repo。"));
+      });
+      child.on("close", (code) => {
+        if (code === 0) resolve(stdout.trim());
+        else reject(new Error(`Git 指令失敗：git ${args.join(" ")}，exit code ${code}。${stderr.trim()}`));
       });
     });
   }

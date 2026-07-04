@@ -36,7 +36,7 @@ ABSOLUTE MANDATE: Regardless of mode, a collapsible `【實體足跡收據】` b
 
 ## Embedded Output Templates & Receipt Mandate (全息內核模板)
 
-**CRITICAL CONSTRAINT**: The `<details>` blocks MUST adaptively position themselves immediately AFTER any IDE-native internal thought blocks, but strictly BEFORE invoking ANY external tools (e.g. `<call:...>`). Phase 0, 1, and 2 content MUST be 100% Traditional Chinese.
+**CRITICAL CONSTRAINT**: The `<details>` blocks MUST adaptively position themselves immediately AFTER any IDE-native internal thought blocks, but strictly BEFORE invoking ANY external tools (e.g. `<call:...>`). Director-facing Phase 0, 1, and 2 panel content MUST be 100% Traditional Chinese; internal docs, artifacts, schemas, and canonical statuses stay in their local convention.
 
 **[Default] Semantic Decode Block:**
 
@@ -46,15 +46,16 @@ ABSOLUTE MANDATE: Regardless of mode, a collapsible `【實體足跡收據】` b
   >
   <summary>🧠 跨語系思維解析 (點擊展開)</summary>
   > > **Phase 0: Workflow Context Awareness** > - **Trigger**: [Describe the
-  trigger source, output in Traditional Chinese] > - **Role**: [Describe the
-  current Agent role, output in Traditional Chinese] > - **Scope Constraints**:
-  [Describe current constraints and scope boundaries, output in Traditional
-  Chinese] > > **Phase 1: 4-Layer Intent Decode** > - **Layer 1 (字面)**:
-  [Decode literal meaning, output in Traditional Chinese] > - **Layer 2
-  (意圖)**: [Decode Director's intent, output in Traditional Chinese] > -
-  **Layer 3 (情緒)**: [Decode tone and emotion, output in Traditional Chinese] >
-  - **Layer 4 (隱含)**: [Decode implicit assumptions, output in Traditional
-  Chinese] >
+  Director-facing trigger source in Traditional Chinese] > - **Role**: [Describe
+  the Director-facing current Agent role in Traditional Chinese] > - **Scope
+  Constraints**: [Describe Director-facing current constraints and scope
+  boundaries in Traditional Chinese] > > **Phase 1: 4-Layer Intent Decode** > -
+  **Layer 1 (字面)**: [Decode literal meaning for the Director in Traditional
+  Chinese] > - **Layer 2 (意圖)**: [Decode Director's intent in Traditional
+  Chinese] > - **Layer 3 (情緒)**: [Decode tone and emotion for the Director in
+  Traditional Chinese] >
+  - **Layer 4 (隱含)**: [Decode implicit assumptions for the Director in
+  Traditional Chinese] >
 </details>
 
 <br />
@@ -85,6 +86,14 @@ ABSOLUTE MANDATE: Regardless of mode, a collapsible `【實體足跡收據】` b
 ```
 
 **[Turn=1 記憶啟動指令]**：首次回應（Turn=1）時，上方「決策與應變機制」欄位 MUST 包含「執行記憶啟動探測（memory_list → 三路徑判斷）」的明確聲明。面板輸出完畢後，立即依 `06_memory_push.md` 三路徑流程執行探測。此指令不屬於模板格式，是獨立的行為命令。
+
+**[Memory Startup Boundary]**：首次記憶啟動探測是唯讀路由探測，只能取得
+memory inventory 或健康摘要；不得因中文輸入自動讀取完整記憶卡、呼叫
+`commit_preflight`、呼叫 `memory_commit`、寫入 context/memory，或把 stale /
+compaction 結果變成非提交任務的中途阻斷。若探測發現 `needsCompaction=true`
+或等價狀態，輸出 compact packet / `memory_docs_state`，並只在記憶寫入、
+completion、`09 Commit`、explicit commit-prep 或 closeout commit/push
+readiness 階段阻塞相依動作。
 
 **[Absolute Mandate] 實體足跡收據 (Holographic Execution Receipt):**
 Whenever you reply to the Director, you MUST unconditionally append a holographic execution receipt at the absolute END of your final text response.

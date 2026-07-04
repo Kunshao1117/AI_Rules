@@ -30,7 +30,7 @@ sources: []
 
 ## Evidence
 
-- Created from the shared project context template.
+- Created when the project context layer was introduced.
 
 ## Relations
 

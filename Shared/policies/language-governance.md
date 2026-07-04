@@ -32,21 +32,39 @@ only governs how that evidence is expressed to each audience.
 
 | Layer | Applies To | Language Rule |
 |---|---|---|
-| Director-facing interface | Conversation, status, plans, reviews, handoffs, completion reports, risk explanations, and task summaries visible to the Director | Use Traditional Chinese (zh-TW). Start from plain-language business meaning. Put technical identifiers only where they add evidence, location, or precision. |
-| Agent-internal instruction | Skill procedures, workflow steps, gates, metadata, schema fields, command examples, code identifiers, and exact tool syntax | Use English technical terms, existing project convention, or exact source text. Do not translate identifiers or machine-readable fields. |
-| Bridge references | Skill descriptions, trigger text, memory summaries, project context summaries, and shared governance references | Use bilingual structure when discovery or human review benefits from it: stable English identifiers plus Traditional Chinese descriptions, triggers, or summaries. |
+| Director-facing interface | Replies, status updates, plans, reviews, handoff reports, completion reports, risk explanations, and task summaries visible to the Director | Use Traditional Chinese (zh-TW). Start from plain-language business meaning. Put technical identifiers only where they add evidence, location, or precision. |
+| Agent-internal instruction | Skill procedures, workflow steps, gates, metadata, schema fields, command examples, code identifiers, exact tool syntax, and policy/reference/matrix/skill bodies | Prefer concise English. Preserve existing project convention and exact source text. Do not translate identifiers, machine-readable fields, or audit tokens. |
+| Bridge references | Skill descriptions, trigger text, memory summaries, project context summaries, shared governance references, and Director-visible templates | Use Chinese only where it helps Director-facing display, bridge labels, discovery snippets, examples, or explicit task requirements. Keep internal body text concise and English-led. |
 | Source code and ecosystem artifacts | Source files, APIs, package metadata, generated code, tests, logs, and external documentation excerpts | Preserve local file convention, ecosystem convention, and exact external wording. Director-facing summaries around them remain Traditional Chinese. |
 | Memory and project context | Source memory cards, project context cards, archive summaries, and memory delivery artifacts | Preserve required schema headings and exact fields. Keep durable source facts concise and stable; put Chinese summary text in designated Chinese-facing sections such as `## 中文摘要` when the schema provides them. |
 
-## Director-Facing Text Rules
+## Internal Governance Source Language
 
-- Director-facing output must begin with Traditional Chinese meaning. English,
-  identifiers, paths, commands, schema fields, state values, and exact tool
-  labels may appear only as supporting precision or evidence after the Chinese
-  meaning is clear.
-- Director-facing output must not be a raw list of file names, field names,
-  function names, command parameters, internal tool names, or station artifact
-  fields.
+- Internal governance source, policy, reference, matrix, and skill bodies prefer
+  concise English to keep runtime context light.
+- Chinese is reserved for Director-facing report/reply rules, display templates,
+  bridge labels, human-facing examples, existing localized workflow names, or
+  explicit task requirements.
+- Do not add broad "Chinese meaning first" requirements to internal policy
+  tables. Apply meaning-first Chinese only when text is Director-facing.
+- Preserve exact audit patterns and canonical tokens in English, such as
+  `no full-team completion claim`, the phrase "not as `complete`",
+  `station_mode`, `role_id`, and file paths.
+- Internal evidence and status state remains canonical English. Use
+  `sufficient`, `partial`, `unverified`, `blocked`, and `not-applicable` for
+  evidence status unless a narrower schema owns a different English value.
+  Director display may render Chinese labels, but those labels must not be
+  written back as internal state values.
+
+## Director-Facing Report Rules
+
+- Director-facing reports, replies, status updates, summaries, and handoff
+  reports must begin with Traditional Chinese meaning. English, identifiers,
+  paths, commands, schema fields, state values, and exact tool labels may appear
+  only as supporting precision or evidence after the Chinese meaning is clear.
+- Director-facing reports and replies must not be a raw list of file names,
+  field names, function names, command parameters, internal tool names, or
+  station artifact fields.
 - When technical identifiers are necessary, introduce the business or governance
   meaning first, then include the exact identifier as supporting evidence,
   location, or precision.
@@ -84,40 +102,74 @@ only governs how that evidence is expressed to each audience.
 - Director-facing tables must use Traditional Chinese column labels as primary
   labels. If a canonical token is required, attach it after the Chinese label,
   such as `完成狀態（completion_state）`.
-- If Director-facing output is English-led, led by station artifacts, led by
-  canonical field lists, or lacks captain synthesis, it fails the
-  Director-facing output gate and must be rewritten or reported as non-complete
+- If a Director-facing report or reply is English-led, led by station artifacts,
+  led by canonical field lists, or lacks captain synthesis, it fails the
+  Director-facing report gate and must be rewritten or reported as non-complete
   by the relevant completion gate.
 - Team-member delivery must not be pasted as the Director-facing body. The
-  captain must translate the artifact into Traditional Chinese meaning-first
-  status, evidence, risk, and next-step language while preserving exact tokens
-  only where they are evidence.
-- 隊長可轉譯、摘要與統整隊員交付，但不得改寫證據來源、角色歸屬、
-  驗證、審查、風險或狀態結論。If a station reports `blocked`,
-  `unverified`, `部分已查`, `未查`, `查不到`, or a source conflict, the
-  Director-facing synthesis must preserve that evidence state and explain it in
-  Traditional Chinese instead of upgrading it to verified language.
+  captain must synthesize a Traditional Chinese meaning-first Director-facing
+  report from the artifact's status, evidence, risk, and next-step conclusions
+  while preserving exact tokens only where they are evidence. The internal
+  artifact itself remains canonical English.
+- The captain may translate, summarize, and synthesize team-member delivery but
+  must not rewrite evidence source, role ownership, validation, review, risk, or
+  state conclusions. If a station reports `partial`, `blocked`, `unverified`,
+  `not-applicable`, or a source conflict, the Director-facing synthesis must
+  preserve that canonical state and explain it in Traditional Chinese instead
+  of upgrading it to verified language.
 - A completion report is blocked when its main body is led by English prose,
   canonical field lists, raw station artifacts, or unsynthesized handoff/output
   templates. The report may include a compact evidence table only after the
   Chinese meaning summary.
 
-## 總監可讀規劃用語（Director-Facing Planning Vocabulary）
+## Director Body And Evidence Appendix Boundary
 
-- 總監可讀的計劃、藍圖、任務板、站點報告、治理規則、交接、完成摘要與風險說明，在描述唯讀證據處理或寫入階段時，不得使用總監指定禁用詞。
-- 唯讀證據處理依情境使用 `統整`、`彙整`、`歸納` 或 `收束`。這些詞只描述證據處理，不暗示 source mutation。
-- 正式寫入階段依情境使用 `套用`、`寫入`、`同步` 或 `變更套用 gate`。這些詞必須有 resolved scope、station ownership、file allowlist、authorization state 與 validation route。
-- 總監可讀文字必須中文先行。英文只可作為 canonical identifiers、file names、command tokens、evidence excerpts 或 exact platform/tool labels，且需搭配繁中說明。
-- 若精確證據本身含有總監指定禁用詞，優先用 file/line evidence 加繁中描述，不在總監可讀 prose 重複該詞；除非總監明確要求 exact quote。
+- Director-facing reports have a Chinese main body first: outcome, impact,
+  evidence state, risk, and next action must be explained in Traditional
+  Chinese before any internal schema appears.
+- Internal board, trace, handoff, station, authorization, lifecycle, and
+  delivery artifact fields are evidence payloads. They must stay in internal
+  artifacts or appear only after the Chinese main body in a clearly labeled
+  evidence appendix.
+- The evidence appendix may preserve exact canonical tokens, state values,
+  commands, paths, hashes, and tool output, but each table or list must use a
+  Traditional Chinese label first and include canonical identifiers only as
+  precision, such as `授權階段（authorization_phase）`.
+- A report whose primary structure is the internal field template, raw artifact
+  schema, English field sequence, or path-only list fails the Director output
+  gate even if an evidence appendix is present.
+- Completion, review, validation, memory/docs, and change-delivery skills may
+  return raw artifact fields to the captain, but those fields are not the
+  Director-facing body and must be synthesized before being shown to the
+  Director.
+
+## Director-Facing Planning Vocabulary
+
+- Director-facing plans, blueprints, board reports, station reports, governance
+  summaries, handoffs, completion summaries, and risk explanations must avoid
+  Director-forbidden wording when describing read-only evidence handling or
+  write phases.
+- For read-only evidence handling, use the Chinese display words `統整`, `彙整`,
+  `歸納`, or `收束` as context allows. They describe evidence processing only and
+  do not imply source mutation.
+- For formal write phases, use Chinese display words such as `套用`, `寫入`,
+  `同步`, or `變更套用 gate` only when resolved scope, station ownership, file
+  allowlist, authorization state, and validation route exist.
+- Director-facing prose remains Chinese-first. English appears only as
+  canonical identifiers, file names, command tokens, evidence excerpts, or exact
+  platform/tool labels with Chinese explanation.
+- If exact evidence contains Director-forbidden wording, prefer file/line
+  evidence plus Chinese explanation, and do not repeat the term in
+  Director-facing prose unless the Director explicitly requests an exact quote.
 
 ## Workflow And Skill Reference Rule
 
-- Before a workflow or skill applies a language, output-layer, memory-language,
-  skill-description, trigger-language, handoff-language, or change-description
-  rule, it must use this policy as the classification source.
-- A workflow or skill may state a task-specific Traditional Chinese output
-  requirement, such as a handoff prompt or completion summary, when that output
-  is Director-facing.
+- Before a workflow or skill applies a language, audience-layer,
+  memory-language, skill-description, trigger-language, handoff-language, or
+  change-description rule, it must use this policy as the classification source.
+- A workflow or skill may state a task-specific Traditional Chinese
+  report/reply requirement, such as a handoff prompt or completion summary, only
+  when the text is Director-facing.
 - A workflow or skill must not copy a platform core language section as its
   only authority. Platform core files are adapter/bootstrap references; this
   policy is the shared source.

@@ -15,8 +15,9 @@ When a cartridge has staleness greater than zero, do not call `memory_update` or
    source.
 4. Update only current truth, active constraints, tracked files, archive
    pointers, and one concise cycle event as needed.
-5. If the card is legacy, over line/byte limits, contradictory, or at the cycle
-   event limit, perform lazy upgrade or compaction before writing.
+5. If the card is legacy, over line/byte limits, contradictory, at the cycle
+   event limit, or reported as `needsCompaction=true`, map the finding to
+   `compaction_status` and produce a compact packet before writing.
 6. Write the full active main file.
 7. Call `memory_commit(moduleName, projectRoot)` only in the separately
    authorized memory-commit phase.
@@ -48,20 +49,42 @@ Parent/child card relationships default to `## Relations`; they become
 
 For tracked source changes:
 
-1. Check card granularity, size, and compaction status.
+1. Check card granularity, size, and `compaction_status`.
 2. Call `memory_read(moduleName)`.
 3. Preserve stable source facts and remove obsolete repair history from
    `## Current Truth`.
 4. Keep Chinese-facing text in description, trigger wording, and
    `## 中文摘要`; keep technical body facts concise and stable.
 5. Add at most one short English item to `## Cycle Events` for the current
-   cycle, unless the card is already at the limit.
+   cycle, unless `compaction_status` is `due`, `blocked`, or `legacy`, or the
+   card is already at the limit.
 6. Write the full active main file.
 7. Call `memory_commit(moduleName, projectRoot)` only in the separately
    authorized memory-commit phase.
 
 `memory_commit` validates and warns. It does not rewrite, summarize, or compact
 content for the AI.
+
+## Compaction Packet Procedure
+
+When a read-only memory tool reports `needsCompaction=true`, event 31 would be
+needed, line/byte limits are exceeded, or a legacy card lacks reliable counters,
+do not append another event as a workaround.
+
+1. Map the condition to `compaction_status`: `due`, `blocked`, or `legacy`.
+2. Return a compact packet with module, trigger, evidence source, current event
+   count, line count, byte count when available, recommended action, and
+   workflow effect.
+3. Continue non-commit implementation work when the memory write is not the
+   current phase, but record memory/docs as blocked or unverified for closeout.
+4. Compact, split/archive, or lazy-upgrade only after authorization resolution
+   binds the memory-write phase and the exact card scope.
+5. Run `memory_commit` only after the active main file has been written and a
+   separate memory-commit protected phase is authorized.
+
+The compact packet replaces legacy memory-halt wording. It is a normal
+evidence artifact, not an instruction to run `commit_preflight` during
+non-commit tasks.
 
 ## Path And Ownership Rules
 
@@ -101,7 +124,7 @@ When a legacy card is being modified, fixed, or repaired:
 - If the turn updates the card, preserve old long-form content in an archive
   when needed, then rebuild the active main card as schema v2.
 - Include schema governance fields, language fields, cycle counters, limits,
-  archive policy, and compaction status.
+  archive policy, and canonical `compaction_status`.
 - Add quality metadata, `## Evidence Base`, `## Read Contract`, and
   `## Conflicts and Supersession`.
 - Normalize section headings, especially `## Tracked Files`.

@@ -101,8 +101,8 @@ Generated screens and AI images are direction material, not implementation contr
    （先對應既有專案元件，再決定是否新增元件）
 3. Discard purely decorative or impossible details that cannot be reproduced in the project's frontend stack.
    （捨棄無法在專案前端技術棧穩定重現的裝飾細節）
-4. Use real rendered screenshots, not generated images, for final acceptance.
-   （最終驗收以真實渲染截圖為準，不以生成圖為準）
+4. Use real rendered screenshots, not generated images, as completion readiness evidence.
+   （收尾就緒證據以真實渲染截圖為準，不以生成圖為準）
 
 ### Step 5: Sync Checkpoint (設計同步檢查)
 

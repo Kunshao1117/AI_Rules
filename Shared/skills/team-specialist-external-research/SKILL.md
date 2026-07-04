@@ -5,7 +5,7 @@ description: >
   official docs, vendor APIs, package behavior, platform rules, security
   guidance, pricing, laws, or external facts are required for a decision; external
   research, 官方文件、外部查證、API 新鮮度、安全指引。 DO NOT use when:
-  local files already answer the question, source mutation, final acceptance,
+  local files already answer the question, source mutation, release/completion station decisions,
   本地證據足夠、改檔、最終裁決。
 metadata:
   author: antigravity
@@ -68,12 +68,13 @@ Return an evidence artifact with these fields:
 1. Do not edit source files.
 2. Do not install packages.
 3. Do not mutate external systems.
-4. Hand off decisions to the captain or architecture station.
+4. Hand off evidence to the architecture station, release/completion station,
+   or captain synthesis ledger for routing and reporting.
 
 ## Trace And Handoff Contract
 
-Every output inherits shared Team-Native trace rules instead of duplicating the
-field list inside this role skill.
+Every returned artifact inherits shared Team-Native trace rules instead of
+duplicating the field list inside this role skill.
 
 1. Receive `operation_mode`, `operation_mode_reason`, `role_id`,
    `role_instance_id`, and `exclusive_task_scope` from the station handoff
@@ -83,7 +84,7 @@ field list inside this role skill.
 3. Include the authorization, channel, lifecycle, delivery, and blocker fields
    required by `team-trace-evidence` and `team-station-handoff-packet`.
 4. Use only this skill's `metadata.relations.artifact_contracts` and
-   `metadata.relations.trace_contracts` as the output contract source.
+   `metadata.relations.trace_contracts` as the artifact contract source.
 5. If the handoff packet is missing role identity fields, return blocked or
    unverified evidence instead of inventing defaults.
 

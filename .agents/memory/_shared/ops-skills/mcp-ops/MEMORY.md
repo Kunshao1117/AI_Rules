@@ -4,14 +4,14 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared MCP 與外部服務操作食譜技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-03T13:41:27+08:00'
+last_updated: '2026-07-04T22:51:55+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T00:56:00+08:00'
+last_verified: '2026-07-04T21:24:30+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -38,11 +38,15 @@ metadata:
 - This child card owns Shared MCP and external-service operation recipe skills.
 - Gateway discovery and real downstream execution must stay separated by governance rules.
 - Mutating external service MCP calls require scope-bound Director intent, authorization resolution, the matching protected gate, and current credential availability.
+- MCP documentation lookup may use latest docs, but project-locked versions and local source remain the implementation boundary.
+- External-service and live-documentation claims follow grounding governance: official or primary sources outrank summaries, memory, and model knowledge.
+- Stitch design output is direction material; real rendered screenshots are completion-readiness evidence, not generated images.
 - PR review operations now treat [SUDO] as an override/risk-closure request only; it cannot force approval, merge, or skipped checks.
 
 ## Active Constraints
 - Do not treat tool discovery as permission to mutate external systems.
 - Treat MCP HITL as an additional execution gate only; it does not replace authorization resolution or the matching protected gate.
+- Label missing latest/current external evidence honestly; do not claim verified MCP or service behavior from tool discovery alone.
 - Keep provider-specific operational details in the tracked skill files.
 
 ## Cycle Events
@@ -55,6 +59,9 @@ metadata:
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
 
 ## Evidence Base
+- source:Shared/policies/grounding-governance.md — Verified external grounding triggers, source ranking, local-version-vs-latest handling, and missing-evidence labels.
+- source:Shared/skills/context7-docs/SKILL.md — Verified latest-doc query behavior and local version compatibility caveat.
+- source:Shared/skills/stitch-design/SKILL.md — Verified MCP HITL boundary, re-read-after-external-edits rule, and real rendered screenshot readiness evidence.
 - source/deployed parity: 2026-07-03 SHA256 checks matched all eight tracked Shared MCP operation skills against `.agents/skills/` deployed copies.
 - source content: tracked operation skills define MCP HITL as an additional gate, require scope-bound authorization for external-state mutation, and keep tool discovery non-authorizing; `pr-review-ops` treats `[SUDO]` as risk-closure only.
 - source:.agents/memory/_shared/ops-skills/archive-001.md — Previous parent-card content preserved during migration.

@@ -8,7 +8,8 @@ This reference defines how AI_Rules workflows choose between project-local memor
 |---|---|---|---|
 | Project-local migration tool | `.agents/tools/Memory-Migration.ps1` | Dry-run is read-only; apply mode requires authorization resolution bound to the migration scope, explicit apply flags, and the matching protected gate | Active memory main-file naming migration and conflict inventory inside downstream projects |
 | Framework source manager | `Scripts/AI-RulesManager.ps1` | Framework source repository only; do not assume downstream projects have this file | Source-maintenance checks, deployment, sync, and framework-owned migration entrypoints |
-| Read-only memory MCP | `workspace_brief`, `memory_list`, `memory_read`, `memory_status`, `memory_deps`, `memory_audit`, `memory_graph`, `commit_preflight` | May be used for evidence without mutating memory | Startup, workflow evidence, stale diagnosis, audit, routine inspection, handoff, and commit preflight |
+| Read-only memory MCP | `workspace_brief`, `memory_list`, `memory_read`, `memory_status`, `memory_deps`, `memory_audit`, `memory_graph` | May be used for evidence without mutating memory | Startup, workflow evidence, stale diagnosis, audit, routine inspection, and handoff |
+| Commit preflight MCP | `commit_preflight` | Read-only, but closeout-scoped; use only when the active route is `09 Commit`, explicit commit-prep, or a closeout station preparing commit/push readiness | Commit readiness, dirty-file blockers, stale/unattributed memory blockers, and source-memory consistency before commit/push |
 | Read-only context MCP | `project_context_status`, `context_inventory`, `context_audit`, `context_diff`, `context_plan`, `project_context_list`, `project_context_read`, `project_context_validate` | Project context reads are evidence only; persistent context writes still require `GO CONTEXT` resolved to the context scope | Separating source memory from project preferences, design DNA, and acceptance defaults |
 | Mutating memory MCP | `memory_commit`, `memory_reindex` | Requires authorization resolution for the scope-bound Director intent signal, the matching memory protected gate, and an MCP HITL gate; MCP HITL is additional and never replaces authorization resolution | Commit a memory card after the active main file is already written; rebuild index after authorized migration |
 
@@ -24,7 +25,7 @@ When cartridge-system is routed through Multi-MCP Gateway, schema discovery is n
 | 04 Fix | Read ownership, status, and dependency evidence before root-cause repair; record only verified durable facts | Do not use `memory_commit` as a staleness reset shortcut |
 | 05 Condense | Use workspace and context inventory evidence to separate source facts from preferences and temporary observations | `_system` or context writes require authorization resolution and the matching memory/context protected gate; context writes preserve `GO CONTEXT` or `GO DNA` when applicable |
 | 08 Audit | Use workspace brief, memory audit, context audit, and graph evidence when available; missing tools become unverified or blocked findings | Audit writes only intermediate logs unless a later workflow updates source memory |
-| 09 Commit | Run commit preflight or equivalent memory status evidence before commit/push | Dirty memory or unattributed files block commit until resolved or explicitly overridden |
+| 09 Commit | Run `commit_preflight` or equivalent memory status evidence before commit/push | Dirty memory or unattributed files block commit until resolved or explicitly overridden |
 | 10 Routine | Use read-only workspace, memory, context, and sync integrity evidence only | Routine inspection is automation-safe only while no mutating MCP call is made |
 | 11 Handoff | Include workspace brief, memory status, stale cards, blockers, and unresolved context evidence | Handoff does not mutate memory by itself |
 | 12 Skill Forge | Read ownership, memory status, and skill governance evidence before creating or changing shared skills | New or modified source skills require memory attribution before completion |
@@ -43,3 +44,6 @@ When cartridge-system is routed through Multi-MCP Gateway, schema discovery is n
 - Missing MCP server: unverified evidence path; continue only with clearly labeled filesystem evidence.
 - MCP schema mismatch: inspect schema before calling; if still unclear, mark blocked.
 - Mutating MCP requested without authorization resolution or the matching protected gate: halt before MCP HITL; MCP HITL alone is insufficient.
+- `commit_preflight` requested outside `09 Commit`, explicit commit-prep, or
+  closeout commit/push readiness: mark the request unverified or route it to
+  `09`; do not let it interrupt non-commit tasks.

@@ -5,7 +5,7 @@ description: >
   artifacts. Use when: checking requirement fit, correctness, maintainability,
   regression risk, evidence integrity, review state, 獨立審查、需求符合、品質風險、
   回歸風險。 DO NOT use when: the reviewer authored the same change, implementing
-  fixes, final captain acceptance, 自審、實作修復、最終裁決。
+  fixes, final Director-facing synthesis, 自審、實作修復、最終裁決。
 metadata:
   author: antigravity
   version: "1.0"
@@ -102,4 +102,7 @@ field list inside this role skill.
 
 - Read-only station.
 - No source edits, memory writes, git, release, deployment, install, or external-state mutation.
-- The captain decides final review lifecycle state.
+- The review station determines review evidence and lifecycle disposition.
+  Completion or release stations check readiness against returned review,
+  validation, memory/docs, sync, and authorization evidence. The captain only
+  synthesizes the Director-facing report.

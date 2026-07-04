@@ -42,7 +42,7 @@ Valid execution channels or delivery forms are:
 - `isolated change delivery`
 - `text change delivery artifact`
 - `station-owned authorized change-application gate`
-- `captain-owned protected gate`
+- `platform-nondelegable protected-action record`
 
 State values such as `blocked`, `unverified`, `standby`, `unavailable`,
 `not-authorized`, `not-applicable`, and `closed-with-director-risk` are not
@@ -94,44 +94,48 @@ Implementation work uses one of these forms:
 
 | Form | Meaning | Boundary |
 |---|---|---|
-| Main-worktree change delivery | 隊員持有 `station_mode: change-delivery` 的正式站點，依 `formal-write` 授權直接修改主工作區 source。 | 必須有 authorization phase `implementation-change-delivery`、精確檔案 allowlist、dirty diff read、`handoff_ownership: station-owned`、`captain_authored: false`；不可自我審查、改記憶、git、release、deploy、install 或外部狀態。若平台只能回傳 fork 或文字交付件，必須標記 `fork-only` 或 `text-only`，不可宣稱主工作區已由隊員寫入。 |
+| Main-worktree change delivery | A formal `station_mode: change-delivery` station directly edits main-worktree source under `formal-write` authorization. | Requires authorization phase `implementation-change-delivery`, exact file allowlist, dirty diff read, `handoff_ownership: station-owned`, and `captain_authored: false`; no self-review, memory mutation, git, release, deploy, install, or external mutation. If the platform can only return a fork or text artifact, mark it `fork-only` or `text-only` and do not claim a station-authored main-worktree write. |
 | Isolated change delivery | Specialist modifies an isolated copy and returns diff/evidence. | No main worktree write, self-review, memory mutation, git, release, deploy, install, or external mutation. |
-| Text change delivery artifact | 隊員回傳 proposed edits，包含 paths、rationale、evidence、risk、memory impact。 | 不可宣稱已套用、不可宣稱審查接受。 |
-| Authorized change-application gate | 隊員持有 `station_mode: change-application` 的正式站點，套用已回傳的隔離/文字交付件、明確 integration task，或被指派的 generated/deployed copy sync。 | 必須有 formal-write、authorization phase `change-application`、精確檔案 allowlist、dirty diff read、`handoff_ownership: station-owned`；不可自我審查、改記憶、git、release、deploy、install 或外部狀態。 |
+| Text change delivery artifact | Specialist returns proposed edits with paths, rationale, evidence, risk, and memory impact. | Do not claim the artifact has been applied or accepted by review. |
+| Authorized change-application gate | A formal `station_mode: change-application` station applies a returned isolated/text artifact, explicit integration task, or assigned generated/deployed copy sync. | Requires `formal-write`, authorization phase `change-application`, exact file allowlist, dirty diff read, and `handoff_ownership: station-owned`; no self-review, memory mutation, git, release, deploy, install, or external mutation. |
 | Captain substitute-authoring risk record | No qualified delivery route exists and the Director explicitly closes that risk. | Not change delivery and never full Team-Native completion. |
 
-Board-facing artifact formats are for station delivery only. Do not paste them
-verbatim into Director-facing output; translate and integrate them through
-`Shared/policies/language-governance.md`.
+Board-facing artifact formats use canonical English keys and are for station
+delivery only. Director-facing summaries must synthesize Traditional Chinese
+meaning first through `Shared/policies/language-governance.md`; do not paste raw
+artifacts into the Director-facing body.
 
 ```text
-Evidence delivery:
-發現:
-證據:
-風險:
-建議:
-是否阻塞:
+artifact_type: evidence_delivery
+findings:
+evidence:
+risk:
+recommendation:
+blocking:
+status:
 ```
 
 ```text
-Implementation change delivery:
-變更:
-檔案:
-證據:
-風險:
+artifact_type: implementation_change_delivery
+changes:
+files:
+evidence:
+risk:
 memory_impact:
-審查需求:
-是否阻塞:
+recommendation:
+blocking:
+status:
 ```
 
 ```text
-Memory/docs delivery:
+artifact_type: memory_docs_delivery
 memory_impact:
 status: memory_delivery / blocked / unverified / closed-with-director-risk
 memory_delivery:
-證據:
-風險:
-是否阻塞:
+evidence:
+risk:
+recommendation:
+blocking:
 ```
 
 Detailed validation, review, memory/docs, and completion artifact rules stay in
@@ -161,9 +165,10 @@ station-owned main-worktree `change-delivery` station with authorization phase
 `implementation-change-delivery`. Change application is a fallback
 station-owned gate for returned isolated/text artifacts, explicit integration
 tasks, or assigned generated/deployed-copy sync. Route either path to a
-protected captain gate only when the platform cannot delegate the physical
-write or protected tool call; the board must record the platform limitation,
-exact scope, source artifact, direct exception, and residual state. Captain
+platform-nondelegable protected-action record only when the platform cannot
+delegate the physical write or protected tool call; the board must record the
+platform limitation, exact scope, source artifact, direct exception, and
+residual state. Captain
 coordination must not call `apply_patch` or any other write tool and present the
 result as change-delivery evidence.
 
@@ -171,14 +176,17 @@ Status probes separate monitoring from failure. Timeout opens probe or standby;
 the probed member pauses, reports position/blocker/safe-to-continue, and stays
 `awaiting-resume` until `status_probe_resume_state` plus
 `status_probe_resume_sent_at` are recorded. Replacement needs generation,
-reason, cancellation state, late-result policy, and receipt decisions.
+reason, cancellation state, late-result policy, and neutral ledger decisions.
 
 ## Direct Exception Register
 
-A direct exception is allowed only for protected captain-owned gates that cannot
-be delegated by the platform, tool-only status actions, hot-path status checks
-with no independent evidence value, blocker/conflict/authorization handling, or
-Director-accepted captain substitute authoring recorded as non-complete risk.
+A direct exception is allowed only for platform-nondelegable protected-action
+records, tool-only status actions, hot-path status checks with no independent
+evidence value, blocker/conflict/permission routing, or Director risk-closed
+captain substitute authoring recorded as non-complete risk. `direct` is not a
+station state, execution route, execution channel, platform route, or execution
+mode. Record it only in `direct_exception` / `direct_exceptions` with a
+station-specific reason, replacement evidence, and residual state.
 
 If two or more evidence-oriented stations use direct exceptions, each row must
 name a station-specific reason, replacement evidence, residual state, and why
@@ -195,7 +203,7 @@ Before the board supports any completion claim, check:
 - Implementation change delivery, memory/docs delivery, validation, and review
   states are present or honestly blocked/unverified/risk closed.
 - Implementation and review are not owned by the same role instance.
-- Captain receipt or status synthesis did not become substitute implementation,
+- Captain ledgering or status synthesis did not become substitute implementation,
   validation, review, or memory/docs attribution.
 - Any review or validation of a change inspects the actual main-worktree diff,
   or explicitly states that a `fork-only` or `text-only` artifact is not
@@ -203,7 +211,7 @@ Before the board supports any completion claim, check:
 - Board-facing artifact formats were not pasted verbatim into Director-facing
   output; captain summaries follow `Shared/policies/language-governance.md`.
 - Opened channels have probe/resume, replacement, cancellation, late-result,
-  and receipt evidence when those lifecycle states apply.
+  and neutral ledger evidence when those lifecycle states apply.
 - No running, unknown, unresponsive, late-result-pending, or
   cancellation-pending channel is hidden behind a `complete` claim.
 - Route fields contain routes/channels/forms, while

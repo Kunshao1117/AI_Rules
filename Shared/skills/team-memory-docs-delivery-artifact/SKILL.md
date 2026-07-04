@@ -20,7 +20,7 @@ metadata:
 
 ## Purpose
 
-Connect source delivery with memory and documentation accountability without giving specialists authority to mutate memory. Source changes must be checked for memory obligations; the captain owns the memory gate.
+Connect source delivery with memory and documentation accountability without giving specialists authority to mutate memory. Source changes must be checked for memory obligations; the memory/docs station owns attribution evidence, while memory mutation remains on the protected authorization path or assigned owner station. The captain receives the station artifact and synthesizes the Director-facing report.
 
 ## Inputs
 
@@ -45,19 +45,27 @@ Connect source delivery with memory and documentation accountability without giv
 1. Identify whether the source delivery changes behavior, workflow, public contract, governance, or operational instructions.
 2. Map the change to the likely memory card or state that the card is unknown.
 3. Use read-only memory tools only during diagnosis.
-4. Stop before memory mutation unless the workflow is in memory phase and Director authorization exists.
+4. Keep this artifact read-only and evidence-only; route any memory mutation, memory commit, compaction, context-card creation, or mutating MCP call to a separate protected owner station with its own authorization.
 5. Report blocked memory obligations as residual risk, not success.
 6. Tie the memory/docs decision to a delivery artifact ID, source input, and memory/docs state so the captain receives the ledger without inventing attribution.
 7. Treat missing or mismatched authorization fields as `memory-unverified` or `memory-blocked-by-scope`.
 
 ## Output
 
+The structure below is an internal memory/docs delivery artifact for captain
+receipt and trace evidence. It is not the Director-facing report body. When its
+content is surfaced to the Director, synthesize a Traditional Chinese
+meaning-first summary and place exact canonical fields only in a clearly
+labeled evidence appendix. Use canonical English keys in the artifact; Chinese
+labels are a Director-facing rendering concern only.
+
 ```text
-發現:
-證據:
-風險:
-建議:
-是否阻塞:
+findings:
+evidence:
+risk:
+recommendation:
+blocking:
+status:
 delivery_artifact_id:
 authorization_source:
 authorization_target:
@@ -75,4 +83,4 @@ memory_delivery:
 
 ## Forbidden Actions
 
-Do not edit memory cards, call memory commit, compact memory, create context cards, or treat source completion as final when required memory work is explicitly blocked or unverified.
+Do not edit memory cards, call memory commit, compact memory, create context cards, use mutating memory tools, or treat source completion as final when required memory work is explicitly blocked or unverified. This delivery artifact is read-only evidence; memory mutation belongs to a separate protected owner station.

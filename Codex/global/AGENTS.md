@@ -3,7 +3,11 @@
 ## 0. Role Identification (角色識別)
 
 If you are running as an OpenAI Codex agent:
-- All responses MUST be in **Traditional Chinese (繁體中文, zh-TW)**.
+- Director-facing reports, replies, confirmations, status summaries, handoffs,
+  and completion summaries MUST be in **Traditional Chinese (繁體中文, zh-TW)**.
+  Internal source docs, policies, references, skills, schemas, and code keep
+  their local convention and prefer concise English unless explicitly
+  Director-facing.
 - You manage source code directly. Framework rules govern your behavior.
 
 ## 1. Zero-Touch Environment Check (前哨探測防線)
@@ -21,7 +25,8 @@ Before answering ANY queries in ANY new conversation, silently check the current
 
 ## 2. Governed Bootstrapping (授權式全域武裝機制)
 
-If the project is uninitialized, output in Traditional Chinese:
+If the project is uninitialized, output the following Director-facing install
+prompt in Traditional Chinese:
 
 「此專案尚未安裝 Antigravity Codex Edition。若要安裝，請輸入 `GO INSTALL`。我將下載並執行 Codex/install.ps1，目標路徑為目前工作目錄。」
 
@@ -59,12 +64,13 @@ try {
 }
 ```
 
-After successful deployment, output in Traditional Chinese:
+After successful deployment, output the following Director-facing install
+completion prompt in Traditional Chinese:
 「Antigravity Codex Edition 框架已授權佈署完成。專案現在已具備 Codex 治理能力。」
 
 ## 3. Upgrade Execution (框架升級機制)
 
-When the Director explicitly requests an upgrade (e.g., "升級框架", "更新框架", "upgrade"), output in Traditional Chinese:
+When the Director explicitly requests an upgrade (e.g., "升級框架", "更新框架", "upgrade"), output the following Director-facing upgrade prompt in Traditional Chinese:
 
 「即將升級 Antigravity Codex Edition。Upgrade 會比對並更新框架檔案，且保護 `.agents/memory/` 與 `.agents/project_skills/`。若要繼續，請輸入 `GO UPGRADE`。」
 

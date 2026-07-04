@@ -138,8 +138,10 @@
   "scripts": {
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
+    "audit": "npm audit --audit-level=high",
+    "verify:runtime": "node -e \"const fs=require('fs');const path=require('path');const pkg=require('./package.json');const fail=(message)=>{console.error(message);process.exit(1);};const main=String(pkg.main||'');if(main!=='./out/extension.js'&&main!=='out/extension.js')fail('package.json main must point to out/extension.js');for(const file of [main,'out/scriptRunner.js']){if(!fs.existsSync(path.resolve(file)))fail('Missing runtime file: '+file);}const runtime=fs.readFileSync(path.resolve('out/scriptRunner.js'),'utf8');const need=(needle,label)=>{if(!runtime.includes(needle))fail('Missing runtime sentinel: '+label);};const order=(first,second,label)=>{const a=runtime.indexOf(first);const b=runtime.indexOf(second);if(a<0||b<0||a>=b)fail('Runtime sentinel order failed: '+label);};[['vscode.workspace.isTrusted','workspace trust'],['assertGitRepoIdentity','repo identity guard'],['assertManagedPath','managed path guard'],['assertTrackedCleanManagerScript','tracked clean manager script'],['ls-files','tracked manager script check'],['status','clean manager script check'],['+refs/heads/','explicit fetch refspec source'],[':refs/remotes/origin/','explicit fetch refspec destination'],['assertReadyToRun(source, script, target)','readiness gate'],['cp.spawn(ps, args','manager spawn']].forEach(([needle,label])=>need(needle,label));order('assertReadyToRun(source, script, target)','cp.spawn(ps, args','readiness before spawn');order('assertGitRepoIdentity(managedRoot, repoUrl)','--hard','identity before destructive reset');order('assertManagedPath(storageRoot, managedRoot);','--hard','managed path before destructive reset');console.log('Runtime verification passed.');\"",
     "package": "vsce package",
-    "vscode:prepublish": "npm run compile"
+    "vscode:prepublish": "npm run compile && npm run verify:runtime"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",

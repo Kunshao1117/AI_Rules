@@ -4,24 +4,24 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-03T21:01:29+08:00'
+last_updated: '2026-07-04T22:50:50+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T20:57:12+08:00'
+last_verified: '2026-07-04T21:22:46+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 15
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
 archive_policy: volume
-compaction_status: stable
+compaction_status: ready
 metadata:
   author: antigravity
   version: '1.0'
@@ -31,56 +31,45 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core — Antigravity Memory
 
 ## Current Truth
 - Antigravity is the Gemini-facing adapter for AI_Rules and uses `.agents/rules/`, `.agents/workflows/`, and `.agents/skills/`.
-- Antigravity core governance evaluates Team-Native Core and Authorization Resolution before lifecycle; workflow buttons, IDE confirmations, task-boundary mode, and GO are scoped authorization evidence only.
-- Antigravity governed user requests automatically activate Team mode, including governance, workflow, fix, build, debug, test, audit, skill, memory/docs, commit, handoff, source, public-contract, or team/delegation dispatch; pure conversation, small stable Q&A, and no-impact work stay ordinary/direct.
-- Without a current governed user request, AI must not self-start Team mode or team work from prior context, tools, prompts, workflow names, or source impact alone.
-- In active Team mode, the mainline automatically serves as captain and must stay within captain authority: communication, authorization resolution, board ownership, dispatch, supervision, delivery receipt, state synthesis, blockers/protected gates, and reporting.
-- `03-1` experiment requests are governed workflow requests that auto-activate reduced/minimal experiment Team mode; sandbox writes remain experiment-only and cannot claim production completion.
-- In active Team mode, broad reads, validation, review, memory/docs attribution, source writes, completion audits, and completion claims require board, station, handoff, role, skill, channel, `station_mode`, `context_visibility`, and `handoff_ownership` evidence.
-- Main-worktree implementation uses named station-owned `change-delivery` with `implementation-change-delivery`, exact allowlist, dirty diff read, and no protected actions; `change-application` is fallback for returned artifacts, explicit integration, or generated/deployed sync.
-- Full team completion requires implementation change delivery, memory/docs delivery, independent review delivery, validation delivery, and trace evidence; `closed-with-director-risk` is non-complete risk closure.
-- The generated shared subagent policy block now carries the hook payload evidence gap, route/state separation, and captain supervision wording shared with Claude and Codex core rules.
-- Antigravity workflow entries and deployed workflow copies now reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
-- The 2026-07-03 workflow authorization-semantics repair preserved verified source/deployed parity across 18/18 Antigravity workflow pairs.
-- Antigravity README now documents 62 on-demand operational skills across `Shared/skills` and deployed `.agents/skills` references.
-- Antigravity docs and workflows cover real execution evidence, deep audit, memory migration tools, change intent, visual evidence, intent alignment, and review governance.
-- Antigravity platform behavior must stay semantically aligned with Claude and Codex while keeping platform-specific routes in adapter files.
-- Antigravity README now frames captain work as communication, authorization resolution, board ownership, dispatch, supervision, delivery receipt, state synthesis, blocker/authorization handling, and reporting; it no longer presents captain work as primary implementation, self-review, or routine main-worktree authoring.
-- Antigravity core keeps platform bootstrap and Director-facing Traditional Chinese mandates, while complete language-layer and external-grounding classification are delegated to shared policies.
+- Governed Antigravity requests activate Team mode; without a current governed request, AI must not self-start team work from prior context, tools, prompts, workflow names, or source impact alone.
+- In active Team mode, the mainline is the Director-facing captain and is limited to coordination, dispatch, board maintenance, delivery receipt, status synthesis, blocker routing, authorization routing, and reporting.
+- Authorization Resolution scope-binding precedes lifecycle; workflow buttons, IDE confirmations, task-boundary mode, and GO are scoped evidence for owner stations or protected-action paths only.
+- Broad reads, validation, review, memory/docs attribution, source writes, completion audits, and completion claims require board, station, role, channel, `station_mode`, `context_visibility`, and `handoff_ownership` evidence.
+- Main-worktree implementation uses station-owned `change-delivery`; `change-application` is fallback for returned artifacts, explicit integration, or generated/deployed sync. Full completion requires implementation, memory/docs, review, validation, and trace evidence.
+- Antigravity bootstrap and upgrade prompts are Director-facing Traditional Chinese text, while internal docs, policies, matrices, skill bodies, artifact keys, canonical status values, command syntax, and code identifiers keep their local convention.
+- `Antigravity/install.ps1` validates branch refs, HTTPS source host/path, target/download receipt paths, optional ZIP SHA256, and extracted child paths; it records download receipts and SHA256 evidence before deployment.
+- Antigravity workflow entries and deployed workflow copies reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion; the 2026-07-03 repair preserved 18/18 source/deployed workflow parity.
+- Antigravity README/docs cover 62 shared operational skills plus real execution evidence, deep audit, memory migration, change intent, visual evidence, intent alignment, review governance, and platform-specific alignment with Claude/Codex semantics.
 ## Active Constraints
 - Do not duplicate root system ownership in this card.
-- Keep Antigravity-specific workflow facts here and shared operational details in Shared skills.
+- Keep Antigravity-specific bootstrap, workflow, and platform facts here; keep shared operational details in Shared skills and policies.
 - Do not track `.agents/memory/_map` or `.agents/memory/_system` source copies here.
 - Split workflow child cards before adding another broad Antigravity workflow cycle.
-- Antigravity workflows and skills must cite the shared language policy instead of treating core identity language text as the sole source.
+- Antigravity workflows and skills must cite the shared language and grounding policies instead of treating core identity language text as the sole source.
+- Remote bootstrap examples must preserve host/path validation, optional hash checks, receipt evidence, and safe temp cleanup.
+- Keep this active card below `line_limit: 120`; compact before adding broad workflow-cycle detail.
 ## Cycle Events
-- 15: Recorded Antigravity dual-gate update: core and README cite Director-readable output and external grounding evidence before completion or commit readiness.
-- 14: Corrected Team mode truth: governed user requests auto-activate Team mode, mainline serves as captain, and absent current governed requests cannot self-start team work.
-- 13: Recorded the 2026-07-03 Antigravity README skill-total correction from 61 to 62 across the problem statement, architecture diagram, skill-system summary, and project tree references.
-- 12: Recorded the 2026-07-03 Antigravity workflow authorization-semantics repair and README verification: scope-bound intent signals, protected gates, routine read-only owner routing, commit-scan owner routing, and 18/18 source/deployed workflow parity.
-- 10-11: Consolidated workflow slimming, shared policy citations, source/deployed parity, [SUDO] risk-closure limits, memory/MCP/security gates, and read-before-write patch-stack guard.
-- 9: Recorded Antigravity core language-governance source split between platform mandates and shared classification policy.
-- 8: Recorded non-hook core hardening so applicable Antigravity work defaults to captain-led Team-Native mode and missing specialist evidence remains blocked or unverified.
-- 7: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform core-rule sync, and commit-preflight stale blocker cleanup.
-- 6: Updated Antigravity README memory after public wording was tightened so captain integration means protected adoption or merge of qualified artifacts, not captain substitute authoring.
-- 5: Updated Antigravity core memory after route/state and captain-supervision hardening; captain wording now means protected integration and gate ownership, not primary authoring or routine write substitution.
-- 4: Regenerated the shared subagent policy block in Antigravity core rules after Team-Native route/state and hook payload evidence hardening.
-- 3: Wave 6B added workflow-orchestration grounding to Antigravity workflow entries and source/deployed drift checks.
-- 2: Wave 6A updated Antigravity workflow entries with operation_mode, daily/full modes, direct/formal-readonly/formal-write boundaries, board triggers, and specialist lifecycle semantics; source/deployed workflow hashes were verified in sync.
-- 01: Compacted the previous Team-Native governance cycle into archive-004 after commit preflight reported line and cycle-event limits.
+- 7: Compacted active card on 2026-07-04, preserving captain limits, source/deployed parity, language layering, and installer trust-boundary facts.
+- 6: Recorded dual-gate output and grounding updates across core and README before completion or commit readiness.
+- 5: Corrected Team mode truth and captain boundary: governed requests activate Team mode; captain coordination cannot substitute for owner-station delivery.
+- 4: Recorded README skill total as 62 and workflow authorization-semantics repair with 18/18 source/deployed workflow parity.
+- 3: Consolidated workflow slimming, shared policy citations, risk-closure limits, memory/MCP/security gates, and read-before-write guard.
+- 2: Regenerated shared subagent policy and workflow-orchestration grounding for Team-Native route/state hardening.
+- 1: Compacted the previous Team-Native governance cycle into archive-004 after commit preflight reported line and cycle-event limits.
 ## Archive Index
 - archive-004.md — Team-Native hard-gate cycle events 19-30 compacted on 2026-06-30.
 - archive-003.md — Older cycle events 10-18 compacted from the active card.
 - archive-002.md — Pre-standardization active card snapshot created during MEMORY.md migration.
 - archive-001.md — Legacy _ag_core card preserved before schema v2 compaction on 2026-06-04.
 ## Evidence Base
-- Source evidence: Antigravity core rules, workflows, README, and preserved archives.
-- Tool evidence: commit preflight identified active-card compaction due on 2026-06-30.
-- Director evidence: 2026-06-30 GO authorized compaction of the four blocking memory cards.
+- source: Antigravity core rules, workflows, README, `Antigravity/global/GEMINI.md`, `Antigravity/install.ps1`, and preserved archives.
+- tool: active-card measurement reported 116 lines before M2 compaction; `git diff/status` reviewed this card before writing.
+- director: 2026-07-04 M2 scope authorized compaction of `_ag_core`, `_claude_core`, and `_codex_core` only.
 ## Read Contract
 - Read this card when the task touches Antigravity tracked files, governed layer, or listed relations.
 - Do not use stale or archived claims as current implementation evidence without reading the referenced source files.
@@ -88,14 +77,9 @@ metadata:
 - No unresolved conflict recorded; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
 - Antigravity 是 Gemini 平台適配層。
-- Antigravity 的 workflow 按鈕、IDE 確認、task_boundary 模式與 GO 現在都必須限縮到明示範圍。
-- 2026-07-03 工作流授權語意修補後，18/18 source/deployed workflow pair 已驗證一致。
-- Antigravity 受治理使用者請求會自動啟動 Team mode；沒有目前受治理使用者請求時，AI 不能自行啟動團隊工作。
-- Team mode 啟動後主線自動擔任隊長，但只能做隊長職權內的協調、派工、接收、彙整與受保護閘門處理。
-- `03-1` 會自動進入 reduced/minimal experiment Team mode；sandbox writes 不等於 production completion。
-- 主工作區實作 primary 是具名 station-owned `change-delivery`；`change-application` 只作 fallback。
-- 本卡不追蹤根層系統卡或地圖卡來源；後續廣泛修改前應拆子卡。
-- Antigravity 總監輸出需繁中語義先行；高變動或外部事實要走 external grounding evidence gate。
+- Antigravity 受治理請求會啟動 Team mode；主線只做 Director-facing captain 協調與授權路由。
+- Source/deployed workflow parity、安裝腳本 trust boundary、語言分層事實已保留。
+- 本卡已壓到 120 行內，但仍需另行 `memory_commit`。
 ## Tracked Files
 - Antigravity/install.ps1
 - Antigravity/README.md
@@ -117,3 +101,7 @@ metadata:
 - _shared (Shared skills injected into Antigravity)
 - _map (memory navigation index)
 - _ag_core.support (child card for support rules and remaining workflows)
+
+## Applicable Skills
+- memory-ops — Use when updating this card.
+- team-memory-docs-delivery-artifact — Use when source changes require memory/docs attribution.

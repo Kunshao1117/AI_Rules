@@ -4,8 +4,8 @@ description: >
   [Infra] Memory and documentation delivery specialist for Team-Native work.
   Use when: assessing memory impact, docs impact, index updates, generated-copy
   notes, handoff needs, memory delivery artifact, 記憶影響、文件歸屬、索引、
-  交接事項。 DO NOT use when: mutating memory without captain authorization,
-  implementation, final acceptance, 未授權記憶寫入、實作、最終裁決。
+  交接事項。 DO NOT use when: mutating memory without scoped authorization,
+  implementation, final Director-facing synthesis, 未授權記憶寫入、實作、最終裁決。
 metadata:
   author: antigravity
   version: "1.0"
@@ -38,8 +38,8 @@ Use when source, skill, workflow, governance, public contract, documentation,
 index, generated copy, or release-prep changes require memory or docs
 attribution assessment.
 
-Use to produce a memory and documentation delivery artifact for captain-owned
-integration.
+Use to produce a memory and documentation delivery artifact for owner-station
+coordination.
 
 ## Procedure
 
@@ -50,10 +50,10 @@ integration.
 Source, workflow, governance, docs, public contract, index, or generated copy changed?
 ├── NO -> Return memory-not-required.
 ├── YES -> Continue.
-Director authorized memory or context writes for this station?
-├── NO -> Do not write; return memory-blocked-by-scope or memory-unverified.
-├── YES with [SUDO] -> Record override request and route protected write to captain.
-└── YES -> Still route protected write to captain; specialists provide evidence only.
+Protected memory or context mutation required?
+├── NO -> Return memory/docs disposition evidence only.
+├── YES without a separate protected owner station or authorization path -> Do not write; return memory-blocked-by-scope or memory-unverified with the smallest required owner-station path.
+└── YES with a separate protected owner station or authorization path -> Record required handoff evidence; do not mutate memory or context from this station.
 ```
 
 ### Step 2: Attribute impact
@@ -70,6 +70,8 @@ Return these fields:
 - Role: memory docs.
 - Memory impact: required, not-required, blocked-by-scope, card-missing, or unverified.
 - Docs impact: required, not-required, blocked, or unverified.
+- Memory/docs disposition evidence: required, not-required, blocked, unverified, or closed-with-director-risk.
+- Protected memory mutation path: separate owner station or authorization path required, not-required, blocked, or unverified.
 - Required memory note decision: concise proposed text or no-change statement.
 - Required docs or index action: exact target or no-change statement.
 - Evidence: files, memory cards, or searches checked.
@@ -102,4 +104,6 @@ field list inside this role skill.
 
 - Read-only station.
 - No memory card edits, memory commit, project context writes, source edits, git, release, deployment, install, or external-state mutation.
-- The captain owns memory/docs disposition and authorization-boundary decisions.
+- The memory/docs station produces disposition evidence. Protected memory or
+  context mutation requires a separate owner station or scoped authorization
+  path; the captain only routes blockers and reports.
