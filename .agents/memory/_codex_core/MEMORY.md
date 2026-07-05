@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-04T22:51:31+08:00'
+last_updated: '2026-07-05T13:28:22+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-04T21:22:45+08:00'
+last_verified: '2026-07-05T13:25:32+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 9
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core — Codex Edition Memory
 ## Current Truth
 - Codex Edition is the OpenAI Codex adapter for AI_Rules governance, using `.codex/AGENTS.md` for project rules; 62 shared skills plus 17 workflow skills from `Codex/.agents/workflow-skills/` merge into `.agents/skills/` for a 79-skill deployed total.
@@ -44,6 +45,7 @@ metadata:
 - Codex README now describes subagent routing as Codex native subagents or project custom agents, not a fixed `.codex/agents/*.toml` source path.
 - Codex documentation and core rules use `closed-with-director-risk` for Director-closed non-complete cases and must not present missing specialist delivery as full team completion.
 - Codex 07 Debug and 11 Handoff entries stay thin, loading shared references and allowing formal-write only after owner-station scope binding, explicit phase/file/command binding, and protected-action authorization.
+- Codex workflow entries now use on-demand Required References: captain entry starts from the workflow row, route summary, workflow evidence row, orchestration order, and Team-Native minimum entry, while language, grounding, platform, stage, write, review, validation, memory, completion, and station details load only when that decision or station opens.
 - Codex entry governance summarizes thin-captain limits, no captain substitute authoring, Team-Native object topology, multi-specialist separation from native subagents, and station-reduction rules.
 - Codex core and global bootstrap keep Director-facing output in Traditional Chinese; internal source docs, policies, references, skills, schemas, and code keep local convention and prefer concise English unless explicitly Director-facing.
 - Current source/deployed parity is verified for `Codex/.codex/AGENTS.md` to `.codex/AGENTS.md`, and for `Codex/global/AGENTS.md` to the user-global `.codex/AGENTS.md`.
@@ -56,6 +58,7 @@ metadata:
 - Keep this active card below `line_limit: 120`; compact before adding broad hook/workflow-cycle detail.
 - After Codex framework source changes, verify source/deployed parity or report it as pending before final completion.
 ## Cycle Events
+- 10: Updated Codex workflow-entry truth for on-demand Required References and source/deployed block parity after the 2026-07-05 captain-context reduction.
 - 9: Compacted active card on 2026-07-04, preserving bootstrap, captain limits, source/deployed parity, language layering, and hook rebuild-pending facts.
 - 8: Hardened Codex bootstrap and installer trust boundaries: Codex-specific initialization, receipt/hash/source evidence, and optional SHA256 verification.
 - 7: Recorded dual-gate output and grounding updates across core and README before completion or commit readiness.
@@ -74,6 +77,7 @@ metadata:
 - source: `.agents/shared/policies/language-governance.md` for Director-facing zh-TW and internal English-led artifact layering.
 - tool: `Get-FileHash -Algorithm SHA256` verified Codex core source/deployed parity and global bootstrap parity on 2026-07-04.
 - tool: active-card measurement reported 128 lines before M2 compaction; `git diff/status` was reviewed before writing.
+- tool: 2026-07-05 validation verified 17 Codex workflow source/deployed Required References blocks match after on-demand loading sync.
 - director: 2026-07-04 M2 scope authorized compaction of `_ag_core`, `_claude_core`, and `_codex_core` only.
 ## Read Contract
 - Read this card when the task touches its tracked files, governed layer, or listed relations.
@@ -84,9 +88,10 @@ metadata:
 - Codex 是 OpenAI Codex 平台適配層。
 - Codex 技能數量 current truth 是 62 套共用技能 + 17 套工作流技能 = 79；`_shared` 支援目錄不計入技能數。
 - Codex 受治理請求會啟動 Team mode；主線只做 Director-facing captain 協調與授權路由。
+- Codex 工作流入口已改為按需載入 references，隊長入口不再預讀完整治理鏈。
 - Native subagents/project custom agents、hook rebuild-pending、station-owned source write 與 parity 事實已保留。
 - 總監可見輸出維持繁中；內部文件、狀態值、指令與程式識別保持本地慣例。
-- 本卡已壓到 120 行內，但仍需另行 `memory_commit`。
+- 本卡已依最新 source 修復 stale 狀態；仍需另行 `memory_commit` 同步索引。
 ## Tracked Files
 - Codex/VERSION
 - Codex/README.md

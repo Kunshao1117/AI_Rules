@@ -47,8 +47,6 @@ When Team mode is not active, ordinary lifecycle, scoped authorization, and
 protected gates still apply without Captain Team Board evidence. In active Team
 mode, `formal-readonly` is the no-write board state for evidence that can shape
 source, workflow, validation, review, memory, release, or governance decisions.
-Director requests governed work such as source, workflow, fix, build, audit, memory/docs.
-After Team mode is active, formal-readonly is no-write evidence.
 
 ## Task Type And Dispatch Pre-Gate
 
@@ -67,11 +65,10 @@ classification`, and `repair loop limit`; long value catalogs stay in
 
 ## Team-Native Minimum Execution Gate
 
-The captain coordinates Director communication, requirement intake, board
-maintenance, dispatch, station-output ledgering, blocker/conflict routing,
-protected phase routing, and final reporting. This is not permission to absorb
-implementation, review, validation, memory attribution, protected execution, or
-protected evidence ownership.
+Captain limits follow the `Captain Boundary Anchor / 隊長邊界錨點` in
+`Shared/policies/team-native-core.md`. This skill only selects execution routes
+and delivery forms after the board exists; it does not turn captain
+coordination into station evidence.
 
 Implementation routes to a named station-owned main-worktree change delivery
 station when `formal-write`, authorization phase `implementation-change-delivery`,
@@ -100,30 +97,19 @@ evidence station after special routes are excluded.
 Skill dispatch package fields are mandatory: Allowed inputs, Allowed tools,
 Forbidden actions, Output artifact format, and Stop condition.
 
-Large-file deep read routes to a bounded specialist; the captain must not
-absorb, substitute, or deep read large files as the team evidence source.
-Large-file deep read routes to a bounded specialist; the captain must not absorb, substitute, or deep read large files as the team evidence source.
+Large-file deep read routes to a bounded specialist under the core captain
+boundary.
 
 Special route outputs: Browser/UI verification station -> `browser branch`;
 Large CLI-only analysis station -> `CLI branch`; Real-time tool access -> `MCP
 read/tool path`; Independent read-only evidence station after special routes
 are excluded -> `evidence branch`.
 
-Regression anchors kept in this thin entry:
-- Implementation station with governed isolated workspace.
-- Implementation station with governed isolated workspace?
-- Browser/UI verification station?
-- Large CLI-only analysis station?
-- Real-time tool access?
-- Independent read-only evidence station after special routes are excluded?
-- Independent read-only evidence station after special routes are excluded.
-- formal board lifecycle.
-- dispatch wave.
-- previous-wave input.
-- next-wave start condition.
-- formal evidence eligibility.
-- yellow classification.
-- repair loop limit.
+Regression anchors kept in this thin entry: governed isolated implementation,
+text change delivery, browser/UI verification, large CLI-only analysis,
+real-time tool access, independent read-only evidence, formal board lifecycle,
+dispatch wave, previous-wave input, next-wave start condition, formal evidence
+eligibility, yellow classification, and repair loop limit.
 
 ## Mandatory Guards
 

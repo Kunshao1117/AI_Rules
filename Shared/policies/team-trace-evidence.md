@@ -30,9 +30,34 @@ must not be cited as Team-Native completion evidence.
 
 Task traces must be written under `.agents/logs/team-traces/` when the active workflow permits log output. Logs are task evidence, not source memory. Durable source facts still belong in `.agents/memory/` after the memory phase.
 
-## Minimal Trace Fields
+## Trace Loading Layers
 
-Each task trace must contain these fields in readable Markdown or JSON:
+Team trace has two loading layers. They change when evidence is loaded and who
+owns it; they do not remove any field, hard gate, review, validation, memory, or
+completion requirement when that evidence is claimed.
+
+| Layer | Owner and timing | Required meaning |
+|---|---|---|
+| Captain runtime minimum trace (`隊長執行期最小追蹤`) | Captain coordination before broad reads, source writes, validation, review, memory/docs attribution, completion audit, or completion claim | Only the task, station, role, channel/status, blocker, reportability, missing station evidence, authorization boundary, and handoff ownership needed to coordinate or honestly report blocked/unverified/risk-closed state |
+| Extended audit trace (`延伸稽核追蹤`) | Conditionally loaded by the owner station for review, validation, memory/docs, completion, audit, release, protected-action, or trace-repair work | Complete fields, lifecycle state, late returns, replacement channels, alternate channels, completion checks, and detailed trace catalog evidence |
+
+The full field catalog is not a captain entrance prerequisite. A captain must not
+be required to read, fill, or preload the complete trace catalog merely to prove
+that the captain did not perform specialist work. No-captain-authoring evidence
+comes from station-owned delivery artifacts, role separation, handoff/channel
+state, and the owner station's returned evidence. When a claim depends on the
+full lifecycle or field catalog, the relevant review, validation, memory/docs,
+completion, audit, release, protected-action, or trace-repair station loads and
+checks the extended audit trace.
+
+## Trace Field Catalog
+
+The catalog below remains canonical for task traces in readable Markdown or
+JSON. Fields are required when the corresponding station, lifecycle,
+authorization, protected action, review, validation, memory/docs, release, or
+completion evidence is claimed; captain runtime minimum trace may link or record
+only the applicable coordination subset until an owner station needs extended
+audit evidence.
 
 Canonical field names remain English for machine trace stability.
 Director-facing summaries follow `Shared/policies/language-governance.md`; when

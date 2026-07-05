@@ -256,9 +256,9 @@ Open only the current dispatch wave. Later waves wait for prior output or an
 honest blocked/unverified/risk state. Review and validation start only after
 change delivery exists or is honestly blocked/unverified/risk closed.
 
-Large-file deep read routes to a bounded specialist station. The captain must not absorb, substitute, or deep read large files as the team evidence source;
-when no route exists, record blocked or unverified with the smallest unblock
-condition.
+Broad/deep read and captain substitute limits follow the `Captain Boundary
+Anchor / 隊長邊界錨點` in `Shared/policies/team-native-core.md`; this board only
+records route, state, `deep_read_scope`, and the smallest unblock condition.
 
 `formal-readonly` is no-write evidence. `formal-write` requires scope-bound
 authorization for implementation change delivery, change application, memory,
@@ -272,9 +272,8 @@ tasks, or assigned generated/deployed-copy sync. Route either path to a
 platform-nondelegable protected-action record only when the platform cannot
 delegate the physical write or protected tool call; the board must record the
 platform limitation, exact scope, source artifact, direct exception, and
-residual state. Captain
-coordination must not call `apply_patch` or any other write tool and present the
-result as change-delivery evidence.
+residual state. Captain coordination records the returned delivery form; it
+does not become change-delivery evidence.
 
 Timeouts open probe/standby, not failure. A probed member pauses until
 `status_probe_resume_state` and `status_probe_resume_sent_at` are recorded.

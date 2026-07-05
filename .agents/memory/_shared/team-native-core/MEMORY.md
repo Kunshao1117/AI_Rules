@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-07-04T22:52:12+08:00'
+last_updated: '2026-07-05T13:29:28+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: partial_evidence
-last_verified: '2026-07-04T21:22:28+08:00'
+last_verified: '2026-07-05T13:25:32+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 5
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,23 +31,28 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.team-native-core — Team-Native Core Governance Memory
 ## Current Truth
 - This card is the specific owner for Team-Native Core policy, workflow orchestration/scenarios, platform plan mapping, workflow evidence references, dispatch gates, station trace evidence, role boundaries, and completion contracts.
 - Governed user requests automatically activate Team-Native / Team mode for governance, workflow, fix, build, debug, test, audit, skill, memory/docs, commit, handoff, source, public-contract, equivalent evidence-bearing work, or team/subagent/delegation dispatch.
 - Without a current governed user request, AI must not self-start Team mode from prior context, workflow names, source impact, platform tools, prompts, or approvals alone.
 - The mainline agent is the Director-facing captain in active Team mode, but captain authority is coordination only: Director communication, station dispatch, board maintenance, delivery receipt, status synthesis, blocker routing, authorization-request routing, and reporting.
+- Team-Native Core now defines a Captain Minimum Entry and Captain Boundary Anchor: captain entry is limited to intake, Team decision, first station path, dispatch, missing-evidence reporting, and Director-facing synthesis; broad/deep reads, implementation, validation, review, memory/docs attribution, protected execution, and completion evidence remain owner-station work.
 - Authorization Resolution is the shared scope-binding gate for GO, interface approvals, platform prompts, modes, workflow names, protected mutations, owner-station paths, formal delegation promotion, boards, traces, artifacts, and completion gates.
 - Route and evidence states are distinct: blocked, unverified, standby, not-authorized, and `closed-with-director-risk` are not fallback execution routes.
 - Captain deep-read, repository-wide search, recursive inventory, implementation, review, validation, and memory/docs substitution are hard exception paths; broad evidence needs specialist delivery or a recorded direct exception.
 - Full team completion requires station-owned change delivery, memory/docs delivery, independent review, validation, completion evidence, required trace evidence, and source/deployed parity where both source and deployed copies exist.
 - Team-Native topology separates Captain Team Board, station family, formal station, substation task, specialist assignment, execution channel, and delivery artifact; reduced station counts require replacement evidence and residual risk.
+- Team trace evidence now has two loading layers: captain runtime minimum trace for coordination and extended audit trace for review, validation, memory/docs, completion, audit, release, protected-action, or trace-repair stations.
+- Platform capability governance now separates context injection from hard enforcement; Antigravity injection precedence remains `unverified`, and Codex/Claude platform rows require citation refresh before being treated as grounded.
 - Platform/workflow/subagent/completion governance cites shared language and grounding policies: Director output is meaning-first Traditional Chinese, and freshness-sensitive or external claims need grounded source evidence.
 ## Active Constraints
 - Do not claim `complete` without separated delivery, memory/docs, review, validation, trace, and parity evidence.
 - Do not let captain synthesis, platform plan mirrors, evidence branches, or protected-action coordination records replace owner-station evidence.
 - Keep platform-specific tool names in adapter sections or platform-specific files.
 ## Cycle Events
+- 48: Recorded the 2026-07-05 captain-context reduction: Captain Minimum Entry, Captain Boundary Anchor, trace loading layers, workflow on-demand references, platform injection boundary, and source/deployed parity verification.
 - 47: M4 compacted the active card while preserving unique tracked ownership for workflow orchestration/scenarios and the six new Team-Native policy/reference sources.
 - 45-46: Recorded governed-request Team activation, captain coordination limits, `03-1` reduced experiment boards, and language/grounding dual-gate integration.
 - 38-44: Consolidated task-board display, compaction, role-boundary hardening, station-owned change delivery, authorization-scoped promotion, and channel lifecycle evidence.
@@ -61,6 +66,7 @@ metadata:
 - source:Shared/policies/platform-plan-mapping.md plus Shared/policies/references/workflow-*.md — Platform plan state and workflow evidence references.
 - source:Shared/skills/programming-team-governance/SKILL.md, team-task-board, handoff, role-boundary, completion, specialist, and delivery skills — Station, role, board, evidence, and completion contracts.
 - tool/director: Commit-preflight compaction evidence and 2026-06-30 GO compaction authorization.
+- tool:2026-07-05 validation/review — `git diff --check` passed, source/deployed parity matched, and independent review accepted the captain-context reduction with residual LF/CRLF and memory-commit risks.
 ## Read Contract
 - Read this card when touching Team-Native Core policy, subagent policy, task board, platform plan mapping, workflow evidence references, platform/workflow matrix, specialist skills, dispatch gates, or Doctor team governance checks; read `_shared` for parent navigation and `_system.scripts` for root PowerShell implementation details.
 ## Conflicts and Supersession
@@ -69,6 +75,8 @@ metadata:
 - 此卡是 Team-Native policy、workflow orchestration/scenarios、platform plan mapping、workflow evidence references 與 station/completion governance 的具體 owner。
 - 受治理使用者請求會自動啟動 Team-Native / Team mode；沒有目前受治理使用者請求時 AI 不能自行啟動。
 - 啟動後主線自動擔任 Director-facing captain，但只做協調、派工、接收、彙整、阻塞與授權請求路由及回報。
+- Team-Native Core 現在有隊長最小入口與隊長邊界錨點；隊長入口不再預讀完整 board/handoff/trace。
+- trace 已分成隊長執行期最小追蹤與延伸稽核追蹤；完整欄位由對應站點按需載入。
 - `update_plan`、checklist 或平台 planning UI 不是授權、驗收、審查、記憶歸屬、同步或完成證據。
 ## Tracked Files
 - Shared/policies/authorization-resolution.md

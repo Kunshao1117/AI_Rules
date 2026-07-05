@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-04T22:51:38+08:00'
+last_updated: '2026-07-05T13:28:47+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-04T22:29:18+08:00'
+last_verified: '2026-07-05T13:25:32+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 27
+cycle_event_count: 28
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,7 +35,7 @@ metadata:
 # _codex_core.support.workflows-general — Codex General Workflow Memory
 
 ## Current Truth
-- Codex workflow entries read deployed workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
+- Codex workflow entries use on-demand Required References: captain entry starts from the workflow row, route summary, workflow evidence row, orchestration order, and Team-Native minimum entry; language, grounding, platform, stage, station, write, review, validation, memory, and completion references load only when needed.
 - Governed requests activate Team mode; workflow names, slash commands, skill triggers, workflow buttons, approval prompts, and `GO` remain route or scope-bound intent signals only.
 - Write authority requires authorization resolution bound to the visible plan, owner station, file set, command, phase, expiry, and protected-action path; route signals never authorize memory, git, release, deployment, install, credentials, or external mutation.
 - In active Team mode, the Codex mainline only coordinates captain work; protected actions stay with owner stations, platform-nondelegable protected-action records, memory-docs stations, or release-completion stations.
@@ -50,6 +50,7 @@ metadata:
 - Build the formal board and trace first; if station/channel evidence, review, validation, memory/docs, parity, or authorization evidence is missing, report `blocked`, `unverified`, or `closed-with-director-risk` instead of completion. Do not write source or memory from read-only flows because `GO` must be resolved to the current visible scope before any formal-write or protected phase.
 
 ## Cycle Events
+- 28: Updated general workflow memory for on-demand Required References and source/deployed Required References block parity after the 2026-07-05 captain-context reduction.
 - 27: Corrected Codex `03-1` truth: governed experiment requests auto-activate Team mode, use reduced/minimal experiment boards, and keep sandbox writes separate from production completion.
 - 26: 記錄 Batch 3 Codex 一般工作流的 scope-binding、owner station 與 protected-action path 語意：`GO` is scope-bound intent, not blanket authorization, and `formal-write` requires resolved plan/owner-station/file-set/command/phase/expiry/protected-action scope.
 - 25: Recorded Codex shared security footer hardening so [SUDO] cannot bypass role limits, scoped authorization, Team-Native, validation, review, protected-action requirements, or complete claims.
@@ -78,6 +79,7 @@ metadata:
 - source:.agents/memory/_codex_core/support/archive-001.md — Previous support-card content preserved during migration.
 - tool:memory_audit — Granularity advisory identified this support card as broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized focused child-card split.
+- tool:2026-07-05 validation — General workflow Required References blocks match deployed copies after on-demand loading sync.
 
 ## Read Contract
 - Read this card when changing owned Codex workflow files.
@@ -88,6 +90,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Codex 一般工作流技能與共用閘門。
+- 一般工作流入口已改為按需載入 references，隊長入口不再預讀完整治理鏈。
 - Codex 00 入口現在只讓純聊天直接回覆；需要檔案、截圖、記憶、規則、工具輸出或治理證據時要升級 formal-readonly。
 - `GO` 只是範圍綁定的意圖訊號；寫入、protected phase 與 `memory_commit` 都要各自完成 authorization resolution。
 - `03-1` 是受治理 workflow；使用者要求 experiment/sandbox prototype 會自動啟動 Team mode 並使用 reduced/minimal experiment station/board，且不作 production completion claim。

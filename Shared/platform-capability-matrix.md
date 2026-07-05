@@ -95,6 +95,25 @@ skill metadata, MCP mutation, or completion.
 | Workflow evidence | Row-level workflow evidence lives outside this matrix. | `Shared/workflow-capability-evidence-matrix.md` |
 | Tool and skill vocabulary | Metadata and `tool_scope` meanings stay with skill governance and role skills. | `Shared/skill-governance.md`; `Shared/skills/team-change-delivery-artifact/SKILL.md` |
 
+## Platform Instruction / Rule Injection Boundary
+
+Context injection can guide model behavior, but it is not hard enforcement.
+AI_Rules must not describe document rules, workflows, skills, `AGENTS.md`, or
+`CLAUDE.md` as platform hard limits. Hard limits come from sandboxing,
+permission systems, managed settings, hooks, or platform/tool execution layers.
+
+| Platform | Rule sources | Known load / precedence | Hard enforcement source | Evidence state |
+|---|---|---|---|---|
+| Antigravity / Gemini | Rules, Workflows, Skills, Permissions, Plugins, `.agents/rules/AGENTS.md`. | Rule surfaces are listed; explicit injection precedence is `unverified`. | Permissions, plugin/tool controls, IDE or host controls when configured; document context alone is not hard enforcement. | `unverified`: local matrix does not carry direct citation evidence for injection precedence. |
+| Claude Edition | `CLAUDE.md`, `@import`, settings, slash commands, skills, subagents. | `CLAUDE.md` is context; settings precedence is Managed > CLI args > Local > Project > User; permissions use deny/ask/allow; skills load lazily. | Managed settings, permission rules, hooks, tool permissions, and subagent tool scopes. | `external-research-artifact`; requires citation refresh before treating this row as grounded. |
+| Codex Edition | Model Spec, global/project/CWD `AGENTS.md`, skills, sandbox and approval configuration. | Authority chain is Root > System > Developer > User > Guideline > No Authority; `AGENTS.md` merges global -> project root -> CWD, with nearer scopes applied later; skills initially expose name/description/path and load the full body only after selection; project docs are budgeted/truncated by configuration. | Sandbox, approval policy, tool availability, runner limits, and filesystem permissions. | `external-research-artifact`; requires citation refresh before treating this row as grounded. |
+
+Large-file burden evidence is platform-specific and citation-dependent. Treat
+Claude, Antigravity, and Codex burden statements as `requires citation refresh`
+unless paired with a current external-research artifact; direct adherence loss
+from large governance files remains `unverified`. Do not generalize one
+platform's burden model across all three platforms.
+
 ## Platform Matrix
 
 | Capability | Antigravity / Gemini | Claude Edition | Codex Edition |

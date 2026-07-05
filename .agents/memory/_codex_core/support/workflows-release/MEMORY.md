@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 提交、巡檢與技能鍛造工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-04T22:51:42+08:00'
+last_updated: '2026-07-05T13:29:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-04T22:29:18+08:00'
+last_verified: '2026-07-05T13:25:32+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 24
+cycle_event_count: 25
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,11 +32,12 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
+
 # _codex_core.support.workflows-release — Codex Release and Governance Workflow Memory
 
 ## Current Truth
-- Commit, routine, handoff, and skill-forge workflow entries reference workflow-orchestration before completion or protected closeout work.
-- Codex 09 source/deployed workflow entries are verified in parity at SHA256 `A0B502D10796A918845AAEACBAB498F76B2F1662B9200271BCCBD4E096BAC8DC`.
+- Commit, routine, handoff, and skill-forge workflow entries use on-demand Required References: captain entry starts from route/evidence/minimum Team-Native gates, while completion, protected closeout, language, grounding, platform, stage, station, review, validation, and memory references load only when needed.
+- Codex release/governance workflow Required References blocks are verified in source/deployed parity after the 2026-07-05 conditional-loading sync; full deployed skill copies remain gitignored and require hash or block comparison for verification.
 - `GO` and workflow names are route or scope-bound intent signals only; source write, changelog/source write, memory mutation, memory index/staleness sync, git commit/push, tag/release, deployment, install, and external mutation are separate protected phases.
 - Commit scans, release readiness evidence, routine inspection, skill-source analysis, review, validation, and memory/docs attribution load `team-station-handoff-packet` and start as `formal-readonly` until an owner station, memory-docs station, release-completion station, or platform-nondelegable protected-action record is authorized through the Director path.
 - Release-side traces record operation mode, board state, station set, dispatch wave, handoff packet, station mode, context visibility, handoff ownership, channel state, artifact states, and authorization resolution before protected closeout or completion claims.
@@ -52,6 +53,7 @@ metadata:
 - Do not let automation-safe routine inspection perform writes.
 
 ## Cycle Events
+- 25: Updated release/governance workflow memory for on-demand Required References and source/deployed Required References block parity after the 2026-07-05 captain-context reduction.
 - 24: Recorded Codex 09 source/deployed parity at SHA256 `A0B502D10796A918845AAEACBAB498F76B2F1662B9200271BCCBD4E096BAC8DC` and the split protected-phase rule for source, changelog, memory, git, release, deploy, install, and external mutation work.
 - 23: Recorded Batch 3 release closeout authorization-resolution rule: `GO` is a scope-bound intent signal; usable authorization must bind the visible plan, station, file set, command, phase, expiry, and required protected gate before formal-write or external mutation, and memory-commit, commit, push, tag, release, and deploy remain separate protected phases.
 - 22: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
@@ -84,6 +86,7 @@ metadata:
 - source:.agents/memory/_codex_core/support/archive-001.md — Previous support-card content preserved during migration.
 - tool:memory_audit — Granularity advisory identified this support card as broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized focused child-card split.
+- tool:2026-07-05 validation — Release/governance workflow Required References blocks match deployed copies after on-demand loading sync.
 
 ## Read Contract
 - Read this card when changing owned Codex workflow files.
@@ -94,6 +97,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Codex 提交、巡檢與技能鍛造工作流。
+- 提交、巡檢與技能鍛造入口已改為按需載入 references，隊長入口不再預讀完整治理鏈。
 - 提交、巡檢、交接與技能鍛造入口需保留團隊證據站點；外部狀態需由對應 owner station 或 platform-nondelegable protected-action record 經 Director authorization path 處理。
 - Codex 09 source/deployed 成對檔案已以 SHA256 `A0B502D10796A918845AAEACBAB498F76B2F1662B9200271BCCBD4E096BAC8DC` 驗證一致。
 - `GO` 不等於 blanket authorization；source write、changelog/source write、memory mutation、git commit/push、tag/release、deployment、install 與 external mutation 都是分離 protected phase，必須完成範圍解析與對應 gate 後才可執行。

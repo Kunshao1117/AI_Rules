@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-04T22:52:06+08:00'
+last_updated: '2026-07-05T13:29:19+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-04T21:24:30+08:00'
+last_verified: '2026-07-05T13:25:32+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 5
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -38,7 +38,7 @@ metadata:
 - Delivery artifact and role-boundary skills require current structured station evidence, scoped authorization fields, role/channel evidence, source/deployed sync evidence, and non-complete outcomes when required evidence is missing.
 - Change delivery artifacts distinguish station-owned main-worktree `change-delivery` from isolated/text fallback artifacts and fallback `change-application`; main-worktree writes need station ownership, exact file scope, dirty-diff evidence, and no self-review.
 - Memory/docs artifacts remain read-only attribution evidence unless a separate protected owner station has scoped memory-write authorization; memory commit, compaction, context cards, and mutating MCP tools need separate protected gates.
-- Role-boundary governance requires operation mode, ten registered role IDs, `role_instance_id`, `exclusive_task_scope`, specialist deep-read evidence, captain coordination read scope, and unread-scope reporting.
+- Role-boundary governance preserves the ten registered role IDs and now cites the Team-Native `Captain Boundary Anchor` for captain forbidden work, broad/deep read substitution, missing evidence, and substitute completion limits.
 - Handoff packets are scoped to one substation task, one role, one concrete task, one output format, and one stop condition; vague multi-role delegation is invalid.
 - Skill creation and delegation rules must stay compatible with Codex native skill loading and cross-platform governance; framework-source skill forging requires an explicit AI_Rules source root.
 - Skill governance routes language choices through shared language governance and external grounding/freshness choices through shared grounding governance.
@@ -47,6 +47,7 @@ metadata:
 - Do not duplicate full skill templates in memory or copy platform core language paragraphs as the only language source; use tracked references and shared language governance for skill formatting, delegation, triggers, handoffs, and generated docs.
 
 ## Cycle Events
+- 39: Updated role-boundary memory after captain-boundary dedupe centralized captain forbidden-work wording in Team-Native Core.
 - 38: M4 compacted the active card while preserving delivery-artifact, role-boundary, skill-factory, deployed-copy, and delegation CLI reference ownership.
 - 36-37: Recorded skill-governance dual-gate placement, team skill split, role-boundary update, and `change-delivery` primary / `change-application` fallback semantics.
 - 33-35: Recorded lifecycle hardening for pause probes, explicit resume, late-result receipt, channel closeout, Director-facing synthesis, and captain receipt boundaries.
@@ -58,6 +59,7 @@ metadata:
 ## Evidence Base
 - source/deployed parity: 2026-07-04 SHA256 checks matched tracked team delivery/role-boundary skills and `skill-factory` against `.agents/skills/` deployed copies.
 - source:Shared/skills/team-*-delivery-artifact/SKILL.md and Shared/skills/team-role-boundaries/SKILL.md — Verified artifact schema, role separation, station evidence, no-repair/no-self-review boundaries, and Director-facing synthesis boundary.
+- tool:2026-07-05 validation — Source/deployed parity matched for team-role-boundaries after captain-boundary dedupe.
 - source:Shared/skills/delegation-strategy/references/cli-prompt-skeleton.md — Verified evidence branch prompt language with canonical English internal fields and zh-TW Director-facing output.
 - source:Shared/policies/language-governance.md and Shared/policies/grounding-governance.md — Verified language-layer and external-grounding routing.
 - tool/director: memory_audit granularity advisory and 2026-06-15 GO SPLIT authorization.
@@ -71,6 +73,7 @@ metadata:
 
 ## 中文摘要
 - 此卡負責未歸入 Team-Native Core 的 delivery artifact、role-boundary、skill-factory、deployed skill copy 與 delegation CLI reference 記憶。
+- `team-role-boundaries` 現在引用 Team-Native Core 的隊長邊界錨點，避免重複長段隊長限制。
 - 交付件與角色邊界技能必須有範圍式授權、角色/通道證據、source/deployed sync 與缺證據時的非完成狀態。
 - `team-task-board` 長模板已拆到 references；暫停探針、明確恢復、晚回接收與通道收束仍是技能治理重點。
 ## Tracked Files

@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 健檢主工作流與三階段子工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-04T22:51:34+08:00'
+last_updated: '2026-07-05T13:28:28+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-04T22:29:18+08:00'
+last_verified: '2026-07-05T13:25:32+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 22
+cycle_event_count: 23
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,10 +32,12 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
+
 # _codex_core.support.workflows-audit — Codex Audit Workflow Memory
 
 ## Current Truth
 - Audit entries and subflows reference workflow-orchestration as the shared board/wave/artifact contract.
+- Audit entries and subflows use on-demand Required References: captain entry starts from route/evidence/minimum Team-Native gates, while language, grounding, platform, stage, station, validation, review, memory, completion, and protected references load only when needed.
 - Audit workflow names, skill triggers, workflow buttons, approval prompts, and `GO` are route or scope-bound intent signals only and do not grant write, memory, git, release, deployment, install, credential, or external-state authority.
 - Audit evidence, inventories, broad reads, validation planning, and review evidence load `team-station-handoff-packet` and run as `formal-readonly` unless a separately authorized `formal-write` repair route resolves scope.
 - Formal team routing is required before broad evidence, coverage, validation planning, review evidence, or completion claims; missing evidence cannot be reported as green.
@@ -53,6 +55,7 @@ metadata:
 - Review and validation findings are evidence outputs, not repair authority; failed audit evidence routes to a separate formal-write or protected owner station.
 
 ## Cycle Events
+- 23: Updated audit workflow memory for on-demand Required References and 17-entry source/deployed Required References block parity after the 2026-07-05 captain-context reduction.
 - 22: Recorded second-wave governance/workflow slimming: workflow entries now stay thin, cite shared policies and workflow-stage procedures, and preserve source/deployed parity.
 - 21: Recorded audit workflow hardening so read-only evidence, broad reads, validation planning, and review evidence require formal team routing before coverage or completion claims.
 - 20: Wave 6B added workflow-orchestration grounding to Codex audit workflow entries and synced deployed .agents/skills copies.
@@ -83,6 +86,7 @@ metadata:
 - source:.agents/memory/_codex_core/support/archive-001.md — Previous support-card content preserved during migration.
 - tool:memory_audit — Granularity advisory identified this support card as broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized focused child-card split.
+- tool:2026-07-05 validation — Audit workflow Required References blocks match deployed copies after on-demand loading sync.
 
 ## Read Contract
 - Read this card when changing owned Codex workflow files.
@@ -93,6 +97,7 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 Codex 健檢主工作流與三階段子工作流。
+- 健檢工作流入口已改為按需載入 references，隊長入口不再預讀完整治理鏈。
 - 健檢入口需呈現具名 owner station、review/validation station 與 Director authorization path，不能只標示直做或委派。
 - 缺證據不能當通過；子代理只作明確允許的證據分支。
 - 記憶寫入與 `memory_commit` 是分離 protected phase。

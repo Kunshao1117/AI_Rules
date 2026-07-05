@@ -177,13 +177,13 @@ Use concrete skill names or paths instead of free-form role descriptions.
 
 ## Deep Read And Captain Coordination Read
 
-Assign broad, repetitive, external, or large-file inspection to
-`deep_read_scope`. Use `captain_coordination_read_scope` for the captain's
-minimum coordination read needed to receive artifacts, maintain
-the board, resolve blockers/conflicts, or confirm authorization boundaries. It
-is not validation, review, memory/docs attribution, or completion evidence. If
-either side cannot read a relevant area, record it in `unread_scope` and return
-blocked or unverified instead of filling the gap with captain substitute work.
+Deep-read and captain coordination boundaries inherit the `Captain Boundary
+Anchor / 隊長邊界錨點` in `Shared/policies/team-native-core.md`. Assign broad,
+repetitive, external, or large-file inspection to `deep_read_scope`. Use
+`captain_coordination_read_scope` only for the captain's minimum read needed to
+receive artifacts, maintain the board, resolve blockers/conflicts, or confirm
+authorization boundaries. If either side cannot read a relevant area, record it
+in `unread_scope` and return blocked or unverified.
 
 Deep read may discover scope gaps, but it does not authorize expansion. The
 specialist reports the gap and stops unless the board is updated.
@@ -266,8 +266,9 @@ late artifact merely because a replacement channel already returned.
 - Replacement is not cancellation; late returns still need a neutral ledger
   decision.
 - A packet without loaded skill references is not a formal handoff.
-- Captain coordination read is not implementation, validation, review,
-  memory/docs attribution, or completion evidence.
+- Captain coordination read follows the core captain boundary and is not
+  implementation, validation, review, memory/docs attribution, or completion
+  evidence.
 - A main-worktree implementation packet uses station-owned `change-delivery` as
   the primary route when authorization phase `implementation-change-delivery`,
   exact file allowlist, dirty diff read, and no protected actions are present;

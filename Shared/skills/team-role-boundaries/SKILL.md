@@ -92,7 +92,7 @@ or completion evidence.
 | `security-reliability` | Classify secrets, authorization, data integrity, abuse, reliability, observability, rollback, and operational risk. | Expose secrets, mutate protected state, implement feature changes, approve release mutation. |
 | `memory-docs` | Attribute memory, documentation, index, handoff, and generated-copy impact as evidence. | Edit memory cards, call memory commit, mutate source, decide final closeout. |
 | `release-completion` | Check readiness, sync, residual risk, handoff, validation, review, and memory/docs evidence. | Final closeout decision, memory write, git, tag, release, deploy, install. |
-| `captain` | Translate Director requests into station tasks, coordinate dispatch, handoff, channels, board state, blockers, permission questions, synthesis ledger, and Director-facing reports. | Decide authorization, perform validation or review, produce memory/docs attribution, decide quality disposition, execute protected actions as station evidence, replace specialist deep-read, perform parallel context-expanding reads while members work, re-scan or re-check member scope, primarily author implementation/review/validation/memory attribution when a delivery route exists, hide missing evidence, rewrite member output as captain evidence, or claim full completion from substitute authoring. |
+| `captain` | Translate Director requests into station tasks, coordinate dispatch, handoff, channels, board state, blockers, permission questions, synthesis ledger, and Director-facing reports. | Cross the core `Captain Boundary Anchor / 隊長邊界錨點`: decide authorization, implement, validate/review, produce memory/docs attribution, execute protected actions as station evidence, substitute broad/deep read, rewrite member output as captain evidence, hide missing evidence, or claim completion from substitute authoring. |
 
 ## Separation Requirements
 
@@ -109,22 +109,18 @@ Keep these separations intact even when a task is small:
   assigned generated/deployed sync. Neither path becomes captain work; a
   platform-nondelegable physical action requires a scoped direct-exception
   record and still does not create captain-owned specialist evidence.
-- Captain ledgering of returned artifacts is not implementation, validation,
-  review, memory/docs evidence, or acceptance; captain substitute authoring is blocked by
-  default and can only close as closed-with-director-risk when explicitly
-  risk-closed for that case.
+- Captain ledgering follows the core captain boundary. It is not implementation,
+  validation, review, memory/docs evidence, or acceptance; substitute authoring
+  can only risk-close when explicitly accepted for that case.
 
 ## Read Scope Boundary
 
-Broad, repetitive, external, or large-file reads are specialist deep-read work.
-The captain may read only the minimum snippets needed for station-output
-ledgering, board maintenance, blocker/conflict handling, or scope-question
-routing.
-
-If no specialist route can deep-read, record a direct exception and close the
-missing separation as blocked, unverified, or closed-with-director-risk. Do not
-use captain coordination read as substitute implementation, review, validation,
-or memory/docs attribution.
+Read scope follows the core `Captain Boundary Anchor / 隊長邊界錨點`: broad,
+repetitive, external, or large-file reads are specialist deep-read work. The
+captain may read only the minimum snippets needed for ledgering, board
+maintenance, blocker/conflict handling, or scope-question routing. If no
+specialist route can deep-read, record a direct exception and close the missing
+separation as blocked, unverified, or closed-with-director-risk.
 
 ## Boundary Check
 

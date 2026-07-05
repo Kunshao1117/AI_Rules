@@ -70,10 +70,11 @@ not.
 ## Core Injection Hard Gate
 
 After a governed Director request activates Team mode, core injection rules must
-enforce the shortest Team-Native gate before any skill, workflow, platform
-adapter, captain tool call, or evidence-producing read can soften it. When Team
-mode is not active, these captain/team-board gates are not evaluated. Once
-Team-Native Core applies, broad file reading,
+enforce the shortest Team-Native gate before any phase-owning skill, workflow,
+platform adapter, captain tool call for broad or evidence-producing work, or
+evidence-producing read can soften it. When Team mode is not active, these
+captain/team-board gates are not evaluated. Once Team-Native Core applies,
+broad file reading,
 repository-wide grep, recursive scans, whole-repository file lists, validation,
 review, memory/docs attribution, completion audit, source writes, and completion
 claims are forbidden until the trace has a Captain Team Board, applicable
@@ -87,6 +88,46 @@ This gate applies before the captain runs tools for those actions. Tool
 availability, fast local commands, workflow route names, or prior conversation
 context do not permit the captain to perform repository-wide evidence gathering
 first and document the board afterward.
+
+### Captain Minimum Entry / 隊長最小入口
+
+The captain minimum entry is only the thin intake layer required to decide
+whether the current request activates Team mode, create or reuse the first
+station path, dispatch bounded work, refuse captain substitute labor, report
+missing station evidence as `blocked`, `unverified`, or
+`closed-with-director-risk`, and provide final Traditional Chinese synthesis
+from returned evidence.
+
+Complete board field catalogs, handoff packet field lists, trace ledgers,
+review records, validation records, memory/docs records, and completion-audit
+fields are not prerequisites for that first captain entry. They load
+conditionally when the matching station, write/read action, review, validation,
+memory/docs, protected action, or completion phase begins, and each phase must
+satisfy its own gate before producing evidence or a completion claim.
+
+This minimum entry does not relax any invariant for source writes, protected
+actions, validation, independent review, memory/docs attribution, delivery
+artifacts, source/deployed sync, or completion. If a later phase needs evidence
+that is absent, the captain reports the missing evidence state instead of doing
+the station's work or claiming completion.
+
+### Captain Boundary Anchor / 隊長邊界錨點
+
+This is the canonical captain-boundary anchor for team skills and subagent
+policy: the captain coordinates intake, board state, handoffs, blocker routing,
+station-output ledgering, and Director-facing synthesis only. Broad/deep reads,
+implementation, validation, review, memory/docs attribution, protected
+execution, and completion evidence belong to owner stations.
+
+Missing station evidence remains `blocked`, `unverified`, or
+`closed-with-director-risk`; `direct_exception` and platform-nondelegable
+records are explicit risk or coordination records, not execution routes,
+station evidence, or completion proof. Main-worktree writes require
+station-owned `change-delivery` with resolved `formal-write` authorization,
+exact allowlist, dirty-diff read, forbidden protected actions, and
+`handoff_ownership: station-owned`; fallback `change-application` is only for a
+returned artifact, explicit integration task, or assigned generated/deployed
+sync. Protected follow-on phases require their own scope-bound authorization.
 
 If any gate element is missing, the station or task can only be `blocked`,
 `unverified`, or `closed-with-director-risk`. The captain must not absorb the
