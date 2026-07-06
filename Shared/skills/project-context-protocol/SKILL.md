@@ -1,7 +1,7 @@
 ---
 name: project-context-protocol
 description: >
-  [Infra] Project context protocol for design DNA, product preferences,
+  專案脈絡與設計 DNA 治理（Infra）：Project context protocol for design DNA, product preferences,
   technical preferences, communication preferences, acceptance preferences,
   CONTEXT.md card format, approval states, GO CONTEXT, and promotion to project skills.
   Use when: 專案脈絡、設計 DNA、產品偏好、技術偏好、溝通偏好、驗收偏好、CONTEXT.md、

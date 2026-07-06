@@ -8,9 +8,9 @@
 ---
 name: skill-name
 description: >
-  [{Domain}] {English functional description}.
-  Use when: {中文正向觸發條件}。
-  DO NOT use when: {中文負向排除條件}。
+  {繁體中文任務領域與觸發詞，必填且必須是第一個可讀內容}; [{Domain}] {English functional description}.
+  Use when: {繁體中文正向觸發條件，必填；English trigger may follow as supplemental}.
+  DO NOT use when: {繁體中文負向排除條件，必填；English exclusions may follow as supplemental}.
 metadata:
   author: antigravity
   version: "1.0"
@@ -22,6 +22,10 @@ metadata:
 ```
 
 Top-level YAML keys must remain Codex-compatible: `name`, `description`, optional `license`, optional `allowed-tools`, and `metadata`.
+`description` MUST start with Traditional Chinese trigger meaning as the first readable content.
+`[{Domain}]`, `Use when:`, `DO NOT use when:`, `when`, or any English label MUST NOT be the first readable content.
+In `Use when:` and `DO NOT use when:` lines, the text after the label MUST start with Traditional Chinese trigger or exclusion meaning; English may follow only as supplemental precision.
+English-only `Use when:` or `DO NOT use when:` text is non-compliant for AI_Rules skills.
 
 Layer-specific origin:
 
@@ -38,31 +42,31 @@ Put localized names, legacy aliases, required skills, lifecycle fields, and user
 ```markdown
 # {Skill Name} — {Subtitle}
 
-## 1. Trigger Conditions (觸發條件)
+## 1. 觸發條件（Trigger Conditions）
 
-When to load this skill:
+適用時機（When to load this skill）:
 
-- Condition 1
-- Condition 2
+- {繁體中文正向觸發條件}; optional English trigger token
+- {繁體中文任務語句}; optional canonical English term
 
-## 2. Procedure (操作步驟)
+## 2. 操作步驟（Procedure）
 
-### Step 1: {Action}
+### 步驟 1：{繁中動作語意}（Step 1: {Action canonical}）
 
-- Instruction detail
+- {繁中指令內容}; optional English canonical instruction
 
-### Step 2: {Action}
+### 步驟 2：{繁中動作語意}（Step 2: {Action canonical}）
 
-- Instruction detail
+- {繁中指令內容}; optional English canonical instruction
 
-## 3. Constraints (限制與邊界)
+## 3. 限制與邊界（Constraints）
 
-- What this skill does NOT cover
-- Known limitations
+- {繁中不涵蓋事項}; optional English canonical boundary
+- {繁中已知限制}; optional English canonical limitation
 
-## 4. References (參考資源) — optional
+## 4. 參考資源（References）- optional
 
-- Link to reference files in `references/` subdirectory
+- {繁中參考資源說明}; optional English canonical reference note
 ```
 
 ## Optional Directories

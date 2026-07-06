@@ -1,7 +1,7 @@
 ---
 name: skill-factory
 description: >
-  Skill generation SOP for creating shared framework skills, project-derived skills,
+  技能產生與技能治理 SOP：Skill generation SOP for creating shared framework skills, project-derived skills,
   and user Codex skills. Enforces Codex SKILL.md compatibility, AI_Rules layer
   placement, Director review gate, and project_skills/ isolation.
   Use when: 需要建立新的專案衍生技能、從健檢建議萃取技能、
@@ -98,8 +98,10 @@ Record the result in `metadata.style` field.
 3. Top-level frontmatter MUST stay Codex-compatible: only `name`, `description`, optional `license`, optional `allowed-tools`, and `metadata`.
 4. AI_Rules governance fields MUST live under `metadata`, not as extra top-level fields.
 5. Frontmatter MUST include `metadata.origin` (`framework` for Shared, `project` for project-derived) and `metadata.style` from Step 1.5.
-6. `description` MUST include English + Chinese keywords for IDE trigger matching and explicit `Use when:` / `DO NOT use when:` boundaries.
+6. `description` 必須把繁中任務語意放在第一個可讀內容，英文 canonical trigger/discovery keywords 只作補充精準化。
+   繁中橋接邊界標籤必須保留：`Use when:` / `DO NOT use when:`。
 7. Read `.agents/shared/policies/language-governance.md` before choosing instruction, interface, bridge, trigger, handoff, or generated documentation language; do not copy platform core language paragraphs as the skill source.
+8. Apply `Shared/policies/source-document-size-governance.md` before adding long examples, tables, templates, or tool recipes; split stable details into `references/`.
 
 ### Step 3: Create Directory Structure
 
@@ -153,9 +155,9 @@ Apply this step only to project-derived skills.
 ---
 name: skill-name
 description: >
-  [{Domain|Quality|Workflow}] {English description}.
-  Use when: {中文觸發條件描述}。
-  DO NOT use when: {排他性與負向觸發條件描述}。
+  {繁體中文任務語意與觸發詞}; [{Domain|Quality|Workflow}] {English canonical description}.
+  Use when: {繁體中文觸發條件描述}; {English canonical trigger keywords if needed}.
+  DO NOT use when: {繁體中文排除條件描述}; {English canonical exclusion keywords if needed}.
 metadata:
   author: antigravity
   version: "1.0"
