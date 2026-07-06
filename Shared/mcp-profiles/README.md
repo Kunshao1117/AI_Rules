@@ -1,8 +1,9 @@
-# MCP Opt-in Profiles
+# MCP 手動啟用設定片段（MCP Opt-in Profiles）
 
-AI_Rules 只提供設定片段，不會在 Fresh / Upgrade / Sync / Audit 中自動安裝外部 MCP server，也不會覆寫使用者全域 MCP 設定。
+AI_Rules 只提供可選用的設定片段。
+Fresh、Upgrade、Sync 與 Audit 不會自動安裝外部 MCP server，也不會覆寫使用者的全域 MCP 設定。
 
-## Codex Profile Snippet
+## Codex 設定片段（Codex Profile Snippet）
 
 ```toml
 # ~/.codex/config.toml
@@ -13,7 +14,7 @@ command = "npx"
 args = ["-y", "multi-mcp-gateway"]
 ```
 
-## Claude Profile Snippet
+## Claude 設定片段（Claude Profile Snippet）
 
 ```json
 {
@@ -26,7 +27,7 @@ args = ["-y", "multi-mcp-gateway"]
 }
 ```
 
-## Gemini / Antigravity Profile Snippet
+## Gemini / Antigravity 設定片段（Gemini / Antigravity Profile Snippet）
 
 ```json
 {
@@ -40,20 +41,33 @@ args = ["-y", "multi-mcp-gateway"]
 }
 ```
 
-## Governance Notes
+## 治理注意事項（Governance Notes）
 
-- Read-only automation may inspect MCP resources, prompts, schemas, and health/status tools.
-- Discovery of MCP resources, prompts, or tool schemas is not permission to execute mutating tools.
-- Any MCP tool that writes files, changes cloud resources, opens PRs, commits code, or mutates memory requires authorization resolution bound to the visible plan, station, file set, command, phase, or expiry, plus the matching protected gate.
-- cartridge-system calls must include `projectRoot` in downstream parameters.
-- Gateway calls must include explicit `workspace`.
+- 唯讀自動化可以檢視 MCP resources、prompts、schemas 與 health/status tools。
+- 發現 MCP resources、prompts 或 tool schemas，不等於取得執行突變工具的授權。
+- 會改變狀態的 MCP tools 必須先完成 authorization resolution，且要綁定目前可見的 plan、station、file set、command、phase 或 expiry。
+- 會改變狀態的 MCP tools 包含檔案寫入、cloud resource changes、PR creation、commits、code changes 與 memory mutation。
+- 會改變狀態的 MCP tools 還需要對應的 protected gate。
+- 呼叫 cartridge-system 時，下游參數必須包含 `projectRoot`。
+- 呼叫 Gateway 時，必須明確包含 `workspace`。
 
-## cartridge-system Operational Contract
+## cartridge-system 操作契約（Operational Contract）
 
-For project memory work, follow the deployed contract at `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md`.
+專案記憶工作要遵循已部署契約：`.agents/skills/memory-ops/references/memory-mcp-tool-contract.md`。
 
-- Project-local file migration starts from `.agents/tools/Memory-Migration.ps1`; downstream projects should not look for the framework source manager unless they are the AI_Rules source repository.
-- Read-only MCP evidence includes workspace brief, memory list/read/status/dependency/audit/graph, commit preflight, and project context inspection tools.
-- Mutating MCP operations such as memory commit or memory reindex require authorization resolution for the scope-bound Director intent signal, the matching memory protected gate, and an MCP HITL gate. MCP HITL is an additional execution gate, not a substitute for authorization resolution.
-- If cartridge-system is accessed through Multi-MCP Gateway, call the downstream tool through the real gateway execution entrypoint with explicit `workspace`, and include explicit `projectRoot` in cartridge-system arguments.
-- Missing MCP support is an unverified or blocked evidence path, not permission to hand-edit memory indexes or batch-rename cards.
+- 專案本機檔案遷移從 `.agents/tools/Memory-Migration.ps1` 開始。
+- 下游專案不應尋找框架來源管理器；只有 AI_Rules source repository 本身例外。
+- 唯讀 MCP 證據包含：
+  - workspace brief；
+  - memory list/read/status/dependency/audit/graph；
+  - commit preflight；
+  - project context inspection tools。
+- 會改變狀態的 MCP 操作，例如 memory commit 或 memory reindex，必須同時具備：
+  - 綁定範圍式 Director intent signal 的 authorization resolution；
+  - 對應的 memory protected gate；
+  - MCP HITL gate。
+- MCP HITL 是額外執行閘門，不是 authorization resolution 的替代品。
+- 如果透過 Multi-MCP Gateway 存取 cartridge-system：
+  - 必須透過真實 gateway execution entrypoint 呼叫下游工具，並明確帶入 `workspace`；
+  - cartridge-system arguments 必須明確包含 `projectRoot`。
+- 缺少 MCP 支援時，證據路徑只能是 unverified 或 blocked；不得因此手改 memory indexes 或批次改名 cards。

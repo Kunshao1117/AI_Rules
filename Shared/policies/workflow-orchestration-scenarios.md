@@ -1,13 +1,26 @@
 # Workflow Orchestration Scenarios
 
-These scenarios are executable examples for the shared workflow orchestration
-contract. They are not authorization. They do not replace Team-Native Core,
-Authorization Resolution, the workflow evidence matrix, platform adapters, team
-task boards, specialist skills, delivery artifacts, memory gates, validation,
-review, commit, release, deployment, install, or external mutation gates.
+These scenarios are executable examples for the shared workflow orchestration contract.
 
-Use these scenarios when a model needs a concrete flow to follow. If a scenario
-conflicts with `workflow-orchestration.md`, the orchestration contract wins.
+They are not authorization.
+
+They do not replace these gates or owner sources:
+
+- Team-Native Core.
+- Authorization Resolution.
+- Workflow evidence matrix.
+- Platform adapters.
+- Team task boards.
+- Specialist skills.
+- Delivery artifacts.
+- Memory gates.
+- Validation.
+- Review.
+- Commit, release, deployment, install, or external mutation gates.
+
+Use these scenarios when a model needs a concrete flow to follow.
+
+If a scenario conflicts with `workflow-orchestration.md`, the orchestration contract wins.
 
 ## Scenario Format
 
@@ -29,20 +42,31 @@ route-back:
 completion state:
 ```
 
-`blocked`, `unverified`, `standby`, and `closed-with-director-risk` are honest
-states, not completion. `closed-with-director-risk` is not full team completion.
-Full team completion requires implementation change delivery, memory/docs
-delivery artifact, review delivery artifact, validation delivery artifact,
-completion evidence, `memory_impact`, and `memory_delivery`. If any required
-artifact is missing, blocked, unverified, or risk-closed, the state is
-`blocked`, `unverified`, or `closed-with-director-risk`; do not report full team
-completion.
+`blocked`, `unverified`, `standby`, and `closed-with-director-risk` are honest states, not completion.
+
+`closed-with-director-risk` is not full team completion.
+
+Full team completion requires these artifacts and fields:
+
+- Implementation change delivery.
+- Memory/docs delivery artifact.
+- Review delivery artifact.
+- Validation delivery artifact.
+- Completion evidence.
+- `memory_impact`.
+- `memory_delivery`.
+
+If any required artifact is missing, blocked, unverified, or risk-closed, use the matching non-complete state.
+
+Do not report full team completion.
 
 ## Scenario 1: Read-Only Evidence Station
 
-Use when a conversation, exploration, blueprint, audit, or commit-preflight
-question needs project files, memory/context, rules, logs, screenshots, or tool
-output but must not write files.
+Use when a no-write question needs project evidence.
+
+The question may come from conversation, exploration, blueprint, audit, or commit-preflight work.
+
+Evidence inputs may include project files, memory/context, rules, logs, screenshots, or tool output.
 
 ```text
 trigger: Director asks for evidence, comparison, review, or research.
@@ -60,8 +84,7 @@ route-back: route to blueprint, build, fix, audit, or commit only after evidence
 completion state: complete only for the read-only question; not source completion.
 ```
 
-Invalid shortcut: staying direct while doing broad file reads or treating a
-read-only summary as write authorization.
+Invalid shortcut: staying direct while doing broad file reads or treating a read-only summary as write authorization.
 
 ## Scenario 2: Blueprint To Build
 
@@ -71,7 +94,10 @@ Use when architecture output is accepted and the Director wants implementation.
 trigger: Blueprint or architecture contract is ready for implementation.
 workflow_route: 02 -> 03 or 03-1.
 operation_mode: full.
-board_state: draft for implementation plan, then formal-write only after authorization resolution binds the Director intent signal to the implementation phase or file/station scope.
+board_state:
+  draft for implementation plan, then formal-write only after authorization
+  resolution binds the Director intent signal to the implementation phase or
+  file/station scope.
 dispatch wave 1: requirement replay, scope impact, architecture boundary.
 previous-wave input: approved blueprint, assumptions, acceptance evidence.
 next-wave start condition: authorization resolution names and binds the phase, files, station, and any expiry.
@@ -105,8 +131,7 @@ completion state: complete only when all applicable delivery artifacts exist and
 non-complete state: use blocked, unverified, or closed-with-director-risk when required evidence is missing.
 ```
 
-Invalid shortcut: validating, reviewing, or committing before change delivery
-state exists.
+Invalid shortcut: validating, reviewing, or committing before change delivery state exists.
 
 ## Scenario 4: Failed Validation Route-Back
 
@@ -126,13 +151,11 @@ route-back: 04 for repair, 07 for deeper diagnosis, 03 for missing build work, 0
 completion state: validation failure is not completion.
 ```
 
-Invalid shortcut: the validation station repairing the implementation it
-validated.
+Invalid shortcut: the validation station repairing the implementation it validated.
 
 ## Scenario 5: Audit Fan-Out
 
-Use when health audit, routine inspection, or broad governance review finds
-different categories of work.
+Use when health audit, routine inspection, or broad governance review finds different categories of work.
 
 ```text
 trigger: 08 or 10 finds drift, bug, missing evidence, or rule gap.
@@ -149,13 +172,11 @@ route-back: build for missing feature, fix for defect, test for evidence gap, sk
 completion state: audit report is complete only for audit scope, not for the routed repair.
 ```
 
-Invalid shortcut: issuing a final audit report before inventory and logic
-evidence exist.
+Invalid shortcut: issuing a final audit report before inventory and logic evidence exist.
 
 ## Scenario 6: Commit-Preflight Blocker
 
-Use when commit preparation discovers dirty files, stale memory, missing
-validation, missing review, missing sync, or untracked new files.
+Use when commit preparation discovers dirty files, stale memory, missing validation, missing review, missing sync, or untracked new files.
 
 ```text
 trigger: commit-preflight or 09 finds a blocker.
@@ -192,13 +213,13 @@ completion state: complete only when source/deployed parity is checked and clean
 non-complete state: use blocked or unverified when source/deployed sync cannot be verified.
 ```
 
-Invalid shortcut: claiming deployed behavior changed when only source files were
-updated.
+Invalid shortcut: claiming deployed behavior changed when only source files were updated.
 
 ## Scenario 8: Hook-Guided Captain-Lite Read
 
-Use when a platform hook must avoid blocking useful orientation reads while
-still preventing unauthorized writes and false completion claims.
+Use when a platform hook must avoid blocking useful orientation reads.
+
+It must still prevent unauthorized writes and false completion claims.
 
 ```text
 trigger: Model performs a small read, broad read, write, protected mutation, or completion claim.
@@ -212,19 +233,23 @@ handoff_packet_id: required before specialist deep-read or write station.
 channel_capability: recorded for specialist deep-read and later stations.
 channel_invocation_status: running, returned, blocked, unavailable, or not-authorized.
 delivery artifact: read evidence, change delivery, validation delivery, review delivery, memory/docs delivery.
-route-back: broad read without deep-read evidence routes back to formal-readonly; unauthorized write routes back to authorization resolution.
+route-back:
+  broad read without deep-read evidence routes back to formal-readonly;
+  unauthorized write routes back to authorization resolution.
 completion state: blocked or unverified if the model only performed captain broad-read or lacks delivery artifacts.
 ```
 
-Invalid shortcut: treating a hook warning as permission to complete, or treating
-a formal-write board as authorization for git, memory commit, release, deploy,
-install, destructive file operations, package publication, or external-state
-mutation without a protected authorization record.
+Invalid shortcut: treating a hook warning as permission to complete.
+
+Invalid shortcut: treating a formal-write board as authorization for protected actions without a protected authorization record.
+
+Protected actions include git, memory commit, release, deploy, install, and destructive file operations.
+
+They also include package publication and external-state mutation.
 
 ## Scenario 9: Channel Life Probe Transition
 
-Use when a running specialist channel receives a status probe, resume, wait
-timeout, replacement, or late result.
+Use when a running specialist channel receives a status probe, resume, wait timeout, replacement, or late result.
 
 ```text
 trigger: Director or captain sends a status probe to a running channel.
@@ -239,12 +264,17 @@ channel_capability: unchanged unless replacement records a new capability.
 channel_invocation_status: status-probed, paused, resumed, timeout, replacement-running, returned-late.
 delivery artifact: pause report with read position, blocker state, safe-to-continue state, or late artifact receipt decision.
 route-back: timeout routes to blocked/unverified; replacement records cancellation and late-result policy.
-completion state: not complete while status_probe_resume_state: awaiting-resume, cancellation_state: cancellation-pending, or late_result_policy: late-result-pending.
+completion state:
+  not complete while status_probe_resume_state: awaiting-resume,
+  cancellation_state: cancellation-pending, or
+  late_result_policy: late-result-pending.
 ```
 
-Invalid shortcut: continuing after pause-and-report without resume, treating
-wait timeout as cancellation without evidence, or hiding a late result after a
-replacement channel starts.
+Invalid shortcut: continuing after pause-and-report without resume.
+
+Invalid shortcut: treating wait timeout as cancellation without evidence.
+
+Invalid shortcut: hiding a late result after a replacement channel starts.
 
 ## Anti-Examples
 
@@ -255,5 +285,4 @@ replacement channel starts.
 - Standby means evidence returned.
 - Closed-with-director-risk means complete.
 - Review or validation starts before the related change delivery state exists.
-- The captain authors specialist implementation, validation, review, or memory
-  attribution and claims full team completion.
+- The captain authors specialist implementation, validation, review, or memory attribution and claims full team completion.
