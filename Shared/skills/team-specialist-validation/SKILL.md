@@ -64,7 +64,9 @@ Validation result is reproducible or clearly classified?
 1. Use the smallest relevant non-mutating check.
 2. Record exact command, browser path, MCP read, or manual reason.
 3. Separate passed, failed, blocked, unverified, and not-applicable.
-4. Do not repair failures inside this station.
+4. Run a size-governance check when available, or manually classify touched
+   source-bearing files with `Shared/policies/source-document-size-governance.md`.
+5. Do not repair failures inside this station.
 
 ### Step 3: Return the validation artifact
 
@@ -75,6 +77,7 @@ Return these fields:
 - Result: passed, failed, blocked, unverified, or not-applicable.
 - Evidence: output summary and source of evidence.
 - Risk: what remains untested.
+- Size-governance evidence: passed, failed, unverified, or not-applicable.
 - Recommendation: next validation or fix route.
 - Blocker status: blocked, unverified, closed-with-director-risk, or not-applicable.
 

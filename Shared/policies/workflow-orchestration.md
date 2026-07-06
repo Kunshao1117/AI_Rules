@@ -31,6 +31,10 @@ Layer ownership, in order:
 
 - Owns: External grounding gate for source type, freshness sensitivity, and no-evidence claim boundaries.
 
+### `Shared/policies/source-document-size-governance.md`
+
+- Owns: Source-document size/split categories, PowerShell module size signals, audit rule-pack placement, and size/split reporting contract.
+
 ### `Shared/policies/workflow-orchestration.md`
 
 - Owns: Workflow entry sequence, transition rules, dispatch waves, and missing-evidence routing.
@@ -109,6 +113,8 @@ Director instruction
 -> machine-readable `execution_spec` gate
    when station or tool execution depends on workflow instructions
 -> existing worktree change integration gate when the target file is dirty
+-> source-document size/split impact gate
+   when source-bearing documents, scripts, modules, skills, policies, or rule packs are written or grown
 -> operation_mode
 -> board_template
 -> board_state
@@ -362,6 +368,23 @@ Workflow family presets and transition conditions live in the paired boundaries 
 
 The main orchestration policy keeps only the sequence.
 It points workflow-specific evidence back to `Shared/workflow-capability-evidence-matrix.md`.
+
+## Source Document Size/Split Rule
+
+When a workflow creates or modifies core, shared policy/reference, `SKILL.md`,
+memory card, PowerShell script/module, audit rule pack, or general source files,
+it cites `Shared/policies/source-document-size-governance.md` and records
+size/split impact in the relevant delivery, review, validation, audit, build, or
+fix artifact.
+
+Size alone is a signal.
+Split work is required only when the policy's responsibility, public-interface,
+or test-isolation signals are present.
+
+Existing oversized source documents or modules may be baselined during an
+initial governance batch.
+That baseline is not a completion claim and does not authorize follow-on
+refactor work.
 
 ## Source/Deployed Sync Rule
 

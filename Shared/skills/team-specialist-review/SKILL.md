@@ -60,7 +60,8 @@ Director request, scope, and change delivery artifact available?
 2. Check correctness against actual files and local patterns.
 3. Check maintainability, minimality, and regression surface.
 4. Check validation and memory-docs evidence integrity when available.
-5. Name residual risk without implementing fixes.
+5. Check `Shared/policies/source-document-size-governance.md` for new oversized files, repeated core/skill stuffing, and unresolved split signals.
+6. Name residual risk without implementing fixes.
 
 ### Step 3: Return the review artifact
 
@@ -70,6 +71,7 @@ Return these fields:
 - Findings: concrete issues or no findings.
 - Evidence: files, sections, or outputs supporting the finding.
 - Risk: regression, maintainability, requirement drift, or missing evidence.
+- Size/split review: accepted, issue-found, unverified, or not-applicable.
 - Review lifecycle disposition: accepted, accepted-risk, fix-required, blocked, or unverified.
 - Director risk closure: closed-with-director-risk only when the Director explicitly closes missing independence/evidence risk; it is not review acceptance and cannot support complete.
 - Blocker status: blocked, unverified, closed-with-director-risk, or not-applicable.

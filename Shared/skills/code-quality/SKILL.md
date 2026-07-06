@@ -82,20 +82,29 @@ Split by behavior, domain, or adapter boundary when any of these are true:
 └── All checks pass → Continue to size review.
 ```
 
-## 3. Dynamic Size Review Thresholds (動態大小複查門檻)
+## 3. Source Document Size Classification (來源文件大小分類)
 
-| File Type           | Max Lines | Examples                         |
-| ------------------- | --------- | -------------------------------- |
-| Utils / Services    | 200 lines | `auth-service.ts`, `utils.ts`    |
-| Components / Pages  | 500 lines | `PostsPage.tsx`, `Editor.tsx`    |
-| Routes / DI Configs | No limit  | `routes.ts`, `payload.config.ts` |
+Classify the target through `Shared/policies/source-document-size-governance.md` before size review.
+
+That policy owns core/platform core, shared policy/reference, `SKILL.md`, memory card, PowerShell scripts/modules, audit rule pack, and general source categories.
+Do not copy its threshold table into this skill.
+
+Local defaults for general source files remain:
+
+- Utils / services: 200 lines.
+- Components / pages: 500 lines.
+- Routes / DI configs: no line limit when the framework requires a single adapter boundary.
+
+For `Scripts/modules/*.psm1`, size is a split signal, not a line-count-only failure.
+Report size/split impact when touched, and split only when the policy's responsibility, public-interface, or test-isolation signals apply.
 
 ## 4. Size Review Gate (大小複查閘門)
 
 ```
 [SIZE REVIEW GATE] AFTER writing or modifying ANY source file:
 ├── Count total lines of target file.
-├── Look up threshold from table above.
+├── Classify the target using source-document-size-governance or the local general-source defaults.
+├── If the category has no numeric threshold, evaluate the category rule and split signals.
 ├── Compare:
 │   ├── lines ≤ threshold → Proceed silently. Zero output.
 │   └── lines > threshold →

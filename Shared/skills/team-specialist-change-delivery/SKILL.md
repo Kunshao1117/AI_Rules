@@ -78,6 +78,9 @@ Protected state requested: memory, git, release, deploy, install, external mutat
 2. Make the smallest change that satisfies the assigned requirement.
 3. Avoid unrelated cleanup, formatting churn, generated output, and scope expansion.
 4. Keep review and validation tasks separate from the implementation work.
+5. For source-bearing files, classify size/split impact with
+   `Shared/policies/source-document-size-governance.md` before returning the
+   artifact.
 
 ### Step 3: Return the change delivery artifact
 
@@ -88,6 +91,7 @@ Return these fields:
 - Evidence: files read, commands used, and relevant observations.
 - Risk: known regression, ambiguity, or integration concern.
 - Memory impact: source behavior, workflow rule, public contract, governance, docs, generated copy, no durable memory fact, or unverified.
+- Size/split impact: category, line delta when known, baseline/no-impact/split-needed/split-plan-needed/not-applicable, and any split signal.
 - Source/deployed pair, sync direction, and sync evidence when generated or
   deployed copies are affected.
 - Review need: independent review focus.

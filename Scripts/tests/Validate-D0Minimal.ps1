@@ -251,6 +251,13 @@ function Resolve-NodeCommand {
     throw "node was not found on PATH."
 }
 
+function Resolve-PowerShellCommand {
+    $powershellExe = Get-Command powershell.exe -ErrorAction SilentlyContinue
+    if ($powershellExe) { return $powershellExe.Source }
+
+    throw "powershell.exe was not found on PATH."
+}
+
 function Read-PackageLockSummary {
     param([Parameter(Mandatory = $true)][string]$Path)
 
@@ -286,8 +293,18 @@ function Test-PowerShellAstParse {
         "Antigravity\install.ps1",
         "Claude\install.ps1",
         "Codex\install.ps1",
-        "Scripts\modules\Audit.psm1"
+        "Scripts\modules\Audit.psm1",
+        "Scripts\tests\Validate-SourceSizeGovernance.ps1"
     )
+
+    $auditPartialsRoot = Get-RepoPath -RelativePath "Scripts\modules\Audit"
+    if (Test-Path -LiteralPath $auditPartialsRoot -PathType Container) {
+        $files += @(
+            Get-ChildItem -LiteralPath $auditPartialsRoot -Filter "*.ps1" -File -ErrorAction Stop |
+                Sort-Object FullName |
+                ForEach-Object { Get-RelativeDisplayPath -Path $_.FullName }
+        )
+    }
 
     if ($PSCommandPath) {
         $files += (Get-RelativeDisplayPath -Path $PSCommandPath)
@@ -319,7 +336,26 @@ function Test-AuditModuleSmoke {
         "Invoke-HealthAudit",
         "Measure-SkillQuality",
         "Measure-WorkflowMetadata",
+        "Measure-DocsConsistency",
         "Measure-PlatformCapability",
+        "Measure-RuntimeGlobalDrift",
+        "Measure-SharedSubagentPolicyDrift",
+        "Measure-SubagentVocabularyDrift",
+        "Measure-GovernanceSemantics",
+        "Measure-ReviewGovernanceCoverage",
+        "Measure-ProgrammingTeamGovernanceCoverage",
+        "Measure-TeamNativeCoreSemantics",
+        "Measure-TeamTraceEvidence",
+        "Measure-CodexHookGovernance",
+        "Measure-DirectorOutputContract",
+        "Measure-DirectorFacingOutputQuality",
+        "Measure-HighChangeGroundingGap",
+        "Test-DirectorLanguageDominance",
+        "Test-RawArtifactLedOutput",
+        "Measure-ProjectSkillLinks",
+        "Measure-SharedContextTemplates",
+        "Measure-ProjectContextCards",
+        "Measure-MemoryCardNaming",
         "Invoke-PlatformGovernanceAudit"
     )
 
@@ -328,6 +364,11 @@ function Test-AuditModuleSmoke {
         if ($exports -notcontains $name) {
             throw "Audit.psm1 did not export expected function: $name"
         }
+    }
+
+    $unexpected = @($exports | Where-Object { $expectedExports -notcontains $_ } | Sort-Object)
+    if ($unexpected.Count -gt 0) {
+        throw "Audit.psm1 exported unexpected functions: $($unexpected -join ', ')"
     }
 }
 
@@ -409,6 +450,12 @@ function Test-NpmAudit {
     $extensionRoot = Get-RepoPath -RelativePath "Extensions\vscode-ai-rules-manager"
     $npm = Resolve-NpmCommand
     Invoke-NativeCommand -FilePath $npm -Arguments @("audit", "--package-lock-only", "--audit-level=high") -WorkingDirectory $extensionRoot -Label "npm audit"
+}
+
+function Test-SourceSizeGovernanceBaseline {
+    $testPath = Get-RepoPath -RelativePath "Scripts\tests\Validate-SourceSizeGovernance.ps1"
+    $powershell = Resolve-PowerShellCommand
+    Invoke-NativeCommand -FilePath $powershell -Arguments @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $testPath, "-NoFail") -WorkingDirectory $script:RepoRoot -Label "source size governance no-fail baseline"
 }
 
 function Test-VscodeIgnoreRuntimePackaging {
@@ -552,6 +599,7 @@ Invoke-Check -Name "extension JSON parse" -ScriptBlock { Test-ExtensionJson }
 Invoke-Check -Name "extension VSIX ignore runtime packaging" -ScriptBlock { Test-VscodeIgnoreRuntimePackaging }
 Invoke-Check -Name "local tsc --noEmit" -ScriptBlock { Test-LocalTscNoEmit }
 Invoke-Check -Name "npm audit package-lock high" -ScriptBlock { Test-NpmAudit }
+Invoke-Check -Name "source size governance baseline smoke" -ScriptBlock { Test-SourceSizeGovernanceBaseline }
 Invoke-Check -Name "1A release workflow sentinels" -ScriptBlock { Test-ReleaseWorkflowSentinels }
 Invoke-Check -Name "1A installer sentinels" -ScriptBlock { Test-InstallerSentinels }
 Invoke-Check -Name "1A scriptRunner sentinels" -ScriptBlock { Test-ScriptRunnerSentinels }

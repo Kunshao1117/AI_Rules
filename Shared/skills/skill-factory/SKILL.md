@@ -207,6 +207,9 @@ Read references/skill-style-guide.md §6 for the full density matrix. Summary:
 
 ### §4.6 Token Budget (Token 預算約束)
 
+`Shared/policies/source-document-size-governance.md` owns SKILL.md size/split semantics.
+Keep these hard limits here for quick generation checks, and move overflow into `references/` by stable responsibility.
+
 | Constraint          | Limit                                         |
 | ------------------- | --------------------------------------------- |
 | SKILL.md line count | < 500 lines                                   |
