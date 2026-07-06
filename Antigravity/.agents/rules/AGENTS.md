@@ -18,14 +18,14 @@ The full bootstrapping protocol (Zero-Touch Environment Check, Silent Deployment
   - 提交系列：`09-1_commit_scan` / `09-2_commit_execute`
   - 健檢系列：`08_audit(健檢)` / `08-1_audit_infra` / `08-2_audit_logic` / `08-3_audit_report`
   - 例行巡檢：`10_routine(巡檢)` — automation-safe read-only maintenance
-  - 其他：00–02, 06–07, 11–12 各一個工作流
+  - 其他工作流：00–02、06–07、11–12 各一個 workflow
   - 共用閘門：`_completion_gate` / `_security_footer`
 - **Skills**: 62 shared operational skills + project memory cards + project context cards
 - **Platform governance**: deployed project reference `.agents/shared/platform-capability-matrix.md` defines native/adapter/manual capability levels; the framework source repository keeps the original at `Shared/platform-capability-matrix.md`. Workflow frontmatter MUST carry metadata v2 (`kind`, `platforms`, `lifecycle_phase`, `role`, `memory_awareness`, `tool_scope`, `human_gate`, `automation_safe`).
 - **MCP profile policy**: external MCP servers are opt-in only. Use deployed snippets in `.agents/shared/mcp-profiles/`; the framework source repository keeps the originals under `Shared/mcp-profiles/`. Never install or modify global MCP config during Fresh/Upgrade/Audit.
 
 <!-- PROJECT IDENTITY 保護區段格式定義：
-     由 /05_condense 工作流生成，升級時由部署腳本保留。
+     由 /05_condense workflow 生成，升級時由部署腳本保留。
      起始標記：## [PROJECT IDENTITY — /05_condense 生成，升級時保留]
      結束標記：<!-- /PROJECT_IDENTITY_END -- >
-     部署腳本識別這兩個標記之間的內容，升級時不覆蓋。 -->
+     部署腳本會保留兩個標記之間的內容，升級時不覆蓋。 -->

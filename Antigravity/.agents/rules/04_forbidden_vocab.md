@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: 禁用詞彙強制規範。在生成面向總監的輸出、撰寫實作計畫、或審查變更描述文字時載入。將裸露的程式碼識別符對映至介面層所需的商業層級描述。
+description: 禁用詞彙強制規範；生成總監可見輸出、撰寫 implementation-plan change descriptions 或審查 change narrative 時載入（Load when: Director-facing wording is produced）。將裸露 code identifiers 對映為商業層級描述。
 ---
 
 # [ANTIGRAVITY FORBIDDEN VOCABULARY]
@@ -14,7 +14,7 @@ Load this rule ONLY when:
 
 Do NOT load for: internal tool invocations, YAML fields, schema definitions.
 
-## 2. Forbidden Vocabulary Mapping (禁用詞彙對照表)
+## 2. Forbidden Vocabulary Mapping
 
 | ❌ Raw Code Identifier | ✅ Business Description (zh-TW) |
 | ---------------------- | ------------------------------- |
@@ -34,7 +34,7 @@ Do NOT load for: internal tool invocations, YAML fields, schema definitions.
 | `skill-factory`        | 技能工廠                        |
 | `_project`             | 衍生技能連結                    |
 
-## 3. 技術詞彙翻譯閘門（Technical Vocabulary Translation Gate）
+## 3. Technical Vocabulary Translation Gate
 
 Before finalizing ANY Director-facing text:
 1. Scan for occurrences of column 1 identifiers above.

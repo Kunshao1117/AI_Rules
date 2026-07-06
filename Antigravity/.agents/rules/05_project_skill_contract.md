@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: 專案衍生技能建立與生命週期合約。在建立新的衍生技能、審查現有衍生技能、執行技能鍛造工作流、或當前工作流宣告 skill_generation 時載入。
+description: 專案衍生技能建立與生命週期合約；建立或審查 derived skills、執行 skill-forge workflow，或目前 workflow 宣告 `skill_generation` 時載入（Load when: project skill lifecycle applies）。
 ---
 
 # [ANTIGRAVITY PROJECT SKILL CONTRACT]
@@ -13,7 +13,7 @@ Load this rule when:
 - The active workflow declares `skill_generation: true` in its YAML frontmatter
 - Reviewing whether an existing project skill should be archived or updated
 
-## 2. Project Skill System (專案衍生技能系統)
+## 2. Project Skill System
 
 - **Project Skills Directory**: AI-generated reusable skills are stored in `.agents/project_skills/` as individual SKILL.md files. A symlink at `.agents/skills/_project` points to this directory, enabling IDE auto-discovery. Project memory is a separate readable knowledge layer and is not mirrored as executable skills.
 - **Readable AND Writable by Master Agent**: Unlike framework-provided skills (read-only), project skills CAN be created and modified by the Master Agent during sanctioned workflows.
