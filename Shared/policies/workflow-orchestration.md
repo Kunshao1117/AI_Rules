@@ -1,55 +1,113 @@
 # Workflow Orchestration Contract
 
-This policy is the shared workflow orchestration layer for AI_Rules. It defines
-how workflow entries start, hand off, wait, route back, and close across
-Codex, Claude, and Antigravity. It does not replace Team-Native Core, the
-workflow evidence matrix, platform adapters, team task boards, specialist role
-skills, or authorization policy.
+This policy is the shared workflow orchestration layer for AI_Rules.
+
+It defines how workflow entries start, hand off, wait, route back, and close.
+The supported platforms are Codex, Claude, and Antigravity.
+
+It does not replace Team-Native Core, the workflow evidence matrix, platform adapters, or team task boards.
+It also does not replace specialist role skills or authorization policy.
 
 ## Source-Of-Truth Chain
 
-Use this contract as the thin sequence layer between workflow routing and
-Team-Native station execution.
+Use this contract as the thin sequence layer between workflow routing and Team-Native station execution.
 
-| Layer | Owns |
-|---|---|
-| `Shared/policies/team-native-core.md` | Highest-priority Team-Native gate, operation mode, station-first rule, and completion boundary. |
-| `Shared/policies/authorization-resolution.md` | Scope-bound authorization fields and phase-specific write gates. |
-| `Shared/policies/language-governance.md` | Audience-layer language classification, Director-facing language rules, exact-evidence preservation, and source/deployed language-policy parity. |
-| `Shared/policies/grounding-governance.md` | External grounding gate for source type, freshness sensitivity, and no-evidence claim boundaries. |
-| `Shared/policies/workflow-orchestration.md` | Workflow entry sequence, transition rules, dispatch waves, and missing-evidence routing. |
-| `Shared/policies/workflow-orchestration-scenarios.md` | Non-authorizing scenario playbooks that show how workflows cooperate without copying rules into entries. |
-| `Shared/policies/platform-plan-mapping.md` | Platform plan-surface mapping, `plan-only` versus `build-plan`, and `update_plan` visual-mirror boundaries. |
-| `source: Shared/policies/references/workflow-orchestration-boundaries.md; deployed: .agents/shared/policies/references/workflow-orchestration-boundaries.md` | Invalid orchestration patterns and entry minimum reference list kept outside the main sequence file. |
-| `Shared/skill-governance.md` | Governance layer placement, skill boundaries, deduplication defenses, and source/deployed skill governance. |
-| `Shared/workflow-capability-evidence-matrix.md` | Per-workflow route, evidence expectations, and next workflow suggestions. |
-| `Shared/platform-capability-matrix.md` | Platform capability translation for Codex, Claude, and Antigravity. |
-| `Shared/skills/team-task-board/SKILL.md` | Board templates, station fields, delivery artifact formats, direct exceptions, and completion checklist. |
-| `Shared/policies/team-trace-evidence.md` | Task trace evidence fields and invalid runtime trace patterns. |
+Layer ownership, in order:
 
-Workflow entries must reference this chain instead of copying the full chain
-into every entry. If two shared sources conflict, Team-Native Core and
-Authorization Resolution win before this orchestration contract.
+### `Shared/policies/team-native-core.md`
+
+- Owns: Highest-priority Team-Native gate, operation mode, station-first rule, and completion boundary.
+
+### `Shared/policies/authorization-resolution.md`
+
+- Owns: Scope-bound authorization fields and phase-specific write gates.
+
+### `Shared/policies/language-governance.md`
+
+- Owns: Audience-layer language classification, Director-facing language rules, and exact-evidence preservation.
+- Also owns source/deployed language-policy parity.
+
+### `Shared/policies/grounding-governance.md`
+
+- Owns: External grounding gate for source type, freshness sensitivity, and no-evidence claim boundaries.
+
+### `Shared/policies/workflow-orchestration.md`
+
+- Owns: Workflow entry sequence, transition rules, dispatch waves, and missing-evidence routing.
+
+### `Shared/policies/workflow-orchestration-scenarios.md`
+
+- Owns: Non-authorizing scenario playbooks.
+- Those playbooks show how workflows cooperate without copying rules into entries.
+
+### `Shared/policies/platform-plan-mapping.md`
+
+- Owns: Platform plan-surface mapping.
+- Owns `plan-only` versus `build-plan`, plus `update_plan` visual-mirror boundaries.
+
+### Workflow execution spec pair
+
+- Source: `Shared/policies/references/workflow-execution-spec-contract.md`.
+- Deployed: `.agents/shared/policies/references/workflow-execution-spec-contract.md`.
+- Owns machine-readable `execution_spec` minimum and human flowchart boundary.
+- Also owns station external-grounding fields and external-research request contract.
+
+### Workflow orchestration boundaries pair
+
+- Source: `Shared/policies/references/workflow-orchestration-boundaries.md`.
+- Deployed: `.agents/shared/policies/references/workflow-orchestration-boundaries.md`.
+- Owns invalid orchestration patterns and the entry minimum reference list outside the main sequence file.
+
+### `Shared/skill-governance.md`
+
+- Owns governance layer placement, skill boundaries, deduplication defenses, and source/deployed skill governance.
+
+### `Shared/workflow-capability-evidence-matrix.md`
+
+- Owns per-workflow route, evidence expectations, and next workflow suggestions.
+
+### `Shared/platform-capability-matrix.md`
+
+- Owns platform capability translation for Codex, Claude, and Antigravity.
+
+### `Shared/skills/team-task-board/SKILL.md`
+
+- Owns board templates, station fields, delivery artifact formats, direct exceptions, and completion checklist.
+
+### `Shared/policies/team-trace-evidence.md`
+
+- Owns task trace evidence fields and invalid runtime trace patterns.
+
+Workflow entries must reference this chain instead of copying the full chain into every entry.
+
+If two shared sources conflict, Team-Native Core and Authorization Resolution win before this orchestration contract.
 
 Scenario playbooks live in `Shared/policies/workflow-orchestration-scenarios.md`.
-They are non-authorizing examples only: they show concrete cooperation flows,
-but do not grant authorization, create new completion states, or override this
-contract.
+
+They are non-authorizing examples only.
+
+They show concrete cooperation flows, but do not grant authorization, create new completion states, or override this contract.
 
 ## Entry Sequence
 
-When Team mode is active, every workflow entry follows this team
-sequence before broad reading, fix, build, validation, review, implementation,
-memory/docs attribution, commit preparation, release preparation, or completion
-claims:
+When Team mode is active, every workflow entry follows this team sequence before these actions:
+
+- Broad reading, fix, build, validation, review, or implementation.
+- Memory/docs attribution, commit preparation, release preparation, or completion claims.
 
 ```text
 Director instruction
+-> dormant Team readiness injection when present, as no-write route context only
 -> workflow route
--> platform plan mapping when a platform plan surface, `plan-only`, or `build-plan` affects routing
--> Director-facing output gate when producing Director-visible text, governed by language-governance
--> external grounding gate when external facts, sources, or freshness affect formal evidence, governed by grounding-governance
+-> platform plan mapping
+   when a platform plan surface, `plan-only`, or `build-plan` affects routing
+-> Director-facing output gate
+   when producing Director-visible text, governed by language-governance
+-> external grounding gate
+   when external facts, sources, or freshness affect formal evidence
 -> authorization resolution
+-> machine-readable `execution_spec` gate
+   when station or tool execution depends on workflow instructions
 -> existing worktree change integration gate when the target file is dirty
 -> operation_mode
 -> board_template
@@ -58,93 +116,175 @@ Director instruction
 -> dispatch wave
 -> station handoff packet
 -> station mode, context visibility, and handoff ownership recorded
+-> captain boundary pre-action guard before any captain broad or evidence-producing tool action
 -> channel capability and channel invocation status
--> first response, status probe pause report, captain resume, timeout, replacement, cancellation, and late-result policy recorded when applicable
+-> first response and lifecycle event policy recorded when applicable
+   status probe pause, captain resume, timeout, replacement, cancellation, late result
 -> returned delivery artifact or blocked/unverified/standby state
 -> captain receipt, board update, blocker/conflict/authorization handling
 -> validation, review, memory/docs, completion audit
 ```
 
-Workflow route is not authorization. A workflow name, slash command, Codex
-skill trigger, Antigravity workflow button, Claude command, platform mode,
-approval prompt, or available channel can route the work, but it cannot grant
-unbounded write authority or protected follow-on authority.
+Workflow route is not authorization.
 
-Platform-visible plan surfaces are governed by
-`Shared/policies/platform-plan-mapping.md`. Codex `update_plan`, checklists, and
-planning UI are visual progress mirrors only. They can reflect `plan-only`,
-`build-plan`, implementation, validation, review, memory/docs, or completion
-steps, but they do not create authorization, delivery artifacts, validation or
-review evidence, memory/docs evidence, source/deployed parity evidence, or
-completion state.
+A route signal can route the work.
+It cannot grant unbounded write authority or protected follow-on authority.
 
-After routing and before accepting formal evidence or making completion claims,
-the workflow applies two thin gates by reference only. Director-facing text uses
-the output gate in `language-governance`; external claims, outside sources, and
-freshness-sensitive facts use the grounding gate in `grounding-governance`.
-This orchestration contract only records gate placement and does not copy the
-verification procedure from either policy.
+Route signals include:
 
-Team-Native / subagent team mode activates when the current Director request
-asks for governed work: governance, workflow, fix, build, debug, test, audit,
-skill, memory/docs, commit, handoff, source, public-contract, or equivalent
-source/governance/evidence-bearing work. Requests for a team, team member,
-subagent, delegation, Team-Native, or equivalent dispatch also activate Team
-mode. Workflow names and skill names are route signals, not fixed passwords; if
-the request itself is governed work, Team mode is triggered by that user
-request. Workflow names, source impact, platform mode, approval prompts, or
-available channels do not activate Team mode without a current governed
-Director request and do not authorize writes or protected actions.
+- Workflow names.
+- Slash commands.
+- Codex skill triggers.
+- Antigravity workflow buttons.
+- Claude commands.
+- Platform mode.
+- Approval prompts.
+- Available channels.
 
-When Team mode is not active, captain/team-board limits do not apply; normal
-lifecycle, scoped authorization, protected-action gates, read-before-write, and
-source/deployed sync rules still apply. Pure conversation, small stable
-answers, and no-impact read-only work remain outside Team mode only when they
-have no source, workflow, validation, review, memory, release, governance, or
-evidence impact.
+Dormant readiness injection and captain boundary pre-action guard output are also non-authorizing route context.
 
-After Team mode is active, the workflow route must create or promote
-the board-first path before governance, workflow, fix, build, broad evidence,
-change delivery, validation, review, memory/docs, protected action, or
-completion work. Missing specialist channel capability becomes standby,
-blocked, unverified, unavailable, or closed-with-director-risk station state; it
-does not downgrade active Team mode to captain-direct execution.
+They can prime no-write Team readiness, identify missing trace fields, or mark would-block boundary risk.
 
-In active Team mode, small read-only probes are permitted before the formal
-board only when needed to identify the route or locate explicitly named files.
-They must stay narrow, non-mutating, and non-evidence-producing: named-file
-status, named-file diff, named-file hash, or a search constrained to explicitly
-named files. Small probes explicitly exclude repository-wide grep, `git grep`
-or `rg` against the repository root, recursive `Get-Content`, recursive
-`Get-ChildItem` used as a file inventory, `rg --files`, `git ls-files`,
-whole-repository file lists, validation, review, implementation, memory/docs
-attribution, and completion claims.
+They cannot create Team mode without a current governed Director request.
+They cannot replace scope-bound authorization or stop execution by themselves.
 
-In active Team mode, broad reads, recursive scans, repository-wide grep,
-validation, review, implementation, memory/docs attribution, and completion
-claims require the formal sequence above before a station-owned broad-read or
-evidence station starts and before the captain may ledger returned evidence. If
-a hook or platform supplies broad context before that trace exists, it remains
-non-authorizing route context until a specialist station returns evidence or
-the board records a direct exception with residual state.
+Route-or-state principle:
+
+After the Director's visible request or agreement has selected the current route, the workflow should take one of these actions:
+
+- Proceed in the matching no-write route.
+- Dispatch the scoped station.
+- Report `blocked`, `unverified`, `standby`, or `closed-with-director-risk`.
+
+Do not re-ask the Director for GO only because internal board, handoff, or channel labels need recording.
+
+Platform-visible plan surfaces are governed by `Shared/policies/platform-plan-mapping.md`.
+
+Codex `update_plan`, checklists, and planning UI are visual progress mirrors only.
+
+They can reflect `plan-only`, `build-plan`, implementation, validation, review, memory/docs, or completion steps.
+
+They do not create authorization, delivery artifacts, validation/review evidence, or memory/docs evidence.
+They also do not create source/deployed parity evidence or completion state.
+
+After routing and before accepting formal evidence or making completion claims, the workflow applies two thin gates by reference only.
+
+Director-facing text uses the output gate in `language-governance`.
+
+External claims, outside sources, and freshness-sensitive facts use the grounding gate in `grounding-governance`.
+
+This orchestration contract only records gate placement and does not copy the verification procedure from either policy.
+
+Flowcharts, diagrams, checklists, and visual plan mirrors are human navigation only.
+
+They can point to the route.
+They cannot act as AI execution specs, authorization, station handoff, validation evidence, review evidence, or completion evidence.
+
+Executable station or tool work uses the machine-readable `execution_spec` minimum in the paired reference files:
+
+- `source: Shared/policies/references/workflow-execution-spec-contract.md`
+- `deployed: .agents/shared/policies/references/workflow-execution-spec-contract.md`
+
+If executable work depends on a flowchart without a resolved `execution_spec`, the affected work is `unverified` or `blocked`.
+The same rule applies when the station handoff packet is missing.
+
+Team-Native / subagent team mode activates when the current Director request asks for governed work in any of these areas:
+
+- Governance, workflow, fix, build, debug, test, audit, skill, memory/docs, commit, or handoff.
+- Source, public-contract, or equivalent source/governance/evidence-bearing work.
+
+Requests for a team, team member, subagent, delegation, Team-Native, or equivalent dispatch also activate Team mode.
+
+Workflow names and skill names are route signals, not fixed passwords.
+If the request itself is governed work, Team mode is triggered by that user request.
+
+Workflow names, source impact, platform mode, approval prompts, or available channels do not activate Team mode by themselves.
+They require a current governed Director request.
+
+They also do not authorize writes or protected actions.
+
+When Team mode is not active, captain/team-board limits do not apply.
+
+Normal lifecycle, scoped authorization, protected-action gates, read-before-write, and source/deployed sync rules still apply.
+
+Pure conversation, small stable answers, and no-impact read-only work remain outside Team mode only when they have no relevant impact.
+
+Relevant impact includes source, workflow, validation, review, memory, release, governance, or evidence impact.
+
+After Team mode is active, the workflow route must create or promote the board-first path before these actions:
+
+- Governance, workflow, fix, build, or broad evidence.
+- Change delivery, validation, review, memory/docs, protected action, or completion work.
+
+Missing specialist channel capability becomes standby, blocked, unverified, unavailable, or closed-with-director-risk station state.
+
+It does not downgrade active Team mode to captain-direct execution.
+
+Director-facing workflow status describes the plain-language route, evidence state, residual risk, and next action.
+
+Raw board, handoff, channel, lifecycle, and authorization fields stay internal unless cited as an evidence appendix.
+
+In active Team mode, small read-only probes are permitted before the formal board only for narrow purposes.
+They are allowed when needed to identify the route or locate explicitly named files.
+
+They must stay narrow, non-mutating, and non-evidence-producing.
+
+Allowed probes are named-file status, named-file diff, named-file hash, or a search constrained to explicitly named files.
+
+Small probes explicitly exclude:
+
+- Repository-wide grep.
+- `git grep` or `rg` against the repository root.
+- Recursive `Get-Content`.
+- Recursive `Get-ChildItem` used as a file inventory.
+- `rg --files`, `git ls-files`, and whole-repository file lists.
+- Validation, review, implementation, memory/docs attribution, and completion claims.
+
+In active Team mode, these actions require the formal sequence above:
+
+- Broad reads, recursive scans, and repository-wide grep.
+- Validation, review, implementation, memory/docs attribution, and completion claims.
+
+The sequence must run before a station-owned broad-read or evidence station starts.
+It must also run before the captain may ledger returned evidence.
+
+Do not treat early broad context as evidence before that trace exists.
+This applies to hooks, dormant readiness injection, pre-action guards, and platform-supplied context.
+
+Treat it as non-authorizing route context.
+
+It stays non-authorizing until a specialist station returns evidence or the board records a direct exception with residual state.
+
+That context cannot be promoted into validation, review, memory/docs, completion, or station-owned evidence.
 
 ## Board-State Boundary
 
-Board states exist only after Team mode is active. This sequence layer uses
-`draft`, `formal-readonly`, and `formal-write` as route states and leaves board
-fields, station rows, direct exceptions, and trace details to
-`Shared/skills/team-task-board/SKILL.md` and
-`Shared/policies/team-trace-evidence.md`.
+Board states exist only after Team mode is active.
 
-`formal-readonly` can gather evidence but cannot write source, memory, git,
-release, deployment, install, or external state. `formal-write` is still scoped
-to the resolved phase, file set, station, expiry, and protected gates.
+This sequence layer uses `draft`, `formal-readonly`, and `formal-write` as route states.
+
+It leaves board fields, station rows, direct exceptions, and trace details to the dedicated board and trace sources:
+
+- `Shared/skills/team-task-board/SKILL.md`
+- `Shared/policies/team-trace-evidence.md`
+
+`formal-readonly` can gather evidence.
+It cannot write source, memory, git, release, deployment, install, or external state.
+
+It does not require repeated GO when the no-write route is already visible.
+
+`formal-write` is a scope-bound one-work-agreement.
+It applies to the resolved phase, file set, station, expiry, and protected gates.
+
+It never carries into protected follow-on phases.
 
 ## Operation Mode
 
-This contract records where `operation_mode` is selected. The daily/full
-eligibility rules stay in `Shared/policies/team-native-core.md`; workflow rows
-and station artifacts record only the chosen mode, reason, and evidence state.
+This contract records where `operation_mode` is selected.
+
+The daily/full eligibility rules stay in `Shared/policies/team-native-core.md`.
+
+Workflow rows and station artifacts record only the chosen mode, reason, and evidence state.
 
 ## Dispatch Waves
 
@@ -156,60 +296,120 @@ Formal orchestration is wave-gated:
 4. Mark formal evidence eligibility for every station.
 5. Do not perform post-board all-at-once dispatch.
 
-Review and validation that judge a change wait until the implementation change
-delivery artifact is returned, blocked, unverified, or closed-with-director-risk.
+Review and validation that judge a change wait for the implementation change delivery artifact.
+
+That artifact must be returned, blocked, unverified, or closed-with-director-risk.
+
 Implementation and review of the same deliverable do not run in the same wave.
+
+## Closeout Targets
+
+Workflow closeout must name the target being judged.
+
+Source-level delivery closeout, full Team-Native completion, and commit/release readiness are different targets.
+
+- Source-level delivery closeout can report delivered source when evidence is sufficient.
+- Required evidence includes the change delivery artifact, validation, review, and sync evidence.
+- Source-level delivery closeout records protected follow-up pending for specific memory/docs states.
+- Those states are `memory-required` and `memory-blocked-by-scope`.
+- That pending follow-up does not block the delivered source layer by itself.
+- This applies only when protected memory mutation is outside the current authorization.
+- Full Team-Native completion still requires the full artifact chain.
+- That chain includes resolved memory/docs evidence and any required protected memory phases.
+- Commit, release, deploy, install, or external mutation readiness treats pending protected follow-up as a blocker.
+- The blocker remains until the matching protected owner station finishes.
+
+Director-facing status should say which target is closed and which protected follow-up remains.
+
+Do not expose the distinction as raw board jargon.
+
+Do not repeatedly ask for internal phase words when the only honest next state is protected follow-up pending.
 
 ## Station Handoff And Channel State
 
-Every formal station needs a handoff packet before it can produce formal
-evidence. This policy records the handoff point in the sequence; packet fields,
-channel lifecycle, status probe, replacement, cancellation, late-result, and
-receipt-decision details stay in `team-station-handoff-packet`,
-`team-task-board`, and `Shared/policies/team-trace-evidence.md`.
+Every formal station needs a handoff packet before it can produce formal evidence.
 
-Minimal lifecycle anchors stay thin here: draft board,
-`status_probe_resume_state`, `cancellation_state`, `late_result_policy`, and
-`receipt_decision` are trace tokens only; detailed value catalogs stay in the
-board, handoff, and trace sources above.
+This policy records the handoff point in the sequence.
 
-Missing channel capability is recorded as station or evidence state. It does not
-erase the station, become an execution route, or support completion.
+Packet fields and channel lifecycle details stay in the sources below.
+The same is true for status probe, replacement, cancellation, late-result, and receipt-decision details.
+
+- `team-station-handoff-packet`
+- `team-task-board`
+- `Shared/policies/team-trace-evidence.md`
+
+Minimal lifecycle anchors stay thin here.
+
+The trace tokens are:
+
+- Draft board.
+- `status_probe_resume_state`.
+- `cancellation_state`.
+- `late_result_policy`.
+- `receipt_decision`.
+
+Detailed value catalogs stay in the board, handoff, and trace sources above.
+
+Missing channel capability is recorded as station or evidence state.
+It does not erase the station, become an execution route, or support completion.
 
 ## Workflow Preset And Transition Reference
 
-Workflow family presets and transition conditions live in `source: Shared/policies/references/workflow-orchestration-boundaries.md; deployed: .agents/shared/policies/references/workflow-orchestration-boundaries.md`. The main
-orchestration policy keeps only the sequence and points workflow-specific
-evidence back to `Shared/workflow-capability-evidence-matrix.md`.
+Workflow family presets and transition conditions live in the paired boundaries files:
+
+- `source: Shared/policies/references/workflow-orchestration-boundaries.md`
+- `deployed: .agents/shared/policies/references/workflow-orchestration-boundaries.md`
+
+The main orchestration policy keeps only the sequence.
+It points workflow-specific evidence back to `Shared/workflow-capability-evidence-matrix.md`.
 
 ## Source/Deployed Sync Rule
 
-Framework source files are the source of truth. Deployed project copies are
-runtime copies. Governance, workflow, skill, shared policy, generated-copy,
-public-contract, and hook changes must record `source_deployed_pair`,
-`sync_direction`, and `sync_evidence` when a runtime copy exists.
+Framework source files are the source of truth. Deployed project copies are runtime copies.
 
-The normal direction is source first, then deployed copy. If a deployed copy is
-patched first during emergency repair, the task must record `sync_direction:
-deployed-to-source-backfill` and backfill the source before completion. Hash or
-content parity is required before any completion claim. Missing parity is Red,
-blocked, or unverified, not a Yellow advisory.
+Governance, workflow, skill, shared policy, generated-copy, public-contract, and hook changes must record sync evidence.
+
+Required fields are `source_deployed_pair`, `sync_direction`, and `sync_evidence`.
+
+This applies when a runtime copy exists.
+
+The normal direction is source first, then deployed copy.
+
+If a deployed copy is patched first during emergency repair, record `sync_direction: deployed-to-source-backfill`.
+
+Backfill the source before completion.
+
+Hash or content parity is required before any completion claim.
+Missing parity is Red, blocked, or unverified, not a Yellow advisory.
 
 Changing only a deployed copy is invalid completion for framework governance.
-When the current wave is intentionally source-only, the report must name the
-deployed pair and record the sync strategy as pending, blocked, unverified, or
-not-applicable. A later deploy/sync wave must compare content or hashes rather
-than relying on narrative claims.
+
+When the current wave is intentionally source-only, the report must name the deployed pair.
+
+It must record the sync strategy as pending, blocked, unverified, or not-applicable.
+
+A later deploy/sync wave must compare content or hashes rather than relying on narrative claims.
 
 ## Invalid Orchestration Patterns
 
-Invalid patterns are maintained in `source: Shared/policies/references/workflow-orchestration-boundaries.md; deployed: .agents/shared/policies/references/workflow-orchestration-boundaries.md`. They remain
-Red, blocked, unverified, or closed-with-director-risk patterns, not as `complete`
-and not full team completion; this main contract only keeps their reference to
-avoid repeating the long list in multiple workflow documents.
+Invalid patterns are maintained in the paired boundaries files:
+
+- `source: Shared/policies/references/workflow-orchestration-boundaries.md`
+- `deployed: .agents/shared/policies/references/workflow-orchestration-boundaries.md`
+
+They remain Red, blocked, unverified, or closed-with-director-risk patterns.
+
+They are not `complete` or full Team-Native completion.
+
+This main contract only keeps their reference.
+That avoids repeating the long list in multiple workflow documents.
 
 ## Entry Minimum Reference
 
-Workflow entries keep a short reference block only and must not copy board,
-trace, platform channel, scenario, or completion catalogs into the entry. The
-complete entry minimum list is in `source: Shared/policies/references/workflow-orchestration-boundaries.md; deployed: .agents/shared/policies/references/workflow-orchestration-boundaries.md`.
+Workflow entries keep a short reference block only.
+They must not copy board, trace, platform channel, scenario, or completion catalogs into the entry.
+
+The complete entry minimum list is in the paired boundaries files:
+
+- `source: Shared/policies/references/workflow-orchestration-boundaries.md`
+- `deployed: .agents/shared/policies/references/workflow-orchestration-boundaries.md`
