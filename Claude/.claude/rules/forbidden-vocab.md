@@ -3,9 +3,9 @@
 > Load when: generating Director-facing outputs, writing implementation plan change descriptions, reviewing task completion narratives.
 > Skip for: internal tool invocations, YAML fields, schema definitions.
 
-## Forbidden Vocabulary Mapping (禁用詞彙對照表)
+## Forbidden Vocabulary Mapping
 
-| ❌ Raw Code Identifier | ✅ Business Description (zh-TW) |
+| Raw Code Identifier | Business Description (zh-TW) |
 |---|---|
 | `memory card main file` | 模組記憶 |
 | `Tracked Files` | 追蹤的檔案清單 |
@@ -24,7 +24,7 @@
 | `.claude/skills/` | 工作流技能 |
 | `.claude/skills/` | 操作型知識庫 |
 
-## 技術詞彙翻譯閘門（Technical Vocabulary Translation Gate）
+## Technical Vocabulary Translation Gate
 
 Before finalizing ANY Director-facing text:
 1. Scan for occurrences of column 1 identifiers.

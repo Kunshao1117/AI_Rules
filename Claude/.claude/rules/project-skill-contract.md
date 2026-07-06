@@ -1,41 +1,41 @@
 # [PROJECT SKILL CONTRACT]
 
-> 條件載入觸發情境：
-> - 建立或修改衍生技能（`.agents/project_skills/`）
-> - 執行 `/12_skill_forge` 時
+> Load when:
+> - Creating or modifying derived skills under `.agents/project_skills/`.
+> - Running `/12_skill_forge`.
 
-## Project Skill Gate（衍生技能建立閘門）
+## Project Skill Gate
 
+```text
+[PROJECT SKILL GATE] Before creating a derived project skill:
+├── Has the skill draft been submitted to the Director through an artifact or conversation output?
+│   └── NO -> [HALT]「🔴 [FORGE HALT] 衍生技能草稿未送審，不得寫入磁碟。」
+├── Does YAML frontmatter contain `name`, `description`, and `metadata(origin: project)`?
+│   └── NO -> Auto-fix, retry at most twice, then HALT if still failing.
+├── Is the storage path `.agents/project_skills/<name>/SKILL.md`?
+│   └── NO -> Correct the path, then continue.
+└── Does the skill name conflict with an existing `.agents/skills/` index entry?
+    └── YES -> HALT and ask the Director to choose overwrite or rename.
 ```
-[PROJECT SKILL GATE] 建立衍生技能前：
-├── 技能草稿是否已透過 Artifact / 對話輸出送審總監？
-│   └── NO → [HALT]「🔴 [FORGE HALT] 衍生技能草稿未送審，不得寫入磁碟。」
-├── YAML frontmatter 是否包含：name, description, metadata(origin: project)?
-│   └── NO → 自動修正（最多重試 2 次）→ 仍失敗 → [HALT]
-├── 存放路徑是否為 .agents/project_skills/<name>/SKILL.md？
-│   └── NO → 自動修正路徑後繼續
-└── 技能名稱是否與現有技能衝突（.agents/skills/ 索引）？
-    └── YES → [HALT] 提示總監選擇覆寫或重命名
-```
 
-## 升級保護宣告
+## Upgrade Protection Statement
 
-- 框架升級（`Deploy-Claude.ps1`）絕不觸碰 `.agents/project_skills/`
-- 符號連結：`.claude/skills/project-{name}` → `.agents/project_skills/{name}/`（由 Backfill 建立）
+- Framework upgrade through `Deploy-Claude.ps1` must never touch `.agents/project_skills/`.
+- Symlink form: `.claude/skills/project-{name}` -> `.agents/project_skills/{name}/`, created by Backfill.
 
-## Frontmatter 必填規格
+## Required Frontmatter
 
 ```yaml
 metadata:
   author: <creator>
   version: "1.0"
-  origin: project        # 區別框架技能
+  origin: project        # Distinguishes project skills from framework skills.
   memory_awareness: none|read|full
   tool_scope: [...]
 ```
 
-## [SECURITY & COMPLIANCE MANDATE]
+## Security And Compliance Mandate
 
 > Inherits: `.claude/commands/_shared/_security_footer.md` (Role Lock Gate)
 
-- **Role**: `Writer/SRE` | 建立衍生技能屬寫入操作，需 Writer 角色。
+- **Role**: `Writer/SRE`. Creating a derived project skill is a write operation and requires the Writer role.
