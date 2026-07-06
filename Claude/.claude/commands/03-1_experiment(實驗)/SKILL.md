@@ -1,7 +1,16 @@
 ---
 name: 03-1_experiment
-description: "Use when: 沙盒快速實驗、髒碼原型、API spike、創意探索；03-1 是受治理 workflow，使用者要求 03-1 / experiment / sandbox prototype 時由該請求觸發 Team mode，主線擔任隊長並可使用 reduced/minimal experiment station/board。Sandbox writes 必須記錄 sandbox scope、discard condition、promotion condition、allowed shortcuts；discard/promotion/production promotion 仍需 scope-bound authorization，且不得宣稱 production completion。DO NOT use when: 生產建構、正式修復或需提交發布。"
-required_skills: [programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
+description: "沙盒快速實驗、髒碼原型、API spike 或創意探索（使用時機：沙盒實驗 / sandbox experiment / prototype）。03-1 是受治理 workflow；使用者要求 03-1、experiment 或 sandbox prototype 時會觸發 Team mode，由主線擔任隊長並使用 reduced/minimal experiment station 或 board。Sandbox writes 必須記錄 sandbox scope、discard condition、promotion condition 與 allowed shortcuts；discard、promotion、production promotion 仍需 scope-bound authorization，且不得宣稱 production completion。不適用：需要生產建構、正式修復、提交或發布（DO NOT use when）。"
+required_skills:
+  - programming-team-governance
+  - team-specialist-registry
+  - team-task-board
+  - team-role-boundaries
+  - team-change-delivery-artifact
+  - team-memory-docs-delivery-artifact
+  - team-validation-delivery-artifact
+  - team-review-delivery-artifact
+  - team-completion-gate
 memory_awareness: none
 user-invocable: true
 metadata:
@@ -33,9 +42,9 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 5. When editing workflow entries, skills, shared policies, or governance boundaries, read `.agents/shared/skill-governance.md` before changing placement or wording.
 6. When a concrete phase checklist is needed, read `.agents/shared/workflow-stage-procedures.md` and use section `03-1 Experiment`. Do not copy that procedure back into this entry.
 7. For Team-Native work, load `.claude/skills/programming-team-governance/SKILL.md`, `.claude/skills/team-task-board/SKILL.md`, `.claude/skills/team-station-handoff-packet/SKILL.md`, `.claude/skills/team-role-boundaries/SKILL.md`, and `.claude/skills/team-completion-gate/SKILL.md`; load delivery-artifact skills only when their stations apply.
-8. When memory evidence applies, use `.claude/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is `未驗證` or `阻塞`.
+8. When memory evidence applies, use `.claude/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is `unverified` or `blocked`.
 
-## 入口瘦身防線（Workflow Entry Slimming Guard）
+## Workflow Entry Slimming Guard
 
 - This entry owns route selection, workflow-specific phase order, minimum load gates, the matching evidence-matrix row, and platform adapter reference only.
 - Do not add copied Team-Native policy, board field lists, delivery artifact schemas, completion checklists, specialist lifecycle details, or full stage playbooks here.
@@ -48,30 +57,18 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Workflow row: `03-1`.
 - Procedure reference: `03-1 Experiment` in `.agents/shared/workflow-stage-procedures.md`.
 - Route summary: Declare sandbox boundary, allowed change scope, discard conditions, promotion criteria, allowed shortcuts, and no production completion claim.
-- `03-1` experiment is a governed workflow route: a Director request for `03-1`,
-  experiment, sandbox prototype, spike, or dirty-code prototype activates Team
-  mode; the mainline acts as captain and records the experiment board before
-  broad evidence, station work, writes, promotion, or completion claims.
-- Use a reduced/minimal experiment station/board, not a no-team path. Record
-  sandbox scope, sandbox boundary, allowed change scope, discard condition,
-  promotion condition, and allowed shortcuts before sandbox writes.
-- Sandbox writes and team artifacts are experiment-only. They do not equal
-  production source completion, memory/docs completion, validation/review
-  acceptance, release readiness, or production promotion.
-- Discard, promotion, and production promotion remain scope-bound phases.
-  Promotion to `03`/build or any formal production source/governance/public-contract
-  write requires a new visible production plan plus authorization resolution,
-  `formal-write`, station-owned `change-delivery`, validation, review, and
-  memory/docs delivery.
-- The captain may coordinate and receive artifacts but must not declare 03-1
-  dirty code or team artifacts production complete.
+- `03-1` experiment is a governed workflow route: a Director request for `03-1`, experiment, sandbox prototype, spike, or dirty-code prototype activates Team mode; the mainline acts as captain and records the experiment board before broad evidence, station work, writes, promotion, or completion claims.
+- Use a reduced/minimal experiment station/board, not a no-team path. Record sandbox scope, sandbox boundary, allowed change scope, discard condition, promotion condition, and allowed shortcuts before sandbox writes.
+- Sandbox writes and team artifacts are experiment-only. They do not equal production source completion, memory/docs completion, validation/review acceptance, release readiness, or production promotion.
+- Discard, promotion, and production promotion remain scope-bound phases. Promotion to `03`/build or any formal production source/governance/public-contract write requires a new visible production plan plus authorization resolution, `formal-write`, station-owned `change-delivery`, validation, review, and memory/docs delivery.
+- The captain may coordinate and receive artifacts but must not declare 03-1 dirty code or team artifacts production complete.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - In active Team mode, use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - In active Team mode, use `formal-write` only after a scope-bound intent signal has been resolved through authorization resolution to the visible plan, file set, station, command, phase, expiry, and required protected gate.
 
 ## Completion Boundary
 
-- Report evidence status as `足夠證據`, `部分證據`, `未驗證`, `阻塞`, or `不適用` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
+- Report evidence status as `sufficient`, `partial`, `unverified`, `blocked`, or `not-applicable` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
 - Full team completion requires separated implementation change delivery, memory/docs delivery, validation delivery, review delivery, source/deployed parity when relevant, and completion audit evidence.
 - Missing delivery artifacts, missing parity, unavailable channels, or Director-accepted residual risk must be reported as `blocked`, `unverified`, or `closed-with-director-risk`, not `complete`.
 - This entry must stay thin. If more procedure detail is needed, add or update the shared reference instead of expanding this file.
