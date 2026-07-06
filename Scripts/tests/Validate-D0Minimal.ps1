@@ -268,7 +268,7 @@ function Read-PackageLockSummary {
     $node = Resolve-NodeCommand
     $parseScript = @'
 const fs = require("fs");
-const file = process.argv[1];
+const file = process.argv[2];
 const data = JSON.parse(fs.readFileSync(file, "utf8"));
 const packages = data.packages && typeof data.packages === "object" ? Object.keys(data.packages).length : 0;
 console.log(JSON.stringify({
@@ -279,7 +279,7 @@ console.log(JSON.stringify({
 }));
 '@
 
-    $output = & $node -e $parseScript $Path
+    $output = $parseScript | & $node - $Path
     $exitCode = if ($null -ne $global:LASTEXITCODE) { [int]$global:LASTEXITCODE } else { 0 }
     if ($exitCode -ne 0) {
         throw "Invalid JSON in $(Get-RelativeDisplayPath -Path $Path)"
