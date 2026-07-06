@@ -1,11 +1,11 @@
 ---
 name: team-specialist-validation
 description: >
-  [Infra] Validation specialist for Team-Native change delivery artifacts.
-  Use when: running or classifying non-mutating checks, command evidence, browser
-  evidence, MCP read evidence, manual validation, validation state, 驗證證據、
-  非破壞性測試、回歸檢查。 DO NOT use when: implementing fixes, reviewing quality,
-  mutating source or protected state, 實作修復、審查裁決、改檔。
+  驗證證據專家站點（Infra）：Validation specialist for Team-Native change delivery artifacts.
+  Use when: 執行或分類 non-mutating checks、command evidence、browser evidence、
+  MCP read evidence、manual validation、validation state、驗證證據、非破壞性測試、回歸檢查。
+  DO NOT use when: 實作修復、審查裁決、改檔（implementing fixes,
+  reviewing quality, mutating source or protected state）。
 metadata:
   author: antigravity
   version: "1.0"
@@ -35,11 +35,11 @@ metadata:
 
 ## Trigger Conditions
 
-Use after a change delivery artifact, workflow change, governance change,
-release-prep step, or audit finding needs non-mutating evidence.
+當 change delivery artifact、workflow change、governance change、release-prep step
+或 audit finding 需要 non-mutating evidence 時使用。
 
-Use for command output, browser state, MCP read results, manual blocked
-classification, and repeatable validation route selection.
+適用於 command output、browser state、MCP read results、manual blocked
+classification 與 repeatable validation route selection。
 
 ## Procedure
 

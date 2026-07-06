@@ -1,12 +1,12 @@
 ---
 name: team-completion-gate
 description: >
-  [Infra] Completion gate for captain-led team work. Use when: closing a build,
-  fix, audit, workflow, skill, memory-docs, commit-prep, or release-prep task;
-  when checking that implementation change delivery, memory delivery, validation, review,
+  團隊收尾完成門檻（Infra）：Completion gate for captain-led team work. Use when: 收尾 build、
+  fix、audit、workflow、skill、memory-docs、commit-prep 或 release-prep task；
+  用於檢查 implementation change delivery、memory delivery、validation、review、
   sync, and residual-risk evidence are complete or honestly blocked; 完成門檻、完成交付件、記憶交付件、殘餘風險、
-  最終證據。DO NOT use when: performing implementation, validation repair,
-  memory commit, git commit, push, tag, release, 實作、修測試、提交或發布。
+  最終證據。DO NOT use when: 執行實作、修補驗證、memory commit、git commit、push、tag、release、
+  實作、修測試、提交或發布。
 metadata:
   author: antigravity
   version: "1.1"
@@ -20,10 +20,10 @@ metadata:
 
 ## Purpose
 
-Use this skill to decide whether a captain-led task may be reported complete, or
-must instead be reported as blocked, unverified, or closed-with-director-risk.
-It checks evidence completeness; it does not implement fixes, mutate memory,
-stage, commit, push, tag, release, deploy, or install.
+Use this skill to decide whether a captain-led task may be reported complete, reported as
+source-level delivery with protected follow-up pending, or reported as blocked, unverified, or
+closed-with-director-risk. It checks evidence completeness; it does not implement fixes, mutate
+memory, stage, commit, push, tag, release, deploy, or install.
 
 Read these sources first:
 
@@ -40,9 +40,12 @@ Read these sources first:
 ## Inputs
 
 - Director request, approved plan, and scope limits.
-- Board row with authorization, station, channel, delivery, and completion
-  states.
-- Implementation change delivery artifact when source changed.
+- Closeout target: source-level delivery, full Team-Native completion, commit/release readiness, or
+  protected follow-up status.
+- Board row with authorization, station, channel, delivery, and completion states.
+- Implementation or authorized change-application delivery artifact when source changed.
+- Artifact chain linking the implementation/change-application artifact, captain ledger receipt,
+  validation, review, memory/docs, sync evidence, and residual-risk dispositions.
 - Memory/docs delivery artifact when source or durable docs changed.
 - Validation delivery artifact when validation applies.
 - Independent review delivery artifact when review applies.
@@ -53,20 +56,33 @@ Read these sources first:
 
 | Check | Complete only when |
 |---|---|
+| Closeout target | The artifact states whether it is judging source-level delivery, full Team-Native completion, commit/release readiness, or protected follow-up status. |
 | Scope | Actual changes match the approved scope and exclusions. |
 | Authorization | Every write/protected phase has source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode. |
-| Change delivery | A returned implementation change delivery artifact exists, or the missing route is not being claimed as complete. |
-| Memory/docs delivery | Memory/docs impact is delivered, or the absence is explicitly blocked/unverified/risk closed. |
+| Artifact chain | Completion consumes only the artifact chain: implementation/change-application delivery artifact, captain ledger receipt, downstream validation, review, memory/docs, sync, and residual-risk artifacts. |
+| Change delivery | A returned implementation or authorized change-application artifact exists, or the missing route is not being claimed as complete. |
+| Memory/docs delivery | Full completion, commit readiness, or release readiness needs delivered memory/docs or an explicit non-complete state. Source-level delivery may report `memory-required` or `memory-blocked-by-scope` as protected follow-up pending when implementation, validation, review, and sync evidence are otherwise sufficient. |
 | Validation | Non-mutating validation passed, or blocked/unverified reason and smallest next validation path are named. |
 | Review | Independent review exists from a role that did not author the change; missing independent review blocks full completion. |
 | Role separation | Implementation, validation, review, memory/docs, and completion boundaries remain separate. |
-| Captain boundary | Captain work is routing, station-output ledgering, board/status synthesis, blocker/conflict/authorization coordination, protected phase routing, and Director-facing reporting; it is not implementation, validation, review, memory/docs attribution, protected execution, or protected evidence ownership. |
+| Captain boundary | Captain work is routing, station-output ledgering, board/status synthesis, blocker/conflict/authorization coordination, protected phase routing, and Director-facing reporting; it is not implementation, validation, review, memory/docs attribution, protected execution, protected evidence ownership, or a substitute completion artifact. |
 | Director-facing report governance | Final Director-facing reports and replies have a Traditional Chinese meaning-first main body, internal delivery fields appear only in a clearly labeled evidence appendix, internal delivery artifacts are synthesized rather than pasted, and technical tokens appear only as supporting evidence, paths, commands, schema fields, tool labels, state values, or exact evidence. English-led, raw-artifact-led, raw-field-led, or unsynthesized Director-facing reports block `complete`. |
 | Channel lifecycle | Every opened channel has first-response, status-probe, explicit pause/status response, captain resume message, timeout, replacement, cancellation, late-result, receipt-decision, and final-closure evidence when applicable. Wait timeouts are not treated as failure, probed members do not continue without captain resume, and replacements do not silently cancel original channels. |
 | Trace | Required board, station, handoff, role, channel, `station_mode`, `context_visibility`, `handoff_ownership`, delivery, and completion trace exists or missing parts are named as non-complete. |
 | Route/state separation | Routes/channels/forms are not mixed with blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk states. |
 | Sync | Source/deployed or generated/runtime pairs have sync direction and parity evidence when relevant. |
 | Residual risk | Remaining uncertainty is visible in the final report. |
+
+If any required chain artifact is missing, or if a captain-authored substitute is offered in place
+of a station artifact, the closeout state is `blocked`, `unverified`, or
+`closed-with-director-risk`; it is not `complete`.
+
+Protected follow-up pending is a source-level closeout disposition, not a full completion state. Use
+it when source changes are delivered, validated, reviewed, and synced, but memory write, memory
+commit, git, release, deployment, install, or another protected phase was not requested or
+authorized. It must name the pending owner station and smallest next protected phase. It must not be
+reported as `complete`, and it becomes a blocker when the closeout target is full Team-Native
+completion, commit readiness, or release readiness.
 
 ## Completion States
 
@@ -78,10 +94,11 @@ Use exactly one:
 | `closed-with-director-risk` | The Director explicitly closes a named residual risk; this is not full completion. |
 | `blocked` | A required tool, authorization, delivery artifact, validation path, review, memory/docs disposition, or sync condition is unavailable. |
 | `unverified` | Evidence is absent or incomplete but the task can still be reported honestly without claiming completion. |
+| `not-applicable` | Full completion is not the current closeout target, such as a source-level delivery report with protected follow-up pending. |
 
-Informal states such as done, completed, acceptable, or accepted-risk do not
-replace the completion state. Review accepted-risk is a review lifecycle state,
-not a Team-Native completion state.
+Informal states such as done, completed, acceptable, source-level-ready,
+protected-follow-up-pending, or accepted-risk do not replace the completion state. Review
+accepted-risk is a review lifecycle state, not a Team-Native completion state.
 
 ## Closeout Lanes
 
@@ -93,23 +110,24 @@ Use the closeout lane from the board:
 | `standard` | Policies, skills, matrices, audit rules, workflow semantics, memory/docs impact, or public contracts. | Requires separated delivery, validation, review, memory/docs disposition, and completion audit unless honestly closed non-complete. |
 | `release-grade` | Commit, tag, release, deployment, install, external mutation, credentials, or operator readiness. | Requires standard lane plus release/security readiness evidence. |
 
-A source, workflow, governance, generated-copy, memory, or public-contract write
-promotes the lane to at least standard unless the board records a concrete
-non-full reason and does not claim full completion.
+A source, workflow, governance, generated-copy, memory, or public-contract write promotes the lane
+to at least standard unless the board records a concrete non-full reason and does not claim full
+completion.
 
 ## Output
 
-The structure below is an internal completion-gate evidence artifact. It may
-inform the final Director-facing report, but the report body must be
-Traditional Chinese meaning-first. Exact internal fields and lifecycle states
-belong only in a compact evidence appendix after the summary, risk, and next
-steps. Use canonical English keys in the artifact; Chinese labels are a
+The structure below is an internal completion-gate evidence artifact. It may inform the final
+Director-facing report, but the report body must be Traditional Chinese meaning-first. Exact
+internal fields and lifecycle states belong only in a compact evidence appendix after the summary,
+risk, and next steps. Use canonical English keys in the artifact; Chinese labels are a
 Director-facing rendering concern only.
 
 ```text
 changes:
 files:
 evidence:
+artifact_chain:
+closeout_target:
 risk:
 director_output_gate:
 internal_artifact_rendering:
@@ -118,6 +136,7 @@ review_need:
 blocking:
 status:
 completion_state:
+protected_follow_up:
 closeout_lane:
 station_mode:
 context_visibility:
@@ -125,11 +144,11 @@ handoff_ownership:
 residual_risk:
 ```
 
-Detailed authorization, board, trace, source/deployed, and station lifecycle
-fields stay in `team-task-board` and `team-trace-evidence`.
+Detailed authorization, board, trace, source/deployed, and station lifecycle fields stay in
+`team-task-board` and `team-trace-evidence`.
 
 ## Forbidden Actions
 
-Do not implement fixes, repair validation failures, change review results,
-mutate memory, call memory commit, stage, commit, push, tag, release, deploy,
-install, or hide missing authorization/evidence behind a completion claim.
+Do not implement fixes, repair validation failures, change review results, mutate memory, call
+memory commit, stage, commit, push, tag, release, deploy, install, or hide missing
+authorization/evidence behind a completion claim.

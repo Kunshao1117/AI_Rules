@@ -1,12 +1,11 @@
 ---
 name: team-validation-delivery-artifact
 description: >
-  [Infra] Validation specialist delivery artifact rules for captain-led work. Use when:
-  producing or checking non-mutating validation evidence after a change delivery, workflow
-  change, audit, or release-prep step; when separating test evidence from
-  implementation; 驗證交付件、非破壞性驗證、測試證據、回歸證據。DO NOT use when:
-  implementing fixes, approving review state, 實作修復、審查裁決, or mutating
-  source, memory, git, deploy, or release state.
+  驗證交付件規則（Infra）：Validation specialist delivery artifact rules for captain-led work.
+  Use when: 需要在 change delivery、workflow change、audit 或 release-prep step 後產出或檢查 non-mutating validation evidence。
+  Use when: 需要把 test evidence 與 implementation 分離。
+  驗證交付件、非破壞性驗證、測試證據、回歸證據。
+  DO NOT use when: 需要實作修復、批准 review state，或 mutate source、memory、git、deploy、release state。
 metadata:
   author: antigravity
   version: "1.0"
@@ -20,7 +19,8 @@ metadata:
 
 ## Purpose
 
-Produce validation evidence without repairing the implementation. A validation specialist proves what was checked, what passed or failed, and what remains unverified.
+Produce validation evidence without repairing the implementation.
+A validation specialist proves what was checked, what passed or failed, and what remains unverified.
 
 ## Inputs
 
@@ -36,10 +36,10 @@ Produce validation evidence without repairing the implementation. A validation s
 2. Record the exact command, browser path, MCP read, or manual reason.
 3. Separate pass, fail, blocked, and unverified states.
 4. Do not fix failures inside the validation station.
-5. Include enough evidence for validation, review, completion stations, and
-   captain synthesis to understand the result without changing it.
+5. Include enough evidence for validation, review, completion stations, and captain synthesis to understand the result without changing it.
 6. Validate the recovered change delivery or evidence delivery; do not treat a subagent route as proof by itself.
-7. Do not validate a change before the change delivery artifact exists. If the artifact is missing, validate only the blocked/unverified/closed-with-director-risk state.
+7. Do not validate a change before the change delivery artifact exists.
+   If the artifact is missing, validate only the blocked/unverified/closed-with-director-risk state.
 8. Record the delivery artifact ID, source input, validation scope, and whether validation happened after change delivery.
 9. Treat missing or mismatched authorization fields as blocked or unverified validation evidence.
 
@@ -83,4 +83,5 @@ Valid `validation_state` values:
 
 ## Forbidden Actions
 
-Do not edit source, run formatters or generators that rewrite files, update snapshots unless explicitly assigned as implementation, change memory, stage files, commit, push, release, deploy, or decide release/completion readiness.
+Do not edit source, run formatters or generators that rewrite files, or update snapshots unless explicitly assigned as implementation.
+Do not change memory, stage files, commit, push, release, deploy, or decide release/completion readiness.

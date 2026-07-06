@@ -1,11 +1,11 @@
 ---
 name: team-specialist-scope-impact
 description: >
-  [Infra] Scope and impact specialist for Team-Native work. Use when: mapping
-  affected files, workflows, skills, memory cards, docs, generated copies,
-  dependencies, regression surface, impact analysis, 影響面、範圍盤點、回歸面、
-  記憶文件影響。 DO NOT use when: implementing changes, release/completion
-  station decisions, release mutation, 實作、收尾裁決、提交發布。
+  範圍影響分析專家站點（Infra）：Scope and impact specialist for Team-Native work. Use when: 盤點
+  affected files、workflows、skills、memory cards、docs、generated copies、
+  dependencies、regression surface、impact analysis、影響面、範圍盤點、回歸面、記憶文件影響。
+  DO NOT use when: 實作、收尾裁決、提交發布（implementing changes,
+  release/completion station decisions, release mutation）。
 metadata:
   author: antigravity
   version: "1.0"
@@ -35,11 +35,11 @@ metadata:
 
 ## Trigger Conditions
 
-Use when the board or owner station needs a bounded impact map before scoped
-routing, integration, validation, review, or completion-readiness evidence.
+當 board 或 owner station 在 scoped routing、integration、validation、review
+或 completion-readiness evidence 前需要 bounded impact map 時使用。
 
-Use for source files, workflow entries, Shared skills, deployed copies,
-memory ownership, documentation surfaces, and regression risk.
+適用於 source files、workflow entries、Shared skills、deployed copies、
+memory ownership、documentation surfaces 與 regression risk。
 
 ## Procedure
 

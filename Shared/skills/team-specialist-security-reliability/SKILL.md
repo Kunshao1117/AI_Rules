@@ -1,11 +1,12 @@
 ---
 name: team-specialist-security-reliability
 description: >
-  [Infra] Security and reliability specialist for Team-Native work. Use when:
-  checking secrets, credential handling, auth, input validation, abuse risk,
-  reliability, observability, rollback, SRE, 安全可靠性、明文憑證、回復路徑、
-  監控風險。 DO NOT use when: routine style review, feature implementation,
-  release mutation, 一般風格審查、功能實作、提交發布。
+  安全可靠性專家站點（Infra）：Security and reliability specialist for Team-Native work.
+  Use when: 需要檢查 secrets、credential handling、auth、input validation、abuse risk、
+  reliability、observability、rollback 或 SRE。
+  關鍵語意：安全可靠性、明文憑證、回復路徑、監控風險。
+  DO NOT use when: 一般風格審查、功能實作、提交發布（routine style review,
+  feature implementation, release mutation）。
 metadata:
   author: antigravity
   version: "1.0"
@@ -35,11 +36,11 @@ metadata:
 
 ## Trigger Conditions
 
-Use when a change touches or has plausible impact on credentials, auth, permissions, data integrity,
-abuse resistance, runtime stability, observability, rollback, or operational
-failure handling.
+當變更觸及或可能影響 credentials、auth、permissions、data integrity、
+abuse resistance、runtime stability、observability、rollback 或 operational
+failure handling 時使用。
 
-Use before integration when the risk surface is unclear or high consequence.
+當 risk surface 不明或後果重大時，在 integration 前使用。
 
 ## Procedure
 

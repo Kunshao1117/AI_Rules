@@ -1,12 +1,11 @@
 ---
 name: team-review-delivery-artifact
 description: >
-  [Infra] Review specialist delivery artifact rules for captain-led work. Use when: checking
-  a change delivery, workflow change, skill change, docs-governance change, or validation
-  result for requirement fit, correctness, quality, regression risk, and residual
-  risk; 審查交付件、獨立審查、需求符合、品質風險、回歸風險。DO NOT use when:
-  the reviewer authored the implementation, 實作者自審, or when the task only
-  needs validation output.
+  獨立審查交付件規則（Infra）：Review specialist delivery artifact rules for captain-led work.
+  Use when: 檢查 change delivery、workflow change、skill change、docs-governance change 或 validation result。
+  Use for requirement fit, correctness, quality, regression risk, and residual risk.
+  審查交付件、獨立審查、需求符合、品質風險、回歸風險。
+  DO NOT use when: 審查者就是 implementation author、實作者自審，或 task only needs validation output。
 metadata:
   author: antigravity
   version: "1.0"
@@ -20,7 +19,8 @@ metadata:
 
 ## Purpose
 
-Give an independent review judgment. The reviewer checks whether the change delivery fits the request and project rules, but does not implement the change being reviewed.
+Give an independent review judgment.
+The reviewer checks whether the change delivery fits the request and project rules, but does not implement the change being reviewed.
 
 ## Inputs
 
@@ -37,8 +37,10 @@ Give an independent review judgment. The reviewer checks whether the change deli
 3. Quality: Is the solution minimal, maintainable, and consistent with local patterns?
 4. Regression risk: What must be treated as possible breakage or drift?
 5. Evidence integrity: Are validation, memory delivery, and sync claims supported?
-6. Role integrity: Does the specialist role trace back to `team-specialist-registry` and the matching `team-specialist-*` skill, and is any subagent only an execution channel?
-7. Wave integrity: Did review start after the relevant change delivery artifact was returned or explicitly marked blocked, unverified, or closed-with-director-risk?
+6. Role integrity: Does the specialist role trace back to `team-specialist-registry` and the matching `team-specialist-*` skill?
+   Is any subagent only an execution channel?
+7. Wave integrity: Did review start after the relevant change delivery artifact was returned?
+   Or was it explicitly marked blocked, unverified, or closed-with-director-risk?
 8. Independence: Did the reviewer avoid authoring the implementation being reviewed? Missing independence prevents `complete`.
 9. Authorization fit: Do authorization source, target, scope, phase, evidence, expiry, and resolution state match the reviewed work?
 
@@ -83,4 +85,8 @@ Valid `review_state` values:
 
 ## Forbidden Actions
 
-Do not review your own implementation, edit files under review, run mutating tools, update memory, stage, commit, push, release, deploy, or convert missing validation into acceptance. Captain substitute authoring must be reviewed only as blocked, unverified, or closed-with-director-risk evidence; it cannot be upgraded into full team completion.
+Do not review your own implementation or edit files under review.
+Do not run mutating tools, update memory, or convert missing validation into acceptance.
+Do not stage, commit, push, release, or deploy.
+Captain substitute authoring must be reviewed only as blocked, unverified, or closed-with-director-risk evidence.
+It cannot be upgraded into full team completion.

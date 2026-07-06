@@ -74,6 +74,13 @@ deep_read_scope
 captain_coordination_read_scope
 context_visibility
 unread_scope
+external_grounding_required
+external_research_question
+external_research_artifact_id
+external_grounding_state
+source_tier
+source_date_or_version
+missing_external_evidence
 allowed_inputs
 allowed_tools
 forbidden_actions
@@ -110,6 +117,9 @@ author_role
 source_input
 integrable_scope
 captain_authored
+validation_handoff
+review_handoff
+memory_docs_handoff
 review_state
 validation_state
 memory_docs_state
@@ -202,6 +212,61 @@ legacy `formal` must be narrowed to `formal-readonly` or `formal-write`.
 - `shared-visible`
 - `unread`
 - `not-applicable`
+
+`external_grounding_required` records whether the station needs current external
+evidence:
+
+- `true`
+- `false`
+- `unknown`
+
+Use `external_grounding_state` or prose for blocked, unverified, or
+not-applicable outcomes. Do not encode those outcomes in
+`external_grounding_required`.
+
+`external_research_question` records the exact external fact, version, API,
+security, legal, pricing, status, or vendor-doc question a station needs. Use
+`not-applicable` when no external evidence is needed.
+
+`external_research_artifact_id` records the returned formal
+`external-research` artifact ID. If a role-specific artifact uses
+`external_grounding_artifact_id`, the returned artifact must map that value to
+canonical `external_research_artifact_id`.
+
+`external_grounding_state` records whether current external evidence is needed,
+requested, sufficient, incomplete, missing, conflicted, blocked, or unverified:
+
+- `not-required`
+- `required`
+- `requested`
+- `sufficient`
+- `partial`
+- `no-evidence`
+- `conflicted`
+- `blocked`
+- `unverified`
+
+Route and receipt events are prose, not machine states. Describe that an
+external-research route opened or that an artifact returned without adding
+those events to the `external_grounding_state` value set.
+
+`source_tier` records the source quality tier returned by the
+`external-research` station:
+
+- `official`
+- `primary`
+- `high-confidence-secondary`
+- `low-confidence-community`
+- `local-tool-output`
+- `not-applicable`
+- `unknown`
+
+`source_date_or_version` records the publication date, retrieval date, API
+version, product version, standard version, or `not-applicable`.
+
+`missing_external_evidence` records the blocked/unverified reason when no
+artifact or sufficient source exists. Use `none` when external evidence is not
+missing.
 
 `handoff_ownership` records who owns the current handoff state:
 
@@ -305,6 +370,12 @@ artifacts:
 - `unverified`
 - `closed-with-director-risk`
 - `not-applicable`
+
+`validation_handoff`, `review_handoff`, and `memory_docs_handoff` record the
+post-change downstream handoff bundle returned by implementation or
+change-application stations. They are inputs for later stations only;
+implementers do not fill final `validation_state`, `review_state`, or
+`memory_docs_state`.
 
 `review_state` records review lifecycle only:
 

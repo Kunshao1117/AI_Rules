@@ -1,11 +1,12 @@
 ---
 name: team-specialist-release-completion
 description: >
-  [Infra] Release and completion specialist for Team-Native work. Use when:
-  checking completion readiness, release-prep evidence, residual risk, sync,
-  review and validation delivery artifacts, handoff, 完成檢查、發布準備、殘餘風險、收尾證據。
-  DO NOT use when: implementing changes, mutating git, tagging, publishing,
-  final completion decision, 實作、提交、打標、發布、最終裁決。
+  發布與收尾檢查專家站點（Infra）：Release and completion specialist for Team-Native work.
+  Use when: 需要檢查 completion readiness、release-prep evidence、residual risk、sync、
+  review and validation delivery artifacts 或 handoff。
+  關鍵語意：完成檢查、發布準備、殘餘風險、收尾證據。
+  DO NOT use when: 實作、提交、打標、發布、最終裁決（implementing changes,
+  mutating git, tagging, publishing, final completion decision）。
 metadata:
   author: antigravity
   version: "1.0"
@@ -34,11 +35,11 @@ metadata:
 
 ## Trigger Conditions
 
-Use near task completion, commit preparation, release preparation, handoff,
-or audit closeout when the captain needs evidence completeness checked.
+接近 task completion、commit preparation、release preparation、handoff
+或 audit closeout，且隊長需要檢查 evidence completeness 時使用。
 
-Use to classify missing change delivery, memory docs, validation, review,
-sync, docs, or residual-risk evidence.
+用於分類缺少的 change delivery、memory docs、validation、review、sync、docs、
+protected follow-up 或 residual-risk evidence。
 
 ## Procedure
 
@@ -49,6 +50,11 @@ sync, docs, or residual-risk evidence.
 Change delivery artifact required and absent?
 ├── YES and no [SUDO] -> HALT and return blocked.
 ├── YES with [SUDO] -> Record override/risk-closure request, mark incomplete separation, and return closed-with-director-risk or blocked; this cannot support complete.
+└── NO -> Continue.
+Closeout target is source-level delivery, with implementation, validation,
+review, and sync evidence present, but memory/docs reports `memory-required` or
+`memory-blocked-by-scope` because protected memory phases were not authorized?
+├── YES -> Return protected-follow-up-pending with `completion_state: not-applicable`; do not block source-level delivery and do not claim full completion.
 └── NO -> Continue.
 Validation, review, memory-docs, or sync evidence required and absent?
 ├── YES -> Return unverified or blocked with smallest completion path.
@@ -62,7 +68,10 @@ Task asks for git, tag, release, deploy, install, or memory mutation?
 
 1. Compare the request, approved scope, actual changed files, validation evidence, review evidence, memory-docs status, and residual risks.
 2. Confirm generated copies, deployed copies, indexes, or docs sync when relevant.
-3. Classify readiness as ready-for-captain-completion, closed-with-director-risk, blocked, unverified, or not-applicable. Formal `completion_state` uses only complete, closed-with-director-risk, blocked, unverified, or not-applicable.
+3. Classify readiness as ready-for-captain-completion, source-level-ready,
+   protected-follow-up-pending, closed-with-director-risk, blocked, unverified,
+   or not-applicable. Formal `completion_state` uses only complete,
+   closed-with-director-risk, blocked, unverified, or not-applicable.
 4. Do not perform protected-state actions.
 
 ### Step 3: Return the completion artifact
@@ -70,12 +79,16 @@ Task asks for git, tag, release, deploy, install, or memory mutation?
 Return these fields:
 
 - Role: release completion.
-- Readiness disposition: ready-for-captain-completion, closed-with-director-risk, blocked, unverified, or not-applicable.
+- Readiness disposition: ready-for-captain-completion, source-level-ready,
+  protected-follow-up-pending, closed-with-director-risk, blocked, unverified,
+  or not-applicable.
 - Formal completion_state recommendation: complete, closed-with-director-risk, blocked, unverified, or not-applicable; readiness disposition is not written into `completion_state`.
 - Evidence present: change delivery, validation, review, memory docs, sync, docs, and handoff.
 - Missing evidence: exact missing item and smallest next step.
 - Residual risk: closed-with-director-risk, unverified, blocked, or none.
-- Protected phase requests needed: memory, git, tag, release, deploy, install, or final completion decision.
+- Protected follow-up queue: memory-write, memory-commit, git, tag, release,
+  deploy, install, external mutation, or final completion decision that remains
+  outside the current source-level closeout.
 - Blocker status: blocked, unverified, closed-with-director-risk, or not-applicable.
 
 ## Trace And Handoff Contract
@@ -98,7 +111,10 @@ field list inside this role skill.
 ## Gotchas
 
 - Do not call a task complete because files were edited.
-- Do not hide missing memory, validation, review, or sync evidence.
+- Do not hide missing memory, validation, review, or sync evidence. If memory is
+  pending only because protected mutation was outside the current source-level
+  scope, report protected follow-up pending instead of repeatedly asking the
+  Director for an internal phase word.
 - Release readiness is not permission to mutate git or publish.
 
 ## Constraints

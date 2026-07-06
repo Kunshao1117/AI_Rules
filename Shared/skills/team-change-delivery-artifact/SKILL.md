@@ -1,13 +1,13 @@
 ---
 name: team-change-delivery-artifact
 description: >
-  [Infra] Implementation specialist change delivery artifact rules. Use when: a team
-  implementation station must deliver a station-owned main-worktree change,
-  isolated workspace change, text change delivery artifact, fallback
-  change-application receipt, or captain substitute authoring risk record; when checking that implementers
-  did not review, validate, mutate memory, or touch git/release state; 變更交付件、
-  隔離變更交付形式、文字變更交付、隊員實作交付。DO NOT use when: review, validation,
-  completion, captain substitute authoring, 審查、驗證、收尾或隊長替代創作。
+  實作變更交付件規則（Infra）：Implementation specialist change delivery artifact rules.
+  Use when: 團隊實作站點需交付 station-owned main-worktree change。
+  Use when: 團隊實作站點需交付 isolated workspace change 或 text change delivery artifact。
+  Use when: 團隊實作站點需交付 fallback change-application receipt 或 captain substitute authoring risk record。
+  Use when: 檢查實作者未自審、未自驗證、未修改 memory，且未碰 git/release state。
+  變更交付件、隔離變更交付形式、文字變更交付、隊員實作交付。
+  DO NOT use when: 審查、驗證、收尾或隊長替代創作（review, validation, completion, captain substitute authoring）。
 metadata:
   author: antigravity
   version: "1.0"
@@ -21,11 +21,15 @@ metadata:
 
 ## Purpose
 
-Constrain implementation specialists to change delivery. The implementer changes only the assigned implementation surface and returns a change delivery artifact for captain receipt, board update, and routing to later stations. Diff text is only a representation format; the governing object is the change delivery artifact.
+Constrain implementation specialists to change delivery.
+The implementer changes only the assigned implementation surface.
+The implementer returns a change delivery artifact for captain receipt, board update, and routing to later stations.
+Diff text is only a representation format; the governing object is the change delivery artifact.
 
 Use `team-role-boundaries` to check role separation and `team-task-board` for board state.
 Use `team-memory-docs-delivery-artifact` to attach memory impact evidence to source changes.
-Use `team-specialist-registry` and the matching `team-specialist-*` skill to confirm the implementation specialist role before any execution channel is used.
+Use `team-specialist-registry` and the matching `team-specialist-*` skill.
+Confirm the implementation specialist role before any execution channel is used.
 
 ## Inputs
 
@@ -53,23 +57,23 @@ Use `team-specialist-registry` and the matching `team-specialist-*` skill to con
 2. Read the existing diff for every target file before editing.
 3. Modify only files explicitly assigned by the board.
 4. Confirm the assigned authorization scope and phase match the artifact being produced or applied.
-5. For main-worktree implementation writes, confirm `station_mode:
-   change-delivery`, `handoff_ownership: station-owned`, authorization phase
-   `implementation-change-delivery`, exact file allowlist, dirty-diff read, and
-   forbidden protected actions before writing.
-6. For fallback change application, confirm the input is a returned
-   isolated/text artifact, explicit integration task, or assigned
-   generated/deployed sync before applying anything.
+5. For main-worktree implementation writes, confirm `station_mode: change-delivery` and `handoff_ownership: station-owned`.
+   Confirm authorization phase `implementation-change-delivery`, exact file allowlist, and dirty-diff read.
+   Confirm forbidden protected actions before writing.
+6. For fallback change application, confirm the input is a returned isolated/text artifact, explicit integration task, or assigned sync.
+   Assigned sync includes generated/deployed sync.
+   Confirm that input before applying anything.
 7. Keep changes minimal and tied to the approved requirement.
 8. Do not add unrelated cleanup, formatting, or generated output.
-9. Stop after producing the change delivery artifact or change-application
-   receipt for captain receipt.
+9. Stop after producing the change delivery artifact or change-application receipt for captain receipt.
 
 ## Output
 
 The structure below is an internal change delivery artifact for captain receipt
-and trace evidence. It is not the Director-facing report body. When its content
-is surfaced to the Director, synthesize a Traditional Chinese meaning-first
+and trace evidence. It is not the Director-facing report body. The
+implementer supplies downstream handoff fields, not final validation, review,
+memory/docs, or completion states. When its content is surfaced to the Director,
+synthesize a Traditional Chinese meaning-first
 summary and place exact canonical fields only in a clearly labeled evidence
 appendix. Use canonical English keys in the artifact; Chinese labels are a
 Director-facing rendering concern only.
@@ -99,9 +103,10 @@ files:
 evidence:
 risk:
 memory_impact:
-review_state:
-validation_state:
-memory_docs_state:
+validation_handoff:
+review_handoff:
+memory_docs_handoff:
+next_wave_start_condition:
 captain_authored:
 recommendation:
 blocking:
@@ -110,4 +115,19 @@ status:
 
 ## Forbidden Actions
 
-Do not perform final review, final validation, memory writes, unauthorized deployed-copy sync, unauthorized main-worktree writes, git staging, commit, push, tag, release, install, secret handling, or external-state mutation. Authorized main-worktree change-delivery stations may write only the exact paths named by the `formal-write` implementation station and must return an artifact or receipt rather than a completion claim. Authorized change-application stations are fallback integration routes for returned isolated/text artifacts, explicit integration tasks, or assigned generated/deployed sync, and may write only the exact paths named by that phase. You may name the source/deployed pair, proposed sync direction, and expected parity evidence, but unassigned deployed-copy sync and any protected follow-on phase need their own scoped station or gate. Text and isolated artifacts are inputs to a station-owned fallback change-application gate. The captain may receive this artifact, maintain the board, handle blockers, and route it onward; captain rewrite, reimplementation, hand-edited replacement, `apply_patch`, or any captain source write is substitute authoring risk. Do not mark the task complete, and do not describe captain substitute authoring as a change delivery artifact or as full team completion.
+Do not perform final review or final validation.
+Do not write memory, perform unauthorized deployed-copy sync, perform unauthorized main-worktree writes, or handle secrets.
+Do not stage, commit, push, tag, release, install, or mutate external state.
+Authorized main-worktree change-delivery stations may write only the exact paths named by the `formal-write` implementation station.
+They must return an artifact or receipt rather than a completion claim.
+Authorized change-application stations are fallback integration routes for returned isolated/text artifacts or explicit integration tasks.
+They are also fallback integration routes for assigned generated/deployed sync.
+They may write only the exact paths named by that phase.
+You may name the source/deployed pair, proposed sync direction, and expected parity evidence.
+Unassigned deployed-copy sync and any protected follow-on phase need their own scoped station or gate.
+Text and isolated artifacts are inputs to a station-owned fallback change-application gate.
+The captain may receive this artifact, maintain the board, handle blockers, record the delivery artifact in the ledger, and route it onward.
+Captain rewrite, reimplementation, hand-edited replacement, `apply_patch`, or any captain source write is substitute authoring risk.
+Do not fill `review_state`, `validation_state`, or `memory_docs_state` as an implementer.
+Provide handoff fields for those downstream stations.
+Do not mark the task complete, and do not describe captain substitute authoring as a change delivery artifact or as full team completion.

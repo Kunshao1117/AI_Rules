@@ -1,10 +1,11 @@
 ---
 name: team-specialist-registry
 description: >
-  [Infra] Team specialist role registry and role_id router for Team-Native work.
-  Use when: choose one of ten specialist child skills for a station; 專家角色、
-  隊員路由、站點派工、角色代號。 DO NOT use when: pure discussion, final
-  Director-facing synthesis, memory writes, git or release mutation.
+  專家角色登錄與站點派工（Infra）：Team-Native 專家角色 registry、role_id router、隊員路由與站點派工。
+  Use when: 需要為 station 選擇 specialist child skill、專家角色、隊員路由、
+  站點派工或角色代號。
+  DO NOT use when: 純討論、最終總監摘要、memory 寫入、git 或 release 突變；
+  English: pure discussion, final Director-facing synthesis, memory writes, git/release mutation.
 metadata:
   author: antigravity
   version: "1.0"
@@ -35,20 +36,17 @@ metadata:
 
 ## Trigger Conditions
 
-Use after the captain has a Team-Native board and needs a station-specific
-specialist role.
+隊長已有 Team-Native board，且需要 station-specific specialist role 時使用。
 
-Use this registry to choose exactly one primary specialist for one substation
-task. Use the chosen child skill for the substation task procedure, role
-identity, support skills, artifact contracts, trace contracts, and output
-format. A station family may contain multiple substation tasks and multiple
-member assignments, but each member assignment can hold only one substation task
-inside the same task trace.
+用此 registry 為一個 substation task 選擇 exactly one primary specialist。
+選定的 child skill 提供 substation task procedure、role identity、support skills、
+artifact contracts、trace contracts 與 output format。一個 station family 可包含多個
+substation tasks 與 member assignments，但同一 task trace 內每個 member assignment
+只能持有一個 substation task。
 
-Before starting the station, create a handoff packet with
-`team-station-handoff-packet` or an equivalent platform adapter. The packet
-must include `operation_mode`, `operation_mode_reason`, `role_id`,
-`role_instance_id`, `exclusive_task_scope`, `station_family`,
+啟動 station 前，使用 `team-station-handoff-packet` 或等效 platform adapter
+建立 handoff packet。該 packet 必須包含 `operation_mode`、`operation_mode_reason`、
+`role_id`、`role_instance_id`, `exclusive_task_scope`, `station_family`,
 `formal_station`, `substation_task`, `member_assignment`, the assigned
 specialist skill, loaded skill refs, read scope, forbidden actions, output
 format, startup threshold, standby reason when applicable, and timeout action.
@@ -91,6 +89,19 @@ specialist artifacts into a Traditional Chinese, meaning-first summary under
 `Shared/policies/language-governance.md`, while preserving evidence source,
 role ownership, and verification state.
 
+### Cross-Station External Grounding Requests
+
+Every specialist may return an `external_grounding_request` when local evidence
+is insufficient, stale, version-sensitive, or dependent on official external
+facts. That request does not change the requesting specialist's `role_id` and
+does not authorize the requester or captain to perform ad hoc research.
+
+Route the request to a separate `external-research` substation with its own
+`role_instance_id`, handoff packet, source tier, `checked_at`,
+`local_version_anchor`, and evidence packet. The requesting station may consume
+the returned `external_grounding_artifact_id`; research evidence remains owned
+by the external-research station.
+
 ### Step 3: Preserve role boundaries and member assignments
 
 1. A station family may have multiple substation tasks and multiple member
@@ -111,9 +122,12 @@ role ownership, and verification state.
    or Director authorization path. The captain coordinates and reports;
    acceptance is not captain-owned, and this registry does not assign protected
    execution or evidence ownership to the captain.
-9. Return blocked, unverified, or closed-with-director-risk when the required
+9. Route external grounding through a separate `external-research` role
+   instance when a station requests current outside evidence. Do not let a
+   non-research role produce source-tiered research evidence.
+10. Return blocked, unverified, or closed-with-director-risk when the required
    role or member separation cannot be preserved.
-10. Treat subagents, browsers, commands, MCP reads, isolated workspaces, and
+11. Treat subagents, browsers, commands, MCP reads, isolated workspaces, and
     text-only paths as execution channels only; they are not role sources.
 
 ## Trace And Handoff Contract
@@ -143,5 +157,6 @@ The registry assigns role identity; shared trace files define the full field set
 ## Constraints
 
 - This registry is read-only.
-- This registry does not replace the Team-Native board, GO gate, memory gate, review-state decision, final Director-facing synthesis, or completion readiness evidence.
+- This registry does not replace the Team-Native board, GO gate, memory gate, or review-state decision.
+  It also does not replace final Director-facing synthesis or completion readiness evidence.
 - Child skills must return a change delivery artifact or an evidence artifact, not a protected-state mutation.

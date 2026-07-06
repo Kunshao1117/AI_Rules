@@ -1,10 +1,10 @@
 ---
 name: memory-ops
 description: >
-  [Infra] Operational guide for reading, updating memory cards, and fixing staleness.
-  MCP Server: cartridge-system
+  記憶卡讀寫與過期修復（Infra）：Operational guide for reading, updating memory cards, and fixing staleness.
   Use when: 讀取、更新已存在的專案記憶卡、復原過期指數或升級舊卡格式時載入。
   DO NOT use when: 決定系統層級架構拓樸、新建模組或拆分卡匣（用 memory-arch 技能）。
+  MCP Server: cartridge-system
 metadata:
   author: antigravity
   version: "2.4"
@@ -33,30 +33,60 @@ Reference routing:
 ## HITL Boundary
 
 - Read-only memory listing, dependency checks, staleness inspection, and schema discovery may proceed silently.
-- Memory card writes/replacements, index repair, and `memory_commit` are protected phases. `GO` is only scope-bound Director intent; mutation requires authorization resolution bound to the visible plan, station, file set, exact command/tool call, phase, expiry, and protected gate.
-- `[MCP HITL GATE]` records justification and HITL evidence; it does not replace authorization resolution or let source-write approval authorize memory commit.
+- Memory card writes/replacements, index repair, and `memory_commit` are protected phases.
+  `GO` is only scope-bound Director intent.
+  Mutation requires authorization resolution bound to the visible plan, station, and file set.
+  It must also bind the exact command/tool call, phase, expiry, and protected gate.
+- `[MCP HITL GATE]` records justification and HITL evidence.
+  It does not replace authorization resolution or let source-write approval authorize memory commit.
 - Discovery of memory tool schemas is not permission to execute mutating memory tools.
 
 ## Core Mandate (支配規則)
 
-Project context is not source memory. Files under `.agents/context/**/CONTEXT.md` follow `project-context-protocol`, require authorization resolution for a scope-bound `GO CONTEXT` persistent-write phase, and must never sync through `memory_commit`.
+Project context is not source memory.
+Files under `.agents/context/**/CONTEXT.md` follow `project-context-protocol`.
+They require authorization resolution for a scope-bound `GO CONTEXT` persistent-write phase and must never sync through `memory_commit`.
 
-Active memory cards are source memory, not executable skills. The canonical active main filename is `MEMORY.md`; `.agents/memory/**/SKILL.md` is legacy compatibility/migration source only. Until cartridge-system `MEMORY.md` support is confirmed and migration is applied, existing cards may remain on `SKILL.md`. Do not hand-rename cards; use the governed migration tool and leave archive volumes (`archive-*.md`) unchanged.
+Active memory cards are source memory, not executable skills.
+The canonical active main filename is `MEMORY.md`.
+`.agents/memory/**/SKILL.md` is legacy compatibility/migration source only.
+Until cartridge-system `MEMORY.md` support is confirmed and migration is applied, existing cards may remain on `SKILL.md`.
+Do not hand-rename cards; use the governed migration tool and leave archive volumes (`archive-*.md`) unchanged.
 
 ## Memory Admission Rules
 
-Write permanent source memory only for source ownership, verified facts, active constraints, stable validation routes, and concise cycle events. Keep task notes, screenshots, raw outputs, audit logs, failed attempts, guesses, and one-off observations in reports or `.agents/logs/`.
+Write permanent source memory only for allowed source-memory cases:
+source ownership, verified facts, active constraints, stable validation routes, and concise cycle events.
+Keep task notes, screenshots, raw outputs, audit logs, failed attempts, guesses, and one-off observations in reports or `.agents/logs/`.
 
-Long-lived preferences, design DNA, acceptance defaults, and product direction belong in project context. Mark partially verified facts and missing evidence instead of presenting them as truth.
+Long-lived preferences, design DNA, acceptance defaults, and product direction belong in project context.
+Mark partially verified facts and missing evidence instead of presenting them as truth.
+
+## Protected Memory Phase Opening Conditions
+
+Read-only memory/docs disposition must happen before any memory mutation path.
+Disposition states open routes only; they do not authorize writes.
+
+- `memory-not-required` and `memory-attributed-no-write` do not open a memory mutation path.
+- `memory-required` opens a separate protected memory-write owner station only after authorization resolution.
+  The resolution must bind the visible plan, station, exact card or module, file set, phase, expiry, and protected gate.
+- `memory-card-missing` is a topology decision request.
+  Route to memory-docs or `memory-arch`; do not create a card from the attribution station.
+- `memory-blocked-by-scope` reports residual risk until the Director grants a scoped protected memory-write phase.
+- `memory-conflict-or-compaction-blocked` requires the smallest memory-ops or memory-arch decision before writing.
+- `memory-unverified` must not be converted into attribution or write authority by inference.
+
+A protected memory-write phase updates the active memory main file only.
+A separate protected memory-commit phase may open after that write.
+Authorization resolution must bind the exact module, project root, command/tool call, phase, expiry, and protected gate.
 
 ## Quality Standard
 
-New and standardized active cards carry quality metadata, current evidence
-status, valid scope, `## Evidence Base`, `## Read Contract`, and
-`## Conflicts and Supersession`. Use `references/memory-template.md` for the
-full schema and body sections.
+New and standardized active cards carry quality metadata, current evidence status, valid scope, `## Evidence Base`, `## Read Contract`, and `## Conflicts and Supersession`.
+Use `references/memory-template.md` for the full schema and body sections.
 
-If old content conflicts, stop at a conflict report or mark the card conflict/pending review. Do not silently choose the convenient fact.
+If old content conflicts, stop at a conflict report or mark the card conflict/pending review.
+Do not silently choose the convenient fact.
 
 All timestamps in memory cards use `YYYY-MM-DDTHH:mm:ss+08:00`; UTC `Z`
 timestamps are forbidden.
@@ -70,9 +100,13 @@ All memory card writes and updates follow this hard sequence:
 2. In a separately authorized memory-commit phase, call
    `cartridge-system__memory_commit` to sync metadata, staleness, and index.
 
-**Commit Obligation (歸卡義務)**: Skipping step 2 after an authorized memory card write is FORBIDDEN. A card written without `memory_commit` is incomplete and fails the Completion Gate.
+**Commit Obligation (歸卡義務)**: Skipping step 2 after an authorized memory card write is FORBIDDEN.
+A card written without `memory_commit` is incomplete and fails the Completion Gate.
 
-**High-Risk Tool Boundary**: `cartridge-system__memory_commit` writes files and index metadata. It is FORBIDDEN during discussion, planning, testing, or read-only audit. Call it only after the active main file is updated and authorization resolution binds the memory-commit phase, exact module, project root, command/tool call, expiry, and protected gate.
+**High-Risk Tool Boundary**: `cartridge-system__memory_commit` writes files and index metadata.
+It is FORBIDDEN during discussion, planning, testing, or read-only audit.
+Call it only after the active main file is updated.
+Authorization resolution must bind the memory-commit phase, exact module, project root, command/tool call, expiry, and protected gate.
 
 `memory_update(mode: replace)` is a fallback only. `patch` and `append` modes
 are deprecated because Markdown merge errors are common.
@@ -112,7 +146,9 @@ and mark the memory/docs state as blocked or unverified for the memory-writing
 or commit-prep phase only. Non-commit implementation may continue, but it must
 not append another memory event until compaction is resolved.
 
-Read-only context tools are evidence for project context only. They do not permit writes to `.agents/context/**/CONTEXT.md` and are not source-memory evidence unless a source file or active card also supports the fact.
+Read-only context tools are evidence for project context only.
+They do not permit writes to `.agents/context/**/CONTEXT.md`.
+They are not source-memory evidence unless a source file or active card also supports the fact.
 
 ### Compaction Status And Compact Packet
 
@@ -151,19 +187,22 @@ memory-writing, completion, or `09 Commit`/closeout phase that needs the card.
 When a memory cartridge has staleness > 0, do not reset it by calling
 `memory_update` or `memory_commit` alone. Read status, read the changed source,
 compare against the active card, update only current durable truth, then run the
-two-step write and commit flow. Use
-`references/memory-lifecycle-procedures.md` for the detailed stale/dependency
-procedure.
+two-step write and commit flow.
+Use `references/memory-lifecycle-procedures.md` for the detailed
+stale/dependency procedure.
 
-`memory_commit` removes `CARTRIDGE_SYSTEM_WARNING` blocks. If warning blocks persist after commit, verify you are not using deprecated update modes.
+`memory_commit` removes `CARTRIDGE_SYSTEM_WARNING` blocks.
+If warning blocks persist after commit, verify you are not using deprecated update modes.
 
 ## Updating Memory (更新記憶)
 
-After modifying tracked source files, route the corresponding memory-card update
-through protected memory-write and memory-commit phases. All paths under
-`## Tracked Files` are project-root relative. Parent/child ownership goes to
-the most specific child card that explicitly owns the file; navigation-only
-parents belong in `## Relations`, not broad tracked-file ownership.
+After modifying tracked source files, route the corresponding disposition
+through memory/docs first. If the result is `memory-required`, route the
+memory-card update through a separate protected memory-write owner station and
+then a separate protected memory-commit phase. All paths under `## Tracked
+Files` are project-root relative. Parent/child ownership goes to the most
+specific child card that explicitly owns the file; navigation-only parents
+belong in `## Relations`, not broad tracked-file ownership.
 
 If `memory_list` reports `indirectStaleness > 0`, call
 `memory_deps(moduleName)` and decide whether upstream changes actually affect
@@ -213,7 +252,9 @@ New source file created?
     └── Option B: Create new memory card (load memory-arch skill)
 ```
 
-**FORBIDDEN**: Leaving new source files untracked. Every production source file belongs to exactly one memory card.
+**FORBIDDEN**: Leaving new source files untracked.
+Every production source file belongs to exactly one memory card.
+A missing owner card is `memory-card-missing`; it opens a topology decision request, not card creation authority.
 
 ## Lazy Upgrade And Migration
 

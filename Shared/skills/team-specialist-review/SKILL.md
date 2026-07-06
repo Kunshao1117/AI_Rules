@@ -1,11 +1,11 @@
 ---
 name: team-specialist-review
 description: >
-  [Infra] Independent review specialist for Team-Native change delivery
-  artifacts. Use when: checking requirement fit, correctness, maintainability,
-  regression risk, evidence integrity, review state, 獨立審查、需求符合、品質風險、
-  回歸風險。 DO NOT use when: the reviewer authored the same change, implementing
-  fixes, final Director-facing synthesis, 自審、實作修復、最終裁決。
+  獨立審查專家站點（Infra）：Independent review specialist for Team-Native change delivery
+  artifacts. Use when: 檢查 requirement fit、correctness、maintainability、
+  regression risk、evidence integrity、review state、獨立審查、需求符合、品質風險、
+  回歸風險。 DO NOT use when: 審查者撰寫同一改動、實作修復、最終裁決；
+  the reviewer authored the same change、implementing fixes、final Director-facing synthesis。
 metadata:
   author: antigravity
   version: "1.0"
@@ -34,10 +34,10 @@ metadata:
 
 ## Trigger Conditions
 
-Use when a change delivery artifact, workflow change, skill change, docs change,
-validation result, or release-prep item needs independent review.
+當 change delivery artifact、workflow change、skill change、docs change、
+validation result 或 release-prep item 需要 independent review 時使用。
 
-Use only when the reviewer did not author the same deliverable.
+僅在 reviewer 沒有撰寫同一 deliverable 時使用。
 
 ## Procedure
 

@@ -1,11 +1,12 @@
 ---
 name: team-specialist-intent-requirements
 description: >
-  [Infra] Intent and requirements specialist for Team-Native work. Use when:
-  restating goal, non-goals, constraints, acceptance criteria, contradictions,
-  ambiguity, requirement replay, 需求回放、意圖對齊、非目標、驗收條件。
-  DO NOT use when: implementation, architecture decision ownership, final review,
-  validation, 設計裁決、實作、驗證、最終審查。
+  意圖需求釐清專家站點（Infra）：Intent and requirements specialist for Team-Native work.
+  Use when: 需要重述 goal、non-goals、constraints、acceptance criteria、
+  contradictions、ambiguity 或 requirement replay。
+  關鍵語意：需求回放、意圖對齊、非目標、驗收條件。
+  DO NOT use when: 設計裁決、實作、驗證、最終審查（implementation,
+  architecture decision ownership, final review, validation）。
 metadata:
   author: antigravity
   version: "1.0"
@@ -34,11 +35,11 @@ metadata:
 
 ## Trigger Conditions
 
-Use when a station needs the Director request replayed into a bounded work
-contract before planning, implementation, review, or validation.
+當 station 在 planning、implementation、review 或 validation 前，需要把總監需求
+replay 成 bounded work contract 時使用。
 
-Use for ambiguity, scope conflict, hidden acceptance criteria, and mismatch
-between the request and available evidence.
+適用於 ambiguity、scope conflict、hidden acceptance criteria，以及 request
+與 available evidence 不一致的情況。
 
 ## Procedure
 

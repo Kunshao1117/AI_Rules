@@ -1,7 +1,7 @@
 ---
 name: team-station-handoff-packet
 description: >
-  [Infra] Team station handoff packet for Team-First specialist startup,
+  團隊站點派工包（Infra）：Team station handoff packet for Team-First specialist startup,
   loaded skill refs, deep-read scope, standby, and timeout monitoring.
   Use when: 隊長要啟動隊員、建立正式站點派工包、傳遞技能引用、分配深讀範圍、設定待機或監控隊員啟動時間。
   DO NOT use when: 純對話、沒有團隊站點、或最終隊長裁決。
@@ -19,9 +19,8 @@ metadata:
 
 ## Purpose
 
-This skill turns one board row into one bounded specialist assignment. It is an
-operating wrapper around the board; it is not a second board template and does
-not repeat the full board field list.
+This skill turns one board row into one bounded specialist assignment. It is an operating wrapper
+around the board; it is not a second board template and does not repeat the full board field list.
 
 Read these sources first:
 
@@ -34,39 +33,34 @@ Read these sources first:
 | Role identity and boundary checks | `Shared/skills/team-role-boundaries/SKILL.md` |
 | Trace audit fields | `Shared/policies/team-trace-evidence.md` |
 
-The packet carries resolved board scope. It never creates write authorization,
-protected mutation authority, final review state, or final readiness or
-completion decisions.
+The packet carries resolved board scope. It never creates write authorization, protected mutation
+authority, final review state, or final readiness or completion decisions.
 
 ## When To Issue A Packet
 
-Issue a packet after a Captain Team Board exists and before opening, retaining,
-replacing, or resuming a formal specialist station.
+Issue a packet after a Captain Team Board exists and before opening, retaining, replacing, or
+resuming a formal specialist station.
 
 Do not issue a packet when:
 
 - no formal station exists;
 - the station has no resolved applicability, wave, or role boundary;
-- the work would mutate source, memory, git, release, deployment, install, or
-  external state without a matching formal-write authorization record;
-- the packet would bundle multiple roles, tasks, output formats, or stop
-  conditions.
+- the work would mutate source, memory, git, release, deployment, install, or external state without
+  a matching formal-write authorization record;
+- the packet would bundle multiple roles, tasks, output formats, or stop conditions.
 
 ## Packet Construction
 
-One packet contains exactly one role, one concrete task, one output artifact
-format, and one stop condition. Split work into separate substation tasks when
-any of those changes.
+One packet contains exactly one role, one concrete task, one output artifact format, and one stop
+condition. Split work into separate substation tasks when any of those changes.
 
-Before the captain starts a specialist channel, the packet must be
-startup-complete: `handoff_packet_id`, `role_id`, `role_instance_id`,
-`station_mode`, `context_visibility`, `handoff_ownership`,
-`assigned_specialist_skill`, `read_scope`, `allowed_tools`,
-`forbidden_actions`, channel state (`requested_execution_channel`,
-`channel_capability`, and `channel_invocation_status`, or an explicit
-blocked/unverified reason), `delivery_artifact_type`, and `stop_condition` must
-be present. If any item is missing, do not dispatch it as formal work; record the
-station as blocked or unverified.
+Before the captain starts a specialist channel, the packet must be startup-complete:
+`handoff_packet_id`, `role_id`, `role_instance_id`, `station_mode`, `context_visibility`,
+`handoff_ownership`, `assigned_specialist_skill`, `read_scope`, `allowed_tools`,
+`forbidden_actions`, channel state (`requested_execution_channel`, `channel_capability`, and
+`channel_invocation_status`, or an explicit blocked/unverified reason), `delivery_artifact_type`,
+and `stop_condition` must be present. If any item is missing, do not dispatch it as formal work;
+record the station as blocked or unverified.
 
 Required packet overlay:
 
@@ -92,6 +86,13 @@ deep_read_scope:
 captain_coordination_read_scope:
 context_visibility:
 unread_scope:
+external_grounding_required:
+external_research_question:
+external_research_artifact_id:
+external_grounding_state:
+source_tier:
+source_date_or_version:
+missing_external_evidence:
 allowed_tools:
 forbidden_actions:
 requested_execution_channel:
@@ -128,35 +129,37 @@ stop_condition:
 handoff_summary:
 ```
 
-The packet inherits operation mode, board state, authorization fields, phase,
-dispatch wave, platform mode, and completion condition from the board row in
-`team-task-board`. Do not duplicate the complete board field set here.
+The packet inherits operation mode, board state, authorization fields, phase, dispatch wave,
+platform mode, and completion condition from the board row in `team-task-board`. Do not duplicate
+the complete board field set here.
 
-The packet is not startup-complete when `station_mode`, `context_visibility`, or
-`handoff_ownership` is missing for an applicable formal station. Missing fields
-keep the station blocked or unverified and cannot support a complete trace.
+External grounding fields are conditional packet inputs. When local source is insufficient or likely
+stale, the requesting station records whether outside evidence is required, the exact research
+question, current grounding state, strongest accepted source tier, source date or version, and any
+missing external evidence. Read-only research constraints belong in `allowed_tools`; forbidden
+mutations belong in `forbidden_actions`.
 
-For `station_mode: change-delivery`, a main-worktree implementation packet must
-prove `handoff_ownership: station-owned`, authorization phase
-`implementation-change-delivery`, exact source file allowlist, dirty-diff read
-requirement, and forbidden protected actions.
+The packet is not startup-complete when `station_mode`, `context_visibility`, or `handoff_ownership`
+is missing for an applicable formal station. Missing fields keep the station blocked or unverified
+and cannot support a complete trace.
 
-For `station_mode: change-application`, the packet must prove fallback
-integration source input as a returned isolated/text artifact, explicit
-integration task, or assigned generated/deployed sync, plus
-`handoff_ownership: station-owned` by default, authorization phase
-`change-application`, exact source file allowlist, dirty-diff read requirement,
-and forbidden protected actions. If the platform cannot delegate the physical
-write or protected tool call, set `handoff_ownership:
-platform-nondelegable-gate` and record the direct exception.
+For `station_mode: change-delivery`, a main-worktree implementation packet must prove
+`handoff_ownership: station-owned`, authorization phase `implementation-change-delivery`, exact
+source file allowlist, dirty-diff read requirement, and forbidden protected actions.
 
-`handoff_packet_id` is canonical. `dispatch_packet_id` may appear only as a
-legacy alias in returned artifacts.
+For `station_mode: change-application`, the packet must prove fallback integration source input as a
+returned isolated/text artifact, explicit integration task, or assigned generated/deployed sync,
+plus `handoff_ownership: station-owned` by default, authorization phase `change-application`, exact
+source file allowlist, dirty-diff read requirement, and forbidden protected actions. If the platform
+cannot delegate the physical write or protected tool call, set
+`handoff_ownership: platform-nondelegable-gate` and record the direct exception.
 
-Director-facing packet summaries must lead with the Traditional Chinese meaning
-and place the canonical field in parentheses, such as
-`讀取範圍（read_scope）` or `停止條件（stop_condition）`. Keep raw canonical
-keys inside packet payloads and evidence tables, not as the primary explanation.
+`handoff_packet_id` is canonical. `dispatch_packet_id` may appear only as a legacy alias in returned
+artifacts.
+
+Director-facing packet summaries must lead with the Traditional Chinese meaning and place the
+canonical field in parentheses, such as `讀取範圍（read_scope）` or `停止條件（stop_condition）`. Keep raw
+canonical keys inside packet payloads and evidence tables, not as the primary explanation.
 
 ## Loaded Skill References
 
@@ -175,18 +178,43 @@ Use concrete skill names or paths instead of free-form role descriptions.
 | Completion | `team-specialist-release-completion`, `team-completion-gate` |
 | External research | `team-specialist-external-research`, relevant official-docs skill if available |
 
+When any non-research station records `external_grounding_required: true`, keep that station's
+original `role_id`. The request opens or feeds a separate `external-research` station; it does not
+convert the requester into the external-research role.
+
 ## Deep Read And Captain Coordination Read
 
-Deep-read and captain coordination boundaries inherit the `Captain Boundary
-Anchor / 隊長邊界錨點` in `Shared/policies/team-native-core.md`. Assign broad,
-repetitive, external, or large-file inspection to `deep_read_scope`. Use
-`captain_coordination_read_scope` only for the captain's minimum read needed to
-receive artifacts, maintain the board, resolve blockers/conflicts, or confirm
-authorization boundaries. If either side cannot read a relevant area, record it
-in `unread_scope` and return blocked or unverified.
+Deep-read and captain coordination boundaries inherit the `Captain Boundary Anchor / 隊長邊界錨點` in
+`Shared/policies/team-native-core.md`. Assign broad, repetitive, external, or large-file inspection
+to `deep_read_scope`. Use `captain_coordination_read_scope` only for the captain's minimum read
+needed to receive artifacts, maintain the board, resolve blockers/conflicts, or confirm
+authorization boundaries. If either side cannot read a relevant area, record it in `unread_scope`
+and return blocked or unverified.
 
-Deep read may discover scope gaps, but it does not authorize expansion. The
-specialist reports the gap and stops unless the board is updated.
+Deep read may discover scope gaps, but it does not authorize expansion. The specialist reports the
+gap and stops unless the board is updated.
+
+## External Grounding Request Routing
+
+Any station can request external grounding through its packet, but only a formal `external-research`
+station owns the research evidence.
+
+1. Put the exact question in `external_research_question` and record the local file, package,
+   platform, API, or policy version in `source_date_or_version` or local-anchor prose.
+2. Use `allowed_tools` for read-only sources such as official docs, release notes, vendor status
+   pages, specifications, read-only MCP/doc lookup, browser evidence, or CLI reads that do not
+   mutate state.
+3. Use `forbidden_actions` to block source writes, memory writes, git, release, deploy, install,
+   credential access, package installs, issue or pull request mutation, cloud mutation, and
+   external-state mutation.
+4. If the request requires live external lookup, set `external_grounding_required: true` and
+   `external_grounding_state: requested`, stop the requesting station as pending, blocked, or
+   unverified as appropriate, and describe the external-research routing event in prose.
+5. Record the returned external-research artifact in `external_research_artifact_id`; the
+   requesting station may consume it but must not rewrite it as its own evidence or ask the captain
+   to perform ad hoc search. If a returned role-specific artifact uses
+   `external_grounding_artifact_id`, map that legacy alias to canonical
+   `external_research_artifact_id`.
 
 ## Startup Monitoring
 
@@ -200,37 +228,32 @@ Record startup monitoring for every packet:
 | Authorized change-application | 5 to 15 minutes |
 | Validation command branch | Command timeout plus 2 minutes |
 
-Thresholds are monitoring defaults, not automatic failure claims. If setup
-needs longer, record the reason in `standby_reason`.
+Thresholds are monitoring defaults, not automatic failure claims. If setup needs longer, record the
+reason in `standby_reason`.
 
-Valid timeout actions are standby, replace, blocked, unverified, or ask the
-Director.
+Valid timeout actions are standby, replace, blocked, unverified, or ask the Director.
 
-The first response deadline and soft timeout are monitoring thresholds, not
-failure declarations. When a channel is slow or unknown, send a status probe if
-the platform permits it. A member that receives a status probe must immediately
-pause its current action, report the exact current position, whether it is
-blocked, and whether continuing is safe, then wait for an explicit captain
-resume message. If the channel responds, keep the same role instance active and
-update progress, extension, blocked state, or resume decision from that
-response. The member may continue only after the captain records the response
-and sends the explicit resume message. If the channel does not respond, record
-it as unresponsive, blocked, or unverified and only then decide whether to open
-a replacement.
+The first response deadline and soft timeout are monitoring thresholds, not failure declarations.
+When a channel is slow or unknown, send a status probe if the platform permits it. A member that
+receives a status probe must immediately pause its current action, report the exact current
+position, whether it is blocked, and whether continuing is safe, then wait for an explicit captain
+resume message. If the channel responds, keep the same role instance active and update progress,
+extension, blocked state, or resume decision from that response. The member may continue only after
+the captain records the response and sends the explicit resume message. If the channel does not
+respond, record it as unresponsive, blocked, or unverified and only then decide whether to open a
+replacement.
 
-Replacement opens a new channel generation. It does not cancel the original
-channel unless cancellation is explicitly requested and acknowledged. Each
-packet must name the late-result policy and late-result window so a late
-artifact can still be received, compared with replacement output, and assigned
-a neutral ledger decision.
+Replacement opens a new channel generation. It does not cancel the original channel unless
+cancellation is explicitly requested and acknowledged. Each packet must name the late-result policy
+and late-result window so a late artifact can still be received, compared with replacement output,
+and assigned a neutral ledger decision.
 
 ## Artifact Routing And Ledgering
 
-Before logging a returned artifact, check the packet, the returned artifact, and
-only the minimum cited source or policy material needed to decide whether the
-artifact should be logged in the synthesis ledger, routed onward, marked
-blocked/unverified, or returned for scope clarification. Formal validation,
-review, and memory/docs interpretation belong to their stations.
+Before logging a returned artifact, check the packet, the returned artifact, and only the minimum
+cited source or policy material needed to decide whether the artifact should be logged in the
+synthesis ledger, routed onward, marked blocked/unverified, or returned for scope clarification.
+Formal validation, review, and memory/docs interpretation belong to their stations.
 
 Returned artifacts must include:
 
@@ -241,46 +264,40 @@ member_assignment:
 specialist_deep_read_evidence:
 ```
 
-Then use the matching delivery format from `team-task-board` or the dedicated
-delivery artifact skill.
+Then use the matching delivery format from `team-task-board` or the dedicated delivery artifact
+skill.
 
-Late returned artifacts are still artifacts. Logging them, including them in
-the synthesis ledger, routing them to an owner station, superseding them,
-marking them out of scope or duplicate, or routing them to conflict review
-requires a recorded neutral ledger decision and reason. Do not silently drop a
-late artifact merely because a replacement channel already returned.
+Late returned artifacts are still artifacts. Logging them, including them in the synthesis ledger,
+routing them to an owner station, superseding them, marking them out of scope or duplicate, or
+routing them to conflict review requires a recorded neutral ledger decision and reason. Do not
+silently drop a late artifact merely because a replacement channel already returned.
 
 ## Gotchas
 
-- A station is a work container; a member assignment is one role instance bound
-  to one substation task.
-- A subagent, browser, command, MCP route, platform adapter, isolated workspace,
-  or text artifact is an execution channel, not a specialist role.
+- A station is a work container; a member assignment is one role instance bound to one substation
+  task.
+- A subagent, browser, command, MCP route, platform adapter, isolated workspace, or text artifact is
+  an execution channel, not a specialist role.
 - Channel unavailability never relaxes role boundaries or authorization scope.
 - Standby means assigned but not evidence-complete.
-- A wait timeout means status is unknown; it is not a failure, cancellation, or
-  rejection without probe, hard-timeout, or explicit returned evidence.
-- A status probe is a pause point. A responding member must not continue work
-  until the captain sends an explicit resume message for that same role
-  instance and channel.
-- Replacement is not cancellation; late returns still need a neutral ledger
-  decision.
+- A wait timeout means status is unknown; it is not a failure, cancellation, or rejection without
+  probe, hard-timeout, or explicit returned evidence.
+- A status probe is a pause point. A responding member must not continue work until the captain
+  sends an explicit resume message for that same role instance and channel.
+- Replacement is not cancellation; late returns still need a neutral ledger decision.
 - A packet without loaded skill references is not a formal handoff.
-- Captain coordination read follows the core captain boundary and is not
-  implementation, validation, review, memory/docs attribution, or completion
-  evidence.
-- A main-worktree implementation packet uses station-owned `change-delivery` as
-  the primary route when authorization phase `implementation-change-delivery`,
-  exact file allowlist, dirty diff read, and no protected actions are present;
-  `change-application` is only fallback integration for a returned
-  isolated/text artifact, explicit integration task, or assigned
-  generated/deployed sync. If platform capability blocks delegation, the board
-  must record a platform-nondelegable protected-action record.
-- Missing work routes back to an eligible station or closes as blocked,
-  unverified, or closed-with-director-risk.
+- Captain coordination read follows the core captain boundary and is not implementation, validation,
+  review, memory/docs attribution, or completion evidence.
+- A main-worktree implementation packet uses station-owned `change-delivery` as the primary route
+  when authorization phase `implementation-change-delivery`, exact file allowlist, dirty diff read,
+  and no protected actions are present; `change-application` is only fallback integration for a
+  returned isolated/text artifact, explicit integration task, or assigned generated/deployed sync.
+  If platform capability blocks delegation, the board must record a platform-nondelegable
+  protected-action record.
+- Missing work routes back to an eligible station or closes as blocked, unverified, or
+  closed-with-director-risk.
 
 ## Constraints
 
-This skill is read-only. It does not authorize source writes, memory writes,
-commits, pushes, tags, releases, deployments, installs, mutating MCP calls, or
-external state changes.
+This skill is read-only. It does not authorize source writes, memory writes, commits, pushes, tags,
+releases, deployments, installs, mutating MCP calls, or external state changes.

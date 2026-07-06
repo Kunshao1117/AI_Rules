@@ -1,14 +1,12 @@
 ---
 name: team-specialist-change-delivery
 description: >
-  [Infra] Change delivery specialist for governed Team-Native implementation.
-  Use when: creating a change delivery artifact in a governed fork, isolated
-  workspace, text-only delivery, authorized main-worktree change-delivery
-  station, or fallback change-application station for approved file scope;
-  implement change,
-  變更交付件、隔離工作區、文字交付、受控實作。 DO NOT use when: reviewing the
-  same change, mutating memory, git, release, deployment, external state,
-  自審、記憶提交、提交發布、部署。
+  變更交付專家站點（Infra）：Change delivery specialist for governed Team-Native implementation.
+  Use when: 為已核准檔案範圍建立 change delivery artifact，包含 governed fork、isolated
+  workspace、text-only delivery、authorized main-worktree change-delivery station、
+  或 fallback change-application station；implement change、變更交付件、隔離工作區、文字交付、受控實作。
+  DO NOT use when: 自審同一改動、修改 memory、git、release、deployment 或 external state；
+  reviewing the same change、記憶提交、提交發布、部署。
 metadata:
   author: antigravity
   version: "1.0"
@@ -37,14 +35,13 @@ metadata:
 
 ## Trigger Conditions
 
-Use only after the captain assigns an implementation station with approved
-file scope, expected behavior, and a station-owned main-worktree
-`change-delivery` route, governed workspace, text-only delivery route, or
-fallback `change-application` route for a returned artifact, explicit
-integration task, or assigned generated/deployed sync.
+僅在隊長已指派 implementation station，且已有 approved file scope、expected behavior，
+以及 station-owned main-worktree `change-delivery` route、governed workspace、
+text-only delivery route，或針對 returned artifact、explicit integration task、
+assigned generated/deployed sync 的 fallback `change-application` route 後使用。
 
-Use to create a change delivery artifact that the captain can receive, record on
-the board, and route to validation, review, memory/docs, or completion stations.
+用於建立可由隊長接收、記錄到 board，並路由給 validation、review、memory/docs
+或 completion stations 的 change delivery artifact。
 
 ## Procedure
 

@@ -1,12 +1,12 @@
 ---
 name: team-role-boundaries
 description: >
-  [Infra] Role boundary guard for captain-led team work. Use when: a task needs
-  requirement, architecture, implementation, validation, review, completion, or
-  captain responsibilities separated; when checking self-review, role leakage,
+  團隊角色邊界防護（Infra）：Role boundary guard for captain-led team work. Use when: 任務需要分離
+  requirement、architecture、implementation、validation、review、completion 或
+  captain responsibilities；用於檢查 self-review、role leakage、
   captain direct-exception records, specialist delivery artifact scope, 團隊角色邊界、角色越界、自我審查、
-  隊長與隊員責任切分。DO NOT use when: pure discussion, single-person
-  non-source answers, 純討論、非編程問答，or replacing the team board.
+  隊長與隊員責任切分。DO NOT use when: 純討論、非編程問答、single-person
+  non-source answers，或用來取代 team board.
 metadata:
   author: antigravity
   version: "1.1"
@@ -20,8 +20,8 @@ metadata:
 
 ## Purpose
 
-Use this skill to check role exclusivity and stop role leakage. It is a boundary
-check, not a board template, authorization source, or completion gate.
+Use this skill to check role exclusivity and stop role leakage. It is a boundary check, not a board
+template, authorization source, or completion gate.
 
 Read these sources first:
 
@@ -38,9 +38,8 @@ Read these sources first:
 
 - Director request and approved scope.
 - Captain board row for the station.
-- Handoff packet with station mode, context visibility, handoff ownership,
-  loaded skill refs, allowed tools, forbidden actions, read scope, and stop
-  condition.
+- Handoff packet with station mode, context visibility, handoff ownership, loaded skill refs,
+  allowed tools, forbidden actions, read scope, and stop condition.
 - Prior delivery artifact when the station depends on one.
 
 ## Specialist Role Exclusivity
@@ -61,22 +60,19 @@ memory-docs
 release-completion
 ```
 
-One task-scoped `role_instance_id` must not hold more than one `role_id`.
-Retain or reuse a role instance only when the same station, role, delivery
-artifact, dispatch wave, and role boundary continue. Crossing to another role
-closes the old station and opens a new role instance.
+One task-scoped `role_instance_id` must not hold more than one `role_id`. Retain or reuse a role
+instance only when the same station, role, delivery artifact, dispatch wave, and role boundary
+continue. Crossing to another role closes the old station and opens a new role instance.
 
-Changing `station_mode`, changing `handoff_ownership`, or moving from
-specialist deep-read to a platform-nondelegable gate record closes the old role instance unless
-the same role, station, delivery artifact, wave, and boundary remain intact.
-Status probes, heartbeats, replacement channels, and late-result receipt do not
-change role identity. A status probe pauses the current role instance until the
-member reports position, blocker state, and safe-to-continue state and the
-captain sends an explicit resume message. A responding slow channel may continue
-only inside the same role and station after that resume message. A replacement
-channel must use a new channel generation, and it cannot use the original
-channel's unfinished artifact as independent review, validation, memory/docs,
-or completion evidence.
+Changing `station_mode`, changing `handoff_ownership`, or moving from specialist deep-read to a
+platform-nondelegable gate record closes the old role instance unless the same role, station,
+delivery artifact, wave, and boundary remain intact. Status probes, heartbeats, replacement
+channels, and late-result receipt do not change role identity. A status probe pauses the current
+role instance until the member reports position, blocker state, and safe-to-continue state and the
+captain sends an explicit resume message. A responding slow channel may continue only inside the
+same role and station after that resume message. A replacement channel must use a new channel
+generation, and it cannot use the original channel's unfinished artifact as independent review,
+validation, memory/docs, or completion evidence.
 
 ## Role Rules
 
@@ -103,24 +99,22 @@ Keep these separations intact even when a task is small:
 - Review judges without authoring the reviewed deliverable.
 - Memory/docs attributes impact and proposed updates without mutating memory.
 - Completion audits evidence without becoming an acceptance or quality decision.
-- Main-worktree change delivery is a formal implementation station when
-  station-owned. Fallback change application is a formal integration station
-  only for returned isolated/text artifacts, explicit integration tasks, or
-  assigned generated/deployed sync. Neither path becomes captain work; a
-  platform-nondelegable physical action requires a scoped direct-exception
-  record and still does not create captain-owned specialist evidence.
-- Captain ledgering follows the core captain boundary. It is not implementation,
-  validation, review, memory/docs evidence, or acceptance; substitute authoring
-  can only risk-close when explicitly accepted for that case.
+- Main-worktree change delivery is a formal implementation station when station-owned. Fallback
+  change application is a formal integration station only for returned isolated/text artifacts,
+  explicit integration tasks, or assigned generated/deployed sync. Neither path becomes captain
+  work; a platform-nondelegable physical action requires a scoped direct-exception record and still
+  does not create captain-owned specialist evidence.
+- Captain ledgering follows the core captain boundary. It is not implementation, validation, review,
+  memory/docs evidence, or acceptance; substitute authoring can only risk-close when explicitly
+  accepted for that case.
 
 ## Read Scope Boundary
 
-Read scope follows the core `Captain Boundary Anchor / 隊長邊界錨點`: broad,
-repetitive, external, or large-file reads are specialist deep-read work. The
-captain may read only the minimum snippets needed for ledgering, board
-maintenance, blocker/conflict handling, or scope-question routing. If no
-specialist route can deep-read, record a direct exception and close the missing
-separation as blocked, unverified, or closed-with-director-risk.
+Read scope follows the core `Captain Boundary Anchor / 隊長邊界錨點`: broad, repetitive, external, or
+large-file reads are specialist deep-read work. The captain may read only the minimum snippets
+needed for ledgering, board maintenance, blocker/conflict handling, or scope-question routing. If no
+specialist route can deep-read, record a direct exception and close the missing separation as
+blocked, unverified, or closed-with-director-risk.
 
 ## Boundary Check
 
@@ -128,32 +122,26 @@ Before logging a station output into the synthesis ledger:
 
 1. Match the artifact author to one registered role and one role instance.
 2. Confirm the artifact cites the assigned specialist skill and handoff packet.
-3. Confirm the artifact stayed inside the allowed action, read scope, tools, and
-   stop condition.
-4. Confirm implementation and review of the same deliverable use different role
-   instances.
-5. Mark artifacts that mutate memory, git, releases, deployments, installs, or
-   external state outside scope as blocked or route them to the proper owner
-   station.
+3. Confirm the artifact stayed inside the allowed action, read scope, tools, and stop condition.
+4. Confirm implementation and review of the same deliverable use different role instances.
+5. Mark artifacts that mutate memory, git, releases, deployments, installs, or external state
+   outside scope as blocked or route them to the proper owner station.
 6. Confirm authorization fields exist for any write-capable or protected phase.
-7. Confirm `station_mode`, `context_visibility`, and `handoff_ownership` are
-   present for every applicable formal station.
-8. Reject artifacts that rely on missing lifecycle or visibility fields while
-   claiming `complete`.
-9. Keep execution routes/channels separate from blocked, unverified, standby,
-   unavailable, not-authorized, and closed-with-director-risk states.
-10. Confirm timeout handling did not convert an unknown channel into failure,
-    cancellation, or rejection without status probe, hard-timeout, cancellation,
-    or returned failure evidence.
-11. Confirm replacement and late-return decisions stay inside the same role
-    boundary and do not create self-review or validation repair.
-12. Confirm a responding probed channel paused, reported status, and resumed
-    only after an explicit captain resume message for the same role instance and
-    channel.
+7. Confirm `station_mode`, `context_visibility`, and `handoff_ownership` are present for every
+   applicable formal station.
+8. Reject artifacts that rely on missing lifecycle or visibility fields while claiming `complete`.
+9. Keep execution routes/channels separate from blocked, unverified, standby, unavailable,
+   not-authorized, and closed-with-director-risk states.
+10. Confirm timeout handling did not convert an unknown channel into failure, cancellation, or
+    rejection without status probe, hard-timeout, cancellation, or returned failure evidence.
+11. Confirm replacement and late-return decisions stay inside the same role boundary and do not
+    create self-review or validation repair.
+12. Confirm a responding probed channel paused, reported status, and resumed only after an explicit
+    captain resume message for the same role instance and channel.
 13. Confirm source/deployed pairs record sync direction and parity evidence when
-   generated or deployed copies are touched.
+    generated or deployed copies are touched.
 14. Mark missing separation as blocked, unverified, or closed-with-director-risk;
-   it cannot support `complete`.
+    it cannot support `complete`.
 
 ## Output
 
@@ -167,6 +155,5 @@ Before logging a station output into the synthesis ledger:
 
 ## Negative Boundary
 
-Do not use this skill to authorize work, replace the board, bypass handoff
-packets, decide final completion, or convert a specialist into the final
-Director-facing owner.
+Do not use this skill to authorize work, replace the board, bypass handoff packets, decide final
+completion, or convert a specialist into the final Director-facing owner.

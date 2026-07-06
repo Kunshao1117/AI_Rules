@@ -19,13 +19,26 @@ Dispatch wave:
 Allowed specialist roles:
 Forbidden specialist roles:
 Direct exceptions:
+External grounding:
 Completion condition:
 ```
 
 ## Full Board Table
 
-| Station family | Formal station | Substation task | Applicability | Execution channel or delivery form | Station state | Evidence state | Evidence owner | Role boundary | Direct exception record | Completion condition |
-|---|---|---|---|---|---|---|---|---|---|---|
+The full board table uses these columns:
+
+- Station family
+- Formal station
+- Substation task
+- Applicability
+- Execution channel or delivery form
+- Station state
+- Evidence state
+- Evidence owner
+- External grounding
+- Role boundary
+- Direct exception record
+- Completion condition
 
 Default station families are requirement replay, counter-evidence, impact map,
 plan authorization, implementation, memory/docs delivery, validation, review,
@@ -38,6 +51,7 @@ Valid execution channels or delivery forms are:
 - `browser evidence branch`
 - `CLI evidence branch`
 - `MCP read branch`
+- `external research evidence branch`
 - `station-owned main-worktree change delivery`
 - `isolated change delivery`
 - `text change delivery artifact`
@@ -66,6 +80,13 @@ Role instance ID:
 Exclusive task scope:
 One concrete task:
 Allowed inputs:
+External grounding required:
+External research question:
+External research artifact:
+External grounding state:
+Source tier:
+Source date or version:
+Missing external evidence:
 Allowed tools:
 Forbidden actions:
 Output artifact format:
@@ -87,23 +108,69 @@ containing `handoff_packet_id`, `role_id`, `role_instance_id`,
 `assigned_specialist_skill`, `read_scope`, `allowed_tools`,
 `forbidden_actions`, channel state, `delivery_artifact_type`, and
 `stop_condition`. Missing startup data keeps the station blocked or unverified.
+When a station may depend on fresh outside evidence, also record
+`external_grounding_required`, `external_research_question`,
+`external_research_artifact_id`, `external_grounding_state`, `source_tier`,
+`source_date_or_version`, and `missing_external_evidence`.
 
 ## Delivery Forms
 
 Implementation work uses one of these forms:
 
-| Form | Meaning | Boundary |
-|---|---|---|
-| Main-worktree change delivery | A formal `station_mode: change-delivery` station directly edits main-worktree source under `formal-write` authorization. | Requires authorization phase `implementation-change-delivery`, exact file allowlist, dirty diff read, `handoff_ownership: station-owned`, and `captain_authored: false`; no self-review, memory mutation, git, release, deploy, install, or external mutation. If the platform can only return a fork or text artifact, mark it `fork-only` or `text-only` and do not claim a station-authored main-worktree write. |
-| Isolated change delivery | Specialist modifies an isolated copy and returns diff/evidence. | No main worktree write, self-review, memory mutation, git, release, deploy, install, or external mutation. |
-| Text change delivery artifact | Specialist returns proposed edits with paths, rationale, evidence, risk, and memory impact. | Do not claim the artifact has been applied or accepted by review. |
-| Authorized change-application gate | A formal `station_mode: change-application` station applies a returned isolated/text artifact, explicit integration task, or assigned generated/deployed copy sync. | Requires `formal-write`, authorization phase `change-application`, exact file allowlist, dirty diff read, and `handoff_ownership: station-owned`; no self-review, memory mutation, git, release, deploy, install, or external mutation. |
-| Captain substitute-authoring risk record | No qualified delivery route exists and the Director explicitly closes that risk. | Not change delivery and never full Team-Native completion. |
+`Main-worktree change delivery`
+: Meaning: A formal `station_mode: change-delivery` station directly edits main-worktree source
+  under `formal-write` authorization.
+: Boundary: Requires authorization phase `implementation-change-delivery`, exact file allowlist,
+  dirty diff read, `handoff_ownership: station-owned`, and `captain_authored: false`; no
+  self-review, memory mutation, git, release, deploy, install, or external mutation. If the platform
+  can only return a fork or text artifact, mark it `fork-only` or `text-only` and do not claim a
+  station-authored main-worktree write.
+
+`Isolated change delivery`
+: Meaning: Specialist modifies an isolated copy and returns diff/evidence.
+: Boundary: No main worktree write, self-review, memory mutation, git, release, deploy, install, or
+  external mutation.
+
+`Text change delivery artifact`
+: Meaning: Specialist returns proposed edits with paths, rationale, evidence, risk, and memory
+  impact.
+: Boundary: Do not claim the artifact has been applied or accepted by review.
+
+`Authorized change-application gate`
+: Meaning: A formal `station_mode: change-application` station applies a returned isolated/text
+  artifact, explicit integration task, or assigned generated/deployed copy sync.
+: Boundary: Requires `formal-write`, authorization phase `change-application`, exact file allowlist,
+  dirty diff read, and `handoff_ownership: station-owned`; no self-review, memory mutation, git,
+  release, deploy, install, or external mutation.
+
+`Captain substitute-authoring risk record`
+: Meaning: No qualified delivery route exists and the Director explicitly closes that risk.
+: Boundary: Not change delivery and never full Team-Native completion.
 
 Board-facing artifact formats use canonical English keys and are for station
 delivery only. Director-facing summaries must synthesize Traditional Chinese
 meaning first through `Shared/policies/language-governance.md`; do not paste raw
 artifacts into the Director-facing body.
+
+Any station artifact may carry `external_grounding_required`,
+`external_research_question`, `external_research_artifact_id`,
+`external_grounding_state`, `source_tier`, `source_date_or_version`, and
+`missing_external_evidence`. Non-research stations use those fields to request
+or consume evidence. Only an `external-research` station returns the
+source-tiered evidence packet. If a role-specific external-research artifact
+uses `external_grounding_artifact_id`, the returned artifact must map it to the
+canonical `external_research_artifact_id`.
+
+Implementation and authorized change-application artifacts return a post-change
+handoff bundle for captain ledgering and next-wave routing. The bundle uses the
+canonical implementation artifact fields below and the full authorization
+metadata from `team-change-delivery-artifact` when that skill owns the station.
+It includes `delivery_artifact_id`, `source_input`, `memory_impact`,
+`source_deployed_pair`, `sync_direction`, `sync_evidence`,
+`validation_handoff`, `review_handoff`, `memory_docs_handoff`, and
+`next_wave_start_condition`. The implementer supplies these downstream handoff
+fields only; implementers do not fill final `validation_state`, `review_state`,
+or `memory_docs_state`.
 
 ```text
 artifact_type: evidence_delivery
@@ -117,11 +184,22 @@ status:
 
 ```text
 artifact_type: implementation_change_delivery
+delivery_artifact_id:
+source_input:
 changes:
 files:
 evidence:
 risk:
 memory_impact:
+source_deployed_pair:
+sync_direction:
+sync_evidence:
+validation_handoff:
+review_handoff:
+memory_docs_handoff:
+next_wave_start_condition:
+review_need:
+captain_authored:
 recommendation:
 blocking:
 status:
@@ -149,6 +227,13 @@ only after change delivery exists or is explicitly blocked/unverified/risk
 closed. Completion starts after implementation, memory/docs, validation, and
 review states exist.
 
+When a station needs current external facts, it records
+`external_grounding_required: true`, `external_grounding_state: requested`,
+and `external_research_question` with the exact question and local anchor.
+The next eligible wave routes that request to a formal `external-research`
+station. The captain logs and routes the request but does not perform temporary
+research as captain-owned evidence.
+
 Large-file deep read routes to a bounded specialist station. The captain must
 not absorb, substitute, or deep read large files as the team evidence source;
 when no route exists, record blocked or unverified with the smallest unblock
@@ -168,9 +253,9 @@ tasks, or assigned generated/deployed-copy sync. Route either path to a
 platform-nondelegable protected-action record only when the platform cannot
 delegate the physical write or protected tool call; the board must record the
 platform limitation, exact scope, source artifact, direct exception, and
-residual state. Captain
-coordination must not call `apply_patch` or any other write tool and present the
-result as change-delivery evidence.
+residual state.
+Captain coordination must not call `apply_patch` or any other write tool and
+present the result as change-delivery evidence.
 
 Status probes separate monitoring from failure. Timeout opens probe or standby;
 the probed member pauses, reports position/blocker/safe-to-continue, and stays

@@ -1,11 +1,12 @@
 ---
 name: team-specialist-architecture-contract
 description: >
-  [Infra] Architecture contract specialist for Team-Native work. Use when:
-  defining boundaries, interfaces, invariants, migration path, compatibility,
-  alternatives, architecture contract, 架構邊界、介面契約、相容性、遷移方案、
-  設計取捨。 DO NOT use when: coding implementation, validation execution,
-  review acceptance, 實作、跑驗證、審查裁決。
+  架構契約專家站點（Infra）：Architecture contract specialist for Team-Native work.
+  Use when: 需要定義 boundaries、interfaces、invariants、migration path、compatibility、
+  alternatives 或 architecture contract。
+  關鍵語意：架構邊界、介面契約、相容性、遷移方案、設計取捨。
+  DO NOT use when: 實作、跑驗證、審查裁決（coding implementation,
+  validation execution, review acceptance）。
 metadata:
   author: antigravity
   version: "1.0"
@@ -35,11 +36,11 @@ metadata:
 
 ## Trigger Conditions
 
-Use when a change needs a durable boundary, interface, migration, or
-compatibility decision before implementation or review.
+當變更在 implementation 或 review 前需要 durable boundary、interface、migration
+或 compatibility decision 時使用。
 
-Use for governance rules, workflow contracts, shared skill semantics,
-public behavior, cross-platform mapping, and repeated structural friction.
+適用於 governance rules、workflow contracts、shared skill semantics、
+public behavior、cross-platform mapping 與 repeated structural friction。
 
 ## Procedure
 
