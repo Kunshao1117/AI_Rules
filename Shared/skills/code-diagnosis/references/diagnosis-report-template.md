@@ -1,40 +1,41 @@
-# 診斷報告標準格式
+# 診斷報告模板（Diagnosis Report Template）
 
-> CLI 必須將 `diagnosis_report.md` 按此結構寫入。
+CLI 必須將 `diagnosis_report.md` 按以下結構寫入；總監可見標題與欄位使用繁中 meaning-first，
+必要 canonical key 放在括號中。
 
 ```markdown
-# 程式碼診斷報告
-> 分析時間: {ISO 8601 timestamp}
-> 分析範圍: {模組列表}
-> 故障症狀: {症狀描述}
+# 程式碼診斷報告（Code Diagnosis Report）
+> 分析時間（analyzed_at）: {ISO 8601 timestamp}
+> 分析範圍（analysis_scope）: {module list}
+> 故障症狀（failure_symptoms）: {symptom description}
 
-## 已讀取檔案
-| # | 檔案路徑 | 行數 | 備註 |
-|---|----------|------|------|
+## 已讀取檔案（Files Read）
+| # | 檔案路徑（file_path） | 行數（lines） | 備註（notes） |
+|---|-----------|-------|-------|
 | 1 | ... | ... | ... |
 
-## 可疑區域（依可能性排序）
+## 可疑區域，依可能性排序（Suspect Areas, Sorted By Likelihood）
 
-### 嫌疑 1: {檔案名:行數範圍}
-- **可疑原因**: {詳細說明}
-- **相關程式碼**:
+### 可疑點 1（suspect_1）: {file name:line range}
+- **可疑原因（why_suspect）**: {detailed explanation}
+- **相關程式碼（related_code）**:
   ```
-  {可疑程式碼片段，含行號}
+  {suspect code snippet with line numbers}
   ```
-- **建議調查方向**: {給主腦的具體調查建議}
+- **建議調查方向（suggested_investigation）**: {specific investigation guidance for the captain}
 
-### 嫌疑 2: ...
+### 可疑點 2（suspect_2）: ...
 
-## 排除區域
-| # | 檔案路徑 | 排除理由 |
-|---|----------|---------|
+## 已排除區域（Ruled-Out Areas）
+| # | 檔案路徑（file_path） | 排除理由（exclusion_reason） |
+|---|-----------|------------------|
 | 1 | ... | ... |
 
-## 跨模組關聯分析
-- **資料流路徑**: {資料從哪個模組流到哪個模組}
-- **依賴鏈**: {涉及的 import/require 關係}
-- **共用狀態**: {多個模組共享的狀態或資源}
+## 跨模組關聯分析（Cross-Module Relationship Analysis）
+- **資料流路徑（data_flow_path）**: {how data moves between modules}
+- **依賴鏈（dependency_chain）**: {relevant import/require relationships}
+- **共用狀態（shared_state）**: {state or resources shared by multiple modules}
 
-## 初步結論
-{CLI 對故障根因的初步判斷，明確標注「此為初步分析，需主腦複查」}
+## 初步結論（Preliminary Conclusion）
+{CLI's preliminary root-cause judgment. Mark clearly: "此為初步分析，需隊長複查（Preliminary analysis; captain review required）."}
 ```

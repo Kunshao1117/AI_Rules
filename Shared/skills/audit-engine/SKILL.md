@@ -1,7 +1,7 @@
 ---
 name: audit-engine
 description: >
-  [Audit] Full-spectrum health audit semantic engine for /08_audit:
+  全光譜健檢語義引擎（Audit）：Full-spectrum health audit semantic engine for /08_audit:
   audit depth selection, project surface detection, feature/endpoint/command
   inventories, evidence packets, coverage gates, traffic-light gates, security,
   API/data-flow analysis, real execution evidence, compatibility, release, and
@@ -41,7 +41,9 @@ These references are part of the contract. Do not inline or fork their rules ins
 
 ## 1. Trigger Conditions
 
-Use only inside a health audit workflow. The engine decides what an audit result means; it does not run package managers, linters, browser tools, MCP calls, deployments, or memory writes.
+僅在 health audit workflow 內使用。
+此 engine 負責判定 audit result 的語義；不執行 package managers、linters、browser tools、MCP calls、
+deployments 或 memory writes。
 
 Allowed callers:
 
@@ -59,7 +61,9 @@ Forbidden callers:
 
 ## 2. Full-Spectrum Audit Flow
 
-Run the semantic flow in this order. A later phase must preserve earlier evidence and cannot overwrite a blocked or unverified state with a green result unless new evidence resolves the reason.
+Run the semantic flow in this order.
+A later phase must preserve earlier evidence and cannot overwrite a blocked or unverified state with a green result
+unless new evidence resolves the reason.
 
 ### Phase A — Audit Depth And Project Surface Profile
 
@@ -125,8 +129,10 @@ Review areas:
 
 - Dependency, type, lint, script, and environment parity scan results.
 - Memory cards, project context cards, skills, workflow entries, rules, and platform policy markers.
-- Change intent governance: whether build/fix/test/audit entries require emergency patch, root-cause repair, local refinement, or structural refactor classification before writes or completion claims.
-- Patch-stack risk: repeated stopgap edits in the same symptom family, file region, workflow rule, or operator path without a current root-cause or refactor route.
+- Change intent governance: whether build/fix/test/audit entries require emergency patch, root-cause repair, local refinement,
+  or structural refactor classification before writes or completion claims.
+- Patch-stack risk: repeated stopgap edits in the same symptom family, file region, workflow rule, or operator path
+  without a current root-cause or refactor route.
 - Directory hygiene for installed platform folders and generated runtime copies.
 - Tool availability: terminal, browser, desktop, MCP, cloud, plugin host, logs, and report-write path.
 - Audit log write availability for `profile.json`, `inventories.json`, `evidence.json`, and `summary.md`.
@@ -159,7 +165,8 @@ If the repository has no API/backend surface, mark API-specific checks `not_appl
 
 ### Phase E — Test Coverage And Real Evidence Gaps
 
-Extract critical behavior from memory cards, public entrypoints, commands, routes, tests, docs, package scripts, and the inventory denominator.
+Extract critical behavior from memory cards, public entrypoints, commands, routes, tests, docs, package scripts,
+and the inventory denominator.
 
 For each critical behavior, classify coverage:
 
@@ -169,15 +176,19 @@ For each critical behavior, classify coverage:
 - Synthetic, mock, fixture, static, or unit-only evidence.
 - Missing evidence.
 
-Synthetic evidence cannot complete behavior that depends on runtime state, persistence, external state, permissions, network, time, files, CLI output, UI operation, or deployment status.
+Synthetic evidence cannot complete behavior that depends on runtime state, persistence, external state, permissions,
+network, time, files, CLI output, UI operation, or deployment status.
 
 When a rendered or visual interface is in scope, also classify:
 
-- Detail-observation coverage: text clipping, long labels, alignment, spacing, borders, overlap, focus/disabled states, loading, empty, and error states.
+- Detail-observation coverage: text clipping, long labels, alignment, spacing, borders, overlap, focus/disabled states,
+  loading, empty, and error states.
 - Real-information coverage: real page, real data, real account state, current response/log, or equivalent real path.
-- Fallback-data disclosure: whether mock, fixture, seeded, fake, static, or idealized data was used, why it was used, and what remains unverified.
+- Fallback-data disclosure: whether mock, fixture, seeded, fake, static, or idealized data was used, why it was used,
+  and what remains unverified.
 
-Screenshot-only visual evidence with no detail-observation notes is partial at best. Fake-data visual evidence for a data-dependent surface is partial or unverified unless paired with a real-information path.
+Screenshot-only visual evidence with no detail-observation notes is partial at best.
+Fake-data visual evidence for a data-dependent surface is partial or unverified unless paired with a real-information path.
 
 ### Phase F — Performance, Reliability, Accessibility, And Compatibility
 
@@ -188,7 +199,8 @@ Review areas:
 - Web performance and Core Web Vitals when a web surface exists.
 - CLI/TUI latency, exit codes, non-interactive behavior, and narrow terminal readability when a command surface exists.
 - Desktop or plugin panel resize, theme, permission, and host-state behavior when a GUI or extension surface exists.
-- Visual detail quality when a rendered interface exists: clipping, alignment, spacing, overlap, fixed-layer coverage, focus/disabled feedback, loading/empty/error states, and density under realistic information.
+- Visual detail quality when a rendered interface exists: clipping, alignment, spacing, overlap, fixed-layer coverage,
+  focus/disabled feedback, loading/empty/error states, and density under realistic information.
 - Database/query performance when a database surface exists.
 - Accessibility when a browser-rendered UI exists.
 - Runtime, framework, operating system, shell, package manager, and CI compatibility.
@@ -228,7 +240,8 @@ The final report must include:
 
 ## 3. Evidence Packet Boundary
 
-Each non-green or non-applicable result must include an evidence packet. Green results should include at least a short evidence summary for high-risk categories.
+Each non-green or non-applicable result must include an evidence packet.
+Green results should include at least a short evidence summary for high-risk categories.
 
 Minimum fields:
 
@@ -255,9 +268,12 @@ Do not report a scanner warning, AI suspicion, or screenshot-only observation as
 
 Shared rules stop at semantics. Platform workflows may choose different evidence collection paths:
 
-- Antigravity: prefer visual artifacts, browser subagent evidence, screenshots, action videos, manager view, terminal, MCP, and plugin adapters when available.
-- Claude: prefer built-in/project subagents, hooks, permission modes, checkpoints, non-interactive CLI, MCP, and SDK automation when available.
-- Codex: prefer skills, explicit subagent workflows, sandbox/approval transcript, CLI/IDE/cloud task evidence, MCP, web search transcript, and report logs when available.
+- Antigravity: prefer visual artifacts, browser subagent evidence, screenshots, action videos, manager view, terminal, MCP,
+  and plugin adapters when available.
+- Claude: prefer built-in/project subagents, hooks, permission modes, checkpoints, non-interactive CLI, MCP,
+  and SDK automation when available.
+- Codex: prefer skills, explicit subagent workflows, sandbox/approval transcript, CLI/IDE/cloud task evidence, MCP,
+  web search transcript, and report logs when available.
 
 Platform adapters must not change:
 

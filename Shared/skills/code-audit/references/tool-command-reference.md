@@ -1,21 +1,22 @@
-# 工具指令對照表
+# Tool Command Reference
 
-> 此為 `code-audit` 技能的參考資料。
+Reference material for the `code-audit` skill.
 
-## MCP 工具（透過 Gateway）
+## MCP Tools Through Gateway
 
-> Gateway 探索工具只查 schema；真實執行下游 MCP 時必須使用 `gateway__call_tool`，並顯式帶入目前專案的 `workspace`。不要用工具表中的下游名稱宣稱已完成真實呼叫。
+Gateway discovery tools only inspect schemas. Real downstream MCP execution must use `gateway__call_tool` and explicitly pass the current project `workspace`.
+Do not claim a real call was completed by naming only the downstream tool from this table.
 
 | Tool | Gateway Call | Purpose |
 |------|-------------|---------|
-| ESLint | `eslint__lint-files` | 程式碼品質掃描 |
-| Snyk SAST | `snyk__snyk_code_scan` | 原始碼安全掃描 |
-| Snyk SCA | `snyk__snyk_sca_scan` | 依賴套件漏洞掃描 |
-| Snyk IaC | `snyk__snyk_iac_scan` | 基礎設施設定掃描 |
-| Snyk Container | `snyk__snyk_container_scan` | 容器映像掃描 |
-| Supabase Advisors | `supabase__get_advisors` | 資料庫效能建議 |
+| ESLint | `eslint__lint-files` | Code quality scan |
+| Snyk SAST | `snyk__snyk_code_scan` | Source security scan |
+| Snyk SCA | `snyk__snyk_sca_scan` | Dependency vulnerability scan |
+| Snyk IaC | `snyk__snyk_iac_scan` | Infrastructure configuration scan |
+| Snyk Container | `snyk__snyk_container_scan` | Container image scan |
+| Supabase Advisors | `supabase__get_advisors` | Database performance advice |
 
-## CLI Shell 指令
+## CLI Shell Commands
 
 | Tech Stack | Type Check |
 |------------|------------|
@@ -23,16 +24,16 @@
 | Python / Django | `mypy .` |
 | Go | `go vet ./...` |
 
-## CLI 內建工具
+## CLI Built-In Tools
 
 | Tool | Purpose |
 |------|---------|
-| `grep_search` | 代辦標記統計、環境變數搜尋 |
-| `read_file` | 讀取 .env.example、設定檔 |
-| `write_file` | 寫入 scan_report.md |
+| `grep_search` | Task marker counts and environment variable search |
+| `read_file` | Read `.env.example` and config files |
+| `write_file` | Write `scan_report.md` |
 
-## 前置條件
+## Prerequisites
 
-- `~/.gemini/settings.json` 必須設定 `multi-mcp-gateway`
-- 專案需安裝 ESLint（`package.json` 中有 eslint 依賴）
-- Snyk MCP 需完成認證（`snyk__snyk_auth`）
+- `~/.gemini/settings.json` must configure `multi-mcp-gateway`.
+- The project must have ESLint installed, with an `eslint` dependency in `package.json`.
+- Snyk MCP auth must be complete through `snyk__snyk_auth`.

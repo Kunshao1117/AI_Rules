@@ -1,7 +1,7 @@
 ---
 name: code-diagnosis
 description: >
-  [Audit] CLI-delegated broad codebase reading and cross-module fault diagnosis.
+  大範圍程式碼診斷（Audit）：CLI-delegated broad codebase reading and cross-module fault diagnosis.
   Use when: 故障涉及 3+ 模組或需讀取 15+ 檔案的大範圍診斷、跨系統邊界（前後端/API/資料庫）的故障定位。
   DO NOT use when: 單一模組內的簡單除錯（主腦直接處理）、工具掃描（用 code-audit）。
 metadata:

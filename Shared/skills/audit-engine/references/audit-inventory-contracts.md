@@ -1,6 +1,7 @@
 # Audit Inventory Contracts
 
-This reference defines the intermediate inventory objects used by deep 08 audits. Inventories are written only to audit logs, not to source files or memory cards.
+This reference defines the intermediate inventory objects used by deep 08 audits.
+Inventories are written only to audit logs, not to source files or memory cards.
 
 ## Log Artifacts
 
@@ -60,4 +61,7 @@ Each finding in evidence.json must reference inventory ids when the finding conc
 
 ## Memory Boundary
 
-Inventories are intermediate audit evidence. They do not become permanent memory by default. Only stable source facts, landed workflow rules, or accepted architectural constraints may be written to memory after the audit leads to a build, fix, documentation, or governance change.
+Inventories are intermediate audit evidence.
+They do not become permanent memory by default.
+Only stable source facts, landed workflow rules, or accepted architectural constraints may be written to memory
+after the audit leads to a build, fix, documentation, or governance change.
