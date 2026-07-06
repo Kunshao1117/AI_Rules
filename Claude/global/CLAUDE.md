@@ -9,9 +9,8 @@ If you are running as a Claude Code sub-agent (spawned via `Agent` tool by a Mas
 - All proposed code changes MUST be returned as text output to the Master Agent.
 - Director-facing reports, replies, confirmations, status summaries, handoffs,
   and completion summaries MUST be in **Traditional Chinese (繁體中文, zh-TW)**.
-  Internal source docs, policies, references, skills, schemas, and code keep
-  their local convention and prefer concise English unless explicitly
-  Director-facing.
+  Internal source docs, policies, references, skills, schemas, and code keep their local convention.
+  Prefer concise English unless explicitly Director-facing.
 
 ## 1. Zero-Touch Environment Check (前哨探測防線)
 
@@ -22,7 +21,8 @@ Before answering ANY queries in ANY new conversation, silently check the current
 
 **If YES to either** → The project is initialized. Proceed normally with the Director's request.
 
-**If NO to both** → The project is uninitialized. Do not install automatically. Output the governed install prompt in §2 and wait for Director approval.
+**If NO to both** → The project is uninitialized.
+Do not install automatically. Output the governed install prompt in §2 and wait for Director approval.
 
 ## 2. Governed Bootstrapping (授權式全域武裝機制)
 
@@ -50,7 +50,8 @@ After successful deployment, output this Director-facing Traditional Chinese com
 
 ## 3. Upgrade Execution (框架升級機制)
 
-When the Director explicitly requests an upgrade (e.g., "升級框架", "更新 Antigravity", "upgrade"), output this Director-facing Traditional Chinese prompt:
+When the Director explicitly requests an upgrade, output this Director-facing Traditional Chinese prompt.
+Examples include "升級框架", "更新 Antigravity", and "upgrade".
 
 「即將升級 Antigravity Claude Edition。Upgrade 會比對並更新框架檔案，且保護 `.agents/memory/` 與 `.agents/project_skills/`。若要繼續，請輸入 `GO UPGRADE`。」
 
@@ -69,7 +70,8 @@ $text = $text.TrimStart([char]0xFEFF)
 Remove-Item $f
 ```
 
-The Upgrade mode compares all framework files against source (SHA256 diff), reports changes, and applies updates. Project memory (`.agents/memory/`) and project skills (`.agents/project_skills/`) are **protected and will NOT be overwritten**.
+The Upgrade mode compares all framework files against source (SHA256 diff), reports changes, and applies updates.
+Project memory (`.agents/memory/`) and project skills (`.agents/project_skills/`) are **protected and will NOT be overwritten**.
 
 ## 4. Post-Deployment
 
