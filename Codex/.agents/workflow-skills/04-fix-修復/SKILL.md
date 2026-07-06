@@ -1,6 +1,6 @@
 ---
 name: "04-fix-修復"
-description: "Use when: 修 bug、修復回歸、排除錯誤、診斷缺陷並執行正式修復。DO NOT use when: 新功能建構或純除錯說明。"
+description: "正式修復與回歸處理：適用於修 bug、修復回歸、排除錯誤、診斷缺陷後執行修復（Use when: fix, bug repair, regression repair）。不適用於新功能建構或純除錯說明（DO NOT use when: feature build, debug-only explanation）。"
 required_skills: [impact-test-strategy]
 metadata:
   author: antigravity
@@ -18,7 +18,9 @@ metadata:
 
 ## Workflow Entry Contract
 
-This Codex workflow skill entry is a thin route entry. It selects workflow row `04`, applies the platform adapter, and points to shared procedures when details are needed. It does not grant write, memory, git, release, deployment, install, credential, or external-state authority.
+This Codex workflow skill entry is a thin route entry.
+It selects workflow row `04`, applies the platform adapter, and points to shared procedures when details are needed.
+It does not grant write, memory, git, release, deployment, install, credential, or external-state authority.
 
 ## Required References
 
@@ -33,13 +35,13 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 7. Phase and station details: load write, protected-action, review, validation, memory/docs, completion, and delivery artifact references only when that decision, station, or phase is actually opened. Missing evidence remains `unverified`, `blocked`, or `closed-with-director-risk`; no gate is relaxed.
 8. Team-Native details: opened stations load their assigned specialist, board, handoff, role-boundary, delivery, validation, review, memory/docs, and completion skills. These are station/phase-owned references, not captain-entry preloads. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix.
 
-## 入口瘦身防線（Workflow Entry Slimming Guard）
+## Workflow Entry Slimming Guard (入口瘦身防線)
 
 - This entry owns route selection, workflow-specific phase order, minimum load gates, the matching evidence-matrix row, and platform adapter reference only.
 - Do not add copied Team-Native policy, board field lists, delivery artifact schemas, completion checklists, specialist lifecycle details, or full stage playbooks here.
 - Put durable governance in shared policies, reusable operating procedure in shared skills or references, and workflow stage details in `.agents/shared/workflow-stage-procedures.md`.
 - If a source/deployed pair exists, update both sides and verify hash or content parity before any completion claim.
-- 若目標檔案已有 worktree changes，先讀 current diff，將仍有效的要求併入既有段落，不得追加重複 rule block。
+- If target files already have worktree changes, read the current diff first, integrate still-valid requirements into the existing section, and do not append duplicate rule blocks.
 
 ## Phase Order
 

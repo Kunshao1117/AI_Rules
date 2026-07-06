@@ -1,6 +1,6 @@
 ---
 name: "02-blueprint-架構"
-description: "Use when: 架構設計、系統藍圖、技術選型、ER 圖、API 邊界或三平台代理治理架構判斷。DO NOT use when: 同輪直接建構功能；改用建構工作流。"
+description: "架構設計與系統藍圖：適用於技術選型、ER 圖、API 邊界或三平台代理治理架構判斷（Use when: blueprint, architecture, API boundary）。不適用於同輪直接建構功能，請改用建構工作流（DO NOT use when: implementation/build）。"
 required_skills: [tech-stack-protocol, intent-alignment-gate]
 metadata:
   author: antigravity
@@ -18,7 +18,9 @@ metadata:
 
 ## Workflow Entry Contract
 
-This Codex workflow skill entry is a thin route entry. It selects workflow row `02`, applies the platform adapter, and points to shared procedures when details are needed. It does not grant write, memory, git, release, deployment, install, credential, or external-state authority.
+This Codex workflow skill entry is a thin route entry.
+It selects workflow row `02`, applies the platform adapter, and points to shared procedures when details are needed.
+It does not grant write, memory, git, release, deployment, install, credential, or external-state authority.
 
 ## Required References
 
@@ -33,20 +35,22 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 7. Phase and station details: load write, protected-action, review, validation, memory/docs, completion, and delivery artifact references only when that decision, station, or phase is actually opened. Missing evidence remains `unverified`, `blocked`, or `closed-with-director-risk`; no gate is relaxed.
 8. Team-Native details: opened stations load their assigned specialist, board, handoff, role-boundary, delivery, validation, review, memory/docs, and completion skills. These are station/phase-owned references, not captain-entry preloads. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix.
 
-## 入口瘦身防線（Workflow Entry Slimming Guard）
+## Workflow Entry Slimming Guard (入口瘦身防線)
 
 - This entry owns route selection, workflow-specific phase order, minimum load gates, the matching evidence-matrix row, and platform adapter reference only.
 - Do not add copied Team-Native policy, board field lists, delivery artifact schemas, completion checklists, specialist lifecycle details, or full stage playbooks here.
 - Put durable governance in shared policies, reusable operating procedure in shared skills or references, and workflow stage details in `.agents/shared/workflow-stage-procedures.md`.
 - If a source/deployed pair exists, update both sides and verify hash or content parity before any completion claim.
-- 若目標檔案已有 worktree changes，先讀 current diff，將仍有效的要求併入既有段落，不得追加重複 rule block。
+- If the target file already has worktree changes, read the current diff and integrate the still-valid requirement into the existing section instead of appending a duplicate rule block.
 
 ## Phase Order
 
 - Workflow row: `02`.
 - Procedure reference: `02 Blueprint` in `.agents/shared/workflow-stage-procedures.md`.
 - Route summary: Replay requirements, challenge assumptions, record decisions, alternatives, compatibility, and build handoff boundaries.
-- Platform plan mapping: `02 Blueprint` may produce `plan-only` architecture or a build handoff, but a `build-plan` belongs to workflow `03` before implementation. Codex `update_plan` is only a visual mirror.
+- Platform plan mapping: `02 Blueprint` may produce `plan-only` architecture or a build handoff, but a `build-plan` belongs to workflow `03` before implementation.
+- A build handoff must include a human-readable flow plus machine-readable `execution_spec`; the detailed contract stays in `.agents/shared/workflow-stage-procedures.md`.
+- Codex `update_plan` is only a visual mirror.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - Use `formal-write` only after a scope-bound intent signal has been resolved to the visible plan, station, file set, command, phase, expiry, and any required protected gate.
