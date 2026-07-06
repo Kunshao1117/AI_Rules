@@ -1,0 +1,23 @@
+{
+  "name": "deny-pretool-git-ls-files",
+  "scenarioCode": "pretool-git-ls-files-deny",
+  "category": "deny",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "deny",
+  "expectedDecision": "deny",
+  "expectedOutputRegex": "已阻擋全 repo 掃描.*請先派站點或改用命名檔/窄範圍讀取",
+  "input": {
+    "hook_event_name": "PreToolUse",
+    "session_id": "fixture-session",
+    "transcript_path": null,
+    "cwd": "D:\\AI_Rules",
+    "model": "gpt-5",
+    "permission_mode": "default",
+    "turn_id": "fixture-turn",
+    "tool_name": "Bash",
+    "tool_use_id": "fixture-tool-git-ls-files",
+    "tool_input": {
+      "command": "git ls-files"
+    }
+  }
+}

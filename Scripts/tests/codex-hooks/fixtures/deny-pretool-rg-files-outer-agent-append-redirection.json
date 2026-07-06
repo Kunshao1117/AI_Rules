@@ -1,0 +1,25 @@
+{
+  "name": "deny-pretool-rg-files-outer-agent-append-redirection",
+  "scenarioCode": "pretool-rg-files-outer-agent-append-redirection-deny",
+  "category": "deny",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "deny",
+  "expectedDecision": "deny",
+  "expectedOutputRegex": "已阻擋全 repo 掃描.*請先派站點或改用命名檔/窄範圍讀取",
+  "input": {
+    "hook_event_name": "PreToolUse",
+    "session_id": "fixture-session",
+    "transcript_path": null,
+    "cwd": "D:\\AI_Rules",
+    "model": "gpt-5",
+    "permission_mode": "default",
+    "turn_id": "fixture-turn",
+    "agent_id": "agent-fixture-worker",
+    "agent_type": "worker",
+    "tool_name": "Bash",
+    "tool_use_id": "fixture-tool-rg-files-append-redirection",
+    "tool_input": {
+      "command": "rg --files >> files.txt"
+    }
+  }
+}

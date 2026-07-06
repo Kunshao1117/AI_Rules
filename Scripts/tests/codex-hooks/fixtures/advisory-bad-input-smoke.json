@@ -1,0 +1,10 @@
+{
+  "name": "advisory-bad-input-smoke",
+  "scenarioCode": "bad-input-smoke",
+  "category": "advisory",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "allow-reminder",
+  "expectedDecision": "allow",
+  "expectedOutputRegex": "advisory/reminder.*提醒模式，不會阻擋工具.*請先停止這次工具呼叫.*輸入不是有效 JSON.*bad-input smoke",
+  "rawInput": "{ this is not valid JSON"
+}

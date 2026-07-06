@@ -1,0 +1,18 @@
+{
+  "name": "advisory-session-start-startup-reminder",
+  "scenarioCode": "session-start-startup-reminder",
+  "category": "advisory",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "allow-reminder",
+  "expectedDecision": "allow",
+  "expectedOutputRegex": "advisory/reminder.*團隊模式提醒.*先派站點.*可開子代理",
+  "input": {
+    "hook_event_name": "SessionStart",
+    "session_id": "fixture-session",
+    "transcript_path": null,
+    "cwd": "D:\\AI_Rules",
+    "model": "gpt-5",
+    "permission_mode": "default",
+    "source": "startup"
+  }
+}
