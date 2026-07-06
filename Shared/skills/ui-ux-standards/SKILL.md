@@ -1,7 +1,7 @@
 ---
 name: ui-ux-standards
 description: >
-  [Quality] UI/UX design manifesto: engineering jargon isolation, multi-language strategy,
+  介面體驗標準與設計治理（Quality）：UI/UX design manifesto: engineering jargon isolation, multi-language strategy,
   human-readable error handling, component reuse, design DNA, UI exploration routing,
   interface surface classification, new project UI discussion, UI skill discovery, and intent-driven interface design.
   Use when: 建構或修改前端 UI 元件、設計錯誤訊息、

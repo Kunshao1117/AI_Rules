@@ -1,10 +1,13 @@
 ---
 name: browser-testing
 description: >
-  [Testing] Browser evidence branch SOP, web/extension interface adaptation evidence,
-  and auto-arbitration gate for E2E visual testing.
-  Use when: 需要瀏覽器證據分支進行視覺驗證、E2E 測試執行、DOM 檢查、截圖證據、網頁或外掛面板介面適配驗收、或瀏覽器自動仲裁閘門判定的場景。
-  DO NOT use when: 寫單元測試（用 test-patterns）、只需要 DOM 選擇器策略（用 test-automation-strategy）、決定委派管道（用 delegation-strategy）。
+  瀏覽器證據與視覺驗證（Testing）：瀏覽器證據分支、視覺驗證、E2E 測試、DOM 檢查、截圖證據與介面適配證據；
+  browser evidence branch SOP and auto-arbitration gate.
+  Use when: 需要瀏覽器證據、視覺驗證、E2E 執行、DOM 檢查、截圖證據、
+  網頁或外掛面板介面適配、或瀏覽器自動仲裁；English: browser evidence,
+  visual verification, E2E execution, DOM inspection, screenshot evidence.
+  DO NOT use when: 需要撰寫單元測試（用 test-patterns）；只需要 DOM 選擇器策略
+  （用 test-automation-strategy）；需要選擇委派管道（用 delegation-strategy）。
 metadata:
   author: antigravity
   version: "6.0"
@@ -15,149 +18,189 @@ metadata:
   tool_scope: ["filesystem:read", "browser", "mcp:playwright", "mcp:a11y"]
 ---
 
-# Browser Testing (瀏覽器測試)
+# Browser Testing
 
 ## HITL Boundary
 
-- Read-only browser inspection, screenshots, accessibility checks, and test result reporting proceed silently only when they remain non-mutating.
-- Applying browser evidence branch proposed code changes, writing files, updating memory, installing packages, pushing commits, or modifying external services requires a scope-bound Director intent signal, authorization resolution, the matching protected gate, and an `[MCP HITL GATE]` justification block when the platform requires it.
+- Read-only browser inspection, screenshots, accessibility checks, and test result reporting
+  proceed silently only when they remain non-mutating.
+- Applying browser evidence branch proposed code changes, writing files, updating memory,
+  installing packages, pushing commits, or modifying external services requires all of:
+  a scope-bound Director intent signal, authorization resolution, the matching protected gate,
+  and an `[MCP HITL GATE]` justification block when the platform requires it.
 - Discovery of browser or MCP tool schemas is not permission to execute mutating tools.
 
-## Trigger Conditions (觸發條件)
+## Trigger Conditions
 
-- E2E visual testing, UI verification, browser-based validation, DOM state inspection, or screenshot evidence collection
-  （端到端視覺測試、UI 驗證、瀏覽器操作驗證、DOM 狀態檢查或截圖證據收集）
+- 需要 E2E 視覺測試、UI 驗證、browser-based validation、DOM state inspection、
+  screenshot evidence collection 或 browser-rendered interface checks 時使用。
 
-## Procedure (操作流程)
+## Procedure
 
-### Step 1: Browser Evidence Branch SOP (瀏覽器證據分支標準作業)
+### Step 1: Browser Evidence Branch SOP
 
 When requesting a browser evidence branch:
-（請求瀏覽器證據分支時）
 
-1. **Director-facing task description**: use Traditional Chinese (zh-TW); internal artifact keys remain canonical English.
-   （對總監顯示的任務描述使用繁體中文；內部交付件欄位維持英文 canonical）
-2. **Platform adapter**: Use the current platform's browser-capable adapter or browser tool under the active board/channel rules
-   （由目前平台轉譯為可用的瀏覽器代理、插件或符合任務板/通道規則的瀏覽器工具）
-3. **Stop condition**: Explicitly define when the branch must stop and return
-   （明確定義停止條件）
-4. **Return format**: Specify `findings / evidence / risk / recommendation / blocking / status`
-   （指定英文 canonical 回報欄位）
-5. **Allowed scope**: The branch must inspect only browser state, DOM, screenshots, accessibility tree, and test results. It cannot read/write project files unless the active platform explicitly runs it as a read-only code evidence branch.
-   （只能檢查瀏覽器狀態、DOM、截圖、可及性樹與測試結果；不可寫入專案檔案）
+1. **Director-facing task description**: use Traditional Chinese (zh-TW);
+   internal artifact keys remain canonical English.
+2. **Platform adapter**: use the current platform's browser-capable adapter
+   or browser tool under the active board and channel rules.
+3. **Stop condition**: explicitly define when the branch must stop and return.
+4. **Return format**: specify `findings / evidence / risk / recommendation / blocking / status`.
+5. **Allowed scope**: the branch may inspect only browser state, DOM, screenshots,
+   accessibility tree, and test results. It cannot read or write project files unless
+   the active platform explicitly runs it as a read-only code evidence branch.
 
-### Step 2: Platform Adapter Notes (平台轉譯提示)
+### Step 2: Platform Adapter Notes
 
-- Antigravity / Gemini maps browser branch intent to its browser-capable agent or plugin adapter.
-- Claude maps browser branch intent to an allowed browser/testing subagent or platform browser tool, depending on project permissions and board/channel rules.
-- Codex maps browser branch intent to native subagents when the Director explicitly asks or a workflow station requires a browser evidence branch. Direct Browser tooling is allowed only when the station is not evidence-oriented or the Programming Team Board records a concrete direct exception and replacement evidence.
-- When a browser branch is required but no browser-capable branch or equivalent tool can run, mark the station `blocked` or `unverified`; do not silently downgrade it to direct browsing.
+- Antigravity / Gemini maps browser branch intent to its browser-capable agent
+  or plugin adapter.
+- Claude maps browser branch intent to an allowed browser/testing subagent
+  or platform browser tool, depending on project permissions and board/channel rules.
+- Codex maps browser branch intent to native subagents when the Director explicitly asks
+  or a workflow station requires a browser evidence branch.
+- Direct Browser tooling is allowed only when the station is not evidence-oriented,
+  or when the Programming Team Board records a concrete direct exception
+  and replacement evidence.
+- When a browser branch is required but no browser-capable branch or equivalent tool can run,
+  mark the station `blocked` or `unverified`; do not silently downgrade it to direct browsing.
 
-### Step 3: Context Passing (上下文傳遞)
+### Step 3: Context Passing
 
 - Browser evidence branches must be treated as not having module memory loaded.
-  （瀏覽器證據分支不一定能存取模組記憶）
-- If project context or design DNA is needed, route context loading through the
-  current board, owner station, or approved project-context protocol; the
-  browser task prompt may include only approved key details.
-  （如需專案脈絡或設計 DNA，透過目前任務板、owner station 或已核准的專案脈絡協議載入；瀏覽器任務提示只放已核准重點）
+- If project context or design DNA is needed, route context loading through the current board,
+  owner station, or approved project-context protocol.
+- The browser task prompt may include only approved key details.
 
-### Step 4: Auto-Arbitration Gate (自動仲裁閘門)
+### Step 4: Auto-Arbitration Gate
 
 After a browser evidence branch returns required change items:
-（瀏覽器證據分支回傳必須處理的變更項目後）
 
-1. Browser evidence branch must not apply proposed changes. If the result requires source modification, return failure evidence and route the item to the responsible change-delivery station or authorized change-application gate.
-   （瀏覽器證據分支不得套用變更；若結果需要修改來源，回傳失敗證據並路由到變更站點或已授權的變更套用 gate）
-2. Run automated tests if project has them.
-   （如有自動測試則執行）
-3. **Auto-Pass**: Linter + Tests pass 100% -> additional human review is skipped only after required authorization resolution, protected gates, and HITL gates are already satisfied.
-   （全通過時只允許略過額外人工審查；必要的授權解析、protected gates 與 HITL gates 仍必須滿足，且不得自行授權寫入）
-4. **Visual Authorization Gate**: UI changes MUST conclude with `/06_test` for visual verification.
-   （UI 變更必須以視覺測試收尾）
+1. Browser evidence branch must not apply proposed changes.
+   If the result requires source modification, return failure evidence and route the item
+   to the responsible change-delivery station or authorized change-application gate.
+2. Run automated tests if the project has them.
+3. **Auto-Pass**: Linter + Tests pass 100% means additional human review is skipped
+   only after required authorization resolution, protected gates, and HITL gates
+   are already satisfied.
+4. **Auto-Pass limit**: passing automation does not self-authorize writes
+   or bypass required gates.
+5. **Visual Authorization Gate**: UI changes MUST conclude with `/06_test`
+   for visual verification.
 
-### Step 4.5: Interface Evidence Matrix (介面證據矩陣)
+### Step 4.5: Interface Evidence Matrix
 
-For browser-rendered UI changes that affect layout, components, styling, or interaction states:
-（影響版面、元件、樣式或互動狀態的瀏覽器渲染 UI 變更）
+For browser-rendered UI changes that affect layout, components, styling,
+or interaction states:
 
-1. For web apps and websites, capture or inspect at least one mobile viewport, one tablet viewport, and one desktop viewport.
-   （網頁與網站至少檢查手機、平板與桌面三種視窗）
-2. For IDE webviews or plugin panels, capture narrow sidebar width, expanded panel width, light/dark theme when supported, and confirmation or feedback states.
-   （IDE webview 或外掛面板檢查窄側欄、展開寬度、支援時的明暗主題，以及確認或回饋狀態）
-3. For non-browser desktop GUI or terminal interfaces, report that browser evidence is not the right adapter and route validation through `ai-dev-quality-gate` interface adaptation evidence.
-   （非瀏覽器桌面 GUI 或終端介面，不套用瀏覽器證據，改走介面適配證據）
-4. Check text overflow, compressed controls, overlapping components, table or chart overflow, fixed elements covering content, touch target size when relevant, spacing consistency, and type hierarchy.
-   （檢查文字溢出、按鈕擠壓、元件重疊、表格超出、固定區塊遮擋、觸控尺寸、間距一致性與字級層級）
-5. If required evidence for the selected surface is missing, report the UI as pending visual validation and do not mark the task complete.
-   （缺少該介面類型必要證據時，只能回報待驗收，不得宣稱完成）
+1. For web apps and websites, capture or inspect at least one mobile viewport,
+   one tablet viewport, and one desktop viewport.
+2. For IDE webviews or plugin panels, capture narrow sidebar width, expanded panel width,
+   light/dark theme when supported, and confirmation or feedback states.
+3. For non-browser desktop GUI or terminal interfaces, report that browser evidence
+   is not the right adapter and route validation through `ai-dev-quality-gate`
+   interface adaptation evidence.
+4. Check text overflow, compressed controls, overlapping components, table or chart overflow,
+   fixed elements covering content, touch target size when relevant, spacing consistency,
+   and type hierarchy.
+5. If required evidence for the selected surface is missing, report the UI as pending
+   visual validation and do not mark the task complete.
 
 Detail-observation rule:
-（細微觀察規則）
 
-1. Inspect the screenshot or rendered state at component detail level: text clipping, long labels, button alignment, spacing gaps, border breaks, overlap, z-index/floating layer issues, focus ring, disabled state, hover/active feedback when applicable, loading flicker, empty state, and error state.
-   （必須逐項檢查文字截斷、長字串、按鈕對齊、間距、邊框、遮擋、浮層、焦點、禁用、互動回饋、載入、空狀態與錯誤狀態）
-2. The browser evidence report must name the detail points inspected and any uninspected scope. A statement such as "overall screenshot looks normal" is insufficient.
-   （回報必須列出已檢查細節與未檢查範圍；不可只用整體看起來正常作為通過依據）
+1. Inspect the screenshot or rendered state at component detail level:
+   text clipping, long labels, button alignment, spacing gaps, border breaks,
+   overlap, z-index or floating layer issues, focus ring, disabled state,
+   hover or active feedback when applicable, loading flicker, empty state,
+   and error state.
+2. The browser evidence report must name the detail points inspected
+   and any uninspected scope.
+3. A statement such as "overall screenshot looks normal" is insufficient.
 
-### Step 4.6: Real Function Evidence Boundary (真實功能證據邊界)
+### Step 4.6: Real Function Evidence Boundary
 
-Screenshots and DOM snapshots prove only what is visible at capture time. They do not, by themselves, prove real data, persistence, business logic, market data, time-series correctness, permissions, external integrations, or post-action side effects.
+Screenshots and DOM snapshots prove only what is visible at capture time.
+They do not, by themselves, prove real data, persistence, business logic,
+market data, time-series correctness, permissions, external integrations,
+or post-action side effects.
 
 For browser-rendered features that depend on data or behavior:
 
-1. Pair screenshots with at least one real execution signal: user interaction result, network request or response, console or server log, persisted state, timestamped data source, or accessible application state.
-2. If the page uses mock, fixture, seeded, or static data, label that evidence as layout or flow evidence only.
-3. If a browser branch cannot access the needed data source, it must return a blocked validation report with attempted steps and missing conditions.
-4. A browser evidence packet that contains only screenshots for a data-dependent feature is incomplete and must not be treated as passing.
+1. Pair screenshots with at least one real execution signal: user interaction result,
+   network request or response, console or server log, persisted state,
+   timestamped data source, or accessible application state.
+2. If the page uses mock, fixture, seeded, or static data, label that evidence
+   as layout or flow evidence only.
+3. If a browser branch cannot access the needed data source, it must return
+   a blocked validation report with attempted steps and missing conditions.
+4. A browser evidence packet that contains only screenshots for a data-dependent feature
+   is incomplete and must not be treated as passing.
 
 Real-information priority:
 
-1. Use real pages, real records, real account state, current API responses, current logs, or an equivalent real path for visual evidence.
-2. Use fake, mock, fixture, seeded, static, or idealized data only when real information is unavailable, permission-blocked, unsafe, broken, or not authorized.
-3. When fallback data is used, the report must state the reason, the difference risk, and which claims remain unverified.
+1. Use real pages, real records, real account state, current API responses, current logs,
+   or an equivalent real path for visual evidence.
+2. Use fake, mock, fixture, seeded, static, or idealized data only when real information
+   is unavailable, permission-blocked, unsafe, broken, or not authorized.
+3. When fallback data is used, the report must state the reason, the difference risk,
+   and which claims remain unverified.
 4. Do not present fallback-data screenshots as production-like visual validation.
 
 Operator-path retention:
 
-1. Do not drop browser validation because the first route, selector, tab, or tool call failed. Search the app routes, scripts, docs, and stable selectors before declaring the browser path unavailable.
-2. For transient browser, network, or server-readiness failures, retry with the Step 5 triage budget before switching paths.
-3. If browser control remains unavailable, use the nearest equivalent operator path when it still exercises the same behavior: desktop controller, plugin host, direct request plus logs, preview URL, or controlled real-path replay.
-4. The blocked report must list the searched entry points, tool attempts, retry count, alternative paths considered, and the missing condition.
+1. Do not drop browser validation because the first route, selector, tab,
+   or tool call failed.
+2. Search the app routes, scripts, docs, and stable selectors before declaring
+   the browser path unavailable.
+3. For transient browser, network, or server-readiness failures, retry with the Step 5
+   triage budget before switching paths.
+4. If browser control remains unavailable, use the nearest equivalent operator path
+   when it still exercises the same behavior: desktop controller, plugin host,
+   direct request plus logs, preview URL, or controlled real-path replay.
+5. The blocked report must list the searched entry points, tool attempts, retry count,
+   alternative paths considered, and the missing condition.
 
-## Constraints (約束)
+## Constraints
 
-- Browser evidence branch artifacts are read-only evidence. Failed browser verification may create a required-change item, but source modification must return to a change-delivery station or authorized change-application gate; the coordinating channel must not perform direct repair from browser failure evidence.
-  （瀏覽器證據分支輸出為唯讀證據；驗證失敗只能產生必修項目並回到變更站點或已授權的變更套用 gate，主線不得依瀏覽器失敗證據直接修補）
+- Browser evidence branch artifacts are read-only evidence.
+- Failed browser verification may create a required-change item, but source modification
+  must return to a change-delivery station or authorized change-application gate.
+- The coordinating channel must not perform direct repair from browser failure evidence.
 - Server must be running and warmed up before requesting browser verification.
-  （啟動瀏覽器驗證前確保伺服器已運行）
 
-### Step 5: Structured Error Triage (結構化錯誤分類)
+### Step 5: Structured Error Triage
 
 When Auto-Arbitration Gate FAILS, classify the error before deciding next action:
-（自動仲裁閘門失敗時，先分類錯誤再決定下一步）
 
 ```text
 [ERROR TRIAGE] On Auto-Arbitration failure:
-├── TRANSIENT (暫時性): Network timeout, server not ready, rate limit, 429/503
-│   └── Action: Wait 3s with backoff, then retry (max 2 retries). Do not abandon the browser evidence path after a single transient failure.
-│       Counts toward Circuit Breaker (Check 0 in _completion_gate).
-├── SEMANTIC (語意性): Wrong selector, element not found, assertion mismatch, logic error
-│   └── Action: Return structured error to the coordinating captain for station re-planning.
-│       Include: { errorType: "SEMANTIC", selector: "...", expected: "...", actual: "..." }
-│       Does NOT count toward Circuit Breaker retry limit.
-└── INFRASTRUCTURE (基礎設施): Server crash, port conflict, OOM, ECONNREFUSED
-    └── Action: [HALT] Escalate to Director immediately.
-          「🔴 [INFRA HALT] 基礎設施異常：{error}。請總監確認環境狀態。」
-          Does NOT count toward Circuit Breaker retry limit.
+- TRANSIENT: Network timeout, server not ready, rate limit, 429/503.
+  Action: wait 3s with backoff, then retry, with a maximum of 2 retries.
+  Do not abandon the browser evidence path after a single transient failure.
+  Counts toward Circuit Breaker, Check 0 in _completion_gate.
+
+- SEMANTIC: Wrong selector, element not found, assertion mismatch, or logic error.
+  Action: return structured error to the coordinating captain for station re-planning.
+  Include: { errorType: "SEMANTIC", selector: "...", expected: "...", actual: "..." }
+  Does NOT count toward Circuit Breaker retry limit.
+
+- INFRASTRUCTURE: Server crash, port conflict, OOM, or ECONNREFUSED.
+  Action: HALT and escalate to the Director immediately.
+  The Director-facing halt message must be written in Traditional Chinese (zh-TW)
+  and include the infrastructure error.
+  Does NOT count toward Circuit Breaker retry limit.
 ```
 
-## Done When (驗證標準)
+## Done When
 
-- Browser evidence branch returned successfully with report
+- Browser evidence branch returned successfully with report.
 - Approved proposed changes were applied by the responsible `change-delivery`
-  or authorized `change-application` station, and tests pass
-- Visual verification screenshot/recording or DOM state evidence is included in the walkthrough
-- Data-dependent or behavior-dependent UI includes a real execution signal, or is explicitly marked failed or blocked
-- Layout-affecting browser UI changes include the required web or plugin-panel evidence, or are explicitly marked pending validation
-- Visual evidence must include detail-observation notes and use real information first, or explicitly label fallback data and remaining risk
+  or authorized `change-application` station, and tests pass.
+- Visual verification screenshot/recording or DOM state evidence is included
+  in the walkthrough.
+- Data-dependent or behavior-dependent UI includes a real execution signal,
+  or is explicitly marked failed or blocked.
+- Layout-affecting browser UI changes include the required web or plugin-panel evidence,
+  or are explicitly marked pending validation.
+- Visual evidence must include detail-observation notes and use real information first,
+  or explicitly label fallback data and remaining risk.

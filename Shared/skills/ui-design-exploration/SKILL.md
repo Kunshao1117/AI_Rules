@@ -1,7 +1,7 @@
 ---
 name: ui-design-exploration
 description: >
-  [Quality] UI design exploration workflow for project-state discussion, UI skill
+  介面設計探索流程（Quality）：UI design exploration workflow for project-state discussion, UI skill
   discovery, web research, operator intent, interface surface classification, component primitives, design directions,
   HTML demo or visual reference selection, design DNA, and project-derived skill preservation.
   Use when: 新專案 UI 討論、新增或重設 UI、介面風格不明確、需要搜尋 UI 設計技能、
@@ -21,14 +21,14 @@ metadata:
 
 ## Trigger Conditions
 
-Use this skill before UI implementation when any condition is true:
+介面實作（UI implementation）前符合任一條件時使用本技能：
 
-- The Director asks for a new page, new app surface, redesign, visual direction, UI template, HTML demo, or style exploration.
-- The requested UI has no approved project design DNA.
-- Existing UI quality is visually unsuitable and the desired direction is not fully specified.
-- The task requires shared component decisions such as dropdowns, scroll behavior, tables, cards, forms, dialogs, toolbars, navigation, empty states, or loading states.
+- 總監要求 new page、new app surface、redesign、visual direction、UI template、HTML demo 或 style exploration。
+- 需求中的 UI 尚無已核准 project design DNA。
+- 既有 UI 視覺品質不適合，且目標方向未完整指定。
+- 任務需要 shared component decisions，例如 dropdowns、scroll behavior、tables、cards、forms、dialogs、toolbars、navigation、empty states 或 loading states。
 
-Do not use this skill for a tiny copy, spacing, color-token, or bug fix when approved DNA and component rules already exist.
+已有核准 DNA 與 component rules 時，不要為 tiny copy、spacing、color-token 或 bug fix 使用本技能。
 
 ## Procedure
 

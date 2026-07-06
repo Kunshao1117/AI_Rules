@@ -1,9 +1,9 @@
 ---
 name: test-patterns
 description: >
-  [Testing] Unit test scaffolding, API contract validation, and error boundary scenario library.
+  單元測試與 API 契約測試模式（Testing）：Unit test scaffolding, API contract validation, and error boundary scenario library.
   Use when: 需要產生單元測試/API 契約驗證/異常場景測試/Mock 策略決策 的場景。
-  DO NOT use when: E2E 瀏覽器視覺測試（用 browser-testing + test-automation-strategy）、效能測量（用 performance-audit）。
+  DO NOT use when: 瀏覽器 E2E 視覺測試（用 browser-testing + test-automation-strategy）、效能測量（用 performance-audit）。
 metadata:
   author: antigravity
   version: "5.2"
@@ -18,6 +18,7 @@ metadata:
 ## 1. Test Decision Tree (測試決策樹)
 
 When you have finished writing code, determine the test type:
+
 （寫完程式碼後，依據以下決策樹決定測試類型）
 
 ```
@@ -61,16 +62,16 @@ If `_system` memory card specifies `__tests__/` directory convention, follow tha
 
 Every API route handler MUST be tested against:
 
-| Scenario                                 | Expected Status | Description                                                                                    |
-| ---------------------------------------- | --------------- | ---------------------------------------------------------------------------------------------- |
-| Valid request（正常請求）                | 200/201         | Happy path with correct payload（正確格式的正常請求）                                          |
-| Missing required fields（缺少必填欄位）  | 400             | Payload missing required properties（缺少必填屬性）                                            |
-| Invalid field types（欄位型別錯誤）      | 400             | Wrong data types in payload（傳入錯誤的資料型別）                                              |
-| Unauthenticated（未登入）                | 401             | No auth token or expired token（無認證令牌或令牌過期）                                         |
-| Unauthorized（無權限）                   | 403             | Valid token but insufficient permissions（令牌有效但權限不足）                                 |
-| Resource not found（資源不存在）         | 404             | Request targets non-existent resource（請求不存在的資源）                                      |
-| Duplicate creation（重複建立）           | 409             | Creating already-existing unique resource（建立已存在的唯一資源）                              |
-| Server error isolation（伺服器錯誤隔離） | 500             | Simulate DB failure — response must NOT leak internals（模擬資料庫故障，回應不可洩漏內部細節） |
+| Scenario | Expected Status | Description |
+| --- | --- | --- |
+| Valid request（正常請求） | 200/201 | Happy path with correct payload（正確格式的正常請求） |
+| Missing required fields（缺少必填欄位） | 400 | Payload missing required properties（缺少必填屬性） |
+| Invalid field types（欄位型別錯誤） | 400 | Wrong data types in payload（傳入錯誤的資料型別） |
+| Unauthenticated（未登入） | 401 | No auth token or expired token（無認證令牌或令牌過期） |
+| Unauthorized（無權限） | 403 | Valid token but insufficient permissions（令牌有效但權限不足） |
+| Resource not found（資源不存在） | 404 | Request targets non-existent resource（請求不存在的資源） |
+| Duplicate creation（重複建立） | 409 | Creating already-existing unique resource（建立已存在的唯一資源） |
+| Server error isolation（伺服器錯誤隔離） | 500 | Simulate DB failure — response must NOT leak internals（模擬資料庫故障，回應不可洩漏內部細節） |
 
 ### Frontend Error Handling Scenarios (前端異常場景)
 
@@ -105,7 +106,10 @@ Verify these states when calling APIs from frontend:
 
 ## 5. Mock Strategy Decision Tree (Mock 策略決策樹)
 
-Unit tests and mocks validate scoped logic and contracts. They do not prove that the complete feature works against the real runtime, real data source, real external service, real file system state, real browser behavior, or real operator workflow.
+- Unit tests and mocks validate scoped logic and contracts.
+- They do not prove that the complete feature works against the real runtime.
+- They do not prove behavior against the real data source or real external service.
+- They do not prove behavior against real file system state, real browser behavior, or real operator workflow.
 
 Use mocks to isolate:
 
@@ -114,7 +118,22 @@ Use mocks to isolate:
 - Contract assumptions
 - Deterministic unit behavior
 
-Do not use mocks, fixtures, fake timers, seeded data, or synthetic screenshots as completion evidence for data-dependent or integration-dependent features. Pair them with real execution evidence through `ai-dev-quality-gate`, `browser-testing`, terminal commands, database queries, logs, preview deployments, or controlled real-path environments. If that real path is unavailable, document operator-tool discovery, transient retry status, equivalent real-path alternatives considered, and the remaining blocker.
+Do not use mocks, fixtures, fake timers, seeded data, or synthetic screenshots as completion evidence.
+
+This applies to data-dependent or integration-dependent features.
+
+Pair them with real execution evidence through:
+
+- `ai-dev-quality-gate`
+- `browser-testing`
+- terminal commands, database queries, logs, preview deployments, or controlled real-path environments
+
+If that real path is unavailable, document:
+
+- operator-tool discovery
+- transient retry status
+- equivalent real-path alternatives considered
+- the remaining blocker
 
 ```
 What are you mocking?
@@ -139,7 +158,8 @@ What are you mocking?
 
 ```
 [MOCK GATE] Before finalizing ANY test file:
-├── [SUDO] detected? → Record override/risk-closure request; continue this gate. It does not skip mock checks or authorize real network calls.
+├── [SUDO] detected? → Record override/risk-closure request; continue this gate.
+│   It does not skip mock checks or authorize real network calls.
 ├── Test file contains external API calls (fetch/axios)?
 │   ├── NO  → Proceed silently.
 │   └── YES → Mock/MSW interceptor present?
@@ -153,14 +173,15 @@ What are you mocking?
 
 When generating tests, cross-reference target module's memory card:
 
-1. `## Current Truth` → Tests MUST verify current valid behavior is upheld
-2. `## Active Constraints` → Tests MUST cover documented hard limits and edge cases
+1. `## Current Truth` → Tests MUST uphold current valid behavior
+2. `## Active Constraints` → Tests MUST cover documented hard limits. Tests MUST cover documented edge cases
 3. `## Applicable Skills` → Load referenced skills for domain-specific constraints
 
 ## Constraints (限制與邊界)
 
 - Scope: unit tests and contract validation ONLY
-- Mocked, fixture, or fake-time tests are partial evidence and cannot by themselves complete a feature that depends on real runtime behavior.
+- Mocked, fixture, or fake-time tests are partial evidence only.
+- They cannot complete a real-runtime-dependent feature by themselves.
 - E2E browser tests: `browser-testing` + `test-automation-strategy`
 - Performance testing: NOT covered
 - Test execution: via terminal `run_command`, NOT MCP tools
