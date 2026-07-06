@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-07T05:51:26+08:00'
+last_updated: '2026-07-07T06:07:37+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T05:51:26+08:00'
+last_verified: '2026-07-07T06:07:37+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-07-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -43,7 +43,7 @@ metadata:
 - Protected actions include memory/project-context mutation, git, release, deploy, install, credentials, destructive filesystem operations, cloud mutation, and external mutation; source-write approval does not authorize them.
 - Director-facing output starts with Traditional Chinese meaning; high-change or external facts, dates, APIs, versions, constraints, and risk assumptions must be grounded in current files, tool output, official docs, or primary sources.
 - Source/deployed sync remains mandatory: `Codex/.codex/AGENTS.md` is source of truth and currently hashes equal to project `.codex/AGENTS.md`; `Codex/global/AGENTS.md` does not hash-match `C:\Users\homeb\.codex\AGENTS.md` and global sync is pending.
-- This update reflects current dirty `Codex/**` AGENTS/README/global/workflow source state and intentionally excludes already-committed `Codex/.codex/hooks*` behavior from this cycle.
+- This update reflects current dirty `Codex/**` AGENTS/README/global/workflow source state and keeps Codex hook config/script ownership here while hook behavior remains excluded from the dirty-source cycle.
 
 ## Active Constraints
 - Keep Codex framework versioning separate from VS Code extension versioning.
@@ -54,6 +54,7 @@ metadata:
 - Keep this active card below `line_limit: 120`; use child workflow cards for workflow-entry detail.
 
 ## Cycle Events
+- 05: Repaired ownership for Codex hook config and Team-Native hook script in `## Tracked Files`.
 - 04: Updated core memory for dirty Codex AGENTS/README/global changes: Team-Native startup, authorization resolution, captain boundary, protected actions, output/grounding, and source/deployed sync.
 - 03: Recorded current workflow-entry dirty-source semantics for Chinese-first descriptions, thin route entries, dirty-diff integration, `execution_spec`, and protected follow-up closeout.
 - 02: Repaired active-card line count and removed stale warning text after reading current file content, target diffs, and Codex source diffs.
@@ -69,6 +70,7 @@ metadata:
 - source: `Codex/.agents/workflow-skills/02-blueprint-架構/SKILL.md`, `03-build-建構/SKILL.md`, `04-fix-修復/SKILL.md`, `07-debug-除錯/SKILL.md`, and `11-handoff-交接/SKILL.md`.
 - tool: `git status --short -- Codex .agents/memory/_codex_core` and targeted `git diff` reviewed on 2026-07-07.
 - tool: `Get-FileHash -Algorithm SHA256` verified `Codex/.codex/AGENTS.md` equals `.codex/AGENTS.md`; `Codex/global/AGENTS.md` differs from `C:\Users\homeb\.codex\AGENTS.md`.
+- director: 2026-07-07 ownership repair instruction assigned `Codex/.codex/hooks.json` and `Codex/.codex/hooks/team-native-gate.ps1` to `_codex_core`.
 - director: 2026-07-07 station C instruction allowed only four `_codex_core` memory files, forbade stage/commit, and excluded already-committed hook behavior.
 
 ## Read Contract
@@ -95,6 +97,8 @@ metadata:
 - Codex/global/config.toml
 - Codex/.codex/AGENTS.md
 - Codex/.codex/config.toml
+- Codex/.codex/hooks.json
+- Codex/.codex/hooks/team-native-gate.ps1
 - Codex/.codex/VERSION
 - Codex/.gitignore
 - Codex/.agents/workflow-skills/02-blueprint-架構/SKILL.md
