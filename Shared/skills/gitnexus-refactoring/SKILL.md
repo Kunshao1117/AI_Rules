@@ -1,11 +1,12 @@
 ---
 name: gitnexus-refactoring
 description: >
-  GitNexus-guided safe refactoring. Use when: 安全重構、rename function、
-  extract module、split service、move file、refactor class、需要改名前後追蹤
-  呼叫鏈與依賴。DO NOT use when: 只想知道改動影響範圍（用
-  gitnexus-impact-analysis）、或只是理解程式碼結構（用
-  gitnexus-exploring）。
+  安全重構與依賴追蹤：GitNexus 輔助安全重構、改名、抽模組、拆 service、搬移檔案與依賴追蹤；
+  safe refactoring guidance.
+  Use when: 需要安全重構、rename function、extract module、split service、
+  move file、refactor class、或改名前後追蹤呼叫鏈與依賴。
+  DO NOT use when: 只想知道改動影響範圍（用 gitnexus-impact-analysis），
+  或只是理解程式碼結構（用 gitnexus-exploring）。
 metadata:
   author: gitnexus
   version: "0.1.0"

@@ -1,10 +1,10 @@
 ---
 name: sentry-ops
 description: >
-  [MCP: sentry] Sentry 錯誤監控操作食譜：錯誤調查、效能排查、問題管理流程。
-  MCP Server: sentry
+  錯誤監控與效能排查操作（MCP: sentry）：Sentry 錯誤監控操作食譜：錯誤調查、效能排查、問題管理流程。
   Use when: 呼叫 sentry 相關工具、錯誤追蹤/堆疊分析/效能監控 的場景。
   DO NOT use when: 非 Sentry 錯誤監控場景、一般除錯不需要 Sentry 工具時。
+  MCP Server: sentry
 metadata:
   author: antigravity
   version: "5.3"
@@ -85,7 +85,7 @@ Standard stack trace insufficient?
 
 - `list_issues` query uses **Sentry search syntax**, not natural language（使用 Sentry 搜尋語法，如 `is:unresolved level:error`）
 - When providing Sentry URLs, pass the **entire URL as-is** to the `issueUrl` parameter（整段 URL 原封不動傳入）
-- Do NOT auto-call `analyze_issue_with_seer` after `get_issue_details` — only use when needed（不要自動呼叫，按需使用）
+- 需要時才呼叫 `analyze_issue_with_seer`；不要在 `get_issue_details` 後自動呼叫。
 - `create_project` already includes DSN — no need to call `create_dsn` separately（不需再另外呼叫）
 
 ## Interpretation (結果解讀)

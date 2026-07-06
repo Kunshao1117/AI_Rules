@@ -1,7 +1,7 @@
 ---
 name: security-sre
 description: >
-  [Quality] Zero-trust validation, credential isolation, and structured logging standards.
+  安全可靠性與憑證隔離治理（Quality）：Zero-trust validation, credential isolation, and structured logging standards.
   Use when: 建構或修改後端 API 端點、設計認證/授權流程、處理機敏資訊（密碼/API key/環境變數）的場景。
   DO NOT use when: 純前端 UI 開發（用 ui-ux-standards）、讀取或審查程式碼而不寫入。03-1 /
   03-1-experiment-實驗 仍需本技能處理真實 API/DB/credential 風險，但不得宣稱 production-ready。
@@ -24,7 +24,7 @@ metadata:
 ├── Active workflow is 03-1 / 03-1-experiment-實驗? → Continue for real API/DB writes; mark output prototype-only and do not claim production security readiness.
 ├── Zod/Joi schema defined for this endpoint's payload?
 │   ├── YES → Proceed silently.
-│   └── NO  → [HALT] 「🔴 [SEC HALT] API 端點 {path} 缺少 Schema 驗證。」
+│   └── NO  → [HALT] 「🔴 [SEC HALT] 端點 {path} 缺少結構驗證（API schema validation）。」
 │             DO NOT proceed. Generate Zod schema first.
 └── Gate cleared.
 ```

@@ -1,10 +1,10 @@
 ---
 name: excel-ops
 description: >
-  [MCP: excel] Excel 試算表操作食譜：工作簿管理、資料寫入、格式化、圖表生成、樞紐分析表。
-  MCP Server: excel
+  試算表操作（MCP: excel）：Excel 試算表操作食譜：工作簿管理、資料寫入、格式化、圖表生成、樞紐分析表。
   Use when: 呼叫 excel 相關工具、資料匯出/報告生成/試算表/圖表/樞紐分析 的場景。
   DO NOT use when: 非試算表操作、純文字報告不需要 Excel 格式。
+  MCP Server: excel
 metadata:
   author: antigravity
   version: "5.3"

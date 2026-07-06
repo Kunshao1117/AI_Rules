@@ -1,10 +1,10 @@
 ---
 name: github-ops
 description: >
-  [MCP: github] GitHub 版本控制操作食譜：倉庫管理、Issue 追蹤、分支建立、程式碼搜尋、檔案推送。
-  MCP Server: github
+  版本控制與倉庫操作（MCP: github）：GitHub 版本控制操作食譜：倉庫管理、Issue 追蹤、分支建立、程式碼搜尋、檔案推送。
   Use when: 需要 倉庫管理/Issue 操作/分支建立/檔案推送/程式碼搜尋 的場景。
   DO NOT use when: 執行 PR 程式碼審查或合併決策（用 pr-review-ops）。
+  MCP Server: github
 metadata:
   author: antigravity
   version: "5.1"

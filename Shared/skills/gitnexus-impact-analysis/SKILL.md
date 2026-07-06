@@ -1,10 +1,12 @@
 ---
 name: gitnexus-impact-analysis
 description: >
-  GitNexus change impact and dependency risk analysis. Use when: 想知道改動會
-  影響誰、what will break、what depends on this、is it safe to change X、修改前
-  需要 blast radius 或依賴追蹤。DO NOT use when: 已決定要執行重構步驟
-  （用 gitnexus-refactoring）、或只是一般程式碼探索（用 gitnexus-exploring）。
+  改動影響與依賴風險分析：GitNexus 改動影響、依賴風險、blast radius 與修改前安全性分析；
+  change impact and dependency risk analysis.
+  Use when: 想知道改動會影響誰、what will break、what depends on this、
+  is it safe to change X、或修改前需要依賴追蹤。
+  DO NOT use when: 已決定要執行重構步驟（用 gitnexus-refactoring），
+  或只是一般程式碼探索（用 gitnexus-exploring）。
 metadata:
   author: gitnexus
   version: "0.1.0"

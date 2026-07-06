@@ -1,7 +1,7 @@
 ---
 name: plugin-release-governance
 description: >
-  [Release] Plugin and extension release governance for VSIX packaging,
+  插件與延伸模組發布治理（Release）：Plugin and extension release governance for VSIX packaging,
   GitHub Release assets, package version bumps, changelog entries, release tags,
   and update reminder design. Use when: 插件開發、extension 修改、VSIX 重新打包、
   GitHub Release 同步、版本升級、tag 發布、自動更新提醒、update reminder、

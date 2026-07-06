@@ -1,13 +1,13 @@
 ---
 name: intent-alignment-gate
 description: >
-  [Quality] Requirement alignment, neutral challenge, decision trace, acceptance trace,
+  需求對齊與中立反證（Quality）：Requirement alignment, neutral challenge, decision trace, acceptance trace,
   review state alignment, and drift audit gate.
-  Use when: architecture blueprint, design-to-build plan, requirements clarification, anti-sycophancy review,
-  neutral challenge, decision record, acceptance trace, drift audit, requirements traceability /
-  需求對齊、反證、中立檢查、架構藍圖、建構計畫、驗收追蹤、偏移稽核、需求追蹤。
-  DO NOT use when: executing a small already-approved edit with no new plan, no architecture decision,
-  no user-facing acceptance criteria, and no workflow or governance change.
+  Use when: 需求對齊、反證、中立檢查、架構藍圖、建構計畫、驗收追蹤、偏移稽核、需求追蹤
+  （architecture blueprint, design-to-build plan, requirements clarification, anti-sycophancy review,
+  neutral challenge, decision record, acceptance trace, drift audit, requirements traceability）。
+  DO NOT use when: 只執行已核准的小型編輯，且沒有新計畫、架構決策、
+  使用者可見驗收條件、工作流或治理變更；English: small approved edit with no new plan.
 metadata:
   author: antigravity
   version: "1.0"
@@ -21,7 +21,9 @@ metadata:
 
 ## Purpose
 
-Use this skill to keep architecture and build work aligned with the Director's actual intent. The gate turns vague or agreeable planning into a traceable contract: understand the request, challenge risky assumptions, record decisions, map requirements to acceptance evidence, and audit drift before completion.
+Use this skill to keep architecture and build work aligned with the Director's actual intent.
+The gate turns vague or agreeable planning into a traceable contract: understand the request, challenge risky assumptions,
+record decisions, map requirements to acceptance evidence, and audit drift before completion.
 
 This skill is platform-neutral. It does not authorize writes, installs, memory commits, commits, pushes, deployments, or mutating MCP calls.
 
@@ -38,11 +40,14 @@ Before producing an architecture blueprint or build plan, restate the request as
 - Success criteria: observable conditions that prove the work is acceptable.
 - Assumptions: items not yet proven; mark each as verified, partial, unverified, or blocked.
 
-If the request is underspecified and the missing fact materially changes architecture or acceptance, ask a targeted question before planning. If a reasonable default is safe, state the default and continue.
+If the request is underspecified and the missing fact materially changes architecture or acceptance,
+ask a targeted question before planning.
+If a reasonable default is safe, state the default and continue.
 
 ### 2. Neutral Challenge
 
-Do not agree with the requested direction by default. Test the proposal against current files, tool output, official documentation, reliable primary sources, or clearly marked inference.
+Do not agree with the requested direction by default.
+Test the proposal against current files, tool output, official documentation, reliable primary sources, or clearly marked inference.
 
 When evidence conflicts with the proposal, respond with this short structure:
 
@@ -50,11 +55,13 @@ When evidence conflicts with the proposal, respond with this short structure:
 - 可能問題
 - 建議做法
 
-Challenge only when it changes safety, feasibility, scope, acceptance, cost, maintenance, or user impact. Do not object merely to appear critical.
+Challenge only when it changes safety, feasibility, scope, acceptance, cost, maintenance, or user impact.
+Do not object merely to appear critical.
 
 ### 3. Decision Record
 
-Every blueprint or build plan that changes architecture, workflow behavior, public interface, validation policy, or persistent governance must record:
+Every blueprint or build plan that changes architecture, workflow behavior, public interface, validation policy,
+or persistent governance must record:
 
 - Decision
 - Status: accepted, rejected, deferred, blocked, or superseded
@@ -72,7 +79,8 @@ Use a trace table whenever the work has more than one requirement or any cross-m
 | Requirement | Source | Plan or task | Acceptance evidence | Status |
 |---|---|---|---|---|
 
-Requirements must not disappear between blueprint, build plan, implementation, validation, and completion report. If a requirement is intentionally dropped or narrowed, record the reason as a decision.
+Requirements must not disappear between blueprint, build plan, implementation, validation, and completion report.
+If a requirement is intentionally dropped or narrowed, record the reason as a decision.
 
 ### 5. Drift Audit
 
@@ -115,4 +123,5 @@ Build plan outputs must include:
 - 偏移稽核規則
 - 完成前回查
 
-Completion reports for affected work must include a drift audit summary with Aligned, Justified deviation, Unauthorized deviation, Unverified, or Not applicable.
+Completion reports for affected work must include a drift audit summary with Aligned, Justified deviation,
+Unauthorized deviation, Unverified, or Not applicable.

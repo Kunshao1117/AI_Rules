@@ -1,7 +1,7 @@
 ---
 name: impact-test-strategy
 description: >
-  [Testing] Change impact analysis, test scope orchestration, and regression test generation.
+  變更影響與回歸測試策略（Testing）：Change impact analysis, test scope orchestration, and regression test generation.
   Use when: 跨模組修改（變更影響 2+ 模組）、核心工具/共用服務重構、或 /04_fix 修復後需產生回歸測試 的場景。
   DO NOT use when: 單一模組內的局部修改、僅樣式/文字調整、設定檔變更。
 metadata:

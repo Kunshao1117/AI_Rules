@@ -1,23 +1,23 @@
-# CLI 能力矩陣
+# CLI Capability Matrix
 
-> 此為 `delegation-strategy` 技能的詳細參考資料。
+Detailed reference for the `delegation-strategy` skill.
 
-## 可用能力
+## Available Capabilities
 
-| 分類 | 抽象能力 | 備註 |
-|------|------|------|
-| 檔案讀取 | 讀檔能力、目錄列舉能力、搜尋能力 | 實際工具名由平台 adapter 提供 |
-| MCP 工具 | MCP direct 或 adapter 核准的 gateway 呼叫能力 | 需使用當前平台的 MCP profile 設定 |
-| Shell 指令 | 平台核准的唯讀 shell 讀取能力 | 僅可做讀取、列舉、診斷，不可改變專案或外部狀態 |
-| 報告寫入 | 平台核准的報告寫入能力 | 只能寫入 workflow 明確授權的中介報告 |
+| Category | Abstract capability | Notes |
+|---|---|---|
+| File reading | File read, directory listing, and search capability | Concrete tool names come from the platform adapter |
+| MCP tools | MCP direct calls or adapter-approved gateway calls | Use the current platform MCP profile configuration |
+| Shell commands | Platform-approved read-only shell read capability | Read, list, and diagnose only; do not mutate the project or external state |
+| Report writing | Platform-approved report write capability | Write only the intermediate report explicitly authorized by the workflow |
 
-## 已知限制
+## Known Limits
 
-| 限制 | 細節 | 繞行方案 |
-|------|------|---------|
-| 非互動模式工具封鎖 | 部分 CLI 的非互動模式會停用 shell 或檔案工具 | 必須改用平台 adapter 核准的互動模式或主代理執行 |
-| MCP 設定獨立 | CLI 的 MCP 設定可能不繼承 IDE | 需由平台 adapter 明確提供 profile |
-| Enter 鍵分離 | 部分 CLI TUI 不解讀文字中的換行為 Enter | 文字輸入與確認鍵分開送出 |
-| ESLint 絕對路徑 | 某些 lint 工具需要完整絕對路徑陣列 | 從記憶技能追蹤檔案構建 |
-| gitignore 過濾 | `.agents/` 被 gitignore 時工具可能跳過 | 改用平台核准的唯讀檔案輸出能力 |
-| ESLint MCP 版本衝突 | MCP 內建引擎與專案框架外掛版本衝突 | 改用 `npx eslint` |
+| Limit | Detail | Workaround |
+|---|---|---|
+| Non-interactive tool block | Some CLIs disable shell or file tools in non-interactive mode | Use the platform adapter's approved interactive mode or the main agent execution route |
+| Independent MCP settings | CLI MCP settings may not inherit IDE settings | Require the platform adapter to provide the profile explicitly |
+| Enter-key separation | Some CLI TUIs do not treat newline text as Enter | Send text input and the confirmation key separately |
+| ESLint absolute paths | Some lint tools require a complete absolute path array | Build paths from tracked-file lists in memory skills |
+| gitignore filtering | Tools may skip `.agents/` when it is gitignored | Use platform-approved read-only file output capability |
+| ESLint MCP version conflict | MCP's built-in engine may conflict with project framework plugins | Use `npx eslint` instead |

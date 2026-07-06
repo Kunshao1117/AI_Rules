@@ -1,10 +1,10 @@
 ---
 name: cloudflare-ops
 description: >
-  [MCP: cloudflare] Cloudflare 雲端服務操作食譜：KV/D1/R2 資源管理、Workers 管理、容器操作、日誌查詢。
-  MCP Server: cloudflare-bindings, cloudflare-containers, cloudflare-observability
+  雲端服務操作（MCP: cloudflare）：Cloudflare 雲端服務操作食譜：KV/D1/R2 資源管理、Workers 管理、容器操作、日誌查詢。
   Use when: 呼叫 cloudflare 相關工具、雲端資源管理/Workers/KV/D1/R2/容器/日誌 的場景。
   DO NOT use when: 非 Cloudflare 雲端服務操作。
+  MCP Server: cloudflare-bindings, cloudflare-containers, cloudflare-observability
 metadata:
   author: antigravity
   version: "5.3"
@@ -23,7 +23,7 @@ metadata:
 
 # Cloudflare Ops — Cloud Service Recipes
 
-> This skill spans three MCP servers: bindings（資源管理）, containers, observability（日誌）。
+> This skill spans three MCP servers: bindings, containers, observability.
 
 ## HITL Boundary
 
@@ -35,7 +35,7 @@ metadata:
 ## Recipe 1: Account Initialization
 
 1. `accounts_list` — List all accounts
-2. `set_active_account` — Set active account（**其他操作前必須先做**）
+2. `set_active_account` — Set active account; this must be done before other operations
 
 ## Recipe 2: KV Key-Value Storage
 
@@ -67,49 +67,48 @@ metadata:
 
 1. `container_initialize` — Start container
 2. `container_ping` — Confirm container is running
-3. `container_exec` — Execute commands（Python 用 `python3`/`pip3`）
+3. `container_exec` — Execute commands; use `python3`/`pip3` for Python
 4. `container_file_write` / `container_file_read` — File read/write
 
-## Recipe 7: Cloud Sandbox Execution (雲端沙箱安全執行)
+## Recipe 7: Cloud Sandbox Execution
 
 Use Cloudflare Containers as an isolated execution environment for one-off scripts.
-（使用 Cloudflare 容器作為一次性腳本的隔離執行環境）
 
-### Use Cases (適用場景)
+### Use Cases
 
-- Data transformation scripts（資料轉換腳本）
-- Batch processing tasks（批次處理任務）
-- Experimental code execution（實驗性程式碼執行）
-- Package installation testing（套件安裝測試）
+- Data transformation scripts
+- Batch processing tasks
+- Experimental code execution
+- Package installation testing
 
-### Full Execution Flow (完整執行流程)
+### Full Execution Flow
 
-1. `container_initialize` — Start a fresh container（啟動全新容器）
-2. `container_ping` — Confirm container is ready（確認容器就緒）
-3. `container_file_write` — Write script file(s) to container（寫入腳本檔案）
+1. `container_initialize` — Start a fresh container
+2. `container_ping` — Confirm container is ready
+3. `container_file_write` — Write script file(s) to container
 4. `container_exec` — Execute the script
    - Python: `python3 script.py`
    - Node.js: `node script.js`
    - Install dependencies first if needed: `pip3 install pandas` or `npm install lodash`
-5. `container_file_read` — Read output files if generated（讀取產出檔案）
-6. `container_file_delete` — Clean up sensitive files（清理敏感檔案）
+5. `container_file_read` — Read output files if generated
+6. `container_file_delete` — Clean up sensitive files
 
-### Security Guidelines (安全指引)
+### Security Guidelines
 
-- ⛔ NEVER pass API keys, passwords, or tokens to the container（禁止傳入機敏資訊）
-- ⛔ NEVER connect container to production databases（禁止連接正式環境資料庫）
-- ✅ Use for read-only analysis and computation（用於唯讀分析和計算）
-- ✅ Clean up all files after execution（執行後清理所有檔案）
+- ⛔ NEVER pass API keys, passwords, or tokens to the container
+- ⛔ NEVER connect container to production databases
+- ✅ Use for read-only analysis and computation
+- ✅ Clean up all files after execution
 
-## Gotchas (踩坑點)
+## Gotchas
 
-- **Account first**: Must `set_active_account` before all operations（所有操作前必須先設定帳號）
-- **Log queries**: `query_worker_observability` filter fields require `observability_keys` confirmation first — do not guess（不要猜測欄位名稱）
+- **Account first**: Must `set_active_account` before all operations
+- **Log queries**: `query_worker_observability` filter fields require `observability_keys` confirmation first — do not guess
 - **Container Python**: Must use `python3` and `pip3`, NOT `python`/`pip`
-- **Pages migration**: Before migrating Pages to Workers, **must** call `migrate_pages_to_workers_guide` first（遷移前必調）
-- `search_cloudflare_documentation` can search all Cloudflare product docs（可搜尋全部 Cloudflare 產品文件）
+- **Pages migration**: Before migrating Pages to Workers, **must** call `migrate_pages_to_workers_guide` first
+- `search_cloudflare_documentation` can search all Cloudflare product docs
 
-## Interpretation (結果解讀)
+## Interpretation
 
-- Log queries support three views: `events`（列表）, calculations（統計）, specific invocations（定位）
-- Worker's `workers_get_worker_code` may return bundled version, not necessarily source code（可能回傳打包版本）
+- Log queries support three views: `events`, calculations, specific invocations
+- Worker's `workers_get_worker_code` may return bundled version, not necessarily source code

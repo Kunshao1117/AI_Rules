@@ -1,11 +1,12 @@
 ---
 name: gitnexus-cli
 description: >
-  GitNexus CLI repository indexing and wiki generation commands. Use when:
-  需要重新索引 repo、reanalyze codebase、執行 npx gitnexus analyze、
-  check status、clean index、generate wiki、列出 indexed repos。DO NOT use
-  when: 只是理解程式碼流程（用 gitnexus-exploring）、追蹤錯誤來源（用
-  gitnexus-debugging）、或評估改動影響（用 gitnexus-impact-analysis）。
+  程式碼索引與 Wiki 生成：GitNexus CLI repo 索引、重新分析、狀態檢查、清除 index、wiki 生成與 indexed repos 列表；
+  repository indexing and wiki generation commands.
+  Use when: 需要重新索引 repo、reanalyze codebase、執行 `npx gitnexus analyze`、
+  check status、clean index、generate wiki、或列出 indexed repos。
+  DO NOT use when: 只是程式碼流程探索（用 gitnexus-exploring）、追蹤錯誤來源
+  （用 gitnexus-debugging）、或評估改動影響（用 gitnexus-impact-analysis）。
 metadata:
   author: gitnexus
   version: "0.1.0"

@@ -1,11 +1,11 @@
 ---
 name: gitnexus-debugging
 description: >
-  GitNexus-assisted debugging and error tracing. Use when: 追蹤錯誤來源、
-  trace this bug、why is X failing、where does this error come from、endpoint
-  returns 500、需要找出呼叫鏈與故障路徑。DO NOT use when: 只是探索架構
-  或程式碼怎麼運作（用 gitnexus-exploring）、或只需要重建 GitNexus 索引
-  （用 gitnexus-cli）。
+  除錯與錯誤追蹤：GitNexus 輔助除錯、錯誤來源追蹤、故障路徑與呼叫鏈定位；debugging and error tracing.
+  Use when: 需要追蹤 bug、查 why X is failing、where this error comes from、
+  endpoint returns 500、或找出呼叫鏈與故障路徑。
+  DO NOT use when: 只是探索架構或程式碼流程（用 gitnexus-exploring），
+  或只需要重建 GitNexus 索引（用 gitnexus-cli）。
 metadata:
   author: gitnexus
   version: "0.1.0"

@@ -1,7 +1,7 @@
 ---
 name: tech-stack-protocol
 description: >
-  [Infra] Tech stack discovery, latest-stable grounding, lock-in, and self-mutation protocols.
+  技術堆疊盤點與版本接地（Infra）：Tech stack discovery, latest-stable grounding, lock-in, and self-mutation protocols.
   References Memory Skill System for state storage.
   Use when: 進入新專案、執行 /02_blueprint 架構設計、
   或任何涉及 技術堆疊/框架/依賴/tech stack/初始化/最新穩定版/API 新鮮度 的決策。

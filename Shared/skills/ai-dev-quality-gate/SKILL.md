@@ -1,10 +1,10 @@
 ---
 name: ai-dev-quality-gate
 description: >
-  [Quality] AI development quality gate for autonomous governance depth,
+  開發品質閘門（Quality）：AI development quality gate for autonomous governance depth,
   tech freshness, UI reuse, design DNA, reference downgrade, real evidence,
   interface evidence, change intent, patch-stack risk, and review escalation.
-  Use when: AI 開發品質、技術新鮮度、UI 介面、UI 探索、共用元件、設計 DNA、真實證據、實際驗收、插件介面任務。
+  Use when: 開發品質、AI 技術新鮮度、UI 介面、UI 探索、共用元件、設計 DNA、真實證據、實際驗收、插件介面任務。
   DO NOT use when: 純後端內部重構、無 UI 且無高變動外部技術依賴的微小修正。
 metadata:
   author: antigravity
@@ -19,12 +19,14 @@ metadata:
 
 ## Trigger Conditions
 
-Load this skill when any task touches:
+任務碰到下列任一範圍時載入本技能：
 
-- External frameworks, MCP servers, VS Code extensions, browser APIs, or other high-change dependencies.
-- UI layout, components, styling, interface adaptation, desktop window behavior, or interaction states.
-- Generated UI images, Stitch screens, visual references, design DNA, Director preference discovery, trading terminals, dashboards, admin tools, websites, product pages, real data, runtime state, CLI, database effects, automation, cloud deployment, or integrations.
-- Governance, workflow, public contract, release, security, cross-module, or repeated fragile-code changes that need review state.
+- 外部框架、MCP servers、VS Code extensions、browser APIs，或其他高變動依賴。
+- 介面 layout、components、styling、interface adaptation、desktop window behavior，或 interaction states。
+- 生成式 UI 圖像、Stitch screens、visual references、design DNA、總監偏好探索、trading terminals、
+  dashboards、admin tools、websites、product pages、real data、runtime state、CLI、database effects、automation、
+  cloud deployment，或 integrations。
+- 治理 Governance、workflow、public contract、release、security、cross-module，或需要 review state 的重複脆弱改動。
 
 ## Procedure
 
@@ -34,14 +36,27 @@ Before planning production work, classify the task depth using observable impact
 
 Task levels:
 
-| Level | Use when | Minimum governance |
-| --- | --- | --- |
-| Lightweight change | Docs, copy, comments, narrow styling, or isolated internal logic with no user-visible, data, public interface, memory, governance, security, or cross-platform impact. | State why no escalation applies and name targeted validation. |
-| Medium feature | Normal feature, UI state, single workflow, data flow, component behavior, CLI behavior, or product-facing change. | Include impact, completeness states, validation, and memory/docs. |
-| Heavy change | Multi-module behavior, persistent data shape, migration, permission/security, public API, release behavior, workflow/skill governance, cross-platform semantics, irreversible action, or high recovery cost. | Use the full design-to-build contract, risk handling, broader regression, docs, and memory updates. |
-| Pure architecture | Architecture-only output, full-system initialization, major technology pivot, ER/API route design, or no same-turn implementation. | Route to blueprint and do not claim implementation readiness. |
+- `Lightweight change`
+  - Use when: 文件、文案、註解、狹窄樣式，或沒有使用者可見、資料、
+    public interface, memory, governance, security, or cross-platform impact.
+  - Minimum governance: State why no escalation applies and name targeted validation.
+- `Medium feature`
+  - Use when: 一般功能、UI 狀態、單一工作流、資料流、元件行為、CLI 行為，
+    or product-facing change.
+  - Minimum governance: Include impact, completeness states, validation, and memory/docs.
+- `Heavy change`
+  - Use when: 跨模組行為、持久化資料形狀、遷移、權限/安全、public API、
+    release behavior, workflow/skill governance, cross-platform semantics, irreversible action, or high recovery cost.
+  - Minimum governance: Use the full design-to-build contract, risk handling, broader regression, docs,
+    and memory updates.
+- `Pure architecture`
+  - Use when: 純架構輸出、全系統初始化、重大技術轉向、ER/API route design，
+    or no same-turn implementation.
+  - Minimum governance: Route to blueprint and do not claim implementation readiness.
 
-Escalation factors: user-visible workflow; data mutation; auth/secrets/security/compliance; public API/CLI/config/schema/plugin/release contracts; generated runtime copies; memory/context/docs truth; irreversible action or high recovery cost.
+Escalation factors: user-visible workflow; data mutation; auth/secrets/security/compliance;
+public API/CLI/config/schema/plugin/release contracts; generated runtime copies; memory/context/docs truth;
+irreversible action or high recovery cost.
 
 Decision rules:
 
@@ -54,25 +69,42 @@ Decision rules:
 
 Before production build, fix, test, or audit work writes files or declares completion, classify the change intent:
 
-| Intent | Use when | Minimum evidence |
-| --- | --- | --- |
-| Emergency patch | A temporary stopgap is needed to isolate a confirmed acute failure or unblock operation. | Reproduced symptom, smallest safe scope, rollback/follow-up path, and unresolved-root-cause marker when root cause remains open. |
-| Root-cause repair | A confirmed defect, regression, or invariant violation is being fixed. | Symptom, cause, repair scope, regression path, affected ownership, and real-path evidence when observable. |
-| Local refinement | Behavior must stay the same while local readability, naming, documentation, tests, or small boundaries improve. | Behavior-unchanged rationale, affected scope, targeted validation, and no hidden user-visible/data/public-interface impact. |
-| Structural refactor | Module boundaries, shared contracts, repeated patch stacks, or systemic maintainability risk are corrected. | Dependency impact, compatibility/migration path, regression matrix, memory/docs impact, and visual/real evidence for user-visible surfaces. |
+- `Emergency patch`
+  - Use when: 需要暫時止血以隔離已確認急性故障，或解除操作阻塞。
+  - Minimum evidence: Reproduced symptom, smallest safe scope, rollback/follow-up path,
+    and unresolved-root-cause marker when root cause remains open.
+- `Root-cause repair`
+  - Use when: 正在修復已確認缺陷、回歸或 invariant violation。
+  - Minimum evidence: Symptom, cause, repair scope, regression path, affected ownership,
+    and real-path evidence when observable.
+- `Local refinement`
+  - Use when: 行為必須維持不變，只改善局部可讀性、命名、文件、測試，
+    or small boundaries improve.
+  - Minimum evidence: Behavior-unchanged rationale, affected scope, targeted validation,
+    and no hidden user-visible/data/public-interface impact.
+- `Structural refactor`
+  - Use when: 模組邊界、共享契約、重複 patch stack，
+    or systemic maintainability risk are corrected.
+  - Minimum evidence: Dependency impact, compatibility/migration path, regression matrix,
+    memory/docs impact, and visual/real evidence for user-visible surfaces.
 
 Patch-stack escalation:
 
-1. If the same symptom family, file region, or operator path has already received one emergency patch in the current cycle, route the next change to root-cause repair or structural refactor.
-2. Do not use "minimal change" language to avoid root-cause analysis when the cause is unknown, repeated, cross-module, or data/operator dependent.
+1. If the same symptom family, file region, or operator path has already received one emergency patch in the current cycle,
+   route the next change to root-cause repair or structural refactor.
+2. Do not use "minimal change" language to avoid root-cause analysis when the cause is unknown, repeated, cross-module,
+   or data/operator dependent.
 3. If the Director explicitly accepts a temporary patch, report the unresolved risk and the smallest follow-up needed.
 4. Local refinement becomes structural refactor when it touches data flow, state, public interface, workflow governance, or repeated edits.
 
 ### 1.6 Review Lifecycle Gate
 
-For Heavy change, Structural refactor, governance/workflow/public contract work, release/plugin behavior, security-sensitive change, or repeated fragile repair, load `quality-review-governance` before the plan or completion is ready.
+For Heavy change, Structural refactor, governance/workflow/public contract work, release/plugin behavior,
+security-sensitive change, or repeated fragile repair, load `quality-review-governance`
+before the plan or completion is ready.
 
-Report review purpose, lifecycle state, evidence status, accepted risk, and blockers. Use exactly one lifecycle state from `quality-review-governance`.
+Report review purpose, lifecycle state, evidence status, accepted risk, and blockers.
+Use exactly one lifecycle state from `quality-review-governance`.
 
 ### 2. Tech Freshness Gate
 
@@ -87,7 +119,8 @@ Do not use model memory as the source of truth for high-change or uncertain APIs
 
 ### 2.5 Real Execution Evidence Gate
 
-Production build, fix, test, and audit work defaults to real verification. If behavior can be started, called, queried, observed, logged, or inspected, attempt that path before claiming completion.
+Production build, fix, test, and audit work defaults to real verification.
+If behavior can be started, called, queried, observed, logged, or inspected, attempt that path before claiming completion.
 
 Classify the real-world operation surface before choosing evidence:
 
@@ -106,11 +139,13 @@ Classify the real-world operation surface before choosing evidence:
 
 Verification method discovery:
 
-1. Before "unable to verify", inventory scripts, servers, tests, browser/desktop control, terminal, plugin host, MCP/API tools, logs, databases, artifacts, and docs.
+1. Before "unable to verify", inventory scripts, servers, tests, browser/desktop control, terminal, plugin host,
+   MCP/API tools, logs, databases, artifacts, and docs.
 2. Choose the closest operator-capable path, then add lower-level evidence only when useful.
 3. Search docs, scripts, routes, task files, and platform notes before marking a path unavailable.
 4. Retry warmup, stale controller, timeout, rate-limit, or delayed readiness failures when safe.
-5. If the primary tool is unavailable, attempt an equivalent real path: alternate controller, command, request, read-only DB check, log, sandbox, preview, dry-run, or recorded real-source replay.
+5. If the primary tool is unavailable, attempt an equivalent real path: alternate controller, command, request,
+   read-only DB check, log, sandbox, preview, dry-run, or recorded real-source replay.
 6. Blocked reports list search scope, tools tried, retry status, alternatives, and the smallest missing condition.
 
 Evidence levels:
@@ -122,10 +157,12 @@ Evidence levels:
 
 Completion rules:
 
-1. Outcomes depending on real data, external state, persistence, timing, permissions, network, or operator-visible behavior need level 1, 2, or 3 evidence.
+1. Outcomes depending on real data, external state, persistence, timing, permissions, network,
+   or operator-visible behavior need level 1, 2, or 3 evidence.
 2. Level 4 is partial validation only.
 3. "Unable to verify" needs inventory, an attempt, and retry or equivalent-path consideration unless the blocker is obvious.
-4. Allowed blockers: missing credentials/login/hardware, unsafe destructive action, outage, rate limit, CAPTCHA/MFA, legal/safety limit, or missing Director authorization.
+4. Allowed blockers: missing credentials/login/hardware, unsafe destructive action, outage, rate limit, CAPTCHA/MFA,
+   legal/safety limit, or missing Director authorization.
 5. Blocked reports include attempts, evidence, tools, retry status, alternatives, missing condition, and next input.
 6. Insufficient evidence means failed or blocked validation, not completion.
 
@@ -147,7 +184,9 @@ Do not require a component inventory when the project has no existing UI surface
 When the Director cannot precisely describe the desired UI:
 
 1. Load `ui-design-exploration` for new UI, redesign, ambiguous direction, or missing approved DNA.
-2. Determine state before reading DNA or components: new/no UI needs category, operator, platform, density, and primitives; approved DNA comes before inspection; missing DNA needs inspection before candidate DNA; narrow edits preserve current rules.
+2. Determine state before reading DNA or components: new/no UI needs category, operator, platform, density, and primitives;
+   approved DNA comes before inspection; missing DNA needs inspection before candidate DNA;
+   narrow edits preserve current rules.
 3. Load `project-context-protocol` and inspect relevant `.agents/context/` design DNA or product preference cards only when they exist.
 4. Apply only approved context; treat candidate context as advisory and disclose it.
 5. Search usable UI skills or design tools before static templates when direction is open.
@@ -189,15 +228,21 @@ Do not force every interface into web responsive rules. Match the evidence to th
 
 Visual detail and real-information requirements:
 
-1. Visual validation must inspect text clipping, alignment, spacing, border breaks, overlap, focus/disabled state, loading flicker, empty/error state, density, and hierarchy. "Looks fine overall" is not enough.
-2. Use real data, account state, current API responses, logs, production-like records, or an equivalent real path. Fake, fixture, seeded, mock, or idealized data is fallback only.
-3. Use fake data only when real information is unavailable, blocked, unsafe, broken, or unauthorized; report why, remaining risk, and unsupported completion claims.
+1. Visual validation must inspect text clipping, alignment, spacing, border breaks, overlap, focus/disabled state,
+   loading flicker, empty/error state, density, and hierarchy.
+   "Looks fine overall" is not enough.
+2. Use real data, account state, current API responses, logs, production-like records, or an equivalent real path.
+   Fake, fixture, seeded, mock, or idealized data is fallback only.
+3. Use fake data only when real information is unavailable, blocked, unsafe, broken, or unauthorized;
+   report why, remaining risk, and unsupported completion claims.
 4. Pair screenshots with relevant states: normal, loading, empty, error, permission/disabled, and before/after interaction.
 5. For refactors or broad UI work, compare before/after and name detail-level differences.
 
 ## Required Report Fields
 
-For affected UI or high-change work, report tech freshness, real execution evidence, change intent, governance depth, review state when the lifecycle gate applies, component reuse, design direction, context/DNA alignment, reference downgrade, interface evidence, and remaining Director review points.
+For affected UI or high-change work, report tech freshness, real execution evidence, change intent, governance depth,
+review state when the lifecycle gate applies, component reuse, design direction, context/DNA alignment,
+reference downgrade, interface evidence, and remaining Director review points.
 
 ## Constraints
 

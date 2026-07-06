@@ -1,11 +1,11 @@
 ---
 name: gitnexus-exploring
 description: >
-  GitNexus codebase exploration and architecture walkthrough. Use when: 想了解
-  程式碼怎麼運作、how does X work、what calls this function、show me the auth
-  flow、探索陌生模組或執行流程。DO NOT use when: 已有明確 bug 要追蹤
-  （用 gitnexus-debugging）、或要安全重構/改名/搬移程式碼（用
-  gitnexus-refactoring）。
+  程式碼庫探索與架構走查：GitNexus 程式碼庫探索、架構走查、執行流程理解與陌生模組檢視；codebase exploration.
+  Use when: 想了解程式碼怎麼運作、what calls this function、auth flow、
+  專案結構、陌生模組或 execution flow。
+  DO NOT use when: 已有明確 bug 要追蹤（用 gitnexus-debugging），
+  或要安全重構、改名、搬移檔案（用 gitnexus-refactoring）。
 metadata:
   author: gitnexus
   version: "0.1.0"

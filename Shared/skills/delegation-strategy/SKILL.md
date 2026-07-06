@@ -1,7 +1,7 @@
 ---
 name: delegation-strategy
 description: >
-  [Infra] Vendor-neutral captain dispatch and Delegation Gate for captain-led stations,
+  隊長派工與委派管道治理（Infra）：Vendor-neutral captain dispatch and Delegation Gate for captain-led stations,
   role-exclusive specialists, evidence/browser/CLI branches, MCP tool/read paths,
   isolated/text change delivery artifacts, and review boundaries.
   Use when: 判斷隊長制、direct_exception 記錄、站點隊員或證據/變更交付管道。
