@@ -4,19 +4,19 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 基礎與討論建構工作流。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-04T22:51:10+08:00'
+last_updated: '2026-07-07T05:51:07+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: 2026-07-03T10:59:34.000Z
+last_verified: '2026-07-07T05:51:07+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 9
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,30 +34,25 @@ metadata:
 # _ag_core.support.workflows-foundation — Antigravity Foundation Workflow Memory
 
 ## Current Truth
-- Antigravity foundation workflow entries now reference workflow-orchestration before evidence-bearing work, station work, write paths, or completion.
-- Antigravity foundation workflows automatically enter Team mode for governed user requests; workflow names alone do not self-start team work without a current governed request.
-- In active Antigravity Team mode, the mainline carries only the captain coordination role: coordination, dispatch, board/channel/blocker coordination, station artifact receipt, status synthesis, and Director-facing reporting; protected actions stay with owner stations or the protected-action authorization path.
-- Antigravity build planning now says later execution performs authorized change application and memory filing, not unbounded physical direct writing.
-- Antigravity build/fix planning and execution now require workflow-orchestration grounding, a scope-bound intent signal resolved by authorization resolution, and formal write stations before any source or generated-copy change; captain direct authoring cannot replace missing change delivery.
-- Antigravity experiment and foundation workflows now explicitly load team-task-board and use template references instead of duplicating full team rules inline.
-- Antigravity `03-1` is a governed workflow: requests for `03-1`, experiment, sandbox prototype, spike, or dirty-code prototype automatically activate Team mode.
-- Antigravity `03-1` uses a reduced/minimal experiment station/board that records sandbox scope, allowed change scope, discard condition, promotion condition, and allowed shortcuts; sandbox writes do not equal production completion.
-- Antigravity build planning and foundation coding workflows now load programming-team-governance and require applicability/execution-mode Programming Team Boards before coding-related work proceeds.
-- Antigravity build, experiment, and foundation workflows now require evidence owner, direct exception, completion condition, and all-direct fake-team guards in Programming Team Boards.
-- Antigravity build workflow now uses the MCP Memory Evidence Matrix for memory-state evidence and project-local migration routing.
 - This child card owns Antigravity shared gates and foundation workflows for chat, exploration, build, and experiment work.
-- These workflow files translate shared semantics into Antigravity-facing workflow entries.
-- Antigravity 00 chat is direct only for pure conversation with no external evidence dependency; files, screenshots, memory cards, rules, agent behavior, tool output, or governance-impact questions enter Team-Native formal-readonly and require returned evidence plus captain verify-read.
-- Build and experiment boundaries must remain distinct.
-- Antigravity build planning now requires change intent classification, patch-stack risk, and real-information visual evidence requirements in validation plans.
-- Antigravity build planning now requires the shared intent alignment gate, including blueprint adoption status, requirement-to-task trace, acceptance matrix, and drift audit rules.
-- Antigravity build planning now requires quality-review-governance when review triggers apply, including review state and minimum sufficient complexity.
+- Foundation workflow descriptions now start with Chinese meaning and keep English exact tokens for trigger precision.
+- `00_chat` stays direct only for pure conversation without external evidence; files, screenshots, memory/context cards, rules, policies, agent behavior, source/tool output, or governance-impact questions route to Team-Native formal-readonly.
+- `01_explore` defines research questions, gathers evidence, challenges assumptions, and then routes to architecture, experiment, build, or audit.
+- `03_build` covers governed build implementation and design-to-build contracts; `03-1` covers governed disposable sandbox experiments with reduced/minimal experiment boards.
+- `03-1` sandbox writes must record sandbox scope, discard condition, promotion condition, and allowed shortcuts; discard, promotion, and production promotion still require scope-bound authorization.
+- Foundation entries reference workflow-orchestration before broad reads, station work, validation, review, memory/docs, write paths, completion, or source/deployed parity claims.
+- Missing memory evidence in foundation entries is expressed as 未驗證 (`unverified`) or 阻塞 (`blocked`) through the MCP Memory Evidence Matrix.
+- `_completion_gate.md` is a thin shared completion reference; missing change delivery, memory/docs, validation, review, sync, authorization, or trace evidence is not `complete`.
+- `_security_footer.md` keeps `[SUDO]` as override/risk-closure request only and preserves role, scoped authorization, Team-Native, validation, review, protected gates, and completion boundaries.
+- Foundation workflow entries must not copy full Team-Native policy, board schemas, completion checklists, Director-facing language policy, or stage playbooks.
 
 ## Active Constraints
 - Do not mix visual evidence requirements into pure discussion workflows.
 - Keep shared gate fragments aligned with platform governance.
+- Keep workflow descriptions meaning-first and concise; durable governance remains in shared policies, shared skills, and workflow-stage procedures.
 
 ## Cycle Events
+- 28: Repaired stale warning state against 2026-07-07 foundation workflow dirty source for description normalization, missing memory evidence wording, shared completion gate, and shared security/[SUDO] boundaries.
 - 27: Corrected `03-1` truth: governed experiment requests auto-activate Team mode, use reduced/minimal experiment boards, and keep sandbox writes separate from production completion.
 - 26: Recorded the 2026-07-03 foundation workflow authorization-semantics repair; scope-bound intent signals require authorization resolution and the affected source/deployed workflow pairs were included in the 18/18 parity verification.
 - 25: Recorded Antigravity shared security footer hardening so [SUDO] records override/risk-closure only and cannot override role, Team-Native, validation/review, protected-action requirements, or complete claims.
@@ -72,6 +67,8 @@ metadata:
 
 ## Evidence Base
 - source:.agents/memory/_ag_core/support/archive-001.md — Previous support-card content preserved during migration.
+- source:Antigravity/.agents/workflows/00_chat(討論).md, `01_explore(搜索).md`, `03_build(建構計畫).md`, `03-1_experiment(實驗).md`, `_completion_gate.md`, and `_security_footer.md` — Dirty source verified on 2026-07-07.
+- tool:`git diff -- Antigravity/.agents/workflows` and `rg` over workflow description/memory/completion/security terms reviewed before writing on 2026-07-07.
 - tool:memory_audit — Granularity advisory identified this support card as broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized focused child-card split.
 
@@ -83,10 +80,11 @@ metadata:
 - No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
 ## 中文摘要
 - 此子卡負責 Antigravity 基礎工作流與共享閘門。
-- Antigravity 00 pure chat stays direct；需要檔案、截圖、記憶、規則、工具輸出或治理證據時升級 formal-readonly。
-- `03-1` experiment/sandbox prototype 會啟動 reduced/minimal Team mode，且 sandbox writes 不等於 production completion。
-- Team mode 主線只做協調、派工、接收、彙整與回報；protected actions 由 owner station 或 protected-action authorization path 處理。
-- promotion 仍需 scope-bound authorization、formal-write、change-delivery、validation/review 與 memory/docs gates。
+- Dirty source 已把基礎 workflow description 改成繁中語義先行，並保留必要英文觸發 token。
+- `00_chat` 僅限無外部證據依賴的純對話；涉及檔案、記憶、規則、工具輸出或治理影響時升級 formal-readonly。
+- `03-1` 仍是受治理沙盒實驗；sandbox writes 不等於 production completion，promotion 仍需 scope-bound authorization。
+- Missing memory evidence 現在明確寫成 `unverified` 或 `blocked`。
+- `_completion_gate` 與 `_security_footer` 保持 thin reference，`[SUDO]` 不跳過 role、authorization、Team-Native、validation、review 或 protected gates。
 ## Tracked Files
 - Antigravity/.agents/workflows/_completion_gate.md
 - Antigravity/.agents/workflows/_security_footer.md

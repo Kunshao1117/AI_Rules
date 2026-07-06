@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 品質閘門、安全可靠性與 UI/UX 標準技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-04T22:52:02+08:00'
+last_updated: '2026-07-07T05:52:39+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-04T21:24:30+08:00'
+last_verified: '2026-07-07T05:52:39+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 9
+cycle_event_count: 11
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,23 +35,25 @@ metadata:
 # _shared.ops-skills.quality-ui — Quality and UI Skills Memory
 
 ## Current Truth
-- This child card owns Shared quality gate, security/SRE, UI design exploration, and UI/UX standard skills; these skills define quality expectations, not task-specific findings.
-- Quality review governance requires independent review boundaries: implementation specialists cannot review their own deliverable, and review specialists cannot implement the same deliverable.
-- Quality review governance defines correctness, high quality, rigor, review timing, lifecycle states, evidence branch boundaries, and minimum sufficient complexity.
-- Quality review governance now follows the active Programming Team Board; review evidence stations default to read-only evidence unless a concrete direct exception is recorded, and evidence branches do not own review disposition, readiness checks, or protected mutation.
-- Review output uses canonical English fields internally; Director-facing review summaries must be synthesized in Traditional Chinese.
-- AI development and intent alignment gates classify change shape and escalate heavy, structural, governance, public-contract, release, security, cross-module, or repeated fragile work into review-state reporting.
-- AI development quality gates require real evidence before completion claims for governance, workflow, public-contract, security, release, or repeated fragile work, while keeping extra token margin for managed-cache and source checkout limits.
-- Intent alignment gate defines requirement playback, neutral challenge, decision trace, requirement trace, and drift audit output contracts for architecture and build workflows.
-- Interface, visual, and generated design evidence requires detail observation, real-information priority, real rendered screenshots or UI state, or clearly labeled fallback risk.
-- High-change security or accessibility guidance must be grounded in current official sources; [SUDO] remains risk-closure only and 03-1 experiments cannot claim production security readiness.
+- This child card owns Shared quality gate, intent-alignment, review governance, security/SRE, UI design exploration, and UI/UX standard skills; these define governance expectations, not task-specific pass results.
+- Tracked quality/UI skill descriptions now start with Traditional Chinese task meaning while preserving canonical English review states, evidence fields, and exact technical identifiers.
+- AI development quality gate classifies task depth, change intent, patch-stack risk, review escalation, real execution evidence, component reuse, design DNA, reference downgrade, and interface evidence.
+- Real execution is required for claims involving real data, runtime state, persistence, integration, cloud/deployment, or operator-visible behavior; synthetic, mock, fixture, or static screenshot evidence is partial only.
+- Quality review governance requires independent review boundaries, lifecycle state, evidence state, review basis, and minimum sufficient complexity; evidence branches do not own final review disposition or protected mutation.
+- Intent alignment gate owns requirement playback, neutral challenge, decision trace, acceptance trace, and drift audit; unauthorized deviation or unverified critical acceptance evidence blocks completion claims.
+- UI exploration now distinguishes new/no UI, approved DNA, missing DNA, and narrow edits before component inventory; generated images, Stitch screens, and templates are references until real rendered UI validates implementation.
+- UI/UX standards classify surface and mode before layout rules, require component reuse/DNA reasoning, and forbid persisting design DNA without explicit `GO CONTEXT` or `GO DNA`.
+- Security/SRE keeps [SUDO] as risk-closure only; 03-1 experiments may handle real API/DB/credential risk but cannot claim production security readiness.
 
 ## Active Constraints
 - Do not use this card as evidence that a specific product screen or security control passed validation.
 - Keep Director-facing design and quality summaries in Traditional Chinese.
 - Captain or orchestration synthesis cannot upgrade raw evidence-branch output into independent review disposition or completion readiness.
+- Use real rendered or equivalent surface-matched evidence before marking UI layout, component, style, or interaction work complete.
+- Do not create visually similar components while ignoring existing shared components or approved design DNA.
 
 ## Cycle Events
+- 11: Repaired stale quality/UI memory for zh-TW trigger wording, real-evidence gates, review lifecycle, intent drift, component reuse, and design DNA boundaries.
 - 10: Recorded security-SRE hardening so [SUDO] cannot skip validation and experiment work remains prototype-only for production security claims.
 - 09: Recorded quality-gate hardening so governance, workflow, public-contract, security, release, or repeated-fragile work escalates to review-state evidence instead of lightweight completion.
 - 08: Added independent-review and role-separation enforcement to quality-review-governance.
@@ -67,9 +69,11 @@ metadata:
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
 
 ## Evidence Base
-- source:Shared/skills/quality-review-governance/SKILL.md — Verified canonical review fields, owner-station review disposition, evidence branch boundaries, and completion/readiness separation.
-- source:Shared/skills/browser-testing/SKILL.md — Verified visual evidence real-information priority and capture-time limitation.
-- source:Shared/policies/language-governance.md — Verified Director-facing zh-TW synthesis and internal canonical English artifact boundary.
+- source:Shared/skills/ai-dev-quality-gate/SKILL.md — Verified task-depth, change-intent, real-evidence, component reuse, design DNA, reference downgrade, and interface evidence gates.
+- source:Shared/skills/quality-review-governance/SKILL.md — Verified independent review, lifecycle states, evidence branch boundary, minimum sufficient complexity, and completion/readiness separation.
+- source:Shared/skills/intent-alignment-gate/SKILL.md — Verified requirement playback, neutral challenge, decision/acceptance trace, and drift audit states.
+- source:Shared/skills/ui-design-exploration/SKILL.md and Shared/skills/ui-ux-standards/SKILL.md — Verified UI state classification, component primitives, design DNA persistence boundary, and surface-specific evidence routing.
+- source:Shared/skills/security-sre/SKILL.md — Verified [SUDO] and 03-1 prototype-only security boundaries.
 - source:.agents/memory/_shared/ops-skills/archive-001.md — Previous parent-card content preserved during migration.
 - tool:memory_audit — Granularity advisory identified this card as too broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized controlled child-card split.
@@ -83,8 +87,9 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責品質閘門、安全可靠性與 UI/UX 標準。
-- 審查治理已接上團隊站點板，不能把審查證據分支視為單純可選。
-- 它記錄規範歸屬，不直接證明單次畫面或安全檢查通過。
+- 品質/UI skills 已改成繁中 meaning-first 觸發語意，內部 review/evidence 欄位仍保留 canonical English。
+- 真實執行、獨立審查、需求偏移與 UI surface 證據是完成主張的邊界。
+- 它記錄規範歸屬，不直接證明單次畫面、審查或安全檢查通過。
 
 ## Tracked Files
 - Shared/skills/ai-dev-quality-gate/SKILL.md

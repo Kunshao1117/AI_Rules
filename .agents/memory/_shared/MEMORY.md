@@ -4,14 +4,14 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-04T22:51:45+08:00'
+last_updated: '2026-07-07T05:53:55+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: partial_evidence
-last_verified: '2026-07-04T21:22:28+08:00'
+last_verified: '2026-07-07T05:53:55+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -39,14 +39,17 @@ metadata:
 - Governed Team-Native work is triggered by current user requests for governance, workflow, source, memory/docs, commit, audit, test, build, fix, debug, handoff, public-contract, or delegation work; no-impact conversation can stay direct.
 - Language governance owns Director-facing meaning-first output and exact-evidence expression; grounding governance owns external source type, freshness sensitivity, official/primary-source precedence, local-version conflicts, and no-evidence claim boundaries.
 - Memory governance separates source memory from project context; staleness repair requires source comparison, full active card write, and separately authorized `memory_commit`.
+- MCP profiles are opt-in snippets only: framework Fresh, Upgrade, Sync, and Audit must not auto-install external MCP servers or overwrite global MCP settings, and mutating MCP tools still need authorization resolution plus the matching protected gate.
+- Skill/source-document placement is centralized: shared skills cite policy/reference homes instead of copying long playbooks, and source-document size/split decisions live in `Shared/policies/source-document-size-governance.md`.
 - Shared references deploy to `.agents/shared/`, and restricted project-local tools deploy from `Shared/project-tools/`; source/deployed parity is required before closeout.
 - Parent cards use `Relations` for navigation when a more specific child card owns concrete tracked files.
 ## Active Constraints
 - Do not put platform-specific tool calls in Shared skill bodies unless the section is explicitly an adapter note.
 - Do not list directories under Tracked Files; put card navigation in Relations, and treat cards above 8 tracked files as split candidates.
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
-- Keep source/deployed shared docs content-identical; workflow, skill, matrix, platform adapter entries, platform plan mapping, workflow evidence references, and team artifacts must cite shared policies, synthesize Director-facing output, and treat workflow names, casual approvals, `GO`, MCP HITL, memory/context write, and other protected phases as scope-bound until authorization resolution binds target, command, phase, expiry, and matching gate.
+- Keep source/deployed shared docs content-identical; workflow, skill, matrix, platform adapter entries, plan mapping, evidence references, and team artifacts must cite shared policies and treat workflow names, casual approvals, `GO`, MCP HITL, memory/context write, and other protected phases as scope-bound until authorization resolution binds target, command, phase, expiry, and matching gate.
 ## Cycle Events
+- 53: Reconciled Shared governance memory with language/grounding, MCP opt-in, memory/context, source-document-size, and skill placement policy updates.
 - 52: M4 compacted the parent card and removed parent tracked ownership for workflow orchestration/scenarios; `_shared.team-native-core` remains the specific owner.
 - 49-51: Recorded dual-gate language/grounding governance, memory lifecycle separation, and scoped protected phases for memory/topology/context writes.
 - 45-48: Recorded Director-facing output synthesis, authorization hardening, memory-ops compression, and channel lifecycle repair.
@@ -55,6 +58,7 @@ metadata:
 - archive-003.md keeps older cycle events 14-22; archive-001.md / archive-002.md preserve legacy and pre-standardization active snapshots from schema v2 and MEMORY.md migration.
 ## Evidence Base
 - Source evidence: Previous active memory content is preserved in archive-002.md.
+- Source evidence: `language-governance`, `grounding-governance`, `workflow-stage-procedures`, `skill-governance`, `mcp-profiles`, memory-ops, memory-arch, project-context, and audit-engine sources verified on 2026-07-07.
 - Tool evidence: cartridge-system memory_list and memory_audit identified legacy main files and missing quality metadata before migration.
 - Director evidence: 2026-06-15 GO MEMORY MIGRATE authorized active memory-card migration.
 ## Read Contract
@@ -74,6 +78,8 @@ metadata:
 - .agents/shared/policies/language-governance.md
 - Shared/policies/grounding-governance.md
 - .agents/shared/policies/grounding-governance.md
+- Shared/policies/source-document-size-governance.md
+- .agents/shared/policies/source-document-size-governance.md
 - Shared/skill-governance.md
 - Shared/mcp-profiles/README.md
 - Shared/context/_map/CONTEXT.md
@@ -81,6 +87,8 @@ metadata:
 - Shared/skills/memory-ops/SKILL.md
 - Shared/skills/memory-arch/SKILL.md
 - Shared/skills/memory-arch/references/memory-quality-migration-blueprint.md
+- Shared/skills/memory-arch/references/topology-rules.md
+- Shared/skills/memory-arch/references/maintenance-playbooks.md
 - Shared/skills/memory-ops/references/memory-template.md
 - Shared/skills/memory-ops/references/memory-lifecycle-procedures.md
 - Shared/skills/memory-ops/references/memory-mcp-tool-contract.md

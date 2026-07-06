@@ -4,19 +4,19 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 一般討論、探索、實驗、濃縮與測試指令。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-04T22:51:23+08:00'
+last_updated: '2026-07-07T05:51:27+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: 2026-07-03T10:59:34.000Z
+last_verified: '2026-07-07T05:51:27+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 9
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -33,27 +33,22 @@ metadata:
 ---
 # _claude_core.support.commands-general — Claude General Commands Memory
 ## Current Truth
-- Claude general command entries now reference workflow-orchestration before evidence-bearing work, station work, write paths, or completion.
-- Claude general commands automatically enter Team mode for governed user requests; command names alone do not self-start team work without a current governed request.
-- In active Claude Team mode, the mainline carries only the captain coordination role: coordination, dispatch, board/channel/blocker coordination, station artifact receipt, status synthesis, and Director-facing reporting; protected actions stay with owner stations, platform-nondelegable protected-action records, or memory-docs/release-completion stations.
-- Claude experiment and general commands now explicitly load team-task-board and use template references instead of duplicating full team rules inline.
-- Claude `03-1` is a governed workflow: requests for `03-1`, experiment, sandbox prototype, spike, or dirty-code prototype automatically activate Team mode.
-- Claude `03-1` uses a reduced/minimal experiment station/board that records sandbox scope, allowed change scope, discard condition, promotion condition, and allowed shortcuts; sandbox writes do not equal production completion.
-- Claude experiment and test commands now load programming-team-governance and require applicability/execution-mode Programming Team Boards for coding-related validation and completion stations.
-- Claude experiment and test commands now require evidence owner, direct exception, completion condition, and all-direct fake-team guards in Programming Team Boards.
-- Claude condense command now uses the MCP memory evidence contract to separate source memory from project context evidence.
 - This child card owns Claude shared command gates and general command entries.
-- General commands must stay aligned with shared workflow semantics and Claude permission behavior.
+- General command descriptions are normalized for Chinese meaning-first trigger text while preserving exact `Use when` and `DO NOT use when` tokens for routing.
+- Missing memory evidence and result evidence now use canonical English states: `sufficient`, `partial`, `unverified`, `blocked`, and `not-applicable`.
+- Workflow entries keep `Workflow Entry Slimming Guard`, `Phase Order`, and `Completion Boundary` as slim references to shared governance instead of embedded playbooks.
+- Claude `03-1` remains a governed experiment route: sandbox requests activate Team mode, use reduced/minimal experiment station or board, and cannot claim production completion without promotion authorization.
+- `03-1` currently uses YAML block-list `required_skills`; `05_condense` and `06_test` still show inline lists in current dirty source, so check source before making group-wide YAML-list claims.
+- Shared completion and security snippets were slimmed and normalized with explicit code fences, `->` arrows, and Director-readable Chinese-first labels.
 - Claude 00 chat is direct only for pure conversation with no external evidence dependency; Team mode starts from a current governed request or dispatch request, not from command names alone.
 - Claude command names and natural-language approvals are route intent plus scope-bound evidence only; write authority requires the matching formal write station, with authorization resolution binding the visible scope and protected phase.
-- Claude experiment command wording now describes sandbox direct execution as an isolated experiment lane, not captain mainline substitute authoring or a routine direct route for production work.
 - Test commands must select evidence by interface surface rather than assuming browser-only proof.
-- Claude test command now requires visual detail-observation notes and real-information-first evidence before fallback fake data.
-- Batch 4B updated 00/01/03-1/05/06 formal-write semantics so writes require authorization resolution bound to the visible plan, file set, owner station, command, phase, expiry, and required protected-action path.
 ## Active Constraints
 - Do not transfer main-agent responsibility to subagents.
 - Do not write source or memory from read-only command flows without the appropriate gate.
+- Do not present the entire general command set as YAML-list converted until `05_condense` and `06_test` are converted or explicitly exempted.
 ## Cycle Events
+- 26: Refreshed current dirty source: general command descriptions, canonical evidence states, slim entry headings, shared snippet formatting, and partial YAML-list conversion status.
 - 25: Corrected Claude `03-1` truth: governed experiment requests auto-activate Team mode, use reduced/minimal experiment boards, and keep sandbox writes separate from production completion.
 - 24: Batch 4B recorded general command formal-write semantics for 00/01/03-1/05/06: scope-bound intent signal, authorization resolution, and owner-station protected-action path now precede write authority.
 - 23: Recorded Claude command security footer hardening so [SUDO] cannot bypass role limits, scoped authorization, Team-Native, validation, review, protected-action requirements, or complete claims.
@@ -67,6 +62,8 @@ metadata:
 - Parent archive remains at .agents/memory/_claude_core/support/archive-001.md.
 ## Evidence Base
 - source:.agents/memory/_claude_core/support/archive-001.md — Previous support-card content preserved during migration.
+- source:Claude/.claude/commands/00_chat(討論)/SKILL.md, 01_explore(搜索), 03-1_experiment(實驗), 05_condense（濃縮）, 06_test(測試), and `_shared` snippets.
+- tool:`git diff -- Claude/.claude/commands/...` and `rg` reviewed descriptions, evidence states, headings, and `required_skills` shapes on 2026-07-07.
 - tool:memory_audit — Granularity advisory identified this support card as broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized focused child-card split.
 
@@ -78,10 +75,10 @@ metadata:
 - No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
 ## 中文摘要
 - 此子卡負責 Claude 一般指令與共用閘門。
-- Claude 00 指令現在只讓純聊天直接回覆；需要檔案、截圖、記憶、規則、工具輸出或治理證據時要升級 formal-readonly。
-- `03-1` 是受治理 workflow；使用者要求 experiment/sandbox prototype 會自動啟動 Team mode 並使用 reduced/minimal experiment station/board，且不作 production completion claim。
-- Team mode 主線只做 coordination、dispatch、board/channel/blocker coordination、station artifact receipt、status synthesis 與 Director-facing reporting；protected actions 另走 owner station 或 protected-action path。
-- 測試指令要依介面型態選擇證據；Batch 4B 已把 00/01/03-1/05/06 formal-write 語意收斂為先經授權解析。
+- 目前 dirty source 已把一般指令 description 改成中文語義先行，並把證據狀態改成 canonical English。
+- `03-1` 已用 YAML block-list `required_skills`；`05`、`06` 仍需看 source，不能概括為全組已轉。
+- 共用 completion/security snippet 已瘦身並正規化 heading、fence、arrow 與中文標籤。
+- `03-1` 仍是受治理實驗路由，不等於 production complete。
 
 ## Tracked Files
 - Claude/.claude/commands/_shared/_completion_gate.md

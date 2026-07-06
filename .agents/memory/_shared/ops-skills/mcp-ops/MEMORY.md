@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared MCP 與外部服務操作食譜技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-04T22:51:55+08:00'
+last_updated: '2026-07-07T05:52:39+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-04T21:24:30+08:00'
+last_verified: '2026-07-07T05:52:39+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,20 +36,23 @@ metadata:
 
 ## Current Truth
 - This child card owns Shared MCP and external-service operation recipe skills.
-- Gateway discovery and real downstream execution must stay separated by governance rules.
-- Mutating external service MCP calls require scope-bound Director intent, authorization resolution, the matching protected gate, and current credential availability.
-- MCP documentation lookup may use latest docs, but project-locked versions and local source remain the implementation boundary.
-- External-service and live-documentation claims follow grounding governance: official or primary sources outrank summaries, memory, and model knowledge.
-- Stitch design output is direction material; real rendered screenshots are completion-readiness evidence, not generated images.
-- PR review operations now treat [SUDO] as an override/risk-closure request only; it cannot force approval, merge, or skipped checks.
+- Tracked MCP skill descriptions now start with Traditional Chinese task meaning, with MCP server names and tool identifiers preserved as exact tokens.
+- External-service state mutation, writes, deploys, pushes, deletes, resets, resolve actions, and credential-sensitive actions require scope-bound Director intent, authorization resolution, the matching protected gate, current target scope, and credential availability.
+- `[MCP HITL GATE]` is an additional execution gate only; it does not replace authorization resolution or authorize another protected phase.
+- Tool schema discovery, documentation lookup, and listed tool names are not proof that a downstream MCP call ran and are not permission to mutate.
+- Context7 provides latest documentation snapshots; project-locked versions and local source remain the implementation boundary when they conflict with latest docs.
+- Maps and Context7 are read-oriented evidence paths; Stitch design output is direction material, and real rendered UI remains completion-readiness evidence.
+- PR review operations keep [SUDO] as override/risk-closure only; it cannot approve, merge, skip CI, or bypass security checks.
 
 ## Active Constraints
 - Do not treat tool discovery as permission to mutate external systems.
 - Treat MCP HITL as an additional execution gate only; it does not replace authorization resolution or the matching protected gate.
 - Label missing latest/current external evidence honestly; do not claim verified MCP or service behavior from tool discovery alone.
 - Keep provider-specific operational details in the tracked skill files.
+- Re-read external design/service state after out-of-band edits before using it as current evidence.
 
 ## Cycle Events
+- 05: Repaired stale MCP ops memory for zh-TW trigger wording, tool-discovery limits, MCP HITL boundaries, and external mutation protected phases.
 - 04: Verified Batch 4A quality metadata against tracked MCP operation skill content and source/deployed hash parity.
 - 03: Recorded Batch 4A MCP ops hardening so external-service mutation requires scope-bound Director intent, authorization resolution, matching protected gate, and MCP HITL only as an additional execution gate.
 - 02: Recorded PR-review operation hardening so [SUDO] cannot approve, merge, skip checks, or authorize external mutation.
@@ -59,11 +62,10 @@ metadata:
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
 
 ## Evidence Base
-- source:Shared/policies/grounding-governance.md — Verified external grounding triggers, source ranking, local-version-vs-latest handling, and missing-evidence labels.
-- source:Shared/skills/context7-docs/SKILL.md — Verified latest-doc query behavior and local version compatibility caveat.
-- source:Shared/skills/stitch-design/SKILL.md — Verified MCP HITL boundary, re-read-after-external-edits rule, and real rendered screenshot readiness evidence.
-- source/deployed parity: 2026-07-03 SHA256 checks matched all eight tracked Shared MCP operation skills against `.agents/skills/` deployed copies.
-- source content: tracked operation skills define MCP HITL as an additional gate, require scope-bound authorization for external-state mutation, and keep tool discovery non-authorizing; `pr-review-ops` treats `[SUDO]` as risk-closure only.
+- source:Shared/skills/cloudflare-ops/SKILL.md, Shared/skills/excel-ops/SKILL.md, Shared/skills/github-ops/SKILL.md, Shared/skills/pr-review-ops/SKILL.md, Shared/skills/sentry-ops/SKILL.md, Shared/skills/stitch-design/SKILL.md — Verified shared HITL, authorization, protected external mutation, and tool-discovery boundaries.
+- source:Shared/skills/context7-docs/SKILL.md — Verified live-doc lookup, required parameters, latest-doc behavior, and local version compatibility caveat.
+- source:Shared/skills/maps-assist/SKILL.md — Verified instruction-first Google Maps documentation route and read-only documentation boundary.
+- source:Shared/policies/grounding-governance.md — External grounding source ranking remains the governing reference for live service and documentation claims.
 - source:.agents/memory/_shared/ops-skills/archive-001.md — Previous parent-card content preserved during migration.
 - tool:memory_audit — Granularity advisory identified this card as too broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized controlled child-card split.
@@ -78,6 +80,8 @@ metadata:
 ## 中文摘要
 - 此子卡負責 MCP 與外部服務操作食譜。
 - 工具探索不等於外部狀態變更授權。
+- MCP HITL 只是額外執行閘門，不替代 scope-bound authorization 或 protected phase。
+- 最新文件查詢要與專案鎖定版本和本地 source 交叉確認。
 
 ## Tracked Files
 - Shared/skills/cloudflare-ops/SKILL.md

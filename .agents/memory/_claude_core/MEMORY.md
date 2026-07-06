@@ -4,19 +4,19 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-04T22:51:17+08:00'
+last_updated: '2026-07-07T05:51:27+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-04T21:22:45+08:00'
+last_verified: '2026-07-07T05:51:27+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 7
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,16 +35,16 @@ metadata:
 
 ## Current Truth
 - Claude Edition is the Claude Code adapter for AI_Rules and uses `.claude/CLAUDE.md`, `.claude/rules/`, `.claude/commands/`, and `.claude/skills/`.
-- Claude governance evaluates Team-Native Core and Authorization Resolution before lifecycle; permission prompts, Plan Mode approval, slash commands, and GO are scoped evidence for owner stations or protected-action paths only.
-- Governed Claude requests activate Team mode; without a current governed request, AI must not self-start team work from prior context, tools, prompts, command names, or source impact alone.
-- In active Team mode, the mainline is the Director-facing captain and is limited to coordination, dispatch, board maintenance, delivery receipt, status synthesis, blocker routing, authorization routing, and reporting.
+- Claude core, global bootstrap, and README now present Director-facing rules in Traditional Chinese meaning-first form; internal source docs, policies, references, skills, schemas, and code keep local convention and prefer concise English unless Director-facing.
+- Claude governance evaluates Team-Native Core, Authorization Resolution, lifecycle, grounding, and Director output gates before work claims; permission prompts, Plan Mode approval, slash commands, and GO are scoped evidence only.
+- Governed Claude requests activate Team mode; command names, tool prompts, prior context, or source impact alone do not self-start team work without a current governed request.
+- In active Team mode, the mainline is the Director-facing captain only: coordination, dispatch, board maintenance, delivery receipt, status synthesis, blocker routing, authorization routing, and reporting.
 - Evidence, broad reads, validation, review, memory/docs attribution, source writes, commit/release prep, and completion claims require board, station, handoff, role, skill, channel, `station_mode`, `context_visibility`, and `handoff_ownership`.
 - Main-worktree implementation uses station-owned `change-delivery`; `change-application` is fallback for returned artifacts, explicit integration, or generated/deployed sync. Full completion requires implementation, memory/docs, review, validation, and trace evidence.
-- Claude command entries and deployed command copies reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion.
+- Claude README now keeps feature rows short, moves Team-Native details into supplemental bullets, adds a Mermaid diagram legend, and expands install/upgrade PowerShell examples into readable multi-line commands.
+- Claude command entries are being normalized around meaning-first descriptions, canonical evidence statuses, YAML-list `required_skills` where converted, and slim workflow-entry bodies; child command cards own group-specific details.
 - Claude memory operations use shared `.agents/memory/`; the deprecated `claude-edition-rules` card is historical only.
-- Claude command entries and README carry Director-readable output, freshness/grounding, memory/context, deep audit, migration, change intent, visual evidence, intent alignment, review governance, and a 62-skill count.
-- Claude core and global bootstrap keep Director-facing output in Traditional Chinese; internal source docs, policies, references, skills, schemas, and code keep local convention and prefer concise English unless explicitly Director-facing.
-- Source/deployed parity is verified for Claude core identity, global bootstrap, and 17 command pairs in the 02/03/04/07/11 scope; Hooks remain paused and excluded.
+- Current dirty Claude source/deployed parity is pending rerun; do not reuse the 2026-07-04 parity result for the 2026-07-07 dirty source set.
 ## Active Constraints
 - Do not restore `.claude/agents/memory/` as a storage path.
 - Keep Claude command entrypoints concise; shared operational detail belongs in Shared skills.
@@ -53,7 +53,9 @@ metadata:
 - Claude commands and skills must cite the shared language policy instead of treating core identity language text as the sole source.
 - Keep this active card below `line_limit: 120`; compact before adding broad command-cycle detail.
 - After Claude framework source changes, verify source/deployed parity or report it as pending before final completion.
+- Keep README Mermaid labels short and explain them through the adjacent legend instead of long graph node labels.
 ## Cycle Events
+- 8: Refreshed card from 2026-07-07 dirty Claude source: core/global/README wording, grounding, Team-Native captain boundary, README legend/install examples, and pending parity status.
 - 7: Compacted active card on 2026-07-04, preserving captain limits, source/deployed parity, language layering, and command authorization semantics.
 - 6: Recorded dual-gate output and grounding updates across core and README before completion or commit readiness.
 - 5: Corrected Team mode truth and captain boundary: governed requests activate Team mode; captain coordination cannot substitute for owner-station delivery.
@@ -67,10 +69,10 @@ metadata:
 - archive-002.md — Pre-standardization active card snapshot created during MEMORY.md migration.
 - archive-001.md — Legacy _claude_core card preserved before schema v2 compaction on 2026-06-04.
 ## Evidence Base
-- source: `Claude/.claude/rules/core-identity.md`, `.claude/rules/core-identity.md`, `Claude/global/CLAUDE.md`, and user-global `.claude/CLAUDE.md`.
+- source: `Claude/.claude/CLAUDE.md`, `Claude/.claude/rules/core-identity.md`, `Claude/global/CLAUDE.md`, and `Claude/README.md`.
 - source: `.agents/shared/policies/language-governance.md` for Director-facing zh-TW and internal English-led artifact layering.
-- tool: `Get-FileHash -Algorithm SHA256` verified Claude core source/deployed parity and global bootstrap parity on 2026-07-04.
-- tool: active-card measurement reported 127 lines before M2 compaction; `git diff/status` was reviewed before writing.
+- tool: `git diff -- Claude/...` and `git status --short` reviewed the current dirty Claude source set on 2026-07-07.
+- tool: `Get-FileHash -Algorithm SHA256` verified Claude core source/deployed parity and global bootstrap parity on 2026-07-04; this must be rerun before claiming parity for current dirty changes.
 - director: 2026-07-04 M2 scope authorized compaction of `_ag_core`, `_claude_core`, and `_codex_core` only.
 ## Read Contract
 - Read this card when the task touches Claude tracked files, governed layer, or listed relations.
@@ -79,10 +81,10 @@ metadata:
 - No unresolved conflict recorded; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
 - Claude Edition 的 active source owner 是本卡。
-- Claude 受治理請求會啟動 Team mode；主線只做 Director-facing captain 協調與授權路由。
-- Claude source/deployed parity、17 組 command pair、62 技能數、Hooks 暫停狀態已保留。
-- 總監可見輸出維持繁中；內部文件、狀態值、指令與程式識別保持本地慣例。
-- 本卡已壓到 120 行內，但仍需另行 `memory_commit`。
+- 目前 Claude core/README/global 的 dirty source 重點是繁中語義先行、接地查證、Team-Native 隊長邊界與 README 可讀性。
+- README 已補圖例並把安裝/升級範例改成多行 PowerShell。
+- commands 詳情由子卡負責；本卡只保留跨 Claude adapter 的總覽。
+- 2026-07-07 dirty source 尚未重新驗證 source/deployed parity；完成宣稱前要另行補證。
 ## Tracked Files
 - Claude/install.ps1
 - Claude/README.md

@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-04T22:50:50+08:00'
+last_updated: '2026-07-07T05:51:07+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-04T21:22:46+08:00'
+last_verified: '2026-07-07T05:51:07+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 7
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,15 +36,16 @@ metadata:
 
 ## Current Truth
 - Antigravity is the Gemini-facing adapter for AI_Rules and uses `.agents/rules/`, `.agents/workflows/`, and `.agents/skills/`.
-- Governed Antigravity requests activate Team mode; without a current governed request, AI must not self-start team work from prior context, tools, prompts, workflow names, or source impact alone.
+- Current Antigravity rule source requires Director-facing output to start from Traditional Chinese plain meaning; exact technical identifiers are supporting evidence only.
+- Governed Antigravity requests activate Team mode; workflow names, source impact, platform tools, permission prompts, and prior state do not activate Team mode without a current governed user request.
 - In active Team mode, the mainline is the Director-facing captain and is limited to coordination, dispatch, board maintenance, delivery receipt, status synthesis, blocker routing, authorization routing, and reporting.
-- Authorization Resolution scope-binding precedes lifecycle; workflow buttons, IDE confirmations, task-boundary mode, and GO are scoped evidence for owner stations or protected-action paths only.
+- Authorization Resolution scope-binding precedes lifecycle; workflow buttons, IDE confirmations, GO, and tool confirmations are scoped evidence only for the current visible plan, station, command, file set, diff, phase, or blocker.
 - Broad reads, validation, review, memory/docs attribution, source writes, completion audits, and completion claims require board, station, role, channel, `station_mode`, `context_visibility`, and `handoff_ownership` evidence.
 - Main-worktree implementation uses station-owned `change-delivery`; `change-application` is fallback for returned artifacts, explicit integration, or generated/deployed sync. Full completion requires implementation, memory/docs, review, validation, and trace evidence.
-- Antigravity bootstrap and upgrade prompts are Director-facing Traditional Chinese text, while internal docs, policies, matrices, skill bodies, artifact keys, canonical status values, command syntax, and code identifiers keep their local convention.
+- Memory mutation, git, release, deploy, install, credentials, destructive filesystem actions, MCP mutation, cloud mutation, and external-state changes each require their own protected gate and scope; `[SUDO]` records risk/override intent only.
+- Antigravity workflow entries now use meaning-first Chinese descriptions, normalize missing memory evidence as `unverified` or `blocked`, and keep shared completion/security gates as thin references to shared skills and policies.
+- Antigravity README and global GEMINI bootstrap text now use expanded PowerShell/CMD install examples, zero-touch checks, upgrade prompts, and post-deployment notices while preserving protected memory/project-skill boundaries.
 - `Antigravity/install.ps1` validates branch refs, HTTPS source host/path, target/download receipt paths, optional ZIP SHA256, and extracted child paths; it records download receipts and SHA256 evidence before deployment.
-- Antigravity workflow entries and deployed workflow copies reference workflow-orchestration before broad reading, station work, validation, review, memory/docs, write paths, or completion; the 2026-07-03 repair preserved 18/18 source/deployed workflow parity.
-- Antigravity README/docs cover 62 shared operational skills plus real execution evidence, deep audit, memory migration, change intent, visual evidence, intent alignment, review governance, and platform-specific alignment with Claude/Codex semantics.
 ## Active Constraints
 - Do not duplicate root system ownership in this card.
 - Keep Antigravity-specific bootstrap, workflow, and platform facts here; keep shared operational details in Shared skills and policies.
@@ -54,6 +55,7 @@ metadata:
 - Remote bootstrap examples must preserve host/path validation, optional hash checks, receipt evidence, and safe temp cleanup.
 - Keep this active card below `line_limit: 120`; compact before adding broad workflow-cycle detail.
 ## Cycle Events
+- 8: Repaired stale warning state against 2026-07-07 Antigravity dirty source for Chinese-first rules, Team-Native authorization/protected gates, memory/MCP/[SUDO] boundaries, workflow descriptions, and README/GEMINI bootstrap wording.
 - 7: Compacted active card on 2026-07-04, preserving captain limits, source/deployed parity, language layering, and installer trust-boundary facts.
 - 6: Recorded dual-gate output and grounding updates across core and README before completion or commit readiness.
 - 5: Corrected Team mode truth and captain boundary: governed requests activate Team mode; captain coordination cannot substitute for owner-station delivery.
@@ -67,7 +69,9 @@ metadata:
 - archive-002.md — Pre-standardization active card snapshot created during MEMORY.md migration.
 - archive-001.md — Legacy _ag_core card preserved before schema v2 compaction on 2026-06-04.
 ## Evidence Base
-- source: Antigravity core rules, workflows, README, `Antigravity/global/GEMINI.md`, `Antigravity/install.ps1`, and preserved archives.
+- source: Antigravity dirty source under `.agents/rules/`, `.agents/workflows/`, `README.md`, and `global/GEMINI.md` verified on 2026-07-07.
+- source: `Antigravity/install.ps1` and preserved archives.
+- tool: `git status --short -- Antigravity` and `git diff --stat -- Antigravity` reviewed 33 dirty Antigravity files before writing.
 - tool: active-card measurement reported 116 lines before M2 compaction; `git diff/status` reviewed this card before writing.
 - director: 2026-07-04 M2 scope authorized compaction of `_ag_core`, `_claude_core`, and `_codex_core` only.
 ## Read Contract
@@ -77,9 +81,10 @@ metadata:
 - No unresolved conflict recorded; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
 - Antigravity 是 Gemini 平台適配層。
-- Antigravity 受治理請求會啟動 Team mode；主線只做 Director-facing captain 協調與授權路由。
-- Source/deployed workflow parity、安裝腳本 trust boundary、語言分層事實已保留。
-- 本卡已壓到 120 行內，但仍需另行 `memory_commit`。
+- 目前 dirty source 已把總監輸出調整為繁中語義先行，並加強 Team-Native、授權解析與 protected gate 邊界。
+- 記憶、MCP、`[SUDO]`、工作流 description、missing memory evidence 與完成/安全 gate 的 durable truth 已更新。
+- README 與 global GEMINI 的安裝、升級、bootstrap 文案已納入本卡。
+- 本次只更新 active card；未執行 `memory_commit`、stage 或 commit。
 ## Tracked Files
 - Antigravity/install.ps1
 - Antigravity/README.md

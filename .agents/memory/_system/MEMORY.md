@@ -4,14 +4,14 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-05T00:02:45+08:00'
+last_updated: '2026-07-07T05:53:55+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-05T00:01:33+08:00'
+last_verified: '2026-07-07T05:53:55+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -77,6 +77,7 @@ metadata:
 ## Evidence Base
 - source:README.md — Root release section now names v0.2.0 and same-name VSIX asset rerun failure semantics.
 - source:CHANGELOG.md — AI Rules Manager v0.2.0 release-prep entry records governance readiness, runtime gate hardening, rerun semantics, and memory/docs cleanup alignment.
+- source:README.md and CHANGELOG.md rechecked on 2026-07-07 for v0.2.0 release docs and same-name VSIX asset rerun failure semantics.
 - source:.agents/memory/_system/archive-003.md — Previous active card snapshot preserved.
 - tool:memory_audit — Granularity advisory identified root script ownership as a split candidate.
 - director:2026-06-15 — GO SPLIT authorized script child-card creation.

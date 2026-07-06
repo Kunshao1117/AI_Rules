@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared Supabase 核心操作技能與回饋資產。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-03T13:41:39+08:00'
+last_updated: '2026-07-07T05:50:42+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T00:56:00+08:00'
+last_verified: '2026-07-07T05:50:42+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 3
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -46,6 +46,7 @@ metadata:
 - Do not treat GO or MCP HITL alone as authorization for Supabase mutation or external-state changes.
 
 ## Cycle Events
+- 04: Reconciled 2026-07-07 Supabase core dirty source as wording and wrapping only; no product-semantic memory change.
 - 03: Verified Batch 4A quality metadata against tracked Supabase core skill content and source/deployed hash parity.
 - 02: Recorded Batch 4A Supabase ops mutation-gate alignment with scope-bound authorization resolution and separate MCP HITL evidence.
 - 01: Split Supabase core skill ownership out of the broad Shared operational skills card.
@@ -54,6 +55,7 @@ metadata:
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
 
 ## Evidence Base
+- source diff: 2026-07-07 dirty core changes add zh-TW description prefixes and wrap prose in Supabase skill files; no product/API semantic change found.
 - source/deployed parity: 2026-07-03 SHA256 checks matched all four tracked Supabase core files against `.agents/skills/` deployed copies.
 - source content: tracked Supabase skills separate core guidance from Postgres best practices, require current documentation grounding for Supabase product facts, and keep mutation/external-state actions behind scope-bound authorization and MCP HITL where applicable.
 - source:.agents/memory/_shared/ops-skills/archive-001.md — Previous parent-card content preserved during migration.
