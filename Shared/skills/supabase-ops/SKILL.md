@@ -1,10 +1,10 @@
 ---
 name: supabase-ops
 description: >
-  [MCP: supabase] Supabase 資料庫管理操作食譜：資料庫操作、安全檢查、分支管理、Edge Function 部署。
-  MCP Server: supabase
+  資料庫管理與安全檢查操作（MCP: supabase）：Supabase 資料庫管理操作食譜：資料庫操作、安全檢查、分支管理、Edge Function 部署。
   Use when: 呼叫 supabase 相關工具、資料庫管理/SQL查詢/安全檢查 的場景。
   DO NOT use when: 非 Supabase 資料庫操作。
+  MCP Server: supabase
 metadata:
   author: antigravity
   version: "5.3"

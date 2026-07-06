@@ -1,7 +1,7 @@
 ---
 name: supabase-postgres-best-practices
 description: >
-  Postgres performance optimization and Supabase-maintained database best
+  資料庫效能最佳實務：Postgres performance optimization and Supabase-maintained database best
   practices. Use when: 撰寫/審查/最佳化 SQL query、index、schema design、
   connection pooling、RLS performance、database configuration、資料庫 schema
   最佳化。DO NOT use when: 任務涉及 Supabase Auth、Edge Functions、Storage、
