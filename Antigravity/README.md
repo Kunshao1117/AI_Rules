@@ -14,8 +14,12 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 
 1. **跨對話失憶** — 每開新對話就忘記之前做過的架構決策 → 透過 `.agents/memory/` 記憶卡系統持久保存
 2. **無紀律執行** — 寫碼前不規劃、寫完不測試 → 20 個工作流檔案強制四拍子節奏
-3. **角色權限模糊** — 子代理人隨意改檔案，或 AI 形式上列站點卻仍全部主線直做 → 使用者要求 governance、workflow、fix、build、debug、test、audit、skill、memory/docs、commit、handoff、source、public-contract 等受治理工作時，即視為使用者要求啟動隊長制團隊模式；不需固定口令。
-   Team mode 啟動只建立治理與派工狀態，不授權寫入；寫入仍需 visible plan、file scope、authorization phase、exact allowlist、dirty diff read 與 protected gate。正式執行先產出草案包，範圍綁定後轉正式派工板並逐波次派工；主工作區 implementation 由具名 station-owned `change-delivery` 站點寫入，`change-application` 只作 returned artifact、明確 integration task 或 assigned sync 的 fallback；隊長只協調、派工、監督、接收站點交付、彙整狀態、處理阻塞與授權邊界、回報
+3. **角色權限模糊** — 子代理人隨意改檔案，或 AI 形式上列站點卻仍全部主線直做。
+   → 使用者要求 governance、workflow、fix、build、debug、test、audit、skill、memory/docs、commit、handoff、source、public-contract 等受治理工作時，
+   即視為使用者要求啟動隊長制團隊模式；不需固定口令。
+   Team mode 啟動只建立治理與派工狀態，不授權寫入；寫入仍需 visible plan、file scope、authorization phase、exact allowlist、dirty diff read 與 protected gate。
+   正式執行先產出草案包，範圍綁定後轉正式派工板並逐波次派工；主工作區 implementation 由具名 station-owned `change-delivery` 站點寫入。
+   `change-application` 只作 returned artifact、明確 integration task 或 assigned sync 的 fallback；隊長只協調、派工、監督、接收站點交付、彙整狀態、處理阻塞與授權邊界、回報
 4. **知識碎片化** — 技能散落各處，Token 暴增 → 62 套按需載入的操作型技能，不用時零開銷
 5. **語言不友善** — 工程術語充斥 → 三層語言架構（指令層英文、介面層繁中、橋接層雙語）
 6. **框架升級斷裂** — 升級怕覆蓋記憶或脈絡 → D06 安全網 + SHA256 差異比對 + 知識資產永久保護
@@ -30,16 +34,52 @@ AI 編碼助手天生有幾個致命弱點，Antigravity 逐一對治：
 
 ```powershell
 # 🆕 全新安裝（在 IDE 終端機直接執行，自動安裝到當前目錄）
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $u='https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1'; $f="$env:TEMP\ag_install.ps1"; $wc=New-Object Net.WebClient; $bytes=$wc.DownloadData($u); $text=[Text.Encoding]::UTF8.GetString($bytes); $text=$text.TrimStart([char]0xFEFF); [IO.File]::WriteAllText($f,$text,(New-Object Text.UTF8Encoding $true)); & $f; Remove-Item $f
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$u = 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1'
+$f = Join-Path $env:TEMP 'ag_install.ps1'
+$wc = New-Object Net.WebClient
+$bytes = $wc.DownloadData($u)
+$text = [Text.Encoding]::UTF8.GetString($bytes).TrimStart([char]0xFEFF)
+[IO.File]::WriteAllText($f, $text, (New-Object Text.UTF8Encoding $true))
+& $f
+Remove-Item $f
 ```
 
 ```powershell
 # ⬆️ 升級現有安裝
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $u='https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1'; $f="$env:TEMP\ag_install.ps1"; $wc=New-Object Net.WebClient; $bytes=$wc.DownloadData($u); $text=[Text.Encoding]::UTF8.GetString($bytes); $text=$text.TrimStart([char]0xFEFF); [IO.File]::WriteAllText($f,$text,(New-Object Text.UTF8Encoding $true)); & $f -Mode Upgrade; Remove-Item $f
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$u = 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Antigravity/install.ps1'
+$f = Join-Path $env:TEMP 'ag_install.ps1'
+$wc = New-Object Net.WebClient
+$bytes = $wc.DownloadData($u)
+$text = [Text.Encoding]::UTF8.GetString($bytes).TrimStart([char]0xFEFF)
+[IO.File]::WriteAllText($f, $text, (New-Object Text.UTF8Encoding $true))
+& $f -Mode Upgrade
+Remove-Item $f
 ```
 
+CMD / 通用 Shell 使用者可用下列多行版本啟動管理控制台。
+
+若目前終端機是 `cmd.exe`，或不確定外層 Shell 是否會先展開 PowerShell 的 `$` 變數，請使用 `-EncodedCommand`。
+下列 CMD 分段版會先組合同一個 encoded payload，再以單一 `-EncodedCommand` 參數執行，避免改成 `-Command` 後被外層展開。
+
 ```cmd
-powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAFMAZQByAHYAaQBjAGUAUABvAGkAbgB0AE0AYQBuAGEAZwBlAHIAXQA6ADoAUwBlAGMAdQByAGkAdAB5AFAAcgBvAHQAbwBjAG8AbAAgAD0AIABbAE4AZQB0AC4AUwBlAGMAdQByAGkAdAB5AFAAcgBvAHQAbwBjAG8AbABUAHkAcABlAF0AOgA6AFQAbABzADEAMgAKACQAdQAgAD0AIAAnAGgAdAB0AHAAcwA6AC8ALwByAGEAdwAuAGcAaQB0AGgAdQBiAHUAcwBlAHIAYwBvAG4AdABlAG4AdAAuAGMAbwBtAC8ASwB1AG4AcwBoAGEAbwAxADEAMQA3AC8AQQBJAF8AUgB1AGwAZQBzAC8AbQBhAGkAbgAvAEEAbgB0AGkAZwByAGEAdgBpAHQAeQAvAGkAbgBzAHQAYQBsAGwALgBwAHMAMQAnAAoAJABmACAAPQAgAEoAbwBpAG4ALQBQAGEAdABoACAAJABlAG4AdgA6AFQARQBNAFAAIAAnAGEAZwBfAGkAbgBzAHQAYQBsAGwALgBwAHMAMQAnAAoAJAB3AGMAIAA9ACAATgBlAHcALQBPAGIAagBlAGMAdAAgAE4AZQB0AC4AVwBlAGIAQwBsAGkAZQBuAHQACgAkAGIAeQB0AGUAcwAgAD0AIAAkAHcAYwAuAEQAbwB3AG4AbABvAGEAZABEAGEAdABhACgAJAB1ACkACgAkAHQAZQB4AHQAIAA9ACAAWwBUAGUAeAB0AC4ARQBuAGMAbwBkAGkAbgBnAF0AOgA6AFUAVABGADgALgBHAGUAdABTAHQAcgBpAG4AZwAoACQAYgB5AHQAZQBzACkACgAkAHQAZQB4AHQAIAA9ACAAJAB0AGUAeAB0AC4AVAByAGkAbQBTAHQAYQByAHQAKABbAGMAaABhAHIAXQAwAHgARgBFAEYARgApAAoAWwBJAE8ALgBGAGkAbABlAF0AOgA6AFcAcgBpAHQAZQBBAGwAbABUAGUAeAB0ACgAJABmACwAIAAkAHQAZQB4AHQALAAgACgATgBlAHcALQBPAGIAagBlAGMAdAAgAFQAZQB4AHQALgBVAFQARgA4AEUAbgBjAG8AZABpAG4AZwAgACQAdAByAHUAZQApACkACgAmACAAJABmACAALQBNAG8AZABlACAATQBlAG4AdQAKAFIAZQBtAG8AdgBlAC0ASQB0AGUAbQAgACQAZgA=
+set "AGCMD=WwBOAGUAdAAuAFMAZQByAHYAaQBjAGUAUABvAGkAbgB0AE0AYQBuAGEAZwBlAHIAXQA6ADoAUwBlAGMAdQBy"
+set "AGCMD=%AGCMD%AGkAdAB5AFAAcgBvAHQAbwBjAG8AbAAgAD0AIABbAE4AZQB0AC4AUwBlAGMAdQByAGkAdAB5AFAAcgBvAHQA"
+set "AGCMD=%AGCMD%bwBjAG8AbABUAHkAcABlAF0AOgA6AFQAbABzADEAMgAKACQAdQAgAD0AIAAnAGgAdAB0AHAAcwA6AC8ALwBy"
+set "AGCMD=%AGCMD%AGEAdwAuAGcAaQB0AGgAdQBiAHUAcwBlAHIAYwBvAG4AdABlAG4AdAAuAGMAbwBtAC8ASwB1AG4AcwBoAGEA"
+set "AGCMD=%AGCMD%bwAxADEAMQA3AC8AQQBJAF8AUgB1AGwAZQBzAC8AbQBhAGkAbgAvAEEAbgB0AGkAZwByAGEAdgBpAHQAeQAv"
+set "AGCMD=%AGCMD%AGkAbgBzAHQAYQBsAGwALgBwAHMAMQAnAAoAJABmACAAPQAgAEoAbwBpAG4ALQBQAGEAdABoACAAJABlAG4A"
+set "AGCMD=%AGCMD%dgA6AFQARQBNAFAAIAAnAGEAZwBfAGkAbgBzAHQAYQBsAGwALgBwAHMAMQAnAAoAJAB3AGMAIAA9ACAATgBl"
+set "AGCMD=%AGCMD%AHcALQBPAGIAagBlAGMAdAAgAE4AZQB0AC4AVwBlAGIAQwBsAGkAZQBuAHQACgAkAGIAeQB0AGUAcwAgAD0A"
+set "AGCMD=%AGCMD%IAAkAHcAYwAuAEQAbwB3AG4AbABvAGEAZABEAGEAdABhACgAJAB1ACkACgAkAHQAZQB4AHQAIAA9ACAAWwBU"
+set "AGCMD=%AGCMD%AGUAeAB0AC4ARQBuAGMAbwBkAGkAbgBnAF0AOgA6AFUAVABGADgALgBHAGUAdABTAHQAcgBpAG4AZwAoACQA"
+set "AGCMD=%AGCMD%YgB5AHQAZQBzACkACgAkAHQAZQB4AHQAIAA9ACAAJAB0AGUAeAB0AC4AVAByAGkAbQBTAHQAYQByAHQAKABb"
+set "AGCMD=%AGCMD%AGMAaABhAHIAXQAwAHgARgBFAEYARgApAAoAWwBJAE8ALgBGAGkAbABlAF0AOgA6AFcAcgBpAHQAZQBBAGwA"
+set "AGCMD=%AGCMD%bABUAGUAeAB0ACgAJABmACwAIAAkAHQAZQB4AHQALAAgACgATgBlAHcALQBPAGIAagBlAGMAdAAgAFQAZQB4"
+set "AGCMD=%AGCMD%AHQALgBVAFQARgA4AEUAbgBjAG8AZABpAG4AZwAgACQAdAByAHUAZQApACkACgAmACAAJABmACAALQBNAG8A"
+set "AGCMD=%AGCMD%ZABlACAATQBlAG4AdQAKAFIAZQBtAG8AdgBlAC0ASQB0AGUAbQAgACQAZgA="
+powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand %AGCMD%
 ```
 
 > 💡 **跨目錄安裝**：加上 `-Target "D:\你的專案路徑"` 即可安裝到其他位置。
@@ -73,10 +113,14 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 | **按需載入** | 技能僅在需要時載入，減少 AI 的認知負擔和 Token 消耗 |
 | **需求對齊與反證** | 架構藍圖與建構計畫必須先回放需求、列出非目標與成功標準，再做中立反證、決策紀錄、驗收追蹤與偏移稽核 |
 | **繁體中文特化** | 三層語言架構：指令層（英文）、介面層（繁體中文）、橋接層（雙語） |
-| **Team-Native Core 團隊原生核心** | Team-Native 由使用者要求受治理工作觸發：governance、workflow、fix、build、debug、test、audit、skill、memory/docs、commit、handoff、source、public-contract，或要求團隊、隊員、subagent、delegation、Team-Native。使用者不需要固定口令。純對話、小型穩定問答與無 source/governance/evidence 影響的工作可維持 direct；Team mode 啟動不等於寫入授權。啟動後，下一個合法狀態必須是隊長任務板、適用站點、隊員派工包與通道狀態；主工作區 implementation 由具名 station-owned `change-delivery` 站點依 `implementation-change-delivery`、精確 allowlist、dirty diff read 與禁止受保護動作寫入，`change-application` 只作 returned artifact、明確 integration task 或 assigned generated/deployed sync 的 fallback。站點以 adapter 或 conditional 路由為主，可轉成 Gemini CLI、`@` 指派、browser-capable agent、IDE workflow、plugin adapter、瀏覽器或命令列證據；若通道不可用，必須先回報 unavailable、blocked、unverified、not-authorized 或 standby，不得默默降級成 routine direct。正式團隊完成必須回收 implementation change delivery、memory delivery、review、validation 四類交付件與 Team-Native trace；隊長只接收交付、維持任務板、彙整狀態、處理阻塞與授權邊界，不能先自行讀完、實作、審查或驗證再事後補團隊軌跡 |
-| **範圍式授權解析** | Antigravity workflow 按鈕、IDE 確認、`task_boundary` 模式、GO 與工具確認都必須收斂到目前明示的計畫、站點、命令、工具或檔案集合；workflow 入口只做路由，介面同意可作為該提示範圍的授權證據，但不是無範圍寫入或記憶/git/release 授權 |
-| **輸出與接地雙閘門** | Antigravity core 只保留總監輸出繁中語義先行與高變動/外部事實接地查證的最小契約；細節引用 `Shared/policies/language-governance.md` 與 `Shared/policies/grounding-governance.md`。source/deployed sync 以 `Antigravity/.agents/rules/00_core_identity.md` 與 `.agents/rules/00_core_identity.md` 雜湊一致為準 |
-| **三位一體治理** | 靜默異常中斷（閘門攔截時才中斷）+ 風險關閉請求或覆寫請求紀錄（`[SUDO]` 只記錄請求，不跳過 scoped authorization、Team-Native、validation、review、protected gates，也不支援 `complete` 宣稱）+ 雙軌沙盒（生產 / 草圖） |
+| **Team-Native Core 團隊原生核心** | 受治理工作觸發 Team mode；寫入需範圍綁定，隊長只協調，完成需交付件與 trace |
+| **範圍式授權解析** | Workflow、IDE 確認、GO 與工具確認都要綁定目前明示的計畫、站點、命令或檔案集合 |
+| **輸出與接地雙閘門** | 繁中語義先行；高變動或外部事實需接地查證 |
+| **三位一體治理** | 靜默異常中斷、`[SUDO]` 風險紀錄與沙盒路徑彼此分離 |
+
+Team-Native Core 補充：Antigravity 可把證據站點轉成 Gemini CLI、`@` 指派、browser-capable agent、IDE workflow、plugin adapter、瀏覽器或命令列證據。
+通道不可用時必須標示 unavailable、blocked、unverified、not-authorized 或 standby，不得默默降級成 routine direct。
+正式完成必須回收 implementation change delivery、memory/docs delivery、review、validation 與 Team-Native trace。
 
 ---
 
@@ -85,21 +129,21 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBOAGUAdAAuAF
 ```mermaid
 graph TB
     subgraph "AI_Rules 框架核心庫"
-        SRC["Antigravity/<br/>Gemini 版源碼"]
-        SH["Shared/skills/<br/>62 套共用技能"]
+        SRC["Antigravity 源碼"]
+        SH["Shared skills"]
     end
 
     subgraph "統一部署引擎"
-        DEPLOY["Scripts/Deploy.ps1<br/>-Platform Antigravity"]
+        DEPLOY["Antigravity 部署"]
     end
 
     subgraph ".agents/ 生態系統（部署後）"
-        RULES["rules/<br/>9 個治理規則"]
-        WF["workflows/<br/>20 個工作流檔案"]
-        SKILLS["skills/<br/>62 套操作型技能"]
-        MEM["memory/<br/>專案記憶（三平台共用）"]
-        CTX["context/<br/>專案脈絡（三平台共用）"]
-        PROJ["project_skills/<br/>衍生技能（升級保護）"]
+        RULES["治理規則"]
+        WF["工作流檔案"]
+        SKILLS["操作型技能"]
+        MEM["共用專案記憶"]
+        CTX["共用專案脈絡"]
+        PROJ["衍生技能"]
     end
 
     SRC -->|"install.ps1"| DEPLOY
@@ -112,6 +156,17 @@ graph TB
     SKILLS -.->|"Gateway: workspace + projectRoot"| MEM
     SKILLS -.->|"讀取已核准脈絡"| CTX
 ```
+
+圖例：
+- Antigravity 源碼：`Antigravity/`，Gemini 版源碼。
+- Shared skills：`Shared/skills/`，62 套共用技能來源。
+- Antigravity 部署：`Scripts/Deploy.ps1 -Platform Antigravity`。
+- 治理規則：部署後 `.agents/rules/`，9 個治理規則。
+- 工作流檔案：部署後 `.agents/workflows/`，20 個工作流檔案。
+- 操作型技能：部署後 `.agents/skills/`，62 套操作型技能。
+- 共用專案記憶：部署後 `.agents/memory/`，三平台共用。
+- 共用專案脈絡：部署後 `.agents/context/`，三平台共用。
+- 衍生技能：部署後 `.agents/project_skills/`，升級時保護。
 
 ---
 
@@ -144,13 +199,22 @@ graph TB
 | **D06 安全防線** | Fresh 模式下以 `try/finally` 備份記憶卡到暫存目錄，部署中斷也不會損失資料 |
 | **知識資產保護** | `memory/`、`project_skills/` 和 `context/` 在升級時絕對不覆蓋 |
 | **確認閘門** | Upgrade 模式產出分類顏色差異報告，需使用者確認才套用 |
-| **Shared policy drift** | Doctor 檢查 Antigravity / Gemini adapter marker block 是否仍由框架來源 `Shared/policies/subagent-invocation.md` 生成，並確認下游 `.agents/shared/policies/subagent-invocation.md` 已部署 |
+| **Shared policy drift** | Doctor 檢查 Antigravity / Gemini adapter marker block、來源政策與下游副本 |
 | **Subagent vocabulary drift** | Doctor 檢查 Shared 技能是否誤把平台工具名寫成共用語義，避免 Antigravity、Claude、Codex 的委派語彙互相污染 |
 | **Review governance coverage** | Doctor 檢查審查治理共用技能、工作流矩陣、子代理政策與 02/03/04/08/09/10 入口是否保留審查狀態與 evidence branch 邊界 |
-| **Captain-led programming governance coverage** | Doctor 檢查隊長制編程治理共用技能、團隊任務板模板、受治理請求觸發、任務類型閘門、派工前置閘門、隊長最小執行權規則、隊長任務板、角色邊界、station-owned main-worktree change delivery、fallback change-application、證據負責人、主線直做例外、全主線假團隊防線、Antigravity workflow 接入與部署後 shared skill / shared reference hash 是否一致；也會檢查 draft-to-formal board lifecycle、dispatch wave、previous-wave input、next-wave start condition、formal evidence eligibility，並攔截草案板派工、草案證據冒充正式驗收與一次開全部隊員 |
+| **Captain-led programming governance coverage** | Doctor 檢查範圍與正式證據資格見下方覆蓋細節 |
 | **Team-Native Core coverage** | Doctor 檢查 Team-Native Core 政策、任務軌跡契約、conditional 平台路由、Team-Native trace 驗收與部署後共用參考；嚴格模式可要求任務軌跡 |
 | **孤兒偵測** | 偵測源碼已刪除但目標仍存在的「孤兒檔案」，標記為 `ORPHAN` 提醒 |
 | **衍生技能補建** | 每次部署自動掃描 `project_skills/`，補建缺少的符號連結 |
+
+覆蓋細節：
+- Shared policy drift 比對 `Shared/policies/subagent-invocation.md` 與 `.agents/shared/policies/subagent-invocation.md`。
+- Doctor 掃描隊長制編程治理技能、團隊任務板模板、受治理請求觸發、任務類型閘門與派工前置閘門。
+- Doctor 確認隊長最小執行權、隊長任務板、角色邊界、station-owned main-worktree change delivery。
+- Doctor 確認 fallback change-application、證據負責人、主線直做例外與全主線假團隊防線。
+- Doctor 確認 Antigravity workflow 接入與 deployed shared skill / shared reference hash 一致。
+- Doctor 檢查 draft-to-formal lifecycle、dispatch wave、previous-wave input、next-wave start condition。
+- Doctor 檢查 formal evidence eligibility，並攔截草案板派工、草案證據冒充正式驗收與一次開全部隊員。
 
 ---
 
@@ -175,10 +239,21 @@ graph TB
 底層規範依啟動模式分為三層：
 
 **`00_core_identity.md`** — Always On（每次對話必載）
-1. **專職化分工** — Team-Native 由使用者要求受治理工作觸發後，隊長任務只限總監溝通、授權解析、建板、派工、監督、接收交付、彙整狀態、處理阻塞與授權邊界、回報，不把一般實作、測試、審查與收尾包辦為正常模式；下游 `.agents/shared/policies/subagent-invocation.md` 與框架來源 `Shared/policies/subagent-invocation.md` 只定義任務類型閘門、派工前置閘門、隊長最小執行權規則、Delegation Gate、角色互斥、station-owned main-worktree change delivery、fallback change-application、假團隊防線與主線直做例外；未啟動 Team-Native 時，純聊天、小型穩定問答與無 source/governance/evidence 影響工作依一般生命週期、範圍式授權與寫入前讀取處理；啟動後任何隊員不得早於任務板啟動；Antigravity / Gemini adapter 把證據型站點轉成 Gemini CLI、`@` 指派、browser-capable agent 或 plugin adapter，實作型隊員使用 `change-delivery`，隔離或文字變更交付只作 fallback，不能自我審查；不可用時標記未驗證、阻塞或 `closed-with-director-risk`（總監風險關閉但非完整）
+1. **專職化分工** — Team-Native 由使用者要求受治理工作觸發後，隊長任務只限總監溝通、授權解析、建板、派工、監督、接收交付、彙整狀態、處理阻塞與授權邊界、回報，不把一般實作、測試、審查與收尾包辦為正常模式。
+   下游 `.agents/shared/policies/subagent-invocation.md` 與框架來源 `Shared/policies/subagent-invocation.md` 只定義任務類型閘門、派工前置閘門。
+   也定義隊長最小執行權規則、Delegation Gate 與角色互斥。
+   另包含 station-owned main-worktree change delivery、fallback change-application、假團隊防線與主線直做例外。
+   未啟動 Team-Native 時，純聊天、小型穩定問答與無 source/governance/evidence 影響工作依一般生命週期、範圍式授權與寫入前讀取處理；啟動後任何隊員不得早於任務板啟動。
+   Antigravity / Gemini adapter 把證據型站點轉成 Gemini CLI、`@` 指派、browser-capable agent 或 plugin adapter，實作型隊員使用 `change-delivery`。
+   隔離或文字變更交付只作 fallback，不能自我審查。
+   不可用時標記未驗證、阻塞或 `closed-with-director-risk`（總監風險關閉但非完整）。
 2. **多代理人視圖透明度** — 子代理人的修改必須回傳主代理人在介面呈現
 3. **生命週期強制** — 規劃 → 驗證閘門 → 執行 → 記憶更新
-4. **禁止終端機文書處理** — 靜默閘門式攔截（`[PRE-FLIGHT GATE]`），`[SUDO]` 只留下風險關閉請求或覆寫請求紀錄；不得跳過 scoped authorization、Team-Native、validation、review、protected gates，也不得支援 `complete` 宣稱；`/03-1_experiment` 是受治理沙盒 workflow，請求本身啟動 Team mode 並使用 reduced/minimal experiment station/board，但 sandbox writes、discard 與 promotion 仍需 scope-bound authorization，且不得宣稱 production completion
+4. **禁止終端機文書處理** — 靜默閘門式攔截（`[PRE-FLIGHT GATE]`），`[SUDO]` 只留下風險關閉請求或覆寫請求紀錄。
+   不得跳過 scoped authorization、Team-Native、validation、review、protected gates，也不得支援 `complete` 宣稱。
+   `/03-1_experiment` 是受治理沙盒 workflow，請求本身啟動 Team mode 並使用 reduced/minimal experiment station/board，
+   但 sandbox writes、discard 與 promotion 仍需 scope-bound authorization。
+   也必須記錄 allowed shortcuts、experiment-only 處置、丟棄條件與升級條件，且不得宣稱 production completion。
 5. **繁體中文特化** — 三層語言架構（指令層、介面層、橋接層）
 
 **`01_cross_lingual_guard.md`** — Always On（每次對話必載）
@@ -193,7 +268,10 @@ graph TB
 3. **技能系統契約** — 按需載入、漸進式揭露、三目錄架構（衍生技能詳見 `05_project_skill_contract.md`）
 
 **`02_code_quality_security.md`** — Model Decision（寫程式碼時載入）
-1. **機密隔離** — `[SEC SILENT GATE]` 靜默掃描，`[SUDO]` 只留下風險關閉請求或覆寫請求紀錄，不授權寫入或揭露明文機密；`/03-1_experiment` 沙盒例外仍需 reduced/minimal experiment station/board、sandbox scope、升級條件與 scope-bound authorization，且不得宣稱 production completion
+1. **機密隔離** — `[SEC SILENT GATE]` 靜默掃描，`[SUDO]` 只留下風險關閉請求或覆寫請求紀錄，不授權寫入或揭露明文機密。
+   `/03-1_experiment` 沙盒例外仍需 reduced/minimal experiment station/board。
+   Sandbox scope、allowed shortcuts、experiment-only 處置、升級條件與 scope-bound authorization 也必須存在。
+   不得宣稱 production completion。
 2. **驗證器鐵律** — `[LINTER GATE]` 最多 3 次自動修復，超限硬性中斷
 3. **橫切品質約束** — 安全/品質/介面/測試的核心原則
 
@@ -215,29 +293,45 @@ graph TB
 
 #### 總監可讀輸出與位置索引
 
-Antigravity 版正式計畫、完成報告、巡檢報告可用短名稱維持可讀性，但同一份輸出必須提供「位置索引」，把「核心規範、工作流入口、文件說明、巡檢規則、記憶卡」這類短名稱對應到具體檔案、章節、工具狀態或目錄範圍。若使用表格，欄位仍固定為「事項、位置、影響、狀態」，且「位置」欄要先用白話位置，再以括號補具體定位。
+Antigravity 版正式計畫、完成報告、巡檢報告可用短名稱維持可讀性，但同一份輸出必須提供「位置索引」，把「核心規範、工作流入口、文件說明、巡檢規則、記憶卡」這類短名稱對應到具體檔案、章節、工具狀態或目錄範圍。
+若使用表格，欄位仍固定為「事項、位置、影響、狀態」，且「位置」欄要先用白話位置，再以括號補具體定位。
 
 #### 中立誠實協作與知識新鮮度
 
-Antigravity 版核心規則要求 AI 保持中立誠實協作。AI 不以討好、附和或迎合總監為目標，也不得為了顯得有批判性而刻意反對。AI 先承接目標，再用實際檔案、工具輸出、官方文件或可靠主要來源確認事實；若證據衝突，必須用「我看到的事實／可能問題／建議做法」短格式提出修正方向與可行替代做法。
+Antigravity 版核心規則要求 AI 保持中立誠實協作。
+AI 不以討好、附和或迎合總監為目標，也不得為了顯得有批判性而刻意反對。
+AI 先承接目標，再用實際檔案、工具輸出、官方文件或可靠主要來源確認事實；若證據衝突，必須用「我看到的事實／可能問題／建議做法」短格式提出修正方向與可行替代做法。
 
 記憶卡與模型內建知識都可能過時。外部框架、API、套件版本、平台規則、價格、法規、安全建議、近期狀態或任何不確定資訊，必須以版本與目前日期作為錨點查最新或官方來源；無法查證時要明說，不得把舊記憶當成最新事實。
 
 #### 需求對齊與偏移稽核
 
-Antigravity 版架構與建構入口會載入需求對齊閘門。架構藍圖必須包含需求理解回放、中立反證檢查、架構決策表、需求到驗收追蹤表、建構交接合約、未驗證與阻塞清單；建構計畫必須包含沿用藍圖狀態、需求到任務追蹤表、任務驗收矩陣、偏移稽核規則與完成前回查。若實際變更偏離核准藍圖，必須標記為符合、合理偏離、未授權偏離或未驗證。
+Antigravity 版架構與建構入口會載入需求對齊閘門。
+架構藍圖必須包含需求理解回放、中立反證檢查、架構決策表、需求到驗收追蹤表、建構交接合約、未驗證與阻塞清單；建構計畫必須包含沿用藍圖狀態、需求到任務追蹤表、任務驗收矩陣、偏移稽核規則與完成前回查。
+若實際變更偏離核准藍圖，必須標記為符合、合理偏離、未授權偏離或未驗證。
 
 #### 跨專案真實驗證契約
 
-Antigravity 版正式建構、修復、測試與健檢都套用「可驗必驗」原則，也必須先判定變更意圖，並區分緊急修補、根因修復、局部修整與結構重構。緊急修補只能止血並留下未解風險，根因修復必須說明症狀、原因與回歸路徑，局部修整必須證明行為不變，結構重構必須說明依賴影響與遷移/相容路徑。同一症狀、同一檔案區域或同一操作者路徑重複修補時，必須升級為根因修復或結構重構，不能繼續堆疊補丁。
+Antigravity 版正式建構、修復、測試與健檢都套用「可驗必驗」原則，也必須先判定變更意圖，並區分緊急修補、根因修復、局部修整與結構重構。
+緊急修補只能止血並留下未解風險，根因修復必須說明症狀、原因與回歸路徑，局部修整必須證明行為不變，結構重構必須說明依賴影響與遷移/相容路徑。
+同一症狀、同一檔案區域或同一操作者路徑重複修補時，必須升級為根因修復或結構重構，不能繼續堆疊補丁。
 
-只要 AI 能啟動應用、操作介面、呼叫服務、執行命令、查詢資料、讀取日誌、截圖或觀察副作用，就必須實際驗證。視覺驗證不能只看整頁大方向，必須檢查文字截斷、長字串、按鈕對齊、間距、邊框破損、遮擋、焦點狀態、禁用狀態、載入、空狀態與錯誤狀態；視覺證據也應優先使用真實資訊頁面、真實資料、實際帳號狀態、目前回應或日誌。mock、fixture、假資料、靜態截圖或局部單元測試只能作為局部證據或備援證據，且必須標記使用原因、差異風險與不可宣稱的完成範圍。缺少真實執行證據時，結果必須是不通過或阻塞，不能包裝成完成。允許阻塞的條件限於缺少外部授權、憑證、實體設備、不可安全執行的破壞性動作、第三方服務不可用、MFA/CAPTCHA、法規或安全限制。
+只要 AI 能啟動應用、操作介面、呼叫服務、執行命令、查詢資料、讀取日誌、截圖或觀察副作用，就必須實際驗證。
+視覺驗證不能只看整頁大方向，必須檢查文字截斷、長字串、按鈕對齊、間距、邊框破損、遮擋、焦點狀態、禁用狀態、載入、空狀態與錯誤狀態；視覺證據也應優先使用真實資訊頁面、真實資料、實際帳號狀態、目前回應或日誌。
+mock、fixture、假資料、靜態截圖或局部單元測試只能作為局部證據或備援證據，且必須標記使用原因、差異風險與不可宣稱的完成範圍。
+缺少真實執行證據時，結果必須是不通過或阻塞，不能包裝成完成。
+允許阻塞的條件限於缺少外部授權、憑證、實體設備、不可安全執行的破壞性動作、第三方服務不可用、MFA/CAPTCHA、法規或安全限制。
 
-Antigravity 健檢入口採深層證據式架構：先選擇快速、標準、深度或鑑識模式，再偵測網站、後端、命令列、桌面、外掛、函式庫、基礎設施、資料管線、AI 功能、文件治理庫或混合專案，並建立功能、端點、命令、任務、介面、資料流、效能與風險盤點。Antigravity 版優先使用站點要求的代理管理、瀏覽器子代理、截圖、錄影與視覺產物採證；中繼證據只允許寫入健檢日誌，不授權修改原始碼、記憶卡或外部狀態。
+Antigravity 健檢入口採深層證據式架構：先選擇快速、標準、深度或鑑識模式，再偵測網站、後端、命令列、桌面、外掛、函式庫、基礎設施、資料管線、AI 功能、文件治理庫或混合專案，並建立功能、端點、命令、任務、介面、資料流、效能與風險盤點。
+Antigravity 版優先使用站點要求的代理管理、瀏覽器子代理、截圖、錄影與視覺產物採證；中繼證據只允許寫入健檢日誌，不授權修改原始碼、記憶卡或外部狀態。
 
-08 以外的工作流共用外部接地矩陣：每個入口都對應任務型態、官方或標準依據、最低證據狀態、阻塞條件與下一流程路由。Antigravity 版只把矩陣轉譯成瀏覽器、視覺產物、IDE 可見結果、終端與站點要求的唯讀代理證據，不把 Claude 鉤子或 Codex 原生子代理規則硬寫成 Antigravity 指令；workflow 入口與介面按鈕只在明示範圍內提供路由或授權證據，不授權無範圍寫入。必要證據分支或任務板不可用時必須標記未驗證、阻塞或 `closed-with-director-risk`（總監風險關閉但非完整）。
+08 以外的工作流共用外部接地矩陣：每個入口都對應任務型態、官方或標準依據、最低證據狀態、阻塞條件與下一流程路由。
+Antigravity 版只把矩陣轉譯成瀏覽器、視覺產物、IDE 可見結果、終端與站點要求的唯讀代理證據，不把 Claude 鉤子或 Codex 原生子代理規則硬寫成 Antigravity 指令。
+workflow 入口與介面按鈕只在明示範圍內提供路由或授權證據，不授權無範圍寫入。
+必要證據分支或任務板不可用時必須標記未驗證、阻塞或 `closed-with-director-risk`（總監風險關閉但非完整）。
 
-若驗證入口沒有第一時間找到，或瀏覽器、桌面操作、命令列、外掛宿主、API、資料庫、日誌、preview / sandbox 等路徑短暫不可用，AI 必須先搜尋、確認服務就緒、重試或改用等價真實路徑。短暫失敗不能成為捨棄真實驗證的理由；最終阻塞時必須列出已搜尋入口、嘗試工具、重試狀態、替代路徑與最小缺失條件。
+若驗證入口沒有第一時間找到，或瀏覽器、桌面操作、命令列、外掛宿主、API、資料庫、日誌、preview / sandbox 等路徑短暫不可用，AI 必須先搜尋、確認服務就緒、重試或改用等價真實路徑。
+短暫失敗不能成為捨棄真實驗證的理由；最終阻塞時必須列出已搜尋入口、嘗試工具、重試狀態、替代路徑與最小缺失條件。
 
 ---
 
@@ -277,7 +371,7 @@ graph LR
 | 01 | 探索 | 可行性研究，雙狀態魔鬼代言人（純搜索 / 深度分析） | Reader |
 | 02 | 架構 | 需求轉化為技術藍圖與記憶系統初始化 | Writer/SRE |
 | 03 | 建構計畫 | Stage 1：記憶載入 → Diff 規劃 → 等待範圍綁定的意圖訊號與授權解析（含沙盒快速路徑） | Writer/SRE |
-| 03-1 | 實驗 | 沙盒快速實驗（受治理 workflow；要求 03-1/experiment/sandbox prototype 會啟動 Team mode，使用 reduced/minimal experiment station/board；sandbox 寫入與 promotion 仍需 scope-bound authorization，且不宣稱 production complete） | Experiment Worker |
+| 03-1 | 實驗 | 受治理沙盒實驗；sandbox 寫入與 promotion 仍需 scope-bound authorization | Experiment Worker |
 | 03-2 | 建構執行 | Stage 2：正式派工板 → 第 1 波變更交付件 → 回收證據 → 達到下一波啟動條件後再派審查/驗證交付件 → 授權變更套用站點處理合格交付件 → 新建歸卡 → 記憶更新 → 真實執行驗證 | Captain/SRE |
 | 05 | 濃縮 | 專案濃縮初始化（掃描 → 萃取 → 隊長任務板 → 審閱 → 寫入） | Writer/SRE |
 | 04-1 | 修復計畫 | Bug 診斷 → 產出修復計畫（唯讀，等待範圍綁定的意圖訊號與授權解析） | Reader |
@@ -379,7 +473,9 @@ graph TD
 - **中文摘要** — 最多五條，供總監快速判讀
 - **追蹤的檔案清單** — 這個模組負責哪些原始碼檔案
 
-內容品質標準要求新建或受控標準化後的現役主卡標記內容品質版本、記憶類型、驗證狀態、最後驗證時間與有效範圍，並提供證據基礎、讀取契約、衝突與取代段落。設計 DNA、產品偏好、驗收口味與一次性觀察不寫入來源記憶；這些內容應留在專案脈絡、任務報告或待審清單。本專案目前尚未執行現役主卡內容標準化遷移。
+內容品質標準要求新建或受控標準化後的現役主卡標記內容品質版本、記憶類型、驗證狀態、最後驗證時間與有效範圍，並提供證據基礎、讀取契約、衝突與取代段落。
+設計 DNA、產品偏好、驗收口味與一次性觀察不寫入來源記憶；這些內容應留在專案脈絡、任務報告或待審清單。
+本專案目前尚未執行現役主卡內容標準化遷移。
 
 #### 樹狀巢狀
 
