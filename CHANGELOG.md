@@ -1,21 +1,29 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+本文件記錄此專案的重要變更；版本號、檔名與技術識別保留原文。
 
-> 語彙說明：本文件保留歷史版本語境；舊條目中的 patch、packet、補丁、封包、隊長代工與 accepted-risk 不得解讀為現行正向規範。現行正向規範只使用交付件、任務軌跡帳本、逐波派工、隊長接收站點交付與彙整狀態、授權後變更由變更站或明確授權 gate 套用，以及缺交付件即阻塞、未驗證或總監風險關閉但非完整。
+> 語彙說明：本文件保留歷史版本語境；舊條目中的 patch、packet、補丁、封包、隊長代工與 accepted-risk 不得解讀為現行正向規範。
+> 現行正向規範只使用交付件、任務軌跡帳本、逐波派工、隊長接收站點交付與彙整狀態、授權後變更由變更站或明確授權 gate 套用，以及缺交付件即阻塞、未驗證或總監風險關閉但非完整。
 
 ## [2026-07-04] AI Rules Manager v0.2.0
 
 ### feat
-- **Team-Native release readiness** — VSIX release prep now reflects the governed Team-Native station model, including station-owned change delivery, authorization-bound writes, release workflow scope, and separated follow-on gates for review, validation, memory/docs, git, tag, release, deploy, and install.
-- **Runtime gate hardening** — Extension packaging keeps the runtime verification gate in the prepublish path, ensuring source update execution still checks workspace trust, repository identity, managed paths, tracked clean manager scripts, explicit fetch refspecs, and readiness before spawning the manager script.
+- **Team-Native 發布就緒** — VSIX 發布準備已對齊受治理的 Team-Native 站點模型；
+  寫入由站點擁有的變更交付負責，並以授權範圍綁定 release workflow。
+  審查、驗證、memory/docs、git、tag、release、deploy 與 install 都保留為分離的後續 gate。
+- **執行期閘門加固** — 延伸模組打包流程保留 prepublish 的 runtime verification gate；
+  在啟動管理腳本前，仍會檢查 workspace trust、repository identity、managed paths、
+  tracked clean manager scripts、explicit fetch refspecs 與 readiness。
 
 ### fix
-- **Release rerun semantics** — Release documentation now states that an existing same-name VSIX asset causes the workflow to reject or fail; reruns must use a new version/tag or manually delete the old asset before retrying.
-- **Memory/docs cleanup alignment** — Release notes and public docs now describe this cycle as governance and cleanup readiness, while keeping memory mutation and source-memory attribution outside the VSIX source-write station.
+- **Release 重跑語意** — 發布文件現在明確說明：若已存在同名 VSIX asset，workflow 會拒絕或失敗；
+  重跑時必須改用新的 version/tag，或先手動刪除舊 asset 再重試。
+- **Memory/docs 清理口徑對齊** — Release notes 與公開文件將本輪描述為治理與清理就緒；
+  memory mutation 與 source-memory attribution 仍留在 VSIX source-write station 之外。
 
 ### chore
-- **AI Rules Manager v0.2.0** — Extension manifest, lockfile, root README, and extension README are prepared for `v0.2.0` / `ai-rules-manager-0.2.0.vsix`.
+- **AI Rules Manager v0.2.0** — Extension manifest、lockfile、根 README 與 extension README
+  已準備對齊 `v0.2.0` / `ai-rules-manager-0.2.0.vsix`。
 
 ## [2026-07-01] Team-Native 授權綁定與巡檢閉鎖
 
@@ -92,7 +100,8 @@ All notable changes to this project will be documented in this file.
 ## [2026-06-28] 團隊原生通道分離重構
 
 ### feat
-- **Assignment/channel separation** — 團隊原生流程改成先建立任務板與指派專家站點，再判斷執行通道；子代理、工具、瀏覽器、命令列、MCP 或隔離工作區不可用時，只能把站點標示為阻塞、未驗證或總監風險關閉但非完整，不得取消指派或回落成隊長代工完整完成。
+- **Assignment/channel separation** — 團隊原生流程改成先建立任務板與指派專家站點，再判斷執行通道；
+  子代理、工具、瀏覽器、命令列、MCP 或隔離工作區不可用時，只能把站點標示為阻塞、未驗證或總監風險關閉但非完整，不得取消指派或回落成隊長代工完整完成。
 - **Direct skill rename** — 正式團隊入口更名為任務板與交付件語義：團隊任務板、變更交付件、記憶文件交付件、驗證交付件與審查交付件成為唯一正式名稱。
 - **Specialist-first routing** — 專家分類由專家角色母技能唯一維護；委派策略固定為選專家子技能、選領域標籤、選請求通道、記錄通道能力與啟動狀態，最後回收交付件或標示缺證狀態。
 
@@ -110,7 +119,8 @@ All notable changes to this project will be documented in this file.
 - **Team trace audit** — 治理巡檢新增 Team-Native Core 語意掃描與可選嚴格任務軌跡檢查；管理器與部署稽核入口可要求 Team-Native trace。
 
 ### docs
-- **Core direction alignment** — 根文件與三平台文件改以 Team-Native Core 描述團隊化方向，並明確區分 Codex / Claude 原生或外掛能力與 Antigravity / Gemini adapter / conditional 路由。
+- **Core direction alignment** — 根文件與三平台文件改以 Team-Native Core 描述團隊化方向，
+  並明確區分 Codex / Claude 原生或外掛能力與 Antigravity / Gemini adapter / conditional 路由。
 - **Skill count refresh** — 共用操作型技能數更新為 61；Codex Edition 部署後技能總數更新為 78（61 共用 + 17 工作流），根文件與三平台文件同步調整。
 
 ### fix
@@ -119,8 +129,10 @@ All notable changes to this project will be documented in this file.
 ## [2026-06-28] 團隊協作封包技能拆分（歷史語境）
 
 ### feat
-- **Team collaboration skill split** — 新增 team-role-boundaries、team-change-delivery-artifact、team-memory-docs-delivery-artifact、team-validation-delivery-artifact、team-review-delivery-artifact、team-completion-gate 六個共用隊員技能，將隊長制從主線處理升級為正式團隊協作。
-- **Formal packet completion** — 歷史紀錄：當時以 implementation patch、memory delivery、review、validation 四類封包描述正式團隊完成；現行規範已改為四類交付件與任務軌跡帳本，且缺件不得稱完整完成。
+- **Team collaboration skill split** — 新增 team-role-boundaries、team-change-delivery-artifact、team-memory-docs-delivery-artifact、
+  team-validation-delivery-artifact、team-review-delivery-artifact、team-completion-gate 六個共用隊員技能，將隊長制從主線處理升級為正式團隊協作。
+- **Formal packet completion** — 歷史紀錄：當時以 implementation patch、memory delivery、review、validation 四類封包描述正式團隊完成；
+  現行規範已改為四類交付件與任務軌跡帳本，且缺件不得稱完整完成。
 
 ### docs
 - **Skill count refresh** — 共用操作型技能數更新為 50；Codex Edition 部署後技能總數更新為 67（50 共用 + 17 工作流），根文件與三平台文件同步調整。
@@ -151,7 +163,10 @@ All notable changes to this project will be documented in this file.
 ## [2026-06-28] 隊長制編程團隊協作模式
 
 ### feat
-- **Captain trigger gate** — 歷史紀錄：當時曾採 default-on 隊長制；現行規範已改為由目前總監對 governance、workflow、fix、build、debug、test、audit、source、public-contract 或等價 source/governance/evidence-bearing work 的受治理請求觸發 Team mode，也可由團隊、隊員、subagent、delegation、Team-Native 等派工語意觸發。它不是 AI 在沒有目前使用者受治理請求時自行 default-on；Team mode 啟動也不等於寫入授權，寫入仍需 scope-bound authorization。純聊天、小型穩定問答、無 source/governance/evidence 影響可維持 direct。
+- **Captain trigger gate** — 歷史紀錄：當時曾採 default-on 隊長制；現行規範已改為由目前總監對 governance、workflow、fix、build、debug、test、audit、source、public-contract
+  或等價 source/governance/evidence-bearing work 的受治理請求觸發 Team mode，也可由團隊、隊員、subagent、delegation、Team-Native 等派工語意觸發。
+  它不是 AI 在沒有目前使用者受治理請求時自行 default-on；Team mode 啟動也不等於寫入授權，寫入仍需 scope-bound authorization。
+  純聊天、小型穩定問答、無 source/governance/evidence 影響可維持 direct。
 - **Task type and dispatch pre-gate** — 隊長制啟動後必須先判斷任務類型、工作流路由、實作授權、允許角色與禁止角色，再建立隊長任務板；任何隊員、子代理、瀏覽器分支、CLI 分支或隔離變更交付不得早於任務板啟動。
 - **Captain minimum execution gate** — 歷史紀錄：當時仍保留部分隊長主線處理與驗收語氣；現行規範已收斂為隊長只協調、派工、監督、接收交付、更新任務板、彙整狀態與回報，隊長代工不得稱完整完成。
 - **Captain team board** — 團隊站點板升級為隊長任務板，每站必須標示是否適用、執行模式、證據負責人、角色邊界、主線直做例外與完成條件。
@@ -331,8 +346,10 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-31] UI 設計探索治理
 
 ### feat
-- **UI design exploration skill** — 新增 `ui-design-exploration` 共用技能，將 UI 需求探索、網路參考搜尋、操作者意圖、共用元件盤點、三案比較、HTML 展示頁或視覺參考選擇、設計 DNA 與專案衍生技能沉澱串成固定流程。
-- **Skill forge compatibility** — 技能工廠改為先分流 Shared framework、project-derived、user Codex 與 workflow/command entry 產物；Codex 相容欄位維持在 top-level 允許清單內，AI_Rules 治理欄位收斂到 `metadata`。
+- **UI design exploration skill** — 新增 `ui-design-exploration` 共用技能，將 UI 需求探索、網路參考搜尋、操作者意圖、共用元件盤點、三案比較、HTML 展示頁或視覺參考選擇、
+  設計 DNA 與專案衍生技能沉澱串成固定流程。
+- **Skill forge compatibility** — 技能工廠改為先分流 Shared framework、project-derived、user Codex 與 workflow/command entry 產物；
+  Codex 相容欄位維持在 top-level 允許清單內，AI_Rules 治理欄位收斂到 `metadata`。
 
 ### docs
 - **Skill count refresh** — 共用操作型技能數更新為 40；Codex Edition 部署後技能總數更新為 57（40 共用 + 17 工作流）。
@@ -350,7 +367,8 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-29] AI Rules Manager v0.1.14
 
 ### fix
-- **Gitignore comment encoding hotfix** — `.gitignore` 管理流程改用專用文字讀寫，讀取既有 UTF-8、UTF-8 BOM、UTF-16 與舊 ANSI 檔案，寫回時固定使用 UTF-8 BOM，避免中文註解在 VS Code 或 Windows PowerShell 5.1 情境下變成亂碼。
+- **Gitignore comment encoding hotfix** — `.gitignore` 管理流程改用專用文字讀寫，讀取既有 UTF-8、UTF-8 BOM、UTF-16 與舊 ANSI 檔案，
+  寫回時固定使用 UTF-8 BOM，避免中文註解在 VS Code 或 Windows PowerShell 5.1 情境下變成亂碼。
 
 ### docs
 - **Release examples** — 根文件與延伸模組文件的 Release tag 與 VSIX 檔名更新為 `v0.1.14` / `ai-rules-manager-0.1.14.vsix`。
@@ -391,7 +409,8 @@ All notable changes to this project will be documented in this file.
 
 ### fix
 - **Shared skill prefix exception** — 技能同步器與專案技能連結巡檢保留 `project-context-protocol`，避免既有 `project-*` 排除規則把正式共用技能誤判成專案技能連結而漏部署或誤報紅燈。
-- **Manager context backfill** — AI Rules Manager 的專案規則同步在套用後會補建 `.agents/context/_map/CONTEXT.md` 與必要 `.gitignore` 追蹤註記，讓既有專案只走管理器同步時也能取得專案脈絡層。
+- **Manager context backfill** — AI Rules Manager 的專案規則同步在套用後會補建 `.agents/context/_map/CONTEXT.md` 與必要 `.gitignore` 追蹤註記，
+  讓既有專案只走管理器同步時也能取得專案脈絡層。
 
 ### docs
 - **Skill count refresh** — 共用操作型技能數更新為 39；Codex Edition 部署後技能總數更新為 56（39 共用 + 17 工作流）。
@@ -409,32 +428,47 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-29] AI Rules Manager v0.1.11
 
 ### fix
-- **Workspace setting trust boundary** — AI Rules Manager now rejects source URL, source root, and PowerShell executable overrides from project workspace settings. These sensitive settings must live in user settings, so opening an unfamiliar project cannot silently redirect the manager to an untrusted source or executable.
-- **Preview failure gate** — global rule sync, project rule sync, and orphan cleanup no longer show the write-confirmation prompt after a failed preview.
-- **Gitignore equivalent patterns** — target project `.gitignore` checks now recognize equivalent ignore patterns such as `**/.agents/logs/` and `**/.cartridge/`, avoiding duplicate AI Rules managed blocks.
+- **Workspace setting trust boundary** — AI Rules Manager now rejects source URL, source root,
+  and PowerShell executable overrides from project workspace settings.
+  These sensitive settings must live in user settings,
+  so opening an unfamiliar project cannot silently redirect the manager to an untrusted source or executable.
+- **Preview failure gate** — global rule sync, project rule sync, and orphan cleanup no longer show the write-confirmation prompt
+  after a failed preview.
+- **Gitignore equivalent patterns** — target project `.gitignore` checks now recognize equivalent ignore patterns
+  such as `**/.agents/logs/` and `**/.cartridge/`,
+  avoiding duplicate AI Rules managed blocks.
 
 ### chore
-- **AI Rules Manager v0.1.11** — extension manifest and lockfile versions are bumped to `0.1.11`; source and docs are updated, with no VSIX packaging or release in this change.
+- **AI Rules Manager v0.1.11** — extension manifest and lockfile versions are bumped to `0.1.11`;
+  source and docs are updated, with no VSIX packaging or release in this change.
 
 ## [2026-05-29] AI Rules Manager v0.1.10
 
 ### fix
-- **Remote source mirror** — VS Code managed AI_Rules cache now auto-aligns to the remote `main` branch before manager actions, so stale or diverged cache copies cannot be used to sync project rules.
+- **Remote source mirror** — VS Code managed AI_Rules cache now auto-aligns to the remote `main` branch before manager actions,
+  so stale or diverged cache copies cannot be used to sync project rules.
 - **Project sync freshness gate** — project rule sync now stops if the selected AI_Rules source is not aligned with the remote repository.
-- **Gitignore additive policy** — target project `.gitignore` handling now checks for required AI Rules entries and inserts only missing lines, preserving existing project rules and comments.
+- **Gitignore additive policy** — target project `.gitignore` handling now checks for required AI Rules entries
+  and inserts only missing lines,
+  preserving existing project rules and comments.
 
 ### chore
-- **AI Rules Manager v0.1.10 release** — extension manifest and lockfile versions are bumped to `0.1.10`; source and docs are updated for the tag-driven VSIX release.
+- **AI Rules Manager v0.1.10 release** — extension manifest and lockfile versions are bumped to `0.1.10`;
+  source and docs are updated for the tag-driven VSIX release.
 
 ## [2026-05-29] AI Rules Manager v0.1.9
 
 ### fix
-- **Source update guard** — AI Rules Manager now stops immediately when the managed AI_Rules source repo is diverged, locally ahead, dirty, or unable to fast-forward; it no longer runs Doctor after a failed source update.
-- **Source status wording** — Source checks now distinguish synced, fast-forward available, diverged source, local-ahead source, and dirty working tree states.
+- **Source update guard** — AI Rules Manager now stops immediately when the managed AI_Rules source repo is diverged,
+  locally ahead, dirty, or unable to fast-forward;
+  it no longer runs Doctor after a failed source update.
+- **Source status wording** — Source checks now distinguish synced, fast-forward available, diverged source,
+  local-ahead source, and dirty working tree states.
 - **Workflow skill count** — Codex workflow skill merge now excludes `_shared` from the user-facing workflow count.
 
 ### chore
-- **AI Rules Manager v0.1.9** — extension manifest and lockfile versions are bumped to `0.1.9`; source and docs are updated, with no VSIX packaging or release in this change.
+- **AI Rules Manager v0.1.9** — extension manifest and lockfile versions are bumped to `0.1.9`;
+  source and docs are updated, with no VSIX packaging or release in this change.
 
 ## [2026-05-29] 情境式總監可讀輸出與中立誠實協作契約
 
@@ -466,7 +500,8 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-22] AI Rules Manager v0.1.8
 
 ### fix
-- **Operation wording precision** — VS Code 側邊欄、Command Palette、確認視窗與管理腳本輸出明確區分 AI_Rules 來源庫更新、VSIX 安裝包新版檢查、治理巡檢 Doctor 與目前專案規則同步，避免「套用更新」被誤解成會安裝插件或同步 `.agents` / `.claude` / `.codex`。
+- **Operation wording precision** — VS Code 側邊欄、Command Palette、確認視窗與管理腳本輸出明確區分 AI_Rules 來源庫更新、VSIX 安裝包新版檢查、
+  治理巡檢 Doctor 與目前專案規則同步，避免「套用更新」被誤解成會安裝插件或同步 `.agents` / `.claude` / `.codex`。
 
 ### chore
 - **AI Rules Manager v0.1.8** — extension manifest 與 lockfile 版本升級到 `0.1.8`，下一次正式 release asset 檔名對齊 `ai-rules-manager-0.1.8.vsix`。
@@ -474,10 +509,13 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-22] 三平台子代理治理建構
 
 ### feat
-- **Delegation Gate semantic core** — `Shared/policies/subagent-invocation.md` 改為 vendor-neutral 的 Delegation Gate / evidence branch 模型，Shared 層只描述委派判斷、唯讀邊界、隊長接收交付與授權處理責任，以及固定證據交付件格式。
+- **Delegation Gate semantic core** — `Shared/policies/subagent-invocation.md` 改為 vendor-neutral 的 Delegation Gate / evidence branch 模型，
+  Shared 層只描述委派判斷、唯讀邊界、隊長接收交付與授權處理責任，以及固定證據交付件格式。
 - **Platform adapter translation** — Antigravity / Gemini、Claude Code、Codex 三平台入口改為各自轉譯 Shared 語義，不再把任一平台的子代理工具名硬寫成共用規則。
-- **Subagent vocabulary drift audit** — Doctor 新增語彙漂移檢查，Shared 技能中的未標註平台工具名會以 Red 阻斷，並攔截 Codex workflow 殘留的 Claude 舊式 Agent subagent_type 語法。
-- **Shared vocabulary hardening** — `delegation-strategy` 與 CLI prompt skeleton 移除平台專屬狀態檔與硬編工具名，browser Auto-Pass 明確不得略過 Director GO / HITL gate。
+- **Subagent vocabulary drift audit** — Doctor 新增語彙漂移檢查，Shared 技能中的未標註平台工具名會以 Red 阻斷，
+  並攔截 Codex workflow 殘留的 Claude 舊式 Agent subagent_type 語法。
+- **Shared vocabulary hardening** — `delegation-strategy` 與 CLI prompt skeleton 移除平台專屬狀態檔與硬編工具名，
+  browser Auto-Pass 明確不得略過 Director GO / HITL gate。
 
 ### docs
 - **Common semantics plus adapters** — 根 README、三平台 README、能力矩陣與 memory cards 同步說明「共用語義 + 平台 adapter」模型，取代舊的一刀切同源說法。
@@ -485,7 +523,8 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-19] VSIX Release Pipeline Node 24 Migration
 
 ### chore
-- **Release workflow Node 24 migration** — VSIX Release workflow 升級為 Node 24 建置路線，改用支援 Node 24 runtime 的 GitHub 官方 actions，避免 Node 20 淘汰影響自動發布。
+- **Release workflow Node 24 migration** — VSIX Release workflow 升級為 Node 24 建置路線，
+  改用支援 Node 24 runtime 的 GitHub 官方 actions，避免 Node 20 淘汰影響自動發布。
 - **VSIX license packaging** — 補齊 repo 與 AI Rules Manager extension package 的 MIT 授權檔，讓 VSIX 打包不再出現缺少 LICENSE 的警告。
 - **Update reminder silence contract** — 文件與插件發布 playbook 明確規定啟動自動檢查只在有新版時通知；沒有新版或暫時無法檢查時只寫入 Output Channel，手動檢查才回報完整狀態。
 
@@ -494,7 +533,8 @@ All notable changes to this project will be documented in this file.
 ### feat
 - **Skill governance contract** — 新增 Skill 放置與觸發契約，將核心規則、workflow / command、Shared Skill 與 memory 的職責分層，讓 Skill 成為三平台按需載入的知識壓縮層。
 - **Plugin release governance skill** — 新增 `plugin-release-governance`，集中管理插件升版、VSIX 打包、GitHub Release、tag、Release asset 與更新提醒的共用流程。
-- **Skill trigger quality audit** — Doctor 的技能品質檢查新增 description 觸發品質欄位，檢查 Shared Skill 中英觸發詞、負向邊界與 workflow 入口觸發語句，避免格式正確但 AI 不會自動讀取的 Skill 漏檢。
+- **Skill trigger quality audit** — Doctor 的技能品質檢查新增 description 觸發品質欄位，
+  檢查 Shared Skill 中英觸發詞、負向邊界與 workflow 入口觸發語句，避免格式正確但 AI 不會自動讀取的 Skill 漏檢。
 - **Workflow trigger descriptions** — 三平台 00-12 workflow / command 入口統一補上 `Use when` 口徑，讓入口負責任務路由、Shared Skill 負責細節 playbook。
 
 ### chore
@@ -522,7 +562,8 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-19] Release 簡介自動化
 
 ### chore
-- **Release notes body** — VSIX release workflow 改為從 `CHANGELOG.md` 的 `AI Rules Manager v<version>` 段落產生 GitHub Release 簡介，不再只依賴 GitHub 的 Full Changelog。
+- **Release notes body** — VSIX release workflow 改為從 `CHANGELOG.md` 的 `AI Rules Manager v<version>` 段落產生 GitHub Release 簡介，
+  不再只依賴 GitHub 的 Full Changelog。
 - **Existing release refresh** — workflow 重新執行時會更新既有 Release 簡介並覆蓋同名 VSIX asset，方便補跑發布。
 
 ## [2026-05-19] AI Rules Manager v0.1.4
@@ -535,11 +576,13 @@ All notable changes to this project will be documented in this file.
 
 ### fix
 - **Runtime drift semantic compare** — 使用者層全域規則與 repo source 比對時，文字規則檔會先正規化 CRLF/LF 換行；內容相同不再顯示 Yellow。
-- **Project sync line-ending tolerance** — 專案規則與 shared skills 差異掃描沿用同一套文字語意比對，避免 `D:\AI_Rules` 與 IDE managed clone 只因 checkout 換行不同互相觸發同步提示。
+- **Project sync line-ending tolerance** — 專案規則與 shared skills 差異掃描沿用同一套文字語意比對，
+  避免 `D:\AI_Rules` 與 IDE managed clone 只因 checkout 換行不同互相觸發同步提示。
 - **Legacy danger pattern narrowing** — 舊路徑高風險語義偵測不再把合法 `.codex/AGENTS.md` fallback 誤標為歷史大寫 Codex agents 路徑。
 
 ### docs
-- **Managed clone behavior** — README 與 AI Rules Manager 文件補充 Antigravity / VS Code 類 IDE 在非 AI_Rules workspace 會使用 globalStorage 管理快取，且全域規則漂移以文字內容判斷。
+- **Managed clone behavior** — README 與 AI Rules Manager 文件補充 Antigravity / VS Code 類 IDE 在非 AI_Rules workspace 會使用 globalStorage 管理快取，
+  且全域規則漂移以文字內容判斷。
 
 ## [2026-05-18] VSIX Release 自動建立與附加
 
@@ -557,7 +600,8 @@ All notable changes to this project will be documented in this file.
 - **Platform template hygiene** — 三平台模板 `.gitignore` 移除歷史殘留規則，並明確標示 `.agents/memory/` 預設是專案知識庫、不忽略。
 
 ### feat
-- **Managed target gitignore block** — `Set-GitignoreEntries` 改為寫入 `AI_RULES_GITIGNORE` marker block，Fresh/Upgrade 會集中管理 `.cartridge/` 與 `.agents/logs/`，並保留目標專案既有規則。
+- **Managed target gitignore block** — `Set-GitignoreEntries` 改為寫入 `AI_RULES_GITIGNORE` marker block，
+  Fresh/Upgrade 會集中管理 `.cartridge/` 與 `.agents/logs/`，並保留目標專案既有規則。
 
 ### docs
 - **Deployment ignore policy** — 根 README 補充框架 repo 自身與部署目標專案的 `.gitignore` 差異。
@@ -565,12 +609,14 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-18] 三平台共用子代理啟用政策
 
 ### feat
-- **Shared subagent invocation policy** — 新增 `Shared/policies/subagent-invocation.md` 作為子代理啟用語義唯一來源，並轉譯到 Codex native subagents、Claude `Agent` tool 與 Antigravity browser / CLI adapter。
+- **Shared subagent invocation policy** — 新增 `Shared/policies/subagent-invocation.md` 作為子代理啟用語義唯一來源，
+  並轉譯到 Codex native subagents、Claude `Agent` tool 與 Antigravity browser / CLI adapter。
 - **Policy marker sync** — 部署與專案同步流程會把 Shared policy marker block 注入三平台核心規則，避免手動維護三份子代理政策。
 - **Subagent drift audit** — Doctor 新增 shared subagent policy drift 檢查，若三平台 marker block 與 Shared policy 不一致會回報治理紅黃燈。
 
 ### docs
-- **Delegation channel model** — `delegation-strategy` 擴充為 direct / native subagent / browser subagent / CLI analytical subagent / MCP tool，並明確 MCP 是主代理工具，不是委派目標。
+- **Delegation channel model** — `delegation-strategy` 擴充為 direct / native subagent / browser subagent / CLI analytical subagent / MCP tool，
+  並明確 MCP 是主代理工具，不是委派目標。
 - **三平台文件同步** — 更新根 README、三平台 README 與能力矩陣，說明子代理政策採共用語義與平台轉譯。
 
 ### chore
@@ -640,15 +686,21 @@ All notable changes to this project will be documented in this file.
 
 ### fix
 - **Governed global bootstrap** — 三平台全域觸發器不再未授權自動下載執行；未初始化等待 `GO INSTALL`，升級等待 `GO UPGRADE`。
-- **Workflow 權限語義對齊** — Antigravity audit logic 改為 `filesystem:write:logs`，測試 workflow 僅輸出失敗報告，commit workflow 在 GO 後才寫 CHANGELOG、stage 明確清單、commit、push。
+- **Workflow 權限語義對齊** — Antigravity audit logic 改為 `filesystem:write:logs`，測試 workflow 僅輸出失敗報告，
+  commit workflow 在 GO 後才寫 CHANGELOG、stage 明確清單、commit、push。
 - **MCP HITL 邊界補強** — 高風險 Shared skills 補入標準 HITL/GO 邊界，明確區分 schema discovery 與 mutating execution。
-- **Governance Semantics audit** — `Deploy.ps1 -Action Audit` 新增語義紅黃燈，掃描舊路徑、自動安裝、blanket staging、automation-safe 變異與 MCP HITL 缺口；紅燈 exit 1，黃燈只報告。
+- **Governance Semantics audit** — `Deploy.ps1 -Action Audit` 新增語義紅黃燈，掃描舊路徑、自動安裝、blanket staging、automation-safe 變異與 MCP HITL 缺口；
+  紅燈 exit 1，黃燈只報告。
 
 ## [2026-05-17] 三平台代理治理升級
 
 ### feat
-- **平台能力矩陣** — 新增 `Shared/platform-capability-matrix.md`，以 `native` / `adapter` / `manual` 對齊 Antigravity、Claude Edition、Codex Edition 的 Skills、commands、AGENTS/CLAUDE/GEMINI 載入、MCP、subagents、automation 與權限模型。
-- **Workflow metadata v2** — 三平台 workflow / command frontmatter 補齊 `kind`、`platforms`、`lifecycle_phase`、`role`、`memory_awareness`、`tool_scope`、`human_gate`、`automation_safe`。
+- **平台能力矩陣** — 新增 `Shared/platform-capability-matrix.md`，以 `native` / `adapter` / `manual` 對齊 Antigravity、Claude Edition、Codex Edition 的
+  Skills、commands、
+  AGENTS/CLAUDE/GEMINI 載入、MCP、subagents、automation 與權限模型。
+- **Workflow metadata v2** — 三平台 workflow / command frontmatter 補齊 `kind`、`platforms`、`lifecycle_phase`、`role`、
+  `memory_awareness`、`tool_scope`、
+  `human_gate`、`automation_safe`。
 - **例行巡檢工作流** — 新增 `10-routine-巡檢` / `10_routine(巡檢)`，作為 automation-safe 唯讀巡檢入口；任何寫入、安裝、記憶歸卡、commit、push 仍需 GO。
 - **MCP opt-in profiles** — 新增 `Shared/mcp-profiles/` 設定片段，明確不在升級流程中自動安裝外部 MCP server 或改動全域工具設定。
 
@@ -695,8 +747,11 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-13] 全域規則安全閘門與遠端一鍵管理機制
 
 ### feat
-- **全域規則安全閘門 (D15)**: 實作基於 SHA256 雜湊比對的規則更新機制。當偵測到使用者全域設定（如 `~/.gemini/GEMINI.md`）與框架最新版本有衝突時，系統將不強制覆寫，而是將最新規則產出至專案內的 `.agents/global_stage/` 安全暫存區，確保自動化更新不破壞個人化配置。
-- **管理機制遠端一鍵指令化 (D16)**: 強化 `Antigravity/install.ps1` 支援 `-Mode Menu` 遠端引導模式。現在總監只需從 GitHub README 複製一段單行指令貼上，即可直接啟動完整的互動式管理控制台，實現「README 即控制台」的零依賴維護體驗。
+- **全域規則安全閘門 (D15)**: 實作基於 SHA256 雜湊比對的規則更新機制。
+  當偵測到使用者全域設定（如 `~/.gemini/GEMINI.md`）與框架最新版本有衝突時，系統將不強制覆寫，而是將最新規則產出至專案內的 `.agents/global_stage/` 安全暫存區，
+  確保自動化更新不破壞個人化配置。
+- **管理機制遠端一鍵指令化 (D16)**: 強化 `Antigravity/install.ps1` 支援 `-Mode Menu` 遠端引導模式。
+  現在總監只需從 GitHub README 複製一段單行指令貼上，即可直接啟動完整的互動式管理控制台，實現「README 即控制台」的零依賴維護體驗。
 - **框架控制台 (Deploy.ps1) 升級**: 優化選單入口，將全域規則安裝升級為「全域規則安全閘門」，並加入對應的 SHA256 比對引擎（Core.psm1）。
 
 ### chore
@@ -724,7 +779,8 @@ All notable changes to this project will be documented in this file.
 ### fix
 - **符號連結靜默失敗修復（D13）**: `Invoke-ProjectSkillBackfill` 加入 Junction 降級回退 + `Test-Path` 驗證，解決 Windows 無 Developer Mode 時靜默誤報成功問題。
 - **技能目錄升級嵌套 Bug 修復（D13）**: `Merge-WorkflowSkills` 改為複製目錄內容（`path\*`）而非目錄本身，修復 Codex Upgrade 後產生嵌套結構的問題。
-- **PSScriptAnalyzer 動詞合規修復（D14）**: 重命名 3 個未授權 PowerShell 動詞（`Ensure-*` → `Initialize-*/Set-*`、`Append-Section` → `Add-ReportSection`），消除靜態分析警告。
+- **PSScriptAnalyzer 動詞合規修復（D14）**: 重命名 3 個未授權 PowerShell 動詞（`Ensure-*` → `Initialize-*/Set-*`、`Append-Section` → `Add-ReportSection`），
+  消除靜態分析警告。
 
 ### chore
 - **四份 README.md 全面更新**: 根目錄、Antigravity、Claude Edition、Codex Edition 四份技術文件對齊統一引擎現況（架構圖、部署說明、目錄結構）。
@@ -732,14 +788,19 @@ All notable changes to this project will be documented in this file.
 ## [2026-05-06] v4.0 Memory Architecture
 
 ### docs: README 全面重構與設計語感升級
-- **母機總覽文件 (README.md)**: 導入問題導向敘事（說明 AI 失憶與無紀律痛點），加入 Badge 徽章系統（版號/平台/授權）與 Emoji 標題層次，將目錄移至安裝說明之前，全面對齊 `cartridge_system` 的專業開源文件標準，同時保留所有架構與技術細節。
+- **母機總覽文件 (README.md)**: 導入問題導向敘事（說明 AI 失憶與無紀律痛點），加入 Badge 徽章系統（版號/平台/授權）與 Emoji 標題層次，
+  將目錄移至安裝說明之前，全面對齊 `cartridge_system` 的專業開源文件標準，同時保留所有架構與技術細節。
 
 ### feat(deploy): 安裝指令體驗優化
-- **免手動指定目錄**: 調整 `Antigravity/install.ps1` 與 `Claude/install.ps1` 的 `-Target` 參數為可選項，預設值改為 `$PWD.Path`。使總監能在 IDE 終端機直接複製並執行指令，實現當前目錄自動安裝，大幅簡化操作流程並向下相容舊有指令。
+- **免手動指定目錄**: 調整 `Antigravity/install.ps1` 與 `Claude/install.ps1` 的 `-Target` 參數為可選項，預設值改為 `$PWD.Path`。
+  使總監能在 IDE 終端機直接複製並執行指令，實現當前目錄自動安裝，大幅簡化操作流程並向下相容舊有指令。
 
 ### feat(memory): 治理架構升級 (幽靈偵測與依賴傳播)
-- **幽靈檔案偵測 (Ghost Detection)**: 於 `memory-ops` 技能新增 `ghostFilesCount` 處理邏輯。當模組內追蹤檔案已在磁碟刪除時，自動清除殘留路徑；並新增全幽靈卡匣自動汰除建議。此邏輯同步實裝至 Antigravity (`03_memory_skill_contract.md`) 與 Claude (`memory-contract.md`) 版的退出閘門。
-- **依賴感知傳播 (Dependency Propagation)**: 於 `memory-ops` 新增 `indirectStaleness` 上游依賴過期感知機制，並在 `memory-arch` 加入 `dependencies` 評估步驟；同步更新 `memory-template.md` 支援依賴關係宣告。
+- **幽靈檔案偵測 (Ghost Detection)**: 於 `memory-ops` 技能新增 `ghostFilesCount` 處理邏輯。
+  當模組內追蹤檔案已在磁碟刪除時，自動清除殘留路徑；並新增全幽靈卡匣自動汰除建議。
+  此邏輯同步實裝至 Antigravity (`03_memory_skill_contract.md`) 與 Claude (`memory-contract.md`) 版的退出閘門。
+- **依賴感知傳播 (Dependency Propagation)**: 於 `memory-ops` 新增 `indirectStaleness` 上游依賴過期感知機制，
+  並在 `memory-arch` 加入 `dependencies` 評估步驟；同步更新 `memory-template.md` 支援依賴關係宣告。
 - **跨平台對等**: 持續落實 D06 原則，同步完成 Antigravity 與 Claude Edition 雙引擎的記憶操作技能與系統合約的 v4.0 升級。
 - **文件更新**: 升級三份 `README.md`，納入記憶系統的幽靈檔案偵測與依賴傳播機制說明。
 
@@ -748,7 +809,8 @@ All notable changes to this project will be documented in this file.
 ### feat(deploy): 雙引擎部署腳本全面繁中本土化與功能對等升級
 - **全繁中行內說明**: 為 `Deploy-Antigravity.ps1`（622 行）與 `Deploy-Claude.ps1`（480 行）補回完整的繁體中文行內說明，涵蓋參數定義、函式邏輯、效能最佳化原因（時間戳優先比對）、D06 安全防線設計及各階段流程說明。
 - **歷史包袱清除**: 移除 Antigravity 版部署引擎中的舊版記憶卡遷移邏輯（`skills/mem-*` → `memory/` 遷移）與 `$SkipDemo` 清除流程，精簡為現代四階段架構。
-- **功能缺口補齊**: Claude Edition 部署引擎新增確認閘門機制（`Get-UpgradeReport` → 分類顏色差異報告 → 互動式確認）、CHANGELOG 更新說明擷取（`Get-ReleaseNotes`）及衍生技能自動補建（`Invoke-ProjectSkillBackfill`）。
+- **功能缺口補齊**: Claude Edition 部署引擎新增確認閘門機制（`Get-UpgradeReport` → 分類顏色差異報告 → 互動式確認）、
+  CHANGELOG 更新說明擷取（`Get-ReleaseNotes`）及衍生技能自動補建（`Invoke-ProjectSkillBackfill`）。
 - **安裝啟動器修正**: 修正 `Antigravity/install.ps1` 的 ZIP 解壓路徑邏輯，確保可靠的遠端部署。
 
 ### feat(claude-commands): Claude Edition 工作流指令重構
