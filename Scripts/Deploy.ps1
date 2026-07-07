@@ -87,6 +87,183 @@ Import-Module (Join-Path $ModulesDir "Audit.psm1")           -Force
 # Global 動作：安裝/更新全局觸發器
 # ══════════════════════════════════════════════════════════
 
+function Merge-CodexGlobalConfigDefaults {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$SourcePath,
+
+        [Parameter(Mandatory = $true)]
+        [string]$TargetPath,
+
+        [Parameter(Mandatory = $true)]
+        [string]$BackupRoot,
+
+        [switch]$Apply
+    )
+
+    if (-not (Test-Path -LiteralPath $SourcePath -PathType Leaf)) { return }
+
+    function Get-TomlSectionBounds {
+        param(
+            [string]$Text,
+            [string]$Section
+        )
+
+        $headers = [regex]::Matches($Text, '(?m)^\s*\[([^\]]+)\]\s*(?:#.*)?(?:\r?\n|$)')
+        for ($i = 0; $i -lt $headers.Count; $i++) {
+            if ($headers[$i].Groups[1].Value.Trim() -eq $Section) {
+                $end = $Text.Length
+                if (($i + 1) -lt $headers.Count) { $end = $headers[$i + 1].Index }
+                return [PSCustomObject]@{
+                    BodyStart = $headers[$i].Index + $headers[$i].Length
+                    End       = $end
+                }
+            }
+        }
+
+        return $null
+    }
+
+    function Get-TomlTopLevelKeyLine {
+        param(
+            [string]$Text,
+            [string]$Key
+        )
+
+        $rootEnd = $Text.Length
+        $firstSection = [regex]::Match($Text, '(?m)^\s*\[[^\]]+\]\s*(?:#.*)?(?:\r?\n|$)')
+        if ($firstSection.Success) { $rootEnd = $firstSection.Index }
+        $rootText = $Text.Substring(0, $rootEnd)
+        $match = [regex]::Match($rootText, ("(?m)^\s*{0}\s*=.*$" -f [regex]::Escape($Key)))
+        if ($match.Success) { return $match.Value.Trim() }
+        return $null
+    }
+
+    function Get-TomlSectionKeyLine {
+        param(
+            [string]$Text,
+            [string]$Section,
+            [string]$Key
+        )
+
+        $bounds = Get-TomlSectionBounds -Text $Text -Section $Section
+        if (-not $bounds) { return $null }
+        $sectionText = $Text.Substring($bounds.BodyStart, $bounds.End - $bounds.BodyStart)
+        $match = [regex]::Match($sectionText, ("(?m)^\s*{0}\s*=.*$" -f [regex]::Escape($Key)))
+        if ($match.Success) { return $match.Value.Trim() }
+        return $null
+    }
+
+    function Add-TomlTopLevelKeyIfMissing {
+        param(
+            [string]$Text,
+            [string]$Key,
+            [string]$Line
+        )
+
+        if (Get-TomlTopLevelKeyLine -Text $Text -Key $Key) { return $Text }
+        if (-not $Text) { return $Line + "`n" }
+        return $Line + "`n`n" + $Text.TrimStart()
+    }
+
+    function Add-TomlSectionKeyIfMissing {
+        param(
+            [string]$Text,
+            [string]$Section,
+            [string]$Key,
+            [string]$Line
+        )
+
+        $bounds = Get-TomlSectionBounds -Text $Text -Section $Section
+        if ($bounds) {
+            $sectionText = $Text.Substring($bounds.BodyStart, $bounds.End - $bounds.BodyStart)
+            if ($sectionText -match ("(?m)^\s*{0}\s*=" -f [regex]::Escape($Key))) { return $Text }
+            return $Text.Insert($bounds.BodyStart, $Line + "`n")
+        }
+
+        if ($Text -and -not $Text.EndsWith("`n")) { $Text += "`n" }
+        return $Text + "`n[$Section]`n$Line`n"
+    }
+
+    function Set-TomlSectionBooleanTrue {
+        param(
+            [string]$Text,
+            [string]$Section,
+            [string]$Key
+        )
+
+        $line = "$Key = true"
+        $bounds = Get-TomlSectionBounds -Text $Text -Section $Section
+        if (-not $bounds) {
+            if ($Text -and -not $Text.EndsWith("`n")) { $Text += "`n" }
+            return $Text + "`n[$Section]`n$line`n"
+        }
+
+        $sectionText = $Text.Substring($bounds.BodyStart, $bounds.End - $bounds.BodyStart)
+        $match = [regex]::Match($sectionText, ("(?m)^(\s*){0}\s*=\s*([^\r\n#]*)([^\r\n]*)(?:\r)?$" -f [regex]::Escape($Key)))
+        if (-not $match.Success) { return $Text.Insert($bounds.BodyStart, $line + "`n") }
+
+        if ($match.Groups[2].Value.Trim() -ceq "true") { return $Text }
+        $tail = $match.Groups[3].Value
+        $comment = ""
+        if ($tail.TrimStart().StartsWith("#")) { $comment = " " + $tail.TrimStart() }
+        $replacement = "$($match.Groups[1].Value)$Key = true$comment"
+        $start = $bounds.BodyStart + $match.Index
+        return $Text.Remove($start, $match.Length).Insert($start, $replacement)
+    }
+
+    $sourceText = Get-Content -LiteralPath $SourcePath -Raw -Encoding UTF8
+    $fallbackLine = Get-TomlTopLevelKeyLine -Text $sourceText -Key "project_doc_fallback_filenames"
+    if (-not $fallbackLine) { $fallbackLine = 'project_doc_fallback_filenames = [".codex/AGENTS.md"]' }
+    $maxThreadsLine = Get-TomlSectionKeyLine -Text $sourceText -Section "agents" -Key "max_threads"
+    if (-not $maxThreadsLine) { $maxThreadsLine = "max_threads = 6" }
+
+    $current = ''
+    if (Test-Path -LiteralPath $TargetPath -PathType Leaf) {
+        $current = Get-Content -LiteralPath $TargetPath -Raw -Encoding UTF8
+    }
+
+    $merged = $current
+    $actions = @()
+
+    $before = $merged
+    $merged = Add-TomlTopLevelKeyIfMissing -Text $merged -Key "project_doc_fallback_filenames" -Line $fallbackLine
+    if ($merged -ne $before) { $actions += "add top-level project_doc_fallback_filenames" }
+
+    $before = $merged
+    $merged = Set-TomlSectionBooleanTrue -Text $merged -Section "features" -Key "multi_agent"
+    if ($merged -ne $before) { $actions += "set [features].multi_agent = true" }
+
+    $before = $merged
+    $merged = Set-TomlSectionBooleanTrue -Text $merged -Section "features" -Key "hooks"
+    if ($merged -ne $before) { $actions += "set [features].hooks = true" }
+
+    $before = $merged
+    $merged = Add-TomlSectionKeyIfMissing -Text $merged -Section "agents" -Key "max_threads" -Line $maxThreadsLine
+    if ($merged -ne $before) { $actions += "add [agents].max_threads default" }
+
+    $merged = $merged.TrimEnd() + "`n"
+
+    if ($current -eq $merged) {
+        Write-Step "Codex config.toml required keys already match section-aware defaults"
+        return
+    }
+
+    if (-not $Apply) {
+        Write-Warn "Codex config.toml would be updated ($($actions -join '; ')): $TargetPath"
+        return
+    }
+
+    New-Item -ItemType Directory -Force -Path (Split-Path $TargetPath -Parent) | Out-Null
+    if (Test-Path -LiteralPath $TargetPath -PathType Leaf) {
+        New-Item -ItemType Directory -Force -Path $BackupRoot | Out-Null
+        $timestamp = (Get-Date).ToString("yyyyMMdd-HHmmss")
+        Copy-Item $TargetPath (Join-Path $BackupRoot "config.toml.$timestamp.bak") -Force
+    }
+    [System.IO.File]::WriteAllText($TargetPath, $merged, [System.Text.UTF8Encoding]::new($false))
+    Write-Ok "Codex config.toml required keys merged ($($actions -join '; ')): $TargetPath"
+}
+
 function Invoke-GlobalInstall {
     Write-Banner "全域規則安全閘門" "Cyan"
     
@@ -120,31 +297,7 @@ function Invoke-GlobalInstall {
     $codexConfigSrc = Join-Path $CodexRoot "global\config.toml"
     $codexConfigDst = Join-Path $profile ".codex\config.toml"
     if (Test-Path $codexConfigSrc) {
-        # config.toml 採特殊合併邏輯：dry-run 只報告，-Apply 才建立或補入
-        if (-not (Test-Path $codexConfigDst)) {
-            if ($Apply) {
-                New-Item -ItemType Directory -Force -Path (Split-Path $codexConfigDst -Parent) | Out-Null
-                Copy-Item $codexConfigSrc $codexConfigDst -Force
-                Write-Ok "Codex config.toml → $codexConfigDst (created)"
-            } else {
-                Write-Warn "Codex config.toml 不存在，待授權建立: $codexConfigDst"
-            }
-        } else {
-            $existing = Get-Content $codexConfigDst -Raw -ErrorAction SilentlyContinue
-            if ($existing -notmatch '\.codex/AGENTS\.md') {
-                if ($Apply) {
-                    New-Item -ItemType Directory -Force -Path $backupRoot | Out-Null
-                    $timestamp = (Get-Date).ToString("yyyyMMdd-HHmmss")
-                    Copy-Item $codexConfigDst (Join-Path $backupRoot "config.toml.$timestamp.bak") -Force
-                    Add-Content $codexConfigDst "`n# Antigravity Codex Edition bridge`nproject_doc_fallback_filenames = [`".codex/AGENTS.md`"]"
-                    Write-Ok "Codex config.toml → $codexConfigDst (fallback entry appended)"
-                } else {
-                    Write-Warn "Codex config.toml 缺少 .codex/AGENTS.md fallback，dry-run 不補入"
-                }
-            } else {
-                Write-Step "Codex config.toml fallback 已存在"
-            }
-        }
+        Merge-CodexGlobalConfigDefaults -SourcePath $codexConfigSrc -TargetPath $codexConfigDst -BackupRoot $backupRoot -Apply:$Apply
     }
 
     Write-Banner "全域規則處理完成" "Green"
