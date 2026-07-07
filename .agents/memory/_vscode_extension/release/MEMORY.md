@@ -4,14 +4,14 @@ scopePath: Extensions/vscode-ai-rules-manager/
 description: >-
   專案記憶：VS Code 管理器外掛封裝、資源、發布與後端入口。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-05T00:02:49+08:00'
+last_updated: '2026-07-08T05:08:17+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-05T00:01:33+08:00'
+last_verified: '2026-07-08T05:06:01+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -43,7 +43,7 @@ metadata:
 - D0 minimal validation requires package `verify:runtime` to inspect compiled `out/extension.js` and `out/scriptRunner.js` runtime sentinels, with `vscode:prepublish` running compile before runtime verification; VSIX release assets still come from GitHub Release tags and the release workflow.
 - The manager backend reports and applies shared governance reference deployment during project rule synchronization.
 - Manager Doctor reports Codex hooks removal or rebuild-pending state and Captain-Lite reading model coverage, forwards optional Team-Native trace requirements, and exits nonzero on governance-audit Red or failed results.
-- Manager entrypoint changes in this cycle are governance fail-closed behavior only; they do not imply a VSIX version bump, tag, release, install, or publication without a separate Director gate.
+- Manager entrypoint changes in this cycle preserve Codex config operator settings through section-aware merge for `multi_agent`, `hooks`, and `max_threads`, do not add `max_depth`, and do not imply a VSIX version bump, tag, release, install, or publication without a separate Director gate.
 - This child card owns VS Code extension package metadata, lockfile, README, resources, release workflow, and manager backend entrypoint.
 - Lockfile-only transitive dev dependency security patches do not change extension behavior or product version by default.
 
@@ -57,7 +57,7 @@ metadata:
 ## Cycle Events
 - 13: Prepared release memory for AI Rules Manager v0.2.0 package/docs readiness, including `0.2.0` manifest and lockfile versions, `ai-rules-manager-0.2.0.vsix`, and same-name VSIX asset rerun failure semantics.
 - 12: Updated release/package memory after supply-chain hardening: `@vscode/vsce` upgraded to 3.9.2, npm audit is clean, release tags validate as `vX.Y.Z`, and packaging remains separate from version bump or publication.
-- 11: Recorded manager Doctor wording after repo-managed Codex Hooks removal: Doctor reports hook removal or rebuild-pending state, without authorizing VSIX version bump, tag, release, install, or publication.
+- 11: Recorded manager entrypoint Codex config sync behavior: section-aware merge preserves operator `max_threads`, leaves `max_depth` at default by omission, and does not authorize VSIX version bump, tag, release, install, or publication.
 - 10: Recorded manager-entrypoint fail-closed alignment with root Doctor and Deploy Audit; no VSIX version bump, tag, release, install, or publication was authorized by this memory update.
 - 09: Hardened the manager backend Doctor path to fail closed on failed governance audit results, aligning VS Code manager entrypoint behavior with root Doctor and Deploy Audit.
 - 08: Updated Doctor description to include Codex project-level hook governance and Captain-Lite read checks.
@@ -95,7 +95,7 @@ metadata:
 - VSIX 封裝工具已升級到 `@vscode/vsce` 3.9.2；發布 workflow 使用 Node 24，npm audit 目前為 0。
 - release tag 需符合 `vX.Y.Z` 才會 checkout。
 - 同名 VSIX asset 已存在時，補跑會拒絕或失敗；需改新版本/tag 或先人工刪除舊 asset。
-- 管理器 Doctor 文案已改為回報 Codex hooks 移除或待重建狀態；這不是發布新版 VSIX 的授權。
+- 管理器入口目前會保留 Codex config 的操作者 `max_threads` 設定，且不加入 `max_depth`；這不是發布新版 VSIX 的授權。
 - D0 minimal 只提供封裝/發布檢查證據；版本與 VSIX 發布仍需明確治理。
 
 ## Tracked Files
