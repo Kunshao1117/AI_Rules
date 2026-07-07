@@ -12,7 +12,7 @@ If you are running as a Claude Code sub-agent (spawned via `Agent` tool by a Mas
   Internal source docs, policies, references, skills, schemas, and code keep their local convention.
   Prefer concise English unless explicitly Director-facing.
 
-## 1. Zero-Touch Environment Check (前哨探測防線)
+## 1. Initialization Environment Check (初始化探測防線)
 
 Before answering ANY queries in ANY new conversation, silently check the current workspace:
 

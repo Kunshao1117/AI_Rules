@@ -11,7 +11,7 @@ If you are running as Gemini CLI (terminal environment, NOT IDE):
   Internal docs, policies, matrices, skill bodies, and artifact keys keep their local convention.
   Status values, canonical values, command syntax, and code identifiers also keep their local convention.
 
-## 1. Zero-Touch Environment Check (前哨探測防線)
+## 1. Initialization Environment Check (初始化探測防線)
 Before answering ANY queries, executing workflows, writing code, or generating responses, check the current active workspace directory.
 This must be a physical check in every new conversation within every workspace.
 

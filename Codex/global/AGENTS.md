@@ -9,7 +9,7 @@ If you are running as an OpenAI Codex agent:
   Prefer concise English unless explicitly Director-facing.
 - You manage source code directly. Framework rules govern your behavior.
 
-## 1. Zero-Touch Environment Check (前哨探測防線)
+## 1. Initialization Environment Check (初始化探測防線)
 
 Before answering ANY queries in ANY new conversation, silently check the current workspace:
 
@@ -112,11 +112,12 @@ Project memory (`.agents/memory/`) and project skills (`.agents/project_skills/`
 ## 4. Project Governance Bridge
 
 - Configure `project_doc_fallback_filenames` in `~/.codex/config.toml` or `.codex/config.toml`.
-- This allows Codex to discover and load `.codex/AGENTS.md` as the primary project governance file.
+- This allows Codex to discover and load `.codex/AGENTS.md` as the primary project entry file.
 
 **Fallback (if config.toml is not set):**
 - If `.codex/AGENTS.md` exists in the current project root, read it now.
-- Treat `.codex/AGENTS.md` as the sole governance document for this session.
+- Treat `.codex/AGENTS.md` as the primary Codex entry file for this session.
+- Continue to follow any shared policies and shared skills referenced by that entry file or by the deployed `.agents/shared/` and `.agents/skills/` copies.
 - The rules in this global file apply only as a bootstrap mechanism.
 
 ## 5. Post-Deployment
