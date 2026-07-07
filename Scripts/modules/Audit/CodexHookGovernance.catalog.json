@@ -1,25 +1,31 @@
 {
   "schema": 1,
   "hookRuntime": {
-    "state": "disabled",
-    "policy": "first-release-isolated-source-retained-runtime-disabled"
+    "state": "active",
+    "policy": "repo-managed-team-native-hooks-active"
   },
   "canonicalDecisionValues": ["allow", "advisory", "deny", "block"],
   "supportedEvents": [
     { "EventName": "SessionStart", "StatusMessage": "團隊啟動提醒" },
+    { "EventName": "UserPromptSubmit", "StatusMessage": "本輪團隊授權提醒" },
+    { "EventName": "SubagentStart", "StatusMessage": "子代理邊界提醒" },
     { "EventName": "PreToolUse", "StatusMessage": "隊長越界提醒" },
-    { "EventName": "Stop", "StatusMessage": "完成證據提醒" }
+    { "EventName": "Stop", "StatusMessage": "完成證據提醒" },
+    { "EventName": "SubagentStop", "StatusMessage": "子代理交付提醒" }
   ],
   "optionalFutureEvents": [
-    { "EventName": "UserPromptSubmit", "Status": "future-optional-disabled-source" },
-    { "EventName": "PermissionRequest", "Status": "future-optional-disabled-source" },
-    { "EventName": "SubagentStart", "Status": "future-optional-disabled-source" },
-    { "EventName": "SubagentStop", "Status": "future-optional-disabled-source" }
+    { "EventName": "PermissionRequest", "Status": "future-optional" }
   ],
   "scriptRequirements": [
     { "Pattern": "SessionStart", "Severity": "Red", "Reason": "hook 腳本缺少 SessionStart 事件處理" },
+    { "Pattern": "UserPromptSubmit", "Severity": "Red", "Reason": "hook 腳本缺少 UserPromptSubmit 事件處理" },
+    { "Pattern": "SubagentStart", "Severity": "Red", "Reason": "hook 腳本缺少 SubagentStart 事件處理" },
     { "Pattern": "PreToolUse", "Severity": "Red", "Reason": "hook 腳本缺少 PreToolUse 事件處理" },
     { "Pattern": "Stop", "Severity": "Red", "Reason": "hook 腳本缺少 Stop 完成宣稱事件處理" },
+    { "Pattern": "SubagentStop", "Severity": "Red", "Reason": "hook 腳本缺少 SubagentStop 交付檢查" },
+    { "Pattern": "Project policy permits bounded subagents only", "Severity": "Red", "Reason": "hook 腳本缺少條件式 subagent 授權提醒" },
+    { "Pattern": "do not recursively delegate", "Severity": "Red", "Reason": "hook 腳本缺少子代理不得遞迴委派限制" },
+    { "Pattern": "Subagent delivery is missing", "Severity": "Red", "Reason": "hook 腳本缺少子代理交付欄位補齊要求" },
     { "Pattern": "Get-HookActionText", "Severity": "Red", "Reason": "hook 腳本缺少動作文字抽取" },
     { "Pattern": "Test-HookDeniedRepoScan", "Severity": "Red", "Reason": "hook 腳本缺少 repo inventory deny 判斷" },
     { "Pattern": "Test-HookExactInventoryCommand", "Severity": "Red", "Reason": "hook 腳本缺少 outer-agent inventory command 分流" },
@@ -40,6 +46,10 @@
     { "File": "advisory-bad-input-smoke.json", "CanonicalDecision": "advisory" },
     { "File": "advisory-pretool-write-no-board.json", "CanonicalDecision": "advisory" },
     { "File": "advisory-session-start-startup-reminder.json", "CanonicalDecision": "advisory" },
+    { "File": "advisory-user-prompt-submit-conditional-subagents.json", "CanonicalDecision": "advisory" },
+    { "File": "advisory-subagent-start-boundaries.json", "CanonicalDecision": "advisory" },
+    { "File": "block-subagent-stop-missing-delivery-fields.json", "CanonicalDecision": "block" },
+    { "File": "allow-subagent-stop-complete-delivery-fields.json", "CanonicalDecision": "allow" },
     { "File": "allow-pretool-git-exe-ls-files-outer-agent-advisory.json", "CanonicalDecision": "advisory" },
     { "File": "allow-pretool-git-ls-files-outer-agent-advisory.json", "CanonicalDecision": "advisory" },
     { "File": "allow-pretool-readonly-single-file-advisory.json", "CanonicalDecision": "advisory" },
@@ -51,7 +61,12 @@
     { "File": "allow-stop-blocked-state.json", "CanonicalDecision": "advisory" },
     { "File": "allow-stop-complete-no-blockers.json", "CanonicalDecision": "allow" },
     { "File": "allow-stop-direct-exception-no-complete.json", "CanonicalDecision": "advisory" },
+    { "File": "allow-stop-fixture-path-reference.json", "CanonicalDecision": "advisory" },
+    { "File": "allow-stop-hook-feedback-echo-noncomplete.json", "CanonicalDecision": "advisory" },
+    { "File": "allow-stop-negated-long-complete-claim.json", "CanonicalDecision": "advisory" },
+    { "File": "allow-stop-non-complete-wording.json", "CanonicalDecision": "advisory" },
     { "File": "block-stop-captain-broad-read-full-completion.json", "CanonicalDecision": "block" },
+    { "File": "block-stop-legacy-message-fallback.json", "CanonicalDecision": "block" },
     { "File": "block-stop-missing-artifacts-complete.json", "CanonicalDecision": "block" },
     { "File": "block-stop-missing-memory-docs.json", "CanonicalDecision": "block" },
     { "File": "block-stop-mixed-blocked-complete.json", "CanonicalDecision": "block" },
@@ -62,7 +77,9 @@
     { "File": "deny-pretool-git-ls-files-outer-agent-chained.json", "CanonicalDecision": "deny" },
     { "File": "deny-pretool-git-ls-files-outer-agent-pipe.json", "CanonicalDecision": "deny" },
     { "File": "deny-pretool-git-ls-files-outer-agent-redirection.json", "CanonicalDecision": "deny" },
+    { "File": "deny-pretool-git-ls-files-nested-cmd-pipe.json", "CanonicalDecision": "deny" },
     { "File": "deny-pretool-git-ls-files.json", "CanonicalDecision": "deny" },
+    { "File": "deny-pretool-rg-files-cmd-pipe.json", "CanonicalDecision": "deny" },
     { "File": "deny-pretool-rg-files-outer-agent-append-redirection.json", "CanonicalDecision": "deny" },
     { "File": "deny-pretool-rg-files-outer-agent-chained.json", "CanonicalDecision": "deny" },
     { "File": "deny-pretool-rg-files-outer-agent-extra-arg.json", "CanonicalDecision": "deny" },

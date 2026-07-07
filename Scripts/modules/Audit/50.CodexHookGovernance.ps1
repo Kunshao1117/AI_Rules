@@ -198,6 +198,12 @@ function Measure-CodexHookGovernance {
             return
         }
 
+        foreach ($topLevelProperty in $Config.PSObject.Properties) {
+            if ($topLevelProperty.Name -ne 'hooks') {
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex active hook 設定含非官方 top-level 欄位 ({0})" -f $Label) -Text $topLevelProperty.Name
+            }
+        }
+
         $eventCatalog = Get-CodexHookCatalogEntries -FunctionName 'Get-CodexHookSupportedEventCatalog' -CatalogName 'supportedEvents'
         $requiredEvents = @($eventCatalog | ForEach-Object { $_.EventName })
         $allowedEvents = $requiredEvents
@@ -279,6 +285,31 @@ function Measure-CodexHookGovernance {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    function Test-CodexAgentConfig {
+        param(
+            [string]$Path,
+            [string]$Label
+        )
+
+        $relative = Get-CodexHookDisplayPath -Path $Path
+        if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex config.toml missing ({0})" -f $Label) -Text 'config.toml'
+            return
+        }
+
+        $content = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+        foreach ($required in @(
+            @{ Pattern = '(?m)^\s*project_doc_fallback_filenames\s*='; Text = 'project_doc_fallback_filenames' },
+            @{ Pattern = '(?m)^\s*multi_agent\s*=\s*true\s*$'; Text = 'features.multi_agent true' },
+            @{ Pattern = '(?m)^\s*hooks\s*=\s*true\s*$'; Text = 'features.hooks true' },
+            @{ Pattern = '(?m)^\s*max_threads\s*='; Text = 'agents.max_threads key' }
+        )) {
+            if ($content -notmatch $required.Pattern) {
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex config.toml missing required key ({0})" -f $Label) -Text $required.Text
             }
         }
     }
@@ -506,9 +537,11 @@ function Measure-CodexHookGovernance {
     }
 
     $sourceConfig = Join-Path $RepoRoot 'Codex\.codex\hooks.json'
+    $sourceAgentConfig = Join-Path $RepoRoot 'Codex\.codex\config.toml'
     $sourceDisabledConfig = Join-Path $RepoRoot 'Codex\.codex\hooks.delete'
     $sourceScript = Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-gate.ps1'
     $targetConfig = Join-Path $TargetRoot '.codex\hooks.json'
+    $targetAgentConfig = Join-Path $TargetRoot '.codex\config.toml'
     $targetDisabledConfig = Join-Path $TargetRoot '.codex\hooks.delete'
     $targetScript = Join-Path $TargetRoot '.codex\hooks\team-native-gate.ps1'
     $fixtureTest = Join-Path $RepoRoot 'Scripts\tests\codex-hooks\Invoke-CodexHookFixtureTests.ps1'
@@ -519,9 +552,11 @@ function Measure-CodexHookGovernance {
 
     $repoManagedHookArtifacts = @(
         @{ Path = $sourceConfig; PathType = 'Leaf' },
+        @{ Path = $sourceAgentConfig; PathType = 'Leaf' },
         @{ Path = $sourceDisabledConfig; PathType = 'Leaf' },
         @{ Path = $sourceHookDirectory; PathType = 'Container' },
         @{ Path = $targetConfig; PathType = 'Leaf' },
+        @{ Path = $targetAgentConfig; PathType = 'Leaf' },
         @{ Path = $targetDisabledConfig; PathType = 'Leaf' },
         @{ Path = $targetHookDirectory; PathType = 'Container' },
         @{ Path = $fixtureTestRoot; PathType = 'Container' }
@@ -555,6 +590,8 @@ function Measure-CodexHookGovernance {
     $hasTargetHookConfig = Test-Path -LiteralPath $targetConfig -PathType Leaf
 
     $requiredHookFiles = @(
+        @{ Path = $sourceAgentConfig; Label = 'source Codex config'; Severity = 'Red' },
+        @{ Path = $targetAgentConfig; Label = 'project Codex config'; Severity = 'Red' },
         @{ Path = $sourceScript; Label = 'source hook script'; Severity = 'Red' },
         @{ Path = $targetScript; Label = 'project hook script'; Severity = 'Red' },
         @{ Path = $fixtureTest; Label = 'hook fixture test'; Severity = 'Yellow' },
@@ -751,7 +788,7 @@ function Measure-CodexHookGovernance {
                     @{ Pattern = '"expectedDecision"\s*:\s*"block"'; Text = 'zh completion fixture expects Stop block decision' },
                     @{ Pattern = '"expectedReasonCodeRegex"\s*:\s*"TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE"'; Text = 'zh completion fixture expects missing station evidence reason code' },
                     @{ Pattern = '"expectedOutputRegex"\s*:\s*"禁止事項\.\*completion evidence\.\*Allowed next steps\.\*Forbidden next steps"'; Text = 'zh completion fixture expects Stop block diagnostic wording' },
-                    @{ Pattern = '"message"\s*:\s*"[^"]*(已完成|complete)'; Text = 'zh completion fixture carries a completion claim message' }
+                    @{ Pattern = '"last_assistant_message"\s*:\s*"[^"]*(已完成|complete)'; Text = 'zh completion fixture carries an official assistant completion claim message' }
                 )
             },
             [PSCustomObject]@{
@@ -957,6 +994,8 @@ function Measure-CodexHookGovernance {
     $targetHookConfig = if ($hasTargetHookConfig) { Read-CodexHookConfig -Path $targetConfig -Label 'project' } else { $null }
     Test-CodexHookConfig -Config $sourceHookConfig -ConfigPath $sourceHookConfigPath -Label $sourceHookConfigLabel
     Test-CodexHookConfig -Config $targetHookConfig -ConfigPath $targetConfig -Label 'project'
+    Test-CodexAgentConfig -Path $sourceAgentConfig -Label 'source'
+    Test-CodexAgentConfig -Path $targetAgentConfig -Label 'project'
     Test-CodexHookScript -Path $sourceScript -Label 'source'
     Test-CodexHookScript -Path $targetScript -Label 'project'
     Test-CodexHookFixtureRunner -Path $fixtureTest

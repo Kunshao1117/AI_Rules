@@ -14,6 +14,6 @@
     "hook_event_name": "Stop",
     "session_id": "fixture-session",
     "cwd": "D:\\AI_Rules",
-    "message": "已完成 Codex hook 修改，可以 complete 收尾。"
+    "last_assistant_message": "已完成 Codex hook 修改，可以 complete 收尾。"
   }
 }

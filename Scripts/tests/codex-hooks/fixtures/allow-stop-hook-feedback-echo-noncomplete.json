@@ -1,0 +1,19 @@
+{
+  "name": "allow-stop-hook-feedback-echo-noncomplete",
+  "scenarioCode": "stop-hook-feedback-echo-noncomplete-allowed",
+  "category": "positive",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "advisory-context",
+  "canonicalDecision": "advisory",
+  "expectedDecision": "allow",
+  "expectedOutputRegex": "完成閘門提醒.*blocked / unverified / closed-with-director-risk / partial.*不可宣稱 complete",
+  "input": {
+    "hook_event_name": "Stop",
+    "session_id": "fixture-session",
+    "cwd": "D:\\AI_Rules",
+    "stop_hook_active": true,
+    "last_assistant_message": "{\"decision\":\"block\",\"reason\":\"禁止事項: station-owned completion evidence required; no captain substitute evidence. Reason code: TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE. Missing structured fields: change delivery, validation, review, memory/docs, final-audit artifacts. Allowed next steps: use partial / unverified / blocked / closed-with-director-risk or provide station-owned artifacts. Forbidden next steps: do not assert final success from substitute evidence.\"}\ncompletion_state: unverified; status: blocked pending station artifacts."
+  }
+}

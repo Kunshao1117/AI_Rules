@@ -1,0 +1,21 @@
+{
+  "name": "advisory-subagent-start-boundaries",
+  "scenarioCode": "subagent-start-boundaries",
+  "category": "positive",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "advisory-context",
+  "canonicalDecision": "advisory",
+  "expectedDecision": "allow",
+  "expectedOutputRegex": "子代理邊界提醒.*Subagent boundary.*do not recursively delegate.*default to read-only unless assigned as station-owned change-delivery or change-application.*formal-write.*exact file allowlist.*dirty-diff read.*main-worktree edits are allowed only within that allowlist.*protected actions.*do not claim overall task completion or final Director-facing completion.*assigned station/subtask status and artifact.*summary, evidence, risk, and next steps",
+  "input": {
+    "hook_event_name": "SubagentStart",
+    "session_id": "fixture-session",
+    "turn_id": "fixture-turn",
+    "agent_id": "fixture-agent",
+    "agent_type": "worker",
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default"
+  }
+}

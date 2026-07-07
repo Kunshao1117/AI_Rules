@@ -1,0 +1,20 @@
+{
+  "name": "advisory-user-prompt-submit-conditional-subagents",
+  "scenarioCode": "user-prompt-submit-conditional-subagents",
+  "category": "positive",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "advisory-context",
+  "canonicalDecision": "advisory",
+  "expectedDecision": "allow",
+  "expectedOutputRegex": "本輪團隊授權提醒.*AI_RULES_HOOK_EVENT=UserPromptSubmit.*Project policy permits bounded subagents only.*current Director prompt explicitly requests team, subagent, delegation, or governed multi-station work.*configured agents\\.max_threads limit.*Codex default depth.*Default subagent work is read-only.*Main-worktree edits are allowed only when.*station-owned change-delivery or change-application.*formal-write.*exact file allowlist.*dirty-diff read.*one-line Director confirmation",
+  "input": {
+    "hook_event_name": "UserPromptSubmit",
+    "session_id": "fixture-session",
+    "turn_id": "fixture-turn",
+    "cwd": "D:\\AI_Rules",
+    "permission_mode": "default",
+    "prompt": "Please review this broad workflow change."
+  }
+}

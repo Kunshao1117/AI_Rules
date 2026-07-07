@@ -13,6 +13,6 @@
     "hook_event_name": "Stop",
     "session_id": "fixture-session",
     "cwd": "D:\\AI_Rules",
-    "message": "delivery_artifact_id: cd-no-blockers-g2. change delivery artifact returned. validation_state: passed with validation artifact val-no-blockers. review_state: accepted with review artifact rev-no-blockers and no blockers in review artifact. memory_docs_state: memory_delivery with memory/docs artifact mem-no-blockers. completion_state: complete after completion audit comp-no-blockers. complete."
+    "last_assistant_message": "delivery_artifact_id: cd-no-blockers-g2. change delivery artifact returned. validation_state: passed with validation artifact val-no-blockers. review_state: accepted with review artifact rev-no-blockers and no blockers in review artifact. memory_docs_state: memory_delivery with memory/docs artifact mem-no-blockers. completion_state: complete after completion audit comp-no-blockers. complete."
   }
 }

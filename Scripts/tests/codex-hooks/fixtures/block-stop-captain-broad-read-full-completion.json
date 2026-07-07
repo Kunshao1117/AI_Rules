@@ -14,6 +14,6 @@
     "hook_event_name": "Stop",
     "session_id": "fixture-session",
     "cwd": "D:\\AI_Rules",
-    "message": "captain broad read 已看完所有檔案，direct_exception 記錄後視為 full complete。"
+    "last_assistant_message": "captain broad read 已看完所有檔案，direct_exception 記錄後視為 full complete。"
   }
 }

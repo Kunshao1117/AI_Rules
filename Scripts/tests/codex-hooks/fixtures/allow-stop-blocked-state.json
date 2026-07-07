@@ -13,6 +13,6 @@
     "hook_event_name": "Stop",
     "session_id": "fixture-session",
     "cwd": "D:\\AI_Rules",
-    "message": "completion_state: blocked。tool_payload_evidence_gap: missing station artifacts，所以目前不宣稱 complete。"
+    "last_assistant_message": "completion_state: blocked。tool_payload_evidence_gap: missing station artifacts，所以目前不宣稱 complete。"
   }
 }

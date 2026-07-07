@@ -14,6 +14,6 @@
     "hook_event_name": "Stop",
     "session_id": "fixture-session",
     "cwd": "D:\\AI_Rules",
-    "message": "change delivery artifact、validation artifact、review artifact 已有；我由隊長補 memory/docs attribution，現在 complete。"
+    "last_assistant_message": "change delivery artifact、validation artifact、review artifact 已有；我由隊長補 memory/docs attribution，現在 complete。"
   }
 }

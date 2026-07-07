@@ -1,6 +1,6 @@
 {
-  "name": "allow-stop-direct-exception-no-complete",
-  "scenarioCode": "stop-direct-exception-no-completion-claim-allowed",
+  "name": "allow-stop-negated-long-complete-claim",
+  "scenarioCode": "stop-long-distance-negated-completion-allowed",
   "category": "positive",
   "schemaStyle": "official-schema-style",
   "decisionLayer": "official-output",
@@ -13,6 +13,6 @@
     "hook_event_name": "Stop",
     "session_id": "fixture-session",
     "cwd": "D:\\AI_Rules",
-    "last_assistant_message": "direct_exception: platform-nondelegable record only. completion_state: unverified. remaining evidence is blocked."
+    "last_assistant_message": "Status: partial. Do not, while validation and review artifacts are still absent, assert that the work is complete or ready for final closure."
   }
 }

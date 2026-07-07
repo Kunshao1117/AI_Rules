@@ -1,8 +1,8 @@
 {
-  "name": "block-stop-missing-artifacts-complete",
-  "scenarioCode": "stop-completion-missing-artifacts-negative-evidence",
+  "name": "block-stop-legacy-message-fallback",
+  "scenarioCode": "stop-legacy-message-fallback",
   "category": "negative",
-  "schemaStyle": "official-schema-style",
+  "schemaStyle": "legacy-fallback",
   "decisionLayer": "official-output",
   "fixtureOrigin": "synthetic",
   "expectedOutcomeKind": "advisory-would-block",
@@ -14,6 +14,6 @@
     "hook_event_name": "Stop",
     "session_id": "fixture-session",
     "cwd": "D:\\AI_Rules",
-    "last_assistant_message": "completion_state: complete. change delivery artifact missing; validation artifact missing; review artifact missing; memory/docs artifact missing; completion audit missing. complete."
+    "message": "completion_state: complete. legacy message fallback still needs station evidence. complete."
   }
 }

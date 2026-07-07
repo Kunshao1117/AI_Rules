@@ -1,0 +1,28 @@
+{
+  "name": "deny-pretool-rg-files-cmd-pipe",
+  "scenarioCode": "pretool-rg-files-cmd-pipe-deny",
+  "category": "deny",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "deny",
+  "canonicalDecision": "deny",
+  "expectedDecision": "deny",
+  "expectedOutputRegex": "已阻擋全 repo 掃描.*請先派站點或改用命名檔/窄範圍讀取",
+  "input": {
+    "hook_event_name": "PreToolUse",
+    "session_id": "fixture-session",
+    "transcript_path": null,
+    "cwd": "D:\\AI_Rules",
+    "model": "gpt-5",
+    "permission_mode": "default",
+    "turn_id": "fixture-turn",
+    "agent_id": "agent-fixture-explorer",
+    "agent_type": "explorer",
+    "tool_name": "exec_command",
+    "tool_use_id": "fixture-tool-rg-files-cmd-pipe",
+    "tool_input": {
+      "cmd": "rg --files | Select-Object -First 1"
+    }
+  }
+}

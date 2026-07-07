@@ -252,6 +252,10 @@ function Test-FixtureStopOutputContract {
         if ($null -eq $reason -or [string]$reason.Value -eq '') {
             $Failures.Add(('{0} Stop block output must emit top-level reason.' -f $CaseName))
         }
+        $extraProperties = @($ParsedOutput.PSObject.Properties.Name | Where-Object { @('decision','reason') -notcontains $_ })
+        if ($extraProperties.Count -gt 0) {
+            $Failures.Add(('{0} Stop block output must use only decision and reason fields; extra fields: {1}.' -f $CaseName, ($extraProperties -join ', ')))
+        }
     } elseif ($null -ne $decision -and [string]$decision.Value -eq 'block') {
         $Failures.Add(('{0} Stop allow output must not emit decision: block.' -f $CaseName))
     }
@@ -295,12 +299,42 @@ function Invoke-FixtureCommandWindowsHook {
     return [PSCustomObject]@{ Stdout = $stdout; Stderr = $stderr; ExitCode = $process.ExitCode }
 }
 
+function Invoke-FixturePowerShellCommandWindowsHook {
+    param([object]$ShellInfo, [string]$CommandLine, [string]$InputJson, [string]$WorkingDirectory)
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $ShellInfo.Path
+    $psi.ArgumentList.Add('-NoProfile')
+    $psi.ArgumentList.Add('-NonInteractive')
+    $psi.ArgumentList.Add('-ExecutionPolicy')
+    $psi.ArgumentList.Add('Bypass')
+    $psi.ArgumentList.Add('-Command')
+    $psi.ArgumentList.Add($CommandLine)
+    $psi.WorkingDirectory = $WorkingDirectory
+    $psi.RedirectStandardInput = $true
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    $psi.UseShellExecute = $false
+    $psi.StandardOutputEncoding = [System.Text.Encoding]::UTF8
+    $psi.StandardErrorEncoding = [System.Text.Encoding]::UTF8
+    $process = [System.Diagnostics.Process]::Start($psi)
+    $process.StandardInput.Write($InputJson)
+    $process.StandardInput.Close()
+    $stdout = $process.StandardOutput.ReadToEnd()
+    $stderr = $process.StandardError.ReadToEnd()
+    $process.WaitForExit()
+    return [PSCustomObject]@{ Stdout = $stdout; Stderr = $stderr; ExitCode = $process.ExitCode }
+}
+
 function Test-FixtureCommandWindowsWrappers {
     param([string]$RepoRoot, [System.Collections.Generic.List[string]]$Failures)
     $cmdInfo = Resolve-FixtureShellApplication -Name 'cmd.exe'
     if (-not $cmdInfo.Available) {
         Write-Host ("Skipping commandWindows host-wrapper checks: {0}" -f $cmdInfo.Reason)
         return
+    }
+    $powerShellHost = Resolve-FixtureShellApplication -Name 'pwsh'
+    if (-not $powerShellHost.Available) {
+        Write-Host ("Skipping PowerShell commandWindows host-wrapper checks: {0}" -f $powerShellHost.Reason)
     }
 
     $hookConfig = Get-Content -LiteralPath (Join-Path $RepoRoot 'Codex\.codex\hooks.json') -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
@@ -337,32 +371,76 @@ function Test-FixtureCommandWindowsWrappers {
                 Input = [ordered]@{ hook_event_name = 'PreToolUse'; cwd = $tempNonRepo; tool_name = 'Bash'; tool_input = [ordered]@{ command = 'rg --files' } }
                 ExpectedDecision = 'allow'
                 ExpectedOutputRegex = 'hook script was not found|advisory/reminder'
+            },
+            [PSCustomObject]@{
+                Name = 'commandWindows-stop-block-json'
+                Event = 'Stop'
+                WorkingDirectory = $RepoRoot
+                Input = [ordered]@{ hook_event_name = 'Stop'; cwd = $RepoRoot; last_assistant_message = 'completion_state: blocked, but the work is complete and ready to finish.' }
+                ExpectedDecision = 'block'
+                ExpectedOutputRegex = '(?s)(?=.*"decision":"block")(?=.*"reason":)(?=.*Reason code: TN-HOOK-COMPLETION-CONFLICTING-STATE)'
+            },
+            [PSCustomObject]@{
+                Name = 'commandWindows-pretool-deny'
+                Event = 'PreToolUse'
+                WorkingDirectory = $RepoRoot
+                Input = [ordered]@{ hook_event_name = 'PreToolUse'; cwd = $RepoRoot; tool_name = 'exec_command'; tool_input = [ordered]@{ cmd = 'rg --files | Select-Object -First 1' } }
+                ExpectedDecision = 'deny'
+                ExpectedOutputRegex = '已阻擋全 repo 掃描.*請先派站點或改用命名檔/窄範圍讀取'
             }
         )
 
         $passed = 0
+        $hosts = @(
+            [PSCustomObject]@{
+                Name = 'cmd'
+                Invoke = {
+                    param($CommandLine, $InputJson, $WorkingDirectory)
+                    Invoke-FixtureCommandWindowsHook -CmdInfo $cmdInfo -CommandLine $CommandLine -InputJson $InputJson -WorkingDirectory $WorkingDirectory
+                }
+            }
+        )
+        if ($powerShellHost.Available) {
+            $hosts += [PSCustomObject]@{
+                Name = 'PowerShell'
+                Invoke = {
+                    param($CommandLine, $InputJson, $WorkingDirectory)
+                    Invoke-FixturePowerShellCommandWindowsHook -ShellInfo $powerShellHost -CommandLine $CommandLine -InputJson $InputJson -WorkingDirectory $WorkingDirectory
+                }
+            }
+        }
         foreach ($case in $cases) {
             $commandLine = Get-FixtureCommandWindowsHook -HookConfig $hookConfig -EventName $case.Event
             $inputJson = $case.Input | ConvertTo-Json -Depth 64 -Compress
-            $result = Invoke-FixtureCommandWindowsHook -CmdInfo $cmdInfo -CommandLine $commandLine -InputJson $inputJson -WorkingDirectory $case.WorkingDirectory
-            $output = $result.Stdout.Trim()
-            if ($result.ExitCode -ne 0) {
-                $failures.Add(('{0} [commandWindows] exit {1}: {2}' -f $case.Name, $result.ExitCode, $result.Stderr))
-                continue
+            foreach ($hostCase in $hosts) {
+                $result = & $hostCase.Invoke $commandLine $inputJson $case.WorkingDirectory
+                $output = $result.Stdout.Trim()
+                $caseName = '{0} [commandWindows/{1}]' -f $case.Name, $hostCase.Name
+                if ($result.ExitCode -ne 0) {
+                    $failures.Add(('{0} exit {1}: {2}' -f $caseName, $result.ExitCode, $result.Stderr))
+                    continue
+                }
+                $parsed = $null
+                try { $parsed = $output | ConvertFrom-Json -ErrorAction Stop } catch {
+                    $failures.Add(('{0} output was not JSON: {1}' -f $caseName, $output))
+                    continue
+                }
+                Test-FixturePreToolPermissionDecisionContract -CaseName $caseName -ParsedOutput $parsed -ExpectedDecision ([string]$case.ExpectedDecision) -Failures $failures
+                Test-FixtureStopOutputContract -CaseName $caseName -Fixture $case -ParsedOutput $parsed -ExpectedDecision ([string]$case.ExpectedDecision) -Failures $failures
+                if ($case.PSObject.Properties['ExpectedDecision'] -and [string]$case.ExpectedDecision -ne '') {
+                    $effectiveDecision = Get-FixtureEffectiveDecision -ParsedOutput $parsed
+                    if ([string]$effectiveDecision -ne [string]$case.ExpectedDecision) {
+                        $failures.Add(('{0} expected decision {1}, got {2}. Output: {3}' -f $caseName, $case.ExpectedDecision, $effectiveDecision, $output))
+                    }
+                }
+                if ($output -notmatch [string]$case.ExpectedOutputRegex) {
+                    $failures.Add(('{0} expectedOutputRegex missed: {1}. Output: {2}' -f $caseName, $case.ExpectedOutputRegex, $output))
+                }
+                if ($case.PSObject.Properties['ExpectedUtf8Text'] -and -not $output.Contains([string]$case.ExpectedUtf8Text)) {
+                    $failures.Add(('{0} expected UTF-8 decoded stdout text missing: {1}. Output: {2}' -f $caseName, $case.ExpectedUtf8Text, $output))
+                }
+                $passed++
             }
-            $parsed = $null
-            try { $parsed = $output | ConvertFrom-Json -ErrorAction Stop } catch {
-                $failures.Add(('{0} [commandWindows] output was not JSON: {1}' -f $case.Name, $output))
-                continue
-            }
-            Test-FixturePreToolPermissionDecisionContract -CaseName ('{0} [commandWindows]' -f $case.Name) -ParsedOutput $parsed -ExpectedDecision ([string]$case.ExpectedDecision) -Failures $failures
-            if ($output -notmatch [string]$case.ExpectedOutputRegex) {
-                $failures.Add(('{0} [commandWindows] expectedOutputRegex missed: {1}. Output: {2}' -f $case.Name, $case.ExpectedOutputRegex, $output))
-            }
-            if ($case.PSObject.Properties['ExpectedUtf8Text'] -and -not $output.Contains([string]$case.ExpectedUtf8Text)) {
-                $failures.Add(('{0} [commandWindows] expected UTF-8 decoded stdout text missing: {1}. Output: {2}' -f $case.Name, $case.ExpectedUtf8Text, $output))
-            }
-            $passed++
         }
         Write-Host ("commandWindows host-wrapper checks passed: {0} case(s)" -f $passed)
     } finally {

@@ -1,8 +1,7 @@
 # Hook Event Matrix
 
 This reference records the Codex hook event lifecycle. It separates current
-runtime state from source-supported behavior that may become active only after a
-future explicit re-enable decision. It is a reference catalog only; hook config
+runtime state from source-supported behavior and optional future candidates. It is a reference catalog only; hook config
 and scripts remain owned by `.codex/hooks.json`, `Codex/.codex/hooks.json`, and
 `.codex/hooks/team-native-gate.ps1` / `Codex/.codex/hooks/team-native-gate.ps1`.
 
@@ -15,50 +14,48 @@ Evidence checked for this matrix:
 
 - Runtime config: `.codex/hooks.json`
 - Source config: `Codex/.codex/hooks.json`
-- Runtime disabled marker: `.codex/hooks.delete`
-- Source disabled marker: `Codex/.codex/hooks.delete`
 - Runtime script: `.codex/hooks/team-native-gate.ps1`
 - Source script: `Codex/.codex/hooks/team-native-gate.ps1`
 
-Current runtime lifecycle: `runtime-disabled`.
+Current runtime lifecycle: `runtime-active`.
 
-Both active config files intentionally keep `hooks` empty and carry
-`x_ai_rules_hooks_lifecycle.state = disabled`. The `.delete` marker files are
-disabled-state evidence, not active hook configs. Therefore the current runtime
-does not invoke repo-managed hook handlers and must not be cited as producing
-runtime Team-Native, validation, review, memory/docs, or completion evidence.
+Both active config files use the official Codex hooks schema only: top-level
+`hooks` with repo-managed handlers for Team-Native advisory, deny, and
+continuation checks. Active configs must not carry lifecycle metadata or other
+non-official top-level fields. Runtime evidence still depends on hook
+trust/review and source/runtime hash parity. Hook output is route context or
+guard feedback only; it is not station-owned delivery, validation, review,
+memory/docs, or completion proof.
 
-## Source-Supported Events When Explicitly Re-Enabled
+## Runtime-Supported Events
 
-These events are source-supported by retained scripts, fixtures, and catalog
-data. They are not current runtime evidence while `runtime-disabled` is in
-effect.
+These events are source-supported and runtime-configured by the current
+repo-managed hook config.
 
-| Event | Source support state | Matcher if re-enabled | Purpose if re-enabled | Authorizing effect |
+| Event | Runtime support state | Matcher | Purpose | Authorizing effect |
 |---|---|---|---|---|
-| `SessionStart` | source-supported-disabled | `startup|resume` | No-write Team readiness reminder at session start or resume. | None. Does not activate Team mode without a current governed Director request. |
-| `PreToolUse` | source-supported-disabled | all configured tool events | Captain boundary and structured-field guard before risky tool actions. | None by itself. May report would-block risk or deny according to hook output only after runtime re-enable. |
-| `Stop` | source-supported-disabled | all configured stop events | Completion-evidence reminder/block before final response. | None by itself. It cannot create missing station evidence. |
-| unknown/default | source fallback only | not configured as a repo-managed event | Produces a reminder for unknown hook event names when the retained script is invoked directly by tests or future wrapper work. | None. Treat as disabled-source advisory and unverified unless the event is added to config after re-enable. |
+| `SessionStart` | runtime-active | `startup|resume` | No-write Team readiness reminder at session start or resume. | None. Does not activate Team mode without a current governed Director request. |
+| `UserPromptSubmit` | runtime-active | matcher ignored by Codex | Adds conditional bounded-subagent context for the current prompt. | None. It must not claim every prompt is already subagent-authorized. |
+| `SubagentStart` | runtime-active | subagent type | Adds subagent role limits: no recursive delegation, default read-only, no protected actions, no completion claim. | None. It constrains the child context only. |
+| `PreToolUse` | runtime-active | all configured tool events | Captain boundary and structured-field guard before risky tool actions. | None by itself. May deny supported repo inventory scans through `permissionDecision = deny`. |
+| `Stop` | runtime-active | matcher ignored by Codex | Completion-evidence reminder/block before final response. | None by itself. It cannot create missing station evidence. |
+| `SubagentStop` | runtime-active | subagent type | Requests another subagent pass when the returned result lacks summary, evidence, risk, or next steps. | None. It requests completion of the subagent artifact only. |
+| unknown/default | source fallback only | not configured as a repo-managed event | Produces a reminder for unknown hook event names when the retained script is invoked directly by tests or future wrapper work. | None. Treat as advisory and unverified unless the event is added to config. |
 
-## Optional Future Events In Disabled-Source Context
+## Optional Future Events
 
 The following events are optional future candidates only. They are not required
-runtime events, not required source-supported events, and not current runtime
-evidence.
+runtime events, not required source-supported events, and not current runtime evidence.
 
 | Event | State | Runtime evidence |
 |---|---|---|
-| `UserPromptSubmit` | optional future / disabled-source only | none |
-| `PermissionRequest` | optional future / disabled-source only | none |
-| `SubagentStart` | optional future / disabled-source only | none |
-| `SubagentStop` | optional future / disabled-source only | none |
+| `PermissionRequest` | optional future | none |
 
 ## Lifecycle States
 
 | Lifecycle state | Meaning | Completion effect |
 |---|---|---|
-| `runtime-disabled` | Active source and runtime configs intentionally have empty `hooks` objects and disabled lifecycle markers. | No runtime hook evidence may be claimed. |
+| `runtime-disabled` | Disabled hook configs may keep an empty `hooks` object plus disabled lifecycle metadata; active runtime configs must not carry metadata. | No runtime hook evidence may be claimed. |
 | `source-supported-disabled` | Retained source script, fixtures, and catalog describe behavior that can be used for tests or future re-enable work only. | Source behavior is documented, but runtime behavior is not active or verified. |
 | `source-active` | Source hook config/script exists under `Codex/.codex/` with active handlers, but runtime parity is not confirmed. | Source is ready for sync; runtime behavior is not verified. |
 | `runtime-active` | Runtime hook config/script exists under `.codex/` and matches the source-managed event intent. | Hook behavior may be cited as current runtime evidence for that project. |

@@ -29,6 +29,7 @@ customization as competing authorities.
 | `Shared/skills/**` | `source` | Canonical source for reusable operational skill bodies and references. Deployed skill copies consume these, not the reverse. |
 | `Shared/skill-governance.md` | `source` | Canonical placement contract for policies, skills, workflows, memory cards, scripts, and source/runtime map references. |
 | `Codex/**` | `source` | Codex platform source templates and bootstrap materials. `Codex/.codex/**` is the source side for deployed `.codex/**` copies. |
+| `Codex/.codex/config.toml` | `source` | Codex project config template. Deploy and sync must merge required keys only; `agents.max_threads` is a suggested default and existing operator values must be preserved. |
 | `Claude/**` | `source` | Claude command, skill, and platform source templates. Runtime `.claude/**` copies must be synced from here or from shared source. |
 | `Claude/.claude/CLAUDE.md` | `source` | Claude Code platform core source for the repo runtime pair. Sync to `.claude/CLAUDE.md` unless a scoped task records documented local customization. |
 | `Antigravity/**` | `source` | Antigravity and Gemini platform source templates, workflow entries, or adapter materials. Runtime `.agents/**` copies must be synced from source. |
@@ -44,7 +45,7 @@ customization as competing authorities.
 | `.agents/logs/**` | `generated` | Task evidence, traces, and runtime logs. Logs can support an audit but are not durable governance or source memory by themselves. |
 | `.claude/**` | `runtime` | Deployed Claude command and skill runtime copies. Sync from `Claude/**` and shared source; do not make canonical policy edits here. |
 | `.claude/CLAUDE.md` | `runtime` | Repo runtime Claude Code core paired with `Claude/.claude/CLAUDE.md`. Preserve as `local-customization` only when a scoped task documents local-only behavior. |
-| `.codex/**` | `runtime` or `local-customization` | `.codex/AGENTS.md` is deployed Codex runtime governance from `Codex/.codex/AGENTS.md`. Local config such as `.codex/config.toml` is environment customization, not framework policy. |
+| `.codex/**` | `runtime` or `local-customization` | `.codex/AGENTS.md` is deployed Codex runtime governance from `Codex/.codex/AGENTS.md`. `.codex/hooks.json` and `.codex/hooks/**` are runtime hook copies when synced from source. `.codex/config.toml` is key-level merged runtime customization; do not overwrite operator-tuned values such as `agents.max_threads`. |
 | `C:\Users\homeb\.codex\AGENTS.md` | `external-global-sync-pending` | External global Codex runtime surface outside repo write scope. Record drift only; do not write during repo-internal sync. |
 | `C:\Users\homeb\.claude\CLAUDE.md` | `external-global-sync-pending` | External global Claude runtime surface outside repo write scope. Record drift only; do not write during repo-internal sync. |
 | `C:\Users\homeb\.gemini\GEMINI.md` | `external-global-sync-pending` | External global Gemini runtime surface outside repo write scope. Record drift only; do not write during repo-internal sync. |

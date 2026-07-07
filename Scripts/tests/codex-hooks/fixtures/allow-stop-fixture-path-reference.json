@@ -1,6 +1,6 @@
 {
-  "name": "allow-stop-direct-exception-no-complete",
-  "scenarioCode": "stop-direct-exception-no-completion-claim-allowed",
+  "name": "allow-stop-fixture-path-reference",
+  "scenarioCode": "stop-fixture-path-reference-allowed",
   "category": "positive",
   "schemaStyle": "official-schema-style",
   "decisionLayer": "official-output",
@@ -13,6 +13,6 @@
     "hook_event_name": "Stop",
     "session_id": "fixture-session",
     "cwd": "D:\\AI_Rules",
-    "last_assistant_message": "direct_exception: platform-nondelegable record only. completion_state: unverified. remaining evidence is blocked."
+    "last_assistant_message": "Regression note only: Scripts/tests/codex-hooks/fixtures/block-stop-mixed-blocked-complete.json and allow-stop-complete-no-blockers.json are fixture paths, not a status assertion. Current state remains unverified."
   }
 }
