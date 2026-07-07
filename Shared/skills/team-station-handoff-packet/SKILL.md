@@ -127,6 +127,7 @@ resume_condition:
 output_artifact_format:
 stop_condition:
 handoff_summary:
+minimal_reference_packet:
 ```
 
 The packet inherits operation mode, board state, authorization fields, phase, dispatch wave,
@@ -262,10 +263,47 @@ handoff_packet_id:
 substation_task:
 member_assignment:
 specialist_deep_read_evidence:
+minimal_reference_packet:
 ```
 
 Then use the matching delivery format from `team-task-board` or the dedicated delivery artifact
 skill.
+
+### Returned Minimal Reference Packet
+
+Every formal station returns a `minimal_reference_packet` so the captain can ledger and route the
+artifact without performing broad substitute search.
+
+Required fields:
+
+```text
+minimal_reference_packet_id:
+packet_state:
+handoff_packet_id:
+role_id:
+role_instance_id:
+assigned_specialist_skill:
+source_input:
+read_scope_used:
+specialist_deep_read_evidence:
+canonical_rule_refs:
+claim_summary:
+unread_scope:
+missing_evidence:
+recommended_transition:
+next_wave_start_condition:
+blocker_status:
+residual_risk:
+```
+
+The packet is an evidence index and routing aid. It is not authorization, validation, review,
+memory/docs attribution, or completion evidence by itself.
+
+If `read_scope_used`, `specialist_deep_read_evidence`, `canonical_rule_refs`, `unread_scope`, or
+`missing_evidence` is absent when needed, the captain records the returned artifact as
+`unverified` or routes it back to the owner station. The captain must not fill those missing
+station-owned fields by doing repository-wide grep, broad file inventory, ad hoc external search,
+or substitute review/validation.
 
 Late returned artifacts are still artifacts. Logging them, including them in the synthesis ledger,
 routing them to an owner station, superseding them, marking them out of scope or duplicate, or

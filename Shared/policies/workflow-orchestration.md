@@ -128,7 +128,13 @@ Director instruction
    status probe pause, captain resume, timeout, replacement, cancellation, late result
 -> returned delivery artifact or blocked/unverified/standby state
 -> captain receipt, board update, blocker/conflict/authorization handling
--> validation, review, memory/docs, completion audit
+-> validation, review, drift/sync evidence
+-> memory/docs disposition after validation and review reach terminal evidence states
+-> protected-memory-write when `closeout_target` requires full completion, commit-ready, or
+   release-ready and memory is required
+-> protected-memory-commit after protected-memory-write when required memory mutation must be
+   committed
+-> completion audit
 ```
 
 Workflow route is not authorization.
@@ -308,22 +314,61 @@ That artifact must be returned, blocked, unverified, or closed-with-director-ris
 
 Implementation and review of the same deliverable do not run in the same wave.
 
+Memory/docs that attributes source, workflow, skill, governance, or durable documentation impact
+waits for validation and review to reach terminal evidence states. The implementation artifact may
+include a `memory_impact` hint and `memory_docs_handoff`, but the memory/docs station consumes the
+validated and reviewed artifact chain rather than pre-validating unfinished work. When that
+disposition says memory is required, the closeout branch either records protected follow-up pending
+for `source-level` or routes built-in `protected-memory-write` and `protected-memory-commit`
+phases for `full-completion`, `commit-ready`, and `release-ready`.
+
+## Workflow Loop Contract
+
+Workflow execution is a bounded control loop:
+
+```text
+Director request
+-> workflow route
+-> machine-readable execution_spec
+-> station handoff packet
+-> station work
+-> minimal_reference_packet or delivery artifact
+-> captain drift_check
+-> transition_decision
+-> next wave, retry, reroute, blocked, unverified, or risk closure
+```
+
+The canonical loop fields and transition values live in
+`Shared/policies/references/workflow-execution-spec-contract.md`. This policy owns only the
+sequence, where `transition_decision` is recorded, and where the resulting next wave, retry,
+reroute, blocked, unverified, no-evidence, conflicted, or Director-risk state is consumed.
+
+After two normal retries for the same symptom family, file region, operator path, or decision
+surface, the loop must change route to root-cause, architecture, scope-impact, external-research,
+blocked, unverified, or Director risk closure.
+
+The captain receives minimal reference packets and delivery artifacts, records a neutral ledger
+decision, and synthesizes Director-facing status. The captain must not fill missing station-owned
+evidence with broad search or promote missing research, validation, review, or memory/docs
+evidence to verified status.
+
 ## Closeout Targets
 
 Workflow closeout must name the target being judged.
 
-Source-level delivery closeout, full Team-Native completion, and commit/release readiness are different targets.
+The canonical `closeout_target` values and transition catalog live in
+`Shared/policies/references/workflow-execution-spec-contract.md`.
 
-- Source-level delivery closeout can report delivered source when evidence is sufficient.
-- Required evidence includes the change delivery artifact, validation, review, and sync evidence.
-- Source-level delivery closeout records protected follow-up pending for specific memory/docs states.
-- Those states are `memory-required` and `memory-blocked-by-scope`.
-- That pending follow-up does not block the delivered source layer by itself.
-- This applies only when protected memory mutation is outside the current authorization.
-- Full Team-Native completion still requires the full artifact chain.
-- That chain includes resolved memory/docs evidence and any required protected memory phases.
-- Commit, release, deploy, install, or external mutation readiness treats pending protected follow-up as a blocker.
-- The blocker remains until the matching protected owner station finishes.
+- `source-level` can report delivered source when evidence is sufficient. Required evidence includes
+  the change delivery artifact, validation, review, and sync evidence. It can close the source layer
+  with `protected-follow-up-pending` when memory/docs says memory is required or blocked by scope
+  and protected memory mutation is outside the current source-level authorization.
+- `full-completion` still requires the full artifact chain. When memory/docs says memory is
+  required, it must route in-flow to `protected-memory-write` and then `protected-memory-commit`;
+  it cannot close with protected follow-up pending.
+- `commit-ready` and `release-ready` inherit the full-completion memory requirement. Pending
+  protected memory write or `memory_commit` blocks commit, release, deploy, install, or
+  external-mutation readiness until the matching protected owner station finishes.
 
 Director-facing status should say which target is closed and which protected follow-up remains.
 

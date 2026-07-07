@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-07T10:41:06+08:00'
+last_updated: '2026-07-07T14:37:27+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: partial_evidence
-last_verified: '2026-07-07T10:35:30+08:00'
+verification_status: verified
+last_verified: '2026-07-07T14:30:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared — Shared Governance Memory
 ## Current Truth
 - Shared owns cross-platform governance sources, language/grounding policy, memory/context governance, audit references, restricted project tools, and parent navigation for child governance cards.
-- `_shared.team-native-core` is the concrete owner for Team-Native policy, workflow orchestration/scenarios, platform plan mapping, workflow evidence references, role boundaries, station evidence, and completion contracts.
+- `_shared.team-native-core` is the concrete owner for Team-Native policy, workflow/protected-flow orchestration, platform plan mapping, workflow evidence references, role boundaries, station evidence, and completion contracts.
 - Director wording, workflow names, GO/continue, MCP HITL, UI approvals, memory/context writes, and protected phases remain intent signals until authorization resolution binds target, station, file set, command, phase, expiry, and gate.
 - Governed Team-Native work is triggered by current user requests for governance, workflow, source, memory/docs, commit, audit, test, build, fix, debug, handoff, public-contract, or delegation work; no-impact conversation can stay direct.
 - Language governance owns Director-facing meaning-first output and exact-evidence expression; 09 commit subject/body/summary must likewise use Traditional Chinese meaning-first main text, while grounding governance owns source freshness and no-evidence claim boundaries.
@@ -50,6 +49,7 @@ metadata:
 - Keep Windows PowerShell 5.1-executed project tools UTF-8 BOM encoded when they contain non-ASCII runtime strings.
 - Keep source/deployed shared docs content-identical; workflow, skill, matrix, platform adapter entries, plan mapping, evidence references, and team artifacts must cite shared policies and treat workflow names, casual approvals, `GO`, MCP HITL, memory/context write, and other protected phases as scope-bound until authorization resolution binds target, command, phase, expiry, and matching gate.
 ## Cycle Events
+- 54: Repaired parent Shared memory status after protected-flow updates; `_shared.team-native-core` remains the detailed owner for Team-Native workflow/protected-flow contracts.
 - 53: Reconciled Shared governance memory with language/grounding, MCP opt-in, memory/context, source-document-size, skill placement, workflow-stage delivery-bundle handoff, and 09 commit wording policy updates.
 - 52: M4 compacted the parent card and removed parent tracked ownership for workflow orchestration/scenarios; `_shared.team-native-core` remains the specific owner.
 - 49-51: Recorded dual-gate language/grounding governance, memory lifecycle separation, and scoped protected phases for memory/topology/context writes.
@@ -60,8 +60,8 @@ metadata:
 ## Evidence Base
 - Source evidence: Previous active memory content is preserved in archive-002.md.
 - Source evidence: `language-governance`, `grounding-governance`, `workflow-stage-procedures`, `skill-governance`, `mcp-profiles`, memory-ops, memory-arch, project-context, and audit-engine sources verified on 2026-07-07; current `workflow-stage-procedures` diff adds delivery-bundle memory_docs handoff and 09 commit wording rules.
-- Tool evidence: cartridge-system memory_list and memory_audit identified legacy main files and missing quality metadata before migration.
-- Director evidence: 2026-06-15 GO MEMORY MIGRATE authorized active memory-card migration.
+- Tool evidence: exact target status/diff on 2026-07-07 showed stale metadata plus cartridge warning only; previous memory_list/memory_audit identified legacy main files and quality metadata gaps before migration.
+- Director evidence: 2026-06-15 GO MEMORY MIGRATE authorized active memory-card migration; 2026-07-07 GO FIX_SHARED_MEMORY authorized exact `_shared` protected memory-write without `memory_commit`.
 ## Read Contract
 - Read this card when the task touches its tracked files, governed layer, or listed relations.
 - Do not use stale or archived claims as current implementation evidence without reading the referenced source files.

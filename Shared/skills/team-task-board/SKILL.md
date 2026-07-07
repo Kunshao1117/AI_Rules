@@ -109,7 +109,13 @@ fields are needed, append them after the Chinese label, such as `完成狀態（
   stations.
 - Current external evidence is requested through board grounding fields and routed to a formal
   `external-research` station; the captain may log and route the request but does not become the
-  evidence owner.
+  evidence owner. Downstream stations consume `external_research_artifact_id` and preserve
+  `partial`, `no-evidence`, `conflicted`, `blocked`, and `unverified` states instead of upgrading
+  them to verified evidence.
+- Returned formal station artifacts include a `minimal_reference_packet` with read scope,
+  specialist evidence, canonical rule references, unread scope, missing evidence, and recommended
+  transition. Missing required packet fields keep the artifact unverified or routed back to the
+  owner station; captain broad search cannot repair station-owned evidence.
 - Main-worktree implementation defaults to a station-owned `change-delivery` station under
   `formal-write`, authorization phase `implementation-change-delivery`, exact file allowlist, dirty
   diff read, `handoff_ownership: station-owned`, and `captain_authored: false`.
@@ -120,8 +126,18 @@ fields are needed, append them after the Chinese label, such as `完成狀態（
   protected-action authority to the captain.
 - Open only the current dispatch wave. Later waves wait for returned output or an honest
   blocked/unverified/risk state.
-- Review, validation, and memory/docs start only after the implementation or change-application
-  handoff bundle exists or is honestly blocked, unverified, or risk-closed.
+- Review and validation start only after the implementation or change-application handoff bundle
+  exists or is honestly blocked, unverified, or risk-closed.
+- Memory/docs starts only after validation and review reach terminal evidence states. An
+  implementation artifact may provide `memory_impact` and `memory_docs_handoff`, but memory/docs
+  disposition consumes the validated and reviewed artifact chain.
+- `full-completion`, commit-ready, and release-ready planning must bind `closeout_target`, protected
+  memory phase applicability, memory card scope, and the `memory_commit` phase before those
+  protected phases become eligible. This is an in-flow protected branch, not an ad hoc tail
+  authorization.
+- `source-level` approval alone does not authorize memory mutation. It may close the source layer
+  with `protected-follow-up-pending`, while `protected-memory-write` and `protected-memory-commit`
+  require their own scope-bound protected authorization.
 - `direct` is not a station state, execution route, execution channel, platform route, or execution
   mode. Record exceptions only in `direct_exception` / `direct_exceptions`.
 

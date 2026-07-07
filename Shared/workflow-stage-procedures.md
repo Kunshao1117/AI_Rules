@@ -36,8 +36,9 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 8. Post-change flow is artifact-chain only:
    - Implementation or authorized change-application returns a delivery handoff bundle with `validation_handoff`, `review_handoff`, and `memory_docs_handoff`.
    - The captain records it in the ledger without rewriting it.
-   - The next wave starts validation, review, and memory/docs only from that delivery bundle.
-   - The memory/docs branch is read-only disposition and attribution routing; it does not authorize memory mutation, memory commit, or direct card writes.
+   - The next wave starts validation and review only from that delivery bundle.
+   - The memory/docs wave starts after validation and review reach terminal evidence states, using the delivery bundle plus the validation/review results.
+   - The implementation bundle may include a `memory_impact` hint, but the memory/docs branch is read-only disposition and attribution routing; it does not authorize memory mutation, memory commit, or direct card writes.
    - Completion consumes only the resulting artifact chain.
 9. Separate source-level delivery closeout from full completion:
    - When source delivery, validation, review, and sync are sufficient but memory/docs reports `memory-required` or `memory-blocked-by-scope` only because protected memory mutation was not authorized, report source-level delivery with protected follow-up pending.
@@ -106,7 +107,8 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
   - source/deployed pair and sync evidence when applicable;
   - validation, review, and memory/docs handoff targets.
 - Route back to implementation only through a new scoped change-delivery or change-application station when a downstream station returns a concrete blocker; captain ledger entries are not fixes.
-- Validation, review, memory/docs, and completion run after change delivery is returned, blocked, unverified, or risk-closed, and completion consumes only the artifact chain.
+- Validation and review run after change delivery is returned, blocked, unverified, or risk-closed.
+- Memory/docs runs after validation and review reach terminal evidence states, and completion consumes only the resulting artifact chain.
 - If memory/docs returns `memory-required` or `memory-blocked-by-scope` after source delivery has passed validation, review, and sync:
   - Close the current source-level build as delivered with protected follow-up pending.
   - Route the memory-write and `memory_commit` work only when that protected phase is explicitly opened.
@@ -129,6 +131,7 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
   - memory/docs handoff;
   - source/deployed sync evidence when relevant.
 - Route back from validation or review to diagnosis when cause evidence is incomplete; route back to a new fix station only when the blocker names a bounded repair surface. Do not let completion substitute for a missing repair artifact.
+- Memory/docs runs only after the fix delivery has terminal validation and review evidence.
 - If the fix itself is delivered, validated, reviewed, and synced, but memory mutation is outside the current scope:
   - Report protected follow-up pending for memory instead of blocking the fixed source state.
   - Commit or release readiness still waits for the protected memory path when required.

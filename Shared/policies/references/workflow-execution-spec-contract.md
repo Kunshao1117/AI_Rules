@@ -70,6 +70,12 @@ Required field meanings, in order:
   - `draft`, `formal-readonly`, or `formal-write`.
 - `dispatch_wave`
   - Current wave and previous-wave input.
+- `closeout_target`
+  - `source-level`, `full-completion`, `commit-ready`, or `release-ready`.
+  - Defines whether protected memory phases may remain follow-up or must resolve in flow.
+- `loop_control`
+  - Compact control fields for retry/reroute decisions.
+  - Includes loop identity, attempt count, retry budget, current transition decision, and exit condition.
 - `station_id`
   - Formal station identifier, or blocked/unverified reason.
 - `role_id` / `role_instance_id`
@@ -112,6 +118,12 @@ Required field meanings, in order:
   - Date, version, release, API version, standard revision, or local version compared to the source.
 - `missing_external_evidence`
   - Concrete missing source, version, access, conflict, or research gap.
+- `minimal_reference_packet`
+  - Station-returned minimal evidence index for captain ledgering and downstream routing.
+  - It is not authorization, validation, review, memory/docs, or completion evidence by itself.
+- `drift_check`
+  - Comparison of the original request, current scope, route, authorization, returned artifacts, and remaining gaps.
+  - Records the transition decision before the next wave or closeout.
 - `source_deployed_pair` / `sync_direction` / `sync_evidence`
   - Pair and parity fields when source/runtime copies are affected.
 - `output_artifact_contract`
@@ -134,6 +146,119 @@ Required field meanings, in order:
   - Required fields or evidence are absent, incomplete, stale, or not yet inspected.
 - `not-applicable`
   - The current task has no executable station or tool-layer work.
+
+## Closeout Target Contract
+
+Closeout target values are canonical here so workflow policies and board skills can cite them
+without duplicating the transition catalog.
+
+- `source-level`
+  - Judges the source delivery layer, including the change delivery artifact, validation, review,
+    and source/deployed sync evidence when those are required for the source change.
+  - May transition to `protected-follow-up-pending` when memory/docs disposition says memory is
+    required but protected memory mutation is outside the current source-level authorization.
+  - Does not claim full Team-Native completion, commit readiness, or release readiness.
+- `full-completion`
+  - Requires the full artifact chain, including memory/docs disposition.
+  - When memory/docs says memory is required, protected memory phases must resolve in flow:
+    `protected-memory-write` followed by `protected-memory-commit`.
+  - Cannot close with `protected-follow-up-pending`.
+- `commit-ready`
+  - Requires `full-completion` to be satisfied first.
+  - Any required `memory_commit` must be complete before git commit readiness is considered.
+  - Git mutation remains a separate protected phase.
+- `release-ready`
+  - Requires `commit-ready` or an equivalent release-preparation chain to be satisfied first.
+  - Pending protected memory phases block release, deploy, install, or external-mutation readiness.
+  - Release, deployment, install, and external mutation remain separate protected phases.
+
+Closeout-related `transition_decision` values are:
+
+- `pass`
+- `retry`
+- `reroute`
+- `protected-follow-up-pending`
+- `protected-memory-write`
+- `protected-memory-commit`
+- `blocked`
+- `unverified`
+- `no-evidence`
+- `conflicted`
+- `closed-with-director-risk`
+
+## Workflow Loop And Minimal Reference Fields
+
+Executable workflow work is a controlled loop, not a linear checklist. The loop decides whether
+the next action can pass forward, retry inside the same station, reroute to a different owner
+station, stop blocked, stop unverified, or close with Director-accepted risk. The fields below stay
+compact and point to station artifacts instead of copying the board, trace, or full playbook.
+
+`loop_control` records:
+
+- `loop_id`
+  - Stable identifier for the current workflow loop.
+- `iteration`
+  - Attempt count for the same bounded decision or symptom family.
+- `retry_budget`
+  - Maximum normal retry count before reroute, root-cause handling, blocked, unverified, or risk closure.
+- `attempt_family_key`
+  - The bounded symptom family, file region, operator path, or decision surface being retried.
+- `previous_transition_decision`
+  - Prior loop result, or `not-applicable`.
+- `transition_decision`
+  - Uses the closeout-related transition catalog above.
+- `exit_condition`
+  - The condition that ends the current station or loop.
+- `next_wave_start_condition`
+  - Evidence required before downstream stations may start.
+- `no_broad_captain_search`
+  - `true` when missing station evidence must be returned to the owner station instead of filled by captain broad search.
+
+Two normal retries for the same `attempt_family_key` are the maximum default. A third attempt must
+change route to root-cause, architecture, scope-impact, external-research, blocked, unverified, or
+Director risk closure.
+
+`minimal_reference_packet` records the station-owned evidence index returned to the captain:
+
+- `minimal_reference_packet_id`
+- `handoff_packet_id`
+- `role_id` / `role_instance_id`
+- `assigned_specialist_skill`
+- `source_input`
+- `read_scope_used`
+- `specialist_deep_read_evidence`
+- `canonical_rule_refs`
+- `claim_summary`
+- `unread_scope`
+- `missing_evidence`
+- `recommended_transition`
+- `next_wave_start_condition`
+- `blocker_status`
+- `residual_risk`
+
+The captain may ledger and synthesize a returned `minimal_reference_packet`. The captain must not
+expand missing `read_scope_used`, `canonical_rule_refs`, `specialist_deep_read_evidence`,
+`unread_scope`, or `missing_evidence` into station-owned evidence by doing broad search. Missing
+required packet fields keep the dependent station `unverified` or route the artifact back to its
+owner station.
+
+`drift_check` records:
+
+- `original_request_summary`
+- `current_scope`
+- `non_goals`
+- `scope_delta`
+- `route_delta`
+- `role_boundary_state`
+- `authorization_delta`
+- `external_grounding_delta`
+- `drift_state`
+- `drift_reason`
+- `repair_route`
+
+`drift_state` uses the same transition values as `loop_control.transition_decision`. Only `pass`
+allows the current loop to proceed without a retry, reroute, blocked/unverified state, or
+Director-risk closure.
 
 ## Station External Grounding Fields
 
@@ -201,3 +326,21 @@ The returned research artifact records the answered question, sources checked, a
 It also records source dates or versions, local-version comparison, conflicts, missing evidence, and `external_grounding_state`.
 Downstream stations consume the artifact ID and preserve any gaps.
 They must not silently upgrade `partial`, `blocked`, `no-evidence`, or `unverified` to verified language.
+
+Returned research artifacts should expose a canonical `external_research_artifact_id`. If a
+role-specific artifact uses `external_grounding_artifact_id`, handoff packets and board rows map
+that legacy alias to `external_research_artifact_id` before downstream consumption.
+
+Downstream stations preserve these fields from the research artifact:
+
+- `external_research_artifact_id`
+- `external_grounding_state`
+- `source_tier`
+- `source_date_or_version`
+- `missing_external_evidence`
+- `conflicting_evidence`
+
+Only `external_grounding_state: sufficient` can support verified language for the exact scoped
+claim. `partial`, `no-evidence`, `conflicted`, `blocked`, and `unverified` remain visible loop
+states and must route to a conservative decision, a narrower research question, a downstream owner
+station, or `closed-with-director-risk`.
