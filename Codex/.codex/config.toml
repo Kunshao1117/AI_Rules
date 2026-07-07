@@ -2,3 +2,11 @@
 # Enables native discovery of .codex/AGENTS.md as the project governance file.
 # Without this, Codex only scans the project root for AGENTS.md.
 project_doc_fallback_filenames = [".codex/AGENTS.md"]
+
+[features]
+multi_agent = true
+hooks = true
+
+[agents]
+# Suggested default only. Install and sync scripts preserve operator changes.
+max_threads = 8

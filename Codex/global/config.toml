@@ -2,3 +2,11 @@
 # Enables native discovery of .codex/AGENTS.md across all projects on this machine.
 # Installed via: Deploy.ps1 -Action Global
 project_doc_fallback_filenames = [".codex/AGENTS.md"]
+
+[features]
+multi_agent = true
+hooks = true
+
+[agents]
+# Suggested default only. Global sync preserves operator changes.
+max_threads = 6

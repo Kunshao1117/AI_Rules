@@ -23,7 +23,11 @@ function Get-HookMessage {
         StopNonCompleteAllowedSystemMessage = '5a6M5oiQ6ZaY6ZaA5o+Q6YaS77ya5Zue6KaG5bey5L2/55SoIGJsb2NrZWQgLyB1bnZlcmlmaWVkIC8gY2xvc2VkLXdpdGgtZGlyZWN0b3ItcmlzayAvIHBhcnRpYWwg562J6Z2e5a6M5oiQ54uA5oWL77yb5YWB6Kix6YCB5Ye677yM5L2G5LiN5Y+v5a6j56ixIGNvbXBsZXRl44CC'
         StopCompleteAllowedSystemMessage = '5a6M5oiQ6ZaY6ZaA5o+Q6YaS77ya5bey5YG15ris5Yiw56uZ6bue5Lqk5LuY6Y+I6IiHIGNvbXBsZXRpb24gYXVkaXTvvJvlhYHoqLHpgIHlh7rlrozmlbTlrozmiJDlrqPnqLHjgII='
         StopBlockedSystemMessage = '5a6M5oiQ6ZaY6ZaA5bey6Zi75pOL77ya56aB5q2i5Zyo57y65bCR56uZ6bue6K2J5pOa5pmC5a6j56ixIGNvbXBsZXRl44CC5YWB6Kix5pS55oiQIHBhcnRpYWwgLyB1bnZlcmlmaWVkIC8gYmxvY2tlZCAvIGNsb3NlZC13aXRoLWRpcmVjdG9yLXJpc2vvvIzmiJboo5zpvYogc3RhdGlvbi1vd25lZCBkZWxpdmVyeSBhcnRpZmFjdHMg5b6M5YaN6YCB5Ye644CC'
-        StopBlockedContext = '56aB5q2i5LqL6aCF77ya6ZqK6ZW35LiN5b6X55u05o6l55Si55SfIGNvbXBsZXRpb24gZXZpZGVuY2XvvIzkuI3og73nlKggY2FwdGFpbiBicm9hZCByZWFk44CBZGlyZWN0X2V4Y2VwdGlvbiDmiJbnvLrlsJEgbWVtb3J5L2RvY3Mg55qEIGFydGlmYWN0IGNoYWluIOWuo+eosSBjb21wbGV0ZeOAguWFgeioseS6i+mghe+8muWbnuWgsSBwYXJ0aWFs44CBdW52ZXJpZmllZOOAgWJsb2NrZWTjgIFjbG9zZWQtd2l0aC1kaXJlY3Rvci1yaXNr77yM5oiW5Lqk55SxIGZvcm1hbCBjb21wbGV0aW9uIHN0YXRpb24g5qqi5p+l44CC6ZmN57Sa5b6M5p6c77ya57y65bCRIGV4dGVybmFsX3Jlc2VhcmNoX2FydGlmYWN0X2lkIOeahCBleHRlcm5hbCByZXNlYXJjaCDlj6rog70gdW52ZXJpZmllZC9wYXJ0aWFsL2Jsb2NrZWTjgIJSZWFzb24gY29kZTogezB944CCTWlzc2luZyBzdHJ1Y3R1cmVkIGZpZWxkczogezF944CCQWxsb3dlZCBuZXh0IHN0ZXBzOiB1c2Ugbm9uLWNvbXBsZXRlIHN0YXRlIG9yIHByb3ZpZGUgc3RhdGlvbi1vd25lZCBhcnRpZmFjdHMuIEZvcmJpZGRlbiBuZXh0IHN0ZXBzOiBkbyBub3QgY2xhaW0gY29tcGxldGUgZnJvbSBjYXB0YWluIHN1YnN0aXR1dGUgZXZpZGVuY2Uu'
+        StopBlockedContext = '56aB5q2i5LqL6aCFOiDkuI3og73nlKggY2FwdGFpbiBicm9hZCByZWFkIOaIliBjYXB0YWluIHN1YnN0aXR1dGUgZXZpZGVuY2Ug5a6j56ixIGNvbXBsZXRlOyDnvLrlsJEgbWVtb3J5L2RvY3Mg55qEIGFydGlmYWN0IGNoYWluIOWuo+eosSBjb21wbGV0ZTsgc3RhdGlvbi1vd25lZCBjb21wbGV0aW9uIGV2aWRlbmNlIHJlcXVpcmVkLiBSZWFzb24gY29kZTogezB9LiBNaXNzaW5nIHN0cnVjdHVyZWQgZmllbGRzOiB7MX0uIEFsbG93ZWQgbmV4dCBzdGVwczogdXNlIHBhcnRpYWwgLyB1bnZlcmlmaWVkIC8gYmxvY2tlZCAvIGNsb3NlZC13aXRoLWRpcmVjdG9yLXJpc2sgb3IgcHJvdmlkZSBzdGF0aW9uLW93bmVkIGFydGlmYWN0cy4gRm9yYmlkZGVuIG5leHQgc3RlcHM6IGRvIG5vdCBhc3NlcnQgZmluYWwgc3VjY2VzcyBmcm9tIHN1YnN0aXR1dGUgZXZpZGVuY2Uu'
+        UserPromptSystemMessage = '5pys6Lyq5ZyY6ZqK5o6I5qyK5o+Q6YaS77yac3ViYWdlbnRzIOWPquiDveWcqOacrOi8quaYjueiuuaOiOasiuaIluaXouaciSBzY29wZWQgVGVhbS1OYXRpdmUg5o6I5qyK5LiL5L2/55So44CC'
+        SubagentStartSystemMessage = '5a2Q5Luj55CG6YKK55WM5o+Q6YaS77ya5LiN5b6X6YGe6L+05aeU5rS+44CB5LiN5b6X54Sh55WM5a+r5YWl44CB6aCQ6Kit5ZSv6K6A44CB5LiN5b6X6Ieq6KGM5a6j56ix5a6M5oiQ44CC'
+        SubagentStopBlockedSystemMessage = '5a2Q5Luj55CG5Lqk5LuY5o+Q6YaS77ya57y65bCR5pGY6KaB44CB6K2J5pOa44CB6aKo6Zqq5oiW5LiL5LiA5q2l5pmC5b+F6aCI6KOc6b2K44CC'
+        SubagentStopAllowedSystemMessage = '5a2Q5Luj55CG5Lqk5LuY5o+Q6YaS77ya5pGY6KaB44CB6K2J5pOa44CB6aKo6Zqq6IiH5LiL5LiA5q2l5bey5a2Y5Zyo44CC'
     }
     return ConvertFrom-HookBase64 -Value $messages[$Key]
 }
@@ -45,34 +49,68 @@ function ConvertTo-HookText {
     return ($Value | ConvertTo-Json -Depth 32 -Compress)
 }
 
+function Add-HookTextPart {
+    param([System.Collections.Generic.List[string]]$Parts, [object]$Value)
+    if ($null -ne $Value -and [string]$Value -ne '') {
+        $Parts.Add((ConvertTo-HookText -Value $Value))
+    }
+}
+
+function Add-HookCommandCandidatesFromObject {
+    param([object]$Object, [System.Collections.Generic.List[string]]$Candidates, [int]$Depth)
+    if ($null -eq $Object -or $Depth -lt 0) { return }
+    foreach ($name in @('command','cmd','script')) {
+        Add-HookTextPart -Parts $Candidates -Value (Get-HookPropertyValue -Object $Object -Names @($name))
+    }
+    foreach ($name in @('tool_input','toolInput','input','payload','arguments','args','params')) {
+        $nested = Get-HookPropertyValue -Object $Object -Names @($name)
+        if ($null -eq $nested -or $nested -is [string] -or [object]::ReferenceEquals($nested, $Object)) { continue }
+        Add-HookCommandCandidatesFromObject -Object $nested -Candidates $Candidates -Depth ($Depth - 1)
+    }
+}
+
+function Get-HookCommandCandidates {
+    param([object]$Payload)
+    $candidates = New-Object System.Collections.Generic.List[string]
+    Add-HookCommandCandidatesFromObject -Object $Payload -Candidates $candidates -Depth 4
+    return @($candidates.ToArray())
+}
+
+function Add-HookActionTextPartsFromObject {
+    param([object]$Object, [System.Collections.Generic.List[string]]$Parts, [int]$Depth, [switch]$IncludeToolName)
+    if ($null -eq $Object -or $Depth -lt 0) { return }
+    $fieldNames = @('command','cmd','script','action','target','path','file_path','patch','prompt','last_assistant_message','message','text','raw_text')
+    if ($IncludeToolName) { $fieldNames = @('tool_name') + $fieldNames }
+    foreach ($name in $fieldNames) {
+        Add-HookTextPart -Parts $Parts -Value (Get-HookPropertyValue -Object $Object -Names @($name))
+    }
+    foreach ($name in @('tool_input','toolInput','input','payload','arguments','args','params')) {
+        $nested = Get-HookPropertyValue -Object $Object -Names @($name)
+        if ($null -eq $nested -or $nested -is [string] -or [object]::ReferenceEquals($nested, $Object)) { continue }
+        Add-HookActionTextPartsFromObject -Object $nested -Parts $Parts -Depth ($Depth - 1)
+    }
+}
+
+function Add-HookEventMarker {
+    param([string]$EventName, [string]$Context)
+    $marker = "AI_RULES_HOOK_EVENT=$EventName"
+    if ([string]::IsNullOrWhiteSpace($Context)) { return $marker }
+    if ($Context -match [regex]::Escape($marker)) { return $Context }
+    return ("{0}`n{1}" -f $marker, $Context)
+}
+
 function Get-HookActionText {
     param([object]$Payload)
     $parts = New-Object System.Collections.Generic.List[string]
-    foreach ($name in @('tool_name','command','action','target','path','file_path','patch','prompt','message','text','raw_text')) {
-        $value = Get-HookPropertyValue -Object $Payload -Names @($name)
-        if ($null -ne $value -and [string]$value -ne '') { $parts.Add((ConvertTo-HookText -Value $value)) }
-    }
-
-    $toolInput = Get-HookPropertyValue -Object $Payload -Names @('tool_input','input','payload')
-    if ($null -ne $toolInput -and $toolInput -ne $Payload) {
-        foreach ($name in @('command','action','target','path','file_path','patch','prompt','message','text')) {
-            $value = Get-HookPropertyValue -Object $toolInput -Names @($name)
-            if ($null -ne $value -and [string]$value -ne '') { $parts.Add((ConvertTo-HookText -Value $value)) }
-        }
-    }
-
+    Add-HookActionTextPartsFromObject -Object $Payload -Parts $parts -Depth 4 -IncludeToolName
     return (($parts -join "`n").Trim())
 }
 
 function Get-HookExecutableCommand {
     param([object]$Payload)
-    $command = Get-HookPropertyValue -Object $Payload -Names @('command')
-    $toolInput = Get-HookPropertyValue -Object $Payload -Names @('tool_input','input','payload')
-    if ($null -ne $toolInput -and $toolInput -ne $Payload) {
-        $inputCommand = Get-HookPropertyValue -Object $toolInput -Names @('command','script')
-        if ($null -ne $inputCommand -and [string]$inputCommand -ne '') { $command = $inputCommand }
-    }
-    return (ConvertTo-HookText -Value $command).Trim()
+    $candidates = @(Get-HookCommandCandidates -Payload $Payload)
+    if ($candidates.Count -eq 0) { return '' }
+    return ([string]$candidates[$candidates.Count - 1]).Trim()
 }
 
 function Test-HookAllowedOuterAgent {
@@ -184,10 +222,34 @@ function Write-SessionStartReminder {
     if ($source -and (@('startup','resume') -notcontains $source)) {
         $context = Get-HookMessage -Key 'SessionOtherSourceContext'
     }
+    $context = Add-HookEventMarker -EventName 'SessionStart' -Context $context
     Write-HookJson -Body ([ordered]@{
         systemMessage = (Get-HookMessage -Key 'SessionSystemMessage')
         hookSpecificOutput = [ordered]@{
             hookEventName = 'SessionStart'
+            additionalContext = $context
+        }
+    })
+}
+
+function Write-UserPromptSubmitReminder {
+    $context = 'Project policy permits bounded subagents only when the current Director prompt explicitly requests team, subagent, delegation, or governed multi-station work, or when an active governed task already carries scoped Team-Native authorization. For broad, read-heavy, multi-area, audit, review, debugging, or exploration tasks, prefer bounded subagents within the configured agents.max_threads limit and Codex default depth. Default subagent work is read-only. Main-worktree edits are allowed only when the current task explicitly authorizes file changes and the subagent is assigned as a station-owned change-delivery or change-application route with formal-write authorization, an exact file allowlist, and dirty-diff read. If runtime policy still requires per-turn explicit subagent authorization and the current prompt does not provide it, stop and ask for one-line Director confirmation instead of silently falling back to single-agent work.'
+    $context = Add-HookEventMarker -EventName 'UserPromptSubmit' -Context $context
+    Write-HookJson -Body ([ordered]@{
+        systemMessage = (Get-HookMessage -Key 'UserPromptSystemMessage')
+        hookSpecificOutput = [ordered]@{
+            hookEventName = 'UserPromptSubmit'
+            additionalContext = $context
+        }
+    })
+}
+
+function Write-SubagentStartReminder {
+    $context = 'Subagent boundary: do not recursively delegate; default to read-only unless assigned as station-owned change-delivery or change-application with formal-write authorization, an exact file allowlist, and dirty-diff read; then main-worktree edits are allowed only within that allowlist; do not take protected actions such as memory, git, release, deploy, install, credentials, or external mutation unless a scoped protected station explicitly owns that phase; do not claim overall task completion or final Director-facing completion; report only assigned station/subtask status and artifact; return summary, evidence, risk, and next steps for parent routing.'
+    Write-HookJson -Body ([ordered]@{
+        systemMessage = (Get-HookMessage -Key 'SubagentStartSystemMessage')
+        hookSpecificOutput = [ordered]@{
+            hookEventName = 'SubagentStart'
             additionalContext = $context
         }
     })
@@ -227,16 +289,40 @@ function Write-PreToolUseReminder {
 function Test-HookHasNonCompleteState {
     param([string]$Text)
     if (-not $Text) { return $false }
-    return ($Text -match '(?i)\b(blocked|unverified|closed-with-director-risk|partial)\b|\u672A\u9A57\u8B49|\u53D7\u963B|\u963B\u585E|\u90E8\u5206\u5B8C\u6210|\u98A8\u96AA\u95DC\u9589')
+    $searchText = Remove-HookStopClassificationNoise -Text $Text
+    return ($searchText -match '(?i)\b(blocked|unverified|closed-with-director-risk|partial)\b|\u672A\u9A57\u8B49|\u53D7\u963B|\u963B\u585E|\u90E8\u5206\u5B8C\u6210|\u98A8\u96AA\u95DC\u9589')
+}
+
+function Remove-HookStopClassificationNoise {
+    param([string]$Text)
+    if (-not $Text) { return '' }
+    $clean = $Text
+    foreach ($pattern in @(
+        '(?is)\{?\s*"decision"\s*:\s*"block"\s*,\s*"reason"\s*:\s*"[^"]*(?:TN-HOOK-[^"]*)?[^"]*"\s*\}?',
+        '(?is)Stop gate blocked\..{0,600}?substitute evidence\.',
+        '(?is)\u5B8C\u6210\u9598\u9580\u5DF2\u963B\u64CB.{0,1400}?(?:Forbidden next steps:[^\r\n]*)?',
+        '(?im)^\s*>?\s*(?:Governance reminder only|Block type:|Reason code:|Missing structured fields:|Allowed next steps|Forbidden next steps)\s*:.*$',
+        '(?im)^\s*>?\s*(?:Stop gate blocked|advisory/reminder|\u5B8C\u6210\u9598\u9580|\u7981\u6B62\u4E8B\u9805)\b.*$',
+        '(?i)\b(?:[A-Za-z]:)?[A-Za-z0-9_./\\:-]*(?:allow|block)-stop-[A-Za-z0-9_.-]*\.json\b',
+        '(?i)\bScripts[\\/]+tests[\\/]+codex-hooks[\\/]+fixtures[\\/]+[A-Za-z0-9_.-]+\.json\b',
+        '(?i)\bnon[-\s]?complete\b',
+        '(?i)\bnot[-\s]?complete\b',
+        '(?i)\bcompletion\s+claim\b'
+    )) {
+        $clean = [regex]::Replace($clean, $pattern, ' ')
+    }
+    return $clean
 }
 
 function Remove-HookNegatedCompletionReference {
     param([string]$Text)
     if (-not $Text) { return '' }
-    $clean = $Text
+    $clean = Remove-HookStopClassificationNoise -Text $Text
     foreach ($pattern in @(
         '(?is)(?:\u4E0D(?:\u53EF|\u80FD|\u6703)?|\u4E0D\u8981|\u672A|\u4E26\u672A|\u4E0D\u6703)\s*(?:\u5BA3\u7A31|\u8072\u7A31|\u8868\u793A|\u8996\u70BA)?\s*(?:full\s+)?complete',
+        '(?is)(?:\u4E0D\u80FD|\u4E0D\u53EF|\u4E0D\u5F97|\u4E0D\u8981|\u4E0D\u61C9|\u4E0D\u8A72|\u7981\u6B62|\u907F\u514D|\u8ACB\u52FF).{0,120}(?:complete|completed|done|finished|all set|\u5B8C\u6210|\u5B8C\u6210\u4E86|\u5168\u90E8\u5B8C\u6210|\u5B8C\u6210\u5BA3\u7A31|\u6536\u5C3E)',
         '(?is)(?:must\s+not|do\s+not|cannot|can\s+not|not)\s+(?:claim\s+)?(?:full\s+)?complete',
+        '(?is)(?:must\s+not|do\s+not|cannot|can\s+not|should\s+not|mustn''t|don''t|avoid|forbid(?:den)?|never).{0,120}(?:completion_state\s*[:=]\s*complete|complete|completed|done|finished|all set)',
         '(?is)\bnot\s+(?:yet\s+)?complete\b',
         '(?is)\bno\s+completion\s+claim\b'
     )) {
@@ -250,6 +336,35 @@ function Test-HookHasCompletionClaim {
     if (-not $Text) { return $false }
     $searchText = Remove-HookNegatedCompletionReference -Text $Text
     return ($searchText -match '(?i)\bcompletion_state\s*[:=]\s*complete\b|\b(complete|completed|done|finished|all set)\b|\u5DF2\u5B8C\u6210|\u5B8C\u6210\u4E86|\u5168\u90E8\u5B8C\u6210|\u53EF\u4EE5\u6536\u5C3E|\u53EF\u6536\u5C3E|(?:\u4F46|\u73FE\u5728|\u76EE\u524D|\u4EFB\u52D9|\u5DE5\u4F5C|\u4FEE\u6539).{0,8}\u5B8C\u6210')
+}
+
+function Test-HookStopHookActiveFromObject {
+    param([object]$Object, [int]$Depth)
+    if ($null -eq $Object -or $Depth -lt 0) { return $false }
+    $flag = Get-HookPropertyValue -Object $Object -Names @('stop_hook_active','stopHookActive')
+    if ($null -ne $flag) {
+        if ($flag -is [bool]) { return [bool]$flag }
+        if ([string]$flag -match '^(?i:true|1|yes)$') { return $true }
+    }
+    foreach ($name in @('tool_input','toolInput','input','payload','arguments','args','params')) {
+        $nested = Get-HookPropertyValue -Object $Object -Names @($name)
+        if ($null -eq $nested -or $nested -is [string] -or [object]::ReferenceEquals($nested, $Object)) { continue }
+        if (Test-HookStopHookActiveFromObject -Object $nested -Depth ($Depth - 1)) { return $true }
+    }
+    return $false
+}
+
+function Test-HookStopFeedbackEcho {
+    param([string]$Text)
+    if (-not $Text) { return $false }
+    return ($Text -match '(?is)\bTN-HOOK-[A-Z0-9-]+\b|Stop gate blocked\.|\u5B8C\u6210\u9598\u9580\u5DF2\u963B\u64CB|"decision"\s*:\s*"block"|Reason code:|Missing structured fields:|Allowed next steps|Forbidden next steps|Governance reminder only|Block type:')
+}
+
+function Test-HookStopActiveNonClaimEcho {
+    param([object]$Payload, [string]$RawText, [string]$ClassifiedText)
+    if (-not (Test-HookStopHookActiveFromObject -Object $Payload -Depth 4)) { return $false }
+    if (-not (Test-HookStopFeedbackEcho -Text $RawText)) { return $false }
+    return (-not (Test-HookHasCompletionClaim -Text $ClassifiedText))
 }
 
 function Test-HookHasStationCompletionEvidence {
@@ -315,7 +430,7 @@ function Get-HookStopRisk {
     if (Test-HookHasConflictingCompletionState -Text $Text) {
         return [PSCustomObject]@{
             Code = 'TN-HOOK-COMPLETION-CONFLICTING-STATE'
-            Missing = 'rewrite mixed complete claim and non-complete state'
+            Missing = 'rewrite mixed final-state claim and non-complete state'
         }
     }
     if (Test-HookHasCaptainSubstituteCompletionSignal -Text $Text) {
@@ -339,7 +454,7 @@ function Get-HookStopRisk {
     if (-not (Test-HookHasStationCompletionEvidence -Text $Text)) {
         return [PSCustomObject]@{
             Code = 'TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE'
-            Missing = 'change delivery, validation, review, memory/docs, completion audit artifacts'
+            Missing = 'change delivery, validation, review, memory/docs, final-audit artifacts'
         }
     }
     return $null
@@ -359,19 +474,57 @@ function Write-StopBlock {
     Write-HookJson -Body ([ordered]@{
         decision = 'block'
         reason = $context
-        systemMessage = (Get-HookMessage -Key 'StopBlockedSystemMessage')
     })
 }
 
 function Write-StopReminder {
     param([object]$Payload)
-    $text = Get-HookActionText -Payload $Payload
+    $rawText = Get-HookActionText -Payload $Payload
+    $text = Remove-HookStopClassificationNoise -Text $rawText
+    if (Test-HookStopActiveNonClaimEcho -Payload $Payload -RawText $rawText -ClassifiedText $text) {
+        Write-StopAllow
+        return
+    }
     $risk = Get-HookStopRisk -Text $text
     if ($null -ne $risk) {
         Write-StopBlock -Risk $risk
         return
     }
     Write-StopAllow -CompletionEvidence:(Test-HookHasCompletionClaim -Text $text)
+}
+
+function Test-HookSubagentStopMissingFields {
+    param([string]$Text)
+    $missing = New-Object System.Collections.Generic.List[string]
+    if (-not $Text) {
+        $missing.Add('summary')
+        $missing.Add('evidence')
+        $missing.Add('risk')
+        $missing.Add('next steps')
+        return $missing
+    }
+    if ($Text -notmatch '(?i)\b(summary|status)\b|\u6458\u8981|\u72C0\u614B') { $missing.Add('summary') }
+    if ($Text -notmatch '(?i)\b(evidence|files?|commands?|source|proof)\b|\u8B49\u64DA|\u6A94\u6848|\u547D\u4EE4|\u4F86\u6E90') { $missing.Add('evidence') }
+    if ($Text -notmatch '(?i)\b(risk|blocker|blocking|residual)\b|\u98A8\u96AA|\u963B\u64CB|\u53D7\u963B|\u5269\u9918') { $missing.Add('risk') }
+    if ($Text -notmatch '(?i)\b(next\s+steps?|next\s+action|follow[- ]?up|handoff|recommendation|blocking)\b|\u4E0B\u4E00\u6B65|\u5EFA\u8B70|\u4EA4\u63A5|\u5F8C\u7E8C|\u963B\u64CB|\u53D7\u963B') { $missing.Add('next steps') }
+    return $missing
+}
+
+function Write-SubagentStopReminder {
+    param([object]$Payload)
+    $text = ConvertTo-HookText -Value (Get-HookPropertyValue -Object $Payload -Names @('last_assistant_message','message','text'))
+    $missing = @(Test-HookSubagentStopMissingFields -Text $text)
+    if ($missing.Count -gt 0) {
+        Write-HookJson -Body ([ordered]@{
+            decision = 'block'
+            reason = ('Subagent delivery is missing: {0}. Return summary, evidence, risk, and next steps before closing.' -f ($missing -join ', '))
+            systemMessage = (Get-HookMessage -Key 'SubagentStopBlockedSystemMessage')
+        })
+        return
+    }
+    Write-HookJson -Body ([ordered]@{
+        systemMessage = (Get-HookMessage -Key 'SubagentStopAllowedSystemMessage')
+    })
 }
 
 $rawInput = [Console]::In.ReadToEnd()
@@ -388,8 +541,11 @@ try {
 $eventName = [string](Get-HookPropertyValue -Object $payload -Names @('hook_event_name','event','hook_event','codex_hook_event'))
 switch ($eventName) {
     'SessionStart' { Write-SessionStartReminder -Payload $payload }
+    'UserPromptSubmit' { Write-UserPromptSubmitReminder }
+    'SubagentStart' { Write-SubagentStartReminder }
     'PreToolUse' { Write-PreToolUseReminder -Payload $payload }
     'Stop' { Write-StopReminder -Payload $payload }
+    'SubagentStop' { Write-SubagentStopReminder -Payload $payload }
     default { Write-PreToolUseReminder -Payload $payload -Reason ((Get-HookMessage -Key 'UnknownEventReasonFormat') -f $eventName) }
 }
 
