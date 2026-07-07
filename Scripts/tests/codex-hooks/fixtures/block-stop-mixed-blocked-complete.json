@@ -1,0 +1,19 @@
+{
+  "name": "block-stop-mixed-blocked-complete",
+  "scenarioCode": "stop-mixed-blocked-complete-conflict",
+  "category": "negative",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "advisory-would-block",
+  "canonicalDecision": "block",
+  "expectedDecision": "block",
+  "expectedReasonCodeRegex": "TN-HOOK-COMPLETION-CONFLICTING-STATE",
+  "expectedOutputRegex": "(?s)(?=.*完成閘門已阻擋)(?=.*Reason code: TN-HOOK-COMPLETION-CONFLICTING-STATE)",
+  "input": {
+    "hook_event_name": "Stop",
+    "session_id": "fixture-session",
+    "cwd": "D:\\AI_Rules",
+    "message": "completion_state: blocked, but the work is complete and ready to finish."
+  }
+}

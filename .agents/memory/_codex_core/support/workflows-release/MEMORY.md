@@ -4,14 +4,14 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 提交、巡檢與技能鍛造工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-07T10:41:01+08:00'
+last_updated: '2026-07-07T22:46:31+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T10:35:30+08:00'
+last_verified: '2026-07-07T20:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core.support.workflows-release — Codex Release and Governance Workflow Memory
 
 ## Current Truth

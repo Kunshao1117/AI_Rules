@@ -1,11 +1,14 @@
 {
   "name": "allow-pretool-readonly-single-file-advisory",
   "scenarioCode": "pretool-single-file-readonly",
-  "category": "allow",
+  "category": "positive",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
   "fixtureOrigin": "synthetic",
-  "expectedOutcomeKind": "allow-reminder",
+  "expectedOutcomeKind": "advisory-context",
+  "canonicalDecision": "advisory",
   "expectedDecision": "allow",
-  "expectedOutputRegex": "advisory/reminder.*提醒模式，不會阻擋工具.*請先停止這次工具呼叫.*single-file-readonly",
+  "expectedOutputRegex": "advisory/reminder.*禁止隊長直接產生 broad read / validation / review / external research / memory-docs / completion evidence.*named-file local_probe.*direct_exception 只能降級成 partial / unverified / closed-with-director-risk.*single-file-readonly",
   "input": {
     "hook_event_name": "PreToolUse",
     "session_id": "fixture-session",

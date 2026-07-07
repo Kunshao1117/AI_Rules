@@ -25,12 +25,19 @@ source-level delivery with protected follow-up pending, or reported as blocked, 
 closed-with-director-risk. It checks evidence completeness; it does not implement fixes, mutate
 memory, stage, commit, push, tag, release, deploy, or install.
 
+Fields such as `station_mode`, `context_visibility`, and `handoff_ownership` are consumed here as
+closeout evidence. Their canonical values remain in
+`Shared/skills/team-task-board/references/board-field-catalog.md`; station startup ownership remains
+in `Shared/skills/team-station-handoff-packet/SKILL.md`; trace audit completeness remains in
+`Shared/policies/team-trace-evidence.md`.
+
 Read these sources first:
 
 | Need | Source |
 |---|---|
 | Full completion boundary and captain substitute-authoring limits | `Shared/policies/team-native-core.md` |
 | Workflow closeout order and dispatch-wave sequencing | `Shared/policies/workflow-orchestration.md` |
+| Closeout targets, completion states, and transition values | `Shared/policies/references/completion-state-machine.md` |
 | Scope-bound authorization for each protected phase | `Shared/policies/authorization-resolution.md` |
 | Required trace evidence and invalid completion patterns | `Shared/policies/team-trace-evidence.md` |
 | Board field list and board-facing checklist | `Shared/skills/team-task-board/SKILL.md` |
@@ -40,8 +47,7 @@ Read these sources first:
 ## Inputs
 
 - Director request, approved plan, and scope limits.
-- Closeout target: source-level delivery, full Team-Native completion, commit/release readiness, or
-  protected follow-up status.
+- Closeout target from `Shared/policies/references/completion-state-machine.md`.
 - Board row with authorization, station, channel, delivery, and completion states.
 - Implementation or authorized change-application delivery artifact when source changed.
 - Artifact chain linking the implementation/change-application artifact, captain ledger receipt,
@@ -56,12 +62,12 @@ Read these sources first:
 
 | Check | Complete only when |
 |---|---|
-| Closeout target | The artifact states whether it is judging source-level delivery, full Team-Native completion, commit/release readiness, or protected follow-up status. |
+| Closeout target | The artifact states the canonical target from `completion-state-machine.md` and the current protected follow-up applicability. |
 | Scope | Actual changes match the approved scope and exclusions. |
 | Authorization | Every write/protected phase has source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode. |
 | Artifact chain | Completion consumes only the artifact chain: implementation/change-application delivery artifact, captain ledger receipt, downstream validation, review, memory/docs, sync, and residual-risk artifacts. |
 | Change delivery | A returned implementation or authorized change-application artifact exists, or the missing route is not being claimed as complete. |
-| Memory/docs delivery | Full completion, commit readiness, or release readiness needs delivered memory/docs or an explicit non-complete state. Source-level delivery may report `memory-required` or `memory-blocked-by-scope` as protected follow-up pending when implementation, validation, review, and sync evidence are otherwise sufficient. |
+| Memory/docs delivery | Process-complete or release-ready closeout needs delivered memory/docs or an explicit non-complete state. Source-level delivery may report `memory-required` or `memory-blocked-by-scope` as protected follow-up pending when implementation, validation, review, and sync evidence are otherwise sufficient. |
 | Validation | Non-mutating validation passed, or blocked/unverified reason and smallest next validation path are named. |
 | Review | Independent review exists from a role that did not author the change; missing independent review blocks full completion. |
 | Role separation | Implementation, validation, review, memory/docs, and completion boundaries remain separate. |
@@ -81,24 +87,17 @@ Protected follow-up pending is a source-level closeout disposition, not a full c
 it when source changes are delivered, validated, reviewed, and synced, but memory write, memory
 commit, git, release, deployment, install, or another protected phase was not requested or
 authorized. It must name the pending owner station and smallest next protected phase. It must not be
-reported as `complete`, and it becomes a blocker when the closeout target is full Team-Native
-completion, commit readiness, or release readiness.
+reported as `complete`, and it becomes a blocker when the closeout target is process-complete or
+release-ready.
 
 ## Completion States
 
-Use exactly one:
-
-| State | Meaning |
-|---|---|
-| `complete` | Scope, authorization, separated delivery artifacts, validation, independent review, Director-facing report governance, channel lifecycle closure including status-probe pause/resume evidence, station lifecycle fields, completion evidence, and required trace are present. |
-| `closed-with-director-risk` | The Director explicitly closes a named residual risk; this is not full completion. |
-| `blocked` | A required tool, authorization, delivery artifact, validation path, review, memory/docs disposition, or sync condition is unavailable. |
-| `unverified` | Evidence is absent or incomplete but the task can still be reported honestly without claiming completion. |
-| `not-applicable` | Full completion is not the current closeout target, such as a source-level delivery report with protected follow-up pending. |
-
-Informal states such as done, completed, acceptable, source-level-ready,
-protected-follow-up-pending, or accepted-risk do not replace the completion state. Review
-accepted-risk is a review lifecycle state, not a Team-Native completion state.
+Use the canonical completion state set and transition rules in
+`Shared/policies/references/completion-state-machine.md`.
+This skill only checks whether the required artifact chain supports the selected target.
+Informal labels such as done, completed, acceptable, source-level-ready,
+protected-follow-up-pending, or accepted-risk do not replace the canonical completion state.
+Review accepted-risk is a review lifecycle state, not a Team-Native completion state.
 
 ## Closeout Lanes
 

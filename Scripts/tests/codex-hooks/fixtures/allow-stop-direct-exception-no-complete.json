@@ -1,0 +1,18 @@
+{
+  "name": "allow-stop-direct-exception-no-complete",
+  "scenarioCode": "stop-direct-exception-no-completion-claim-allowed",
+  "category": "positive",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "advisory-context",
+  "canonicalDecision": "advisory",
+  "expectedDecision": "allow",
+  "expectedOutputRegex": "完成閘門提醒.*blocked / unverified / closed-with-director-risk / partial.*不可宣稱 complete",
+  "input": {
+    "hook_event_name": "Stop",
+    "session_id": "fixture-session",
+    "cwd": "D:\\AI_Rules",
+    "message": "direct_exception: platform-nondelegable record only. completion_state: unverified. remaining evidence is blocked."
+  }
+}

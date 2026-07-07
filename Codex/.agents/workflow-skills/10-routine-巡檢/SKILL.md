@@ -1,7 +1,7 @@
 ---
 name: "10-routine-巡檢"
 description: "自動化安全的例行巡檢：適用於唯讀健康檢查、技能品質、文件數字、記憶過期與 MCP 設定健康（Use when: automation-safe routine, health check）。不適用於需要直接修復或寫入檔案（DO NOT use when: write or fix）。"
-required_skills: [code-audit]
+required_skills: []
 memory_awareness: read
 metadata:
   author: antigravity
@@ -13,7 +13,7 @@ metadata:
   role: reader
   memory_awareness: read
   tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
-  human_gate: "authorization resolution required before writes"
+  human_gate: "none for read-only routine; writes and heavy scans route to a non-routine workflow"
   automation_safe: true
 ---
 
@@ -22,6 +22,8 @@ metadata:
 This Codex workflow skill entry is a thin route entry.
 It selects workflow row `10`, applies the platform adapter, and points to shared procedures when details are needed.
 It does not grant write, memory, git, release, deployment, install, credential, or external-state authority.
+It also does not grant package-manager, compiler, linter, audit, or interactive batch execution.
+Routine is a static read-only route; heavy deterministic scans route elsewhere.
 
 ## Required References
 
@@ -30,7 +32,7 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 1. Captain entry minimum: start with workflow row `10`, the route summary below, `.agents/shared/workflow-capability-evidence-matrix.md` row `10`, `.agents/shared/policies/workflow-orchestration.md` for route/authorization order, and the minimum Team-Native entry gate in `.agents/shared/policies/team-native-core.md`.
 2. Director-facing output: read `.agents/shared/policies/language-governance.md` before wording reports, confirmations, status summaries, handoffs, completion summaries, exact-evidence text, or change descriptions.
 3. External facts/freshness: read `.agents/shared/policies/grounding-governance.md` and the relevant external-research sources only when external facts, dates, APIs, versions, source freshness, or research quality can affect the conclusion.
-4. Platform semantics: read `.agents/shared/platform-capability-matrix.md` only when platform adapter behavior, tool capability, permission surface, or evidence limits affect the route.
+4. Platform semantics (conditional): read `.agents/shared/platform-capability-matrix.md` when platform adapter behavior, tool capability, permission surface, evidence limits, protected phases, source-impacting work, or heavy-scan routing affects the route.
 5. Platform plan mapping: read `.agents/shared/policies/platform-plan-mapping.md` only when a platform plan surface, Codex `update_plan`, `plan-only`, or `build-plan` affects route, authorization wording, progress, handoff, or completion language.
 6. Skill/stage governance: read `.agents/shared/skill-governance.md` only when editing workflow entries, skills, shared policies, or governance boundaries; read `.agents/shared/workflow-stage-procedures.md` only when the concrete phase checklist is needed, using section `10 Routine` without copying it back here.
 7. Phase and station details: load write, protected-action, review, validation, memory/docs, completion, and delivery artifact references only when that decision, station, or phase is actually opened. Missing evidence remains `unverified`, `blocked`, or `closed-with-director-risk`; no gate is relaxed.
@@ -49,6 +51,8 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 - Workflow row: `10`.
 - Procedure reference: `10 Routine` in `.agents/shared/workflow-stage-procedures.md`.
 - Route summary: Stay read-only and automation-safe; report drift and route any fix to a write workflow with scope-bound authorization resolution.
+- Do not load `code-audit` as a required skill and do not run `npm`, `tsc`, ESLint, audit, or interactive batch commands from routine.
+- Route heavy deterministic scans to `08 Audit`, `06 Test`, or another explicit non-routine route with its own evidence boundary.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - Use `formal-write` only after a scope-bound Director intent signal passes authorization resolution and binds the explicit phase, file set, command, or required protected gate.

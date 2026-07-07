@@ -4,6 +4,21 @@ This reference defines the machine-readable `execution_spec` contract for workfl
 It is the canonical place for executable workflow fields.
 Those fields are too detailed for `Shared/policies/workflow-orchestration.md` or `Shared/policies/team-native-core.md`.
 
+## Reference Imports
+
+This file owns the executable field shape. It imports shared value catalogs from
+these references instead of redefining them:
+
+- Status semantics: `Shared/policies/references/status-ontology.md`.
+- Completion targets and completion states:
+  `Shared/policies/references/completion-state-machine.md`.
+- Authorization phases:
+  `Shared/policies/references/authorization-phase-registry.md`.
+- Protected actions:
+  `Shared/policies/references/protected-action-registry.md`.
+- Source/runtime/generated copy roles:
+  `Shared/policies/references/platform-copy-map.md`.
+
 ## Human Flowchart Boundary
 
 Flowcharts, diagrams, Mermaid charts, screenshots, UI plan mirrors, and checklists are human navigation aids.
@@ -71,8 +86,7 @@ Required field meanings, in order:
 - `dispatch_wave`
   - Current wave and previous-wave input.
 - `closeout_target`
-  - `source-level`, `full-completion`, `commit-ready`, or `release-ready`.
-  - Defines whether protected memory phases may remain follow-up or must resolve in flow.
+  - Value and legacy aliases from `completion-state-machine.md`.
 - `loop_control`
   - Compact control fields for retry/reroute decisions.
   - Includes loop identity, attempt count, retry budget, current transition decision, and exit condition.
@@ -95,11 +109,14 @@ Required field meanings, in order:
 - `allowed_targets`
   - Exact files, directories, generated copies, external resources, or command targets in scope.
 - `forbidden_actions`
-  - Memory, git, release, deployment, install, credentials, external mutation, self-review, or other prohibited actions.
+  - Values and categories from `protected-action-registry.md`, plus role-local
+    prohibitions such as self-review.
 - `authorization_source` / `authorization_target` / `authorization_scope`
   - Scope-bound authorization fields from `authorization-resolution.md`.
 - `authorization_phase` / `authorization_evidence` / `authorization_expiry`
   - Scope-bound authorization fields from `authorization-resolution.md`.
+  - `authorization_phase` values come from
+    `authorization-phase-registry.md`.
 - `authorization_resolution_state`
   - Scope-bound authorization state from `authorization-resolution.md`.
 - `external_grounding_required`
@@ -111,7 +128,7 @@ Required field meanings, in order:
   - Returned research artifact ID.
   - Also allows `pending`, `blocked`, `unverified`, or `not-applicable`.
 - `external_grounding_state`
-  - Status value from this reference and `grounding-governance.md`.
+  - Status value from `status-ontology.md` and `grounding-governance.md`.
 - `source_tier`
   - Strongest source tier supporting the external claim.
 - `source_date_or_version`
@@ -125,7 +142,8 @@ Required field meanings, in order:
   - Comparison of the original request, current scope, route, authorization, returned artifacts, and remaining gaps.
   - Records the transition decision before the next wave or closeout.
 - `source_deployed_pair` / `sync_direction` / `sync_evidence`
-  - Pair and parity fields when source/runtime copies are affected.
+  - Pair and parity fields from `platform-copy-map.md` when source/runtime or
+    source/generated copies are affected.
 - `output_artifact_contract`
   - Expected delivery artifact schema or skill contract.
 - `stop_condition`
@@ -149,42 +167,12 @@ Required field meanings, in order:
 
 ## Closeout Target Contract
 
-Closeout target values are canonical here so workflow policies and board skills can cite them
-without duplicating the transition catalog.
+Closeout target values are canonical in
+`Shared/policies/references/completion-state-machine.md`.
 
-- `source-level`
-  - Judges the source delivery layer, including the change delivery artifact, validation, review,
-    and source/deployed sync evidence when those are required for the source change.
-  - May transition to `protected-follow-up-pending` when memory/docs disposition says memory is
-    required but protected memory mutation is outside the current source-level authorization.
-  - Does not claim full Team-Native completion, commit readiness, or release readiness.
-- `full-completion`
-  - Requires the full artifact chain, including memory/docs disposition.
-  - When memory/docs says memory is required, protected memory phases must resolve in flow:
-    `protected-memory-write` followed by `protected-memory-commit`.
-  - Cannot close with `protected-follow-up-pending`.
-- `commit-ready`
-  - Requires `full-completion` to be satisfied first.
-  - Any required `memory_commit` must be complete before git commit readiness is considered.
-  - Git mutation remains a separate protected phase.
-- `release-ready`
-  - Requires `commit-ready` or an equivalent release-preparation chain to be satisfied first.
-  - Pending protected memory phases block release, deploy, install, or external-mutation readiness.
-  - Release, deployment, install, and external mutation remain separate protected phases.
-
-Closeout-related `transition_decision` values are:
-
-- `pass`
-- `retry`
-- `reroute`
-- `protected-follow-up-pending`
-- `protected-memory-write`
-- `protected-memory-commit`
-- `blocked`
-- `unverified`
-- `no-evidence`
-- `conflicted`
-- `closed-with-director-risk`
+This execution spec carries the chosen `closeout_target` and transition
+decision. It does not redefine target meanings, legacy aliases, completion
+states, or transition values.
 
 ## Workflow Loop And Minimal Reference Fields
 
@@ -206,7 +194,7 @@ compact and point to station artifacts instead of copying the board, trace, or f
 - `previous_transition_decision`
   - Prior loop result, or `not-applicable`.
 - `transition_decision`
-  - Uses the closeout-related transition catalog above.
+  - Uses the transition catalog in `completion-state-machine.md`.
 - `exit_condition`
   - The condition that ends the current station or loop.
 - `next_wave_start_condition`
@@ -279,10 +267,9 @@ Required field meanings:
   - Research artifact returned by the `external-research` station.
   - `pending`, `blocked`, or `unverified` are non-complete values.
 - `external_grounding_state`
-  - `not-required`, `required`, `requested`, `sufficient`, `partial`, `no-evidence`, `conflicted`, `blocked`, or `unverified`.
+  - Value from `status-ontology.md` and `grounding-governance.md`.
 - `source_tier`
-  - `official`, `primary`, `high-confidence-secondary`, `low-confidence-community`, or `local-tool-output`.
-  - Also allows `not-applicable` or `unknown`.
+  - Value from `grounding-governance.md`.
 - `source_date_or_version`
   - Source publication date, release date, standard revision, API version, package version, or lockfile version.
   - Also allows `not-applicable`.
@@ -290,12 +277,10 @@ Required field meanings:
   - Missing official page, version match, source access, conflict resolution, date, or local-version comparison.
   - Use `none` when no evidence is missing.
 
-`sufficient` means the exact claim is supported by accepted evidence for the relevant date/version/scope.
-Accepted evidence is official, primary, or otherwise allowed by the governing source rules.
-`partial` means evidence exists but authority, scope, version, or access gaps remain.
-`no-evidence` means research was attempted but no adequate source was found.
-`blocked` means required access, permission, credential, service, safety, or authorization is missing.
-`unverified` means required grounding was not performed or no research artifact was returned.
+Status meanings such as `sufficient`, `partial`, `no-evidence`, `blocked`,
+and `unverified` are owned by
+`Shared/policies/references/status-ontology.md`. Grounding-specific source
+tiers and evidence rules remain governed by `grounding-governance.md`.
 
 ## External Research Station Flow
 
@@ -320,7 +305,7 @@ Other stations may request research by recording these fields:
 - `needed_by_phase`
   - Architecture, implementation, validation, review, release, security, completion, or blocked.
 - `fallback_if_missing`
-  - `blocked`, `unverified`, `partial`, or `closed-with-director-risk`.
+  - Conservative non-complete state from the canonical status and completion sources.
 
 The returned research artifact records the answered question, sources checked, and source tier.
 It also records source dates or versions, local-version comparison, conflicts, missing evidence, and `external_grounding_state`.

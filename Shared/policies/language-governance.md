@@ -56,6 +56,26 @@ This policy only governs how that evidence is expressed to each audience.
 - Language rule: preserve local file convention, ecosystem convention, and exact external wording.
 - Director-facing summaries around them remain Traditional Chinese.
 
+### Hook, Test, And Resource Layers
+
+- Hook payloads, hook event names, hook config keys, hook script identifiers,
+  and hook output schema fields keep exact canonical tokens.
+- Test names, assertions, command output, exit codes, fixture names, snapshots,
+  selectors, and failure text keep exact local or ecosystem wording.
+- Resource identifiers, MCP resource URIs, connector/tool names, file paths,
+  hashes, versions, package names, and API identifiers keep exact source text.
+- Director-facing explanations about hooks, tests, and resources must be
+  Traditional Chinese meaning-first.
+- Put exact hook/test/resource tokens after the Chinese meaning as evidence,
+  location, command, field, or precision.
+- Do not translate canonical hook events such as `SessionStart`, `PreToolUse`,
+  or `Stop`.
+- Do not write Chinese display labels back into hook payloads, test artifacts,
+  resource identifiers, or machine-readable fields.
+- Hook reminders and test/resource outputs are evidence or route context only.
+  Director-facing reports must explain their practical meaning in Chinese
+  before citing raw tokens.
+
 ### Memory And Project Context
 
 - Applies to: source memory cards, project context cards, archive summaries, and memory delivery artifacts.

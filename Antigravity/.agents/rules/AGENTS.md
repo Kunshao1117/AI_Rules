@@ -12,10 +12,10 @@ The full bootstrapping protocol (Zero-Touch Environment Check, Silent Deployment
 
 - **Rules**: Core mandate and bootstrapper sentinel (00–07; 00/01 always-on, 02–07 on-demand). 07 includes tool-level permission matrix.
 - **Workflows**: 20 lifecycle workflow files + 2 shared gates
-  - 建構系列：`03_build(建構計畫)` / `03-1_experiment` / `03-2_build_execute`
-  - 修復系列：`04-1_fix_plan` / `04-2_fix_execute`
+  - 建構系列：現行公開入口 `03_build(建構計畫)` / `03-1_experiment`；legacy compatibility split-stage file（非現行公開入口）：`03-2_build_execute`
+  - 修復系列：現行公開入口 `04_fix`；legacy compatibility split-stage files（非現行公開入口）：`04-1_fix_plan` / `04-2_fix_execute`
   - 濃縮系列：`05_condense(濃縮)` — 專案初始化萃取
-  - 提交系列：`09-1_commit_scan` / `09-2_commit_execute`
+  - 提交系列：現行公開入口 `09_commit`；legacy compatibility split-stage files（非現行公開入口）：`09-1_commit_scan` / `09-2_commit_execute`
   - 健檢系列：`08_audit(健檢)` / `08-1_audit_infra` / `08-2_audit_logic` / `08-3_audit_report`
   - 例行巡檢：`10_routine(巡檢)` — automation-safe read-only maintenance
   - 其他工作流：00–02、06–07、11–12 各一個 workflow

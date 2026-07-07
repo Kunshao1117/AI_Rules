@@ -56,6 +56,22 @@ Layer ownership, in order:
 - Owns machine-readable `execution_spec` minimum and human flowchart boundary.
 - Also owns station external-grounding fields and external-research request contract.
 
+### Central reference catalog
+
+- `Shared/policies/references/status-ontology.md` owns shared status meanings.
+- `Shared/policies/references/completion-state-machine.md` owns closeout targets,
+  completion states, and complete/non-complete mutual exclusion.
+- `Shared/policies/references/authorization-phase-registry.md` owns
+  authorization phase values.
+- `Shared/policies/references/protected-action-registry.md` owns protected
+  action categories and required gates.
+- `Shared/policies/references/hook-event-matrix.md` owns repo-managed hook
+  event support and disabled/source-active/runtime lifecycle.
+- `Shared/policies/references/exception-registry.md` owns direct and
+  platform-nondelegable exception records.
+- `Shared/policies/references/platform-copy-map.md` owns source/runtime,
+  generated, vendor, and cache copy roles.
+
 ### Workflow orchestration boundaries pair
 
 - Source: `Shared/policies/references/workflow-orchestration-boundaries.md`.
@@ -94,6 +110,20 @@ They show concrete cooperation flows, but do not grant authorization, create new
 
 ## Entry Sequence
 
+Canonical stage order:
+
+```text
+workflow route
+-> authorization resolution
+-> operation_mode
+-> board_template and board_state
+-> station set, dispatch wave, and handoff packet
+-> delivery artifact or terminal station state
+-> validation and review
+-> memory/docs attribution
+-> closeout target and completion judgment
+```
+
 When Team mode is active, every workflow entry follows this team sequence before these actions:
 
 - Broad reading, fix, build, validation, review, or implementation.
@@ -103,12 +133,9 @@ When Team mode is active, every workflow entry follows this team sequence before
 Director instruction
 -> dormant Team readiness injection when present, as no-write route context only
 -> workflow route
--> platform plan mapping
-   when a platform plan surface, `plan-only`, or `build-plan` affects routing
--> Director-facing output gate
-   when producing Director-visible text, governed by language-governance
--> external grounding gate
-   when external facts, sources, or freshness affect formal evidence
+   including platform plan mapping when a platform plan surface, `plan-only`, or `build-plan` affects routing
+   including Director-facing output gate when producing Director-visible text, governed by language-governance
+   including external grounding gate when external facts, sources, or freshness affect formal evidence
 -> authorization resolution
 -> machine-readable `execution_spec` gate
    when station or tool execution depends on workflow instructions
@@ -126,12 +153,13 @@ Director instruction
 -> channel capability and channel invocation status
 -> first response and lifecycle event policy recorded when applicable
    status probe pause, captain resume, timeout, replacement, cancellation, late result
+-> hook event lifecycle check when repo-managed hooks provide route context
 -> returned delivery artifact or blocked/unverified/standby state
 -> captain receipt, board update, blocker/conflict/authorization handling
 -> validation, review, drift/sync evidence
 -> memory/docs disposition after validation and review reach terminal evidence states
--> protected-memory-write when `closeout_target` requires full completion, commit-ready, or
-   release-ready and memory is required
+-> protected-memory-write when `closeout_target` requires process-complete or release-ready
+   and memory is required
 -> protected-memory-commit after protected-memory-write when required memory mutation must be
    committed
 -> completion audit
@@ -169,6 +197,9 @@ After the Director's visible request or agreement has selected the current route
 - Report `blocked`, `unverified`, `standby`, or `closed-with-director-risk`.
 
 Do not re-ask the Director for GO only because internal board, handoff, or channel labels need recording.
+
+Ask the Director only when continuing would expand scope, cost, external tool or state access, protected action exposure, or residual risk.
+Do not mechanically interrupt after a fixed number of modules, batches, or files when the visible route and scope are unchanged.
 
 Platform-visible plan surfaces are governed by `Shared/policies/platform-plan-mapping.md`.
 
@@ -320,7 +351,7 @@ include a `memory_impact` hint and `memory_docs_handoff`, but the memory/docs st
 validated and reviewed artifact chain rather than pre-validating unfinished work. When that
 disposition says memory is required, the closeout branch either records protected follow-up pending
 for `source-level` or routes built-in `protected-memory-write` and `protected-memory-commit`
-phases for `full-completion`, `commit-ready`, and `release-ready`.
+phases for `process-complete` and `release-ready`.
 
 ## Workflow Loop Contract
 
@@ -357,18 +388,19 @@ evidence to verified status.
 Workflow closeout must name the target being judged.
 
 The canonical `closeout_target` values and transition catalog live in
-`Shared/policies/references/workflow-execution-spec-contract.md`.
+`Shared/policies/references/completion-state-machine.md`. The executable field
+shape lives in `Shared/policies/references/workflow-execution-spec-contract.md`.
 
-- `source-level` can report delivered source when evidence is sufficient. Required evidence includes
-  the change delivery artifact, validation, review, and sync evidence. It can close the source layer
-  with `protected-follow-up-pending` when memory/docs says memory is required or blocked by scope
-  and protected memory mutation is outside the current source-level authorization.
-- `full-completion` still requires the full artifact chain. When memory/docs says memory is
-  required, it must route in-flow to `protected-memory-write` and then `protected-memory-commit`;
-  it cannot close with protected follow-up pending.
-- `commit-ready` and `release-ready` inherit the full-completion memory requirement. Pending
-  protected memory write or `memory_commit` blocks commit, release, deploy, install, or
-  external-mutation readiness until the matching protected owner station finishes.
+Target meanings, aliases, and transition values are not repeated here; use
+`Shared/policies/references/completion-state-machine.md`.
+This policy only places the closeout decision after source delivery, validation, review,
+memory/docs attribution, and any required protected follow-up phases.
+
+Do not collapse the closeout layers:
+
+- Source or document delivery means the applied source/document layer has change delivery, validation, review, and sync/parity evidence for that layer.
+- Process evidence complete means the governed artifact chain has also resolved memory/docs disposition, lifecycle closure, and completion audit.
+- Commit or release readiness means the process is complete and the additional protected git, release, deployment, install, credential, or external-mutation gates are either satisfied or explicitly out of scope.
 
 Director-facing status should say which target is closed and which protected follow-up remains.
 
@@ -435,6 +467,9 @@ refactor work.
 
 Framework source files are the source of truth. Deployed project copies are runtime copies.
 
+Copy roles and sync direction values are governed by
+`Shared/policies/references/platform-copy-map.md`.
+
 Governance, workflow, skill, shared policy, generated-copy, public-contract, and hook changes must record sync evidence.
 
 Required fields are `source_deployed_pair`, `sync_direction`, and `sync_evidence`.
@@ -468,6 +503,10 @@ Invalid patterns are maintained in the paired boundaries files:
 They remain Red, blocked, unverified, or closed-with-director-risk patterns.
 
 They are not `complete` or full Team-Native completion.
+
+Shared status meanings and the `complete` versus non-complete boundary come
+from `Shared/policies/references/status-ontology.md` and
+`Shared/policies/references/completion-state-machine.md`.
 
 This main contract only keeps their reference.
 That avoids repeating the long list in multiple workflow documents.

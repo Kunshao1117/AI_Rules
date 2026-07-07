@@ -1,0 +1,19 @@
+{
+  "name": "block-stop-missing-memory-docs",
+  "scenarioCode": "stop-memory-docs-captain-substitution",
+  "category": "negative",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "advisory-would-block",
+  "canonicalDecision": "block",
+  "expectedDecision": "block",
+  "expectedReasonCodeRegex": "TN-HOOK-MEMORY-DOCS-CAPTAIN-SUBSTITUTION",
+  "expectedOutputRegex": "禁止事項.*缺少 memory/docs 的 artifact chain 宣稱 complete.*Reason code: TN-HOOK-MEMORY-DOCS-CAPTAIN-SUBSTITUTION",
+  "input": {
+    "hook_event_name": "Stop",
+    "session_id": "fixture-session",
+    "cwd": "D:\\AI_Rules",
+    "message": "change delivery artifact、validation artifact、review artifact 已有；我由隊長補 memory/docs attribution，現在 complete。"
+  }
+}

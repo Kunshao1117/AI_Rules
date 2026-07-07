@@ -25,28 +25,30 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 ## 共同階段規則（Common Phase Rules）
 
 1. Bind the Director request to a current plan, station, file set, command, or protected phase before any write.
-2. Read `workflow-orchestration.md`, `language-governance.md`, the workflow evidence matrix row, and the platform capability matrix before broad evidence or source-impacting work.
-3. Read `platform-plan-mapping.md` when a platform plan/checklist/progress surface, `plan-only`, or `build-plan` affects routing, authorization interpretation, progress reporting, or completion language.
-4. When current official, public, or internal-source evidence can affect a workflow decision, route an `external-research` station before the affected station.
+2. Apply the canonical stage order from `workflow-orchestration.md`.
+3. Always read `workflow-orchestration.md`, `language-governance.md`, and the workflow evidence matrix row before broad evidence or source-impacting work.
+   Read the platform capability matrix conditionally when platform adapter behavior, tool capability, permission surface, evidence limits, protected phases, source-impacting work, or log-write capability affects the route.
+4. Read `platform-plan-mapping.md` when a platform plan/checklist/progress surface, `plan-only`, or `build-plan` affects routing, authorization interpretation, progress reporting, or completion language.
+5. When current official, public, or internal-source evidence can affect a workflow decision, route an `external-research` station before the affected station.
    Each consuming station must carry an `external_research_question` that names the question, source tier, freshness need, accepted evidence, and stop condition.
    Returned research is station input, not write authority.
-5. Use `formal-readonly` for evidence, research, impact mapping, validation planning, review evidence, memory/docs attribution, and broad reads.
-6. Use `formal-write` only after a scope-bound intent signal is resolved through authorization resolution to the visible plan, file set, station, phase, expiry, and required protected gate.
-7. Keep implementation, validation, review, memory/docs, and completion as separate delivery states. Missing states are blocked, unverified, or closed-with-director-risk, not complete.
-8. Post-change flow is artifact-chain only:
+6. Ask the Director only when the next step expands scope, cost, external tool/state access, protected action exposure, or residual risk.
+   Do not pause mechanically after a fixed number of modules, batches, or files while the current route and scope remain unchanged.
+7. Use `formal-readonly` for evidence, research, impact mapping, validation planning, review evidence, memory/docs attribution, and broad reads.
+8. Use `formal-write` only after a scope-bound intent signal is resolved through authorization resolution to the visible plan, file set, station, phase, expiry, and required protected gate.
+9. Keep implementation, validation, review, memory/docs, and completion as separate delivery states. Missing states are blocked, unverified, or closed-with-director-risk, not complete.
+10. Post-change flow is artifact-chain only:
    - Implementation or authorized change-application returns a delivery handoff bundle with `validation_handoff`, `review_handoff`, and `memory_docs_handoff`.
    - The captain records it in the ledger without rewriting it.
    - The next wave starts validation and review only from that delivery bundle.
    - The memory/docs wave starts after validation and review reach terminal evidence states, using the delivery bundle plus the validation/review results.
    - The implementation bundle may include a `memory_impact` hint, but the memory/docs branch is read-only disposition and attribution routing; it does not authorize memory mutation, memory commit, or direct card writes.
    - Completion consumes only the resulting artifact chain.
-9. Separate source-level delivery closeout from full completion:
-   - When source delivery, validation, review, and sync are sufficient but memory/docs reports `memory-required` or `memory-blocked-by-scope` only because protected memory mutation was not authorized, report source-level delivery with protected follow-up pending.
-   - Do not mark the source-level delivery itself as blocked or ask the Director for an internal phase label.
-   - Full completion, commit, or release readiness remains blocked until the protected memory owner station and any required `memory_commit` phase finish.
-10. When a source/deployed pair exists, record sync direction and parity evidence before any completion claim.
-11. Use `commit_preflight` only in `09 Commit`, explicit commit-prep, or closeout commit/push readiness. Other workflows use normal read-only memory evidence and compact packets without interrupting non-commit work.
-12. Read `source-document-size-governance.md` when source-bearing documents, scripts, modules, skills, policies, or rule packs are written, grown, reviewed, validated, or audited.
+11. Separate source/document delivery, process completion, and release readiness using
+    `Shared/policies/references/completion-state-machine.md`.
+12. When a source/deployed pair exists, record sync direction and parity evidence before any completion claim.
+13. Use `commit_preflight` only in `09 Commit`, explicit commit-prep, or closeout commit/push readiness. Other workflows use normal read-only memory evidence and compact packets without interrupting non-commit work.
+14. Read `source-document-size-governance.md` when source-bearing documents, scripts, modules, skills, policies, or rule packs are written, grown, reviewed, validated, or audited.
 
 ## 00 Chat / 聊天
 
@@ -162,9 +164,13 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 ## 08 Audit / 健檢
 
 - Run inventory before logic review, and logic review before final report.
+- Preserve the audit artifact chain: `08-1` inventory artifact -> `08-2` logic-review artifact -> `08-3` final report.
+  A later phase consumes earlier artifacts; missing predecessors remain `unverified` or `blocked`, not green.
 - Define depth, project type, surface denominator, evidence sources, and known unavailable areas.
 - Include oversized source documents, PowerShell modules, audit rule packs, and repeated core/skill stuffing in the audit denominator when size/split governance is in scope.
 - Do not repair during audit. Findings route to build, fix, test, skill-forge, commit prep, or handoff.
+- Default audit evidence is no-write.
+  Audit log writing is a separate `audit-log-write` stage scoped only to `.agents/logs/`; a no-write audit does not authorize `profile.json`, `inventories.json`, `evidence.json`, `summary.md`, or other log writes.
 - Report red/yellow/green only with evidence status and unresolved scope.
 
 ## 08-1 Infra Inventory / 基礎盤點
@@ -172,18 +178,23 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 - Identify project type, runtime surfaces, commands, routes, files, workflows, memory/context cards, and external dependencies.
 - Record source-document size/split signals when they are in scope; existing oversized modules may be baseline findings rather than blocking failures.
 - Record denominator and skipped scope before any quality judgment.
-- Return inventory evidence for `08-2` logic review.
+- Return the `08-1` inventory artifact for `08-2` logic review.
+  It is prerequisite evidence, not a final audit conclusion.
 
 ## 08-2 Logic Review / 深度邏輯
 
 - Review architecture, state/data flow, security, reliability, validation coverage, governance consistency, and evidence integrity using `08-1` inventory as input.
+- If the `08-1` inventory denominator is missing, stale, or incomplete for the selected depth, return `unverified` or `blocked` instead of continuing to final conclusions.
 - Review whether size combines with multiple responsibilities, mixed public interfaces, or difficult test isolation before recommending a split.
 - Do not issue final audit conclusions before inventory gaps are visible.
 - Route repairable findings to the right workflow with evidence status.
+- Return the `08-2` logic-review artifact for `08-3`; do not replace or bypass the inventory artifact.
 
 ## 08-3 Audit Report / 健檢總結
 
 - Summarize inventory, logic findings, evidence status, blockers, unverified scope, recommended routes, and residual risk.
+- Consume both the `08-1` inventory artifact and the `08-2` logic-review artifact before issuing the final report.
+- If either predecessor artifact is missing or does not match the selected audit depth, report `unverified` or `blocked`; do not synthesize a complete health report from partial inputs.
 - Do not treat recommendations as write authorization.
 - If commit or release readiness is requested, route to `09`.
 
@@ -201,8 +212,11 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 ## 10 Routine / 巡檢
 
 - Stay read-only and automation-safe.
+- Use static read-only inspection only.
+  Do not run package-manager, compiler, linter, audit, or interactive batch commands such as `npm`, `tsc`, or ESLint from the routine route.
 - Check drift, skill quality, workflow metadata, source/deployed consistency, memory health, MCP profile surfaces, and documented counts.
 - Report exact findings and proposed routes. Do not apply fixes.
+- Route heavy deterministic scans to `08 Audit`, `06 Test`, or another explicit non-routine route with its own evidence and authorization boundary.
 - Any write proposal routes to build, fix, audit, skill-forge, or commit prep and waits for a scope-bound intent signal resolved through authorization resolution.
 
 ## 11 Handoff / 交接

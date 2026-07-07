@@ -1,0 +1,19 @@
+{
+  "name": "block-stop-missing-artifacts-complete",
+  "scenarioCode": "stop-completion-missing-artifacts-negative-evidence",
+  "category": "negative",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "advisory-would-block",
+  "canonicalDecision": "block",
+  "expectedDecision": "block",
+  "expectedReasonCodeRegex": "TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE",
+  "expectedOutputRegex": "禁止事項.*completion evidence.*Reason code: TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE",
+  "input": {
+    "hook_event_name": "Stop",
+    "session_id": "fixture-session",
+    "cwd": "D:\\AI_Rules",
+    "message": "completion_state: complete. change delivery artifact missing; validation artifact missing; review artifact missing; memory/docs artifact missing; completion audit missing. complete."
+  }
+}

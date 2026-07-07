@@ -1,0 +1,26 @@
+{
+  "name": "context-pretool-captain-broad-read-no-board",
+  "scenarioCode": "pretool-captain-broad-read-no-board",
+  "category": "positive",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "advisory-context",
+  "canonicalDecision": "advisory",
+  "expectedDecision": "allow",
+  "expectedOutputRegex": "advisory/reminder.*禁止隊長直接產生 broad read / validation / review / external research / memory-docs / completion evidence.*允許隊長做 coordination.*named-file local_probe.*工具分類：broad-read",
+  "input": {
+    "hook_event_name": "PreToolUse",
+    "session_id": "fixture-session",
+    "transcript_path": null,
+    "cwd": "D:\\AI_Rules",
+    "model": "gpt-5",
+    "permission_mode": "default",
+    "turn_id": "fixture-turn",
+    "tool_name": "Bash",
+    "tool_use_id": "fixture-tool-broad-read",
+    "tool_input": {
+      "command": "rg TODO"
+    }
+  }
+}

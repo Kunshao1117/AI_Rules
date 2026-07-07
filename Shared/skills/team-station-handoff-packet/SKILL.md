@@ -21,6 +21,9 @@ metadata:
 
 This skill turns one board row into one bounded specialist assignment. It is an operating wrapper
 around the board; it is not a second board template and does not repeat the full board field list.
+Overlapping fields are packet overlay views of the board row. Canonical field names and values stay
+in `Shared/skills/team-task-board/references/board-field-catalog.md`, while trace completeness stays
+in `Shared/policies/team-trace-evidence.md`.
 
 Read these sources first:
 

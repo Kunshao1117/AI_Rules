@@ -4,14 +4,14 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-07T05:53:55+08:00'
+last_updated: '2026-07-07T22:46:56+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
-memory_kind: governance_rule
+memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T05:53:55+08:00'
+last_verified: '2026-07-07T20:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -35,6 +35,8 @@ metadata:
 # _system — Repository Governance Memory
 
 ## Current Truth
+- This card is a repository-level source/status pointer for ownership, release baseline, and memory/context boundaries; it is not a runtime governance rule source.
+- Canonical runtime governance lives in source files such as `README.md`, `CHANGELOG.md`, platform cores, and Shared policies/skills, with current source taking precedence over this memory card.
 - AI_Rules is the source repository for Antigravity, Claude Edition, and Codex Edition governance.
 - Root README and platform README skill counts now describe 62 shared operational skills; Codex deployed skills total 79 from 62 shared skills plus 17 workflow skills, excluding the `_shared` support directory.
 - Root `CLAUDE.md` is an ignored live/root file and now aligns Codex Edition to v0.1.3 plus 62 shared operational skills.
@@ -55,6 +57,7 @@ metadata:
 - Source memory lives in `.agents/memory/`; project context lives in `.agents/context/`; root PowerShell implementation ownership moved to `_system.scripts`.
 
 ## Active Constraints
+- Runtime authority status: current governance behavior is sourced from canonical source files and Shared policies/skills; this card is a source/status pointer.
 - Do not commit, push, tag, publish, install, upgrade, or mutate external state without explicit Director approval.
 - Do not edit another repository, including `D:\cartridge_system`, unless the Director explicitly approves cross-repository work.
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.

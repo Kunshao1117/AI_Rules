@@ -9,7 +9,7 @@ description: >
   健檢深度、專案型態偵測、功能/端點/命令盤點、覆蓋率分母、證據包、
   紅黃綠燈、未驗證/阻塞判定、安全架構、API/資料流、測試覆蓋、
   真實驗證、相容性與發布治理審查。
-  DO NOT use when: 執行 ESLint/npm audit/tsc 等工具掃描（用 code-audit）、
+  DO NOT use when: 執行 ESLint/npm audit/tsc 等工具掃描（可選 deterministic scan 用 code-audit）、
   單一 bug 修復、一般重構、或非健檢工作流。
 metadata:
   author: antigravity
@@ -123,19 +123,20 @@ Rules:
 
 ### Phase C — Baseline And Governance Topology
 
-Combine deterministic scan output from `code-audit` with governance inspection.
+Combine deterministic scan output from `code-audit` only when a separate scan phase or returned scan artifact exists.
+Without that artifact, record the deterministic scan scope as not requested, blocked, or unverified as appropriate, then continue with semantic governance inspection.
 
 Review areas:
 
-- Dependency, type, lint, script, and environment parity scan results.
+- Dependency, type, lint, script, and environment parity scan results when provided by a routed deterministic scan.
 - Memory cards, project context cards, skills, workflow entries, rules, and platform policy markers.
 - Change intent governance: whether build/fix/test/audit entries require emergency patch, root-cause repair, local refinement,
   or structural refactor classification before writes or completion claims.
 - Patch-stack risk: repeated stopgap edits in the same symptom family, file region, workflow rule, or operator path
   without a current root-cause or refactor route.
 - Directory hygiene for installed platform folders and generated runtime copies.
-- Tool availability: terminal, browser, desktop, MCP, cloud, plugin host, logs, and report-write path.
-- Audit log write availability for `profile.json`, `inventories.json`, `evidence.json`, and `summary.md`.
+- Tool availability: terminal, browser, desktop, MCP, cloud, plugin host, logs, and audit-log path.
+- Audit log write eligibility for `profile.json`, `inventories.json`, `evidence.json`, and `summary.md`, only when the caller opens a separate `audit-log-write` stage scoped to `.agents/logs/`.
 
 The semantic output must include an evidence packet for each yellow/red/unverified item.
 
@@ -289,7 +290,8 @@ Platform adapters must not change:
 - No [SUDO] exemption for semantic audit meaning.
 - Does not perform tool scans; it interprets tool output.
 - Does not write source, memory, project context, commits, releases, cloud resources, or external state.
-- May authorize writing intermediate audit logs only when the caller workflow explicitly grants `filesystem:write:logs`.
+- Does not authorize writing intermediate audit logs.
+  Logs may be written only by a separate caller-owned `audit-log-write` stage explicitly scoped to `.agents/logs/` and `filesystem:write:logs`; a no-write audit cannot write logs.
 - Missing tools or unavailable operators do not produce green results. Use `unverified` or `blocked`.
 - `not_applicable` requires surface-profile evidence.
 - Coverage claims require an inventory denominator for the selected depth.

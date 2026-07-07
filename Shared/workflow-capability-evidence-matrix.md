@@ -6,7 +6,7 @@
 
 工作流編排順序由 `Shared/policies/workflow-orchestration.md` 管理。
 本矩陣只擁有各工作流的證據期待；共享 route chain 由 orchestration policy 擁有。
-該鏈路是 `route -> authorization -> operation_mode -> board -> dispatch wave -> delivery artifact -> completion`。
+本矩陣只用該鏈路對齊各 workflow row 的最低證據。
 具體合作範例放在 `Shared/policies/workflow-orchestration-scenarios.md`；
 那些範例是不授權的 playbooks，不能取代本矩陣或 orchestration contract。
 
@@ -35,25 +35,10 @@ This matrix keeps only route-level evidence expectations and the 00-12 workflow 
 
 ## Evidence Status
 
-- sufficient
-  - Meaning: Official docs, current source, tool output, or real operation evidence supports the claim.
-  - Use boundary: Can support workflow judgment.
-- partial
-  - Meaning: Reasonable evidence exists, but complete operation, version, permission, or environment confirmation is missing.
-  - Use boundary: May provide advice with gaps; must not claim high-risk verification is complete.
-- unverified
-  - Meaning: A check is needed but current data or tool output is insufficient.
-  - Use boundary: Must name the gap and smallest evidence path.
-- blocked
-  - Meaning: Credentials, authorization, login, external service, hardware, or high-risk approval is missing.
-  - Use boundary: Must not give a green light; list blocker conditions only.
-- not-applicable
-  - Meaning: Project type or task intent does not need the check.
-  - Use boundary: Must include the basis for the decision.
-
-`closed-with-director-risk` is a process closure state, not evidence status, completion status, or full team completion.
-It only records Director risk closure for a named gap.
-Missing artifacts, independent review, validation, Team-Native trace, or captain substitute authoring still cannot claim `complete`.
+Status meanings live in `Shared/policies/references/status-ontology.md`.
+Closeout targets and completion states live in
+`Shared/policies/references/completion-state-machine.md`.
+This matrix only names the minimum evidence expected per workflow route.
 
 ## Gate Profile References
 
@@ -65,6 +50,7 @@ Workflow rows below only name the minimum evidence expected for each route.
 - Formal orchestration and completion: `Shared/policies/workflow-orchestration.md`
   plus `team-completion-gate`.
 - Platform capability translation: `Shared/platform-capability-matrix.md`.
+  Load condition: workflow orchestration, language governance, and the workflow row are always required for broad evidence or source-impacting work; the platform capability matrix is conditional when platform behavior, tool capability, permission surface, evidence limits, protected phases, source-impacting work, or log-write capability affects the route.
 
 ## Team-Native Evidence Reference
 
@@ -224,11 +210,14 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 
 - 任務類型（Task type）: Full-spectrum audit, deep audit, high-risk preflight.
 - 接地依據（Grounding basis）:
-  - Shared audit engine, this matrix, OWASP, Playwright, Lighthouse, Web Vitals, WCAG, OpenTelemetry.
+  - Shared audit engine as the semantic and logic owner, this matrix, OWASP, Playwright, Lighthouse, Web Vitals, WCAG, OpenTelemetry.
+  - `code-audit` is only an optional deterministic scan source when a separate scan artifact exists or a scan phase is explicitly routed.
   - Engineering review governance and programming-team governance.
 - 最低證據（Minimum evidence）:
   - Audit board, depth, project type, capability snapshot, feature/endpoint/command inventory, denominator.
+  - Artifact chain: `08-1` inventory artifact -> `08-2` logic-review artifact -> `08-3` final report.
   - Evidence artifacts, review state, memory/context governance evidence, lights, unverified/blocker list.
+  - Audit log writes require a separate `audit-log-write` stage scoped only to `.agents/logs/`; no-write audit evidence does not authorize log file creation.
 - 常見路由（Common route）: 02, 03, 04, 06, 09.
 
 ### 09 Commit / 紀錄
@@ -246,10 +235,11 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 
 - 任務類型（Task type）: Automation-safe read-only governance.
 - 接地依據（Grounding basis）:
-  - Automation health check, workflow drift check, engineering review governance, programming-team governance coverage.
+  - Automation health check, static read-only workflow drift check, engineering review governance, programming-team governance coverage.
 - 最低證據（Minimum evidence）:
   - Routine station coverage, skill quality, doc consistency, matrix coverage, review governance coverage.
   - Read-only memory/context inspection and no-write proof.
+  - No package-manager, compiler, linter, audit, or interactive batch execution from the routine route; heavy scans route to `08`, `06`, or another explicit non-routine workflow.
 - 常見路由（Common route）: 08, 12.
 
 ### 11 Handoff / 交接

@@ -1,11 +1,14 @@
 {
   "name": "advisory-pretool-write-no-board",
   "scenarioCode": "pretool-write-no-board",
-  "category": "advisory",
+  "category": "positive",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
   "fixtureOrigin": "synthetic",
-  "expectedOutcomeKind": "allow-reminder",
+  "expectedOutcomeKind": "advisory-context",
+  "canonicalDecision": "advisory",
   "expectedDecision": "allow",
-  "expectedOutputRegex": "advisory/reminder.*提醒模式，不會阻擋工具.*隊員/站點工作.*請先停止這次工具呼叫.*不要直接替隊員完成.*write-advisory",
+  "expectedOutputRegex": "提醒模式，不會阻擋工具.*禁止事項.*broad read / validation / review / external research / memory-docs / completion evidence.*允許事項.*coordination.*station dispatch.*artifact synthesis.*named-file local_probe.*降級後果.*direct_exception.*partial / unverified / closed-with-director-risk.*write-advisory",
   "input": {
     "hook_event_name": "PreToolUse",
     "session_id": "fixture-session",
@@ -16,6 +19,7 @@
     "turn_id": "fixture-turn",
     "tool_name": "apply_patch",
     "tool_use_id": "fixture-tool-write",
+    "command": "*** Begin Patch\n*** Update File: Codex/.codex/hooks.json\n@@\n+{}\n*** End Patch",
     "tool_input": {
       "command": "*** Begin Patch\n*** Update File: Codex/.codex/hooks.json\n@@\n+{}\n*** End Patch"
     }

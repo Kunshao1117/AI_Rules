@@ -1,5 +1,10 @@
-﻿# Internal partial for Audit.psm1. Loaded by the facade only.
+# Internal partial for Audit.psm1. Loaded by the facade only.
 # Codex hook governance
+
+$codexHookGovernanceCatalogPath = Join-Path $PSScriptRoot 'CodexHookGovernance\Catalog.ps1'
+if (Test-Path -LiteralPath $codexHookGovernanceCatalogPath -PathType Leaf) {
+    . $codexHookGovernanceCatalogPath
+}
 
 function Measure-CodexHookGovernance {
     <#
@@ -89,6 +94,85 @@ function Measure-CodexHookGovernance {
         }
     }
 
+    function Test-CodexHookConfigDisabled {
+        param([object]$Config)
+
+        if ($null -eq $Config) { return $false }
+        $lifecycleProperty = $Config.PSObject.Properties['x_ai_rules_hooks_lifecycle']
+        if ($null -eq $lifecycleProperty -or $null -eq $lifecycleProperty.Value) { return $false }
+        $stateProperty = $lifecycleProperty.Value.PSObject.Properties['state']
+        return ($null -ne $stateProperty -and [string]$stateProperty.Value -eq 'disabled')
+    }
+
+    function Get-CodexHookCatalogEntries {
+        param(
+            [string]$FunctionName,
+            [string]$CatalogName
+        )
+
+        if (-not (Get-Command -Name $FunctionName -ErrorAction SilentlyContinue)) {
+            Add-CodexHookFinding -Severity 'Red' -File 'Scripts/modules/Audit/CodexHookGovernance/Catalog.ps1' -Line 1 -Reason 'Codex hook governance catalog loader missing' -Text $CatalogName
+            return @()
+        }
+
+        try {
+            return @(& $FunctionName)
+        } catch {
+            Add-CodexHookFinding -Severity 'Red' -File 'Scripts/modules/Audit/CodexHookGovernance.catalog.json' -Line 1 -Reason 'Codex hook governance catalog 無法載入' -Text $_.Exception.Message
+            return @()
+        }
+    }
+
+    function Test-CodexHookFixtureManifestCatalogParity {
+        param(
+            [string]$ManifestPath,
+            [object[]]$RequiredFixtureCatalog
+        )
+
+        if (-not (Test-Path -LiteralPath $ManifestPath -PathType Leaf)) { return }
+
+        $relative = Get-CodexHookDisplayPath -Path $ManifestPath
+        try {
+            $fixtureManifest = Get-Content -LiteralPath $ManifestPath -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
+        } catch {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture manifest 不是有效 JSON' -Text $_.Exception.Message
+            return
+        }
+
+        $sourceCatalog = Get-CodexHookPropertyText -Object $fixtureManifest -Name 'sourceCatalog'
+        if ($sourceCatalog -ne 'Scripts/modules/Audit/CodexHookGovernance.catalog.json') {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture manifest 未標示權威 catalog 來源' -Text 'sourceCatalog must point to Scripts/modules/Audit/CodexHookGovernance.catalog.json'
+        }
+
+        $manifestRequiredProperty = $fixtureManifest.PSObject.Properties['requiredFixtures']
+        $manifestRequired = if ($null -eq $manifestRequiredProperty) { @() } else { @($manifestRequiredProperty.Value) }
+        $catalogRequiredNames = @($RequiredFixtureCatalog | ForEach-Object { [string]$_.File } | Sort-Object)
+        $manifestRequiredNames = @($manifestRequired | ForEach-Object { [string]$_.file } | Sort-Object)
+
+        if ($manifestRequiredNames.Count -ne $catalogRequiredNames.Count) {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture manifest 與 catalog required fixture 數量不一致' -Text ("manifest={0}; catalog={1}" -f $manifestRequiredNames.Count, $catalogRequiredNames.Count)
+        }
+
+        foreach ($missing in @($catalogRequiredNames | Where-Object { $manifestRequiredNames -notcontains $_ })) {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture manifest 缺少 catalog required fixture' -Text $missing
+        }
+        foreach ($extra in @($manifestRequiredNames | Where-Object { $catalogRequiredNames -notcontains $_ })) {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture manifest 含非 catalog required fixture' -Text $extra
+        }
+
+        $catalogDecisionByName = @{}
+        foreach ($entry in $RequiredFixtureCatalog) {
+            $catalogDecisionByName[[string]$entry.File] = [string]$entry.CanonicalDecision
+        }
+        foreach ($entry in $manifestRequired) {
+            $fileName = [string]$entry.file
+            if (-not $catalogDecisionByName.ContainsKey($fileName)) { continue }
+            if ([string]$entry.canonicalDecision -ne $catalogDecisionByName[$fileName]) {
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture manifest 與 catalog canonicalDecision 不一致' -Text ("{0}: manifest={1}; catalog={2}" -f $fileName, $entry.canonicalDecision, $catalogDecisionByName[$fileName])
+            }
+        }
+    }
+
     function Test-CodexHookConfig {
         param(
             [object]$Config,
@@ -106,17 +190,21 @@ function Measure-CodexHookGovernance {
         }
 
         $hooksObject = $hooksProperty.Value
-        $requiredEvents = @('UserPromptSubmit', 'PreToolUse', 'PermissionRequest', 'SubagentStart', 'SubagentStop', 'Stop')
-        $allowedEvents = $requiredEvents
-        $expectedStatusMessages = @{
-            UserPromptSubmit = '團隊就緒提醒'
-            PreToolUse       = '隊長邊界提醒'
-            PermissionRequest = '隊長邊界提醒'
-            SubagentStart    = '團隊治理提醒'
-            SubagentStop     = '團隊治理提醒'
-            Stop             = '完成證據提醒'
-        }
         $eventNames = @($hooksObject.PSObject.Properties | ForEach-Object { $_.Name })
+        if (Test-CodexHookConfigDisabled -Config $Config) {
+            if ($eventNames.Count -gt 0) {
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook disabled 設定仍含 active handler ({0})" -f $Label) -Text ($eventNames -join ', ')
+            }
+            return
+        }
+
+        $eventCatalog = Get-CodexHookCatalogEntries -FunctionName 'Get-CodexHookSupportedEventCatalog' -CatalogName 'supportedEvents'
+        $requiredEvents = @($eventCatalog | ForEach-Object { $_.EventName })
+        $allowedEvents = $requiredEvents
+        $expectedStatusMessages = @{}
+        foreach ($event in $eventCatalog) {
+            $expectedStatusMessages[$event.EventName] = $event.StatusMessage
+        }
 
         foreach ($requiredEvent in $requiredEvents) {
             if ($eventNames -notcontains $requiredEvent) {
@@ -226,72 +314,7 @@ function Measure-CodexHookGovernance {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line $line -Reason ("hook 腳本含 raw non-ASCII/CJK literal ({0})" -f $Label) -Text ("U+{0:X4}; use New-UnicodeString codepoints for non-ASCII markers" -f $codePoint)
         }
 
-        $requiredPatterns = @(
-            @{ Pattern = 'PermissionRequest'; Severity = 'Red'; Reason = 'hook 腳本缺少授權請求事件處理' },
-            @{ Pattern = 'SubagentStop'; Severity = 'Red'; Reason = 'hook 腳本缺少隊員結束事件處理' },
-            @{ Pattern = 'Stop'; Severity = 'Red'; Reason = 'hook 腳本缺少完成宣稱事件處理' },
-            @{ Pattern = 'transcript_path'; Severity = 'Yellow'; Reason = 'hook 腳本缺少 transcript 輔助查證' },
-            @{ Pattern = 'Get-HistoricalTranscriptReferenceText'; Severity = 'Red'; Reason = 'hook 腳本缺少歷史 transcript 參照分層' },
-            @{ Pattern = 'Get-CurrentStructuredEvidenceText'; Severity = 'Red'; Reason = 'hook 腳本缺少當前結構化證據分層' },
-            @{ Pattern = 'Get-HookActionText'; Severity = 'Red'; Reason = 'hook 腳本缺少動作文字與證據文字分離' },
-            @{ Pattern = 'Get-HookToolBehavior'; Severity = 'Red'; Reason = 'hook 腳本缺少工具行為分類' },
-            @{ Pattern = 'Test-HasReadOnlyCommand'; Severity = 'Red'; Reason = 'hook 腳本缺少唯讀命令放行分類' },
-            @{ Pattern = 'Test-HasBroadReadCommand'; Severity = 'Yellow'; Reason = 'hook 腳本缺少隊長大量讀檔提示分類' },
-            @{ Pattern = 'Test-HasShellWriteSignal'; Severity = 'Red'; Reason = 'hook 腳本缺少 shell 寫入訊號分類' },
-            @{ Pattern = 'Test-HasScopedWriteAuthorization'; Severity = 'Red'; Reason = 'hook 腳本缺少寫入範圍授權分類' },
-            @{ Pattern = 'Test-ActionWithinScopedWriteAuthorization'; Severity = 'Red'; Reason = 'hook 腳本缺少實際寫入目標與授權範圍比對' },
-            @{ Pattern = 'Get-HookExplicitAuthorizedWritePaths'; Severity = 'Red'; Reason = 'hook 腳本缺少明確授權檔案解析' },
-            @{ Pattern = 'Test-HookNormalizedPathEqual'; Severity = 'Red'; Reason = 'hook 腳本缺少正規化精確路徑比對' },
-            @{ Pattern = 'Get-HookActionTargetPaths'; Severity = 'Red'; Reason = 'hook 腳本缺少寫入目標抽取' },
-            @{ Pattern = 'Test-HasProtectedAuthorizationEvidence'; Severity = 'Red'; Reason = 'hook 腳本缺少保護操作授權分類' },
-            @{ Pattern = 'Get-HookProtectedMutationKeys'; Severity = 'Red'; Reason = 'hook 腳本缺少保護操作動作鍵解析' },
-            @{ Pattern = 'invalid payload fail-closed|invalid payload|__parse_error'; Severity = 'Red'; Reason = 'hook 腳本缺少 invalid payload fail-closed 語義' },
-            @{ Pattern = 'tool_execution_envelope|tool execution envelope'; Severity = 'Red'; Reason = 'hook 腳本缺少工具執行信封檢查' },
-            @{ Pattern = 'execution_receipt|execution receipt'; Severity = 'Red'; Reason = 'hook 腳本缺少工具執行回執檢查' },
-            @{ Pattern = 'Get-HookHostVerifiedToolLayerEvidence'; Severity = 'Red'; Reason = 'hook 腳本缺少 host/platform verified tool-layer evidence 讀取入口' },
-            @{ Pattern = 'CODEX_HOOK_HOST_VERIFIED_TOOL_LAYER_EVIDENCE_JSON'; Severity = 'Red'; Reason = 'hook 腳本缺少 host verified evidence JSON 環境來源' },
-            @{ Pattern = 'CODEX_HOOK_HOST_VERIFIED_TOOL_LAYER_EVIDENCE_PATH'; Severity = 'Red'; Reason = 'hook 腳本缺少 host verified evidence 檔案路徑環境來源' },
-            @{ Pattern = '(?s)(?=.*工具層信封或回執不是由 host/platform 驗證通道提供)(?=.*tool-layer envelope/receipt)'; Severity = 'Red'; Reason = 'hook 腳本缺少繁中 meaning-first host/platform verified channel fail-closed 訊息' },
-            @{ Pattern = 'Get-HookTrustedExecutionReceiptRecords'; Severity = 'Red'; Reason = 'hook 腳本缺少可信工具執行回執分流檢查' },
-            @{ Pattern = 'Test-HookEnvelopeReceiptIdentityMatch'; Severity = 'Red'; Reason = 'hook 腳本缺少信封與回執 id/nonce 對應檢查' },
-            @{ Pattern = 'Test-HookReceiptDecisionAllows'; Severity = 'Red'; Reason = 'hook 腳本缺少回執 allowed decision 檢查' },
-            @{ Pattern = 'Test-HookReceiptMatchesActionAndScope'; Severity = 'Red'; Reason = 'hook 腳本缺少回執 action/target/scope 與保護授權比對' },
-            @{ Pattern = 'trusted_issuer|trusted issuer'; Severity = 'Red'; Reason = 'hook 腳本缺少可信簽發器檢查' },
-            @{ Pattern = 'signature|tool_envelope_signature'; Severity = 'Red'; Reason = 'hook 腳本缺少信封簽章檢查' },
-            @{ Pattern = 'nonce|tool_envelope_nonce'; Severity = 'Red'; Reason = 'hook 腳本缺少信封 nonce 檢查' },
-            @{ Pattern = 'risk_close_evidence|Director risk close evidence'; Severity = 'Red'; Reason = 'hook 腳本缺少總監風險關閉證據檢查' },
-            @{ Pattern = 'post-block bypass hard block|Test-HasPostBlockBypassAttempt'; Severity = 'Red'; Reason = 'hook 腳本缺少被擋後繞路硬阻擋檢查' },
-            @{ Pattern = 'Test-HasStructuredTeamNativePayload'; Severity = 'Red'; Reason = 'hook 腳本缺少目前結構化 Team-Native payload 硬閘門' },
-            @{ Pattern = 'tool_payload_evidence_gap'; Severity = 'Red'; Reason = 'hook 腳本缺少 payload 證據缺口回報' },
-            @{ Pattern = 'New-HookDiagnosticReason'; Severity = 'Red'; Reason = 'hook 腳本缺少拒絕診斷提示建構器' },
-            @{ Pattern = 'hookSpecificOutput'; Severity = 'Red'; Reason = 'hook 腳本缺少官方 hookSpecificOutput 輸出形狀' },
-            @{ Pattern = 'additionalContext'; Severity = 'Red'; Reason = 'hook 腳本缺少官方 additionalContext advisory 提醒輸出' },
-            @{ Pattern = 'systemMessage'; Severity = 'Red'; Reason = 'hook 腳本缺少官方 systemMessage advisory 提醒輸出' },
-            @{ Pattern = 'internalFallback'; Severity = 'Red'; Reason = 'hook 腳本缺少 decision/advisory internal fallback 標記' },
-            @{ Pattern = 'internal-fallback-compatibility'; Severity = 'Red'; Reason = 'hook 腳本缺少 internal fallback 相容性來源標記' },
-            @{ Pattern = '(?s)(?=.*提醒模式)(?=.*不會阻擋執行)(?=.*Advisory mode)'; Severity = 'Red'; Reason = 'hook 腳本缺少繁中 meaning-first advisory-only 不阻擋不變式' },
-            @{ Pattern = '(?s)(?=.*阻擋類型)(?=.*Block type:)'; Severity = 'Red'; Reason = 'hook 腳本缺少繁中 meaning-first 阻擋類型診斷標籤' },
-            @{ Pattern = '(?s)(?=.*原因碼)(?=.*Reason code:)'; Severity = 'Red'; Reason = 'hook 腳本缺少繁中 meaning-first 原因碼診斷標籤' },
-            @{ Pattern = '(?s)(?=.*缺少結構化欄位)(?=.*Missing structured fields:)'; Severity = 'Red'; Reason = 'hook 腳本缺少繁中 meaning-first 缺失結構欄位診斷標籤' },
-            @{ Pattern = '(?s)(?=.*可以採取的下一步)(?=.*Allowed next steps)'; Severity = 'Red'; Reason = 'hook 腳本缺少繁中 meaning-first 被擋後允許下一步提示' },
-            @{ Pattern = '(?s)(?=.*禁止的下一步)(?=.*Forbidden next steps)'; Severity = 'Red'; Reason = 'hook 腳本缺少繁中 meaning-first 被擋後禁止下一步提示' },
-            @{ Pattern = 'Test-HasPostBlockBypassAttempt'; Severity = 'Red'; Reason = 'hook 腳本缺少被擋後換工具或換通道繞路偵測' },
-            @{ Pattern = '(?s)(?=.*自然語言指令可以作為有效意圖)(?=.*natural-language instructions are valid)'; Severity = 'Yellow'; Reason = 'hook 腳本缺少繁中 meaning-first 自然語言授權綁定提示' },
-            @{ Pattern = 'current visible plan or station'; Severity = 'Yellow'; Reason = 'hook 腳本缺少日常語句綁定目前可見計畫或站點提示' },
-            @{ Pattern = 'Do not require the Director to say internal channel names'; Severity = 'Yellow'; Reason = 'hook 腳本仍可能要求總監說內部通道名稱' },
-            @{ Pattern = 'Test-IsCurrentCompletionReferenceLine'; Severity = 'Red'; Reason = 'hook 腳本缺少完成字眼引用排除' },
-            @{ Pattern = 'Test-IsNegatedArtifactLine'; Severity = 'Red'; Reason = 'hook 腳本缺少否定交付件語境排除' },
-            @{ Pattern = 'Test-IsNegatedClosureStateLine'; Severity = 'Red'; Reason = 'hook 腳本缺少否定降級狀態排除' },
-            @{ Pattern = 'Test-HasPositiveArtifactMention'; Severity = 'Red'; Reason = 'hook 腳本缺少正向交付件狀態檢查' },
-            @{ Pattern = 'Test-HasCaptainSubstituteAuthoringSignal'; Severity = 'Red'; Reason = 'hook 腳本缺少隊長代工完成宣稱 advisory 偵測' },
-            @{ Pattern = 'Test-HasMemoryDocsCaptainSubstitutionSignal'; Severity = 'Red'; Reason = 'hook 腳本缺少 memory/docs 隊長代填完成宣稱 advisory 偵測' },
-            @{ Pattern = 'sed'; Severity = 'Yellow'; Reason = 'hook 腳本缺少 sed in-place 寫入偵測提示' },
-            @{ Pattern = 'tee'; Severity = 'Yellow'; Reason = 'hook 腳本缺少 tee 寫入偵測提示' },
-            @{ Pattern = '(?s)(?=.*隊長輕量讀取模型)(?=.*Captain-Lite read model)'; Severity = 'Yellow'; Reason = 'hook 腳本缺少繁中 meaning-first Captain-Lite 讀取提示' },
-            @{ Pattern = '--dangerously-bypass-hook-trust'; Severity = 'Red'; Reason = 'hook 腳本缺少信任繞過攔截' },
-            @{ Pattern = 'Team-Native route hint'; Severity = 'Yellow'; Reason = 'hook 腳本缺少提示注入訊息' }
-        )
-
+        $requiredPatterns = Get-CodexHookCatalogEntries -FunctionName 'Get-CodexHookScriptRequirementCatalog' -CatalogName 'scriptRequirements'
         foreach ($requirement in $requiredPatterns) {
             if ($searchContent -notmatch $requirement.Pattern) {
                 Add-CodexHookFinding -Severity $requirement.Severity -File $relative -Line 1 -Reason ("{0} ({1})" -f $requirement.Reason, $Label) -Text $requirement.Pattern
@@ -311,23 +334,17 @@ function Measure-CodexHookGovernance {
             @{ Pattern = 'Get-FixtureShells'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 shell 矩陣探測' },
             @{ Pattern = 'Resolve-FixtureShellApplication'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 application shell 解析' },
             @{ Pattern = 'CommandType\s+Application'; Severity = 'Red'; Reason = 'Codex hook fixture runner shell 解析可能被 function/alias shadow' },
-            @{ Pattern = 'not an application path'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少不可用 shell 路徑說明' },
-            @{ Pattern = 'Skipping shell'; Severity = 'Yellow'; Reason = 'Codex hook fixture runner 缺少 shell 不可用時的跳過提示' },
-            @{ Pattern = 'RequireAllShells'; Severity = 'Yellow'; Reason = 'Codex hook fixture runner 缺少嚴格 shell 矩陣選項' },
             @{ Pattern = 'StandardOutputEncoding'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 UTF-8 stdout 設定' },
             @{ Pattern = 'StandardErrorEncoding'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 UTF-8 stderr 設定' },
-            @{ Pattern = 'expectedDiagnosticLabels'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少拒絕診斷標籤檢查' },
-            @{ Pattern = 'hostVerifiedToolLayerEvidence'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少根層 host verified evidence fixture 支援' },
-            @{ Pattern = 'CODEX_HOOK_HOST_VERIFIED_TOOL_LAYER_EVIDENCE_JSON'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 host verified evidence JSON 注入' },
-            @{ Pattern = 'CODEX_HOOK_HOST_VERIFIED_TOOL_LAYER_EVIDENCE_PATH'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 host verified evidence 路徑注入' },
-            @{ Pattern = 'expectedDiagnosticLabels'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少診斷標籤合約檢查' },
             @{ Pattern = 'expectedReasonCodeRegex'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少原因碼機器合約檢查' },
             @{ Pattern = 'expectedOutputRegex'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少可見輸出語意檢查' },
+            @{ Pattern = 'Test-FixtureStopOutputContract'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 Stop official output contract 檢查' },
+            @{ Pattern = 'Get-FixtureTrackingState'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 tracked/untracked 狀態分流' },
+            @{ Pattern = 'canonicalDecision'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 canonicalDecision taxonomy 檢查' },
             @{ Pattern = 'Test-FixtureFileHashEqual'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少來源與部署副本雜湊同步檢查' },
             @{ Pattern = 'hook source/deployed sync'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少來源與部署副本同步成功訊息' },
             @{ Pattern = 'Remove-Item'; Severity = 'Yellow'; Reason = 'Codex hook fixture runner 缺少暫存 transcript 清理提示' }
         )
-
         foreach ($requirement in $requiredPatterns) {
             if ($content -notmatch $requirement.Pattern) {
                 Add-CodexHookFinding -Severity $requirement.Severity -File $relative -Line 1 -Reason $requirement.Reason -Text $requirement.Pattern
@@ -399,9 +416,10 @@ function Measure-CodexHookGovernance {
         $expectedOutcomeKind = Get-CodexHookPropertyText -Object $fixture -Name 'expectedOutcomeKind'
         $expectedDecision = Get-CodexHookPropertyText -Object $fixture -Name 'expectedDecision'
         $expectedOutputRegex = Get-CodexHookPropertyText -Object $fixture -Name 'expectedOutputRegex'
+        $canonicalDecision = Get-CodexHookPropertyText -Object $fixture -Name 'canonicalDecision'
         $fixtureName = [IO.Path]::GetFileName($Path)
 
-        if (@('positive','negative','internal-fallback') -notcontains $category) {
+        if (@('allow','advisory','deny','block','positive','negative','internal-fallback') -notcontains $category) {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少分層 category' -Text 'category must be positive, negative, or internal-fallback'
         }
         if (@('official-schema-style','legacy-fallback') -notcontains $schemaStyle) {
@@ -413,8 +431,21 @@ function Measure-CodexHookGovernance {
         if (@('synthetic','captured-synthetic') -notcontains $fixtureOrigin) {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 captured/synthetic 來源分層' -Text 'fixtureOrigin must be synthetic or captured-synthetic'
         }
-        if (@('allow','advisory-context','advisory-would-block') -notcontains $expectedOutcomeKind) {
+        if (@('allow','allow-reminder','advisory-context','advisory-would-block','deny','block') -notcontains $expectedOutcomeKind) {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 expectedOutcomeKind 分層' -Text 'expectedOutcomeKind must describe allow/advisory behavior'
+        }
+        if ([string]::IsNullOrWhiteSpace($canonicalDecision)) {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 canonicalDecision taxonomy' -Text 'canonicalDecision must be allow, advisory, deny, or block'
+        } else {
+            $canonicalValues = Get-CodexHookCatalogEntries -FunctionName 'Get-CodexHookCanonicalDecisionValues' -CatalogName 'canonicalDecisionValues'
+            if ($canonicalValues -notcontains $canonicalDecision) {
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture canonicalDecision 不在正式 taxonomy' -Text 'canonicalDecision must be allow, advisory, deny, or block'
+            }
+
+            $expectedFromDecision = if (@('allow','advisory') -contains $canonicalDecision) { 'allow' } else { $canonicalDecision }
+            if ($expectedDecision -and ($expectedDecision -ne $expectedFromDecision)) {
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture canonicalDecision 與 expectedDecision 不一致' -Text ("canonicalDecision {0} expects expectedDecision {1}" -f $canonicalDecision, $expectedFromDecision)
+            }
         }
         if ($expectedOutputRegex -and ($expectedOutputRegex -notmatch '[\u4E00-\u9FFF]')) {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture expectedOutputRegex 未驗證繁中 meaning-first 內容' -Text 'expectedOutputRegex must include Chinese semantic text plus any canonical machine token'
@@ -530,9 +561,9 @@ function Measure-CodexHookGovernance {
         @{ Path = $fixtureRoot; Label = 'hook fixtures'; Severity = 'Yellow' }
     )
     if (-not ($hasSourceHookConfig -or $hasSourceDisabledConfig)) {
-        $requiredHookFiles += @{ Path = $sourceConfig; Label = 'source hook config or renamed marker'; Severity = 'Red' }
+        $requiredHookFiles += @{ Path = $sourceConfig; Label = 'source hook config or disabled marker'; Severity = 'Red' }
     }
-    if ((-not $hasSourceDisabledConfig) -and (-not $hasTargetHookConfig)) {
+    if (-not $hasTargetHookConfig) {
         $requiredHookFiles += @{ Path = $targetConfig; Label = 'project hook config'; Severity = 'Red' }
     }
 
@@ -544,7 +575,10 @@ function Measure-CodexHookGovernance {
     }
 
     if ($hasSourceDisabledConfig -and $hasTargetHookConfig) {
-        Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $targetConfig) -Line 1 -Reason 'Codex hook 設定仍使用舊 project 檔名' -Text 'source uses Codex\.codex\hooks.delete renamed-hook marker; do not restore .codex\hooks.json'
+        $targetLifecycleConfig = Read-CodexHookConfig -Path $targetConfig -Label 'project lifecycle'
+        if (-not (Test-CodexHookConfigDisabled -Config $targetLifecycleConfig)) {
+            Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $targetConfig) -Line 1 -Reason 'Codex hook disabled marker 與 active project config 衝突' -Text 'hooks.delete may coexist only with a disabled hooks.json whose hooks object is empty'
+        }
     }
     if ((Test-Path -LiteralPath $sourceConfig -PathType Leaf) -and (Test-Path -LiteralPath $targetConfig -PathType Leaf) -and (-not (Test-AuditFileHashEqual -SourcePath $sourceConfig -TargetPath $targetConfig))) {
         Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $targetConfig) -Line 1 -Reason 'Codex hook 設定部署副本與來源不一致' -Text 'Codex\.codex\hooks.json -> .codex\hooks.json'
@@ -554,55 +588,15 @@ function Measure-CodexHookGovernance {
     }
 
     $trackedRequiredFiles = New-Object System.Collections.Generic.List[string]
+    $untrackedRequiredFixtureCount = 0
     foreach ($path in @($sourceConfig, $sourceScript, $fixtureTest)) {
         $trackedRequiredFiles.Add($path)
     }
     if (Test-Path -LiteralPath $fixtureRoot -PathType Container) {
-        $requiredFixtureNames = @(
-            'allow-pretool-readonly-rg-no-board.json',
-            'allow-pretool-readonly-single-file-no-board.json',
-            'context-pretool-captain-broad-read-no-board.json',
-            'allow-pretool-specialist-deep-read-formal-readonly.json',
-            'allow-pretool-write-authorized.json',
-            'block-pretool-write-draft-board.json',
-            'block-pretool-write-out-of-scope.json',
-            'block-pretool-protected-mutation-general-board.json',
-            'block-stop-missing-memory-docs.json',
-            'allow-stop-full-artifacts.json',
-            'allow-stop-zh-not-complete-state.json',
-            'allow-stop-honest-unverified-report.json',
-            'allow-stop-active-honest-unverified-report.json',
-            'allow-stop-negated-incomplete-sentence.json',
-            'block-stop-captain-broad-read-full-completion.json',
-            'block-stop-readonly-claims-source-complete.json',
-            'allow-stop-quoted-zh-completion-text.json',
-            'allow-stop-readonly-search-report.json',
-            'allow-stop-zh-key-closed-with-director-risk-state.json',
-            'allow-pretool-readonly-transcript-pollution.json',
-            'bad-input.json',
-            'block-trust-bypass.json',
-            'block-command-fake-board.json',
-            'block-fake-role-only.json',
-            'block-permission-write-tool-no-board.json',
-            'block-pretool-write-transcript-fake-board.json',
-            'block-pretool-current-dangerous-bypass.json',
-            'block-pretool-shell-redirect-no-auth.json',
-            'allow-pretool-shell-redirect-authorized.json',
-            'allow-stop-quoted-completion-text.json',
-            'block-pretool-git-apply-no-auth.json',
-            'block-pretool-npm-install-no-auth.json',
-            'block-pretool-write-prefix-target.json',
-            'block-stop-missing-all-artifacts-fake-complete.json',
-            'block-stop-negated-unverified-fake-complete.json',
-            'block-stop-active-short-completion.json',
-            'block-stop-live-last-assistant-short-completion.json',
-            'block-stop-mixed-complete-with-negative-test.json',
-            'block-stop-readonly-plus-source-complete.json',
-            'block-stop-short-all-set.json',
-            'block-stop-zh-test-passed-no-artifacts.json',
-            'allow-pretool-protected-git-apply-authorized.json',
-            'allow-user-prompt-zh-natural-binding.json'
-        )
+        $fixtureManifestPath = Join-Path $fixtureRoot 'manifest.json'
+        $requiredFixtureCatalog = Get-CodexHookCatalogEntries -FunctionName 'Get-CodexHookRequiredFixtureCatalog' -CatalogName 'requiredFixtures'
+        Test-CodexHookFixtureManifestCatalogParity -ManifestPath $fixtureManifestPath -RequiredFixtureCatalog $requiredFixtureCatalog
+        $requiredFixtureNames = @($requiredFixtureCatalog | ForEach-Object { $_.File })
         foreach ($requiredFixtureName in $requiredFixtureNames) {
             $requiredFixturePath = Join-Path $fixtureRoot $requiredFixtureName
             if (-not (Test-Path -LiteralPath $requiredFixturePath -PathType Leaf)) {
@@ -751,15 +745,33 @@ function Measure-CodexHookGovernance {
             },
             [PSCustomObject]@{
                 File = 'block-stop-zh-completion.json'
-                Reason = 'Codex hook 被擋後繞路與中文完成宣稱 fixture 覆蓋不足'
+                Reason = 'Codex hook 中文完成宣稱 Stop block fixture 覆蓋不足'
                 Patterns = @(
                     @{ Pattern = '"name"\s*:\s*"block-stop-zh-completion"'; Text = 'zh completion fixture name' },
-                    @{ Pattern = '"expectedOutputRegex"\s*:\s*"被擋後繞路硬阻擋\.\*wouldBlockDecision\.\*block"'; Text = 'zh completion fixture expects zh-first advisory would-block marker' },
-                    @{ Pattern = '"expectedDiagnosticLabels"\s*:\s*true'; Text = 'zh completion fixture requires diagnostic labels' },
-                    @{ Pattern = '"rawInput"\s*:'; Text = 'zh completion fixture uses rawInput' },
-                    @{ Pattern = '\\u9264.{0,40}\\u5b50.{0,40}\\u64cb.{0,40}\\u4e0b|apply_patch'; Text = 'zh completion fixture references prior hook block or apply_patch' },
-                    @{ Pattern = '\\u63db.{0,40}\\u5de5.{0,40}\\u5177|Set-Content|another tool'; Text = 'zh completion fixture covers post-block alternate tool intent' },
-                    @{ Pattern = '\\u5df2.{0,40}\\u5b8c.{0,40}\\u6210|Doctor'; Text = 'zh completion fixture covers completion claim' }
+                    @{ Pattern = '"expectedDecision"\s*:\s*"block"'; Text = 'zh completion fixture expects Stop block decision' },
+                    @{ Pattern = '"expectedReasonCodeRegex"\s*:\s*"TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE"'; Text = 'zh completion fixture expects missing station evidence reason code' },
+                    @{ Pattern = '"expectedOutputRegex"\s*:\s*"禁止事項\.\*completion evidence\.\*Allowed next steps\.\*Forbidden next steps"'; Text = 'zh completion fixture expects Stop block diagnostic wording' },
+                    @{ Pattern = '"message"\s*:\s*"[^"]*(已完成|complete)'; Text = 'zh completion fixture carries a completion claim message' }
+                )
+            },
+            [PSCustomObject]@{
+                File = 'block-stop-missing-artifacts-complete.json'
+                Reason = 'Codex hook missing artifact negative evidence Stop block fixture 覆蓋不足'
+                Patterns = @(
+                    @{ Pattern = '"name"\s*:\s*"block-stop-missing-artifacts-complete"'; Text = 'missing artifacts fixture name' },
+                    @{ Pattern = '"expectedDecision"\s*:\s*"block"'; Text = 'missing artifacts fixture expects Stop block decision' },
+                    @{ Pattern = '"expectedReasonCodeRegex"\s*:\s*"TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE"'; Text = 'missing artifacts fixture expects missing station evidence reason code' },
+                    @{ Pattern = 'completion_state:\s*complete\.\s*change delivery artifact missing;\s*validation artifact missing;\s*review artifact missing;\s*memory/docs artifact missing;\s*completion audit missing\.\s*complete\.'; Text = 'missing artifacts fixture carries exact review payload pattern' }
+                )
+            },
+            [PSCustomObject]@{
+                File = 'allow-stop-complete-no-blockers.json'
+                Reason = 'Codex hook no blockers positive evidence Stop allow fixture 覆蓋不足'
+                Patterns = @(
+                    @{ Pattern = '"name"\s*:\s*"allow-stop-complete-no-blockers"'; Text = 'no blockers allow fixture name' },
+                    @{ Pattern = '"expectedDecision"\s*:\s*"allow"'; Text = 'no blockers allow fixture expects Stop allow decision' },
+                    @{ Pattern = 'no blockers in review artifact'; Text = 'no blockers allow fixture carries positive review artifact wording' },
+                    @{ Pattern = 'delivery_artifact_id: cd-no-blockers-g2\.\s*change delivery artifact returned\.\s*validation_state: passed with validation artifact.*review_state: accepted with review artifact.*memory_docs_state: memory_delivery with memory/docs artifact.*completion_state: complete after completion audit'; Text = 'no blockers allow fixture carries complete positive evidence chain' }
                 )
             },
             [PSCustomObject]@{
@@ -843,45 +855,54 @@ function Measure-CodexHookGovernance {
 
         $postBlockFixture = Join-Path $fixtureRoot 'block-stop-zh-completion.json'
         if (Test-Path -LiteralPath $postBlockFixture -PathType Leaf) {
-            Test-CodexHookFixtureStructuredContract -Path $postBlockFixture -ExpectedDecision 'allow' -ScenarioCodePattern '(post-block|bypass)' -RequireReasonCodeRegex -RequireDiagnosticLabels
+            Test-CodexHookFixtureStructuredContract -Path $postBlockFixture -ExpectedDecision 'block' -ScenarioCodePattern '(completion|missing-station-evidence)' -RequireReasonCodeRegex
         }
 
-        $advisoryOnlyFixtureChecks = @(
+        $captainBoundaryFixtureChecks = @(
             [PSCustomObject]@{
                 File = 'context-pretool-captain-broad-read-no-board.json'
                 Scenario = '(broad-read|context)'
-                ReasonCode = 'TN-HOOK-CAPTAIN-BROAD-READ-NO-BOARD'
-                Output = '隊長輕量讀取模型.*大量讀取缺少.*Captain-Lite read model'
+                ExpectedDecision = 'allow'
+                ReasonCode = ''
+                Output = 'advisory/reminder.*禁止隊長直接產生 broad read / validation / review / external research / memory-docs / completion evidence.*允許隊長做 coordination.*named-file local_probe'
                 Reason = 'Codex hook captain broad-read no-board advisory fixture 覆蓋不足'
             },
             [PSCustomObject]@{
                 File = 'block-stop-missing-memory-docs.json'
                 Scenario = '(memory-docs-captain|captain-substitution)'
+                ExpectedDecision = 'block'
                 ReasonCode = 'TN-HOOK-MEMORY-DOCS-CAPTAIN-SUBSTITUTION'
-                Output = '隊長代填 memory/docs 歸因不能支撐完成宣稱.*Captain-filled memory/docs attribution cannot support a completion claim'
+                Output = '禁止事項.*缺少 memory/docs 的 artifact chain 宣稱 complete'
                 Reason = 'Codex hook memory/docs captain substitution advisory fixture 覆蓋不足'
             },
             [PSCustomObject]@{
                 File = 'block-stop-captain-broad-read-full-completion.json'
                 Scenario = '(captain-substitute|substitute-completion)'
+                ExpectedDecision = 'block'
                 ReasonCode = 'TN-HOOK-CAPTAIN-SUBSTITUTE-COMPLETION'
-                Output = '隊長代工不能視為站點持有的完成證據.*Captain substitute authoring cannot be treated as station-owned completion evidence'
+                Output = '禁止事項.*不能用 captain broad read.*宣稱 complete'
                 Reason = 'Codex hook captain substitute completion advisory fixture 覆蓋不足'
             }
         )
-        foreach ($fixtureCheck in $advisoryOnlyFixtureChecks) {
+        foreach ($fixtureCheck in $captainBoundaryFixtureChecks) {
             $fixturePath = Join-Path $fixtureRoot $fixtureCheck.File
             if (-not (Test-Path -LiteralPath $fixturePath -PathType Leaf)) { continue }
-            Test-CodexHookFixtureStructuredContract -Path $fixturePath -ExpectedDecision 'allow' -ScenarioCodePattern $fixtureCheck.Scenario -RequireReasonCodeRegex -RequireDiagnosticLabels
+            $requireReasonCode = -not [string]::IsNullOrWhiteSpace([string]$fixtureCheck.ReasonCode)
+            if ($requireReasonCode) {
+                Test-CodexHookFixtureStructuredContract -Path $fixturePath -ExpectedDecision $fixtureCheck.ExpectedDecision -ScenarioCodePattern $fixtureCheck.Scenario -RequireReasonCodeRegex
+            } else {
+                Test-CodexHookFixtureStructuredContract -Path $fixturePath -ExpectedDecision $fixtureCheck.ExpectedDecision -ScenarioCodePattern $fixtureCheck.Scenario
+            }
             $fixtureContent = Get-Content -LiteralPath $fixturePath -Raw -Encoding UTF8
-            foreach ($requiredAdvisoryPattern in @(
-                @{ Pattern = ('"expectedReasonCodeRegex"\s*:\s*"{0}"' -f [regex]::Escape($fixtureCheck.ReasonCode)); Text = $fixtureCheck.ReasonCode },
-                @{ Pattern = ('"expectedOutputRegex"\s*:\s*"{0}' -f [regex]::Escape($fixtureCheck.Output)); Text = $fixtureCheck.Output },
-                @{ Pattern = '"expectedDecision"\s*:\s*"allow"'; Text = 'advisory-only expectedDecision allow' },
-                @{ Pattern = '"expectedDiagnosticLabels"\s*:\s*true'; Text = 'diagnostic labels required' }
-            )) {
-                if ($fixtureContent -notmatch $requiredAdvisoryPattern.Pattern) {
-                    Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $fixturePath) -Line 1 -Reason $fixtureCheck.Reason -Text $requiredAdvisoryPattern.Text
+            $requiredPatterns = New-Object System.Collections.Generic.List[object]
+            $requiredPatterns.Add(@{ Pattern = ('"expectedOutputRegex"\s*:\s*"{0}' -f [regex]::Escape($fixtureCheck.Output)); Text = $fixtureCheck.Output })
+            $requiredPatterns.Add(@{ Pattern = ('"expectedDecision"\s*:\s*"{0}"' -f [regex]::Escape($fixtureCheck.ExpectedDecision)); Text = ("expectedDecision {0}" -f $fixtureCheck.ExpectedDecision) })
+            if ($requireReasonCode) {
+                $requiredPatterns.Add(@{ Pattern = ('"expectedReasonCodeRegex"\s*:\s*"{0}"' -f [regex]::Escape($fixtureCheck.ReasonCode)); Text = $fixtureCheck.ReasonCode })
+            }
+            foreach ($requiredPattern in @($requiredPatterns.ToArray())) {
+                if ($fixtureContent -notmatch $requiredPattern.Pattern) {
+                    Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $fixturePath) -Line 1 -Reason $fixtureCheck.Reason -Text $requiredPattern.Text
                 }
             }
         }
@@ -908,9 +929,12 @@ function Measure-CodexHookGovernance {
         }
 
         Get-ChildItem -LiteralPath $fixtureRoot -Filter '*.json' -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -ne 'manifest.json' } |
             Sort-Object FullName |
             ForEach-Object {
-                $trackedRequiredFiles.Add($_.FullName)
+                if ($requiredFixtureNames -contains $_.Name) {
+                    $trackedRequiredFiles.Add($_.FullName)
+                }
                 Test-CodexHookFixtureLayering -Path $_.FullName
             }
     }
@@ -919,17 +943,18 @@ function Measure-CodexHookGovernance {
         if ((Test-Path -LiteralPath $trackedRequired -PathType Leaf) -and (-not (Test-CodexHookSourceFileTracked -Path $trackedRequired))) {
             $trackedRequiredRelative = Get-AuditRelativePath -RepoRoot $RepoRoot -Path $trackedRequired
             if ($trackedRequiredRelative -match '^Scripts[\\/]tests[\\/]codex-hooks[\\/]fixtures[\\/].+\.json$') {
-                Add-CodexHookFinding -Severity 'Yellow' -File (Get-CodexHookDisplayPath -Path $trackedRequired) -Line 1 -Reason 'Codex hook fixture 已存在但尚未納入版本控制' -Text 'fixture exists in the working tree; release or clean clone still requires explicit staging later'
+                $untrackedRequiredFixtureCount++
+                Add-CodexHookFinding -Severity 'Yellow' -File (Get-CodexHookDisplayPath -Path $trackedRequired) -Line 1 -Reason 'Codex hook fixture 已存在但尚未納入版本控制' -Text 'fixture exists in the working tree and may run locally, but release-ready is false until it is tracked'
             } else {
                 Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $trackedRequired) -Line 1 -Reason 'Codex hook 或測試檔尚未納入版本控制' -Text 'release or clean clone may miss the Team-Native hook guard or its fixture evidence'
             }
         }
     }
 
-    $sourceHookConfigPath = if ($hasSourceHookConfig) { $sourceConfig } elseif ($hasSourceDisabledConfig) { $sourceDisabledConfig } else { $sourceConfig }
-    $sourceHookConfigLabel = if ($sourceHookConfigPath -eq $sourceDisabledConfig) { 'source renamed-hook marker' } else { 'source' }
-    $sourceHookConfig = Read-CodexHookConfig -Path $sourceHookConfigPath -Label $sourceHookConfigLabel
-    $targetHookConfig = if ($hasSourceDisabledConfig) { $null } else { Read-CodexHookConfig -Path $targetConfig -Label 'project' }
+    $sourceHookConfigPath = $sourceConfig
+    $sourceHookConfigLabel = 'source'
+    $sourceHookConfig = if ($hasSourceHookConfig) { Read-CodexHookConfig -Path $sourceHookConfigPath -Label $sourceHookConfigLabel } else { $null }
+    $targetHookConfig = if ($hasTargetHookConfig) { Read-CodexHookConfig -Path $targetConfig -Label 'project' } else { $null }
     Test-CodexHookConfig -Config $sourceHookConfig -ConfigPath $sourceHookConfigPath -Label $sourceHookConfigLabel
     Test-CodexHookConfig -Config $targetHookConfig -ConfigPath $targetConfig -Label 'project'
     Test-CodexHookScript -Path $sourceScript -Label 'source'
@@ -967,6 +992,8 @@ function Measure-CodexHookGovernance {
         RebuildPending = $false
         RedCount       = $redCount
         YellowCount    = $yellowCount
+        UntrackedRequiredFixtureCount = $untrackedRequiredFixtureCount
+        ReleaseReady   = (($redCount -eq 0) -and ($untrackedRequiredFixtureCount -eq 0))
         Passed         = ($redCount -eq 0)
     }
 }

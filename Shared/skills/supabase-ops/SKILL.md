@@ -64,9 +64,9 @@ metadata:
 
 ### Workflow Integration (工作流整合)
 
-- `/03_build`: Use branch for safe schema changes during feature development
+- `/02_blueprint`: Plan schema refactoring boundaries, rollback strategy, and branch safety before mutation
+- `/03_build`: Use branch for safe schema changes or planned schema refactoring during feature development
 - `/04_fix`: Use branch to test database fixes before applying to production
-- `/05_refactor`: Use branch for schema refactoring with rollback safety
 
 ## Recipe 4: Edge Function Deployment
 

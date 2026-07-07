@@ -1,11 +1,14 @@
 {
   "name": "advisory-session-start-startup-reminder",
   "scenarioCode": "session-start-startup-reminder",
-  "category": "advisory",
+  "category": "positive",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
   "fixtureOrigin": "synthetic",
-  "expectedOutcomeKind": "allow-reminder",
+  "expectedOutcomeKind": "advisory-context",
+  "canonicalDecision": "advisory",
   "expectedDecision": "allow",
-  "expectedOutputRegex": "advisory/reminder.*團隊模式提醒.*治理要求已明確要求站點分工.*必要的子代理/隊員派工.*先派站點.*可開子代理",
+  "expectedOutputRegex": "advisory/reminder.*禁止隊長直接產生 broad read / validation / review / external research / memory-docs / completion evidence.*允許隊長做 coordination.*station dispatch.*artifact synthesis.*named-file local_probe.*direct_exception 只能降級成 partial / unverified / closed-with-director-risk.*external_research_artifact_id",
   "input": {
     "hook_event_name": "SessionStart",
     "session_id": "fixture-session",

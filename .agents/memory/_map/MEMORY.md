@@ -4,14 +4,16 @@ scopePath: .agents/memory/
 description: >-
   專案記憶：記憶拓樸索引與卡片導覽。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-03T22:55:05+08:00'
+last_updated: '2026-07-07T22:46:34+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
-memory_kind: governance_rule
+memory_kind: source_fact
 verification_status: verified
 last_verified: '2026-07-03T22:54:27+08:00'
+verified_as_of: '2026-07-03T22:54:27+08:00'
+current_validity: owner_pointer_only
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -37,8 +39,11 @@ metadata:
 - This card is a root memory index only.
 - Startup readers use it to choose the next active Layer 1 card.
 - It does not store historical decisions or implementation detail.
+- This card is a navigation/source pointer only; it is not a runtime governance rule source.
+- Canonical memory procedures live in `memory-ops`, `memory-arch`, and the relevant Shared policies/skills, not in this index card.
 - Child cards are discovered through each parent card's Relations section.
 ## Active Constraints
+- Do not use this card as runtime authority for governance behavior or memory mutation rules.
 - Keep this card under 8 KB.
 - Do not add detailed history here.
 - Update Relations when Layer 1 memory cards are added, deprecated, or renamed.

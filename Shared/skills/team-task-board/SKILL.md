@@ -50,6 +50,12 @@ Record `station_family`, `formal_station`, `substation_task`, `member_assignment
 `execution_channel`, and `delivery_artifact` separately. Stations are containers, members are role
 instances, channels are execution routes, and artifacts are evidence. Do not collapse them.
 
+The board owns board-facing canonical fields and value sets through
+`references/board-field-catalog.md`. Handoff packets consume those fields for startup payloads,
+completion consumes them as artifact-chain evidence, and `Shared/policies/team-trace-evidence.md`
+audits trace completeness. If the same field appears in multiple files, keep the catalog value here
+and add only layer-specific use notes elsewhere.
+
 Reduction is allowed only at substation task or member count while preserving station families,
 roles, artifact types, evidence ownership, and completion honesty. Use
 `references/board-templates-and-delivery.md#full-board-table` for valid execution channels and
@@ -131,10 +137,10 @@ fields are needed, append them after the Chinese label, such as `完成狀態（
 - Memory/docs starts only after validation and review reach terminal evidence states. An
   implementation artifact may provide `memory_impact` and `memory_docs_handoff`, but memory/docs
   disposition consumes the validated and reviewed artifact chain.
-- `full-completion`, commit-ready, and release-ready planning must bind `closeout_target`, protected
-  memory phase applicability, memory card scope, and the `memory_commit` phase before those
-  protected phases become eligible. This is an in-flow protected branch, not an ad hoc tail
-  authorization.
+- Closeout planning must bind canonical `closeout_target` from
+  `Shared/policies/references/completion-state-machine.md`, protected memory phase applicability,
+  memory card scope, and the `memory_commit` phase before those protected phases become eligible.
+  This is an in-flow protected branch, not an ad hoc tail authorization.
 - `source-level` approval alone does not authorize memory mutation. It may close the source layer
   with `protected-follow-up-pending`, while `protected-memory-write` and `protected-memory-commit`
   require their own scope-bound protected authorization.

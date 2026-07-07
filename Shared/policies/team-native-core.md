@@ -61,6 +61,17 @@ The long `execution_spec` and external-grounding field contract lives in:
 - Source: `Shared/policies/references/workflow-execution-spec-contract.md`.
 - Deployed: `.agents/shared/policies/references/workflow-execution-spec-contract.md`.
 
+Central reference catalogs live in `Shared/policies/references/` and are the
+canonical value owners for shared terms:
+
+- Status meanings: `status-ontology.md`.
+- Completion targets and completion states: `completion-state-machine.md`.
+- Authorization phases: `authorization-phase-registry.md`.
+- Protected actions: `protected-action-registry.md`.
+- Hook event lifecycle: `hook-event-matrix.md`.
+- Exception records: `exception-registry.md`.
+- Source/runtime/generated copy roles: `platform-copy-map.md`.
+
 ## Core Boundary And Policy Placement Rule
 
 Team-Native Core owns the governed team safety invariants after activation.
@@ -651,47 +662,33 @@ Validation and review stations report failures; they do not repair the core chan
 
 ## Strict State Machine And Delivery Semantics
 
-Team-Native Core keeps these states, exception records, and delivery forms because they preserve completion honesty:
+Team-Native Core keeps the hard boundary, while detailed value catalogs live in
+the central references:
 
-State and delivery entries:
+- Status meanings and route/state separation:
+  `Shared/policies/references/status-ontology.md`.
+- Completion targets, target transitions, and the `complete` versus
+  non-complete mutual-exclusion rule:
+  `Shared/policies/references/completion-state-machine.md`.
+- Exception records for `direct_exception`, `platform-nondelegable`, and
+  `closed-with-director-risk`:
+  `Shared/policies/references/exception-registry.md`.
+- Authorization phase values:
+  `Shared/policies/references/authorization-phase-registry.md`.
+- Protected-action categories:
+  `Shared/policies/references/protected-action-registry.md`.
 
-- `direct_exception` (`direct` only as legacy shorthand inside that field)
-  - Allowed use: captain coordination work only.
-  - Examples: request intake, station-task translation, board maintenance, dispatch, handoff and channel coordination.
-  - Examples: neutral station-output ledgering, blocker/permission routing, and final Director-facing reporting.
-  - Examples: hot-path non-mutating status checks with no independent evidence value.
-  - Examples: no independent evidence value after scope reduction.
-  - Excludes: authorization decisions, protected-action execution, captain source authoring, and repository-wide evidence work.
-  - Excludes: implementation, review, validation, memory/docs attribution, quality disposition, and completion evidence.
-  - Required evidence: station name, direct exception reason, replacement evidence, and residual state.
-- `main-worktree change delivery`
-  - Allowed use: a named change-delivery station directly edits the main worktree under `formal-write` scope.
-  - Required evidence: station-owned handoff, authorization phase `implementation-change-delivery`, and exact file allowlist.
-  - Required evidence: dirty-diff read, forbidden protected actions, change ledger entry, memory impact, and review need.
-- `text change delivery artifact`
-  - Allowed use: no governed isolated workspace is available.
-  - Allowed use: the implementation task is bounded, diffable, and safe to deliver as a text change delivery artifact.
-  - Required evidence: file scope, proposed edits, evidence, risk, memory impact, review need, and blocker status.
-- `closed-with-director-risk`
-  - Allowed use: the Director closes the task with a named risk while required team separation or delivery artifacts are missing.
-  - Required evidence: Director risk decision, missing artifact or separation, non-complete label, and residual limitation.
-- `unverified`
-  - Allowed use: evidence is required but currently absent or incomplete.
-  - Required evidence: missing evidence, attempted route or reason not attempted, and smallest verification path.
-- `blocked`
-  - Allowed use: a required tool, permission, credential, isolation boundary, or delivery artifact is unavailable.
-  - Allowed use: scope-bound authorization is unavailable.
-  - Required evidence: blocking condition and smallest unblock requirement.
-- `not-applicable`
-  - Allowed use: the station does not belong to the task.
-  - Required evidence: concrete non-applicability reason.
+The core minimum remains:
 
-`direct_exception`, `closed-with-director-risk`, and `main-worktree change delivery` are not non-team shortcuts.
-`text change delivery artifact` is not a non-team shortcut.
-They are exception records, formal station states, or delivery forms with stricter evidence requirements.
-Review lifecycle risk states do not become Team-Native station, missing-artifact, completion, or capability states.
-Diff output may be used only as an implementation representation; the governance object is the change delivery artifact.
-`closed-with-director-risk` is never `complete`.
+- `direct_exception`, `closed-with-director-risk`, main-worktree change
+  delivery, and text change delivery artifacts are not non-team shortcuts.
+- They are exception records, formal station states, or delivery forms with
+  stricter evidence requirements.
+- Review lifecycle risk states do not become Team-Native station,
+  missing-artifact, completion, or capability states.
+- Diff output may be used only as an implementation representation; the
+  governance object is the change delivery artifact.
+- `closed-with-director-risk` is never `complete`.
 
 State labels are not fallback routes.
 If a template, trace, hook payload, handoff packet, or report places a state label into an execution route field, the station is invalid.
@@ -701,13 +698,12 @@ The route field must be corrected and the state must be moved into a state field
 
 ## Completion Rule
 
-Full team completion requires:
+Completion targets and state transitions are defined in
+`Shared/policies/references/completion-state-machine.md`.
 
-1. Implementation change delivery artifact with memory impact.
-2. Memory/docs delivery artifact with memory impact and memory delivery status.
-3. Independent review delivery artifact from a reviewer who did not author the implementation.
-4. Validation delivery artifact from a route that did not repair the implementation.
-5. Completion audit covering scope, sync, docs, memory, drift, and residual risk.
+Process completion requires the separated artifact chain: change delivery,
+memory/docs disposition, independent review, validation, sync evidence when
+applicable, and completion audit.
 
 `operation_mode: daily` can close daily work only within its reduced scope.
 It must not be reported as full team completion for full-only work.
@@ -715,49 +711,27 @@ It must not be reported as full team completion for full-only work.
 It is required for Doctor/Audit rule changes.
 It is also required for release preparation or protected external-state readiness.
 
-Station-owned main-worktree change delivery is the primary implementation path when `formal-write` authorization binds the station.
-The binding must name the change-delivery station, authorization phase `implementation-change-delivery`, and exact file allowlist.
-It must also name dirty-diff read.
-It must also name forbidden protected actions and `handoff_ownership: station-owned`.
-The station writes the main worktree directly and returns a change delivery artifact or ledger entry with memory impact.
-Review and validation inspect the resulting diff and do not re-apply it.
+Station-owned main-worktree change delivery and fallback change application
+follow the authorization phase registry and protected-action registry. Forked
+or text artifacts must not be reported as applied source.
 
-If the platform can only return a forked workspace or text artifact, the artifact must be marked `fork-only` or `text-only`.
-It must not be reported as applied to the main worktree.
-It cannot support a main-worktree worker-write claim.
+The captain may ledger station output and synthesize status, but must not turn
+ledgering into implementation, validation, review, memory/docs attribution, or
+completion evidence. Captain substitute authoring remains blocked or
+risk-closed, never `complete`, under the exception registry.
 
-Change application is a fallback integration route, not the normal implementation hop.
-Use a station-owned authorized change-application station only to apply a returned isolated/text artifact.
-It may also perform an explicitly scoped integration task or sync an assigned generated/deployed copy.
-A platform-nondelegable protected-action record is allowed only when the platform cannot delegate the physical write or protected tool call.
-It records only the scoped action and does not rewrite the returned artifact.
+Review and validation remain independent and inspect the actual applied diff
+when source is applied. Missing required artifacts, independent review, or
+validation keep the target blocked, unverified, or risk-closed.
 
-The captain may log station output, maintain the board, handle conflicts, and report status.
-The captain must not turn station-output ledgering into implementation, review, validation, or memory/docs evidence.
-Captain substitute authoring means the captain creates specialist content because no qualified change delivery route exists.
-It starts as blocked.
-It may be closed-with-director-risk only when the Director explicitly accepts that exact case.
-It must not be described as full team completion.
+For the same closeout target, `complete` is mutually exclusive with
+`blocked`, `unverified`, `partial`, `no-evidence`, `conflicted`,
+`not-applicable`, and `closed-with-director-risk` according to the completion
+state machine and status ontology.
 
-Review and validation remain independent.
-They inspect the actual main-worktree diff after main-worktree change delivery or after fallback integration.
-If only a forked or text artifact exists, review and validation must say the artifact is not applied.
-They cannot validate applied source in that case.
-
-Rewriting, reauthoring, refactoring beyond the returned artifact, or filling missing implementation are captain substitute authoring.
-Adding unreturned review conclusions or inventing validation evidence is also captain substitute authoring.
-Adding memory/docs attribution is captain substitute authoring as well.
-These actions cannot support `complete`, even when the final text or diff looks correct.
-They require a blocked, unverified, or closed-with-director-risk record unless a qualified station returns the missing delivery artifact.
-
-If any required delivery artifact or independent review is missing, the task can only finish as blocked or unverified.
-It can also finish as closed-with-director-risk.
-It must not be described as full team completion.
-
-Protected follow-on phases require their own authorization resolution.
-A returned implementation change delivery artifact or main-worktree change delivery ledger entry does not authorize change application.
-It also does not authorize memory writes, memory commit, git, release, deployment, install, or external mutation.
-Each protected phase must record scope-bound authorization or remain blocked/unverified.
+Protected follow-on phases require their own authorization resolution and
+protected-action gate. Source write approval does not authorize memory, git,
+release, deployment, install, credential, or external mutation.
 
 Scope-bound implementation authorization is one work agreement for the visible change-delivery phase, not a blanket workflow pass.
 It can cover the named station and allowlist through the current delivery.

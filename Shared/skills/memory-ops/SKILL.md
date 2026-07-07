@@ -30,6 +30,11 @@ Reference routing:
 | Full-card standardization blueprint | `../memory-arch/references/memory-quality-migration-blueprint.md` |
 | Memory language, triggers, handoffs, and `## 中文摘要` | `.agents/shared/policies/language-governance.md` |
 
+Team memory/docs handoff fields are route inputs, not memory operation fields.
+`memory_docs_handoff` and `memory_docs_state` stay board/delivery-layer evidence owned by
+`team-task-board` and the memory/docs delivery artifact; this skill consumes them only after the
+memory/docs station opens a read-only disposition or a separately authorized protected memory phase.
+
 ## HITL Boundary
 
 - Read-only memory listing, dependency checks, staleness inspection, and schema discovery may proceed silently.

@@ -30,6 +30,18 @@ Workflows and skills must inherit this file and these sources:
 - `Shared/skills/team-review-delivery-artifact/SKILL.md`
 - `Shared/skills/team-completion-gate/SKILL.md`
 
+Shared value catalogs:
+
+- Status meanings: `Shared/policies/references/status-ontology.md`.
+- Completion targets and states:
+  `Shared/policies/references/completion-state-machine.md`.
+- Authorization phases:
+  `Shared/policies/references/authorization-phase-registry.md`.
+- Protected actions:
+  `Shared/policies/references/protected-action-registry.md`.
+- Exception records:
+  `Shared/policies/references/exception-registry.md`.
+
 Those sources must not define a parallel activation policy.
 
 Specialist role sources must cite `team-specialist-registry` and the matching `team-specialist-*` skill.
@@ -98,13 +110,8 @@ It is also triggered by a request for a team, team member, subagent, delegation,
 
 The Director does not need to say a fixed phrase such as `啟動團隊模式`.
 
-The expected sequence starts with Director request -> captain intake -> translation -> team board.
-
-Then specialist skill dispatch -> specialist work.
-
-Then captain monitoring -> delivery/evidence artifact receipt -> synthesis ledger and board update.
-
-Then independent validation, review, and memory/docs stations -> completion audit -> report.
+The runtime sequence is owned by `Shared/policies/workflow-orchestration.md`.
+This policy only maps governed stations to execution channels after that sequence is active.
 
 The captain coordinates, ledgers artifacts, routes scope/authorization questions, and coordinates owner stations.
 
@@ -140,28 +147,13 @@ When Team mode is not active, ordinary no-write or read-only work is not constra
 
 Formal member startup must use a skill dispatch package, not a verbal role description.
 
-The package records:
-
-- assigned specialist skill;
-- loaded skill refs;
-- read scope;
-- deep read scope;
-- captain coordination read scope;
-- context visibility;
-- handoff ownership;
-- station mode;
-- unread scope;
-- allowed inputs;
-- allowed tools;
-- forbidden actions;
-- output artifact format;
-- stop condition;
-- startup time;
-- first-response deadline;
-- last-progress time;
-- timeout action;
-- status-probe pause/resume state;
-- standby reason.
+The required startup payload and field values are owned by
+`Shared/skills/team-station-handoff-packet/SKILL.md`,
+`Shared/skills/team-task-board/SKILL.md`, and
+`Shared/skills/team-task-board/references/board-field-catalog.md`.
+This policy only requires that the package exist before channel start and bind
+the role, station, channel state, handoff ownership, permissions,
+prohibitions, artifact format, stop condition, and monitoring fields.
 
 Large-file deep read must go to a bounded member station.
 
@@ -416,7 +408,10 @@ Handoff and skill-forging are also stationized work that must be evaluated.
 
 Stations must not be labeled only as "active", "when needed", or by size.
 
-Each station must map to a real channel or delivery form, such as:
+Each station must map to a real channel or delivery form, or record a
+non-route state in the station state field.
+
+Channel and delivery-form examples include:
 
 - `evidence branch`
 - `browser branch`
@@ -427,12 +422,14 @@ Each station must map to a real channel or delivery form, such as:
 - `text change delivery artifact`
 - `station-owned authorized change-application gate`
 - `platform-nondelegable protected-action record`
-- `blocked`
-- `not-applicable`
 
 `direct` can appear only in `direct_exception`.
 
 That record must include evidence owner, role boundary, completion condition, and exception reason.
+
+State examples such as `blocked`, `unverified`, `standby`, `unavailable`,
+`not-authorized`, `not-applicable`, and `closed-with-director-risk` stay in
+state fields governed by `Shared/policies/references/status-ontology.md`.
 
 The Delegation Gate returns only one of these outcomes:
 
@@ -887,54 +884,23 @@ Only when the Director explicitly accepts `closed-with-director-risk` for that c
 
 That substitute content must remain marked non-complete.
 
-Do not treat lack of isolation as a normal fallback or full-completion evidence.
+Do not treat lack of isolation as a normal fallback or process-complete evidence.
 
-### Fixed Report Formats
+### Report Format Ownership
 
-All evidence branches must report with the `team-task-board` evidence delivery artifact format.
+Branch report schemas are owned by `team-task-board` and the matching delivery
+artifact skills.
 
-This lets the main agent ledger and synthesize quickly:
+- Evidence branches use the `evidence_delivery` artifact family from
+  `team-task-board`.
+- Isolated/text implementation branches use the implementation change delivery
+  artifact family from `team-change-delivery-artifact`.
+- Source, workflow, governance, documentation, generated-copy, and
+  public-contract changes also require the memory/docs delivery artifact family
+  from `team-memory-docs-delivery-artifact`.
 
-```text
-artifact_type: evidence_delivery
-findings:
-evidence:
-risk:
-recommendation:
-blocking:
-status:
-```
-
-All isolated change delivery branches or text change delivery artifacts must report with the `team-task-board` format.
-
-Use the implementation change delivery format:
-
-```text
-artifact_type: implementation_change_delivery
-changes:
-files:
-evidence:
-risk:
-memory_impact:
-review_need:
-blocking:
-status:
-```
-
-All source, workflow, governance, documentation, generated-copy, or public-contract changes must produce a memory/docs delivery artifact.
-
-Otherwise they must be marked explicitly as blocked, unverified, or Director-risk-closed but non-complete.
-
-```text
-artifact_type: memory_docs_delivery
-memory_impact:
-status: memory_delivery / blocked / unverified / closed-with-director-risk
-memory_delivery:
-evidence:
-risk:
-recommendation:
-blocking:
-```
+Missing required artifacts remain blocked, unverified, or
+`closed-with-director-risk`; they do not become completion evidence.
 
 ### Change Application Authorization
 
@@ -985,15 +951,20 @@ Auditable completion also requires Team-Native trace evidence.
 
 Otherwise the trace gap must be marked `unverified` or `blocked`.
 
-## Platform Translation Blocks
+## Non-Authoritative Generated Snippet Templates
 
-The following blocks are injected into platform core rules by the sync script.
+The following blocks are non-authoritative generated snippet templates injected
+into platform core rules by the sync script.
 
 Platform copies must not be edited by hand.
 
 Platform-specific tool names may appear only in these translation blocks or platform-specific workflow/command files.
 
 Shared semantics must not hard-code a single vendor tool name.
+
+Canonical policy remains above this section and in the central references. If a
+generated snippet conflicts with the canonical policy or reference catalogs, the
+canonical source wins and the snippet must be regenerated.
 
 <!-- SUBAGENT_POLICY:CODEX_START -->
 ### Shared Subagent Invocation Policy (Codex native subagents)

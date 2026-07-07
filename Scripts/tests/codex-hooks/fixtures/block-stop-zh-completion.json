@@ -1,0 +1,19 @@
+{
+  "name": "block-stop-zh-completion",
+  "scenarioCode": "stop-completion-missing-station-evidence",
+  "category": "negative",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "advisory-would-block",
+  "canonicalDecision": "block",
+  "expectedDecision": "block",
+  "expectedReasonCodeRegex": "TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE",
+  "expectedOutputRegex": "禁止事項.*completion evidence.*Allowed next steps.*Forbidden next steps",
+  "input": {
+    "hook_event_name": "Stop",
+    "session_id": "fixture-session",
+    "cwd": "D:\\AI_Rules",
+    "message": "已完成 Codex hook 修改，可以 complete 收尾。"
+  }
+}

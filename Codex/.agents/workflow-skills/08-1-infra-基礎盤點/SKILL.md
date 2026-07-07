@@ -11,7 +11,7 @@ metadata:
   role: analyst
   memory_awareness: read
   tool_scope: ["filesystem:read", "filesystem:write:logs", "terminal:read", "mcp:read"]
-  human_gate: "none"
+  human_gate: "none for no-write inventory; separate audit-log-write stage required for filesystem:write:logs"
   automation_safe: false
 ---
 
@@ -19,7 +19,8 @@ metadata:
 
 This Codex workflow skill entry is a thin route entry.
 It selects workflow row `08`, applies the platform adapter, and points to shared procedures when details are needed.
-It does not grant write, memory, git, release, deployment, install, credential, or external-state authority.
+It does not grant source write, audit-log write during no-write inventory, memory, git, release, deployment, install, credential, or external-state authority.
+The `filesystem:write:logs` tool scope is a conditional capability only; writing inventory logs is a separate `audit-log-write` stage scoped only to `.agents/logs/`.
 
 ## Required References
 
@@ -28,7 +29,7 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 1. Captain entry minimum: start with workflow row `08`, the route summary below, `.agents/shared/workflow-capability-evidence-matrix.md` row `08`, `.agents/shared/policies/workflow-orchestration.md` for route/authorization order, and the minimum Team-Native entry gate in `.agents/shared/policies/team-native-core.md`.
 2. Director-facing output: read `.agents/shared/policies/language-governance.md` before wording reports, confirmations, status summaries, handoffs, completion summaries, exact-evidence text, or change descriptions.
 3. External facts/freshness: read `.agents/shared/policies/grounding-governance.md` and the relevant external-research sources only when external facts, dates, APIs, versions, source freshness, or research quality can affect the conclusion.
-4. Platform semantics: read `.agents/shared/platform-capability-matrix.md` only when platform adapter behavior, tool capability, permission surface, or evidence limits affect the route.
+4. Platform semantics (conditional): read `.agents/shared/platform-capability-matrix.md` when platform adapter behavior, tool capability, permission surface, evidence limits, protected phases, source-impacting work, or audit-log-write capability affects the route.
 5. Platform plan mapping: read `.agents/shared/policies/platform-plan-mapping.md` only when a platform plan surface, Codex `update_plan`, `plan-only`, or `build-plan` affects route, authorization wording, progress, handoff, or completion language.
 6. Skill/stage governance: read `.agents/shared/skill-governance.md` only when editing workflow entries, skills, shared policies, or governance boundaries; read `.agents/shared/workflow-stage-procedures.md` only when the concrete phase checklist is needed, using section `08-1 Infra Inventory` without copying it back here.
 7. Phase and station details: load write, protected-action, review, validation, memory/docs, completion, and delivery artifact references only when that decision, station, or phase is actually opened. Missing evidence remains `unverified`, `blocked`, or `closed-with-director-risk`; no gate is relaxed.
@@ -47,6 +48,8 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 - Workflow row: `08`.
 - Procedure reference: `08-1 Infra Inventory` in `.agents/shared/workflow-stage-procedures.md`.
 - Route summary: Inventory project type, surfaces, commands, routes, files, workflows, memory/context, and dependencies before judgment.
+- Output contract: return the `08-1` inventory artifact and denominator for `08-2`; this is prerequisite evidence, not a final audit conclusion.
+- Audit log writing is not part of no-write inventory evidence. Open a separate `audit-log-write` stage scoped only to `.agents/logs/` before writing `profile.json`, `inventories.json`, or equivalent logs.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - Use `formal-write` only after a scope-bound Director intent signal passes authorization resolution and binds the explicit phase, file set, command, or required protected gate.
@@ -54,6 +57,6 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 ## Completion Boundary
 
 - Report evidence status as `sufficient`, `partial`, `unverified`, `blocked`, or `not-applicable` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
-- Full team completion requires separated implementation change delivery, memory/docs delivery, validation delivery, review delivery, source/deployed parity when relevant, and completion audit evidence.
+- Process completion requires separated implementation change delivery when a source/document change exists, memory/docs delivery, validation delivery, review delivery, source/deployed parity when relevant, and completion audit evidence.
 - Missing delivery artifacts, missing parity, unavailable channels, or Director-accepted residual risk must be reported as `blocked`, `unverified`, or `closed-with-director-risk`, not `complete`.
 - This entry must stay thin. If more procedure detail is needed, add or update the shared reference instead of expanding this file.

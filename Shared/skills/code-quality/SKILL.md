@@ -3,7 +3,7 @@ name: code-quality
 description: >
   程式碼品質治理（Quality）：Code quality enforcement via functional module boundaries, SOLID review,
   size review warnings, maintainability-driven refactoring, and minimum sufficient complexity review.
-  Use when: 建構新原始碼檔案、調整功能模組邊界、執行 /05_refactor 重構、檔案大小可能造成維護風險、或需要取捨簡潔與複雜設計 的場景。
+  Use when: 建構新原始碼檔案、調整功能模組邊界、在 /02_blueprint 規劃結構重整、在 /03_build 執行計畫性結構重整、在 /04_fix 修復中調整模組邊界、檔案大小可能造成維護風險、或需要取捨簡潔與複雜設計 的場景。
   DO NOT use when: 純討論/研究/讀取程式碼、修改設定檔或樣式文字。03-1 / 03-1-experiment-實驗
   只能產出 prototype-quality evidence，不能用本技能宣稱 production-ready。
 metadata:

@@ -2,8 +2,11 @@
   "name": "deny-pretool-git-ls-files-outer-agent-cached",
   "scenarioCode": "pretool-git-ls-files-outer-agent-cached-deny",
   "category": "deny",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
   "fixtureOrigin": "synthetic",
   "expectedOutcomeKind": "deny",
+  "canonicalDecision": "deny",
   "expectedDecision": "deny",
   "expectedOutputRegex": "已阻擋全 repo 掃描.*請先派站點或改用命名檔/窄範圍讀取",
   "input": {

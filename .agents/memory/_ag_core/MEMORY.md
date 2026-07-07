@@ -4,14 +4,14 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-07T05:51:07+08:00'
+last_updated: '2026-07-07T22:46:09+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T05:51:07+08:00'
+last_verified: '2026-07-07T20:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -84,7 +84,7 @@ metadata:
 - 目前 dirty source 已把總監輸出調整為繁中語義先行，並加強 Team-Native、授權解析與 protected gate 邊界。
 - 記憶、MCP、`[SUDO]`、工作流 description、missing memory evidence 與完成/安全 gate 的 durable truth 已更新。
 - README 與 global GEMINI 的安裝、升級、bootstrap 文案已納入本卡。
-- 本次只更新 active card；未執行 `memory_commit`、stage 或 commit。
+- 本次 active card 納入 protected memory-ops 同步範圍；git stage/commit 未授權也未執行。
 ## Tracked Files
 - Antigravity/install.ps1
 - Antigravity/README.md

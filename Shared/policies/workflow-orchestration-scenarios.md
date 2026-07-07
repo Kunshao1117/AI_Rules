@@ -18,6 +18,18 @@ They do not replace these gates or owner sources:
 - Review.
 - Commit, release, deployment, install, or external mutation gates.
 
+Shared value catalogs:
+
+- Status meanings: `Shared/policies/references/status-ontology.md`.
+- Completion targets and states:
+  `Shared/policies/references/completion-state-machine.md`.
+- Authorization phases:
+  `Shared/policies/references/authorization-phase-registry.md`.
+- Protected actions:
+  `Shared/policies/references/protected-action-registry.md`.
+- Hook event lifecycle:
+  `Shared/policies/references/hook-event-matrix.md`.
+
 Use these scenarios when a model needs a concrete flow to follow.
 
 If a scenario conflicts with `workflow-orchestration.md`, the orchestration contract wins.
@@ -42,11 +54,12 @@ route-back:
 completion state:
 ```
 
-`blocked`, `unverified`, `standby`, and `closed-with-director-risk` are honest states, not completion.
+`blocked`, `unverified`, `partial`, `standby`, and `closed-with-director-risk`
+are honest states from the status ontology, not completion.
 
 `closed-with-director-risk` is not full team completion.
 
-Full team completion requires these artifacts and fields:
+Process completion requires these artifacts and fields:
 
 - Implementation change delivery.
 - Memory/docs delivery artifact.
@@ -59,6 +72,9 @@ Full team completion requires these artifacts and fields:
 If any required artifact is missing, blocked, unverified, or risk-closed, use the matching non-complete state.
 
 Do not report full team completion.
+
+For the same closeout target, `complete` is mutually exclusive with every
+non-complete state listed in `completion-state-machine.md`.
 
 ## Scenario 1: Read-Only Evidence Station
 
@@ -246,6 +262,9 @@ Invalid shortcut: treating a formal-write board as authorization for protected a
 Protected actions include git, memory commit, release, deploy, install, and destructive file operations.
 
 They also include package publication and external-state mutation.
+
+The canonical protected-action catalog lives in
+`Shared/policies/references/protected-action-registry.md`.
 
 ## Scenario 9: Channel Life Probe Transition
 

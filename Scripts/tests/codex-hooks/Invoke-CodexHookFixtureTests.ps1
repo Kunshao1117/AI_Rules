@@ -49,6 +49,57 @@ function Test-FixtureFileHashEqual {
     return ($left -eq $right)
 }
 
+function Test-FixtureHookConfigDisabled {
+    param([object]$HookConfig)
+    if ($null -eq $HookConfig) { return $false }
+    $lifecycle = $HookConfig.PSObject.Properties['x_ai_rules_hooks_lifecycle']
+    if ($null -eq $lifecycle -or $null -eq $lifecycle.Value) { return $false }
+    $state = $lifecycle.Value.PSObject.Properties['state']
+    return ($null -ne $state -and [string]$state.Value -eq 'disabled')
+}
+
+function Get-FixtureFiles {
+    param([string]$FixturesRoot)
+    Get-ChildItem -LiteralPath $FixturesRoot -Filter '*.json' -File |
+        Where-Object { $_.Name -ne 'manifest.json' } |
+        Sort-Object Name
+}
+
+function Read-FixtureManifest {
+    param([string]$FixturesRoot)
+    $manifestPath = Join-Path $FixturesRoot 'manifest.json'
+    if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) { return $null }
+    return (Get-Content -LiteralPath $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop)
+}
+
+function Test-FixtureManifestContract {
+    param([string]$FixturesRoot, [object]$Manifest, [System.Collections.Generic.List[string]]$Failures)
+    if ($null -eq $Manifest) { return }
+    $requiredProperty = $Manifest.PSObject.Properties['requiredFixtures']
+    if ($null -eq $requiredProperty) {
+        $Failures.Add('manifest.json must define requiredFixtures.')
+        return
+    }
+    foreach ($entry in @($requiredProperty.Value)) {
+        $file = [string]$entry.file
+        if ([string]::IsNullOrWhiteSpace($file)) {
+            $Failures.Add('manifest.json has a required fixture entry without file.')
+            continue
+        }
+        $fixturePath = Join-Path $FixturesRoot $file
+        if (-not (Test-Path -LiteralPath $fixturePath -PathType Leaf)) {
+            $Failures.Add(('manifest.json required fixture is missing: {0}' -f $file))
+            continue
+        }
+        $fixture = Get-Content -LiteralPath $fixturePath -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
+        if ($entry.PSObject.Properties['canonicalDecision'] -and $fixture.PSObject.Properties['canonicalDecision']) {
+            if ([string]$entry.canonicalDecision -ne [string]$fixture.canonicalDecision) {
+                $Failures.Add(('{0} manifest canonicalDecision {1} conflicts with fixture canonicalDecision {2}.' -f $file, $entry.canonicalDecision, $fixture.canonicalDecision))
+            }
+        }
+    }
+}
+
 function ConvertTo-FixtureInputJson {
     param([object]$Fixture, [System.Collections.Generic.List[string]]$CleanupPaths)
     if ($Fixture.PSObject.Properties['rawInput']) { return [string]$Fixture.rawInput }
@@ -123,6 +174,39 @@ function Get-FixtureEffectiveDecision {
     return 'allow'
 }
 
+function Get-FixtureCanonicalDecision {
+    param([object]$Fixture)
+    if ($Fixture.PSObject.Properties['canonicalDecision'] -and -not [string]::IsNullOrWhiteSpace([string]$Fixture.canonicalDecision)) {
+        return [string]$Fixture.canonicalDecision
+    }
+    return ''
+}
+
+function Test-FixtureCanonicalDecisionContract {
+    param([string]$CaseName, [object]$Fixture, [System.Collections.Generic.List[string]]$Failures)
+    $canonicalDecision = Get-FixtureCanonicalDecision -Fixture $Fixture
+    if (@('allow','advisory','deny','block') -notcontains $canonicalDecision) {
+        $Failures.Add(('{0} must define canonicalDecision as allow, advisory, deny, or block.' -f $CaseName))
+        return
+    }
+    if ($Fixture.PSObject.Properties['expectedDecision']) {
+        $expectedDecision = [string]$Fixture.expectedDecision
+        $expectedFromCanonical = if (@('allow','advisory') -contains $canonicalDecision) { 'allow' } else { $canonicalDecision }
+        if ($expectedDecision -ne $expectedFromCanonical) {
+            $Failures.Add(('{0} canonicalDecision {1} conflicts with expectedDecision {2}; expectedDecision should be {3}.' -f $CaseName, $canonicalDecision, $expectedDecision, $expectedFromCanonical))
+        }
+    }
+}
+
+function Get-FixtureTrackingState {
+    param([string]$RepoRoot, [string]$Path)
+    $relative = [IO.Path]::GetRelativePath($RepoRoot, $Path) -replace '\\', '/'
+    $output = @(& git -C $RepoRoot ls-files -- $relative 2>$null)
+    if ($LASTEXITCODE -ne 0) { return 'untracked' }
+    if (($output | ForEach-Object { $_ -replace '\\', '/' } | Where-Object { $_ -eq $relative }).Count -gt 0) { return 'tracked' }
+    return 'untracked'
+}
+
 function Test-FixturePreToolPermissionDecisionContract {
     param([string]$CaseName, [object]$ParsedOutput, [string]$ExpectedDecision, [System.Collections.Generic.List[string]]$Failures)
     $hookSpecific = $ParsedOutput.PSObject.Properties['hookSpecificOutput']
@@ -143,6 +227,33 @@ function Test-FixturePreToolPermissionDecisionContract {
     }
     if ($null -ne $permissionDecision) {
         $Failures.Add(('{0} must not emit hookSpecificOutput.permissionDecision for allow/advisory PreToolUse output.' -f $CaseName))
+    }
+}
+
+function Test-FixtureStopOutputContract {
+    param([string]$CaseName, [object]$Fixture, [object]$ParsedOutput, [string]$ExpectedDecision, [System.Collections.Generic.List[string]]$Failures)
+    $eventName = $null
+    if ($Fixture.PSObject.Properties['input'] -and $Fixture.input.PSObject.Properties['hook_event_name']) {
+        $eventName = [string]$Fixture.input.hook_event_name
+    }
+    if ($eventName -ne 'Stop') { return }
+
+    if ($ParsedOutput.PSObject.Properties['hookSpecificOutput']) {
+        $Failures.Add(('{0} must not emit hookSpecificOutput for Stop output; Codex Stop supports common output fields plus decision/reason only.' -f $CaseName))
+    }
+
+    $expectsBlock = @('deny','block') -contains [string]$ExpectedDecision
+    $decision = $ParsedOutput.PSObject.Properties['decision']
+    $reason = $ParsedOutput.PSObject.Properties['reason']
+    if ($expectsBlock) {
+        if ($null -eq $decision -or [string]$decision.Value -ne 'block') {
+            $Failures.Add(('{0} Stop block output must emit top-level decision: block.' -f $CaseName))
+        }
+        if ($null -eq $reason -or [string]$reason.Value -eq '') {
+            $Failures.Add(('{0} Stop block output must emit top-level reason.' -f $CaseName))
+        }
+    } elseif ($null -ne $decision -and [string]$decision.Value -eq 'block') {
+        $Failures.Add(('{0} Stop allow output must not emit decision: block.' -f $CaseName))
     }
 }
 
@@ -193,6 +304,10 @@ function Test-FixtureCommandWindowsWrappers {
     }
 
     $hookConfig = Get-Content -LiteralPath (Join-Path $RepoRoot 'Codex\.codex\hooks.json') -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
+    if (Test-FixtureHookConfigDisabled -HookConfig $hookConfig) {
+        Write-Host 'commandWindows host-wrapper checks skipped: hooks runtime disabled by lifecycle marker'
+        return
+    }
     $tempRoot = (Resolve-Path -LiteralPath ([IO.Path]::GetTempPath())).Path
     $tempNonRepo = Join-Path $tempRoot ('codex-hook-nonrepo-{0}' -f ([guid]::NewGuid().ToString('N')))
     New-Item -ItemType Directory -Path $tempNonRepo | Out-Null
@@ -213,7 +328,7 @@ function Test-FixtureCommandWindowsWrappers {
                 WorkingDirectory = $tempNonRepo
                 Input = [ordered]@{ hook_event_name = 'PreToolUse'; cwd = $RepoRoot; tool_name = 'Bash'; tool_input = [ordered]@{ command = 'git diff -- Codex/.codex/hooks.json' } }
                 ExpectedDecision = 'allow'
-                ExpectedOutputRegex = 'advisory/reminder.*請先停止這次工具呼叫.*不要直接替隊員完成.*single-file-readonly'
+                ExpectedOutputRegex = 'advisory/reminder.*禁止隊長直接產生 broad read / validation / review / external research / memory-docs / completion evidence.*允許隊長做 coordination.*named-file local_probe.*direct_exception 只能降級成 partial / unverified / closed-with-director-risk.*single-file-readonly'
             },
             [PSCustomObject]@{
                 Name = 'commandWindows-missing-script-nonrepo-cwd'
@@ -272,11 +387,19 @@ if ($VerifyRuntimeSync) {
 }
 
 $shells = Get-FixtureShells -Requested $Shell
-$fixtures = Get-ChildItem -LiteralPath $FixturesRoot -Filter '*.json' -File | Sort-Object Name
+$manifest = Read-FixtureManifest -FixturesRoot $FixturesRoot
+$fixtures = Get-FixtureFiles -FixturesRoot $FixturesRoot
 $failures = New-Object System.Collections.Generic.List[string]
+$trackedFixtureCount = 0
+$untrackedFixtureCount = 0
+
+Test-FixtureManifestContract -FixturesRoot $FixturesRoot -Manifest $manifest -Failures $failures
 
 foreach ($fixtureFile in $fixtures) {
     $fixture = Get-Content -LiteralPath $fixtureFile.FullName -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
+    $trackingState = Get-FixtureTrackingState -RepoRoot $RepoRoot -Path $fixtureFile.FullName
+    if ($trackingState -eq 'tracked') { $trackedFixtureCount++ } else { $untrackedFixtureCount++ }
+    Test-FixtureCanonicalDecisionContract -CaseName $fixtureFile.Name -Fixture $fixture -Failures $failures
     foreach ($shellInfo in $shells) {
         $cleanup = New-Object System.Collections.Generic.List[string]
         try {
@@ -293,6 +416,7 @@ foreach ($fixtureFile in $fixtures) {
                 continue
             }
             Test-FixturePreToolPermissionDecisionContract -CaseName ('{0} [{1}]' -f $fixtureFile.Name, $shellInfo.Name) -ParsedOutput $parsed -ExpectedDecision ([string]$fixture.expectedDecision) -Failures $failures
+            Test-FixtureStopOutputContract -CaseName ('{0} [{1}]' -f $fixtureFile.Name, $shellInfo.Name) -Fixture $fixture -ParsedOutput $parsed -ExpectedDecision ([string]$fixture.expectedDecision) -Failures $failures
             if ($fixture.PSObject.Properties['expectedDecision']) {
                 $effectiveDecision = Get-FixtureEffectiveDecision -ParsedOutput $parsed
                 if ([string]$effectiveDecision -ne [string]$fixture.expectedDecision) {
@@ -333,4 +457,5 @@ if ($failures.Count -gt 0) {
     throw ("Codex hook fixture failures: {0}" -f $failures.Count)
 }
 
+Write-Host ("Codex hook fixture tracking: {0} tracked, {1} untracked" -f $trackedFixtureCount, $untrackedFixtureCount)
 Write-Host ("Codex hook fixtures passed: {0} fixture(s), {1} shell(s)" -f $fixtures.Count, $shells.Count)

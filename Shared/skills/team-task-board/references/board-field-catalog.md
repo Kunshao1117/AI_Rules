@@ -4,6 +4,12 @@ This reference owns the complete board field catalog for
 `team-task-board/SKILL.md`. Other skills cite this file and
 `Shared/policies/team-trace-evidence.md` instead of copying the list.
 
+Field names listed here are board-facing canonical names and value sets.
+`team-station-handoff-packet` may repeat a field as packet overlay input,
+`team-completion-gate` may repeat a field as closeout evidence, and
+`team-trace-evidence` may audit the same field for trace completeness.
+Those files consume this catalog; they do not define competing values.
+
 ## Canonical Board Fields
 
 ```text

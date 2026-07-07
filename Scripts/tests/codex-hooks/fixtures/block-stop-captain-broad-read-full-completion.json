@@ -1,0 +1,19 @@
+{
+  "name": "block-stop-captain-broad-read-full-completion",
+  "scenarioCode": "stop-captain-substitute-completion",
+  "category": "negative",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "advisory-would-block",
+  "canonicalDecision": "block",
+  "expectedDecision": "block",
+  "expectedReasonCodeRegex": "TN-HOOK-CAPTAIN-SUBSTITUTE-COMPLETION",
+  "expectedOutputRegex": "禁止事項.*不能用 captain broad read.*宣稱 complete.*Reason code: TN-HOOK-CAPTAIN-SUBSTITUTE-COMPLETION",
+  "input": {
+    "hook_event_name": "Stop",
+    "session_id": "fixture-session",
+    "cwd": "D:\\AI_Rules",
+    "message": "captain broad read 已看完所有檔案，direct_exception 記錄後視為 full complete。"
+  }
+}

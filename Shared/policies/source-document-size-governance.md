@@ -39,6 +39,23 @@ policies, references, or skills.
 Do not use core files as a bypass when a shared policy or skill is the smaller
 durable home.
 
+Measurable signals:
+
+- Over 250 lines: report size/split impact when touched.
+- Over 500 lines: require a baseline note or split rationale.
+- Over 800 lines, or growth of more than 100 lines in one change: require a
+  split plan when any split signal below is present.
+
+Core split signals:
+
+- A field catalog, status catalog, phase registry, protected-action list,
+  scenario catalog, or generated template block is embedded in the core.
+- The same rule is repeated in a shared policy, platform core, workflow entry,
+  and skill.
+- The section contains operational procedure steps better owned by a loaded
+  skill or reference.
+- A generated/runtime copy block is mixed with canonical source policy.
+
 ### Shared Policy And Reference Documents
 
 Shared policies own cross-workflow contracts, precedence, invalid patterns, and
@@ -48,6 +65,34 @@ Reference files own examples, scenario catalogs, field tables, and long
 procedures.
 When a shared policy starts mixing a contract with a playbook, split the
 playbook into a reference file and keep the policy as the routing contract.
+
+Measurable signals for shared policies:
+
+- Over 350 lines: report size/split impact when touched.
+- Over 600 lines: require a baseline note or split rationale.
+- Over 900 lines, or growth of more than 150 lines in one change: require a
+  split plan when any split signal below is present.
+
+Measurable signals for reference files:
+
+- Over 500 lines: report size/split impact when touched.
+- Over 900 lines: require a baseline note or split rationale.
+- Over 1,200 lines, or growth of more than 200 lines in one change: require a
+  split plan when responsibilities mix.
+
+Shared policy/reference split signals:
+
+- A status ontology, completion state machine, authorization phase registry,
+  protected-action registry, hook event matrix, exception registry, or platform
+  copy map is redefined instead of cited.
+- One document owns more than two unrelated responsibility areas, such as
+  execution field shape plus scenario playbooks plus generated templates.
+- A policy contains long example catalogs where a reference file would preserve
+  the contract more clearly.
+- A reference becomes authoritative for a policy decision without a policy file
+  naming it as owner.
+- Test, hook, runtime, generated-copy, and source-governance responsibilities
+  are mixed without a clear owner boundary.
 
 ### `SKILL.md`
 

@@ -12,14 +12,18 @@ function ConvertFrom-HookBase64 {
 function Get-HookMessage {
     param([string]$Key)
     $messages = @{
-        SessionStartupContext = 'YWR2aXNvcnkvcmVtaW5kZXLvvJrlnJjpmormqKHlvI/mj5DphpLjgILlsI3oqbHplovlp4vmiJbmgaLlvqnmmYLvvIzoi6Xnm67liY3lt6XkvZzmtonlj4rmsrvnkIbjgIHkv67lvqnjgIHlu7rmp4vjgIHmuKzoqabjgIHlr6nmn6XjgIHoqJjmhrYv5paH5Lu244CBY29tbWl0IOaIliBoYW5kb2Zm77yM6YCZ5YCLIGhvb2sg5rOo5YWl5Y2z6KGo56S655uu5YmN5rK755CG6KaB5rGC5bey5piO56K66KaB5rGC56uZ6bue5YiG5bel6IiH5b+F6KaB55qE5a2Q5Luj55CGL+maiuWToea0vuW3pe+8m+S4jeimgeino+iugOeCuuaykuacieS9v+eUqOiAheimgeaxguS7o+eQhi/liIblt6XjgILoq4vlhYjmtL7nq5npu57jgIHmmI7norrop5LoibIv56+E5ZyNL+S6pOS7mOS7tu+8m+mcgOimgeaZguWPr+mWi+WtkOS7o+eQhu+8jOS9huiri+WFiOWujOaIkOermem7nuS6pOaOpe+8jOWGjeWBmuW7o+Wfn+iugOOAgeWvq+WFpeOAgempl+itieaIluWujOaIkOWbnuWgseOAgg=='
-        SessionOtherSourceContext = 'YWR2aXNvcnkvcmVtaW5kZXLvvJrmraQgU2Vzc2lvblN0YXJ0IOS+hua6kOS4jeaYryBzdGFydHVwL3Jlc3VtZe+8m+ebruWJjSBob29rcy5qc29uIOaHieWPquWMuemFjSBzdGFydHVwL3Jlc3VtZeOAgg=='
-        SessionSystemMessage = '5ZyY6ZqK5qih5byP5o+Q6YaS77yaZ292ZXJuZWQgd29yayDlt7LopoHmsYLnq5npu57liIblt6XoiIflv4XopoHnmoTlrZDku6PnkIYv6ZqK5ZOh5rS+5bel77yb5Y+v6ZaL5a2Q5Luj55CG77yM6KuL5YWI5rS+56uZ6bue77yM5YaN5Z+36KGM56uZ6bue5bel5L2c44CC'
-        PreToolContextFormat = 'YWR2aXNvcnkvcmVtaW5kZXLvvJrpgJnmmK/mj5DphpLmqKHlvI/vvIzkuI3mnIPpmLvmk4vlt6XlhbfjgILlsI0gZ292ZXJuZWQgd29ya++8jOmAmeWAiyBob29rIOazqOWFpeetieWQjOebruWJjeayu+eQhuimgeaxguW3suaYjueiuuimgeaxguermem7nuWIhuW3peiIh+W/heimgeeahOWtkOS7o+eQhi/pmorlk6HmtL7lt6XvvJvkuI3opoHop6PoroDngrrmspLmnInkvb/nlKjogIXopoHmsYLku6PnkIYv5YiG5bel44CC5L2g54++5Zyo5Y+v6IO95q2j5rqW5YKZ5Z+36KGM6ZqK5ZOhL+ermem7nuW3peS9nO+8m+iri+WFiOWBnOatoumAmeasoeW3peWFt+WRvOWPq+aIluS4jeimgeebtOaOpee5vOe6jOOAguiri+aUuea0vuermem7nuOAgeeiuuiqjeermem7ni/nr4TlnI3vvIzmiJbmqJnoqJjmnKrpqZforYnjgILkuI3opoHnm7TmjqXmm7/pmorlk6HlrozmiJDlu6Pln5/oroDlj5bjgIHpqZforYnjgIHlr6nmn6XjgIHoqJjmhrYv5paH5Lu25q245bGs5oiW5a+r5YWl44CC5bel5YW35YiG6aGe77yaezB944CC'
-        PreToolSystemMessage = '5o+Q6YaS5qih5byP77yM5LiN5pyD6Zi75pOL5bel5YW344CC5bCNIGdvdmVybmVkIHdvcmvvvIzpgJnlgIsgaG9vayDms6jlhaXnrYnlkIznm67liY3msrvnkIbopoHmsYLlt7LmmI7norropoHmsYLnq5npu57liIblt6XoiIflv4XopoHnmoTlrZDku6PnkIYv6ZqK5ZOh5rS+5bel77yb5LiN6KaB6Kej6K6A54K65rKS5pyJ5L2/55So6ICF6KaB5rGC5Luj55CGL+WIhuW3peOAguS9oOePvuWcqOWPr+iDveato+a6luWCmeWft+ihjOmaiuWToS/nq5npu57lt6XkvZzvvJvoq4vlhYjlgZzmraLpgJnmrKHlt6Xlhbflkbzlj6vmiJbkuI3opoHnm7TmjqXnubznuozjgILoq4vmlLnmtL7nq5npu57jgIHnorroqo3nq5npu54v56+E5ZyN77yM5oiW5qiZ6KiY5pyq6amX6K2J44CC5LiN6KaB55u05o6l5pu/6ZqK5ZOh5a6M5oiQ5buj5Z+f6K6A5Y+W44CB6amX6K2J44CB5a+p5p+l44CB6KiY5oa2L+aWh+S7tuatuOWxrOaIluWvq+WFpeOAgg=='
-        PreToolDenyRepoScanReason = '5bey6Zi75pOL5YWoIHJlcG8g5o6D5o+P77yM6KuL5YWI5rS+56uZ6bue5oiW5pS555So5ZG95ZCN5qqUL+eqhOevhOWcjeiugOWPluOAgg=='
-        BadInputReason = '6Ly45YWl5LiN5piv5pyJ5pWIIEpTT07vvJvmraTmoYjkvovlj6rlgZogYmFkLWlucHV0IHNtb2tl77yM5LuN57at5oyB5o+Q6YaS5qih5byP5Lim5YWB6KixIGhvc3Qg57m857qM44CC'
-        UnknownEventReasonFormat = '55uu5YmN5LqL5Lu25pyq5o6b5rex5bGkIGdhdGXvvJp7MH3jgII='
+        SessionStartupContext = 'YWR2aXNvcnkvcmVtaW5kZXLvvJrnpoHmraLpmorplbfnm7TmjqXnlKLnlJ8gYnJvYWQgcmVhZCAvIHZhbGlkYXRpb24gLyByZXZpZXcgLyBleHRlcm5hbCByZXNlYXJjaCAvIG1lbW9yeS1kb2NzIC8gY29tcGxldGlvbiBldmlkZW5jZeOAguWFgeiosemaiumVt+WBmiBjb29yZGluYXRpb27jgIFzdGF0aW9uIGRpc3BhdGNo44CBYXJ0aWZhY3Qgc3ludGhlc2lz44CBbmFtZWQtZmlsZSBsb2NhbF9wcm9iZeOAgmRpcmVjdF9leGNlcHRpb24g5Y+q6IO96ZmN57Sa5oiQIHBhcnRpYWwgLyB1bnZlcmlmaWVkIC8gY2xvc2VkLXdpdGgtZGlyZWN0b3Itcmlza++8jOS4jeWPr+Wuo+eosSBjb21wbGV0ZeOAgmV4dGVybmFsIHJlc2VhcmNoIOW/hemgiOeUsSBmb3JtYWwgZXh0ZXJuYWwtcmVzZWFyY2ggc3RhdGlvbiDnlKLnlJ8gZXh0ZXJuYWxfcmVzZWFyY2hfYXJ0aWZhY3RfaWTvvJvmspLmnIkgYXJ0aWZhY3Qg5bCx5Y+q6IO9IHVudmVyaWZpZWQvcGFydGlhbC9ibG9ja2Vk44CC'
+        SessionOtherSourceContext = 'YWR2aXNvcnkvcmVtaW5kZXLvvJrmraQgU2Vzc2lvblN0YXJ0IOS+hua6kOS4jeaYryBzdGFydHVwL3Jlc3VtZe+8m+ebruWJjSBob29rcy5qc29uIOaHieWPquWMuemFjSBzdGFydHVwL3Jlc3VtZeOAguemgeatouaKiuatpOaPkOmGkueVtuS9nOermem7nuitieaTmuaIluWujOaIkOitieaTmuOAgg=='
+        SessionSystemMessage = '5ZyY6ZqK5qih5byP5o+Q6YaS77ya56aB5q2i6ZqK6ZW355u05o6l55Si55SfIGJyb2FkIHJlYWQgLyB2YWxpZGF0aW9uIC8gcmV2aWV3IC8gZXh0ZXJuYWwgcmVzZWFyY2ggLyBtZW1vcnktZG9jcyAvIGNvbXBsZXRpb24gZXZpZGVuY2XjgILlhYHoqLEgY29vcmRpbmF0aW9u44CBc3RhdGlvbiBkaXNwYXRjaOOAgWFydGlmYWN0IHN5bnRoZXNpc+OAgW5hbWVkLWZpbGUgbG9jYWxfcHJvYmXvvJtkaXJlY3RfZXhjZXB0aW9uIOS4jeWPr+Wuo+eosSBjb21wbGV0ZeOAgg=='
+        PreToolContextFormat = 'YWR2aXNvcnkvcmVtaW5kZXLvvJrmj5DphpLmqKHlvI/vvIzkuI3mnIPpmLvmk4vlt6XlhbfjgILnpoHmraLpmorplbfnm7TmjqXnlKLnlJ8gYnJvYWQgcmVhZCAvIHZhbGlkYXRpb24gLyByZXZpZXcgLyBleHRlcm5hbCByZXNlYXJjaCAvIG1lbW9yeS1kb2NzIC8gY29tcGxldGlvbiBldmlkZW5jZeOAguWFgeiosemaiumVt+WBmiBjb29yZGluYXRpb27jgIFzdGF0aW9uIGRpc3BhdGNo44CBYXJ0aWZhY3Qgc3ludGhlc2lz44CBbmFtZWQtZmlsZSBsb2NhbF9wcm9iZeOAguiLpeS4jeaYryBuYW1lZC1maWxlIGxvY2FsX3Byb2Jl77yM6KuL5YWI5YGc5q2i6YCZ5qyh5bel5YW35ZG85Y+r5Lim5pS55rS+56uZ6bue5oiW6ZmN57Sa44CCZGlyZWN0X2V4Y2VwdGlvbiDlj6rog73pmY3ntJrmiJAgcGFydGlhbCAvIHVudmVyaWZpZWQgLyBjbG9zZWQtd2l0aC1kaXJlY3Rvci1yaXNr77yM5LiN5Y+v5a6j56ixIGNvbXBsZXRl44CCZXh0ZXJuYWwgcmVzZWFyY2gg5b+F6aCI55SxIGZvcm1hbCBleHRlcm5hbC1yZXNlYXJjaCBzdGF0aW9uIOeUoueUnyBleHRlcm5hbF9yZXNlYXJjaF9hcnRpZmFjdF9pZO+8m+aykuaciSBhcnRpZmFjdCDlsLHlj6rog70gdW52ZXJpZmllZC9wYXJ0aWFsL2Jsb2NrZWTjgILlt6XlhbfliIbpoZ7vvJp7MH3jgII='
+        PreToolSystemMessage = '5o+Q6YaS5qih5byP77yM5LiN5pyD6Zi75pOL5bel5YW344CC56aB5q2i5LqL6aCF77ya6ZqK6ZW35LiN5b6X55u05o6l5pu/6ZqK5ZOh5a6M5oiQIGJyb2FkIHJlYWQgLyB2YWxpZGF0aW9uIC8gcmV2aWV3IC8gZXh0ZXJuYWwgcmVzZWFyY2ggLyBtZW1vcnktZG9jcyAvIGNvbXBsZXRpb24gZXZpZGVuY2XjgILlhYHoqLHkuovpoIXvvJpjb29yZGluYXRpb27jgIFzdGF0aW9uIGRpc3BhdGNo44CBYXJ0aWZhY3Qgc3ludGhlc2lz44CBbmFtZWQtZmlsZSBsb2NhbF9wcm9iZeOAgumZjee0muW+jOaenO+8mmRpcmVjdF9leGNlcHRpb24g5Y+q6IO9IHBhcnRpYWwgLyB1bnZlcmlmaWVkIC8gY2xvc2VkLXdpdGgtZGlyZWN0b3Itcmlza++8jOS4jeWPryBjb21wbGV0ZeOAgg=='
+        PreToolDenyRepoScanReason = '5bey6Zi75pOL5YWoIHJlcG8g5o6D5o+P44CC56aB5q2i6ZqK6ZW355SoIHJnIC0tZmlsZXMg5oiWIGdpdCBscy1maWxlcyDnm7TmjqXnlKLnlJ8gcmVwbyBpbnZlbnRvcnkgZXZpZGVuY2XvvJvoq4vlhYjmtL7nq5npu57miJbmlLnnlKjlkb3lkI3mqpQv56qE56+E5ZyN6K6A5Y+W44CC'
+        BadInputReason = '6Ly45YWl5LiN5piv5pyJ5pWIIEpTT07vvJtiYWQtaW5wdXQgc21va2XjgILnpoHmraLmiornhKHmlYggcGF5bG9hZCDnlbbmiJDnq5npu57orYnmk5rvvJvlj6rlhYHoqLEgaG9zdCDnubznuozkuKbkv53nlZkgYWR2aXNvcnkvcmVtaW5kZXLjgII='
+        UnknownEventReasonFormat = '55uu5YmN5LqL5Lu25pyq5o6b5rex5bGkIGdhdGXvvJp7MH3jgILnpoHmraLmiormnKrnn6Xkuovku7bovLjlh7rnlbbkvZzlrozmiJDorYnmk5rjgII='
+        StopNonCompleteAllowedSystemMessage = '5a6M5oiQ6ZaY6ZaA5o+Q6YaS77ya5Zue6KaG5bey5L2/55SoIGJsb2NrZWQgLyB1bnZlcmlmaWVkIC8gY2xvc2VkLXdpdGgtZGlyZWN0b3ItcmlzayAvIHBhcnRpYWwg562J6Z2e5a6M5oiQ54uA5oWL77yb5YWB6Kix6YCB5Ye677yM5L2G5LiN5Y+v5a6j56ixIGNvbXBsZXRl44CC'
+        StopCompleteAllowedSystemMessage = '5a6M5oiQ6ZaY6ZaA5o+Q6YaS77ya5bey5YG15ris5Yiw56uZ6bue5Lqk5LuY6Y+I6IiHIGNvbXBsZXRpb24gYXVkaXTvvJvlhYHoqLHpgIHlh7rlrozmlbTlrozmiJDlrqPnqLHjgII='
+        StopBlockedSystemMessage = '5a6M5oiQ6ZaY6ZaA5bey6Zi75pOL77ya56aB5q2i5Zyo57y65bCR56uZ6bue6K2J5pOa5pmC5a6j56ixIGNvbXBsZXRl44CC5YWB6Kix5pS55oiQIHBhcnRpYWwgLyB1bnZlcmlmaWVkIC8gYmxvY2tlZCAvIGNsb3NlZC13aXRoLWRpcmVjdG9yLXJpc2vvvIzmiJboo5zpvYogc3RhdGlvbi1vd25lZCBkZWxpdmVyeSBhcnRpZmFjdHMg5b6M5YaN6YCB5Ye644CC'
+        StopBlockedContext = '56aB5q2i5LqL6aCF77ya6ZqK6ZW35LiN5b6X55u05o6l55Si55SfIGNvbXBsZXRpb24gZXZpZGVuY2XvvIzkuI3og73nlKggY2FwdGFpbiBicm9hZCByZWFk44CBZGlyZWN0X2V4Y2VwdGlvbiDmiJbnvLrlsJEgbWVtb3J5L2RvY3Mg55qEIGFydGlmYWN0IGNoYWluIOWuo+eosSBjb21wbGV0ZeOAguWFgeioseS6i+mghe+8muWbnuWgsSBwYXJ0aWFs44CBdW52ZXJpZmllZOOAgWJsb2NrZWTjgIFjbG9zZWQtd2l0aC1kaXJlY3Rvci1yaXNr77yM5oiW5Lqk55SxIGZvcm1hbCBjb21wbGV0aW9uIHN0YXRpb24g5qqi5p+l44CC6ZmN57Sa5b6M5p6c77ya57y65bCRIGV4dGVybmFsX3Jlc2VhcmNoX2FydGlmYWN0X2lkIOeahCBleHRlcm5hbCByZXNlYXJjaCDlj6rog70gdW52ZXJpZmllZC9wYXJ0aWFsL2Jsb2NrZWTjgIJSZWFzb24gY29kZTogezB944CCTWlzc2luZyBzdHJ1Y3R1cmVkIGZpZWxkczogezF944CCQWxsb3dlZCBuZXh0IHN0ZXBzOiB1c2Ugbm9uLWNvbXBsZXRlIHN0YXRlIG9yIHByb3ZpZGUgc3RhdGlvbi1vd25lZCBhcnRpZmFjdHMuIEZvcmJpZGRlbiBuZXh0IHN0ZXBzOiBkbyBub3QgY2xhaW0gY29tcGxldGUgZnJvbSBjYXB0YWluIHN1YnN0aXR1dGUgZXZpZGVuY2Uu'
     }
     return ConvertFrom-HookBase64 -Value $messages[$Key]
 }
@@ -80,11 +84,11 @@ function Test-HookAllowedOuterAgent {
     return $true
 }
 
-function Test-HookExactSafeRepoInventoryCommand {
+function Test-HookExactInventoryCommand {
     param([string]$Command)
     if (-not $Command) { return $false }
-    $safeInventoryCommands = @('rg --files','rg.exe --files','git ls-files','git.exe ls-files')
-    return ($safeInventoryCommands -ccontains $Command.Trim())
+    $inventoryCommandPatterns = @('rg --files','rg.exe --files','git ls-files','git.exe ls-files')
+    return ($inventoryCommandPatterns -ccontains $Command.Trim())
 }
 
 function Test-HookDeniedRepoScan {
@@ -96,7 +100,7 @@ function Test-HookDeniedRepoScan {
     $looksExecutable = ($command -ne '') -or ($toolName -match '(Bash|Shell|PowerShell|pwsh|cmd|exec_command|terminal)')
     if (-not $looksExecutable) { return $false }
 
-    if ((Test-HookAllowedOuterAgent -Payload $Payload) -and (Test-HookExactSafeRepoInventoryCommand -Command $command)) {
+    if ((Test-HookAllowedOuterAgent -Payload $Payload) -and (Test-HookExactInventoryCommand -Command $command)) {
         return $false
     }
 
@@ -220,6 +224,156 @@ function Write-PreToolUseReminder {
     })
 }
 
+function Test-HookHasNonCompleteState {
+    param([string]$Text)
+    if (-not $Text) { return $false }
+    return ($Text -match '(?i)\b(blocked|unverified|closed-with-director-risk|partial)\b|\u672A\u9A57\u8B49|\u53D7\u963B|\u963B\u585E|\u90E8\u5206\u5B8C\u6210|\u98A8\u96AA\u95DC\u9589')
+}
+
+function Remove-HookNegatedCompletionReference {
+    param([string]$Text)
+    if (-not $Text) { return '' }
+    $clean = $Text
+    foreach ($pattern in @(
+        '(?is)(?:\u4E0D(?:\u53EF|\u80FD|\u6703)?|\u4E0D\u8981|\u672A|\u4E26\u672A|\u4E0D\u6703)\s*(?:\u5BA3\u7A31|\u8072\u7A31|\u8868\u793A|\u8996\u70BA)?\s*(?:full\s+)?complete',
+        '(?is)(?:must\s+not|do\s+not|cannot|can\s+not|not)\s+(?:claim\s+)?(?:full\s+)?complete',
+        '(?is)\bnot\s+(?:yet\s+)?complete\b',
+        '(?is)\bno\s+completion\s+claim\b'
+    )) {
+        $clean = [regex]::Replace($clean, $pattern, ' ')
+    }
+    return $clean
+}
+
+function Test-HookHasCompletionClaim {
+    param([string]$Text)
+    if (-not $Text) { return $false }
+    $searchText = Remove-HookNegatedCompletionReference -Text $Text
+    return ($searchText -match '(?i)\bcompletion_state\s*[:=]\s*complete\b|\b(complete|completed|done|finished|all set)\b|\u5DF2\u5B8C\u6210|\u5B8C\u6210\u4E86|\u5168\u90E8\u5B8C\u6210|\u53EF\u4EE5\u6536\u5C3E|\u53EF\u6536\u5C3E|(?:\u4F46|\u73FE\u5728|\u76EE\u524D|\u4EFB\u52D9|\u5DE5\u4F5C|\u4FEE\u6539).{0,8}\u5B8C\u6210')
+}
+
+function Test-HookHasStationCompletionEvidence {
+    param([string]$Text)
+    if (-not $Text) { return $false }
+    if (Test-HookHasNegatedStationCompletionEvidence -Text $Text) { return $false }
+    $requiredPatterns = @(
+        'delivery_artifact_id|change delivery artifact|change-delivery',
+        'validation_state\s*[:=]\s*(passed|accepted)|validation.*(passed|artifact)',
+        'review_state\s*[:=]\s*(accepted|passed)|review.*artifact',
+        'memory_docs_state\s*[:=]\s*(memory_delivery|not-applicable|passed)|memory/docs.*artifact|memory-docs.*artifact',
+        'completion_state\s*[:=]\s*complete|completion audit'
+    )
+    foreach ($pattern in $requiredPatterns) {
+        if ($Text -notmatch $pattern) { return $false }
+    }
+    return $true
+}
+
+function Test-HookHasNegatedStationCompletionEvidence {
+    param([string]$Text)
+    if (-not $Text) { return $false }
+    $evidenceToken = '(?:delivery_artifact_id|change[- ]delivery\s+artifact|validation(?:_state|\s+artifact)|review(?:_state|\s+artifact)|memory[-/]docs(?:_state|\s+artifact)|memory\s+docs(?:_state|\s+artifact)|completion\s+audit)'
+    $negativeTerm = '(?:missing|lack|lacks|lacking|without|absent|unavailable|not\s+provided|not\s+supplied|unprovided|\u7F3A\u5C11|\u672A\u63D0\u4F9B|\u6C92\u6709|\u7121)'
+    $precisePatterns = @(
+        ('(?is)\b(?:no)\s+(?:the\s+)?{0}\b' -f $evidenceToken),
+        ('(?is)(?:{0})\s+(?:the\s+)?{1}\b' -f $negativeTerm, $evidenceToken),
+        ('(?is)\b{0}\b(?:\s|[;:,.]){{0,24}}(?:{1})' -f $evidenceToken, $negativeTerm),
+        '(?is)\bartifact\b(?:\s|[;:,.]){{0,16}}(?:missing|unavailable|not\s+provided|not\s+supplied|unprovided)',
+        '(?is)(?:missing|unavailable|not\s+provided|not\s+supplied|unprovided)(?:\s|[;:,.]){{0,16}}\bartifact\b',
+        '(?is)(?:\u7F3A\u5C11|\u672A\u63D0\u4F9B|\u6C92\u6709|\u7121)(?:\s|[;:,.]){{0,16}}\bartifact\b'
+    )
+    foreach ($pattern in $precisePatterns) {
+        if ($Text -match $pattern) { return $true }
+    }
+    return $false
+}
+
+function Test-HookHasConflictingCompletionState {
+    param([string]$Text)
+    if (-not (Test-HookHasCompletionClaim -Text $Text)) { return $false }
+    return (Test-HookHasNonCompleteState -Text $Text)
+}
+
+function Test-HookHasCaptainSubstituteCompletionSignal {
+    param([string]$Text)
+    if (-not $Text) { return $false }
+    foreach ($pattern in @(
+        '(?is)\bcaptain\s+broad\s+read\b',
+        '(?is)\bcaptain\s+substitute\b',
+        '(?is)\bcaptain_authored\s*[:=]\s*true\b',
+        '(?is)\bdirect_exception\b.{0,100}(?:support|supports|\u652F\u6490|\u8996\u70BA|\u7576\u6210|\u7528|\u4F5C\u70BA|completion\s+evidence|complete|completed|full\s+complete|\u5B8C\u6210\u8B49\u64DA|\u5B8C\u6210\u5BA3\u7A31)',
+        '(?is)(?:support|supports|\u652F\u6490|\u8996\u70BA|\u7576\u6210|\u7528|\u4F5C\u70BA|completion\s+evidence|complete|completed|full\s+complete|\u5B8C\u6210\u8B49\u64DA|\u5B8C\u6210\u5BA3\u7A31).{0,100}\bdirect_exception\b'
+    )) {
+        if ($Text -match $pattern) { return $true }
+    }
+    return $false
+}
+
+function Get-HookStopRisk {
+    param([string]$Text)
+    if (-not (Test-HookHasCompletionClaim -Text $Text)) { return $null }
+    if (Test-HookHasConflictingCompletionState -Text $Text) {
+        return [PSCustomObject]@{
+            Code = 'TN-HOOK-COMPLETION-CONFLICTING-STATE'
+            Missing = 'rewrite mixed complete claim and non-complete state'
+        }
+    }
+    if (Test-HookHasCaptainSubstituteCompletionSignal -Text $Text) {
+        return [PSCustomObject]@{
+            Code = 'TN-HOOK-CAPTAIN-SUBSTITUTE-COMPLETION'
+            Missing = 'station-owned completion evidence'
+        }
+    }
+    if ($Text -match '(?i)memory[-/]docs|memory_docs|memory docs' -and $Text -notmatch '(?i)memory_docs_state|memory[-/]docs.*artifact|memory delivery') {
+        return [PSCustomObject]@{
+            Code = 'TN-HOOK-MEMORY-DOCS-CAPTAIN-SUBSTITUTION'
+            Missing = 'memory_docs_state, memory/docs delivery artifact'
+        }
+    }
+    if ($Text -match '(?i)external research|external_research|grounding' -and $Text -notmatch 'external_research_artifact_id\s*[:=]\s*[A-Za-z0-9._-]+') {
+        return [PSCustomObject]@{
+            Code = 'TN-HOOK-EXTERNAL-RESEARCH-MISSING-ARTIFACT'
+            Missing = 'external_research_artifact_id'
+        }
+    }
+    if (-not (Test-HookHasStationCompletionEvidence -Text $Text)) {
+        return [PSCustomObject]@{
+            Code = 'TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE'
+            Missing = 'change delivery, validation, review, memory/docs, completion audit artifacts'
+        }
+    }
+    return $null
+}
+
+function Write-StopAllow {
+    param([switch]$CompletionEvidence)
+    $messageKey = if ($CompletionEvidence) { 'StopCompleteAllowedSystemMessage' } else { 'StopNonCompleteAllowedSystemMessage' }
+    Write-HookJson -Body ([ordered]@{
+        systemMessage = (Get-HookMessage -Key $messageKey)
+    })
+}
+
+function Write-StopBlock {
+    param([object]$Risk)
+    $context = (Get-HookMessage -Key 'StopBlockedContext') -f $Risk.Code, $Risk.Missing
+    Write-HookJson -Body ([ordered]@{
+        decision = 'block'
+        reason = $context
+        systemMessage = (Get-HookMessage -Key 'StopBlockedSystemMessage')
+    })
+}
+
+function Write-StopReminder {
+    param([object]$Payload)
+    $text = Get-HookActionText -Payload $Payload
+    $risk = Get-HookStopRisk -Text $text
+    if ($null -ne $risk) {
+        Write-StopBlock -Risk $risk
+        return
+    }
+    Write-StopAllow -CompletionEvidence:(Test-HookHasCompletionClaim -Text $text)
+}
+
 $rawInput = [Console]::In.ReadToEnd()
 if (-not $rawInput -and $env:AI_RULES_HOOK_STDIN) {
     $rawInput = $env:AI_RULES_HOOK_STDIN
@@ -235,6 +389,7 @@ $eventName = [string](Get-HookPropertyValue -Object $payload -Names @('hook_even
 switch ($eventName) {
     'SessionStart' { Write-SessionStartReminder -Payload $payload }
     'PreToolUse' { Write-PreToolUseReminder -Payload $payload }
+    'Stop' { Write-StopReminder -Payload $payload }
     default { Write-PreToolUseReminder -Payload $payload -Reason ((Get-HookMessage -Key 'UnknownEventReasonFormat') -f $eventName) }
 }
 

@@ -2,8 +2,11 @@
   "name": "allow-pretool-rg-files-outer-agent-unknown-type-advisory",
   "scenarioCode": "pretool-rg-files-outer-agent-unknown-type-allow",
   "category": "allow",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
   "fixtureOrigin": "synthetic",
   "expectedOutcomeKind": "allow-reminder",
+  "canonicalDecision": "advisory",
   "expectedDecision": "allow",
   "expectedOutputRegex": "advisory/reminder.*提醒模式，不會阻擋工具.*請先停止這次工具呼叫.*broad-read",
   "input": {

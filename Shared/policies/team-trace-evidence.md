@@ -8,22 +8,27 @@ Static rules can prove that the framework text is present.
 
 They cannot prove that a specific task actually followed the required sequence.
 
-The required sequence is:
+Team trace evidence proves that a specific task followed the required sequence.
+`Shared/policies/workflow-orchestration.md` owns that runtime sequence; this file owns only the trace fields and invalid trace patterns.
 
-- Director instruction -> captain intake -> translation.
-- Board creation -> specialist station assignment -> execution-channel decision.
-- Specialist work or blocked/unverified channel state -> captain supervision.
-- Returned change delivery artifacts or evidence delivery artifacts -> captain logs received station output.
-- Captain ledger and board updates -> independent validation and review -> completion audit -> report.
+Shared value catalogs used by this trace:
 
-Team trace evidence fills that gap.
+- Status meanings and route/state separation:
+  `Shared/policies/references/status-ontology.md`.
+- Completion targets and completion states:
+  `Shared/policies/references/completion-state-machine.md`.
+- Authorization phases:
+  `Shared/policies/references/authorization-phase-registry.md`.
+- Protected actions:
+  `Shared/policies/references/protected-action-registry.md`.
+- Hook event lifecycle:
+  `Shared/policies/references/hook-event-matrix.md`.
+- Exception records:
+  `Shared/policies/references/exception-registry.md`.
+- Source/runtime/generated copy roles:
+  `Shared/policies/references/platform-copy-map.md`.
 
-`Shared/policies/workflow-orchestration.md` owns the runtime sequence that this trace records.
-
-The recorded runtime sequence is:
-
-- route -> authorization -> operation_mode -> board -> dispatch wave -> handoff packet.
-- channel state -> delivery artifact -> completion.
+The recorded runtime sequence follows `Shared/policies/workflow-orchestration.md`.
 
 Trace evidence also proves that authorization was scope-bound.
 
@@ -110,14 +115,19 @@ Raw English-only field lists belong only inside machine-readable trace payloads 
 
 Raw English-only field lists are not the Director-facing explanation.
 
+Value sets for board, station, channel, lifecycle, and delivery-artifact fields
+are owned by `Shared/skills/team-task-board/references/board-field-catalog.md`.
+Status meanings and route/state separation are owned by
+`Shared/policies/references/status-ontology.md`.
+
 #### `task_id`
 
 - Required content: Stable task identifier or timestamp
 
 #### `task_type`
 
-- Required content: discussion, exploration, blueprint, build-plan, implementation, or fix-debug.
-- Required content: validation-audit, commit-release, or handoff-skill.
+- Required content: canonical workflow task type from
+  `Shared/policies/references/workflow-team-evidence.md`.
 
 #### `workflow_route`
 
@@ -130,22 +140,23 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `execution_spec_state`
 
-- Required content: `draft`, `resolved`, `blocked`, `unverified`, or `not-applicable`.
+- Required content: execution-spec state from
+  `Shared/policies/references/workflow-execution-spec-contract.md`.
 - Required content: Human flowcharts do not satisfy this field.
 
 #### `dormant_readiness_hook_state`
 
-- Required content: not-applicable, primed-no-write, activated-by-current-request, blocked, or unverified.
+- Required content: readiness state from the hook lifecycle and status catalogs.
 - Required content: This field proves startup readiness did not authorize work by itself.
 
 #### `captain_pre_action_guard_state`
 
-- Required content: not-applicable, passed-micro-read, passed-station-trace, blocked, or unverified.
+- Required content: pre-action guard state from the board/status catalogs.
 - Required content: This field applies before captain broad reads, source writes, validation, review, memory/docs, or completion evidence.
 
 #### `operation_mode`
 
-- Required content: `daily` for reduced routine Team-Native work, or `full` for complete Team-Native work
+- Required content: operation mode governed by `Shared/policies/team-native-core.md`
 
 #### `operation_mode_reason`
 
@@ -153,12 +164,12 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `board_state`
 
-- Required content: `draft`, `formal-readonly`, or `formal-write`.
+- Required content: board state from `team-task-board` and the board field catalog.
 - Required content: Legacy `formal` must be narrowed before the trace can support completion.
 
 #### `implementation_authorization`
 
-- Required content: no-write, plan-only, scope-resolved-write, scope-resolved-push, release-authorized, or blocked.
+- Required content: implementation authorization state from authorization resolution and status catalogs.
 
 #### `go_evidence`
 
@@ -179,8 +190,8 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `authorization_phase`
 
-- Required content: plan-only, implementation-change-delivery, change-application, validation, or review.
-- Required content: memory-docs, memory-commit, git, release, deployment, install, external-mutation, or blocked.
+- Required content: canonical value from
+  `Shared/policies/references/authorization-phase-registry.md`, or blocked/unverified reason.
 
 #### `authorization_evidence`
 
@@ -193,7 +204,8 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `authorization_resolution_state`
 
-- Required content: authorized, no-write, scope-mismatch, phase-mismatch, expired, unverified, blocked, or revoked.
+- Required content: authorization resolution state from
+  `Shared/policies/authorization-resolution.md` and status catalogs.
 
 #### `platform_mode_observed`
 
@@ -210,7 +222,7 @@ Raw English-only field lists are not the Director-facing explanation.
 #### `role_id`
 
 - Required content: One of the registered ten specialist roles, such as `intent-requirements`, `change-delivery`, or `review`.
-- Required content: Blocked or unverified reason.
+  Record a blocked or unverified reason when no valid role exists.
 
 #### `role_instance_id`
 
@@ -220,8 +232,7 @@ Raw English-only field lists are not the Director-facing explanation.
 #### `exclusive_task_scope`
 
 - Required content: Usually `task`.
-- Required content: This field proves the specialist role instance is exclusive within the current task trace.
-- Required content: Blocked or unverified reason.
+  This proves the specialist role instance is exclusive within the current task trace, or records the blocked/unverified reason.
 
 #### `loaded_skill_refs`
 
@@ -234,9 +245,7 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `domain_label`
 
-- Required content: Domain label used for the station, such as governance rules, platform capability, or testing automation.
-- Required content: Domain label used for memory governance, documentation, or architecture quality.
-- Required content: Domain label used for external information.
+- Required content: Domain label used for the station, such as governance, platform capability, testing, memory, documentation, architecture, or external information.
 
 #### `requested_execution_channel`
 
@@ -244,18 +253,15 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `channel_capability`
 
-- Required content: available, conditional, unavailable, or unverified
+- Required content: channel capability value from the board field catalog and platform capability matrix.
 
 #### `channel_invocation_status`
 
-- Required content: not-started, requested, running, returned, unavailable, blocked, or not-authorized
+- Required content: invocation status from the board field catalog and status catalogs.
 
 #### `channel_run_id`
 
-- Required content: Unique identifier for one concrete execution-channel attempt, including native subagent, adapter, or CLI.
-- Required content: Unique identifier for one concrete execution-channel attempt, including browser or MCP read.
-- Required content: Unique identifier for station-owned main-worktree change delivery or isolated workspace.
-- Required content: Unique identifier for one concrete execution-channel attempt, including text artifact or change-application gate.
+- Required content: Unique identifier for one concrete execution-channel attempt, including subagent, adapter, CLI, browser, MCP, change-delivery, isolated/text artifact, or change-application.
 
 #### `channel_generation`
 
@@ -267,8 +273,7 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `replacement_reason`
 
-- Required content: Why a replacement channel was opened, such as unresponsive, hard-timeout, or role-boundary.
-- Required content: Why a replacement channel was opened, such as stale context, blocked route, or not-applicable.
+- Required content: Why a replacement channel was opened, such as unresponsive, hard-timeout, role-boundary, stale context, blocked route, or not-applicable.
 
 #### `execution_route`
 
@@ -277,10 +282,7 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `execution_channel`
 
-- Required content: Native subagent, project custom agent, tool/MCP, command evidence, or browser evidence.
-- Required content: External research, station-owned main-worktree change delivery, or isolated change delivery.
-- Required content: Text change delivery or station-owned authorized change-application gate.
-- Required content: Platform-nondelegable protected-action record.
+- Required content: Execution channel or delivery form, including subagent, tool/MCP, CLI/browser evidence, external research, change delivery/application, isolated/text delivery, or platform-nondelegable protected-action record.
 
 #### `tool_execution_envelope`
 
@@ -310,35 +312,33 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `execution_receipt_decision`
 
-- Required content: allowed, blocked, unverified, not-authorized, or not-applicable.
+- Required content: tool receipt decision from the execution envelope/status catalogs.
 
 #### `station_state`
 
-- Required content: assigned, standby, running, returned, blocked, unverified, closed-with-director-risk, or not-applicable.
+- Required content: station state from the board field catalog.
+- Status meanings come from `Shared/policies/references/status-ontology.md`.
 
 #### `evidence_state`
 
-- Required content: pending, returned, logged, routed-to-owner-station, blocked, or unverified.
-- Required content: closed-with-director-risk or not-applicable.
+- Required content: evidence state from the board field catalog.
+- Status meanings come from `Shared/policies/references/status-ontology.md`.
 
 #### `station_lifecycle_state`
 
-- Required content: assigned, standby, retained, reused, handoff-required, closed, replaced, blocked, or not-applicable.
+- Required content: lifecycle state from the board field catalog.
 
 #### `station_mode`
 
-- Required content: Station posture: `read-only`, `change-delivery`, `change-application`, or `validation`.
-- Required content: Station posture: `review`, `memory-docs`, `completion`, `protected-gate`, or `not-applicable`.
+- Required content: station mode from the board field catalog.
 
 #### `handoff_ownership`
 
-- Required content: Current handoff owner: `station-owned`, `platform-nondelegable-gate`, or `returned-to-captain`.
-- Required content: Current handoff owner: `reassigned`, `blocked`, `unverified`, or `not-applicable`.
+- Required content: handoff ownership value from the board field catalog.
 
 #### `context_visibility`
 
-- Required content: Scope visibility: `specialist-deep-read`, `captain-coordination-only`, or `shared-visible`.
-- Required content: Scope visibility: `unread` or `not-applicable`.
+- Required content: context visibility value from the board field catalog.
 
 #### `retention_reason`
 
@@ -346,7 +346,7 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `conversation_health`
 
-- Required content: clear, needs-handoff, stale, over-budget, role-conflict, or blocked
+- Required content: conversation health value from the board/status catalogs
 
 #### `reuse_count`
 
@@ -379,12 +379,12 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `external_grounding_state`
 
-- Required content: not-required, required, requested, sufficient, partial, no-evidence, conflicted, blocked, or unverified.
+- Required content: grounding value governed by `grounding-governance.md`
+  with status meaning from `Shared/policies/references/status-ontology.md`.
 
 #### `source_tier`
 
-- Required content: official, primary, high-confidence-secondary, low-confidence-community, or local-tool-output.
-- Required content: not-applicable or unknown.
+- Required content: source tier value from grounding governance, or not-applicable/unknown.
 
 #### `source_date_or_version`
 
@@ -397,8 +397,7 @@ Raw English-only field lists are not the Director-facing explanation.
 #### `captain_coordination_read_scope`
 
 - Required content: Narrow coordination read scope for station-output ledgering or board maintenance.
-- Required content: Narrow coordination read scope for blocker handling, conflict resolution, or scope-question routing.
-- Required content: It is not validation, review, memory/docs attribution, or completion evidence.
+  Also covers blocker handling, conflict resolution, or scope-question routing; it is not validation, review, memory/docs attribution, or completion evidence.
 
 #### `unread_scope`
 
@@ -422,17 +421,15 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `heartbeat_state`
 
-- Required content: not-required, pending, received, overdue, unavailable, or not-applicable
+- Required content: heartbeat state from the board/status catalogs
 
 #### `status_probe_state`
 
-- Required content: not-sent, sent, paused-reported, responded-paused, or awaiting-resume.
-- Required content: responded-extension-requested, responded-blocked, unresponsive, unavailable, or not-applicable.
+- Required content: status-probe state from the board/status catalogs.
 
 #### `status_probe_sent_at`
 
-- Required content: Local timestamp when the captain asked the channel for status after uncertainty or timeout.
-- Required content: not-applicable.
+- Required content: Local timestamp when the captain asked the channel for status after uncertainty or timeout, or not-applicable.
 
 #### `status_probe_response_at`
 
@@ -440,12 +437,11 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `status_probe_pause_report`
 
-- Required content: Specialist report after a status probe: current stop point, blocker state, and whether continuing is safe.
-- Required content: not-applicable.
+- Required content: Specialist report after a status probe, including stop point, blocker state, and safe-to-continue judgment, or not-applicable.
 
 #### `status_probe_resume_state`
 
-- Required content: awaiting-resume, resume-sent, resumed, blocked, or unavailable.
+- Required content: resume state from the board/status catalogs.
 - Required content: No-probe cases are represented by `status_probe_state`.
 
 #### `status_probe_resume_sent_at`
@@ -462,12 +458,11 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `timeout_action`
 
-- Required content: standby, replace, blocked, unverified, director-input, or not-applicable
+- Required content: timeout action from the board/status catalogs
 
 #### `late_result_policy`
 
-- Required content: late-result-pending, receive-and-compare, accept-until-hard-timeout, or ignore-after-cancelled.
-- Required content: blocked, unverified, or not-applicable.
+- Required content: late-result policy from the board/status catalogs.
 
 #### `late_result_window`
 
@@ -475,7 +470,7 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `cancellation_state`
 
-- Required content: not-requested, cancellation-pending, requested, acknowledged, ignored, unavailable, or not-applicable.
+- Required content: cancellation state from the board/status catalogs.
 
 #### `returned_at`
 
@@ -483,17 +478,15 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `return_timing`
 
-- Required content: on-time, late, not-returned, or not-applicable
+- Required content: return timing from the board/status catalogs
 
 #### `receipt_decision`
 
-- Required content: logged, included-in-synthesis-ledger, routed-to-owner-station, or superseded-by-replacement.
-- Required content: out-of-scope, duplicate, conflict-review, blocked, unverified, or not-applicable.
+- Required content: receipt decision from the board/status catalogs.
 
 #### `receipt_decision_reason`
 
-- Required content: Why the returned or late artifact was logged, included in the synthesis ledger, or routed to an owner station.
-- Required content: Why the returned or late artifact was superseded, marked out of scope, marked duplicate, or routed to conflict review.
+- Required content: Why the returned or late artifact was logged, routed, superseded, marked out of scope, marked duplicate, or routed to conflict review.
 
 #### `conflict_with_artifact_id`
 
@@ -501,8 +494,7 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `final_channel_closure_reason`
 
-- Required content: Completed delivery, superseded, cancelled, hard-timeout, role conflict, blocked, or unverified.
-- Required content: Director risk close or not-applicable.
+- Required content: final channel closure reason from the board/status catalogs.
 
 #### `standby_reason`
 
@@ -510,15 +502,15 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `closeout_lane`
 
-- Required content: light, standard, release-grade, or not-applicable
+- Required content: closeout lane from the completion and board catalogs
 
 #### `yellow_classification`
 
-- Required content: fix-this-cycle, residual-accepted, deferred-follow-up, local-customization, informational, or not-applicable.
+- Required content: yellow classification from the board/status catalogs.
 
 #### `yellow_resolution_state`
 
-- Required content: fixed, deferred, accepted-residual, escalated-blocked, escalated-red, or not-applicable
+- Required content: yellow resolution state from the board/status catalogs
 
 #### `repair_loop_count`
 
@@ -526,8 +518,7 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `delivery_artifact`
 
-- Required content: Intent, scope, architecture, change, validation, review, memory, or documentation.
-- Required content: Completion or evidence delivery artifact.
+- Required content: delivery artifact family from `team-task-board` and the matching delivery artifact skill.
 
 #### `delivery_artifact_id`
 
@@ -535,8 +526,7 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `delivery_artifact_status`
 
-- Required content: pending, returned, logged, applied-by-owner-station, blocked, or unverified.
-- Required content: closed-with-director-risk or not-applicable.
+- Required content: delivery artifact status from the board/status catalogs.
 
 #### `author_role`
 
@@ -553,17 +543,17 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `review_state`
 
-- Required content: not-started, pending, accepted, fix-required, blocked, unverified, accepted-risk, or not-applicable.
+- Required content: review lifecycle state from quality review governance.
 - Required content: accepted-risk is a review lifecycle judgment only.
 - Required content: It is not a Team-Native station status, delivery artifact status, or completion status.
 
 #### `validation_state`
 
-- Required content: not-started, pending, passed, failed, blocked, unverified, or not-applicable
+- Required content: validation state from the board/status catalogs.
 
 #### `memory_docs_state`
 
-- Required content: not-started, memory_delivery, blocked, unverified, closed-with-director-risk, or not-applicable.
+- Required content: memory/docs state from the memory/docs delivery artifact and status catalogs.
 
 #### `captain_authored`
 
@@ -573,13 +563,11 @@ Raw English-only field lists are not the Director-facing explanation.
 #### `no_captain_authoring`
 
 - Required content: true/blocked/unverified/closed-with-director-risk statement.
-- Required content: This statement proves the captain did not author specialist implementation or review work.
-- Required content: This statement proves the captain did not author validation or memory attribution work.
+  This proves the captain did not author specialist implementation, review, validation, or memory attribution work.
 
 #### `stations`
 
-- Required content: Station list with applicability, execution route/channel, and owner.
-- Required content: Station list with role boundary, direct exception, and completion condition.
+- Required content: Station list with applicability, execution route/channel, owner, role boundary, direct exception, and completion condition.
 
 #### `waves`
 
@@ -601,25 +589,22 @@ Raw English-only field lists are not the Director-facing explanation.
 #### `captain_artifact_receipt_risk`
 
 - Required content: Legacy-risk field.
-- Required content: Use only to record not-applicable when old captain artifact-receipt wording appears in a trace.
-- Required content: Use only to record non-complete blocked/unverified risk for old captain artifact-receipt wording.
-- Required content: New traces use neutral synthesis-ledger language.
+  Use only to record not-applicable or non-complete blocked/unverified risk for old captain artifact-receipt wording.
+  New traces use neutral synthesis-ledger language.
 
 #### `captain_context_burden`
 
 - Required content: none, coordination-only, or direct-exception.
-- Required content: This field records whether the captain avoided parallel reads, duplicate scans, or re-checks.
-- Required content: This field records whether the captain avoided substitute validation/review.
-- Required content: This field records whether the captain avoided memory/docs attribution and captain-owned member finding rewrites.
+  This records whether the captain avoided parallel reads, duplicate scans, substitute validation/review, memory/docs attribution, and member-finding rewrites.
 
 #### `captain_substitute_authoring`
 
-- Required content: blocked by default.
-- Required content: closed-with-director-risk only with case-specific Director approval and no full-team-completion claim.
+- Required content: blocked by default; `closed-with-director-risk` only with case-specific Director approval and no full-team-completion claim.
 
 #### `completion_state`
 
-- Required content: complete, closed-with-director-risk, blocked, unverified, or not-applicable
+- Required content: value governed by
+  `Shared/policies/references/completion-state-machine.md`.
 
 #### `risk_close_evidence`
 
@@ -631,11 +616,13 @@ Raw English-only field lists are not the Director-facing explanation.
 
 #### `source_deployed_pair`
 
-- Required content: Source file and deployed copy pair when a generated/runtime copy is affected
+- Required content: Source/runtime or source/generated pair when a copy role from
+  `Shared/policies/references/platform-copy-map.md` is affected.
 
 #### `sync_direction`
 
-- Required content: source-to-deployed, deployed-to-source-backfill, not-applicable, blocked, or unverified
+- Required content: canonical sync direction from
+  `Shared/policies/references/platform-copy-map.md`.
 
 #### `sync_evidence`
 
@@ -694,7 +681,8 @@ Raw English-only field lists are not the Director-facing explanation.
 - The Director-facing completion body follows `Shared/policies/language-governance.md`.
 - These values may close as blocked, unverified, closed-with-director-risk, or not-applicable.
 - These values may close that way only when the trace is not claiming full completion.
-- `completion_state` is limited to `complete`, `closed-with-director-risk`, `blocked`, `unverified`, or `not-applicable`.
+- `completion_state` values and closeout targets are governed by
+  `Shared/policies/references/completion-state-machine.md`.
 - `completed`, `done`, `accepted-risk`, and other informal states must not pass as completion evidence.
 - Two or more evidence-oriented stations marked direct require station-specific `direct_exceptions`.
 - Two or more evidence-oriented stations marked direct require replacement evidence and residual state.
@@ -703,6 +691,8 @@ Raw English-only field lists are not the Director-facing explanation.
 - Missing route capability belongs in `station_state`, `evidence_state`, `authorization_resolution_state`, or `completion_state`.
 - `direct` belongs only in `direct_exception` / `direct_exceptions`.
 - `direct` is not a canonical route, channel, board state, station state, or completion state.
+- Exception record meanings are governed by
+  `Shared/policies/references/exception-registry.md`.
 - Write-capable or protected mutation traces must include a trusted `tool_execution_envelope`.
 - Write-capable or protected mutation traces must include trusted issuer, signature, nonce, and matching `execution_receipt`.
 - Missing or untrusted envelope evidence keeps the action blocked or unverified.
@@ -800,7 +790,8 @@ These patterns must not pass:
 - Missing Team-Native trace evidence for Doctor/Audit rule changes.
 - Missing Team-Native trace evidence for routine audit rule readiness.
 - Missing Team-Native trace evidence for commit/release preparation.
-- `completion_state` outside `complete`, `closed-with-director-risk`, `blocked`, `unverified`, or `not-applicable`.
+- A `completion_state` value that is not defined by
+  `Shared/policies/references/completion-state-machine.md`.
 - A non-complete `completion_state` paired with a completion claim.
 - A completion claim is invalid when its trace or evidence appendix lacks parseable `stations`.
 - A completion claim is invalid when its trace or evidence appendix lacks parseable `delivery_artifacts`.
@@ -863,6 +854,8 @@ These patterns must not pass:
 - Counting a captain pre-action guard reminder or would-block risk as validation, review, memory/docs attribution, or completion proof.
 - `blocked`, `unverified`, `standby`, `not-authorized`, `unavailable`, or `closed-with-director-risk` placed in `execution_route`.
 - Those state values must not be placed in `execution_channel`, execution mode, or platform route fields.
+- Route/state separation is governed by
+  `Shared/policies/references/status-ontology.md`.
 - Missing authorization source, target, scope, phase, evidence, expiry, resolution state, or observed platform mode.
 - This applies to any trace claiming write, change-delivery, change-application, memory, git, release, or deployment authority.
 - This applies to any trace claiming install or external-mutation authority.

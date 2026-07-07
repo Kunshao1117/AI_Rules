@@ -10,6 +10,20 @@ It applies before these work types begin:
 Authorization is scope-bound evidence.
 It is not inferred from workflow name, platform mode, channel availability, or a general request to use an agent.
 
+Canonical value owners:
+
+- Authorization phases:
+  `Shared/policies/references/authorization-phase-registry.md`.
+- Protected actions:
+  `Shared/policies/references/protected-action-registry.md`.
+- Status meanings:
+  `Shared/policies/references/status-ontology.md`.
+- Completion and risk-close boundaries:
+  `Shared/policies/references/completion-state-machine.md`.
+
+Protected-action categories and required phase mapping are governed by
+`Shared/policies/references/protected-action-registry.md`.
+
 ## Priority Contract
 
 Team-Native Core has the highest governance priority after the current Director request asks for governed work touching these areas:
@@ -320,9 +334,8 @@ Required field meanings:
   - Concrete allowed operation boundary.
   - Examples include files, directories, generated copies, memory cards, commands, release actions, or none.
 - `authorization_phase`
-  - Allowed values include `plan-only`, `implementation-change-delivery`, and `change-application`.
-  - They also include `validation`, `review`, `memory-docs`, `memory-commit`, `git`, and `release`.
-  - They also include `deployment`, `install`, `external-mutation`, or `blocked`.
+  - Canonical value from
+    `Shared/policies/references/authorization-phase-registry.md`.
 - `authorization_evidence`
   - Prompt excerpt, board row, approval UI event, command confirmation, or missing evidence reason.
 - `authorization_expiry`

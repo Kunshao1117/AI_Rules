@@ -4,14 +4,14 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-07T06:07:37+08:00'
+last_updated: '2026-07-07T22:47:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
-memory_kind: governance_rule
+memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T06:07:37+08:00'
+last_verified: '2026-07-07T20:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -34,24 +34,23 @@ metadata:
 
 # _system.scripts — Repository Script Governance Memory
 ## Current Truth
-- This child card owns root PowerShell deployment, split Audit module scripts, audit tests, memory migration, skill sync, platform sync, and D0/source-size validation scripts.
-- `Scripts/tests/Validate-D0Minimal.ps1` is the D0 minimal validation route for source sentinels covering PowerShell parse/import, extension JSON/runtime gates, package-lock parsing, release workflow, installer hardening, and scriptRunner guards.
-- `Read-PackageLockSummary` feeds the inline Node parser through stdin and reads the package-lock path from `process.argv[2]`, matching `node - <path>` invocation semantics.
-- Doctor, Deploy Audit, and manager Doctor fail closed on governance-audit Red findings, failed audit results, and Team-Native hard-gate failures; core policy drift remains Red for hard-policy pairs.
-- Repo-managed Codex Hooks and fixtures are committed under the Codex hook source/deployed pair and `Scripts/tests/codex-hooks/`; the runner validates hook config/script presence, commandWindows host-wrapper cases, fixture expectations, optional source/deployed hash parity, and git tracking.
-- Audit checks scope-bound Batch 3 authorization semantics, trusted tool envelope/receipt validity, formal-write/protected gates, and legacy trace non-authorization.
-- Audit and Skills-Sync cover workflow-orchestration shared references, source/deployed drift, scenario templates, Team-Native semantics, and mixed completion wording.
-- Doctor/Audit enforce Team-Native trace fields, role identity, loaded skills, handoff packets, delivery artifacts, lifecycle fields, closeout lanes, captain-authoring safety, and active-Team captain-led station ownership.
-- Governance sync and Doctor include authorization-resolution policy, exact SHA256 deploy-copy drift checks, forbidden authorization semantic scans, and downstream `.agents/` shared-reference/project-tool sync.
-- Audit reports Director-facing diagnostics in Traditional Chinese with exact machine tokens, and includes output-quality plus high-change external-grounding coverage before commit readiness.
-- Audit distinguishes active Team context from inactive ordinary lifecycle, covers `03-1` reduced/minimal experiment boards, and checks non-Hooks channel lifecycle plus empty parent/index `## Tracked Files` delegation evidence.
+- This memory card is a source/status pointer for script ownership and validation context; it is not a runtime governance rule source.
+- Canonical behavior and runtime rules live in tracked `Scripts/**` source files plus referenced Shared policies/skills; this card owns root PowerShell deployment, split Audit module scripts, audit tests, memory migration, skill sync, platform sync, and D0/source-size validation scripts.
+- `Scripts/tests/Validate-D0Minimal.ps1` is the D0 minimal validation route for parse/import, extension JSON/runtime gates, package-lock parsing, release workflow, installer hardening, and scriptRunner guards; `Read-PackageLockSummary` feeds Node through stdin and reads `process.argv[2]`.
+- Doctor, Deploy Audit, and manager Doctor fail closed on governance-audit Red findings, failed audit results, Team-Native hard-gate failures, and hard-policy source/deployed drift.
+- Repo-managed Codex Hooks and fixtures are under the Codex hook source/deployed pair and `Scripts/tests/codex-hooks/`; the runner validates hook config/script presence, commandWindows host-wrapper cases, fixture expectations, optional source/deployed hash parity, and git tracking.
+- Audit checks authorization semantics, trusted tool envelope/receipt validity, formal-write/protected gates, trace non-authorization, workflow references, scenario templates, Team-Native semantics, mixed completion wording, and source/deployed drift.
+- Doctor/Audit enforce Team-Native trace fields, role identity, loaded skills, handoff packets, delivery artifacts, lifecycle fields, closeout lanes, captain-authoring safety, active-Team captain-led station ownership, and downstream `.agents/` shared-reference/project-tool sync.
+- Audit reports Director-facing diagnostics in Traditional Chinese with exact machine tokens, output-quality coverage, high-change external-grounding coverage, active/inactive Team context separation, `03-1` reduced/minimal experiment boards, non-Hooks channel lifecycle, and empty parent/index `## Tracked Files` delegation evidence.
+- Ownership status: new Codex hook governance catalog sources are present at `Scripts/modules/Audit/CodexHookGovernance.catalog.json` and `Scripts/modules/Audit/CodexHookGovernance/Catalog.ps1`; cartridge metadata sync is handled through protected `memory_commit`.
 ## Active Constraints
-- Do not mutate external repositories or deployment targets without explicit Director approval.
-- Keep script behavior aligned with protected memory and project-skill directories.
-- Do not use this card as a substitute for reading the current script implementation before edits.
+- Do not use this card as runtime authority for current governance behavior; verify current behavior from the canonical script and policy sources.
+- External repository and deployment target mutations are protected states with explicit Director approval evidence.
+- Script behavior alignment target includes protected memory and project-skill directories.
+- Current script implementation is the source context for edits; this card is not a substitute source.
 - Treat `Measure-WorkflowMetadata` and `Measure-GovernanceSemantics` Red 0 / Yellow 0 as upstream validation evidence unless the current station reruns those checks.
 - Treat hook diagnostics and deny decisions as tool-guard evidence only; authorization, memory, git, release, deploy, install, and completion gates remain separate protected phases.
-- Do not use full Doctor or `Measure-CodexHookGovernance` as completion evidence for non-Hooks lifecycle work.
+- Full Doctor and `Measure-CodexHookGovernance` are non-completion evidence for non-Hooks lifecycle work.
 - Treat D0 minimal validation as source-side sentinel evidence; deployed parity still requires the governed sync/parity route.
 ## Cycle Events
 - 61: Repaired ownership for source-size governance validation and split Audit module scripts in `## Tracked Files`.
@@ -77,9 +76,8 @@ metadata:
 - tool: commit preflight identified active-card compaction due on 2026-06-30.
 - director: 2026-06-30 GO authorized compaction of the four blocking memory cards.
 ## Read Contract
-- Read this card when changing root PowerShell scripts.
-- Read `_system.scripts.codex-hooks-fixtures` when changing Codex hook JSON fixtures.
-- Read `_system` for repository-level governance and release context before high-risk script changes.
+- This card is read context for root PowerShell script changes; `_system.scripts.codex-hooks-fixtures` is read context for Codex hook JSON fixture changes.
+- `_system` is repository-level governance and release context for high-risk script changes.
 ## Conflicts and Supersession
 - No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
 ## 中文摘要
@@ -98,6 +96,8 @@ metadata:
 - Scripts/modules/Audit/30.WorkflowPlatform.ps1
 - Scripts/modules/Audit/40.PolicySemantics.ps1
 - Scripts/modules/Audit/50.CodexHookGovernance.ps1
+- Scripts/modules/Audit/CodexHookGovernance.catalog.json
+- Scripts/modules/Audit/CodexHookGovernance/Catalog.ps1
 - Scripts/modules/Audit/60.ProgrammingTeamGovernance.ps1
 - Scripts/modules/Audit/70.DirectorOutputGrounding.ps1
 - Scripts/modules/Audit/80.ProjectStores.ps1

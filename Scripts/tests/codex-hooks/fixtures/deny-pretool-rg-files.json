@@ -1,11 +1,14 @@
 {
   "name": "deny-pretool-rg-files",
   "scenarioCode": "pretool-rg-files-deny",
-  "category": "deny",
+  "category": "negative",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
   "fixtureOrigin": "synthetic",
-  "expectedOutcomeKind": "deny",
+  "expectedOutcomeKind": "advisory-would-block",
+  "canonicalDecision": "deny",
   "expectedDecision": "deny",
-  "expectedOutputRegex": "已阻擋全 repo 掃描.*請先派站點或改用命名檔/窄範圍讀取",
+  "expectedOutputRegex": "已阻擋全 repo 掃描.*禁止隊長用 rg --files 或 git ls-files 直接產生 repo inventory evidence.*請先派站點或改用命名檔/窄範圍讀取",
   "input": {
     "hook_event_name": "PreToolUse",
     "session_id": "fixture-session",

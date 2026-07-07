@@ -14,10 +14,18 @@ That policy covers outside facts, source type, freshness sensitivity, and no-evi
 Skills and workflow entries cite that policy instead of embedding research or verification playbooks.
 Source-document size and split decisions are governed by `Shared/policies/source-document-size-governance.md`.
 That policy covers core, shared policies, `SKILL.md`, memory cards, PowerShell modules, audit rule packs, and general source files.
+Source/runtime/generated surface classification is governed by `Shared/policies/references/source-runtime-surface-map.md`.
+That reference expands the repository surface map while `Shared/policies/references/platform-copy-map.md` keeps the compact copy-role and sync-direction values.
 
 ## Skill Placement Contract
 
 Layer meanings:
+
+Operational governance content has five durable homes: policies, skills, workflow entries, memory cards, and scripts.
+Platform core, runtime copies, generated blocks, logs, and caches may cite or carry those homes, but they do not become competing governance sources.
+Memory cards must not carry governance rules.
+Scripts must not embed large governance manuals.
+Workflow entries must not copy full policy manuals.
 
 ### Core rules
 
@@ -35,7 +43,7 @@ Layer meanings:
 
 - Purpose: Task routing and lifecycle phase selection.
 - Put here: Build/fix/commit/audit stage order and explicit load gates.
-- Do not put here: Full implementation recipes shared across platforms.
+- Do not put here: Full implementation recipes shared across platforms, copied policy manuals, memory procedures, or script playbooks.
 
 ### Shared skills
 
@@ -47,7 +55,13 @@ Layer meanings:
 
 - Purpose: Project-specific facts and decisions.
 - Put here: Current architecture, version choices, repo lessons, and module ownership.
-- Do not put here: Generic procedure that should apply to many projects.
+- Do not put here: Governance rules, generic procedure that should apply to many projects, workflow gates, reusable script manuals, or platform policy copies.
+
+### Scripts and automation
+
+- Purpose: Deterministic executable mechanics.
+- Put here: Small checks, transforms, sync helpers, wrappers, and validators that consume policies, skills, or references.
+- Do not put here: Large governance manuals, rule catalogs, workflow handbooks, memory schemas, or human-readable policy authority.
 
 ### Project context
 
@@ -84,6 +98,7 @@ Governance content must use the smallest durable home that still preserves the e
 - Workflow entries keep route order, load gates, and task-specific evidence expectations.
 - Skills keep operational procedures, artifact formats, tool recipes, and references loaded on demand.
 - Memory keeps source-backed project facts and active constraints.
+- Scripts keep executable mechanics only and cite their governance source instead of embedding the manual.
 - Project context keeps long-lived preferences and design or acceptance DNA.
 
 If a paragraph duplicates a canonical policy, replace it with a reference.
@@ -117,9 +132,14 @@ The exception is a task that explicitly names them as the source repair target.
 Governance, workflow, skill, and public-contract changes must record the source/deployed pair strategy before completion:
 
 - Source-first is the normal path.
+- Runtime copies are synchronized after the source change through a scoped deploy, generated-copy sync, or change-application gate.
+- Generated output is not an authority source; repair the generator or source policy, then regenerate or mark parity unverified.
 - Deployed-first emergency repair must be backfilled to source before it can be complete.
 - Updating only a deployed copy is an invalid completion for framework-level governance.
 - Missing parity evidence is blocked or unverified, not a harmless warning.
+
+Use `Shared/policies/references/source-runtime-surface-map.md` to classify `source`, `runtime`, `generated`, `legacy`, and `local-customization` surfaces before deciding the repair order.
+Legacy and local customization surfaces may be preserved as local behavior, but they do not define reusable governance unless a source backfill is explicitly scoped.
 
 ## Skill Relation Metadata
 
@@ -215,9 +235,24 @@ Platform entries must preserve `operation_mode`:
 - `full` is required for implementation, repair, bottom-layer refactor, cross-file governance, and specialist skill rewrites.
 - `full` is also required for Doctor/Audit changes, commit/release/deploy preparation, or protected external-state readiness.
 
+Platform entry load gates must distinguish always-required route context from conditional platform context:
+
+- Workflow route row, workflow orchestration, and Director-facing language governance are always required for governed broad evidence, source-impacting work, or completion language.
+- Platform capability matrix loading is conditional when platform adapter behavior, tool capability, permission surface, evidence limits, source-impacting work, protected phases, or log-write capability affects the route.
+- Do not mark platform capability loading as always-required unless every phase in that entry genuinely needs platform translation.
+
 Platform entries must not weaken the shared contract.
 They must not replace required delivery artifacts with generic main-thread handling.
 Those artifacts are implementation change delivery, memory delivery, review, and validation delivery artifacts.
+
+## Team Field Ownership Contract
+
+Team board, handoff, trace, and completion files may repeat a field name only to show how that field is consumed in that layer.
+Canonical board-facing field names and value sets live in `Shared/skills/team-task-board/references/board-field-catalog.md`.
+Station startup payloads live in `Shared/skills/team-station-handoff-packet/SKILL.md`.
+Trace audit expectations live in `Shared/policies/team-trace-evidence.md`.
+Completion consumes the artifact chain through `Shared/skills/team-completion-gate/SKILL.md`.
+When a field such as `station_mode`, `context_visibility`, or `handoff_ownership` appears in more than one file, the local file must cite or consume the canonical value instead of redefining a competing catalog.
 
 ## Doctor Expectations
 

@@ -4,14 +4,14 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-07T10:55:12+08:00'
+last_updated: '2026-07-07T22:46:21+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T10:35:30+08:00'
+last_verified: '2026-07-07T20:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -37,23 +37,23 @@ metadata:
 ## Current Truth
 - Codex Edition is the OpenAI Codex adapter for AI_Rules governance, using `.codex/AGENTS.md`; Codex deploys 62 shared skills plus 17 workflow skills for a 79-skill deployed total.
 - Current core rules make Team mode active only for the current governed Director request; workflow names, tools, approvals, prior state, or source impact alone are route signals, not activation.
-- Active Team mode requires Captain Team Board, applicable station, station handoff packet, role identity, assigned specialist skill, channel state, `station_mode`, `context_visibility`, and `handoff_ownership` before broad reads, validation, review, memory/docs attribution, completion audit, source writes, or completion claims.
-- The Codex mainline is Director-facing captain only: it coordinates scope, dispatch, artifact receipt, status synthesis, blocker/protected-gate routing, and reporting; it must not backfill missing station evidence or claim captain-owned broad-read, implementation, review, validation, memory/docs, or completion evidence.
-- Main-worktree source writes require station-owned `change-delivery` under `formal-write`, authorization phase `implementation-change-delivery`, exact file allowlist, dirty diff read, and no protected action; `change-application` is only for returned artifacts, explicit integration, or assigned generated/deployed sync.
-- Director text, `GO`, workflow commands, UI approvals, permission prompts, and tool confirmations are usable authority only after authorization resolution binds the visible plan, station, file set, command, diff, phase, expiry, blocker, and any required protected gate.
+- Active Team mode evidence includes Captain Team Board, applicable station, station handoff packet, role identity, assigned specialist skill, channel state, `station_mode`, `context_visibility`, and `handoff_ownership` before broad reads, validation, review, memory/docs attribution, completion audit, source writes, or completion claims.
+- The Codex mainline is Director-facing captain only: it coordinates scope, dispatch, artifact receipt, status synthesis, blocker/protected-gate routing, and reporting; captain-owned backfill is non-substitute evidence for missing station evidence across broad-read, implementation, review, validation, memory/docs, or completion surfaces.
+- Main-worktree source-write eligibility is represented by station-owned `change-delivery` under `formal-write`, authorization phase `implementation-change-delivery`, exact file allowlist, dirty diff read, and no protected action; `change-application` is only for returned artifacts, explicit integration, or assigned generated/deployed sync.
+- Usable authority from Director text, `GO`, workflow commands, UI approvals, permission prompts, and tool confirmations is recorded only after authorization resolution binds the visible plan, station, file set, command, diff, phase, expiry, blocker, and any required protected gate.
 - Protected actions include memory/project-context mutation, git, release, deploy, install, credentials, destructive filesystem operations, cloud mutation, and external mutation; source-write approval does not authorize them.
 - Codex hook startup/pre-tool reminders now state that, for governed work, the hook reminder satisfies the station-delegation and necessary subagent/teammate dispatch request precondition only; board, station, role, handoff, and channel state are still required and no protected action is authorized.
-- Director-facing output starts with Traditional Chinese meaning; high-change or external facts, dates, APIs, versions, constraints, and risk assumptions must be grounded in current files, tool output, official docs, or primary sources.
+- Director-facing output starts with Traditional Chinese meaning; high-change or external facts, dates, APIs, versions, constraints, and risk assumptions have grounded-evidence status from current files, tool output, official docs, or primary sources.
 - Source/deployed sync remains mandatory: `Codex/.codex/AGENTS.md` is source of truth and currently hashes equal to project `.codex/AGENTS.md`; `Codex/global/AGENTS.md` does not hash-match `C:\Users\homeb\.codex\AGENTS.md` and global sync is pending.
 - This update reflects current dirty `Codex/**` AGENTS/README/global/workflow source state and current Codex hook reminder wording under the Director-authorized memory-write scope.
 
 ## Active Constraints
-- Keep Codex framework versioning separate from VS Code extension versioning.
-- Keep root README ownership in `_system`, and keep live `.agents/skills/` sync checks separate from Codex source workflow checks.
-- Do not add long playbooks, field catalogs, or duplicated workflow procedure detail to Codex core files; route detail to Shared policies, Shared skills, or workflow references.
-- Before source writes, produce a bounded plan, bind write authority to the visible scope, read current file content/status/diff, and integrate dirty target sections in place.
-- Codex workflow entries must stay thin, cite deployed shared language/grounding policy when needed, and preserve source/deployed parity before completion claims.
-- Keep this active card below `line_limit: 120`; use child workflow cards for workflow-entry detail.
+- Codex framework versioning is separate from VS Code extension versioning.
+- Root README ownership is `_system`; live `.agents/skills/` sync checks are separate from Codex source workflow checks.
+- Long playbooks, field catalogs, and duplicated workflow procedure detail belong to Shared policies, Shared skills, or workflow references rather than Codex core files.
+- Pre-source-write lifecycle evidence includes a bounded plan, scope-bound write authority, current file content/status/diff, and in-place integration for dirty target sections.
+- Codex workflow entries are thin route entries with deployed shared language/grounding policy citations where needed and source/deployed parity evidence before completion claims.
+- Active-card size target remains below `line_limit: 120`; child workflow cards carry workflow-entry detail.
 
 ## Cycle Events
 - 06: Recorded Codex hook reminder semantics for governed work: hook injection satisfies the delegation-request precondition only, requires station handoff before work, and does not authorize protected actions.
@@ -78,8 +78,8 @@ metadata:
 - director: 2026-07-07 protected memory-write instruction explicitly requested recording current Codex hook reminder semantics without protected action authority.
 
 ## Read Contract
-- Read this card when the task touches Codex core governance, framework source/deployed sync, or the tracked core workflow entries below.
-- Do not use archived hook-cycle facts as current dirty-source evidence without reading the current source and Director scope.
+- This card is read context when the task touches Codex core governance, framework source/deployed sync, or the tracked core workflow entries below.
+- Archived hook-cycle facts are not current dirty-source evidence without current source and Director-scope evidence.
 
 ## Conflicts and Supersession
 - superseded: prior station C hook-exclusion wording is replaced only for this Director-authorized memory-write update; current hook reminder wording is now recorded from source evidence.
@@ -102,6 +102,7 @@ metadata:
 - Codex/.codex/AGENTS.md
 - Codex/.codex/config.toml
 - Codex/.codex/hooks.json
+- Codex/.codex/hooks.delete
 - Codex/.codex/hooks/team-native-gate.ps1
 - Codex/.codex/VERSION
 - Codex/.gitignore
@@ -116,4 +117,4 @@ metadata:
 - _system (root governance and deployment memory); _shared (Shared operational skills); _map (memory navigation index); _codex_core.support (support workflow child card)
 
 ## Applicable Skills
-- memory-ops — Update and commit this card; team-memory-docs-delivery-artifact — Report memory/docs state.
+- memory-ops — Memory update and commit procedure owner; team-memory-docs-delivery-artifact — memory/docs state reporting owner.
