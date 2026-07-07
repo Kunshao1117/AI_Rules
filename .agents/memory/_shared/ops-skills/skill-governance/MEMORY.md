@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-07T05:52:39+08:00'
+last_updated: '2026-07-07T10:41:11+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T05:52:39+08:00'
+last_verified: '2026-07-07T10:35:30+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 7
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.ops-skills.skill-governance — Skill Governance Memory
 ## Current Truth
 - This card owns operational skill governance files under `Shared/skills/` that are not assigned to `_shared.team-native-core`, plus active deployed root skill copies when those copies are project inputs.
@@ -38,8 +39,8 @@ metadata:
 - `Shared/skills/_index.md` is now an expanded skill registry where each entry preserves `Keywords (EN)`, `關鍵字 (ZH)`, `Skill`, and `MCP Server`.
 - Skill-factory and its references require AI_Rules skill descriptions to start with Traditional Chinese task meaning as the first readable content; `Use when:` and `DO NOT use when:` labels stay canonical but their text must start with Traditional Chinese trigger or exclusion meaning.
 - Delivery artifact and role-boundary skills require current structured station evidence, scoped authorization fields, role/channel evidence, source/deployed sync evidence, and non-complete outcomes when required evidence is missing.
-- Change delivery artifacts distinguish station-owned main-worktree `change-delivery` from isolated/text fallback artifacts and fallback `change-application`; main-worktree writes need station ownership, exact file scope, dirty-diff evidence, and no self-review.
-- Memory/docs artifacts remain read-only attribution evidence unless a separate protected owner station has scoped memory-write authorization; memory commit, compaction, context cards, and mutating MCP tools need separate protected gates.
+- Change delivery artifacts now require `validation_handoff`, `review_handoff`, and `memory_docs_handoff` in the returned delivery bundle while still distinguishing station-owned main-worktree `change-delivery` from isolated/text fallback artifacts and fallback `change-application`.
+- Memory/docs artifacts and `memory_docs_handoff` remain read-only attribution/disposition evidence unless a separate protected owner station has scoped memory-write authorization; memory commit, compaction, context cards, and mutating MCP tools need separate protected gates.
 - Role-boundary governance preserves the ten registered role IDs and now cites the Team-Native `Captain Boundary Anchor` for captain forbidden work, broad/deep read substitution, missing evidence, and substitute completion limits.
 - Handoff packets are scoped to one substation task, one role, one concrete task, one output format, and one stop condition; vague multi-role delegation is invalid.
 - Skill creation and delegation rules must stay compatible with Codex native skill loading and cross-platform governance; framework-source skill forging requires an explicit AI_Rules source root.
@@ -49,6 +50,7 @@ metadata:
 - Do not duplicate full skill templates in memory or copy platform core language paragraphs as the only language source; use tracked references and shared language governance for skill formatting, delegation, triggers, handoffs, and generated docs.
 
 ## Cycle Events
+- 41: Recorded change-delivery bundle requirements for validation/review/memory-docs handoffs and reaffirmed that memory-docs handoff is read-only, not memory mutation authority.
 - 40: Repaired stale skill-governance memory for skill registry expansion, skill-factory zh-TW trigger requirements, and delivery-artifact protected routing boundaries.
 - 39: Updated role-boundary memory after captain-boundary dedupe centralized captain forbidden-work wording in Team-Native Core.
 - 38: M4 compacted the active card while preserving delivery-artifact, role-boundary, skill-factory, deployed-copy, and delegation CLI reference ownership.
@@ -63,6 +65,7 @@ metadata:
 - source:Shared/skills/_index.md — Verified expanded skill registry format and preserved EN/ZH keyword, skill, and MCP server fields.
 - source:Shared/skills/skill-factory/SKILL.md and references — Verified Codex-compatible skill generation, layer placement, `metadata.style`, reference handling, quality checklist, and zh-TW first-readable trigger requirement.
 - source:Shared/skills/team-*-delivery-artifact/SKILL.md and Shared/skills/team-role-boundaries/SKILL.md — Verified artifact schema, role separation, station evidence, handoff fields, no-repair/no-self-review boundaries, and Director-facing synthesis boundary.
+- source:Shared/skills/team-change-delivery-artifact/SKILL.md and Shared/skills/team-specialist-change-delivery/SKILL.md — Dirty diff makes validation/review/memory-docs handoffs mandatory in the change delivery bundle and keeps memory-docs read-only.
 - source:.agents/skills/team-*-delivery-artifact/SKILL.md, .agents/skills/team-role-boundaries/SKILL.md, and .agents/skills/skill-factory/SKILL.md — Deployed root skill copies are tracked inputs for this card, but current source/deployed parity was not revalidated in this station.
 - source:Shared/skills/delegation-strategy/references/cli-prompt-skeleton.md — Verified evidence branch prompt language with canonical English internal fields and zh-TW Director-facing output.
 - source:Shared/policies/language-governance.md and Shared/policies/grounding-governance.md — Verified language-layer and external-grounding routing.
@@ -79,7 +82,7 @@ metadata:
 - 此卡負責未歸入 Team-Native Core 的 delivery artifact、role-boundary、skill-factory、deployed skill copy 與 delegation CLI reference 記憶。
 - 技能索引已從表格改為逐項 registry；skill-factory 現要求 description 第一個可讀內容必須是繁中任務語意。
 - `team-role-boundaries` 現在引用 Team-Native Core 的隊長邊界錨點，避免重複長段隊長限制。
-- 交付件與角色邊界技能必須有範圍式授權、角色/通道證據、source/deployed sync 與缺證據時的非完成狀態。
+- 交付件與角色邊界技能必須有範圍式授權、角色/通道證據、source/deployed sync 與缺證據時的非完成狀態；change delivery bundle 必須交出 validation/review/memory_docs handoff。
 - `team-task-board` 長模板已拆到 references；暫停探針、明確恢復、晚回接收與通道收束仍是技能治理重點。
 ## Tracked Files
 - Shared/skills/_index.md

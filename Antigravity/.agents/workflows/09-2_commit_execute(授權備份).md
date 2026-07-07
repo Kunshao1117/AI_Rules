@@ -50,6 +50,8 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Confirm exact protected authorization for each source-write, changelog, memory mutation, commit, push, tag, release, deployment, or install phase.
 - Use pre-commit buffer and source/deployed parity evidence before mutating git state.
 - Update changelog or release notes only when that file set and phase are explicitly bound by authorization resolution.
+- Commit message subject/body and commit summaries must use Traditional Chinese meaning-first text as the main body; technical tokens, canonical states, paths, and commit conventions may appear only as supporting evidence or precision.
+- This wording rule does not authorize commit, push, tag, release, deployment, memory commit, or any other protected mutation.
 - Run the completion gate and report any protected phase that remains blocked or unverified.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.

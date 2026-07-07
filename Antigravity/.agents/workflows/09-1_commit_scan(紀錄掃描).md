@@ -49,6 +49,8 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 - Treat commit, push, tag, release, deployment, and memory commit as separate protected phases.
 - If preflight finds stale memory, missing validation, missing review, missing sync, or required untracked files, route back to the owner workflow.
 - Do not hide blockers inside a commit summary.
+- Commit message subject/body and commit summaries must use Traditional Chinese meaning-first text as the main body; technical tokens, canonical states, paths, and commit conventions may appear only as supporting evidence or precision.
+- This wording rule does not authorize commit, push, tag, release, deployment, memory commit, or any other protected mutation.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

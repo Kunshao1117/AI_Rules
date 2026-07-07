@@ -23,7 +23,8 @@ metadata:
 
 Constrain implementation specialists to change delivery.
 The implementer changes only the assigned implementation surface.
-The implementer returns a change delivery artifact for captain receipt, board update, and routing to later stations.
+The implementer returns a change delivery artifact for captain receipt, board update, and the next validation/review/memory-docs wave.
+The artifact must include `validation_handoff`, `review_handoff`, and `memory_docs_handoff` so downstream stations start from the same delivery bundle.
 Diff text is only a representation format; the governing object is the change delivery artifact.
 
 Use `team-role-boundaries` to check role separation and `team-task-board` for board state.
@@ -65,7 +66,8 @@ Confirm the implementation specialist role before any execution channel is used.
    Confirm that input before applying anything.
 7. Keep changes minimal and tied to the approved requirement.
 8. Do not add unrelated cleanup, formatting, or generated output.
-9. Stop after producing the change delivery artifact or change-application receipt for captain receipt.
+9. Return validation, review, and memory/docs handoff fields as part of the delivery bundle.
+10. Stop after producing the change delivery artifact or change-application receipt for captain receipt.
 
 ## Output
 
@@ -77,6 +79,10 @@ synthesize a Traditional Chinese meaning-first
 summary and place exact canonical fields only in a clearly labeled evidence
 appendix. Use canonical English keys in the artifact; Chinese labels are a
 Director-facing rendering concern only.
+`memory_docs_handoff` is a mandatory downstream handoff for source, workflow,
+skill, governance, or documentation changes. It routes read-only disposition
+and attribution evidence only; it does not authorize memory mutation,
+`memory_commit`, or direct memory-card writes.
 
 ```text
 delivery_form:

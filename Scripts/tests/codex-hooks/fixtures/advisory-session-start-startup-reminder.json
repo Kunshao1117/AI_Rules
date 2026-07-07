@@ -5,7 +5,7 @@
   "fixtureOrigin": "synthetic",
   "expectedOutcomeKind": "allow-reminder",
   "expectedDecision": "allow",
-  "expectedOutputRegex": "advisory/reminder.*團隊模式提醒.*先派站點.*可開子代理",
+  "expectedOutputRegex": "advisory/reminder.*團隊模式提醒.*治理要求已明確要求站點分工.*必要的子代理/隊員派工.*先派站點.*可開子代理",
   "input": {
     "hook_event_name": "SessionStart",
     "session_id": "fixture-session",

@@ -50,6 +50,16 @@ It also decides formal evidence eligibility before this policy maps a station to
 
 Official Codex subagent semantics cover agent spawning, routing, waiting, and consolidated responses only when explicitly requested.
 
+For AI_Rules Codex Edition, when the current Director request is governed work
+and a `SessionStart` or `PreToolUse` hook injects a Team/delegation reminder,
+that combination satisfies the Codex explicitly-requested delegation gate for
+opening Codex subagents.
+This exception resolves only the request/route precondition.
+Codex subagents may start only after Team-Native board, station, role, handoff,
+dispatch wave, and channel state are recorded.
+It does not authorize source writes, memory mutation, git, release, deploy,
+install, credentials, or external-state mutation.
+
 Claude and Antigravity / Gemini have their own platform-tool semantics.
 
 AI_Rules role IDs, station modes, dispatch waves, delivery artifacts, `execution_spec`, and memory/docs states are internal schema.

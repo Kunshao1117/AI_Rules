@@ -4,14 +4,14 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-07-07T05:53:55+08:00'
+last_updated: '2026-07-07T10:41:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-07T05:53:55+08:00'
+last_verified: '2026-07-07T10:35:30+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -41,12 +41,12 @@ metadata:
 - Team-Native Core now defines a Captain Minimum Entry and Captain Boundary Anchor: captain entry is limited to intake, Team decision, first station path, dispatch, missing-evidence reporting, and Director-facing synthesis; broad/deep reads, implementation, validation, review, memory/docs attribution, protected execution, and completion evidence remain owner-station work.
 - Authorization Resolution is the shared scope-binding gate for GO, interface approvals, platform prompts, modes, workflow names, protected mutations, owner-station paths, formal delegation promotion, boards, traces, artifacts, and completion gates; blocked, unverified, standby, not-authorized, and `closed-with-director-risk` are states, not execution routes.
 - Executable workflow work needs a resolved machine-readable `execution_spec`, station handoff packet, or canonical policy fields; human flowcharts, plans, and checklists are navigation aids only.
-- Every source-changing workflow needs read-only memory/docs disposition before mutation; `memory-required` and `memory-blocked-by-scope` can leave source-level protected follow-up pending, but full completion, commit, release, deploy, install, or external mutation readiness remains blocked until protected memory phases finish.
+- Every source-changing workflow needs a delivery bundle with `validation_handoff`, `review_handoff`, and read-only `memory_docs_handoff`; `memory-required` and `memory-blocked-by-scope` can leave source-level protected follow-up pending, but full completion, commit, release, deploy, install, or external mutation readiness remains blocked until protected memory phases finish.
 - Captain deep-read, repository-wide search, recursive inventory, implementation, review, validation, and memory/docs substitution are hard exception paths; broad evidence needs specialist delivery or a recorded direct exception.
 - Full team completion requires station-owned change delivery, memory/docs delivery, independent review, validation, completion evidence, required trace evidence, and source/deployed parity where both source and deployed copies exist.
 - Team-Native topology separates Captain Team Board, station family, formal station, substation task, specialist assignment, execution channel, and delivery artifact; reduced station counts require replacement evidence and residual risk.
 - Team trace evidence has two loading layers, and formal station startup must include `handoff_packet_id`, role identity, assigned skill, read/tools/action scope, channel state, `station_mode`, `context_visibility`, `handoff_ownership`, delivery artifact type, and stop condition.
-- Hook reminders, pre-action guard output, and execution receipts are evidence or tool-guard signals only; they cannot authorize scope, replace station evidence, or prove validation, review, memory/docs, or completion.
+- Hook reminders plus a current governed Director request satisfy only the Codex delegation-request precondition for station/subagent or teammate dispatch; they cannot authorize protected actions, replace station evidence, or prove validation, review, memory/docs, or completion.
 - Platform/workflow/subagent/completion governance cites shared language and grounding policies: Director output is meaning-first Traditional Chinese, and freshness-sensitive or external claims need grounded source evidence.
 ## Active Constraints
 - Do not claim `complete` without separated delivery, memory/docs, review, validation, trace, and parity evidence.
@@ -54,7 +54,7 @@ metadata:
 - Do not treat human flowcharts, advisory reminders, would-block risk markers, or hook/runtime guard decisions as authorization, station-owned evidence, validation, review, memory/docs attribution, or completion proof.
 - Keep platform-specific tool names in adapter sections or platform-specific files.
 ## Cycle Events
-- 50: Recorded execution_spec, memory disposition, source-level protected follow-up, trace startup fields, and workflow evidence boundaries after shared policy refresh.
+- 50: Recorded execution_spec, mandatory validation/review/memory_docs handoff bundles, source-level protected follow-up, trace startup fields, hook-reminder delegation precondition boundaries, and workflow evidence boundaries after shared policy refresh.
 - 48: Recorded the 2026-07-05 captain-context reduction: Captain Minimum Entry, Captain Boundary Anchor, trace loading layers, workflow on-demand references, platform injection boundary, and source/deployed parity verification.
 - 47: M4 compacted the active card while preserving unique tracked ownership for workflow orchestration/scenarios and the six new Team-Native policy/reference sources.
 - 45-46: Recorded governed-request Team activation, captain coordination limits, `03-1` reduced experiment boards, and language/grounding dual-gate integration.
@@ -64,7 +64,7 @@ metadata:
 ## Archive Index
 - archive-001.md / archive-002.md — Older cycle events 1-19 compacted from the active card.
 ## Evidence Base
-- source:Shared/policies/team-native-core.md and Shared/policies/subagent-invocation.md — Team mode trigger, captain limits, and subagent/station boundaries.
+- source:Shared/policies/team-native-core.md and Shared/policies/subagent-invocation.md — Team mode trigger, captain limits, subagent/station boundaries, and governed-work hook reminder delegation-request semantics.
 - source:Shared/policies/workflow-orchestration.md and Shared/policies/workflow-orchestration-scenarios.md — Workflow route/state, channel lifecycle, authorization, and scenario ownership.
 - source:Shared/policies/platform-plan-mapping.md plus Shared/policies/references/workflow-*.md — Platform plan state and workflow evidence references.
 - source:Shared/skills/programming-team-governance/SKILL.md, team-task-board, handoff, role-boundary, completion, specialist, and delivery skills — Station, role, board, evidence, and completion contracts.
@@ -79,7 +79,7 @@ metadata:
 - 此卡是 Team-Native policy、workflow orchestration/scenarios、platform plan mapping、workflow evidence references 與 station/completion governance 的具體 owner。
 - 受治理使用者請求會自動啟動 Team-Native / Team mode；沒有目前受治理使用者請求時 AI 不能自行啟動。
 - 啟動後主線自動擔任 Director-facing captain，但只做協調、派工、接收、彙整、阻塞與授權請求路由及回報。
-- Team-Native Core 現在有 execution_spec、隊長最小入口、隊長邊界錨點、memory disposition 與 source-level follow-up 邊界；hooks/receipts 只是工具或證據訊號，不是授權或完成證據。
+- Team-Native Core 現在有 execution_spec、隊長最小入口、隊長邊界錨點、mandatory memory_docs_handoff 與 source-level follow-up 邊界；hook reminder 只滿足 governed work 的分工/子代理請求前提，不授權 protected actions。
 - `update_plan`、checklist 或平台 planning UI 不是授權、驗收、審查、記憶歸屬、同步或完成證據。
 ## Tracked Files
 - Shared/policies/authorization-resolution.md

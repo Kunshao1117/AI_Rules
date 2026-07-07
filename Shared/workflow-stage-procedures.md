@@ -34,9 +34,10 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 6. Use `formal-write` only after a scope-bound intent signal is resolved through authorization resolution to the visible plan, file set, station, phase, expiry, and required protected gate.
 7. Keep implementation, validation, review, memory/docs, and completion as separate delivery states. Missing states are blocked, unverified, or closed-with-director-risk, not complete.
 8. Post-change flow is artifact-chain only:
-   - Implementation or authorized change-application returns a delivery handoff bundle.
+   - Implementation or authorized change-application returns a delivery handoff bundle with `validation_handoff`, `review_handoff`, and `memory_docs_handoff`.
    - The captain records it in the ledger without rewriting it.
-   - The next wave runs validation, review, and memory/docs from that bundle.
+   - The next wave starts validation, review, and memory/docs only from that delivery bundle.
+   - The memory/docs branch is read-only disposition and attribution routing; it does not authorize memory mutation, memory commit, or direct card writes.
    - Completion consumes only the resulting artifact chain.
 9. Separate source-level delivery closeout from full completion:
    - When source delivery, validation, review, and sync are sufficient but memory/docs reports `memory-required` or `memory-blocked-by-scope` only because protected memory mutation was not authorized, report source-level delivery with protected follow-up pending.
@@ -190,6 +191,8 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 - Commit, push, tag, release, deployment, and memory commit are separate protected phases with separate authorization.
 - If preflight finds stale memory, missing validation, missing review, missing sync, compact-packet blockers, or untracked required files, route back to the owner workflow.
 - Source-level protected follow-up pending becomes a blocker in this route when it affects commit readiness. Do not hide it inside the commit summary.
+- Commit message subject, commit body, and commit summary must use Traditional Chinese meaning-first text as the main body; technical tokens, canonical states, file paths, and commit conventions may appear only as supporting evidence or precision.
+- Commit message wording rules do not authorize commit, push, tag, release, deployment, memory commit, or any other protected mutation.
 - Do not hide blockers inside a commit summary.
 
 ## 10 Routine / 巡檢

@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-07T06:07:37+08:00'
+last_updated: '2026-07-07T10:55:12+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T06:07:37+08:00'
+last_verified: '2026-07-07T10:35:30+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-07-001
-cycle_event_count: 5
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
@@ -41,9 +42,10 @@ metadata:
 - Main-worktree source writes require station-owned `change-delivery` under `formal-write`, authorization phase `implementation-change-delivery`, exact file allowlist, dirty diff read, and no protected action; `change-application` is only for returned artifacts, explicit integration, or assigned generated/deployed sync.
 - Director text, `GO`, workflow commands, UI approvals, permission prompts, and tool confirmations are usable authority only after authorization resolution binds the visible plan, station, file set, command, diff, phase, expiry, blocker, and any required protected gate.
 - Protected actions include memory/project-context mutation, git, release, deploy, install, credentials, destructive filesystem operations, cloud mutation, and external mutation; source-write approval does not authorize them.
+- Codex hook startup/pre-tool reminders now state that, for governed work, the hook reminder satisfies the station-delegation and necessary subagent/teammate dispatch request precondition only; board, station, role, handoff, and channel state are still required and no protected action is authorized.
 - Director-facing output starts with Traditional Chinese meaning; high-change or external facts, dates, APIs, versions, constraints, and risk assumptions must be grounded in current files, tool output, official docs, or primary sources.
 - Source/deployed sync remains mandatory: `Codex/.codex/AGENTS.md` is source of truth and currently hashes equal to project `.codex/AGENTS.md`; `Codex/global/AGENTS.md` does not hash-match `C:\Users\homeb\.codex\AGENTS.md` and global sync is pending.
-- This update reflects current dirty `Codex/**` AGENTS/README/global/workflow source state and keeps Codex hook config/script ownership here while hook behavior remains excluded from the dirty-source cycle.
+- This update reflects current dirty `Codex/**` AGENTS/README/global/workflow source state and current Codex hook reminder wording under the Director-authorized memory-write scope.
 
 ## Active Constraints
 - Keep Codex framework versioning separate from VS Code extension versioning.
@@ -54,6 +56,7 @@ metadata:
 - Keep this active card below `line_limit: 120`; use child workflow cards for workflow-entry detail.
 
 ## Cycle Events
+- 06: Recorded Codex hook reminder semantics for governed work: hook injection satisfies the delegation-request precondition only, requires station handoff before work, and does not authorize protected actions.
 - 05: Repaired ownership for Codex hook config and Team-Native hook script in `## Tracked Files`.
 - 04: Updated core memory for dirty Codex AGENTS/README/global changes: Team-Native startup, authorization resolution, captain boundary, protected actions, output/grounding, and source/deployed sync.
 - 03: Recorded current workflow-entry dirty-source semantics for Chinese-first descriptions, thin route entries, dirty-diff integration, `execution_spec`, and protected follow-up closeout.
@@ -67,18 +70,19 @@ metadata:
 
 ## Evidence Base
 - source: `Codex/.codex/AGENTS.md`, `Codex/README.md`, `Codex/global/AGENTS.md`, and `.codex/AGENTS.md` dirty/current content.
+- source: `Codex/.codex/hooks/team-native-gate.ps1` — Current decoded reminder text verified for governed-work station delegation and necessary subagent/teammate dispatch semantics.
 - source: `Codex/.agents/workflow-skills/02-blueprint-架構/SKILL.md`, `03-build-建構/SKILL.md`, `04-fix-修復/SKILL.md`, `07-debug-除錯/SKILL.md`, and `11-handoff-交接/SKILL.md`.
 - tool: `git status --short -- Codex .agents/memory/_codex_core` and targeted `git diff` reviewed on 2026-07-07.
 - tool: `Get-FileHash -Algorithm SHA256` verified `Codex/.codex/AGENTS.md` equals `.codex/AGENTS.md`; `Codex/global/AGENTS.md` differs from `C:\Users\homeb\.codex\AGENTS.md`.
 - director: 2026-07-07 ownership repair instruction assigned `Codex/.codex/hooks.json` and `Codex/.codex/hooks/team-native-gate.ps1` to `_codex_core`.
-- director: 2026-07-07 station C instruction allowed only four `_codex_core` memory files, forbade stage/commit, and excluded already-committed hook behavior.
+- director: 2026-07-07 protected memory-write instruction explicitly requested recording current Codex hook reminder semantics without protected action authority.
 
 ## Read Contract
 - Read this card when the task touches Codex core governance, framework source/deployed sync, or the tracked core workflow entries below.
 - Do not use archived hook-cycle facts as current dirty-source evidence without reading the current source and Director scope.
 
 ## Conflicts and Supersession
-- superseded: prior active-card hook advisory/rebuild facts are excluded from this dirty-source memory cycle by Director station C scope.
+- superseded: prior station C hook-exclusion wording is replaced only for this Director-authorized memory-write update; current hook reminder wording is now recorded from source evidence.
 - pending-review: user-global deployment remains hash-mismatched to `Codex/global/AGENTS.md`; report global parity as pending until a governed sync applies it.
 
 ## 中文摘要
@@ -87,7 +91,7 @@ metadata:
 - 寫入、記憶、git、release、deploy、install、credentials 與外部變更都需要各自範圍化授權。
 - 總監可見輸出以繁中語義先行；高變動與外部事實必須以目前檔案、工具或主要來源接地。
 - 專案 `.codex/AGENTS.md` 已與 source hash 一致；使用者全域 AGENTS 尚未同步。
-- 本輪記憶排除已提交的 `Codex/.codex/hooks*` 行為。
+- 本輪已記錄目前 Codex hook reminder：governed work 下視為站點分工與必要子代理/隊員派工的請求前提，但不授權 protected actions。
 
 ## Tracked Files
 - Codex/VERSION
@@ -112,5 +116,4 @@ metadata:
 - _system (root governance and deployment memory); _shared (Shared operational skills); _map (memory navigation index); _codex_core.support (support workflow child card)
 
 ## Applicable Skills
-- memory-ops — Update and commit this card.
-- team-memory-docs-delivery-artifact — Report memory/docs state.
+- memory-ops — Update and commit this card; team-memory-docs-delivery-artifact — Report memory/docs state.

@@ -4,19 +4,19 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 提交、巡檢與技能鍛造工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-07T05:51:26+08:00'
+last_updated: '2026-07-07T10:41:01+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T05:51:26+08:00'
+last_verified: '2026-07-07T10:35:30+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-07-001
-cycle_event_count: 3
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core.support.workflows-release — Codex Release and Governance Workflow Memory
 
 ## Current Truth
@@ -39,6 +40,7 @@ metadata:
 - Required References load on demand: captain entry starts from route/evidence/minimum Team-Native gates; completion, protected closeout, language, grounding, platform, stage, station, review, validation, and memory references load only when needed.
 - The Workflow Entry Slimming Guard requires workflow entries to own only route selection, minimum load gates, evidence-matrix row, and platform adapter reference; dirty target files require current diff review and integration into existing sections.
 - `09` is commit-prep/change-summary routing, not unfinished implementation or git-status-only work; memory-write, memory index/staleness sync, git commit/push, tag/release, deploy, install, and external mutation are distinct protected phases.
+- `09` commit message subject/body and commit summaries must use Traditional Chinese meaning-first main text; this wording rule does not authorize git commit or any protected follow-on phase.
 - `10` stays automation-safe only while read-only; routine inspection cannot repair or write files without a separately resolved formal-write or protected owner station.
 - `12` covers reusable skill/methodology creation and does not apply to discussion-only or description-only edits without a write scope.
 - Release-side evidence still requires team-task-board inheritance, role-bound delivery artifacts, review/validation separation, memory/docs disposition, source/deployed parity when relevant, and honest blocked/unverified/risk-closed states.
@@ -49,6 +51,7 @@ metadata:
 - Keep release workflow entries thin; durable release and closeout procedure belongs in Shared skills or workflow-stage references.
 
 ## Cycle Events
+- 04: Recorded `09` commit subject/body/summary Traditional Chinese meaning-first wording governance while preserving separate authorization for git and protected follow-on phases.
 - 03: Updated release workflow memory for Chinese-first descriptions, thin-entry wrapping, on-demand references, and dirty-diff slimming guard semantics.
 - 02: Preserved split protected-phase rules for commit prep, routine read-only inspection, skill forge, memory, git, release, deploy, install, and external mutation.
 - 01: Removed stale warning text after current release workflow file content and targeted diffs were reviewed.
@@ -59,6 +62,7 @@ metadata:
 
 ## Evidence Base
 - source: `Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md`, `10-routine-巡檢/SKILL.md`, and `12-skill-forge-技能鍛造/SKILL.md`.
+- source: `Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md` — Dirty diff adds Traditional Chinese meaning-first commit wording and explicit no protected follow-on authorization.
 - tool: targeted `git diff` and `rg` output reviewed on 2026-07-07 for release description, thin-entry, on-demand reference, and dirty-diff changes.
 - director: 2026-07-07 station C instruction limited memory writes to `_codex_core` cards and excluded already-committed hook behavior.
 
@@ -72,6 +76,7 @@ metadata:
 ## 中文摘要
 - 提交、巡檢與技能鍛造 workflow description 已改為繁中語義先行。
 - 這些入口仍是 thin route，不授權 source write、memory、git、release、deploy、install 或外部變更。
+- `09` commit subject/body/summary 必須繁中語義先行，且不授權 git commit 或任何 protected follow-on phase。
 - `GO`、工作流名稱與工具確認只是路由或範圍訊號；各 protected phase 需要各自授權。
 - 例行巡檢保持唯讀；記憶寫入與 `memory_commit` 不可合併。
 

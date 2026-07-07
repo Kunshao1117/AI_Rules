@@ -40,8 +40,8 @@ metadata:
 text-only delivery route，或針對 returned artifact、explicit integration task、
 assigned generated/deployed sync 的 fallback `change-application` route 後使用。
 
-用於建立可由隊長接收、記錄到 board，並路由給 validation、review、memory/docs
-或 completion stations 的 change delivery artifact。
+用於建立可由隊長接收、記錄到 board，並作為 validation、review、memory/docs
+下一波共同輸入的 change delivery artifact；completion 只能消耗該 artifact chain。
 
 ## Procedure
 
@@ -88,6 +88,7 @@ Return these fields:
 - Evidence: files read, commands used, and relevant observations.
 - Risk: known regression, ambiguity, or integration concern.
 - Memory impact: source behavior, workflow rule, public contract, governance, docs, generated copy, no durable memory fact, or unverified.
+- Validation, review, and memory/docs handoffs: downstream station start targets from the returned delivery bundle; `memory_docs_handoff` is read-only disposition and does not grant memory mutation.
 - Size/split impact: category, line delta when known, baseline/no-impact/split-needed/split-plan-needed/not-applicable, and any split signal.
 - Source/deployed pair, sync direction, and sync evidence when generated or
   deployed copies are affected.

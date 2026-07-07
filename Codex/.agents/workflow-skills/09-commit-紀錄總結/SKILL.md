@@ -51,6 +51,8 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - A commit workflow may scan and organize evidence, but no `GO`, approval wording, route trigger, or summary substitutes for phase-specific authorization.
+- Commit message subject/body and commit summaries must use Traditional Chinese meaning-first text as the main body; technical tokens, canonical states, paths, and commit conventions may appear only as supporting evidence or precision.
+- This wording rule does not authorize git commit or any protected follow-on phase.
 - Use `formal-write` only after a scope-bound Director intent signal passes authorization resolution and binds the visible scope, explicit phase, expiry, file set, command, and required protected gate for the current source write, memory mutation, git, release, deployment, install, or external mutation phase.
 
 ## Completion Boundary
