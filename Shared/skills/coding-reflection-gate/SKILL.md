@@ -11,6 +11,7 @@ metadata:
   author: antigravity
   version: "1.0"
   origin: framework
+  kind: workflow
   style: hybrid
   memory_awareness: read
   tool_scope: ["filesystem:read", "terminal:read"]
@@ -26,6 +27,7 @@ Use this skill only as a workflow route gate:
 - After validation, debug, or fix evidence fails and the next attempt could repeat the same mistake.
 - When requirements, evidence, route ownership, risk, or retry count are unclear enough to affect the next station.
 - When governance depth may need escalation before coding continues.
+- When AI prior, local evidence, quick-check, formal external research, or missing evidence must be classified before the next coding station.
 
 Do not load this skill for simple, already-scoped edits with sufficient route, evidence, and acceptance conditions.
 
@@ -53,6 +55,8 @@ Classify only from visible evidence:
 - `evidence_inputs`: workflow route, current plan or `execution_spec` draft, validation/debug/fix artifact, error summary, retry count, risk signal, and missing evidence.
 - `ambiguity_level`: `none`, `low`, `medium`, `high`, or `blocked`.
 - `risk_level`: `low`, `medium`, `high`, or `blocked`.
+- `grounding_tier`: `G0`, `G1`, `G2`, `G3`, or `G4`.
+- `ai_prior_used`: `true`, `false`, or `unknown`.
 - `max_iterations`: normal retry limit before reroute; default `2`, lower when repeated attempts already failed.
 
 Do not infer hidden intent or private reasoning. State observable gaps.
@@ -70,7 +74,8 @@ Pick one route:
 | Architecture or public contract is missing before execution | `02-blueprint-架構` |
 | Failure needs diagnosis before another write | `07-debug-除錯` |
 | Root cause and scoped repair are known | `04-fix-修復` |
-| Current facts depend on fresh external evidence | `external-research station` |
+| Narrow current official/primary source check is enough | `external-research station (quick-check)` |
+| Current architecture, governance, security, deployment, pricing, law, standards, release, or cross-source risk depends on fresh evidence | `external-research station (formal-research)` |
 | Required evidence or authorization is absent | `blocked` |
 | Evidence is incomplete but non-blocking only if risk is accepted | `unverified` |
 
@@ -84,6 +89,9 @@ trigger:
 evidence_inputs:
 ambiguity_level:
 risk_level:
+grounding_tier:
+ai_prior_used:
+external_research_question:
 recommended_route:
 max_iterations:
 not_review_or_validation: true
@@ -99,6 +107,8 @@ Use `status: partial`, `unverified`, or `blocked` when evidence is missing.
 - Do not implement code, patch files, run validation, perform review, or mutate memory.
 - Do not authorize writes, protected actions, external mutation, git, release, deploy, install, or credentials.
 - Do not replace `execution_spec`; this gate may only provide optional route context for it.
+- Do not treat AI prior as verified evidence.
+- `G2` and `G3` recommendations route evidence ownership to the external-research station.
 - Do not expose hidden chain-of-thought. Provide a concise decision and evidence summary.
 - Treat `[SUDO]` only as a recorded risk-closure request. It never bypasses scoped authorization, Team-Native, validation, review, protected gates, or completion evidence.
 

@@ -17,6 +17,9 @@
 外部接地由 `Shared/policies/grounding-governance.md` 管理。
 該政策涵蓋 outside facts、source type、freshness sensitivity 與 no-evidence claim boundaries。
 本矩陣只記錄精簡 gate profiles 與 workflow evidence expectations。
+AI prior 只能作為假設起點。
+Grounding tier 使用 `G0` local-grounded、`G1` stable assumption、`G2` quick-check、`G3` formal external research、`G4` unverified/blocked。
+本矩陣只要求 route-level tier classification；詳細 field contract 留在 `workflow-execution-spec-contract.md`。
 
 ## Reference Index
 
@@ -47,6 +50,8 @@ Workflow rows below only name the minimum evidence expected for each route.
 
 - Director-facing output: `Shared/policies/language-governance.md`.
 - External grounding: `Shared/policies/grounding-governance.md`.
+- Grounding execution fields and closeout bundle shape:
+  `Shared/policies/references/workflow-execution-spec-contract.md`.
 - Formal orchestration and completion: `Shared/policies/workflow-orchestration.md`
   plus `team-completion-gate`.
 - Platform capability translation: `Shared/platform-capability-matrix.md`.
@@ -164,9 +169,13 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 接地依據（Grounding basis）:
   - Explore -> plan -> implement -> validate, intent-alignment gate, engineering review governance.
   - Programming-team governance.
+  - `G0` local evidence by default; `G2` quick-check for narrow current API/package docs;
+    `G3` formal external research for architecture, governance, security, deploy, pricing, law,
+    standards, release-readiness, or cross-source risk.
 - 最低證據（Minimum evidence）:
   - Team board, blueprint carryover, review purpose/state, requirement-to-task trace, task acceptance matrix.
   - Drift audit, real validation route, tool discovery, blockers, memory ownership/status evidence.
+  - Implementation delivery bundle with `grounding_handoff`, `closeout_bundle`, and expected dirty files when source changed.
 - 常見路由（Common route）: 04, 06, 08, 09.
 
 ### 04 Fix / 修復
@@ -175,9 +184,12 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 接地依據（Grounding basis）:
   - Root-cause analysis, defect management, regression testing, engineering review governance.
   - Programming-team governance.
+  - `G0` local reproduction/log/source evidence; `G2` quick-check for narrow current framework/API behavior;
+    `G3` formal research for security, deployment, legal, pricing, standards, or conflicting outside facts.
 - 最低證據（Minimum evidence）:
   - Team board, symptom, cause, review purpose/state, fix evidence, regression evidence.
   - Affected memory-card status and dependency evidence.
+  - Repair delivery bundle with grounding handoff, expected dirty files, validation/review/memory-docs handoffs, and closeout bundle index.
 - 常見路由（Common route）: 06, 07, 09.
 
 ### 05 Condense / 濃縮
@@ -202,8 +214,11 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 任務類型（Task type）: Stack trace, logs, fault localization.
 - 接地依據（Grounding basis）:
   - OpenTelemetry, SRE monitoring, root-cause diagnosis, programming-team governance.
+  - AI prior only as hypothesis; `G0` for local logs/traces/source/tool output; `G2` or `G3`
+    when current docs, advisories, platform rules, or conflicting external evidence can change diagnosis.
 - 最低證據（Minimum evidence）:
   - Debug station board, observable signal, hypothesis, confirmation/counter-evidence, route-to-fix condition.
+  - Grounding tier and missing evidence state before routing a fix.
 - 常見路由（Common route）: 04, 06, 08.
 
 ### 08 Audit / 健檢
@@ -226,9 +241,12 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 接地依據（Grounding basis）:
   - Conventional Commits, Keep a Changelog, SemVer, status checks, engineering review governance.
   - Programming-team governance.
+  - Closeout bundle is an index only; commit readiness re-checks artifact chain, dirty state,
+    grounding gaps, sync, validation, review, and memory/docs disposition.
 - 最低證據（Minimum evidence）:
   - Commit board, explicit file list, review lifecycle risk, unverified/blocker list, memory status.
   - Memory preflight, change summary, version/artifact decision.
+  - Expected dirty-file comparison and unresolved `G4` grounding gaps reported as blockers or residual risk.
 - 常見路由（Common route）: 04, 06, 08, 11.
 
 ### 10 Routine / 巡檢
@@ -256,9 +274,12 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 任務類型（Task type）: New skills, shared skills, project skills.
 - 接地依據（Grounding basis）:
   - Agent Skills spec, skill descriptions, progressive loading, programming-team governance, skill handoff package.
+  - `G2` quick-check for narrow live skill/tool documentation; `G3` formal research for platform
+    governance, security, deployment, legal/pricing, external mutation, or cross-source conflict.
 - 最低證據（Minimum evidence）:
   - Skill-forge board, layer choice, description quality, reference split, skill handoff package.
   - Validation gate, affected memory and skill-index evidence.
+  - Source/deployed parity, grounding handoff, expected dirty files, and closeout bundle index.
 - 常見路由（Common route）: 03, 08, 10.
 
 ## Memory Evidence Reference

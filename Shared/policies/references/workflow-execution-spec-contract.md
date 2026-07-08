@@ -124,6 +124,15 @@ Required field meanings, in order:
     `authorization-phase-registry.md`.
 - `authorization_resolution_state`
   - Scope-bound authorization state from `authorization-resolution.md`.
+- `ai_prior`
+  - Model knowledge or memory used as a hypothesis starter.
+  - It is not verified evidence and may be `not-used`.
+- `grounding_tier`
+  - `G0`, `G1`, `G2`, `G3`, or `G4` from `grounding-governance.md`.
+  - Use only the tier needed for the station's risk.
+- `grounding_mode`
+  - `local-grounded`, `stable-assumption`, `quick-check`, `formal-research`,
+    `unverified`, `blocked`, or `not-applicable`.
 - `external_grounding_required`
   - `true`, `false`, or `unknown`.
   - Records whether external evidence can affect this station's conclusion.
@@ -138,6 +147,11 @@ Required field meanings, in order:
   - Strongest source tier supporting the external claim.
 - `source_date_or_version`
   - Date, version, release, API version, standard revision, or local version compared to the source.
+- `checked_at`
+  - ISO-8601 timestamp for G2 or G3 evidence, or `not-applicable`.
+- `local_version_anchor`
+  - Local source, lockfile, package, API, policy date, tool output, or `not-applicable`
+    anchor used to compare external evidence to the project state.
 - `missing_external_evidence`
   - Concrete missing source, version, access, conflict, or research gap.
 - `minimal_reference_packet`
@@ -149,6 +163,29 @@ Required field meanings, in order:
 - `source_deployed_pair` / `sync_direction` / `sync_evidence`
   - Pair and parity fields from `platform-copy-map.md` when source/runtime or
     source/generated copies are affected.
+- `grounding_handoff`
+  - Short downstream pointer to grounding tier, mode, artifact ID, missing evidence,
+    and affected decision.
+- `closeout_bundle`
+  - Optional index for non-trivial source-impacting work.
+  - It may list delivery artifact, changed files, expected dirty files,
+    expected untracked/generated files, validation/review/memory-docs handoffs,
+    grounding handoff, sync evidence, and residual risk.
+  - It is not validation, review, memory attribution, external-research evidence,
+    protected authorization, or completion evidence by itself.
+- `expected_dirty_files`
+  - Closeout/preflight comparison list for files this station expects to leave modified.
+  - It is not write authorization, not an allowlist override, and not downstream evidence by itself.
+- `expected_untracked_files` / `expected_untracked`
+  - Closeout/preflight comparison list for generated or untracked paths this station expects to leave present.
+  - `expected_untracked` is a compact alias for `expected_untracked_files`.
+  - It is not write authorization, not an allowlist override, and not downstream evidence by itself.
+- `preflight_expected_state_override`
+  - Optional commit/preflight-only override for a named expected dirty or untracked comparison.
+  - It must be single-use, exact file allowlist scoped, current diff/hash-bound where available,
+    and auditable with reason, expiry, and responsible owner.
+  - Wildcard, directory-wide, persistent, or policy-level overrides are forbidden.
+  - Unexpected dirty or untracked files remain blockers and must not be normalized by this field.
 - `output_artifact_contract`
   - Expected delivery artifact schema or skill contract.
 - `stop_condition`
@@ -259,8 +296,25 @@ Every formal station records the external grounding fields when external facts c
 Affected conclusions include architecture, implementation, validation, review, release readiness, and security.
 They also include compliance, cost, and completion claims.
 
+These fields are conditional for trivial tasks.
+If no external fact or current outside source can affect the bounded station result, record
+`external_grounding_required: false`, `grounding_tier: G0` or `G1`, and the local or assumption basis.
+Do not require a quick-check artifact only to answer a low-risk local or stable-semantics question.
+
 Required field meanings:
 
+- `ai_prior`
+  - `not-used`, or a concise hypothesis label.
+  - AI prior is never the source tier.
+- `grounding_tier`
+  - `G0`: local-grounded source, lockfile, log, test, tool output, or provided artifact.
+  - `G1`: stable low-risk assumption from model knowledge, labeled as an assumption.
+  - `G2`: quick-check against one to three official or primary sources.
+  - `G3`: formal external research with an `external_research_artifact_id`.
+  - `G4`: required evidence missing, conflicted, blocked, or unverified.
+- `grounding_mode`
+  - `local-grounded`, `stable-assumption`, `quick-check`, `formal-research`,
+    `unverified`, `blocked`, or `not-applicable`.
 - `external_grounding_required`
   - `true` when external freshness or outside sources can affect the station.
   - `false` when local files, tool output, or stable semantics are enough.
@@ -278,6 +332,11 @@ Required field meanings:
 - `source_date_or_version`
   - Source publication date, release date, standard revision, API version, package version, or lockfile version.
   - Also allows `not-applicable`.
+- `checked_at`
+  - ISO-8601 timestamp for the lookup or artifact, or `not-applicable`.
+- `local_version_anchor`
+  - The local version, file, policy date, generated client, package manifest, lockfile,
+    or explicit `missing-local-anchor`.
 - `missing_external_evidence`
   - Missing official page, version match, source access, conflict resolution, date, or local-version comparison.
   - Use `none` when no evidence is missing.
@@ -311,6 +370,10 @@ Other stations may request research by recording these fields:
   - Architecture, implementation, validation, review, release, security, completion, or blocked.
 - `fallback_if_missing`
   - Conservative non-complete state from the canonical status and completion sources.
+
+Use `research_mode: quick-check` for G2 evidence when one to three official or primary sources can answer the narrow question.
+Use `research_mode: formal-research` for G3 evidence when the decision affects architecture, governance, security, deployment, pricing, law, standards, release readiness, or cross-source conflict handling.
+Both modes remain station-owned external evidence and return or map to `external_research_artifact_id`.
 
 The returned research artifact records the answered question, sources checked, and source tier.
 It also records source dates or versions, local-version comparison, conflicts, missing evidence, and `external_grounding_state`.

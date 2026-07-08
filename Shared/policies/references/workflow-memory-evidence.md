@@ -91,6 +91,32 @@ Required protected memory phases must be completed before those readiness states
 
 `memory_commit` runs only after an authorized memory card write updates active memory main-file content.
 
+## Closeout Bundle Boundary
+
+An implementation or change-application `closeout_bundle` may help the memory/docs station find
+delivery artifacts, changed files, expected dirty files, grounding handoff, validation/review
+handoffs, sync evidence, and residual risks.
+
+The bundle is an index/checklist only.
+It does not replace memory attribution, owner-card selection, read-only memory evidence, protected
+memory authorization, memory write, or `memory_commit`.
+Memory/docs stations must inspect the relevant source delivery and memory evidence instead of
+copying bundle text into a memory card.
+
+## Forbidden Memory Content
+
+Do not write these into source memory cards:
+
+- plaintext secrets, credentials, tokens, private keys, or sensitive personal data;
+- unverified AI prior, stale recall, guesses, or unsourced external claims;
+- raw external research transcripts, raw tool logs, raw test output, screenshots, or one-run traces;
+- short-lived task status, dirty-file lists, temporary blockers, or handoff prose;
+- pricing, legal, regulatory, security, deployment, or API claims without current accepted evidence;
+- rejected alternatives, brainstorming, failed attempts, or review comments without durable source impact.
+
+If such content appears in a delivery bundle, keep it in the task artifact or report as residual
+risk. Do not promote it to durable memory.
+
 ## Memory Admission Matrix
 
 Source memory writes are allowed only when the workflow has a durable, source-backed fact or active constraint to preserve.

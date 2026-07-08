@@ -25,6 +25,8 @@ Source changes must be checked for memory obligations.
 The memory/docs station owns read-only disposition and attribution evidence.
 Memory mutation remains on a separate protected authorization path or assigned owner station.
 The captain receives the station artifact and synthesizes the Director-facing report without authoring missing memory evidence.
+A `closeout_bundle` from change delivery is only an index/checklist for this station.
+It does not replace memory attribution, read-only evidence, owner-card selection, protected memory authorization, memory writes, or `memory_commit`.
 
 ## Inputs
 
@@ -33,6 +35,7 @@ The captain receives the station artifact and synthesizes the Director-facing re
 - Director authorization for memory work, if any.
 - Authorization source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode.
 - Read-only memory audit or status evidence, when available.
+- Closeout bundle reference, if present.
 
 ## Decision
 
@@ -60,6 +63,13 @@ The captain receives the station artifact and synthesizes the Director-facing re
 7. Treat missing or mismatched authorization fields as `memory-unverified` or `memory-blocked-by-scope`.
 8. Route `memory-card-missing`, owner-card conflicts, and topology ambiguity to memory-docs or memory-arch decision evidence.
    Do not let the captain author a card or attribution substitute.
+9. Do not copy `closeout_bundle` text into memory.
+   Inspect the source delivery and memory evidence, then produce disposition.
+10. Treat these as forbidden memory content: secrets or credentials, sensitive personal data,
+    unverified AI prior, stale recall, unsourced external claims, raw logs, raw test output,
+    screenshots, one-run traces, temporary blockers, dirty-file lists, handoff prose,
+    pricing/legal/security/deployment/API claims without current accepted evidence,
+    rejected alternatives, brainstorming, and failed attempts without durable source impact.
 
 ## Output
 
@@ -87,9 +97,11 @@ authorization_expiry:
 authorization_resolution_state:
 platform_mode_observed:
 source_input:
+closeout_bundle_ref:
 memory_state:
 memory_impact:
 memory_delivery:
+forbidden_memory_content_check:
 ```
 
 ## Forbidden Actions

@@ -25,6 +25,11 @@ Constrain implementation specialists to change delivery.
 The implementer changes only the assigned implementation surface.
 The implementer returns a change delivery artifact for captain receipt, board update, and the next validation/review/memory-docs wave.
 The artifact must include `validation_handoff`, `review_handoff`, and `memory_docs_handoff` so downstream stations start from the same delivery bundle.
+When grounding affects the implementation, the artifact also includes `grounding_handoff`.
+For non-trivial source-impacting work, it may include a `closeout_bundle` index and
+`expected_dirty_files` plus `expected_untracked_files` / `expected_untracked` so later
+stations can compare actual dirty and untracked/generated state without inventing evidence.
+These fields are closeout/preflight comparison fields only, not authorization or allowlist overrides.
 Diff text is only a representation format; the governing object is the change delivery artifact.
 
 Use `team-role-boundaries` to check role separation and `team-task-board` for board state.
@@ -41,6 +46,7 @@ Confirm the implementation specialist role before any execution channel is used.
 - Required behavior change.
 - Existing source context read before writing.
 - Test or validation expectations, if provided.
+- Grounding tier or returned external research artifact when current outside facts affected implementation.
 
 ## Delivery Modes
 
@@ -67,6 +73,11 @@ Confirm the implementation specialist role before any execution channel is used.
 7. Keep changes minimal and tied to the approved requirement.
 8. Do not add unrelated cleanup, formatting, or generated output.
 9. Return validation, review, and memory/docs handoff fields as part of the delivery bundle.
+   Include `grounding_handoff` when the implementation used G2/G3 evidence or leaves G4 gaps.
+   Include `expected_dirty_files` for the exact files this station expects to leave dirty.
+   Include `expected_untracked_files` or compact alias `expected_untracked` for exact generated/untracked paths this station expects to leave present.
+   Treat expected dirty and untracked fields as closeout/preflight comparison only, not write authorization or allowlist override.
+   Treat `closeout_bundle` as an index/checklist only, not downstream evidence.
 10. Stop after producing the change delivery artifact or change-application receipt for captain receipt.
 
 ## Output
@@ -104,6 +115,10 @@ integrable_scope:
 source_deployed_pair:
 sync_direction:
 sync_evidence:
+expected_dirty_files:
+expected_untracked_files:
+grounding_handoff:
+closeout_bundle:
 changes:
 files:
 evidence:

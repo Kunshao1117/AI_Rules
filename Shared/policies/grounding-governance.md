@@ -43,6 +43,26 @@ When skipping is material to the conclusion, record `external_grounding_state: n
 Name the basis, for example local file evidence or stable language semantics.
 Do not use this exception for dependency versions, service behavior, regulatory claims, pricing, schedules, or "latest" questions.
 
+## AI Prior And Grounding Tiers
+
+`AI prior` means model knowledge, memory, or unstated recall used only as a hypothesis starter.
+It is not verified evidence.
+It must not support words such as verified, current, latest, safe, supported, or complete unless another accepted source tier grounds the exact claim.
+
+Use the lightest grounding tier that can support the decision:
+
+| Tier | Label | Use boundary |
+|---|---|---|
+| `G0` | local-grounded | Current local source, lockfile, log, test, non-mutating tool output, or provided artifact supports the claim. |
+| `G1` | stable model knowledge | Low-risk stable concept only; mark as assumption or general reasoning, not verified fact. |
+| `G2` | quick-check | One to three official or primary sources, with `checked_at`, source tier, and a short evidence artifact. |
+| `G3` | formal external research | Architecture, governance, security, deploy, pricing, law, standards, cross-source conflict, or other decision-impacting freshness risk; requires `external_research_artifact_id`. |
+| `G4` | unverified/blocked | Required evidence cannot be checked, is inaccessible, conflicts, or remains stale but affects a decision. |
+
+`G2` may be produced as a concise quick-check artifact by an external-research station or a tool-specific docs lookup that feeds external-research artifact semantics.
+`G3` remains formal station-owned external research.
+Other stations may consume the returned artifact ID and gaps, but they do not become owners of external evidence.
+
 ## Source Ranking
 
 Use the strongest available source tier and label weaker evidence honestly.
@@ -123,12 +143,17 @@ If the external-research route is unavailable, record one of these canonical sta
 
 Formal station traces and `execution_spec` payloads use these canonical fields:
 
+- `ai_prior`;
+- `grounding_tier`;
+- `grounding_mode`;
 - `external_grounding_required`;
 - `external_research_question`;
 - `external_research_artifact_id`;
 - `external_grounding_state`;
 - `source_tier`;
 - `source_date_or_version`;
+- `checked_at`;
+- `local_version_anchor`;
 - `missing_external_evidence`.
 
 `external_grounding_state` uses these machine states:
@@ -164,6 +189,15 @@ The following states must remain visible in downstream validation, review, relea
 
 `source_date_or_version` records the date, release, standard revision, API/package/local version, or `not-applicable`.
 Detailed field semantics stay in the workflow execution spec reference.
+
+## Evidence Budget And Closeout Bundle
+
+Grounding work should match the decision risk.
+Trivial local edits can close with `G0` or a clearly marked `G1` assumption when no external fact affects the result.
+Implementation, validation, review, release, security, pricing, legal, deployment, or governance decisions that depend on current outside facts need `G2` or `G3`.
+
+A `closeout_bundle` is only an index of returned artifacts, changed files, grounding tier, validation/review/memory-docs handoffs, sync evidence, expected dirty files, and residual risks.
+It does not replace external-research artifacts, validation evidence, review evidence, memory/docs attribution, protected gates, or completion evidence.
 
 ## Completion Reporting Display Labels
 

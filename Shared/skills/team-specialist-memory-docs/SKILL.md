@@ -40,6 +40,10 @@ attribution assessment 時使用。
 
 用於產生供 owner-station coordination 使用的 memory and documentation delivery artifact。
 
+Change-delivery `closeout_bundle` input is only an index for finding artifacts,
+changed files, grounding handoff, sync evidence, and residual risks.
+It does not replace memory/docs attribution evidence or authorize mutation.
+
 ## Procedure
 
 ### Step 1: Apply memory docs gate
@@ -65,6 +69,12 @@ Protected memory or context mutation required?
 3. State whether a memory card, docs file, index, or generated-copy sync is required.
    Also state whether it is already attributed without write, missing, blocked, conflict/compaction blocked, or unverified.
 4. Do not edit memory cards or call memory mutation tools.
+5. Check forbidden memory content before proposing any memory note:
+   secrets or credentials, sensitive personal data, unverified AI prior, stale recall,
+   unsourced external claims, raw logs, raw test output, screenshots, one-run traces,
+   temporary blockers, dirty-file lists, handoff prose, pricing/legal/security/deployment/API
+   claims without current accepted evidence, rejected alternatives, brainstorming, and
+   failed attempts without durable source impact.
 
 ### Step 3: Return the memory docs artifact
 
@@ -75,6 +85,8 @@ Return these fields:
   memory-conflict-or-compaction-blocked, or memory-unverified.
 - Docs impact: required, not-required, blocked, or unverified.
 - Memory/docs disposition evidence: one of the canonical memory states plus concise attribution evidence.
+- Closeout bundle reference: consumed as an index only, or not-present.
+- Forbidden memory content check: clear, blocked, or unverified.
 - Protected memory mutation path: separate memory-write owner station required.
   It may also be separate memory-commit phase required after active memory file update, not-required, blocked, or unverified.
 - Required memory note decision: concise proposed text or no-change statement.

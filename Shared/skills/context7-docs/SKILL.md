@@ -65,6 +65,32 @@ When the project uses a specific framework version:
 2. Include version info in the query context
 3. Cross-reference results with the project's locked tech stack.
 
+## Grounding Handoff
+
+Context7 is a documentation lookup source.
+It is not a replacement for the `external-research` station when a decision
+needs station-owned external evidence.
+
+For decision-impacting lookup results, return or feed these fields into the
+external-research artifact semantics:
+
+```text
+grounding_tier: G2
+grounding_mode: quick-check
+source_tier: official
+local_version_anchor:
+checked_at:
+source_date_or_version:
+external_research_artifact_id: pending | not-applicable | <artifact id>
+missing_external_evidence:
+```
+
+If the lookup affects architecture, governance, security, deployment, pricing,
+law, standards, release readiness, or conflicts across sources, route `G3`
+formal external research instead of treating a docs snippet as final proof.
+If the local version cannot be anchored, record `missing-local-anchor` and keep
+the downstream claim `partial` or `unverified`.
+
 ## Gotchas
 
 - **Both parameters are REQUIRED**: `resolve-library-id` and `query-docs` each require two parameters. Missing one causes an `invalid_type` error.
@@ -74,6 +100,7 @@ When the project uses a specific framework version:
 - If `resolve-library-id` returns no results, try alternative names (e.g., `"next"` vs `"nextjs"`).
 - Documentation results are snapshots; for critical decisions, verify against the actual source.
 - Call at most three times per question. If no good result appears after three calls, use the best available result and record the API limit.
+- AI prior can motivate the query, but it must not be reported as documentation evidence.
 
 ## Integration with Workflows
 

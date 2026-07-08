@@ -57,6 +57,8 @@ Read these sources first:
 - Independent review delivery artifact when review applies.
 - Sync or parity evidence when generated/deployed copies are touched.
 - Residual-risk notes from blocked, unverified, or risk-closed stations.
+- Closeout bundle index from implementation or change-application, when present.
+  This is an index only; it does not replace the artifact chain or downstream evidence.
 
 ## Completion Checklist
 
@@ -66,10 +68,12 @@ Read these sources first:
 | Scope | Actual changes match the approved scope and exclusions. |
 | Authorization | Every write/protected phase has source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode. |
 | Artifact chain | Completion consumes only the artifact chain: implementation/change-application delivery artifact, captain ledger receipt, downstream validation, review, memory/docs, sync, and residual-risk artifacts. |
+| Closeout bundle | The bundle may point to artifacts, changed files, expected dirty files, grounding handoff, sync, and residual risks. It is never completion evidence by itself. |
 | Change delivery | A returned implementation or authorized change-application artifact exists, or the missing route is not being claimed as complete. |
 | Memory/docs delivery | Process-complete or release-ready closeout needs delivered memory/docs or an explicit non-complete state. Source-level delivery may report `memory-required` or `memory-blocked-by-scope` as protected follow-up pending when implementation, validation, review, and sync evidence are otherwise sufficient. |
 | Validation | Non-mutating validation passed, or blocked/unverified reason and smallest next validation path are named. |
 | Review | Independent review exists from a role that did not author the change; missing independent review blocks full completion. |
+| Grounding | AI prior is not verified evidence. Required G2/G3 artifacts must be present by ID; G4 gaps remain visible as blocked, unverified, partial, no-evidence, conflicted, or Director-accepted risk. |
 | Role separation | Implementation, validation, review, memory/docs, and completion boundaries remain separate. |
 | Captain boundary | Captain work is routing, station-output ledgering, board/status synthesis, blocker/conflict/authorization coordination, protected phase routing, and Director-facing reporting; it is not implementation, validation, review, memory/docs attribution, protected execution, protected evidence ownership, or a substitute completion artifact. |
 | Director-facing report governance | Final Director-facing reports and replies have a Traditional Chinese meaning-first main body, internal delivery fields appear only in a clearly labeled evidence appendix, internal delivery artifacts are synthesized rather than pasted, and technical tokens appear only as supporting evidence, paths, commands, schema fields, tool labels, state values, or exact evidence. English-led, raw-artifact-led, raw-field-led, or unsynthesized Director-facing reports block `complete`. |
@@ -126,6 +130,8 @@ changes:
 files:
 evidence:
 artifact_chain:
+grounding_handoff:
+closeout_bundle:
 closeout_target:
 risk:
 director_output_gate:

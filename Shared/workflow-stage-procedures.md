@@ -32,6 +32,9 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 5. When current official, public, or internal-source evidence can affect a workflow decision, route an `external-research` station before the affected station.
    Each consuming station must carry an `external_research_question` that names the question, source tier, freshness need, accepted evidence, and stop condition.
    Returned research is station input, not write authority.
+   Use `G2` quick-check for narrow low-blast-radius questions answerable by one to three official or primary sources.
+   Use `G3` formal external research for architecture, governance, security, deployment, pricing, law, standards, release readiness, cross-source conflict, or high-blast-radius implementation decisions.
+   Treat AI prior as a hypothesis only; it is never verified evidence without a matching local, official, primary, or returned research artifact.
 6. Ask the Director only when the next step expands scope, cost, external tool/state access, protected action exposure, or residual risk.
    Do not pause mechanically after a fixed number of modules, batches, or files while the current route and scope remain unchanged.
 7. Use `formal-readonly` for evidence, research, impact mapping, validation planning, review evidence, memory/docs attribution, and broad reads.
@@ -39,15 +42,19 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 9. Keep implementation, validation, review, memory/docs, and completion as separate delivery states. Missing states are blocked, unverified, or closed-with-director-risk, not complete.
 10. Post-change flow is artifact-chain only:
    - Implementation or authorized change-application returns a delivery handoff bundle with `validation_handoff`, `review_handoff`, and `memory_docs_handoff`.
+   - The bundle may also include `grounding_handoff`, `closeout_bundle`, `expected_dirty_files`, and `expected_untracked_files`.
+   - `expected_dirty_files`, `expected_untracked_files`, and the compact alias `expected_untracked` are closeout/preflight comparison fields only; they are not authorization, source-sync permission, protected-action permission, or downstream evidence by themselves.
    - The captain records it in the ledger without rewriting it.
    - The next wave starts validation and review only from that delivery bundle.
    - The memory/docs wave starts after validation and review reach terminal evidence states, using the delivery bundle plus the validation/review results.
    - The implementation bundle may include a `memory_impact` hint, but the memory/docs branch is read-only disposition and attribution routing; it does not authorize memory mutation, memory commit, or direct card writes.
-   - Completion consumes only the resulting artifact chain.
+   - `closeout_bundle` is an index/checklist only; completion consumes the resulting artifact chain, not the bundle by itself.
 11. Separate source/document delivery, process completion, and release readiness using
     `Shared/policies/references/completion-state-machine.md`.
 12. When a source/deployed pair exists, record sync direction and parity evidence before any completion claim.
 13. Use `commit_preflight` only in `09 Commit`, explicit commit-prep, or closeout commit/push readiness. Other workflows use normal read-only memory evidence and compact packets without interrupting non-commit work.
+    Any commit/preflight override for expected dirty or untracked state must be single-use, exact file allowlist scoped, current diff/hash-bound where available, and auditable with reason, expiry, and responsible owner.
+    Wildcard, directory-wide, persistent, or policy-level overrides are forbidden; unexpected dirty or untracked files remain blockers.
 14. Read `source-document-size-governance.md` when source-bearing documents, scripts, modules, skills, policies, or rule packs are written, grown, reviewed, validated, or audited.
 
 ## 00 Chat / 聊天
@@ -99,14 +106,22 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 - A production `build-plan` may start only from a machine-readable `execution_spec`, exact file allowlist, and acceptance matrix. Mermaid, screenshots, or human flowcharts may explain sequence, but they are not enough to open implementation change delivery.
 - If the `execution_spec`, file allowlist, or acceptance matrix is missing, route back to `02` or the intent-alignment station before writing.
 - Include source-document size/split impact in the build plan when the file set includes core, shared policy/reference, `SKILL.md`, memory card, PowerShell script/module, audit rule pack, or large general source files.
+- Classify grounding tier before writes:
+  - `G0` for local source, lockfile, logs, tests, or tool output.
+  - `G2` when a narrow framework/API/package behavior check can affect implementation.
+  - `G3` when the build depends on architecture, governance, security, deployment, pricing, law, standards, or cross-source external evidence.
 - After a scope-bound intent signal is resolved through authorization resolution, open implementation change delivery only for the named scope.
 - Post-change checklist: record:
   - delivery artifact ID;
   - `source_input`;
   - changed files;
+  - expected dirty files;
+  - expected untracked/generated files;
   - size/split impact;
+  - `grounding_handoff`;
   - `memory_impact`;
   - source/deployed pair and sync evidence when applicable;
+  - `closeout_bundle`;
   - validation, review, and memory/docs handoff targets.
 - Route back to implementation only through a new scoped change-delivery or change-application station when a downstream station returns a concrete blocker; captain ledger entries are not fixes.
 - Validation and review run after change delivery is returned, blocked, unverified, or risk-closed.
@@ -122,15 +137,21 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 - Classify whether the work is emergency temporary fix, root-cause repair, local refinement, or structural refactor.
 - Plan regression evidence before writes, including real-path validation when behavior depends on runtime state, external systems, persistence, UI, or operator-visible output.
 - Classify size/split impact before writes when the fix touches a large source document, `Scripts/modules/*.psm1`, audit rule pack, or governance source.
+- Route `G2` quick-check before repair when the symptom depends on current framework/API behavior, package documentation, or vendor status.
+- Route `G3` formal research when root-cause or repair choice depends on security guidance, deploy platform rules, laws, pricing, standards, or conflicting external sources.
 - After a scope-bound intent signal is resolved through authorization resolution, open a repair `change-delivery` station only for the named cause and route failed validation back to diagnosis or a new fix station.
 - Post-change checklist: attach:
   - repair delivery artifact ID;
   - symptom/cause `source_input`;
   - changed files;
+  - expected dirty files;
+  - expected untracked/generated files;
   - size/split impact;
+  - grounding handoff;
   - regression handoff;
   - review handoff;
   - memory/docs handoff;
+  - closeout bundle index;
   - source/deployed sync evidence when relevant.
 - Route back from validation or review to diagnosis when cause evidence is incomplete; route back to a new fix station only when the blocker names a bounded repair surface. Do not let completion substitute for a missing repair artifact.
 - Memory/docs runs only after the fix delivery has terminal validation and review evidence.
@@ -158,6 +179,10 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 
 - Gather logs, traces, stack frames, commands, inputs, recent changes, and environment signals without mutating source.
 - State hypotheses and disconfirming evidence.
+- Treat model knowledge as AI prior only.
+  Use `G0` for local logs, traces, source, tests, and tool output.
+  Route `G2` when a narrow current docs check can change the hypothesis.
+  Route `G3` when the diagnosis depends on security advisories, platform incidents, deploy rules, standards, or conflicting external sources.
 - Stop when root cause, missing evidence, or a broader audit need is clear.
 - Route confirmed repair to `04`, missing implementation to `03`, and systemic uncertainty to `08`.
 
@@ -201,9 +226,13 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 ## 09 Commit / 紀錄
 
 - Scan dirty files, staged files, source/deployed parity, memory status, validation state, review state, and unresolved blockers.
+- Consume the latest implementation/change-application `closeout_bundle` only as an index to the artifact chain.
+  Re-check dirty files, expected dirty files, expected untracked files, grounding gaps, sync evidence, validation, review, and memory/docs disposition directly.
 - Run `commit_preflight` or equivalent source-memory consistency evidence only in this route or an explicit commit-prep/closeout station.
 - Commit, push, tag, release, deployment, and memory commit are separate protected phases with separate authorization.
-- If preflight finds stale memory, missing validation, missing review, missing sync, compact-packet blockers, or untracked required files, route back to the owner workflow.
+- If preflight needs to accept expected dirty or untracked state, the override must be single-use, exact file allowlist scoped, current diff/hash-bound where available, and auditable with reason, expiry, and responsible owner.
+  Wildcard, directory-wide, persistent, or policy-level overrides are forbidden.
+- If preflight finds stale memory, missing validation, missing review, missing sync, compact-packet blockers, unexpected dirty files, unexpected untracked files, or untracked required files, route back to the owner workflow.
 - Source-level protected follow-up pending becomes a blocker in this route when it affects commit readiness. Do not hide it inside the commit summary.
 - Commit message subject, commit body, and commit summary must use Traditional Chinese meaning-first text as the main body; technical tokens, canonical states, file paths, and commit conventions may appear only as supporting evidence or precision.
 - Commit message wording rules do not authorize commit, push, tag, release, deployment, memory commit, or any other protected mutation.
@@ -230,11 +259,17 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 - Decide whether the content belongs in core, shared policy, workflow entry, operational skill, reference file, memory, or project context.
 - Keep trigger language in frontmatter description; put long examples, templates, and procedures in references.
 - Validate naming, description specificity, boundary language, required metadata, and source/deployed sync.
+- Use `G2` quick-check for narrow live skill/tool documentation questions that affect trigger or tool usage.
+- Use `G3` formal research when skill governance depends on current platform rules, security, deployment, external mutation, legal/pricing constraints, or cross-source conflict.
 - Post-change checklist: return:
   - skill delivery artifact ID;
   - source/deployed pair;
   - sync direction;
   - parity evidence;
+  - expected dirty files;
+  - expected untracked/generated files;
+  - grounding handoff;
+  - closeout bundle index;
   - memory/docs handoff;
   - validation handoff;
   - independent review handoff.

@@ -72,6 +72,24 @@ evidence is inaccessible or absent, record that in `external_grounding_state`
 as `blocked`, `unverified`, or `no-evidence`, and name the gap in
 `missing_external_evidence`.
 
+## Research Modes
+
+Use `research_mode: quick-check` for `G2` evidence when a narrow decision can
+be answered by one to three official or primary sources.
+Return a short artifact with `checked_at`, `local_version_anchor`,
+`source_tier`, `source_date_or_version`, and the exact applicability boundary.
+
+Use `research_mode: formal-research` for `G3` evidence when the decision affects
+architecture, governance, security, deployment, pricing, law, standards,
+release readiness, cross-source conflict, or high-blast-radius implementation.
+Formal research still returns concise evidence; long source notes stay out of
+core policies and workflow entries.
+
+`AI prior` may be recorded only as the hypothesis that triggered research.
+It is not a source tier and never verifies a claim.
+Both modes preserve station ownership of external evidence and must return or
+map to `external_research_artifact_id`.
+
 ## Procedure
 
 ### Step 1: Set the research anchor
@@ -89,6 +107,10 @@ Return an evidence packet with these fields:
 ```text
 artifact_type: external_grounding_evidence
 external_grounding_artifact_id:
+external_research_artifact_id:
+research_mode:
+grounding_tier:
+ai_prior:
 role: external-research
 requesting_station:
 question:
@@ -121,6 +143,7 @@ secondary sources as if it were current proof.
 `external_grounding_artifact_id` may remain as this role-specific artifact ID.
 Handoff packets and board rows must map it to canonical
 `external_research_artifact_id`.
+New artifacts should include both fields when possible.
 
 ### Step 3: Keep research separate from implementation
 
@@ -158,6 +181,10 @@ duplicating the field list inside this role skill.
 - A requesting station can consume an `external_grounding_artifact_id`; it does
   not become the owner of the research evidence. Handoff and board traces map
   that role-specific ID to canonical `external_research_artifact_id`.
+- `quick-check` is lighter than `formal-research`, but it is still external
+  evidence owned by this station or a docs lookup feeding this artifact shape.
+- `G4` must be returned when the required source, version anchor, date, access,
+  or conflict resolution cannot be established.
 
 ## Constraints
 
