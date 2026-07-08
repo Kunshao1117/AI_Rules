@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-07T10:41:11+08:00'
+last_updated: '2026-07-08T11:48:15+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T10:35:30+08:00'
+last_verified: '2026-07-08T11:45:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 8
+cycle_event_count: 9
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,7 +36,7 @@ metadata:
 ## Current Truth
 - This card owns operational skill governance files under `Shared/skills/` that are not assigned to `_shared.team-native-core`, plus active deployed root skill copies when those copies are project inputs.
 - Team-Native Core files, programming-team governance, team-task-board, delegation-strategy root, and dispatch-gate ownership live in `_shared.team-native-core`; this card keeps delivery-artifact, role-boundary, skill-factory, and delegation CLI reference ownership.
-- `Shared/skills/_index.md` is now an expanded skill registry where each entry preserves `Keywords (EN)`, `關鍵字 (ZH)`, `Skill`, and `MCP Server`.
+- `Shared/skills/_index.md` is now an expanded skill registry where each entry preserves `Keywords (EN)`, `關鍵字 (ZH)`, `Skill`, and `MCP Server`, and registers `coding-reflection-gate` as read-only workflow routing rather than execution/write/completion authority.
 - Skill-factory and its references require AI_Rules skill descriptions to start with Traditional Chinese task meaning as the first readable content; `Use when:` and `DO NOT use when:` labels stay canonical but their text must start with Traditional Chinese trigger or exclusion meaning.
 - Delivery artifact and role-boundary skills require current structured station evidence, scoped authorization fields, role/channel evidence, source/deployed sync evidence, and non-complete outcomes when required evidence is missing.
 - Change delivery artifacts now require `validation_handoff`, `review_handoff`, and `memory_docs_handoff` in the returned delivery bundle while still distinguishing station-owned main-worktree `change-delivery` from isolated/text fallback artifacts and fallback `change-application`.
@@ -50,6 +50,7 @@ metadata:
 - Do not duplicate full skill templates in memory or copy platform core language paragraphs as the only language source; use tracked references and shared language governance for skill formatting, delegation, triggers, handoffs, and generated docs.
 
 ## Cycle Events
+- 42: Recorded `coding-reflection-gate` in the Shared skill registry as read-only workflow routing with no delivery, review, validation, memory, or completion authority.
 - 41: Recorded change-delivery bundle requirements for validation/review/memory-docs handoffs and reaffirmed that memory-docs handoff is read-only, not memory mutation authority.
 - 40: Repaired stale skill-governance memory for skill registry expansion, skill-factory zh-TW trigger requirements, and delivery-artifact protected routing boundaries.
 - 39: Updated role-boundary memory after captain-boundary dedupe centralized captain forbidden-work wording in Team-Native Core.
@@ -63,6 +64,7 @@ metadata:
 
 ## Evidence Base
 - source:Shared/skills/_index.md — Verified expanded skill registry format and preserved EN/ZH keyword, skill, and MCP server fields.
+- upstream_artifact:2026-07-08 — Reported `coding-reflection-gate` registration in `Shared/skills/_index.md`.
 - source:Shared/skills/skill-factory/SKILL.md and references — Verified Codex-compatible skill generation, layer placement, `metadata.style`, reference handling, quality checklist, and zh-TW first-readable trigger requirement.
 - source:Shared/skills/team-*-delivery-artifact/SKILL.md and Shared/skills/team-role-boundaries/SKILL.md — Verified artifact schema, role separation, station evidence, handoff fields, no-repair/no-self-review boundaries, and Director-facing synthesis boundary.
 - source:Shared/skills/team-change-delivery-artifact/SKILL.md and Shared/skills/team-specialist-change-delivery/SKILL.md — Dirty diff makes validation/review/memory-docs handoffs mandatory in the change delivery bundle and keeps memory-docs read-only.

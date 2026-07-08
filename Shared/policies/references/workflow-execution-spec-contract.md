@@ -77,6 +77,11 @@ Required field meanings, in order:
   - Never executable by itself.
 - `workflow_route`
   - Workflow or semantic route used as a route hint.
+- `reflection_routing_decision`
+  - Optional route context returned by `coding-reflection-gate`.
+  - It may shape retry, reroute, ambiguity, and governance-depth decisions.
+  - It never replaces `execution_spec`, station handoff, scoped authorization, validation evidence, or review evidence.
+  - It never authorizes writes, review, validation, memory mutation, protected actions, or completion claims.
 - `task_type`
   - Discussion, exploration, blueprint, build-plan, implementation, fix-debug, validation-audit, commit-release, or handoff-skill.
 - `operation_mode`

@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-07T22:46:40+08:00'
+last_updated: '2026-07-08T11:48:08+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T20:50:00+08:00'
+last_verified: '2026-07-08T11:45:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 6
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -41,7 +41,7 @@ metadata:
 - Language governance owns Director-facing meaning-first output and exact-evidence expression; 09 commit subject/body/summary use Traditional Chinese meaning-first main text, while grounding governance owns source freshness and no-evidence claim boundaries.
 - Memory governance separates source memory from project context; delivery-bundle `memory_docs_handoff` is read-only disposition/attribution routing, and staleness repair is represented by source comparison, full active card write, and separately authorized `memory_commit`.
 - MCP profiles are opt-in snippets only: framework Fresh, Upgrade, Sync, and Audit have no auto-install behavior for external MCP servers and no overwrite behavior for global MCP settings; mutating MCP tools remain bound to authorization resolution plus the matching protected gate.
-- Skill/source-document placement is centralized: shared skills cite policy/reference homes instead of copying long playbooks, and source-document size/split decisions live in `Shared/policies/source-document-size-governance.md`.
+- Skill/source-document placement is centralized: `Shared/skills/_index.md` registers `coding-reflection-gate`, reflection-like skills stay narrow read-only route gates, and source-document size/split decisions live in `Shared/policies/source-document-size-governance.md`.
 - Shared references deploy to `.agents/shared/`, and restricted project-local tools deploy from `Shared/project-tools/`; source/deployed parity is a closeout evidence item.
 - Parent cards use `Relations` for navigation when a more specific child card owns concrete tracked files.
 - Ownership status: new Shared policy reference sources are present in this worktree and are attributed through `_shared.team-native-core`; cartridge metadata sync is handled through protected `memory_commit`.
@@ -51,6 +51,7 @@ metadata:
 - Windows PowerShell 5.1 project tools with non-ASCII runtime strings use UTF-8 BOM encoding.
 - Source/deployed shared-doc parity is a closeout evidence item; workflow names, casual approvals, `GO`, MCP HITL, memory/context write, and other protected phases remain scope-bound intent until authorization resolution binds target, command, phase, expiry, and matching gate.
 ## Cycle Events
+- 55: Recorded coding-reflection-gate registry and reflection-like skill governance as read-only routing rather than workflow, execution, protected-action, or completion authority.
 - 54: Repaired parent Shared memory status after protected-flow updates; `_shared.team-native-core` remains the detailed owner for Team-Native workflow/protected-flow contracts.
 - 53: Reconciled Shared governance memory with language/grounding, MCP opt-in, memory/context, source-document-size, skill placement, workflow-stage delivery-bundle handoff, and 09 commit wording policy updates.
 - 52: M4 compacted the parent card and removed parent tracked ownership for workflow orchestration/scenarios; `_shared.team-native-core` remains the specific owner.
@@ -61,6 +62,7 @@ metadata:
 - archive-003.md keeps older cycle events 14-22; archive-001.md / archive-002.md preserve legacy and pre-standardization active snapshots from schema v2 and MEMORY.md migration.
 ## Evidence Base
 - Source evidence: Previous active memory content is preserved in archive-002.md.
+- Upstream read-only artifact: 2026-07-08 memory-write station input reported `Shared/skill-governance.md` reflection-skill boundaries and `Shared/skills/_index.md` coding-reflection-gate registry.
 - Source evidence: `language-governance`, `grounding-governance`, `workflow-stage-procedures`, `skill-governance`, `mcp-profiles`, memory-ops, memory-arch, project-context, and audit-engine sources verified on 2026-07-07; current `workflow-stage-procedures` diff adds delivery-bundle memory_docs handoff and 09 commit wording rules.
 - Tool evidence: exact target status/diff on 2026-07-07 showed stale metadata plus cartridge warning only; previous memory_list/memory_audit identified legacy main files and quality metadata gaps before migration.
 - Director evidence: 2026-06-15 GO MEMORY MIGRATE authorized active memory-card migration; 2026-07-07 protected memory-ops authorization covers current `.agents/memory/**` repair and `memory_commit`.

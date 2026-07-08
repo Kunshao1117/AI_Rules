@@ -5,7 +5,8 @@ description: >
   review state alignment, and drift audit gate.
   Use when: 需求對齊、反證、中立檢查、架構藍圖、建構計畫、驗收追蹤、偏移稽核、需求追蹤
   （architecture blueprint, design-to-build plan, requirements clarification, anti-sycophancy review,
-  neutral challenge, decision record, acceptance trace, drift audit, requirements traceability）。
+  neutral challenge, decision record, acceptance trace, drift audit, requirements traceability）；
+  coding-reflection-gate 偵測 ambiguity、requirement drift、或 counter-evidence need 時。
   DO NOT use when: 只執行已核准的小型編輯，且沒有新計畫、架構決策、
   使用者可見驗收條件、工作流或治理變更；English: small approved edit with no new plan.
 metadata:

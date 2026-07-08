@@ -4,7 +4,8 @@ description: >
   開發品質閘門（Quality）：AI development quality gate for autonomous governance depth,
   tech freshness, UI reuse, design DNA, reference downgrade, real evidence,
   interface evidence, change intent, patch-stack risk, and review escalation.
-  Use when: 開發品質、AI 技術新鮮度、UI 介面、UI 探索、共用元件、設計 DNA、真實證據、實際驗收、插件介面任務。
+  Use when: 開發品質、AI 技術新鮮度、UI 介面、UI 探索、共用元件、設計 DNA、真實證據、實際驗收、
+  插件介面任務、coding reflection governance-depth escalation、或 self-check boundary 需要釐清。
   DO NOT use when: 純後端內部重構、無 UI 且無高變動外部技術依賴的微小修正。
 metadata:
   author: antigravity
@@ -27,6 +28,7 @@ metadata:
   dashboards、admin tools、websites、product pages、real data、runtime state、CLI、database effects、automation、
   cloud deployment，或 integrations。
 - 治理 Governance、workflow、public contract、release、security、cross-module，或需要 review state 的重複脆弱改動。
+- coding-reflection-gate 指出治理深度、品質邊界、或 self-check boundary 不足以支撐下一步。
 
 ## Procedure
 

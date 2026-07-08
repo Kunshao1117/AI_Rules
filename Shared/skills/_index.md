@@ -378,3 +378,9 @@ Each item preserves `Keywords (EN)`, `關鍵字 (ZH)`, `Skill`, and `MCP Server`
 - 關鍵字 (ZH): Postgres 最佳化、查詢優化、索引設計
 - Skill: supabase-postgres-best-practices
 - MCP Server: supabase
+
+## 63. coding-reflection-gate
+- Keywords (EN): coding reflection, retry routing, ambiguity escalation, governance depth, route gate
+- 關鍵字 (ZH): 程式反思、重試路由、模糊升級、治理深度、路由閘門
+- Skill: coding-reflection-gate
+- MCP Server: —

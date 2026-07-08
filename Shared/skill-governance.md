@@ -50,6 +50,8 @@ Workflow entries must not copy full policy manuals.
 - Purpose: On-demand operational knowledge.
 - Put here: Repeatable procedures, team-station governance, tool playbooks, release steps, and test recipes.
 - Do not put here: Non-negotiable safety rules that must apply before skill load.
+- Reflection-like skills are narrow route gates. They must not replace workflow entries, `execution_spec`,
+  implementation/change-delivery, review, validation, memory/docs, or completion gates.
 
 ### Memory
 

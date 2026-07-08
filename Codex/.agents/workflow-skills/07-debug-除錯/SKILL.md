@@ -47,6 +47,7 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 - Workflow row: `07`.
 - Procedure reference: `07 Debug` in `.agents/shared/workflow-stage-procedures.md`.
 - Route summary: Gather signals and hypotheses without mutating source; route confirmed repair, missing implementation, or systemic uncertainty onward.
+- Repeated hypothesis failure: route through `coding-reflection-gate`; use `structured-reasoning` when multiple competing causes or architecture-level trade-offs remain.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - Use `formal-write` only after a scope-bound Director intent signal passes authorization resolution and binds the explicit phase, file set, command, or required protected gate.

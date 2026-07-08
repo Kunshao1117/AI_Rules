@@ -50,6 +50,7 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 - Route summary: Produce the design-to-build contract before writes; after scoped authorization resolution, route through change delivery and later validation/review/memory states.
 - Platform plan mapping: distinguish `build-plan` from `plan-only`; `build-plan` starts from `execution_spec`, exact file allowlist, and acceptance matrix, not Mermaid-only context.
 - It defines file sets, acceptance, validation, memory/docs, and sync expectations, but still waits for authorization resolution before implementation.
+- Optional reflection route: when ambiguity, risk, or retry signals exist, run `coding-reflection-gate` after workflow route and before `execution_spec` or build-plan; it is not mandatory for every build and does not authorize writes.
 - Codex `update_plan` is only a visual mirror.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.

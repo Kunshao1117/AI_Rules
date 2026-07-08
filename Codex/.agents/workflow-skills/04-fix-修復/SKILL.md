@@ -48,6 +48,7 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 - Workflow row: `04`.
 - Procedure reference: `04 Fix` in `.agents/shared/workflow-stage-procedures.md`.
 - Route summary: Start from symptom and root cause; plan regression evidence; repair only the scoped cause after scoped authorization resolution.
+- Failed fix loop: after failed validation or repeated repair attempts, route through `coding-reflection-gate` before another attempt; reroute to debug, structured reasoning, or a blocked/unverified state when evidence is insufficient.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - Use `formal-write` only after a scope-bound intent signal has been resolved to the visible plan, station, file set, command, phase, expiry, and any required protected gate.

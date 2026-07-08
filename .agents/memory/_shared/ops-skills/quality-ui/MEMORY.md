@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 品質閘門、安全可靠性與 UI/UX 標準技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-07T05:52:39+08:00'
+last_updated: '2026-07-08T11:48:21+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T05:52:39+08:00'
+last_verified: '2026-07-08T11:45:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 11
+cycle_event_count: 12
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -37,10 +37,10 @@ metadata:
 ## Current Truth
 - This child card owns Shared quality gate, intent-alignment, review governance, security/SRE, UI design exploration, and UI/UX standard skills; these define governance expectations, not task-specific pass results.
 - Tracked quality/UI skill descriptions now start with Traditional Chinese task meaning while preserving canonical English review states, evidence fields, and exact technical identifiers.
-- AI development quality gate classifies task depth, change intent, patch-stack risk, review escalation, real execution evidence, component reuse, design DNA, reference downgrade, and interface evidence.
+- AI development quality gate classifies task depth, change intent, patch-stack risk, review escalation, real execution evidence, component reuse, design DNA, reference downgrade, interface evidence, and escalation from `coding-reflection-gate` when route risk or governance depth requires quality routing.
 - Real execution is required for claims involving real data, runtime state, persistence, integration, cloud/deployment, or operator-visible behavior; synthetic, mock, fixture, or static screenshot evidence is partial only.
 - Quality review governance requires independent review boundaries, lifecycle state, evidence state, review basis, and minimum sufficient complexity; evidence branches do not own final review disposition or protected mutation.
-- Intent alignment gate owns requirement playback, neutral challenge, decision trace, acceptance trace, and drift audit; unauthorized deviation or unverified critical acceptance evidence blocks completion claims.
+- Intent alignment gate owns requirement playback, neutral challenge, decision trace, acceptance trace, drift audit, and `coding-reflection-gate` reroutes for ambiguity or drift risk; unauthorized deviation or unverified critical acceptance evidence blocks completion claims.
 - UI exploration now distinguishes new/no UI, approved DNA, missing DNA, and narrow edits before component inventory; generated images, Stitch screens, and templates are references until real rendered UI validates implementation.
 - UI/UX standards classify surface and mode before layout rules, require component reuse/DNA reasoning, and forbid persisting design DNA without explicit `GO CONTEXT` or `GO DNA`.
 - Security/SRE keeps [SUDO] as risk-closure only; 03-1 experiments may handle real API/DB/credential risk but cannot claim production security readiness.
@@ -53,6 +53,7 @@ metadata:
 - Do not create visually similar components while ignoring existing shared components or approved design DNA.
 
 ## Cycle Events
+- 12: Recorded `coding-reflection-gate` escalation paths into AI quality and intent-alignment gates for ambiguity, risk, retry, and governance-depth routing.
 - 11: Repaired stale quality/UI memory for zh-TW trigger wording, real-evidence gates, review lifecycle, intent drift, component reuse, and design DNA boundaries.
 - 10: Recorded security-SRE hardening so [SUDO] cannot skip validation and experiment work remains prototype-only for production security claims.
 - 09: Recorded quality-gate hardening so governance, workflow, public-contract, security, release, or repeated-fragile work escalates to review-state evidence instead of lightweight completion.
@@ -69,9 +70,9 @@ metadata:
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
 
 ## Evidence Base
-- source:Shared/skills/ai-dev-quality-gate/SKILL.md — Verified task-depth, change-intent, real-evidence, component reuse, design DNA, reference downgrade, and interface evidence gates.
+- source/upstream_artifact:Shared/skills/ai-dev-quality-gate/SKILL.md — Verified task-depth, change-intent, real-evidence, component reuse, design DNA, reference downgrade, interface evidence gates, and 2026-07-08 coding-reflection-gate escalation input.
 - source:Shared/skills/quality-review-governance/SKILL.md — Verified independent review, lifecycle states, evidence branch boundary, minimum sufficient complexity, and completion/readiness separation.
-- source:Shared/skills/intent-alignment-gate/SKILL.md — Verified requirement playback, neutral challenge, decision/acceptance trace, and drift audit states.
+- source/upstream_artifact:Shared/skills/intent-alignment-gate/SKILL.md — Verified requirement playback, neutral challenge, decision/acceptance trace, drift audit states, and 2026-07-08 coding-reflection-gate reroute input.
 - source:Shared/skills/ui-design-exploration/SKILL.md and Shared/skills/ui-ux-standards/SKILL.md — Verified UI state classification, component primitives, design DNA persistence boundary, and surface-specific evidence routing.
 - source:Shared/skills/security-sre/SKILL.md — Verified [SUDO] and 03-1 prototype-only security boundaries.
 - source:.agents/memory/_shared/ops-skills/archive-001.md — Previous parent-card content preserved during migration.

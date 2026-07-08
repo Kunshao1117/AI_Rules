@@ -2,7 +2,8 @@
 name: structured-reasoning
 description: >
   深度推理與多方案分析（Infra）：Sequential Thinking deep reasoning workflow: architecture decisions, debugging, multi-option analysis.
-  Use when: 需要 深度推理/架構決策/除錯分析/多方案比較 的複雜場景。
+  Use when: 需要 深度推理/架構決策/除錯分析/多方案比較 的複雜場景；coding-reflection-gate
+  升級到 deep reasoning、反覆假設失敗、或需比較多條程式路由時。
   DO NOT use when: 簡單問答/事實查詢/單一選項決策/不需要多步推理的場景。
 metadata:
   author: antigravity
@@ -23,6 +24,7 @@ metadata:
 ├── 需要多重取捨的 architecture decision → Use
 ├── 需要多層分析的 deep debugging → Use
 ├── 需要 multi-option comparison → Use
+├── coding-reflection-gate recommends deep reasoning after repeated failed hypotheses → Use
 └── 簡單 Q&A / fact lookup / creative writing → Do NOT use
 ```
 

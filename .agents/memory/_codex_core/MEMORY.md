@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-08T10:13:41+08:00'
+last_updated: '2026-07-08T11:48:38+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-08T10:11:35+08:00'
+last_verified: '2026-07-08T11:45:29+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-08-001
-cycle_event_count: 2
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
@@ -38,6 +39,7 @@ metadata:
 - Current Team mode activates only for the current governed Director request; the captain coordinates scope, dispatch, artifact receipt, blocker/protected-gate routing, and Traditional Chinese reporting without backfilling station-owned evidence.
 - Source-write eligibility uses station-owned `change-delivery` under `formal-write`, authorization phase `implementation-change-delivery`, exact file allowlist, dirty diff read, and no protected action; `change-application` is only for returned artifacts, explicit integration, or assigned generated/deployed sync.
 - Protected actions include memory/project-context mutation, git, release, deploy, install, credentials, destructive filesystem operations, cloud mutation, and external mutation; source-write approval does not authorize them.
+- Codex 03-build, 04-fix, and 07-debug workflow skills may route optional `coding-reflection-gate` reflection/retry checks before build-plan or execution_spec; the route does not replace authorization, implementation, validation, review, memory, or completion evidence.
 - Active Codex hooks are `SessionStart`, `UserPromptSubmit`, `SubagentStart`, `PreToolUse`, `Stop`, and `SubagentStop`; `hooks.json` uses the official top-level `hooks` object and Windows `commandWindows` uses `pwsh -EncodedCommand` to avoid BackgroundJob/non-JSON stdout.
 - Hook runtime now emits `AI_RULES_HOOK_EVENT` markers for `SessionStart` and `UserPromptSubmit`; `PreToolUse` inspects `command`, `cmd`, `script`, and nested tool input command fields before denying repo inventory commands such as `rg --files` and `git ls-files`.
 - `Stop` reads `last_assistant_message` with `message`/`text` fallback, strips hook-feedback, `<hook_prompt>`, and fixture-path noise before classifying completion claims; completion-risk findings emit advisory `systemMessage` only and no Stop `decision: block`.
@@ -54,6 +56,7 @@ metadata:
 ## Cycle Events
 - 01: Compacted stale hook-cycle noise and recorded current active hook runtime behavior, source/runtime parity, validation snapshot, review accepted-risk, and protected follow-up boundaries.
 - 02: Recorded Director-approved Stop completion-risk policy change: completion-risk Stop findings are advisory-only and no longer hard-block AI completion replies.
+- 03: Recorded optional `coding-reflection-gate` reflection/retry routing in Codex 03-build, 04-fix, and 07-debug workflow skills without granting write or protected-action authority.
 
 ## Archive Index
 - archive-003.md — Older cycle events 13-22 compacted from the active card.
@@ -68,6 +71,7 @@ metadata:
 - tool: `git diff` and `git status --short` for the authorized memory files plus Codex hook/config and fixture sources reviewed on 2026-07-08.
 - tool: `Get-FileHash -Algorithm SHA256` verified source/runtime Codex hook/config parity on 2026-07-08.
 - director: 2026-07-08 protected memory-write instruction supplied validation pass summary, review accepted-risk, fixture tracking repair, and no release/deploy/install boundary.
+- upstream_artifact:2026-07-08 — Reported optional coding-reflection-gate reflection/retry routing in `Codex/.agents/workflow-skills/03-build-建構/SKILL.md`, `04-fix-修復/SKILL.md`, and `07-debug-除錯/SKILL.md`.
 
 ## Read Contract
 - Read this card when work touches Codex core governance, Codex hook runtime/config, framework source/deployed sync, or the tracked core workflow entries below.
