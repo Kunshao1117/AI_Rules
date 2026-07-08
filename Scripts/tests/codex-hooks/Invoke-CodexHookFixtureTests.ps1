@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path,
     [string]$FixturesRoot = (Join-Path $PSScriptRoot 'fixtures'),
     [string]$HookScript = (Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-gate.ps1'),
@@ -120,15 +120,49 @@ function ConvertTo-FixtureInputJson {
     return ($inputObject | ConvertTo-Json -Depth 64 -Compress)
 }
 
+function ConvertTo-FixtureProcessArgument {
+    param([AllowNull()][string]$Argument)
+    if ($null -eq $Argument) { return '""' }
+    if ($Argument -notmatch '[\s"]') { return $Argument }
+
+    $quoted = '"'
+    $backslashCount = 0
+    foreach ($character in $Argument.ToCharArray()) {
+        if ($character -eq '\') {
+            $backslashCount++
+            continue
+        }
+        if ($character -eq '"') {
+            if ($backslashCount -gt 0) { $quoted += ('\' * ($backslashCount * 2)) }
+            $quoted += '\"'
+            $backslashCount = 0
+            continue
+        }
+        if ($backslashCount -gt 0) {
+            $quoted += ('\' * $backslashCount)
+            $backslashCount = 0
+        }
+        $quoted += $character
+    }
+    if ($backslashCount -gt 0) { $quoted += ('\' * ($backslashCount * 2)) }
+    $quoted += '"'
+    return $quoted
+}
+
+function Set-FixtureProcessArguments {
+    param([System.Diagnostics.ProcessStartInfo]$ProcessStartInfo, [string[]]$Arguments)
+    if ($null -ne $ProcessStartInfo.ArgumentList) {
+        foreach ($argument in $Arguments) { [void]$ProcessStartInfo.ArgumentList.Add($argument) }
+        return
+    }
+    $ProcessStartInfo.Arguments = (($Arguments | ForEach-Object { ConvertTo-FixtureProcessArgument -Argument $_ }) -join ' ')
+}
+
 function Invoke-FixtureHook {
     param([object]$ShellInfo, [string]$InputJson, [object]$Fixture, [System.Collections.Generic.List[string]]$CleanupPaths)
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = $ShellInfo.Path
-    $psi.ArgumentList.Add('-NoProfile')
-    $psi.ArgumentList.Add('-ExecutionPolicy')
-    $psi.ArgumentList.Add('Bypass')
-    $psi.ArgumentList.Add('-File')
-    $psi.ArgumentList.Add($HookScript)
+    Set-FixtureProcessArguments -ProcessStartInfo $psi -Arguments @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $HookScript)
     $psi.RedirectStandardInput = $true
     $psi.RedirectStandardOutput = $true
     $psi.RedirectStandardError = $true
@@ -198,9 +232,22 @@ function Test-FixtureCanonicalDecisionContract {
     }
 }
 
+function Resolve-FixtureRelativePath {
+    param([string]$BasePath, [string]$Path)
+    $baseFull = [IO.Path]::GetFullPath($BasePath)
+    $targetFull = [IO.Path]::GetFullPath($Path)
+    if (-not $baseFull.EndsWith([IO.Path]::DirectorySeparatorChar) -and -not $baseFull.EndsWith([IO.Path]::AltDirectorySeparatorChar)) {
+        $baseFull = $baseFull + [IO.Path]::DirectorySeparatorChar
+    }
+    if ($targetFull.StartsWith($baseFull, [StringComparison]::OrdinalIgnoreCase)) {
+        return $targetFull.Substring($baseFull.Length)
+    }
+    return $targetFull
+}
+
 function Get-FixtureTrackingState {
     param([string]$RepoRoot, [string]$Path)
-    $relative = [IO.Path]::GetRelativePath($RepoRoot, $Path) -replace '\\', '/'
+    $relative = (Resolve-FixtureRelativePath -BasePath $RepoRoot -Path $Path) -replace '\\', '/'
     $output = @(& git -C $RepoRoot ls-files -- $relative 2>$null)
     if ($LASTEXITCODE -ne 0) { return 'untracked' }
     if (($output | ForEach-Object { $_ -replace '\\', '/' } | Where-Object { $_ -eq $relative }).Count -gt 0) { return 'tracked' }
@@ -279,10 +326,7 @@ function Invoke-FixtureCommandWindowsHook {
     param([object]$CmdInfo, [string]$CommandLine, [string]$InputJson, [string]$WorkingDirectory)
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = $CmdInfo.Path
-    $psi.ArgumentList.Add('/d')
-    $psi.ArgumentList.Add('/s')
-    $psi.ArgumentList.Add('/c')
-    $psi.ArgumentList.Add($CommandLine)
+    Set-FixtureProcessArguments -ProcessStartInfo $psi -Arguments @('/d', '/s', '/c', $CommandLine)
     $psi.WorkingDirectory = $WorkingDirectory
     $psi.RedirectStandardInput = $true
     $psi.RedirectStandardOutput = $true
@@ -303,12 +347,7 @@ function Invoke-FixturePowerShellCommandWindowsHook {
     param([object]$ShellInfo, [string]$CommandLine, [string]$InputJson, [string]$WorkingDirectory)
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = $ShellInfo.Path
-    $psi.ArgumentList.Add('-NoProfile')
-    $psi.ArgumentList.Add('-NonInteractive')
-    $psi.ArgumentList.Add('-ExecutionPolicy')
-    $psi.ArgumentList.Add('Bypass')
-    $psi.ArgumentList.Add('-Command')
-    $psi.ArgumentList.Add($CommandLine)
+    Set-FixtureProcessArguments -ProcessStartInfo $psi -Arguments @('-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-Command', $CommandLine)
     $psi.WorkingDirectory = $WorkingDirectory
     $psi.RedirectStandardInput = $true
     $psi.RedirectStandardOutput = $true

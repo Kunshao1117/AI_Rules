@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-08T16:59:05+08:00'
+last_updated: '2026-07-08T17:41:42+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-08T16:57:27+08:00'
+last_verified: '2026-07-08T17:39:43+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-08-001
-cycle_event_count: 3
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
@@ -57,6 +56,7 @@ metadata:
 - 01: Compacted stale hook-cycle noise and recorded current active hook runtime behavior, source/runtime parity, validation snapshot, review accepted-risk, and protected follow-up boundaries.
 - 02: Recorded Director-approved Stop completion-risk policy change: completion-risk Stop findings are advisory-only and no longer hard-block AI completion replies.
 - 03: Recorded optional `coding-reflection-gate` reflection/retry routing in Codex 03-build, 04-fix, and 07-debug workflow skills without granting write or protected-action authority.
+- 04: Removed stale ghost tracked-file state for deleted `Codex/.codex/hooks.delete` after confirming no current Codex hook source diff.
 
 ## Archive Index
 - archive-003.md — Older cycle events 13-22 compacted from the active card.
@@ -69,6 +69,7 @@ metadata:
 - source: `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1` and `Scripts/tests/codex-hooks/fixtures/*.json`.
 - tool: Gateway `memory_audit`, `memory_status`, and `memory_read` for `_codex_core`, `_system.scripts`, and `_system.scripts.codex-hooks-fixtures` on 2026-07-08.
 - tool: `git status --short -- Codex`, `git diff --name-status -- Codex`, and `git diff --name-status -- Codex/.codex/hooks.delete` returned no Codex source changes on 2026-07-08.
+- tool: `Test-Path Codex/.codex/hooks.delete` returned false and `git log -- Codex/.codex/hooks.delete` showed prior removal history on 2026-07-08.
 - tool: `Get-FileHash -Algorithm SHA256` verified source/runtime Codex hook/config parity on 2026-07-08.
 - director: 2026-07-08 protected memory-write instruction supplied validation pass summary, review accepted-risk, fixture tracking repair, and no release/deploy/install boundary.
 - upstream_artifact:2026-07-08 — Reported optional coding-reflection-gate reflection/retry routing in `Codex/.agents/workflow-skills/03-build-建構/SKILL.md`, `04-fix-修復/SKILL.md`, and `07-debug-除錯/SKILL.md`.
@@ -97,7 +98,6 @@ metadata:
 - Codex/.codex/AGENTS.md
 - Codex/.codex/config.toml
 - Codex/.codex/hooks.json
-- Codex/.codex/hooks.delete
 - Codex/.codex/hooks/team-native-gate.ps1
 - Codex/.codex/VERSION
 - Codex/.gitignore

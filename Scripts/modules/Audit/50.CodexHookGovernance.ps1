@@ -1,4 +1,4 @@
-# Internal partial for Audit.psm1. Loaded by the facade only.
+﻿# Internal partial for Audit.psm1. Loaded by the facade only.
 # Codex hook governance
 
 $codexHookGovernanceCatalogPath = Join-Path $PSScriptRoot 'CodexHookGovernance\Catalog.ps1'
