@@ -18,11 +18,13 @@ function Get-HookMessage {
         PreToolContextFormat = 'YWR2aXNvcnkvcmVtaW5kZXLvvJrmj5DphpLmqKHlvI/vvIzkuI3mnIPpmLvmk4vlt6XlhbfjgILnpoHmraLpmorplbfnm7TmjqXnlKLnlJ8gYnJvYWQgcmVhZCAvIHZhbGlkYXRpb24gLyByZXZpZXcgLyBleHRlcm5hbCByZXNlYXJjaCAvIG1lbW9yeS1kb2NzIC8gY29tcGxldGlvbiBldmlkZW5jZeOAguWFgeiosemaiumVt+WBmiBjb29yZGluYXRpb27jgIFzdGF0aW9uIGRpc3BhdGNo44CBYXJ0aWZhY3Qgc3ludGhlc2lz44CBbmFtZWQtZmlsZSBsb2NhbF9wcm9iZeOAguiLpeS4jeaYryBuYW1lZC1maWxlIGxvY2FsX3Byb2Jl77yM6KuL5YWI5YGc5q2i6YCZ5qyh5bel5YW35ZG85Y+r5Lim5pS55rS+56uZ6bue5oiW6ZmN57Sa44CCZGlyZWN0X2V4Y2VwdGlvbiDlj6rog73pmY3ntJrmiJAgcGFydGlhbCAvIHVudmVyaWZpZWQgLyBjbG9zZWQtd2l0aC1kaXJlY3Rvci1yaXNr77yM5LiN5Y+v5a6j56ixIGNvbXBsZXRl44CCZXh0ZXJuYWwgcmVzZWFyY2gg5b+F6aCI55SxIGZvcm1hbCBleHRlcm5hbC1yZXNlYXJjaCBzdGF0aW9uIOeUoueUnyBleHRlcm5hbF9yZXNlYXJjaF9hcnRpZmFjdF9pZO+8m+aykuaciSBhcnRpZmFjdCDlsLHlj6rog70gdW52ZXJpZmllZC9wYXJ0aWFsL2Jsb2NrZWTjgILlt6XlhbfliIbpoZ7vvJp7MH3jgII='
         PreToolSystemMessage = '5o+Q6YaS5qih5byP77yM5LiN5pyD6Zi75pOL5bel5YW344CC56aB5q2i5LqL6aCF77ya6ZqK6ZW35LiN5b6X55u05o6l5pu/6ZqK5ZOh5a6M5oiQIGJyb2FkIHJlYWQgLyB2YWxpZGF0aW9uIC8gcmV2aWV3IC8gZXh0ZXJuYWwgcmVzZWFyY2ggLyBtZW1vcnktZG9jcyAvIGNvbXBsZXRpb24gZXZpZGVuY2XjgILlhYHoqLHkuovpoIXvvJpjb29yZGluYXRpb27jgIFzdGF0aW9uIGRpc3BhdGNo44CBYXJ0aWZhY3Qgc3ludGhlc2lz44CBbmFtZWQtZmlsZSBsb2NhbF9wcm9iZeOAgumZjee0muW+jOaenO+8mmRpcmVjdF9leGNlcHRpb24g5Y+q6IO9IHBhcnRpYWwgLyB1bnZlcmlmaWVkIC8gY2xvc2VkLXdpdGgtZGlyZWN0b3Itcmlza++8jOS4jeWPryBjb21wbGV0ZeOAgg=='
         PreToolDenyRepoScanReason = '5bey6Zi75pOL5YWoIHJlcG8g5o6D5o+P44CC56aB5q2i6ZqK6ZW355SoIHJnIC0tZmlsZXMg5oiWIGdpdCBscy1maWxlcyDnm7TmjqXnlKLnlJ8gcmVwbyBpbnZlbnRvcnkgZXZpZGVuY2XvvJvoq4vlhYjmtL7nq5npu57miJbmlLnnlKjlkb3lkI3mqpQv56qE56+E5ZyN6K6A5Y+W44CC'
+        PreToolDenyGuardedNoStationReason = '5bey6Zi75pOL57y65bCR56uZ6bue55eV6Leh55qEIGd1YXJkZWQgZGlyZWN0IGFjdGlvbuOAguiri+WFiOa0vuermem7nuaIlumZhOS4iiBzdGF0aW9uIHRyYWNl77yM5oiW5pS555SoIG5hbWVkLWZpbGUgbG9jYWxfcHJvYmXjgII='
         BadInputReason = '6Ly45YWl5LiN5piv5pyJ5pWIIEpTT07vvJtiYWQtaW5wdXQgc21va2XjgILnpoHmraLmiornhKHmlYggcGF5bG9hZCDnlbbmiJDnq5npu57orYnmk5rvvJvlj6rlhYHoqLEgaG9zdCDnubznuozkuKbkv53nlZkgYWR2aXNvcnkvcmVtaW5kZXLjgII='
         UnknownEventReasonFormat = '55uu5YmN5LqL5Lu25pyq5o6b5rex5bGkIGdhdGXvvJp7MH3jgILnpoHmraLmiormnKrnn6Xkuovku7bovLjlh7rnlbbkvZzlrozmiJDorYnmk5rjgII='
         StopNonCompleteAllowedSystemMessage = '5a6M5oiQ6ZaY6ZaA5o+Q6YaS77ya5Zue6KaG5bey5L2/55SoIGJsb2NrZWQgLyB1bnZlcmlmaWVkIC8gY2xvc2VkLXdpdGgtZGlyZWN0b3ItcmlzayAvIHBhcnRpYWwg562J6Z2e5a6M5oiQ54uA5oWL77yb5YWB6Kix6YCB5Ye677yM5L2G5LiN5Y+v5a6j56ixIGNvbXBsZXRl44CC'
         StopCompleteAllowedSystemMessage = '5a6M5oiQ6ZaY6ZaA5o+Q6YaS77ya5bey5YG15ris5Yiw56uZ6bue5Lqk5LuY6Y+I6IiHIGNvbXBsZXRpb24gYXVkaXTvvJvlhYHoqLHpgIHlh7rlrozmlbTlrozmiJDlrqPnqLHjgII='
         StopRiskAdvisorySystemMessage = '5a6M5oiQ6ZaY6ZaA5o+Q6YaS77ya5YG15ris5Yiw5a6M5oiQ5a6j56ix5Y+v6IO957y65bCR56uZ6bue6K2J5pOa5oiW54uA5oWL6KGd56qB77yb5pysIGhvb2sg5LiN5pyD6Zi75pOL6YCB5Ye677yM6KuL55Sx57i955uj5Yik5pa35piv5ZCm5o6l5Y+X44CCUmVhc29uIGNvZGU6IHswfS4gTWlzc2luZyBzdHJ1Y3R1cmVkIGZpZWxkczogezF9LiDlu7rorbDmqJnmmI4gcGFydGlhbCAvIHVudmVyaWZpZWQgLyBibG9ja2VkIC8gY2xvc2VkLXdpdGgtZGlyZWN0b3ItcmlzayDmiJboo5zpvYogc3RhdGlvbi1vd25lZCBhcnRpZmFjdHPjgII='
+        UserPromptTeamModePhrase = '5pON5L2c6ICF6KaB5rGC6ZaL5ZWf5a2Q5Luj55CG5Yqf6IO977yM5Lim6buY6KqN5ZWf5YuV5ZyY6ZqK5qih5byP'
         UserPromptSystemMessage = '5pys6Lyq5ZyY6ZqK5o6I5qyK5o+Q6YaS77yac3ViYWdlbnRzIOWPquiDveWcqOacrOi8quaYjueiuuaOiOasiuaIluaXouaciSBzY29wZWQgVGVhbS1OYXRpdmUg5o6I5qyK5LiL5L2/55So44CC'
         SubagentStartSystemMessage = '5a2Q5Luj55CG6YKK55WM5o+Q6YaS77ya5LiN5b6X6YGe6L+05aeU5rS+44CB5LiN5b6X54Sh55WM5a+r5YWl44CB6aCQ6Kit5ZSv6K6A44CB5LiN5b6X6Ieq6KGM5a6j56ix5a6M5oiQ44CC'
         SubagentStopBlockedSystemMessage = '5a2Q5Luj55CG5Lqk5LuY5o+Q6YaS77ya57y65bCR5pGY6KaB44CB6K2J5pOa44CB6aKo6Zqq5oiW5LiL5LiA5q2l5pmC5b+F6aCI6KOc6b2K44CC'
@@ -105,6 +107,22 @@ function Get-HookActionText {
     return (($parts -join "`n").Trim())
 }
 
+function Get-HookTranscriptText {
+    param([object]$Payload)
+    # Trace bridge example: station_mode: formal-write; handoff_ownership: station-owned; authorization_phase: implementation-change-delivery.
+    $path = [string](Get-HookPropertyValue -Object $Payload -Names @('transcript_path','transcriptPath'))
+    if ([string]::IsNullOrWhiteSpace($path)) { return '' }
+    try {
+        if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { return '' }
+        $text = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        if ($null -eq $text) { return '' }
+        if ($text.Length -gt 20000) { return $text.Substring($text.Length - 20000) }
+        return $text
+    } catch {
+        return ''
+    }
+}
+
 function Get-HookExecutableCommand {
     param([object]$Payload)
     $candidates = @(Get-HookCommandCandidates -Payload $Payload)
@@ -126,6 +144,37 @@ function Test-HookExactInventoryCommand {
     if (-not $Command) { return $false }
     $inventoryCommandPatterns = @('rg --files','rg.exe --files','git ls-files','git.exe ls-files')
     return ($inventoryCommandPatterns -ccontains $Command.Trim())
+}
+
+function Test-HookHasStationTrace {
+    param([object]$Payload, [string]$Text)
+    $metadataHits = 0
+    foreach ($name in @(
+        'station_mode','stationMode',
+        'authorization_phase','authorizationPhase',
+        'handoff_ownership','handoffOwnership',
+        'role_id','roleId',
+        'author_role','authorRole',
+        'assigned_specialist','assignedSpecialist',
+        'delivery_artifact_id','deliveryArtifactId',
+        'board','Board'
+    )) {
+        $value = Get-HookPropertyValue -Object $Payload -Names @($name)
+        if ($null -ne $value -and [string]$value -ne '') { $metadataHits++ }
+    }
+    if ($metadataHits -ge 2) { return $true }
+    if (-not $Text) { return $false }
+
+    $traceHits = 0
+    $hasStationMode = ($Text -match '(?i)\bstation_mode\s*[:=]\s*(formal-write|formal-readonly|change-delivery|change-application|readonly|read-only)\b')
+    $hasOwnership = ($Text -match '(?i)\bhandoff_ownership\s*[:=]\s*(station-owned|implementation patch|change-delivery|change-application)\b')
+    $hasPhase = ($Text -match '(?i)\bauthorization_phase\s*[:=]\s*(implementation-change-delivery|change-application|formal-readonly|formal-write)\b')
+    $hasRole = ($Text -match '(?i)\b(author_role|role_id|assigned_specialist|Board)\s*[:=]')
+    $hasBoundedScope = ($Text -match '(?i)\bexact file allowlist\b|\bdirty-diff read\b|\bstation-owned\b|\bchange-delivery\b|\bchange-application\b')
+    foreach ($hit in @($hasStationMode, $hasOwnership, $hasPhase, $hasRole, $hasBoundedScope)) {
+        if ($hit) { $traceHits++ }
+    }
+    return (($hasStationMode -or $hasOwnership -or $hasPhase) -and $traceHits -ge 2)
 }
 
 function Test-HookDeniedRepoScan {
@@ -200,6 +249,22 @@ function Test-HookReadOnly {
     return $false
 }
 
+function Test-HookGuardedDirectActionWithoutStationTrace {
+    param([object]$Payload, [string]$Text)
+    # Existing outer-agent inventory exception remains before station_mode: formal-write; handoff_ownership: station-owned; authorization_phase: implementation-change-delivery trace checks.
+    $command = Get-HookExecutableCommand -Payload $Payload
+    if ((Test-HookAllowedOuterAgent -Payload $Payload) -and (Test-HookExactInventoryCommand -Command $command)) {
+        return $false
+    }
+    $traceText = $Text
+    $transcriptText = Get-HookTranscriptText -Payload $Payload
+    if ($transcriptText) { $traceText = "$traceText`n$transcriptText" }
+    if (Test-HookHasStationTrace -Payload $Payload -Text $traceText) { return $false }
+    if (Test-HookBroadRead -Text $Text) { return $true }
+    if (Test-HookWriteLike -Payload $Payload -Text $Text) { return $true }
+    return $false
+}
+
 function Get-HookToolClass {
     param([object]$Payload)
     $actionText = Get-HookActionText -Payload $Payload
@@ -233,6 +298,15 @@ function Write-SessionStartReminder {
 
 function Write-UserPromptSubmitReminder {
     $context = 'Project policy permits bounded subagents only when the current Director prompt explicitly requests team, subagent, delegation, or governed multi-station work, or when an active governed task already carries scoped Team-Native authorization. For broad, read-heavy, multi-area, audit, review, debugging, or exploration tasks, prefer bounded subagents within the configured agents.max_threads limit and Codex default depth. Default subagent work is read-only. Main-worktree edits are allowed only when the current task explicitly authorizes file changes and the subagent is assigned as a station-owned change-delivery or change-application route with formal-write authorization, an exact file allowlist, and dirty-diff read. If runtime policy still requires per-turn explicit subagent authorization and the current prompt does not provide it, stop and ask for one-line Director confirmation instead of silently falling back to single-agent work.'
+    $stateLines = @(
+        (Get-HookMessage -Key 'UserPromptTeamModePhrase'),
+        'TEAM_NATIVE_ACTIVE=true',
+        'SUBAGENT_AUTHORIZATION=granted_for_bounded_stations',
+        'LANE_SELECTION=exclusion_first_negative_contract',
+        'CAPTAIN_DIRECT_WORK=forbidden_except_named_file_local_probe_or_recorded_exception',
+        'NEXT_LEGAL_ACTION=dispatch_matching_station_or_stop_noncomplete'
+    )
+    $context = ((@($stateLines) + @($context)) -join "`n")
     $context = Add-HookEventMarker -EventName 'UserPromptSubmit' -Context $context
     Write-HookJson -Body ([ordered]@{
         systemMessage = (Get-HookMessage -Key 'UserPromptSystemMessage')
@@ -255,7 +329,11 @@ function Write-SubagentStartReminder {
 }
 
 function Write-PreToolUseDeny {
-    $reason = Get-HookMessage -Key 'PreToolDenyRepoScanReason'
+    param([string]$MessageKey = 'PreToolDenyRepoScanReason')
+    $reason = Get-HookMessage -Key $MessageKey
+    if ($MessageKey -eq 'PreToolDenyGuardedNoStationReason') {
+        $reason = "$reason`nGUARDED_DIRECT_ACTION_NO_STATION_TRACE=true"
+    }
     Write-HookJson -Body ([ordered]@{
         systemMessage = $reason
         hookSpecificOutput = [ordered]@{
@@ -271,6 +349,10 @@ function Write-PreToolUseReminder {
     $actionText = Get-HookActionText -Payload $Payload
     if (Test-HookDeniedRepoScan -Payload $Payload -Text $actionText) {
         Write-PreToolUseDeny
+        return
+    }
+    if (Test-HookGuardedDirectActionWithoutStationTrace -Payload $Payload -Text $actionText) {
+        Write-PreToolUseDeny -MessageKey 'PreToolDenyGuardedNoStationReason'
         return
     }
     $toolClass = Get-HookToolClass -Payload $Payload
@@ -472,6 +554,7 @@ function Write-StopAllow {
 function Write-StopRiskAdvisory {
     param([object]$Risk)
     $message = (Get-HookMessage -Key 'StopRiskAdvisorySystemMessage') -f $Risk.Code, $Risk.Missing
+    $message = "$message`nCOMPLETION_EVIDENCE_WARNING=true`nDIRECTOR_FINAL_ACCEPTANCE_REQUIRED=true"
     Write-HookJson -Body ([ordered]@{
         systemMessage = $message
     })

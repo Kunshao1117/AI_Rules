@@ -34,8 +34,14 @@ Missing channel capability is a station state, not permission for captain-direct
 
 When active, Team-Native Core is an execution precondition, not advisory prose.
 The next valid runtime state is a Captain Team Board with applicable stations, handoff packets, and channel states.
-The captain must not perform broad reading, impact mapping, implementation, validation, review, or memory attribution first.
+The captain must not directly perform broad/deep reads, impact mapping,
+source/governance/workflow/skill/policy/script/test/hook/fixture/support
+automation implementation, validation, review, memory/docs attribution,
+external research, completion audit or evidence, protected mutation, or external
+mutation.
 The captain must not perform commit preparation, release preparation, or completion claims first and only document the team route afterward.
+Lane routing cannot use `tiny` or `light` until governed/guarded action
+classification and these captain prohibitions have been evaluated.
 
 Team activation may be silent in the Director experience.
 Silent activation still depends on the current governed Director request; it is not AI default-on.
@@ -147,14 +153,14 @@ The captain must not do the station's work or claim completion.
 
 This is the canonical captain-boundary anchor for team skills and subagent policy.
 The captain coordinates intake, board state, handoffs, blocker routing, station-output ledgering, and Director-facing synthesis only.
-Broad/deep reads, implementation, validation, review, and memory/docs attribution belong to stations.
-Protected execution and completion evidence also belong to stations.
+Broad/deep reads, impact mapping, source/governance/workflow/skill/policy/script/test/hook/fixture/support automation implementation, validation, review, external research, and memory/docs attribution belong to stations.
+Protected execution, external mutation, completion audit, and completion evidence also belong to stations.
 
 Captain runtime self-check:
 
 - Before source writes, the captain must route work to an owner station or record a non-complete state.
-- Before broad/deep read evidence, validation, review, or memory/docs attribution, route to an owner station or record a non-complete state.
-- Before completion audit/claim or protected execution, route to an owner station or record a non-complete state.
+- Before broad/deep read evidence, impact mapping, external research, validation, review, or memory/docs attribution, route to an owner station or record a non-complete state.
+- Before completion audit/claim, completion evidence, protected execution, or external mutation, route to an owner station or record a non-complete state.
 - Valid non-complete states are `blocked`, `unverified`, and `closed-with-director-risk`.
 
 This self-check is a coordination guard only.
@@ -630,8 +636,8 @@ Closeout is risk-tiered so Team-Native Core stays rigorous without mechanical al
 Closeout lane entries:
 
 - `light`
-  - Use when: documentation, generated-copy sync, Yellow drift, or low-risk governance wording.
-  - Constraint: no release or external-state mutation.
+  - Use when: the negative lane contract and guarded-action precedence leave only no-write, non-guarded documentation or status drift.
+  - Constraint: no source, workflow, governance, generated/runtime copy, evidence-surface, release, protected, or external-state mutation.
   - Minimum stations: scope/impact, change delivery or sync delivery, validation, completion audit.
 - `standard`
   - Use when: multi-file policies, skills, matrices, audit rules, workflow semantics, or memory/docs impact.
@@ -641,7 +647,7 @@ Closeout lane entries:
   - Minimum stations: standard lane plus release completion and security/reliability.
 
 Fast closeout never lowers the completion bar and does not replace `operation_mode`.
-It only reduces unnecessary station churn inside the selected mode.
+It only reduces unnecessary station churn inside the selected mode after the negative lane contract is satisfied.
 A light lane uses fewer stations only when the board records why review or memory/docs is not applicable.
 It may also record the missing station as blocked, unverified, or closed-with-director-risk.
 Any source, workflow, governance, generated-copy, memory, or public-contract write promotes the lane to at least `standard`.

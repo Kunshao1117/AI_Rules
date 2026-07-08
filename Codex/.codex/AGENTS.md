@@ -128,6 +128,13 @@ When Team mode is not active, captain/team-board limits do not apply.
 
 Ordinary lifecycle, scoped authorization, protected-action gates, read-before-write, and security rules still apply.
 
+- **Lane-routing precedence anchor（分流優先序錨點）**:
+  - Governed/guarded action classification and captain prohibitions run before `tiny` or `light` lane selection.
+
+  - The captain must not directly perform broad/deep reads, impact mapping, source/governance/workflow/skill/policy/script/test/hook/fixture/support automation implementation, validation, review, memory/docs attribution, external research, completion audit/evidence, protected mutation, or external mutation.
+
+  - If `tiny` or `light` is invalid, choose the minimal sufficient route; do not auto-promote to `full` unless cross-domain scope, unclear scope, high blast radius, external grounding, or multi-station depth requires it.
+
 - **Minimum startup gate（最低啟動閘門）**:
   - Once Team mode is active, the trace must include Captain Team Board, applicable station, and station handoff packet.
 

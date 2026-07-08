@@ -66,6 +66,7 @@ Read these sources first:
 |---|---|
 | Closeout target | The artifact states the canonical target from `completion-state-machine.md` and the current protected follow-up applicability. |
 | Scope | Actual changes match the approved scope and exclusions. |
+| Lane negative contract | The selected lane satisfies the exclusion-first contract in `workflow-lane-routing.md`. `tiny` or `light` evidence cannot close governed/guarded actions, source-level writes, captain-prohibited work, or missing station-owned validation/review/memory-docs/completion artifacts. |
 | Authorization | Every write/protected phase has source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode. |
 | Artifact chain | Completion consumes only the artifact chain: implementation/change-application delivery artifact, captain ledger receipt, downstream validation, review, memory/docs, sync, and residual-risk artifacts. |
 | Closeout bundle | The bundle may point to artifacts, changed files, expected dirty files, grounding handoff, sync, and residual risks. It is never completion evidence by itself. |
@@ -110,18 +111,20 @@ Use the closeout lane from the board:
 
 | Lane | Applies to | Completion note |
 |---|---|---|
-| `tiny` | No source, governance, workflow, memory, public-contract, protected, or external-state impact. | Formal stages may be `not-applicable`; cannot close source-level changes. |
-| `light` | Low-risk docs, generated-copy sync, or wording drift with reduced station set. | Reduced stations need explicit not-applicable, blocked, unverified, or risk-closed reasons. |
-| `standard` | Policies, skills, matrices, audit rules, workflow semantics, memory/docs impact, or public contracts. | Requires separated delivery, validation, review, memory/docs disposition, and completion audit unless honestly closed non-complete. |
-| `full` | Multi-area, architecture-significant, externally grounded, ambiguous, or high-blast-radius governed work. | Must consider the full lifecycle vocabulary and record stage disposition for each applicable stage. |
+| `tiny` | Pure conversation, stable small answers, or named-file micro-probes only after no governed/guarded action exists. It MUST NOT include broad/deep read, source/governance/workflow/skill/policy/script/test/hook/fixture/support automation impact, validation, review, memory/docs attribution, completion evidence, public-contract impact, protected action, or external-state impact. | Formal stages may be `not-applicable`; cannot close source-level changes or station-owned evidence gaps. |
+| `light` | Bounded read-only clarification, generated-copy inspection, or wording-drift inspection only when no guarded action exists. | Reduced stations need explicit not-applicable, blocked, unverified, or risk-closed reasons; cannot close source-level writes or replace station-owned validation, review, memory/docs, or completion evidence. |
+| `standard` | Bounded governed work, policies, skills, matrices, audit rules, workflow semantics, scripts, tests, hooks, fixtures, support automation, memory/docs impact, public contracts, or invalid lower-lane work without `full` triggers. | Requires separated delivery, validation, review, memory/docs disposition, and completion audit unless honestly closed non-complete. |
+| `full` | Multi-area, cross-domain, architecture-significant, externally grounded, ambiguous, high-blast-radius, unclear-scope, or multi-station-depth governed work. | Must consider the full lifecycle vocabulary and record stage disposition for each applicable stage. |
 | `release-grade` | Commit, tag, release, deployment, install, external mutation, credentials, or operator readiness. | Requires standard lane plus release/security readiness evidence. |
 
-A source, workflow, governance, generated-copy, memory, or public-contract write promotes the lane
+A source, workflow, governance, script, test, hook, fixture, support-automation, generated-copy, memory, or public-contract write promotes the lane
 to at least `standard` for source-level closeout. Evidence may support `standard`, `full`, or
 `release-grade` based on blast radius, external/protected impact, and release readiness, but it must
-not downgrade a source, workflow, or governance write below `standard` when source-level closeout is
+not downgrade a source, workflow, governance, script, test, hook, fixture, or support-automation write below `standard` when source-level closeout is
 claimed. A concrete non-full reason may choose `standard` instead of `full`, but it cannot choose
-`tiny` or `light` for a source, workflow, or governance write.
+`tiny` or `light` for a source, workflow, governance, script, test, hook, fixture, or support-automation write.
+An invalid `tiny` or `light` lane does not automatically become `full`; use the minimal sufficient
+route, usually `standard`, unless `full` triggers are present.
 
 Lane semantics, stage disposition, validation judgment state, and size/split disposition are owned by
 `Shared/policies/references/workflow-lane-routing.md`.
@@ -129,8 +132,9 @@ This skill consumes those fields and does not copy size threshold tables.
 Do not use absolute "no error" or "無誤" wording as completion evidence; validation judgment must
 name the evidence-based state and supporting artifact or gap.
 
-Hooks are excluded unless explicitly scoped.
+Hooks are excluded only when neither the approved scope nor affected surface names hooks, hook scripts, hook fixtures, hook tests, or hook support automation.
 Hook procedures are outside this completion check unless the approved scope names them.
+When hooks are in scope, missing hook scope, validation, review, or sync evidence keeps closeout `blocked` or `unverified`.
 
 ## Output
 

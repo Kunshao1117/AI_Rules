@@ -4,7 +4,7 @@
   "sourceCatalog": "Scripts/modules/Audit/CodexHookGovernance.catalog.json",
   "requiredFixtures": [
     { "file": "advisory-bad-input-smoke.json", "canonicalDecision": "advisory" },
-    { "file": "advisory-pretool-write-no-board.json", "canonicalDecision": "advisory" },
+    { "file": "advisory-pretool-write-no-board.json", "canonicalDecision": "deny" },
     { "file": "advisory-session-start-startup-reminder.json", "canonicalDecision": "advisory" },
     { "file": "advisory-user-prompt-submit-conditional-subagents.json", "canonicalDecision": "advisory" },
     { "file": "advisory-subagent-start-boundaries.json", "canonicalDecision": "advisory" },
@@ -33,7 +33,7 @@
     { "file": "block-stop-mixed-blocked-complete.json", "canonicalDecision": "advisory" },
     { "file": "block-stop-positive-final-success.json", "canonicalDecision": "advisory" },
     { "file": "block-stop-zh-completion.json", "canonicalDecision": "advisory" },
-    { "file": "context-pretool-captain-broad-read-no-board.json", "canonicalDecision": "advisory" },
+    { "file": "context-pretool-captain-broad-read-no-board.json", "canonicalDecision": "deny" },
     { "file": "deny-pretool-git-exe-ls-files.json", "canonicalDecision": "deny" },
     { "file": "deny-pretool-git-ls-files-outer-agent-cached.json", "canonicalDecision": "deny" },
     { "file": "deny-pretool-git-ls-files-outer-agent-chained.json", "canonicalDecision": "deny" },

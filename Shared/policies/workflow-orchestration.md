@@ -120,6 +120,8 @@ Canonical stage order:
 
 ```text
 workflow route
+-> governed/guarded action classification
+-> captain prohibition guard
 -> lifecycle lane and stage disposition
 -> authorization resolution
 -> operation_mode
@@ -143,6 +145,12 @@ Director instruction
    including platform plan mapping when a platform plan surface, `plan-only`, or `build-plan` affects routing
    including Director-facing output gate when producing Director-visible text, governed by language-governance
    including external grounding gate when external facts, sources, or freshness affect formal evidence
+-> governed/guarded action classification
+   before lower-lane choice; guarded actions include broad/deep read, impact mapping,
+   source implementation, validation, review, memory/docs attribution, external
+   research, completion evidence, protected action, and external mutation
+-> captain prohibition guard
+   captain-direct work cannot satisfy station-owned guarded actions
 -> lifecycle lane routing and stage disposition gate
    using `workflow-lane-routing.md`; `not-applicable` and `reduced-by-lane` are valid dispositions
 -> authorization resolution
@@ -178,6 +186,8 @@ Workflow route is not authorization.
 
 A route signal can route the work.
 It cannot grant unbounded write authority or protected follow-on authority.
+It also cannot select `tiny` or `light` before governed/guarded action
+classification and captain prohibitions have been evaluated.
 
 Route signals include:
 
@@ -461,6 +471,14 @@ Workflow entries select the smallest honest `lane_id` from
 `Shared/policies/references/workflow-lane-routing.md`.
 
 Allowed lanes are `tiny`, `light`, `standard`, `full`, and `release-grade`.
+Lane selection happens only after governed/guarded action classification and
+captain-prohibition checks.
+`tiny` and `light` are negative lanes; they are unavailable when any guarded
+action or captain-prohibited action exists.
+When a lower lane is invalid, choose the minimal sufficient route, usually
+`standard`.
+Reserve `full` for cross-domain work, unclear scope, high blast radius, external
+grounding, architecture significance, or multi-station depth.
 Lane choice controls which lifecycle stages must run and which may be recorded as
 `not-applicable` or `reduced-by-lane`.
 
@@ -472,7 +490,8 @@ blocked, unverified, no-evidence, conflicted, or risk-closed states when evidenc
 Validation closeout uses evidence-based `validation_judgment_state`.
 Do not use absolute "no error" or "無誤" wording as validation or completion evidence.
 
-Hooks are excluded unless explicitly scoped.
+Hooks are excluded only when neither the approved or requested scope nor the affected evidence surface names hooks, hook scripts, hook fixtures, hook tests, or hook support automation.
+If hooks are the target or evidence surface, hook scope must be explicit or the route remains `blocked` or `unverified`.
 This rule records scope awareness only and does not define hook procedures.
 
 ## Source Document Size/Split Rule

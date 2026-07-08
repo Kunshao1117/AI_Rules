@@ -449,6 +449,16 @@ function Measure-CodexHookGovernance {
         $expectedOutputRegex = Get-CodexHookPropertyText -Object $fixture -Name 'expectedOutputRegex'
         $canonicalDecision = Get-CodexHookPropertyText -Object $fixture -Name 'canonicalDecision'
         $fixtureName = [IO.Path]::GetFileName($Path)
+        $inputProperty = $fixture.PSObject.Properties['input']
+        $inputObject = if ($null -eq $inputProperty) { $null } else { $inputProperty.Value }
+        $hookEventName = Get-CodexHookPropertyText -Object $inputObject -Name 'hook_event_name'
+        # Keep deny-permission scoped to PreToolUse permission-deny fixtures.
+        $isPreToolPermissionDenyOutcome = (
+            $expectedOutcomeKind -eq 'deny-permission' -and
+            $hookEventName -eq 'PreToolUse' -and
+            $expectedDecision -eq 'deny' -and
+            $canonicalDecision -eq 'deny'
+        )
 
         if (@('allow','advisory','deny','block','positive','negative','internal-fallback') -notcontains $category) {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少分層 category' -Text 'category must be positive, negative, or internal-fallback'
@@ -462,8 +472,8 @@ function Measure-CodexHookGovernance {
         if (@('synthetic','captured-synthetic') -notcontains $fixtureOrigin) {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 captured/synthetic 來源分層' -Text 'fixtureOrigin must be synthetic or captured-synthetic'
         }
-        if (@('allow','allow-reminder','advisory-context','advisory-would-block','deny','block') -notcontains $expectedOutcomeKind) {
-            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 expectedOutcomeKind 分層' -Text 'expectedOutcomeKind must describe allow/advisory behavior'
+        if ((@('allow','allow-reminder','advisory-context','advisory-would-block','deny','block') -notcontains $expectedOutcomeKind) -and -not $isPreToolPermissionDenyOutcome) {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 expectedOutcomeKind 分層' -Text 'expectedOutcomeKind must describe allow/advisory behavior, or deny-permission for PreToolUse permission-deny fixtures'
         }
         if ([string]::IsNullOrWhiteSpace($canonicalDecision)) {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 canonicalDecision taxonomy' -Text 'canonicalDecision must be allow, advisory, deny, or block'
@@ -494,16 +504,13 @@ function Measure-CodexHookGovernance {
             }
         }
 
-        $inputProperty = $fixture.PSObject.Properties['input']
         if ($null -eq $inputProperty) { return }
-        $inputObject = $inputProperty.Value
         $toolName = Get-CodexHookPropertyText -Object $inputObject -Name 'tool_name'
         if ($toolName -ne 'apply_patch') { return }
 
         if ($schemaStyle -ne 'official-schema-style') {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'apply_patch fixture 未標示 official schema-style' -Text 'schemaStyle: official-schema-style'
         }
-        $hookEventName = Get-CodexHookPropertyText -Object $inputObject -Name 'hook_event_name'
         if (-not $hookEventName) {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'apply_patch fixture 缺少官方 hook_event_name 形狀' -Text 'hook_event_name'
         }
@@ -899,10 +906,10 @@ function Measure-CodexHookGovernance {
             [PSCustomObject]@{
                 File = 'context-pretool-captain-broad-read-no-board.json'
                 Scenario = '(broad-read|context)'
-                ExpectedDecision = 'allow'
+                ExpectedDecision = 'deny'
                 ReasonCode = ''
-                Output = 'advisory/reminder.*禁止隊長直接產生 broad read / validation / review / external research / memory-docs / completion evidence.*允許隊長做 coordination.*named-file local_probe'
-                Reason = 'Codex hook captain broad-read no-board advisory fixture 覆蓋不足'
+                Output = '已阻擋缺少站點痕跡的 guarded direct action.*station trace.*named-file local_probe.*GUARDED_DIRECT_ACTION_NO_STATION_TRACE=true'
+                Reason = 'Codex hook captain broad-read no-board deny fixture 覆蓋不足'
             },
             [PSCustomObject]@{
                 File = 'block-stop-missing-memory-docs.json'
@@ -917,7 +924,7 @@ function Measure-CodexHookGovernance {
                 Scenario = '(captain-substitute|substitute-completion)'
                 ExpectedDecision = 'allow'
                 ReasonCode = 'TN-HOOK-CAPTAIN-SUBSTITUTE-COMPLETION'
-                Output = '完成閘門提醒.*不會阻擋送出.*Reason code: TN-HOOK-CAPTAIN-SUBSTITUTE-COMPLETION'
+                Output = '完成閘門提醒.*不會阻擋送出.*Reason code: TN-HOOK-CAPTAIN-SUBSTITUTE-COMPLETION.*COMPLETION_EVIDENCE_WARNING=true.*DIRECTOR_FINAL_ACCEPTANCE_REQUIRED=true'
                 Reason = 'Codex hook captain substitute completion Stop advisory fixture 覆蓋不足'
             }
         )
