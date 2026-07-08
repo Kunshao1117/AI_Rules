@@ -22,8 +22,7 @@ function Get-HookMessage {
         UnknownEventReasonFormat = '55uu5YmN5LqL5Lu25pyq5o6b5rex5bGkIGdhdGXvvJp7MH3jgILnpoHmraLmiormnKrnn6Xkuovku7bovLjlh7rnlbbkvZzlrozmiJDorYnmk5rjgII='
         StopNonCompleteAllowedSystemMessage = '5a6M5oiQ6ZaY6ZaA5o+Q6YaS77ya5Zue6KaG5bey5L2/55SoIGJsb2NrZWQgLyB1bnZlcmlmaWVkIC8gY2xvc2VkLXdpdGgtZGlyZWN0b3ItcmlzayAvIHBhcnRpYWwg562J6Z2e5a6M5oiQ54uA5oWL77yb5YWB6Kix6YCB5Ye677yM5L2G5LiN5Y+v5a6j56ixIGNvbXBsZXRl44CC'
         StopCompleteAllowedSystemMessage = '5a6M5oiQ6ZaY6ZaA5o+Q6YaS77ya5bey5YG15ris5Yiw56uZ6bue5Lqk5LuY6Y+I6IiHIGNvbXBsZXRpb24gYXVkaXTvvJvlhYHoqLHpgIHlh7rlrozmlbTlrozmiJDlrqPnqLHjgII='
-        StopBlockedSystemMessage = '5a6M5oiQ6ZaY6ZaA5bey6Zi75pOL77ya56aB5q2i5Zyo57y65bCR56uZ6bue6K2J5pOa5pmC5a6j56ixIGNvbXBsZXRl44CC5YWB6Kix5pS55oiQIHBhcnRpYWwgLyB1bnZlcmlmaWVkIC8gYmxvY2tlZCAvIGNsb3NlZC13aXRoLWRpcmVjdG9yLXJpc2vvvIzmiJboo5zpvYogc3RhdGlvbi1vd25lZCBkZWxpdmVyeSBhcnRpZmFjdHMg5b6M5YaN6YCB5Ye644CC'
-        StopBlockedContext = '56aB5q2i5LqL6aCFOiDkuI3og73nlKggY2FwdGFpbiBicm9hZCByZWFkIOaIliBjYXB0YWluIHN1YnN0aXR1dGUgZXZpZGVuY2Ug5a6j56ixIGNvbXBsZXRlOyDnvLrlsJEgbWVtb3J5L2RvY3Mg55qEIGFydGlmYWN0IGNoYWluIOWuo+eosSBjb21wbGV0ZTsgc3RhdGlvbi1vd25lZCBjb21wbGV0aW9uIGV2aWRlbmNlIHJlcXVpcmVkLiBSZWFzb24gY29kZTogezB9LiBNaXNzaW5nIHN0cnVjdHVyZWQgZmllbGRzOiB7MX0uIEFsbG93ZWQgbmV4dCBzdGVwczogdXNlIHBhcnRpYWwgLyB1bnZlcmlmaWVkIC8gYmxvY2tlZCAvIGNsb3NlZC13aXRoLWRpcmVjdG9yLXJpc2sgb3IgcHJvdmlkZSBzdGF0aW9uLW93bmVkIGFydGlmYWN0cy4gRm9yYmlkZGVuIG5leHQgc3RlcHM6IGRvIG5vdCBhc3NlcnQgZmluYWwgc3VjY2VzcyBmcm9tIHN1YnN0aXR1dGUgZXZpZGVuY2Uu'
+        StopRiskAdvisorySystemMessage = '5a6M5oiQ6ZaY6ZaA5o+Q6YaS77ya5YG15ris5Yiw5a6M5oiQ5a6j56ix5Y+v6IO957y65bCR56uZ6bue6K2J5pOa5oiW54uA5oWL6KGd56qB77yb5pysIGhvb2sg5LiN5pyD6Zi75pOL6YCB5Ye677yM6KuL55Sx57i955uj5Yik5pa35piv5ZCm5o6l5Y+X44CCUmVhc29uIGNvZGU6IHswfS4gTWlzc2luZyBzdHJ1Y3R1cmVkIGZpZWxkczogezF9LiDlu7rorbDmqJnmmI4gcGFydGlhbCAvIHVudmVyaWZpZWQgLyBibG9ja2VkIC8gY2xvc2VkLXdpdGgtZGlyZWN0b3ItcmlzayDmiJboo5zpvYogc3RhdGlvbi1vd25lZCBhcnRpZmFjdHPjgII='
         UserPromptSystemMessage = '5pys6Lyq5ZyY6ZqK5o6I5qyK5o+Q6YaS77yac3ViYWdlbnRzIOWPquiDveWcqOacrOi8quaYjueiuuaOiOasiuaIluaXouaciSBzY29wZWQgVGVhbS1OYXRpdmUg5o6I5qyK5LiL5L2/55So44CC'
         SubagentStartSystemMessage = '5a2Q5Luj55CG6YKK55WM5o+Q6YaS77ya5LiN5b6X6YGe6L+05aeU5rS+44CB5LiN5b6X54Sh55WM5a+r5YWl44CB6aCQ6Kit5ZSv6K6A44CB5LiN5b6X6Ieq6KGM5a6j56ix5a6M5oiQ44CC'
         SubagentStopBlockedSystemMessage = '5a2Q5Luj55CG5Lqk5LuY5o+Q6YaS77ya57y65bCR5pGY6KaB44CB6K2J5pOa44CB6aKo6Zqq5oiW5LiL5LiA5q2l5pmC5b+F6aCI6KOc6b2K44CC'
@@ -298,6 +297,7 @@ function Remove-HookStopClassificationNoise {
     if (-not $Text) { return '' }
     $clean = $Text
     foreach ($pattern in @(
+        '(?is)<hook_prompt\b[^>]*>.*?</hook_prompt>',
         '(?is)\{?\s*"decision"\s*:\s*"block"\s*,\s*"reason"\s*:\s*"[^"]*(?:TN-HOOK-[^"]*)?[^"]*"\s*\}?',
         '(?is)Stop gate blocked\..{0,600}?substitute evidence\.',
         '(?is)\u5B8C\u6210\u9598\u9580\u5DF2\u963B\u64CB.{0,1400}?(?:Forbidden next steps:[^\r\n]*)?',
@@ -322,6 +322,7 @@ function Remove-HookNegatedCompletionReference {
         '(?is)(?:\u4E0D(?:\u53EF|\u80FD|\u6703)?|\u4E0D\u8981|\u672A|\u4E26\u672A|\u4E0D\u6703)\s*(?:\u5BA3\u7A31|\u8072\u7A31|\u8868\u793A|\u8996\u70BA)?\s*(?:full\s+)?complete',
         '(?is)(?:\u4E0D\u80FD|\u4E0D\u53EF|\u4E0D\u5F97|\u4E0D\u8981|\u4E0D\u61C9|\u4E0D\u8A72|\u7981\u6B62|\u907F\u514D|\u8ACB\u52FF).{0,120}(?:complete|completed|done|finished|all set|\u5B8C\u6210|\u5B8C\u6210\u4E86|\u5168\u90E8\u5B8C\u6210|\u5B8C\u6210\u5BA3\u7A31|\u6536\u5C3E)',
         '(?is)(?:must\s+not|do\s+not|cannot|can\s+not|not)\s+(?:claim\s+)?(?:full\s+)?complete',
+        '(?is)(?:must\s+not|do\s+not|cannot|can\s+not|should\s+not|mustn''t|don''t|avoid|forbid(?:den)?|never).{0,120}(?:final\s+success|successful\s+final|successfully\s+finished)',
         '(?is)(?:must\s+not|do\s+not|cannot|can\s+not|should\s+not|mustn''t|don''t|avoid|forbid(?:den)?|never).{0,120}(?:completion_state\s*[:=]\s*complete|complete|completed|done|finished|all set)',
         '(?is)\bnot\s+(?:yet\s+)?complete\b',
         '(?is)\bno\s+completion\s+claim\b'
@@ -335,7 +336,7 @@ function Test-HookHasCompletionClaim {
     param([string]$Text)
     if (-not $Text) { return $false }
     $searchText = Remove-HookNegatedCompletionReference -Text $Text
-    return ($searchText -match '(?i)\bcompletion_state\s*[:=]\s*complete\b|\b(complete|completed|done|finished|all set)\b|\u5DF2\u5B8C\u6210|\u5B8C\u6210\u4E86|\u5168\u90E8\u5B8C\u6210|\u53EF\u4EE5\u6536\u5C3E|\u53EF\u6536\u5C3E|(?:\u4F46|\u73FE\u5728|\u76EE\u524D|\u4EFB\u52D9|\u5DE5\u4F5C|\u4FEE\u6539).{0,8}\u5B8C\u6210')
+    return ($searchText -match '(?i)\bcompletion_state\s*[:=]\s*complete\b|\b(complete|completed|done|finished|all set|final success|successful final)\b|\u5DF2\u5B8C\u6210|\u5B8C\u6210\u4E86|\u5168\u90E8\u5B8C\u6210|\u53EF\u4EE5\u6536\u5C3E|\u53EF\u6536\u5C3E|(?:\u4F46|\u73FE\u5728|\u76EE\u524D|\u4EFB\u52D9|\u5DE5\u4F5C|\u4FEE\u6539).{0,8}\u5B8C\u6210')
 }
 
 function Test-HookStopHookActiveFromObject {
@@ -468,12 +469,11 @@ function Write-StopAllow {
     })
 }
 
-function Write-StopBlock {
+function Write-StopRiskAdvisory {
     param([object]$Risk)
-    $context = (Get-HookMessage -Key 'StopBlockedContext') -f $Risk.Code, $Risk.Missing
+    $message = (Get-HookMessage -Key 'StopRiskAdvisorySystemMessage') -f $Risk.Code, $Risk.Missing
     Write-HookJson -Body ([ordered]@{
-        decision = 'block'
-        reason = $context
+        systemMessage = $message
     })
 }
 
@@ -487,7 +487,7 @@ function Write-StopReminder {
     }
     $risk = Get-HookStopRisk -Text $text
     if ($null -ne $risk) {
-        Write-StopBlock -Risk $risk
+        Write-StopRiskAdvisory -Risk $risk
         return
     }
     Write-StopAllow -CompletionEvidence:(Test-HookHasCompletionClaim -Text $text)

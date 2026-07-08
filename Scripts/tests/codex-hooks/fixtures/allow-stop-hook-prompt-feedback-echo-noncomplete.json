@@ -1,0 +1,18 @@
+{
+  "name": "allow-stop-hook-prompt-feedback-echo-noncomplete",
+  "scenarioCode": "stop-hook-prompt-feedback-echo-noncomplete-allowed",
+  "category": "positive",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "advisory-context",
+  "canonicalDecision": "advisory",
+  "expectedDecision": "allow",
+  "expectedOutputRegex": "完成閘門提醒.*blocked / unverified / closed-with-director-risk / partial.*不可宣稱 complete",
+  "input": {
+    "hook_event_name": "Stop",
+    "session_id": "fixture-session",
+    "cwd": "D:\\AI_Rules",
+    "last_assistant_message": "<hook_prompt event=\"Stop\">Stop gate blocked. Reason code: TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE. Allowed next steps: use partial / unverified / blocked / closed-with-director-risk. Forbidden next steps: do not assert final success from substitute evidence. Do not claim complete.</hook_prompt>\nStatus: blocked. I cannot assert final success from substitute evidence."
+  }
+}

@@ -782,21 +782,21 @@ function Measure-CodexHookGovernance {
             },
             [PSCustomObject]@{
                 File = 'block-stop-zh-completion.json'
-                Reason = 'Codex hook 中文完成宣稱 Stop block fixture 覆蓋不足'
+                Reason = 'Codex hook 中文完成宣稱 Stop advisory fixture 覆蓋不足'
                 Patterns = @(
                     @{ Pattern = '"name"\s*:\s*"block-stop-zh-completion"'; Text = 'zh completion fixture name' },
-                    @{ Pattern = '"expectedDecision"\s*:\s*"block"'; Text = 'zh completion fixture expects Stop block decision' },
+                    @{ Pattern = '"expectedDecision"\s*:\s*"allow"'; Text = 'zh completion fixture expects Stop advisory allow decision' },
                     @{ Pattern = '"expectedReasonCodeRegex"\s*:\s*"TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE"'; Text = 'zh completion fixture expects missing station evidence reason code' },
-                    @{ Pattern = '"expectedOutputRegex"\s*:\s*"禁止事項\.\*completion evidence\.\*Allowed next steps\.\*Forbidden next steps"'; Text = 'zh completion fixture expects Stop block diagnostic wording' },
+                    @{ Pattern = '"expectedOutputRegex"\s*:\s*"完成閘門提醒\.\*不會阻擋送出\.\*Reason code: TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE"'; Text = 'zh completion fixture expects Stop advisory diagnostic wording' },
                     @{ Pattern = '"last_assistant_message"\s*:\s*"[^"]*(已完成|complete)'; Text = 'zh completion fixture carries an official assistant completion claim message' }
                 )
             },
             [PSCustomObject]@{
                 File = 'block-stop-missing-artifacts-complete.json'
-                Reason = 'Codex hook missing artifact negative evidence Stop block fixture 覆蓋不足'
+                Reason = 'Codex hook missing artifact negative evidence Stop advisory fixture 覆蓋不足'
                 Patterns = @(
                     @{ Pattern = '"name"\s*:\s*"block-stop-missing-artifacts-complete"'; Text = 'missing artifacts fixture name' },
-                    @{ Pattern = '"expectedDecision"\s*:\s*"block"'; Text = 'missing artifacts fixture expects Stop block decision' },
+                    @{ Pattern = '"expectedDecision"\s*:\s*"allow"'; Text = 'missing artifacts fixture expects Stop advisory allow decision' },
                     @{ Pattern = '"expectedReasonCodeRegex"\s*:\s*"TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE"'; Text = 'missing artifacts fixture expects missing station evidence reason code' },
                     @{ Pattern = 'completion_state:\s*complete\.\s*change delivery artifact missing;\s*validation artifact missing;\s*review artifact missing;\s*memory/docs artifact missing;\s*completion audit missing\.\s*complete\.'; Text = 'missing artifacts fixture carries exact review payload pattern' }
                 )
@@ -892,7 +892,7 @@ function Measure-CodexHookGovernance {
 
         $postBlockFixture = Join-Path $fixtureRoot 'block-stop-zh-completion.json'
         if (Test-Path -LiteralPath $postBlockFixture -PathType Leaf) {
-            Test-CodexHookFixtureStructuredContract -Path $postBlockFixture -ExpectedDecision 'block' -ScenarioCodePattern '(completion|missing-station-evidence)' -RequireReasonCodeRegex
+            Test-CodexHookFixtureStructuredContract -Path $postBlockFixture -ExpectedDecision 'allow' -ScenarioCodePattern '(completion|missing-station-evidence)' -RequireReasonCodeRegex
         }
 
         $captainBoundaryFixtureChecks = @(
@@ -907,18 +907,18 @@ function Measure-CodexHookGovernance {
             [PSCustomObject]@{
                 File = 'block-stop-missing-memory-docs.json'
                 Scenario = '(memory-docs-captain|captain-substitution)'
-                ExpectedDecision = 'block'
+                ExpectedDecision = 'allow'
                 ReasonCode = 'TN-HOOK-MEMORY-DOCS-CAPTAIN-SUBSTITUTION'
-                Output = '禁止事項.*缺少 memory/docs 的 artifact chain 宣稱 complete'
-                Reason = 'Codex hook memory/docs captain substitution advisory fixture 覆蓋不足'
+                Output = '完成閘門提醒.*不會阻擋送出.*Reason code: TN-HOOK-MEMORY-DOCS-CAPTAIN-SUBSTITUTION'
+                Reason = 'Codex hook memory/docs captain substitution Stop advisory fixture 覆蓋不足'
             },
             [PSCustomObject]@{
                 File = 'block-stop-captain-broad-read-full-completion.json'
                 Scenario = '(captain-substitute|substitute-completion)'
-                ExpectedDecision = 'block'
+                ExpectedDecision = 'allow'
                 ReasonCode = 'TN-HOOK-CAPTAIN-SUBSTITUTE-COMPLETION'
-                Output = '禁止事項.*不能用 captain broad read.*宣稱 complete'
-                Reason = 'Codex hook captain substitute completion advisory fixture 覆蓋不足'
+                Output = '完成閘門提醒.*不會阻擋送出.*Reason code: TN-HOOK-CAPTAIN-SUBSTITUTE-COMPLETION'
+                Reason = 'Codex hook captain substitute completion Stop advisory fixture 覆蓋不足'
             }
         )
         foreach ($fixtureCheck in $captainBoundaryFixtureChecks) {

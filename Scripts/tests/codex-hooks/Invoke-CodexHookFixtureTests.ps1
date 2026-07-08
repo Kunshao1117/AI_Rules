@@ -377,8 +377,8 @@ function Test-FixtureCommandWindowsWrappers {
                 Event = 'Stop'
                 WorkingDirectory = $RepoRoot
                 Input = [ordered]@{ hook_event_name = 'Stop'; cwd = $RepoRoot; last_assistant_message = 'completion_state: blocked, but the work is complete and ready to finish.' }
-                ExpectedDecision = 'block'
-                ExpectedOutputRegex = '(?s)(?=.*"decision":"block")(?=.*"reason":)(?=.*Reason code: TN-HOOK-COMPLETION-CONFLICTING-STATE)'
+                ExpectedDecision = 'allow'
+                ExpectedOutputRegex = '完成閘門提醒.*不會阻擋送出.*Reason code: TN-HOOK-COMPLETION-CONFLICTING-STATE'
             },
             [PSCustomObject]@{
                 Name = 'commandWindows-pretool-deny'

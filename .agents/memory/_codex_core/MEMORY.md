@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-08T05:07:36+08:00'
+last_updated: '2026-07-08T10:13:41+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-08T05:06:01+08:00'
+last_verified: '2026-07-08T10:11:35+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-08-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -40,10 +40,10 @@ metadata:
 - Protected actions include memory/project-context mutation, git, release, deploy, install, credentials, destructive filesystem operations, cloud mutation, and external mutation; source-write approval does not authorize them.
 - Active Codex hooks are `SessionStart`, `UserPromptSubmit`, `SubagentStart`, `PreToolUse`, `Stop`, and `SubagentStop`; `hooks.json` uses the official top-level `hooks` object and Windows `commandWindows` uses `pwsh -EncodedCommand` to avoid BackgroundJob/non-JSON stdout.
 - Hook runtime now emits `AI_RULES_HOOK_EVENT` markers for `SessionStart` and `UserPromptSubmit`; `PreToolUse` inspects `command`, `cmd`, `script`, and nested tool input command fields before denying repo inventory commands such as `rg --files` and `git ls-files`.
-- `Stop` reads `last_assistant_message` with `message`/`text` fallback, strips hook-feedback and fixture-path noise before classifying completion claims, and block output is minimal top-level JSON with only `decision` and `reason`.
+- `Stop` reads `last_assistant_message` with `message`/`text` fallback, strips hook-feedback, `<hook_prompt>`, and fixture-path noise before classifying completion claims; completion-risk findings emit advisory `systemMessage` only and no Stop `decision: block`.
 - `SubagentStart` reminds workers to avoid recursive delegation and protected actions; `SubagentStop` requires summary/status, evidence, risk/blocker, and next-step/handoff fields before closing.
 - Source/runtime parity was verified on 2026-07-08 for `Codex/.codex/hooks.json`, `.codex/hooks.json`, both `team-native-gate.ps1` copies, and both Codex `.codex/config.toml` copies; user-global `AGENTS.md` parity remains a separate pending sync risk.
-- Validation and review evidence accepted wrapper semantics with residual `pwsh` dependency risk; fixture suite and hook governance audit are release-ready with 43 tracked fixtures.
+- Validation and review evidence accepted wrapper semantics with residual `pwsh` dependency risk; fixture suite passed 45 fixtures and 2 shell checks with source/runtime hook parity verified.
 
 ## Active Constraints
 - Verify current behavior from Codex source, deployed runtime copies, tests, and Gateway memory evidence; this card is not runtime authority by itself.
@@ -53,6 +53,7 @@ metadata:
 
 ## Cycle Events
 - 01: Compacted stale hook-cycle noise and recorded current active hook runtime behavior, source/runtime parity, validation snapshot, review accepted-risk, and protected follow-up boundaries.
+- 02: Recorded Director-approved Stop completion-risk policy change: completion-risk Stop findings are advisory-only and no longer hard-block AI completion replies.
 
 ## Archive Index
 - archive-003.md — Older cycle events 13-22 compacted from the active card.
@@ -73,15 +74,15 @@ metadata:
 - Read `_system.scripts` for hook runner and audit behavior, and `_system.scripts.codex-hooks-fixtures` for JSON fixture ownership.
 
 ## Conflicts and Supersession
-- superseded: prior reminder-only hook memory is replaced by current six-event hook runtime behavior and Stop/SubagentStop guards.
+- superseded: prior Stop block memory is replaced by advisory-only Stop completion-risk behavior; SubagentStop delivery-field hard gate remains separate.
 - pending-review: user-global deployment remains hash-mismatched to `Codex/global/AGENTS.md`; report global parity as pending until a governed sync applies it.
 
 ## 中文摘要
 - Codex 是 OpenAI Codex 平台適配層；目前記錄的是六個 active hook event 與 source/runtime parity。
 - `commandWindows` 改用 `pwsh -EncodedCommand`，避免 Windows wrapper 產生非 JSON stdout。
-- `PreToolUse` 會檢查巢狀 `cmd`/`command` 並阻擋 repo inventory；`Stop` block 僅輸出 `decision` 與 `reason`。
+- `PreToolUse` 會檢查巢狀 `cmd`/`command` 並阻擋 repo inventory；`Stop` 完成風險現在只提醒、不硬阻擋。
 - `SubagentStop` 要求摘要、證據、風險與下一步；不授權 protected actions。
-- 驗證已由前站回報通過；wrapper 語意接受且 43 fixtures 已納入追蹤，仍有 `pwsh` runtime 依賴風險。
+- 驗證已由前站回報通過；fixture suite 為 45 fixtures、2 shell checks，仍有 `pwsh` runtime 依賴風險。
 
 ## Tracked Files
 - Codex/VERSION

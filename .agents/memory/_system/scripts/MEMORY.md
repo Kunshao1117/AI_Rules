@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-08T05:07:55+08:00'
+last_updated: '2026-07-08T10:18:49+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-08T05:06:01+08:00'
+last_verified: '2026-07-08T10:11:35+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-08-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _system.scripts — Repository Script Governance Memory
 ## Current Truth
 - This card is a source/status pointer for root PowerShell deployment, split Audit module scripts, audit tests, memory migration, skill sync, platform sync, D0 validation, source-size validation, and Codex hook fixture runner ownership.
@@ -39,10 +38,10 @@ metadata:
 - `Scripts/tests/Validate-D0Minimal.ps1` is the D0 minimal validation route for parse/import, extension JSON/runtime gates, package-lock parsing, release workflow, installer hardening, and scriptRunner guards.
 - Doctor, Deploy Audit, and manager Doctor fail closed on governance-audit Red findings, failed audit results, Team-Native hard-gate failures, and hard-policy source/deployed drift.
 - Repo-managed Codex hooks and fixtures are under the Codex hook source/deployed pair and `Scripts/tests/codex-hooks/`; the runner validates active event coverage, official payload fields, Windows/POSIX host wrappers, fixture expectations, optional source/deployed hash parity, and git tracking.
-- `Invoke-CodexHookFixtureTests.ps1` now verifies Stop block output is only top-level `decision` plus `reason`, and validates `commandWindows` through both `cmd` and `pwsh` hosts when available.
+- `Invoke-CodexHookFixtureTests.ps1` now verifies Stop completion-risk cases are advisory allow outputs with `systemMessage`, and validates `commandWindows` through both `cmd` and `pwsh` hosts when available.
 - Audit checks authorization semantics, trusted tool envelope/receipt validity, formal-write/protected gates, trace non-authorization, workflow references, scenario templates, Team-Native semantics, mixed completion wording, and source/deployed drift.
 - Ownership status: Codex hook governance catalog/audit sources and config merge helpers are present; section-aware config merge preserves existing `max_threads`, adds project default 8/global default 6 only when missing, fixes `features` false values, omits `max_depth`, and skips all `.codex/*` writes when the upgrade gate is declined.
-- Approved validation evidence reports the hook fixture suite passed with 43 tracked fixture(s), 2 shell(s), source/runtime sync verified, and hook governance audit `ReleaseReady=true` with Red/Yellow 0.
+- Approved validation evidence reports the hook fixture suite passed with 45 fixture(s), 2 shell(s), source/runtime sync verified, and staged hook governance audit `ReleaseReady=true` with Red/Yellow 0.
 ## Active Constraints
 - Verify current script behavior from source, runner output, Gateway evidence, and git diff; this card is only ownership and status memory.
 - Treat hook diagnostics and deny decisions as tool-guard evidence only; authorization, memory, git, release, deploy, install, and completion gates remain separate protected phases.
@@ -52,6 +51,7 @@ metadata:
 - `pwsh` remains a residual runtime dependency risk for hook wrappers.
 ## Cycle Events
 - 01: Compacted stale script-cycle noise and recorded section-aware Codex config sync, upgrade skip gate repair, 43-fixture validation, runtime sync verification, and hook governance release-ready state.
+- 02: Recorded Stop completion-risk runner change from hard block expectations to advisory allow expectations across fixture harness and governance audit checks.
 ## Archive Index
 - archive-002.md — Script governance events 23-30 compacted on 2026-06-30.
 - archive-001.md — Older script cycle events 09-21 compacted from the active card.
@@ -63,7 +63,7 @@ metadata:
 - tool: Gateway `memory_audit`, `memory_status`, and `memory_read` on 2026-07-08.
 - tool: `git diff` and `git status --short` for script runner, fixture manifest, hook/config source, and authorized memory files reviewed on 2026-07-08.
 - tool: `Measure-CodexHookGovernance` reported `Passed=true`, `ReleaseReady=true`, Red 0, Yellow 0, and untracked required fixtures 0 on 2026-07-08.
-- director: 2026-07-08 protected memory-write instruction supplied 43-fixture validation, runtime sync evidence, manifest/catalog mirror repair, residual broader-dirty-worktree risk, `pwsh` runtime risk, and no git/no memory_commit boundaries.
+- director: 2026-07-08 protected memory-write instruction supplied 45-fixture validation, runtime sync evidence, manifest/catalog mirror repair, residual broader-dirty-worktree risk, and `pwsh` runtime risk.
 ## Read Contract
 - Read this card for root PowerShell script changes, Codex hook runner changes, audit integration changes, or D0/source-size validation script changes.
 - Read `_system.scripts.codex-hooks-fixtures` for Codex hook JSON fixture additions, deletions, edits, and tracking.
@@ -72,10 +72,10 @@ metadata:
 - pending-follow-up: broader dirty-worktree risk and any git staging/commit remain outside this memory-write phase.
 ## 中文摘要
 - 此子卡負責根層 PowerShell 腳本、Audit 模組拆分腳本、D0/source-size 驗證與 Codex hook runner。
-- runner 現在檢查 Stop block 極簡 JSON、`cmd`/`pwsh` commandWindows wrapper、官方 payload 欄位與 fixture 預期。
-- 前站驗證回報 43 fixtures、2 shell 通過，且 `Invoke-CodexHookFixtureTests.ps1 -VerifyRuntimeSync` 已驗證 runtime sync。
+- runner 現在檢查 Stop 完成風險 advisory allow、`cmd`/`pwsh` commandWindows wrapper、官方 payload 欄位與 fixture 預期。
+- 前站驗證回報 45 fixtures、2 shell 通過，且 `Invoke-CodexHookFixtureTests.ps1 -VerifyRuntimeSync` 已驗證 runtime sync。
 - JSON fixtures 歸屬在 child card；本卡只記錄 runner 與 script-side 行為。
-- config merge 已改為 section-aware 並保留操作者 `max_threads`；manifest/catalog mirror 已修復為 43 required fixtures。
+- config merge 已改為 section-aware 並保留操作者 `max_threads`；manifest/catalog mirror 已修復為 45 required fixtures。
 - 不授權 `memory_commit`、git、release、deploy、install 或外部變更。
 ## Tracked Files
 - Scripts/Deploy.ps1

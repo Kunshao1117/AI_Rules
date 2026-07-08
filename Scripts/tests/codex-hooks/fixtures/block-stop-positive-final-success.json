@@ -1,8 +1,8 @@
 {
-  "name": "block-stop-legacy-message-fallback",
-  "scenarioCode": "stop-legacy-message-fallback",
+  "name": "block-stop-positive-final-success",
+  "scenarioCode": "stop-positive-final-success-missing-station-evidence",
   "category": "negative",
-  "schemaStyle": "legacy-fallback",
+  "schemaStyle": "official-schema-style",
   "decisionLayer": "internal-fallback",
   "fixtureOrigin": "synthetic",
   "expectedOutcomeKind": "advisory-would-block",
@@ -14,6 +14,6 @@
     "hook_event_name": "Stop",
     "session_id": "fixture-session",
     "cwd": "D:\\AI_Rules",
-    "message": "completion_state: complete. legacy message fallback still needs station evidence. complete."
+    "last_assistant_message": "<hook_prompt event=\"Stop\">Stop gate blocked. Reason code: TN-HOOK-COMPLETION-MISSING-STATION-EVIDENCE. Allowed next steps: use partial / unverified / blocked / closed-with-director-risk. Forbidden next steps: do not assert final success from substitute evidence.</hook_prompt>\n現在已完成，可以 complete 收尾。"
   }
 }
