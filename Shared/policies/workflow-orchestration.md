@@ -35,6 +35,12 @@ Layer ownership, in order:
 
 - Owns: Source-document size/split categories, PowerShell module size signals, audit rule-pack placement, and size/split reporting contract.
 
+### Workflow lane routing pair
+
+- Source: `Shared/policies/references/workflow-lane-routing.md`.
+- Deployed: `.agents/shared/policies/references/workflow-lane-routing.md`.
+- Owns lifecycle lanes, stage disposition, validation judgment state, and size/split closeout disposition.
+
 ### `Shared/policies/workflow-orchestration.md`
 
 - Owns: Workflow entry sequence, transition rules, dispatch waves, and missing-evidence routing.
@@ -114,6 +120,7 @@ Canonical stage order:
 
 ```text
 workflow route
+-> lifecycle lane and stage disposition
 -> authorization resolution
 -> operation_mode
 -> board_template and board_state
@@ -136,6 +143,8 @@ Director instruction
    including platform plan mapping when a platform plan surface, `plan-only`, or `build-plan` affects routing
    including Director-facing output gate when producing Director-visible text, governed by language-governance
    including external grounding gate when external facts, sources, or freshness affect formal evidence
+-> lifecycle lane routing and stage disposition gate
+   using `workflow-lane-routing.md`; `not-applicable` and `reduced-by-lane` are valid dispositions
 -> authorization resolution
 -> machine-readable `execution_spec` gate
    when station or tool execution depends on workflow instructions
@@ -153,10 +162,10 @@ Director instruction
 -> channel capability and channel invocation status
 -> first response and lifecycle event policy recorded when applicable
    status probe pause, captain resume, timeout, replacement, cancellation, late result
--> hook event lifecycle check when repo-managed hooks provide route context
+-> hook event lifecycle check when explicitly scoped repo-managed hooks provide route context
 -> returned delivery artifact or blocked/unverified/standby state
 -> captain receipt, board update, blocker/conflict/authorization handling
--> validation, review, drift/sync evidence
+-> validation, evidence-based validation judgment, review, drift/sync evidence
 -> memory/docs disposition after validation and review reach terminal evidence states
 -> protected-memory-write when `closeout_target` requires process-complete or release-ready
    and memory is required
@@ -446,6 +455,26 @@ Workflow family presets and transition conditions live in the paired boundaries 
 The main orchestration policy keeps only the sequence.
 It points workflow-specific evidence back to `Shared/workflow-capability-evidence-matrix.md`.
 
+## Lifecycle Lane Routing Rule
+
+Workflow entries select the smallest honest `lane_id` from
+`Shared/policies/references/workflow-lane-routing.md`.
+
+Allowed lanes are `tiny`, `light`, `standard`, `full`, and `release-grade`.
+Lane choice controls which lifecycle stages must run and which may be recorded as
+`not-applicable` or `reduced-by-lane`.
+
+The full formal lifecycle vocabulary lives in the lane reference.
+This policy does not force every task through every stage.
+It requires an explicit disposition for each applicable stage and preserves
+blocked, unverified, no-evidence, conflicted, or risk-closed states when evidence is missing.
+
+Validation closeout uses evidence-based `validation_judgment_state`.
+Do not use absolute "no error" or "無誤" wording as validation or completion evidence.
+
+Hooks are excluded unless explicitly scoped.
+This rule records scope awareness only and does not define hook procedures.
+
 ## Source Document Size/Split Rule
 
 When a workflow creates or modifies core, shared policy/reference, `SKILL.md`,
@@ -453,6 +482,8 @@ memory card, PowerShell script/module, audit rule pack, or general source files,
 it cites `Shared/policies/source-document-size-governance.md` and records
 size/split impact in the relevant delivery, review, validation, audit, build, or
 fix artifact.
+It also records `size_split_disposition` using
+`Shared/policies/references/workflow-lane-routing.md` before source-level closeout.
 
 Size alone is a signal.
 Split work is required only when the policy's responsibility, public-interface,
@@ -462,6 +493,9 @@ Existing oversized source documents or modules may be baselined during an
 initial governance batch.
 That baseline is not a completion claim and does not authorize follow-on
 refactor work.
+An existing oversized baseline may be `baseline` in size/split disposition;
+missing size/split disposition for an applicable source/governance/workflow change is
+`blocked` or `unverified`, not source-level closed.
 
 ## Source/Deployed Sync Rule
 

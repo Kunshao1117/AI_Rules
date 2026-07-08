@@ -18,6 +18,9 @@ these references instead of redefining them:
   `Shared/policies/references/protected-action-registry.md`.
 - Source/runtime/generated copy roles:
   `Shared/policies/references/platform-copy-map.md`.
+- Lifecycle lanes, stage disposition, validation judgment, and size/split
+  closeout disposition:
+  `Shared/policies/references/workflow-lane-routing.md`.
 
 ## Human Flowchart Boundary
 
@@ -92,6 +95,18 @@ Required field meanings, in order:
   - Current wave and previous-wave input.
 - `closeout_target`
   - Value and legacy aliases from `completion-state-machine.md`.
+- `lane_id`
+  - Workflow lifecycle lane from `workflow-lane-routing.md`.
+  - Allowed values are `tiny`, `light`, `standard`, `full`, and `release-grade`.
+- `stage_disposition`
+  - Compact map of lifecycle stages to `required`, `completed-by-artifact`,
+    `not-applicable`, `reduced-by-lane`, `blocked`, `unverified`, or
+    `closed-with-director-risk`.
+  - For `full` and `release-grade`, consider the full formal lifecycle vocabulary
+    in `workflow-lane-routing.md` and record a disposition for each stage.
+- `validation_judgment_state`
+  - Evidence-based validation judgment from `workflow-lane-routing.md`.
+  - Do not use absolute "no error" or "無誤" semantics as a completion claim.
 - `loop_control`
   - Compact control fields for retry/reroute decisions.
   - Includes loop identity, attempt count, retry budget, current transition decision, and exit condition.
@@ -186,6 +201,15 @@ Required field meanings, in order:
     and auditable with reason, expiry, and responsible owner.
   - Wildcard, directory-wide, persistent, or policy-level overrides are forbidden.
   - Unexpected dirty or untracked files remain blockers and must not be normalized by this field.
+- `size_split_gate`
+  - Compact size/split impact record for source-bearing documents, scripts,
+    modules, skills, policies, rule packs, memory cards, and public contracts.
+  - Carries `size_split_impact`, `size_split_disposition`, supporting reason,
+    and reference to `Shared/policies/source-document-size-governance.md`.
+  - Existing oversized baseline may be `baseline`; it is not by itself a blocker.
+- `hooks_scope`
+  - `excluded-unless-explicitly-scoped`, `explicitly-scoped`, or `not-applicable`.
+  - Hooks are excluded unless explicitly scoped; this field does not define hook procedures.
 - `output_artifact_contract`
   - Expected delivery artifact schema or skill contract.
 - `stop_condition`

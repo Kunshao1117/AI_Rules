@@ -81,6 +81,7 @@ Read these sources first:
 | Trace | Required board, station, handoff, role, channel, `station_mode`, `context_visibility`, `handoff_ownership`, delivery, and completion trace exists or missing parts are named as non-complete. |
 | Route/state separation | Routes/channels/forms are not mixed with blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk states. |
 | Sync | Source/deployed or generated/runtime pairs have sync direction and parity evidence when relevant. |
+| Size/split disposition | Applicable source, governance, workflow, skill, policy, rule-pack, script/module, memory-card, or public-contract changes have `size_split_impact` and `size_split_disposition` before source-level closeout. Existing oversized baseline may be `baseline`; missing disposition is blocked or unverified. |
 | Residual risk | Remaining uncertainty is visible in the final report. |
 
 If any required chain artifact is missing, or if a captain-authored substitute is offered in place
@@ -109,13 +110,27 @@ Use the closeout lane from the board:
 
 | Lane | Applies to | Completion note |
 |---|---|---|
+| `tiny` | No source, governance, workflow, memory, public-contract, protected, or external-state impact. | Formal stages may be `not-applicable`; cannot close source-level changes. |
 | `light` | Low-risk docs, generated-copy sync, or wording drift with reduced station set. | Reduced stations need explicit not-applicable, blocked, unverified, or risk-closed reasons. |
 | `standard` | Policies, skills, matrices, audit rules, workflow semantics, memory/docs impact, or public contracts. | Requires separated delivery, validation, review, memory/docs disposition, and completion audit unless honestly closed non-complete. |
+| `full` | Multi-area, architecture-significant, externally grounded, ambiguous, or high-blast-radius governed work. | Must consider the full lifecycle vocabulary and record stage disposition for each applicable stage. |
 | `release-grade` | Commit, tag, release, deployment, install, external mutation, credentials, or operator readiness. | Requires standard lane plus release/security readiness evidence. |
 
 A source, workflow, governance, generated-copy, memory, or public-contract write promotes the lane
-to at least standard unless the board records a concrete non-full reason and does not claim full
-completion.
+to at least `standard` for source-level closeout. Evidence may support `standard`, `full`, or
+`release-grade` based on blast radius, external/protected impact, and release readiness, but it must
+not downgrade a source, workflow, or governance write below `standard` when source-level closeout is
+claimed. A concrete non-full reason may choose `standard` instead of `full`, but it cannot choose
+`tiny` or `light` for a source, workflow, or governance write.
+
+Lane semantics, stage disposition, validation judgment state, and size/split disposition are owned by
+`Shared/policies/references/workflow-lane-routing.md`.
+This skill consumes those fields and does not copy size threshold tables.
+Do not use absolute "no error" or "無誤" wording as completion evidence; validation judgment must
+name the evidence-based state and supporting artifact or gap.
+
+Hooks are excluded unless explicitly scoped.
+Hook procedures are outside this completion check unless the approved scope names them.
 
 ## Output
 
@@ -133,6 +148,13 @@ artifact_chain:
 grounding_handoff:
 closeout_bundle:
 closeout_target:
+lane_id:
+stage_disposition:
+validation_judgment_state:
+size_split_impact:
+size_split_disposition:
+size_split_reference:
+hooks_scope:
 risk:
 director_output_gate:
 internal_artifact_rendering:

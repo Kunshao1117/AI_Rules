@@ -30,6 +30,9 @@ For non-trivial source-impacting work, it may include a `closeout_bundle` index 
 `expected_dirty_files` plus `expected_untracked_files` / `expected_untracked` so later
 stations can compare actual dirty and untracked/generated state without inventing evidence.
 These fields are closeout/preflight comparison fields only, not authorization or allowlist overrides.
+For source, governance, workflow, skill, policy, rule-pack, script/module, memory-card, or
+public-contract changes, it also includes `size_split_impact` and `size_split_disposition`
+from the lane/size governance references.
 Diff text is only a representation format; the governing object is the change delivery artifact.
 
 Use `team-role-boundaries` to check role separation and `team-task-board` for board state.
@@ -47,6 +50,7 @@ Confirm the implementation specialist role before any execution channel is used.
 - Existing source context read before writing.
 - Test or validation expectations, if provided.
 - Grounding tier or returned external research artifact when current outside facts affected implementation.
+- Lifecycle lane, stage disposition, and size/split expectations when source-bearing files are in scope.
 
 ## Delivery Modes
 
@@ -74,6 +78,13 @@ Confirm the implementation specialist role before any execution channel is used.
 8. Do not add unrelated cleanup, formatting, or generated output.
 9. Return validation, review, and memory/docs handoff fields as part of the delivery bundle.
    Include `grounding_handoff` when the implementation used G2/G3 evidence or leaves G4 gaps.
+   Include `lane_id` and `stage_disposition` when the approved route provided them.
+   Include `size_split_impact` and `size_split_disposition` for source-bearing changes, citing
+   `Shared/policies/source-document-size-governance.md` and
+   `Shared/policies/references/workflow-lane-routing.md` instead of copying threshold tables.
+   Existing oversized baseline may be recorded as `baseline`; it is not by itself a blocker and
+   does not authorize unrelated split/refactor work.
+   Record hooks as excluded unless explicitly scoped; do not add hook procedures from this artifact.
    Include `expected_dirty_files` for the exact files this station expects to leave dirty.
    Include `expected_untracked_files` or compact alias `expected_untracked` for exact generated/untracked paths this station expects to leave present.
    Treat expected dirty and untracked fields as closeout/preflight comparison only, not write authorization or allowlist override.
@@ -112,6 +123,12 @@ execution_channel:
 author_role:
 source_input:
 integrable_scope:
+lane_id:
+stage_disposition:
+size_split_impact:
+size_split_disposition:
+size_split_reference:
+hooks_scope:
 source_deployed_pair:
 sync_direction:
 sync_evidence:
@@ -127,6 +144,7 @@ memory_impact:
 validation_handoff:
 review_handoff:
 memory_docs_handoff:
+size_split_handoff:
 next_wave_start_condition:
 captain_authored:
 recommendation:

@@ -4,14 +4,14 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-08T11:48:38+08:00'
+last_updated: '2026-07-08T16:59:05+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-08T11:45:29+08:00'
+last_verified: '2026-07-08T16:57:27+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -68,7 +68,7 @@ metadata:
 - source: `Codex/.codex/config.toml`, `.codex/config.toml`, `Codex/.codex/AGENTS.md`, `Codex/README.md`, and `Codex/global/AGENTS.md`.
 - source: `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1` and `Scripts/tests/codex-hooks/fixtures/*.json`.
 - tool: Gateway `memory_audit`, `memory_status`, and `memory_read` for `_codex_core`, `_system.scripts`, and `_system.scripts.codex-hooks-fixtures` on 2026-07-08.
-- tool: `git diff` and `git status --short` for the authorized memory files plus Codex hook/config and fixture sources reviewed on 2026-07-08.
+- tool: `git status --short -- Codex`, `git diff --name-status -- Codex`, and `git diff --name-status -- Codex/.codex/hooks.delete` returned no Codex source changes on 2026-07-08.
 - tool: `Get-FileHash -Algorithm SHA256` verified source/runtime Codex hook/config parity on 2026-07-08.
 - director: 2026-07-08 protected memory-write instruction supplied validation pass summary, review accepted-risk, fixture tracking repair, and no release/deploy/install boundary.
 - upstream_artifact:2026-07-08 — Reported optional coding-reflection-gate reflection/retry routing in `Codex/.agents/workflow-skills/03-build-建構/SKILL.md`, `04-fix-修復/SKILL.md`, and `07-debug-除錯/SKILL.md`.
