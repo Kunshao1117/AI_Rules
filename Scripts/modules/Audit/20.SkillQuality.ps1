@@ -23,12 +23,15 @@ function Measure-SkillQuality {
     if ($PSVersionTable.PSVersion.Major -lt 7) {
         $pwshCmd = Get-Command pwsh -ErrorAction SilentlyContinue
         if ($pwshCmd) {
-            $moduleDir = $PSScriptRoot   # 在進入 scriptblock 前捕捉，避免子程序內 $PSScriptRoot 為空
-            & pwsh -Command {
-                param($sr, $tg, $md)
-                Import-Module (Join-Path $md "Audit.psm1") -Force
+            $facadeModulePath = Join-Path (Split-Path $PSScriptRoot -Parent) "Audit.psm1"
+            if (-not (Test-Path -LiteralPath $facadeModulePath -PathType Leaf)) {
+                throw "Audit facade module not found: $facadeModulePath"
+            }
+            & pwsh -NoProfile -Command {
+                param($sr, $tg, $modulePath)
+                Import-Module $modulePath -Force
                 Measure-SkillQuality -SkillsRoot $sr -Target $tg
-            } -Args $SkillsRoot, $Target, $moduleDir
+            } -Args $SkillsRoot, $Target, $facadeModulePath
             return
         }
     }
@@ -38,9 +41,13 @@ function Measure-SkillQuality {
 
     if (-not $SkillsRoot) {
         # 預設使用 Shared/skills/
-        $SkillsRoot = Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) "Shared\skills"
+        $repoRoot = Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -Parent
+        $SkillsRoot = Join-Path $repoRoot "Shared\skills"
+        if (-not (Test-Path -LiteralPath $SkillsRoot -PathType Container)) {
+            throw "Default skills root not found: $SkillsRoot"
+        }
     }
-    if (Test-Path $SkillsRoot) { $SkillsRoot = (Resolve-Path $SkillsRoot).Path }
+    if (Test-Path -LiteralPath $SkillsRoot) { $SkillsRoot = (Resolve-Path -LiteralPath $SkillsRoot).Path }
 
     $ForbiddenPatterns = @(
         'This skill teaches', 'This skill enables', 'This skill provides',

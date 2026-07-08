@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-08T20:13:17+08:00'
+last_updated: '2026-07-08T21:15:11+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-08T17:39:43+08:00'
+last_verified: '2026-07-08T21:12:28+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-08-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -48,6 +48,7 @@ metadata:
 - Accepted residual risks: transcript/text trace trust boundary may over-allow, write-like rule may overblock some non-source writes, `Audit.psm1` facade command is absent, and `pwsh` remains a hook-wrapper dependency.
 ## Cycle Events
 - 01-04: Compacted stale script-cycle noise; recorded config sync/upgrade skip repair, Stop advisory runner change, Windows PowerShell 5.1 compatibility repair, hook state-machine audit/fixture sync, source/runtime hash parity, 45-fixture validation, and accepted residual risks.
+- 05: Repaired Measure-SkillQuality Windows PowerShell 5.x fallback to import the split Audit facade via resolved path, run pwsh with -NoProfile, resolve default Shared\skills from repo root, and fail fast on missing facade/default root.
 ## Archive Index
 - archive-002.md — script governance events 23-30; archive-001.md — older script cycle events 09-21.
 ## Evidence Base
@@ -59,6 +60,7 @@ metadata:
 - tool: `Measure-CodexHookGovernance` reported `Passed=True`, `ReleaseReady=True`, `RedCount=0`, `YellowCount=0`, and untracked required fixtures 0 on 2026-07-08.
 - tool: validation station on 2026-07-08 verified Windows PowerShell and `pwsh` fixture runners at 45 passed each, parser checks, `commandWindows` host-wrapper cases, source/runtime hook hash equality, and manager `-WhatIf` load paths.
 - director: 2026-07-08 protected memory-write instruction supplied 45-fixture validation, runtime sync evidence, manifest/catalog mirror repair, residual broader-dirty-worktree risk, and `pwsh` runtime risk.
+- director: 2026-07-08 protected memory-write handoff reported validated `Scripts/modules/Audit/20.SkillQuality.ps1` fallback repair for Windows PowerShell 5.x facade import, `pwsh -NoProfile`, repo-root default skills, and fail-fast missing path handling.
 ## Read Contract
 - Read this card for root PowerShell, Codex hook runner, audit integration, D0/source-size validation script changes; read `_system.scripts.codex-hooks-fixtures` for JSON fixture changes/tracking.
 ## Conflicts and Supersession
