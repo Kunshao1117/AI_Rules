@@ -4,19 +4,19 @@ scopePath: Extensions/vscode-ai-rules-manager/
 description: >-
   專案記憶：VS Code 管理器外掛封裝、資源、發布與後端入口。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-08T05:08:17+08:00'
+last_updated: '2026-07-08T22:56:01+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-08T05:06:01+08:00'
+last_verified: '2026-07-08T22:45:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 13
+cycle_event_count: 14
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _vscode_extension.release — VS Code Extension Release Memory
 
 ## Current Truth
@@ -41,7 +40,7 @@ metadata:
 - The VSIX release workflow validates release refs before checkout and accepts only explicit tags shaped like `vX.Y.Z`.
 - Release documentation states that an existing same-name VSIX asset causes the workflow to reject or fail; reruns require a new version/tag or manual asset deletion first.
 - D0 minimal validation requires package `verify:runtime` to inspect compiled `out/extension.js` and `out/scriptRunner.js` runtime sentinels, with `vscode:prepublish` running compile before runtime verification; VSIX release assets still come from GitHub Release tags and the release workflow.
-- The manager backend reports and applies shared governance reference deployment during project rule synchronization.
+- The manager backend reports and applies shared governance reference deployment during project rule synchronization; Apply uses `ApplyDefault` audit while Doctor uses `Full`, so sync UX is not polluted by the complete semantic scan.
 - Manager Doctor reports Codex hooks removal or rebuild-pending state and Captain-Lite reading model coverage, forwards optional Team-Native trace requirements, and exits nonzero on governance-audit Red or failed results.
 - Manager entrypoint changes in this cycle preserve Codex config operator settings through section-aware merge for `multi_agent`, `hooks`, and `max_threads`, do not add `max_depth`, and do not imply a VSIX version bump, tag, release, install, or publication without a separate Director gate.
 - This child card owns VS Code extension package metadata, lockfile, README, resources, release workflow, and manager backend entrypoint.
@@ -55,6 +54,7 @@ metadata:
 - Do not describe release reruns as overwriting same-name VSIX assets; current docs require rejection/failure unless the asset is removed or a new version/tag is used.
 
 ## Cycle Events
+- 14: Recorded manager Apply using ApplyDefault so plugin sync UX skips the full semantic scan while Doctor keeps Full.
 - 13: Prepared release memory for AI Rules Manager v0.2.0 package/docs readiness, including `0.2.0` manifest and lockfile versions, `ai-rules-manager-0.2.0.vsix`, and same-name VSIX asset rerun failure semantics.
 - 12: Updated release/package memory after supply-chain hardening: `@vscode/vsce` upgraded to 3.9.2, npm audit is clean, release tags validate as `vX.Y.Z`, and packaging remains separate from version bump or publication.
 - 11: Recorded manager entrypoint Codex config sync behavior: section-aware merge preserves operator `max_threads`, leaves `max_depth` at default by omission, and does not authorize VSIX version bump, tag, release, install, or publication.
@@ -78,7 +78,7 @@ metadata:
 - source:Extensions/vscode-ai-rules-manager/README.md — Extension release docs name tag `v0.2.0`, `ai-rules-manager-0.2.0.vsix`, and same-name asset rerun failure semantics.
 - source:CHANGELOG.md — AI Rules Manager v0.2.0 release notes describe Team-Native readiness, runtime gate hardening, rerun semantics, and memory/docs cleanup alignment.
 - source:.agents/memory/_vscode_extension/archive-002.md — Previous active card snapshot preserved.
-- source-memory:_system.scripts — D0 minimal validation script ownership remains with `_system.scripts`; this card records release, package, prepublish, and packaged VSIX runtime-sentinel constraints.
+- source-memory:_system.scripts — D0 minimal validation script ownership remains with `_system.scripts`; this card records release, package, prepublish, packaged VSIX runtime-sentinel constraints, and the ApplyDefault/Full audit-profile split that affects manager sync UX.
 - tool:memory_audit — Granularity advisory identified extension ownership as a split candidate.
 - director:2026-06-15 — GO SPLIT authorized release child-card creation.
 

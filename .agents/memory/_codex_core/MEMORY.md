@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-08T20:13:13+08:00'
+last_updated: '2026-07-08T22:55:46+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-08T17:39:43+08:00'
+last_verified: '2026-07-08T22:45:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-08-001
-cycle_event_count: 5
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,10 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core — Codex Edition Memory
 
 ## Current Truth
-- Codex Edition is the OpenAI Codex adapter for AI_Rules governance, using `.codex/AGENTS.md`; Codex deploys 62 shared skills plus 17 workflow skills for a 79-skill deployed total.
+- Codex Edition is the OpenAI Codex adapter for AI_Rules governance, using `.codex/AGENTS.md`; Codex deploys 62 shared skills plus 17 workflow skills for a 79-skill deployed total, and its installer SHA helper accepts blank optional hashes while non-empty values remain 64-hex checked.
 - Current Team mode activates only for the current governed Director request; the captain coordinates scope, dispatch, artifact receipt, blocker/protected-gate routing, and Traditional Chinese reporting without backfilling station-owned evidence.
 - Source-write eligibility uses station-owned `change-delivery` under `formal-write`, authorization phase `implementation-change-delivery`, exact file allowlist, dirty diff read, and no protected action; `change-application` is only for returned artifacts, explicit integration, or assigned generated/deployed sync.
 - Protected actions include memory/project-context mutation, git, release, deploy, install, credentials, destructive filesystem operations, cloud mutation, and external mutation; source-write approval does not authorize them.
@@ -57,13 +56,14 @@ metadata:
 - 03: Recorded optional `coding-reflection-gate` reflection/retry routing in Codex 03-build, 04-fix, and 07-debug workflow skills without granting write or protected-action authority.
 - 04: Removed stale ghost tracked-file state for deleted `Codex/.codex/hooks.delete` after confirming no current Codex hook source diff.
 - 05: Recorded Team-Native hook state-machine update for UserPromptSubmit state injection, PreToolUse guarded-action denial, advisory Stop completion warnings, source/runtime hook parity, and accepted review risks.
+- 06: Recorded Codex installer empty SHA regression guard while preserving non-empty 64-hex validation.
 
 ## Archive Index
 - archive-003.md — Older events 13-22; archive-001.md — legacy pre-schema-v2 card; archive-002.md — pre-standardization MEMORY.md migration snapshot.
 
 ## Evidence Base
 - source: `Codex/.codex/hooks.json`, `.codex/hooks.json`, `Codex/.codex/hooks/team-native-gate.ps1`, and `.codex/hooks/team-native-gate.ps1`.
-- source: `Codex/.codex/config.toml`, `.codex/config.toml`, `Codex/.codex/AGENTS.md`, `Codex/README.md`, and `Codex/global/AGENTS.md`.
+- source: `Codex/.codex/config.toml`, `.codex/config.toml`, `Codex/.codex/AGENTS.md`, `Codex/README.md`, `Codex/install.ps1`, and `Codex/global/AGENTS.md`.
 - source: `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1` and `Scripts/tests/codex-hooks/fixtures/*.json`.
 - tool: Gateway `memory_audit`, `memory_status`, and `memory_read` for `_codex_core`, `_system.scripts`, and `_system.scripts.codex-hooks-fixtures` on 2026-07-08.
 - tool: `git status --short -- Codex`, `git diff --name-status -- Codex`, and `git diff --name-status -- Codex/.codex/hooks.delete` returned no Codex source changes on 2026-07-08.

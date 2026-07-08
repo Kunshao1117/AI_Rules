@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-07T22:46:09+08:00'
+last_updated: '2026-07-08T22:55:24+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T20:50:00+08:00'
+last_verified: '2026-07-08T22:45:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 8
+cycle_event_count: 9
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _ag_core — Antigravity Memory
 
 ## Current Truth
@@ -45,7 +44,7 @@ metadata:
 - Memory mutation, git, release, deploy, install, credentials, destructive filesystem actions, MCP mutation, cloud mutation, and external-state changes each require their own protected gate and scope; `[SUDO]` records risk/override intent only.
 - Antigravity workflow entries now use meaning-first Chinese descriptions, normalize missing memory evidence as `unverified` or `blocked`, and keep shared completion/security gates as thin references to shared skills and policies.
 - Antigravity README and global GEMINI bootstrap text now use expanded PowerShell/CMD install examples, zero-touch checks, upgrade prompts, and post-deployment notices while preserving protected memory/project-skill boundaries.
-- `Antigravity/install.ps1` validates branch refs, HTTPS source host/path, target/download receipt paths, optional ZIP SHA256, and extracted child paths; it records download receipts and SHA256 evidence before deployment.
+- `Antigravity/install.ps1` validates branch refs, HTTPS source host/path, target/download receipt paths, optional ZIP SHA256, and extracted child paths; its SHA helper accepts blank optional hashes while non-empty values remain 64-hex checked.
 ## Active Constraints
 - Do not duplicate root system ownership in this card.
 - Keep Antigravity-specific bootstrap, workflow, and platform facts here; keep shared operational details in Shared skills and policies.
@@ -55,6 +54,7 @@ metadata:
 - Remote bootstrap examples must preserve host/path validation, optional hash checks, receipt evidence, and safe temp cleanup.
 - Keep this active card below `line_limit: 120`; compact before adding broad workflow-cycle detail.
 ## Cycle Events
+- 9: Recorded Antigravity installer empty SHA regression guard while preserving non-empty 64-hex validation.
 - 8: Repaired stale warning state against 2026-07-07 Antigravity dirty source for Chinese-first rules, Team-Native authorization/protected gates, memory/MCP/[SUDO] boundaries, workflow descriptions, and README/GEMINI bootstrap wording.
 - 7: Compacted active card on 2026-07-04, preserving captain limits, source/deployed parity, language layering, and installer trust-boundary facts.
 - 6: Recorded dual-gate output and grounding updates across core and README before completion or commit readiness.

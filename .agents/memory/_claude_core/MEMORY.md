@@ -4,19 +4,19 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-07T22:46:16+08:00'
+last_updated: '2026-07-08T22:55:40+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T20:50:00+08:00'
+last_verified: '2026-07-08T22:45:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 8
+cycle_event_count: 9
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core — Claude Edition Memory
 
 ## Current Truth
@@ -56,6 +55,7 @@ metadata:
 - After Claude framework source changes, verify source/deployed parity or report it as pending before final completion.
 - Keep README Mermaid labels short and explain them through the adjacent legend instead of long graph node labels.
 ## Cycle Events
+- 9: Recorded Claude installer empty SHA regression guard while preserving non-empty 64-hex validation.
 - 8: Refreshed card from 2026-07-07 dirty Claude source: core/global/README wording, grounding, Team-Native captain boundary, README legend/install examples, and pending parity status.
 - 7: Compacted active card on 2026-07-04, preserving captain limits, source/deployed parity, language layering, and command authorization semantics.
 - 6: Recorded dual-gate output and grounding updates across core and README before completion or commit readiness.
@@ -70,7 +70,7 @@ metadata:
 - archive-002.md — Pre-standardization active card snapshot created during MEMORY.md migration.
 - archive-001.md — Legacy _claude_core card preserved before schema v2 compaction on 2026-06-04.
 ## Evidence Base
-- source: `Claude/.claude/CLAUDE.md`, `Claude/.claude/rules/core-identity.md`, `Claude/global/CLAUDE.md`, and `Claude/README.md`.
+- source: `Claude/.claude/CLAUDE.md`, `Claude/.claude/rules/core-identity.md`, `Claude/global/CLAUDE.md`, `Claude/README.md`, and `Claude/install.ps1`.
 - source: `.agents/shared/policies/language-governance.md` for Director-facing zh-TW and internal English-led artifact layering.
 - tool: `git diff -- Claude/...` and `git status --short` reviewed the current dirty Claude source set on 2026-07-07.
 - tool: `Get-FileHash -Algorithm SHA256` verified Claude core source/deployed parity and global bootstrap parity on 2026-07-04; this must be rerun before claiming parity for current dirty changes.

@@ -540,6 +540,8 @@ function Test-InstallerSentinels {
         Assert-ContainsLiteral -Path $path -Needle "function Assert-SafeRef" -Label "safe ref helper"
         Assert-ContainsLiteral -Path $path -Needle 'Assert-SafeRef -Name "Branch" -Value $Branch' -Label "safe branch validation"
         Assert-ContainsLiteral -Path $path -Needle "function Assert-Sha256Value" -Label "sha256 value validation helper"
+        Assert-ContainsLiteral -Path $path -Needle 'Assert-Sha256Value -Name "ExpectedZipSha256" -Value $ExpectedZipSha256' -Label "expected zip sha256 validation call"
+        Assert-ContainsRegex -Path $path -Pattern '(?s)function\s+Assert-Sha256Value\s*\{.*?\[Parameter\(Mandatory\s*=\s*\$true\)\]\s*\r?\n\s*\[AllowEmptyString\(\)\]\s*\r?\n\s*\[string\]\$Value.*?if\s*\(\$Value\s+-and\s+\$Value\s+-notmatch\s+''\^\[A-Fa-f0-9\]\{64\}\$''\)' -Label "optional sha256 allows empty string but rejects invalid non-empty values"
         Assert-ContainsLiteral -Path $path -Needle "function Get-Sha256Hex" -Label "sha256 hash helper"
         Assert-ContainsLiteral -Path $path -Needle "Downloaded ZIP SHA256 mismatch." -Label "download sha256 comparison"
         Assert-ContainsRegex -Path $path -Pattern '(?s)if\s*\(\$ExpectedZipSha256\s+-and\s+\$actualZipSha256\s+-ne\s+\$ExpectedZipSha256\.ToLowerInvariant\(\)\)\s*\{\s*throw\s+"Downloaded ZIP SHA256 mismatch\."\s*\}' -Label "download sha256 compare expression and throw"

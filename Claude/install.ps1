@@ -121,6 +121,7 @@ function Assert-Sha256Value {
         [string]$Name,
 
         [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
         [string]$Value
     )
 
