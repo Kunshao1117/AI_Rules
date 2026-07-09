@@ -1,14 +1,16 @@
 {
   "name": "allow-pretool-apply-patch-change-delivery-allowlist",
-  "scenarioCode": "pretool-apply-patch-change-delivery-allowlist-allow",
-  "category": "allow",
+  "scenarioCode": "pretool-apply-patch-reminder-only-advisory",
+  "category": "advisory",
   "schemaStyle": "official-schema-style",
   "decisionLayer": "official-output",
   "fixtureOrigin": "synthetic",
-  "expectedOutcomeKind": "allow-reminder",
+  "latestModel": "reminder-only-v1",
+  "expectedOutcomeKind": "advisory-context",
   "canonicalDecision": "advisory",
   "expectedDecision": "allow",
-  "expectedOutputRegex": "advisory/reminder.*提醒模式，不會阻擋工具.*write-advisory",
+  "expectedOutputRegex": "工具前置強提醒.*只提示、不阻擋工具.*PRETOOL_GUARD=advisory_only.*NO_DENY_OR_BLOCK=true",
+  "expectedAbsentRegex": "permissionDecision",
   "input": {
     "hook_event_name": "PreToolUse",
     "session_id": "fixture-session",
@@ -18,20 +20,11 @@
     "permission_mode": "default",
     "turn_id": "fixture-turn",
     "agent_id": "agent-fixture-change-delivery",
-    "agent_type": "subagent",
-    "role_id": "change-delivery",
-    "station_mode": "change-delivery",
-    "board_state": "formal-write",
-    "authorization_phase": "implementation-change-delivery",
-    "handoff_ownership": "station-owned",
-    "exact_file_allowlist": [
-      "Codex/.codex/hooks/team-native-gate.ps1"
-    ],
     "tool_name": "apply_patch",
-    "tool_use_id": "fixture-tool-apply-patch-allowlist",
-    "command": "*** Begin Patch\n*** Update File: Codex/.codex/hooks/team-native-gate.ps1\n@@\n+$example = 'allowlisted target'\n*** End Patch",
+    "tool_use_id": "fixture-tool-apply-patch-reminder",
+    "command": "*** Begin Patch\n*** Update File: Scripts/tests/codex-hooks/fixtures/allow-pretool-apply-patch-change-delivery-allowlist.json\n@@\n+$example = 'reminder only'\n*** End Patch",
     "tool_input": {
-      "command": "*** Begin Patch\n*** Update File: Codex/.codex/hooks/team-native-gate.ps1\n@@\n+$example = 'allowlisted target'\n*** End Patch"
+      "command": "*** Begin Patch\n*** Update File: Scripts/tests/codex-hooks/fixtures/allow-pretool-apply-patch-change-delivery-allowlist.json\n@@\n+$example = 'reminder only'\n*** End Patch"
     }
   }
 }

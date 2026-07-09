@@ -4,19 +4,19 @@ scopePath: Scripts/tests/codex-hooks/fixtures/
 description: >-
   專案記憶：Codex Team-Native hooks JSON 測試夾具。Use when: updating Codex hook fixtures,
   reminder/deny expectations, or fixture ownership.
-last_updated: '2026-07-09T14:16:54+08:00'
+last_updated: '2026-07-09T20:56:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-09T13:43:35+08:00'
+last_verified: '2026-07-09T20:49:07+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-08-001
-cycle_event_count: 5
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -33,23 +33,22 @@ metadata:
 ---
 # _system.scripts.codex-hooks-fixtures — Codex Hook Fixture Memory
 ## Current Truth
-- This child card owns Codex hook JSON fixtures under `Scripts/tests/codex-hooks/fixtures/`; canonical behavior lives in the runner, live fixtures, manifest, Codex hook source/deployed pair, and manifest/catalog 65 required fixture registration including 14 `spawn_agent`/`send_input` host-schema, safety-denylist, explicit action, and forged station/action metadata fixtures, while `_system.scripts` owns runner/Audit/source-deployed behavior.
-- `UserPromptSubmit` fixtures expect exact phrase `操作者要求開啟子代理功能，並默認啟動團隊模式` plus Team-Native state lines; `PreToolUse` fixtures route by trusted host-level actor/station evidence, allow normal root delegation host schema, recursively deny root object/array or nested forged/action metadata, and Stop completion-risk fixtures remain advisory allow outputs.
+- This child card owns Codex hook JSON fixtures under `Scripts/tests/codex-hooks/fixtures/`; canonical behavior lives in runner/manifest/source-deployed hooks, and latest fixture semantics cover only `SessionStart`, `UserPromptSubmit`, and `PreToolUse` reminders with no `permissionDecision` or deny/block outcome; the retained apply_patch allowlist filename now carries `latestModel: reminder-only-v1`.
 ## Active Constraints
 - Memory is only the ownership pointer; runner/manifest computes current counts, concrete attribution resides in `## Tracked Files`, protected `memory_commit` is later metadata sync, and git staging/commit remains separate.
 ## Cycle Events
 - 01-05: Compacted stale fixture-cycle noise, attributed 51 fixture JSON files plus manifest, recorded UserPromptSubmit/PreToolUse/Stop/SubagentStop/apply_patch coverage, and attributed 14 spawn_agent/send_input PreToolUse fixtures with 65-fixture two-shell validation, 10 commandWindows cases, launcher parity, and ReleaseReady tracking blockers.
+- 06: Replaced latest fixture memory with `reminder-only-v1`: the retained apply_patch allowlist fixture is advisory-only, expects no `permissionDecision`, and records the three-event model while terminal/subagent lifecycle fixtures are no longer current governance hooks.
 ## Archive Index
 - None yet.
 ## Evidence Base
-- source: `Scripts/tests/codex-hooks/fixtures/*.json`, `Scripts/tests/codex-hooks/fixtures/manifest.json`, `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1`, `Scripts/modules/Audit/CodexHookGovernance.catalog.json`, hook gate/config files, and launcher source/runtime pair.
-- tool/director: 2026-07-09 fixture runner passed 65 fixtures x 2 shells and 10 commandWindows cases; Audit reported `ReleaseReady=false`, `RedCount=1`, `YellowCount=14`, `UntrackedRequiredFixtureCount=14`; Director supplied 14 new delegation fixture attributions, launcher parity, Zone.Identifier absence, and no git/push authority.
+- source/tool: `Scripts/tests/codex-hooks/fixtures/allow-pretool-apply-patch-change-delivery-allowlist.json` keeps the old filename with `latestModel: reminder-only-v1`, `category: advisory`, and `expectedAbsentRegex: permissionDecision`; fixture files, manifest, runner, audit catalog, and Director-supplied team smoke evidence support the current model.
 ## Read Contract
 - Read before fixture changes; also read `_system.scripts` for runner/Audit behavior and `_codex_core` for hook config/gate behavior.
 ## Conflicts and Supersession
-- superseded: stale Stop block expectations, pre-state-machine assumptions, and 39/41/43/45/51 fixture-count assumptions are replaced by approved 65-fixture manifest/catalog repair.
+- superseded: stale deny/block, `Stop`, `SubagentStart`, and `SubagentStop` fixture expectations are replaced by the three-event reminder-only model.
 ## 中文摘要
-- 此子卡只做 Codex hooks JSON fixture 歸屬；目前歸屬 65 個 fixture JSON 與 `manifest.json`，manifest/catalog 均以 65 required fixtures 為準，新增 14 個 `spawn_agent`/`send_input` fixture，覆蓋 root host schema 放行、root/nested forged/action metadata 拒絕、explicit write/protected action 拒絕；驗證回報 65 fixtures x 2 shells、host-wrapper 10 cases、launcher parity true。
+- 此子卡只做 Codex hooks JSON fixture 歸屬；最新穩定模型只看 `SessionStart`、`UserPromptSubmit`、`PreToolUse` 三項提醒，且 `PreToolUse` fixture 不期待 `permissionDecision`、不做 deny/block；allowlist 檔名保留但內容已是 `reminder-only-v1`。
 ## Tracked Files
 - Scripts/tests/codex-hooks/fixtures/advisory-bad-input-smoke.json
 - Scripts/tests/codex-hooks/fixtures/advisory-pretool-write-no-board.json

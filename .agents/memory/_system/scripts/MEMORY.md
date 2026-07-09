@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-09T17:01:09+08:00'
+last_updated: '2026-07-09T20:55:57+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-09T16:56:58+08:00'
+last_verified: '2026-07-09T20:49:07+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-08-001
-cycle_event_count: 9
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -38,12 +38,12 @@ metadata:
 - Shared governance reference sync and audit coverage include `workflow-stage-procedures.md`; D0 validates Shared runtime references have source files plus Skills-Sync and audit-helper coverage.
 - Claude Upgrade scans root `CLAUDE.md` in addition to `commands/` and `rules/`, and D0 validates this root-entry scan sentinel.
 - `Scripts/tests/Validate-D0Minimal.ps1` is the D0 route for parse/import, extension JSON/runtime gates, package-lock parsing, release workflow, installer hardening including installer SHA regression sentinels, and scriptRunner guards; Doctor/Deploy Audit/manager Doctor fail closed on governance Red findings, failed audits, Team-Native hard-gate failures, and hard-policy source/deployed drift.
-- Repo-managed Codex hooks/fixtures are under the hook source/deployed pair and `Scripts/tests/codex-hooks/`; the runner validates active event coverage, official payload fields, Windows/POSIX host wrappers, fixture expectations, optional source/deployed hash parity including launcher, git tracking, Stop advisory allow outputs, and `commandWindows` through `cmd`/`pwsh` when available.
-- Windows PowerShell 5.1 compatibility keeps hook messages ASCII-only via Base64 decoded as UTF-8; `Invoke-CodexHookFixtureTests.ps1` preserves `cmd.exe /d /s /c <commandWindows>` command-string semantics, its PowerShell wrapper launches `cmd`, and commandWindows coverage includes PreToolUse/SessionStart non-repo process CWD plus `payload.cwd` repo-root resolver cases.
-- Audit checks authorization semantics, trusted tool envelope/receipt validity, formal-write/protected gates, trace non-authorization, workflow references/scenarios, Team-Native semantics, mixed completion wording, hook state-machine governance, manifest/catalog sync, launcher-to-gate delegation, source/deployed drift, and tracking readiness.
-- Current validation evidence reports 10 host-wrapper cases passed, Windows PowerShell and `pwsh` fixture runners each passed 65 fixtures, source/runtime hooks/gate/launcher SHA parity was true, Zone.Identifier streams were absent, and hook governance returns `ReleaseReady=false` until the source launcher plus 14 required fixtures are tracked.
+- Repo-managed Codex hooks/fixtures are under the hook source/deployed pair and `Scripts/tests/codex-hooks/`; the runner now validates only three reminder events, official payload fields, Windows/POSIX host wrappers, fallback reminder output contracts, fixture expectations, optional source/deployed hash parity including launcher, git tracking, and `commandWindows` through `cmd`/`pwsh` when available.
+- Windows PowerShell 5.1 compatibility keeps hook messages ASCII-only via Base64 decoded as UTF-8; `Invoke-CodexHookFixtureTests.ps1` preserves `cmd.exe /d /s /c <commandWindows>` semantics, verifies empty stderr, checks empty-stdin wrappers, and rejects `PreToolUse` outputs that emit `permissionDecision` or `permissionDecisionReason`.
+- Audit checks three-event reminder-only governance for `SessionStart`, `UserPromptSubmit`, and `PreToolUse`, including no `permissionDecision`, fallback output contracts, manifest/catalog sync, launcher-to-gate delegation, source/deployed drift, and the retained `reminder-only-v1` allowlist fixture.
+- Current source evidence shows `Scripts/modules/Audit/50.CodexHookGovernance.ps1`, `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1`, and `Scripts/tests/codex-hooks/fixtures/allow-pretool-apply-patch-change-delivery-allowlist.json` synchronized to the three-item reminder model.
 ## Active Constraints
-- Verify script behavior from source, runner output, Gateway evidence, and git diff; hook diagnostics/deny decisions are tool-guard evidence only, while authorization, memory, git, release, deploy, install, and completion gates remain separate protected phases.
+- Verify script behavior from source, runner output, Gateway evidence, and git diff; hook reminders are advisory-only and never replace authorization, memory, git, release, deploy, install, or completion evidence.
 - Full Doctor and `Measure-CodexHookGovernance` are non-completion evidence for non-Hooks lifecycle work.
 - JSON fixture ownership belongs to `_system.scripts.codex-hooks-fixtures`; this parent card owns runner/audit/script-side behavior, and memory repair does not authorize `memory_commit`, reindex, git, release, deploy, install, credentials, or external mutation.
 - Accepted residual risks: transcript/text trace trust boundary may over-allow, write-like rule may overblock some non-source writes, `Audit.psm1` facade command is absent, and `pwsh` remains a hook-wrapper dependency.
@@ -54,13 +54,16 @@ metadata:
 - 06: Recorded ApplyDefault/Full audit profiles, D0 installer SHA sentinel, and accepted validation summary.
 - 07: Recorded ASCII Base64 hook messages, commandWindows cmd-string host-wrapper preservation, 10 host-wrapper cases, 51-fixture two-shell validation, source/runtime hook SHA parity, and protected-action precedence.
 - 08: Recorded launcher-aware runner/audit coverage, 65-fixture two-shell validation, 10 commandWindows cases, source/runtime launcher parity, and ReleaseReady tracking blockers.
+- 10: Replaced script-side hook memory with the synchronized three-event reminder-only model: runner and audit cover `SessionStart`/`UserPromptSubmit`/`PreToolUse`, PreToolUse no-permissionDecision output, fallback reminders, empty stderr/stdin wrappers, and retained allowlist fixture `reminder-only-v1`.
 ## Archive Index
 - archive-002.md — script governance events 23-30; archive-001.md — older script cycle events 09-21.
 ## Evidence Base
 - source: `Scripts/modules/Skills-Sync.psm1`, `Scripts/modules/Audit/00.Common.ps1`, `Scripts/modules/Platform-Claude.psm1`, and `Scripts/tests/Validate-D0Minimal.ps1` current diff on 2026-07-09.
 - tool: `cartridge-system__memory_status` reported `_system.scripts` content complete with stale warning before this repair on 2026-07-09.
 - tool: `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Scripts\tests\Validate-D0Minimal.ps1 -SkipNpmAudit` reported Passed 11, Failed 0 on 2026-07-09.
-- source: `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1`, `Scripts/modules/Audit/50.CodexHookGovernance.ps1`, `Scripts/modules/Audit/CodexHookGovernance.catalog.json`, and `Scripts/modules/Audit/CodexHookGovernance/Catalog.ps1`.
+- source: `Scripts/modules/Audit/50.CodexHookGovernance.ps1` current content on 2026-07-09 declares `SessionStart`, `UserPromptSubmit`, and `PreToolUse` as the reminder events, requires no `permissionDecision`, and recognizes `reminder-only-v1`.
+- source: `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1` current content on 2026-07-09 supports only three reminder events, checks empty stderr/stdin wrappers, and fails `PreToolUse` outputs with permission-decision fields.
+- source: `Scripts/tests/codex-hooks/fixtures/allow-pretool-apply-patch-change-delivery-allowlist.json`, `Scripts/modules/Audit/CodexHookGovernance.catalog.json`, and `Scripts/modules/Audit/CodexHookGovernance/Catalog.ps1`.
 - source: `Scripts/tests/Validate-D0Minimal.ps1`, `Scripts/tests/Validate-SourceSizeGovernance.ps1`, and `Scripts/modules/Audit/*.ps1`.
 - source: `Codex/.codex/hooks.json`, `.codex/hooks.json`, `Codex/.codex/hooks/team-native-gate.ps1`, `.codex/hooks/team-native-gate.ps1`, and Codex hook fixtures.
 - tool: Gateway `memory_audit`, `memory_status`, and `memory_read` on 2026-07-08.
@@ -70,18 +73,17 @@ metadata:
 - director: 2026-07-08 protected memory-write instruction supplied 45-fixture validation, runtime sync evidence, manifest/catalog mirror repair, residual broader-dirty-worktree risk, and `pwsh` runtime risk.
 - director: 2026-07-08 protected memory-write handoff reported validated `Scripts/modules/Audit/20.SkillQuality.ps1` fallback repair for Windows PowerShell 5.x facade import, `pwsh -NoProfile`, repo-root default skills, and fail-fast missing path handling.
 - director: 2026-07-09 protected memory-write instruction supplied ASCII Base64 hook messages, commandWindows host-wrapper repair, 10 host-wrapper cases, 51-fixture two-shell validation, protected-action precedence, and source/runtime hook SHA parity.
-- tool: `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1 -RequireAllShells -VerifyRuntimeSync` reported source/deployed sync verified, commandWindows host-wrapper checks passed 10 cases, 65 fixtures passed across 2 shells, and fixture tracking was 51 tracked/14 untracked on 2026-07-09.
-- tool: `Measure-CodexHookGovernance` reported `Status=Checked`, `ReleaseReady=False`, `RedCount=1`, `YellowCount=14`, and `UntrackedRequiredFixtureCount=14` on 2026-07-09.
+- director/tool: 2026-07-09 team smoke reported subagent `apply_patch` create/delete and readonly `rg --files .codex Codex/.codex` both succeeded without hook blocking.
 ## Read Contract
 - Read this card for root PowerShell, Codex hook runner, audit integration, D0/source-size validation script changes; read `_system.scripts.codex-hooks-fixtures` for JSON fixture changes/tracking.
 ## Conflicts and Supersession
-- superseded: older runner memory that only described reminder/deny behavior is replaced by active-event, official-payload, host-wrapper, and Stop/SubagentStop validation coverage.
-- pending-follow-up: hook-runner/audit behavior changes remain owned by the separate hooks lane; release/deploy/install remain outside this sync repair.
+- superseded: older runner memory that described deny/block, terminal `Stop`/`SubagentStop`, or six-event hook governance is replaced by the three-event advisory-only model.
+- pending-follow-up: memory metadata sync remains pending until the parent opens the separate protected `memory_commit` phase; release/deploy/install remain outside this memory write.
 ## 中文摘要
 - Shared governance reference sync/audit 清單已補 `workflow-stage-procedures.md`，D0 會檢查 runtime `.agents/shared` 引用都有 source、sync 與 audit 覆蓋。
 - Claude Upgrade 現在掃 root `CLAUDE.md`，D0 也加入 sentinel。
-- 此子卡負責根層 PowerShell 腳本、Audit 模組、D0/source-size 驗證與 Codex hook runner；runner 現在也檢查 launcher source/runtime parity、commandWindows resolver 與 65 個 fixtures。
-- 本機驗證回報 host-wrapper 10 cases、Windows PowerShell 與 `pwsh` fixture runners 各 65 passed、source/runtime hooks/gate/launcher SHA parity true、Zone.Identifier absent；Audit 仍標記 `ReleaseReady=false`，直到 source launcher 與 14 required fixtures 被追蹤。
+- 此子卡負責根層 PowerShell 腳本、Audit 模組、D0/source-size 驗證與 Codex hook runner；hook runner/audit 現在以 `SessionStart`、`UserPromptSubmit`、`PreToolUse` 三項提醒為準。
+- `PreToolUse` 測試模型只檢查提醒輸出，不允許 `permissionDecision`，也不代表 deny/block 工具。
 - JSON fixtures 歸屬在 child card；本卡只記錄 runner、Audit 與 script-side 行為，且不授權 `memory_commit`、git、release、deploy、install 或外部變更。
 ## Tracked Files
 - Scripts/Deploy.ps1

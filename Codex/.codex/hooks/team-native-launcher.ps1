@@ -5,8 +5,11 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+$allowedEvents = @('SessionStart', 'UserPromptSubmit', 'PreToolUse')
+
 function Write-LauncherAdvisory {
     param(
+        [string]$EventName,
         [string]$SystemMessage,
         [string]$AdditionalContext
     )
@@ -14,7 +17,7 @@ function Write-LauncherAdvisory {
     [ordered]@{
         systemMessage = $SystemMessage
         hookSpecificOutput = [ordered]@{
-            hookEventName = $HookEvent
+            hookEventName = $EventName
             additionalContext = $AdditionalContext
         }
     } | ConvertTo-Json -Depth 8 -Compress
@@ -24,7 +27,19 @@ try {
     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
     $OutputEncoding = [System.Text.Encoding]::UTF8
 
+    if ($allowedEvents -notcontains $HookEvent) {
+        Write-LauncherAdvisory `
+            -EventName $HookEvent `
+            -SystemMessage ('Codex Team-Native hook event is not enabled: {0}' -f $HookEvent) `
+            -AdditionalContext 'Supported Team-Native hook events: SessionStart, UserPromptSubmit, PreToolUse. Advisory/reminder only.'
+        exit 0
+    }
+
     $raw = [Console]::In.ReadToEnd()
+    if (-not $raw -and $env:AI_RULES_HOOK_STDIN) {
+        $raw = $env:AI_RULES_HOOK_STDIN
+    }
+
     $payload = $null
     try {
         if (-not [string]::IsNullOrWhiteSpace($raw)) {
@@ -69,11 +84,16 @@ try {
     if ($scriptPath) {
         & $scriptPath -HookEvent $HookEvent -PayloadJson $raw
     } else {
-        Write-LauncherAdvisory -SystemMessage 'Codex hook script was not found' -AdditionalContext 'Codex hook script was not found; advisory/reminder only.'
+        Write-LauncherAdvisory `
+            -EventName $HookEvent `
+            -SystemMessage 'Codex Team-Native hook script was not found' `
+            -AdditionalContext 'Codex Team-Native hook script was not found; advisory/reminder only.'
     }
 } catch {
-    $message = 'Codex hook launcher exception; advisory/reminder only. ' + $_.Exception.Message
-    Write-LauncherAdvisory -SystemMessage 'Codex hook launcher exception' -AdditionalContext $message
+    Write-LauncherAdvisory `
+        -EventName $HookEvent `
+        -SystemMessage 'Codex Team-Native hook launcher exception' `
+        -AdditionalContext ('Codex Team-Native hook launcher exception; advisory/reminder only. ' + $_.Exception.Message)
 }
 
 exit 0
