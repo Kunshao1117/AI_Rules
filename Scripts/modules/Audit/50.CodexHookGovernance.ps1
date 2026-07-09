@@ -19,7 +19,7 @@ function Measure-CodexHookGovernance {
     $RepoRoot = (Resolve-Path $RepoRoot).Path
     $TargetRoot = (Resolve-Path $TargetRoot).Path
     $results = New-Object System.Collections.ArrayList
-    $codexHookReminderEvents = @('SessionStart', 'UserPromptSubmit', 'PreToolUse')
+    $codexHookDirectiveEvents = @('SessionStart', 'UserPromptSubmit', 'PreToolUse')
     $codexHookLatestFixtureNames = @('allow-pretool-apply-patch-change-delivery-allowlist.json')
     $codexHookActiveScriptRequirementPatterns = @(
         'SessionStart',
@@ -28,7 +28,8 @@ function Measure-CodexHookGovernance {
         'hookSpecificOutput',
         'additionalContext',
         'systemMessage',
-        'TEAM_NATIVE_ACTIVE=true'
+        'TEAM_NATIVE_ACTIVE=true',
+        'NON_IGNORABLE_DIRECTIVE=true'
     )
 
     function Add-CodexHookFinding {
@@ -161,31 +162,33 @@ function Measure-CodexHookGovernance {
         )
     }
 
-    function Test-CodexHookLauncherEventAwareAdvisory {
+    function Test-CodexHookLauncherEventAwareDirective {
         param([string]$Content)
 
         return (
             $Content -match "\$allowedEvents\s*=\s*@\('SessionStart',\s*'UserPromptSubmit',\s*'PreToolUse'\)" -and
             $Content -match '-notcontains\s+\$HookEvent' -and
-            $Content -match 'Supported Team-Native hook events: SessionStart, UserPromptSubmit, PreToolUse\. Advisory/reminder only\.' -and
+            $Content -match 'Supported Team-Native hook events: SessionStart, UserPromptSubmit, PreToolUse\. NON_IGNORABLE_DIRECTIVE=true\.' -and
             $Content -match 'hookSpecificOutput' -and
             $Content -notmatch "\bpermissionDecision\b" -and
             $Content -notmatch "'(?:SubagentStart|SubagentStop)'"
         )
     }
 
-    function Test-CodexHookGateReminderOnlyOutput {
+    function Test-CodexHookGateDirectiveOutput {
         param([string]$Content)
 
         return (
-            $Content -match 'function\s+Write-HookReminder' -and
-            $Content -match 'function\s+Write-SessionStartReminder' -and
-            $Content -match 'function\s+Write-UserPromptSubmitReminder' -and
-            $Content -match 'function\s+Write-PreToolUseReminder' -and
-            $Content -match 'function\s+Write-UnsupportedEventReminder' -and
+            $Content -match 'function\s+Write-HookDirective' -and
+            $Content -match 'function\s+Write-SessionStartDirective' -and
+            $Content -match 'function\s+Write-UserPromptSubmitDirective' -and
+            $Content -match 'function\s+Write-PreToolUseDirective' -and
+            $Content -match 'function\s+Write-UnsupportedEventDirective' -and
             $Content -match 'SUPPORTED_EVENTS=SessionStart,UserPromptSubmit,PreToolUse' -and
-            $Content -match '(?s)switch\s*\(\$eventName\).*?''SessionStart''\s*\{\s*Write-SessionStartReminder\s*\}.*?''UserPromptSubmit''\s*\{\s*Write-UserPromptSubmitReminder\s*\}.*?''PreToolUse''\s*\{\s*Write-PreToolUseReminder\s*\}.*?default\s*\{\s*Write-UnsupportedEventReminder\s+-EventName\s+\$eventName\s*\}' -and
+            $Content -match '(?s)switch\s*\(\$eventName\).*?''SessionStart''\s*\{\s*Write-SessionStartDirective\s*\}.*?''UserPromptSubmit''\s*\{\s*Write-UserPromptSubmitDirective\s*\}.*?''PreToolUse''\s*\{\s*Write-PreToolUseDirective\s*\}.*?default\s*\{\s*Write-UnsupportedEventDirective\s+-EventName\s+\$eventName\s*\}' -and
             $Content -match 'hookSpecificOutput' -and
+            $Content -match 'NON_IGNORABLE_DIRECTIVE=true' -and
+            $Content -match 'PRETOOL_GUARD=mandatory_directive' -and
             $Content -notmatch "\bpermissionDecision\b" -and
             $Content -notmatch "'(?:SubagentStart|SubagentStop)'"
         )
@@ -328,7 +331,7 @@ function Measure-CodexHookGovernance {
             }
         }
 
-        $eventCatalog = @(Get-CodexHookCatalogEntries -FunctionName 'Get-CodexHookSupportedEventCatalog' -CatalogName 'supportedEvents' | Where-Object { $codexHookReminderEvents -contains $_.EventName })
+        $eventCatalog = @(Get-CodexHookCatalogEntries -FunctionName 'Get-CodexHookSupportedEventCatalog' -CatalogName 'supportedEvents' | Where-Object { $codexHookDirectiveEvents -contains $_.EventName })
         $requiredEvents = @($eventCatalog | ForEach-Object { $_.EventName })
         $allowedEvents = $requiredEvents
         $expectedStatusMessages = @{}
@@ -471,8 +474,8 @@ function Measure-CodexHookGovernance {
         $decodedDisplayParts.Add($content)
         $searchContent = (@($decodedDisplayParts.ToArray()) -join "`n")
         $nonAsciiMatch = [regex]::Match($content, '[^\x00-\x7F]')
-        $allowsRawReminderText = ($content -match 'REMINDER_ONLY=true' -or $content -match 'NO_DENY_OR_BLOCK=true')
-        if ($nonAsciiMatch.Success -and -not $allowsRawReminderText) {
+        $allowsRawDirectiveText = ($content -match 'NON_IGNORABLE_DIRECTIVE=true' -or $content -match 'PRETOOL_GUARD=mandatory_directive')
+        if ($nonAsciiMatch.Success -and -not $allowsRawDirectiveText) {
             $line = (($content.Substring(0, $nonAsciiMatch.Index) -split "\r?\n").Count)
             $codePoint = [int][char]$nonAsciiMatch.Value[0]
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line $line -Reason ("hook 腳本含 raw non-ASCII/CJK literal ({0})" -f $Label) -Text ("U+{0:X4}; use New-UnicodeString codepoints for non-ASCII markers" -f $codePoint)
@@ -485,12 +488,12 @@ function Measure-CodexHookGovernance {
             }
         }
 
-        if ([IO.Path]::GetFileName($Path) -eq 'team-native-launcher.ps1' -and -not (Test-CodexHookLauncherEventAwareAdvisory -Content $content)) {
-            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook launcher fallback 未限制為三項提醒事件 ({0})" -f $Label) -Text 'SessionStart/UserPromptSubmit/PreToolUse advisory-only'
+        if ([IO.Path]::GetFileName($Path) -eq 'team-native-launcher.ps1' -and -not (Test-CodexHookLauncherEventAwareDirective -Content $content)) {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook launcher fallback 未限制為三項強制規範事件 ({0})" -f $Label) -Text 'SessionStart/UserPromptSubmit/PreToolUse directive'
         }
 
-        if ([IO.Path]::GetFileName($Path) -eq 'team-native-gate.ps1' -and -not (Test-CodexHookGateReminderOnlyOutput -Content $content)) {
-            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook gate 未限制為三項提醒輸出 ({0})" -f $Label) -Text 'PreToolUse must remain advisory-only without permissionDecision'
+        if ([IO.Path]::GetFileName($Path) -eq 'team-native-gate.ps1' -and -not (Test-CodexHookGateDirectiveOutput -Content $content)) {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook gate 未限制為三項強制規範輸出 ({0})" -f $Label) -Text 'PreToolUse must remain directive output without permissionDecision'
         }
     }
 
@@ -511,7 +514,7 @@ function Measure-CodexHookGovernance {
             @{ Pattern = 'expectedReasonCodeRegex'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少原因碼機器合約檢查' },
             @{ Pattern = 'expectedOutputRegex'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少可見輸出語意檢查' },
             @{ Pattern = 'Test-FixturePreToolPermissionDecisionContract'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 PreToolUse 無 permissionDecision 檢查' },
-            @{ Pattern = 'Test-FixtureReminderFallbackContracts'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少三項提醒 fallback contract 檢查' },
+            @{ Pattern = 'Test-FixtureDirectiveFallbackContracts'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少三項強制規範 fallback contract 檢查' },
             @{ Pattern = 'stderr must be empty'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 stderr 空值檢查' },
             @{ Pattern = 'Get-FixtureTrackingState'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 tracked/untracked 狀態分流' },
             @{ Pattern = 'canonicalDecision'; Severity = 'Red'; Reason = 'Codex hook fixture runner 缺少 canonicalDecision taxonomy 檢查' },
@@ -597,7 +600,7 @@ function Measure-CodexHookGovernance {
         $inputObject = if ($null -eq $inputProperty) { $null } else { $inputProperty.Value }
         $hookEventName = Get-CodexHookPropertyText -Object $inputObject -Name 'hook_event_name'
 
-        if (@('allow','advisory','positive','negative','internal-fallback') -notcontains $category) {
+        if (@('allow','advisory','directive','positive','negative','internal-fallback') -notcontains $category) {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少分層 category' -Text 'category must be positive, negative, or internal-fallback'
         }
         if (@('official-schema-style','legacy-fallback') -notcontains $schemaStyle) {
@@ -609,15 +612,15 @@ function Measure-CodexHookGovernance {
         if (@('synthetic','captured-synthetic') -notcontains $fixtureOrigin) {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 captured/synthetic 來源分層' -Text 'fixtureOrigin must be synthetic or captured-synthetic'
         }
-        if (@('allow','allow-reminder','advisory-context','advisory-would-block') -notcontains $expectedOutcomeKind) {
-            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 expectedOutcomeKind 分層' -Text 'expectedOutcomeKind must describe reminder/advisory behavior'
+        if (@('allow','allow-reminder','advisory-context','advisory-would-block','directive-context') -notcontains $expectedOutcomeKind) {
+            Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 expectedOutcomeKind 分層' -Text 'expectedOutcomeKind must describe directive/advisory compatibility behavior'
         }
         if ([string]::IsNullOrWhiteSpace($canonicalDecision)) {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture 缺少 canonicalDecision taxonomy' -Text 'canonicalDecision must be allow, advisory, deny, or block'
         } else {
             $canonicalValues = @('allow', 'advisory')
             if ($canonicalValues -notcontains $canonicalDecision) {
-                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture canonicalDecision 不在 reminder-only taxonomy' -Text 'canonicalDecision must be allow or advisory'
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'Codex hook fixture canonicalDecision 不在 directive taxonomy' -Text 'canonicalDecision must be allow or advisory'
             }
 
             $expectedFromDecision = if (@('allow','advisory') -contains $canonicalDecision) { 'allow' } else { $canonicalDecision }
@@ -647,7 +650,7 @@ function Measure-CodexHookGovernance {
 
         foreach ($routingPropertyName in @('role_id', 'station_mode', 'board_state', 'authorization_phase', 'handoff_ownership', 'exact_file_allowlist')) {
             if ($inputObject.PSObject.Properties[$routingPropertyName]) {
-                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'apply_patch reminder-only fixture 不可期待 allowlist routing' -Text $routingPropertyName
+                Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason 'apply_patch directive fixture 不可期待 allowlist routing' -Text $routingPropertyName
             }
         }
 

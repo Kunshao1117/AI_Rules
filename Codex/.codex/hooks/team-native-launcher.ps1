@@ -7,7 +7,7 @@ $ErrorActionPreference = 'Stop'
 
 $allowedEvents = @('SessionStart', 'UserPromptSubmit', 'PreToolUse')
 
-function Write-LauncherAdvisory {
+function Write-LauncherDirective {
     param(
         [string]$EventName,
         [string]$SystemMessage,
@@ -28,10 +28,10 @@ try {
     $OutputEncoding = [System.Text.Encoding]::UTF8
 
     if ($allowedEvents -notcontains $HookEvent) {
-        Write-LauncherAdvisory `
+        Write-LauncherDirective `
             -EventName $HookEvent `
-            -SystemMessage ('Codex Team-Native hook event is not enabled: {0}' -f $HookEvent) `
-            -AdditionalContext 'Supported Team-Native hook events: SessionStart, UserPromptSubmit, PreToolUse. Advisory/reminder only.'
+            -SystemMessage ('Codex Team-Native hook event is outside the active directive set: {0}' -f $HookEvent) `
+            -AdditionalContext 'Supported Team-Native hook events: SessionStart, UserPromptSubmit, PreToolUse. NON_IGNORABLE_DIRECTIVE=true.'
         exit 0
     }
 
@@ -84,16 +84,16 @@ try {
     if ($scriptPath) {
         & $scriptPath -HookEvent $HookEvent -PayloadJson $raw
     } else {
-        Write-LauncherAdvisory `
+        Write-LauncherDirective `
             -EventName $HookEvent `
-            -SystemMessage 'Codex Team-Native hook script was not found' `
-            -AdditionalContext 'Codex Team-Native hook script was not found; advisory/reminder only.'
+            -SystemMessage 'Codex Team-Native hook directive script was not found' `
+            -AdditionalContext 'Codex Team-Native hook directive script was not found; treat Team-Native route as unverified until restored.'
     }
 } catch {
-    Write-LauncherAdvisory `
+    Write-LauncherDirective `
         -EventName $HookEvent `
         -SystemMessage 'Codex Team-Native hook launcher exception' `
-        -AdditionalContext ('Codex Team-Native hook launcher exception; advisory/reminder only. ' + $_.Exception.Message)
+        -AdditionalContext ('Codex Team-Native hook launcher exception; treat Team-Native route as unverified until fixed. ' + $_.Exception.Message)
 }
 
 exit 0

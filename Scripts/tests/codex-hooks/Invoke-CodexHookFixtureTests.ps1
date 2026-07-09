@@ -247,7 +247,7 @@ function Get-FixtureSupportedHookEvents {
     @('SessionStart', 'UserPromptSubmit', 'PreToolUse')
 }
 
-function Get-FixtureLatestReminderNames {
+function Get-FixtureLatestDirectiveNames {
     @('allow-pretool-apply-patch-change-delivery-allowlist.json')
 }
 
@@ -259,10 +259,10 @@ function Get-FixtureEventName {
     return ''
 }
 
-function Test-FixtureLatestReminderCase {
+function Test-FixtureLatestDirectiveCase {
     param([string]$FileName, [object]$Fixture)
 
-    if ((Get-FixtureLatestReminderNames) -notcontains $FileName) { return $false }
+    if ((Get-FixtureLatestDirectiveNames) -notcontains $FileName) { return $false }
     $eventName = Get-FixtureEventName -Fixture $Fixture
     if ((Get-FixtureSupportedHookEvents) -notcontains $eventName) { return $false }
     $canonicalDecision = Get-FixtureCanonicalDecision -Fixture $Fixture
@@ -281,7 +281,7 @@ function Test-FixtureCanonicalDecisionContract {
     if ($Fixture.PSObject.Properties['expectedDecision']) {
         $expectedDecision = [string]$Fixture.expectedDecision
         if ($expectedDecision -ne 'allow') {
-            $Failures.Add(('{0} canonicalDecision {1} conflicts with expectedDecision {2}; reminder-only expectedDecision should be allow.' -f $CaseName, $canonicalDecision, $expectedDecision))
+            $Failures.Add(('{0} canonicalDecision {1} conflicts with expectedDecision {2}; directive expectedDecision should be allow.' -f $CaseName, $canonicalDecision, $expectedDecision))
         }
     }
 }
@@ -316,18 +316,18 @@ function Test-FixturePreToolPermissionDecisionContract {
     if ($null -eq $eventName -or [string]$eventName.Value -ne 'PreToolUse') { return }
     $permissionDecision = $hookSpecific.Value.PSObject.Properties['permissionDecision']
     if ($null -ne $permissionDecision) {
-        $Failures.Add(('{0} must not emit hookSpecificOutput.permissionDecision for reminder-only PreToolUse output.' -f $CaseName))
+        $Failures.Add(('{0} must not emit hookSpecificOutput.permissionDecision for directive PreToolUse output.' -f $CaseName))
     }
     if ($hookSpecific.Value.PSObject.Properties['permissionDecisionReason']) {
-        $Failures.Add(('{0} must not emit hookSpecificOutput.permissionDecisionReason for reminder-only PreToolUse output.' -f $CaseName))
+        $Failures.Add(('{0} must not emit hookSpecificOutput.permissionDecisionReason for directive PreToolUse output.' -f $CaseName))
     }
 }
 
-function Test-FixtureSupportedReminderEvent {
+function Test-FixtureSupportedDirectiveEvent {
     param([string]$CaseName, [string]$EventName, [object]$ParsedOutput, [System.Collections.Generic.List[string]]$Failures)
     if ([string]::IsNullOrWhiteSpace($EventName)) { return }
     if ((Get-FixtureSupportedHookEvents) -notcontains $EventName) {
-        $Failures.Add(('{0} uses unsupported hook event {1}; reminder fixtures support only SessionStart, UserPromptSubmit, and PreToolUse.' -f $CaseName, $EventName))
+        $Failures.Add(('{0} uses unsupported hook event {1}; directive fixtures support only SessionStart, UserPromptSubmit, and PreToolUse.' -f $CaseName, $EventName))
     }
 }
 
@@ -437,7 +437,7 @@ function Invoke-FixturePowerShellShellCommandWindowsHook {
     return [PSCustomObject]@{ Stdout = $stdout; Stderr = $stderr; ExitCode = $process.ExitCode }
 }
 
-function Test-FixtureReminderFallbackContracts {
+function Test-FixtureDirectiveFallbackContracts {
     param([string]$RepoRoot, [object]$ShellInfo, [System.Collections.Generic.List[string]]$Failures)
 
     $gateScript = Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-gate.ps1'
@@ -458,7 +458,7 @@ function Test-FixtureReminderFallbackContracts {
         }
         try {
             $gateParsed = $gateResult.Stdout.Trim() | ConvertFrom-Json -ErrorAction Stop
-            Test-FixtureSupportedReminderEvent -CaseName $gateCaseName -EventName $eventName -ParsedOutput $gateParsed -Failures $Failures
+            Test-FixtureSupportedDirectiveEvent -CaseName $gateCaseName -EventName $eventName -ParsedOutput $gateParsed -Failures $Failures
             Test-FixturePreToolPermissionDecisionContract -CaseName $gateCaseName -ParsedOutput $gateParsed -ExpectedDecision 'allow' -Failures $Failures
         } catch {
             $Failures.Add(('{0} output was not JSON: {1}' -f $gateCaseName, $gateResult.Stdout.Trim()))
@@ -469,7 +469,7 @@ function Test-FixtureReminderFallbackContracts {
         $launcherInput = [ordered]@{
             hook_event_name = $eventName
             cwd = $tempNonRepo
-            prompt = 'fallback reminder contract probe'
+            prompt = 'fallback directive contract probe'
         } | ConvertTo-Json -Depth 16 -Compress
         $launcherResult = Invoke-FixturePowerShellScript -ShellInfo $ShellInfo -ScriptPath $launcherScript -Arguments @('-HookEvent', $eventName) -InputJson $launcherInput -WorkingDirectory $tempNonRepo
         $launcherCaseName = 'launcher-missing-gate-{0}' -f $eventName
@@ -483,7 +483,7 @@ function Test-FixtureReminderFallbackContracts {
         }
         try {
             $launcherParsed = $launcherResult.Stdout.Trim() | ConvertFrom-Json -ErrorAction Stop
-            Test-FixtureSupportedReminderEvent -CaseName $launcherCaseName -EventName $eventName -ParsedOutput $launcherParsed -Failures $Failures
+            Test-FixtureSupportedDirectiveEvent -CaseName $launcherCaseName -EventName $eventName -ParsedOutput $launcherParsed -Failures $Failures
             Test-FixturePreToolPermissionDecisionContract -CaseName $launcherCaseName -ParsedOutput $launcherParsed -ExpectedDecision 'allow' -Failures $Failures
         } catch {
             $Failures.Add(('{0} output was not JSON: {1}' -f $launcherCaseName, $launcherResult.Stdout.Trim()))
@@ -492,7 +492,7 @@ function Test-FixtureReminderFallbackContracts {
         $passed++
     }
 
-    Write-Host ("reminder fallback output contracts passed: {0} case(s)" -f $passed)
+    Write-Host ("directive fallback output contracts passed: {0} case(s)" -f $passed)
 }
 
 function Test-FixtureCommandWindowsWrappers {
@@ -524,24 +524,24 @@ function Test-FixtureCommandWindowsWrappers {
                 Event = 'SessionStart'
                 WorkingDirectory = $RepoRoot
                 Input = [ordered]@{ hook_event_name = 'SessionStart'; cwd = $RepoRoot; source = 'startup' }
-                ExpectedOutputRegex = '團隊模式提醒.*REMINDER_ONLY=true'
-                ExpectedUtf8Text = '團隊模式提醒'
+                ExpectedOutputRegex = '團隊模式強制規範.*NON_IGNORABLE_DIRECTIVE=true'
+                ExpectedUtf8Text = '團隊模式強制規範'
             },
             [PSCustomObject]@{
                 Name = 'commandWindows-session-empty-stdin'
                 Event = 'SessionStart'
                 WorkingDirectory = $RepoRoot
                 RawInput = ''
-                ExpectedOutputRegex = '團隊模式提醒'
+                ExpectedOutputRegex = '團隊模式強制規範'
                 ExpectedAbsentRegex = 'bad-input smoke'
             },
             [PSCustomObject]@{
                 Name = 'commandWindows-user-prompt-submit'
                 Event = 'UserPromptSubmit'
                 WorkingDirectory = $RepoRoot
-                Input = [ordered]@{ hook_event_name = 'UserPromptSubmit'; cwd = $RepoRoot; prompt = 'fixture user prompt reminder' }
+                Input = [ordered]@{ hook_event_name = 'UserPromptSubmit'; cwd = $RepoRoot; prompt = 'fixture user prompt directive' }
                 ExpectedDecision = 'allow'
-                ExpectedOutputRegex = '本輪團隊模式提醒.*REMINDER_ONLY=true'
+                ExpectedOutputRegex = '本輪團隊模式強制規範.*NON_IGNORABLE_DIRECTIVE=true'
                 ExpectedAbsentRegex = 'permissionDecision'
             },
             [PSCustomObject]@{
@@ -550,8 +550,8 @@ function Test-FixtureCommandWindowsWrappers {
                 WorkingDirectory = $tempNonRepo
                 Input = [ordered]@{ hook_event_name = 'PreToolUse'; cwd = $RepoRoot; tool_name = 'Bash'; tool_input = [ordered]@{ command = 'git diff -- Codex/.codex/hooks.json' } }
                 ExpectedDecision = 'allow'
-                ExpectedOutputRegex = '工具前置強提醒.*只提示、不阻擋工具.*NO_DENY_OR_BLOCK=true'
-                ExpectedAbsentRegex = 'permissionDecision'
+                ExpectedOutputRegex = '工具前置強制規範.*使用者/操作者要求.*PRETOOL_GUARD=mandatory_directive.*NON_IGNORABLE_DIRECTIVE=true'
+                ExpectedAbsentRegex = 'permissionDecision|REMINDER_ONLY|NO_DENY_OR_BLOCK|advisory_only|只提示|不阻擋'
             },
             [PSCustomObject]@{
                 Name = 'commandWindows-pretool-empty-stdin'
@@ -559,8 +559,8 @@ function Test-FixtureCommandWindowsWrappers {
                 WorkingDirectory = $RepoRoot
                 RawInput = ''
                 ExpectedDecision = 'allow'
-                ExpectedOutputRegex = '只提示、不阻擋工具'
-                ExpectedAbsentRegex = 'bad-input smoke|permissionDecision'
+                ExpectedOutputRegex = '工具前置強制規範.*NON_IGNORABLE_DIRECTIVE=true'
+                ExpectedAbsentRegex = 'bad-input smoke|permissionDecision|REMINDER_ONLY|NO_DENY_OR_BLOCK|advisory_only|只提示|不阻擋'
             },
             [PSCustomObject]@{
                 Name = 'commandWindows-pretool-repo-host-cwd'
@@ -568,8 +568,8 @@ function Test-FixtureCommandWindowsWrappers {
                 WorkingDirectory = $RepoRoot
                 Input = [ordered]@{ hook_event_name = 'PreToolUse'; cwd = $RepoRoot; tool_name = 'Bash'; tool_input = [ordered]@{ command = 'git diff -- Codex/.codex/hooks.json' } }
                 ExpectedDecision = 'allow'
-                ExpectedOutputRegex = '工具前置強提醒.*只提示、不阻擋工具.*NO_DENY_OR_BLOCK=true'
-                ExpectedAbsentRegex = 'permissionDecision'
+                ExpectedOutputRegex = '工具前置強制規範.*使用者/操作者要求.*PRETOOL_GUARD=mandatory_directive.*NON_IGNORABLE_DIRECTIVE=true'
+                ExpectedAbsentRegex = 'permissionDecision|REMINDER_ONLY|NO_DENY_OR_BLOCK|advisory_only|只提示|不阻擋'
             }
     )
 
@@ -612,7 +612,7 @@ function Test-FixtureCommandWindowsWrappers {
                 $failures.Add(('{0} output was not JSON: {1}' -f $caseName, $output))
                 continue
             }
-            Test-FixtureSupportedReminderEvent -CaseName $caseName -EventName $case.Event -ParsedOutput $parsed -Failures $failures
+            Test-FixtureSupportedDirectiveEvent -CaseName $caseName -EventName $case.Event -ParsedOutput $parsed -Failures $failures
             Test-FixturePreToolPermissionDecisionContract -CaseName $caseName -ParsedOutput $parsed -ExpectedDecision ([string]$case.ExpectedDecision) -Failures $failures
             if ($case.PSObject.Properties['ExpectedDecision'] -and [string]$case.ExpectedDecision -ne '') {
                 $effectiveDecision = Get-FixtureEffectiveDecision -ParsedOutput $parsed
@@ -661,7 +661,7 @@ Test-FixtureManifestContract -FixturesRoot $FixturesRoot -Manifest $manifest -Fa
 
 foreach ($fixtureFile in $fixtures) {
     $fixture = Get-Content -LiteralPath $fixtureFile.FullName -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
-    if (-not (Test-FixtureLatestReminderCase -FileName $fixtureFile.Name -Fixture $fixture)) {
+    if (-not (Test-FixtureLatestDirectiveCase -FileName $fixtureFile.Name -Fixture $fixture)) {
         $skippedFixtureCount++
         continue
     }
@@ -692,7 +692,7 @@ foreach ($fixtureFile in $fixtures) {
             if ($fixture.PSObject.Properties['input'] -and $fixture.input.PSObject.Properties['hook_event_name']) {
                 $fixtureEventName = [string]$fixture.input.hook_event_name
             }
-            Test-FixtureSupportedReminderEvent -CaseName ('{0} [{1}]' -f $fixtureFile.Name, $shellInfo.Name) -EventName $fixtureEventName -ParsedOutput $parsed -Failures $failures
+            Test-FixtureSupportedDirectiveEvent -CaseName ('{0} [{1}]' -f $fixtureFile.Name, $shellInfo.Name) -EventName $fixtureEventName -ParsedOutput $parsed -Failures $failures
             Test-FixturePreToolPermissionDecisionContract -CaseName ('{0} [{1}]' -f $fixtureFile.Name, $shellInfo.Name) -ParsedOutput $parsed -ExpectedDecision ([string]$fixture.expectedDecision) -Failures $failures
             if ($fixture.PSObject.Properties['expectedDecision']) {
                 $effectiveDecision = Get-FixtureEffectiveDecision -ParsedOutput $parsed
@@ -731,7 +731,7 @@ foreach ($fixtureFile in $fixtures) {
 }
 
 if (-not $SkipHostWrapper) {
-    Test-FixtureReminderFallbackContracts -RepoRoot $RepoRoot -ShellInfo $shells[0] -Failures $failures
+    Test-FixtureDirectiveFallbackContracts -RepoRoot $RepoRoot -ShellInfo $shells[0] -Failures $failures
     Test-FixtureCommandWindowsWrappers -RepoRoot $RepoRoot -Failures $failures -CommandPropertyName 'commandWindows' -DisplayName 'commandWindows'
 }
 

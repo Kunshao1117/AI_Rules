@@ -6,12 +6,12 @@
   },
   "canonicalDecisionValues": ["allow", "advisory", "deny", "block"],
   "supportedEvents": [
-    { "EventName": "SessionStart", "StatusMessage": "團隊啟動提醒" },
-    { "EventName": "UserPromptSubmit", "StatusMessage": "本輪團隊授權提醒" },
-    { "EventName": "SubagentStart", "StatusMessage": "子代理邊界提醒" },
-    { "EventName": "PreToolUse", "StatusMessage": "隊長越界提醒" },
-    { "EventName": "Stop", "StatusMessage": "完成證據提醒" },
-    { "EventName": "SubagentStop", "StatusMessage": "子代理交付提醒" }
+    { "EventName": "SessionStart", "StatusMessage": "團隊啟動規範" },
+    { "EventName": "UserPromptSubmit", "StatusMessage": "本輪團隊規範" },
+    { "EventName": "SubagentStart", "StatusMessage": "子代理邊界規範" },
+    { "EventName": "PreToolUse", "StatusMessage": "隊長邊界規範" },
+    { "EventName": "Stop", "StatusMessage": "完成證據規範" },
+    { "EventName": "SubagentStop", "StatusMessage": "子代理交付規範" }
   ],
   "optionalFutureEvents": [
     { "EventName": "PermissionRequest", "Status": "future-optional" }

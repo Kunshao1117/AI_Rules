@@ -1,16 +1,16 @@
 {
   "name": "allow-pretool-apply-patch-change-delivery-allowlist",
-  "scenarioCode": "pretool-apply-patch-reminder-only-advisory",
-  "category": "advisory",
+  "scenarioCode": "pretool-apply-patch-mandatory-directive",
+  "category": "directive",
   "schemaStyle": "official-schema-style",
   "decisionLayer": "official-output",
   "fixtureOrigin": "synthetic",
-  "latestModel": "reminder-only-v1",
-  "expectedOutcomeKind": "advisory-context",
+  "latestModel": "mandatory-directive-v1",
+  "expectedOutcomeKind": "directive-context",
   "canonicalDecision": "advisory",
   "expectedDecision": "allow",
-  "expectedOutputRegex": "工具前置強提醒.*只提示、不阻擋工具.*PRETOOL_GUARD=advisory_only.*NO_DENY_OR_BLOCK=true",
-  "expectedAbsentRegex": "permissionDecision",
+  "expectedOutputRegex": "工具前置強制規範.*使用者/操作者要求.*PRETOOL_GUARD=mandatory_directive.*NON_IGNORABLE_DIRECTIVE=true",
+  "expectedAbsentRegex": "permissionDecision|REMINDER_ONLY|NO_DENY_OR_BLOCK|advisory_only|只提示|不阻擋",
   "input": {
     "hook_event_name": "PreToolUse",
     "session_id": "fixture-session",
@@ -21,10 +21,10 @@
     "turn_id": "fixture-turn",
     "agent_id": "agent-fixture-change-delivery",
     "tool_name": "apply_patch",
-    "tool_use_id": "fixture-tool-apply-patch-reminder",
-    "command": "*** Begin Patch\n*** Update File: Scripts/tests/codex-hooks/fixtures/allow-pretool-apply-patch-change-delivery-allowlist.json\n@@\n+$example = 'reminder only'\n*** End Patch",
+    "tool_use_id": "fixture-tool-apply-patch-directive",
+    "command": "*** Begin Patch\n*** Update File: Scripts/tests/codex-hooks/fixtures/allow-pretool-apply-patch-change-delivery-allowlist.json\n@@\n+$example = 'mandatory directive'\n*** End Patch",
     "tool_input": {
-      "command": "*** Begin Patch\n*** Update File: Scripts/tests/codex-hooks/fixtures/allow-pretool-apply-patch-change-delivery-allowlist.json\n@@\n+$example = 'reminder only'\n*** End Patch"
+      "command": "*** Begin Patch\n*** Update File: Scripts/tests/codex-hooks/fixtures/allow-pretool-apply-patch-change-delivery-allowlist.json\n@@\n+$example = 'mandatory directive'\n*** End Patch"
     }
   }
 }
