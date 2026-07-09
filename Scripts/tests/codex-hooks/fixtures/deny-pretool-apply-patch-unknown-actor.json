@@ -1,0 +1,26 @@
+{
+  "name": "deny-pretool-apply-patch-unknown-actor",
+  "scenarioCode": "pretool-apply-patch-unknown-actor-deny",
+  "category": "deny",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "deny",
+  "canonicalDecision": "deny",
+  "expectedDecision": "deny",
+  "expectedOutputRegex": "已阻擋 write-like tool.*captain/default/unknown/missing actor.*fail closed",
+  "input": {
+    "hook_event_name": "PreToolUse",
+    "session_id": "fixture-session",
+    "transcript_path": null,
+    "cwd": "D:\\AI_Rules",
+    "model": "gpt-5",
+    "permission_mode": "default",
+    "turn_id": "fixture-turn",
+    "tool_name": "apply_patch",
+    "tool_use_id": "fixture-tool-apply-patch-unknown",
+    "tool_input": {
+      "command": "*** Begin Patch\n*** Update File: Codex/.codex/hooks/team-native-gate.ps1\n@@\n+$example = 'unknown should deny'\n*** End Patch"
+    }
+  }
+}

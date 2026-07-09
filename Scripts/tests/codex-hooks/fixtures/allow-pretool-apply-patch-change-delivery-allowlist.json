@@ -1,0 +1,36 @@
+{
+  "name": "allow-pretool-apply-patch-change-delivery-allowlist",
+  "scenarioCode": "pretool-apply-patch-change-delivery-allowlist-allow",
+  "category": "allow",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "allow-reminder",
+  "canonicalDecision": "advisory",
+  "expectedDecision": "allow",
+  "expectedOutputRegex": "advisory/reminder.*提醒模式，不會阻擋工具.*write-advisory",
+  "input": {
+    "hook_event_name": "PreToolUse",
+    "session_id": "fixture-session",
+    "transcript_path": null,
+    "cwd": "D:\\AI_Rules",
+    "model": "gpt-5",
+    "permission_mode": "default",
+    "turn_id": "fixture-turn",
+    "agent_id": "agent-fixture-change-delivery",
+    "agent_type": "subagent",
+    "role_id": "change-delivery",
+    "station_mode": "change-delivery",
+    "board_state": "formal-write",
+    "authorization_phase": "implementation-change-delivery",
+    "handoff_ownership": "station-owned",
+    "exact_file_allowlist": [
+      "Codex/.codex/hooks/team-native-gate.ps1"
+    ],
+    "tool_name": "apply_patch",
+    "tool_use_id": "fixture-tool-apply-patch-allowlist",
+    "tool_input": {
+      "command": "*** Begin Patch\n*** Update File: Codex/.codex/hooks/team-native-gate.ps1\n@@\n+$example = 'allowlisted target'\n*** End Patch"
+    }
+  }
+}

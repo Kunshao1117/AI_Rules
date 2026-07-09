@@ -1,3 +1,8 @@
+param(
+    [string]$HookEvent,
+    [string]$PayloadJson
+)
+
 $ErrorActionPreference = 'Stop'
 
 $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
@@ -19,6 +24,11 @@ function Get-HookMessage {
         PreToolSystemMessage = '5o+Q6YaS5qih5byP77yM5LiN5pyD6Zi75pOL5bel5YW344CC56aB5q2i5LqL6aCF77ya6ZqK6ZW35LiN5b6X55u05o6l5pu/6ZqK5ZOh5a6M5oiQIGJyb2FkIHJlYWQgLyB2YWxpZGF0aW9uIC8gcmV2aWV3IC8gZXh0ZXJuYWwgcmVzZWFyY2ggLyBtZW1vcnktZG9jcyAvIGNvbXBsZXRpb24gZXZpZGVuY2XjgILlhYHoqLHkuovpoIXvvJpjb29yZGluYXRpb27jgIFzdGF0aW9uIGRpc3BhdGNo44CBYXJ0aWZhY3Qgc3ludGhlc2lz44CBbmFtZWQtZmlsZSBsb2NhbF9wcm9iZeOAgumZjee0muW+jOaenO+8mmRpcmVjdF9leGNlcHRpb24g5Y+q6IO9IHBhcnRpYWwgLyB1bnZlcmlmaWVkIC8gY2xvc2VkLXdpdGgtZGlyZWN0b3Itcmlza++8jOS4jeWPryBjb21wbGV0ZeOAgg=='
         PreToolDenyRepoScanReason = '5bey6Zi75pOL5YWoIHJlcG8g5o6D5o+P44CC56aB5q2i6ZqK6ZW355SoIHJnIC0tZmlsZXMg5oiWIGdpdCBscy1maWxlcyDnm7TmjqXnlKLnlJ8gcmVwbyBpbnZlbnRvcnkgZXZpZGVuY2XvvJvoq4vlhYjmtL7nq5npu57miJbmlLnnlKjlkb3lkI3mqpQv56qE56+E5ZyN6K6A5Y+W44CC'
         PreToolDenyGuardedNoStationReason = '5bey6Zi75pOL57y65bCR56uZ6bue55eV6Leh55qEIGd1YXJkZWQgZGlyZWN0IGFjdGlvbuOAguiri+WFiOa0vuermem7nuaIlumZhOS4iiBzdGF0aW9uIHRyYWNl77yM5oiW5pS555SoIG5hbWVkLWZpbGUgbG9jYWxfcHJvYmXjgII='
+        PreToolDenyWriteActorReason = '5bey6Zi75pOLIHdyaXRlLWxpa2UgdG9vbO+8mmFjdG9yIOacquiiq+WPr+S/oSBob3N0IHBheWxvYWQg6K2J5piO54K6IHN0YXRpb24tb3duZWQgY2hhbmdlLWRlbGl2ZXJ5IHN1YmFnZW50L21lbWJlcu+8m2NhcHRhaW4vZGVmYXVsdC91bmtub3duL21pc3NpbmcgYWN0b3Ig5LiA5b6LIGZhaWwgY2xvc2Vk44CC'
+        PreToolDenyWriteStationReason = '5bey6Zi75pOLIHdyaXRlLWxpa2UgdG9vbO+8mue8uuWwkeWPr+S/oSBob3N0LWxldmVsIGNoYW5nZS1kZWxpdmVyeSByb3V0aW5nIOaIliBleGFjdCBmaWxlIGFsbG93bGlzdO+8m3Rvb2xfaW5wdXQgc3RhdGlvbiBtZXRhZGF0YSDkuI3lj6/kvZzngrrmjojmrIrjgII='
+        PreToolDenyWriteAllowlistReason = '5bey6Zi75pOLIHdyaXRlLWxpa2UgdG9vbO+8muWvpumam+Wvq+WFpSB0YXJnZXQg5LiN5ZyoIGV4YWN0IGZpbGUgYWxsb3dsaXN0IOWFp++8jOaIlueEoeazleino+aekOWvpumam+Wvq+WFpSB0YXJnZXTjgII='
+        PreToolDenyForgedToolInputStationReason = '5bey6Zi75pOLIGZvcmdlZCB0b29sX2lucHV0IHN0YXRpb24gbWV0YWRhdGHvvJp0b29sX2lucHV0IOWPquiDveeUqOaWvOino+aekCBjb21tYW5kL3BhdGNoL2ZpbGUgdGFyZ2V0c++8jOS4jeW+l+aPkOS+myBhZ2VudC9zdGF0aW9uL2F1dGhvcml6YXRpb24vYWxsb3dsaXN0IHRyYWNl44CC'
+        PreToolDenyProtectedActionReason = '5bey6Zi75pOLIHByb3RlY3RlZCBhY3Rpb27vvJptZW1vcnkvZ2l0L3JlbGVhc2UvZGVwbG95L2luc3RhbGwvY3JlZGVudGlhbHMvZXh0ZXJuYWwgbXV0YXRpb24vZGVzdHJ1Y3RpdmUgZmlsZXN5c3RlbSDkuI3lm6AgY2hhbmdlLWRlbGl2ZXJ5IG1lbWJlciByb3V0aW5nIOaUvuWvrOOAgg=='
         BadInputReason = '6Ly45YWl5LiN5piv5pyJ5pWIIEpTT07vvJtiYWQtaW5wdXQgc21va2XjgILnpoHmraLmiornhKHmlYggcGF5bG9hZCDnlbbmiJDnq5npu57orYnmk5rvvJvlj6rlhYHoqLEgaG9zdCDnubznuozkuKbkv53nlZkgYWR2aXNvcnkvcmVtaW5kZXLjgII='
         UnknownEventReasonFormat = '55uu5YmN5LqL5Lu25pyq5o6b5rex5bGkIGdhdGXvvJp7MH3jgILnpoHmraLmiormnKrnn6Xkuovku7bovLjlh7rnlbbkvZzlrozmiJDorYnmk5rjgII='
         StopNonCompleteAllowedSystemMessage = '5a6M5oiQ6ZaY6ZaA5o+Q6YaS77ya5Zue6KaG5bey5L2/55SoIGJsb2NrZWQgLyB1bnZlcmlmaWVkIC8gY2xvc2VkLXdpdGgtZGlyZWN0b3ItcmlzayAvIHBhcnRpYWwg562J6Z2e5a6M5oiQ54uA5oWL77yb5YWB6Kix6YCB5Ye677yM5L2G5LiN5Y+v5a6j56ixIGNvbXBsZXRl44CC'
@@ -249,6 +259,205 @@ function Test-HookReadOnly {
     return $false
 }
 
+function Test-HookHasHostLevelWriteInput {
+    param([object]$Payload)
+    foreach ($name in @('command','cmd','script','patch','path','file_path','filePath','target_file','targetFile','file','filename')) {
+        $value = Get-HookPropertyValue -Object $Payload -Names @($name)
+        if ($null -ne $value -and -not [string]::IsNullOrWhiteSpace([string]$value)) { return $true }
+    }
+    return $false
+}
+
+function Normalize-HookPath {
+    param([string]$Path, [string]$Cwd)
+    if ([string]::IsNullOrWhiteSpace($Path)) { return '' }
+    $candidate = $Path.Trim().Trim('"').Trim("'") -replace '\\','/'
+    if ([string]::IsNullOrWhiteSpace($candidate)) { return '' }
+    try {
+        if ($candidate -match '^[A-Za-z]:/') {
+            $fullPath = [IO.Path]::GetFullPath(($candidate -replace '/', [IO.Path]::DirectorySeparatorChar))
+            $pathSeparators = @([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar)
+            $cwdPath = [IO.Path]::GetFullPath($Cwd).TrimEnd($pathSeparators)
+            if ($fullPath.StartsWith($cwdPath, [StringComparison]::OrdinalIgnoreCase)) {
+                $candidate = $fullPath.Substring($cwdPath.Length).TrimStart($pathSeparators) -replace '\\','/'
+            }
+        }
+    } catch {
+    }
+    while ($candidate.StartsWith('./')) { $candidate = $candidate.Substring(2) }
+    return (($candidate.TrimStart('/') -replace '/+','/').Trim())
+}
+
+function ConvertTo-HookStringArray {
+    param([object]$Value)
+    $items = New-Object System.Collections.Generic.List[string]
+    if ($null -eq $Value) { return @() }
+    if ($Value -is [string]) {
+        foreach ($part in ($Value -split '[,;\r\n]+')) {
+            if (-not [string]::IsNullOrWhiteSpace($part)) { $items.Add($part.Trim()) }
+        }
+        return @($items.ToArray())
+    }
+    if ($Value -is [System.Collections.IEnumerable]) {
+        foreach ($item in $Value) {
+            if ($null -ne $item -and -not [string]::IsNullOrWhiteSpace([string]$item)) {
+                $items.Add(([string]$item).Trim())
+            }
+        }
+        return @($items.ToArray())
+    }
+    return @(([string]$Value).Trim())
+}
+
+function Get-HookTrustedFileAllowlist {
+    param([object]$Payload)
+    $value = Get-HookPropertyValue -Object $Payload -Names @(
+        'exact_file_allowlist','exactFileAllowlist',
+        'file_allowlist','fileAllowlist',
+        'allowed_files','allowedFiles',
+        'write_allowlist','writeAllowlist',
+        'authorization_file_allowlist','authorizationFileAllowlist'
+    )
+    $cwd = [string](Get-HookPropertyValue -Object $Payload -Names @('cwd'))
+    $allowlist = New-Object System.Collections.Generic.List[string]
+    foreach ($item in (ConvertTo-HookStringArray -Value $value)) {
+        $normalized = Normalize-HookPath -Path $item -Cwd $cwd
+        if ($normalized) { $allowlist.Add($normalized) }
+    }
+    return @($allowlist.ToArray())
+}
+
+function Add-HookPatchTargetsFromText {
+    param([string]$Text, [System.Collections.Generic.List[string]]$Targets)
+    if (-not $Text) { return }
+    foreach ($line in ($Text -split "`r?`n")) {
+        if ($line -match '^\*\*\*\s+(?:Add|Update|Delete)\s+File:\s*(.+?)\s*$') {
+            $Targets.Add($Matches[1])
+        } elseif ($line -match '^\*\*\*\s+Move\s+to:\s*(.+?)\s*$') {
+            $Targets.Add($Matches[1])
+        }
+    }
+}
+
+function Add-HookWriteTargetsFromObject {
+    param([object]$Object, [System.Collections.Generic.List[string]]$Targets, [int]$Depth)
+    if ($null -eq $Object -or $Depth -lt 0) { return }
+    foreach ($name in @('path','file_path','filePath','target_file','targetFile','file','filename')) {
+        foreach ($value in (ConvertTo-HookStringArray -Value (Get-HookPropertyValue -Object $Object -Names @($name)))) {
+            if ($value) { $Targets.Add($value) }
+        }
+    }
+    foreach ($name in @('command','cmd','script','patch')) {
+        Add-HookPatchTargetsFromText -Text (ConvertTo-HookText -Value (Get-HookPropertyValue -Object $Object -Names @($name))) -Targets $Targets
+    }
+    foreach ($name in @('tool_input','toolInput','input','payload','arguments','args','params')) {
+        $nested = Get-HookPropertyValue -Object $Object -Names @($name)
+        if ($null -eq $nested -or $nested -is [string] -or [object]::ReferenceEquals($nested, $Object)) { continue }
+        Add-HookWriteTargetsFromObject -Object $nested -Targets $Targets -Depth ($Depth - 1)
+    }
+}
+
+function Get-HookWriteTargets {
+    param([object]$Payload)
+    $rawTargets = New-Object System.Collections.Generic.List[string]
+    Add-HookWriteTargetsFromObject -Object $Payload -Targets $rawTargets -Depth 4
+    $cwd = [string](Get-HookPropertyValue -Object $Payload -Names @('cwd'))
+    $seen = @{}
+    $targets = New-Object System.Collections.Generic.List[string]
+    foreach ($target in $rawTargets.ToArray()) {
+        $normalized = Normalize-HookPath -Path $target -Cwd $cwd
+        if ($normalized -and -not $seen.ContainsKey($normalized)) {
+            $seen[$normalized] = $true
+            $targets.Add($normalized)
+        }
+    }
+    return @($targets.ToArray())
+}
+
+function Test-HookAllTargetsInAllowlist {
+    param([string[]]$Targets, [string[]]$Allowlist)
+    if ($Targets.Count -eq 0 -or $Allowlist.Count -eq 0) { return $false }
+    $allowed = @{}
+    foreach ($path in $Allowlist) { $allowed[$path] = $true }
+    foreach ($target in $Targets) {
+        if (-not $allowed.ContainsKey($target)) { return $false }
+    }
+    return $true
+}
+
+function Test-HookProtectedAction {
+    param([string]$Text)
+    if (-not $Text) { return $false }
+    foreach ($pattern in @(
+        '(?im)(^|[\s;&|])git(\.exe)?\s+(apply|commit|push|tag|checkout|reset|clean|stash|merge|rebase)\b',
+        '(?im)(^|[\s;&|])(npm|pnpm|yarn)\s+(install|add)\b',
+        '(?im)(^|[\s;&|])pip\s+install\b',
+        '(?im)(^|[\s;&|])(vercel|wrangler|netlify|firebase)\s+deploy\b',
+        '(?im)(^|[\s;&|])gh\s+release\b',
+        '(?im)\b(Remove-Item|rm\s+-r|rm\s+-rf|rmdir|del\s+/s)\b',
+        '(?i)\b(memory_commit|write_memory|credential|credentials|secret|secrets|external\s+mutation)\b'
+    )) {
+        if ($Text -match $pattern) { return $true }
+    }
+    return $false
+}
+
+function Test-HookToolInputHasGovernanceMetadataFromObject {
+    param([object]$Object, [int]$Depth)
+    if ($null -eq $Object -or $Depth -lt 0 -or $Object -is [string]) { return $false }
+    $governanceNames = @(
+        'agent_id','agentId','agent_type','agentType','actor_id','actorId','actor_type','actorType',
+        'role_id','roleId','author_role','authorRole','assigned_specialist','assignedSpecialist',
+        'station_mode','stationMode','board_state','boardState',
+        'authorization_phase','authorizationPhase','handoff_ownership','handoffOwnership',
+        'exact_file_allowlist','exactFileAllowlist','file_allowlist','fileAllowlist',
+        'allowed_files','allowedFiles','write_allowlist','writeAllowlist',
+        'authorization_file_allowlist','authorizationFileAllowlist',
+        'station_trace','stationTrace','board','Board'
+    )
+    foreach ($property in $Object.PSObject.Properties) {
+        if ($governanceNames -ccontains $property.Name) { return $true }
+        if ($property.Value -ne $null -and -not ($property.Value -is [string])) {
+            if (Test-HookToolInputHasGovernanceMetadataFromObject -Object $property.Value -Depth ($Depth - 1)) { return $true }
+        }
+    }
+    return $false
+}
+
+function Test-HookToolInputContainsGovernanceMetadata {
+    param([object]$Payload)
+    $toolInput = Get-HookPropertyValue -Object $Payload -Names @('tool_input','toolInput')
+    if ($null -eq $toolInput -or $toolInput -is [string]) { return $false }
+    return (Test-HookToolInputHasGovernanceMetadataFromObject -Object $toolInput -Depth 4)
+}
+
+function Get-HookTrustedChangeDeliveryRoute {
+    param([object]$Payload)
+    $actorType = ([string](Get-HookPropertyValue -Object $Payload -Names @('agent_type','agentType','actor_type','actorType'))).Trim().ToLowerInvariant()
+    $actorAllowed = ($actorType -match '^(subagent|member|worker)$')
+    $roleId = ([string](Get-HookPropertyValue -Object $Payload -Names @('role_id','roleId','author_role','authorRole','assigned_specialist','assignedSpecialist'))).Trim().ToLowerInvariant()
+    $stationMode = ([string](Get-HookPropertyValue -Object $Payload -Names @('station_mode','stationMode'))).Trim().ToLowerInvariant()
+    $boardState = ([string](Get-HookPropertyValue -Object $Payload -Names @('board_state','boardState'))).Trim().ToLowerInvariant()
+    $phase = ([string](Get-HookPropertyValue -Object $Payload -Names @('authorization_phase','authorizationPhase'))).Trim().ToLowerInvariant()
+    $ownership = ([string](Get-HookPropertyValue -Object $Payload -Names @('handoff_ownership','handoffOwnership'))).Trim().ToLowerInvariant()
+    $allowlist = @(Get-HookTrustedFileAllowlist -Payload $Payload)
+    $targets = @(Get-HookWriteTargets -Payload $Payload)
+    $stationAllowed = (
+        $roleId -eq 'change-delivery' -and
+        $stationMode -eq 'change-delivery' -and
+        $boardState -eq 'formal-write' -and
+        $phase -eq 'implementation-change-delivery' -and
+        $ownership -eq 'station-owned' -and
+        $allowlist.Count -gt 0
+    )
+    $targetsAllowed = Test-HookAllTargetsInAllowlist -Targets $targets -Allowlist $allowlist
+    return [PSCustomObject]@{
+        ActorAllowed = $actorAllowed
+        StationAllowed = $stationAllowed
+        TargetsAllowed = $targetsAllowed
+    }
+}
+
 function Test-HookGuardedDirectActionWithoutStationTrace {
     param([object]$Payload, [string]$Text)
     # Existing outer-agent inventory exception remains before station_mode: formal-write; handoff_ownership: station-owned; authorization_phase: implementation-change-delivery trace checks.
@@ -351,7 +560,35 @@ function Write-PreToolUseReminder {
         Write-PreToolUseDeny
         return
     }
-    if (Test-HookGuardedDirectActionWithoutStationTrace -Payload $Payload -Text $actionText) {
+    if (Test-HookProtectedAction -Text $actionText) {
+        Write-PreToolUseDeny -MessageKey 'PreToolDenyProtectedActionReason'
+        return
+    }
+    $isWriteLike = Test-HookWriteLike -Payload $Payload -Text $actionText
+    if ($isWriteLike) {
+        if (Test-HookToolInputContainsGovernanceMetadata -Payload $Payload) {
+            Write-PreToolUseDeny -MessageKey 'PreToolDenyForgedToolInputStationReason'
+            return
+        }
+        if ((Test-HookHasHostLevelWriteInput -Payload $Payload) -and (Test-HookGuardedDirectActionWithoutStationTrace -Payload $Payload -Text $actionText)) {
+            Write-PreToolUseDeny -MessageKey 'PreToolDenyGuardedNoStationReason'
+            return
+        }
+        $route = Get-HookTrustedChangeDeliveryRoute -Payload $Payload
+        if (-not $route.ActorAllowed) {
+            Write-PreToolUseDeny -MessageKey 'PreToolDenyWriteActorReason'
+            return
+        }
+        if (-not $route.StationAllowed) {
+            Write-PreToolUseDeny -MessageKey 'PreToolDenyWriteStationReason'
+            return
+        }
+        if (-not $route.TargetsAllowed) {
+            Write-PreToolUseDeny -MessageKey 'PreToolDenyWriteAllowlistReason'
+            return
+        }
+    }
+    if ((-not $isWriteLike) -and (Test-HookGuardedDirectActionWithoutStationTrace -Payload $Payload -Text $actionText)) {
         Write-PreToolUseDeny -MessageKey 'PreToolDenyGuardedNoStationReason'
         return
     }
@@ -610,7 +847,11 @@ function Write-SubagentStopReminder {
     })
 }
 
-$rawInput = [Console]::In.ReadToEnd()
+if ($PSBoundParameters.ContainsKey('PayloadJson')) {
+    $rawInput = $PayloadJson
+} else {
+    $rawInput = [Console]::In.ReadToEnd()
+}
 if (-not $rawInput -and $env:AI_RULES_HOOK_STDIN) {
     $rawInput = $env:AI_RULES_HOOK_STDIN
 }
@@ -620,8 +861,15 @@ try {
     Write-PreToolUseReminder -Payload ([PSCustomObject]@{}) -Reason (Get-HookMessage -Key 'BadInputReason')
     exit 0
 }
+if ($null -eq $payload) {
+    Write-PreToolUseReminder -Payload ([PSCustomObject]@{}) -Reason (Get-HookMessage -Key 'BadInputReason')
+    exit 0
+}
 
-$eventName = [string](Get-HookPropertyValue -Object $payload -Names @('hook_event_name','event','hook_event','codex_hook_event'))
+$eventName = $HookEvent
+if ([string]::IsNullOrWhiteSpace($eventName)) {
+    $eventName = [string](Get-HookPropertyValue -Object $payload -Names @('hook_event_name','event','hook_event','codex_hook_event'))
+}
 switch ($eventName) {
     'SessionStart' { Write-SessionStartReminder -Payload $payload }
     'UserPromptSubmit' { Write-UserPromptSubmitReminder }

@@ -94,13 +94,12 @@ Confirm the implementation specialist role before any execution channel is used.
 ## Output
 
 The structure below is an internal change delivery artifact for captain receipt
-and trace evidence. It is not the Director-facing report body. The
-implementer supplies downstream handoff fields, not final validation, review,
-memory/docs, or completion states. When its content is surfaced to the Director,
-synthesize a Traditional Chinese meaning-first
-summary and place exact canonical fields only in a clearly labeled evidence
-appendix. Use canonical English keys in the artifact; Chinese labels are a
-Director-facing rendering concern only.
+and trace evidence, not the Director-facing report body. Director-facing
+rendering and evidence appendix handling are governed by
+`Shared/policies/language-governance.md`. The implementer supplies downstream
+handoff fields, not final validation, review, memory/docs, or completion states.
+Use canonical English keys in the artifact; Chinese labels are a Director-facing
+rendering concern only.
 `memory_docs_handoff` is a mandatory downstream handoff for source, workflow,
 skill, governance, or documentation changes. It routes read-only disposition
 and attribution evidence only; it does not authorize memory mutation,

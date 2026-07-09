@@ -77,7 +77,7 @@ Read these sources first:
 | Grounding | AI prior is not verified evidence. Required G2/G3 artifacts must be present by ID; G4 gaps remain visible as blocked, unverified, partial, no-evidence, conflicted, or Director-accepted risk. |
 | Role separation | Implementation, validation, review, memory/docs, and completion boundaries remain separate. |
 | Captain boundary | Captain work is routing, station-output ledgering, board/status synthesis, blocker/conflict/authorization coordination, protected phase routing, and Director-facing reporting; it is not implementation, validation, review, memory/docs attribution, protected execution, protected evidence ownership, or a substitute completion artifact. |
-| Director-facing report governance | Final Director-facing reports and replies have a Traditional Chinese meaning-first main body, internal delivery fields appear only in a clearly labeled evidence appendix, internal delivery artifacts are synthesized rather than pasted, and technical tokens appear only as supporting evidence, paths, commands, schema fields, tool labels, state values, or exact evidence. English-led, raw-artifact-led, raw-field-led, or unsynthesized Director-facing reports block `complete`. |
+| Director-facing report governance | Final Director-facing reports and replies follow `Shared/policies/language-governance.md` for Director-facing language and captain synthesis. English-led, raw-artifact-led, raw-field-led, or unsynthesized Director-facing reports cannot support `complete`. |
 | Channel lifecycle | Every opened channel has first-response, status-probe, explicit pause/status response, captain resume message, timeout, replacement, cancellation, late-result, receipt-decision, and final-closure evidence when applicable. Wait timeouts are not treated as failure, probed members do not continue without captain resume, and replacements do not silently cancel original channels. |
 | Trace | Required board, station, handoff, role, channel, `station_mode`, `context_visibility`, `handoff_ownership`, delivery, and completion trace exists or missing parts are named as non-complete. |
 | Route/state separation | Routes/channels/forms are not mixed with blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk states. |
@@ -138,11 +138,10 @@ When hooks are in scope, missing hook scope, validation, review, or sync evidenc
 
 ## Output
 
-The structure below is an internal completion-gate evidence artifact. It may inform the final
-Director-facing report, but the report body must be Traditional Chinese meaning-first. Exact
-internal fields and lifecycle states belong only in a compact evidence appendix after the summary,
-risk, and next steps. Use canonical English keys in the artifact; Chinese labels are a
-Director-facing rendering concern only.
+The structure below is an internal completion-gate evidence artifact, not the Director-facing
+report body. Director-facing rendering is governed by `Shared/policies/language-governance.md`.
+Use canonical English keys in the artifact; Chinese labels are a Director-facing rendering concern
+only.
 
 ```text
 changes:

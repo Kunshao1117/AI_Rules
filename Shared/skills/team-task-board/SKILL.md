@@ -97,14 +97,11 @@ Use references instead of copying long lists or templates into this file:
 - Closeout checklist:
   `references/board-templates-and-delivery.md#board-closeout-checklist`.
 
-Director-facing display uses Traditional Chinese meaning first with exact field names in
-parentheses when precision is needed. Board-facing machine keys stay canonical English and must not
-be translated, renamed, or derived locally.
-Team-member delivery artifacts and board-facing payloads are internal evidence and must not be
-pasted into the Director-facing body; the captain must synthesize the artifacts into Traditional
-Chinese meaning-first reports.
-Director-facing tables must use Traditional Chinese column labels as primary labels. When canonical
-fields are needed, append them after the Chinese label, such as `完成狀態（completion_state）`.
+Director-facing board rendering follows `Shared/policies/language-governance.md`.
+Board-facing machine keys stay canonical English and must not be translated, renamed, or derived
+locally.
+Team-member delivery artifacts and board-facing payloads are internal evidence; synthesize them
+before Director-facing display instead of pasting raw artifacts.
 
 ## Hard Gates
 

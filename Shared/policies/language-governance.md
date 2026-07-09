@@ -112,6 +112,20 @@ This policy only governs how that evidence is expressed to each audience.
 - For Director-facing field display, write the Traditional Chinese meaning first.
 - Keep the canonical identifier in parentheses, such as `任務板狀態（board_state）`.
 - Do not translate or rename canonical machine fields.
+- Director-facing governance and process terms with stable Traditional Chinese
+  translations must be introduced as `繁體中文(English)`, such as
+  `任務板(board)`, `站點(station)`, `證據(evidence)`, and `驗證(validation)`.
+- After the term is established in the same report or section, later uses may
+  use Traditional Chinese alone if no precision is lost.
+- Exact identifiers remain exact and must not be translated or written back as
+  Chinese. Examples include `tokens`, `Codex`, paths, commands, schema keys,
+  canonical field names, API names, package names, hook event names, status
+  tokens, code identifiers, and exact evidence.
+- If a term has no stable Traditional Chinese definition, or is a
+  product/brand/exact technical token, preserve the source token and explain
+  around it in Traditional Chinese.
+- This is a Director-facing display rule only; it does not change internal
+  state values.
 - Raw board, handoff, channel, authorization, lifecycle, or station field lists must not be the Director-facing main body.
 - Explain the route, ownership, risk, and next action in Traditional Chinese first.
 - Place canonical fields only in an evidence appendix when needed.

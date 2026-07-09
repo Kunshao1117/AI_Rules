@@ -326,7 +326,7 @@ function Invoke-FixtureCommandWindowsHook {
     param([object]$CmdInfo, [string]$CommandLine, [string]$InputJson, [string]$WorkingDirectory)
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = $CmdInfo.Path
-    Set-FixtureProcessArguments -ProcessStartInfo $psi -Arguments @('/d', '/s', '/c', $CommandLine)
+    $psi.Arguments = '/d /s /c ' + $CommandLine
     $psi.WorkingDirectory = $WorkingDirectory
     $psi.RedirectStandardInput = $true
     $psi.RedirectStandardOutput = $true
@@ -347,12 +347,40 @@ function Invoke-FixturePowerShellCommandWindowsHook {
     param([object]$ShellInfo, [string]$CommandLine, [string]$InputJson, [string]$WorkingDirectory)
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = $ShellInfo.Path
-    Set-FixtureProcessArguments -ProcessStartInfo $psi -Arguments @('-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-Command', $CommandLine)
+    $wrapperCommand = @'
+$ErrorActionPreference = 'Stop'
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$cmdPath = (Get-Command -Name 'cmd.exe' -CommandType Application -ErrorAction Stop).Source
+$child = New-Object System.Diagnostics.ProcessStartInfo
+$child.FileName = $cmdPath
+$child.Arguments = '/d /s /c ' + [string]$env:CODEX_HOOK_FIXTURE_COMMAND_WINDOWS
+$child.WorkingDirectory = [string]$env:CODEX_HOOK_FIXTURE_WORKING_DIRECTORY
+$child.RedirectStandardInput = $true
+$child.RedirectStandardOutput = $true
+$child.RedirectStandardError = $true
+$child.UseShellExecute = $false
+$child.StandardOutputEncoding = [System.Text.Encoding]::UTF8
+$child.StandardErrorEncoding = [System.Text.Encoding]::UTF8
+$inputText = [Console]::In.ReadToEnd()
+$process = [System.Diagnostics.Process]::Start($child)
+$process.StandardInput.Write($inputText)
+$process.StandardInput.Close()
+$stdout = $process.StandardOutput.ReadToEnd()
+$stderr = $process.StandardError.ReadToEnd()
+$process.WaitForExit()
+[Console]::Out.Write($stdout)
+[Console]::Error.Write($stderr)
+exit $process.ExitCode
+'@
+    $encodedWrapperCommand = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($wrapperCommand))
+    Set-FixtureProcessArguments -ProcessStartInfo $psi -Arguments @('-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-EncodedCommand', $encodedWrapperCommand)
     $psi.WorkingDirectory = $WorkingDirectory
     $psi.RedirectStandardInput = $true
     $psi.RedirectStandardOutput = $true
     $psi.RedirectStandardError = $true
     $psi.UseShellExecute = $false
+    $psi.Environment['CODEX_HOOK_FIXTURE_COMMAND_WINDOWS'] = $CommandLine
+    $psi.Environment['CODEX_HOOK_FIXTURE_WORKING_DIRECTORY'] = $WorkingDirectory
     $psi.StandardOutputEncoding = [System.Text.Encoding]::UTF8
     $psi.StandardErrorEncoding = [System.Text.Encoding]::UTF8
     $process = [System.Diagnostics.Process]::Start($psi)

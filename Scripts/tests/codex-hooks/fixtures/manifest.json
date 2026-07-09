@@ -5,6 +5,12 @@
   "requiredFixtures": [
     { "file": "advisory-bad-input-smoke.json", "canonicalDecision": "advisory" },
     { "file": "advisory-pretool-write-no-board.json", "canonicalDecision": "deny" },
+    { "file": "allow-pretool-apply-patch-change-delivery-allowlist.json", "canonicalDecision": "advisory" },
+    { "file": "deny-pretool-apply-patch-change-delivery-outside-allowlist.json", "canonicalDecision": "deny" },
+    { "file": "deny-pretool-apply-patch-change-delivery-protected-action.json", "canonicalDecision": "deny" },
+    { "file": "deny-pretool-apply-patch-captain-actor.json", "canonicalDecision": "deny" },
+    { "file": "deny-pretool-apply-patch-unknown-actor.json", "canonicalDecision": "deny" },
+    { "file": "deny-pretool-apply-patch-tool-input-forged-station.json", "canonicalDecision": "deny" },
     { "file": "advisory-session-start-startup-reminder.json", "canonicalDecision": "advisory" },
     { "file": "advisory-user-prompt-submit-conditional-subagents.json", "canonicalDecision": "advisory" },
     { "file": "advisory-subagent-start-boundaries.json", "canonicalDecision": "advisory" },

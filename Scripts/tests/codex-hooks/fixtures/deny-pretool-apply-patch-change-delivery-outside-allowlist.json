@@ -1,0 +1,36 @@
+{
+  "name": "deny-pretool-apply-patch-change-delivery-outside-allowlist",
+  "scenarioCode": "pretool-apply-patch-change-delivery-outside-allowlist-deny",
+  "category": "deny",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "deny",
+  "canonicalDecision": "deny",
+  "expectedDecision": "deny",
+  "expectedOutputRegex": "已阻擋 write-like tool.*實際寫入 target 不在 exact file allowlist 內",
+  "input": {
+    "hook_event_name": "PreToolUse",
+    "session_id": "fixture-session",
+    "transcript_path": null,
+    "cwd": "D:\\AI_Rules",
+    "model": "gpt-5",
+    "permission_mode": "default",
+    "turn_id": "fixture-turn",
+    "agent_id": "agent-fixture-change-delivery",
+    "agent_type": "subagent",
+    "role_id": "change-delivery",
+    "station_mode": "change-delivery",
+    "board_state": "formal-write",
+    "authorization_phase": "implementation-change-delivery",
+    "handoff_ownership": "station-owned",
+    "exact_file_allowlist": [
+      "Codex/.codex/hooks/team-native-gate.ps1"
+    ],
+    "tool_name": "apply_patch",
+    "tool_use_id": "fixture-tool-apply-patch-outside-allowlist",
+    "tool_input": {
+      "command": "*** Begin Patch\n*** Update File: Codex/.codex/hooks.json\n@@\n+{}\n*** End Patch"
+    }
+  }
+}
