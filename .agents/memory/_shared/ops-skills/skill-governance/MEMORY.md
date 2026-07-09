@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-08T16:53:26+08:00'
+last_updated: '2026-07-09T01:23:52+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-08T16:49:07+08:00'
+last_verified: '2026-07-09T01:17:28+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 10
+cycle_event_count: 11
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -39,7 +39,7 @@ metadata:
 - `Shared/skills/_index.md` is now an expanded skill registry where each entry preserves `Keywords (EN)`, `關鍵字 (ZH)`, `Skill`, and `MCP Server`, and registers `coding-reflection-gate` as read-only workflow routing rather than execution/write/completion authority.
 - Skill-factory and its references require AI_Rules skill descriptions to start with Traditional Chinese task meaning as the first readable content; `Use when:` and `DO NOT use when:` labels stay canonical but their text must start with Traditional Chinese trigger or exclusion meaning.
 - Delivery artifact and role-boundary skills require current structured station evidence, scoped authorization fields, role/channel evidence, source/deployed sync evidence, and non-complete outcomes when required evidence is missing.
-- Change delivery artifacts now require `lane_id`, `stage_disposition`, `size_split_impact`, `size_split_disposition`, `size_split_reference`, `hooks_scope`, `size_split_handoff`, `validation_handoff`, `review_handoff`, `memory_docs_handoff`, `grounding_handoff`, `closeout_bundle`, `expected_dirty_files`, and `expected_untracked_files`; closeout bundle is an index/checklist and expected dirty/untracked fields are comparison inputs, not authorization.
+- Change delivery artifacts now require `lane_id`, `stage_disposition`, `size_split_impact`, `size_split_disposition`, `size_split_reference`, `hooks_scope`, `size_split_handoff`, `validation_handoff`, `review_handoff`, `memory_docs_handoff`, `grounding_handoff`, `closeout_bundle`, `expected_dirty_files`, and `expected_untracked_files`; closeout bundle is an index/checklist, expected dirty/untracked fields are comparison inputs, and Director-facing rendering/evidence appendix language delegates to `Shared/policies/language-governance.md` while canonical English keys and downstream handoff fields stay preserved.
 - Memory/docs artifacts and `memory_docs_handoff` remain read-only attribution/disposition evidence unless a separate protected owner station has scoped memory-write authorization; memory commit, compaction, context cards, and mutating MCP tools need separate protected gates.
 - Role-boundary governance preserves the ten registered role IDs and now cites the Team-Native `Captain Boundary Anchor` for captain forbidden work, broad/deep read substitution, missing evidence, and substitute completion limits.
 - Handoff packets are scoped to one substation task, one role, one concrete task, one output format, and one stop condition; vague multi-role delegation is invalid.
@@ -51,6 +51,7 @@ metadata:
 - Existing oversized baseline may be recorded as `baseline`; size alone is not a split blocker, and hooks remain excluded unless explicitly scoped.
 
 ## Cycle Events
+- 44: Recorded `team-change-delivery-artifact` delegation of Director-facing rendering and evidence appendix language to language-governance while preserving canonical English keys, downstream handoffs, and source/runtime parity.
 - 43: Recorded TGDL delivery artifact fields: grounding handoff, closeout bundle, expected dirty/untracked comparison fields, and memory-docs read-only boundaries.
 - 42: Recorded `coding-reflection-gate` in the Shared skill registry as read-only workflow routing with no delivery, review, validation, memory, or completion authority.
 - 41: Recorded change-delivery bundle requirements for validation/review/memory-docs handoffs and reaffirmed that memory-docs handoff is read-only, not memory mutation authority.
@@ -65,7 +66,7 @@ metadata:
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
 
 ## Evidence Base
-- source:Shared/skills/team-change-delivery-artifact/SKILL.md and .agents/skills/team-change-delivery-artifact/SKILL.md — Verified lane/stage, size/split, hooks_scope, size_split_handoff, baseline, and hook exclusion rules on 2026-07-08.
+- source:Shared/skills/team-change-delivery-artifact/SKILL.md and .agents/skills/team-change-delivery-artifact/SKILL.md — Verified language-governance delegation, canonical English artifact keys, downstream handoff fields, and source/runtime parity on 2026-07-09.
 - upstream_artifact:memory-docs-artifact-hp-tgdl-memory-docs-20260708 plus validation va-hp-tgdl-revalidation-20260708-01 and review ra-hp-tgdl-review-delta-20260708-01 — accepted TGDL skill-governance/delivery-artifact facts for this memory update.
 - source:Shared/skills/_index.md — Verified expanded skill registry format and preserved EN/ZH keyword, skill, and MCP server fields.
 - upstream_artifact:2026-07-08 — Reported `coding-reflection-gate` registration in `Shared/skills/_index.md`.
@@ -89,7 +90,7 @@ metadata:
 - 此卡負責未歸入 Team-Native Core 的 delivery artifact、role-boundary、skill-factory、deployed skill copy 與 delegation CLI reference 記憶。
 - 技能索引已從表格改為逐項 registry；skill-factory 現要求 description 第一個可讀內容必須是繁中任務語意。
 - `team-role-boundaries` 現在引用 Team-Native Core 的隊長邊界錨點，避免重複長段隊長限制。
-- 交付件與角色邊界技能必須有範圍式授權、角色/通道證據、source/deployed sync 與缺證據時的非完成狀態；change delivery bundle 必須交出 lane/stage、size/split、hooks_scope、validation/review/memory_docs/grounding handoff、closeout_bundle 與 expected dirty/untracked comparison fields。
+- 交付件與角色邊界技能必須有範圍式授權、角色/通道證據、source/deployed sync 與缺證據時的非完成狀態；`team-change-delivery-artifact` 會把總監呈現與 evidence appendix 語言委派給 `language-governance`，同時保留 canonical English keys 與 downstream handoff fields。
 - `team-task-board` 長模板已拆到 references；暫停探針、明確恢復、晚回接收與通道收束仍是技能治理重點。
 ## Tracked Files
 - Shared/skills/_index.md
