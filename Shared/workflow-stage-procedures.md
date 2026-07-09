@@ -30,19 +30,26 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 4. Always read `workflow-orchestration.md`, `language-governance.md`, and the workflow evidence matrix row before broad evidence or source-impacting work.
    Read the platform capability matrix conditionally when platform adapter behavior, tool capability, permission surface, evidence limits, protected phases, source-impacting work, or log-write capability affects the route.
 5. Read `platform-plan-mapping.md` when a platform plan/checklist/progress surface, `plan-only`, or `build-plan` affects routing, authorization interpretation, progress reporting, or completion language.
-6. When current official, public, or internal-source evidence can affect a workflow decision, route an `external-research` station before the affected station.
+6. Record a lightweight intent envelope before broad evidence, source-impacting work, external grounding, or completion wording.
+   The envelope names the current Director request, requested output, allowed evidence, forbidden actions, mutation scope, file/resource scope, non-goals, ambiguity, and claim limit.
+   Use an overreach check before tool use, broad reads, external lookup, source writes, validation, review, protected actions, or completion wording when the next action could exceed the current request.
+   Failed checks route to simplification, split work, a targeted Director question, external research, blocked, or unverified state.
+7. When current official, public, or internal-source evidence can affect a workflow decision, route an `external-research` station before the affected station.
    Each consuming station must carry an `external_research_question` that names the question, source tier, freshness need, accepted evidence, and stop condition.
    Returned research is station input, not write authority.
    Use `G2` quick-check for narrow low-blast-radius questions answerable by one to three official or primary sources.
    Use `G3` formal external research for architecture, governance, security, deployment, pricing, law, standards, release readiness, cross-source conflict, or high-blast-radius implementation decisions.
    Treat AI prior as a hypothesis only; it is never verified evidence without a matching local, official, primary, or returned research artifact.
-7. Ask the Director only when the next step expands scope, cost, external tool/state access, protected action exposure, or residual risk.
+8. Use `design-reflection-gate` when a design, architecture, workflow, skill, governance rule, public contract, build handoff, fix strategy, or completion claim can become durable behavior.
+   Daily low-risk decisions use a quick matrix; governance, blueprint, workflow/skill/source-impacting, public-contract, multi-area, high-risk, or completion-affecting decisions use a full matrix.
+   Design reflection is a read-only route gate; it is not validation, review, memory/docs attribution, protected authorization, or completion evidence.
+9. Ask the Director only when the next step expands scope, cost, external tool/state access, protected action exposure, or residual risk.
    Do not pause mechanically after a fixed number of modules, batches, or files while the current route and scope remain unchanged.
-8. Use `formal-readonly` for evidence, research, impact mapping, validation planning, review evidence, memory/docs attribution, and broad reads.
-9. Use `formal-write` only after a scope-bound intent signal is resolved through authorization resolution to the visible plan, file set, station, phase, expiry, and required protected gate.
-10. Keep implementation, validation, validation judgment, review, memory/docs, and completion as separate delivery states. Missing states are blocked, unverified, or closed-with-director-risk, not complete.
+10. Use `formal-readonly` for evidence, research, impact mapping, validation planning, review evidence, memory/docs attribution, and broad reads.
+11. Use `formal-write` only after a scope-bound intent signal is resolved through authorization resolution to the visible plan, file set, station, phase, expiry, and required protected gate.
+12. Keep implementation, validation, validation judgment, review, memory/docs, and completion as separate delivery states. Missing states are blocked, unverified, or closed-with-director-risk, not complete.
     Do not use absolute "no error" or "無誤" language; validation judgment uses the states in `workflow-lane-routing.md`.
-11. Post-change flow is artifact-chain only:
+13. Post-change flow is artifact-chain only:
    - Implementation or authorized change-application returns a delivery handoff bundle with `validation_handoff`, `review_handoff`, and `memory_docs_handoff`.
    - The bundle may also include `grounding_handoff`, `closeout_bundle`, `expected_dirty_files`, and `expected_untracked_files`.
    - For source-bearing changes, the bundle includes `size_split_impact`, `size_split_disposition`, and the size-governance reference used.
@@ -52,19 +59,20 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
    - The memory/docs wave starts after validation and review reach terminal evidence states, using the delivery bundle plus the validation/review results.
    - The implementation bundle may include a `memory_impact` hint, but the memory/docs branch is read-only disposition and attribution routing; it does not authorize memory mutation, memory commit, or direct card writes.
    - `closeout_bundle` is an index/checklist only; completion consumes the resulting artifact chain, not the bundle by itself.
-12. Separate source/document delivery, process completion, and release readiness using
+14. Separate source/document delivery, process completion, and release readiness using
     `Shared/policies/references/completion-state-machine.md`.
-13. When a source/deployed pair exists, record sync direction and parity evidence before any completion claim.
-14. Use `commit_preflight` only in `09 Commit`, explicit commit-prep, or closeout commit/push readiness. Other workflows use normal read-only memory evidence and compact packets without interrupting non-commit work.
+15. When a source/deployed pair exists, record sync direction and parity evidence before any completion claim.
+16. Use `commit_preflight` only in `09 Commit`, explicit commit-prep, or closeout commit/push readiness. Other workflows use normal read-only memory evidence and compact packets without interrupting non-commit work.
     Any commit/preflight override for expected dirty or untracked state must be single-use, exact file allowlist scoped, current diff/hash-bound where available, and auditable with reason, expiry, and responsible owner.
     Wildcard, directory-wide, persistent, or policy-level overrides are forbidden; unexpected dirty or untracked files remain blockers.
-15. Read `source-document-size-governance.md` when source-bearing documents, scripts, modules, skills, policies, or rule packs are written, grown, reviewed, validated, or audited.
+17. Read `source-document-size-governance.md` when source-bearing documents, scripts, modules, skills, policies, or rule packs are written, grown, reviewed, validated, or audited.
     Record `size_split_disposition`; an existing oversized baseline may be `baseline`, but missing disposition is `blocked` or `unverified` for source-level closeout.
-16. Hooks are excluded unless explicitly scoped; do not add hook procedures from this stage reference.
+18. Hooks are excluded unless explicitly scoped; do not add hook procedures from this stage reference.
 
 ## 00 Chat / 聊天
 
 - Answer directly only when the response depends on current conversation, Director-provided snippets, or stable general reasoning.
+- Use only the quick intent/design matrix for low-risk chat. Promote to `formal-readonly` when the answer could solidify governance, architecture, workflow, skill, public-contract, validation, review, memory, release, or evidence decisions.
 - If the request needs files, screenshots, memory/context cards, rules, workflow evidence, tool output, or later governance decisions, promote to a `formal-readonly` evidence station.
 - Route research, architecture, build, fix, test, commit, release, or write work to the matching workflow instead of expanding chat scope.
 - Direct chat never writes files, memory, git, release state, deployment, installs, credentials, or external state.
@@ -72,6 +80,7 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 ## 01 Explore / 探索
 
 - Define the research question, decision to support, freshness needs, and source quality bar.
+- Before turning research into a recommendation, run the quick or full design reflection matrix according to impact scope.
 - Prefer official, primary, or current sources when the result can influence architecture, implementation, governance, release, or spend.
 - Return findings with source dates, confidence, bias or coverage gaps, and route recommendations.
 - Route buildable architecture decisions to `02`, experiments to `03-1`, and implementation-ready work to `03` only after evidence is sufficient.
@@ -81,6 +90,7 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 - Replay requirements, non-goals, constraints, assumptions, and acceptance criteria.
 - Run neutral challenge against current files, tool output, memory/context, and official sources when relevant.
 - Record architecture decisions, rejected alternatives, compatibility impact, and migration or rollback path.
+- Run full design reflection after option comparison and before a build handoff when the blueprint will shape durable architecture, workflow, skill, governance, public contract, or source behavior.
 - Produce a build handoff contract only when implementation boundaries, validation expectations, memory/docs impact, and unresolved risks are clear.
 - When the blueprint becomes a handoff to `03`, produce a dual-format contract: a human-readable flowchart or narrative for Director and reviewer context, and a machine-readable `execution_spec` for downstream routing.
 - The `execution_spec` must name:
@@ -93,6 +103,7 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
   - validation route;
   - memory/docs impact;
   - external research inputs;
+  - design reflection status and residual risks when applicable;
   - size/split gate when source-bearing files are in scope;
   - hooks scope as excluded unless explicitly scoped;
   - unresolved risks;
@@ -113,7 +124,7 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 - Produce a design-to-build contract before writes: requirement trace, review state when required, architecture boundary, change intent, real validation path, file sets, memory/docs impact, and drift audit rule.
 - Treat that design-to-build contract as `build-plan`, not `plan-only`: it defines implementation boundaries and acceptance evidence but does not grant write authority, and Codex `update_plan` remains only a progress mirror.
 - A production `build-plan` may start only from a machine-readable `execution_spec`, exact file allowlist, and acceptance matrix. Mermaid, screenshots, or human flowcharts may explain sequence, but they are not enough to open implementation change delivery.
-- If the `execution_spec`, file allowlist, or acceptance matrix is missing, route back to `02` or the intent-alignment station before writing.
+- If the `execution_spec`, file allowlist, acceptance matrix, or applicable design reflection decision is missing, route back to `02`, `design-reflection-gate`, or the intent-alignment station before writing.
 - Include source-document size/split impact in the build plan when the file set includes core, shared policy/reference, `SKILL.md`, memory card, PowerShell script/module, audit rule pack, or large general source files.
 - Classify grounding tier before writes:
   - `G0` for local source, lockfile, logs, tests, or tool output.
@@ -146,6 +157,7 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 - Start with symptom, reproduction or observed failure, affected scope, and candidate root causes.
 - Classify whether the work is emergency temporary fix, root-cause repair, local refinement, or structural refactor.
 - Plan regression evidence before writes, including real-path validation when behavior depends on runtime state, external systems, persistence, UI, or operator-visible output.
+- Run design reflection before a fix when the repair would change public behavior, API/data contracts, workflow semantics, skill behavior, governance rules, or the repair starts acting like a redesign.
 - Classify size/split impact before writes when the fix touches a large source document, `Scripts/modules/*.psm1`, audit rule pack, or governance source.
 - Route `G2` quick-check before repair when the symptom depends on current framework/API behavior, package documentation, or vendor status.
 - Route `G3` formal research when root-cause or repair choice depends on security guidance, deploy platform rules, laws, pricing, standards, or conflicting external sources.
@@ -184,6 +196,7 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 - Use non-mutating validation by default.
 - Distinguish unit, integration, regression, visual, performance, accessibility, real execution, blocked, and unverified evidence.
 - Return `validation_judgment_state` from `workflow-lane-routing.md`; never turn absence of observed failure into "no error" or "無誤" completion language.
+- Do not treat design reflection as validation evidence. It may clarify expected behavior or residual design risk, but validation still needs its own evidence.
 - Run a non-mutating size-governance check when a workflow asks for it or when touched files cross the source-document policy categories.
 - Failed validation routes to fix, debug, build, or audit. The validation station does not repair the implementation it validates.
 
@@ -257,6 +270,7 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
   Do not run package-manager, compiler, linter, audit, or interactive batch commands such as `npm`, `tsc`, or ESLint from the routine route.
 - Check drift, skill quality, workflow metadata, source/deployed consistency, memory health, MCP profile surfaces, and documented counts.
 - Report exact findings and proposed routes. Do not apply fixes.
+- Check whether intent envelope, overreach, grounding, and design reflection fields have drifted into excessive complexity or duplicated rules; route repair to `12` or `08` instead of fixing during routine.
 - Route heavy deterministic scans to `08 Audit`, `06 Test`, or another explicit non-routine route with its own evidence and authorization boundary.
 - Any write proposal routes to build, fix, audit, skill-forge, or commit prep and waits for a scope-bound intent signal resolved through authorization resolution.
 
@@ -269,6 +283,7 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 ## 12 Skill Forge / 技能鍛造
 
 - Decide whether the content belongs in core, shared policy, workflow entry, operational skill, reference file, memory, or project context.
+- Use full design reflection when adding a new gate, matrix, role, workflow rule, skill boundary, or repeated governance field.
 - Keep trigger language in frontmatter description; put long examples, templates, and procedures in references.
 - Validate naming, description specificity, boundary language, required metadata, and source/deployed sync.
 - Use `G2` quick-check for narrow live skill/tool documentation questions that affect trigger or tool usage.

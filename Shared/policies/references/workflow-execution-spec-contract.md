@@ -85,6 +85,24 @@ Required field meanings, in order:
   - It may shape retry, reroute, ambiguity, and governance-depth decisions.
   - It never replaces `execution_spec`, station handoff, scoped authorization, validation evidence, or review evidence.
   - It never authorizes writes, review, validation, memory mutation, protected actions, or completion claims.
+- `intent_envelope`
+  - Compact request boundary for the latest Director request.
+  - Carries intent type, requested output, allowed evidence, forbidden actions, mutation scope, file scope,
+    authorization state, grounding need, non-goals, ambiguities, escalation rule, and claim limit.
+  - It prevents stale-task carryover and does not authorize writes or protected actions by itself.
+- `overreach_check`
+  - Compact scope-expansion check before tool use, broad reads, external lookup, writes, validation,
+    review, protected actions, or completion wording.
+  - Records whether the next action is required by the current request or agent-added scope.
+  - Values include `pass`, `revise`, `split`, `ask`, and `blocked`.
+- `design_reflection`
+  - Optional design-shape decision returned by `design-reflection-gate`.
+  - It checks intent fit, definition clarity, complexity pressure, scope creep, smaller alternatives,
+    residual risk, and design claim limits.
+  - It may shape blueprint, build-plan, workflow, skill, governance, public-contract, and completion
+    wording boundaries.
+  - It never replaces `execution_spec`, station handoff, scoped authorization, validation evidence,
+    review evidence, memory/docs attribution, or completion evidence.
 - `task_type`
   - Discussion, exploration, blueprint, build-plan, implementation, fix-debug, validation-audit, commit-release, or handoff-skill.
 - `operation_mode`
@@ -169,6 +187,10 @@ Required field meanings, in order:
     anchor used to compare external evidence to the project state.
 - `missing_external_evidence`
   - Concrete missing source, version, access, conflict, or research gap.
+- `intent_grounding_and_reflection_handoff`
+  - Short downstream pointer to `intent_envelope`, `overreach_check`, grounding fields,
+    and `design_reflection` when those affect execution, validation, review, or completion wording.
+  - It is an index only and does not replace the underlying artifacts or policy fields.
 - `minimal_reference_packet`
   - Station-returned minimal evidence index for captain ledgering and downstream routing.
   - It is not authorization, validation, review, memory/docs, or completion evidence by itself.
@@ -230,6 +252,114 @@ Required field meanings, in order:
   - Required fields or evidence are absent, incomplete, stale, or not yet inspected.
 - `not-applicable`
   - The current task has no executable station or tool-layer work.
+
+## Intent Envelope And Overreach Fields
+
+Every non-trivial formal route records a compact `intent_envelope` before broad evidence, source-impacting work,
+external grounding, or completion wording. Lightweight chat may keep this implicit unless the answer could affect
+governance, source, validation, review, memory, release, or evidence claims.
+
+`intent_envelope` records:
+
+- `latest_director_request`
+  - The current request being answered; prevents older task carryover.
+- `intent_type`
+  - `chat`, `research`, `design`, `debug`, `review`, `validate`, `build`, `fix`, `commit`,
+    `deploy`, `memory`, `handoff`, or another bounded route label.
+- `requested_output`
+  - Answer, summary, plan, evidence, design, repair, test result, commit summary, handoff, or blocked report.
+- `allowed_evidence`
+  - Current conversation, provided snippets, named files, local tool output, repo-wide evidence,
+    external grounding, or blocked/unverified reason.
+- `forbidden_actions`
+  - Actions explicitly excluded by the Director or by policy.
+- `mutation_scope`
+  - `none`, `source-write`, `memory-write`, `git`, `install`, `deploy`, `external-state`, or `protected`.
+- `file_scope`
+  - `none`, exact files, exact directories, generated copies, unknown, or whole-repository.
+- `authorization_state`
+  - `none`, `route-intent`, `readonly-authorized`, `write-scoped`, `protected-scoped`, or `blocked`.
+- `grounding_need`
+  - `stable-local`, `local-evidence-needed`, `external-current-needed`, `unverifiable`, or `not-applicable`.
+- `non_goals`
+  - Explicitly excluded work such as no scan, no write, no external lookup, no validation, or no deploy.
+- `ambiguities`
+  - Missing scope, missing files, missing acceptance criteria, conflicting instructions, or operator choices.
+- `escalation_rule`
+  - `answer-now`, `ask`, `formal-readonly`, `formal-write`, `protected-gate`, `blocked`, or `unverified`.
+- `claim_limit`
+  - The strongest allowed wording, such as `suggestion-only`, `local-evidence`, `externally-grounded`,
+    `validated`, `reviewed`, `source-delivered`, or `noncomplete`.
+
+`overreach_check` records:
+
+- `result`
+  - `pass`, `revise`, `split`, `ask`, or `blocked`.
+- `action_under_check`
+  - Tool use, broad read, external lookup, source write, validation, review, protected action, completion wording, or other action.
+- `required_by_request`
+  - `true`, `false`, or `unknown`.
+- `scope_delta`
+  - `none`, `minor`, `material`, `unauthorized`, or `unknown`.
+- `reason`
+  - Concise rationale for the result.
+- `next_action`
+  - Continue, simplify, split, ask Director, route external research, block, or mark unverified.
+
+Overreach checks are hard gates for scope expansion. They never create authorization.
+
+## Design Reflection Fields
+
+Use `design_reflection` when a design, architecture, workflow, skill, governance rule, public contract,
+build handoff, fix strategy, or completion claim can become durable behavior.
+
+Low-risk daily work may use quick mode. Governance, blueprint, workflow/skill/source-impacting, public-contract,
+multi-area, high-risk, or completion-affecting work uses full mode.
+
+`design_reflection` records:
+
+- `required`
+  - `auto`, `yes`, or `no`.
+- `status`
+  - `sufficient`, `partial`, `unverified`, `blocked`, or `not-applicable`.
+- `matrix_mode`
+  - `quick` or `full`.
+- `trigger`
+  - The reason design reflection was needed.
+- `intent_envelope_ref`
+  - Reference to the request boundary consumed by the reflection.
+- `operator_intent`
+  - Concise statement of the Director's goal being preserved.
+- `selected_design`
+  - The chosen design shape or `not-applicable`.
+- `alternatives_considered`
+  - Smaller, rejected, or deferred options.
+- `preserved_invariants`
+  - Constraints that must survive implementation.
+- `non_goals`
+  - Work intentionally excluded from the design.
+- `scope_delta`
+  - `none`, `minor`, `material`, `unauthorized`, or `unknown`.
+- `overreach_result`
+  - `pass`, `revise`, `split`, `ask`, or `blocked`.
+- `complexity_pressure`
+  - `keep`, `light`, `simplify`, or `split/condense`.
+- `evidence_fit`
+  - `sufficient`, `named-read-needed`, `external-needed`, or `missing/conflict`.
+- `grounding_tier`
+  - `G0`, `G1`, `G2`, `G3`, or `G4`.
+- `external_research_question`
+  - Narrow question when design reflection needs external grounding.
+- `residual_risks`
+  - Disclosed design risks, missing evidence, or blocked claims.
+- `recommended_action`
+  - `keep`, `simplify`, `split`, `ask`, `external-research`, `blocked`, or `unverified`.
+- `next_station`
+  - Downstream route or `not-applicable`.
+
+`design_reflection` is not validation, review, memory/docs attribution, protected authorization,
+or completion evidence. A sufficient design reflection can support a clearer build handoff, but
+downstream stations still need their own evidence.
 
 ## Closeout Target Contract
 

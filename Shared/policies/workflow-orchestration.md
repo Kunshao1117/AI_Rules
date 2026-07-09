@@ -31,6 +31,11 @@ Layer ownership, in order:
 
 - Owns: External grounding gate for source type, freshness sensitivity, and no-evidence claim boundaries.
 
+### `Shared/skills/design-reflection-gate/SKILL.md`
+
+- Owns: Design-shape reflection for intent fit, definition clarity, complexity pressure, scope creep, and smaller alternatives.
+- It is a read-only route gate. It does not authorize source writes, validation, review, memory/docs attribution, protected actions, or completion claims.
+
 ### `Shared/policies/source-document-size-governance.md`
 
 - Owns: Source-document size/split categories, PowerShell module size signals, audit rule-pack placement, and size/split reporting contract.
@@ -120,6 +125,10 @@ Canonical stage order:
 
 ```text
 workflow route
+-> intent envelope
+-> overreach check
+-> external grounding trigger
+-> design reflection gate
 -> governed/guarded action classification
 -> captain prohibition guard
 -> lifecycle lane and stage disposition
@@ -144,7 +153,20 @@ Director instruction
 -> workflow route
    including platform plan mapping when a platform plan surface, `plan-only`, or `build-plan` affects routing
    including Director-facing output gate when producing Director-visible text, governed by language-governance
-   including external grounding gate when external facts, sources, or freshness affect formal evidence
+-> intent envelope
+   classifying the latest Director request, requested output, allowed evidence,
+   forbidden actions, mutation scope, file scope, and claim limit
+-> overreach check
+   before tool use, broad reads, external lookup, source writes, validation, review,
+   protected action, or completion wording; the check asks whether the action is
+   required by the current Director request or would be agent-added scope
+-> external grounding trigger
+   when external facts, sources, or freshness affect formal evidence; if external
+   grounding is not required, record the local, provided, or stable-semantics basis
+-> design reflection gate
+   when a response, plan, blueprint, workflow, skill, governance change, build handoff,
+   fix strategy, or completion claim can solidify a design decision or introduce
+   complexity, scope drift, or operator-intent drift
 -> governed/guarded action classification
    before lower-lane choice; guarded actions include broad/deep read, impact mapping,
    source implementation, validation, review, memory/docs attribution, external
@@ -235,7 +257,27 @@ Director-facing text uses the output gate in `language-governance`.
 
 External claims, outside sources, and freshness-sensitive facts use the grounding gate in `grounding-governance`.
 
-This orchestration contract only records gate placement and does not copy the verification procedure from either policy.
+Design-shape decisions use the read-only design reflection gate in `design-reflection-gate`.
+That gate checks whether a proposed design still matches the Director's intent, has clear definitions,
+uses the smallest sufficient complexity, avoids scope creep, names smaller alternatives, and preserves
+unverified or blocked evidence honestly.
+
+This orchestration contract only records gate placement and does not copy the verification or reflection procedure from those policies and skills.
+
+Intent envelope and overreach checks are lightweight by default:
+
+- `intent envelope` records what the Director asked for, what output is requested, what evidence is allowed,
+  which actions are forbidden, whether mutation is in scope, the file/resource scope, and the maximum claim level.
+- `overreach check` records `pass`, `revise`, `split`, `ask`, or `blocked` before an agent expands scope,
+  performs broad reads, performs external lookup, writes source, runs validation/review, mutates protected state,
+  or claims completion.
+- A failed overreach check routes to simplification, split work, a targeted Director question, external research,
+  blocked, or unverified state. It never creates write authority.
+
+Design reflection is not mandatory full-process work for every chat turn.
+Use a quick matrix for ordinary low-risk routing, and a full matrix only when governance, architecture,
+workflow/skill/source-impacting work, public contracts, cross-area decisions, or completion claims are affected.
+The matrix is a route and design-quality tool only; it is not authorization, validation, review, or completion evidence.
 
 Flowcharts, diagrams, checklists, and visual plan mirrors are human navigation only.
 

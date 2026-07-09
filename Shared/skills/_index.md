@@ -384,3 +384,9 @@ Each item preserves `Keywords (EN)`, `關鍵字 (ZH)`, `Skill`, and `MCP Server`
 - 關鍵字 (ZH): 程式反思、重試路由、模糊升級、治理深度、路由閘門
 - Skill: coding-reflection-gate
 - MCP Server: —
+
+## 64. design-reflection-gate
+- Keywords (EN): design reflection, intent fit, definition clarity, complexity pressure, scope creep, smaller alternatives
+- 關鍵字 (ZH): 設計反思、意圖符合、定義清晰、複雜度壓力、範圍蔓延、較小替代方案
+- Skill: design-reflection-gate
+- MCP Server: —

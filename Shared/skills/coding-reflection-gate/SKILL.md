@@ -6,7 +6,8 @@ description: >
   Use when: 程式任務完成 workflow route 後、execution_spec 或 build-plan 前出現 ambiguity/risk/retry signals；
   validation/debug/fix 失敗後準備再次嘗試；coding reflection, retry routing, governance escalation.
   DO NOT use when: 需要直接實作、驗證、審查、記憶寫入、git/release/deploy/install、
-  或要求揭露 hidden chain-of-thought；implementation, validation, review, memory mutation, protected actions.
+  設計形狀反思、或要求揭露 hidden chain-of-thought；implementation, validation, review,
+  design-shape reflection, memory mutation, protected actions.
 metadata:
   author: antigravity
   version: "1.0"
@@ -28,8 +29,11 @@ Use this skill only as a workflow route gate:
 - When requirements, evidence, route ownership, risk, or retry count are unclear enough to affect the next station.
 - When governance depth may need escalation before coding continues.
 - When AI prior, local evidence, quick-check, formal external research, or missing evidence must be classified before the next coding station.
+- When a coding route may need a separate design-shape check, this skill may recommend `design-reflection-gate`.
 
 Do not load this skill for simple, already-scoped edits with sufficient route, evidence, and acceptance conditions.
+Do not use this skill to decide whether a design is meaningful, too complex, over-scoped, or aligned with the Director's concept.
+That responsibility belongs to `design-reflection-gate`.
 
 ## Procedure
 
@@ -69,6 +73,7 @@ Pick one route:
 | --- | --- |
 | Route, scope, and acceptance are clear | `direct-original-workflow` |
 | Requirements drift, ambiguity, or counter-evidence need alignment | `intent-alignment-gate` |
+| Proposed solution shape, design definition, complexity, or scope creep needs reflection | `design-reflection-gate` |
 | Multiple competing hypotheses or architectural trade-offs remain | `structured-reasoning` |
 | Governance depth, quality boundary, or self-check risk is unclear | `ai-dev-quality-gate` |
 | Architecture or public contract is missing before execution | `02-blueprint-架構` |
@@ -107,6 +112,7 @@ Use `status: partial`, `unverified`, or `blocked` when evidence is missing.
 - Do not implement code, patch files, run validation, perform review, or mutate memory.
 - Do not authorize writes, protected actions, external mutation, git, release, deploy, install, or credentials.
 - Do not replace `execution_spec`; this gate may only provide optional route context for it.
+- Do not replace `design-reflection-gate`; this gate routes coding retry and ambiguity, not design meaning, complexity, or operator-intent fit.
 - Do not treat AI prior as verified evidence.
 - `G2` and `G3` recommendations route evidence ownership to the external-research station.
 - Do not expose hidden chain-of-thought. Provide a concise decision and evidence summary.

@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 發布治理、結構化推理與技術堆疊協議技能。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-08T13:08:44+08:00'
+last_updated: '2026-07-09T22:16:50+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-08T13:06:03+08:00'
+last_verified: '2026-07-09T22:07:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 7
+cycle_event_count: 8
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,7 +36,8 @@ metadata:
 
 ## Current Truth
 - This child card owns Shared plugin release governance, structured reasoning, and tech-stack protocol skills.
-- `coding-reflection-gate` carries `metadata.kind=workflow` and remains a read-only workflow route gate used after route selection and before execution_spec/build-plan to assess ambiguity, risk, retry, and governance-depth routing; it grants no write or protected-action authority.
+- `coding-reflection-gate` carries `metadata.kind=workflow` and remains a read-only workflow route gate used after route selection and before execution_spec/build-plan to assess ambiguity, risk, retry, and governance-depth routing; it may recommend `design-reflection-gate` but grants no write or protected-action authority.
+- `design-reflection-gate` is a read-only workflow/design-shape gate for intent fit, definition clarity, complexity pressure, scope creep, smaller alternatives, and operator-intent drift; it does not replace coding retry routing, validation, review, memory mutation, protected authorization, or completion claims.
 - Tracked release/reasoning/tech-stack skill descriptions now start with Traditional Chinese task meaning and preserve exact release, version, and tool identifiers.
 - Release decisions and technology recommendations require current evidence when the external ecosystem may have changed.
 - The card records ownership, not the latest external platform facts.
@@ -55,6 +56,7 @@ metadata:
 
 ## Cycle Events
 - 07: Recorded TGDL release/reasoning boundaries: coding-reflection-gate is metadata.kind=workflow/read-only, and commit/preflight overrides are single-use exact-file exceptions only.
+- 08: Added design-reflection-gate ownership as a read-only design-shape route gate distinct from coding-reflection-gate.
 - 06: Added `coding-reflection-gate` ownership and structured-reasoning escalation routing while preserving read-only/no-protected-authority boundaries.
 - 05: Repaired stale release/reasoning memory for zh-TW trigger wording, release-phase separation, tech-stack protected phases, and structured-reasoning routing.
 - 04: Recorded Batch 4A tech-stack protocol hardening so system memory, dependency-file, install, MCP-config, and memory-commit mutations each require separate scope-bound protected authorization.
@@ -67,6 +69,7 @@ metadata:
 
 ## Evidence Base
 - upstream_artifact:memory-docs-artifact-hp-tgdl-memory-docs-20260708 plus validation va-hp-tgdl-revalidation-20260708-01 and review ra-hp-tgdl-review-delta-20260708-01 — accepted TGDL coding-reflection/preflight facts for this memory update.
+- source:Shared/skills/design-reflection-gate/SKILL.md and Shared/skills/coding-reflection-gate/SKILL.md — Verified read-only design-shape routing and coding retry/ambiguity routing boundaries on 2026-07-09.
 - upstream_artifact:2026-07-08 — Reported new-file ownership for `Shared/skills/coding-reflection-gate/SKILL.md` and structured-reasoning escalation from coding-reflection-gate.
 - source:Shared/skills/plugin-release-governance/SKILL.md — Verified plugin/extension release trigger wording, phase-separated version/changelog/build/commit/tag/release/upload governance, and no silent install/download rule.
 - source:Shared/skills/tech-stack-protocol/SKILL.md — Verified latest-stable grounding, locked stack, `_system` memory, dependency-file, install, MCP config, and memory_commit protected phase boundaries.
@@ -88,9 +91,11 @@ metadata:
 - 發布流程已改為逐階段保護授權；一次 GO 不能串起 commit、push、tag、Release 或 artifact upload。
 - 技術堆疊更新、安裝、MCP 設定與 memory_commit 也是各自獨立 protected phase。
 - `coding-reflection-gate` 是 metadata.kind=workflow 的唯讀 route gate；commit/preflight override 只能是 single-use exact-file 例外。
+- `design-reflection-gate` 是唯讀 design-shape gate，處理 intent fit、complexity、scope creep 與 smaller alternative，不取代 coding retry、validation、review 或 protected gates。
 
 ## Tracked Files
 - Shared/skills/coding-reflection-gate/SKILL.md
+- Shared/skills/design-reflection-gate/SKILL.md
 - Shared/skills/plugin-release-governance/references/vsix-release-playbook.md
 - Shared/skills/plugin-release-governance/SKILL.md
 - Shared/skills/structured-reasoning/SKILL.md

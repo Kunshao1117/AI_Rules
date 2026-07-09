@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-09T00:24:26+08:00'
+last_updated: '2026-07-09T22:16:42+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-09T00:20:23+08:00'
+last_verified: '2026-07-09T22:07:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 9
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -40,7 +40,7 @@ metadata:
 - Language governance owns Director-facing meaning-first output, exact-evidence expression, and the display-only contract that stable governance/process terms are introduced as `繁體中文(English)` while exact identifiers remain exact and internal state values do not change; grounding governance treats AI prior as assumption, not verified evidence, and separates G0-G4 evidence tiers plus quick-check vs formal-research routes.
 - Memory governance separates source memory from project context; delivery-bundle `memory_docs_handoff` is read-only disposition/attribution routing, and staleness repair is represented by source comparison, full active card write, and separately authorized `memory_commit`.
 - MCP profiles are opt-in snippets only: framework Fresh, Upgrade, Sync, and Audit have no auto-install behavior for external MCP servers and no overwrite behavior for global MCP settings; mutating MCP tools remain bound to authorization resolution plus the matching protected gate.
-- Skill/source placement is centralized: `_index.md` registers `coding-reflection-gate`; reflection-like skills stay narrow read-only gates; source-document size/split and workflow-stage lifecycle wording live in Shared policy/procedure sources.
+- Skill/source placement is centralized: `_index.md` registers `coding-reflection-gate` and `design-reflection-gate`; reflection-like skills stay narrow read-only gates; source-document size/split, intent envelope, overreach, design reflection, and workflow-stage lifecycle wording live in Shared policy/procedure sources.
 - Shared references deploy to `.agents/shared/`, and restricted project-local tools deploy from `Shared/project-tools/`; source/deployed parity is a closeout evidence item.
 - Parent cards use `Relations` for navigation when a more specific child card owns concrete tracked files.
 - Ownership status: new Shared policy reference sources are present in this worktree and are attributed through `_shared.team-native-core`; cartridge metadata sync is handled through protected `memory_commit`.
@@ -51,6 +51,7 @@ metadata:
 - Source/deployed shared-doc parity is a closeout evidence item; workflow names, casual approvals, `GO`, MCP HITL, and protected phases remain scope-bound intent until authorization resolution binds target, command, phase, expiry, and gate.
 ## Cycle Events
 - 57: Repaired Shared language display memory for stable `繁體中文(English)` governance/process terms, exact identifiers, and display-only state boundaries; memory_commit remains a separate protected phase.
+- 58: Recorded workflow-stage intent envelope, overreach check, and design-reflection routing as read-only/non-authorizing governance procedures.
 - 53-56: Recorded TGDL grounding, coding-reflection-gate registry, protected-flow repair, workflow-stage wording, lifecycle lane evidence, and Shared memory ownership updates.
 - 45-52: Recorded language/grounding gates, memory lifecycle separation, scoped protected phases, output synthesis, authorization hardening, memory-ops compression, channel lifecycle, and parent-card compaction.
 - 30-44: Earlier Team-Native, workflow, Doctor, route/state, and completion-semantics events remain summarized by Current Truth and child cards.
@@ -58,7 +59,7 @@ metadata:
 - archive-003.md keeps older cycle events 14-22; archive-001.md / archive-002.md preserve legacy and pre-standardization active snapshots from schema v2 and MEMORY.md migration.
 ## Evidence Base
 - source:Shared/policies/language-governance.md and .agents/shared/policies/language-governance.md lines 115-128 - Verified stable `繁體中文(English)` governance/process term display, exact-identifier preservation, and display-only state boundary on 2026-07-09; source/deployed SHA256 parity `0FF8243332D8227987E7FBF5D06EA48DB46BDA91011E978E3142F92DAB800B0C`.
-- source:Shared/workflow-stage-procedures.md — Verified smallest honest lifecycle lane selection, post-change size/split artifact fields, and evidence-based validation judgment wording on 2026-07-08.
+- source:Shared/workflow-stage-procedures.md, Shared/policies/workflow-orchestration.md, Shared/policies/references/workflow-execution-spec-contract.md, Shared/skills/_index.md, Shared/skills/coding-reflection-gate/SKILL.md, and Shared/skills/design-reflection-gate/SKILL.md — Verified intent envelope, overreach checks, design-reflection routing, and workflow-stage lifecycle boundaries on 2026-07-09.
 - source:archive-002.md — Previous active memory content preserved before compaction.
 - upstream_artifact:memory-docs-artifact-hp-tgdl-memory-docs-20260708 plus validation va-hp-tgdl-revalidation-20260708-01 and review ra-hp-tgdl-review-delta-20260708-01 — accepted TGDL durable grounding/workflow facts for this memory update.
 - Upstream read-only artifact: 2026-07-08 memory-write station input reported `Shared/skill-governance.md` reflection-skill boundaries and `Shared/skills/_index.md` coding-reflection-gate registry.
@@ -73,7 +74,7 @@ metadata:
 - `GO`、`MCP HITL`、介面核准與日常指令都只是意圖訊號；寫入與 protected phase 的有效性來自目標、檔案、命令、階段、期限與 gate 的綁定。
 - `memory_docs_handoff` 只做唯讀 disposition/attribution，不授權記憶寫入；記憶卡寫入、拓樸調整、`GO CONTEXT`、遷移/reindex 與 `memory_commit` 都是受保護階段。
 - 語言治理的總監輸出層是繁中意義化摘要；穩定治理/流程術語先以 `繁體中文(English)` 顯示，精確識別符維持原文且不改變內部 state values；grounding governance 將 AI prior 視為假設，並以 G0-G4、quick-check/formal-research 分層處理接地證據。
-- `Shared/workflow-stage-procedures.md` 要求 source-impacting work 前選最小誠實 lifecycle lane，驗證採 evidence-based judgment，並納入 size/split disposition。
+- `Shared/workflow-stage-procedures.md` 要求 broad evidence、source-impacting work、external grounding 或 completion wording 前記錄 lightweight intent envelope 與 overreach check，並在 durable design/workflow/skill/governance decision 使用 `design-reflection-gate`。
 - 父子記憶卡重疊時，具體檔案歸屬最具體子卡；導覽父卡可空 `Tracked Files`，並以 `Read Contract` 與 `Relations` 指向子卡。
 ## Tracked Files
 - Shared/workflow-stage-procedures.md

@@ -52,6 +52,10 @@ Workflow rows below only name the minimum evidence expected for each route.
 - External grounding: `Shared/policies/grounding-governance.md`.
 - Grounding execution fields and closeout bundle shape:
   `Shared/policies/references/workflow-execution-spec-contract.md`.
+- Intent envelope, overreach checks, and design reflection execution fields:
+  `Shared/policies/workflow-orchestration.md`,
+  `Shared/policies/references/workflow-execution-spec-contract.md`, and
+  `Shared/skills/design-reflection-gate/SKILL.md`.
 - Formal orchestration and completion: `Shared/policies/workflow-orchestration.md`
   plus `team-completion-gate`.
 - Platform capability translation: `Shared/platform-capability-matrix.md`.
@@ -128,6 +132,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - Codex instruction layers, Claude context management, Agent Skills trigger semantics, governed Team formal-readonly.
 - 最低證據（Minimum evidence）:
   - Direct answers rely only on current conversation, supplied snippets, or stable general reasoning.
+  - Low-risk chat uses a quick intent/design matrix only when needed to prevent overreach or claim inflation.
   - Active Team formal-readonly requires board, read scope, specialist evidence, citations, missing evidence list.
   - It also requires evidence state, captain receipt, and board update.
 - 常見路由（Common route）: 01, 02, 03, 04, 06, 09.
@@ -138,6 +143,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 接地依據（Grounding basis）: Research source quality, freshness, governed Team formal-readonly.
 - 最低證據（Minimum evidence）:
   - Formal-readonly board, specialist handoff, source tier, date, bias, coverage gap, unverified items.
+  - Research-to-recommendation handoff records intent envelope, grounding state, and quick/full design reflection when findings can shape architecture, implementation, governance, spend, or release.
   - If no specialist opens, record unavailable channel and direct exception.
 - 常見路由（Common route）: 02, 03, 08.
 
@@ -148,7 +154,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - ADR, C4, arc42, official framework docs, intent-alignment gate, programming-team governance.
 - 最低證據（Minimum evidence）:
   - Formal-readonly board, requirement replay, counter-evidence, decision state, alternatives.
-  - Review purpose/state, requirement-to-acceptance trace, assumptions, compatibility, build handoff contract.
+  - Review purpose/state, requirement-to-acceptance trace, assumptions, compatibility, design reflection decision, build handoff contract.
 - 常見路由（Common route）: 03, 08, 12.
 
 ### 03-1 Experiment / 實驗
@@ -174,7 +180,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
     standards, release-readiness, or cross-source risk.
 - 最低證據（Minimum evidence）:
   - Team board, blueprint carryover, review purpose/state, requirement-to-task trace, task acceptance matrix.
-  - Drift audit, real validation route, tool discovery, blockers, memory ownership/status evidence.
+  - Intent envelope, overreach check, applicable design reflection status, drift audit, real validation route, tool discovery, blockers, memory ownership/status evidence.
   - Implementation delivery bundle with `grounding_handoff`, `closeout_bundle`, and expected dirty files when source changed.
 - 常見路由（Common route）: 04, 06, 08, 09.
 
@@ -188,6 +194,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
     `G3` formal research for security, deployment, legal, pricing, standards, or conflicting outside facts.
 - 最低證據（Minimum evidence）:
   - Team board, symptom, cause, review purpose/state, fix evidence, regression evidence.
+  - Design reflection is required when the fix changes public behavior, contracts, workflow/skill semantics, or governance rules.
   - Affected memory-card status and dependency evidence.
   - Repair delivery bundle with grounding handoff, expected dirty files, validation/review/memory-docs handoffs, and closeout bundle index.
 - 常見路由（Common route）: 06, 07, 09.
@@ -207,6 +214,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - Playwright, Lighthouse, Web Vitals, WCAG, programming-team governance.
 - 最低證據（Minimum evidence）:
   - Test station board, project type, test surface, evidence level, blocker reason.
+  - Validation may consume design reflection as expected-behavior context, but design reflection is not validation evidence.
 - 常見路由（Common route）: 03, 04, 08.
 
 ### 07 Debug / 除錯
@@ -246,7 +254,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 最低證據（Minimum evidence）:
   - Commit board, explicit file list, review lifecycle risk, unverified/blocker list, memory status.
   - Memory preflight, change summary, version/artifact decision.
-  - Expected dirty-file comparison and unresolved `G4` grounding gaps reported as blockers or residual risk.
+  - Expected dirty-file comparison, unresolved `G4` grounding gaps, and unresolved design reflection blockers reported as blockers or residual risk.
 - 常見路由（Common route）: 04, 06, 08, 11.
 
 ### 10 Routine / 巡檢
@@ -256,6 +264,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - Automation health check, static read-only workflow drift check, engineering review governance, programming-team governance coverage.
 - 最低證據（Minimum evidence）:
   - Routine station coverage, skill quality, doc consistency, matrix coverage, review governance coverage.
+  - Read-only drift check for intent envelope, overreach, grounding, and design reflection rules becoming duplicated, unused, or too complex.
   - Read-only memory/context inspection and no-write proof.
   - No package-manager, compiler, linter, audit, or interactive batch execution from the routine route; heavy scans route to `08`, `06`, or another explicit non-routine workflow.
 - 常見路由（Common route）: 08, 12.
@@ -278,6 +287,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
     governance, security, deployment, legal/pricing, external mutation, or cross-source conflict.
 - 最低證據（Minimum evidence）:
   - Skill-forge board, layer choice, description quality, reference split, skill handoff package.
+  - Full design reflection when adding or changing gates, matrices, roles, workflow rules, skill boundaries, or repeated governance fields.
   - Validation gate, affected memory and skill-index evidence.
   - Source/deployed parity, grounding handoff, expected dirty files, and closeout bundle index.
 - 常見路由（Common route）: 03, 08, 10.

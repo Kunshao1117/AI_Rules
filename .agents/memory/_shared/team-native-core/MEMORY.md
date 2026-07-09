@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-07-09T01:23:48+08:00'
+last_updated: '2026-07-09T22:16:36+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-09T01:17:28+08:00'
+last_verified: '2026-07-09T22:07:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-28-001
-cycle_event_count: 8
+cycle_event_count: 9
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -38,7 +38,7 @@ metadata:
 - Governed user requests activate Team-Native / Team mode for governance, workflow, fix/build/debug/test/audit, skill, memory/docs, commit, handoff, source/public-contract work, or team/subagent/delegation dispatch; otherwise prior context, workflow names, tools, prompts, and approvals are route signals only.
 - The Director-facing captain coordinates intake, Team decision, dispatch, board maintenance, delivery receipt, synthesis, blockers, authorization requests, and reporting; broad/deep reads, implementation, validation, review, memory/docs attribution, protected execution, and completion evidence remain owner-station work.
 - Authorization Resolution binds scope for GO, interface approvals, platform prompts, workflow names, protected mutations, owner-station paths, formal delegation, boards, traces, artifacts, and completion gates; blocked/unverified/standby/not-authorized/closed-with-director-risk are states.
-- Executable workflow work is evidenced by `execution_spec`, station handoff, or canonical policy fields; TGDL/fast closeout/`closeout_bundle` are index aids and do not replace delivery, validation, review, memory/docs, completion evidence, or protected gates.
+- Executable workflow work now carries `intent_envelope`, `overreach_check`, `design_reflection`, and `intent_grounding_and_reflection_handoff` as route/evidence fields; these shape boundaries and handoffs but do not replace write authorization, validation, review, memory/docs, protected gates, or completion evidence.
 - Hook governance covers SessionStart, UserPromptSubmit, SubagentStart, PreToolUse, Stop, and SubagentStop; hook target/evidence surfaces require explicit scope or blocked/unverified state and are not station-owned review, validation, memory/docs, or completion evidence.
 - Platform/workflow/subagent/completion governance cites shared language/grounding policies; Shared references live under `Shared/policies/references/`, cartridge metadata sync is protected `memory_commit`, and lane routing applies exclusion-first negative contract before `tiny`/`light`, with invalid tiny/light routes moving to the minimal sufficient station route, usually `standard`.
 - `team-completion-gate` and `team-task-board` slim repeated Director-facing language/output rules into citations to `Shared/policies/language-governance.md` while preserving canonical fields, authorization, role-boundary, sync, and completion evidence gates; source/runtime skill parity was verified on 2026-07-09.
@@ -48,10 +48,12 @@ metadata:
 ## Cycle Events
 - 25-54: Consolidated governed activation, captain limits, station-owned delivery, authorization, channel/route/review states, workflow scenarios/evidence, hook stop states, trusted receipts, trace startup, delegation preconditions, TGDL closeout, exclusion-first lane routing, fast-closeout limits, and scoped hook evidence surfaces.
 - 55: Recorded team-completion-gate and team-task-board language-rule slimming into language-governance citations while preserving canonical fields and source/runtime parity.
+- 56: Recorded intent envelope, overreach check, design reflection, and downstream grounding/reflection handoff fields as non-authorizing workflow evidence.
 ## Archive Index
 - archive-001.md / archive-002.md — Older cycle events 1-19 compacted from the active card.
 ## Evidence Base
 - source/artifact: Shared/deployed workflow lane and Team governance pairs plus TGDL memory/validation/review artifacts were reported validated/reviewed on 2026-07-08; lane routing now uses exclusion-first negative contract, scoped hook evidence surfaces, and standard-minimum source closeout.
+- source:Shared/policies/workflow-orchestration.md, Shared/policies/references/workflow-execution-spec-contract.md, Shared/workflow-stage-procedures.md, Shared/skills/design-reflection-gate/SKILL.md, and Shared/skills/coding-reflection-gate/SKILL.md — Verified intent envelope, overreach, design reflection, and handoff field boundaries on 2026-07-09.
 - source:Shared/skills/team-completion-gate/SKILL.md, .agents/skills/team-completion-gate/SKILL.md, Shared/skills/team-task-board/SKILL.md, and .agents/skills/team-task-board/SKILL.md — Verified Director-facing language-governance citations and source/runtime parity on 2026-07-09.
 - source:Shared/policies/team-native-core.md, Shared/policies/subagent-invocation.md, Shared/policies/references/hook-event-matrix.md, and Shared/policies/references/source-runtime-surface-map.md — Team mode trigger, captain limits, subagent/station boundaries, active hook matrix, and source/runtime surface mapping.
 - source/upstream_artifact:Shared workflow orchestration, scenario, platform mapping, workflow reference, and execution-spec sources — Route/state, lifecycle, authorization, scenarios, platform plan, optional reflection routing, closeout target, minimal reference packet, and memory follow-up contract.
