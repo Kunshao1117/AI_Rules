@@ -140,6 +140,109 @@ function Get-HookExecutableCommand {
     return ([string]$candidates[$candidates.Count - 1]).Trim()
 }
 
+function Test-HookDelegationTextTool {
+    param([object]$Payload)
+    return ((Get-HookDelegationToolKind -Payload $Payload) -ne '')
+}
+
+function Get-HookDelegationToolKind {
+    param([object]$Payload)
+    $toolName = [string](Get-HookPropertyValue -Object $Payload -Names @('tool_name'))
+    if ($toolName -match '(?i)(^|[._/-])spawn[_-]?agent$') { return 'spawn_agent' }
+    if ($toolName -match '(?i)(^|[._/-])send[_-]?input$') { return 'send_input' }
+    return ''
+}
+
+function Get-HookDelegationHostSchemaRootNames {
+    param([object]$Payload)
+    $modelNames = @(
+        'model','model_id','modelId','model_name','modelName','model_slug','modelSlug',
+        'reasoning_effort','reasoningEffort','temperature','top_p','topP'
+    )
+    switch (Get-HookDelegationToolKind -Payload $Payload) {
+        'spawn_agent' {
+            return @('agent_type','agentType','fork_context','forkContext','message','messages','items') + $modelNames
+        }
+        'send_input' {
+            return @('target','message','messages','items','interrupt') + $modelNames
+        }
+        default {
+            return @()
+        }
+    }
+}
+
+function Test-HookDelegationHostSchemaRootFieldShouldRecurse {
+    param([string]$Name, [object]$Value)
+    if (@('items') -ccontains $Name) { return $true }
+    return (Test-HookStructuredValue -Value $Value)
+}
+
+function Test-HookStructuredValue {
+    param([object]$Value)
+    if ($null -eq $Value) { return $false }
+    if ($Value -is [string]) { return $false }
+    if ($Value -is [ValueType]) { return $false }
+    return $true
+}
+
+function Test-HookDelegationTextOnly {
+    param([object]$Payload)
+    return ((Test-HookDelegationTextTool -Payload $Payload) -and [string]::IsNullOrWhiteSpace((Get-HookExecutableCommand -Payload $Payload)))
+}
+
+function Add-HookDelegationTextPartsFromObject {
+    param([object]$Object, [System.Collections.Generic.List[string]]$Parts, [int]$Depth)
+    if ($null -eq $Object -or $Depth -lt 0) { return }
+    if ($Object -is [System.Collections.IEnumerable] -and -not ($Object -is [string])) {
+        foreach ($item in @($Object)) {
+            Add-HookDelegationTextPartsFromObject -Object $item -Parts $Parts -Depth ($Depth - 1)
+        }
+        return
+    }
+    foreach ($name in @('message','messages','prompt','description','instructions','task','text','raw_text','content','query','question','title','summary')) {
+        Add-HookTextPart -Parts $Parts -Value (Get-HookPropertyValue -Object $Object -Names @($name))
+    }
+    $inputValue = Get-HookPropertyValue -Object $Object -Names @('input')
+    if ($inputValue -is [string]) {
+        Add-HookTextPart -Parts $Parts -Value $inputValue
+    }
+    foreach ($name in @('tool_input','toolInput','input','payload','arguments','args','params','items')) {
+        $nested = Get-HookPropertyValue -Object $Object -Names @($name)
+        if ($null -eq $nested -or $nested -is [string] -or [object]::ReferenceEquals($nested, $Object)) { continue }
+        Add-HookDelegationTextPartsFromObject -Object $nested -Parts $Parts -Depth ($Depth - 1)
+    }
+}
+
+function Get-HookDelegationText {
+    param([object]$Payload)
+    $parts = New-Object System.Collections.Generic.List[string]
+    Add-HookDelegationTextPartsFromObject -Object $Payload -Parts $parts -Depth 4
+    return (($parts -join "`n").Trim())
+}
+
+function Remove-HookDelegationSafetyRestrictionText {
+    param([string]$Text)
+    if (-not $Text) { return '' }
+    $safetyMarker = '(?:do\s+not|don''t|must\s+not|should\s+not|cannot|can\s+not|never|avoid|forbidden(?:\s+(?:actions?|list))?|prohibited(?:\s+(?:actions?|list))?|not\s+allowed|safety\s+(?:restriction|limit)|deny\s*list|block\s*list|\u7981\u6B62|\u4E0D\u5F97|\u4E0D\u8981|\u4E0D\u53EF(?:\u4EE5)?|\u4E0D\u80FD|\u8ACB\u52FF|\u907F\u514D|\u5B89\u5168\u9650\u5236|\u7981\u6B62\u6E05\u55AE|\u7981\u6B62\u4E8B\u9805|\u4E0D\u5141\u8A31)'
+    $clean = $Text
+    foreach ($pattern in @(
+        ('(?is)(^|[.;\r\n])[^.;\r\n]{{0,80}}(?:{0})[^.;\r\n]{{0,320}}(?=([.;\r\n]|$))' -f $safetyMarker),
+        ('(?im)^\s*(?:[-*]\s*)?(?:{0})[^\r\n]*$' -f $safetyMarker)
+    )) {
+        $clean = [regex]::Replace($clean, $pattern, ' ')
+    }
+    return $clean
+}
+
+function Get-HookClassificationText {
+    param([object]$Payload, [string]$ActionText)
+    if (-not (Test-HookDelegationTextOnly -Payload $Payload)) { return $ActionText }
+    $delegationText = Get-HookDelegationText -Payload $Payload
+    $text = $ActionText
+    if ($delegationText) { $text = "$text`n$delegationText" }
+    return (Remove-HookDelegationSafetyRestrictionText -Text $text)
+}
 function Test-HookAllowedOuterAgent {
     param([object]$Payload)
     $agentId = [string](Get-HookPropertyValue -Object $Payload -Names @('agent_id'))
@@ -228,6 +331,13 @@ function Test-HookWriteLike {
     param([object]$Payload, [string]$Text)
     $toolName = [string](Get-HookPropertyValue -Object $Payload -Names @('tool_name'))
     if ($toolName -match '^(apply_patch|Edit|Write)$') { return $true }
+    if (Test-HookDelegationTextTool -Payload $Payload) {
+        if (Test-HookToolInputContainsGovernanceMetadata -Payload $Payload) { return $true }
+        if (Test-HookToolInputContainsStructuredActionMetadata -Payload $Payload) { return $true }
+        if (Test-HookDelegationTextOnly -Payload $Payload) {
+            return (Test-HookDelegationTextHasExplicitWriteRequest -Text $Text)
+        }
+    }
     if (-not $Text) { return $false }
     foreach ($pattern in @(
         'apply_patch',
@@ -244,6 +354,21 @@ function Test-HookWriteLike {
     return $false
 }
 
+function Test-HookDelegationTextHasExplicitWriteRequest {
+    param([string]$Text)
+    if (-not $Text) { return $false }
+    $patchTool = 'apply' + '_patch'
+    foreach ($pattern in @(
+        ('(?is)\b(?:use|run|execute|call|invoke|perform)\b.{{0,80}}\b{0}\b' -f [regex]::Escape($patchTool)),
+        ('(?is)\b{0}\b.{{0,80}}\b(?:to|and)\b.{{0,80}}\b(?:edit|modify|write|create|delete|remove|patch)\b' -f [regex]::Escape($patchTool)),
+        '(?im)^\s*(?:apply|create|write)\s+(?:a\s+)?patch\b',
+        '(?im)^\s*(?:edit|modify|write|create|delete|remove)\s+(?:the\s+)?(?:source|code|file|files|worktree|repository|repo)\b',
+        '(?is)\b(?:please|must|should|need\s+to|have\s+to|go\s+ahead\s+and)\b.{0,80}\b(?:edit|modify|write|create|delete|remove)\s+(?:the\s+)?(?:source|code|file|files|worktree|repository|repo)\b'
+    )) {
+        if ($Text -match $pattern) { return $true }
+    }
+    return $false
+}
 function Test-HookReadOnly {
     param([string]$Text)
     if (-not $Text) { return $false }
@@ -402,9 +527,8 @@ function Test-HookProtectedAction {
     return $false
 }
 
-function Test-HookToolInputHasGovernanceMetadataFromObject {
-    param([object]$Object, [int]$Depth)
-    if ($null -eq $Object -or $Depth -lt 0 -or $Object -is [string]) { return $false }
+function Test-HookGovernanceMetadataKey {
+    param([string]$Name)
     $governanceNames = @(
         'agent_id','agentId','agent_type','agentType','actor_id','actorId','actor_type','actorType',
         'role_id','roleId','author_role','authorRole','assigned_specialist','assignedSpecialist',
@@ -413,12 +537,34 @@ function Test-HookToolInputHasGovernanceMetadataFromObject {
         'exact_file_allowlist','exactFileAllowlist','file_allowlist','fileAllowlist',
         'allowed_files','allowedFiles','write_allowlist','writeAllowlist',
         'authorization_file_allowlist','authorizationFileAllowlist',
-        'station_trace','stationTrace','board','Board'
+        'station_trace','stationTrace','board','Board',
+        'station','allowlist','authorization'
+    )
+    return ($governanceNames -ccontains $Name)
+}
+
+function Test-HookToolInputHasGovernanceMetadataFromObject {
+    param([object]$Object, [int]$Depth, [string[]]$IgnoredRootNames = @(), [bool]$IsRoot = $false)
+    if ($null -eq $Object -or $Depth -lt 0 -or $Object -is [string]) { return $false }
+    if ($Object -is [System.Collections.IEnumerable]) {
+        foreach ($item in @($Object)) {
+            if (Test-HookToolInputHasGovernanceMetadataFromObject -Object $item -Depth ($Depth - 1) -IgnoredRootNames $IgnoredRootNames -IsRoot:$false) { return $true }
+        }
+        return $false
+    }
+    $naturalLanguageNames = @(
+        'message','messages','prompt','description','instructions','task',
+        'text','raw_text','content','query','question','title','summary'
     )
     foreach ($property in $Object.PSObject.Properties) {
-        if ($governanceNames -ccontains $property.Name) { return $true }
-        if ($property.Value -ne $null -and -not ($property.Value -is [string])) {
-            if (Test-HookToolInputHasGovernanceMetadataFromObject -Object $property.Value -Depth ($Depth - 1)) { return $true }
+        $ignoredRootHostField = ($IsRoot -and ($IgnoredRootNames -ccontains $property.Name))
+        $valueShouldRecurse = Test-HookStructuredValue -Value $property.Value
+        $ignoredRootScalarHostField = ($ignoredRootHostField -and -not (Test-HookDelegationHostSchemaRootFieldShouldRecurse -Name $property.Name -Value $property.Value))
+        if ((-not $ignoredRootHostField) -and (Test-HookGovernanceMetadataKey -Name $property.Name)) { return $true }
+        if (($naturalLanguageNames -ccontains $property.Name) -and -not $valueShouldRecurse) { continue }
+        if ($ignoredRootScalarHostField) { continue }
+        if ($valueShouldRecurse) {
+            if (Test-HookToolInputHasGovernanceMetadataFromObject -Object $property.Value -Depth ($Depth - 1) -IgnoredRootNames $IgnoredRootNames -IsRoot:$false) { return $true }
         }
     }
     return $false
@@ -428,9 +574,51 @@ function Test-HookToolInputContainsGovernanceMetadata {
     param([object]$Payload)
     $toolInput = Get-HookPropertyValue -Object $Payload -Names @('tool_input','toolInput')
     if ($null -eq $toolInput -or $toolInput -is [string]) { return $false }
-    return (Test-HookToolInputHasGovernanceMetadataFromObject -Object $toolInput -Depth 4)
+    $ignoredRootNames = @(Get-HookDelegationHostSchemaRootNames -Payload $Payload)
+    return (Test-HookToolInputHasGovernanceMetadataFromObject -Object $toolInput -Depth 4 -IgnoredRootNames $ignoredRootNames -IsRoot:$true)
 }
 
+function Test-HookToolInputHasStructuredActionMetadataFromObject {
+    param([object]$Object, [int]$Depth, [string[]]$IgnoredRootNames = @(), [bool]$IsRoot = $false)
+    if ($null -eq $Object -or $Depth -lt 0 -or $Object -is [string]) { return $false }
+    if ($Object -is [System.Collections.IEnumerable]) {
+        foreach ($item in @($Object)) {
+            if (Test-HookToolInputHasStructuredActionMetadataFromObject -Object $item -Depth ($Depth - 1) -IgnoredRootNames $IgnoredRootNames -IsRoot:$false) { return $true }
+        }
+        return $false
+    }
+    $naturalLanguageNames = @(
+        'message','messages','prompt','description','instructions','task',
+        'text','raw_text','content','query','question','title','summary'
+    )
+    $actionNames = @(
+        'command','cmd','script','action','target','path','file_path','filePath',
+        'target_file','targetFile','file','filename','patch'
+    )
+    foreach ($property in $Object.PSObject.Properties) {
+        $ignoredRootHostField = ($IsRoot -and ($IgnoredRootNames -ccontains $property.Name))
+        $valueShouldRecurse = Test-HookStructuredValue -Value $property.Value
+        $ignoredRootScalarHostField = ($ignoredRootHostField -and -not (Test-HookDelegationHostSchemaRootFieldShouldRecurse -Name $property.Name -Value $property.Value))
+        if ((-not $ignoredRootHostField) -and ($actionNames -ccontains $property.Name)) {
+            if ($null -ne $property.Value -and -not [string]::IsNullOrWhiteSpace((ConvertTo-HookText -Value $property.Value))) { return $true }
+        }
+        if (($naturalLanguageNames -ccontains $property.Name) -and -not $valueShouldRecurse) { continue }
+        if ($property.Name -eq 'input' -and $property.Value -is [string]) { continue }
+        if ($ignoredRootScalarHostField) { continue }
+        if ($valueShouldRecurse) {
+            if (Test-HookToolInputHasStructuredActionMetadataFromObject -Object $property.Value -Depth ($Depth - 1) -IgnoredRootNames $IgnoredRootNames -IsRoot:$false) { return $true }
+        }
+    }
+    return $false
+}
+
+function Test-HookToolInputContainsStructuredActionMetadata {
+    param([object]$Payload)
+    $toolInput = Get-HookPropertyValue -Object $Payload -Names @('tool_input','toolInput')
+    if ($null -eq $toolInput -or $toolInput -is [string]) { return $false }
+    $ignoredRootNames = @(Get-HookDelegationHostSchemaRootNames -Payload $Payload)
+    return (Test-HookToolInputHasStructuredActionMetadataFromObject -Object $toolInput -Depth 4 -IgnoredRootNames $ignoredRootNames -IsRoot:$true)
+}
 function Get-HookTrustedChangeDeliveryRoute {
     param([object]$Payload)
     $actorType = ([string](Get-HookPropertyValue -Object $Payload -Names @('agent_type','agentType','actor_type','actorType'))).Trim().ToLowerInvariant()
@@ -556,27 +744,28 @@ function Write-PreToolUseDeny {
 function Write-PreToolUseReminder {
     param([object]$Payload, [string]$Reason)
     $actionText = Get-HookActionText -Payload $Payload
-    if (Test-HookDeniedRepoScan -Payload $Payload -Text $actionText) {
+    $classificationText = Get-HookClassificationText -Payload $Payload -ActionText $actionText
+    if (Test-HookDeniedRepoScan -Payload $Payload -Text $classificationText) {
         Write-PreToolUseDeny
         return
     }
-    if (Test-HookProtectedAction -Text $actionText) {
+    if (Test-HookProtectedAction -Text $classificationText) {
         Write-PreToolUseDeny -MessageKey 'PreToolDenyProtectedActionReason'
         return
     }
-    $isWriteLike = Test-HookWriteLike -Payload $Payload -Text $actionText
+    $isWriteLike = Test-HookWriteLike -Payload $Payload -Text $classificationText
     if ($isWriteLike) {
         if (Test-HookToolInputContainsGovernanceMetadata -Payload $Payload) {
             Write-PreToolUseDeny -MessageKey 'PreToolDenyForgedToolInputStationReason'
             return
         }
-        if ((Test-HookHasHostLevelWriteInput -Payload $Payload) -and (Test-HookGuardedDirectActionWithoutStationTrace -Payload $Payload -Text $actionText)) {
-            Write-PreToolUseDeny -MessageKey 'PreToolDenyGuardedNoStationReason'
-            return
-        }
         $route = Get-HookTrustedChangeDeliveryRoute -Payload $Payload
         if (-not $route.ActorAllowed) {
             Write-PreToolUseDeny -MessageKey 'PreToolDenyWriteActorReason'
+            return
+        }
+        if ((Test-HookHasHostLevelWriteInput -Payload $Payload) -and (Test-HookGuardedDirectActionWithoutStationTrace -Payload $Payload -Text $classificationText)) {
+            Write-PreToolUseDeny -MessageKey 'PreToolDenyGuardedNoStationReason'
             return
         }
         if (-not $route.StationAllowed) {
@@ -588,7 +777,7 @@ function Write-PreToolUseReminder {
             return
         }
     }
-    if ((-not $isWriteLike) -and (Test-HookGuardedDirectActionWithoutStationTrace -Payload $Payload -Text $actionText)) {
+    if ((-not $isWriteLike) -and (Test-HookGuardedDirectActionWithoutStationTrace -Payload $Payload -Text $classificationText)) {
         Write-PreToolUseDeny -MessageKey 'PreToolDenyGuardedNoStationReason'
         return
     }

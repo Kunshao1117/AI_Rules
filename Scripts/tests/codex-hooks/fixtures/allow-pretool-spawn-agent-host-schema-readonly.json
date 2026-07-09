@@ -1,0 +1,28 @@
+{
+  "name": "allow-pretool-spawn-agent-host-schema-readonly",
+  "scenarioCode": "pretool-spawn-agent-host-schema-readonly-allow",
+  "category": "allow",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "allow-reminder",
+  "canonicalDecision": "advisory",
+  "expectedDecision": "allow",
+  "expectedOutputRegex": "提醒模式，不會阻擋工具.*general-tool",
+  "input": {
+    "hook_event_name": "PreToolUse",
+    "session_id": "fixture-session",
+    "transcript_path": null,
+    "cwd": "D:\\AI_Rules",
+    "model": "gpt-5",
+    "permission_mode": "default",
+    "turn_id": "fixture-turn",
+    "tool_name": "spawn_agent",
+    "tool_use_id": "fixture-tool-spawn-agent-host-schema-readonly",
+    "tool_input": {
+      "agent_type": "general",
+      "model": "gpt-5",
+      "message": "Read the named hook payload handling logic and report observations only."
+    }
+  }
+}

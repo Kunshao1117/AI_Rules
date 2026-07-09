@@ -4,19 +4,19 @@ scopePath: Scripts/tests/codex-hooks/fixtures/
 description: >-
   專案記憶：Codex Team-Native hooks JSON 測試夾具。Use when: updating Codex hook fixtures,
   reminder/deny expectations, or fixture ownership.
-last_updated: '2026-07-09T08:27:12+08:00'
+last_updated: '2026-07-09T14:16:54+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-09T08:19:05+08:00'
+last_verified: '2026-07-09T13:43:35+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-08-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,33 +31,25 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _system.scripts.codex-hooks-fixtures — Codex Hook Fixture Memory
 ## Current Truth
-- This child card owns Codex hook JSON fixtures under `Scripts/tests/codex-hooks/fixtures/`; canonical fixture behavior lives in the runner, live fixtures, manifest, and Codex hook source/deployed pair, while the parent `_system.scripts` owns runner/Audit/source-deployed behavior.
-- `UserPromptSubmit` fixtures expect exact phrase `操作者要求開啟子代理功能，並默認啟動團隊模式` plus Team-Native state lines; `PreToolUse` fixtures route write-like actions by trusted host-level actor/station evidence, deny captain/unknown/forged `tool_input` station claims, and run protected-action checks before write routing; Stop completion-risk fixtures are advisory allow outputs with warning fields and no `decision: block`.
-- Approved repair/validation state has 51 fixture JSON files plus `manifest.json`; manifest/catalog both register 51 required fixtures, six apply_patch change-delivery fixtures cover allowlist allow/deny, captain and unknown actor denial, forged station denial, and protected-action precedence, while 51 fixtures x 2 shells, 10 host-wrapper cases, and source/runtime hook SHA parity passed.
+- This child card owns Codex hook JSON fixtures under `Scripts/tests/codex-hooks/fixtures/`; canonical behavior lives in the runner, live fixtures, manifest, Codex hook source/deployed pair, and manifest/catalog 65 required fixture registration including 14 `spawn_agent`/`send_input` host-schema, safety-denylist, explicit action, and forged station/action metadata fixtures, while `_system.scripts` owns runner/Audit/source-deployed behavior.
+- `UserPromptSubmit` fixtures expect exact phrase `操作者要求開啟子代理功能，並默認啟動團隊模式` plus Team-Native state lines; `PreToolUse` fixtures route by trusted host-level actor/station evidence, allow normal root delegation host schema, recursively deny root object/array or nested forged/action metadata, and Stop completion-risk fixtures remain advisory allow outputs.
 ## Active Constraints
-- Memory is only the ownership pointer; runner/manifest or live tracked inventory computes current counts, concrete attribution resides in `## Tracked Files`, protected `memory_commit` is later metadata sync, and git staging/commit remains separate.
+- Memory is only the ownership pointer; runner/manifest computes current counts, concrete attribution resides in `## Tracked Files`, protected `memory_commit` is later metadata sync, and git staging/commit remains separate.
 ## Cycle Events
-- 01-03: Compacted stale fixture-cycle noise, attributed 43 active fixtures plus manifest, recorded two Stop advisory fixtures to reach 45 JSON cases, and updated UserPromptSubmit/PreToolUse/Stop expected decisions for the Team-Native hook state machine.
-- 04: Attributed six apply_patch change-delivery PreToolUse fixtures and recorded 51-fixture two-shell validation, 10 host-wrapper cases, protected-action precedence, forged station denial, and source/runtime hook SHA parity.
+- 01-05: Compacted stale fixture-cycle noise, attributed 51 fixture JSON files plus manifest, recorded UserPromptSubmit/PreToolUse/Stop/SubagentStop/apply_patch coverage, and attributed 14 spawn_agent/send_input PreToolUse fixtures with 65-fixture two-shell validation, 10 commandWindows cases, launcher parity, and ReleaseReady tracking blockers.
 ## Archive Index
 - None yet.
 ## Evidence Base
-- source: `Scripts/tests/codex-hooks/fixtures/*.json`, `Scripts/tests/codex-hooks/fixtures/manifest.json`, and `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1`.
-- source: `Codex/.codex/hooks/team-native-gate.ps1`, `.codex/hooks/team-native-gate.ps1`, `Codex/.codex/hooks.json`, and `.codex/hooks.json`.
-- tool: `Measure-CodexHookGovernance` reported Red 0, Yellow 0, and untracked required fixtures 0 on 2026-07-08.
-- director: 2026-07-08 protected memory-write instruction supplied UserPromptSubmit state-line expectations, PreToolUse guarded-action denial, advisory Stop warning fields, 45-fixture validation, runtime sync evidence, manifest/catalog mirror repair, accepted residual risks, and no git/push authority.
-- director: 2026-07-09 protected memory-write instruction supplied six new apply_patch fixture attributions, 51-fixture two-shell validation, 10 host-wrapper cases, protected-action precedence, forged station denial, and source/runtime hook SHA parity.
+- source: `Scripts/tests/codex-hooks/fixtures/*.json`, `Scripts/tests/codex-hooks/fixtures/manifest.json`, `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1`, `Scripts/modules/Audit/CodexHookGovernance.catalog.json`, hook gate/config files, and launcher source/runtime pair.
+- tool/director: 2026-07-09 fixture runner passed 65 fixtures x 2 shells and 10 commandWindows cases; Audit reported `ReleaseReady=false`, `RedCount=1`, `YellowCount=14`, `UntrackedRequiredFixtureCount=14`; Director supplied 14 new delegation fixture attributions, launcher parity, Zone.Identifier absence, and no git/push authority.
 ## Read Contract
-- Read this card before Codex hook JSON fixture changes; read `_system.scripts` for runner/Audit behavior and `_codex_core` for hook config/gate behavior.
+- Read before fixture changes; also read `_system.scripts` for runner/Audit behavior and `_codex_core` for hook config/gate behavior.
 ## Conflicts and Supersession
-- superseded: stale Stop block expectations, pre-state-machine UserPrompt/PreToolUse assumptions, and 39/41/43/45 fixture-count assumptions are replaced by the approved 51-fixture manifest/catalog repair.
+- superseded: stale Stop block expectations, pre-state-machine assumptions, and 39/41/43/45/51 fixture-count assumptions are replaced by approved 65-fixture manifest/catalog repair.
 ## 中文摘要
-- 此子卡只做 Codex hooks JSON fixture 歸屬；本次歸屬 51 個 fixture JSON 與 `manifest.json`，manifest/catalog 均以 51 required fixtures 為準。
-- UserPromptSubmit fixture 現要求指定中文句與 Team-Native 狀態行；PreToolUse 依 host-level actor/station evidence 判斷 write-like routing，拒絕 captain/unknown/forged station 與 protected action。
-- Stop 完成風險 fixture 現在是 advisory allow，附 `COMPLETION_EVIDENCE_WARNING=true` 與 `DIRECTOR_FINAL_ACCEPTANCE_REQUIRED=true`；前站驗證回報 host-wrapper 10 cases、Windows PowerShell 與 `pwsh` fixture runners 各 51 passed、source/runtime hook SHA parity true。
+- 此子卡只做 Codex hooks JSON fixture 歸屬；目前歸屬 65 個 fixture JSON 與 `manifest.json`，manifest/catalog 均以 65 required fixtures 為準，新增 14 個 `spawn_agent`/`send_input` fixture，覆蓋 root host schema 放行、root/nested forged/action metadata 拒絕、explicit write/protected action 拒絕；驗證回報 65 fixtures x 2 shells、host-wrapper 10 cases、launcher parity true。
 ## Tracked Files
 - Scripts/tests/codex-hooks/fixtures/advisory-bad-input-smoke.json
 - Scripts/tests/codex-hooks/fixtures/advisory-pretool-write-no-board.json
@@ -73,6 +65,12 @@ metadata:
 - Scripts/tests/codex-hooks/fixtures/allow-pretool-rg-files-outer-agent-explorer-advisory.json
 - Scripts/tests/codex-hooks/fixtures/allow-pretool-rg-files-outer-agent-missing-type-advisory.json
 - Scripts/tests/codex-hooks/fixtures/allow-pretool-rg-files-outer-agent-unknown-type-advisory.json
+- Scripts/tests/codex-hooks/fixtures/allow-pretool-send-input-host-schema-readonly.json
+- Scripts/tests/codex-hooks/fixtures/allow-pretool-send-input-readonly-safety-denylist.json
+- Scripts/tests/codex-hooks/fixtures/allow-pretool-spawn-agent-host-schema-readonly.json
+- Scripts/tests/codex-hooks/fixtures/allow-pretool-spawn-agent-readonly-safety-denylist.json
+- Scripts/tests/codex-hooks/fixtures/allow-pretool-spawn-agent-text-mentions-governance-metadata.json
+- Scripts/tests/codex-hooks/fixtures/allow-pretool-spawn-agent-write-like-text-governance-metadata.json
 - Scripts/tests/codex-hooks/fixtures/allow-stop-blocked-state.json
 - Scripts/tests/codex-hooks/fixtures/allow-stop-complete-no-blockers.json
 - Scripts/tests/codex-hooks/fixtures/allow-stop-direct-exception-no-complete.json
@@ -96,6 +94,14 @@ metadata:
 - Scripts/tests/codex-hooks/fixtures/deny-pretool-apply-patch-change-delivery-protected-action.json
 - Scripts/tests/codex-hooks/fixtures/deny-pretool-apply-patch-tool-input-forged-station.json
 - Scripts/tests/codex-hooks/fixtures/deny-pretool-apply-patch-unknown-actor.json
+- Scripts/tests/codex-hooks/fixtures/deny-pretool-send-input-explicit-write-action.json
+- Scripts/tests/codex-hooks/fixtures/deny-pretool-send-input-nested-structured-action.json
+- Scripts/tests/codex-hooks/fixtures/deny-pretool-send-input-target-object-structured-action.json
+- Scripts/tests/codex-hooks/fixtures/deny-pretool-spawn-agent-explicit-protected-action.json
+- Scripts/tests/codex-hooks/fixtures/deny-pretool-spawn-agent-fork-context-forged-station-trace.json
+- Scripts/tests/codex-hooks/fixtures/deny-pretool-spawn-agent-message-object-forged-station-trace.json
+- Scripts/tests/codex-hooks/fixtures/deny-pretool-spawn-agent-messages-array-forged-station-trace.json
+- Scripts/tests/codex-hooks/fixtures/deny-pretool-spawn-agent-nested-forged-station-trace.json
 - Scripts/tests/codex-hooks/fixtures/deny-pretool-git-exe-ls-files.json
 - Scripts/tests/codex-hooks/fixtures/deny-pretool-git-ls-files-nested-cmd-pipe.json
 - Scripts/tests/codex-hooks/fixtures/deny-pretool-git-ls-files-outer-agent-cached.json
@@ -111,7 +117,3 @@ metadata:
 - Scripts/tests/codex-hooks/fixtures/deny-pretool-rg-files-tool-input-forged-station.json
 - Scripts/tests/codex-hooks/fixtures/deny-pretool-rg-files.json
 - Scripts/tests/codex-hooks/fixtures/manifest.json
-## Relations
-- _system.scripts (parent runner/script governance); _codex_core (hook config/gate script); _shared.team-native-core (Team-Native governance)
-## Applicable Skills
-- memory-ops — fixture attribution/staleness repair/memory commit; memory-arch — fixture ownership splits or topology changes.

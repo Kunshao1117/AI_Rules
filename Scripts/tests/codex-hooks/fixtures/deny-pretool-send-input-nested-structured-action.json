@@ -1,0 +1,31 @@
+{
+  "name": "deny-pretool-send-input-nested-structured-action",
+  "scenarioCode": "pretool-send-input-nested-structured-action-deny",
+  "category": "deny",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "deny",
+  "canonicalDecision": "deny",
+  "expectedDecision": "deny",
+  "expectedOutputRegex": "permissionDecision.*deny|已阻擋",
+  "input": {
+    "hook_event_name": "PreToolUse",
+    "session_id": "fixture-session",
+    "transcript_path": null,
+    "cwd": "D:\\AI_Rules",
+    "model": "gpt-5",
+    "permission_mode": "default",
+    "turn_id": "fixture-turn",
+    "tool_name": "send_input",
+    "tool_use_id": "fixture-tool-send-input-nested-structured-action",
+    "tool_input": {
+      "target": "agent-fixture-readonly",
+      "message": "Continue with the supplied payload.",
+      "payload": {
+        "action": "apply_patch",
+        "command": "Set-Content -LiteralPath Codex/.codex/hooks/team-native-gate.ps1 -Value changed"
+      }
+    }
+  }
+}

@@ -392,6 +392,27 @@ exit $process.ExitCode
     return [PSCustomObject]@{ Stdout = $stdout; Stderr = $stderr; ExitCode = $process.ExitCode }
 }
 
+function Invoke-FixturePowerShellShellCommandWindowsHook {
+    param([object]$ShellInfo, [string]$CommandLine, [string]$InputJson, [string]$WorkingDirectory)
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $ShellInfo.Path
+    Set-FixtureProcessArguments -ProcessStartInfo $psi -Arguments @('-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-Command', $CommandLine)
+    $psi.WorkingDirectory = $WorkingDirectory
+    $psi.RedirectStandardInput = $true
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    $psi.UseShellExecute = $false
+    $psi.StandardOutputEncoding = [System.Text.Encoding]::UTF8
+    $psi.StandardErrorEncoding = [System.Text.Encoding]::UTF8
+    $process = [System.Diagnostics.Process]::Start($psi)
+    $process.StandardInput.Write($InputJson)
+    $process.StandardInput.Close()
+    $stdout = $process.StandardOutput.ReadToEnd()
+    $stderr = $process.StandardError.ReadToEnd()
+    $process.WaitForExit()
+    return [PSCustomObject]@{ Stdout = $stdout; Stderr = $stderr; ExitCode = $process.ExitCode }
+}
+
 function Test-FixtureCommandWindowsWrappers {
     param([string]$RepoRoot, [System.Collections.Generic.List[string]]$Failures)
     $cmdInfo = Resolve-FixtureShellApplication -Name 'cmd.exe'
@@ -409,12 +430,8 @@ function Test-FixtureCommandWindowsWrappers {
         Write-Host 'commandWindows host-wrapper checks skipped: hooks runtime disabled by lifecycle marker'
         return
     }
-    $tempRoot = (Resolve-Path -LiteralPath ([IO.Path]::GetTempPath())).Path
-    $tempNonRepo = Join-Path $tempRoot ('codex-hook-nonrepo-{0}' -f ([guid]::NewGuid().ToString('N')))
-    New-Item -ItemType Directory -Path $tempNonRepo | Out-Null
-
-    try {
-        $cases = @(
+    $tempNonRepo = (Resolve-Path -LiteralPath ([IO.Path]::GetTempPath())).Path
+    $cases = @(
             [PSCustomObject]@{
                 Name = 'commandWindows-session-repo-root'
                 Event = 'SessionStart'
@@ -432,12 +449,12 @@ function Test-FixtureCommandWindowsWrappers {
                 ExpectedOutputRegex = 'advisory/reminder.*禁止隊長直接產生 broad read / validation / review / external research / memory-docs / completion evidence.*允許隊長做 coordination.*named-file local_probe.*direct_exception 只能降級成 partial / unverified / closed-with-director-risk.*single-file-readonly'
             },
             [PSCustomObject]@{
-                Name = 'commandWindows-missing-script-nonrepo-cwd'
+                Name = 'commandWindows-pretool-repo-host-cwd'
                 Event = 'PreToolUse'
-                WorkingDirectory = $tempNonRepo
-                Input = [ordered]@{ hook_event_name = 'PreToolUse'; cwd = $tempNonRepo; tool_name = 'Bash'; tool_input = [ordered]@{ command = 'rg --files' } }
+                WorkingDirectory = $RepoRoot
+                Input = [ordered]@{ hook_event_name = 'PreToolUse'; cwd = $RepoRoot; tool_name = 'Bash'; tool_input = [ordered]@{ command = 'git diff -- Codex/.codex/hooks.json' } }
                 ExpectedDecision = 'allow'
-                ExpectedOutputRegex = 'hook script was not found|advisory/reminder'
+                ExpectedOutputRegex = 'advisory/reminder.*禁止隊長直接產生 broad read / validation / review / external research / memory-docs / completion evidence.*允許隊長做 coordination.*named-file local_probe.*direct_exception 只能降級成 partial / unverified / closed-with-director-risk.*single-file-readonly'
             },
             [PSCustomObject]@{
                 Name = 'commandWindows-stop-block-json'
@@ -455,70 +472,61 @@ function Test-FixtureCommandWindowsWrappers {
                 ExpectedDecision = 'deny'
                 ExpectedOutputRegex = '已阻擋全 repo 掃描.*請先派站點或改用命名檔/窄範圍讀取'
             }
-        )
+    )
 
-        $passed = 0
-        $hosts = @(
-            [PSCustomObject]@{
-                Name = 'cmd'
-                Invoke = {
-                    param($CommandLine, $InputJson, $WorkingDirectory)
-                    Invoke-FixtureCommandWindowsHook -CmdInfo $cmdInfo -CommandLine $CommandLine -InputJson $InputJson -WorkingDirectory $WorkingDirectory
-                }
-            }
-        )
-        if ($powerShellHost.Available) {
-            $hosts += [PSCustomObject]@{
-                Name = 'PowerShell'
-                Invoke = {
-                    param($CommandLine, $InputJson, $WorkingDirectory)
-                    Invoke-FixturePowerShellCommandWindowsHook -ShellInfo $powerShellHost -CommandLine $CommandLine -InputJson $InputJson -WorkingDirectory $WorkingDirectory
-                }
+    $passed = 0
+    $hosts = @(
+        [PSCustomObject]@{
+            Name = 'cmd'
+            Invoke = {
+                param($CommandLine, $InputJson, $WorkingDirectory)
+                Invoke-FixtureCommandWindowsHook -CmdInfo $cmdInfo -CommandLine $CommandLine -InputJson $InputJson -WorkingDirectory $WorkingDirectory
             }
         }
-        foreach ($case in $cases) {
-            $commandLine = Get-FixtureCommandWindowsHook -HookConfig $hookConfig -EventName $case.Event
-            $inputJson = $case.Input | ConvertTo-Json -Depth 64 -Compress
-            foreach ($hostCase in $hosts) {
-                $result = & $hostCase.Invoke $commandLine $inputJson $case.WorkingDirectory
-                $output = $result.Stdout.Trim()
-                $caseName = '{0} [commandWindows/{1}]' -f $case.Name, $hostCase.Name
-                if ($result.ExitCode -ne 0) {
-                    $failures.Add(('{0} exit {1}: {2}' -f $caseName, $result.ExitCode, $result.Stderr))
-                    continue
-                }
-                $parsed = $null
-                try { $parsed = $output | ConvertFrom-Json -ErrorAction Stop } catch {
-                    $failures.Add(('{0} output was not JSON: {1}' -f $caseName, $output))
-                    continue
-                }
-                Test-FixturePreToolPermissionDecisionContract -CaseName $caseName -ParsedOutput $parsed -ExpectedDecision ([string]$case.ExpectedDecision) -Failures $failures
-                Test-FixtureStopOutputContract -CaseName $caseName -Fixture $case -ParsedOutput $parsed -ExpectedDecision ([string]$case.ExpectedDecision) -Failures $failures
-                if ($case.PSObject.Properties['ExpectedDecision'] -and [string]$case.ExpectedDecision -ne '') {
-                    $effectiveDecision = Get-FixtureEffectiveDecision -ParsedOutput $parsed
-                    if ([string]$effectiveDecision -ne [string]$case.ExpectedDecision) {
-                        $failures.Add(('{0} expected decision {1}, got {2}. Output: {3}' -f $caseName, $case.ExpectedDecision, $effectiveDecision, $output))
-                    }
-                }
-                if ($output -notmatch [string]$case.ExpectedOutputRegex) {
-                    $failures.Add(('{0} expectedOutputRegex missed: {1}. Output: {2}' -f $caseName, $case.ExpectedOutputRegex, $output))
-                }
-                if ($case.PSObject.Properties['ExpectedUtf8Text'] -and -not $output.Contains([string]$case.ExpectedUtf8Text)) {
-                    $failures.Add(('{0} expected UTF-8 decoded stdout text missing: {1}. Output: {2}' -f $caseName, $case.ExpectedUtf8Text, $output))
-                }
-                $passed++
-            }
-        }
-        Write-Host ("commandWindows host-wrapper checks passed: {0} case(s)" -f $passed)
-    } finally {
-        $resolvedTemp = Resolve-Path -LiteralPath $tempNonRepo -ErrorAction SilentlyContinue
-        if ($null -ne $resolvedTemp) {
-            $resolvedTempPath = $resolvedTemp.Path
-            if ($resolvedTempPath.StartsWith($tempRoot, [StringComparison]::OrdinalIgnoreCase)) {
-                Remove-Item -LiteralPath $resolvedTempPath -Recurse -Force
+    )
+    if ($powerShellHost.Available) {
+        $hosts += [PSCustomObject]@{
+            Name = 'PowerShellCmdWrapper'
+            Invoke = {
+                param($CommandLine, $InputJson, $WorkingDirectory)
+                Invoke-FixturePowerShellCommandWindowsHook -ShellInfo $powerShellHost -CommandLine $CommandLine -InputJson $InputJson -WorkingDirectory $WorkingDirectory
             }
         }
     }
+    foreach ($case in $cases) {
+        $commandLine = Get-FixtureCommandWindowsHook -HookConfig $hookConfig -EventName $case.Event
+        $inputJson = $case.Input | ConvertTo-Json -Depth 64 -Compress
+        foreach ($hostCase in $hosts) {
+            $result = & $hostCase.Invoke $commandLine $inputJson $case.WorkingDirectory
+            $output = $result.Stdout.Trim()
+            $caseName = '{0} [commandWindows/{1}]' -f $case.Name, $hostCase.Name
+            if ($result.ExitCode -ne 0) {
+                $failures.Add(('{0} exit {1}: {2}' -f $caseName, $result.ExitCode, $result.Stderr))
+                continue
+            }
+            $parsed = $null
+            try { $parsed = $output | ConvertFrom-Json -ErrorAction Stop } catch {
+                $failures.Add(('{0} output was not JSON: {1}' -f $caseName, $output))
+                continue
+            }
+            Test-FixturePreToolPermissionDecisionContract -CaseName $caseName -ParsedOutput $parsed -ExpectedDecision ([string]$case.ExpectedDecision) -Failures $failures
+            Test-FixtureStopOutputContract -CaseName $caseName -Fixture $case -ParsedOutput $parsed -ExpectedDecision ([string]$case.ExpectedDecision) -Failures $failures
+            if ($case.PSObject.Properties['ExpectedDecision'] -and [string]$case.ExpectedDecision -ne '') {
+                $effectiveDecision = Get-FixtureEffectiveDecision -ParsedOutput $parsed
+                if ([string]$effectiveDecision -ne [string]$case.ExpectedDecision) {
+                    $failures.Add(('{0} expected decision {1}, got {2}. Output: {3}' -f $caseName, $case.ExpectedDecision, $effectiveDecision, $output))
+                }
+            }
+            if ($output -notmatch [string]$case.ExpectedOutputRegex) {
+                $failures.Add(('{0} expectedOutputRegex missed: {1}. Output: {2}' -f $caseName, $case.ExpectedOutputRegex, $output))
+            }
+            if ($case.PSObject.Properties['ExpectedUtf8Text'] -and -not $output.Contains([string]$case.ExpectedUtf8Text)) {
+                $failures.Add(('{0} expected UTF-8 decoded stdout text missing: {1}. Output: {2}' -f $caseName, $case.ExpectedUtf8Text, $output))
+            }
+            $passed++
+        }
+    }
+    Write-Host ("commandWindows host-wrapper checks passed: {0} case(s)" -f $passed)
 }
 
 if ($VerifyRuntimeSync) {
@@ -527,6 +535,9 @@ if ($VerifyRuntimeSync) {
     }
     if (-not (Test-FixtureFileHashEqual -SourcePath (Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-gate.ps1') -TargetPath (Join-Path $RepoRoot '.codex\hooks\team-native-gate.ps1'))) {
         throw 'hook source/deployed sync failed: team-native-gate.ps1 hash mismatch'
+    }
+    if (-not (Test-FixtureFileHashEqual -SourcePath (Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-launcher.ps1') -TargetPath (Join-Path $RepoRoot '.codex\hooks\team-native-launcher.ps1'))) {
+        throw 'hook source/deployed sync failed: team-native-launcher.ps1 hash mismatch'
     }
     Write-Host 'hook source/deployed sync verified'
 }

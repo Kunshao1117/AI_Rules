@@ -1,0 +1,27 @@
+{
+  "name": "allow-pretool-spawn-agent-readonly-safety-denylist",
+  "scenarioCode": "pretool-spawn-agent-readonly-safety-denylist-allow",
+  "category": "allow",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "allow-reminder",
+  "canonicalDecision": "advisory",
+  "expectedDecision": "allow",
+  "expectedOutputRegex": "提醒模式，不會阻擋工具.*general-tool",
+  "input": {
+    "hook_event_name": "PreToolUse",
+    "session_id": "fixture-session",
+    "transcript_path": null,
+    "cwd": "D:\\AI_Rules",
+    "model": "gpt-5",
+    "permission_mode": "default",
+    "turn_id": "fixture-turn",
+    "tool_name": "spawn_agent",
+    "tool_use_id": "fixture-tool-spawn-agent-readonly-safety-denylist",
+    "tool_input": {
+      "task": "Read-only task: summarize hook fixture coverage. Safety restrictions: do not run git commit, npm install, pip install, vercel deploy, gh release, Remove-Item, memory_commit, write_memory, credentials, external mutation. Do not use apply_patch or edit files.",
+      "instructions": "Return observations only; the forbidden list is a safety constraint, not an instruction to perform those actions."
+    }
+  }
+}

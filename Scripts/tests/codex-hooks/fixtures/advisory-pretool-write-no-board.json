@@ -17,6 +17,8 @@
     "model": "gpt-5",
     "permission_mode": "default",
     "turn_id": "fixture-turn",
+    "agent_id": "agent-fixture-change-delivery",
+    "agent_type": "subagent",
     "tool_name": "apply_patch",
     "tool_use_id": "fixture-tool-write",
     "command": "*** Begin Patch\n*** Update File: Codex/.codex/hooks.json\n@@\n+{}\n*** End Patch",

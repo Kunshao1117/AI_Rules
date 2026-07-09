@@ -104,6 +104,77 @@ function Measure-CodexHookGovernance {
         return ($null -ne $stateProperty -and [string]$stateProperty.Value -eq 'disabled')
     }
 
+    function Get-CodexHookLauncherPath {
+        param([string]$ConfigPath)
+
+        return (Join-Path (Split-Path -Parent $ConfigPath) 'hooks\team-native-launcher.ps1')
+    }
+
+    function Test-CodexHookLauncherDelegatesToGate {
+        param([string]$Path)
+
+        if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $false }
+        $content = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+        return (
+            $content -match '\.codex[\\/]hooks[\\/]team-native-gate\.ps1' -and
+            $content -match '\[Console\]::In\.ReadToEnd\(\)' -and
+            $content -match 'Split-Path\s+-Parent' -and
+            $content -match 'Test-Path\s+-LiteralPath\s+\$candidate' -and
+            $content -match '(?s)&\s+\$scriptPath\s+-HookEvent\s+\$HookEvent\s+-PayloadJson\s+\$raw'
+        )
+    }
+
+    function Test-CodexHookCommandWindowsLauncherResolver {
+        param([string]$CommandWindows)
+
+        return (
+            $CommandWindows -match '\[Console\]::In\.ReadToEnd\(\)' -and
+            $CommandWindows -match 'ConvertFrom-Json' -and
+            $CommandWindows -match 'PSObject\.Properties\[''cwd''\]' -and
+            $CommandWindows -match '\(Get-Location\)\.Path' -and
+            $CommandWindows -match '\.codex[\\/]hooks[\\/]team-native-launcher\.ps1' -and
+            $CommandWindows -match '(?i)-File\s+\$launcher' -and
+            $CommandWindows -match '\$raw\s*\|\s*&\s+pwsh'
+        )
+    }
+
+    function Get-CodexHookFunctionContent {
+        param(
+            [string]$Content,
+            [string]$FunctionName
+        )
+
+        $pattern = '(?s)function\s+' + [regex]::Escape($FunctionName) + '\s*\{(?<body>.*?)(?=\r?\nfunction\s+|\z)'
+        $match = [regex]::Match($Content, $pattern)
+        if (-not $match.Success) { return '' }
+        return $match.Groups['body'].Value
+    }
+
+    function Test-CodexHookGateChangeDeliveryHardCondition {
+        param([string]$Content)
+
+        $body = Get-CodexHookFunctionContent -Content $Content -FunctionName 'Get-HookTrustedChangeDeliveryRoute'
+        if ([string]::IsNullOrWhiteSpace($body)) { return $false }
+
+        $requiredPairs = @(
+            @{ Field = 'role_id|roleId|author_role|authorRole|assigned_specialist|assignedSpecialist'; Value = 'change-delivery' },
+            @{ Field = 'station_mode|stationMode'; Value = 'change-delivery' },
+            @{ Field = 'board_state|boardState'; Value = 'formal-write' },
+            @{ Field = 'authorization_phase|authorizationPhase'; Value = 'implementation-change-delivery' },
+            @{ Field = 'handoff_ownership|handoffOwnership'; Value = 'station-owned' }
+        )
+        foreach ($pair in $requiredPairs) {
+            if ($body -notmatch $pair.Field) { return $false }
+            if ($body -notmatch [regex]::Escape($pair.Value)) { return $false }
+        }
+
+        if ($body -notmatch 'Get-HookTrustedFileAllowlist') { return $false }
+        if ($body -notmatch '(?i)allowlist') { return $false }
+        if ($body -notmatch '(?s)(allowlist\.Count\s*-gt\s*0|Count\s*\)\s*-gt\s*0)') { return $false }
+        if ($body -notmatch 'StationAllowed') { return $false }
+        return $true
+    }
+
     function Get-CodexHookCatalogEntries {
         param(
             [string]$FunctionName,
@@ -183,6 +254,8 @@ function Measure-CodexHookGovernance {
         if ($null -eq $Config) { return }
 
         $relative = Get-CodexHookDisplayPath -Path $ConfigPath
+        $launcherPath = Get-CodexHookLauncherPath -ConfigPath $ConfigPath
+        $launcherDelegatesToGate = Test-CodexHookLauncherDelegatesToGate -Path $launcherPath
         $hooksProperty = $Config.PSObject.Properties['hooks']
         if ($null -eq $hooksProperty) {
             Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook 設定缺少 hooks 根節點 ({0})" -f $Label) -Text 'missing hooks'
@@ -243,6 +316,8 @@ function Measure-CodexHookGovernance {
                     $commandWindows = Get-CodexHookPropertyText -Object $handler -Name 'commandWindows'
                     $statusMessage = Get-CodexHookPropertyText -Object $handler -Name 'statusMessage'
                     $commandText = Get-CodexHookCommandText -Handler $handler
+                    $pointsToGate = ($commandText -match '\.codex[\\\/]hooks[\\\/]team-native-gate\.ps1')
+                    $pointsToLauncher = ($commandText -match '\.codex[\\\/]hooks[\\\/]team-native-launcher\.ps1')
 
                     if ($type -ne 'command') {
                         Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook handler 不是 command 類型 ({0})" -f $Label) -Text ("{0}: {1}" -f $eventName, $type)
@@ -253,10 +328,13 @@ function Measure-CodexHookGovernance {
                     if (-not $commandWindows) {
                         Add-CodexHookFinding -Severity 'Yellow' -File $relative -Line 1 -Reason ("Codex hook handler 缺少 Windows 命令覆寫 ({0})" -f $Label) -Text $eventName
                     }
-                    if ($commandText -notmatch '\.codex[\\\/]hooks[\\\/]team-native-gate\.ps1') {
-                        Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook handler 未指向 Team-Native gate 腳本 ({0})" -f $Label) -Text $eventName
+                    elseif (-not (Test-CodexHookCommandWindowsLauncherResolver -CommandWindows $commandWindows)) {
+                        Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook Windows resolver 未從 payload.cwd/current location 定位 launcher 並以 -File 轉交 payload ({0})" -f $Label) -Text $eventName
                     }
-                    if ($commandText -notmatch 'git\s+rev-parse\s+--show-toplevel') {
+                    if (-not ($pointsToGate -or ($pointsToLauncher -and $launcherDelegatesToGate))) {
+                        Add-CodexHookFinding -Severity 'Red' -File $relative -Line 1 -Reason ("Codex hook handler 未指向 Team-Native gate 腳本或已驗證 launcher ({0})" -f $Label) -Text $eventName
+                    }
+                    if (-not (($commandText -match 'git\s+rev-parse\s+--show-toplevel') -or ($pointsToLauncher -and $launcherDelegatesToGate))) {
                         Add-CodexHookFinding -Severity 'Yellow' -File $relative -Line 1 -Reason ("Codex hook handler 未以 git 根目錄解析專案 hook ({0})" -f $Label) -Text $eventName
                     }
                     if ($commandText -match '--dangerously-bypass-hook-trust') {
@@ -347,6 +425,12 @@ function Measure-CodexHookGovernance {
 
         $requiredPatterns = Get-CodexHookCatalogEntries -FunctionName 'Get-CodexHookScriptRequirementCatalog' -CatalogName 'scriptRequirements'
         foreach ($requirement in $requiredPatterns) {
+            if ($requirement.Reason -match 'station_mode=change-delivery') {
+                if (-not (Test-CodexHookGateChangeDeliveryHardCondition -Content $searchContent)) {
+                    Add-CodexHookFinding -Severity $requirement.Severity -File $relative -Line 1 -Reason ("{0} ({1})" -f $requirement.Reason, $Label) -Text $requirement.Pattern
+                }
+                continue
+            }
             if ($searchContent -notmatch $requirement.Pattern) {
                 Add-CodexHookFinding -Severity $requirement.Severity -File $relative -Line 1 -Reason ("{0} ({1})" -f $requirement.Reason, $Label) -Text $requirement.Pattern
             }
@@ -547,10 +631,12 @@ function Measure-CodexHookGovernance {
     $sourceAgentConfig = Join-Path $RepoRoot 'Codex\.codex\config.toml'
     $sourceDisabledConfig = Join-Path $RepoRoot 'Codex\.codex\hooks.delete'
     $sourceScript = Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-gate.ps1'
+    $sourceLauncher = Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-launcher.ps1'
     $targetConfig = Join-Path $TargetRoot '.codex\hooks.json'
     $targetAgentConfig = Join-Path $TargetRoot '.codex\config.toml'
     $targetDisabledConfig = Join-Path $TargetRoot '.codex\hooks.delete'
     $targetScript = Join-Path $TargetRoot '.codex\hooks\team-native-gate.ps1'
+    $targetLauncher = Join-Path $TargetRoot '.codex\hooks\team-native-launcher.ps1'
     $fixtureTest = Join-Path $RepoRoot 'Scripts\tests\codex-hooks\Invoke-CodexHookFixtureTests.ps1'
     $fixtureRoot = Join-Path $RepoRoot 'Scripts\tests\codex-hooks\fixtures'
     $sourceHookDirectory = Join-Path $RepoRoot 'Codex\.codex\hooks'
@@ -601,6 +687,8 @@ function Measure-CodexHookGovernance {
         @{ Path = $targetAgentConfig; Label = 'project Codex config'; Severity = 'Red' },
         @{ Path = $sourceScript; Label = 'source hook script'; Severity = 'Red' },
         @{ Path = $targetScript; Label = 'project hook script'; Severity = 'Red' },
+        @{ Path = $sourceLauncher; Label = 'source hook launcher'; Severity = 'Red' },
+        @{ Path = $targetLauncher; Label = 'project hook launcher'; Severity = 'Red' },
         @{ Path = $fixtureTest; Label = 'hook fixture test'; Severity = 'Yellow' },
         @{ Path = $fixtureRoot; Label = 'hook fixtures'; Severity = 'Yellow' }
     )
@@ -630,10 +718,13 @@ function Measure-CodexHookGovernance {
     if ((Test-Path -LiteralPath $sourceScript -PathType Leaf) -and (Test-Path -LiteralPath $targetScript -PathType Leaf) -and (-not (Test-AuditFileHashEqual -SourcePath $sourceScript -TargetPath $targetScript))) {
         Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $targetScript) -Line 1 -Reason 'Codex hook 腳本部署副本與來源不一致' -Text 'Codex\.codex\hooks\team-native-gate.ps1 -> .codex\hooks\team-native-gate.ps1'
     }
+    if ((Test-Path -LiteralPath $sourceLauncher -PathType Leaf) -and (Test-Path -LiteralPath $targetLauncher -PathType Leaf) -and (-not (Test-AuditFileHashEqual -SourcePath $sourceLauncher -TargetPath $targetLauncher))) {
+        Add-CodexHookFinding -Severity 'Red' -File (Get-CodexHookDisplayPath -Path $targetLauncher) -Line 1 -Reason 'Codex hook launcher 部署副本與來源不一致' -Text 'Codex\.codex\hooks\team-native-launcher.ps1 -> .codex\hooks\team-native-launcher.ps1'
+    }
 
     $trackedRequiredFiles = New-Object System.Collections.Generic.List[string]
     $untrackedRequiredFixtureCount = 0
-    foreach ($path in @($sourceConfig, $sourceScript, $fixtureTest)) {
+    foreach ($path in @($sourceConfig, $sourceScript, $sourceLauncher, $fixtureTest)) {
         $trackedRequiredFiles.Add($path)
     }
     if (Test-Path -LiteralPath $fixtureRoot -PathType Container) {

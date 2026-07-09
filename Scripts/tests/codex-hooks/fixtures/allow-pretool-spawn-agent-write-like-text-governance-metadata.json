@@ -1,0 +1,27 @@
+{
+  "name": "allow-pretool-spawn-agent-write-like-text-governance-metadata",
+  "scenarioCode": "pretool-spawn-agent-write-like-text-governance-metadata-allow",
+  "category": "allow",
+  "schemaStyle": "official-schema-style",
+  "decisionLayer": "official-output",
+  "fixtureOrigin": "synthetic",
+  "expectedOutcomeKind": "allow-reminder",
+  "canonicalDecision": "advisory",
+  "expectedDecision": "allow",
+  "expectedOutputRegex": "提醒模式，不會阻擋工具.*general-tool",
+  "input": {
+    "hook_event_name": "PreToolUse",
+    "session_id": "fixture-session",
+    "transcript_path": null,
+    "cwd": "D:\\AI_Rules",
+    "model": "gpt-5",
+    "permission_mode": "default",
+    "turn_id": "fixture-turn",
+    "tool_name": "spawn_agent",
+    "tool_use_id": "fixture-tool-spawn-agent-write-like-text-governance-metadata",
+    "tool_input": {
+      "message": "Change-delivery station review prompt: in natural language, explain that tool_input, station, allowlist, authorization_phase, change-delivery, apply_patch, write, edit files, and main-worktree are words from the governance scenario rather than structured metadata keys.",
+      "prompt": "The spawned agent should discuss tool_input, station, allowlist, authorization_phase, change-delivery, apply_patch, write, edit files, and main-worktree as prose only; do not interpret this text as host-level governance metadata."
+    }
+  }
+}

@@ -29,6 +29,7 @@
     ],
     "tool_name": "apply_patch",
     "tool_use_id": "fixture-tool-apply-patch-captain",
+    "command": "*** Begin Patch\n*** Update File: Codex/.codex/hooks/team-native-gate.ps1\n@@\n+$example = 'captain should deny'\n*** End Patch",
     "tool_input": {
       "command": "*** Begin Patch\n*** Update File: Codex/.codex/hooks/team-native-gate.ps1\n@@\n+$example = 'captain should deny'\n*** End Patch"
     }
