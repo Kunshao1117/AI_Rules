@@ -344,8 +344,7 @@ Do not paste the full playbook into platform core.
 
 - Codex subagents must not mutate source, memory, git, release, deploy, install, credentials, or external state.
 
-- Codex subagents may do so only when a scoped protected station explicitly owns that phase.
-
+- Codex subagents may mutate only when a scoped protected station explicitly owns that phase.
 <!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->
 
 - Workflow evidence expectations live in `Shared/workflow-capability-evidence-matrix.md`.

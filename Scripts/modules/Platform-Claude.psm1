@@ -164,10 +164,11 @@ function Invoke-ClaudeUpgrade {
     $targetVersion  = Get-VersionContent -Path $dstVersionFile
     Write-Banner "Claude Edition Upgrade v$targetVersion → v$version | 目標: $Target" "DarkCyan"
 
-    Write-Step "正在掃描 .claude/ 差異（commands/rules）..."
+    Write-Step "正在掃描 .claude/ 差異（CLAUDE.md/commands/rules）..."
 
     # 掃描框架結構（排除 skills/，由 Shared/ 獨立管理）
     $categoryMap = [ordered]@{
+        "平台入口 (Entry)"       = { $_.Path -eq "CLAUDE.md" }
         "工作流指令 (Commands)" = { $_.Path -like "commands\*" -or $_.Path -like "commands/*" }
         "治理規範 (Rules)"      = { $_.Path -like "rules\*"    -or $_.Path -like "rules/*" }
     }
@@ -178,6 +179,7 @@ function Invoke-ClaudeUpgrade {
         -SourceRoot $srcDotClaude `
         -TargetRoot $dstDotClaude `
         -ScanDirs @("commands", "rules") `
+        -ScanFiles @("CLAUDE.md") `
         -ProtectedDirs @() `
         -ExcludeFiles $excludeFiles
 

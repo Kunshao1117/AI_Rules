@@ -252,10 +252,16 @@ function Resolve-NodeCommand {
 }
 
 function Resolve-PowerShellCommand {
-    $powershellExe = Get-Command powershell.exe -ErrorAction SilentlyContinue
-    if ($powershellExe) { return $powershellExe.Source }
+    foreach ($name in @("powershell.exe", "powershell", "pwsh.exe", "pwsh")) {
+        $command = Get-Command $name -ErrorAction SilentlyContinue
+        if (-not $command) { continue }
+        foreach ($property in @("Source", "Path", "Definition")) {
+            $value = [string]$command.$property
+            if (-not [string]::IsNullOrWhiteSpace($value)) { return $value }
+        }
+    }
 
-    throw "powershell.exe was not found on PATH."
+    throw "No PowerShell executable was found on PATH."
 }
 
 function Read-PackageLockSummary {
@@ -293,6 +299,8 @@ function Test-PowerShellAstParse {
         "Antigravity\install.ps1",
         "Claude\install.ps1",
         "Codex\install.ps1",
+        "Scripts\modules\Skills-Sync.psm1",
+        "Scripts\modules\Platform-Claude.psm1",
         "Scripts\modules\Audit.psm1",
         "Scripts\tests\Validate-SourceSizeGovernance.ps1"
     )
@@ -560,6 +568,79 @@ function Test-InstallerSentinels {
     }
 }
 
+function Get-SharedRuntimeReferenceTargets {
+    $roots = @(
+        "Codex\.agents",
+        "Claude",
+        "Antigravity",
+        ".agents\skills"
+    )
+
+    $references = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+    foreach ($relativeRoot in $roots) {
+        $root = Get-RepoPath -RelativePath $relativeRoot
+        if (-not (Test-Path -LiteralPath $root -PathType Container)) { continue }
+
+        Get-ChildItem -LiteralPath $root -Recurse -File -Include "*.md", "*.ps1" -ErrorAction Stop |
+            ForEach-Object {
+                $text = Read-TextFile -Path $_.FullName
+                foreach ($match in [regex]::Matches($text, '\.agents/shared/([A-Za-z0-9._/\-]+\.[A-Za-z0-9]+)')) {
+                    $rel = $match.Groups[1].Value.TrimEnd('.', ',', ';', ':').Replace('/', '\')
+                    if ($rel) { $null = $references.Add($rel) }
+                }
+            }
+    }
+
+    return @($references) | Sort-Object
+}
+
+function Test-SharedGovernanceReferenceCoverage {
+    $sharedRoot = Get-RepoPath -RelativePath "Shared"
+    $skillsSyncPath = Get-RepoPath -RelativePath "Scripts\modules\Skills-Sync.psm1"
+    $auditCommonPath = Get-RepoPath -RelativePath "Scripts\modules\Audit\00.Common.ps1"
+    $platformClaudePath = Get-RepoPath -RelativePath "Scripts\modules\Platform-Claude.psm1"
+    $codexSource = Get-RepoPath -RelativePath "Codex\.codex\AGENTS.md"
+    $codexRuntime = Get-RepoPath -RelativePath ".codex\AGENTS.md"
+
+    Import-Module $skillsSyncPath -Force -ErrorAction Stop
+    . $auditCommonPath
+
+    $syncRefs = @(Get-SharedGovernanceReferenceRelativePaths -SharedRoot $sharedRoot)
+    $auditRefs = @(Get-AuditSharedGovernanceReferenceRelativePaths -SharedRoot $sharedRoot)
+
+    if ($syncRefs -notcontains "workflow-stage-procedures.md") {
+        throw "Skills-Sync shared references must include workflow-stage-procedures.md"
+    }
+    if ($auditRefs -notcontains "workflow-stage-procedures.md") {
+        throw "Audit shared references must include workflow-stage-procedures.md"
+    }
+
+    foreach ($rel in @(Get-SharedRuntimeReferenceTargets)) {
+        $sourcePath = Join-Path $sharedRoot $rel
+        if (-not (Test-Path -LiteralPath $sourcePath -PathType Leaf)) {
+            throw "Shared runtime reference has no source file: $rel"
+        }
+        if ($syncRefs -notcontains $rel) {
+            throw "Shared runtime reference is not deployed by Skills-Sync: $rel"
+        }
+        if ($auditRefs -notcontains $rel) {
+            throw "Shared runtime reference is not covered by audit helper: $rel"
+        }
+    }
+
+    Assert-ContainsRegex -Path $platformClaudePath -Pattern '(?s)Get-UpgradeReport.*?-ScanFiles\s+@\("CLAUDE\.md"\)' -Label "Claude upgrade scans root CLAUDE.md"
+
+    $startMarker = "<!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->"
+    $endMarker = "<!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->"
+    $sourceBlock = Get-TextBetweenLiteral -Path $codexSource -Start $startMarker -End $endMarker -Label "Codex source shared subagent marker"
+    $runtimeBlock = Get-TextBetweenLiteral -Path $codexRuntime -Start $startMarker -End $endMarker -Label "Codex runtime shared subagent marker"
+    $normalizedSourceBlock = ($sourceBlock -replace "\r\n?", "`n").Trim()
+    $normalizedRuntimeBlock = ($runtimeBlock -replace "\r\n?", "`n").Trim()
+    if ($normalizedSourceBlock -ne $normalizedRuntimeBlock) {
+        throw "Codex source and runtime shared subagent marker blocks must match"
+    }
+}
+
 function Test-ScriptRunnerSentinels {
     $runner = Get-RepoPath -RelativePath "Extensions\vscode-ai-rules-manager\src\scriptRunner.ts"
     $runBody = Get-TextBetweenLiteral -Path $runner -Start "async run(action: ManagerAction" -End "  private async resolveRepoRoot" -Label "script runner run method"
@@ -604,6 +685,7 @@ Invoke-Check -Name "npm audit package-lock high" -ScriptBlock { Test-NpmAudit }
 Invoke-Check -Name "source size governance baseline smoke" -ScriptBlock { Test-SourceSizeGovernanceBaseline }
 Invoke-Check -Name "1A release workflow sentinels" -ScriptBlock { Test-ReleaseWorkflowSentinels }
 Invoke-Check -Name "1A installer sentinels" -ScriptBlock { Test-InstallerSentinels }
+Invoke-Check -Name "shared governance reference coverage" -ScriptBlock { Test-SharedGovernanceReferenceCoverage }
 Invoke-Check -Name "1A scriptRunner sentinels" -ScriptBlock { Test-ScriptRunnerSentinels }
 
 $failed = @($script:Results | Where-Object { -not $_.Passed })

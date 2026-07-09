@@ -50,6 +50,7 @@ function Get-SharedGovernanceReferenceRelativePaths {
         "platform-capability-matrix.md",
         "workflow-capability-evidence-matrix.md",
         "skill-governance.md",
+        "workflow-stage-procedures.md",
         "policies\authorization-resolution.md",
         "policies\workflow-orchestration.md",
         "policies\workflow-orchestration-scenarios.md",

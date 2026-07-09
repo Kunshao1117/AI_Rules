@@ -4,19 +4,19 @@ scopePath: Claude/
 description: >-
   專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-08T22:55:40+08:00'
+last_updated: '2026-07-09T16:59:43+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-08T22:45:00+08:00'
+last_verified: '2026-07-09T16:56:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 9
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -42,6 +42,7 @@ metadata:
 - Evidence, broad reads, validation, review, memory/docs attribution, source writes, commit/release prep, and completion claims require board, station, handoff, role, skill, channel, `station_mode`, `context_visibility`, and `handoff_ownership`.
 - Main-worktree implementation uses station-owned `change-delivery`; `change-application` is fallback for returned artifacts, explicit integration, or generated/deployed sync. Full completion requires implementation, memory/docs, review, validation, and trace evidence.
 - Claude README now keeps feature rows short, moves Team-Native details into supplemental bullets, adds a Mermaid diagram legend, and expands install/upgrade PowerShell examples into readable multi-line commands.
+- Claude README installed-surface documentation treats shared governance references as the explicit Shared allowlist plus `Shared/policies/` and `Shared/mcp-profiles/`; project tools and context templates are documented as separate deployed surfaces.
 - Claude command entries are being normalized around meaning-first descriptions, canonical evidence statuses, YAML-list `required_skills` where converted, and slim workflow-entry bodies; child command cards own group-specific details.
 - Claude memory operations use shared `.agents/memory/`; the deprecated `claude-edition-rules` card is historical only.
 - Current dirty Claude source/deployed parity is pending rerun; do not reuse the 2026-07-04 parity result for the 2026-07-07 dirty source set.
@@ -55,6 +56,7 @@ metadata:
 - After Claude framework source changes, verify source/deployed parity or report it as pending before final completion.
 - Keep README Mermaid labels short and explain them through the adjacent legend instead of long graph node labels.
 ## Cycle Events
+- 10: Recorded Installed Surfaces wording repair for shared governance references, project tools, and context templates.
 - 9: Recorded Claude installer empty SHA regression guard while preserving non-empty 64-hex validation.
 - 8: Refreshed card from 2026-07-07 dirty Claude source: core/global/README wording, grounding, Team-Native captain boundary, README legend/install examples, and pending parity status.
 - 7: Compacted active card on 2026-07-04, preserving captain limits, source/deployed parity, language layering, and command authorization semantics.
@@ -70,6 +72,8 @@ metadata:
 - archive-002.md — Pre-standardization active card snapshot created during MEMORY.md migration.
 - archive-001.md — Legacy _claude_core card preserved before schema v2 compaction on 2026-06-04.
 ## Evidence Base
+- source: `Claude/README.md` Installed Surfaces table verified from current diff on 2026-07-09.
+- tool: `cartridge-system__memory_status` reported `_claude_core` content complete with stale warning before this repair on 2026-07-09.
 - source: `Claude/.claude/CLAUDE.md`, `Claude/.claude/rules/core-identity.md`, `Claude/global/CLAUDE.md`, `Claude/README.md`, and `Claude/install.ps1`.
 - source: `.agents/shared/policies/language-governance.md` for Director-facing zh-TW and internal English-led artifact layering.
 - tool: `git diff -- Claude/...` and `git status --short` reviewed the current dirty Claude source set on 2026-07-07.
@@ -83,7 +87,7 @@ metadata:
 ## 中文摘要
 - Claude Edition 的 active source owner 是本卡。
 - 目前 Claude core/README/global 的 dirty source 重點是繁中語義先行、接地查證、Team-Native 隊長邊界與 README 可讀性。
-- README 已補圖例並把安裝/升級範例改成多行 PowerShell。
+- README 已補圖例、把安裝/升級範例改成多行 PowerShell，並把 Installed Surfaces 的 Shared 參考範圍寫成明確 allowlist。
 - commands 詳情由子卡負責；本卡只保留跨 Claude adapter 的總覽。
 - 2026-07-07 dirty source 尚未重新驗證 source/deployed parity；完成宣稱前要另行補證。
 ## Tracked Files

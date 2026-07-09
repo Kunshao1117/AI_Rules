@@ -55,7 +55,9 @@ deployment, credentials, destructive filesystem work, or external mutation.
 | Codex config | `Codex/.codex/config.toml` | `.codex/config.toml` |
 | Workflow skills | `Codex/.agents/workflow-skills/` | `.agents/skills/` |
 | Shared skills | `Shared/skills/` | `.agents/skills/` |
-| Shared references | `Shared/**` | `.agents/shared/**` |
+| Shared governance references | `Shared` allowlist + `Shared/policies/` + `Shared/mcp-profiles/` | `.agents/shared/` |
+| Project tools | `Shared/project-tools/` | `.agents/tools/` |
+| Context templates | `Shared/context/` | `.agents/context/` |
 | Project memory | protected local project asset | `.agents/memory/` |
 | Project context | protected local project asset | `.agents/context/` |
 

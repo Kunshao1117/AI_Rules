@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-08T22:55:24+08:00'
+last_updated: '2026-07-09T16:59:40+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-08T22:45:00+08:00'
+last_verified: '2026-07-09T16:56:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 9
+cycle_event_count: 10
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -44,6 +44,7 @@ metadata:
 - Memory mutation, git, release, deploy, install, credentials, destructive filesystem actions, MCP mutation, cloud mutation, and external-state changes each require their own protected gate and scope; `[SUDO]` records risk/override intent only.
 - Antigravity workflow entries now use meaning-first Chinese descriptions, normalize missing memory evidence as `unverified` or `blocked`, and keep shared completion/security gates as thin references to shared skills and policies.
 - Antigravity README and global GEMINI bootstrap text now use expanded PowerShell/CMD install examples, zero-touch checks, upgrade prompts, and post-deployment notices while preserving protected memory/project-skill boundaries.
+- Antigravity README installed-surface documentation treats shared governance references as the explicit Shared allowlist plus `Shared/policies/` and `Shared/mcp-profiles/`; project tools and context templates are documented as separate deployed surfaces.
 - `Antigravity/install.ps1` validates branch refs, HTTPS source host/path, target/download receipt paths, optional ZIP SHA256, and extracted child paths; its SHA helper accepts blank optional hashes while non-empty values remain 64-hex checked.
 ## Active Constraints
 - Do not duplicate root system ownership in this card.
@@ -54,6 +55,7 @@ metadata:
 - Remote bootstrap examples must preserve host/path validation, optional hash checks, receipt evidence, and safe temp cleanup.
 - Keep this active card below `line_limit: 120`; compact before adding broad workflow-cycle detail.
 ## Cycle Events
+- 10: Recorded Installed Surfaces wording repair for shared governance references, project tools, and context templates.
 - 9: Recorded Antigravity installer empty SHA regression guard while preserving non-empty 64-hex validation.
 - 8: Repaired stale warning state against 2026-07-07 Antigravity dirty source for Chinese-first rules, Team-Native authorization/protected gates, memory/MCP/[SUDO] boundaries, workflow descriptions, and README/GEMINI bootstrap wording.
 - 7: Compacted active card on 2026-07-04, preserving captain limits, source/deployed parity, language layering, and installer trust-boundary facts.
@@ -69,6 +71,8 @@ metadata:
 - archive-002.md — Pre-standardization active card snapshot created during MEMORY.md migration.
 - archive-001.md — Legacy _ag_core card preserved before schema v2 compaction on 2026-06-04.
 ## Evidence Base
+- source: `Antigravity/README.md` Installed Surfaces table verified from current diff on 2026-07-09.
+- tool: `cartridge-system__memory_status` reported `_ag_core` content complete with stale warning before this repair on 2026-07-09.
 - source: Antigravity dirty source under `.agents/rules/`, `.agents/workflows/`, `README.md`, and `global/GEMINI.md` verified on 2026-07-07.
 - source: `Antigravity/install.ps1` and preserved archives.
 - tool: `git status --short -- Antigravity` and `git diff --stat -- Antigravity` reviewed 33 dirty Antigravity files before writing.
@@ -82,9 +86,8 @@ metadata:
 ## 中文摘要
 - Antigravity 是 Gemini 平台適配層。
 - 目前 dirty source 已把總監輸出調整為繁中語義先行，並加強 Team-Native、授權解析與 protected gate 邊界。
+- README 的 Installed Surfaces 現在把 Shared 治理參考、project tools、context templates 拆開描述。
 - 記憶、MCP、`[SUDO]`、工作流 description、missing memory evidence 與完成/安全 gate 的 durable truth 已更新。
-- README 與 global GEMINI 的安裝、升級、bootstrap 文案已納入本卡。
-- 本次 active card 納入 protected memory-ops 同步範圍；git stage/commit 未授權也未執行。
 ## Tracked Files
 - Antigravity/install.ps1
 - Antigravity/README.md
