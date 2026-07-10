@@ -80,6 +80,12 @@ Required field meanings, in order:
   - Never executable by itself.
 - `workflow_route`
   - Workflow or semantic route used as a route hint.
+- `workflow_entry_ref`
+  - Exact workflow entry, command, skill, or matrix row that selected the route.
+  - It is a Stage 2 route link only; it never authorizes writes or protected actions by itself.
+- `stage_procedure_ref`
+  - Matching section in `Shared/workflow-stage-procedures.md`, or `not-applicable`.
+  - It points to the shared procedure checklist instead of copying workflow-entry text.
 - `reflection_routing_decision`
   - Optional route context returned by `coding-reflection-gate`.
   - It may shape retry, reroute, ambiguity, and governance-depth decisions.
@@ -103,8 +109,26 @@ Required field meanings, in order:
     wording boundaries.
   - It never replaces `execution_spec`, station handoff, scoped authorization, validation evidence,
     review evidence, memory/docs attribution, or completion evidence.
+- `behavior_counterevidence`
+  - Compact Stage 7 link to counter-evidence that can change behavior, governance, workflow, or
+    completion wording.
+  - It may point to requirement replay, neutral challenge, local disconfirming evidence, conflicting
+    external evidence, validation failures, review findings, or drift checks.
+  - State values use the status ontology: `sufficient`, `partial`, `no-evidence`, `conflicted`,
+    `blocked`, `unverified`, or `not-applicable`.
+  - It is not a separate review, validation, or authorization record.
 - `task_type`
   - Discussion, exploration, blueprint, build-plan, implementation, fix-debug, validation-audit, commit-release, or handoff-skill.
+- `execution_profile`
+  - `not-applicable`, `fast`, `balanced`, or `deep`.
+- `requested_model`
+  - `not-requested`, `platform-default`, or `exact:<opaque-id>`.
+- `requested_reasoning_effort`
+  - `not-requested`, `platform-default`, `low`, `medium`, `high`, or `exact:<opaque-token>`.
+- `context_scope_ref`
+  - `handoff:<handoff_packet_id>#context-scope`, `unresolved`, or `not-applicable`.
+- `wait_policy_ref`
+  - `handoff:<handoff_packet_id>#wait-policy`, `unresolved`, or `not-applicable`.
 - `operation_mode`
   - `daily`, `full`, or blocked/unverified reason.
 - `board_state`
@@ -200,6 +224,9 @@ Required field meanings, in order:
 - `source_deployed_pair` / `sync_direction` / `sync_evidence`
   - Pair and parity fields from `platform-copy-map.md` when source/runtime or
     source/generated copies are affected.
+  - These fields are the Stage 8 source/deployed sync link.
+  - `sync_evidence` must name hash parity, content parity, generated marker parity, or the concrete
+    blocked/unverified reason before source-level closeout can rely on the pair.
 - `grounding_handoff`
   - Short downstream pointer to grounding tier, mode, artifact ID, missing evidence,
     and affected decision.
@@ -252,6 +279,50 @@ Required field meanings, in order:
   - Required fields or evidence are absent, incomplete, stale, or not yet inspected.
 - `not-applicable`
   - The current task has no executable station or tool-layer work.
+
+Pure discussion or other work with no executable station uses this complete
+sentinel tuple and no other combination:
+
+```text
+execution_profile: not-applicable
+requested_model: not-requested
+requested_reasoning_effort: not-requested
+context_scope_ref: not-applicable
+wait_policy_ref: not-applicable
+```
+
+Executable work must not mix any value from that tuple into its requested
+snapshot. It uses `fast`, `balanced`, or `deep`; a requested model other than
+`not-requested`; a requested effort other than `not-requested`; and two handoff
+references bound to the same `handoff_packet_id`. Both references may be
+`unresolved` only while the spec is `draft`. An executable snapshot that mixes
+`not-requested`, `not-applicable`, or unresolved references is `unverified`; it
+cannot be `resolved` or dispatched.
+
+Resolve executable work in this order:
+
+1. Keep the `execution_spec` in `draft` while its handoff references are unresolved.
+2. Create the board row and a draft `handoff_packet_id`.
+3. Materialize and seal the packet's `#context-scope` and `#wait-policy` anchors.
+4. Bind `context_scope_ref` and `wait_policy_ref` to those anchors on the same packet ID.
+5. Resolve the execution spec.
+6. Copy the resolved requested fields into the immutable `requested_execution_snapshot`.
+7. Verify channel fields and handoff startup completeness.
+8. Only then treat the station as executable and dispatchable.
+
+The requested execution fields record intent only. They do not grant
+authorization, alter route or scope, bypass protected gates, guarantee channel
+availability, or prove what the platform applied. `requested_model:
+exact:<opaque-id>` may come only from an explicit current Director request or a
+current dispatch resolution that cites presently verified platform capability
+or execution evidence. Do not place named models in profile tables, policy
+defaults, or persistent profile presets.
+
+Requested and applied execution state remain separate. This execution spec owns
+the requested intent; `Shared/skills/team-station-handoff-packet/SKILL.md`
+carries the immutable requested snapshot and returned application receipt; and
+`Shared/skills/team-task-board/references/board-field-catalog.md` owns the
+canonical observed state after receipt ledgering.
 
 ## Intent Envelope And Overreach Fields
 

@@ -72,6 +72,10 @@ replaces_channel_run_id
 replacement_reason
 execution_route
 execution_channel
+execution_profile_application_state
+applied_model
+applied_reasoning_effort
+execution_profile_variance_reason
 evidence_owner
 role_boundary
 direct_exception
@@ -198,6 +202,100 @@ legacy `formal` must be narrowed to `formal-readonly` or `formal-write`.
 - `unavailable`
 - `blocked`
 - `not-authorized`
+
+`execution_profile_application_state` records canonical observed application
+state after channel receipt handling:
+
+- `pending`
+- `applied`
+- `applied-with-variance`
+- `unavailable`
+- `blocked`
+- `unverified`
+- `not-applicable`
+
+`applied_model` records a channel-reported opaque ID, or one of:
+
+- `unreported`
+- `not-applied`
+- `not-applicable`
+
+`applied_reasoning_effort` records a channel-reported opaque token, or one of:
+
+- `unreported`
+- `not-applied`
+- `not-applicable`
+
+`execution_profile_variance_reason` is an object with `code` and `detail`.
+Allowed `code` values are:
+
+- `none`
+- `requested-model-unavailable`
+- `requested-effort-unavailable`
+- `requested-channel-unavailable`
+- `platform-selected-alternative`
+- `platform-receipt-missing`
+- `scope-unresolved`
+- `authorization-blocked`
+- `policy-blocked`
+- `requested-snapshot-inconsistent`
+- `channel-capability-unverified`
+- `receipt-conflict`
+- `other`
+- `not-applicable`
+
+The board recomputes canonical application state from the immutable requested
+snapshot, board channel fields, and returned receipt. It never blindly copies
+`execution_profile_application_state` from the receipt. Apply this exact
+matrix; a receipt conflict takes precedence whenever an otherwise applicable
+row contains inconsistent capability, packet ID, run ID, or receipt values:
+
+| Condition | Canonical state | Applied fields | Variance |
+|---|---|---|---|
+| Complete non-executable sentinel tuple: `execution_profile: not-applicable`, model and effort `not-requested`, and both refs `not-applicable` | `not-applicable` | Both `not-applicable` | `not-applicable`; empty detail |
+| Executable snapshot mixes `not-requested` or `not-applicable`, or either ref is `unresolved` or bound to a different packet | `unverified` | Preserve each actually reported value; each missing value is `unreported` | `scope-unresolved` for unresolved or mismatched refs; otherwise `requested-snapshot-inconsistent`; non-empty detail |
+| `channel_capability: unavailable` and no actual applied value exists | `unavailable` | Both `not-applied` | `requested-channel-unavailable`; non-empty detail |
+| `channel_invocation_status: unavailable`, no actual applied value exists, and no conflicting capability or receipt evidence exists | `unavailable` | Both `not-applied` | `requested-channel-unavailable`; non-empty detail |
+| `channel_capability: unverified` | `unverified` | Preserve each actually reported value; each missing value is `unreported` | `channel-capability-unverified`; non-empty detail |
+| Capability is `available` or `conditional`, invocation is `not-started`, `requested`, or `running`, and receipt is `pending` | `pending` | Both `unreported` | `not-applicable`; empty detail |
+| Invocation is `blocked` or `not-authorized` and no actual applied value exists | `blocked` | Both `not-applied` | `policy-blocked` for `blocked`; `authorization-blocked` for `not-authorized`; non-empty detail |
+| Invocation is `returned`, but the receipt is missing or partial | `unverified` | Preserve each actually reported value; each missing value is `unreported` | `platform-receipt-missing`; non-empty detail naming every missing receipt field |
+| Invocation is `returned`, the receipt is complete, and all requested comparisons match | `applied` | Both actual channel-reported values | `none`; empty detail |
+| Invocation is `returned`, the receipt is complete, and at least one requested comparison mismatches | `applied-with-variance` | Both actual channel-reported values | `platform-selected-alternative`, or `requested-model-unavailable` / `requested-effort-unavailable` when the channel explicitly reports that cause; non-empty detail |
+| Capability, invocation, packet ID, run ID, or receipt values are inconsistent | `unverified` | Preserve each actually reported value; each missing value is `unreported`; never infer a value | `receipt-conflict`; non-empty detail naming the conflict |
+
+A complete `applied_execution_receipt` contains every field required by the
+handoff receipt schema: `handoff_packet_id`, `channel_run_id`,
+`execution_profile_application_state`, `applied_model`,
+`applied_reasoning_effort`, and `execution_profile_variance_reason`. The packet
+ID and run ID must match the board row. The receipt application state must be a
+valid application-state value, and the variance reason must contain a valid
+code and a detail that follows the empty/non-empty rule below. Actual model and
+reasoning-effort values must be channel-reported and must not be `unreported`,
+`not-applied`, `not-applicable`, or any other sentinel.
+
+The receipt's application state and variance reason are validated inputs to
+reconciliation, not canonical outputs. The board still recomputes canonical
+state and variance from the requested snapshot, board channel fields, and the
+whole receipt; it does not blindly copy either receipt self-report.
+
+A receipt missing any required field, including its application state or
+variance reason, is partial. A partial receipt is never complete and cannot
+reach `applied` or `applied-with-variance`; it is `unverified` with
+`platform-receipt-missing` and non-empty detail naming every missing field.
+
+Requested-value comparison is exact:
+
+- `platform-default` accepts any actual channel-reported value, never a sentinel.
+- `exact:<opaque>` strips only the `exact:` prefix and compares the remainder verbatim.
+- Requested effort `low`, `medium`, or `high` compares verbatim with the actual effort.
+
+An exact model mismatch, exact effort mismatch, unreported model or effort,
+unavailable channel, or unverified channel cannot yield `applied`. A partial
+receipt is always `unverified`, never `applied-with-variance`.
+
+For `none` and `not-applicable`, `detail` must be empty. For every other
+variance code, `detail` must be non-empty.
 
 `station_mode` records the station posture:
 

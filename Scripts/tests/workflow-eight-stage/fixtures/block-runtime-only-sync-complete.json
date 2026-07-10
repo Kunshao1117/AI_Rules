@@ -1,0 +1,28 @@
+{
+  "case": "block-runtime-only-sync-complete",
+  "description": "A runtime-only pair omits required sync evidence and parity but is reported as complete.",
+  "closeout_target": "source-level",
+  "reported_completion_state": "complete",
+  "captain_authored": false,
+  "source_deployed_pair": {
+    "source": "Shared/policies/workflow-orchestration.md",
+    "runtime": ".agents/shared/policies/workflow-orchestration.md",
+    "sync_direction": "runtime-only"
+  },
+  "artifact_chain": {
+    "change_delivery": "present",
+    "validation": "passed",
+    "review": "accepted",
+    "memory_docs": "memory-attributed-no-write",
+    "director_output_gate": "passed"
+  },
+  "protected_follow_up": {
+    "state": "none",
+    "phase": "none"
+  },
+  "expected": {
+    "completion_allowed": false,
+    "source_level_allowed": false,
+    "reason": "runtime-only sync and absent sync evidence/parity cannot support completion"
+  }
+}

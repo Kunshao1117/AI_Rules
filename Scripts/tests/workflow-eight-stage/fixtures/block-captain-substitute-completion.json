@@ -1,0 +1,30 @@
+{
+  "case": "block-captain-substitute-completion",
+  "description": "Captain substitute authoring is offered as if it were a station-owned completion artifact.",
+  "closeout_target": "process-complete",
+  "reported_completion_state": "complete",
+  "captain_authored": true,
+  "source_deployed_pair": {
+    "source": "Shared/policies/language-governance.md",
+    "runtime": ".agents/shared/policies/language-governance.md",
+    "sync_direction": "source-to-runtime",
+    "sync_evidence": "hash parity recorded"
+  },
+  "artifact_chain": {
+    "change_delivery": "captain-substitute",
+    "validation": "passed",
+    "review": "accepted",
+    "memory_docs": "memory-attributed-no-write",
+    "source_runtime_hash_parity": "present",
+    "director_output_gate": "passed"
+  },
+  "protected_follow_up": {
+    "state": "none",
+    "phase": "none"
+  },
+  "expected": {
+    "completion_allowed": false,
+    "source_level_allowed": false,
+    "reason": "captain substitute authoring cannot support completion"
+  }
+}

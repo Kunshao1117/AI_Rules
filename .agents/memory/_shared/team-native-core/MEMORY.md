@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-07-09T22:16:36+08:00'
+last_updated: '2026-07-10T17:18:06+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-09T22:07:58+08:00'
+last_verified: '2026-07-10T10:49:35+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
-cycle_id: 2026-06-28-001
-cycle_event_count: 9
+cycle_id: 2026-07-10-001
+cycle_event_count: 1
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -34,36 +34,34 @@ metadata:
 
 # _shared.team-native-core — Team-Native Core Governance Memory
 ## Current Truth
-- This card points to Team-Native Core source/status ownership for workflow orchestration/scenarios, platform plan mapping, evidence refs, dispatch gates, trace, role boundaries, and completion contracts; canonical rules live in tracked Shared policies, references, and skills.
-- Governed user requests activate Team-Native / Team mode for governance, workflow, fix/build/debug/test/audit, skill, memory/docs, commit, handoff, source/public-contract work, or team/subagent/delegation dispatch; otherwise prior context, workflow names, tools, prompts, and approvals are route signals only.
-- The Director-facing captain coordinates intake, Team decision, dispatch, board maintenance, delivery receipt, synthesis, blockers, authorization requests, and reporting; broad/deep reads, implementation, validation, review, memory/docs attribution, protected execution, and completion evidence remain owner-station work.
-- Authorization Resolution binds scope for GO, interface approvals, platform prompts, workflow names, protected mutations, owner-station paths, formal delegation, boards, traces, artifacts, and completion gates; blocked/unverified/standby/not-authorized/closed-with-director-risk are states.
-- Executable workflow work now carries `intent_envelope`, `overreach_check`, `design_reflection`, and `intent_grounding_and_reflection_handoff` as route/evidence fields; these shape boundaries and handoffs but do not replace write authorization, validation, review, memory/docs, protected gates, or completion evidence.
-- Hook governance covers SessionStart, UserPromptSubmit, SubagentStart, PreToolUse, Stop, and SubagentStop; hook target/evidence surfaces require explicit scope or blocked/unverified state and are not station-owned review, validation, memory/docs, or completion evidence.
-- Platform/workflow/subagent/completion governance cites shared language/grounding policies; Shared references live under `Shared/policies/references/`, cartridge metadata sync is protected `memory_commit`, and lane routing applies exclusion-first negative contract before `tiny`/`light`, with invalid tiny/light routes moving to the minimal sufficient station route, usually `standard`.
-- `team-completion-gate` and `team-task-board` slim repeated Director-facing language/output rules into citations to `Shared/policies/language-governance.md` while preserving canonical fields, authorization, role-boundary, sync, and completion evidence gates; source/runtime skill parity was verified on 2026-07-09.
+- Team-Native has one governed eight-stage mainline; its normative order runs from resolved spec and handoff through channel receipt, board ledger, delivery, validation/review, memory/docs, and completion, while entries, policies, matrices, skills, boards, handoffs, and artifacts remain layers of that route rather than alternate mainlines.
+- Stage 2 records `workflow_entry_ref` and `stage_procedure_ref`; Stage 7 records `behavior_counterevidence`; Stage 8 records `source_deployed_pair`, `sync_direction`, and hash/content parity evidence or an honest blocked/unverified state.
+- An executable `requested_execution_snapshot` freezes only after the same handoff packet materializes and seals `#context-scope` and `#wait-policy`, binds both refs, and resolves the spec; changing either anchor requires a new packet ID.
+- Requested profile/model/reasoning fields record intent only: delegation resolves `fast`/`balanced`/`deep` without changing scope, role, authorization, protected gates, completion requirements, or wait duration, and never treats requested values as proof of platform application.
+- `applied_execution_receipt` is channel input; the board recomputes canonical observed state from the immutable snapshot, channel fields, and whole receipt. Missing or partial applied values are never inferred and remain `unverified` with `platform-receipt-missing`.
+- The captain cannot substitute implementation, validation, review, memory/docs attribution, protected execution, or completion evidence; memory retains separate task-start clue, post-task disposition, protected write, and separately authorized `memory_commit` touchpoints.
+- Source-level delivery may leave protected follow-up pending, but process-complete/release-ready require requested protected memory phases and sync evidence; Director-facing readiness never alters source truth or station evidence state.
 ## Active Constraints
-- This card is a source/status pointer; canonical behavior lives in tracked Shared policies/references/skills, and `complete` requires separated delivery, memory/docs, review, validation, trace, and parity evidence because captain synthesis, fast closeout, plan mirrors, evidence branches, coordination, flowcharts, and hook/runtime guards are non-owner/non-authorizing signals.
-- Commit/preflight overrides must be single-use, exact-file allowlists with current diff/hash binding where available, auditable reason, expiry, and responsible owner; wildcard, persistent, or policy-level overrides are forbidden, and unexpected dirty/untracked files remain blockers.
+- Bare skill triggers, route fields, plan mirrors, hooks, and runtime guards are non-authorizing and cannot replace the artifact chain.
+- Missing memory/docs, validation, review, sync/parity, or Director-output evidence stays non-complete under the canonical state machine.
 ## Cycle Events
-- 25-54: Consolidated governed activation, captain limits, station-owned delivery, authorization, channel/route/review states, workflow scenarios/evidence, hook stop states, trusted receipts, trace startup, delegation preconditions, TGDL closeout, exclusion-first lane routing, fast-closeout limits, and scoped hook evidence surfaces.
-- 55: Recorded team-completion-gate and team-task-board language-rule slimming into language-governance citations while preserving canonical fields and source/runtime parity.
-- 56: Recorded intent envelope, overreach check, design reflection, and downstream grounding/reflection handoff fields as non-authorizing workflow evidence.
+- 01: Compacted prior events; recorded the single eight-stage mainline, sealed-anchor snapshot order, requested-versus-applied boundary, canonical receipt ledgering, four memory touchpoints, five-pair parity, and 9/9 validation evidence.
 ## Archive Index
 - archive-001.md / archive-002.md — Older cycle events 1-19 compacted from the active card.
 ## Evidence Base
-- source/artifact: Shared/deployed workflow lane and Team governance pairs plus TGDL memory/validation/review artifacts were reported validated/reviewed on 2026-07-08; lane routing now uses exclusion-first negative contract, scoped hook evidence surfaces, and standard-minimum source closeout.
-- source:Shared/policies/workflow-orchestration.md, Shared/policies/references/workflow-execution-spec-contract.md, Shared/workflow-stage-procedures.md, Shared/skills/design-reflection-gate/SKILL.md, and Shared/skills/coding-reflection-gate/SKILL.md — Verified intent envelope, overreach, design reflection, and handoff field boundaries on 2026-07-09.
-- source:Shared/skills/team-completion-gate/SKILL.md, .agents/skills/team-completion-gate/SKILL.md, Shared/skills/team-task-board/SKILL.md, and .agents/skills/team-task-board/SKILL.md — Verified Director-facing language-governance citations and source/runtime parity on 2026-07-09.
-- source:Shared/policies/team-native-core.md, Shared/policies/subagent-invocation.md, Shared/policies/references/hook-event-matrix.md, and Shared/policies/references/source-runtime-surface-map.md — Team mode trigger, captain limits, subagent/station boundaries, active hook matrix, and source/runtime surface mapping.
-- source/upstream_artifact:Shared workflow orchestration, scenario, platform mapping, workflow reference, and execution-spec sources — Route/state, lifecycle, authorization, scenarios, platform plan, optional reflection routing, closeout target, minimal reference packet, and memory follow-up contract.
-- tool/director: Commit-preflight compaction evidence, 2026-06-30 GO compaction authorization, and 2026-07-07 protected-flow handoff validation/review for workflow/team-task-board source/deployed counterparts.
+- source: `Shared/policies/references/workflow-execution-spec-contract.md`, `Shared/skills/team-station-handoff-packet/SKILL.md`, and `Shared/skills/delegation-strategy/SKILL.md` — sealed-anchor snapshot order, immutable carrier, requested-intent profiles, and unchanged authority/wait boundaries.
+- source: `Shared/skills/team-task-board/references/board-field-catalog.md` and `Shared/policies/workflow-orchestration.md` — receipt reconciliation, canonical observed board state, missing-receipt handling, and sole normative sequence.
+- artifact: supplied source review and validation summaries — five source/runtime pairs reached parity and the execution-profile/receipt suite passed 9/9.
 ## Read Contract
-- This card is the pre-change ownership context for Team-Native Core policy, subagent policy, task board, platform plan mapping, workflow evidence references, platform/workflow matrix, specialist skills, dispatch gates, and Doctor team governance checks; `_shared` provides parent navigation and `_system.scripts` provides root PowerShell implementation context.
+- Read this card for Team-Native mainline, stage evidence, station/completion contracts, and protected memory lifecycle ownership; current tracked source remains canonical.
 ## Conflicts and Supersession
-- Supersedes older memory wording that framed team collaboration as optional helper branches.
+- superseded: multi-mainline, optional-helper, or parallel skill-mechanism interpretations are replaced by the single eight-stage mainline.
+- superseded: a bare skill trigger cannot stand in for a resolved station, authorization, artifact chain, or completion state.
+- superseded: task-start memory read, post-task disposition, memory write, and `memory_commit` are separate touchpoints, not one merged memory phase.
 ## 中文摘要
-- 此卡是 Team-Native policy、workflow orchestration/scenarios、platform plan mapping、workflow evidence refs 與 station/completion governance owner；`team-completion-gate` 與 `team-task-board` 已把重複的總監輸出規則瘦身為 `language-governance` 引用，且保留 canonical fields、authorization、role-boundary、sync 與 completion evidence gates。
+- Team-Native 只有一條八階段主線；workflow、skill、board 與 artifact 都是同一路徑的不同層次。
+- 同一 handoff packet 必須先封存 context/wait anchors，才能凍結 requested snapshot；requested profile/model/reasoning 只表達意圖，不授權、不改範圍或等待時間，也不證明平台實際套用。
+- Channel receipt 只是輸入，board 才重算 canonical observed state；缺漏不得推定，維持 `unverified / platform-receipt-missing`。四個 memory touchpoints 仍彼此分離。
 ## Tracked Files
 - Shared/policies/authorization-resolution.md
 - Shared/policies/team-native-core.md

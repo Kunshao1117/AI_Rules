@@ -119,28 +119,56 @@ They are non-authorizing examples only.
 
 They show concrete cooperation flows, but do not grant authorization, create new completion states, or override this contract.
 
+## Team-Native Topology Map
+
+Team-Native has one governed workflow mainline. This policy owns the route sequence and
+responsibility handoff for that mainline. Workflow entries, shared policies, matrices, skills,
+boards, handoff packets, and delivery artifacts are layers of the same route, not separate
+workflow, policy, or skill mechanisms.
+
+- Team-Native Core plus Authorization Resolution own the hard gates and authorization boundaries.
+  They decide whether work may enter Team mode, write, or protected phases.
+- Workflow entries are thin route selectors. They name the workflow row, stage-procedure reference,
+  evidence-matrix row, and executable input they require; they do not fork the lifecycle sequence.
+- Team Trace Evidence owns evidence and audit recording only. It records whether the route produced
+  required evidence; it does not create authorization, station states, or completion permission.
+- Workflow Orchestration alone owns lifecycle and entry order, transition rules, dispatch waves,
+  handoff timing, and missing-evidence routing.
+- The workflow capability evidence matrix owns only per-workflow route and evidence expectations;
+  it does not own lifecycle or entry order.
+- Skills, Team Task Board, Handoff Packet, and delivery artifacts form the operation and evidence
+  execution layer. They carry assigned work, returned artifacts, and downstream handoffs without
+  redefining the gates above.
+- Behavior counter-evidence enters the mainline through intent envelope, overreach check, design
+  reflection, station evidence, drift check, validation, and review. It is evidence routing, not a
+  separate workflow.
+- Source/deployed sync enters the mainline through `source_deployed_pair`, `sync_direction`, and
+  `sync_evidence` before source-level closeout when a runtime or generated pair exists.
+
+Do not add board states, station states, completion states, field catalogs, test fixtures, or
+playbooks to this map.
+
 ## Entry Sequence
 
 Canonical stage order:
 
-```text
-workflow route
--> intent envelope
--> overreach check
--> external grounding trigger
--> design reflection gate
--> governed/guarded action classification
--> captain prohibition guard
--> lifecycle lane and stage disposition
--> authorization resolution
--> operation_mode
--> board_template and board_state
--> station set, dispatch wave, and handoff packet
--> delivery artifact or terminal station state
--> validation and review
--> memory/docs attribution
--> closeout target and completion judgment
-```
+This sequence is the only mainline a workflow entry may invoke.
+
+Both statements refer to the detailed Entry Sequence below. Non-normative orientation only: its
+concerns include request boundaries, station execution, receipt evidence, and governed closeout;
+this compact orientation is thematic and non-sequential.
+
+Mainline responsibility anchors:
+
+- Stage 1 unique mainline: this policy owns order and responsibility handoff; other sources cite it
+  instead of creating alternate lifecycle tracks.
+- Stage 2 workflow entry: entry files and workflow skills keep route selection, row references,
+  stage-procedure pointers, and load gates only.
+- Stage 7 behavior counter-evidence: disconfirming evidence is recorded in the existing intent,
+  reflection, station, drift, validation, and review fields instead of opening a parallel
+  counter-evidence flow.
+- Stage 8 source/deployed sync: source/runtime or generated-copy parity is recorded with the
+  paired sync fields and remains blocked or unverified when hash or content parity is missing.
 
 When Team mode is active, every workflow entry follows this team sequence before these actions:
 
@@ -176,32 +204,44 @@ Director instruction
 -> lifecycle lane routing and stage disposition gate
    using `workflow-lane-routing.md`; `not-applicable` and `reduced-by-lane` are valid dispositions
 -> authorization resolution
--> machine-readable `execution_spec` gate
-   when station or tool execution depends on workflow instructions
 -> existing worktree change integration gate when the target file is dirty
 -> source-document size/split impact gate
    when source-bearing documents, scripts, modules, skills, policies, or rule packs are written or grown
--> operation_mode
--> board_template
--> board_state
--> station set
--> dispatch wave
--> station handoff packet
--> station mode, context visibility, and handoff ownership recorded
--> captain boundary pre-action guard before any captain broad or evidence-producing tool action
--> channel capability and channel invocation status
--> first response and lifecycle event policy recorded when applicable
+-> operation_mode and applicable role, authorization, and protected-gate requirements
+-> conditional task-start memory clue
+   only when the route's declared memory awareness and prior project decisions can affect the
+   current task; this is read-only clue material and never replaces current source, current diff,
+   current platform evidence, or scoped authorization
+-> execution profile and requested model/reasoning intent resolution plus draft machine-readable `execution_spec`
+   using the execution spec contract and delegation strategy; requested intent is not applied state,
+   and executable context/wait references remain unresolved until handoff anchors exist
+-> board_template and board_state
+-> station set and dispatch wave
+-> draft station handoff packet
+   create its handoff packet ID and record station mode, context visibility, handoff ownership,
+   loaded skill refs, scope, forbidden actions, output format, and stop condition
+-> materialize and seal the packet's `#context-scope` and `#wait-policy` anchors
+-> bind `context_scope_ref` and `wait_policy_ref` to those anchors on the same handoff packet ID
+-> resolve the `execution_spec`
+-> freeze the immutable `requested_execution_snapshot` from the resolved spec
+-> channel capability, channel invocation status, and first-response/lifecycle policy
    status probe pause, captain resume, timeout, replacement, cancellation, late result
--> hook event lifecycle check when explicitly scoped repo-managed hooks provide route context
+-> startup-complete gate
+   verify required packet, snapshot, channel, scope, role, ownership, artifact, and stop fields before dispatch
+-> explicitly scoped lifecycle context
+   apply repo-managed hook lifecycle context only when hooks are explicitly scoped
+-> execute the selected channel
+-> channel returns applied_execution_receipt
+-> board recomputes canonical observed application state from the requested snapshot, channel fields,
+   and receipt instead of copying receipt state; only the board ledger is canonical observed state
 -> returned delivery artifact or blocked/unverified/standby state
--> captain receipt, board update, blocker/conflict/authorization handling
+-> blocker/conflict/authorization handling
 -> validation, evidence-based validation judgment, review, drift/sync evidence
 -> memory/docs disposition after validation and review reach terminal evidence states
--> protected-memory-write when `closeout_target` requires process-complete or release-ready
-   and memory is required
--> protected-memory-commit after protected-memory-write when required memory mutation must be
-   committed
--> completion audit
+-> applicable protected memory phases
+   protected-memory-write when the closeout target requires process-complete or release-ready and
+   memory is required, then protected-memory-commit when that mutation must be committed
+-> completion audit and closeout-target completion judgment
 ```
 
 Workflow route is not authorization.
@@ -416,19 +456,10 @@ phases for `process-complete` and `release-ready`.
 
 ## Workflow Loop Contract
 
-Workflow execution is a bounded control loop:
-
-```text
-Director request
--> workflow route
--> machine-readable execution_spec
--> station handoff packet
--> station work
--> minimal_reference_packet or delivery artifact
--> captain drift_check
--> transition_decision
--> next wave, retry, reroute, blocked, unverified, or risk closure
-```
+Workflow execution is a bounded control loop inside the sole normative Entry Sequence above; this
+section does not define a second mainline. After a station returns its minimal reference packet or
+delivery artifact, the captain records `drift_check` and `transition_decision`, then follows the
+Entry Sequence's next-wave, retry, reroute, blocked, unverified, or risk-closure handling.
 
 The canonical loop fields and transition values live in
 `Shared/policies/references/workflow-execution-spec-contract.md`. This policy owns only the
@@ -474,6 +505,12 @@ Do not repeatedly ask for internal phase words when the only honest next state i
 Every formal station needs a handoff packet before it can produce formal evidence.
 
 This policy records the handoff point in the sequence.
+
+The handoff consumes the resolved requested execution snapshot before a channel starts. The channel
+then returns an applied execution receipt, the captain logs that receipt to the board as canonical
+observed state, and only then routes the delivery artifact or terminal station state. The execution
+spec owns requested intent, the handoff skill owns carrier shape, and the board catalog owns observed
+state values; this policy defines only that order.
 
 Packet fields and channel lifecycle details stay in the sources below.
 The same is true for status probe, replacement, cancellation, late-result, and receipt-decision details.

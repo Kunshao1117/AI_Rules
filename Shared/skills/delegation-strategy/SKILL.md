@@ -63,6 +63,48 @@ The formal board lifecycle records `dispatch wave`, `previous-wave input`,
 classification`, and `repair loop limit`; long value catalogs stay in
 `references/team-dispatch-gates.md`.
 
+### Execution Profile Resolution
+
+After task type is known and before any execution channel is chosen, resolve the
+requested execution profile and requested defaults:
+
+- Pure discussion or work with no executable station uses `not-applicable`,
+  `requested_model: not-requested`, `requested_reasoning_effort:
+  not-requested`, and `not-applicable` context/wait references. The presence of
+  these fields never activates Team mode.
+- Narrow, clearly bounded read-only work uses `fast`, `requested_model:
+  platform-default`, and `requested_reasoning_effort: low`.
+- General work, a single-file source change, or a requirements/scope-resolution
+  station uses `balanced`, `requested_model: platform-default`, and
+  `requested_reasoning_effort: medium`.
+- Cross-module work, external research, high-risk work, or protected work uses
+  `deep`, `requested_model: platform-default`, and
+  `requested_reasoning_effort: high`.
+
+These are the only execution profile selection rules. `high-assurance` is a
+governance requirement and `scope-resolution` is a route or station; neither is
+an execution profile. An exact requested model may come only from the current
+Director's explicit request or the current dispatch resolution citing presently
+verified platform capability or execution evidence. Do not encode named models
+in profiles, policies, or long-term defaults.
+
+An exact requested reasoning effort, `exact:<opaque-token>`, follows the same
+source-legitimacy rule. It may appear only in the current per-task execution spec
+when grounded in a current explicit Director request or current verified
+platform/channel evidence. It must never become a permanent profile enum or
+default, and it must not be inferred from prior availability.
+
+Requested profile, model, and effort are intent, not authority or availability
+guarantees. They cannot remove roles, alter route or scope, relax authorization
+or protected gates, or change completion requirements. If the requested channel,
+model, or effort is unavailable, preserve requested intent and record the
+`unavailable` / `not-applied` / variance outcome through the canonical board
+fields; do not silently downgrade. Applied-field values and consistency rules
+remain owned by the board field catalog. Delegation selects requested intent
+only; it never derives applied state and never sets wait durations. Materialized
+startup timing is owned by Handoff Packet Startup Monitoring through the current
+`wait_policy_ref`; do not add profile-specific fixed wait durations.
+
 ## Team-Native Minimum Execution Gate
 
 Captain limits follow the `Captain Boundary Anchor / 隊長邊界錨點` in
@@ -82,11 +124,15 @@ artifact, then `blocked`.
 For each applicable station:
 
 1. Select the specialist from `team-specialist-registry`.
-2. Build a handoff packet with loaded skill refs, read scope, forbidden actions,
-   output format, startup deadline, and stop condition.
-3. Record requested execution channel, channel capability, channel invocation
-   status, station lifecycle, standby reason, and closeout lane.
-4. Return a delivery artifact or mark `blocked`, `unverified`, `standby`, or
+2. Resolve the execution profile and requested model/effort intent under the
+   pre-gate above.
+3. Build a handoff packet with the immutable requested execution snapshot,
+   loaded skill refs, read scope, forbidden actions, output format, referenced
+   wait policy, and stop condition.
+4. Record requested execution channel, channel capability, channel invocation
+   status, station lifecycle, standby reason, and closeout lane. Ledger returned
+   applied execution state through the canonical board fields.
+5. Return a delivery artifact or mark `blocked`, `unverified`, `standby`, or
    `closed-with-director-risk`.
 
 Mandatory route anchors remain: Implementation station with governed isolated

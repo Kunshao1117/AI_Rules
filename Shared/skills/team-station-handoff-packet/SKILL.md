@@ -62,8 +62,8 @@ Before the captain starts a specialist channel, the packet must be startup-compl
 `handoff_ownership`, `assigned_specialist_skill`, `read_scope`, `allowed_tools`,
 `forbidden_actions`, channel state (`requested_execution_channel`, `channel_capability`, and
 `channel_invocation_status`, or an explicit blocked/unverified reason), `delivery_artifact_type`,
-and `stop_condition` must be present. If any item is missing, do not dispatch it as formal work;
-record the station as blocked or unverified.
+`requested_execution_snapshot`, and `stop_condition` must be present. If any item is missing, do
+not dispatch it as formal work; record the station as blocked or unverified.
 
 Required packet overlay:
 
@@ -81,6 +81,7 @@ exclusive_task_scope:
 assigned_specialist_skill:
 loaded_skill_refs:
 handoff_ownership:
+requested_execution_snapshot:
 one_concrete_task:
 allowed_inputs:
 read_scope:
@@ -136,6 +137,64 @@ minimal_reference_packet:
 The packet inherits operation mode, board state, authorization fields, phase, dispatch wave,
 platform mode, and completion condition from the board row in `team-task-board`. Do not duplicate
 the complete board field set here.
+
+`requested_execution_snapshot` is an immutable carrier copied from the resolved execution spec:
+
+```text
+requested_execution_snapshot: {
+  execution_spec_id,
+  spec_version,
+  execution_profile,
+  requested_model,
+  requested_reasoning_effort,
+  context_scope_ref,
+  wait_policy_ref
+}
+```
+
+Its field values remain owned by the execution spec contract. The snapshot does not create
+authorization or prove platform application. For executable station work, unresolved context or
+wait references keep the packet startup-incomplete.
+
+Before the execution spec resolves, the draft handoff packet materializes and seals these anchor
+projections:
+
+```text
+#context-scope: {
+  allowed_inputs,
+  read_scope,
+  allowed_paths_or_resources,
+  deep_read_scope,
+  captain_coordination_read_scope,
+  context_visibility,
+  unread_scope
+}
+
+#wait-policy: {
+  startup_monitoring_class,
+  first_useful_response_default,
+  startup_started_at,
+  first_response_deadline,
+  soft_timeout_at,
+  hard_timeout_at,
+  status_probe_policy,
+  replacement_policy,
+  cancellation_policy,
+  timeout_action,
+  late_result_policy,
+  late_result_window
+}
+```
+
+`context_scope_ref` and `wait_policy_ref` must bind to those two anchors on the same
+`handoff_packet_id`. Changing either sealed projection requires a new `handoff_packet_id`. A
+resolved spec and its immutable requested snapshot must not drift to changed anchor content.
+
+`status_probe_policy` materializes when a probe is permitted, the pause/report requirement, and the
+explicit-resume requirement. `replacement_policy` materializes replacement eligibility and the new
+channel rule without implying cancellation. `cancellation_policy` materializes explicit request and
+acknowledgement requirements and the treatment of late returns. These fields make the lifecycle
+behavior below addressable through the sealed wait-policy anchor.
 
 External grounding fields are conditional packet inputs. When local source is insufficient or likely
 stale, the requesting station records whether outside evidence is required, the exact research
@@ -222,9 +281,10 @@ station owns the research evidence.
 
 ## Startup Monitoring
 
-Record startup monitoring for every packet:
+Record startup monitoring for every executable packet by materializing its sealed `#wait-policy`
+projection with one existing startup monitoring class:
 
-| Station type | First useful response default |
+| Startup monitoring class | First useful response default |
 |---|---|
 | Small read-only evidence | 2 to 5 minutes |
 | Broad file or external research | 5 to 12 minutes |
@@ -232,8 +292,14 @@ Record startup monitoring for every packet:
 | Authorized change-application | 5 to 15 minutes |
 | Validation command branch | Command timeout plus 2 minutes |
 
-Thresholds are monitoring defaults, not automatic failure claims. If setup needs longer, record the
-reason in `standby_reason`.
+These classes monitor startup only. They never select or change an execution profile, workflow
+route, station, role, or delivery mode, and they add no profile-specific duration. If the packet
+cannot map to one of these existing classes, `wait_policy_ref` remains `unresolved` and the packet
+remains blocked or unverified.
+
+Materialize `first_response_deadline`, soft/hard timeout, `status_probe_policy`,
+`replacement_policy`, `cancellation_policy`, and late-result fields from the referenced wait
+policy. If setup needs a policy-permitted extension, record the reason in `standby_reason`.
 
 Valid timeout actions are standby, replace, blocked, unverified, or ask the Director.
 
@@ -267,7 +333,25 @@ substation_task:
 member_assignment:
 specialist_deep_read_evidence:
 minimal_reference_packet:
+applied_execution_receipt:
 ```
+
+`applied_execution_receipt` is `pending`, `not-applicable`, or this returned object:
+
+```text
+applied_execution_receipt: {
+  handoff_packet_id,
+  channel_run_id,
+  execution_profile_application_state,
+  applied_model,
+  applied_reasoning_effort,
+  execution_profile_variance_reason
+}
+```
+
+The receipt carries what the channel reported and uses the board catalog's observed-state values;
+it does not redefine them here. Only after the captain logs the receipt into the board ledger does
+the board become the canonical observed execution state.
 
 Then use the matching delivery format from `team-task-board` or the dedicated delivery artifact
 skill.
