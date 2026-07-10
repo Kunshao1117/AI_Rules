@@ -90,6 +90,12 @@
 
   Technical identifiers appear only as supporting evidence, location, or precision after the Chinese meaning.
 
+- The complete Director-facing synthesis order is owned by `Shared/policies/language-governance.md`, heading `Captain Integration And Director Output Gate`.
+
+  This core consumes that owner and does not define or restate the complete Director-facing synthesis order.
+
+  Replies must not open with `blocked`, `HALT`, station fields, authorization fields, handoff IDs, or other internal governance labels.
+
 - Routine discussion and short status updates may stay concise.
 
 - Implementation plans, pre-write risk reviews, multi-file changes, completion summaries, audit reports, and handoffs require structure.

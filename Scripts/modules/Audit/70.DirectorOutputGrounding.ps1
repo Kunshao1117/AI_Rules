@@ -1,6 +1,192 @@
 ﻿# Internal partial for Audit.psm1. Loaded by the facade only.
 # Director output quality and grounding
 
+function Get-DirectorOutputMarkdownBlocks {
+    param(
+        [Parameter(Mandatory = $true)][string]$Content
+    )
+
+    $lines = @($Content -split '\r?\n')
+    $blocks = New-Object System.Collections.Generic.List[object]
+    $index = 0
+
+    while ($index -lt $lines.Count) {
+        if ([string]::IsNullOrWhiteSpace($lines[$index])) {
+            $index++
+            continue
+        }
+
+        $startIndex = $index
+        $line = $lines[$index]
+        if ($line -match '^[ \t]*\|') {
+            $blocks.Add([PSCustomObject]@{ Kind = 'TableRow'; Line = $index + 1; Text = $line })
+            $index++
+            continue
+        }
+        if ($line -match '^[ \t]*#{1,6}[ \t]+') {
+            $blocks.Add([PSCustomObject]@{ Kind = 'Heading'; Line = $index + 1; Text = $line })
+            $index++
+            continue
+        }
+
+        $kind = if ($line -match '^[ \t]*[-*+][ \t]+') { 'Bullet' } else { 'Paragraph' }
+        $blockLines = New-Object System.Collections.Generic.List[string]
+        $blockLines.Add($line)
+        $index++
+
+        while ($index -lt $lines.Count) {
+            $candidate = $lines[$index]
+            if ([string]::IsNullOrWhiteSpace($candidate)) { break }
+            if ($candidate -match '^[ \t]*\|' -or $candidate -match '^[ \t]*#{1,6}[ \t]+') { break }
+            if ($candidate -match '^[ \t]*[-*+][ \t]+') { break }
+            $blockLines.Add($candidate)
+            $index++
+        }
+
+        $blocks.Add([PSCustomObject]@{
+            Kind = $kind
+            Line = $startIndex + 1
+            Text = ($blockLines -join "`n")
+        })
+    }
+
+    return @($blocks.ToArray())
+}
+
+function Test-DirectorActionForwardBlockOrder {
+    param(
+        [Parameter(Mandatory = $true)][string]$Text,
+        [Parameter(Mandatory = $true)][string[]]$Markers
+    )
+
+    $position = -1
+    foreach ($marker in $Markers) {
+        $position = $Text.IndexOf($marker, $position + 1, [StringComparison]::Ordinal)
+        if ($position -lt 0) { return $false }
+    }
+    return $true
+}
+
+function Test-DirectorActionForwardStructuralContract {
+    param(
+        [Parameter(Mandatory = $true)][object[]]$Targets
+    )
+
+    $ownerHeading = 'Captain Integration And Director Output Gate'
+    $soleOwnerDeclaration = 'This section is the sole owner of the complete Director-facing synthesis order and evidence-appendix boundary.'
+    $requiredOrderPrefix = 'The required visible main-body order is:'
+    $consumerPolicyPath = 'Shared/policies/language-governance.md'
+    $consumerNonOwnerPhrase = 'does not define or restate the complete Director-facing synthesis order'
+    $markers = @('current conclusion/status', 'next step', 'authorization boundary', 'evidence')
+    $findings = New-Object System.Collections.Generic.List[object]
+
+    function Add-ActionForwardFinding {
+        param(
+            [string]$Scope,
+            [string]$Path,
+            [int]$Line,
+            [string]$Reason
+        )
+
+        $findings.Add([PSCustomObject]@{
+            Scope = $Scope
+            Path = $Path
+            Line = [Math]::Max(1, $Line)
+            Reason = $Reason
+        })
+    }
+
+    foreach ($target in @($Targets)) {
+        $scope = [string]$target.Scope
+        $path = [string]$target.Path
+        $contractRole = [string]$target.ContractRole
+        $contentProperty = $target.PSObject.Properties['Content']
+        if ($null -ne $contentProperty) {
+            $content = [string]$contentProperty.Value
+        } elseif (Test-Path -LiteralPath $path -PathType Leaf) {
+            $content = Get-Content -LiteralPath $path -Raw -Encoding UTF8
+        } else {
+            Add-ActionForwardFinding -Scope $scope -Path $path -Line 1 -Reason 'Action-forward contract target is missing.'
+            continue
+        }
+
+        $lines = @($content -split '\r?\n')
+        $blocks = @(Get-DirectorOutputMarkdownBlocks -Content $content)
+
+        if ($contractRole -eq 'owner') {
+            $headingLines = New-Object System.Collections.Generic.List[int]
+            for ($lineIndex = 0; $lineIndex -lt $lines.Count; $lineIndex++) {
+                if ($lines[$lineIndex] -eq "## $ownerHeading") {
+                    $headingLines.Add($lineIndex + 1)
+                }
+            }
+
+            if ($headingLines.Count -ne 1) {
+                $findingLine = if ($headingLines.Count -gt 0) { $headingLines[0] } else { 1 }
+                Add-ActionForwardFinding -Scope $scope -Path $path -Line $findingLine -Reason 'Owner must contain exactly one canonical H2 heading.'
+                continue
+            }
+
+            $ownerStartLine = $headingLines[0]
+            $ownerEndLine = $lines.Count
+            for ($lineIndex = $ownerStartLine; $lineIndex -lt $lines.Count; $lineIndex++) {
+                if ($lines[$lineIndex] -match '^##[ \t]+') {
+                    $ownerEndLine = $lineIndex
+                    break
+                }
+            }
+            $ownerBlocks = @($blocks | Where-Object { $_.Line -gt $ownerStartLine -and $_.Line -le $ownerEndLine })
+            $ownershipBlocks = @($ownerBlocks | Where-Object {
+                $_.Text.IndexOf($soleOwnerDeclaration, [StringComparison]::Ordinal) -ge 0
+            })
+            if ($ownershipBlocks.Count -ne 1) {
+                Add-ActionForwardFinding -Scope $scope -Path $path -Line $ownerStartLine -Reason 'Owner section must contain exactly one sole-owner declaration.'
+            }
+
+            $requiredOrderBlocks = @($ownerBlocks | Where-Object {
+                $_.Text.IndexOf($requiredOrderPrefix, [StringComparison]::Ordinal) -ge 0
+            })
+            if ($requiredOrderBlocks.Count -ne 1) {
+                Add-ActionForwardFinding -Scope $scope -Path $path -Line $ownerStartLine -Reason 'Owner section must contain exactly one required-order block.'
+            } elseif (-not (Test-DirectorActionForwardBlockOrder -Text $requiredOrderBlocks[0].Text -Markers $markers)) {
+                Add-ActionForwardFinding -Scope $scope -Path $path -Line $requiredOrderBlocks[0].Line -Reason 'Owner required-order block must contain all four atomic markers in canonical order.'
+            }
+
+            $definitionBlocks = @($blocks | Where-Object {
+                Test-DirectorActionForwardBlockOrder -Text $_.Text -Markers $markers
+            })
+            if ($definitionBlocks.Count -ne 1) {
+                $findingLine = if ($definitionBlocks.Count -gt 0) { $definitionBlocks[0].Line } else { $ownerStartLine }
+                Add-ActionForwardFinding -Scope $scope -Path $path -Line $findingLine -Reason 'Owner must contain exactly one complete action-forward definition block.'
+            }
+            continue
+        }
+
+        if ($contractRole -ne 'consumer') {
+            Add-ActionForwardFinding -Scope $scope -Path $path -Line 1 -Reason 'Action-forward contract role must be owner or consumer.'
+            continue
+        }
+
+        if ($content.IndexOf($consumerPolicyPath, [StringComparison]::Ordinal) -lt 0) {
+            Add-ActionForwardFinding -Scope $scope -Path $path -Line 1 -Reason 'Consumer is missing the exact language-governance policy path.'
+        }
+        if ($content.IndexOf($ownerHeading, [StringComparison]::Ordinal) -lt 0) {
+            Add-ActionForwardFinding -Scope $scope -Path $path -Line 1 -Reason 'Consumer is missing the exact owner heading.'
+        }
+        if ($content.IndexOf($consumerNonOwnerPhrase, [StringComparison]::OrdinalIgnoreCase) -lt 0) {
+            Add-ActionForwardFinding -Scope $scope -Path $path -Line 1 -Reason 'Consumer is missing the non-owner declaration.'
+        }
+
+        foreach ($block in $blocks) {
+            if (Test-DirectorActionForwardBlockOrder -Text $block.Text -Markers $markers) {
+                Add-ActionForwardFinding -Scope $scope -Path $path -Line $block.Line -Reason 'Consumer contains a duplicate complete action-forward definition block.'
+            }
+        }
+    }
+
+    return @($findings.ToArray())
+}
+
 function Measure-DirectorOutputContract {
     <#
     .SYNOPSIS
@@ -155,6 +341,26 @@ function Measure-DirectorOutputContract {
             Severity = $Severity
             File     = $File
             Reason   = $Reason
+        })
+    }
+
+    $actionForwardContractTargets = @(
+        [PSCustomObject]@{ Scope = 'language-governance-source'; Path = Join-Path $RepoRoot 'Shared\policies\language-governance.md'; ContractRole = 'owner' },
+        [PSCustomObject]@{ Scope = 'language-governance-runtime'; Path = Join-Path $TargetRoot '.agents\shared\policies\language-governance.md'; ContractRole = 'owner' },
+        [PSCustomObject]@{ Scope = 'codex-core-source'; Path = Join-Path $RepoRoot 'Codex\.codex\AGENTS.md'; ContractRole = 'consumer' },
+        [PSCustomObject]@{ Scope = 'codex-core-runtime'; Path = Join-Path $TargetRoot '.codex\AGENTS.md'; ContractRole = 'consumer' },
+        [PSCustomObject]@{ Scope = 'completion-gate-source'; Path = Join-Path $RepoRoot 'Shared\skills\team-completion-gate\SKILL.md'; ContractRole = 'consumer' },
+        [PSCustomObject]@{ Scope = 'completion-gate-runtime'; Path = Join-Path $TargetRoot '.agents\skills\team-completion-gate\SKILL.md'; ContractRole = 'consumer' },
+        [PSCustomObject]@{ Scope = 'team-task-board-source'; Path = Join-Path $RepoRoot 'Shared\skills\team-task-board\SKILL.md'; ContractRole = 'consumer' },
+        [PSCustomObject]@{ Scope = 'team-task-board-runtime'; Path = Join-Path $TargetRoot '.agents\skills\team-task-board\SKILL.md'; ContractRole = 'consumer' }
+    )
+    foreach ($finding in @(Test-DirectorActionForwardStructuralContract -Targets $actionForwardContractTargets)) {
+        $null = $results.Add([PSCustomObject]@{
+            Severity = 'Red'
+            Scope = $finding.Scope
+            File = Get-DirectorDisplayPath -Path $finding.Path
+            Line = $finding.Line
+            Reason = $finding.Reason
         })
     }
 

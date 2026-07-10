@@ -8,6 +8,27 @@ It is evidence guidance only.
 
 Memory writes, memory commits, and project context writes require their own protected authorization gates.
 
+## Lifecycle Touchpoints
+
+Memory handling has four distinct touchpoints. They must not be collapsed into one task step.
+
+1. Task-start memory read and clues:
+   - Relevant memory summary, memory registry, project context, and prior rollout references are read-only clues.
+   - They help scope likely owner cards, stale areas, and project constraints before implementation or evidence work.
+   - They do not prove current source truth, authorize source writes, authorize memory writes, or satisfy memory/docs delivery.
+2. Post-task memory/docs disposition:
+   - After source, workflow, skill, governance, or durable documentation changes, a memory/docs route must decide whether memory is not required, already attributed, required, missing, blocked by scope, conflicted, or unverified.
+   - This disposition is read-only evidence and routing. It may cite changed files and delivery artifacts.
+   - It does not mutate memory and does not authorize mutation.
+3. Protected memory write:
+   - A memory card write is a separate protected phase.
+   - It requires scoped authorization, an owner station, an owner card or approved topology decision, and current source evidence.
+   - It cannot be performed by implementation, validation, review, or completion stations unless that exact protected phase is assigned.
+4. Protected `memory_commit`:
+   - `memory_commit` is a separate protected phase after an authorized memory write updates active memory content.
+   - It is not part of task-start reading, attribution, post-task disposition, source delivery, validation, or review.
+   - It must not be used as a shortcut to reset stale memory state without a verified card edit.
+
 ## Disposition Before Mutation
 
 Every source-changing workflow must produce or receive read-only memory/docs disposition evidence.

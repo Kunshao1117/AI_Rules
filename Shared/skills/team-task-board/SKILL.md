@@ -97,11 +97,20 @@ Use references instead of copying long lists or templates into this file:
 - Closeout checklist:
   `references/board-templates-and-delivery.md#board-closeout-checklist`.
 
-Director-facing board rendering follows `Shared/policies/language-governance.md`.
+Director-facing board rendering consumes `Shared/policies/language-governance.md`, heading
+`Captain Integration And Director Output Gate`.
+This skill does not define or restate the complete Director-facing synthesis order.
 Board-facing machine keys stay canonical English and must not be translated, renamed, or derived
 locally.
-Team-member delivery artifacts and board-facing payloads are internal evidence; synthesize them
-before Director-facing display instead of pasting raw artifacts.
+Team-member delivery artifacts, board-facing payloads, field catalogs, and board tables are
+internal evidence, not the Director-facing report body.
+Director-facing display uses Traditional Chinese meaning first; board fields, technical
+identifiers, paths, commands, and canonical state values appear only as supporting evidence,
+location, or precision after the Chinese explanation.
+Director-facing tables use Traditional Chinese column labels first and keep canonical identifiers in
+parentheses only when precision is needed.
+Before Director-facing display, synthesize board and artifact evidence according to that owner
+policy. A raw board table, raw field catalog, or raw delivery artifact must not be the main body.
 
 ## Hard Gates
 

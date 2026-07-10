@@ -61,6 +61,21 @@ Workflow rows below only name the minimum evidence expected for each route.
 - Platform capability translation: `Shared/platform-capability-matrix.md`.
   Load condition: workflow orchestration, language governance, and the workflow row are always required for broad evidence or source-impacting work; the platform capability matrix is conditional when platform behavior, tool capability, permission surface, evidence limits, protected phases, source-impacting work, or log-write capability affects the route.
 
+## Eight-Stage Minimum Evidence Anchors
+
+This matrix aligns workflow rows to the shared mainline without redefining the long field catalogs.
+
+| Stage | Minimum evidence anchor |
+|---|---|
+| 1. Unique mainline | Route cites `Shared/policies/workflow-orchestration.md` as the order and responsibility owner; alternate lifecycle tracks are `unverified` or `blocked`. |
+| 2. Workflow entry | Entry names workflow row, stage-procedure reference, evidence-matrix row, and executable input requirement; route text is not authorization. |
+| 3. Execution spec | Executable work has `execution_spec_state`, `lane_id`, `stage_disposition`, scope, authorization, station, and stop-condition fields, or a blocked/unverified reason. |
+| 4. Station handoff | Formal station has role, role instance, specialist skill, station mode, context visibility, handoff ownership, and allowed targets. |
+| 5. Delivery artifact | Assigned station returns the appropriate delivery artifact or terminal blocked/unverified/risk state. |
+| 6. Independent evidence | Validation, review, memory/docs, and completion consume the artifact chain through separate owner states. |
+| 7. Behavior counter-evidence | Requirement replay, neutral challenge, disconfirming local/external evidence, validation failure, review finding, or drift check is recorded with a status. |
+| 8. Source/deployed sync | Source/runtime or generated pair records `source_deployed_pair`, `sync_direction`, and hash/content parity evidence, or the missing parity state. |
+
 ## Team-Native Evidence Reference
 
 Team-Native board, dispatch, delivery, lifecycle, direct-exception, late-result, and closeout details are referenced here.
@@ -180,8 +195,8 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
     standards, release-readiness, or cross-source risk.
 - 最低證據（Minimum evidence）:
   - Team board, blueprint carryover, review purpose/state, requirement-to-task trace, task acceptance matrix.
-  - Intent envelope, overreach check, applicable design reflection status, drift audit, real validation route, tool discovery, blockers, memory ownership/status evidence.
-  - Implementation delivery bundle with `grounding_handoff`, `closeout_bundle`, and expected dirty files when source changed.
+  - Intent envelope, overreach check, behavior counter-evidence state, applicable design reflection status, drift audit, real validation route, tool discovery, blockers, memory ownership/status evidence.
+  - Implementation delivery bundle with `grounding_handoff`, `closeout_bundle`, expected dirty files, and source/deployed sync evidence when source/runtime or generated pairs exist.
 - 常見路由（Common route）: 04, 06, 08, 09.
 
 ### 04 Fix / 修復

@@ -129,6 +129,8 @@ This policy only governs how that evidence is expressed to each audience.
 - Raw board, handoff, channel, authorization, lifecycle, or station field lists must not be the Director-facing main body.
 - Explain the route, ownership, risk, and next action in Traditional Chinese first.
 - Place canonical fields only in an evidence appendix when needed.
+- Report sequencing, synthesis readiness, and the evidence-appendix boundary are owned by `Captain Integration And Director Output Gate`.
+- This section owns only Director-facing language and identifier presentation; it does not restate the full report order.
 - Commands, paths, code identifiers, schema fields, and exact tool output remain exact when cited.
 - Add Traditional Chinese explanation around exact tokens instead of changing them.
 - Change descriptions in plans, task summaries, and completion reports must name the functional or governance behavior first.
@@ -140,11 +142,18 @@ This policy only governs how that evidence is expressed to each audience.
 
 ## Captain Integration And Director Output Gate
 
+- This section is the sole owner of the complete Director-facing synthesis order and evidence-appendix boundary.
 - Team-member delivery artifacts are internal evidence artifacts.
 - Board fields, trace fields, handoff packets, channel states, and specialist output templates are also internal evidence artifacts.
 - They are not Director-facing reports.
 - Before any Director-facing status, plan, handoff, review, risk explanation, or completion report, the captain must synthesize.
 - The synthesis must turn received artifacts into Traditional Chinese meaning-first prose.
+- The required visible main-body order is: current conclusion/status -> next step -> authorization boundary -> evidence.
+- First name the smallest next step that can move now, then name missing authorization or out-of-scope limits, and only then add evidence, paths, fields, hashes, or internal state.
+- The visible main body must start with Traditional Chinese plain meaning about outcome, impact, risk, and next action.
+- Internal fields, exact identifiers, paths, hashes, canonical states, and tool output may appear only as supporting precision after that explanation or in a clearly labeled evidence appendix.
+- Each appendix table or list must use a Traditional Chinese label first; canonical identifiers may follow as precision, such as `授權階段（authorization_phase）`.
+- Engineering labels such as `blocked`, `HALT`, `station_mode`, `authorization_phase`, or handoff IDs must not lead the report.
 - Do not paste or lightly wrap internal artifacts as the main body.
 - Do not paste or lightly wrap English field tables, English workflow phrases, or specialist raw output as the main body.
 - Do not make self-correction or internal governance repair text the Director-facing main body.
@@ -172,23 +181,14 @@ This policy only governs how that evidence is expressed to each audience.
 - A completion report is blocked when its main body is led by English prose or canonical field lists.
 - It is also blocked when led by raw station artifacts or unsynthesized handoff/output templates.
 - The report may include a compact evidence table only after the Chinese meaning summary.
-
-## Director Body And Evidence Appendix Boundary
-
-- Director-facing reports have a Chinese main body first.
-- Outcome, impact, evidence state, risk, and next action must be explained in Traditional Chinese before any internal schema appears.
-- Internal board, trace, handoff, station, authorization, lifecycle, and delivery artifact fields are evidence payloads.
-- They must stay in internal artifacts.
-- If shown, they may appear only after the Chinese main body in a clearly labeled evidence appendix.
-- The evidence appendix may preserve exact canonical tokens, state values, commands, paths, hashes, and tool output.
-- Each table or list must use a Traditional Chinese label first.
-- Include canonical identifiers only as precision, such as `授權階段（authorization_phase）`.
-- A report fails the Director output gate when its primary structure is the internal field template.
-- A report also fails when its primary structure is raw artifact schema, English field sequence, or path-only list.
-- This failure applies even if an evidence appendix is present.
+- It names the practical governance behavior before naming files, fields, commands, hashes, or station artifacts.
+- Missing evidence remains visible in Chinese and preserves the canonical state such as `blocked`, `unverified`, or `not-applicable`.
+- The main body must not be a raw artifact template, raw field sequence, raw diff summary, compliance-only report, English-led station report, path-only list, or report that skips the next action.
+- An unsynthesized internal artifact cannot support a Director-facing completion report.
+- When the report body fails this threshold, the relevant completion gate must treat Director output as non-complete until the captain provides a Traditional Chinese meaning-first synthesis.
+- This gate affects reporting readiness only; it does not alter source truth, validation results, review results, memory/docs disposition, or protected-action authorization.
 - Completion, review, validation, memory/docs, and change-delivery skills may return raw artifact fields to the captain.
-- Those fields are not the Director-facing body.
-- They must be synthesized before being shown to the Director.
+- Those fields are not the Director-facing body and must be synthesized before being shown to the Director.
 
 ## Director-Facing Planning Vocabulary
 
@@ -204,6 +204,7 @@ This policy only governs how that evidence is expressed to each audience.
 - Director-facing prose remains Chinese-first.
 - English appears only as canonical identifiers, file names, command tokens, evidence excerpts, or exact platform/tool labels.
 - English tokens need Chinese explanation.
+- Planning report order follows `Captain Integration And Director Output Gate`; this section only governs planning vocabulary.
 - If exact evidence contains Director-forbidden wording, prefer file/line evidence plus Chinese explanation.
 - Do not repeat the term in Director-facing prose unless the Director explicitly requests an exact quote.
 

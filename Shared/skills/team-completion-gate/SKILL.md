@@ -42,6 +42,8 @@ Read these sources first:
 | Required trace evidence and invalid completion patterns | `Shared/policies/team-trace-evidence.md` |
 | Board field list and board-facing checklist | `Shared/skills/team-task-board/SKILL.md` |
 | Role separation checks | `Shared/skills/team-role-boundaries/SKILL.md` |
+| Skill route classification and trigger boundary | `Shared/skill-governance.md` |
+| Memory lifecycle and protected memory phase separation | `Shared/policies/references/workflow-memory-evidence.md` |
 | Director-facing language and captain synthesis gate | `Shared/policies/language-governance.md` |
 
 ## Inputs
@@ -56,6 +58,7 @@ Read these sources first:
 - Validation delivery artifact when validation applies.
 - Independent review delivery artifact when review applies.
 - Sync or parity evidence when generated/deployed copies are touched.
+- Skill route evidence showing that loaded skills are entry, station, or support skills as applicable.
 - Residual-risk notes from blocked, unverified, or risk-closed stations.
 - Closeout bundle index from implementation or change-application, when present.
   This is an index only; it does not replace the artifact chain or downstream evidence.
@@ -70,20 +73,39 @@ Read these sources first:
 | Authorization | Every write/protected phase has source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode. |
 | Artifact chain | Completion consumes only the artifact chain: implementation/change-application delivery artifact, captain ledger receipt, downstream validation, review, memory/docs, sync, and residual-risk artifacts. |
 | Closeout bundle | The bundle may point to artifacts, changed files, expected dirty files, grounding handoff, sync, and residual risks. It is never completion evidence by itself. |
+| Skill route classification | Loaded or triggered skills are classified as entry, station, or support skills when routing depends on that distinction. A skill hit is only a candidate route and never substitutes for authorization, handoff, a station artifact, or completion evidence. |
 | Change delivery | A returned implementation or authorized change-application artifact exists, or the missing route is not being claimed as complete. |
-| Memory/docs delivery | Process-complete or release-ready closeout needs delivered memory/docs or an explicit non-complete state. Source-level delivery may report `memory-required` or `memory-blocked-by-scope` as protected follow-up pending when implementation, validation, review, and sync evidence are otherwise sufficient. |
+| Memory/docs delivery | Process-complete or release-ready closeout needs read-only memory/docs disposition, any required protected memory write result, any required `memory_commit` result, or an explicit non-complete state. Source-level delivery may report `memory-required` or `memory-blocked-by-scope` as protected follow-up pending when implementation, validation, review, and sync evidence are otherwise sufficient. |
 | Validation | Non-mutating validation passed, or blocked/unverified reason and smallest next validation path are named. |
 | Review | Independent review exists from a role that did not author the change; missing independent review blocks full completion. |
 | Grounding | AI prior is not verified evidence. Required G2/G3 artifacts must be present by ID; G4 gaps remain visible as blocked, unverified, partial, no-evidence, conflicted, or Director-accepted risk. |
 | Role separation | Implementation, validation, review, memory/docs, and completion boundaries remain separate. |
 | Captain boundary | Captain work is routing, station-output ledgering, board/status synthesis, blocker/conflict/authorization coordination, protected phase routing, and Director-facing reporting; it is not implementation, validation, review, memory/docs attribution, protected execution, protected evidence ownership, or a substitute completion artifact. |
-| Director-facing report governance | Final Director-facing reports and replies follow `Shared/policies/language-governance.md` for Director-facing language and captain synthesis. English-led, raw-artifact-led, raw-field-led, or unsynthesized Director-facing reports cannot support `complete`. |
+| Director-facing report governance | Final Director-facing reports and replies consume `Shared/policies/language-governance.md`, heading `Captain Integration And Director Output Gate`, for Traditional Chinese meaning-first synthesis. This skill does not define or restate the complete Director-facing synthesis order. English-led, raw-artifact-led, raw-field-led, path-only, compliance-only, next-step-missing, or otherwise unsynthesized output blocks `complete`. |
 | Channel lifecycle | Every opened channel has first-response, status-probe, explicit pause/status response, captain resume message, timeout, replacement, cancellation, late-result, receipt-decision, and final-closure evidence when applicable. Wait timeouts are not treated as failure, probed members do not continue without captain resume, and replacements do not silently cancel original channels. |
 | Trace | Required board, station, handoff, role, channel, `station_mode`, `context_visibility`, `handoff_ownership`, delivery, and completion trace exists or missing parts are named as non-complete. |
 | Route/state separation | Routes/channels/forms are not mixed with blocked, unverified, standby, unavailable, not-authorized, or closed-with-director-risk states. |
 | Sync | Source/deployed or generated/runtime pairs have sync direction and parity evidence when relevant. |
 | Size/split disposition | Applicable source, governance, workflow, skill, policy, rule-pack, script/module, memory-card, or public-contract changes have `size_split_impact` and `size_split_disposition` before source-level closeout. Existing oversized baseline may be `baseline`; missing disposition is blocked or unverified. |
 | Residual risk | Remaining uncertainty is visible in the final report. |
+
+For the selected closeout target, missing validation, missing independent review, missing
+memory/docs disposition, missing required sync/parity, or missing Traditional Chinese Director
+output synthesis keeps `completion_state` non-complete. Use `blocked`, `unverified`,
+`not-applicable`, or `closed-with-director-risk` according to
+`Shared/policies/references/completion-state-machine.md`; do not invent a parallel completion
+state.
+
+The `director_output_gate` consumes `Shared/policies/language-governance.md`, heading
+`Captain Integration And Director Output Gate`, and passes only when the Director-facing main body
+satisfies that owner's synthesis order and evidence-appendix boundary. This skill does not define or
+restate the complete Director-facing synthesis order. A completion report made only of internal
+fields, paths, station states, authorization labels, or blocker language is not enough. If the
+report skips the next action or opens with compliance fields instead of a Director-readable
+conclusion, the gate keeps closeout non-complete.
+This gate consumes output-readiness only. It does not replace validation, independent review,
+memory/docs disposition, required sync/parity evidence, residual-risk evidence, or any protected
+authorization result in the artifact chain.
 
 If any required chain artifact is missing, or if a captain-authored substitute is offered in place
 of a station artifact, the closeout state is `blocked`, `unverified`, or
@@ -151,9 +173,11 @@ artifact_chain:
 grounding_handoff:
 closeout_bundle:
 closeout_target:
+skill_route_gate:
 lane_id:
 stage_disposition:
 validation_judgment_state:
+memory_docs_disposition:
 size_split_impact:
 size_split_disposition:
 size_split_reference:

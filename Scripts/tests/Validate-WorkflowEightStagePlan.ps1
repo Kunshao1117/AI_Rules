@@ -774,6 +774,9 @@ function Test-DirectorOutputFixtureCases {
     Assert-True -Condition ($blockedCount -ge 4) -Message "At least four noncompliant Director bodies must fail."
 
     $validCase = @($cases | Where-Object { [string]$_.name -eq 'valid-action-forward-body' })[0]
+    $rawInternalFieldCase = @($cases | Where-Object { [string]$_.name -eq 'raw-internal-field-bullets' })[0]
+    Assert-True -Condition (Test-FixtureDirectorOutputSequenceReady -Fixture $directorOutputFixture -DirectorOutput $validCase) -Message "valid-action-forward-body must pass the actual-body sequence gate."
+    Assert-True -Condition (-not (Test-FixtureDirectorOutputSequenceReady -Fixture $directorOutputFixture -DirectorOutput $rawInternalFieldCase)) -Message "raw-internal-field-bullets must fail the actual-body sequence gate."
     foreach ($allowedDisposition in @('memory-not-required', 'memory-attributed-no-write')) {
         $directorOutputFixture.artifact_chain.memory_docs = $allowedDisposition
         Assert-True -Condition (Test-FixtureCanComplete -Fixture $directorOutputFixture -DirectorOutput $validCase) -Message ("Canonical no-write memory disposition was rejected: {0}" -f $allowedDisposition)
@@ -785,6 +788,61 @@ function Test-DirectorOutputFixtureCases {
     $directorOutputFixture.artifact_chain.memory_docs = 'memory-not-required'
 }
 
+function Test-DirectorActionForwardStructuralContractCases {
+    $auditPartialPath = Get-RepoPath -RelativePath "Scripts\modules\Audit\70.DirectorOutputGrounding.ps1"
+    . $auditPartialPath
+
+    $ownerHeading = 'Captain Integration And Director Output Gate'
+    $ownerDeclaration = 'This section is the sole owner of the complete Director-facing synthesis order and evidence-appendix boundary.'
+    $orderPrefix = 'The required visible main-body order is:'
+    $consumerPath = 'Shared/policies/language-governance.md'
+    $nonOwnerPhrase = 'does not define or restate the complete Director-facing synthesis order'
+    $markers = @('current conclusion/status', 'next step', 'authorization boundary', 'evidence')
+    $validOwner = "# Policy`n`n## $ownerHeading`n`n- $ownerDeclaration`n- $orderPrefix $($markers -join ' -> ')."
+    $validConsumer = "This consumer follows $consumerPath, heading $ownerHeading, and $nonOwnerPhrase."
+
+    $validFindings = @(Test-DirectorActionForwardStructuralContract -Targets @(
+        [PSCustomObject]@{ Scope = 'valid-owner'; Path = 'owner.md'; ContractRole = 'owner'; Content = $validOwner },
+        [PSCustomObject]@{ Scope = 'valid-consumer'; Path = 'consumer.md'; ContractRole = 'consumer'; Content = $validConsumer }
+    ))
+    Assert-True -Condition ($validFindings.Count -eq 0) -Message "Valid owner and consumer structural contracts must pass."
+
+    $ownerMissingFindings = @(Test-DirectorActionForwardStructuralContract -Targets @(
+        [PSCustomObject]@{ Scope = 'owner-missing'; Path = 'owner-missing.md'; ContractRole = 'owner'; Content = '# Policy without owner' }
+    ))
+    Assert-True -Condition ($ownerMissingFindings.Count -gt 0) -Message "Missing owner structure was not detected."
+
+    $wrongOrder = @($markers[0], $markers[2], $markers[1], $markers[3]) -join ' -> '
+    $wrongOrderOwner = "# Policy`n`n## $ownerHeading`n`n- $ownerDeclaration`n- $orderPrefix $wrongOrder."
+    $wrongOrderFindings = @(Test-DirectorActionForwardStructuralContract -Targets @(
+        [PSCustomObject]@{ Scope = 'wrong-order'; Path = 'wrong-order.md'; ContractRole = 'owner'; Content = $wrongOrderOwner }
+    ))
+    Assert-True -Condition ($wrongOrderFindings.Count -gt 0) -Message "Wrong owner marker order was not detected."
+
+    $missingReferenceFindings = @(Test-DirectorActionForwardStructuralContract -Targets @(
+        [PSCustomObject]@{ Scope = 'missing-reference'; Path = 'missing-reference.md'; ContractRole = 'consumer'; Content = "This consumer $nonOwnerPhrase." }
+    ))
+    Assert-True -Condition ($missingReferenceFindings.Count -gt 0) -Message "Missing consumer owner reference was not detected."
+
+    $duplicateConsumer = "$validConsumer`n`n- $($markers -join ', then ')."
+    $duplicateFindings = @(Test-DirectorActionForwardStructuralContract -Targets @(
+        [PSCustomObject]@{ Scope = 'duplicate-consumer'; Path = 'duplicate-consumer.md'; ContractRole = 'consumer'; Content = $duplicateConsumer }
+    ))
+    Assert-True -Condition (@($duplicateFindings | Where-Object { $_.Reason -match 'duplicate complete' }).Count -eq 1) -Message "Duplicate consumer bullet block was not detected."
+
+    $nearbyUnrelated = "$validConsumer`n`n$($markers[0]) is discussed here.`n`n$($markers[1]) is discussed separately.`n`n$($markers[2]) belongs to another paragraph.`n`n$($markers[3]) is only a nearby term."
+    $nearbyFindings = @(Test-DirectorActionForwardStructuralContract -Targets @(
+        [PSCustomObject]@{ Scope = 'nearby-unrelated'; Path = 'nearby-unrelated.md'; ContractRole = 'consumer'; Content = $nearbyUnrelated }
+    ))
+    Assert-True -Condition ($nearbyFindings.Count -eq 0) -Message "Nearby unrelated prose caused a cross-paragraph false positive."
+
+    foreach ($finding in @($ownerMissingFindings + $wrongOrderFindings + $missingReferenceFindings + $duplicateFindings)) {
+        Assert-True -Condition (-not [string]::IsNullOrWhiteSpace([string]$finding.Scope)) -Message "Structural finding must include scope."
+        Assert-True -Condition (-not [string]::IsNullOrWhiteSpace([string]$finding.Path)) -Message "Structural finding must include path."
+        Assert-True -Condition ([int]$finding.Line -ge 1) -Message "Structural finding must include a starting line."
+    }
+}
+
 function Test-DirectorOutputGateSemantics {
     $languagePath = Get-RepoPath -RelativePath "Shared\policies\language-governance.md"
     $completionPath = Get-RepoPath -RelativePath "Shared\skills\team-completion-gate\SKILL.md"
@@ -793,27 +851,21 @@ function Test-DirectorOutputGateSemantics {
     $captainGateSection = Get-MarkdownSectionText -Text $languageText -Heading 'Captain Integration And Director Output Gate'
     $reportRulesSection = Get-MarkdownSectionText -Text $languageText -Heading 'Director-Facing Report Rules'
     $planningVocabularySection = Get-MarkdownSectionText -Text $languageText -Heading 'Director-Facing Planning Vocabulary'
-    $actionForwardSequence = 'current conclusion/status -> next step -> authorization boundary -> evidence'
-
     Assert-TextContainsLiteral -Text $languageText -Needle "Traditional Chinese meaning-first" -Scope "Shared/policies/language-governance.md" -Label "Traditional Chinese meaning-first"
     Assert-TextContainsLiteral -Text $languageText -Needle "Raw board, handoff, channel, authorization, lifecycle, or station field lists must not be the Director-facing main body." -Scope "Shared/policies/language-governance.md" -Label "raw board is not director main body"
     Assert-True -Condition ($null -ne $captainGateSection) -Message "Captain Integration And Director Output Gate must exist exactly once."
     Assert-True -Condition ($null -ne $reportRulesSection) -Message "Director-Facing Report Rules must exist exactly once."
     Assert-True -Condition ($null -ne $planningVocabularySection) -Message "Director-Facing Planning Vocabulary must exist exactly once."
-    Assert-True -Condition ([regex]::Matches($languageText, [regex]::Escape($actionForwardSequence)).Count -eq 1) -Message "Action-forward sequence must have exactly one complete policy owner."
-    Assert-TextContainsLiteral -Text $captainGateSection -Needle $actionForwardSequence -Scope "Captain Integration And Director Output Gate" -Label "action-forward director output order"
-    Assert-TextNotContainsLiteral -Text $reportRulesSection -Needle $actionForwardSequence -Scope "Director-Facing Report Rules" -Label "duplicated action-forward order"
-    Assert-TextNotContainsLiteral -Text $planningVocabularySection -Needle $actionForwardSequence -Scope "Director-Facing Planning Vocabulary" -Label "duplicated action-forward order"
     Assert-TextContainsLiteral -Text $languageText -Needle "clearly labeled evidence appendix" -Scope "Shared/policies/language-governance.md" -Label "evidence appendix boundary"
     Assert-TextContainsLiteral -Text $languageText -Needle "non-complete until the captain provides a Traditional Chinese meaning-first synthesis" -Scope "Shared/policies/language-governance.md" -Label "non-complete output gate"
     Assert-TextContainsLiteral -Text $languageText -Needle "does not alter source truth, validation results, review results, memory/docs disposition, or protected-action authorization" -Scope "Shared/policies/language-governance.md" -Label "output gate does not replace evidence"
     Assert-TextContainsLiteral -Text $completionText -Needle "Director-facing report governance" -Scope "Shared/skills/team-completion-gate/SKILL.md" -Label "completion report governance row"
     Assert-TextContainsLiteral -Text $completionText -Needle "Traditional Chinese meaning-first synthesis" -Scope "Shared/skills/team-completion-gate/SKILL.md" -Label "completion language gate"
-    Assert-TextContainsLiteral -Text $completionText -Needle "current conclusion/status -> next step -> authorization boundary -> evidence" -Scope "Shared/skills/team-completion-gate/SKILL.md" -Label "completion action-forward order"
     Assert-TextContainsLiteral -Text $completionText -Needle "director_output_gate:" -Scope "Shared/skills/team-completion-gate/SKILL.md" -Label "director output artifact field"
     Assert-TextContainsLiteral -Text $completionText -Needle 'blocks `complete`' -Scope "Shared/skills/team-completion-gate/SKILL.md" -Label "complete blocked by unsynthesized output"
     Assert-TextContainsLiteral -Text $completionText -Needle "next-step-missing" -Scope "Shared/skills/team-completion-gate/SKILL.md" -Label "missing next step blocks complete"
     Assert-TextContainsLiteral -Text $completionText -Needle "memory/docs disposition, required sync/parity evidence" -Scope "Shared/skills/team-completion-gate/SKILL.md" -Label "director output gate consumes only output readiness"
+    Test-DirectorActionForwardStructuralContractCases
     Test-DirectorOutputFixtureCases
 }
 

@@ -53,6 +53,48 @@ Workflow entries must not copy full policy manuals.
 - Reflection-like skills are narrow route gates. They must not replace workflow entries, `execution_spec`,
   implementation/change-delivery, review, validation, memory/docs, or completion gates.
 
+### Skill route classification
+
+Skills are route and procedure carriers. A skill match is a candidate route signal only.
+It does not grant write authority, protected-action authority, station ownership, handoff completion,
+artifact-chain completeness, or a completion state.
+
+#### Entry skills
+
+- Purpose: Start or classify a workflow route from Director intent.
+- Examples: build, fix, audit, test, commit-prep, handoff, and skill-forge workflow entries.
+- Required boundary:
+  - They may open the governed route and name applicable stations.
+  - They do not authorize source writes or protected actions by themselves.
+  - They must pass implementation, validation, review, memory/docs, and completion work to the matching station skills when those stages apply.
+
+#### Station skills
+
+- Purpose: Own one Team-Native station role or delivery artifact contract.
+- Examples: `team-change-delivery-artifact`, `team-validation-delivery-artifact`,
+  `team-review-delivery-artifact`, `team-memory-docs-delivery-artifact`, and
+  `team-completion-gate`.
+- Required boundary:
+  - They become actionable only after a board row, handoff packet, station ownership,
+    authorization phase, and file or evidence scope are resolved.
+  - They may produce only their station-owned artifact.
+  - They must not fill another station's validation, review, memory/docs, protected-action,
+    or completion evidence.
+
+#### Support skills
+
+- Purpose: Provide reusable procedures, references, and tool guidance for an entry or station route.
+- Examples: role-boundary, grounding, source-size, memory-ops, platform, and testing support skills.
+- Required boundary:
+  - They can inform station work or evidence collection.
+  - They cannot replace a station handoff packet or station-owned delivery artifact.
+  - They cannot convert a skill hit into authorization, protected mutation, or completion.
+
+Skill descriptions and relation metadata should identify whether a skill is an entry skill,
+station skill, or support skill when that distinction affects routing.
+Completion gates must treat a bare skill trigger as `unverified` or `blocked` evidence until the
+required station route, artifact chain, and language synthesis are present.
+
 ### Memory
 
 - Purpose: Project-specific facts and decisions.

@@ -91,3 +91,21 @@ readiness and protected-action applicability.
 Missing artifacts do not disappear when a reduced station set is used. The
 trace must record each missing artifact as `blocked`, `unverified`,
 `not-applicable`, or `closed-with-director-risk`.
+
+## Gate Boundaries
+
+Skill triggers, skill matches, or loaded support skills are route evidence only.
+They are not completion transitions and cannot replace station handoff,
+authorization, or station-owned artifacts.
+
+Memory/docs handling follows the lifecycle in
+`Shared/policies/references/workflow-memory-evidence.md`.
+Task-start memory reads, read-only memory/docs disposition, protected memory
+writes, and protected `memory_commit` are separate phases. A pending required
+memory phase keeps `process-complete` and `release-ready` non-complete until it
+is resolved or explicitly risk-closed for the exact scope.
+
+Director-facing reporting follows `Shared/policies/language-governance.md`.
+An unsynthesized, English-led, raw-field-led, or raw-artifact-led report body
+does not support `complete`. This is a reporting gate over the same completion
+state set, not a new completion system.

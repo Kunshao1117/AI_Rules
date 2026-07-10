@@ -22,6 +22,22 @@ Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix r
 | 來源/部署副本對 | source/deployed pair | sync and parity evidence |
 | 記憶/文件交付 | memory/docs handoff | attribution route, not memory mutation |
 
+## 主線引用錨點（Mainline Reference Anchors）
+
+Workflow entries and workflow skills use this file as a shared procedure reference.
+They must not copy these procedures back into the 00-12 entry bodies.
+
+- Stage 1 unique mainline: route order and responsibility handoff come from
+  `Shared/policies/workflow-orchestration.md`.
+- Stage 2 workflow entry: each entry names its workflow row, this stage-procedure section, the
+  workflow evidence matrix row, and any required `execution_spec` or handoff input.
+- Stage 7 behavior counter-evidence: use requirement replay, neutral challenge, overreach check,
+  design reflection, station evidence, validation/review findings, and `drift_check` as the shared
+  counter-evidence surface.
+- Stage 8 source/deployed sync: when a runtime or generated pair exists, record the pair, sync
+  direction, and hash or content parity evidence before source-level closeout. Missing parity stays
+  `blocked` or `unverified`.
+
 ## 共同階段規則（Common Phase Rules）
 
 1. Bind the Director request to a current plan, station, file set, command, or protected phase before any write.
