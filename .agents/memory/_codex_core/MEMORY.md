@@ -4,7 +4,7 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-10T18:51:47+08:00'
+last_updated: '2026-07-11T21:11:23+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2

@@ -4,7 +4,7 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-10T11:15:32+08:00'
+last_updated: '2026-07-11T21:11:37+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2

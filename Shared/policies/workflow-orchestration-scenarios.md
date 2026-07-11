@@ -135,11 +135,12 @@ trigger: Change delivery artifact returned, blocked, unverified, or closed-with-
 workflow_route: 03 or 04 -> 06, review, memory/docs, completion, then 09.
 operation_mode: full.
 board_state: formal-write for integration, then eligible validation/review/memory stations.
-dispatch wave 1: authorized change application or receipt of returned change delivery artifact.
+dispatch wave 1: receive the one complete change delivery artifact produced after all ordered steps and files in the resolved scope, or perform only its authorized change application and integration.
 previous-wave input: change delivery artifact and scoped authorization.
-next-wave start condition: integrated change or recorded blocked/unverified state.
-dispatch wave 2: validation and memory/docs attribution.
-dispatch wave 3: independent review after the change delivery state exists.
+intermediate checkpoint: only for a material change to scope or authorization, public contract, migration, security posture, or an irreversible/protected action.
+next-wave start condition: complete delivery, including applicable source/deployed sync, or a recorded blocked/unverified state.
+dispatch wave 2: validation and independent review run as siblings; independent checks may run in parallel and dependency-ordered checks stay sequential.
+dispatch wave 3: memory/docs attribution after validation and review reach terminal evidence states.
 dispatch wave 4: completion audit and commit preparation.
 delivery artifact: validation delivery, memory/docs delivery, review delivery, completion evidence.
 route-back: failed validation routes to 04, 07, or 03; missing memory routes to memory/docs.
@@ -147,7 +148,7 @@ completion state: complete only when all applicable delivery artifacts exist and
 non-complete state: use blocked, unverified, or closed-with-director-risk when required evidence is missing.
 ```
 
-Invalid shortcut: validating, reviewing, or committing before change delivery state exists.
+Invalid shortcut: restarting formal review after every file, starting memory/docs before validation and review are terminal, or committing before change delivery exists.
 
 ## Scenario 4: Failed Validation Route-Back
 
@@ -220,10 +221,10 @@ operation_mode: full for public-contract or workflow impact.
 board_state: formal-write for source integration and generated-copy sync.
 dispatch wave 1: source change delivery.
 dispatch wave 2: generated or deployed copy sync.
-dispatch wave 3: hash or content validation.
+dispatch wave 3: hash/content validation and independent review may run as sibling work when independent; dependency-ordered checks stay sequential.
 previous-wave input: source file list and generated-copy target list.
 next-wave start condition: sync completes or is marked blocked/unverified.
-delivery artifact: change delivery plus validation evidence for source/deployed parity.
+delivery artifact: change delivery plus validation and review evidence, including source/deployed parity.
 route-back: if drift remains, return to sync or mark residual risk.
 completion state: complete only when source/deployed parity is checked and clean.
 non-complete state: use blocked or unverified when source/deployed sync cannot be verified.

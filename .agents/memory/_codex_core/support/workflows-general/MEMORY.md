@@ -4,7 +4,7 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-07T05:51:26+08:00'
+last_updated: '2026-07-11T21:11:29+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2

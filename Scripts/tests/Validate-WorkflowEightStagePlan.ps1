@@ -661,6 +661,19 @@ function Test-Stage6IndependentEvidence {
     Assert-TextContainsLiteral -Text $matrixText -Needle "through separate owner states" -Scope "workflow-capability-evidence-matrix.md" -Label "separate evidence owners"
     Assert-TextContainsLiteral -Text $boardText -Needle "Review and validation start only after the implementation or change-application handoff bundle" -Scope "team-task-board/SKILL.md" -Label "validation and review handoff ordering"
     Assert-TextContainsLiteral -Text $boardText -Needle "Memory/docs starts only after validation and review reach terminal evidence states." -Scope "team-task-board/SKILL.md" -Label "memory docs ordering"
+    $orchestrationText = Read-TextFile -Path (Get-RepoPath -RelativePath "Shared\policies\workflow-orchestration.md")
+    $scenarioText = Read-TextFile -Path (Get-RepoPath -RelativePath "Shared\policies\workflow-orchestration-scenarios.md")
+    Assert-TextContainsLiteral -Text $orchestrationText -Needle "Do not restart formal review or validation after every micro-step or file." -Scope "workflow-orchestration.md" -Label "batch work avoids micro-step review"
+    Assert-TextContainsLiteral -Text $orchestrationText -Needle "This checkpoint does not create a new stage or state." -Scope "workflow-orchestration.md" -Label "checkpoint does not expand lifecycle"
+    Assert-TextContainsLiteral -Text $orchestrationText -Needle "Independent checks may run in parallel; checks with a real dependency remain ordered." -Scope "workflow-orchestration.md" -Label "parallel independent evidence with ordered dependencies"
+    Assert-TextContainsLiteral -Text $scenarioText -Needle "memory/docs attribution after validation and review reach terminal evidence states" -Scope "workflow-orchestration-scenarios.md" -Label "memory docs follows terminal evidence"
+    $scenario3Section = Get-MarkdownSectionText -Text $scenarioText -Heading "Scenario 3: Build Or Fix To Validation, Review, Memory, And Commit Prep"
+    Assert-True -Condition ($null -ne $scenario3Section) -Message "Scenario 3 post-delivery section must exist exactly once."
+    $scenario3Wave1 = [regex]::Match($scenario3Section, '(?m)^dispatch wave 1:\s*(?<value>.+)$')
+    Assert-True -Condition $scenario3Wave1.Success -Message "Scenario 3 must define dispatch wave 1."
+    $redoDeliveryPattern = '(?i)\b(finish|implement|reimplement|complete)\b.{0,160}\b(return|produce)\b.{0,120}\bchange delivery artifact\b'
+    Assert-True -Condition ('finish implementation, then return one complete change delivery artifact' -match $redoDeliveryPattern) -Message "Scenario 3 contradiction guard must reject a synthetic redo-delivery wave."
+    Assert-True -Condition ($scenario3Wave1.Groups['value'].Value -notmatch $redoDeliveryPattern) -Message "Scenario 3 must consume or integrate the existing complete delivery artifact instead of redoing implementation and returning it again."
     Assert-TextContainsLiteral -Text $completionText -Needle "Implementation, validation, review, memory/docs, and completion boundaries remain separate." -Scope "team-completion-gate/SKILL.md" -Label "independent evidence boundaries"
     Assert-TextContainsLiteral -Text $memoryReferenceText -Needle '### `memory-not-required`' -Scope "workflow-memory-evidence.md" -Label "canonical memory-not-required disposition"
     Assert-TextContainsLiteral -Text $memoryReferenceText -Needle '### `memory-attributed-no-write`' -Scope "workflow-memory-evidence.md" -Label "canonical memory-attributed-no-write disposition"
@@ -857,6 +870,9 @@ function Test-DirectorOutputGateSemantics {
     Assert-True -Condition ($null -ne $reportRulesSection) -Message "Director-Facing Report Rules must exist exactly once."
     Assert-True -Condition ($null -ne $planningVocabularySection) -Message "Director-Facing Planning Vocabulary must exist exactly once."
     Assert-TextContainsLiteral -Text $languageText -Needle "clearly labeled evidence appendix" -Scope "Shared/policies/language-governance.md" -Label "evidence appendix boundary"
+    Assert-TextContainsLiteral -Text $languageText -Needle "actual work completed since the previous visible report -> practical impact -> remaining work -> current blocker or risk" -Scope "Shared/policies/language-governance.md" -Label "plain-language progress order"
+    Assert-TextContainsLiteral -Text $languageText -Needle "If no work has actually completed since the previous visible report, say so directly." -Scope "Shared/policies/language-governance.md" -Label "no false progress"
+    Assert-TextContainsLiteral -Text $languageText -Needle "internal routing are not completed progress by themselves" -Scope "Shared/policies/language-governance.md" -Label "internal activity is not progress"
     Assert-TextContainsLiteral -Text $languageText -Needle "non-complete until the captain provides a Traditional Chinese meaning-first synthesis" -Scope "Shared/policies/language-governance.md" -Label "non-complete output gate"
     Assert-TextContainsLiteral -Text $languageText -Needle "does not alter source truth, validation results, review results, memory/docs disposition, or protected-action authorization" -Scope "Shared/policies/language-governance.md" -Label "output gate does not replace evidence"
     Assert-TextContainsLiteral -Text $completionText -Needle "Director-facing report governance" -Scope "Shared/skills/team-completion-gate/SKILL.md" -Label "completion report governance row"

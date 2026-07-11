@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-09T22:32:29+08:00'
+last_updated: '2026-07-11T21:11:43+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2

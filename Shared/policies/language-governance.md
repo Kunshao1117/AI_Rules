@@ -148,8 +148,9 @@ This policy only governs how that evidence is expressed to each audience.
 - They are not Director-facing reports.
 - Before any Director-facing status, plan, handoff, review, risk explanation, or completion report, the captain must synthesize.
 - The synthesis must turn received artifacts into Traditional Chinese meaning-first prose.
-- The required visible main-body order is: current conclusion/status -> next step -> authorization boundary -> evidence.
-- First name the smallest next step that can move now, then name missing authorization or out-of-scope limits, and only then add evidence, paths, fields, hashes, or internal state.
+- The required visible main-body order is: current conclusion/status -> next step -> authorization boundary -> evidence. For a progress, status, or completion update, expand `current conclusion/status` in this order: actual work completed since the previous visible report -> practical impact -> remaining work -> current blocker or risk.
+- If no work has actually completed since the previous visible report, say so directly. Started work, dispatch, board updates, station activity, identifiers, and internal routing are not completed progress by themselves.
+- After the plain-language progress sequence, name the smallest next step and any missing authorization or out-of-scope limit. Only then add evidence, paths, fields, hashes, or internal state.
 - The visible main body must start with Traditional Chinese plain meaning about outcome, impact, risk, and next action.
 - Internal fields, exact identifiers, paths, hashes, canonical states, and tool output may appear only as supporting precision after that explanation or in a clearly labeled evidence appendix.
 - Each appendix table or list must use a Traditional Chinese label first; canonical identifiers may follow as precision, such as `授權階段（authorization_phase）`.

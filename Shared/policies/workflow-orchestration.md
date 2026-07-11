@@ -446,6 +446,17 @@ That artifact must be returned, blocked, unverified, or closed-with-director-ris
 
 Implementation and review of the same deliverable do not run in the same wave.
 
+Within one resolved authorization scope, ordered implementation steps and
+multiple files may stay in one delivery wave. Do not restart formal review or validation after every micro-step or file. Add an intermediate checkpoint only
+when continuing would materially change scope or authorization, a public
+contract, a migration, security posture, or an irreversible or protected
+action. This checkpoint does not create a new stage or state.
+
+After the complete delivery artifact and any applicable source/deployed sync
+are ready, validation and independent review may start as sibling stations in
+the same dispatch wave. Independent checks may run in parallel; checks with a real dependency remain ordered. A finding routes one bounded repair pass before
+the affected evidence is rerun.
+
 Memory/docs that attributes source, workflow, skill, governance, or durable documentation impact
 waits for validation and review to reach terminal evidence states. The implementation artifact may
 include a `memory_impact` hint and `memory_docs_handoff`, but the memory/docs station consumes the
