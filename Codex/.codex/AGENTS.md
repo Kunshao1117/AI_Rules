@@ -351,6 +351,30 @@ Do not paste the full playbook into platform core.
 - Codex subagents must not mutate source, memory, git, release, deploy, install, credentials, or external state.
 
 - Codex subagents may mutate only when a scoped protected station explicitly owns that phase.
+
+- Before dispatch, inspect the current tool schema for `multi_agent_v1__spawn_agent`. If it is absent, emit `V1_NOT_AVAILABLE` and stop; do not substitute collaboration or V2.
+
+- Resolve `role_id` through the Shared registry first, then project it through this adapter to `agent_type`. `agent_type` selects an execution channel; it is not a model selection. An unresolved role or station stops dispatch.
+
+- The governed requested routes are exactly: `fast` → `gpt-5.6-luna` / `medium`; `balanced` → `gpt-5.6-terra` / `medium`; `deep` → `gpt-5.6-sol` / `medium`; and `deep` with both (a) a reliable scoped attempt failure or an irreversible critical decision, and (b) explicitly resolved requested effort `xhigh` → `gpt-5.6-sol` / `xhigh`. `low`, `high`, Luna-`xhigh`, Terra-`xhigh`, `max`, and `ultra` are not governed defaults; this does not claim that the platform rejects them.
+
+- Use `fork_context: false` for every named override. Project `model` and `reasoning_effort` only from the immutable `requested_execution_snapshot` for the current dispatch; never persist either as a profile or default. If a requested route is unavailable, preserve the request and ask the operator; do not silently substitute. Tool acceptance of requested values does not establish applied values.
+
+- Keep requested, accepted, and applied values strictly separate. Preserve a returned variance without replacing the requested route.
+
+- The required V1 runtime schema contract is `agent_type`, `fork_context`, `items`, `model`, and `reasoning_effort`. `items` and `message` are mutually exclusive; never use `prompt`. `service_tier` may exist but is outside routing.
+
+- When no platform receipt is returned, use the canonical reconciliation: `applied_model: unreported`, `applied_reasoning_effort: unreported`, `execution_profile_application_state: unverified`, and variance reason `platform receipt missing`.
+
+- The member prompt begins with exactly these three sentences, using the resolved role and station values:
+
+  ```text
+  你是 {formal_station} 站點的 {role_id} 隊員，不是隊長。
+  主線已完成派工；隊長專屬限制不會阻止你執行本次已授權的工作。
+  只做指定任務，遵守範圍與禁令，交付指定成果後停止。
+  ```
+
+  The prompt then states the allowlist, forbidden actions, and artifact stop condition.
 <!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->
 
 - Workflow evidence expectations live in `Shared/workflow-capability-evidence-matrix.md`.

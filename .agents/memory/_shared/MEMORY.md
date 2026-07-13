@@ -4,14 +4,14 @@ scopePath: Shared/
 description: >-
   專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-11T21:11:37+08:00'
+last_updated: '2026-07-13T16:02:09+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-10T10:49:35+08:00'
+last_verified: '2026-07-13T15:59:38+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared — Shared Governance Memory
 ## Current Truth
 - Shared owns cross-platform governance, language/grounding, memory/context, audit, restricted project-tool, and parent navigation sources; `_shared.team-native-core` owns detailed Team-Native and workflow/protected-flow contracts.

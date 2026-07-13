@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-11T21:11:23+08:00'
+last_updated: '2026-07-13T17:20:20+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-10T18:30:45+08:00'
+last_verified: '2026-07-13T16:48:52+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-10-001
-cycle_event_count: 1
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -33,43 +33,53 @@ metadata:
 ---
 
 # _codex_core — Codex Edition Memory
+
 ## Current Truth
-- Codex Edition is the OpenAI Codex adapter for AI_Rules governance, using `.codex/AGENTS.md`; Codex deploys 62 shared skills plus 17 workflow skills for a 79-skill deployed total, and its installer SHA helper accepts blank optional hashes while non-empty values remain 64-hex checked.
-- Current Team mode activates only for the current governed Director request; the captain coordinates scope, dispatch, artifact receipt, blocker/protected-gate routing, and Traditional Chinese reporting without backfilling station-owned evidence.
-- The complete Director-facing action order is owned only by `Shared/policies/language-governance.md`, heading `Captain Integration And Director Output Gate`; Codex core consumes that owner and does not define or restate the order.
-- Captain synthesis may translate and summarize delivery artifacts, but it cannot substitute for station-owned implementation, validation, review, memory/docs attribution, or completion evidence.
-- Codex README installed-surface documentation treats shared governance references as the explicit Shared allowlist plus `Shared/policies/` and `Shared/mcp-profiles/`; project tools and context templates are documented as separate deployed surfaces.
-- The Codex source `.codex/AGENTS.md` shared subagent marker is kept normalized with the deployed runtime `.codex/AGENTS.md` marker; D0 validation asserts the marker blocks match.
-- Hook config keeps only three directive-injection events, `SessionStart`, `UserPromptSubmit`, and `PreToolUse`, and delegates through `team-native-launcher.ps1`; Windows `commandWindows` preserves stdin, resolves repo root from `payload.cwd` or process CWD, and passes fallback stdin through `AI_RULES_HOOK_STDIN`.
-- Active hook output is `mandatory-directive-v1`: injected text says the user/operator requires captain-led Team-Native routing even when Codex platform or model layers expose general tool capability; `DIRECTIVE_AUTHORITY=user_operator_team_native_requirement`, `NON_IGNORABLE_DIRECTIVE=true`, and `PRETOOL_GUARD=mandatory_directive` are canonical context markers.
-- Repository-local `Codex/.codex/AGENTS.md` and `.codex/AGENTS.md` reached exact source/runtime parity after governed synchronization.
+
+- The Codex V1 adapter governs `fast` → Luna/`medium`, `balanced` → Terra/`medium`, and `deep` → Sol/`medium`; Sol/`xhigh` is allowed only after a reliable scoped failure or irreversible critical decision with explicitly resolved effort.
+- V1 dispatch requires `agent_type`, `fork_context`, `items`, `model`, and `reasoning_effort`; `items` and `message` are exclusive, and `prompt` is prohibited. Named overrides use `fork_context: false`.
+- If `multi_agent_v1__spawn_agent` is unavailable, emit `V1_NOT_AVAILABLE` and stop without a V2 fallback. `role_id` is resolved to `agent_type` separately from model selection.
+- Requested, accepted, and applied values are separate. Without a receipt, applied model and effort are `unreported` and application state is `unverified`.
+- The member prompt begins with the fixed three role-boundary sentences. `Scripts/Watch-CodexModelV1.ps1` is a local experimental workaround, not a formal Codex adapter capability or platform guarantee; the formal V1 adapter contract must not depend on the watcher or a volatile cache format.
+
 ## Active Constraints
-- Verify current behavior from Codex source, deployed runtime copies, tests, and Gateway memory evidence; this card is not runtime authority by itself.
-- Director-facing text starts with Traditional Chinese meaning and consumes the sole action-order owner in `Shared/policies/language-governance.md`; exact hook/test/resource tokens remain canonical evidence.
-- Requested model/profile values do not prove platform application; the current startup applied-values receipt remains an `unverified trace variance` and must not be promoted to confirmed state.
-- Memory content repair does not authorize `memory_commit`, memory reindex, git staging/commit, release, deploy, install, credentials, or external mutation.
+
+- The Codex adapter consumes the sole Director-output owner in `Shared/policies/language-governance.md`; it does not restate that order.
+- Current source and deployed `AGENTS.md` copies must remain synchronized.
+- A watcher or its local cache behavior is supporting script evidence only and cannot establish a platform-applied model or capability.
+
 ## Cycle Events
-- 01: Compacted the active card, recorded the sole Director-output owner and captain boundary, and corrected parity evidence to the repository-local Codex source/runtime pair.
+
+- 01: Compacted the active card and recorded the Director-output owner, captain boundary, and Codex source/runtime parity.
+- 02: Reverified V1 route conditions, schema exclusivity, no-V2 fallback, fixed member prefix, receipt variance handling, and source/deployed AGENTS parity.
+- 03: Clarified that the local watcher is outside the formal V1 adapter contract and cannot imply a platform guarantee.
+
 ## Archive Index
-- archive-003.md — Older events 13-22; archive-001.md — legacy pre-schema-v2 card; archive-002.md — pre-standardization MEMORY.md migration snapshot.
+
+- archive-003.md — Older events 13-22; archive-001.md / archive-002.md — legacy and migration history.
+
 ## Evidence Base
-- source: `Codex/.codex/AGENTS.md` — reference to the sole Director-output owner, captain boundary, completion evidence, lifecycle, and tracked Codex governance.
-- source: `Codex/README.md`, `Codex/install.ps1`, `Codex/global/AGENTS.md`, and `Codex/.codex/config.toml` — installed surfaces, bootstrap, and platform configuration.
-- filesystem: repository-local `Codex/.codex/AGENTS.md` and `.codex/AGENTS.md` were verified at exact parity after synchronization on 2026-07-10.
-- source: `Codex/.codex/hooks.json`, `Codex/.codex/hooks/team-native-gate.ps1`, and `Codex/.codex/hooks/team-native-launcher.ps1` — current three-event mandatory directive model.
-- tool: prior D0 and Codex hook governance evidence remains supporting history; current source overrides stale tool summaries.
+
+- source/deployed: `Codex/.codex/AGENTS.md` and `.codex/AGENTS.md` — identical V1 adapter contract, route mapping, no-V2 fallback, fixed prompt prefix, and receipt reconciliation.
+- source: `Scripts/tests/codex-subagents/Invoke-CodexSubagentV1ContractFixtureTests.ps1` — four routes, schema cases, prefix assertion, receipt variance, and adapter exclusion of `Watch-CodexModelV1.ps1`.
+- source: `Scripts/Watch-CodexModelV1.ps1` — local experimental disclaimer and guarded cache-write implementation; source confirms only script behavior, not platform capability.
+
 ## Read Contract
-- Read this card for Codex core governance, hook runtime/config, source/deployed sync, or tracked workflow entries; read `_system.scripts` for hook runner/audit and `_system.scripts.codex-hooks-fixtures` for JSON fixtures.
+
+- Read for Codex adapter governance, V1 dispatch contract, source/deployed parity, or related fixtures.
+
 ## Conflicts and Supersession
-- superseded: the prior Codex-core restatement of the complete Director-facing order is replaced by a reference to the sole owner in `Shared/policies/language-governance.md`.
-- superseded: prior six-event, `Stop`/`SubagentStop`, deny/block, advisory, and reminder-only memory is replaced by the three-event `mandatory-directive-v1` model.
-- completed: this cycle's `memory_commit` finished; MCP confirmed `staleness: 0`, `healthy`, and `pendingChanges: []`.
+
+- superseded: any claim that a requested or accepted route proves the platform applied that model or effort.
+
 ## 中文摘要
-- 完整的總監輸出順序只由 `Shared/policies/language-governance.md` 的 `Captain Integration And Director Output Gate` 定義；Codex core 僅引用，不再重述。
-- 專案內 `Codex/.codex/AGENTS.md` 與 `.codex/AGENTS.md` 已達 exact parity；不再使用無法在專案內驗證的使用者全域雜湊。
-- 隊長可統整交付件，但不能替代實作、驗證、審查、記憶文件或完成證據。
-- Codex hook 仍採三事件 `mandatory-directive-v1`，本輪未修改 hook 範圍。
+
+- Codex V1 僅有四條受管路線；Sol/`xhigh` 必須同時符合受限失敗或不可逆關鍵決策，以及已明確解析的推理強度。
+- V1 不可用時輸出 `V1_NOT_AVAILABLE` 並停止，不得回退 V2；平台未回傳收據時不得猜測實際套用值。
+- `Watch-CodexModelV1.ps1` 是本機實驗性 workaround，正式 V1 adapter 不得依賴它或把快取格式當平台保證。
+
 ## Tracked Files
+
 - Codex/VERSION
 - Codex/README.md
 - Codex/install.ps1
@@ -88,9 +98,12 @@ metadata:
 - Codex/.agents/workflow-skills/07-debug-除錯/SKILL.md
 - Codex/.agents/workflow-skills/11-handoff-交接/SKILL.md
 - .agents/memory/_codex_core/archive-001.md
+- .codex/AGENTS.md
 
 ## Relations
-- _system (root governance and deployment memory); _shared (Shared operational skills); _map (memory navigation index); _codex_core.support (support workflow child card); _system.scripts (hook runner and audit); _system.scripts.codex-hooks-fixtures (fixture ownership)
+
+- _system (root governance); _shared (Shared policy); _system.scripts (runner ownership).
 
 ## Applicable Skills
-- memory-ops — Memory update and commit procedure owner; team-memory-docs-delivery-artifact — memory/docs state reporting owner.
+
+- memory-ops — authorized source-memory update and separate commit procedure.

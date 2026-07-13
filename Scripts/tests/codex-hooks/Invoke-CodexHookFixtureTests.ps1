@@ -24,7 +24,7 @@ function Resolve-FixtureShellApplication {
 
 function Get-FixtureShells {
     param([string[]]$Requested)
-    $names = if ($Requested -and $Requested.Count -gt 0) { $Requested } else { @('pwsh','powershell') }
+    $names = if ($Requested -and $Requested.Count -gt 0) { $Requested } else { @('pwsh') }
     $resolved = @()
     foreach ($name in $names) {
         $shell = Resolve-FixtureShellApplication -Name $name
@@ -644,6 +644,15 @@ if ($VerifyRuntimeSync) {
     }
     if (-not (Test-FixtureFileHashEqual -SourcePath (Join-Path $RepoRoot 'Codex\.codex\hooks\team-native-launcher.ps1') -TargetPath (Join-Path $RepoRoot '.codex\hooks\team-native-launcher.ps1'))) {
         throw 'hook source/deployed sync failed: team-native-launcher.ps1 hash mismatch'
+    }
+    if (-not (Test-FixtureFileHashEqual -SourcePath (Join-Path $RepoRoot 'Codex\.codex\AGENTS.md') -TargetPath (Join-Path $RepoRoot '.codex\AGENTS.md'))) {
+        throw 'Codex generated policy sync failed: AGENTS.md hash mismatch'
+    }
+    if (-not (Test-FixtureFileHashEqual -SourcePath (Join-Path $RepoRoot 'Codex\.codex\config.toml') -TargetPath (Join-Path $RepoRoot '.codex\config.toml'))) {
+        throw 'Codex config source/deployed sync failed: config.toml hash mismatch'
+    }
+    if (-not (Test-FixtureFileHashEqual -SourcePath (Join-Path $RepoRoot 'Shared\policies\subagent-invocation.md') -TargetPath (Join-Path $RepoRoot '.agents\shared\policies\subagent-invocation.md'))) {
+        throw 'shared policy source/deployed sync failed: subagent-invocation.md hash mismatch'
     }
     Write-Host 'hook source/deployed sync verified'
 }

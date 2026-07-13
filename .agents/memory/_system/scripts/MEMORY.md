@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-11T21:37:29+08:00'
+last_updated: '2026-07-13T18:04:50+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-11T21:34:33+08:00'
+last_verified: '2026-07-13T18:03:01+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-10-001
-cycle_event_count: 2
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,48 +31,53 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _system.scripts — Repository Script Governance Memory
 ## Current Truth
-- This card is a source/status pointer for root PowerShell deployment, split Audit module scripts, audit tests, memory migration, skill sync, platform sync, D0 validation, source-size validation, and Codex hook fixture runner ownership.
-- Canonical behavior and runtime rules live in tracked `Scripts/**` source files plus referenced Shared policies/skills; this card is not runtime authority by itself.
-- `Scripts/tests/Validate-WorkflowEightStagePlan.ps1` remains the stable route for Stage 1 through Stage 8 and Director-output semantics; it now also asserts lightweight delivery batching, the five material checkpoint categories, sibling validation/review after delivery, ordered dependent checks, post-terminal memory/docs, the no-redo-delivery rule, and plain-language progress reporting. The accepted run retained 13 Shared source/runtime hash pairs, repository-local Codex parity, and 9 passed with 0 failed.
-- Its fixtures fail closed for missing memory/docs and sync evidence, allow source-level protected follow-up only as non-complete, reject captain-substituted completion, reject compliance-led Director output, and reject runtime-only sync.
-- `Scripts/modules/Audit/70.DirectorOutputGrounding.ps1` is an internal Audit partial loaded by `Audit.psm1`; `Measure-DirectorOutputContract` is exported through the facade, so the old absent-command/export claim is obsolete.
-- The Director-output Audit parses Markdown blocks instead of relying on a loose cross-paragraph regex. Positive and negative cases cover a missing owner, wrong marker order, missing consumer reference, duplicated consumer definition, and unrelated adjacent text; the direct source/runtime owner check returned 0 findings.
-- Current supporting validation also passed D0 with 11 passed and 0 failed under `-SkipNpmAudit`, and source-size governance scanned 185 files with 17 yellow and 0 red.
-- D0 and hook runner ownership remains unchanged: D0 covers source/runtime governance checks, while Codex hook tests cover the three-event `mandatory-directive-v1` model and Windows wrapper behavior.
-- Shared governance reference sync includes `workflow-stage-procedures.md`, and Claude Upgrade includes root `CLAUDE.md` scanning.
+- This card covers root PowerShell deployment, audit modules, memory migration, skill/platform sync, validation, and runner ownership; tracked source remains runtime authority.
+- The hook fixture runner defaults to `pwsh`; an alternate shell is explicit through `-Shell`, unavailable shells are skipped unless `-RequireAllShells` is set. Windows PowerShell 5.1 is therefore opt-in and best-effort, not a default guarantee.
+- The V1 subagent contract runner is static source-contract evidence only: four governed routes, 52 executed cases, and 22 watcher safeguards cover V1 schema, `items`/`message` exclusivity, fixed member prefix, receipt variance, and no-V2 fallback.
+- Hook observations are fixture evidence, not runtime guarantees. The hook fixture runner and V1 subagent contract runner are distinct surfaces.
+- `Scripts/Watch-CodexModelV1.ps1` is a local experimental workaround, not an adapter capability or platform guarantee: every turn pre-opens only the effective local cache, rejects UNC/reparse paths, confirms its final path through `SafeFileHandle`/`GetFinalPathNameByHandleW`, holds `FileShare.None`, and performs one verified v2→v1 byte-offset write with `Flush(true)`, never a whole-file overwrite. `writeAttempted`/`writeVerified` classify failures: post-attempt unverified is terminal `CACHE_WRITE_STATE_UNKNOWN`; verified-write cleanup failure is terminal `CACHE_WRITE_VERIFIED_CLEANUP_FAILED`; only `CACHE_WRITE_NOT_ATTEMPTED` may retry from a fresh guarded open.
+
 ## Active Constraints
-- Validation fixtures are evidence contracts, not authorization or completion by themselves; missing protected memory or sync evidence remains fail-closed.
-- JSON fixtures under `workflow-eight-stage/fixtures/` are tracked here for the integrated route; Codex hook JSON fixture ownership remains in `_system.scripts.codex-hooks-fixtures`.
-- Memory repair does not authorize `memory_commit`, reindex, git mutation, release, deploy, install, credentials, or external mutation.
+- Validation fixtures are evidence contracts, not authorization or completion evidence.
+- Memory updates require a separate authorized `memory_commit`; this card does not claim that commit has run. Watcher behavior is source-local and must not be promoted to a platform guarantee.
+
 ## Cycle Events
-- 01: Compacted prior events and recorded 13-pair/Codex parity, eight-stage 9/9, D0 11/11 with npm audit skipped, source-size 185/17/0, structural Director-output Audit coverage, and 0 direct owner findings.
-- 02: Added durable validator coverage for lightweight batching, material-only checkpoints, sibling validation/review, dependency ordering, post-terminal memory/docs, no redo-delivery, and plain-language progress reporting; the accepted route remained 9/9.
+- 01: Compacted prior script-governance events and retained source/runtime validation ownership.
+- 02: Recorded lightweight workflow validation, protected follow-up limits, and structural Director-output audit coverage.
+- 03: Reverified pwsh-default hook fixtures, explicit alternate-shell handling, and the separate V1 adapter-contract runner.
+- 04: Recorded the watcher’s guarded local cache-write safety contract and its non-platform boundary.
+
 ## Archive Index
-- archive-002.md — script governance events 23-30; archive-001.md — older script cycle events 09-21.
+
+- archive-002.md — script governance events 23-30; archive-001.md — older events 09-21.
+
 ## Evidence Base
-- source/tool: `Scripts/tests/Validate-WorkflowEightStagePlan.ps1` and its current run — 13 Shared source/runtime hash pairs, repository-local Codex exact parity, and 9 passed / 0 failed.
-- source/tool: `Scripts/tests/Validate-WorkflowEightStagePlan.ps1` now asserts the retained lightweight orchestration and reporting semantics; the accepted validation run reported 9 passed / 0 failed and its built-in parity list remains 13 Shared source/runtime pairs plus repository-local Codex parity.
-- source/tool: `Scripts/modules/Audit/70.DirectorOutputGrounding.ps1` and its direct test matrix — Markdown-block owner/consumer structure, ordered markers, duplicate detection, unrelated-text allowance, and 0 source/runtime findings.
-- tool: `Scripts/tests/Validate-D0Minimal.ps1 -SkipNpmAudit` passed 11/11 with npm audit skipped; `Validate-SourceSizeGovernance.ps1 -NoFail` reported 185 scanned, 17 yellow, and 0 red.
-- source: `Scripts/tests/Validate-D0Minimal.ps1`, `Scripts/modules/Skills-Sync.psm1`, and `Scripts/modules/Platform-Claude.psm1` — retained D0, Shared sync, and Claude root-entry coverage.
-- source: `Scripts/modules/Audit/50.CodexHookGovernance.ps1` and `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1` — retained Codex hook audit/runner behavior.
+
+- source: `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1` — default shell selection, explicit shell override, fixture handling, and hook-runner scope.
+- source: `Scripts/tests/codex-subagents/Invoke-CodexSubagentV1ContractFixtureTests.ps1` — four routes, 52 static contract cases, 22 watcher safeguards, schema/prefix/receipt/no-V2 boundaries; never runs the watcher or a user cache.
+- source: `Scripts/Watch-CodexModelV1.ps1` — pre-open/final-handle checks, single-offset write, explicit attempt/verification states, terminal error classes, and non-guarantee boundary.
+
 ## Read Contract
-- Read this card for root PowerShell, Audit facade, eight-stage/D0/source-size validation, and runner ownership; use the Codex hook fixture child card for hook JSON fixtures.
+
+- Read for root PowerShell, audit/validation scripts, and the separate hook or V1 runner contracts.
+
 ## Conflicts and Supersession
-- superseded: the claim that the Audit facade command/export is absent is replaced by current `Audit.psm1` loading and exporting `Measure-DirectorOutputContract`.
-- completed: this cycle's `memory_commit` finished; MCP confirmed `staleness: 0`, `healthy`, and `pendingChanges: []`.
-- superseded: temporary verification-target, manifest, recovery, and artifact-ledger validators or fixtures are not part of the retained script route.
+
+- superseded: treating fixture observations as runtime capability guarantees or merging hook and V1 runner responsibilities.
+
 ## 中文摘要
-- `Validate-WorkflowEightStagePlan.ps1` 仍是 Stage 1-8 與總監輸出語意的穩定驗證入口；目前也檢查輕量批次、五類重大中途檢查、交付後平行驗證／審查、相依檢查排序、不得重做交付及白話進度回報。13 組 Shared 配對與 Codex 專案內 parity 維持通過，結果為 9/9；已撤回的重型驗證機制不屬於目前驗證路徑。
-- fixture 對缺少 memory/sync、隊長替代、compliance-led output 與 runtime-only sync 採 fail-closed。
-- source-level protected follow-up 只能標示為尚未完整完成，不能升級為 process completion。
-- `Measure-DirectorOutputContract` 已由 Audit facade 載入並匯出；舊缺失敘述已失效。
-- Audit 已改用 Markdown 區塊結構檢查並涵蓋完整正反例，來源與執行副本檢查為 0 findings；D0 為 11/11，檔案大小治理為 185 scanned、17 yellow、0 red。
+
+- hook fixture 預設使用 `pwsh`；Windows PowerShell 5.1 必須明確指定，且僅屬盡力支援，不是預設保證。
+- hook 與 V1 subagent runner 是不同測試面；兩者輸出都不能推論為平台執行期保證。
+- watcher 每輪 pre-open，並用 `SafeFileHandle` 驗證最終路徑；僅能以單一已驗證 offset 做 v2→v1 局部寫入與 `Flush(true)`，不可整檔覆寫。
+- `writeAttempted`/`writeVerified` 使 `STATE_UNKNOWN` 與 `VERIFIED_CLEANUP_FAILED` 終止；僅 `NOT_ATTEMPTED` 可從新 guarded open 重試，且快取格式不是平台保證。
+
 ## Tracked Files
+
 - Scripts/Deploy.ps1
+- Scripts/Watch-CodexModelV1.ps1
 - Scripts/modules/Core.psm1
 - Scripts/modules/Audit.psm1
 - Scripts/modules/Audit/00.Common.ps1
@@ -103,9 +108,12 @@ metadata:
 - Scripts/tests/workflow-eight-stage/fixtures/block-missing-memory-docs-complete.json
 - Scripts/tests/workflow-eight-stage/fixtures/block-runtime-only-sync-complete.json
 - Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1
+- Scripts/tests/codex-subagents/Invoke-CodexSubagentV1ContractFixtureTests.ps1
+
 ## Relations
-- _system (parent card: repository governance)
-- _shared (shared governance source)
-- _system.scripts.codex-hooks-fixtures (child card: Codex hook JSON fixture ownership)
-- _codex_core (related card: Codex hook config and gate script)
-- _vscode_extension.release (related manager entrypoint ownership)
+
+- _system (parent governance); _shared (Shared policy); _codex_core (adapter contract).
+
+## Applicable Skills
+
+- memory-ops — authorized source-memory update and separate commit procedure.

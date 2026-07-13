@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >-
   專案記憶：Team-Native Core shared governance, station routing, trace evidence, and
   team completion contracts.
-last_updated: '2026-07-11T21:37:22+08:00'
+last_updated: '2026-07-13T18:26:35+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-11T21:34:33+08:00'
+last_verified: '2026-07-13T18:03:01+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-10-001
-cycle_event_count: 2
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,39 +31,40 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared.team-native-core — Team-Native Core Governance Memory
 ## Current Truth
-- Team-Native has one governed eight-stage mainline; its normative order runs from resolved spec and handoff through channel receipt, board ledger, delivery, validation/review, memory/docs, and completion, while entries, policies, matrices, skills, boards, handoffs, and artifacts remain layers of that route rather than alternate mainlines.
-- Within one resolved authorization scope, ordered implementation steps and multiple files may complete as one delivery wave; only a material change to scope or authorization, a public contract, migration, security posture, or an irreversible/protected action opens an intermediate checkpoint, and that checkpoint adds no lifecycle stage or state.
-- After one complete delivery artifact plus applicable source/deployed sync, validation and independent review start as sibling stations and may run in parallel when independent; dependent checks remain ordered, findings route one bounded repair pass, and memory/docs waits for both evidence lanes to become terminal.
-- Stage 2 records `workflow_entry_ref` and `stage_procedure_ref`; Stage 7 records `behavior_counterevidence`; Stage 8 records `source_deployed_pair`, `sync_direction`, and hash/content parity evidence or an honest blocked/unverified state.
-- An executable `requested_execution_snapshot` freezes only after the same handoff packet materializes and seals `#context-scope` and `#wait-policy`, binds both refs, and resolves the spec; changing either anchor requires a new packet ID.
-- Requested profile/model/reasoning fields record intent only: delegation resolves `fast`/`balanced`/`deep` without changing scope, role, authorization, protected gates, completion requirements, or wait duration, and never treats requested values as proof of platform application.
-- `applied_execution_receipt` is channel input; the board recomputes canonical observed state from the immutable snapshot, channel fields, and whole receipt. Missing or partial applied values are never inferred and remain `unverified` with `platform-receipt-missing`.
-- The captain cannot substitute implementation, validation, review, memory/docs attribution, protected execution, or completion evidence; memory retains separate task-start clue, post-task disposition, protected write, and separately authorized `memory_commit` touchpoints.
-- Source-level delivery may leave protected follow-up pending, but process-complete/release-ready require requested protected memory phases and sync evidence; the complete Director-facing action order has one owner, `Shared/policies/language-governance.md` heading `Captain Integration And Director Output Gate`, while Codex core, `team-completion-gate`, and `team-task-board` only reference it.
-- Director-output audit now inspects Markdown blocks structurally rather than using a loose cross-paragraph regex; it verifies the sole owner, ordered markers, consumer references, and duplicate definitions while allowing unrelated nearby text.
+- Team-Native uses the governed eight-stage route; station-owned evidence, authorization, validation, review, memory/docs, and completion remain separate responsibilities.
+- Governed V1 routes are exactly fast/Luna/medium, balanced/Terra/medium, deep/Sol/medium, and deep/Sol/xhigh only when (reliable scoped attempt failure OR irreversible critical decision) AND explicitly resolved requested effort is `xhigh`; unavailable routes preserve the request and never fall back.
+- `requested_execution_snapshot` is request intent: after `#context-scope` and `#wait-policy` resolve the execution spec, seal/freeze the immutable snapshot; requested, accepted, and applied values remain separate, and an applied receipt never writes back to the requested snapshot. Without a receipt, applied model/effort are `unreported`, application is `unverified`, and variance is `platform receipt missing`.
+- `role_id`, `agent_type`, and model are distinct: `agent_type` selects the execution channel. Unresolved role/station stops dispatch; the member prefix fixes non-captain identity before scoped allowlist and stop conditions.
+
 ## Active Constraints
-- Bare skill triggers, route fields, plan mirrors, hooks, and runtime guards are non-authorizing and cannot replace the artifact chain; missing memory/docs, validation, review, sync/parity, or Director-output evidence stays non-complete.
+- Route fields, plans, hooks, and guards are non-authorizing; missing station, validation, review, memory, or parity evidence remains non-complete.
+- V1 requires `agent_type`, `fork_context`, `items`, `model`, and `reasoning_effort`; `items` and `message` are exclusive, `prompt` is forbidden, and source/deployed pairs require parity evidence.
+
 ## Cycle Events
-- 01: Compacted prior events; recorded the single eight-stage mainline, sealed-anchor snapshot order, requested-versus-applied boundary, four memory touchpoints, 13-pair parity, the sole Director-output owner, structural Audit coverage, and 9/9 validation evidence.
-- 02: Recorded lightweight batch delivery, material-only checkpoints, sibling validation/review after delivery, ordered dependent checks, post-evidence memory/docs, and explicit non-retention of heavy verification machinery.
+- 01: Compacted prior events; recorded the eight-stage mainline, requested-versus-applied boundary, protected-memory touchpoints, and Director-output owner.
+- 02: Recorded lightweight delivery batching, material-only checkpoints, sibling validation/review, ordered dependencies, and post-evidence memory/docs.
+- 03: Reverified profile resolution, role/model separation, receipt reconciliation, and source/deployed subagent-policy parity.
+
 ## Archive Index
-- archive-001.md / archive-002.md — Older cycle events 1-19 compacted from the active card.
+- archive-001.md / archive-002.md — Older cycle events compacted from the active card.
+
 ## Evidence Base
-- source: workflow execution spec, station handoff, delegation, board catalog, and orchestration sources — sealed anchors, requested-intent boundaries, receipt reconciliation, canonical observed state, and the sole normative sequence.
-- source/artifact: `Shared/policies/language-governance.md`, `team-completion-gate`, and `team-task-board` establish sole ownership and consumer-only references; accepted validation verified 13 Shared pairs plus repository-local Codex parity, eight-stage 9/9, and 0 direct owner findings.
-- source/artifact: `Shared/policies/workflow-orchestration.md` and `Shared/policies/workflow-orchestration-scenarios.md` define lightweight batching, five material checkpoint categories, sibling validation/review after delivery, ordered dependencies, bounded repair, and post-terminal memory/docs; accepted change, validation, and review evidence confirmed the temporary heavy verification machinery is not retained.
+- source/deployed: `Shared/policies/subagent-invocation.md` and `.agents/shared/policies/subagent-invocation.md` — identical policy for V1 routes, xhigh gate, no fallback, identity, and receipt reconciliation.
+- source: `Shared/skills/delegation-strategy/SKILL.md` — delegation consumes task evidence and preserves role, authorization, and channel boundaries.
+
 ## Read Contract
-- Read this card for Team-Native mainline, stage evidence, station/completion contracts, and protected memory lifecycle ownership; current tracked source remains canonical.
+- Read for Team-Native routing, station evidence, execution-intent boundaries, and protected-memory lifecycle ownership.
+
 ## Conflicts and Supersession
-- superseded: multi-mainline, optional-helper, parallel skill-mechanism, and bare-trigger interpretations are replaced by the single eight-stage mainline with resolved station, authorization, artifact chain, and completion state.
-- superseded: task-start memory read, post-task disposition, memory write, and `memory_commit` are separate touchpoints, not one merged memory phase.
-- superseded: verification-target schemas, batch fingerprints, manifests, recovery packets, and artifact-owner ledgers are not part of the retained lightweight workflow.
+- superseded: inferring an applied model from requested/accepted values, role/station, or tool acceptance; or treating Sol/xhigh as available without both its decision and explicitly resolved-effort gates.
+
 ## 中文摘要
-- 同一授權範圍可先完成整批實作；只有範圍／授權、公開契約、遷移、安全或不可逆／受保護操作發生實質變化時才加入中途檢查點，而且不增加新階段或狀態。完整交付與同步後，驗證與獨立審查可平行，具依賴者仍依序，兩者終止後才進入 memory/docs。
-- 本輪不保留 verification-target schema、manifest、batch fingerprint、recovery packet 或 artifact-owner ledger 等重型機制。
+- Sol/xhigh 僅在「可靠失敗或不可逆決策」且明確解析為 `xhigh` 時可用；不可自動替代或 fallback。
+- requested、accepted、applied 必須分離；無平台收據時 applied 均為 `unreported`、狀態為 `unverified`。
+- `role_id`、`agent_type`、model 不同；角色或站點無法解析時停止派工，隊員提示固定其非隊長身份。
+
 ## Tracked Files
 - Shared/policies/authorization-resolution.md
 - Shared/policies/team-native-core.md
@@ -108,5 +109,11 @@ metadata:
 - Shared/skills/team-specialist-security-reliability/SKILL.md
 - Shared/skills/team-specialist-release-completion/SKILL.md
 - Shared/skills/team-specialist-external-research/SKILL.md
+- .agents/skills/delegation-strategy/SKILL.md
+- .agents/shared/policies/subagent-invocation.md
+
 ## Relations
-- _shared (parent Shared governance); _shared.ops-skills.skill-governance (skill governance); _system.scripts (Doctor/deploy scripts)
+- _shared (parent governance); _system.scripts (script governance).
+
+## Applicable Skills
+- memory-ops — authorized source-memory update and separate commit procedure.

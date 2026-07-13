@@ -66,20 +66,22 @@ classification`, and `repair loop limit`; long value catalogs stay in
 ### Execution Profile Resolution
 
 After task type is known and before any execution channel is chosen, resolve the
-requested execution profile and requested defaults:
+requested execution profile from task evidence. Error cost, reversibility,
+validation difficulty, and reliable prior failure are the deciding factors;
+role or station may recommend a profile, but task evidence, explicit
+requirements, and operator answers may override that recommendation. A role or
+station never binds a model.
 
 - Pure discussion or work with no executable station uses `not-applicable`,
   `requested_model: not-requested`, `requested_reasoning_effort:
   not-requested`, and `not-applicable` context/wait references. The presence of
   these fields never activates Team mode.
-- Narrow, clearly bounded read-only work uses `fast`, `requested_model:
-  platform-default`, and `requested_reasoning_effort: low`.
-- General work, a single-file source change, or a requirements/scope-resolution
-  station uses `balanced`, `requested_model: platform-default`, and
-  `requested_reasoning_effort: medium`.
-- Cross-module work, external research, high-risk work, or protected work uses
-  `deep`, `requested_model: platform-default`, and
-  `requested_reasoning_effort: high`.
+- `fast` is appropriate when error cost is low, the work is reversible, and
+  validation is straightforward.
+- `balanced` is appropriate for ordinary bounded work when no deep-route signal
+  applies.
+- `deep` is appropriate when error cost is high, reversal is difficult,
+  validation is difficult, or a reliable scoped attempt has already failed.
 
 These are the only execution profile selection rules. `high-assurance` is a
 governance requirement and `scope-resolution` is a route or station; neither is
@@ -92,7 +94,10 @@ An exact requested reasoning effort, `exact:<opaque-token>`, follows the same
 source-legitimacy rule. It may appear only in the current per-task execution spec
 when grounded in a current explicit Director request or current verified
 platform/channel evidence. It must never become a permanent profile enum or
-default, and it must not be inferred from prior availability.
+default, and it must not be inferred from prior availability. If the profile or
+requested effort remains ambiguous, ask at most two targeted operator questions.
+Until resolved, the execution spec is `draft` / `unverified`; do not invent a
+sentinel value.
 
 Requested profile, model, and effort are intent, not authority or availability
 guarantees. They cannot remove roles, alter route or scope, relax authorization
@@ -209,4 +214,5 @@ evidence, browser, CLI, MCP, main-worktree change delivery, isolated change
 delivery, text change delivery, or fallback change application to `native`,
 `adapter`, `conditional`, or `unavailable`. Conditional routes need proof.
 Unavailable routes cannot become legacy invalid/forbidden `routine direct` or
-routine captain work.
+routine captain work. Vendor-specific named model and reasoning-effort tables
+remain adapter-owned.
