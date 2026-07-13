@@ -4,14 +4,14 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-13T18:04:50+08:00'
+last_updated: '2026-07-13T22:56:40+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: verified
-last_verified: '2026-07-13T18:03:01+08:00'
+verification_status: partial_evidence
+last_verified: '2026-07-13T22:52:03+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -35,29 +35,28 @@ metadata:
 ## Current Truth
 - This card covers root PowerShell deployment, audit modules, memory migration, skill/platform sync, validation, and runner ownership; tracked source remains runtime authority.
 - The hook fixture runner defaults to `pwsh`; an alternate shell is explicit through `-Shell`, unavailable shells are skipped unless `-RequireAllShells` is set. Windows PowerShell 5.1 is therefore opt-in and best-effort, not a default guarantee.
-- The V1 subagent contract runner is static source-contract evidence only: four governed routes, 52 executed cases, and 22 watcher safeguards cover V1 schema, `items`/`message` exclusivity, fixed member prefix, receipt variance, and no-V2 fallback.
+- The V1 subagent contract runner is static source-contract evidence only: it owns six simplified watcher cases for the experimental boundary, exact pattern/replacement/count behavior, multi-match replacement, and zero-match preservation.
 - Hook observations are fixture evidence, not runtime guarantees. The hook fixture runner and V1 subagent contract runner are distinct surfaces.
-- `Scripts/Watch-CodexModelV1.ps1` is a local experimental workaround, not an adapter capability or platform guarantee: every turn pre-opens only the effective local cache, rejects UNC/reparse paths, confirms its final path through `SafeFileHandle`/`GetFinalPathNameByHandleW`, holds `FileShare.None`, and performs one verified v2→v1 byte-offset write with `Flush(true)`, never a whole-file overwrite. `writeAttempted`/`writeVerified` classify failures: post-attempt unverified is terminal `CACHE_WRITE_STATE_UNKNOWN`; verified-write cleanup failure is terminal `CACHE_WRITE_VERIFIED_CLEANUP_FAILED`; only `CACHE_WRITE_NOT_ATTEMPTED` may retry from a fresh guarded open.
+- `Scripts/Watch-CodexModelV1.ps1` is a local experimental workaround, not a formal Codex adapter capability or platform guarantee. It performs whole-file regex replacement for all exact `multi_agent_version: v2` matches, reports the match count, and leaves zero-match content unchanged; the prior exact-one and guarded byte-local safeguards were intentionally removed by Director decision.
 
 ## Active Constraints
 - Validation fixtures are evidence contracts, not authorization or completion evidence.
-- Memory updates require a separate authorized `memory_commit`; this card does not claim that commit has run. Watcher behavior is source-local and must not be promoted to a platform guarantee.
+- Memory updates require a separate authorized `memory_commit`; this card does not claim that commit has run. Actual cache/runtime behavior was not executed in this delivery and remains unverified.
 
 ## Cycle Events
 - 01: Compacted prior script-governance events and retained source/runtime validation ownership.
 - 02: Recorded lightweight workflow validation, protected follow-up limits, and structural Director-output audit coverage.
 - 03: Reverified pwsh-default hook fixtures, explicit alternate-shell handling, and the separate V1 adapter-contract runner.
-- 04: Recorded the watcher’s guarded local cache-write safety contract and its non-platform boundary.
+- 04: Replaced the watcher’s exact-one guarded byte-local contract with the Director-approved all-match whole-file regex behavior and six static watcher cases.
 
 ## Archive Index
-
 - archive-002.md — script governance events 23-30; archive-001.md — older events 09-21.
 
 ## Evidence Base
-
 - source: `Scripts/tests/codex-hooks/Invoke-CodexHookFixtureTests.ps1` — default shell selection, explicit shell override, fixture handling, and hook-runner scope.
-- source: `Scripts/tests/codex-subagents/Invoke-CodexSubagentV1ContractFixtureTests.ps1` — four routes, 52 static contract cases, 22 watcher safeguards, schema/prefix/receipt/no-V2 boundaries; never runs the watcher or a user cache.
-- source: `Scripts/Watch-CodexModelV1.ps1` — pre-open/final-handle checks, single-offset write, explicit attempt/verification states, terminal error classes, and non-guarantee boundary.
+- source: `Scripts/tests/codex-subagents/Invoke-CodexSubagentV1ContractFixtureTests.ps1` — six static watcher cases cover the experimental boundary, exact pattern/replacement/count behavior, multi-match replacement, and zero-match preservation; never runs the watcher or a user cache.
+- source: `Scripts/Watch-CodexModelV1.ps1` — all-match whole-file regex replacement, match-count reporting, zero-match preservation, and non-guarantee boundary.
+- director: 2026-07-13 — intentionally remove the prior exact-one and guarded byte-local watcher safeguards.
 
 ## Read Contract
 
@@ -66,13 +65,14 @@ metadata:
 ## Conflicts and Supersession
 
 - superseded: treating fixture observations as runtime capability guarantees or merging hook and V1 runner responsibilities.
+- superseded: exact-one guarded byte-local watcher writes and their attempt/verification state classification.
 
 ## 中文摘要
 
 - hook fixture 預設使用 `pwsh`；Windows PowerShell 5.1 必須明確指定，且僅屬盡力支援，不是預設保證。
 - hook 與 V1 subagent runner 是不同測試面；兩者輸出都不能推論為平台執行期保證。
-- watcher 每輪 pre-open，並用 `SafeFileHandle` 驗證最終路徑；僅能以單一已驗證 offset 做 v2→v1 局部寫入與 `Flush(true)`，不可整檔覆寫。
-- `writeAttempted`/`writeVerified` 使 `STATE_UNKNOWN` 與 `VERIFIED_CLEANUP_FAILED` 終止；僅 `NOT_ATTEMPTED` 可從新 guarded open 重試，且快取格式不是平台保證。
+- watcher 是本機實驗性 workaround；目前會對所有精確 `multi_agent_version: v2` 做整檔 regex 取代並回報數量，零匹配保持不變，先前 exact-one 與 guarded byte-local 防線已依總監決定移除。
+- fixture 僅持有六個簡化 watcher 靜態契約案例；本次未執行 actual cache/runtime，相關行為仍未驗證。
 
 ## Tracked Files
 

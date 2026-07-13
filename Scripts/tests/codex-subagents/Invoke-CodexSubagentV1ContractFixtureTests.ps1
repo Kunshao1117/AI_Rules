@@ -222,32 +222,23 @@ Add-ContainsIssue -Issues $issues -Text $normalizedDelegationSkill -Needle 'If t
 
 # Static source inspection only: this fixture never invokes the watcher or a user models cache.
 $watcherStaticCases = @(
-    @{ Name = 'experimental disclaimer'; Condition = $watcher.Contains('local experimental workaround') -and $watcher.Contains('not a formal Codex adapter capability') -and $watcher.Contains('not a platform guarantee') },
-    @{ Name = 'effective cache path only'; Condition = $watcher.Contains('Get-ExpectedCodexModelsCachePath') -and $watcher.Contains('Resolve-ValidatedCodexModelsCachePath') -and $watcher.Contains('Only the effective Codex models cache path is allowed:') },
-    @{ Name = 'CODEX_HOME fallback'; Condition = $watcher.Contains('$env:CODEX_HOME') -and $watcher.Contains('Join-Path $env:USERPROFILE ''.codex''') -and $watcher.Contains("'models_cache.json'") },
-    @{ Name = 'UNC and reparse rejection'; Condition = $watcher.Contains("StartsWith('\\')") -and $watcher.Contains('Assert-PathHasNoReparsePoint') -and $watcher.Contains('FileAttributes]::ReparsePoint') },
-    @{ Name = 'pre-open reparse guard per update'; Condition = $watcher.Contains('$expectedPath = Resolve-ValidatedCodexModelsCachePath -CandidatePath $TargetPath') -and $watcher.IndexOf('Resolve-ValidatedCodexModelsCachePath -CandidatePath $TargetPath') -lt $watcher.IndexOf('[System.IO.File]::Open(') },
-    @{ Name = 'exclusive cache lock'; Condition = $watcher.Contains('[System.IO.FileShare]::None') },
-    @{ Name = 'final handle path API and SafeFileHandle'; Condition = $watcher.Contains('GetFinalPathNameByHandleW') -and $watcher.Contains('[Microsoft.Win32.SafeHandles.SafeFileHandle]$SafeFileHandle') -and $watcher.Contains('$stream.SafeFileHandle') -and $watcher.Contains('if ($result -eq 0 -or $result -ge $bufferCapacity)') },
-    @{ Name = 'post-open expected path comparison'; Condition = $watcher.Contains('Get-ValidatedFinalPathFromHandle -SafeFileHandle $stream.SafeFileHandle') -and $watcher.Contains('[System.StringComparison]::OrdinalIgnoreCase') -and $watcher.Contains('Opened cache path differs from the expected effective Codex cache path') },
-    @{ Name = 'strict JSON and equal byte length'; Condition = $watcher.Contains('ConvertFrom-Json -ErrorAction Stop') -and $watcher.Contains('$updatedBytes.Length -ne $bytes.Length') },
-    @{ Name = 'exact changed offset set'; Condition = $watcher.Contains('$expectedChangedOffsets.SetEquals($actualChangedOffsets)') },
-    @{ Name = 'exactly one changed offset'; Condition = $watcher.Contains('$actualChangedOffsets.Count -ne 1') -and $watcher.Contains('exactly one validated cache byte offset is required') },
-    @{ Name = 'v2 to v1 byte guard'; Condition = $watcher.Contains("[byte][char]'2'") -and $watcher.Contains("[byte][char]'1'") },
-    @{ Name = 'same locked handle byte-local write only'; Condition = $watcher.Contains('$stream.WriteByte($updatedBytes[$writeOffset])') -and $watcher.Contains('$stream.ReadByte()') -and -not $watcher.Contains('$stream.Write($updatedBytes, 0, $updatedBytes.Length)') -and -not $watcher.Contains('[System.IO.File]::ReadAllBytes($expectedPath)') },
-    @{ Name = 'durable flush and post-write readback'; Condition = $watcher.Contains('$stream.Flush($true)') -and $watcher.Contains('$writtenByte = $stream.ReadByte()') -and $watcher.Contains('Post-write verification failed at byte offset') },
-    @{ Name = 'operation and Dispose failures are captured before classification'; Condition = $watcher.Contains('$operationException = $_.Exception') -and $watcher.Contains('$disposeException = $_.Exception') -and $watcher.Contains('if ($null -ne $operationException -or $null -ne $disposeException)') -and $watcher.Contains('$failureMessages.Add("Operation failure: $($operationException.Message)")') -and $watcher.Contains('$failureMessages.Add("Dispose failure: $($disposeException.Message)")') },
-    @{ Name = 'possibly-partial write state is terminal'; Condition = $watcher.Contains('$writeAttempted = $true') -and $watcher.Contains('$writeVerified = $false') -and $watcher.Contains('if (-not $writeVerified)') -and $watcher.Contains('CACHE_WRITE_STATE_UNKNOWN: possibly-partial cache update') },
-    @{ Name = 'verified write cleanup failure is terminal'; Condition = $watcher.Contains('$writeVerified = $true') -and $watcher.Contains('CACHE_WRITE_VERIFIED_CLEANUP_FAILED: cache update was verified before cleanup failed') -and $watcher.Contains('if (-not $writeAttempted)') -and $watcher.Contains('if (-not $writeVerified)') },
-    @{ Name = 'only no-attempt failures retry'; Condition = $watcher.Contains('$_.Exception.Message.StartsWith(''CACHE_WRITE_NOT_ATTEMPTED:'', [System.StringComparison]::Ordinal)') -and -not $watcher.Contains('catch [System.IO.IOException]') -and -not $watcher.Contains('catch [System.UnauthorizedAccessException]') -and ([regex]::Matches($watcher, '(?m)^\s*continue\s*$').Count -eq 1) },
-    @{ Name = 'pre-write failure is explicitly no-attempt'; Condition = $watcher.Contains('CACHE_WRITE_NOT_ATTEMPTED: cache update failed before any write attempt') },
-    @{ Name = 'hidden optional launch'; Condition = $watcher.Contains("Start-Process -FilePath 'explorer.exe'") -and $watcher.Contains('-WindowStyle Hidden') },
-    @{ Name = 'no whole-file overwrite API'; Condition = -not $watcher.Contains('WriteAllText(') -and -not $watcher.Contains('WriteAllBytes(') },
-    @{ Name = 'static fixture boundary'; Condition = $true }
+    @{ Name = 'experimental non-platform boundary'; Condition = $watcher.Contains('# Local experimental workaround only; not a formal Codex adapter capability and not a platform guarantee.') },
+    @{ Name = 'precise v2 pattern'; Condition = $watcher.Contains('$pattern = ''(?<prefix>"multi_agent_version"\s*:\s*)"v2"''') },
+    @{ Name = 'regex matches and replace'; Condition = $watcher.Contains('$matches = [regex]::Matches($text, $pattern)') -and $watcher.Contains('$updated = [regex]::Replace($text, $pattern, ''${prefix}"v1"'')') },
+    @{ Name = 'match count result without exact-one guard'; Condition = $watcher.Contains('return $matches.Count') -and -not $watcher.Contains('exactly one validated cache byte offset is required') -and -not $watcher.Contains('$actualChangedOffsets.Count -ne 1') }
 )
 foreach ($case in $watcherStaticCases) {
     Add-ContractIssue -Issues $issues -Condition $case.Condition -Message "Watcher static contract case failed: $($case.Name)"
 }
+
+$watcherPattern = '(?<prefix>"multi_agent_version"\s*:\s*)"v2"'
+$watcherReplacement = '${prefix}"v1"'
+$twoMatchSample = '{"multi_agent_version":"v2","nested":{"multi_agent_version" : "v2"}}'
+$twoMatchUpdated = [regex]::Replace($twoMatchSample, $watcherPattern, $watcherReplacement)
+Add-ContractIssue -Issues $issues -Condition (([regex]::Matches($twoMatchSample, $watcherPattern).Count -eq 2) -and ([regex]::Matches($twoMatchUpdated, $watcherPattern).Count -eq 0) -and ([regex]::Matches($twoMatchUpdated, '(?<prefix>"multi_agent_version"\s*:\s*)"v1"').Count -eq 2)) -Message 'Watcher in-memory multi-match fixture must replace two exact v2 values with v1 values'
+$zeroMatchSample = '{"multi_agent_version":"v1"}'
+Add-ContractIssue -Issues $issues -Condition ([string]::Equals([regex]::Replace($zeroMatchSample, $watcherPattern, $watcherReplacement), $zeroMatchSample, [System.StringComparison]::Ordinal)) -Message 'Watcher in-memory zero-match fixture must remain unchanged'
+$watcherContractCaseCount = $watcherStaticCases.Count + 2
 
 $schemaNegativeCases = @(
     @{ Name = 'missing agent_type'; Keys = @('fork_context', 'items', 'model', 'reasoning_effort') },
@@ -343,9 +334,9 @@ if ($PSBoundParameters.ContainsKey('SuppliedSchemaJson')) {
     Add-ContractIssue -Issues $issues -Condition $suppliedResult.Valid -Message ("Supplied schema failed V1 contract: {0}" -f ($suppliedResult.Issues -join '; '))
 }
 
-$executedCaseCount = $schemaNegativeCases.Count + $payloadCases.Count + $routePositiveCases.Count + $routeFailureCases.Count + $watcherStaticCases.Count
+$executedCaseCount = $schemaNegativeCases.Count + $payloadCases.Count + $routePositiveCases.Count + $routeFailureCases.Count + $watcherContractCaseCount
 if ($issues.Count -gt 0) {
-    throw ("Codex V1 adapter contract fixture failures ({0} issues; {1} executed table cases): {2}" -f $issues.Count, $executedCaseCount, ($issues -join '; '))
+    throw ("Codex V1 adapter contract fixture failures ({0} issues; {1} executed contract cases): {2}" -f $issues.Count, $executedCaseCount, ($issues -join '; '))
 }
 
-Write-Host ('Codex V1 adapter contract fixtures passed: {0} governed routes; {1} executed table cases, including {2} static watcher safeguards. Contract tests only validate adapter/source contracts, never execute the watcher or a user models cache, and do not prove runtime/model quality or applied values; no platform receipt means applied remains unverified.' -f $expectedRoutes.Count, $executedCaseCount, $watcherStaticCases.Count)
+Write-Host ('Codex V1 adapter contract fixtures passed: {0} governed routes; {1} executed contract cases, including {2} watcher contract cases. Contract tests only validate adapter/source contracts, never execute the watcher or a user models cache, and do not prove runtime/model quality or applied values; no platform receipt means applied remains unverified.' -f $expectedRoutes.Count, $executedCaseCount, $watcherContractCaseCount)
