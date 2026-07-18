@@ -17,6 +17,11 @@ metadata:
   style: hybrid
   memory_awareness: read
   tool_scope: ["filesystem:read", "terminal:read"]
+  platforms: ["codex"]
+  lifecycle_phase: ["planning", "pre-execution"]
+  role: design-reflection
+  human_gate: conditional
+  automation_safe: true
 ---
 
 # Design Reflection Gate — Design-Shape Reflection

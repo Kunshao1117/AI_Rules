@@ -29,6 +29,8 @@ The reviewer checks whether the change delivery fits the request and project rul
 - Authorization source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode.
 - Relevant source, rules, and memory delivery evidence if needed.
 - Validation delivery artifact, if available.
+- Change-delivery responsibility inventory and coupling proposal when a
+  source-bearing file changed.
 
 ## Review Checks
 
@@ -43,6 +45,14 @@ The reviewer checks whether the change delivery fits the request and project rul
    Or was it explicitly marked blocked, unverified, or closed-with-director-risk?
 8. Independence: Did the reviewer avoid authoring the implementation being reviewed? Missing independence prevents `complete`.
 9. Authorization fit: Do authorization source, target, scope, phase, evidence, expiry, and resolution state match the reviewed work?
+10. Responsibility boundary: Using
+    `Shared/policies/source-document-size-governance.md`, independently identify
+    actual change triggers, owners, contracts or outputs, consumers, failure
+    modes, and test entrypoints. Do not accept broad author labels as proof that
+    separate areas are one responsibility. Record `single` for one
+    responsibility, `coupled-second-accepted` only when every strong-coupling
+    condition is supported, `split-required` for a third responsibility or
+    rejected coupling, and `unverified` when the evidence is incomplete.
 
 ## Output
 
@@ -73,7 +83,16 @@ delivery_artifact_id:
 author_role_reviewed:
 reviewer_role:
 source_input:
+responsibility_review_disposition:
+responsibility_findings:
 ```
+
+Valid `responsibility_review_disposition` values:
+
+- `single`
+- `coupled-second-accepted`
+- `split-required`
+- `unverified`
 
 Valid `review_state` values:
 

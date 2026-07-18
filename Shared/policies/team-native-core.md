@@ -78,6 +78,14 @@ canonical value owners for shared terms:
 - Exception records: `exception-registry.md`.
 - Source/runtime/generated copy roles: `platform-copy-map.md`.
 
+Parallel dispatch consumes the canonical `parallel_dispatch_contract` from the
+board catalog; `Shared/policies/workflow-orchestration.md` alone owns
+dependency, wave, and same-wave semantics. Cross-conversation continuation
+uses `Shared/policies/references/cross-thread-handoff-contract.md`, with
+platform transport kept in its adapter. Protected long-work local checkpoints
+route only to `team-specialist-git-checkpoint`; the core does not copy either
+schema or procedure.
+
 ## Core Boundary And Policy Placement Rule
 
 Team-Native Core owns the governed team safety invariants after activation.
@@ -276,14 +284,14 @@ Operation mode entries:
 
 - `daily`
   - Use when: routine inspection, lightweight evidence, low-risk documentation alignment, or generated-copy checks.
-  - Use when: bounded governance drift has no source, workflow, skill, audit-rule, release, or deployment impact.
+  - Use when: bounded governance drift has no source, workflow, skill, release, or deployment impact.
   - Use when: bounded governance drift has no install, external-state, or protected mutation impact.
   - Completion boundary: reduced Team-Native evidence may close daily work only.
   - Completion boundary: it still requires a Captain board, `role_id`, handoff packet, and trace evidence.
   - Completion boundary: it still requires `operation_mode_reason` and explicit blocked/unverified states.
   - Completion boundary: it cannot claim full team completion unless the task itself does not require full station separation.
 - `full`
-  - Use when: implementation, repair, bottom-layer refactor, cross-file governance, specialist skill rewrites, or Doctor/Audit changes.
+  - Use when: implementation, repair, bottom-layer refactor, cross-file governance, or specialist skill rewrites.
   - Use when: commit/release/deploy preparation, high-risk external state, or changes to source or workflow.
   - Use when: changes affect memory/docs obligations, public contracts, generated copies, or completion semantics.
   - Completion boundary: full completion requires separated change delivery, validation, review, memory/docs, and completion evidence.
@@ -389,6 +397,10 @@ It also names the assigned specialist skill, loaded skill references, task row, 
 The packet must name the startup threshold and stop condition.
 The handoff packet may be produced from `team-station-handoff-packet` or an equivalent platform adapter.
 It must be visible in the board or delivery trace.
+
+Station startup, cross-thread continuation, and platform thread movement are
+different contracts. Only station startup uses `handoff_packet_id`; a
+cross-thread package and platform transport metadata cannot satisfy this rule.
 
 The packet must include these fields when applicable:
 
@@ -640,7 +652,7 @@ Closeout lane entries:
   - Constraint: no source, workflow, governance, generated/runtime copy, evidence-surface, release, protected, or external-state mutation.
   - Minimum stations: scope/impact, change delivery or sync delivery, validation, completion audit.
 - `standard`
-  - Use when: multi-file policies, skills, matrices, audit rules, workflow semantics, or memory/docs impact.
+  - Use when: multi-file policies, skills, matrices, workflow semantics, or memory/docs impact.
   - Minimum stations: scope/impact, change delivery, memory/docs, validation, independent review, completion audit.
 - `release-grade`
   - Use when: commit, tag, release, deployment, install, external state, credentials, or public operator readiness.
@@ -714,7 +726,6 @@ applicable, and completion audit.
 `operation_mode: daily` can close daily work only within its reduced scope.
 It must not be reported as full team completion for full-only work.
 `operation_mode: full` is required for bottom-layer refactor, cross-file governance changes, and specialist skill rewrites.
-It is required for Doctor/Audit rule changes.
 It is also required for release preparation or protected external-state readiness.
 
 Station-owned main-worktree change delivery and fallback change application
@@ -738,6 +749,11 @@ state machine and status ontology.
 Protected follow-on phases require their own authorization resolution and
 protected-action gate. Source write approval does not authorize memory, git,
 release, deployment, install, credential, or external mutation.
+
+A long-work Git checkpoint is protected Git work and is never process
+completion, final commit readiness, or release readiness. Its triggering event
+only opens eligibility evaluation; execution still requires the separate Git
+station, authorization, and receipt.
 
 Scope-bound implementation authorization is one work agreement for the visible change-delivery phase, not a blanket workflow pass.
 It can cover the named station and allowlist through the current delivery.

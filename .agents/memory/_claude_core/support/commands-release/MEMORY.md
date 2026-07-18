@@ -4,7 +4,7 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 紀錄、巡檢與技能鍛造指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-07T05:51:27+08:00'
+last_updated: '2026-07-18T12:00:53+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -45,12 +45,11 @@ metadata:
 - Claude commit, routine, and skill-forge commands now use the MCP Memory Evidence Matrix for preflight, read-only routine, and skill attribution evidence.
 - This child card owns Claude commit, routine, and skill-forge command entries.
 - Commit commands separate changelog/source write, memory mutation, git commit, push, tag, release, deployment, and install into distinct protected phases; changelog/source write and git commit need separate scope-bound intent signals plus authorization resolution.
-- Routine checks are read-only unless a later gate authorizes writes.
-- Claude commit and routine commands now check review-state blockers, accepted-risk items, unverified high-risk validation, and review governance coverage before release or routine conclusions.
+- `10_routine` and Manager Check are Git-only: report worktree, HEAD, tracking branch, and origin sync/ahead/behind/diverged/unconfirmable state; no MCP, memory, source, health, review, or validation inspection occurs.
 
 ## Active Constraints
 - Do not treat `GO` as blanket authorization for changelog/source write, memory mutation, git commit, push, tag, release, deployment, install, credentials, or external state.
-- Do not let routine inspection mutate source or memory without a phase-specific scope-bound write gate.
+- Do not widen routine beyond its Git-only report.
 - Keep git, memory, release, deployment, install, credential, and external-state mutations in separated protected phases.
 
 ## Cycle Events
@@ -87,7 +86,7 @@ metadata:
 - 目前 dirty source 已把 09/10/12 descriptions 改成中文語義先行，並把 `required_skills` 改為 YAML block list。
 - 證據狀態使用 canonical English；缺少記憶證據是 `unverified` 或 `blocked`。
 - `GO` 仍只是授權解析後的 scope-bound intent signal，不是 changelog/source、memory、git、release、deploy、install 或 external state 的一次性授權。
-- 例行巡檢保持唯讀，除非另有階段化寫入 gate。
+- `10_routine` 與 Manager Check 僅回報 Git 工作樹、HEAD、追蹤分支與 origin 同步狀態。
 
 ## Tracked Files
 - Claude/.claude/commands/09_commit(紀錄)/SKILL.md

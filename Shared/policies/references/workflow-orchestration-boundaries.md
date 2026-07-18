@@ -91,7 +91,7 @@ When Team mode is active, workflow entries keep their matrix row and apply the m
 
 - Workflows: 02, 07.
 - Default orchestration: `formal-readonly` for intent, counter-evidence, architecture, impact, and root-cause evidence.
-- Route to build, fix, experiment, or audit when writes or broader evidence are needed.
+- Route to build, fix, or experiment when writes or broader evidence are needed.
 
 ### Change production
 
@@ -99,11 +99,11 @@ When Team mode is active, workflow entries keep their matrix row and apply the m
 - Default orchestration: `formal-write` only after scoped authorization resolution.
 - Implementation returns change delivery before validation, review, memory/docs, and completion.
 
-### Validation and audit
+### Validation and routine
 
-- Workflows: 06, 08, 08-1, 08-2, 08-3, 10.
-- Default orchestration: Read-only validation/audit stations do not repair implementation.
-- Failed validation routes back to fix, debug, build, or audit.
+- Workflows: 06, 10.
+- Default orchestration: Read-only validation or routine stations do not repair implementation.
+- Failed validation routes back to fix, debug, or build.
 
 ### Knowledge and closeout
 
@@ -121,12 +121,12 @@ When Team mode is active, workflow entries keep their matrix row and apply the m
   - Normal routing needs another workflow.
 - Forbidden shortcut: Do not stay direct while performing broad file reads or evidence work in active Team mode.
 
-### 01 explore -> 02, 03-1, or 08
+### 01 explore -> 02 or 03-1
 
-- Required condition: Evidence is current enough to shape architecture, experiment, or audit.
+- Required condition: Evidence is current enough to shape architecture or experiment.
 - Forbidden shortcut: Do not start build from insufficient evidence.
 
-### 02 blueprint -> 03, 03-1, 08, or 11
+### 02 blueprint -> 03, 03-1, or 11
 
 - Required condition: Handoff contract, assumptions, acceptance evidence, write boundary, and platform plan mapping state are clear.
 - Forbidden shortcut: Do not treat architecture output, `plan-only`, or a platform plan mirror as write authorization.
@@ -136,9 +136,9 @@ When Team mode is active, workflow entries keep their matrix row and apply the m
 - Required condition: Prototype is promoted or discarded with clear scope.
 - Forbidden shortcut: Do not commit or claim production quality for disposable prototype work.
 
-### 07 debug -> 04 or 08
+### 07 debug -> 04
 
-- Required condition: Root cause is found, or broader audit is needed.
+- Required condition: Root cause is found.
 - Forbidden shortcut: Debug stations do not patch core code.
 
 ### 03 or 04 -> 06, review, memory/docs, 09
@@ -151,19 +151,14 @@ When Team mode is active, workflow entries keep their matrix row and apply the m
 - Required condition: Failure maps to repair, diagnosis, or missing implementation.
 - Forbidden shortcut: Validation stations do not repair the implementation they validate.
 
-### 08 -> 08-1, 08-2, 08-3, 03, 04, 09
-
-- Required condition: Inventory, logic review, and report evidence are ordered.
-- Forbidden shortcut: Do not issue audit report before inventory and logic evidence.
-
-### 10 routine -> 08, 04, 02, or 12
+### 10 routine -> 04, 02, or 12
 
 - Required condition: Anomaly, drift, or rule gap is found.
 - Forbidden shortcut: Routine inspection does not write fixes.
 
-### 09 commit -> 03, 04, 05, 06, 08, or 11
+### 09 commit -> 03, 04, 05, 06, or 11
 
-- Required condition: Preflight finds source, memory, validation, audit, or handoff gaps.
+- Required condition: Preflight finds source, memory, validation, or handoff gaps.
 - Forbidden shortcut: Commit flow does not hide blockers or complete unfinished work.
 
 ## Entry Minimum Reference

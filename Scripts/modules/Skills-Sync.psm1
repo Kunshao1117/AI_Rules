@@ -346,9 +346,9 @@ function Merge-WorkflowSkills {
 function Get-SharedPolicyBlock {
     <#
     .SYNOPSIS
-        從 Shared/policies/ 讀取指定平台的政策轉譯區塊。
+        從指定的 Shared 平台 Adapter 讀取政策轉譯區塊。
     .PARAMETER PolicyPath
-        Shared/policies/subagent-invocation.md 的絕對路徑。
+        Shared/policies/adapters/ 下目標平台 Adapter 的絕對路徑。
     .PARAMETER Platform
         目標平台：Codex / Claude / Antigravity。
     #>
@@ -381,9 +381,9 @@ function Get-SharedPolicyBlock {
 function Sync-SharedPolicyBlock {
     <#
     .SYNOPSIS
-        將 Shared policy 的平台轉譯區塊同步到核心規則 marker block。
+        將 Shared 平台 Adapter 的轉譯區塊同步到核心規則 marker block。
     .PARAMETER PolicyPath
-        Shared/policies/subagent-invocation.md 的絕對路徑。
+        Shared/policies/adapters/ 下目標平台 Adapter 的絕對路徑。
     .PARAMETER TargetPath
         要注入的核心規則檔案。
     .PARAMETER Platform

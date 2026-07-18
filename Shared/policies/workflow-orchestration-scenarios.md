@@ -80,13 +80,13 @@ non-complete state listed in `completion-state-machine.md`.
 
 Use when a no-write question needs project evidence.
 
-The question may come from conversation, exploration, blueprint, audit, or commit-preflight work.
+The question may come from conversation, exploration, blueprint, or commit-preflight work.
 
 Evidence inputs may include project files, memory/context, rules, logs, screenshots, or tool output.
 
 ```text
 trigger: Director asks for evidence, comparison, review, or research.
-workflow_route: 00, 01, 02, 07, 08, 09, 10, or 11 as appropriate.
+workflow_route: 00, 01, 02, 07, 09, 10, or 11 as appropriate.
 operation_mode: daily for bounded routine evidence; full for governance-impact evidence.
 board_state: formal-readonly.
 dispatch wave: 1 evidence station.
@@ -96,7 +96,7 @@ handoff_packet_id: required before specialist work starts.
 channel_capability: available, conditional, unavailable, or unverified.
 channel_invocation_status: requested, running, returned, blocked, unavailable, or not-authorized.
 delivery artifact: evidence artifact with findings, evidence, risk, advice, blocker state.
-route-back: route to blueprint, build, fix, audit, or commit only after evidence is sufficient.
+route-back: route to blueprint, build, fix, or commit only after evidence is sufficient.
 completion state: complete only for the read-only question; not source completion.
 ```
 
@@ -156,7 +156,7 @@ Use when test, browser, MCP, or manual validation finds a failure.
 
 ```text
 trigger: validation_state is failed, blocked, or unverified.
-workflow_route: 06 -> 04, 07, 03, or 08.
+workflow_route: 06 -> 04, 07, or 03.
 operation_mode: full when source/workflow impact exists.
 board_state: formal-readonly for diagnosis, formal-write only after authorization resolution binds the repair scope.
 dispatch wave: diagnosis first; repair starts only after root cause or repair scope is clear.
@@ -164,40 +164,19 @@ previous-wave input: failing command, browser path, MCP read, or manual blocker 
 next-wave start condition: root cause found, missing implementation identified, or blocker removed.
 handoff_packet_id: new packet for diagnosis or repair; do not reuse validation as repair.
 delivery artifact: validation artifact plus diagnosis or change delivery artifact.
-route-back: 04 for repair, 07 for deeper diagnosis, 03 for missing build work, 08 for systemic audit.
+route-back: 04 for repair, 07 for deeper diagnosis, or 03 for missing build work.
 completion state: validation failure is not completion.
 ```
 
 Invalid shortcut: the validation station repairing the implementation it validated.
 
-## Scenario 5: Audit Fan-Out
-
-Use when health audit, routine inspection, or broad governance review finds different categories of work.
-
-```text
-trigger: 08 or 10 finds drift, bug, missing evidence, or rule gap.
-workflow_route: 08 -> 08-1 -> 08-2 -> 08-3, then 03, 04, 06, 09, or 12.
-operation_mode: daily only for bounded routine evidence; full for governance-impact findings.
-board_state: formal-readonly until an authorized write workflow starts.
-dispatch wave 1: inventory evidence.
-dispatch wave 2: logic, security, reliability, or governance review.
-dispatch wave 3: report and route recommendation.
-previous-wave input: inventory before logic, logic before report.
-next-wave start condition: finding is mapped to build, fix, test, commit, or skill-forge.
-delivery artifact: audit evidence artifact and route-back recommendation.
-route-back: build for missing feature, fix for defect, test for evidence gap, skill-forge for rule gap.
-completion state: audit report is complete only for audit scope, not for the routed repair.
-```
-
-Invalid shortcut: issuing a final audit report before inventory and logic evidence exist.
-
-## Scenario 6: Commit-Preflight Blocker
+## Scenario 5: Commit-Preflight Blocker
 
 Use when commit preparation discovers dirty files, stale memory, missing validation, missing review, missing sync, or untracked new files.
 
 ```text
 trigger: commit-preflight or 09 finds a blocker.
-workflow_route: 09 -> 03, 04, 05, 06, 08, or 11.
+workflow_route: 09 -> 03, 04, 05, 06, or 11.
 operation_mode: full for commit/release readiness.
 board_state: formal-readonly for scan; formal-write only for named repairs or memory phase.
 dispatch wave: scan first, route-back second, commit only after blockers clear.
@@ -210,7 +189,7 @@ completion state: blocked until source, memory, validation, review, and sync blo
 
 Invalid shortcut: hiding a blocker inside a commit summary.
 
-## Scenario 7: Generated Or Deployed Copy Sync
+## Scenario 6: Generated Or Deployed Copy Sync
 
 Use when source governance files have deployed copies.
 
@@ -232,7 +211,7 @@ non-complete state: use blocked or unverified when source/deployed sync cannot b
 
 Invalid shortcut: claiming deployed behavior changed when only source files were updated.
 
-## Scenario 8: Hook-Guided Captain-Lite Read
+## Scenario 7: Hook-Guided Captain-Lite Read
 
 Use when a platform hook must avoid blocking useful orientation reads.
 

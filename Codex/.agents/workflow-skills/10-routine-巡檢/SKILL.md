@@ -1,8 +1,8 @@
 ---
 name: "10-routine-巡檢"
-description: "自動化安全的例行巡檢：適用於唯讀健康檢查、技能品質、文件數字、記憶過期與 MCP 設定健康（Use when: automation-safe routine, health check）。不適用於需要直接修復或寫入檔案（DO NOT use when: write or fix）。"
+description: "Git-only 唯讀狀態回報：只適用於 Git 工作樹、HEAD、追蹤分支與 origin 關係（Use when: Git status report）。不適用於任何內容檢查、修復或寫入（DO NOT use when: inspect content, fix, or write）。"
 required_skills: []
-memory_awareness: read
+memory_awareness: none
 metadata:
   author: antigravity
   version: "2.0"
@@ -11,55 +11,18 @@ metadata:
   platforms: ["codex"]
   lifecycle_phase: routine
   role: reader
-  memory_awareness: read
-  tool_scope: ["filesystem:read", "terminal:read", "mcp:read"]
-  human_gate: "none for read-only routine; writes and heavy scans route to a non-routine workflow"
+  memory_awareness: none
+  tool_scope: ["filesystem:read", "terminal:read"]
+  human_gate: "none for Git-only read-only reporting; any mutation needs its own scoped workflow"
   automation_safe: true
 ---
 
-## Workflow Entry Contract
+## Git-Only Routine Contract
 
-This Codex workflow skill entry is a thin route entry.
-It selects workflow row `10`, applies the platform adapter, and points to shared procedures when details are needed.
-It does not grant write, memory, git, release, deployment, install, credential, or external-state authority.
-It also does not grant package-manager, compiler, linter, audit, or interactive batch execution.
-Routine is a static read-only route; heavy deterministic scans route elsewhere.
+This workflow reports only Git worktree state, `HEAD`, the tracking branch,
+and the relation to `origin`.
 
-## Required References
-
-Load references on demand; this entry stays a route contract, not a fixed preflight reading list.
-
-1. Captain entry minimum: start with workflow row `10`, the route summary below, `.agents/shared/workflow-capability-evidence-matrix.md` row `10`, `.agents/shared/policies/workflow-orchestration.md` for route/authorization order, and the minimum Team-Native entry gate in `.agents/shared/policies/team-native-core.md`.
-2. Director-facing output: read `.agents/shared/policies/language-governance.md` before wording reports, confirmations, status summaries, handoffs, completion summaries, exact-evidence text, or change descriptions.
-3. External facts/freshness: read `.agents/shared/policies/grounding-governance.md` and the relevant external-research sources only when external facts, dates, APIs, versions, source freshness, or research quality can affect the conclusion.
-4. Platform semantics (conditional): read `.agents/shared/platform-capability-matrix.md` when platform adapter behavior, tool capability, permission surface, evidence limits, protected phases, source-impacting work, or heavy-scan routing affects the route.
-5. Platform plan mapping: read `.agents/shared/policies/platform-plan-mapping.md` only when a platform plan surface, Codex `update_plan`, `plan-only`, or `build-plan` affects route, authorization wording, progress, handoff, or completion language.
-6. Skill/stage governance: read `.agents/shared/skill-governance.md` only when editing workflow entries, skills, shared policies, or governance boundaries; read `.agents/shared/workflow-stage-procedures.md` only when the concrete phase checklist is needed, using section `10 Routine` without copying it back here.
-7. Phase and station details: load write, protected-action, review, validation, memory/docs, completion, and delivery artifact references only when that decision, station, or phase is actually opened. Missing evidence remains `unverified`, `blocked`, or `closed-with-director-risk`; no gate is relaxed.
-8. Team-Native details: opened stations load their assigned specialist, board, handoff, role-boundary, delivery, validation, review, memory/docs, and completion skills. These are station/phase-owned references, not captain-entry preloads. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix.
-
-## Workflow Entry Slimming Guard (入口瘦身防線)
-
-- This entry owns route selection, workflow-specific phase order, minimum load gates, the matching evidence-matrix row, and platform adapter reference only.
-- Do not add copied Team-Native policy, board field lists, delivery artifact schemas, completion checklists, specialist lifecycle details, or full stage playbooks here.
-- Put durable governance in shared policies, reusable operating procedure in shared skills or references, and workflow stage details in `.agents/shared/workflow-stage-procedures.md`.
-- If a source/deployed pair exists, update both sides and verify hash or content parity before any completion claim.
-- If the target file already has worktree changes, read the current diff and integrate the still-valid requirement into the existing section instead of appending a duplicate rule block.
-
-## Phase Order
-
-- Workflow row: `10`.
-- Procedure reference: `10 Routine` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Stay read-only and automation-safe; report drift and route any fix to a write workflow with scope-bound authorization resolution.
-- Do not load `code-audit` as a required skill and do not run `npm`, `tsc`, ESLint, audit, or interactive batch commands from routine.
-- Route heavy deterministic scans to `08 Audit`, `06 Test`, or another explicit non-routine route with its own evidence boundary.
-- Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
-- Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
-- Use `formal-write` only after a scope-bound Director intent signal passes authorization resolution and binds the explicit phase, file set, command, or required protected gate.
-
-## Completion Boundary
-
-- Report evidence status as `sufficient`, `partial`, `unverified`, `blocked`, or `not-applicable` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
-- Full team completion requires separated implementation change delivery, memory/docs delivery, validation delivery, review delivery, source/deployed parity when relevant, and completion audit evidence.
-- Missing delivery artifacts, missing parity, unavailable channels, or Director-accepted residual risk must be reported as `blocked`, `unverified`, or `closed-with-director-risk`, not `complete`.
-- This entry must stay thin. If more procedure detail is needed, add or update the shared reference instead of expanding this file.
+- Report each relation as synchronized, behind, ahead, diverged, or unable to confirm.
+- Do not scan policies, skills, documentation, memory, hooks, configuration, or source content.
+- Do not run package-manager, compiler, linter, audit, browser, MCP, or interactive batch commands.
+- Do not write, fix, stage, commit, push, or mutate external state.

@@ -109,4 +109,3 @@ the downstream claim `partial` or `unverified`.
 | `/03_build` | Query framework API usage to implement correctly |
 | `/04_fix` | Query API changes to confirm the repair path |
 | `/07_debug` | Query known issues and solutions |
-| `/08_audit` | Query best practices for code-quality assessment |

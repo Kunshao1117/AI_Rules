@@ -53,6 +53,7 @@ scope-impact
 external-research
 architecture-contract
 change-delivery
+git-checkpoint
 validation
 review
 security-reliability
@@ -83,6 +84,7 @@ validation, memory/docs, or completion evidence.
 | `external-research` | Gather current official or primary-source evidence and map it to the local decision. | Edit source, install packages, mutate external systems, decide final closeout. |
 | `architecture-contract` | Define boundaries, alternatives, interfaces, migration, compatibility, and risk. | Write production changes, hide tradeoffs, approve implementation. |
 | `change-delivery` | Own a scoped main-worktree `change-delivery` station when `station_mode: change-delivery`, `handoff_ownership: station-owned`, authorization phase is `implementation-change-delivery`, exact file allowlist and dirty-diff read are present; produce isolated/text change delivery artifacts when main-worktree station delegation is unavailable; or own fallback `change-application` for a returned artifact, explicit integration task, or assigned generated/deployed sync. | Review own work, write outside the exact station scope, mutate memory, commit, push, release, deploy, install, or external state. |
+| `git-checkpoint` | Under separate `authorization_phase: git`, stage one exact path allowlist, create one local checkpoint commit, and return the canonical receipt. | Source edit, tests, self-review, validation, memory/docs, sync, final commit, push, tag, branch, merge, amend, reset, restore, checkout, rebase, stash, clean, force, release, deploy, or history rewrite. |
 | `validation` | Run or classify non-mutating checks and validation evidence. | Repair implementation, approve quality, change evidence after failure. |
 | `review` | Judge requirement fit, correctness, maintainability, evidence integrity, and regression risk. | Implement the reviewed change, self-approve, mutate files. |
 | `security-reliability` | Classify secrets, authorization, data integrity, abuse, reliability, observability, rollback, and operational risk. | Expose secrets, mutate protected state, implement feature changes, approve release mutation. |
@@ -99,6 +101,9 @@ Keep these separations intact even when a task is small:
 - Review judges without authoring the reviewed deliverable.
 - Memory/docs attributes impact and proposed updates without mutating memory.
 - Completion audits evidence without becoming an acceptance or quality decision.
+- Git checkpoint stabilizes one eligible slice only. It remains separate from
+  change delivery, validation, review, memory/docs, final commit, release
+  completion, and captain coordination.
 - Main-worktree change delivery is a formal implementation station when station-owned. Fallback
   change application is a formal integration station only for returned isolated/text artifacts,
   explicit integration tasks, or assigned generated/deployed sync. Neither path becomes captain
@@ -125,7 +130,9 @@ Before logging a station output into the synthesis ledger:
 3. Confirm the artifact stayed inside the allowed action, read scope, tools, and stop condition.
 4. Confirm implementation and review of the same deliverable use different role instances.
 5. Mark artifacts that mutate memory, git, releases, deployments, installs, or external state
-   outside scope as blocked or route them to the proper owner station.
+   outside scope as blocked or route them to the proper owner station. A Git
+   mutation is valid here only when the `git-checkpoint` role cites its
+   separately authorized exact-path procedure and canonical receipt.
 6. Confirm authorization fields exist for any write-capable or protected phase.
 7. Confirm `station_mode`, `context_visibility`, and `handoff_ownership` are present for every
    applicable formal station.

@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-07T05:52:39+08:00'
+last_updated: '2026-07-18T11:59:07+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -37,10 +37,10 @@ metadata:
 ## Current Truth
 - This child card owns Shared testing, browser evidence, accessibility, performance, test automation, test-pattern, Trunk, and regression strategy skills.
 - Tracked testing skill descriptions now use Traditional Chinese task meaning first and preserve canonical English for tool names, artifacts, and state values.
-- Browser evidence remains station-owned evidence by default; required browser branches cannot silently downgrade to direct browsing without a recorded direct exception and replacement evidence.
-- Visual validation must include detail-observation notes; screenshots or DOM snapshots prove only visible capture-time state and do not prove persistence, business rules, real data, or integrations by themselves.
+- Browser evidence remains station-owned; visual validation includes detail observations, and screenshots or DOM snapshots prove only capture-time visible state—not persistence, business rules, real data, or integrations.
 - Real-information visual evidence is preferred: real pages, records, account state, responses, logs, or equivalent real paths. Mock, fixture, fake, seeded, static, or idealized data is fallback only and must state residual risk.
 - Test-pattern mocks validate scoped logic and contracts only; they cannot complete real-runtime, data-source, external-service, filesystem, browser, or operator-workflow claims without real execution evidence.
+- Tests and checks are opt-in: run only what the current acceptance directly proves or what a necessary lower-cost risk exception authorizes; never add test-of-test/check-of-check work, repair a test solely to repair it, or repair a checker solely to repair it.
 - Performance-audit and Trunk keep install, report-artifact writes, CI/deploy changes, uploads, remote settings, and generated source fixes as separate protected phases.
 - Trunk is native MCP, not Gateway; Trunk fixId or setup instructions are plan material until the matching phase is separately authorized.
 

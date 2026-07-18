@@ -22,6 +22,8 @@ Delivery artifacts are resolved by the same policy layer.
 | Scope-bound authorization and protected phase gates | `Shared/policies/authorization-resolution.md` |
 | Board fields, station rows, and delivery forms | `Shared/skills/team-task-board/SKILL.md` |
 | Subagent and channel invocation semantics | `Shared/policies/subagent-invocation.md` |
+| Cross-thread semantic package, freshness, lifecycle, and confirmation | `Shared/policies/references/cross-thread-handoff-contract.md` |
+| Current Codex thread transport projection | `Shared/policies/adapters/codex-thread-handoff.md` |
 | Audience language layer and exact-token preservation | `Shared/policies/language-governance.md` |
 | External grounding source, freshness, and no-evidence boundaries | `Shared/policies/grounding-governance.md` |
 
@@ -212,6 +214,18 @@ Do not generalize one platform's burden model across all three platforms.
 - Claude Edition: `native` + `conditional`; built-in, custom, or plugin subagents after board creation.
 - Codex Edition: `native` + `conditional`; Codex native or project agents after board creation.
 
+### Cross-Thread Handoff Transport
+
+- Semantic package state is platform-neutral and governed by
+  `cross-thread-handoff-contract.md`; it is not a station handoff packet.
+- Codex Edition: `native` + `conditional`; exact-target send, explicitly
+  requested create, and interruption-aware move route through
+  `codex-thread-handoff.md`.
+- Codex transport metadata and successful invocation do not prove semantic
+  target confirmation or transfer authorization.
+- This Codex row does not define thread-tool schemas or capability claims for
+  Claude or Antigravity / Gemini.
+
 ### Automation-Safe Workflow
 
 - Antigravity / Gemini: `adapter`; metadata and workflow gate.
@@ -250,6 +264,10 @@ Admission, MCP evidence, mutation, and commit gates stay in `Shared/policies/ref
 - Use `Shared/policies/grounding-governance.md` for external facts.
 - Subagent invocation: use `Shared/policies/subagent-invocation.md`.
 - Channels return evidence or artifacts but do not decide authorization.
+- Cross-thread semantic handoff: use
+  `Shared/policies/references/cross-thread-handoff-contract.md`.
+- Codex thread transport only: use
+  `Shared/policies/adapters/codex-thread-handoff.md`.
 - Skill metadata and `tool_scope`: use `Shared/skill-governance.md`.
 - Write semantics belong to authorization and the owning role skill.
 - MCP profiles: `Shared/mcp-profiles/` remains opt-in guidance.

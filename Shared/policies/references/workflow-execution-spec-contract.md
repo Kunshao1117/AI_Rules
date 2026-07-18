@@ -101,6 +101,12 @@ Required field meanings, in order:
     review, protected actions, or completion wording.
   - Records whether the next action is required by the current request or agent-added scope.
   - Values include `pass`, `revise`, `split`, `ask`, and `blocked`.
+- `scope_expansion_request`
+  - Operator-decision trace from `authorization-resolution.md` when `overreach_check` detects an
+    intended action outside current acceptance, exact authorization, active delivery slice, or an
+    existing hard gate.
+  - Records the exact delta, classification, operator options and decision, or `not-required`.
+  - It never creates authorization; unresolved requests stop only the affected action.
 - `design_reflection`
   - Optional design-shape decision returned by `design-reflection-gate`.
   - It checks intent fit, definition clarity, complexity pressure, scope creep, smaller alternatives,
@@ -121,6 +127,10 @@ Required field meanings, in order:
   - Discussion, exploration, blueprint, build-plan, implementation, fix-debug, validation-audit, commit-release, or handoff-skill.
 - `execution_profile`
   - `not-applicable`, `fast`, `balanced`, or `deep`.
+- `execution_resolution_inputs`
+  - Platform-neutral `U`, `E`, `R`, `V`, `B`, `A`, `D`, `F`, and post-profile materialized `C`
+    evidence used to resolve the requested profile and effective reasoning-depth floor.
+  - Uses the hard-floor-plus-score contract below; it never names or selects a vendor model.
 - `requested_model`
   - `not-requested`, `platform-default`, or `exact:<opaque-id>`.
 - `requested_reasoning_effort`
@@ -129,6 +139,13 @@ Required field meanings, in order:
   - `handoff:<handoff_packet_id>#context-scope`, `unresolved`, or `not-applicable`.
 - `wait_policy_ref`
   - `handoff:<handoff_packet_id>#wait-policy`, `unresolved`, or `not-applicable`.
+- `delivery_slice`
+  - Acceptance-sized implementation/review/validation unit. Carries the slice schema below, or a
+    legacy fallback that infers only the current authorized acceptance unit.
+- `accepted_execution_request`
+  - Adapter acceptance receipt for the requested snapshot, or canonical `pending`, `partial`,
+    `missing`, `conflicting`, or `not-applicable` reconciliation state.
+  - Acceptance is not application and never overwrites requested or applied values.
 - `operation_mode`
   - `daily`, `full`, or blocked/unverified reason.
 - `board_state`
@@ -318,11 +335,267 @@ current dispatch resolution that cites presently verified platform capability
 or execution evidence. Do not place named models in profile tables, policy
 defaults, or persistent profile presets.
 
-Requested and applied execution state remain separate. This execution spec owns
-the requested intent; `Shared/skills/team-station-handoff-packet/SKILL.md`
-carries the immutable requested snapshot and returned application receipt; and
-`Shared/skills/team-task-board/references/board-field-catalog.md` owns the
-canonical observed state after receipt ledgering.
+Requested, accepted, and applied execution state remain separate. This execution spec owns the
+requested intent and acceptance receipt shape; `Shared/skills/team-station-handoff-packet/SKILL.md`
+carries the immutable requested snapshot, accepted request provenance, and returned application
+receipt; and `Shared/skills/team-task-board/references/board-field-catalog.md` owns canonical
+accepted and observed state after ledgering. Missing, partial, or conflicting acceptance keeps
+dependent execution evidence unverified and never supplies applied values. Missing or partial
+application receipt remains unverified and never copies accepted values into the applied layer.
+
+## Execution Evidence Provenance Boundary
+
+Execution evidence uses exactly these provenance classes:
+
+- `official-public`: current official public documentation for a value or API concept.
+- `current-session-tool-schema`: request or response fields exposed by the callable tool in the
+  current session.
+- `observed-platform-receipt`: values explicitly returned for the current run.
+- `internal-governance-only`: framework planning, routing, reconciliation, wait, lifecycle, board,
+  and trace data.
+- `unverified`: missing, mismatched, stale, inferred, or non-observed evidence.
+
+The provenance class describes evidence; it is not a platform request parameter. Only the
+current-session tool schema can establish that a field is callable or that a specific named payload
+value is allowed in the current run. A schema that names a field but does not explicitly enumerate
+the candidate value does not establish that value. Official public documentation, memory, and past
+schemas may provide context, but none substitutes for the current callable schema or payload gate.
+
+`requested_execution_snapshot`, `accepted_execution_request`,
+`applied_execution_receipt`, wait policy, wait baseline, and lifecycle ledger are
+`internal-governance-only` carriers. They must never be serialized into a platform request payload
+or described as official native response objects. An internal receipt carrier may preserve
+`observed-platform-receipt` evidence without changing its own provenance.
+
+Only `observed-platform-receipt` evidence that explicitly names a valid actual value may populate
+the corresponding accepted or applied actual-value field. Successful invocation, transport IDs,
+or internal lifecycle transitions do not prove acceptance or application. Missing receipt evidence
+uses the existing missing, unreported, and unverified owner semantics; do not invent a carrier.
+
+Wait policy and lifecycle values are framework-planned internal policy. They do not project to a
+platform timeout, scheduler, or native lifecycle receipt.
+
+## Platform-Neutral Execution Resolution
+
+Shared execution resolution uses only `not-applicable`, `fast`, `balanced`, and `deep`. Platform
+adapters map the resolved request to current channel capabilities; shared sources do not encode
+model families, vendor tiers, or numbered model levels.
+
+`execution_resolution_inputs` records the numeric evidence projection below, plus a reason and
+evidence reference for each value. The mapping is one-to-one and canonical; platform adapters
+consume this table by reference and must not reinterpret a value or copy the full table into core.
+`C` is a post-profile materialized cost-budget value, so its evidence reference must name either
+the explicit operator cost signal or the resolved-profile default that produced it.
+
+| Input | Valid domain | Ordinal meaning |
+|---|---:|---|
+| `U` | `0..2` | `0` settled and bounded; `1` bounded uncertainty; `2` material unresolved uncertainty. |
+| `E` | `0..3` | `0` negligible error cost; `1` bounded error cost; `2` high error cost; `3` critical error cost. |
+| `R` | `0..2` | `0` readily reversible; `1` costly but recoverable; `2` irreversible or exceptionally difficult to reverse. |
+| `V` | `0..3` | `0` no dependable verifier; `1` weak or partial verifier; `2` reliable verifier; `3` strong, comprehensive verifier. |
+| `B` | `0..3` | `0` isolated blast radius; `1` bounded cross-boundary impact; `2` broad impact; `3` system-, contract-, or repository-wide impact. |
+| `A` | `0..3` | `0` routine assurance; `1` elevated assurance; `2` high assurance; `3` critical or protected-gate assurance. |
+| `D` | `0..3` | `0` shallow domain work; `1` bounded domain work; `2` multi-step or dependency-heavy work; `3` deep domain or dependency complexity. |
+| `C` | `0..2` | `0` explicit cost cap; `1` normal bounded budget; `2` explicit quality-first budget. |
+| `F` | `0` or `1` | `0` no reliable same-scope failure; `1` reliable same-scope failure evidence is present. |
+
+Resolve the projection in this exact order:
+
+1. Confirm that scope and authorization are resolved for the requested dispatch. Otherwise stop as
+   `draft` / `unverified`.
+2. Validate `U`, `E`, `R`, `V`, `B`, `A`, `D`, and `F` as required integer values in
+   the domains above. A missing, non-integer, or out-of-domain value stops resolution; `C` is
+   deliberately not required at this pre-profile step.
+3. Apply the existing hard floor and weighted-score rules to resolve the platform-neutral profile.
+   Thresholds remain lower-bound comparisons, including `E>=3`, `R>=2`, `B>=2`, and `A>=3`,
+   so a future domain extension cannot silently weaken a floor.
+4. Materialize `C` from a valid explicit operator cost signal when one exists. Otherwise derive
+   it from the resolved profile: `fast` and `balanced` materialize `C=1`; `deep`
+   materializes `C=2`. An ambiguous, conflicting, non-canonical, or unsupported cost signal,
+   or an unresolved profile, stops as `draft` / `unverified`; do not guess `C`.
+5. Validate the complete projection, including materialized `C`, before selecting requested
+   effort. No profile, rung, model, or effort may be selected when this complete validation fails.
+
+`V` is verifier strength, not validation difficulty. High `V` can support evidence-backed extended
+reasoning, but it does not by itself raise the selected profile or platform model family. Validation
+difficulty remains separate pre-existing task evidence and must not be encoded by reinterpreting
+`V`.
+
+Resolution uses hard floor first, then a score among profiles at or above that floor. High error
+cost, difficult reversal, broad blast radius, or high assurance demand sets a minimum profile
+regardless of aggregate score. The remaining weighted evidence may raise the profile but cannot
+lower the hard floor. Record the selected profile, floor reason, score rationale, and any unresolved
+input; do not rely on an unexplained total.
+
+The `C` defaults are generic materialization rules, not a promise of a platform feature or applied
+effort. Adapter acceptance still does not prove application.
+
+`F` can raise effective reasoning depth only when the failed attempt is same-scope, reproducible,
+and verifier-backed. Reliable failure never raises depth by itself; domain complexity and verifier
+strength must independently support the raise. Unreliable, cross-scope, or unverified failure
+remains context only.
+
+Reasoning depth and requested effort cannot alter task scope, authorization, delivery slices,
+stations, roles, independent review depth, validation obligations, completion evidence, or any hard
+gate. They change only the bounded compute request inside the already governed route.
+
+## Platform-Neutral Workload Bands And Wait Formulas
+
+The shared wait policy uses adapter-neutral duration quantiles for each `workload_class`. `W50`,
+`W90`, and `W99` are elapsed-duration bands in minutes before any adapter multiplier is applied.
+Prefer current local telemetry only when at least 20 eligible completed runs exist for the same
+workload class, the samples have positive durations, and the resulting quantiles satisfy
+`0 < W50 <= W90 <= W99`. Record `workload_band_source: local-telemetry`, sample count, observation
+window, and quantile timestamp. Telemetry is evidence for the current packet only; it never rewrites
+governance, profile selection, or adapter coefficients.
+
+When local telemetry is missing, insufficient, invalid, or stale for the current environment, use
+this bootstrap band and record `workload_band_source: bootstrap` plus the missing-telemetry reason:
+
+| Workload class | W50 | W90 | W99 |
+|---|---:|---:|---:|
+| `short-evidence` | 2 | 5 | 8 |
+| `broad-read` | 5 | 12 | 20 |
+| `architecture-research` | 8 | 18 | 30 |
+| `change-delivery` | 10 | 20 | 35 |
+| `validation-command` | 5 | 15 | 30 |
+| `external-tool` | 5 | 15 | 30 |
+
+The platform-neutral formulas consume, but do not define, the adapter-owned latency multiplier `M`
+and first-useful fraction `S`. For Codex, those coefficient values remain owned only by the Codex
+adapter block in `Shared/policies/subagent-invocation.md`; other adapters own their own values.
+Both inputs must be positive, and `0 < S <= 1`.
+
+```text
+adapter_first_useful_fraction = S
+expected_duration = W50 * M
+soft_budget = W90 * M
+hard_budget = W99 * M
+initial_wait_budget = hard_budget
+initial_first_useful_budget = adapter_first_useful_fraction * initial_wait_budget
+extension_ceiling = 2 * initial_hard_budget
+```
+
+This reference owns only the workload quantiles and formulas above.
+`Shared/skills/team-station-handoff-packet/references/execution-lifecycle.md` consumes them to
+materialize the immutable wait baseline and owns all deadline revisions, health/progress,
+extension counting, applied-receipt rebase, probe/resume, replacement, cancellation, and late
+return. `initial_wait_budget` remains the compatibility alias for `initial_hard_budget`; the
+lifecycle owner applies the single `2 * initial_hard_budget` ceiling.
+
+## Acceptance Delivery Slice
+
+`delivery_slice` is the formal review and validation unit. It is acceptance-sized rather than a
+micro-step or file-sized unit and records:
+
+```text
+delivery_slice: {
+  delivery_slice_id,
+  acceptance_objective,
+  acceptance_evidence_targets,
+  authorization_scope,
+  authorization_phase,
+  exact_allowlist,
+  contract_boundary,
+  migration_boundary,
+  security_and_data_posture,
+  protected_action_boundary,
+  data_integrity_risk,
+  included_repairs,
+  slice_state,
+  legacy_fallback
+}
+```
+
+`slice_state` is `draft`, `authorized`, `in-delivery`, `checkpoint-required`, `delivered`,
+`review-validation-pending`, `returned-for-repair`, `blocked`, `unverified`, or `closed`.
+`legacy_fallback` is `not-applicable` or `inferred-current-acceptance`. Legacy inference binds only
+the current delivery artifact or current authorized acceptance unit and cannot widen scope.
+
+An acceptance-required repair remains in the same slice only when acceptance, allowlist, contract,
+authorization, migration boundary, security and data posture, protected-action exposure, and
+data-integrity risk stay stable. A slice-boundary checkpoint and new slice are required when any of those changes,
+when a repair crosses a boundary, or when a repeated symptom requires root-cause work. New slices
+must pass `scope_expansion_request` and scoped authorization resolution when they add a delta.
+
+## Long-Work Git Checkpoint Route
+
+The slice-boundary checkpoint above is a ledger checkpoint, not a Git commit.
+A long-work Git checkpoint is a separate protected route owned by
+`Shared/skills/team-specialist-git-checkpoint/SKILL.md`.
+
+Multi-slice work, context compaction, cross-thread handoff, agent replacement,
+phase transition, or a risk-bearing next action may set checkpoint eligibility
+for evaluation only. The execution spec cannot authorize staging or commit;
+the route still requires separately resolved `authorization_phase: git`.
+Elapsed time, dirty files, generic `GO`, and "work has taken a long time" are
+not eligibility proof or authorization.
+
+When executed, the board records the canonical `git_checkpoint_receipt`.
+That receipt stabilizes one delivery slice and may honestly preserve pending or
+unverified validation, review, memory/docs, and sync evidence. It never changes
+the slice acceptance, scope, hard gates, requested/accepted/applied execution
+layers, final completion, or release readiness.
+
+## Accepted Execution Request
+
+`accepted_execution_request` is a distinct adapter receipt between the immutable requested snapshot
+and the applied execution receipt:
+
+```text
+accepted_execution_request: {
+  handoff_packet_id,
+  channel_run_id,
+  acceptance_state,
+  accepted_execution_profile,
+  accepted_model,
+  accepted_reasoning_effort,
+  accepted_context_scope_ref,
+  accepted_wait_policy_ref,
+  acceptance_variance_reason,
+  accepted_at
+}
+```
+
+The adapter-supplied object is immutable evidence, not its own canonical verdict. Board ledgering
+recomputes the flat `acceptance_state` as one of `pending`, `exact`, `alternative`, `partial`,
+`missing`, `conflicting`, or `not-applicable`:
+
+- `exact`: every required receipt field is present, packet and run IDs match, and all five accepted
+  execution values match the requested profile, model, effort, context reference, and wait reference.
+- `alternative`: every required receipt field is present and identifiers match, but at least one of
+  those five accepted execution values differs from the immutable requested snapshot.
+- `partial`: an acceptance receipt exists but lacks one or more required fields.
+- `missing`: the acceptance point has passed but no acceptance receipt exists.
+- `conflicting`: packet or run ID, channel state, receipt state, accepted value, or variance object
+  conflicts with the board row or with the independently recomputed exact/alternative result.
+- `pending` and `not-applicable`: lifecycle sentinels used only before an acceptance result is due or
+  for the complete non-executable tuple, respectively.
+
+`acceptance_variance_reason` is an object containing both `code` and `detail`. Its allowed codes and
+state mapping are exact:
+
+| Canonical acceptance state | Allowed code | Detail rule |
+|---|---|---|
+| `exact` | `none` | Empty. |
+| `alternative` | `adapter-accepted-alternative` | Non-empty and names the accepted difference. |
+| `partial` | `acceptance-receipt-partial` | Non-empty and names every missing field. |
+| `missing` | `acceptance-receipt-missing` or `legacy-acceptance-receipt-missing` | Non-empty and names why no acceptance receipt exists. |
+| `conflicting` | `acceptance-receipt-conflict` | Non-empty and names the conflict. |
+| `not-applicable` | `not-applicable` | Empty. |
+
+An empty variance object, an unknown code, a missing `code` or `detail`, or a detail that violates
+the table is not a complete accepted receipt. The board never trusts a receipt's self-reported
+`acceptance_state`; it independently compares the immutable requested and accepted layers and
+requires the receipt state and reason object to agree with that result. No value is inferred from
+the request or later application receipt. For legacy channels that return only an application
+receipt, record canonical `acceptance_state: missing` with
+`{ code: legacy-acceptance-receipt-missing, detail: <non-empty reason> }`; the applied receipt is
+reconciled independently.
+
+Requested, accepted, and applied records are immutable peer layers. They are compared during board
+ledgering but never copied over or used to overwrite one another. Tool or adapter acceptance never
+implies that a model, profile, reasoning effort, context scope, or wait policy was applied.
 
 ## Intent Envelope And Overreach Fields
 

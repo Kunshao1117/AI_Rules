@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 發布治理、結構化推理與技術堆疊協議技能。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-09T22:16:50+08:00'
+last_updated: '2026-07-18T11:59:12+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -46,6 +46,7 @@ metadata:
 - Tech-stack protocol treats `_system` memory, dependency-file, install, MCP-config, and memory-commit mutations as separate protected phases requiring their own scope-bound authorization.
 - Structured reasoning is for complex architecture, debugging, and multi-option analysis; it can be escalated or rerouted from `coding-reflection-gate`, must invoke the physical MCP tool when used, and must not replace simple direct answers.
 - Commit/preflight overrides must be single-use, exact-file allowlists with current diff/hash binding where available, auditable reason, expiry, and responsible owner; wildcard, persistent, or policy-level overrides are forbidden.
+- Reflection, release, and tech-stack routes do not add a test scope; testing starts only when current acceptance and exact authorization identify a necessary minimal exception.
 
 ## Active Constraints
 - Do not skip current official-source verification for high-change stack, release, or platform guidance.

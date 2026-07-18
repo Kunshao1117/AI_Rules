@@ -175,14 +175,6 @@ They stay in reports, logs, or project context.
 - Not source memory:
   - Single-run logs, screenshots, fixture-only evidence.
 
-### 08 Audit
-
-- Admissible source memory:
-  - Evidence-confirmed long-lived governance facts.
-  - Stable validation route summaries after follow-up work lands.
-- Not source memory:
-  - Intermediate audit inventories, raw evidence delivery artifacts, one-time performance readings, unverified guesses.
-
 ### 09 Commit
 
 - Admissible source memory:
@@ -231,7 +223,7 @@ Those tools are ordinary evidence.
 
 A commit-preflight dirty-file or memory blocker must route to `09` or closeout.
 
-It must not interrupt non-commit implementation, validation, review, audit, routine, or handoff work mid-task.
+It must not interrupt non-commit implementation, validation, review, routine, or handoff work mid-task.
 
 ### 03 Build
 
@@ -277,20 +269,6 @@ It must not interrupt non-commit implementation, validation, review, audit, rout
   - Project context write preserves `GO CONTEXT`.
   - It still binds `GO CONTEXT` to the visible context scope.
 
-### 08 Audit
-
-- Entry locations:
-  - Codex: `.agents/skills/08-audit-健檢/SKILL.md` plus `08-1/08-2/08-3`
-  - Claude: `.claude/commands/08_audit(健檢)/SKILL.md` plus subflows
-  - Antigravity: `.agents/workflows/08_audit(健檢).md` plus subflows
-- Minimum MCP memory evidence:
-  - Workspace brief, memory audit, memory graph/status, and context audit.
-  - Commit-preflight findings are referenced only when the audit explicitly checks commit readiness.
-  - Those findings route to `09`.
-- Mutating MCP gate:
-  - Audit does not mutate memory.
-  - Follow-up build/fix/commit workflows perform authorized writes.
-
 ### 09 Commit
 
 - Entry locations:
@@ -310,11 +288,8 @@ It must not interrupt non-commit implementation, validation, review, audit, rout
   - Codex: `.agents/skills/10-routine-巡檢/SKILL.md`
   - Claude: `.claude/commands/10_routine(巡檢)/SKILL.md`
   - Antigravity: `.agents/workflows/10_routine(巡檢).md`
-- Minimum MCP memory evidence:
-  - Workspace brief, memory audit, context audit, sync integrity, and read-only tool availability evidence.
-- Mutating MCP gate:
-  - No mutating MCP calls.
-  - Any write proposal routes to build/fix/audit for authorization resolution and the matching protected gate.
+- Memory boundary: This Git-only route does not inspect memory, context, MCP, or sync-integrity content.
+- Mutating MCP gate: No MCP calls.
 
 ### 11 Handoff
 

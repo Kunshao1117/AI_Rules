@@ -13,7 +13,7 @@ External grounding is governed by `Shared/policies/grounding-governance.md`.
 That policy covers outside facts, source type, freshness sensitivity, and no-evidence claim boundaries.
 Skills and workflow entries cite that policy instead of embedding research or verification playbooks.
 Source-document size and split decisions are governed by `Shared/policies/source-document-size-governance.md`.
-That policy covers core, shared policies, `SKILL.md`, memory cards, PowerShell modules, audit rule packs, and general source files.
+That policy covers core, shared policies, `SKILL.md`, memory cards, PowerShell modules, and general source files.
 Source/runtime/generated surface classification is governed by `Shared/policies/references/source-runtime-surface-map.md`.
 That reference expands the repository surface map while `Shared/policies/references/platform-copy-map.md` keeps the compact copy-role and sync-direction values.
 
@@ -42,7 +42,7 @@ Workflow entries must not copy full policy manuals.
 ### Workflow / command entry
 
 - Purpose: Task routing and lifecycle phase selection.
-- Put here: Build/fix/commit/audit stage order and explicit load gates.
+- Put here: Build/fix/commit stage order and explicit load gates.
 - Do not put here: Full implementation recipes shared across platforms, copied policy manuals, memory procedures, or script playbooks.
 
 ### Shared skills
@@ -62,7 +62,7 @@ artifact-chain completeness, or a completion state.
 #### Entry skills
 
 - Purpose: Start or classify a workflow route from Director intent.
-- Examples: build, fix, audit, test, commit-prep, handoff, and skill-forge workflow entries.
+- Examples: build, fix, test, commit-prep, handoff, and skill-forge workflow entries.
 - Required boundary:
   - They may open the governed route and name applicable stations.
   - They do not authorize source writes or protected actions by themselves.
@@ -248,7 +248,7 @@ They should not duplicate the full playbook.
 
 Coding workflows should route through `programming-team-governance` when they touch these areas:
 
-- Source, tests, debugging, audit, commit preparation, handoff, or skill creation.
+- Source, tests, debugging, commit preparation, handoff, or skill creation.
 - Workflow rules, source memory, or governance decisions.
 
 The shared skill defines the captain trigger gate, captain team board, role exclusivity, and station board.
@@ -277,7 +277,7 @@ Platform entries must preserve `operation_mode`:
 
 - `daily` is reduced Team-Native mode for routine low-risk evidence.
 - `full` is required for implementation, repair, bottom-layer refactor, cross-file governance, and specialist skill rewrites.
-- `full` is also required for Doctor/Audit changes, commit/release/deploy preparation, or protected external-state readiness.
+- `full` is also required for commit/release/deploy preparation or protected external-state readiness.
 
 Platform entry load gates must distinguish always-required route context from conditional platform context:
 
@@ -297,40 +297,3 @@ Station startup payloads live in `Shared/skills/team-station-handoff-packet/SKIL
 Trace audit expectations live in `Shared/policies/team-trace-evidence.md`.
 Completion consumes the artifact chain through `Shared/skills/team-completion-gate/SKILL.md`.
 When a field such as `station_mode`, `context_visibility`, or `handoff_ownership` appears in more than one file, the local file must cite or consume the canonical value instead of redefining a competing catalog.
-
-## Doctor Expectations
-
-Skill quality checks should treat trigger quality as a first-class signal:
-
-- A short or generic description is a warning.
-- Body-only `Use when` guidance without description triggers is a warning.
-- Operational Shared skills without both English and Traditional Chinese trigger terms are a warning.
-- Operational Shared skills without a negative boundary are a warning.
-- Skills that copy long size tables, rule catalogs, or module split playbooks instead of citing `source-document-size-governance.md` are a warning.
-- Workflow / command entries must describe when the workflow should start.
-- They must not only describe what the workflow does internally.
-- Coding-related workflow / command entries must expose the team-station board requirement.
-- Use a load gate or equivalent grounding section.
-- That section must include captain trigger, evidence owner, role boundary, direct exception, and completion condition.
-- That section must also state that all-direct evidence boards are invalid without concrete exceptions.
-- Coding-related workflow / command entries must load the six formal team child skills when applicable.
-- The six skills include `team-role-boundaries`, `team-change-delivery-artifact`, and `team-memory-docs-delivery-artifact`.
-- They also include `team-validation-delivery-artifact`, `team-review-delivery-artifact`, and `team-completion-gate`.
-- Coding-related workflow / command entries must not imply that the Director must manually name a workflow.
-- This applies before captain-led governance starts.
-- Coding-related workflow / command entries must not allow implementation specialists to review their own work.
-- Coding-related workflow / command entries must not allow implementation specialists to write the main worktree directly.
-- Coding-related workflow / command entries must require all four formal delivery artifacts for full team completion.
-- The four artifacts are implementation change delivery, memory delivery, review, and validation.
-- Implementation change delivery artifacts must include `memory_impact`.
-- Memory/docs delivery artifacts must include `memory_impact` and `memory_delivery`.
-- Incomplete memory/docs delivery artifacts need a blocked, unverified, or closed-with-director-risk status.
-- `closed-with-director-risk` is Director risk closure, not completion.
-- Review delivery artifacts and validation delivery artifacts must remain independent from the implementation specialist.
-- High-risk release, deployment, or mutation skills must name their public trigger terms explicitly.
-- Workflow and operational skills should not mix responsibilities.
-- Team-Native specialist role skills should expose `metadata.relations`.
-- Required relation fields are `role_id`, `role_layer`, `parent_skill`, and `support_skills`.
-- Required relation fields also include `embedded_artifacts`, `artifact_contracts`, and `trace_contracts`.
-- Team-Native governance text should distinguish `operation_mode: daily` from `operation_mode: full`.
-- Daily mode must not be used for full-only work or to claim full team completion.

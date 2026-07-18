@@ -92,7 +92,7 @@ When the active `_system` memory main file contains an `## MCP Servers` section:
 
 - Treat listed MCP servers as part of the locked tech stack
 - Adding/removing follows the same governance as framework changes:
-  - Routine additions: `/08_audit` auto-handles
+  - Routine additions: require an explicitly scoped change workflow
   - Architectural pivots (replacing core MCP): Requires `/02_blueprint`
 - Record changes in the active `_system` memory main file under `## MCP Servers` only within the authorized `_system` memory-write and memory-commit phases
 - Config location: `~/.gemini/antigravity/mcp_config.json` (global) or `.gemini/settings.json` (project)

@@ -4,19 +4,19 @@ scopePath: .
 description: >-
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-07T22:46:56+08:00'
+last_updated: '2026-07-18T12:46:19+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T20:50:00+08:00'
+last_verified: '2026-07-17T20:08:47+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
-cycle_id: 2026-06-28-001
-cycle_event_count: 8
+cycle_id: 2026-07-17-001
+cycle_event_count: 1
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -54,7 +54,7 @@ metadata:
 - Root README and CHANGELOG now prepare AI Rules Manager v0.2.0 / `ai-rules-manager-0.2.0.vsix` release documentation, including same-name VSIX asset rerun failure semantics.
 - Director-facing output must use Traditional Chinese unless a lower-level artifact explicitly requires another language.
 - Root repository work, git status, commit, tag, and push operations use `D:\AI_Rules` as the baseline.
-- Source memory lives in `.agents/memory/`; project context lives in `.agents/context/`; root PowerShell implementation ownership moved to `_system.scripts`.
+- Source memory lives in `.agents/memory/`; project context lives in `.agents/context/`; root PowerShell ownership moved to `_system.scripts`, and root documentation now describes Scripts as deployment, sync, and manager automation without an audit surface.
 
 ## Active Constraints
 - Runtime authority status: current governance behavior is sourced from canonical source files and Shared policies/skills; this card is a source/status pointer.
@@ -63,14 +63,7 @@ metadata:
 - Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
 
 ## Cycle Events
-- 22: Recorded root README and CHANGELOG v0.2.0 release-prep documentation, including explicit same-name VSIX asset rerun failure semantics.
-- 21: Recorded root documentation dual-gate update for Director-readable output and external grounding evidence before commit/release readiness.
-- 20: Corrected root Team mode truth: governed user requests auto-activate Team mode, mainline performs captain coordination only, `03-1` uses reduced experiment boards, and absent current governed requests cannot self-start team work.
-- 19: Recorded root documentation skill-count cleanup: README files, ignored live/root `CLAUDE.md`, and Antigravity source/live sentinels now use 62 shared skills; Codex deployed skill count remains 79 (62 shared + 17 workflow, excluding `_shared` support directory).
-- 18: Compacted root documentation history into Current Truth after Team-Native, formal-readonly/formal-write, scoped authorization, captain non-authoring, and current skill-count wording became the root documentation baseline.
-- 17: Recorded final Team-Native cleanup for remaining Doctor red-light fixes, cross-platform sync, changelog precision, and commit-preflight stale blocker cleanup.
-- 16: Recorded the 2026-07-01 Team-Native thin-captain and multi-specialist documentation hardening; root docs and changelog now avoid wording that implies captain authoring, self-review, or blanket GO authority.
-- 01-15: Consolidated earlier June 2026 root governance, Team-Native, scoped-authorization, workflow orchestration, and pre-commit documentation events into Current Truth and archives.
+- 01: Normalized root governance and aligned repository documentation after removal of the audit surface; routine and manager checks are Git-only status reporting.
 
 ## Archive Index
 - archive-001.md — Legacy _system card identity and decisions through D39.
@@ -78,7 +71,7 @@ metadata:
 - archive-003.md: Pre-standardization active card snapshot created during MEMORY.md migration.
 
 ## Evidence Base
-- source:README.md — Root release section now names v0.2.0 and same-name VSIX asset rerun failure semantics.
+- source:README.md — Root repository map now limits Scripts to deployment, sync, and manager automation; the removed audit surface is not documented as current.
 - source:CHANGELOG.md — AI Rules Manager v0.2.0 release-prep entry records governance readiness, runtime gate hardening, rerun semantics, and memory/docs cleanup alignment.
 - source:README.md and CHANGELOG.md rechecked on 2026-07-07 for v0.2.0 release docs and same-name VSIX asset rerun failure semantics.
 - source:.agents/memory/_system/archive-003.md — Previous active card snapshot preserved.
@@ -93,7 +86,7 @@ metadata:
 - No unresolved root `CLAUDE.md` or Antigravity sentinel skill-count conflict remains after the 2026-07-03 documentation cleanup.
 
 ## 中文摘要
-- AI_Rules 是三平台治理框架核心庫；README/三平台 README 目前採共用技能 62，Codex 部署技能 79。
+- AI_Rules 是三平台治理框架核心庫；根 README 現在只把 Scripts 描述為部署、同步與管理器自動化，不再宣稱 Audit/Doctor 健檢面。
 - 根 README 與 CHANGELOG 已準備 AI Rules Manager v0.2.0 / `ai-rules-manager-0.2.0.vsix` 發布文件，並明確同名 VSIX asset 補跑會拒絕或失敗。
 - 根層 `CLAUDE.md` 是 ignored live/root file，已對齊 Codex v0.1.3 與 62 套共用技能；Antigravity source/live sentinel 也對齊 62 套。
 - 按鈕、`GO`、workflow 與 mode 只提供範圍化授權證據，不是授權本身。
@@ -113,3 +106,7 @@ metadata:
 - _claude_core (Claude platform source)
 - _ag_core (Antigravity platform source)
 - _system.scripts (child card: root PowerShell scripts)
+
+## Applicable Skills
+- memory-ops — Update and commit this root navigation card.
+- memory-arch — Use for parent/child topology or archive decisions.

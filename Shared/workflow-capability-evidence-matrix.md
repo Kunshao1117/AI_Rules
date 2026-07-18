@@ -2,7 +2,6 @@
 
 本文件是 00-12 工作流共用的外部接地與證據期待矩陣，不取代各工作流本體。
 各工作流引用本矩陣後，仍需套用自身的 task boundary、platform capability 與 evidence state。
-08 Audit 的深度、盤點分母與覆蓋率規則仍由 shared audit engine 擁有。
 
 工作流編排順序由 `Shared/policies/workflow-orchestration.md` 管理。
 本矩陣只擁有各工作流的證據期待；共享 route chain 由 orchestration policy 擁有。
@@ -35,6 +34,12 @@ This matrix keeps only route-level evidence expectations and the 00-12 workflow 
 - Route order, dispatch waves, invalid orchestration patterns:
   - `Shared/policies/workflow-orchestration.md`
   - `Shared/policies/references/workflow-orchestration-boundaries.md`
+- Cross-thread semantic handoff and Codex transport projection:
+  - `Shared/policies/references/cross-thread-handoff-contract.md`
+  - `Shared/policies/adapters/codex-thread-handoff.md`
+- Long-work local Git checkpoint procedure and receipt:
+  - `Shared/skills/team-specialist-git-checkpoint/SKILL.md`
+  - `Shared/skills/team-task-board/references/board-field-catalog.md`
 
 ## Evidence Status
 
@@ -123,19 +128,18 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 | 工作流 | 中文任務語意 | 常見觸發 / route trigger | 常見下一路由（Common route） |
 |---|---|---|---|
 | `00 Chat` | 聊天、概念釐清、小型穩定問答 | 純對話、輕量 Q&A、無外部證據依賴 | `01` 探索、`02` 架構、`03` 建構、`04` 修復、`06` 測試、`09` 紀錄 |
-| `01 Explore` | 探索、研究、可行性與反方分析 | 網路研究、競品分析、source freshness 問題 | `02` 架構、`03` 建構、`08` 健檢 |
-| `02 Blueprint` | 架構、系統藍圖、技術決策 | 架構設計、重大技術方向、build handoff | `03` 建構、`08` 健檢、`12` 技能鍛造 |
+| `01 Explore` | 探索、研究、可行性與反方分析 | 網路研究、競品分析、source freshness 問題 | `02` 架構、`03` 建構 |
+| `02 Blueprint` | 架構、系統藍圖、技術決策 | 架構設計、重大技術方向、build handoff | `03` 建構、`12` 技能鍛造 |
 | `03-1 Experiment` | 實驗、沙盒 spike、可丟棄原型 | 快速試作、sandbox prototype | `03` 建構、`11` 交接 |
-| `03 Build` | 正式建構、產品行為變更 | implementation、feature build、正式 source change | `04` 修復、`06` 測試、`08` 健檢、`09` 紀錄 |
+| `03 Build` | 正式建構、產品行為變更 | implementation、feature build、正式 source change | `04` 修復、`06` 測試、`09` 紀錄 |
 | `04 Fix` | 修復、bug fix、回歸修補 | defect、regression repair、root-cause repair | `06` 測試、`07` 除錯、`09` 紀錄 |
 | `05 Condense` | 濃縮、專案身份與長期記憶初始化 | memory/context condensation、project identity | `02` 架構、`11` 交接、`12` 技能鍛造 |
-| `06 Test` | 測試、E2E、視覺、效能、無障礙與回歸驗證 | validation、browser/e2e/performance/a11y evidence | `03` 建構、`04` 修復、`08` 健檢 |
-| `07 Debug` | 除錯、log/stack trace 定位 | fault localization、observable signal、hypothesis | `04` 修復、`06` 測試、`08` 健檢 |
-| `08 Audit` | 健檢、深度審查、高風險預檢 | full-spectrum audit、doctor、preflight | `02` 架構、`03` 建構、`04` 修復、`06` 測試、`09` 紀錄 |
-| `09 Commit` | 紀錄、變更摘要、提交/發布前檢查 | changelog、commit prep、version/pre-release scan | `04` 修復、`06` 測試、`08` 健檢、`11` 交接 |
-| `10 Routine` | 巡檢、自動化安全唯讀治理 | automation-safe check、drift scan、no-write inspection | `08` 健檢、`12` 技能鍛造 |
+| `06 Test` | 測試、E2E、視覺、效能、無障礙與回歸驗證 | validation、browser/e2e/performance/a11y evidence | `03` 建構、`04` 修復 |
+| `07 Debug` | 除錯、log/stack trace 定位 | fault localization、observable signal、hypothesis | `04` 修復、`06` 測試 |
+| `09 Commit` | 紀錄、變更摘要、提交/發布前檢查 | changelog、commit prep、version/pre-release scan | `04` 修復、`06` 測試、`11` 交接 |
+| `10 Routine` | Git 唯讀狀態回報 | Git 工作樹、HEAD、追蹤分支與 origin 狀態 | `09` 紀錄 |
 | `11 Handoff` | 交接、續跑提示、目前狀態整理 | handoff、continuation prompt、dirty state summary | `02` 架構、`03` 建構、`04` 修復、`09` 紀錄 |
-| `12 Skill Forge` | 技能鍛造、新增或修復 shared/project skill | skill creation、trigger quality、reference split | `03` 建構、`08` 健檢、`10` 巡檢 |
+| `12 Skill Forge` | 技能鍛造、新增或修復 shared/project skill | skill creation、trigger quality、reference split | `03` 建構 |
 
 ### 00 Chat / 聊天
 
@@ -197,7 +201,9 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - Team board, blueprint carryover, review purpose/state, requirement-to-task trace, task acceptance matrix.
   - Intent envelope, overreach check, behavior counter-evidence state, applicable design reflection status, drift audit, real validation route, tool discovery, blockers, memory ownership/status evidence.
   - Implementation delivery bundle with `grounding_handoff`, `closeout_bundle`, expected dirty files, and source/deployed sync evidence when source/runtime or generated pairs exist.
-- 常見路由（Common route）: 04, 06, 08, 09.
+  - When same-wave writers are proposed, a fresh canonical `parallel_dispatch_contract`; different
+    write files alone are not parallel evidence.
+- 常見路由（Common route）: 04, 06, 09.
 
 ### 04 Fix / 修復
 
@@ -230,7 +236,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 最低證據（Minimum evidence）:
   - Test station board, project type, test surface, evidence level, blocker reason.
   - Validation may consume design reflection as expected-behavior context, but design reflection is not validation evidence.
-- 常見路由（Common route）: 03, 04, 08.
+- 常見路由（Common route）: 03, 04.
 
 ### 07 Debug / 除錯
 
@@ -242,21 +248,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 最低證據（Minimum evidence）:
   - Debug station board, observable signal, hypothesis, confirmation/counter-evidence, route-to-fix condition.
   - Grounding tier and missing evidence state before routing a fix.
-- 常見路由（Common route）: 04, 06, 08.
-
-### 08 Audit / 健檢
-
-- 任務類型（Task type）: Full-spectrum audit, deep audit, high-risk preflight.
-- 接地依據（Grounding basis）:
-  - Shared audit engine as the semantic and logic owner, this matrix, OWASP, Playwright, Lighthouse, Web Vitals, WCAG, OpenTelemetry.
-  - `code-audit` is only an optional deterministic scan source when a separate scan artifact exists or a scan phase is explicitly routed.
-  - Engineering review governance and programming-team governance.
-- 最低證據（Minimum evidence）:
-  - Audit board, depth, project type, capability snapshot, feature/endpoint/command inventory, denominator.
-  - Artifact chain: `08-1` inventory artifact -> `08-2` logic-review artifact -> `08-3` final report.
-  - Evidence artifacts, review state, memory/context governance evidence, lights, unverified/blocker list.
-  - Audit log writes require a separate `audit-log-write` stage scoped only to `.agents/logs/`; no-write audit evidence does not authorize log file creation.
-- 常見路由（Common route）: 02, 03, 04, 06, 09.
+- 常見路由（Common route）: 04, 06.
 
 ### 09 Commit / 紀錄
 
@@ -270,27 +262,29 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - Commit board, explicit file list, review lifecycle risk, unverified/blocker list, memory status.
   - Memory preflight, change summary, version/artifact decision.
   - Expected dirty-file comparison, unresolved `G4` grounding gaps, and unresolved design reflection blockers reported as blockers or residual risk.
-- 常見路由（Common route）: 04, 06, 08, 11.
+  - Any long-work `git_checkpoint_receipt` is intermediate stability evidence only; it does not
+    satisfy final commit, validation, review, memory/docs, sync, push, release, or completion gates.
+- 常見路由（Common route）: 04, 06, 11.
 
 ### 10 Routine / 巡檢
 
-- 任務類型（Task type）: Automation-safe read-only governance.
-- 接地依據（Grounding basis）:
-  - Automation health check, static read-only workflow drift check, engineering review governance, programming-team governance coverage.
-- 最低證據（Minimum evidence）:
-  - Routine station coverage, skill quality, doc consistency, matrix coverage, review governance coverage.
-  - Read-only drift check for intent envelope, overreach, grounding, and design reflection rules becoming duplicated, unused, or too complex.
-  - Read-only memory/context inspection and no-write proof.
-  - No package-manager, compiler, linter, audit, or interactive batch execution from the routine route; heavy scans route to `08`, `06`, or another explicit non-routine workflow.
-- 常見路由（Common route）: 08, 12.
+- 任務類型（Task type）: Git-only read-only status report.
+- 最低證據（Minimum evidence）: Git worktree, `HEAD`, tracking branch, and `origin` relation as synchronized, behind, ahead, diverged, or unable to confirm.
+- 禁止範圍: Do not inspect policies, skills, documentation, memory, hooks, configuration, or source content.
+- 常見路由（Common route）: 09.
 
 ### 11 Handoff / 交接
 
 - 任務類型（Task type）: Task handoff and continuation prompt.
 - 接地依據（Grounding basis）: Context handoff practice, programming-team governance.
 - 最低證據（Minimum evidence）:
-  - Handoff board, current status, dirty files, blockers, unverified items, workspace/memory health evidence.
-  - Next workflow.
+  - Handoff board, current status, per-path dirty/worktree snapshot, blockers, unverified items,
+    workspace/memory health evidence, and next workflow.
+  - For cross-thread continuation, a fresh canonical package with
+    `cross_thread_handoff_id`, fingerprint, `authority_transfer_state: not-transferred`,
+    transport state, and separate target-confirmation evidence.
+  - For Codex transport, the adapter-selected send/create/move flow with exact target and bounded
+    observation; transport success alone remains unconfirmed.
 - 常見路由（Common route）: 02, 03, 04, 09.
 
 ### 12 Skill Forge / 技能鍛造
@@ -356,6 +350,4 @@ Memory writes and commits keep their separate protected gates.
 - Missing tools, missing credentials, or unsupported platform features must not be treated as success.
 - Platform adapters may add stronger evidence paths.
 - Platform adapters must not weaken the minimum evidence contract.
-- 08 remains the deep full-spectrum audit baseline.
 - Other workflows use only the row relevant to their lifecycle.
-- Other workflows do not copy 08 inventory machinery unless the audit workflow is active.

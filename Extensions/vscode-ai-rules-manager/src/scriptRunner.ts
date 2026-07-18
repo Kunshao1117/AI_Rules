@@ -14,7 +14,6 @@ export type ManagerAction =
   | "Check"
   | "Plan"
   | "Apply"
-  | "Doctor"
   | "SyncGlobal"
   | "SyncProjectRules"
   | "MemoryMigration"

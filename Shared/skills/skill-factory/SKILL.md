@@ -25,7 +25,6 @@ metadata:
 ```
 Trigger?
 ├── Director explicitly instructs skill creation → Proceed
-├── /08_audit Phase G detects recurring patterns across 3+ modules → Proceed
 ├── /04_fix or /07_debug identifies reusable methodology → Proceed
 └── None of above → Do NOT invoke this skill
 ```
@@ -255,14 +254,3 @@ python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_valid
 1. Call `notify_user` with SKILL.md path in `PathsToReview`
 2. Prompt: `[技能鍛造] 新技能已建立：{技能功能名稱}。請總監審閱。`
 3. Skill is NOT active until Director approves
-
-## 6. Quality Scan Gate（品質掃描閘門）
-
-```
-After generating SKILL.md:
-1. Run Codex quick_validate.py against {skill-directory-path}
-2. For Shared or project-derived AI_Rules skills, run: .agents/scripts/Measure-SkillQuality.ps1 -Target {skill-directory-path}
-3. All required validators pass → Submit for Director review
-4. Any 🔴 or validation failure → Fix → Re-scan
-5. Read references/skill-quality-checklist.md for detailed criteria
-```

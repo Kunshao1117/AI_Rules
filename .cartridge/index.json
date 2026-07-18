@@ -1,0 +1,5368 @@
+{
+  "version": 1,
+  "lastScanned": "2026-07-18T13:37:56+08:00",
+  "cartridges": {
+    "claude-edition-rules": {
+      "skillPath": ".agents/memory/claude-edition-rules/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/claude-edition-rules/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/claude-edition-rules/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/claude-edition-rules/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T13:05:08+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：舊 Claude 規則記憶的廢棄索引。Use when: task touches this card tracked files or governed scope.",
+      "trackedFiles": [
+        ".agents/memory/claude-edition-rules/archive-001.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-03T13:21:27+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 1,
+      "parent": null,
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3100,
+        "lineCount": 74,
+        "chineseCharCount": 0,
+        "bodyCharCount": 1705,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 2,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/claude-edition-rules/archive-001.md",
+            "sizeBytes": 28409,
+            "lineCount": 180,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/claude-edition-rules/archive-002.md",
+            "sizeBytes": 2461,
+            "lineCount": 83,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_ag_core": {
+      "skillPath": ".agents/memory/_ag_core/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_ag_core/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_ag_core/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_ag_core/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-17T20:08:47+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or governed scope.",
+      "trackedFiles": [
+        "Antigravity/install.ps1",
+        "Antigravity/README.md",
+        "Antigravity/VERSION",
+        "Antigravity/global/GEMINI.md",
+        "Antigravity/.agents/rules/00_core_identity.md",
+        "Antigravity/.agents/rules/03_memory_skill_contract.md",
+        "Antigravity/.agents/rules/04_forbidden_vocab.md",
+        "Antigravity/.agents/rules/07_mcp_guardrails.md",
+        "Antigravity/.agents/workflows/02_blueprint(架構).md",
+        "Antigravity/.agents/workflows/03-2_build_execute(建構執行).md",
+        "Antigravity/.agents/workflows/04-1_fix_plan(修復計畫).md",
+        "Antigravity/.agents/workflows/04-2_fix_execute(修復執行).md",
+        "Antigravity/.agents/workflows/05_condense(濃縮).md",
+        "Antigravity/.agents/workflows/07_debug(除錯).md",
+        "Antigravity/.agents/workflows/09-1_commit_scan(紀錄掃描).md",
+        "Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md",
+        ".agents/memory/_ag_core/archive-001.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:49:01+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 1,
+      "parent": null,
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 9584,
+        "lineCount": 120,
+        "chineseCharCount": 0,
+        "bodyCharCount": 6416,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-30-001",
+        "cycleEventCount": 11,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_ag_core/archive-001.md",
+            "sizeBytes": 16393,
+            "lineCount": 137,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_ag_core/archive-002.md",
+            "sizeBytes": 5211,
+            "lineCount": 114,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_ag_core/archive-003.md",
+            "sizeBytes": 1380,
+            "lineCount": 17,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_ag_core/archive-004.md",
+            "sizeBytes": 2201,
+            "lineCount": 21,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_ag_core.support": {
+      "skillPath": ".agents/memory/_ag_core/support/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_ag_core/support/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_ag_core/support/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_ag_core/support/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T13:05:08+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Antigravity 支援檔案與工作流導覽父卡。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Antigravity/.agents/VERSION",
+        "Antigravity/.gitignore",
+        "Antigravity/.vscode/settings.json"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-03T13:21:30+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 2,
+      "parent": "_ag_core",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3160,
+        "lineCount": 86,
+        "chineseCharCount": 0,
+        "bodyCharCount": 1816,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 3,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_ag_core/support/archive-001.md",
+            "sizeBytes": 5988,
+            "lineCount": 123,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_ag_core.support.rules": {
+      "skillPath": ".agents/memory/_ag_core/support/rules/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_ag_core/support/rules/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_ag_core/support/rules/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_ag_core/support/rules/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-07T20:50:00+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Antigravity 支援規則檔。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Antigravity/.agents/rules/01_cross_lingual_guard.md",
+        "Antigravity/.agents/rules/02_code_quality_security.md",
+        "Antigravity/.agents/rules/05_project_skill_contract.md",
+        "Antigravity/.agents/rules/06_memory_push.md",
+        "Antigravity/.agents/rules/AGENTS.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:45:17+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_ag_core.support",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 6743,
+        "lineCount": 108,
+        "chineseCharCount": 0,
+        "bodyCharCount": 4284,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 7,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_ag_core.support.workflows-audit-commit": {
+      "skillPath": ".agents/memory/_ag_core/support/workflows-audit-commit/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_ag_core/support/workflows-audit-commit/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_ag_core/support/workflows-audit-commit/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_ag_core/support/workflows-audit-commit/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-18T12:01:08+08:00",
+        "validScope": "historical",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：已退休的 Antigravity /08 健檢入口 索引。Use when: resolving legacy audit references.",
+      "trackedFiles": [],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:59:28+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_ag_core.support",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 1926,
+        "lineCount": 65,
+        "chineseCharCount": 0,
+        "bodyCharCount": 840,
+        "chineseRatio": 0,
+        "cycleId": "2026-07-18-001",
+        "cycleEventCount": 1,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_ag_core.support.workflows-foundation": {
+      "skillPath": ".agents/memory/_ag_core/support/workflows-foundation/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_ag_core/support/workflows-foundation/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_ag_core/support/workflows-foundation/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_ag_core/support/workflows-foundation/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-07T05:51:07+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Antigravity 基礎與討論建構工作流。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Antigravity/.agents/workflows/_completion_gate.md",
+        "Antigravity/.agents/workflows/_security_footer.md",
+        "Antigravity/.agents/workflows/00_chat(討論).md",
+        "Antigravity/.agents/workflows/01_explore(搜索).md",
+        "Antigravity/.agents/workflows/03_build(建構計畫).md",
+        "Antigravity/.agents/workflows/03-1_experiment(實驗).md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-07T05:51:07+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_ag_core.support",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 7646,
+        "lineCount": 104,
+        "chineseCharCount": 15,
+        "bodyCharCount": 5016,
+        "chineseRatio": 0.003,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 10,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_ag_core.support.workflows-operations": {
+      "skillPath": ".agents/memory/_ag_core/support/workflows-operations/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_ag_core/support/workflows-operations/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_ag_core/support/workflows-operations/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_ag_core/support/workflows-operations/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-07T05:51:07+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Antigravity 測試、巡檢、交接與技能鍛造工作流。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Antigravity/.agents/workflows/06_test(測試).md",
+        "Antigravity/.agents/workflows/10_routine(巡檢).md",
+        "Antigravity/.agents/workflows/11_handoff(交接).md",
+        "Antigravity/.agents/workflows/12_skill_forge(技能鍛造).md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:01:37+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_ag_core.support",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 7218,
+        "lineCount": 106,
+        "chineseCharCount": 15,
+        "bodyCharCount": 4697,
+        "chineseRatio": 0.0032,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 10,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_claude_core": {
+      "skillPath": ".agents/memory/_claude_core/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_claude_core/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_claude_core/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_claude_core/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-17T20:08:47+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Claude 平台核心來源與治理規則。Use when: task touches this card tracked files or governed scope.",
+      "trackedFiles": [
+        "Claude/install.ps1",
+        "Claude/README.md",
+        "Claude/VERSION",
+        "Claude/global/CLAUDE.md",
+        "Claude/.claude/CLAUDE.md",
+        "Claude/.claude/rules/core-identity.md",
+        "Claude/.claude/rules/memory-contract.md",
+        "Claude/.claude/rules/forbidden-vocab.md",
+        "Claude/.claude/commands/02_blueprint(架構)/SKILL.md",
+        "Claude/.claude/commands/03_build(建構)/SKILL.md",
+        "Claude/.claude/commands/04_fix(修復)/SKILL.md",
+        "Claude/.claude/commands/07_debug(除錯)/SKILL.md",
+        "Claude/.claude/commands/11_handoff(交接)/SKILL.md",
+        ".agents/memory/_claude_core/archive-001.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:46:54+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 1,
+      "parent": null,
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 9361,
+        "lineCount": 120,
+        "chineseCharCount": 0,
+        "bodyCharCount": 6350,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-30-001",
+        "cycleEventCount": 11,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_claude_core/archive-001.md",
+            "sizeBytes": 13991,
+            "lineCount": 123,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_claude_core/archive-002.md",
+            "sizeBytes": 5514,
+            "lineCount": 117,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_claude_core/archive-003.md",
+            "sizeBytes": 1774,
+            "lineCount": 25,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_claude_core/archive-004.md",
+            "sizeBytes": 2149,
+            "lineCount": 21,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_claude_core.support": {
+      "skillPath": ".agents/memory/_claude_core/support/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_claude_core/support/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_claude_core/support/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_claude_core/support/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T13:05:08+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Claude 支援檔案與指令導覽父卡。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [],
+      "staleness": 0,
+      "lastUpdated": "2026-07-03T13:21:37+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 2,
+      "parent": "_claude_core",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3154,
+        "lineCount": 85,
+        "chineseCharCount": 0,
+        "bodyCharCount": 1883,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 3,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_claude_core/support/archive-001.md",
+            "sizeBytes": 5530,
+            "lineCount": 120,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_claude_core.support.commands-audit": {
+      "skillPath": ".agents/memory/_claude_core/support/commands-audit/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_claude_core/support/commands-audit/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_claude_core/support/commands-audit/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_claude_core/support/commands-audit/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-18T12:01:08+08:00",
+        "validScope": "historical",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：已退休的 Claude /08 健檢入口 索引。Use when: resolving legacy audit references.",
+      "trackedFiles": [],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:59:30+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_claude_core.support",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 1927,
+        "lineCount": 65,
+        "chineseCharCount": 0,
+        "bodyCharCount": 858,
+        "chineseRatio": 0,
+        "cycleId": "2026-07-18-001",
+        "cycleEventCount": 1,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_claude_core.support.commands-general": {
+      "skillPath": ".agents/memory/_claude_core/support/commands-general/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_claude_core/support/commands-general/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_claude_core/support/commands-general/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_claude_core/support/commands-general/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-07T05:51:27+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Claude 一般討論、探索、實驗、濃縮與測試指令。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Claude/.claude/commands/_shared/_completion_gate.md",
+        "Claude/.claude/commands/_shared/_security_footer.md",
+        "Claude/.claude/commands/00_chat(討論)/SKILL.md",
+        "Claude/.claude/commands/01_explore(搜索)/SKILL.md",
+        "Claude/.claude/commands/03-1_experiment(實驗)/SKILL.md",
+        "Claude/.claude/commands/05_condense（濃縮）/SKILL.md",
+        "Claude/.claude/commands/06_test(測試)/SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-07T05:51:27+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_claude_core.support",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 6860,
+        "lineCount": 100,
+        "chineseCharCount": 10,
+        "bodyCharCount": 4424,
+        "chineseRatio": 0.0023,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 10,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_claude_core.support.commands-release": {
+      "skillPath": ".agents/memory/_claude_core/support/commands-release/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_claude_core/support/commands-release/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_claude_core/support/commands-release/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_claude_core/support/commands-release/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-07T05:51:27+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Claude 紀錄、巡檢與技能鍛造指令。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Claude/.claude/commands/09_commit(紀錄)/SKILL.md",
+        "Claude/.claude/commands/10_routine(巡檢)/SKILL.md",
+        "Claude/.claude/commands/12_skill_forge(技能鍛造)/SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:00:53+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_claude_core.support",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 7256,
+        "lineCount": 104,
+        "chineseCharCount": 8,
+        "bodyCharCount": 4896,
+        "chineseRatio": 0.0016,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 9,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_claude_core.support.rules-settings": {
+      "skillPath": ".agents/memory/_claude_core/support/rules-settings/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_claude_core/support/rules-settings/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_claude_core/support/rules-settings/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_claude_core/support/rules-settings/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-07T05:51:27+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Claude 規則、設定與支援專案檔。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Claude/.claude/rules/code-quality.md",
+        "Claude/.claude/rules/cross-lingual-guard.md",
+        "Claude/.claude/rules/mcp-guardrails.md",
+        "Claude/.claude/rules/project-skill-contract.md",
+        "Claude/.claude/settings.local.json",
+        "Claude/.gitignore",
+        "Claude/.vscode/settings.json"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-07T05:51:27+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_claude_core.support",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 4799,
+        "lineCount": 98,
+        "chineseCharCount": 0,
+        "bodyCharCount": 2836,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 4,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_codex_core": {
+      "skillPath": ".agents/memory/_codex_core/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_codex_core/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_codex_core/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_codex_core/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-17T20:08:47+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Codex 平台核心來源與治理規則。Use when: task touches this card tracked files or governed scope.",
+      "trackedFiles": [
+        "Codex/VERSION",
+        "Codex/README.md",
+        "Codex/install.ps1",
+        "Codex/global/AGENTS.md",
+        "Codex/global/config.toml",
+        "Codex/.codex/AGENTS.md",
+        "Codex/.codex/config.toml",
+        "Codex/.codex/hooks.json",
+        "Codex/.codex/hooks/team-native-gate.ps1",
+        "Codex/.codex/hooks/team-native-launcher.ps1",
+        "Codex/.codex/VERSION",
+        "Codex/.gitignore",
+        "Codex/.agents/workflow-skills/02-blueprint-架構/SKILL.md",
+        "Codex/.agents/workflow-skills/03-build-建構/SKILL.md",
+        "Codex/.agents/workflow-skills/04-fix-修復/SKILL.md",
+        "Codex/.agents/workflow-skills/07-debug-除錯/SKILL.md",
+        "Codex/.agents/workflow-skills/11-handoff-交接/SKILL.md",
+        ".agents/memory/_codex_core/archive-001.md",
+        ".codex/AGENTS.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T11:56:27+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 1,
+      "parent": null,
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 5924,
+        "lineCount": 111,
+        "chineseCharCount": 0,
+        "bodyCharCount": 3345,
+        "chineseRatio": 0,
+        "cycleId": "2026-07-10-001",
+        "cycleEventCount": 4,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_codex_core/archive-001.md",
+            "sizeBytes": 25674,
+            "lineCount": 165,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_codex_core/archive-002.md",
+            "sizeBytes": 5602,
+            "lineCount": 118,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_codex_core/archive-003.md",
+            "sizeBytes": 1772,
+            "lineCount": 25,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_codex_core.support": {
+      "skillPath": ".agents/memory/_codex_core/support/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_codex_core/support/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_codex_core/support/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_codex_core/support/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T13:05:08+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Codex 工作流技能導覽父卡。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [],
+      "staleness": 0,
+      "lastUpdated": "2026-07-03T13:21:44+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 2,
+      "parent": "_codex_core",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3076,
+        "lineCount": 83,
+        "chineseCharCount": 0,
+        "bodyCharCount": 1808,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 3,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_codex_core/support/archive-001.md",
+            "sizeBytes": 5374,
+            "lineCount": 113,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_codex_core.support.workflows-audit": {
+      "skillPath": ".agents/memory/_codex_core/support/workflows-audit/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_codex_core/support/workflows-audit/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_codex_core/support/workflows-audit/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_codex_core/support/workflows-audit/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-18T12:01:08+08:00",
+        "validScope": "historical",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：已退休的 Codex /08 健檢入口 索引。Use when: resolving legacy audit references.",
+      "trackedFiles": [],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:59:33+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_codex_core.support",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 1921,
+        "lineCount": 65,
+        "chineseCharCount": 0,
+        "bodyCharCount": 848,
+        "chineseRatio": 0,
+        "cycleId": "2026-07-18-001",
+        "cycleEventCount": 1,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_codex_core.support.workflows-general": {
+      "skillPath": ".agents/memory/_codex_core/support/workflows-general/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_codex_core/support/workflows-general/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_codex_core/support/workflows-general/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_codex_core/support/workflows-general/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-07T05:51:26+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Codex/.agents/workflow-skills/_shared/_completion_gate.md",
+        "Codex/.agents/workflow-skills/_shared/_security_footer.md",
+        "Codex/.agents/workflow-skills/00-chat-聊天/SKILL.md",
+        "Codex/.agents/workflow-skills/01-explore-探索/SKILL.md",
+        "Codex/.agents/workflow-skills/03-1-experiment-實驗/SKILL.md",
+        "Codex/.agents/workflow-skills/05-condense-濃縮/SKILL.md",
+        "Codex/.agents/workflow-skills/06-test-測試/SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-11T21:11:29+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_codex_core.support",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 6602,
+        "lineCount": 99,
+        "chineseCharCount": 10,
+        "bodyCharCount": 3992,
+        "chineseRatio": 0.0025,
+        "cycleId": "2026-07-07-001",
+        "cycleEventCount": 4,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_codex_core.support.workflows-release": {
+      "skillPath": ".agents/memory/_codex_core/support/workflows-release/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_codex_core/support/workflows-release/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_codex_core/support/workflows-release/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_codex_core/support/workflows-release/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-07T20:50:00+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Codex 提交、巡檢與技能鍛造工作流技能。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md",
+        "Codex/.agents/workflow-skills/10-routine-巡檢/SKILL.md",
+        "Codex/.agents/workflow-skills/12-skill-forge-技能鍛造/SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:00:57+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_codex_core.support",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 6529,
+        "lineCount": 95,
+        "chineseCharCount": 14,
+        "bodyCharCount": 4253,
+        "chineseRatio": 0.0033,
+        "cycleId": "2026-07-07-001",
+        "cycleEventCount": 4,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_map": {
+      "skillPath": ".agents/memory/_map/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_map/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_map/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_map/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T22:54:27+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：記憶拓樸索引與卡片導覽。Use when: task touches this card tracked files or governed scope.",
+      "trackedFiles": [
+        ".agents/memory/_map/archive-001.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-07T22:46:34+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 1,
+      "parent": null,
+      "compaction": {
+        "cardKind": "root_index",
+        "limitKind": "root_index",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3712,
+        "lineCount": 83,
+        "chineseCharCount": 0,
+        "bodyCharCount": 2240,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 3,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 8192,
+        "lineLimit": null,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_map/archive-001.md",
+            "sizeBytes": 2820,
+            "lineCount": 69,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_map/archive-002.md",
+            "sizeBytes": 3131,
+            "lineCount": 99,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared": {
+      "skillPath": ".agents/memory/_shared/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-17T20:08:47+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：跨平台共用框架來源與治理規則。Use when: task touches this card tracked files or governed scope.",
+      "trackedFiles": [
+        "Shared/workflow-stage-procedures.md",
+        "Shared/policies/language-governance.md",
+        ".agents/shared/policies/language-governance.md",
+        "Shared/policies/grounding-governance.md",
+        ".agents/shared/policies/grounding-governance.md",
+        "Shared/policies/source-document-size-governance.md",
+        ".agents/shared/policies/source-document-size-governance.md",
+        "Shared/policies/adapters/antigravity-subagent-invocation.md",
+        "Shared/policies/adapters/claude-subagent-invocation.md",
+        "Shared/policies/adapters/codex-subagent-invocation.md",
+        "Shared/policies/adapters/codex-thread-handoff.md",
+        "Shared/skill-governance.md",
+        "Shared/mcp-profiles/README.md",
+        "Shared/context/_map/CONTEXT.md",
+        "Shared/skills/memory-ops/SKILL.md",
+        "Shared/skills/memory-arch/SKILL.md",
+        "Shared/skills/memory-arch/references/memory-quality-migration-blueprint.md",
+        "Shared/skills/memory-arch/references/topology-rules.md",
+        "Shared/skills/memory-arch/references/maintenance-playbooks.md",
+        "Shared/skills/memory-ops/references/memory-template.md",
+        "Shared/skills/memory-ops/references/memory-lifecycle-procedures.md",
+        "Shared/skills/memory-ops/references/memory-mcp-tool-contract.md",
+        "Shared/skills/project-context-protocol/SKILL.md",
+        "Shared/skills/project-context-protocol/references/context-template.md",
+        "Shared/skills/team-specialist-git-checkpoint/SKILL.md",
+        "Shared/project-tools/Memory-Migration.ps1",
+        "Shared/project-tools/modules/Memory-Migration.psm1",
+        ".agents/memory/_shared/archive-001.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:45:38+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 1,
+      "parent": null,
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 8959,
+        "lineCount": 117,
+        "chineseCharCount": 0,
+        "bodyCharCount": 5254,
+        "chineseRatio": 0,
+        "cycleId": "2026-07-10-001",
+        "cycleEventCount": 3,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_shared/archive-001.md",
+            "sizeBytes": 21141,
+            "lineCount": 196,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_shared/archive-002.md",
+            "sizeBytes": 6336,
+            "lineCount": 127,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_shared/archive-003.md",
+            "sizeBytes": 1729,
+            "lineCount": 21,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.ops-skills": {
+      "skillPath": ".agents/memory/_shared/ops-skills/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/ops-skills/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/ops-skills/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/ops-skills/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T13:05:08+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：跨平台共用操作型技能來源導覽父卡。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [],
+      "staleness": 0,
+      "lastUpdated": "2026-07-03T13:21:49+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 2,
+      "parent": "_shared",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3501,
+        "lineCount": 88,
+        "chineseCharCount": 0,
+        "bodyCharCount": 2148,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 3,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_shared/ops-skills/archive-001.md",
+            "sizeBytes": 6665,
+            "lineCount": 129,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.ops-skills.code-analysis": {
+      "skillPath": ".agents/memory/_shared/ops-skills/code-analysis/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/ops-skills/code-analysis/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/ops-skills/code-analysis/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/ops-skills/code-analysis/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-17T20:08:47+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Shared 程式掃描、診斷與品質操作技能。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/code-audit/references/scan-report-template.md",
+        "Shared/skills/code-audit/references/scan-task-prompt.md",
+        "Shared/skills/code-audit/references/tool-command-reference.md",
+        "Shared/skills/code-audit/SKILL.md",
+        "Shared/skills/code-diagnosis/references/diagnosis-report-template.md",
+        "Shared/skills/code-diagnosis/references/diagnosis-task-prompt.md",
+        "Shared/skills/code-diagnosis/SKILL.md",
+        "Shared/skills/code-quality/SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:45:23+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.ops-skills",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 5541,
+        "lineCount": 98,
+        "chineseCharCount": 0,
+        "bodyCharCount": 3148,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 5,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.ops-skills.gitnexus": {
+      "skillPath": ".agents/memory/_shared/ops-skills/gitnexus/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/ops-skills/gitnexus/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/ops-skills/gitnexus/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/ops-skills/gitnexus/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-07T05:52:39+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Shared GitNexus 索引、探索、除錯與影響分析技能。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/gitnexus-cli/SKILL.md",
+        "Shared/skills/gitnexus-debugging/SKILL.md",
+        "Shared/skills/gitnexus-exploring/SKILL.md",
+        "Shared/skills/gitnexus-guide/SKILL.md",
+        "Shared/skills/gitnexus-impact-analysis/SKILL.md",
+        "Shared/skills/gitnexus-refactoring/SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T11:57:31+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.ops-skills",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 4920,
+        "lineCount": 96,
+        "chineseCharCount": 0,
+        "bodyCharCount": 2975,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 3,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.ops-skills.mcp-ops": {
+      "skillPath": ".agents/memory/_shared/ops-skills/mcp-ops/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/ops-skills/mcp-ops/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/ops-skills/mcp-ops/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/ops-skills/mcp-ops/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-08T13:06:03+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Shared MCP 與外部服務操作食譜技能。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/cloudflare-ops/SKILL.md",
+        "Shared/skills/context7-docs/SKILL.md",
+        "Shared/skills/excel-ops/SKILL.md",
+        "Shared/skills/github-ops/SKILL.md",
+        "Shared/skills/maps-assist/SKILL.md",
+        "Shared/skills/pr-review-ops/SKILL.md",
+        "Shared/skills/sentry-ops/SKILL.md",
+        "Shared/skills/stitch-design/SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:45:26+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.ops-skills",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 6530,
+        "lineCount": 106,
+        "chineseCharCount": 0,
+        "bodyCharCount": 4372,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 6,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.ops-skills.quality-ui": {
+      "skillPath": ".agents/memory/_shared/ops-skills/quality-ui/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/ops-skills/quality-ui/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/ops-skills/quality-ui/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/ops-skills/quality-ui/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-08T11:45:29+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Shared 品質閘門、安全可靠性與 UI/UX 標準技能。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/ai-dev-quality-gate/SKILL.md",
+        "Shared/skills/intent-alignment-gate/SKILL.md",
+        "Shared/skills/quality-review-governance/SKILL.md",
+        "Shared/skills/security-sre/SKILL.md",
+        "Shared/skills/ui-design-exploration/SKILL.md",
+        "Shared/skills/ui-ux-standards/SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-08T11:48:21+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.ops-skills",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 7834,
+        "lineCount": 110,
+        "chineseCharCount": 0,
+        "bodyCharCount": 5517,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 12,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.ops-skills.release-reasoning": {
+      "skillPath": ".agents/memory/_shared/ops-skills/release-reasoning/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/ops-skills/release-reasoning/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/ops-skills/release-reasoning/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/ops-skills/release-reasoning/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-09T22:07:58+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Shared 發布治理、結構化推理與技術堆疊協議技能。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/coding-reflection-gate/SKILL.md",
+        "Shared/skills/design-reflection-gate/SKILL.md",
+        "Shared/skills/plugin-release-governance/references/vsix-release-playbook.md",
+        "Shared/skills/plugin-release-governance/SKILL.md",
+        "Shared/skills/structured-reasoning/SKILL.md",
+        "Shared/skills/tech-stack-protocol/SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T11:59:12+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.ops-skills",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 8420,
+        "lineCount": 112,
+        "chineseCharCount": 0,
+        "bodyCharCount": 5728,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 8,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.ops-skills.skill-governance": {
+      "skillPath": ".agents/memory/_shared/ops-skills/skill-governance/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/ops-skills/skill-governance/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/ops-skills/skill-governance/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/ops-skills/skill-governance/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-17T20:08:47+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Shared 委派策略與技能工廠治理技能。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/_index.md",
+        ".agents/skills/_index.md",
+        "Shared/skills/team-review-delivery-artifact/SKILL.md",
+        "Shared/skills/team-validation-delivery-artifact/SKILL.md",
+        "Shared/skills/team-memory-docs-delivery-artifact/SKILL.md",
+        "Shared/skills/team-change-delivery-artifact/SKILL.md",
+        "Shared/skills/team-role-boundaries/SKILL.md",
+        ".agents/skills/team-review-delivery-artifact/SKILL.md",
+        ".agents/skills/team-validation-delivery-artifact/SKILL.md",
+        ".agents/skills/team-memory-docs-delivery-artifact/SKILL.md",
+        ".agents/skills/team-change-delivery-artifact/SKILL.md",
+        ".agents/skills/team-role-boundaries/SKILL.md",
+        "Shared/skills/delegation-strategy/references/cli-capability-matrix.md",
+        "Shared/skills/delegation-strategy/references/cli-delegation-sop.md",
+        "Shared/skills/delegation-strategy/references/cli-prompt-skeleton.md",
+        "Shared/skills/skill-factory/references/skill-quality-checklist.md",
+        "Shared/skills/skill-factory/references/skill-style-guide.md",
+        "Shared/skills/skill-factory/references/skill-template.md",
+        "Shared/skills/skill-factory/SKILL.md",
+        ".agents/skills/skill-factory/SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T11:59:45+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.ops-skills",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 10570,
+        "lineCount": 114,
+        "chineseCharCount": 3,
+        "bodyCharCount": 6619,
+        "chineseRatio": 0.0005,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 8,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.ops-skills.supabase-core": {
+      "skillPath": ".agents/memory/_shared/ops-skills/supabase-core/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/ops-skills/supabase-core/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/ops-skills/supabase-core/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/ops-skills/supabase-core/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-07T20:50:00+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Shared Supabase 核心操作技能與回饋資產。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/supabase-ops/SKILL.md",
+        "Shared/skills/supabase/assets/feedback-issue-template.md",
+        "Shared/skills/supabase/references/skill-feedback.md",
+        "Shared/skills/supabase/SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-07T22:46:47+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.ops-skills",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 4153,
+        "lineCount": 88,
+        "chineseCharCount": 0,
+        "bodyCharCount": 2554,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 4,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.ops-skills.testing": {
+      "skillPath": ".agents/memory/_shared/ops-skills/testing/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/ops-skills/testing/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/ops-skills/testing/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/ops-skills/testing/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-07T05:52:39+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/a11y-testing/SKILL.md",
+        "Shared/skills/browser-testing/SKILL.md",
+        "Shared/skills/impact-test-strategy/references/regression-test-examples.md",
+        "Shared/skills/impact-test-strategy/SKILL.md",
+        "Shared/skills/performance-audit/SKILL.md",
+        "Shared/skills/test-automation-strategy/SKILL.md",
+        "Shared/skills/test-patterns/references/api-route-test-template.md",
+        "Shared/skills/test-patterns/references/hook-test-template.md",
+        "Shared/skills/test-patterns/references/utility-test-template.md",
+        "Shared/skills/test-patterns/SKILL.md",
+        "Shared/skills/trunk-ops/SKILL.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T11:59:07+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.ops-skills",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 7545,
+        "lineCount": 112,
+        "chineseCharCount": 0,
+        "bodyCharCount": 4900,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 9,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.supabase-postgres": {
+      "skillPath": ".agents/memory/_shared/supabase-postgres/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/supabase-postgres/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/supabase-postgres/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/supabase-postgres/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-07T05:50:42+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Supabase Postgres 大型參考技能來源導覽父卡。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/supabase-postgres-best-practices/SKILL.md",
+        "Shared/skills/supabase-postgres-best-practices/references/_contributing.md",
+        "Shared/skills/supabase-postgres-best-practices/references/_sections.md",
+        "Shared/skills/supabase-postgres-best-practices/references/_template.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-07T05:50:42+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 2,
+      "parent": "_shared",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 4118,
+        "lineCount": 92,
+        "chineseCharCount": 0,
+        "bodyCharCount": 2392,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 4,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_shared/supabase-postgres/archive-001.md",
+            "sizeBytes": 5446,
+            "lineCount": 116,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.supabase-postgres.connection-data": {
+      "skillPath": ".agents/memory/_shared/supabase-postgres/connection-data/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/supabase-postgres/connection-data/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/supabase-postgres/connection-data/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/supabase-postgres/connection-data/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T13:05:08+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Supabase Postgres 連線與資料操作參考主題。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/supabase-postgres-best-practices/references/conn-idle-timeout.md",
+        "Shared/skills/supabase-postgres-best-practices/references/conn-limits.md",
+        "Shared/skills/supabase-postgres-best-practices/references/conn-pooling.md",
+        "Shared/skills/supabase-postgres-best-practices/references/conn-prepared-statements.md",
+        "Shared/skills/supabase-postgres-best-practices/references/data-batch-inserts.md",
+        "Shared/skills/supabase-postgres-best-practices/references/data-n-plus-one.md",
+        "Shared/skills/supabase-postgres-best-practices/references/data-pagination.md",
+        "Shared/skills/supabase-postgres-best-practices/references/data-upsert.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-03T13:21:58+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.supabase-postgres",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3619,
+        "lineCount": 86,
+        "chineseCharCount": 0,
+        "bodyCharCount": 1668,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 2,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.supabase-postgres.locking-monitoring": {
+      "skillPath": ".agents/memory/_shared/supabase-postgres/locking-monitoring/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/supabase-postgres/locking-monitoring/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/supabase-postgres/locking-monitoring/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/supabase-postgres/locking-monitoring/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T13:05:08+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Supabase Postgres 鎖定、交易與監控參考主題。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/supabase-postgres-best-practices/references/lock-advisory.md",
+        "Shared/skills/supabase-postgres-best-practices/references/lock-deadlock-prevention.md",
+        "Shared/skills/supabase-postgres-best-practices/references/lock-short-transactions.md",
+        "Shared/skills/supabase-postgres-best-practices/references/lock-skip-locked.md",
+        "Shared/skills/supabase-postgres-best-practices/references/monitor-explain-analyze.md",
+        "Shared/skills/supabase-postgres-best-practices/references/monitor-pg-stat-statements.md",
+        "Shared/skills/supabase-postgres-best-practices/references/monitor-vacuum-analyze.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-03T13:22:02+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.supabase-postgres",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3680,
+        "lineCount": 86,
+        "chineseCharCount": 0,
+        "bodyCharCount": 1768,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 2,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.supabase-postgres.query-indexing": {
+      "skillPath": ".agents/memory/_shared/supabase-postgres/query-indexing/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/supabase-postgres/query-indexing/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/supabase-postgres/query-indexing/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/supabase-postgres/query-indexing/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T13:05:08+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Supabase Postgres 查詢與索引參考主題。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/supabase-postgres-best-practices/references/advanced-full-text-search.md",
+        "Shared/skills/supabase-postgres-best-practices/references/advanced-jsonb-indexing.md",
+        "Shared/skills/supabase-postgres-best-practices/references/query-composite-indexes.md",
+        "Shared/skills/supabase-postgres-best-practices/references/query-covering-indexes.md",
+        "Shared/skills/supabase-postgres-best-practices/references/query-index-types.md",
+        "Shared/skills/supabase-postgres-best-practices/references/query-missing-indexes.md",
+        "Shared/skills/supabase-postgres-best-practices/references/query-partial-indexes.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-03T13:22:05+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.supabase-postgres",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3620,
+        "lineCount": 86,
+        "chineseCharCount": 0,
+        "bodyCharCount": 1697,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 2,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.supabase-postgres.schema-design": {
+      "skillPath": ".agents/memory/_shared/supabase-postgres/schema-design/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/supabase-postgres/schema-design/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/supabase-postgres/schema-design/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/supabase-postgres/schema-design/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T13:05:08+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Supabase Postgres 結構設計參考主題。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/supabase-postgres-best-practices/references/schema-constraints.md",
+        "Shared/skills/supabase-postgres-best-practices/references/schema-data-types.md",
+        "Shared/skills/supabase-postgres-best-practices/references/schema-foreign-key-indexes.md",
+        "Shared/skills/supabase-postgres-best-practices/references/schema-lowercase-identifiers.md",
+        "Shared/skills/supabase-postgres-best-practices/references/schema-partitioning.md",
+        "Shared/skills/supabase-postgres-best-practices/references/schema-primary-keys.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-03T13:22:08+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.supabase-postgres",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3434,
+        "lineCount": 84,
+        "chineseCharCount": 0,
+        "bodyCharCount": 1614,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 2,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.supabase-postgres.security": {
+      "skillPath": ".agents/memory/_shared/supabase-postgres/security/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/supabase-postgres/security/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/supabase-postgres/security/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/supabase-postgres/security/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T13:05:08+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Supabase Postgres 權限與 RLS 安全參考主題。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Shared/skills/supabase-postgres-best-practices/references/security-privileges.md",
+        "Shared/skills/supabase-postgres-best-practices/references/security-rls-basics.md",
+        "Shared/skills/supabase-postgres-best-practices/references/security-rls-performance.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-03T13:22:13+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 3,
+      "parent": "_shared.supabase-postgres",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3288,
+        "lineCount": 82,
+        "chineseCharCount": 0,
+        "bodyCharCount": 1712,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 2,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_shared.team-native-core": {
+      "skillPath": ".agents/memory/_shared/team-native-core/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_shared/team-native-core/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_shared/team-native-core/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_shared/team-native-core/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-17T20:08:47+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：Team-Native Core shared governance, station routing, trace evidence, and team completion contracts.",
+      "trackedFiles": [
+        "Shared/policies/authorization-resolution.md",
+        "Shared/policies/team-native-core.md",
+        "Shared/policies/team-trace-evidence.md",
+        "Shared/policies/subagent-invocation.md",
+        "Shared/policies/workflow-orchestration.md",
+        "Shared/policies/workflow-orchestration-scenarios.md",
+        "Shared/policies/platform-plan-mapping.md",
+        "Shared/policies/references/workflow-execution-spec-contract.md",
+        "Shared/policies/references/workflow-lane-routing.md",
+        "Shared/policies/references/workflow-memory-evidence.md",
+        "Shared/policies/references/workflow-orchestration-boundaries.md",
+        "Shared/policies/references/workflow-review-visual-evidence.md",
+        "Shared/policies/references/workflow-team-evidence.md",
+        "Shared/policies/references/authorization-phase-registry.md",
+        "Shared/policies/references/completion-state-machine.md",
+        "Shared/policies/references/exception-registry.md",
+        "Shared/policies/references/hook-event-matrix.md",
+        "Shared/policies/references/platform-copy-map.md",
+        "Shared/policies/references/protected-action-registry.md",
+        "Shared/policies/references/source-runtime-surface-map.md",
+        "Shared/policies/references/status-ontology.md",
+        "Shared/platform-capability-matrix.md",
+        "Shared/workflow-capability-evidence-matrix.md",
+        "Shared/skills/programming-team-governance/SKILL.md",
+        "Shared/skills/team-task-board/SKILL.md",
+        "Shared/skills/team-task-board/references/board-field-catalog.md",
+        "Shared/skills/team-task-board/references/board-templates-and-delivery.md",
+        "Shared/skills/team-station-handoff-packet/SKILL.md",
+        "Shared/skills/team-station-handoff-packet/references/execution-lifecycle.md",
+        "Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md",
+        "Shared/skills/delegation-strategy/SKILL.md",
+        "Shared/skills/delegation-strategy/references/team-dispatch-gates.md",
+        "Shared/skills/team-completion-gate/SKILL.md",
+        "Shared/skills/team-completion-gate/references/completion-evidence-contract.md",
+        "Shared/skills/team-specialist-registry/SKILL.md",
+        "Shared/skills/team-specialist-intent-requirements/SKILL.md",
+        "Shared/skills/team-specialist-scope-impact/SKILL.md",
+        "Shared/skills/team-specialist-architecture-contract/SKILL.md",
+        "Shared/skills/team-specialist-change-delivery/SKILL.md",
+        "Shared/skills/team-specialist-memory-docs/SKILL.md",
+        "Shared/skills/team-specialist-validation/SKILL.md",
+        "Shared/skills/team-specialist-review/SKILL.md",
+        "Shared/skills/team-specialist-security-reliability/SKILL.md",
+        "Shared/skills/team-specialist-release-completion/SKILL.md",
+        "Shared/skills/team-specialist-external-research/SKILL.md",
+        ".agents/skills/delegation-strategy/SKILL.md",
+        ".agents/shared/policies/subagent-invocation.md",
+        "Shared/policies/references/cross-thread-handoff-contract.md"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:46:23+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 2,
+      "parent": "_shared",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 6746,
+        "lineCount": 113,
+        "chineseCharCount": 0,
+        "bodyCharCount": 2439,
+        "chineseRatio": 0,
+        "cycleId": "2026-07-17-001",
+        "cycleEventCount": 1,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_shared/team-native-core/archive-001.md",
+            "sizeBytes": 2165,
+            "lineCount": 25,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_shared/team-native-core/archive-002.md",
+            "sizeBytes": 1318,
+            "lineCount": 13,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_shared/team-native-core/archive-003.md",
+            "sizeBytes": 1282,
+            "lineCount": 18,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_system": {
+      "skillPath": ".agents/memory/_system/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_system/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_system/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_system/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-17T20:08:47+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        ".gitignore",
+        "README.md",
+        "CHANGELOG.md",
+        "LICENSE"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:46:19+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 1,
+      "parent": null,
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 8327,
+        "lineCount": 113,
+        "chineseCharCount": 0,
+        "bodyCharCount": 5698,
+        "chineseRatio": 0,
+        "cycleId": "2026-07-17-001",
+        "cycleEventCount": 1,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_system/archive-001.md",
+            "sizeBytes": 15297,
+            "lineCount": 95,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_system/archive-002.md",
+            "sizeBytes": 20730,
+            "lineCount": 89,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_system/archive-003.md",
+            "sizeBytes": 6430,
+            "lineCount": 126,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_system.scripts": {
+      "skillPath": ".agents/memory/_system/scripts/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_system/scripts/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_system/scripts/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_system/scripts/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-17T20:28:23+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Scripts/Deploy.ps1",
+        "Scripts/Watch-CodexModelV1.ps1",
+        "Scripts/modules/Core.psm1",
+        "Scripts/modules/Memory-Migration.psm1",
+        "Scripts/modules/Skills-Sync.psm1",
+        "Scripts/modules/Platform-Antigravity.psm1",
+        "Scripts/modules/Platform-Claude.psm1",
+        "Scripts/modules/Platform-Codex.psm1"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:00:22+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 2,
+      "parent": "_system",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3923,
+        "lineCount": 76,
+        "chineseCharCount": 0,
+        "bodyCharCount": 2032,
+        "chineseRatio": 0,
+        "cycleId": "2026-07-17-001",
+        "cycleEventCount": 1,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_system/scripts/archive-001.md",
+            "sizeBytes": 2204,
+            "lineCount": 22,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_system/scripts/archive-002.md",
+            "sizeBytes": 1881,
+            "lineCount": 17,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_system/scripts/archive-003.md",
+            "sizeBytes": 1263,
+            "lineCount": 19,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_vscode_extension": {
+      "skillPath": ".agents/memory/_vscode_extension/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_vscode_extension/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_vscode_extension/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_vscode_extension/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T13:05:08+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：VS Code 管理器外掛導覽父卡。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [],
+      "staleness": 0,
+      "lastUpdated": "2026-07-03T13:22:17+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 1,
+      "parent": null,
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3338,
+        "lineCount": 86,
+        "chineseCharCount": 0,
+        "bodyCharCount": 2021,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 3,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_vscode_extension/archive-001.md",
+            "sizeBytes": 19543,
+            "lineCount": 123,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_vscode_extension/archive-002.md",
+            "sizeBytes": 4072,
+            "lineCount": 104,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_vscode_extension.auxiliary": {
+      "skillPath": ".agents/memory/_vscode_extension/auxiliary/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_vscode_extension/auxiliary/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_vscode_extension/auxiliary/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_vscode_extension/auxiliary/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-03T22:54:27+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：VS Code 管理器輔助來源。Use when: task touches this card tracked files or governed scope.",
+      "trackedFiles": [
+        "Extensions/vscode-ai-rules-manager/.vscodeignore",
+        "Extensions/vscode-ai-rules-manager/LICENSE",
+        "Extensions/vscode-ai-rules-manager/tsconfig.json"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-03T22:55:08+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 2,
+      "parent": "_vscode_extension",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 3868,
+        "lineCount": 79,
+        "chineseCharCount": 0,
+        "bodyCharCount": 2279,
+        "chineseRatio": 0,
+        "cycleId": "2026-06-15-001",
+        "cycleEventCount": 3,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_vscode_extension/auxiliary/archive-001.md",
+            "sizeBytes": 2470,
+            "lineCount": 82,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_vscode_extension.release": {
+      "skillPath": ".agents/memory/_vscode_extension/release/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_vscode_extension/release/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_vscode_extension/release/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_vscode_extension/release/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-08T22:45:00+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：VS Code 管理器外掛封裝、資源、發布與後端入口。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Extensions/vscode-ai-rules-manager/package.json",
+        "Extensions/vscode-ai-rules-manager/package-lock.json",
+        "Extensions/vscode-ai-rules-manager/README.md",
+        "Extensions/vscode-ai-rules-manager/resources/ai-rules.svg",
+        "Extensions/vscode-ai-rules-manager/resources/icon.png",
+        ".github/workflows/release-vsix.yml",
+        "Scripts/AI-RulesManager.ps1"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:45:32+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 2,
+      "parent": "_vscode_extension",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 7006,
+        "lineCount": 109,
+        "chineseCharCount": 0,
+        "bodyCharCount": 4230,
+        "chineseRatio": 0,
+        "cycleId": "2026-07-18-001",
+        "cycleEventCount": 1,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    },
+    "_vscode_extension.runtime": {
+      "skillPath": ".agents/memory/_vscode_extension/runtime/MEMORY.md",
+      "mainFile": {
+        "type": "MEMORY.md",
+        "activePath": ".agents/memory/_vscode_extension/runtime/MEMORY.md",
+        "activeFileName": "MEMORY.md",
+        "candidates": {
+          "memory": ".agents/memory/_vscode_extension/runtime/MEMORY.md"
+        },
+        "candidatePaths": [
+          ".agents/memory/_vscode_extension/runtime/MEMORY.md"
+        ],
+        "legacyCompatibility": false,
+        "migrationRequired": false,
+        "conflict": false
+      },
+      "mainFileType": "MEMORY.md",
+      "contentQuality": {
+        "status": "complete",
+        "label": "完整",
+        "requiredFields": [
+          "memory_schema_version",
+          "memory_quality_version",
+          "memory_kind",
+          "verification_status",
+          "last_verified",
+          "valid_scope"
+        ],
+        "requiredSections": [
+          "Current Truth",
+          "Active Constraints",
+          "Cycle Events",
+          "Archive Index",
+          "Evidence Base",
+          "Read Contract",
+          "Conflicts and Supersession",
+          "中文摘要",
+          "Tracked Files"
+        ],
+        "missingFields": [],
+        "missingSections": [],
+        "verificationStatus": "verified",
+        "lastVerified": "2026-07-04T21:36:13+08:00",
+        "validScope": "current-project",
+        "evidenceBaseStatus": "present",
+        "evidenceWarnings": [],
+        "legacyCompatibility": false,
+        "migrationRequired": false
+      },
+      "contentQualityStatus": "complete",
+      "migrationRequired": false,
+      "legacyCompatibility": false,
+      "description": "專案記憶：VS Code 管理器外掛 runtime TypeScript 來源。Use when: task touches this split memory scope or its tracked files.",
+      "trackedFiles": [
+        "Extensions/vscode-ai-rules-manager/src/extension.ts",
+        "Extensions/vscode-ai-rules-manager/src/extensionUpdate.ts",
+        "Extensions/vscode-ai-rules-manager/src/panel.ts",
+        "Extensions/vscode-ai-rules-manager/src/commands.ts",
+        "Extensions/vscode-ai-rules-manager/src/scriptRunner.ts",
+        "Extensions/vscode-ai-rules-manager/src/status.ts"
+      ],
+      "staleness": 0,
+      "lastUpdated": "2026-07-18T12:45:36+08:00",
+      "pendingChanges": [],
+      "ghostFiles": [],
+      "dependencies": [],
+      "indirectStaleness": 0,
+      "depth": 2,
+      "parent": "_vscode_extension",
+      "compaction": {
+        "cardKind": "main",
+        "limitKind": "main",
+        "compliance": "ok",
+        "schemaVersion": 2,
+        "isLegacy": false,
+        "contentLanguage": "en",
+        "humanLanguage": "zh-TW",
+        "sizeBytes": 4766,
+        "lineCount": 95,
+        "chineseCharCount": 0,
+        "bodyCharCount": 2792,
+        "chineseRatio": 0,
+        "cycleId": "2026-07-18-001",
+        "cycleEventCount": 1,
+        "cycleEventLimit": 30,
+        "sizeLimitBytes": 16384,
+        "lineLimit": 120,
+        "archivePolicy": "volume",
+        "compactionStatus": "ready",
+        "needsCompaction": false,
+        "recommendedAction": "none",
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
+      }
+    }
+  },
+  "fileMap": {
+    ".agents/memory/claude-edition-rules/archive-001.md": [
+      "claude-edition-rules"
+    ],
+    "Antigravity/install.ps1": [
+      "_ag_core"
+    ],
+    "Antigravity/README.md": [
+      "_ag_core"
+    ],
+    "Antigravity/VERSION": [
+      "_ag_core"
+    ],
+    "Antigravity/global/GEMINI.md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/rules/00_core_identity.md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/rules/03_memory_skill_contract.md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/rules/04_forbidden_vocab.md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/rules/07_mcp_guardrails.md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/workflows/02_blueprint(架構).md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/workflows/03-2_build_execute(建構執行).md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/workflows/04-1_fix_plan(修復計畫).md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/workflows/04-2_fix_execute(修復執行).md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/workflows/05_condense(濃縮).md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/workflows/07_debug(除錯).md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/workflows/09-1_commit_scan(紀錄掃描).md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md": [
+      "_ag_core"
+    ],
+    ".agents/memory/_ag_core/archive-001.md": [
+      "_ag_core"
+    ],
+    "Antigravity/.agents/VERSION": [
+      "_ag_core.support"
+    ],
+    "Antigravity/.gitignore": [
+      "_ag_core.support"
+    ],
+    "Antigravity/.vscode/settings.json": [
+      "_ag_core.support"
+    ],
+    "Antigravity/.agents/rules/01_cross_lingual_guard.md": [
+      "_ag_core.support.rules"
+    ],
+    "Antigravity/.agents/rules/02_code_quality_security.md": [
+      "_ag_core.support.rules"
+    ],
+    "Antigravity/.agents/rules/05_project_skill_contract.md": [
+      "_ag_core.support.rules"
+    ],
+    "Antigravity/.agents/rules/06_memory_push.md": [
+      "_ag_core.support.rules"
+    ],
+    "Antigravity/.agents/rules/AGENTS.md": [
+      "_ag_core.support.rules"
+    ],
+    "Antigravity/.agents/workflows/_completion_gate.md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/_security_footer.md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/00_chat(討論).md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/01_explore(搜索).md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/03_build(建構計畫).md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/03-1_experiment(實驗).md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/06_test(測試).md": [
+      "_ag_core.support.workflows-operations"
+    ],
+    "Antigravity/.agents/workflows/10_routine(巡檢).md": [
+      "_ag_core.support.workflows-operations"
+    ],
+    "Antigravity/.agents/workflows/11_handoff(交接).md": [
+      "_ag_core.support.workflows-operations"
+    ],
+    "Antigravity/.agents/workflows/12_skill_forge(技能鍛造).md": [
+      "_ag_core.support.workflows-operations"
+    ],
+    "Claude/install.ps1": [
+      "_claude_core"
+    ],
+    "Claude/README.md": [
+      "_claude_core"
+    ],
+    "Claude/VERSION": [
+      "_claude_core"
+    ],
+    "Claude/global/CLAUDE.md": [
+      "_claude_core"
+    ],
+    "Claude/.claude/CLAUDE.md": [
+      "_claude_core"
+    ],
+    "Claude/.claude/rules/core-identity.md": [
+      "_claude_core"
+    ],
+    "Claude/.claude/rules/memory-contract.md": [
+      "_claude_core"
+    ],
+    "Claude/.claude/rules/forbidden-vocab.md": [
+      "_claude_core"
+    ],
+    "Claude/.claude/commands/02_blueprint(架構)/SKILL.md": [
+      "_claude_core"
+    ],
+    "Claude/.claude/commands/03_build(建構)/SKILL.md": [
+      "_claude_core"
+    ],
+    "Claude/.claude/commands/04_fix(修復)/SKILL.md": [
+      "_claude_core"
+    ],
+    "Claude/.claude/commands/07_debug(除錯)/SKILL.md": [
+      "_claude_core"
+    ],
+    "Claude/.claude/commands/11_handoff(交接)/SKILL.md": [
+      "_claude_core"
+    ],
+    ".agents/memory/_claude_core/archive-001.md": [
+      "_claude_core"
+    ],
+    "Claude/.claude/commands/_shared/_completion_gate.md": [
+      "_claude_core.support.commands-general"
+    ],
+    "Claude/.claude/commands/_shared/_security_footer.md": [
+      "_claude_core.support.commands-general"
+    ],
+    "Claude/.claude/commands/00_chat(討論)/SKILL.md": [
+      "_claude_core.support.commands-general"
+    ],
+    "Claude/.claude/commands/01_explore(搜索)/SKILL.md": [
+      "_claude_core.support.commands-general"
+    ],
+    "Claude/.claude/commands/03-1_experiment(實驗)/SKILL.md": [
+      "_claude_core.support.commands-general"
+    ],
+    "Claude/.claude/commands/05_condense（濃縮）/SKILL.md": [
+      "_claude_core.support.commands-general"
+    ],
+    "Claude/.claude/commands/06_test(測試)/SKILL.md": [
+      "_claude_core.support.commands-general"
+    ],
+    "Claude/.claude/commands/09_commit(紀錄)/SKILL.md": [
+      "_claude_core.support.commands-release"
+    ],
+    "Claude/.claude/commands/10_routine(巡檢)/SKILL.md": [
+      "_claude_core.support.commands-release"
+    ],
+    "Claude/.claude/commands/12_skill_forge(技能鍛造)/SKILL.md": [
+      "_claude_core.support.commands-release"
+    ],
+    "Claude/.claude/rules/code-quality.md": [
+      "_claude_core.support.rules-settings"
+    ],
+    "Claude/.claude/rules/cross-lingual-guard.md": [
+      "_claude_core.support.rules-settings"
+    ],
+    "Claude/.claude/rules/mcp-guardrails.md": [
+      "_claude_core.support.rules-settings"
+    ],
+    "Claude/.claude/rules/project-skill-contract.md": [
+      "_claude_core.support.rules-settings"
+    ],
+    "Claude/.claude/settings.local.json": [
+      "_claude_core.support.rules-settings"
+    ],
+    "Claude/.gitignore": [
+      "_claude_core.support.rules-settings"
+    ],
+    "Claude/.vscode/settings.json": [
+      "_claude_core.support.rules-settings"
+    ],
+    "Codex/VERSION": [
+      "_codex_core"
+    ],
+    "Codex/README.md": [
+      "_codex_core"
+    ],
+    "Codex/install.ps1": [
+      "_codex_core"
+    ],
+    "Codex/global/AGENTS.md": [
+      "_codex_core"
+    ],
+    "Codex/global/config.toml": [
+      "_codex_core"
+    ],
+    "Codex/.codex/AGENTS.md": [
+      "_codex_core"
+    ],
+    "Codex/.codex/config.toml": [
+      "_codex_core"
+    ],
+    "Codex/.codex/hooks.json": [
+      "_codex_core"
+    ],
+    "Codex/.codex/hooks/team-native-gate.ps1": [
+      "_codex_core"
+    ],
+    "Codex/.codex/hooks/team-native-launcher.ps1": [
+      "_codex_core"
+    ],
+    "Codex/.codex/VERSION": [
+      "_codex_core"
+    ],
+    "Codex/.gitignore": [
+      "_codex_core"
+    ],
+    "Codex/.agents/workflow-skills/02-blueprint-架構/SKILL.md": [
+      "_codex_core"
+    ],
+    "Codex/.agents/workflow-skills/03-build-建構/SKILL.md": [
+      "_codex_core"
+    ],
+    "Codex/.agents/workflow-skills/04-fix-修復/SKILL.md": [
+      "_codex_core"
+    ],
+    "Codex/.agents/workflow-skills/07-debug-除錯/SKILL.md": [
+      "_codex_core"
+    ],
+    "Codex/.agents/workflow-skills/11-handoff-交接/SKILL.md": [
+      "_codex_core"
+    ],
+    ".agents/memory/_codex_core/archive-001.md": [
+      "_codex_core"
+    ],
+    ".codex/AGENTS.md": [
+      "_codex_core"
+    ],
+    "Codex/.agents/workflow-skills/_shared/_completion_gate.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/_shared/_security_footer.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/00-chat-聊天/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/01-explore-探索/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/03-1-experiment-實驗/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/05-condense-濃縮/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/06-test-測試/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md": [
+      "_codex_core.support.workflows-release"
+    ],
+    "Codex/.agents/workflow-skills/10-routine-巡檢/SKILL.md": [
+      "_codex_core.support.workflows-release"
+    ],
+    "Codex/.agents/workflow-skills/12-skill-forge-技能鍛造/SKILL.md": [
+      "_codex_core.support.workflows-release"
+    ],
+    ".agents/memory/_map/archive-001.md": [
+      "_map"
+    ],
+    "Shared/workflow-stage-procedures.md": [
+      "_shared"
+    ],
+    "Shared/policies/language-governance.md": [
+      "_shared"
+    ],
+    ".agents/shared/policies/language-governance.md": [
+      "_shared"
+    ],
+    "Shared/policies/grounding-governance.md": [
+      "_shared"
+    ],
+    ".agents/shared/policies/grounding-governance.md": [
+      "_shared"
+    ],
+    "Shared/policies/source-document-size-governance.md": [
+      "_shared"
+    ],
+    ".agents/shared/policies/source-document-size-governance.md": [
+      "_shared"
+    ],
+    "Shared/policies/adapters/antigravity-subagent-invocation.md": [
+      "_shared"
+    ],
+    "Shared/policies/adapters/claude-subagent-invocation.md": [
+      "_shared"
+    ],
+    "Shared/policies/adapters/codex-subagent-invocation.md": [
+      "_shared"
+    ],
+    "Shared/policies/adapters/codex-thread-handoff.md": [
+      "_shared"
+    ],
+    "Shared/skill-governance.md": [
+      "_shared"
+    ],
+    "Shared/mcp-profiles/README.md": [
+      "_shared"
+    ],
+    "Shared/context/_map/CONTEXT.md": [
+      "_shared"
+    ],
+    "Shared/skills/memory-ops/SKILL.md": [
+      "_shared"
+    ],
+    "Shared/skills/memory-arch/SKILL.md": [
+      "_shared"
+    ],
+    "Shared/skills/memory-arch/references/memory-quality-migration-blueprint.md": [
+      "_shared"
+    ],
+    "Shared/skills/memory-arch/references/topology-rules.md": [
+      "_shared"
+    ],
+    "Shared/skills/memory-arch/references/maintenance-playbooks.md": [
+      "_shared"
+    ],
+    "Shared/skills/memory-ops/references/memory-template.md": [
+      "_shared"
+    ],
+    "Shared/skills/memory-ops/references/memory-lifecycle-procedures.md": [
+      "_shared"
+    ],
+    "Shared/skills/memory-ops/references/memory-mcp-tool-contract.md": [
+      "_shared"
+    ],
+    "Shared/skills/project-context-protocol/SKILL.md": [
+      "_shared"
+    ],
+    "Shared/skills/project-context-protocol/references/context-template.md": [
+      "_shared"
+    ],
+    "Shared/skills/team-specialist-git-checkpoint/SKILL.md": [
+      "_shared"
+    ],
+    "Shared/project-tools/Memory-Migration.ps1": [
+      "_shared"
+    ],
+    "Shared/project-tools/modules/Memory-Migration.psm1": [
+      "_shared"
+    ],
+    ".agents/memory/_shared/archive-001.md": [
+      "_shared"
+    ],
+    "Shared/skills/code-audit/references/scan-report-template.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-audit/references/scan-task-prompt.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-audit/references/tool-command-reference.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-audit/SKILL.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-diagnosis/references/diagnosis-report-template.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-diagnosis/references/diagnosis-task-prompt.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-diagnosis/SKILL.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-quality/SKILL.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/gitnexus-cli/SKILL.md": [
+      "_shared.ops-skills.gitnexus"
+    ],
+    "Shared/skills/gitnexus-debugging/SKILL.md": [
+      "_shared.ops-skills.gitnexus"
+    ],
+    "Shared/skills/gitnexus-exploring/SKILL.md": [
+      "_shared.ops-skills.gitnexus"
+    ],
+    "Shared/skills/gitnexus-guide/SKILL.md": [
+      "_shared.ops-skills.gitnexus"
+    ],
+    "Shared/skills/gitnexus-impact-analysis/SKILL.md": [
+      "_shared.ops-skills.gitnexus"
+    ],
+    "Shared/skills/gitnexus-refactoring/SKILL.md": [
+      "_shared.ops-skills.gitnexus"
+    ],
+    "Shared/skills/cloudflare-ops/SKILL.md": [
+      "_shared.ops-skills.mcp-ops"
+    ],
+    "Shared/skills/context7-docs/SKILL.md": [
+      "_shared.ops-skills.mcp-ops"
+    ],
+    "Shared/skills/excel-ops/SKILL.md": [
+      "_shared.ops-skills.mcp-ops"
+    ],
+    "Shared/skills/github-ops/SKILL.md": [
+      "_shared.ops-skills.mcp-ops"
+    ],
+    "Shared/skills/maps-assist/SKILL.md": [
+      "_shared.ops-skills.mcp-ops"
+    ],
+    "Shared/skills/pr-review-ops/SKILL.md": [
+      "_shared.ops-skills.mcp-ops"
+    ],
+    "Shared/skills/sentry-ops/SKILL.md": [
+      "_shared.ops-skills.mcp-ops"
+    ],
+    "Shared/skills/stitch-design/SKILL.md": [
+      "_shared.ops-skills.mcp-ops"
+    ],
+    "Shared/skills/ai-dev-quality-gate/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/intent-alignment-gate/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/quality-review-governance/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/security-sre/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/ui-design-exploration/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/ui-ux-standards/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/coding-reflection-gate/SKILL.md": [
+      "_shared.ops-skills.release-reasoning"
+    ],
+    "Shared/skills/design-reflection-gate/SKILL.md": [
+      "_shared.ops-skills.release-reasoning"
+    ],
+    "Shared/skills/plugin-release-governance/references/vsix-release-playbook.md": [
+      "_shared.ops-skills.release-reasoning"
+    ],
+    "Shared/skills/plugin-release-governance/SKILL.md": [
+      "_shared.ops-skills.release-reasoning"
+    ],
+    "Shared/skills/structured-reasoning/SKILL.md": [
+      "_shared.ops-skills.release-reasoning"
+    ],
+    "Shared/skills/tech-stack-protocol/SKILL.md": [
+      "_shared.ops-skills.release-reasoning"
+    ],
+    "Shared/skills/_index.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    ".agents/skills/_index.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/team-review-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/team-validation-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/team-memory-docs-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/team-change-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/team-role-boundaries/SKILL.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    ".agents/skills/team-review-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    ".agents/skills/team-validation-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    ".agents/skills/team-memory-docs-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    ".agents/skills/team-change-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    ".agents/skills/team-role-boundaries/SKILL.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/delegation-strategy/references/cli-capability-matrix.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/delegation-strategy/references/cli-delegation-sop.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/delegation-strategy/references/cli-prompt-skeleton.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/skill-factory/references/skill-quality-checklist.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/skill-factory/references/skill-style-guide.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/skill-factory/references/skill-template.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/skill-factory/SKILL.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    ".agents/skills/skill-factory/SKILL.md": [
+      "_shared.ops-skills.skill-governance"
+    ],
+    "Shared/skills/supabase-ops/SKILL.md": [
+      "_shared.ops-skills.supabase-core"
+    ],
+    "Shared/skills/supabase/assets/feedback-issue-template.md": [
+      "_shared.ops-skills.supabase-core"
+    ],
+    "Shared/skills/supabase/references/skill-feedback.md": [
+      "_shared.ops-skills.supabase-core"
+    ],
+    "Shared/skills/supabase/SKILL.md": [
+      "_shared.ops-skills.supabase-core"
+    ],
+    "Shared/skills/a11y-testing/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/browser-testing/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/impact-test-strategy/references/regression-test-examples.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/impact-test-strategy/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/performance-audit/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-automation-strategy/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-patterns/references/api-route-test-template.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-patterns/references/hook-test-template.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-patterns/references/utility-test-template.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-patterns/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/trunk-ops/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/SKILL.md": [
+      "_shared.supabase-postgres"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/_contributing.md": [
+      "_shared.supabase-postgres"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/_sections.md": [
+      "_shared.supabase-postgres"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/_template.md": [
+      "_shared.supabase-postgres"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/conn-idle-timeout.md": [
+      "_shared.supabase-postgres.connection-data"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/conn-limits.md": [
+      "_shared.supabase-postgres.connection-data"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/conn-pooling.md": [
+      "_shared.supabase-postgres.connection-data"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/conn-prepared-statements.md": [
+      "_shared.supabase-postgres.connection-data"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/data-batch-inserts.md": [
+      "_shared.supabase-postgres.connection-data"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/data-n-plus-one.md": [
+      "_shared.supabase-postgres.connection-data"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/data-pagination.md": [
+      "_shared.supabase-postgres.connection-data"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/data-upsert.md": [
+      "_shared.supabase-postgres.connection-data"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/lock-advisory.md": [
+      "_shared.supabase-postgres.locking-monitoring"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/lock-deadlock-prevention.md": [
+      "_shared.supabase-postgres.locking-monitoring"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/lock-short-transactions.md": [
+      "_shared.supabase-postgres.locking-monitoring"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/lock-skip-locked.md": [
+      "_shared.supabase-postgres.locking-monitoring"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/monitor-explain-analyze.md": [
+      "_shared.supabase-postgres.locking-monitoring"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/monitor-pg-stat-statements.md": [
+      "_shared.supabase-postgres.locking-monitoring"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/monitor-vacuum-analyze.md": [
+      "_shared.supabase-postgres.locking-monitoring"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/advanced-full-text-search.md": [
+      "_shared.supabase-postgres.query-indexing"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/advanced-jsonb-indexing.md": [
+      "_shared.supabase-postgres.query-indexing"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/query-composite-indexes.md": [
+      "_shared.supabase-postgres.query-indexing"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/query-covering-indexes.md": [
+      "_shared.supabase-postgres.query-indexing"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/query-index-types.md": [
+      "_shared.supabase-postgres.query-indexing"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/query-missing-indexes.md": [
+      "_shared.supabase-postgres.query-indexing"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/query-partial-indexes.md": [
+      "_shared.supabase-postgres.query-indexing"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/schema-constraints.md": [
+      "_shared.supabase-postgres.schema-design"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/schema-data-types.md": [
+      "_shared.supabase-postgres.schema-design"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/schema-foreign-key-indexes.md": [
+      "_shared.supabase-postgres.schema-design"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/schema-lowercase-identifiers.md": [
+      "_shared.supabase-postgres.schema-design"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/schema-partitioning.md": [
+      "_shared.supabase-postgres.schema-design"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/schema-primary-keys.md": [
+      "_shared.supabase-postgres.schema-design"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/security-privileges.md": [
+      "_shared.supabase-postgres.security"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/security-rls-basics.md": [
+      "_shared.supabase-postgres.security"
+    ],
+    "Shared/skills/supabase-postgres-best-practices/references/security-rls-performance.md": [
+      "_shared.supabase-postgres.security"
+    ],
+    "Shared/policies/authorization-resolution.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/team-native-core.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/team-trace-evidence.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/subagent-invocation.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/workflow-orchestration.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/workflow-orchestration-scenarios.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/platform-plan-mapping.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/workflow-execution-spec-contract.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/workflow-lane-routing.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/workflow-memory-evidence.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/workflow-orchestration-boundaries.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/workflow-review-visual-evidence.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/workflow-team-evidence.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/authorization-phase-registry.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/completion-state-machine.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/exception-registry.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/hook-event-matrix.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/platform-copy-map.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/protected-action-registry.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/source-runtime-surface-map.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/status-ontology.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/platform-capability-matrix.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/workflow-capability-evidence-matrix.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/programming-team-governance/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-task-board/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-task-board/references/board-field-catalog.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-task-board/references/board-templates-and-delivery.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-station-handoff-packet/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-station-handoff-packet/references/execution-lifecycle.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/delegation-strategy/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/delegation-strategy/references/team-dispatch-gates.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-completion-gate/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-completion-gate/references/completion-evidence-contract.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-specialist-registry/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-specialist-intent-requirements/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-specialist-scope-impact/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-specialist-architecture-contract/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-specialist-change-delivery/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-specialist-memory-docs/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-specialist-validation/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-specialist-review/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-specialist-security-reliability/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-specialist-release-completion/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/skills/team-specialist-external-research/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    ".agents/skills/delegation-strategy/SKILL.md": [
+      "_shared.team-native-core"
+    ],
+    ".agents/shared/policies/subagent-invocation.md": [
+      "_shared.team-native-core"
+    ],
+    "Shared/policies/references/cross-thread-handoff-contract.md": [
+      "_shared.team-native-core"
+    ],
+    ".gitignore": [
+      "_system"
+    ],
+    "README.md": [
+      "_system"
+    ],
+    "CHANGELOG.md": [
+      "_system"
+    ],
+    "LICENSE": [
+      "_system"
+    ],
+    "Scripts/Deploy.ps1": [
+      "_system.scripts"
+    ],
+    "Scripts/Watch-CodexModelV1.ps1": [
+      "_system.scripts"
+    ],
+    "Scripts/modules/Core.psm1": [
+      "_system.scripts"
+    ],
+    "Scripts/modules/Memory-Migration.psm1": [
+      "_system.scripts"
+    ],
+    "Scripts/modules/Skills-Sync.psm1": [
+      "_system.scripts"
+    ],
+    "Scripts/modules/Platform-Antigravity.psm1": [
+      "_system.scripts"
+    ],
+    "Scripts/modules/Platform-Claude.psm1": [
+      "_system.scripts"
+    ],
+    "Scripts/modules/Platform-Codex.psm1": [
+      "_system.scripts"
+    ],
+    "Extensions/vscode-ai-rules-manager/.vscodeignore": [
+      "_vscode_extension.auxiliary"
+    ],
+    "Extensions/vscode-ai-rules-manager/LICENSE": [
+      "_vscode_extension.auxiliary"
+    ],
+    "Extensions/vscode-ai-rules-manager/tsconfig.json": [
+      "_vscode_extension.auxiliary"
+    ],
+    "Extensions/vscode-ai-rules-manager/package.json": [
+      "_vscode_extension.release"
+    ],
+    "Extensions/vscode-ai-rules-manager/package-lock.json": [
+      "_vscode_extension.release"
+    ],
+    "Extensions/vscode-ai-rules-manager/README.md": [
+      "_vscode_extension.release"
+    ],
+    "Extensions/vscode-ai-rules-manager/resources/ai-rules.svg": [
+      "_vscode_extension.release"
+    ],
+    "Extensions/vscode-ai-rules-manager/resources/icon.png": [
+      "_vscode_extension.release"
+    ],
+    ".github/workflows/release-vsix.yml": [
+      "_vscode_extension.release"
+    ],
+    "Scripts/AI-RulesManager.ps1": [
+      "_vscode_extension.release"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/extension.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/extensionUpdate.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/panel.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/commands.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/scriptRunner.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/status.ts": [
+      "_vscode_extension.runtime"
+    ]
+  },
+  "untrackedFiles": []
+}

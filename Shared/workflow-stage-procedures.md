@@ -84,6 +84,15 @@ They must not copy these procedures back into the 00-12 entry bodies.
 17. Read `source-document-size-governance.md` when source-bearing documents, scripts, modules, skills, policies, or rule packs are written, grown, reviewed, validated, or audited.
     Record `size_split_disposition`; an existing oversized baseline may be `baseline`, but missing disposition is `blocked` or `unverified` for source-level closeout.
 18. Hooks are excluded unless explicitly scoped; do not add hook procedures from this stage reference.
+19. Same-wave parallel dispatch consumes the canonical `parallel_dispatch_contract` and the wave
+    predicate in `workflow-orchestration.md`. Different write files alone are insufficient; stale
+    baselines, unfrozen interfaces, producer/consumer contract changes, conflict-domain overlap,
+    or generated/source overlap stop or order the affected dispatch. Keep the assignment
+    acceptance-sized rather than micro-delegating each file.
+20. A long-work Git checkpoint is distinct from a delivery-slice boundary and final commit. Its
+    lifecycle events trigger eligibility evaluation only; execution routes solely to
+    `team-specialist-git-checkpoint` after separate `authorization_phase: git`. It does not add
+    tests or satisfy validation, review, memory/docs, sync, completion, push, or release gates.
 
 ## 00 Chat / 聊天
 
@@ -224,48 +233,13 @@ They must not copy these procedures back into the 00-12 entry bodies.
   Use `G0` for local logs, traces, source, tests, and tool output.
   Route `G2` when a narrow current docs check can change the hypothesis.
   Route `G3` when the diagnosis depends on security advisories, platform incidents, deploy rules, standards, or conflicting external sources.
-- Stop when root cause, missing evidence, or a broader audit need is clear.
-- Route confirmed repair to `04`, missing implementation to `03`, and systemic uncertainty to `08`.
-
-## 08 Audit / 健檢
-
-- Run inventory before logic review, and logic review before final report.
-- Preserve the audit artifact chain: `08-1` inventory artifact -> `08-2` logic-review artifact -> `08-3` final report.
-  A later phase consumes earlier artifacts; missing predecessors remain `unverified` or `blocked`, not green.
-- Define depth, project type, surface denominator, evidence sources, and known unavailable areas.
-- Include oversized source documents, PowerShell modules, audit rule packs, and repeated core/skill stuffing in the audit denominator when size/split governance is in scope.
-- Do not repair during audit. Findings route to build, fix, test, skill-forge, commit prep, or handoff.
-- Default audit evidence is no-write.
-  Audit log writing is a separate `audit-log-write` stage scoped only to `.agents/logs/`; a no-write audit does not authorize `profile.json`, `inventories.json`, `evidence.json`, `summary.md`, or other log writes.
-- Report red/yellow/green only with evidence status and unresolved scope.
-
-## 08-1 Infra Inventory / 基礎盤點
-
-- Identify project type, runtime surfaces, commands, routes, files, workflows, memory/context cards, and external dependencies.
-- Record source-document size/split signals when they are in scope; existing oversized modules may be baseline findings rather than blocking failures.
-- Record denominator and skipped scope before any quality judgment.
-- Return the `08-1` inventory artifact for `08-2` logic review.
-  It is prerequisite evidence, not a final audit conclusion.
-
-## 08-2 Logic Review / 深度邏輯
-
-- Review architecture, state/data flow, security, reliability, validation coverage, governance consistency, and evidence integrity using `08-1` inventory as input.
-- If the `08-1` inventory denominator is missing, stale, or incomplete for the selected depth, return `unverified` or `blocked` instead of continuing to final conclusions.
-- Review whether size combines with multiple responsibilities, mixed public interfaces, or difficult test isolation before recommending a split.
-- Do not issue final audit conclusions before inventory gaps are visible.
-- Route repairable findings to the right workflow with evidence status.
-- Return the `08-2` logic-review artifact for `08-3`; do not replace or bypass the inventory artifact.
-
-## 08-3 Audit Report / 健檢總結
-
-- Summarize inventory, logic findings, evidence status, blockers, unverified scope, recommended routes, and residual risk.
-- Consume both the `08-1` inventory artifact and the `08-2` logic-review artifact before issuing the final report.
-- If either predecessor artifact is missing or does not match the selected audit depth, report `unverified` or `blocked`; do not synthesize a complete health report from partial inputs.
-- Do not treat recommendations as write authorization.
-- If commit or release readiness is requested, route to `09`.
+- Stop when root cause, missing evidence, or broader uncertainty is clear; leave unresolved scope `unverified`.
+- Route confirmed repair to `04` and missing implementation to `03`.
 
 ## 09 Commit / 紀錄
 
+- Distinguish final commit preparation from a previously authorized long-work Git checkpoint.
+  A checkpoint receipt is stability evidence only and does not satisfy this route's downstream gates.
 - Scan dirty files, staged files, source/deployed parity, memory status, validation state, review state, and unresolved blockers.
 - Consume the latest implementation/change-application `closeout_bundle` only as an index to the artifact chain.
   Re-check dirty files, expected dirty files, expected untracked files, grounding gaps, sync evidence, validation, review, and memory/docs disposition directly.
@@ -281,18 +255,27 @@ They must not copy these procedures back into the 00-12 entry bodies.
 
 ## 10 Routine / 巡檢
 
-- Stay read-only and automation-safe.
-- Use static read-only inspection only.
-  Do not run package-manager, compiler, linter, audit, or interactive batch commands such as `npm`, `tsc`, or ESLint from the routine route.
-- Check drift, skill quality, workflow metadata, source/deployed consistency, memory health, MCP profile surfaces, and documented counts.
-- Report exact findings and proposed routes. Do not apply fixes.
-- Check whether intent envelope, overreach, grounding, and design reflection fields have drifted into excessive complexity or duplicated rules; route repair to `12` or `08` instead of fixing during routine.
-- Route heavy deterministic scans to `08 Audit`, `06 Test`, or another explicit non-routine route with its own evidence and authorization boundary.
-- Any write proposal routes to build, fix, audit, skill-forge, or commit prep and waits for a scope-bound intent signal resolved through authorization resolution.
+- Stay read-only and Git-only.
+- Report only the Git worktree state, `HEAD`, tracking branch, and relation to `origin`: synchronized, behind, ahead, diverged, or unable to confirm.
+- Do not scan policies, skills, documentation, memory, hooks, configuration, or source content.
+- Do not run package-manager, compiler, linter, audit, browser, MCP, or interactive batch commands, and do not apply fixes.
 
 ## 11 Handoff / 交接
 
-- Summarize current goal, changed or dirty files, evidence collected, blockers, unverified areas, memory/context state, validation/review state, and next route.
+- Use `Shared/policies/references/cross-thread-handoff-contract.md` when another conversation will
+  continue the task. Preserve goal/acceptance/decisions/non-goals/plan, completed/pending/unverified
+  work, per-path worktree state, repository and checkpoint state, authorization snapshot, active
+  member/channel lifecycle, evidence/review/memory/sync/completion state, blockers/risks, first
+  legal action, forbidden actions, expiry, fingerprint, transport state, and target confirmation.
+- Keep station handoff, cross-thread semantic handoff, and platform thread transport separate; they
+  do not share `handoff_packet_id`.
+- For Codex transport, load `Shared/policies/adapters/codex-thread-handoff.md`. Send, create, and
+  move are separate flows; create requires an explicit operator request, move resolves interruption
+  risk, and transport success never substitutes for target confirmation.
+- The target conversation re-resolves current authorization evidence, expiry, and protected gates;
+  `authority_transfer_state` remains `not-transferred`.
+- When no cross-thread transport is requested, summarize current goal, changed or dirty files,
+  evidence, blockers, unverified areas, memory/context state, validation/review state, and next route.
 - Distinguish user-provided evidence from evidence verified in the current turn.
 - Handoff does not mutate memory unless a separate memory workflow and authorization exists.
 

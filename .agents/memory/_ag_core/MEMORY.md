@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台核心來源與治理規則。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-09T16:59:40+08:00'
+last_updated: '2026-07-18T12:49:01+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-09T16:56:58+08:00'
+last_verified: '2026-07-17T20:08:47+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-30-001
-cycle_event_count: 10
+cycle_event_count: 11
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,7 +32,6 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 # _ag_core — Antigravity Memory
-
 ## Current Truth
 - Antigravity is the Gemini-facing adapter for AI_Rules and uses `.agents/rules/`, `.agents/workflows/`, and `.agents/skills/`.
 - Current Antigravity rule source requires Director-facing output to start from Traditional Chinese plain meaning; exact technical identifiers are supporting evidence only.
@@ -42,7 +41,8 @@ metadata:
 - Broad reads, validation, review, memory/docs attribution, source writes, completion audits, and completion claims require board, station, role, channel, `station_mode`, `context_visibility`, and `handoff_ownership` evidence.
 - Main-worktree implementation uses station-owned `change-delivery`; `change-application` is fallback for returned artifacts, explicit integration, or generated/deployed sync. Full completion requires implementation, memory/docs, review, validation, and trace evidence.
 - Memory mutation, git, release, deploy, install, credentials, destructive filesystem actions, MCP mutation, cloud mutation, and external-state changes each require their own protected gate and scope; `[SUDO]` records risk/override intent only.
-- Antigravity workflow entries now use meaning-first Chinese descriptions, normalize missing memory evidence as `unverified` or `blocked`, and keep shared completion/security gates as thin references to shared skills and policies.
+- Antigravity workflow inventory excludes the removed 08 audit route; `10_routine` is Git-only, while accepted testing and direct evidence stay in their explicit workflow or skill routes.
+- The generated Antigravity subagent marker now comes from `Shared/policies/adapters/antigravity-subagent-invocation.md`; shared Team-Native semantics remain canonical in `Shared/policies/subagent-invocation.md`.
 - Antigravity README and global GEMINI bootstrap text now use expanded PowerShell/CMD install examples, zero-touch checks, upgrade prompts, and post-deployment notices while preserving protected memory/project-skill boundaries.
 - Antigravity README installed-surface documentation treats shared governance references as the explicit Shared allowlist plus `Shared/policies/` and `Shared/mcp-profiles/`; project tools and context templates are documented as separate deployed surfaces.
 - `Antigravity/install.ps1` validates branch refs, HTTPS source host/path, target/download receipt paths, optional ZIP SHA256, and extracted child paths; its SHA helper accepts blank optional hashes while non-empty values remain 64-hex checked.
@@ -55,6 +55,7 @@ metadata:
 - Remote bootstrap examples must preserve host/path validation, optional hash checks, receipt evidence, and safe temp cleanup.
 - Keep this active card below `line_limit: 120`; compact before adding broad workflow-cycle detail.
 ## Cycle Events
+- 11: Refreshed the platform adapter and aligned the workflow inventory after removal of the 08 audit route; `10_routine` remains Git-only.
 - 10: Recorded Installed Surfaces wording repair for shared governance references, project tools, and context templates.
 - 9: Recorded Antigravity installer empty SHA regression guard while preserving non-empty 64-hex validation.
 - 8: Repaired stale warning state against 2026-07-07 Antigravity dirty source for Chinese-first rules, Team-Native authorization/protected gates, memory/MCP/[SUDO] boundaries, workflow descriptions, and README/GEMINI bootstrap wording.
@@ -71,7 +72,8 @@ metadata:
 - archive-002.md — Pre-standardization active card snapshot created during MEMORY.md migration.
 - archive-001.md — Legacy _ag_core card preserved before schema v2 compaction on 2026-06-04.
 ## Evidence Base
-- source: `Antigravity/README.md` Installed Surfaces table verified from current diff on 2026-07-09.
+- source: `Antigravity/.agents/rules/00_core_identity.md` and `Shared/policies/adapters/antigravity-subagent-invocation.md` verified on 2026-07-17.
+- source: `Antigravity/README.md` current workflow inventory and Installed Surfaces table verified from the current diff on 2026-07-18.
 - tool: `cartridge-system__memory_status` reported `_ag_core` content complete with stale warning before this repair on 2026-07-09.
 - source: Antigravity dirty source under `.agents/rules/`, `.agents/workflows/`, `README.md`, and `global/GEMINI.md` verified on 2026-07-07.
 - source: `Antigravity/install.ps1` and preserved archives.
@@ -85,9 +87,10 @@ metadata:
 - No unresolved conflict recorded; contradictions found later must be indexed here instead of silently overwritten.
 ## 中文摘要
 - Antigravity 是 Gemini 平台適配層。
+- 平台核心中的隊員派工標記現在由 Antigravity 專用 adapter 產生，共用政策仍是唯一治理來源。
 - 目前 dirty source 已把總監輸出調整為繁中語義先行，並加強 Team-Native、授權解析與 protected gate 邊界。
 - README 的 Installed Surfaces 現在把 Shared 治理參考、project tools、context templates 拆開描述。
-- 記憶、MCP、`[SUDO]`、工作流 description、missing memory evidence 與完成/安全 gate 的 durable truth 已更新。
+- 現行工作流清單不含 08 健檢入口；`10_routine` 僅回報 Git 狀態，測試與直接證據仍由明確路由負責。
 ## Tracked Files
 - Antigravity/install.ps1
 - Antigravity/README.md
@@ -103,13 +106,14 @@ metadata:
 - Antigravity/.agents/workflows/04-2_fix_execute(修復執行).md
 - Antigravity/.agents/workflows/05_condense(濃縮).md
 - Antigravity/.agents/workflows/07_debug(除錯).md
+- Antigravity/.agents/workflows/09-1_commit_scan(紀錄掃描).md
+- Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md
 - .agents/memory/_ag_core/archive-001.md
 ## Relations
 - _system (root governance and deployment memory)
 - _shared (Shared skills injected into Antigravity)
 - _map (memory navigation index)
 - _ag_core.support (child card for support rules and remaining workflows)
-
 ## Applicable Skills
 - memory-ops — Use when updating this card.
 - team-memory-docs-delivery-artifact — Use when source changes require memory/docs attribution.

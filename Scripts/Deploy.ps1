@@ -8,21 +8,17 @@
 .PARAMETER Platform
     目標平台：Antigravity / Claude / Codex / All
 .PARAMETER Mode
-    操作模式：Fresh / Upgrade / Audit / Sync
+    操作模式：Fresh / Upgrade / Sync
 .PARAMETER Target
     目標專案絕對路徑（Fresh/Upgrade 必填，預設為當前目錄）
 .PARAMETER Action
-    特殊動作：Global（安裝/更新全局觸發器）/ Audit（三平台代理治理巡檢，包含 Team-Native 專家技能與任務軌跡）
+    特殊動作：Global（安裝/更新全局觸發器）
 .PARAMETER RemoveOrphans
     Upgrade 模式：是否自動清除孤兒檔案
 .PARAMETER Apply
     Global 動作：實際寫入使用者層全域規則；未指定時只報告差異
 .PARAMETER ProfileRoot
     使用者層全域規則根目錄。預設為目前使用者 Profile，可用於 temp profile 測試
-.PARAMETER RequireTeamTrace
-    要求 Team-Native task trace；缺少或不完整的軌跡會讓治理巡檢回報紅燈
-.PARAMETER TeamTraceRoot
-    Team-Native task trace 目錄；相對路徑會以目標專案根目錄為基準
 .EXAMPLE
     # 選單模式
     .\Deploy.ps1
@@ -34,29 +30,24 @@
     .\Deploy.ps1 -Platform All -Mode Sync
     .\Deploy.ps1 -Action Global
     .\Deploy.ps1 -Action Global -Apply
-    .\Deploy.ps1 -Action Audit
 #>
 param(
     [ValidateSet("Antigravity", "Claude", "Codex", "All")]
     [string]$Platform,
 
-    [ValidateSet("Fresh", "Upgrade", "Audit", "Sync")]
+    [ValidateSet("Fresh", "Upgrade", "Sync")]
     [string]$Mode,
 
     [string]$Target = $PWD.Path,
 
-    [ValidateSet("Global", "Audit")]
+    [ValidateSet("Global")]
     [string]$Action,
 
     [switch]$RemoveOrphans,
 
     [switch]$Apply,
 
-    [string]$ProfileRoot = $env:USERPROFILE,
-
-    [switch]$RequireTeamTrace,
-
-    [string]$TeamTraceRoot
+    [string]$ProfileRoot = $env:USERPROFILE
 )
 
 $ErrorActionPreference = "Stop"
@@ -70,7 +61,12 @@ $ModulesDir       = Join-Path $PSScriptRoot "modules"
 $SharedRoot       = Join-Path $RepoRoot "Shared"
 $SharedSkillsRoot = Join-Path $RepoRoot "Shared\skills"
 $ProjectToolsRoot = Join-Path $SharedRoot "project-tools"
-$SharedPolicyPath = Join-Path $RepoRoot "Shared\policies\subagent-invocation.md"
+$SharedAdapterRoot = Join-Path $RepoRoot "Shared\policies\adapters"
+$SharedAdapterPaths = @{
+    Antigravity = Join-Path $SharedAdapterRoot "antigravity-subagent-invocation.md"
+    Claude      = Join-Path $SharedAdapterRoot "claude-subagent-invocation.md"
+    Codex       = Join-Path $SharedAdapterRoot "codex-subagent-invocation.md"
+}
 $AgRoot           = Join-Path $RepoRoot "Antigravity"
 $ClaudeRoot       = Join-Path $RepoRoot "Claude"
 $CodexRoot        = Join-Path $RepoRoot "Codex"
@@ -81,7 +77,6 @@ Import-Module (Join-Path $ModulesDir "Skills-Sync.psm1")     -Force
 Import-Module (Join-Path $ModulesDir "Platform-Antigravity.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Platform-Claude.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Platform-Codex.psm1")  -Force
-Import-Module (Join-Path $ModulesDir "Audit.psm1")           -Force
 
 # ══════════════════════════════════════════════════════════
 # Global 動作：安裝/更新全局觸發器
@@ -323,16 +318,10 @@ function Invoke-PlatformDeploy {
                     Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".agents\skills") -Mode Diff
                     Sync-SharedGovernanceReferences -SharedRoot $SharedRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
                     Sync-ProjectTools -ProjectToolsRoot $ProjectToolsRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
-                    Sync-SharedPolicyBlock -PolicyPath $SharedPolicyPath `
+                    Sync-SharedPolicyBlock -PolicyPath $SharedAdapterPaths.Antigravity `
                         -TargetPath (Join-Path $TargetPath ".agents\rules\00_core_identity.md") `
                         -Platform Antigravity `
                         -InsertBeforePattern '(?m)^## 2\. Agentic Swarm UI Visibility'
-                }
-                "Audit"   {
-                    Invoke-DocScan    -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
-                    Invoke-HealthAudit -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
-                    Measure-SkillQuality -SkillsRoot (Join-Path $TargetPath ".agents\skills")
-                    return (Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $TargetPath -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot)
                 }
             }
         }
@@ -344,16 +333,10 @@ function Invoke-PlatformDeploy {
                     Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".claude\skills") -Mode Diff
                     Sync-SharedGovernanceReferences -SharedRoot $SharedRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
                     Sync-ProjectTools -ProjectToolsRoot $ProjectToolsRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
-                    Sync-SharedPolicyBlock -PolicyPath $SharedPolicyPath `
+                    Sync-SharedPolicyBlock -PolicyPath $SharedAdapterPaths.Claude `
                         -TargetPath (Join-Path $TargetPath ".claude\rules\core-identity.md") `
                         -Platform Claude `
                         -InsertBeforePattern '(?m)^## 2\. Multi-Agent Transparency'
-                }
-                "Audit"   {
-                    Invoke-DocScan    -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
-                    Invoke-HealthAudit -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
-                    Measure-SkillQuality -SkillsRoot (Join-Path $TargetPath ".claude\skills")
-                    return (Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $TargetPath -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot)
                 }
             }
         }
@@ -365,16 +348,10 @@ function Invoke-PlatformDeploy {
                     Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".agents\skills") -Mode Diff
                     Sync-SharedGovernanceReferences -SharedRoot $SharedRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
                     Sync-ProjectTools -ProjectToolsRoot $ProjectToolsRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
-                    Sync-SharedPolicyBlock -PolicyPath $SharedPolicyPath `
+                    Sync-SharedPolicyBlock -PolicyPath $SharedAdapterPaths.Codex `
                         -TargetPath (Join-Path $TargetPath ".codex\AGENTS.md") `
                         -Platform Codex `
                         -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
-                }
-                "Audit"   {
-                    Invoke-DocScan    -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
-                    Invoke-HealthAudit -ProjectRoot $TargetPath -AgentsDir (Join-Path $TargetPath ".agents")
-                    Measure-SkillQuality -SkillsRoot (Join-Path $TargetPath ".agents\skills")
-                    return (Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $TargetPath -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot)
                 }
             }
         }
@@ -400,14 +377,13 @@ function Show-Menu {
     Write-Host "  操作選擇:" -ForegroundColor White
     Write-Host "    [F] Fresh   全新安裝（目標目錄由下一步指定）" -ForegroundColor Green
     Write-Host "    [U] Upgrade 差異升級" -ForegroundColor Yellow
-    Write-Host "    [A] Audit   健檢掃描（含 Team-Native 專家技能與任務軌跡）" -ForegroundColor Magenta
     Write-Host "    [S] Sync    僅同步技能" -ForegroundColor DarkGray
     Write-Host "    [G] Global  安裝/更新全局觸發器" -ForegroundColor Cyan
     Write-Host "    [Q] 退出" -ForegroundColor DarkGray
     Write-Host ""
 
     $platInput = Read-Host "  選擇平台 [1/2/3/4]"
-    $modeInput = Read-Host "  選擇操作 [F/U/A/S/G/Q]"
+    $modeInput = Read-Host "  選擇操作 [F/U/S/G/Q]"
 
     if ($modeInput -match "^[Qq]$") { Write-Host "已退出。"; return }
     if ($modeInput -match "^[Gg]$") { Invoke-GlobalInstall; return }
@@ -423,7 +399,6 @@ function Show-Menu {
     $selectedMode = switch ($modeInput.ToUpper()) {
         "F" { "Fresh" }
         "U" { "Upgrade" }
-        "A" { "Audit" }
         "S" { "Sync" }
         default { Write-Fail "無效操作選擇"; return }
     }
@@ -435,21 +410,11 @@ function Show-Menu {
     }
 
     if ($selectedPlatform -eq "All") {
-        $auditFailures = 0
         foreach ($p in @("Antigravity", "Claude", "Codex")) {
-            $audit = Invoke-PlatformDeploy -PlatformName $p -DeployMode $selectedMode -TargetPath $selectedTarget
-            if (($selectedMode -eq "Audit") -and $audit -and (-not $audit.Passed)) {
-                $auditFailures++
-            }
-        }
-        if (($selectedMode -eq "Audit") -and ($auditFailures -gt 0)) {
-            exit 1
+            Invoke-PlatformDeploy -PlatformName $p -DeployMode $selectedMode -TargetPath $selectedTarget
         }
     } else {
-        $audit = Invoke-PlatformDeploy -PlatformName $selectedPlatform -DeployMode $selectedMode -TargetPath $selectedTarget
-        if (($selectedMode -eq "Audit") -and $audit -and (-not $audit.Passed)) {
-            exit 1
-        }
+        Invoke-PlatformDeploy -PlatformName $selectedPlatform -DeployMode $selectedMode -TargetPath $selectedTarget
     }
 }
 
@@ -462,32 +427,14 @@ if ($Action -eq "Global") {
     exit 0
 }
 
-if ($Action -eq "Audit") {
-    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot
-    if (-not $audit.Passed) {
-        exit 1
-    }
-    exit 0
-}
-
 if ($Platform -and $Mode) {
     # 參數模式
     if ($Platform -eq "All") {
-        $auditFailures = 0
         foreach ($p in @("Antigravity", "Claude", "Codex")) {
-            $audit = Invoke-PlatformDeploy -PlatformName $p -DeployMode $Mode -TargetPath $Target
-            if (($Mode -eq "Audit") -and $audit -and (-not $audit.Passed)) {
-                $auditFailures++
-            }
-        }
-        if (($Mode -eq "Audit") -and ($auditFailures -gt 0)) {
-            exit 1
+            Invoke-PlatformDeploy -PlatformName $p -DeployMode $Mode -TargetPath $Target
         }
     } else {
-        $audit = Invoke-PlatformDeploy -PlatformName $Platform -DeployMode $Mode -TargetPath $Target
-        if (($Mode -eq "Audit") -and $audit -and (-not $audit.Passed)) {
-            exit 1
-        }
+        Invoke-PlatformDeploy -PlatformName $Platform -DeployMode $Mode -TargetPath $Target
     }
 } else {
     # 選單模式

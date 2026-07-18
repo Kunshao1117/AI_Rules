@@ -82,8 +82,7 @@ Codex workflow routes are deployed as skills:
 `00-chat-聊天`, `01-explore-探索`, `02-blueprint-架構`,
 `03-build-建構`, `03-1-experiment-實驗`, `04-fix-修復`,
 `05-condense-濃縮`, `06-test-測試`, `07-debug-除錯`,
-`08-audit-健檢`, `08-1-infra-基礎盤點`, `08-2-logic-深度邏輯`,
-`08-3-report-健檢總結`, `09-commit-紀錄總結`, `10-routine-巡檢`,
+`09-commit-紀錄總結`, `10-routine-巡檢`,
 `11-handoff-交接`, and `12-skill-forge-技能鍛造`.
 
 The route names are triggers only. Authorization, Team-Native dispatch,

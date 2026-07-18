@@ -8,7 +8,7 @@
     orphan deletion, -RemoveOrphans.
 #>
 param(
-    [ValidateSet("Check", "Plan", "Apply", "Doctor", "SyncGlobal", "SyncProjectRules", "CleanupOrphans", "Gitignore", "MemoryMigration")]
+    [ValidateSet("Check", "Plan", "Apply", "SyncGlobal", "SyncProjectRules", "CleanupOrphans", "Gitignore", "MemoryMigration")]
     [string]$Action = "Check",
 
     [string]$RepoRoot,
@@ -29,11 +29,7 @@ param(
 
     [switch]$WhatIf,
 
-    [switch]$ManagedSource,
-
-    [switch]$RequireTeamTrace,
-
-    [string]$TeamTraceRoot
+    [switch]$ManagedSource
 )
 
 $ErrorActionPreference = "Stop"
@@ -47,7 +43,6 @@ $RepoRoot = (Resolve-Path $RepoRoot).Path
 $ModulesDir = Join-Path $RepoRoot "Scripts\modules"
 
 Import-Module (Join-Path $ModulesDir "Core.psm1") -Force
-Import-Module (Join-Path $ModulesDir "Audit.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Skills-Sync.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Memory-Migration.psm1") -Force
 
@@ -177,10 +172,9 @@ function Assert-SourceSyncedForProjectSync {
 
 function Invoke-Check {
     Write-ManagerHeader "檢查 AI_Rules 來源狀態"
-    Write-Host "用途：讀取 AI_Rules 來源版本庫的 Git 狀態，並檢查使用者層全域規則漂移；不寫入目前專案。"
+    Write-Host "用途：讀取 AI_Rules 來源版本庫的 Git 狀態與版本關係；不寫入目前專案，也不解析規範、技能、文件、記憶、hook、設定或來源內容。"
     $snapshot = Get-GitSnapshot
     Show-GitSnapshot -Snapshot $snapshot
-    $null = Measure-RuntimeGlobalDrift -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot
 }
 
 function Invoke-Plan {
@@ -196,7 +190,7 @@ function Invoke-Plan {
         Write-Host "- 目前來源是本機來源；工具只檢查狀態，不會自動重設本機變更。"
         Write-Host "- 若有遠端更新，更新動作只會嘗試快轉更新，不會重設本機變更。"
     }
-    Write-Host "- 套用後會重新執行平台代理治理巡檢。"
+    Write-Host "- 套用只會對齊來源庫並回報 Git 狀態；不會解析規範、技能、文件、記憶、hook、設定或來源內容。"
     Write-Host "- 這不會安裝新版 VSIX，也不會同步目前專案的 .agents / .claude / .codex。"
     Write-Host "- 全域規則、專案規則與孤兒檔案仍需另外按鈕確認，不會在 Plan 階段修改。"
     if ($snapshot.DirtyCount -gt 0) {
@@ -210,9 +204,9 @@ function Invoke-ApplyUpdate {
     Write-ManagerHeader "更新 AI_Rules 來源庫"
     if ($WhatIf) {
         if ($ManagedSource) {
-            Write-Host "WhatIf：插件會先對齊 AI_Rules 遠端來源鏡像，然後執行治理巡檢；不安裝 VSIX，也不同步目前專案規則。"
+            Write-Host "WhatIf：插件會先對齊 AI_Rules 遠端來源鏡像；不安裝 VSIX，也不同步目前專案規則。"
         } else {
-            Write-Host "WhatIf：將檢查本機 AI_Rules 來源並嘗試快轉更新，然後執行治理巡檢；不安裝 VSIX，也不同步目前專案規則。"
+            Write-Host "WhatIf：將檢查本機 AI_Rules 來源並嘗試快轉更新；不安裝 VSIX，也不同步目前專案規則。"
         }
         return
     }
@@ -223,44 +217,30 @@ function Invoke-ApplyUpdate {
     $snapshot = Get-GitSnapshot
     if ($snapshot.DirtyCount -gt 0) {
         Show-GitSnapshot -Snapshot $snapshot
-        Write-Fail "來源庫更新失敗：工作樹有變更；已停止，不執行治理巡檢。"
+        Write-Fail "來源庫更新失敗：工作樹有變更；已停止。"
         exit 1
     }
     if ($snapshot.Relation -eq "Diverged") {
         Show-GitSnapshot -Snapshot $snapshot
-        Write-Fail "來源庫更新失敗：來源庫分叉；已停止，不執行治理巡檢。"
+        Write-Fail "來源庫更新失敗：來源庫分叉；已停止。"
         exit 1
     }
     if ($snapshot.Relation -eq "LocalAhead") {
         Show-GitSnapshot -Snapshot $snapshot
-        Write-Fail "來源庫更新失敗：本機領先遠端；已停止，不執行治理巡檢。"
+        Write-Fail "來源庫更新失敗：本機領先遠端；已停止。"
         exit 1
     }
     if ($ManagedSource) {
         if ($snapshot.Relation -ne "Synced") {
             Show-GitSnapshot -Snapshot $snapshot
-            Write-Fail "來源庫更新失敗：AI_Rules 管理快取未能對齊遠端版本庫；已停止，不執行治理巡檢。"
+            Write-Fail "來源庫更新失敗：AI_Rules 管理快取未能對齊遠端版本庫；已停止。"
             exit 1
         }
-        $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot -AuditProfile ApplyDefault
-        if (-not $audit.Passed) { exit 1 }
         return
     }
     git -C $RepoRoot pull --ff-only
     if ($LASTEXITCODE -ne 0) {
-        Write-Fail "來源庫更新失敗：無法快轉或 Git 回報錯誤；已停止，不執行治理巡檢。"
-        exit 1
-    }
-    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot -AuditProfile ApplyDefault
-    if (-not $audit.Passed) { exit 1 }
-}
-
-function Invoke-Doctor {
-    Write-ManagerHeader "治理巡檢 Doctor"
-    Write-Host "用途：檢查 Shared Skill 品質、workflow metadata、policy marker、Team-Native 專家技能、任務軌跡、Codex repo-managed hooks 移除／rebuild pending 狀態與 Captain-Lite 讀取模型、子代理語彙、審查治理覆蓋、下游共用參考、專案本地工具、全域規則漂移與 project skill links；不寫入檔案。"
-    $audit = Invoke-PlatformGovernanceAudit -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -TargetRoot $Target -RequireTeamTrace:$RequireTeamTrace -TeamTraceRoot $TeamTraceRoot -AuditProfile Full
-    if (-not $audit.Passed) {
-        Write-Fail "Doctor 阻塞：治理巡檢存在 Red findings，請先修正。"
+        Write-Fail "來源庫更新失敗：無法快轉或 Git 回報錯誤；已停止。"
         exit 1
     }
 }
@@ -936,7 +916,6 @@ switch ($Action) {
     "Check"          { Invoke-Check }
     "Plan"           { Invoke-Plan }
     "Apply"          { Invoke-ApplyUpdate }
-    "Doctor"         { Invoke-Doctor }
     "SyncGlobal"     { Invoke-SyncGlobal }
     "SyncProjectRules" { Invoke-SyncProjectRules }
     "CleanupOrphans" { Invoke-CleanupOrphans }

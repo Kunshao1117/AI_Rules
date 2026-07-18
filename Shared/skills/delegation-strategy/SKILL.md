@@ -29,7 +29,7 @@ completion.
 | Team semantics and station sequence | `programming-team-governance`, `Shared/policies/workflow-orchestration.md` |
 | Role source and boundaries | `team-specialist-registry`, `team-role-boundaries` |
 | Board fields and handoff packets | `team-task-board`, `team-station-handoff-packet` |
-| Channel routing details and long gates | `references/team-dispatch-gates.md` |
+| Channel routing details, same-wave checks, and long gates | `references/team-dispatch-gates.md` |
 | CLI branch SOP and prompt skeleton | `references/cli-delegation-sop.md`, `references/cli-capability-matrix.md`, `references/cli-prompt-skeleton.md` |
 | Review lifecycle boundary | `quality-review-governance` |
 
@@ -66,22 +66,32 @@ classification`, and `repair loop limit`; long value catalogs stay in
 ### Execution Profile Resolution
 
 After task type is known and before any execution channel is chosen, resolve the
-requested execution profile from task evidence. Error cost, reversibility,
-validation difficulty, and reliable prior failure are the deciding factors;
-role or station may recommend a profile, but task evidence, explicit
-requirements, and operator answers may override that recommendation. A role or
-station never binds a model.
+requested execution profile from the platform-neutral `U`, `E`, `R`, `V`, `B`,
+`A`, `D`, `C`, and `F` inputs in
+`Shared/policies/references/workflow-execution-spec-contract.md`. Apply its
+hard-floor-plus-score behavior and record the floor and score rationale. Role or
+station may recommend a profile, but task evidence, explicit requirements, and
+operator answers may override that recommendation. A role or station never
+binds a model.
 
 - Pure discussion or work with no executable station uses `not-applicable`,
   `requested_model: not-requested`, `requested_reasoning_effort:
   not-requested`, and `not-applicable` context/wait references. The presence of
   these fields never activates Team mode.
-- `fast` is appropriate when error cost is low, the work is reversible, and
-  validation is straightforward.
-- `balanced` is appropriate for ordinary bounded work when no deep-route signal
-  applies.
-- `deep` is appropriate when error cost is high, reversal is difficult,
-  validation is difficult, or a reliable scoped attempt has already failed.
+- `fast` is appropriate when the hard floor stays low and the combined evidence
+  remains bounded; it may request bounded extended-depth capability when the
+  adapter offers it and task evidence warrants it.
+- `balanced` is appropriate for ordinary bounded work above the fast range; it
+  may also request bounded extended-depth capability without changing scope or
+  gates.
+- `deep` is quality-priority when the hard floor or combined evidence requires
+  it and may request a larger bounded reasoning budget.
+
+Reliable failure raises effective reasoning depth only when the failure is
+same-scope, reproducible, and verifier-backed, and another resolution input
+independently supports the raise. Failure evidence never selects `deep` by
+itself. Cost or latency preference can choose among profiles above the hard
+floor but cannot lower that floor.
 
 These are the only execution profile selection rules. `high-assurance` is a
 governance requirement and `scope-resolution` is a route or station; neither is
@@ -101,14 +111,17 @@ sentinel value.
 
 Requested profile, model, and effort are intent, not authority or availability
 guarantees. They cannot remove roles, alter route or scope, relax authorization
-or protected gates, or change completion requirements. If the requested channel,
+or protected gates, reduce review depth or validation obligations, alter a
+delivery slice, or change completion requirements. If the requested channel,
 model, or effort is unavailable, preserve requested intent and record the
 `unavailable` / `not-applied` / variance outcome through the canonical board
 fields; do not silently downgrade. Applied-field values and consistency rules
 remain owned by the board field catalog. Delegation selects requested intent
-only; it never derives applied state and never sets wait durations. Materialized
-startup timing is owned by Handoff Packet Startup Monitoring through the current
-`wait_policy_ref`; do not add profile-specific fixed wait durations.
+only; it never derives accepted or applied state and never sets wait durations.
+Adapter acceptance is recorded in `accepted_execution_request`, and acceptance
+never proves application. Materialized startup timing is owned by Handoff Packet
+Startup Monitoring through the current `wait_policy_ref`; do not add
+profile-specific fixed wait durations.
 
 ## Team-Native Minimum Execution Gate
 
@@ -134,10 +147,14 @@ For each applicable station:
 3. Build a handoff packet with the immutable requested execution snapshot,
    loaded skill refs, read scope, forbidden actions, output format, referenced
    wait policy, and stop condition.
-4. Record requested execution channel, channel capability, channel invocation
+4. When same-wave parallel work is proposed, run the concrete dispatch checks
+   in `references/team-dispatch-gates.md` against the packet's canonical
+   `parallel_dispatch_contract`; do not infer eligibility from different write
+   files.
+5. Record requested execution channel, channel capability, channel invocation
    status, station lifecycle, standby reason, and closeout lane. Ledger returned
    applied execution state through the canonical board fields.
-5. Return a delivery artifact or mark `blocked`, `unverified`, `standby`, or
+6. Return a delivery artifact or mark `blocked`, `unverified`, `standby`, or
    `closed-with-director-risk`.
 
 Mandatory route anchors remain: Implementation station with governed isolated

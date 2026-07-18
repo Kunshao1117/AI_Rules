@@ -238,6 +238,107 @@ It also must not create authority for deployment, install, credentials, or exter
 
 It also must not authorize later phases.
 
+## Scope Expansion Request
+
+`scope_expansion_request` is the canonical operator-decision trace for any intended action outside
+the current acceptance, exact authorization, acceptance-sized `delivery_slice`, or an existing hard
+gate. The affected action stops before execution while the request is unresolved. `overreach_check`
+remains the detection gate; it may identify a delta, but it never records or substitutes for the
+operator's decision.
+
+Classify the proposed delta as exactly one of:
+
+- `acceptance-required-repair`: a repair needed to satisfy the current acceptance contract.
+- `minimal-enabling-change`: a change that is necessary, smallest sufficient, reversible, inside
+  the same risk posture, and introduces no new public contract, migration, protected action, or
+  data-integrity boundary. All five conditions are required.
+- `out-of-scope-improvement`: beneficial work that is not required by current acceptance.
+- `existing-hard-gate`: authorization, security, data, protected-action, review, validation, sync,
+  or other canonical gate already required by policy.
+- `new-concrete-security-risk`: a newly discovered, specific security or data-integrity risk with
+  named affected action and evidence.
+
+The request records this compact schema:
+
+```text
+scope_expansion_request: {
+  request_id,
+  originating_slice_id,
+  affected_action,
+  classification,
+  exact_delta,
+  reason_and_evidence,
+  authorization_or_gate_impact,
+  operator_options,
+  operator_decision,
+  decision_evidence,
+  decision_state
+}
+```
+
+`operator_options` are `approve-exact-delta`, `reject`, `defer`, and `revise`. `decision_state`
+is `not-required`, `pending-operator`, `approved-intent`, `rejected`, `deferred`, `revision-requested`,
+`blocked`, or `unverified`. No response means stop the affected action with no scope expansion; it
+does not imply approval, rejection of unrelated work, or permission to apply a silent safeguard.
+
+`approve-exact-delta` remains an intent signal until this policy resolves the exact target, scope,
+phase, station, file or resource set, expiry, and applicable protected gate. A delta that changes a
+public contract, migration, security posture, data boundary, data-integrity risk, or protected action
+must create a new `delivery_slice` after that resolution; it cannot be folded into the current slice.
+
+An `existing-hard-gate` cannot be bypassed, waived, or relabeled as a minimal enabling change. A
+new concrete security or data-integrity risk stops only the affected action and asks the operator for
+the exact decision. When evidence is unknown or incomplete, record `unverified` and ask; do not
+invent a risk, silently expand scope, or silently add a safeguard.
+
+### Test Actions And Validation Boundary
+
+This is the sole canonical owner of test admission. Validation is not testing,
+and creating, modifying, or executing a test is allowed only when all three
+conditions below are true:
+
+1. The target is an endpoint, performance, concurrency, data-integrity, or
+   another non-visual invariant that a visual or interactive tool cannot
+   directly prove. Ordinary page appearance, interactive flows, policy text,
+   and static references do not qualify.
+2. A current-session, suitable, non-destructive real tool or interface still
+   cannot provide sufficient acceptance evidence. Use Browser, Chrome,
+   Computer Use, CLI static checks, or a real interface when one can
+   prove the acceptance; do not substitute a test.
+3. The acceptance explicitly binds a test artifact, or the operator precisely
+   approves the exact test scope. The resolved authorization must bind exact
+   files, commands, data or fixtures, phase, expiry, and acceptance references.
+
+Model capability or effort, best practice, review, validation, regression
+rationale, and workflow routing are not test authorization. An approved test
+delta remains intent evidence until this policy resolves those exact bindings.
+The existing hard gates remain in force.
+
+For text, policy, documentation, configuration, and static-data work, create
+no tests. When acceptance calls for validation, use the smallest accepted,
+non-mutating static check, such as syntax, schema, frontmatter,
+broken-reference, source/deployed-parity, or duplicate-canonical-owner checks.
+Those checks are acceptance evidence, not tests.
+
+Direct real-tool observation proves only what it can actually observe; visual
+evidence proves visible state or layout, not endpoint contracts, performance,
+concurrency, data integrity, or other non-visual invariants. When the first two
+conditions hold but the third does not, stop and obtain the operator's precise
+decision through `scope_expansion_request`.
+
+Do not create a complex, project-wide, full-suite, routine, or repeated
+regression run merely because validation is pending. A permitted exception is
+limited to its named acceptance objective and exact resolved scope.
+
+Every proposed test or check must directly prove the named acceptance, or a
+necessary risk that cannot be proved at lower cost. On failure, classify the
+result before changing anything as an outcome defect, checker outdated or
+inapplicable, incorrect assumption, or tool/environment problem. A failed
+check never authorizes repairing its test or checker. Unless an action is
+explicitly retained and necessary after that classification, stop, remove it,
+or use direct evidence instead. Do not create test-of-test, check-of-check, or
+self-repair loops.
+
 `formal-readonly` routing does not require repeated GO when the current route is already visible.
 
 No-write evidence gathering and blocked/unverified state reporting follow the same rule.
@@ -247,6 +348,26 @@ It applies to the named visible scope, phase, station, file set, and expiry.
 
 Protected phases remain separate.
 They need their own scope-bound authorization even when they are the obvious next workflow step.
+
+## Cross-Thread Authorization Boundary
+
+`Shared/policies/references/cross-thread-handoff-contract.md` owns the semantic
+handoff package. Its authorization snapshot is historical evidence at package
+preparation time, not authority in the target conversation.
+
+`authority_transfer_state` is always `not-transferred`. Before the target takes
+its first legal action, it must re-resolve current authorization evidence,
+target, scope, phase, expiry, and every protected gate under this policy.
+Package preparation, message delivery, thread creation, thread movement,
+transport completion, target confirmation, and a prior `GO` do not satisfy
+that resolution.
+
+The send, create, or move transport itself also requires exact current intent
+for that transport action. Creating a new or background thread is allowed only
+when the operator explicitly requested it; it is never an automatic fallback.
+If target identity, package freshness, interruption risk, or current authority
+is missing, stop as blocked, stale, or unverified rather than recovering
+authority from the source thread.
 
 ## Existing Worktree Change Gate
 
@@ -284,6 +405,16 @@ The source/deployed pair strategy must also be recorded.
 These signals route the work only; they do not authorize writes or protected actions:
 
 - Workflow names are route hints only. A workflow name is not authorization.
+- Model capability or reasoning effort, quality preference, best practice, regression rationale,
+  workflow route, and review or validation obligation are not test authorization.
+- Multi-slice work, context compaction, cross-thread handoff, agent replacement,
+  phase transition, risk-bearing next action, elapsed time, dirty files,
+  generic `GO`, and "work has taken a long time" may at most trigger Git
+  checkpoint eligibility evaluation. They do not authorize staging or commit.
+- A long-work Git checkpoint requires a separately resolved
+  `authorization_phase: git` bound to one exact stage allowlist and one local
+  checkpoint commit. It does not inherit implementation or final-commit
+  authority.
 - A request for subagents, a specialist, or a team mode is not authorization by itself.
 - A request for Team-Native / subagent team mode turns on the team route.
 - That request still does not authorize writes, protected phases, hidden cleanup, or unscoped dispatch.

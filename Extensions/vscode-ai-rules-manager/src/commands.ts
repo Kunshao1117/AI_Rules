@@ -22,11 +22,9 @@ export function registerAiRulesCommands(
     await updateChecker.checkForUpdates({ manual: true });
   }));
   runReadOnly("aiRules.planUpdate", "查看來源更新影響", "Plan");
-  runReadOnly("aiRules.doctor", "治理巡檢 Doctor", "Doctor");
-  runReadOnly("aiRules.syncCoverageCheck", "同步完整性檢查", "Doctor");
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.applyUpdate", async () => {
-    const ok = await confirm("這會對齊 AI_Rules 遠端來源庫，然後跑治理巡檢。不會安裝新版 VSIX，也不會同步目前專案的 .agents / .claude / .codex。明確設定的本機來源只檢查狀態，不會被自動重設。");
+    const ok = await confirm("這會對齊 AI_Rules 遠端來源庫。不會安裝新版 VSIX，也不會同步目前專案的 .agents / .claude / .codex。明確設定的本機來源只檢查 Git 狀態，不會被自動重設。");
     if (ok) await run("對齊 AI_Rules 遠端來源", "Apply", runner, status, panel, { apply: true });
   }));
 

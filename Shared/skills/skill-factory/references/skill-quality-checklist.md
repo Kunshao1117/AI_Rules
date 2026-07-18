@@ -1,7 +1,5 @@
 # Skill Quality Checklist
 
-The `Measure-SkillQuality.ps1` quality scanner evaluates skill compliance against this checklist.
-
 ## Checklist
 
 ### 1. Line Count Limit

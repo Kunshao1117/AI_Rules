@@ -16,6 +16,14 @@ metadata:
 
 # Refactoring with GitNexus
 
+## Test Scope Opt-In
+
+GitNexus dependency mapping supports refactoring, but it does not make tests part of a refactor by
+default. Include test planning, creation, modification, or execution only when the current acceptance
+and exact authorization name it; regression rationale, quality practice, review, validation, or a
+workflow route do not grant that scope. See `Shared/policies/authorization-resolution.md`; test work
+starts only after its canonical tool-first gate identifies a necessary minimal exception.
+
 ## When to Use
 
 - "Rename this function safely"
@@ -30,7 +38,7 @@ metadata:
 1. gitnexus_impact({target: "X", direction: "upstream"})  → Map all dependents
 2. gitnexus_query({query: "X"})                            → Find execution flows involving X
 3. gitnexus_context({name: "X"})                           → See all incoming/outgoing refs
-4. Plan update order: interfaces → implementations → callers → tests
+4. Plan update order: interfaces → implementations → callers → authorized test work, if any
 ```
 
 > If "Index is stale" → run `npx gitnexus analyze` in terminal.
@@ -44,7 +52,7 @@ metadata:
 - [ ] Review graph edits (high confidence) and ast_search edits (review carefully)
 - [ ] If satisfied: gitnexus_rename({..., dry_run: false}) — apply edits
 - [ ] gitnexus_detect_changes() — verify only expected files changed
-- [ ] Run tests for affected processes
+- [ ] If tests are explicitly authorized, run only the accepted commands for affected processes
 ```
 
 ### Extract Module
@@ -55,7 +63,7 @@ metadata:
 - [ ] Define new module interface
 - [ ] Extract code, update imports
 - [ ] gitnexus_detect_changes() — verify affected scope
-- [ ] Run tests for affected processes
+- [ ] If tests are explicitly authorized, run only the accepted commands for affected processes
 ```
 
 ### Split Function/Service
@@ -67,7 +75,7 @@ metadata:
 - [ ] Create new functions/services
 - [ ] Update callers
 - [ ] gitnexus_detect_changes() — verify affected scope
-- [ ] Run tests for affected processes
+- [ ] If tests are explicitly authorized, run only the accepted commands for affected processes
 ```
 
 ## Tools
@@ -128,5 +136,5 @@ RETURN caller.name, caller.filePath ORDER BY caller.filePath
 
 4. gitnexus_detect_changes({scope: "all"})
    → Affected: LoginFlow, TokenRefresh
-   → Risk: MEDIUM — run tests for these flows
+   → Risk: MEDIUM — request an exact test scope before testing these flows
 ```

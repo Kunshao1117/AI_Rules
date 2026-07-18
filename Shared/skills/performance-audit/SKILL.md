@@ -35,7 +35,7 @@ metadata:
 
 ## Trigger Conditions
 
-- 健檢第 5 段需要 performance assessment（`/08_audit` report output stage）
+- 已接受的效能驗收需要 performance assessment
 - 部署前需要 performance gate
 - 總監要求 performance report
 
@@ -93,7 +93,6 @@ npx lighthouse
     └── ALL metrics within the "Good" threshold → No additional flag
 ```
 
-> This gate is referenced by `/08_audit_index` section 5 for deterministic performance traffic-light assignment.
 
 ## Recipe 2: Browser Navigation Metrics
 

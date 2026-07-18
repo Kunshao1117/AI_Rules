@@ -67,6 +67,20 @@ Layer ownership, in order:
 - Owns machine-readable `execution_spec` minimum and human flowchart boundary.
 - Also owns station external-grounding fields and external-research request contract.
 
+### Cross-thread handoff pair
+
+- `Shared/policies/references/cross-thread-handoff-contract.md` owns the
+  platform-neutral package schema, freshness, lifecycle, and target-confirmation semantics.
+- `Shared/policies/adapters/codex-thread-handoff.md` owns only the current Codex thread-tool
+  projection and send/create/move transport procedures.
+
+### Long-work Git checkpoint
+
+- `Shared/skills/team-specialist-git-checkpoint/SKILL.md` owns the protected local checkpoint
+  execution procedure.
+- The board field catalog owns `git_checkpoint_receipt`; this orchestration policy only places
+  eligibility evaluation and the protected route in the workflow sequence.
+
 ### Central reference catalog
 
 - `Shared/policies/references/status-ontology.md` owns shared status meanings.
@@ -230,10 +244,14 @@ Director instruction
    verify required packet, snapshot, channel, scope, role, ownership, artifact, and stop fields before dispatch
 -> explicitly scoped lifecycle context
    apply repo-managed hook lifecycle context only when hooks are explicitly scoped
--> execute the selected channel
+-> dispatch the immutable requested snapshot to the selected channel
+-> channel adapter records `accepted_execution_request`
+   missing or partial acceptance remains unverified; acceptance never proves application
+-> execute the accepted channel request without changing the sealed scope or wait baseline
 -> channel returns applied_execution_receipt
 -> board recomputes canonical observed application state from the requested snapshot, channel fields,
-   and receipt instead of copying receipt state; only the board ledger is canonical observed state
+   accepted request, and applied receipt instead of copying either receipt state; only the board ledger is
+   canonical observed state
 -> returned delivery artifact or blocked/unverified/standby state
 -> blocker/conflict/authorization handling
 -> validation, evidence-based validation judgment, review, drift/sync evidence
@@ -313,6 +331,15 @@ Intent envelope and overreach checks are lightweight by default:
   or claims completion.
 - A failed overreach check routes to simplification, split work, a targeted Director question, external research,
   blocked, or unverified state. It never creates write authority.
+- When the check detects an intended action outside current acceptance, exact authorization, the active
+  `delivery_slice`, or an existing hard gate, route the operator decision through the canonical
+  `scope_expansion_request` in `authorization-resolution.md`. Do not execute the delta while that request is
+  unresolved, and do not treat detection as approval.
+- Examples include adding, changing, or running a test because of model capability, quality preference,
+  best practice, regression reasoning, workflow routing, or a review/validation obligation. Validation may
+  instead use acceptance-bound static checks, manual acceptance, or tool output. Prefer suitable tools proven
+  available in the current session; the canonical tool-first and test-exception decision is owned solely by
+  `authorization-resolution.md`.
 
 Design reflection is not mandatory full-process work for every chat turn.
 Use a quick matrix for ordinary low-risk routing, and a full matrix only when governance, architecture,
@@ -446,11 +473,51 @@ That artifact must be returned, blocked, unverified, or closed-with-director-ris
 
 Implementation and review of the same deliverable do not run in the same wave.
 
+This policy is the sole owner of dependency, wave, and same-wave semantics. Different write files
+are necessary for parallel writers but are not sufficient to make them same-wave eligible. Every
+candidate same-wave station carries the canonical `parallel_dispatch_contract` from the board
+field catalog through its station handoff packet.
+
+Writers may share a wave only when the captured baseline is fresh at dispatch; write scopes are
+disjoint; mutable owned/consumed contracts and conflict domains do not overlap; every
+producer/consumer pair consumes the same immutable `interface_freeze_ref`; a source/deployed pair
+is not divided between writers; source change delivery and memory/docs attribution remain
+role-separated; exactly one integration owner and barrier are named; and all protected invariants
+are consistent. Otherwise order the stations after their upstream input or record the applicable
+blocked/unverified eligibility value from the board catalog.
+
+Baseline drift, an unfrozen interface, a producer/consumer contract change, or generated/source
+overlap makes the affected dispatch non-dispatchable. If detected after dispatch, the affected
+member stops at the packet stop condition and returns its escalation condition; it must not expand
+scope or repair another station's contract. Keep one acceptance-sized delivery slice intact rather
+than decomposing it into frequent per-file or micro-step assignments.
+
 Within one resolved authorization scope, ordered implementation steps and
-multiple files may stay in one delivery wave. Do not restart formal review or validation after every micro-step or file. Add an intermediate checkpoint only
-when continuing would materially change scope or authorization, a public
-contract, a migration, security posture, or an irreversible or protected
-action. This checkpoint does not create a new stage or state.
+multiple files may stay in one delivery wave. The formal implementation, review, and validation unit is an
+acceptance-sized `delivery_slice`, not a micro-step or individual file. Do not restart formal review or
+validation after every micro-step or file.
+
+A `delivery_slice` groups one acceptance objective, its exact authorization and allowlist, the contract and
+risk posture that must remain stable, the implementation artifact, and the downstream review/validation handoff.
+Its canonical schema and state live in the execution spec contract and board field catalog. Legacy work with no
+explicit slice maps once to the current delivery artifact or current authorized acceptance unit and records
+`delivery_slice_legacy_fallback: inferred-current-acceptance`; the fallback does not widen scope.
+
+Keep an acceptance-required repair in the same slice only while acceptance, allowlist, public contract,
+authorization, security and data posture, protected-action exposure, and data-integrity risk remain stable. Add a
+slice-boundary checkpoint and open a newly authorized slice when scope or authorization changes; a public contract, migration,
+security posture, protected action, data boundary, or data-integrity risk changes; a repair crosses one of those
+boundaries; or a repeated symptom requires root-cause work. The slice-boundary checkpoint is a ledger boundary, not a Git commit, new
+workflow stage or completion state; it does not expand the lifecycle or silently add a safeguard. Any operator
+decision needed for that boundary uses
+`scope_expansion_request` before execution.
+
+A long-work Git checkpoint is a separate protected `authorization_phase: git` route. Multi-slice
+work, context compaction, cross-thread handoff, agent replacement, a phase transition, or a
+risk-bearing next action may trigger eligibility evaluation only; elapsed time, dirty files,
+generic `GO`, or a claim that work has been running for a long time does not authorize a commit.
+When separately authorized, route execution to `team-specialist-git-checkpoint`; its receipt is a
+stability checkpoint, not final completion or final commit/release readiness.
 
 After the complete delivery artifact and any applicable source/deployed sync
 are ready, validation and independent review may start as sibling stations in
@@ -517,11 +584,19 @@ Every formal station needs a handoff packet before it can produce formal evidenc
 
 This policy records the handoff point in the sequence.
 
-The handoff consumes the resolved requested execution snapshot before a channel starts. The channel
-then returns an applied execution receipt, the captain logs that receipt to the board as canonical
-observed state, and only then routes the delivery artifact or terminal station state. The execution
-spec owns requested intent, the handoff skill owns carrier shape, and the board catalog owns observed
-state values; this policy defines only that order.
+Keep three meanings separate. A station handoff packet uses `handoff_packet_id` to start one formal
+member assignment. A cross-thread handoff package uses `cross_thread_handoff_id` to continue task
+context in another conversation. A platform thread transport may return an operation identifier,
+but that metadata is neither of those semantic objects and is not target confirmation.
+
+The handoff consumes the resolved requested execution snapshot before a channel starts. The channel adapter
+records an `accepted_execution_request` separately when it accepts all or part of that request, then returns an
+`applied_execution_receipt`. Tool or adapter acceptance never proves application. Missing or partial acceptance
+or application receipts remain unverified, and requested, accepted, and applied values never overwrite one
+another. The captain logs both receipts and the board recomputes canonical observed application state before it
+routes the delivery artifact or terminal station state. The execution spec owns requested intent, the handoff
+skill owns carrier and lifecycle shape, and the board catalog owns accepted and observed value semantics; this
+policy defines only that order.
 
 Packet fields and channel lifecycle details stay in the sources below.
 The same is true for status probe, replacement, cancellation, late-result, and receipt-decision details.
@@ -530,7 +605,12 @@ The same is true for status probe, replacement, cancellation, late-result, and r
 - `team-task-board`
 - `Shared/policies/team-trace-evidence.md`
 
-Minimal lifecycle anchors stay thin here.
+Minimal lifecycle anchors stay thin here. The handoff packet owns the immutable wait baseline, mutable
+lifecycle ledger, shared wait-policy behavior, and workload mapping; the board field catalog owns the canonical
+lifecycle vocabulary and receipt-ledger states. Legal deadline, health/progress, extension, probe/resume,
+replacement, and late-return ledger updates do not require a new handoff packet. A sealed dispatch-scope or
+wait-baseline change does. Platform adapters may supply latency classes or multipliers, but this shared policy
+does not name models, vendors, or vendor coefficients.
 
 The trace tokens are:
 

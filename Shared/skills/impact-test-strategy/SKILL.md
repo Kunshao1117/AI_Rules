@@ -2,8 +2,10 @@
 name: impact-test-strategy
 description: >
   變更影響與回歸測試策略（Testing）：Change impact analysis, test scope orchestration, and regression test generation.
-  Use when: 跨模組修改（變更影響 2+ 模組）、核心工具/共用服務重構、或 /04_fix 修復後需產生回歸測試 的場景。
-  DO NOT use when: 單一模組內的局部修改、僅樣式/文字調整、設定檔變更。
+  Use when: 現有驗收已明確指名測試範圍，或操作員已精確核准測試差異，
+  適用於跨模組變更、核心工具/共用服務重構，或已授權的回歸測試。
+  DO NOT use when: 測試範圍未獲明確接受與授權，或僅為沒有已接受測試需求的局部樣式、文字、
+  設定或靜態資料工作。
 metadata:
   author: antigravity
   version: "5.2"
@@ -15,9 +17,18 @@ metadata:
 
 # Impact & Test Strategy — 影響與測試策略
 
+## Test Scope Opt-In
+
+This skill is a method for an already authorized test scope; it does not decide that tests are
+necessary. Do not create, modify, discover for execution, or run tests unless the current acceptance
+and exact authorization permit them. Validation, quality preference, regression rationale, workflow
+route, and impact level do not grant that permission. The canonical owner is
+`Shared/policies/authorization-resolution.md`; this skill applies only after that policy's tool-first
+gate establishes that a minimal test exception is necessary.
+
 ## 1. Impact Analysis Flow (影響分析流程)
 
-Execute BEFORE code modification:
+Use this flow only when an accepted test scope needs impact mapping:
 
 ### Step 1: Map File → Module (檔案→模組映射)
 
@@ -63,7 +74,7 @@ Include in `implementation_plan.md`:
 - 風險等級：🔴/🟡/🟢
 - 受影響模組：{list of affected modules}
 - 關聯文件：{documentation files that require sync}
-- 建議測試範圍：{see § 2}
+- 已授權測試範圍：{see § 2}
 - 真實驗證路徑：{real operation surface, data source, executable path, and blocker status}
 ```
 
@@ -79,20 +90,21 @@ Include in `implementation_plan.md`:
 └── Gate cleared.
 ```
 
-## 2. Test Scope Decision Tree (測試範圍決策樹)
+## 2. Authorized Test Scope Selection (已授權測試範圍選擇)
 
 ```
-Change type?
-├── Hotfix → Run: Source module unit tests + Source module E2E
-├── Cross-module → Run: All affected modules' unit tests + Full E2E
-├── Core utility refactor → Run: ALL unit tests + Full E2E
-├── UI-only → Run: E2E visual test for affected pages only
-└── Config / Environment → Run: Full E2E suite (no unit tests)
+Does current acceptance and exact authorization name a test action?
+├── NO → Do not select, create, modify, or run a test. Return to the acceptance-bound validation route.
+└── YES → Select only the named behavior, files, commands, data/fixtures, phase, and expiry:
+    ├── Authorized unit behavior → use the scoped unit-test method
+    ├── Authorized browser behavior → use the scoped E2E or visual-test method
+    ├── Authorized regression behavior → use the scoped regression-test method
+    └── Other authorized behavior → use only the explicitly approved test technique
 ```
 
 Real-path scope rule:
 
-- If the change affects user-visible behavior, data flow, persistence, network requests, files, scheduled jobs, CLI output, permissions, or external integrations, include at least one real execution path in the recommended test scope.
+- When an authorized test scope requires a real execution path for user-visible behavior, data flow, persistence, network requests, files, scheduled jobs, CLI output, permissions, or external integrations, include that named path in the scope.
 - Before marking real execution unavailable, include operator-tool discovery in the scope: search project scripts, documented commands, routes, test harnesses, browser or desktop operation paths, plugin hosts, logs, databases, and direct request options.
 - Treat transient readiness, timeout, or tool-connection failures as retryable evidence gaps first. They do not remove the need for the real execution path.
 - If real execution is blocked, list the blocker and the closest controlled real-path alternative, such as preview branch, local service, dry-run, sandbox database, recorded real response, or read-only production check.
@@ -100,13 +112,12 @@ Real-path scope rule:
 
 ### Execution Protocol (執行協定)
 
-1. Unit tests first
-2. Fix unit test failures before proceeding to E2E
-3. E2E tests last
+Follow the order in the exact authorized commands. Do not infer unit, E2E, full-suite, or regression
+execution from the change type alone.
 
-## 3. Regression Test Generator (回歸測試產生器)
+## 3. Authorized Regression Test Design (已授權回歸測試設計)
 
-After `/04_fix` bug fix, generate a regression test:
+When a bug-fix acceptance expressly authorizes a regression test, design it as follows:
 
 ### Step 1: Analyze the Fix Diff (分析修復差異)
 
@@ -136,23 +147,23 @@ What type of bug was fixed?
 
 ### Step 3: Write and Register (撰寫並註冊)
 
-1. Write the regression test using `test-patterns` skill's § 1 decision tree for file placement
-2. Name the test descriptively: `it('should not regress: {bug description}')`
-3. Document one short English evidence item in the module's memory card `## Cycle Events`
+1. Create or change only the authorized test files, using `test-patterns` skill's § 1 placement method.
+2. Name the test descriptively: `it('should not regress: {bug description}')`.
+3. Route any memory update through its separate protected memory authorization; this test scope does not authorize it.
 
 ### /04_fix Completion Gate Integration
 
-- [ ] Regression test generated for the fixed bug
-- [ ] Regression test passes
-- [ ] Lesson documented in memory card
+- [ ] The accepted regression test delta was delivered, if one was authorized.
+- [ ] The exact accepted test command produced its recorded evidence, if execution was authorized.
+- [ ] Any memory lesson follows a separately authorized memory route.
 
 ## Constraints (限制與邊界)
 
 - Primary testing-context source: memory card `## Relations` section
 - `## Relations` is navigation context only. It does not equal frontmatter `dependencies` and must not be used for indirect staleness propagation.
 - No memory cards → fall back to `grep_search` for import/require analysis
-- This skill determines WHICH tests to run — does NOT execute them
-- Test execution: via terminal `run_command`
+- This skill determines an already accepted test scope; it does not make testing a default or execute it.
+- Test execution, when precisely authorized, uses the named terminal command.
 
 ## References (參考資源)
 

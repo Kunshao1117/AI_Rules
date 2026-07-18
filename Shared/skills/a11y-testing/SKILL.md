@@ -68,14 +68,6 @@ After visual E2E testing, add an accessibility scan step:
 2. Include accessibility results in `walkthrough.md`
 3. If critical violations found → trigger `/04_fix` for remediation
 
-### In /08_audit
-
-Add as Phase H — Accessibility Audit:
-
-1. Scan all major pages listed in memory cards
-2. Include results in the Traffic Light Health Report
-3. Critical a11y violations = 🔴 Red Light
-
 ## Constraints
 
 - This skill ONLY covers automated scanning — it cannot catch all accessibility issues

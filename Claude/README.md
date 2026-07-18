@@ -76,7 +76,7 @@ Claude workflow routes are Slash Commands:
 
 `/00_chat`, `/01_explore`, `/02_blueprint`, `/03_build`,
 `/03-1_experiment`, `/04_fix`, `/05_condense`, `/06_test`,
-`/07_debug`, `/08_audit`, `/09_commit`, `/10_routine`, `/11_handoff`,
+`/07_debug`, `/09_commit`, `/10_routine`, `/11_handoff`,
 and `/12_skill_forge`.
 
 The command name routes work only. Authorization, Team-Native dispatch,

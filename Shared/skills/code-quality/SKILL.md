@@ -32,42 +32,28 @@ metadata:
 
 ## 1. Functional Module Boundary Gate (功能模組邊界閘門)
 
-```
-[MODULE GATE] For every source file written or modified:
-├── Does the file represent one functional responsibility or one coherent adapter boundary?
-│   ├── YES → Continue.
-│   └── NO  → Refactor by functional boundary before completion.
-├── Does the file expose a clear public interface for its module?
-│   ├── YES → Continue.
-│   └── NO  → Clarify exports, entrypoints, or ownership before completion.
-├── Would splitting reduce coupling, test difficulty, or maintenance risk?
-│   ├── YES → Split by behavior/domain boundary.
-│   └── NO  → Keep cohesive code together even if the file is moderately large.
-└── Gate cleared → Continue to SOLID review.
-```
+`Shared/policies/source-document-size-governance.md`, heading
+`Source Responsibility Contract`, is the only owner of responsibility
+identity, the one-default/two-maximum rule, strong-coupling evidence, and the
+third-responsibility split gate. Do not restate or soften that contract here.
 
-Do not split a file merely to reduce line count. Fragmentation without a functional boundary is a quality regression.
+For every source file written or modified:
 
-### 1.1 Cohesive Large File Allowance (可保留大檔條件)
+1. Declare `responsibility_inventory`, `responsibility_count`,
+   `second_responsibility_coupling`, `third_responsibility_split_gate`, and
+   `responsibility_split_delta_ref` before writing.
+2. Continue with one responsibility.
+3. With two responsibilities, provide the complete coupling evidence and route
+   it to independent review; change delivery cannot accept its own coupling.
+4. With three or more responsibilities, stop before writing and resolve the
+   exact split delta with the operator.
+5. Confirm that the surviving module has a clear public interface or owner
+   boundary and an independent validation reference.
 
-Keeping a larger file is acceptable when all of these are true:
-
-- The file has one functional responsibility or one framework-required adapter boundary.
-- The public interface is clearer when the behavior stays together.
-- Splitting would add coordination code, circular imports, duplicated state, or weaker test readability.
-- The main tests can exercise the behavior without unrelated setup.
-- The file size is a maintenance signal, not the root cause of maintenance risk.
-
-### 1.2 Required Split Criteria (必須拆分條件)
-
-Split by behavior, domain, or adapter boundary when any of these are true:
-
-- The file contains multiple independent responsibilities that change for different reasons.
-- Separate consumers depend on different public interfaces that are currently tangled together.
-- Tests require unrelated setup because unrelated behaviors share state or side effects.
-- The file mixes UI, persistence, network, business rules, and orchestration without a clear boundary.
-- Recent or expected changes would repeatedly touch unrelated regions of the same file.
-- A failure in one behavior is hard to isolate because the module boundary is too broad.
+Do not split merely to reduce line count, and do not keep mixed
+responsibilities merely because the file is short. Fragmentation without a
+functional boundary and broad labels that conceal independent change triggers
+are both quality regressions.
 
 ## 2. SOLID Alignment Gate (SOLID 原則閘門)
 
@@ -84,7 +70,9 @@ Split by behavior, domain, or adapter boundary when any of these are true:
 
 ## 3. Source Document Size Classification (來源文件大小分類)
 
-Classify the target through `Shared/policies/source-document-size-governance.md` before size review.
+Classify the target through `Shared/policies/source-document-size-governance.md`
+before size review. Its responsibility gate runs before every local line
+threshold.
 
 That policy owns core/platform core, shared policy/reference, `SKILL.md`, memory card, PowerShell scripts/modules, audit rule pack, and general source categories.
 Do not copy its threshold table into this skill.

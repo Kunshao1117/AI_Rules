@@ -14,6 +14,49 @@ delivery artifact or recorded missing state.
 
 Do not perform post-board all-at-once dispatch.
 
+### Parallel Dispatch Preflight
+
+The wave predicate is owned only by
+`Shared/policies/workflow-orchestration.md`. This reference performs the
+dispatch-time checks against the canonical `parallel_dispatch_contract` in the
+board catalog; it does not define another schema or value set.
+
+Before starting every candidate same-wave writer:
+
+1. Confirm the packet carries the complete sealed contract and that its
+   baseline revision, status snapshot, and diff fingerprint still describe the
+   current worktree.
+2. Confirm exact write scopes are disjoint. Treat this as necessary but not
+   sufficient.
+3. Compare owned and consumed mutable contracts plus conflict domains; any
+   overlap orders or blocks the candidate.
+4. For every producer/consumer edge, confirm both packets name the same
+   immutable interface freeze. Missing or changed freeze evidence is
+   `blocked-unfrozen-interface`.
+5. Confirm one source/deployed pair is not split between different writers and
+   generated/source overlap is absent.
+6. Confirm source change delivery and memory/docs attribution use separate role
+   instances.
+7. Confirm exactly one integration owner and one integration barrier cover the
+   combined output.
+8. Confirm protected invariants are identical and downstream consumers wait at
+   the named barrier.
+
+Set `same_wave_eligibility` to `eligible` only after every check passes. Use
+`ordered-after-upstream` for a real dependency,
+`blocked-unfrozen-interface` for missing or changed freeze evidence,
+`blocked-conflict-domain` for mutable contract, conflict-domain, generated,
+source/deployed, integration-owner, or invariant conflict, and `unverified`
+when evidence is incomplete. Use `not-applicable` when no parallel dispatch is
+proposed.
+
+Baseline drift, a producer/consumer contract change, an unfrozen interface, or
+generated/source overlap before dispatch is non-dispatchable. When detected
+after dispatch, stop the affected member at its packet stop condition and
+return the escalation condition. The member does not edit outside scope.
+Keep one acceptance-sized slice as the dispatch unit; do not replace it with
+frequent per-file micro-assignments.
+
 Before starting or reusing a channel, evaluate station lifecycle. Retain or
 reuse only for the same role, station, delivery artifact, and preserved role
 boundary. Record station lifecycle state, retention reason, conversation
@@ -49,6 +92,7 @@ absorb, substitute, or deep read large files as the team evidence source.
 | Validation | `team-specialist-validation` | CLI/browser/MCP/evidence; hot-path non-mutating status checks are coordination feedback only and do not satisfy validation artifacts | implementation repair |
 | Review | `team-specialist-review` | independent evidence branch | authoring the reviewed deliverable |
 | Completion readiness | `team-specialist-release-completion` | drift, sync, docs, completion evidence | final state mutation |
+| Long-work local Git checkpoint | `team-specialist-git-checkpoint` | separately authorized exact-path stage plus one local checkpoint commit | source edit, self-review, tests, push, history rewrite |
 
 ## Delegation Gate Order
 
@@ -63,7 +107,9 @@ Evaluate each station in this order:
    matching formal station.
 3. Secrets, login, credentials, external mutation, commit, push, release,
    deployment, install, and memory write route to an owner station or Director
-   authorization path, or close as `blocked`.
+   authorization path, or close as `blocked`. A long-work local checkpoint
+   routes only to `team-specialist-git-checkpoint` after separate
+   `authorization_phase: git`; an eligibility event does not authorize it.
 4. Implementation with scoped main-worktree authorization routes to
    station-owned `main-worktree change delivery`.
 5. Implementation with governed isolated workspace but no main-worktree

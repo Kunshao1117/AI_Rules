@@ -16,6 +16,7 @@ Implementation authorization:
 Authorization scope:
 Phase:
 Dispatch wave:
+Parallel dispatch contract:
 Allowed specialist roles:
 Forbidden specialist roles:
 Direct exceptions:
@@ -96,6 +97,7 @@ Channel generation:
 Status probe state:
 Status probe resume state:
 Late result policy:
+Parallel dispatch contract ref:
 ```
 
 The station handoff packet may add read scope, startup monitoring,
@@ -112,6 +114,11 @@ When a station may depend on fresh outside evidence, also record
 `external_grounding_required`, `external_research_question`,
 `external_research_artifact_id`, `external_grounding_state`, `source_tier`,
 `source_date_or_version`, and `missing_external_evidence`.
+
+Same-wave candidates carry the complete canonical
+`parallel_dispatch_contract` from `board-field-catalog.md` through the station
+handoff packet. This template references that object only; it does not copy its
+nested schema or decide eligibility.
 
 ## Delivery Forms
 
@@ -146,6 +153,13 @@ Implementation work uses one of these forms:
 `Captain substitute-authoring risk record`
 : Meaning: No qualified delivery route exists and the Director explicitly closes that risk.
 : Boundary: Not change delivery and never full Team-Native completion.
+
+`Git checkpoint receipt`
+: Meaning: Intermediate stability receipt returned only by the separately
+  authorized `git-checkpoint` station.
+: Boundary: Uses the canonical receipt in `board-field-catalog.md`; it is not
+  implementation, validation, review, memory/docs, sync, final commit,
+  completion, push, or release evidence.
 
 Board-facing artifact formats use canonical English keys and are for station
 delivery only. Director-facing summaries must synthesize Traditional Chinese
@@ -227,6 +241,11 @@ only after change delivery exists or is explicitly blocked/unverified/risk
 closed. Completion starts after implementation, memory/docs, validation, and
 review states exist.
 
+Same-wave dispatch follows only `Shared/policies/workflow-orchestration.md`.
+The board stores the canonical `parallel_dispatch_contract`; different write
+files alone do not make a station eligible. Actual dispatch checks stay in
+`delegation-strategy/references/team-dispatch-gates.md`.
+
 When a station needs current external facts, it records
 `external_grounding_required: true`, `external_grounding_state: requested`,
 and `external_research_question` with the exact question and local anchor.
@@ -297,6 +316,8 @@ Before the board supports any completion claim, check:
   output; captain summaries follow `Shared/policies/language-governance.md`.
 - Opened channels have probe/resume, replacement, cancellation, late-result,
   and neutral ledger evidence when those lifecycle states apply.
+- Any `git_checkpoint_receipt` remains intermediate evidence and is not counted
+  as final commit, completion, push, or release readiness.
 - No running, unknown, unresponsive, late-result-pending, or
   cancellation-pending channel is hidden behind a `complete` claim.
 - Route fields contain routes/channels/forms, while

@@ -32,6 +32,8 @@ Source of truth:
 | Scope-bound authorization, natural-language binding, protected phases, and expiry | `Shared/policies/authorization-resolution.md` |
 | Required task trace fields, invalid trace patterns, and trace audit semantics | `Shared/policies/team-trace-evidence.md` |
 | Board fields, station rows, delivery forms, and template-level checklists | `Shared/skills/team-task-board/SKILL.md` |
+| Accepted/application receipt values, lifecycle vocabulary, and delivery-slice ledger fields | `Shared/skills/team-task-board/references/board-field-catalog.md` |
+| Wait-policy behavior, workload classes, probe/resume, replacement generations, and receipt carrier shape | `Shared/skills/team-station-handoff-packet/SKILL.md` |
 
 This skill adds operational sequence and editing hygiene only. If a hard rule is already in a
 policy, cite the policy instead of restating it here.
@@ -135,14 +137,11 @@ worker and then claim full Team-Native completion.
    station blocked or unverified.
 5. Dispatch only the current eligible wave. Later waves wait for returned, blocked, unverified, or
    risk-closed input from previous waves.
-6. Supervise channel lifecycle without treating wait timeouts as failures. If a channel misses its
-   first response or soft timeout, send a status probe when possible. A probed member must pause
-   current action, report current position, blocker state, and safe-to-continue state, then wait.
-   The captain must record that response and send an explicit resume message before the responding
-   channel continues inside the same role and station. Unresponsive channels may be marked
-   blocked/unverified and replaced with a recorded late-result policy. Replacement does not cancel
-   the original channel unless cancellation is explicit, and late artifacts still require a neutral
-   ledger decision.
+6. Supervise channel lifecycle through the canonical vocabulary in the board field catalog and the
+   wait-policy transitions in the handoff packet skill. Do not restate or extend their state tables
+   here. Preserve requested, accepted, and applied execution as separate records; acceptance never
+   proves application. Probe/resume, timeout extensions, replacement generations, cancellation,
+   and late returns follow those owners and retain neutral ledger decisions.
 7. Log returned station output into the synthesis ledger, update the board, and route formal
    checking to validation, review, memory/docs, or completion stations as applicable.
 8. Apply main-worktree implementation only through a station-owned `change-delivery` station held by
@@ -155,6 +154,12 @@ worker and then claim full Team-Native completion.
    completion.
 9. Run validation, independent review, memory/docs disposition, and completion gate as separate
    states before claiming completion.
+
+Implementation, formal review, and validation use the acceptance-sized `delivery_slice` owned by
+the execution spec and board catalog. Keep repairs in the same slice only while acceptance,
+allowlist, contract, authorization, and risk posture stay stable. Route slice-boundary deltas through
+the operator-first `scope_expansion_request` owner in `authorization-resolution.md`; do not turn
+micro-steps or files into separate review units.
 
 ## Direct Exceptions
 

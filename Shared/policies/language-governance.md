@@ -191,6 +191,57 @@ This policy only governs how that evidence is expressed to each audience.
 - Completion, review, validation, memory/docs, and change-delivery skills may return raw artifact fields to the captain.
 - Those fields are not the Director-facing body and must be synthesized before being shown to the Director.
 
+### Plain-Language Precision Contract
+
+- This contract applies by default to every Director-facing work report, including a status, progress, handoff, plan, risk, review, validation, or completion report.
+- Short updates may combine these facts, but may not omit any fact needed to understand actual completion and non-completion, impact, risk, or the next action.
+- State actual completion and non-completion separately. Do not let work started, a route selected, a dispatch made, or a planned action imply that a result is complete.
+- Describe each relevant change as before-and-after change, then state its practical impact. A path, diff label, or technical token alone is not a change description.
+- State validation coverage and its limits: name what was checked, what that check does not establish, and any validation that remains pending, unavailable, or failed.
+- Unknown, Failure, and Authorization Insufficient are distinct conditions. Do not use one to conceal, replace, or imply another.
+- Explain a term in plain Traditional Chinese before its exact token when the token adds precision. Keep paths, commands, canonical fields, states, and other canonical tokens exact after that explanation.
+- State remaining work and its practical impact, including a real user, source, governance, or delivery consequence; do not label an item as a todo without explaining why it matters.
+- State the next step as applicable: required decision, affected file or scope, concrete action, and explicit exclusions. Do not imply that an excluded, unapproved, or later-phase action will occur.
+- This is a reporting contract only. It does not change a canonical state, authorization fact, validation fact, review fact, or canonical token. Chinese display wording must not upgrade, downgrade, infer, or overwrite those facts.
+
+#### Completion（已完成）
+
+- Use `已完成` only when the stated in-scope result has actually been delivered. State the delivered result, its practical impact, and the evidence coverage and limit.
+- State any remaining work separately, including review, validation, sync, protected work, or out-of-scope work when it still affects the Director's decision.
+- Do not imply that the whole task, a later phase, a deployment, validation, review, or authorization is complete when the available facts establish only the stated result.
+
+#### Partial Completion（部分完成）
+
+- Use `部分完成` only when a stated portion has actually been delivered and another stated portion remains. State both portions, each practical impact, the limiting condition, and the next action.
+- Do not use `部分完成` as softened wording for unknown progress, a failed action, missing authorization, or a result that has not been delivered.
+- Do not let the completed portion imply completion of the original scope.
+
+#### Waiting（等待）
+
+- Use `等待` only for a known dependency, decision, approval, input, or scheduled action. State what is awaited, who or what can unblock it, the practical impact of waiting, and the next decision or action.
+- Do not imply that the awaited result exists, that authorization has been granted, or that blocked work has succeeded.
+
+#### Unknown（未知）
+
+- Use `未知` only when the relevant fact or evidence is not established. State what is unknown, why it matters, the evidence gap, and the smallest next action that could resolve it.
+- Do not present `未知` as a failure, a waiting condition, or authorization insufficient unless that separate fact is also established and stated.
+
+#### Failure（失敗）
+
+- Use `失敗` only when an attempted action, check, or outcome has an observed failure. State what was attempted, what failed, the practical impact, the evidence coverage and limit, and the recovery or decision needed next.
+- Do not imply that a workaround, retry, validation result, or repair succeeded without evidence.
+- Do not relabel missing authority or missing facts as `失敗`.
+
+#### Authorization Insufficient（授權不足）
+
+- Use `授權不足` only when the needed action lacks a resolved authority, phase, file or scope, or protected gate. State the blocked action, the exact authorization gap, its practical impact, and the decision, grant, or exclusion needed next.
+- Do not imply that the implementation failed, that the underlying fact is unknown, or that the missing authority will be inferred from a prior approval.
+
+#### Risk Closure（帶風險收尾）
+
+- Use `帶風險收尾` only when a known unresolved risk is explicitly being closed under the applicable risk decision. State the residual risk, affected scope, missing or limited evidence, practical impact, and the excluded follow-up or next owner action.
+- Do not imply normal completion, successful validation or review, restored authorization, or removal of the residual risk. A risk closure does not change the underlying canonical state or evidence.
+
 ## Director-Facing Planning Vocabulary
 
 - Director-facing plans, blueprints, board reports, station reports, and governance summaries must avoid forbidden wording.

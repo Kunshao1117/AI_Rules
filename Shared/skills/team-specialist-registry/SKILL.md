@@ -22,6 +22,7 @@ metadata:
       - team-specialist-external-research
       - team-specialist-architecture-contract
       - team-specialist-change-delivery
+      - team-specialist-git-checkpoint
       - team-specialist-validation
       - team-specialist-review
       - team-specialist-security-reliability
@@ -77,6 +78,7 @@ Director prompt contains [SUDO]?
 | Official docs, current external facts, vendor or API research | `external-research` | `team-specialist-external-research` | Source-grounded research evidence |
 | Boundary, interface, migration, architectural contract | `architecture-contract` | `team-specialist-architecture-contract` | Architecture decision evidence |
 | Assigned file edits in a governed fork or text-only delivery | `change-delivery` | `team-specialist-change-delivery` | Implemented or proposed change delivery artifact |
+| Separately authorized long-work local checkpoint | `git-checkpoint` | `team-specialist-git-checkpoint` | Canonical Git checkpoint receipt |
 | Non-mutating command, browser, MCP, or manual evidence | `validation` | `team-specialist-validation` | Validation state and remaining gaps |
 | Independent requirement fit and regression review | `review` | `team-specialist-review` | Review state and findings |
 | Secret, abuse, reliability, observability, rollback risk | `security-reliability` | `team-specialist-security-reliability` | Risk classification and safeguards |
@@ -117,17 +119,21 @@ by the external-research station.
    memory/docs attribution for the same deliverable.
 7. Keep implementation, review, validation, and memory/docs attribution on
    different role instances for the same deliverable.
-8. Route memory mutation, git mutation, release mutation, deployment, install,
+8. Keep `git-checkpoint` separate from change delivery, validation, review,
+   memory/docs, final commit, and release-completion roles. Its protected Git
+   mutation is limited to its separately authorized exact-path checkpoint
+   procedure and canonical receipt.
+9. Route memory mutation, other git mutation, release mutation, deployment, install,
    and final completion readiness questions through the matching owner station
    or Director authorization path. The captain coordinates and reports;
    acceptance is not captain-owned, and this registry does not assign protected
    execution or evidence ownership to the captain.
-9. Route external grounding through a separate `external-research` role
+10. Route external grounding through a separate `external-research` role
    instance when a station requests current outside evidence. Do not let a
    non-research role produce source-tiered research evidence.
-10. Return blocked, unverified, or closed-with-director-risk when the required
+11. Return blocked, unverified, or closed-with-director-risk when the required
    role or member separation cannot be preserved.
-11. Treat subagents, browsers, commands, MCP reads, isolated workspaces, and
+12. Treat subagents, browsers, commands, MCP reads, isolated workspaces, and
     text-only paths as execution channels only; they are not role sources.
 
 ## Trace And Handoff Contract
@@ -159,4 +165,7 @@ The registry assigns role identity; shared trace files define the full field set
 - This registry is read-only.
 - This registry does not replace the Team-Native board, GO gate, memory gate, or review-state decision.
   It also does not replace final Director-facing synthesis or completion readiness evidence.
-- Child skills must return a change delivery artifact or an evidence artifact, not a protected-state mutation.
+- Child skills normally return a change delivery or evidence artifact. The only
+  registered protected mutation here is the scoped `git-checkpoint` procedure,
+  which returns its canonical receipt and grants no other Git or protected
+  authority.

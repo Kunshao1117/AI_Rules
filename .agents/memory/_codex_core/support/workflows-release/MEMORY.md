@@ -4,7 +4,7 @@ scopePath: Codex/.agents/workflow-skills/
 description: >-
   專案記憶：Codex 提交、巡檢與技能鍛造工作流技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-07T22:46:31+08:00'
+last_updated: '2026-07-18T12:00:57+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -40,7 +40,7 @@ metadata:
 - The Workflow Entry Slimming Guard requires workflow entries to own only route selection, minimum load gates, evidence-matrix row, and platform adapter reference; dirty target files require current diff review and integration into existing sections.
 - `09` is commit-prep/change-summary routing, not unfinished implementation or git-status-only work; memory-write, memory index/staleness sync, git commit/push, tag/release, deploy, install, and external mutation are distinct protected phases.
 - `09` commit message subject/body and commit summaries must use Traditional Chinese meaning-first main text; this wording rule does not authorize git commit or any protected follow-on phase.
-- `10` stays automation-safe only while read-only; routine inspection cannot repair or write files without a separately resolved formal-write or protected owner station.
+- `10` and Manager Check are Git-only: report worktree, HEAD, tracking branch, and origin sync/ahead/behind/diverged/unconfirmable state; they do not inspect MCP, memory, source, health, review, or validation evidence.
 - `12` covers reusable skill/methodology creation and does not apply to discussion-only or description-only edits without a write scope.
 - Release-side evidence still requires team-task-board inheritance, role-bound delivery artifacts, review/validation separation, memory/docs disposition, source/deployed parity when relevant, and honest blocked/unverified/risk-closed states.
 
@@ -77,7 +77,7 @@ metadata:
 - 這些入口仍是 thin route，不授權 source write、memory、git、release、deploy、install 或外部變更。
 - `09` commit subject/body/summary 必須繁中語義先行，且不授權 git commit 或任何 protected follow-on phase。
 - `GO`、工作流名稱與工具確認只是路由或範圍訊號；各 protected phase 需要各自授權。
-- 例行巡檢保持唯讀；記憶寫入與 `memory_commit` 不可合併。
+- `10` 與 Manager Check 只回報 Git 狀態；不讀 MCP、記憶、來源或健康資訊。
 
 ## Tracked Files
 - Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md

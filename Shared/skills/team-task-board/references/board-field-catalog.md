@@ -26,6 +26,7 @@ yellow_resolution_state
 repair_loop_limit
 phase
 dispatch_wave
+parallel_dispatch_contract
 previous_wave_input
 next_wave_start_condition
 formal_evidence_eligibility
@@ -48,6 +49,7 @@ applicability
 station_state
 evidence_state
 station_lifecycle_state
+execution_lifecycle_state
 station_mode
 retention_reason
 conversation_health
@@ -72,6 +74,15 @@ replaces_channel_run_id
 replacement_reason
 execution_route
 execution_channel
+accepted_execution_request
+acceptance_state
+accepted_execution_profile
+accepted_model
+accepted_reasoning_effort
+accepted_context_scope_ref
+accepted_wait_policy_ref
+acceptance_variance_reason
+accepted_at
 execution_profile_application_state
 applied_model
 applied_reasoning_effort
@@ -97,6 +108,12 @@ forbidden_actions
 output_artifact_format
 stop_condition
 startup_started_at
+workload_class
+adapter_latency_class
+adapter_latency_multiplier
+adapter_first_useful_fraction
+initial_wait_budget
+initial_first_useful_budget
 first_response_deadline
 first_response_at
 last_progress_at
@@ -108,6 +125,8 @@ status_probe_resume_state
 status_probe_resume_sent_at
 soft_timeout_at
 hard_timeout_at
+extension_count
+extension_ceiling
 timeout_action
 late_result_policy
 late_result_window
@@ -126,6 +145,11 @@ delivery_artifact_status
 author_role
 source_input
 integrable_scope
+delivery_slice
+delivery_slice_id
+delivery_slice_state
+delivery_slice_legacy_fallback
+git_checkpoint_receipt
 captain_authored
 validation_handoff
 review_handoff
@@ -139,6 +163,137 @@ source_deployed_pair
 sync_direction
 sync_evidence
 ```
+
+## Field Provenance Boundary
+
+Every board field in this catalog is `internal-governance-only`. The requested snapshot carried by
+the handoff packet, nested `accepted_execution_request`, accepted flat projections,
+`applied_execution_receipt`, applied flat projections, wait-policy fields, wait-baseline fields,
+and lifecycle fields remain internal governance carriers even when they preserve
+`observed-platform-receipt` evidence.
+
+Use the five provenance classes owned by
+`Shared/policies/references/workflow-execution-spec-contract.md`:
+`official-public`, `current-session-tool-schema`, `observed-platform-receipt`,
+`internal-governance-only`, and `unverified`. Provenance is evidence metadata, not a platform
+request parameter or a new board value set. Internal fields must not enter a platform payload or be
+described as native platform receipts.
+
+Only an observed receipt that explicitly names a valid actual value may populate the corresponding
+accepted or applied actual-value projection. Successful invocation, transport identifiers, and
+internal wait or lifecycle transitions do not prove acceptance or application. When observed
+receipt evidence is absent, use the existing missing, unreported, and unverified semantics rather
+than adding a new carrier.
+
+## Nested Contract Schemas
+
+### Parallel Dispatch Contract
+
+`parallel_dispatch_contract` is the canonical board object used to decide whether bounded member
+assignments may enter the same dispatch wave. This catalog owns its nested shape and value set;
+`Shared/policies/workflow-orchestration.md` is the sole owner of dependency, wave, and same-wave
+semantics.
+
+```text
+parallel_dispatch_contract: {
+  contract_version,
+  baseline_revision,
+  baseline_status_snapshot,
+  baseline_diff_fingerprint,
+  read_scope,
+  write_scope,
+  forbidden_scope,
+  forbidden_actions,
+  owned_contracts,
+  consumed_contracts,
+  protected_invariants,
+  upstream_inputs,
+  downstream_consumers,
+  conflict_domains,
+  interface_freeze_ref,
+  same_wave_eligibility,
+  delivery_artifact_type,
+  output_artifact_format,
+  integration_owner,
+  integration_barrier,
+  stop_condition,
+  escalation_condition
+}
+```
+
+`same_wave_eligibility` uses exactly:
+
+- `eligible`
+- `ordered-after-upstream`
+- `blocked-unfrozen-interface`
+- `blocked-conflict-domain`
+- `unverified`
+- `not-applicable`
+
+The object is sealed for one dispatch decision. `baseline_revision`,
+`baseline_status_snapshot`, and `baseline_diff_fingerprint` identify the same captured worktree
+state; `interface_freeze_ref` identifies the immutable producer/consumer interface consumed by the
+candidate stations. Missing or drifted baseline evidence is `unverified`, not `eligible`.
+`integration_owner` names one owner for the combined output and `integration_barrier` names the
+point at which downstream review/validation may begin. Handoff packets carry this object without
+copying or redefining its nested fields.
+
+### Git Checkpoint Receipt
+
+`git_checkpoint_receipt` is the canonical board receipt for one separately authorized long-work
+local Git checkpoint:
+
+```text
+git_checkpoint_receipt: {
+  checkpoint_id,
+  checkpoint_state,
+  delivery_slice_id,
+  acceptance_ref,
+  authorization_snapshot: {
+    authorization_source,
+    authorization_target,
+    authorization_scope,
+    authorization_phase,
+    authorization_evidence,
+    authorization_expiry,
+    authorization_resolution_state
+  },
+  repository_root,
+  branch,
+  head_before,
+  stage_allowlist,
+  index_baseline,
+  staged_files,
+  staged_diff_hash,
+  evidence_states: {
+    minimum_static_or_tool_evidence,
+    known_breakage_state,
+    validation_state,
+    review_state,
+    memory_docs_state,
+    sync_evidence_state
+  },
+  secret_check,
+  commit_subject,
+  commit_sha,
+  head_verified,
+  push_state,
+  history_mode,
+  result,
+  blocker
+}
+```
+
+`checkpoint_state` is `eligible`, `authorized`, `staged`, `committed`, `blocked`, `unverified`, or
+`not-applicable`. `result` is `checkpoint-created`, `blocked`, `unverified`, or `not-applicable`.
+`authorization_phase` must be `git`, `index_baseline` must record an empty pre-stage index,
+`push_state` must be `not-requested`, and `history_mode` must be `append-only`. The commit subject
+must explicitly identify the commit as a checkpoint.
+
+Pending or unverified validation, review, memory/docs, or sync evidence is allowed only when
+recorded honestly in `evidence_states`; the receipt does not claim completion. The execution
+procedure and prohibited Git operations are owned solely by
+`Shared/skills/team-specialist-git-checkpoint/SKILL.md`.
 
 ## Field Value Catalog
 
@@ -186,6 +341,29 @@ legacy `formal` must be narrowed to `formal-readonly` or `formal-write`.
 - `blocked`
 - `not-applicable`
 
+`station_lifecycle_state` is retained as a station-retention compatibility view. The single shared
+execution lifecycle field is `execution_lifecycle_state`, with this canonical vocabulary:
+
+- `packet-ready`
+- `starting`
+- `running-silent`
+- `progress-reported`
+- `probe-eligible`
+- `probe-pending`
+- `paused-for-probe`
+- `resume-required`
+- `soft-overrun`
+- `replacement-eligible`
+- `cancel-pending`
+- `returned`
+- `late-returned`
+- `blocked`
+- `unverified`
+- `closed`
+
+Adapters map their events into these values and must not add model- or vendor-specific lifecycle
+states. The handoff packet owns wait-policy transitions; this catalog owns the values.
+
 `channel_capability` records whether the requested channel can run:
 
 - `available`
@@ -202,6 +380,34 @@ legacy `formal` must be narrowed to `formal-readonly` or `formal-write`.
 - `unavailable`
 - `blocked`
 - `not-authorized`
+
+`acceptance_state` records adapter acceptance separately from requested and applied state:
+
+- `pending`
+- `exact`
+- `alternative`
+- `partial`
+- `missing`
+- `conflicting`
+- `not-applicable`
+
+A complete `accepted_execution_request` contains the packet ID, run ID, acceptance state, accepted
+profile, accepted model, accepted reasoning effort, accepted context reference, accepted wait
+reference, variance reason, and acceptance timestamp defined by the execution spec contract. The
+nested `accepted_execution_request` is the immutable ledgered receipt. The flat fields from
+`acceptance_state` through `accepted_at` are projections of that one object, not independently
+writable peer records. Board ledgering derives every flat field from the nested receipt; any nested
+and flat mismatch is `conflicting` with `acceptance-receipt-conflict` rather than a second truth.
+
+Canonical exact, alternative, partial, missing, and conflicting reconciliation, including the
+allowed `acceptance_variance_reason` codes and empty/non-empty detail rules, is owned by
+`Shared/policies/references/workflow-execution-spec-contract.md`. A legacy channel with no
+acceptance receipt uses `legacy-acceptance-receipt-missing`. Tool acceptance never implies application. acceptance is not application.
+
+Requested, accepted, and applied fields are immutable peer layers. Board reconciliation compares
+them but never overwrites one layer with another, fills missing accepted values from requested
+intent, or fills missing applied values from acceptance. A complete application receipt remains
+necessary for an applied state.
 
 `execution_profile_application_state` records canonical observed application
 state after channel receipt handling:
@@ -260,8 +466,8 @@ row contains inconsistent capability, packet ID, run ID, or receipt values:
 | Capability is `available` or `conditional`, invocation is `not-started`, `requested`, or `running`, and receipt is `pending` | `pending` | Both `unreported` | `not-applicable`; empty detail |
 | Invocation is `blocked` or `not-authorized` and no actual applied value exists | `blocked` | Both `not-applied` | `policy-blocked` for `blocked`; `authorization-blocked` for `not-authorized`; non-empty detail |
 | Invocation is `returned`, but the receipt is missing or partial | `unverified` | Preserve each actually reported value; each missing value is `unreported` | `platform-receipt-missing`; non-empty detail naming every missing receipt field |
-| Invocation is `returned`, the receipt is complete, and all requested comparisons match | `applied` | Both actual channel-reported values | `none`; empty detail |
-| Invocation is `returned`, the receipt is complete, and at least one requested comparison mismatches | `applied-with-variance` | Both actual channel-reported values | `platform-selected-alternative`, or `requested-model-unavailable` / `requested-effort-unavailable` when the channel explicitly reports that cause; non-empty detail |
+| Invocation is `returned`, the receipt is complete, its self-report agrees with reconciliation, and all requested comparisons match | `applied` | Both actual channel-reported values | `none`; empty detail |
+| Invocation is `returned`, the receipt is complete, its self-report agrees with reconciliation, and at least one requested comparison mismatches | `applied-with-variance` | Both actual channel-reported values | `platform-selected-alternative`, or `requested-model-unavailable` / `requested-effort-unavailable` when the channel explicitly reports that cause; non-empty detail |
 | Capability, invocation, packet ID, run ID, or receipt values are inconsistent | `unverified` | Preserve each actually reported value; each missing value is `unreported`; never infer a value | `receipt-conflict`; non-empty detail naming the conflict |
 
 A complete `applied_execution_receipt` contains every field required by the
@@ -269,10 +475,25 @@ handoff receipt schema: `handoff_packet_id`, `channel_run_id`,
 `execution_profile_application_state`, `applied_model`,
 `applied_reasoning_effort`, and `execution_profile_variance_reason`. The packet
 ID and run ID must match the board row. The receipt application state must be a
-valid application-state value, and the variance reason must contain a valid
-code and a detail that follows the empty/non-empty rule below. Actual model and
-reasoning-effort values must be channel-reported and must not be `unreported`,
-`not-applied`, `not-applicable`, or any other sentinel.
+valid complete-receipt value: `applied` or `applied-with-variance`. A complete
+executable receipt also requires board `channel_capability` to be `available`
+or `conditional` and `channel_invocation_status` to be `returned`. Packet and
+run IDs must be non-empty, non-sentinel values and must match the board row.
+
+The variance reason must be a non-null object containing both `code` and
+`detail`. Receipt-supplied codes are limited to `none`,
+`platform-selected-alternative`, `requested-model-unavailable`, and
+`requested-effort-unavailable`; other canonical variance codes are board
+reconciliation outputs, not claims a receipt can use to prove itself. An empty
+object, unknown code, missing property, or invalid empty/non-empty detail makes
+the receipt partial or conflicting according to the matrix.
+
+Actual model and reasoning-effort values must be channel-reported, non-empty,
+and must not be `unreported`, `unknown`, `unverified`, `missing`, `not-applied`,
+`not-applicable`, or any other sentinel. A self-reported application state or
+variance object that disagrees with the requested-value comparison is a
+`receipt-conflict`; the board does not normalize that contradiction into an
+applied state.
 
 The receipt's application state and variance reason are validated inputs to
 reconciliation, not canonical outputs. The board still recomputes canonical
@@ -308,6 +529,41 @@ variance code, `detail` must be non-empty.
 - `completion`
 - `protected-gate`
 - `not-applicable`
+
+`workload_class` uses the platform-neutral handoff classes:
+
+- `short-evidence`
+- `broad-read`
+- `architecture-research`
+- `change-delivery`
+- `validation-command`
+- `external-tool`
+
+`adapter_latency_class`, `adapter_latency_multiplier`, and
+`adapter_first_useful_fraction` are opaque adapter-reported timing inputs. The
+wait baseline computes `initial_first_useful_budget` from the formal formula in
+the execution spec contract. These fields may extend wait budgets only under
+the handoff wait-policy contract and never select a profile, change scope or
+gates, or prove applied execution. `extension_count` is at most two and
+`extension_ceiling` is at most two times `initial_wait_budget`.
+
+`delivery_slice` is the acceptance-sized implementation/review/validation unit from the execution
+spec contract. `delivery_slice_state` values are:
+
+- `draft`
+- `authorized`
+- `in-delivery`
+- `checkpoint-required`
+- `delivered`
+- `review-validation-pending`
+- `returned-for-repair`
+- `blocked`
+- `unverified`
+- `closed`
+
+`delivery_slice_legacy_fallback` is `not-applicable` or `inferred-current-acceptance`. Legacy
+fallback maps only the current delivery artifact or authorized acceptance unit and never expands
+scope. Review and validation ledger against the slice rather than individual files or micro-steps.
 
 `context_visibility` records who actually saw the assigned scope:
 

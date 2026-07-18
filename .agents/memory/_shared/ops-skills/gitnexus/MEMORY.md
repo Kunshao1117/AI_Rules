@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared GitNexus 索引、探索、除錯與影響分析技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-07T05:52:39+08:00'
+last_updated: '2026-07-18T11:57:31+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -41,6 +41,7 @@ metadata:
 - Read `gitnexus://repo/{name}/context` before relying on graph answers; if the context reports stale index, refresh with `npx gitnexus analyze` before using the result as current evidence.
 - `gitnexus-cli` owns analyze/status/clean/wiki/list commands; exploration, debugging, impact, and refactoring skills own their narrower query routes.
 - Impact analysis and safe refactoring use graph dependency and blast-radius evidence before edits, but source writes still require the normal change-delivery route.
+- GitNexus refactoring does not include tests by default; test planning, edits, or execution require current acceptance and exact authorization, then only the accepted commands for the affected scope.
 - Repository indexing outputs are task evidence, not permanent memory by default.
 
 ## Active Constraints

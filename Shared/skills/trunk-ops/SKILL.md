@@ -2,8 +2,8 @@
 name: trunk-ops
 description: >
   測試品質與 CI 不穩定測試治理：Trunk CI 測試品質操作食譜：測試框架偵測、不穩定測試修復、CI 上傳設定。
-  Use when: 呼叫 trunk 相關工具、CI 測試修復/不穩定測試/flaky test/測試上傳設定 的場景。
-  DO NOT use when: 非 CI 測試品質/不穩定測試場景、一般本機測試執行。
+  Use when: 現有驗收與精確授權已指名 Trunk CI/test operation、flaky-test repair 或 test-upload setting。
+  DO NOT use when: 沒有明確的 test/CI scope、非 CI test-quality work，或一般 local test execution。
   MCP Server: trunk (native, non-Gateway)
 metadata:
   author: antigravity
@@ -17,13 +17,21 @@ metadata:
 
 # Trunk Ops — CI Test Quality Recipes
 
+## Test Scope Opt-In
+
+Use this skill only after the current acceptance and exact authorization bind the relevant test or CI
+operation. It does not make framework detection, test execution, upload, or flaky-test work a default
+follow-up to validation, review, quality practice, regression reasoning, or a workflow route. Test
+authorization is owned by `Shared/policies/authorization-resolution.md`; invoke this skill only after
+that canonical tool-first gate approves a minimal test exception.
+
 > [!EXECUTION BOUNDARY]
 > **主腦專屬 (Direct Execution Only)**
 > 此技能與 `mcp_trunk_*` 工具僅限主腦 (Master Agent/IDE) 於本機直連執行，嚴禁委派給 CLI 或其他終端子代理人。
 
 ## HITL Boundary
 
-- Read-only framework detection and flaky-test recommendations may proceed silently.
+- Read-only framework detection and flaky-test recommendations may proceed only inside the accepted test/CI scope.
 - Installing upload tooling is a protected phase.
 - Modifying CI configuration is a protected phase.
 - Applying generated fixes is a protected phase.
@@ -37,13 +45,13 @@ metadata:
 - Install, CI-write, source-fix, remote-setting mutation, and upload are separate protected phases.
 - Discovery of Trunk tool schemas is not permission to execute mutating tools.
 
-## Recipe 1: Test Framework Detection（測試框架偵測）
+## Recipe 1: Authorized Test Framework Detection（已授權測試框架偵測）
 
 1. `detect-frameworks` — Scan codebase to identify test frameworks
 2. Review returned instructions and execute the codebase analysis
 3. Output: list of detected frameworks（如 jest, vitest, playwright, pytest 等）
 
-> Use this as a pre-step before setting up trunk uploads.
+> Use this only when the accepted upload scope requires framework identification.
 
 ## Recipe 2: Setup Trunk Uploads（CI 測試上傳設定）
 
@@ -80,7 +88,7 @@ Director provides fix ID?
    - `orgSlug`: optional — Trunk org slug
 3. Review returned fix recommendations
 4. Apply fixes via `/04_fix` workflow
-5. Run tests locally to verify stability
+5. Run only the exact test command named by the accepted test scope to record stability evidence
 6. Iterate until test passes reliably
 
 ## Gotchas (踩坑點)

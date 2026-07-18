@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 程式掃描、診斷與品質操作技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-07T22:46:44+08:00'
+last_updated: '2026-07-18T12:45:23+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T20:50:00+08:00'
+last_verified: '2026-07-17T20:08:47+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,21 +35,20 @@ metadata:
 # _shared.ops-skills.code-analysis — Code Analysis Skills Memory
 
 ## Current Truth
-- This child card owns Shared code scanning, broad diagnosis, code-quality, and audit-engine operational skills.
+- This child card owns Shared code scanning, broad diagnosis, and code-quality operational skills.
 - Tracked skill descriptions now start with Traditional Chinese task meaning, while internal artifact keys remain canonical English.
-- Code-audit owns deterministic CLI or Gateway-backed scans; Gateway discovery is schema evidence only, and real downstream MCP calls must go through `gateway__call_tool` with the current workspace.
+- Code-audit owns deterministic CLI or Gateway-backed scans only when current acceptance directly requires that evidence and no lower-cost evidence is sufficient; Git-only `/10_routine` must not invoke it.
 - Code-diagnosis owns broad 3+ module or 15+ file fault diagnosis; its CLI report is preliminary evidence and still needs captain review.
-- Audit-engine is the /08 semantic audit engine only; it classifies depth, project surface, inventory denominator, evidence packets, traffic lights, and coverage without running tools or writing memory.
-- Audit-engine treats screenshot-only visual evidence, fake-data visual evidence, sampled checks, and synthetic evidence as partial or unverified when real behavior is in scope.
-- Code-quality routes simple-versus-complex implementation choices to `quality-review-governance`, rejects speculative abstraction and line-count-only splitting, and keeps [SUDO] or 03-1 output from supporting `complete`.
+- Code-quality cites the canonical source responsibility contract: one responsibility by default, a second only with strong coupling and independent review, and a mandatory operator-resolved split before a third responsibility is written. Line count alone still does not justify fragmentation.
 
 ## Active Constraints
-- Keep scan commands, report templates, diagnosis prompts, and audit matrices in tracked source references; this card stores ownership and durable routing constraints only.
-- Do not mark scan, diagnosis, quality, or audit findings as verified unless current source, command output, or accepted evidence was checked in the current task.
-- In /08 audit, use audit-engine semantics instead of re-running code-audit relationship/API/dead-code/key-function/data-layer checks locally.
+- Keep scan commands, report templates, and diagnosis prompts in tracked source references; this card stores ownership and durable routing constraints only.
+- Do not mark scan, diagnosis, or quality findings as verified unless current source, command output, or accepted evidence was checked in the current task.
+- Do not run test-of-test or check-of-check work, and do not repair tests or checkers merely to make their own evidence pass.
 
 ## Cycle Events
-- 04: Repaired stale dirty-source memory for code-audit, code-diagnosis, code-quality, and audit-engine trigger language, evidence, and routing boundaries.
+- 04: Retired the removed semantic audit engine and narrowed code-audit to explicitly accepted direct scan evidence outside Git-only routine reporting.
+- 05: Refreshed code-quality ownership after responsibility counting moved to the canonical source-size policy.
 - 03: Recorded code-quality hardening so [SUDO] never skips gates and 03-1 experiment work cannot support production-ready or complete claims.
 - 02: Added minimum-sufficient-complexity alignment to code-quality through quality-review-governance.
 - 01: Split code analysis ownership out of the broad Shared operational skills card.
@@ -58,10 +57,9 @@ metadata:
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
 
 ## Evidence Base
-- source:Shared/skills/code-audit/SKILL.md and references — Verified zh-TW trigger wording, Gateway execution boundary, scan report meaning-first labels, and current workspace requirement.
+- source:Shared/skills/code-audit/SKILL.md and references — Verified the explicit non-routine scan boundary, Gateway execution boundary, current workspace requirement, and Git-only `/10_routine` exclusion.
 - source:Shared/skills/code-diagnosis/SKILL.md and references — Verified broad-diagnosis trigger boundary and preliminary CLI diagnosis report contract.
-- source:Shared/skills/code-quality/SKILL.md — Verified [SUDO], 03-1 prototype-only, minimum-sufficient-complexity, and anti-fragmentation constraints.
-- source:Shared/skills/audit-engine/SKILL.md and references — Verified /08-only semantic engine boundary, inventory denominator, real-evidence, visual/fake-data, and memory-write boundaries.
+- source:Shared/skills/code-quality/SKILL.md and Shared/policies/source-document-size-governance.md — Verified responsibility declaration, independent second-responsibility review, third-responsibility split gate, and anti-fragmentation constraints.
 - source:.agents/memory/_shared/ops-skills/archive-001.md — Previous parent-card content preserved during migration.
 - tool:memory_audit — Granularity advisory identified this card as too broad by tracked-file count.
 - director:2026-06-15 — GO SPLIT authorized controlled child-card split.
@@ -74,9 +72,10 @@ metadata:
 - No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
 
 ## 中文摘要
-- 此子卡負責 Shared 程式掃描、診斷、品質與健檢語義引擎技能。
+- 此子卡負責 Shared 程式掃描、診斷與品質技能；已移除的語義健檢引擎不再屬於現行能力。
 - 這批 dirty source 已改成繁中 meaning-first 觸發語意，內部報告欄位仍保留 canonical English。
-- 真實工具執行、Gateway MCP 呼叫與 /08 audit 語義判定不能互相取代。
+- 只有驗收直接需要且沒有更低成本證據時才執行程式掃描；Git-only `/10_routine` 不得呼叫掃描技能。
+- code-quality 現在引用唯一的責任治理來源：預設一責任、第二責任需強耦合審查、第三責任必須先拆檔並詢問操作者。
 - 父卡只保留導覽，不再直接追蹤這批檔案。
 
 ## Tracked Files
@@ -88,10 +87,6 @@ metadata:
 - Shared/skills/code-diagnosis/references/diagnosis-task-prompt.md
 - Shared/skills/code-diagnosis/SKILL.md
 - Shared/skills/code-quality/SKILL.md
-- Shared/skills/audit-engine/SKILL.md
-- Shared/skills/audit-engine/references/audit-inventory-contracts.md
-- Shared/skills/audit-engine/references/project-surface-matrix.md
-- Shared/skills/audit-engine/references/surface-audit-recipes.md
 
 ## Relations
 - _shared.ops-skills (parent card: operational-skill family index)

@@ -4,7 +4,7 @@ scopePath: Antigravity/.agents/workflows/
 description: >-
   專案記憶：Antigravity 測試、巡檢、交接與技能鍛造工作流。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-07T05:51:07+08:00'
+last_updated: '2026-07-18T12:01:37+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -38,7 +38,7 @@ metadata:
 - This child card owns Antigravity testing, routine, handoff, and skill-forge workflow entries.
 - Operational workflow descriptions now start with Chinese meaning and keep English exact tokens for trigger precision.
 - `06_test` covers validation and testing evidence; evidence levels do not authorize repair by themselves.
-- `10_routine` remains automation-safe read-only health inspection for skills, document counts, memory staleness, and MCP settings; direct repair or file writes route back to owner workflows.
+- `10_routine` and Manager Check are Git-only: they report worktree, HEAD, tracking branch, and origin sync/ahead/behind/diverged/unconfirmable state; they do not inspect MCP, memory, source content, or health metrics.
 - `11_handoff` covers handoff and continuation prompts and must not be used while implementation or commit work is still active.
 - `12_skill_forge` covers Shared/project/Codex skill creation and reusable-method extraction; no-write skill discussion or description-only edits use a narrower route.
 - Operational entries reference workflow-orchestration before broad reads, station work, validation, review, memory/docs, completion, or any write path.
@@ -49,9 +49,10 @@ metadata:
 
 ## Active Constraints
 - Do not claim real behavior verification without captured operation evidence or an explicit blocked state.
-- Keep handoff, routine, and skill-forge workflows from mutating source, memory, project context, git, release, deployment, install, credentials, or external state without a phase-specific scope-bound gate.
+- Keep handoff and skill-forge workflows from mutating protected state without a phase-specific gate; routine is Git-only and must not widen into source, memory, MCP, or health inspection.
 
 ## Cycle Events
+- 25: Replaced routine health inspection with the Git-only worktree, HEAD, tracking-branch, and origin-relation contract.
 - 24: Repaired stale warning state against 2026-07-07 operations workflow dirty source for description normalization, missing memory evidence wording, read-only routine boundaries, and protected action routing.
 - 23: Recorded the 2026-07-03 operations workflow authorization-semantics repair; routine stays read-only, write proposals route to owner workflows, and affected source/deployed workflow pairs were included in the 18/18 parity verification.
 - 22: Recorded Batch 3b scope-bound GO semantics for Antigravity skill forge; upstream six-file Measure-GovernanceSemantics evidence reported Red 0 / Yellow 0 and was not rerun in this memory phase.
@@ -83,7 +84,7 @@ metadata:
 ## 中文摘要
 - 此子卡負責 Antigravity 測試、巡檢、交接與技能鍛造入口。
 - Dirty source 已把操作 workflow description 改成繁中語義先行，並保留必要英文觸發 token。
-- `10_routine` 保持唯讀；需要直接修復或寫入時要轉回 owner workflow。
+- `10_routine` 與 Manager Check 只回報 Git 工作樹、HEAD、追蹤分支與 origin 同步狀態，不讀 MCP、記憶、來源或健康指標。
 - `11_handoff` 不用於仍在實作或需要提交的狀態。
 - `12_skill_forge` 用於實際技能鍛造與可重用方法萃取；純討論或 description-only edit 走較窄路由。
 - Missing memory evidence 現在明確寫成 `unverified` 或 `blocked`；受保護動作仍需 phase-specific scope-bound gate。

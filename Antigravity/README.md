@@ -78,7 +78,7 @@ Antigravity workflow routes are `.agents/workflows/` entries:
 
 `00_chat`, `01_explore`, `02_blueprint`, `03_build`,
 `03-1_experiment`, `04_fix`, `05_condense`, `06_test`, `07_debug`,
-`08_audit`, `09_commit`, `10_routine`, `11_handoff`, and
+`09_commit`, `10_routine`, `11_handoff`, and
 `12_skill_forge`.
 
 Legacy split-stage files remain compatibility surfaces. They do not create new

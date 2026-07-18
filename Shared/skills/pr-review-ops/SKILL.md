@@ -29,7 +29,7 @@ metadata:
 ## Trigger Conditions
 
 - 總監要求審查特定 PR（code review on a specific PR）
-- 健檢流程（`/08_audit`）發現待審 PR
+- 已接受的建構或修復流程發現待審 PR
 - 建構後工作流需要 peer review gate
 
 ## Recipe 1: PR Content Analysis

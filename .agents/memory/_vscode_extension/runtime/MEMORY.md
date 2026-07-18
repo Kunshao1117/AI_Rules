@@ -4,7 +4,7 @@ scopePath: Extensions/vscode-ai-rules-manager/src/
 description: >-
   專案記憶：VS Code 管理器外掛 runtime TypeScript 來源。Use when: task touches this split
   memory scope or its tracked files.
-last_updated: '2026-07-04T22:52:26+08:00'
+last_updated: '2026-07-18T12:45:36+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -15,8 +15,8 @@ last_verified: '2026-07-04T21:36:13+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
-cycle_id: 2026-06-15-001
-cycle_event_count: 4
+cycle_id: 2026-07-18-001
+cycle_event_count: 1
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,11 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _vscode_extension.runtime — VS Code Extension Runtime Memory
 
 ## Current Truth
-- The extension exposes read-only sync coverage checks and governed memory main-file migration commands.
-- The extension sync UI tells operators that project-rule sync deploys `.agents/tools` project-local tools.
+- The extension source-status UI is Git-only: Check and Plan report repository state, while Apply aligns the source and reports Git state without inspecting governance or source content.
+- The extension retains governed memory main-file migration and user/project rule synchronization; project-rule sync still deploys `.agents/tools` project-local tools.
 - This child card owns VS Code extension TypeScript runtime source files.
 - The extension UI delegates governed actions to repository PowerShell scripts.
 - User-level settings remain the trusted source for repository root, repository URL, and PowerShell executable overrides.
@@ -49,15 +50,13 @@ metadata:
 - Do not silently install or update VSIX packages from runtime UI behavior.
 
 ## Cycle Events
-- 04: Hardened managed repository trust: non-default `repoUrl` now requires explicit trust, and destructive Git operations re-check the managed cache path and Git directory before reset/clean.
-- 03: Updated sync coverage and project sync runtime text to include project-local tools.
-- 02: Added VS Code commands for sync coverage checks and memory main-file migration.
-- 01: Split VS Code extension runtime source ownership out of the extension parent card.
+- 01: Consolidated runtime ownership after source status became Git-only and the former governance-check commands were removed while governed sync and memory migration remained.
 
 ## Archive Index
 - Parent archives remain at .agents/memory/_vscode_extension/archive-001.md and archive-002.md.
 
 ## Evidence Base
+- source:Extensions/vscode-ai-rules-manager/src/panel.ts, `commands.ts`, and `scriptRunner.ts` — Verified Git-only source status/alignment UI and removal of governance-check commands.
 - source:.agents/memory/_vscode_extension/archive-002.md — Previous active card snapshot preserved.
 - source-memory:_system.scripts — D0 minimal validation script ownership remains with `_system.scripts`; this card records scriptRunner readiness, managed repository, package runtime, and packaged VSIX sentinel constraints.
 - tool:memory_audit — Granularity advisory identified extension ownership as a split candidate.
@@ -73,6 +72,7 @@ metadata:
 ## 中文摘要
 - 此子卡負責 VS Code 外掛 TypeScript runtime。
 - UI 動作委派給受治理的 PowerShell 腳本。
+- 來源狀態與對齊操作只回報 Git；治理健檢與同步完整性命令已移除，規則同步與記憶遷移仍保留。
 - D0 minimal 會檢查 runtime readiness 與 managed-cache 安全哨兵。
 
 ## Tracked Files

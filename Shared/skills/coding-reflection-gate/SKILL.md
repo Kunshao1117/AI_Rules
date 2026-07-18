@@ -16,6 +16,11 @@ metadata:
   style: hybrid
   memory_awareness: read
   tool_scope: ["filesystem:read", "terminal:read"]
+  platforms: ["codex"]
+  lifecycle_phase: ["pre-execution", "retry-reroute"]
+  role: workflow-routing
+  human_gate: conditional
+  automation_safe: true
 ---
 
 # Coding Reflection Gate — Route Reflection Decision

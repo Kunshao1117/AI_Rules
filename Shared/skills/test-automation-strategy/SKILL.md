@@ -1,9 +1,11 @@
 ---
 name: test-automation-strategy
 description: >
-  自動化測試選擇器與介面證據策略（Testing）：DOM element interaction patterns, selector strategy, interface visual evidence strategy, and auto-fix feedback loops.
-  Use when: 需要 DOM 選擇器策略（data-testid/aria-label 選擇）、E2E 測試的自動修復迴圈、視覺證據策略、介面適配證據、或繁體中文 UI 字串斷言的場景。
-  DO NOT use when: 啟動或委派瀏覽器證據分支（用 browser-testing）、寫單元測試程式碼（用 test-patterns）。
+  自動化測試選擇器與介面證據策略（Testing）：DOM element interaction patterns, selector strategy, interface visual evidence strategy, and evidence classification.
+  Use when: 現有驗收已包含精確的 browser 或 E2E 測試範圍，或操作員已精確核准，
+  且需要 DOM selectors、visual evidence 或繁體中文 UI assertions。
+  DO NOT use when: 測試範圍未獲明確接受與授權，或需啟動或委派 browser
+  evidence branch（已授權時使用 browser-testing），或撰寫單元測試（使用 test-patterns）。
 metadata:
   author: antigravity
   version: "6.0"
@@ -15,14 +17,20 @@ metadata:
 
 # [SKILL: TEST AUTOMATION STRATEGY]
 
+## Test Scope Opt-In
+
+`Shared/policies/authorization-resolution.md` owns test admission, direct-evidence
+priority, failure classification, and the stop rule. This skill only supplies
+selector and interface-evidence methods after that owner has resolved an exact
+test scope; it does not admit tests, browser startup, screenshots, selectors,
+or a test project/runner.
+
 ## 1. Interface Evidence Strategy (視覺化測試)
 
-- **Visual Validation**: Do not rely solely on CLI tests.
-  UI behavior changes require real rendered evidence through the appropriate browser, desktop GUI, terminal, or platform adapter.
-- **Server Warmup**: Always ensure the local server is running and fully booted (`npm run dev` or equivalent)
-  before triggering browser verification.
-- **Artifact Proof**: After clicking elements or submitting forms, capture the final successful DOM state or screenshot
-  and embed it into the `walkthrough.md` artifact when the workflow produces one.
+- **Visual Validation**: When the accepted scope calls for browser evidence, do not rely solely on CLI tests.
+  Use the allowed browser, desktop GUI, terminal, or platform-adapter evidence.
+- **Server Warmup**: Before an authorized browser test, ensure the allowed local server is running and fully booted.
+- **Artifact Proof**: When the accepted scope requires it, capture the final DOM state or screenshot in the named artifact.
 - **Interface Adaptation Proof**: Layout, component, style, or interaction changes require evidence matched to the surface type.
   Missing evidence means the UI is pending validation, not complete.
 - **Real Function Proof**: If a feature depends on data, persistence, network calls, permissions, time, files, automation,
@@ -36,7 +44,7 @@ metadata:
 - **Real Information Priority**: Use real pages, real data, real account state, current responses, logs,
   or equivalent real-path evidence. Mock, fixture, seeded, fake, static, or idealized data is fallback evidence only
   and must be labeled with reason and residual risk.
-- **Operator Tool Discovery**: Before marking a flow untestable, search available project and platform operation paths:
+- **Operator Tool Discovery**: Before marking an authorized test flow untestable, search available project and platform operation paths:
   dev scripts, E2E commands, app routes, browser control, desktop GUI control, terminal commands, plugin host commands,
   direct requests, logs, databases, and documented workflows.
 - **Transient Failure Retention**: Temporary server warmup, browser navigation, tool connection, timeout,
@@ -73,7 +81,7 @@ For each required surface, check:
 ## 2. DOM Selection Patterns
 
 ```text
-[DOM SELECTOR GATE] For EVERY E2E DOM interaction:
+[DOM SELECTOR GATE] For each authorized E2E DOM interaction:
 ├── Element has data-testid attribute?
 │   ├── YES -> Use data-testid. Proceed silently.
 │   └── NO  -> Element has aria-label or id?
@@ -83,17 +91,13 @@ For each required surface, check:
 └── FORBIDDEN: CSS class selectors (.btn-primary, .card-header) for test interactions.
 ```
 
-## 3. Feedback Loop & Auto-Fix
+## 3. Evidence Classification And Routing
 
-- If a visual test fails (e.g., button is obscured, route returns 404), classify the browser evidence first.
-- If real function evidence is missing for a data-dependent flow, classify the result as failed or blocked before proposing fixes.
-- If visual evidence uses only fallback fake data for a data-dependent flow, classify the result as partial
-  and state the missing real-information path.
-- If a screenshot passes only at the whole-page level but detail checks are missing, classify the result as pending visual validation.
-- If an operator tool fails transiently, retry or verify readiness before dropping that evidence path.
-- If the primary operator path remains unavailable, choose an equivalent real path before concluding that the feature cannot be tested.
-- In writable workflows with Director `GO`, route DOM-error fixes through `/04_fix(修復)` before retrying the test workflow.
-- In read-only workflows, return the evidence packet and required fix route without modifying files or memory.
+Apply the owner policy's failure classification and stop rule before changing
+anything. This skill must not repair a selector, test, browser harness, or
+checker merely to make its own evidence pass. An explicitly accepted product
+repair needs its own resolved source-write scope; otherwise return the evidence
+and residual blocker without modifying files or memory.
 
 ## 4. Traditional Chinese UI Matching
 

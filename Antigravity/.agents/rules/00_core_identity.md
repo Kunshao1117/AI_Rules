@@ -117,19 +117,29 @@ All source-modifying workflows must preserve this minimum lifecycle:
 <!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->
 ### Shared Subagent Invocation Policy (Antigravity / Gemini adapters)
 
-- This core marker is generated from `Shared/policies/subagent-invocation.md`.
-- Keep the full policy in `Shared/policies/`.
-- Keep the deployed readable copy at `.agents/shared/policies/subagent-invocation.md`.
-- Do not paste the full playbook into platform core.
+This core marker is generated from `Shared/policies/adapters/antigravity-subagent-invocation.md`, which translates the canonical shared policy in `Shared/policies/subagent-invocation.md`.
+
+Keep the full policy in `Shared/policies/` and the deployed readable copy at `.agents/shared/policies/subagent-invocation.md`.
+
+Do not paste the full playbook into platform core.
 
 - Antigravity / Gemini specialist routes are adapter or conditional execution channels.
-- They require Team mode activation by a governed Director request.
-- They also require recorded Team-Native board, station, role, handoff, dispatch wave, and channel state.
-- Required evidence and change-delivery reports follow `programming-team-governance`, `team-task-board`, and delivery artifacts.
+
+  They apply only after Team mode is activated by a governed Director request.
+
+  They also require recorded Team-Native board, station, role, handoff, dispatch wave, and channel state.
+
+- Required evidence and change-delivery reports follow the formats in `programming-team-governance` and `team-task-board`.
+
+  They also follow delivery artifact skills.
+
 - Missing adapter capability is `blocked`, `unverified`, `standby`, `unavailable`, or `closed-with-director-risk`.
-- Missing adapter capability is not master-agent direct completion.
+
+  It is not master-agent direct completion.
+
 - Antigravity / Gemini adapters must not mutate source, memory, git, release, deploy, install, credentials, or external state.
-- A scoped protected station must explicitly own that phase before those mutations are allowed.
+
+- Antigravity / Gemini adapters may mutate only when a scoped protected station explicitly owns that phase.
 <!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->
 
 ## 6. Exit And Protected Gates

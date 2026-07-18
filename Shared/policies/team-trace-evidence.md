@@ -27,6 +27,15 @@ Shared value catalogs used by this trace:
   `Shared/policies/references/exception-registry.md`.
 - Source/runtime/generated copy roles:
   `Shared/policies/references/platform-copy-map.md`.
+- Parallel dispatch nested schema and values:
+  `Shared/skills/team-task-board/references/board-field-catalog.md`.
+- Dependency, wave, and same-wave semantics:
+  `Shared/policies/workflow-orchestration.md`.
+- Cross-thread package and target-confirmation lifecycle:
+  `Shared/policies/references/cross-thread-handoff-contract.md`.
+- Git checkpoint procedure and receipt:
+  `Shared/skills/team-specialist-git-checkpoint/SKILL.md` and the board field
+  catalog.
 
 The recorded runtime sequence follows `Shared/policies/workflow-orchestration.md`.
 
@@ -641,6 +650,16 @@ Status meanings and route/state separation are owned by
 - The startup payload includes `delivery_artifact_type` and `stop_condition`.
 - Missing any startup payload field keeps the station blocked or unverified.
 - A missing startup payload cannot support a complete Team-Native trace.
+- A same-wave candidate must reference its sealed
+  `parallel_dispatch_contract` and canonical `same_wave_eligibility`.
+- Different write files alone cannot support same-wave eligibility.
+- Baseline drift, unfrozen producer/consumer interface, mutable
+  contract/conflict-domain overlap, source/deployed writer split,
+  generated/source overlap, inconsistent invariants, or missing single
+  integration ownership keeps the affected dispatch ordered, blocked, or
+  unverified under `workflow-orchestration.md`.
+- An affected member that detects those stop conditions must return its
+  escalation condition; out-of-scope edits are invalid station evidence.
 - A wait timeout or missing first response is not failure evidence by itself.
 - Before opening a replacement due to slow or unknown progress, the trace must record `status_probe_state` and `status_probe_sent_at`.
 - Before opening a replacement due to slow or unknown progress, the trace must record the status probe response.
@@ -671,9 +690,23 @@ Status meanings and route/state separation are owned by
 - Any completion claim missing `station_mode`, `context_visibility`, or `handoff_ownership` for an applicable formal station is invalid.
 - In active Team mode, `operation_mode: full` requires Team-Native trace evidence.
 - Governance-impact implementation requires Team-Native trace evidence.
-- Doctor/Audit rule changes require Team-Native trace evidence.
-- Routine audit rule readiness requires Team-Native trace evidence.
 - Commit/release preparation requires Team-Native trace evidence.
+- A cross-thread continuation trace references `cross_thread_handoff_id`,
+  package fingerprint, handoff state, transport state, and target-confirmation
+  state from the canonical cross-thread contract.
+- Cross-thread continuation must not reuse `handoff_packet_id` or treat
+  transport success as target confirmation.
+- Cross-thread `authority_transfer_state` remains `not-transferred`; the target
+  trace must show fresh authorization and protected-gate resolution before its
+  first legal action.
+- A created long-work Git checkpoint must reference the canonical
+  `git_checkpoint_receipt`, `role_id: git-checkpoint`, separately authorized
+  `authorization_phase: git`, exact stage allowlist, empty index baseline, one
+  local checkpoint commit, `push_state: not-requested`, and
+  `history_mode: append-only`.
+- Git checkpoint evidence may preserve pending or unverified validation,
+  review, memory/docs, or sync state. It cannot support final completion,
+  final-commit readiness, or release readiness by itself.
 - Missing trace is a blocked Red audit finding, not a Yellow advisory.
 - Trace records or a clearly labeled evidence appendix must preserve parseable `stations` and `delivery_artifacts`.
 - Trace records or a clearly labeled evidence appendix must preserve parseable `role_instance_id`.
@@ -760,6 +793,14 @@ These patterns must not pass:
 - Exception: the station is explicitly auditing a blocked/unverified missing-artifact state.
 - Two or more evidence-oriented stations marked direct without station-specific exception, replacement evidence, and residual state.
 - Missing previous-wave input or next-wave start condition on a formal board.
+- Same-wave writers dispatched without a fresh canonical
+  `parallel_dispatch_contract`.
+- Same-wave eligibility inferred only from different files, or retained after
+  baseline drift, an unfrozen interface, producer/consumer contract change,
+  conflict-domain overlap, source/deployed writer split, or generated/source
+  overlap.
+- Acceptance-sized work split into repeated per-file micro-dispatch merely to
+  create parallel channels.
 - Captain substitute authoring described as full team completion.
 - Captain substitute authoring recorded as change delivery, validation, review, memory/docs evidence, or completion evidence.
 - Missing independent review described as complete instead of blocked, unverified, or closed-with-director-risk.
@@ -787,9 +828,17 @@ These patterns must not pass:
 - Missing startup payload cannot be counted as complete trace evidence.
 - Missing Team-Native trace evidence for `operation_mode: full`.
 - Missing Team-Native trace evidence for governance-impact implementation.
-- Missing Team-Native trace evidence for Doctor/Audit rule changes.
-- Missing Team-Native trace evidence for routine audit rule readiness.
 - Missing Team-Native trace evidence for commit/release preparation.
+- Reusing a station `handoff_packet_id` as a cross-thread handoff identifier.
+- Treating send/create/move transport success, an operation ID, or a status
+  revision as target-thread confirmation.
+- Treating a cross-thread package or target confirmation as transferred
+  authorization.
+- Creating, staging, or committing a Git checkpoint because of elapsed time,
+  dirty files, generic `GO`, or long-work wording without a separately
+  authorized `git-checkpoint` station and canonical receipt.
+- Treating a Git checkpoint as final completion, final commit, validation,
+  review, memory/docs, sync, push, or release evidence.
 - A `completion_state` value that is not defined by
   `Shared/policies/references/completion-state-machine.md`.
 - A non-complete `completion_state` paired with a completion claim.
@@ -810,7 +859,7 @@ These patterns must not pass:
 - Downstream stations must not treat `requested`, `partial`, `no-evidence`, or `conflicted` as sufficient grounding evidence.
 - Downstream stations must not treat `blocked` or `unverified` as sufficient grounding evidence.
 - `operation_mode: daily` used for bottom-layer refactor, cross-file governance changes, or specialist skill rewrites.
-- `operation_mode: daily` used for Doctor/Audit rule changes or commit/release preparation.
+- `operation_mode: daily` used for commit/release preparation.
 - `operation_mode: daily` used for deployment/install/external-state readiness or any other full-only work.
 - `operation_mode: daily` described as full team completion without proving the task itself did not require full station separation.
 - `operation_mode: full` missing separated change delivery, validation, or review evidence.

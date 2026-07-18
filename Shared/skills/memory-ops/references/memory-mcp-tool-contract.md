@@ -24,9 +24,8 @@ When cartridge-system is routed through Multi-MCP Gateway, schema discovery is n
 | 03 Build | Read relevant card status and ownership before writes; use dependency evidence when indirect staleness is reported | Memory writes happen only after source changes land and card content is updated |
 | 04 Fix | Read ownership, status, and dependency evidence before root-cause repair; record only verified durable facts | Do not use `memory_commit` as a staleness reset shortcut |
 | 05 Condense | Use workspace and context inventory evidence to separate source facts from preferences and temporary observations | `_system` or context writes require authorization resolution and the matching memory/context protected gate; context writes preserve `GO CONTEXT` or `GO DNA` when applicable |
-| 08 Audit | Use workspace brief, memory audit, context audit, and graph evidence when available; missing tools become unverified or blocked findings | Audit writes only intermediate logs unless a later workflow updates source memory |
 | 09 Commit | Run `commit_preflight` or equivalent memory status evidence before commit/push | Dirty memory or unattributed files block commit until resolved or explicitly overridden |
-| 10 Routine | Use read-only workspace, memory, context, and sync integrity evidence only | Routine inspection is automation-safe only while no mutating MCP call is made |
+| 10 Routine | No memory or context evidence: this Git-only route does not inspect MCP, memory, or source content | No MCP calls |
 | 11 Handoff | Include workspace brief, memory status, stale cards, blockers, and unresolved context evidence | Handoff does not mutate memory by itself |
 | 12 Skill Forge | Read ownership, memory status, and skill governance evidence before creating or changing shared skills | New or modified source skills require memory attribution before completion |
 

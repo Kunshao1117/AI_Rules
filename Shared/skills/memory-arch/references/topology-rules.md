@@ -23,7 +23,7 @@ phase needed. Do not create folders, write active memory main files, or call
 substitution.
 
 ```text
-New module identified by /02_blueprint or /08_audit?
+New module identified by /02_blueprint?
 ├── Step 1: Determine nesting level (see Nesting Decision Tree)
 ├── Step 2: Create folder at resolved path → `.agents/memory/{module}/`
 ├── Step 3: Create the active memory main file using template → see `../../memory-ops/references/memory-template.md`

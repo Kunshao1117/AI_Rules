@@ -8,8 +8,6 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
     "aiRules.checkExtensionUpdate",
     "aiRules.planUpdate",
     "aiRules.applyUpdate",
-    "aiRules.doctor",
-    "aiRules.syncCoverageCheck",
     "aiRules.syncGlobalRules",
     "aiRules.syncProjectRules",
     "aiRules.syncProjectRulesCodex",
@@ -46,14 +44,12 @@ export class AiRulesPanelProvider implements vscode.WebviewViewProvider {
     const nonce = crypto.randomBytes(16).toString("base64");
     const sections = [
       {
-        title: "來源更新與巡檢",
+        title: "來源更新",
         buttons: [
-          ["aiRules.checkUpdate", "檢查來源狀態", "讀取 AI_Rules 遠端來源與使用者層規則漂移"],
+          ["aiRules.checkUpdate", "檢查來源狀態", "讀取 AI_Rules 的 Git snapshot 與版本關係"],
           ["aiRules.checkExtensionUpdate", "檢查 VSIX 新版", "查 GitHub Release 是否有新版安裝包"],
-          ["aiRules.planUpdate", "查看來源更新影響", "說明遠端來源對齊後會做的巡檢"],
-          ["aiRules.applyUpdate", "對齊 AI_Rules 遠端來源", "確認後對齊來源；不安裝 VSIX、不同步專案規則"],
-          ["aiRules.doctor", "治理巡檢 Doctor", "只檢查規範、技能與連結；不寫入"],
-          ["aiRules.syncCoverageCheck", "同步完整性檢查", "檢查共用治理參考、支援檔、專案工具與外掛入口是否完整"]
+          ["aiRules.planUpdate", "查看來源更新影響", "顯示遠端來源的 Git 對齊關係"],
+          ["aiRules.applyUpdate", "對齊 AI_Rules 遠端來源", "確認後對齊來源；不安裝 VSIX、不同步專案規則"]
         ]
       },
       {

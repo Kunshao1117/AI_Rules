@@ -1,6 +1,6 @@
 ---
 name: "11-handoff-交接"
-description: "交接與接手提示產出：適用於 handoff、彙整目前成果、掃描記憶卡並產出下一個 AI 可接手的提示（Use when: handoff, transition prompt）。不適用於仍在實作或需要提交（DO NOT use when: implementation in progress, commit）。"
+description: "交接與接手提示產出：適用於 handoff、跨 Codex 對話 continuation package、彙整目前成果並產出下一個 AI 可接手的提示（Use when: handoff, cross-thread continuation, transition prompt）。不適用於在目前對話繼續實作或執行提交（DO NOT use when: continue implementation here, commit execution）。"
 metadata:
   author: antigravity
   version: "2.0"
@@ -33,6 +33,11 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 6. Skill/stage governance: read `.agents/shared/skill-governance.md` only when editing workflow entries, skills, shared policies, or governance boundaries; read `.agents/shared/workflow-stage-procedures.md` only when the concrete phase checklist is needed, using section `11 Handoff` without copying it back here.
 7. Phase and station details: load write, protected-action, review, validation, memory/docs, completion, and delivery artifact references only when that decision, station, or phase is actually opened. Missing evidence remains `unverified`, `blocked`, or `closed-with-director-risk`; no gate is relaxed.
 8. Team-Native details: opened stations load their assigned specialist, board, handoff, role-boundary, delivery, validation, review, memory/docs, and completion skills. These are station/phase-owned references, not captain-entry preloads. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix.
+9. Cross-thread continuation: load
+   `.agents/shared/policies/references/cross-thread-handoff-contract.md` for the
+   semantic package, freshness, lifecycle, and target confirmation. Load
+   `.agents/shared/policies/adapters/codex-thread-handoff.md` only when current
+   Codex thread transport is actually requested.
 
 ## Workflow Entry Slimming Guard (入口瘦身防線)
 
@@ -46,7 +51,14 @@ Load references on demand; this entry stays a route contract, not a fixed prefli
 
 - Workflow row: `11`.
 - Procedure reference: `11 Handoff` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Summarize current state, dirty files, evidence, blockers, memory/context state, validation/review state, and next route.
+- Route summary: Summarize current state, per-path worktree state, evidence,
+  blockers, memory/context state, validation/review state, and next route.
+- For cross-thread continuation, build the shared semantic package first.
+  Station handoff, cross-thread handoff, and Codex transport remain separate
+  objects and do not share `handoff_packet_id`.
+- Codex send/create/move procedures stay in the adapter. Transport success is
+  not target confirmation, and the target must re-resolve current authorization
+  and protected gates because authority is not transferred.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - Use `formal-write` only after a scope-bound Director intent signal passes authorization resolution and binds the explicit phase, file set, command, or required protected gate.

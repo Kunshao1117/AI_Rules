@@ -318,13 +318,6 @@ Each item preserves `Keywords (EN)`, `關鍵字 (ZH)`, `Skill`, and `MCP Server`
 - Skill: trunk-ops
 - MCP Server: trunk
 
-## 53. audit-engine
-- Keywords (EN): full-spectrum health audit, evidence delivery artifact, patch stack, visual evidence,
-  project surface, compatibility, audit engine
-- 關鍵字 (ZH): 全光譜健檢、證據交付件、補丁堆疊、視覺證據、專案型態、相容性、健檢引擎
-- Skill: audit-engine
-- MCP Server: —
-
 ## 54. gitnexus-cli
 - Keywords (EN): gitnexus CLI, index repo, analyze codebase, generate wiki
 - 關鍵字 (ZH): 索引倉庫、分析代碼庫、生成 Wiki
@@ -389,4 +382,10 @@ Each item preserves `Keywords (EN)`, `關鍵字 (ZH)`, `Skill`, and `MCP Server`
 - Keywords (EN): design reflection, intent fit, definition clarity, complexity pressure, scope creep, smaller alternatives
 - 關鍵字 (ZH): 設計反思、意圖符合、定義清晰、複雜度壓力、範圍蔓延、較小替代方案
 - Skill: design-reflection-gate
+- MCP Server: —
+
+## 65. team-specialist-git-checkpoint
+- Keywords (EN): git checkpoint, long-work checkpoint, local checkpoint commit, append-only recovery
+- 關鍵字 (ZH): Git 檢查點、長工作檢查點、本機檢查點提交、追加式復原
+- Skill: team-specialist-git-checkpoint
 - MCP Server: —

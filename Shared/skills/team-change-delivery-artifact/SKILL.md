@@ -33,6 +33,9 @@ These fields are closeout/preflight comparison fields only, not authorization or
 For source, governance, workflow, skill, policy, rule-pack, script/module, memory-card, or
 public-contract changes, it also includes `size_split_impact` and `size_split_disposition`
 from the lane/size governance references.
+It also declares the touched file responsibilities and coupling evidence from
+`Shared/policies/source-document-size-governance.md`. The implementer supplies
+the inventory but cannot self-accept a coupled second responsibility.
 Diff text is only a representation format; the governing object is the change delivery artifact.
 
 Use `team-role-boundaries` to check role separation and `team-task-board` for board state.
@@ -51,6 +54,8 @@ Confirm the implementation specialist role before any execution channel is used.
 - Test or validation expectations, if provided.
 - Grounding tier or returned external research artifact when current outside facts affected implementation.
 - Lifecycle lane, stage disposition, and size/split expectations when source-bearing files are in scope.
+- Responsibility inventory, count, coupling proposal, and any exact split delta
+  reference for every source-bearing file in scope.
 
 ## Delivery Modes
 
@@ -82,8 +87,16 @@ Confirm the implementation specialist role before any execution channel is used.
    Include `size_split_impact` and `size_split_disposition` for source-bearing changes, citing
    `Shared/policies/source-document-size-governance.md` and
    `Shared/policies/references/workflow-lane-routing.md` instead of copying threshold tables.
+   Include `responsibility_inventory`, `responsibility_count`,
+   `second_responsibility_coupling`, `third_responsibility_split_gate`, and
+   `responsibility_split_delta_ref` using the Source Responsibility Contract in
+   `Shared/policies/source-document-size-governance.md`.
+   The inventory names each responsibility's change trigger, contract or
+   output, and validation reference. The implementer does not populate
+   `responsibility_review_disposition`; that judgment belongs to independent
+   review.
    Existing oversized baseline may be recorded as `baseline`; it is not by itself a blocker and
-   does not authorize unrelated split/refactor work.
+   does not authorize unrelated split/refactor work or a third responsibility.
    Record hooks as excluded unless explicitly scoped; do not add hook procedures from this artifact.
    Include `expected_dirty_files` for the exact files this station expects to leave dirty.
    Include `expected_untracked_files` or compact alias `expected_untracked` for exact generated/untracked paths this station expects to leave present.
@@ -127,6 +140,11 @@ stage_disposition:
 size_split_impact:
 size_split_disposition:
 size_split_reference:
+responsibility_inventory:
+responsibility_count:
+second_responsibility_coupling:
+third_responsibility_split_gate:
+responsibility_split_delta_ref:
 hooks_scope:
 source_deployed_pair:
 sync_direction:

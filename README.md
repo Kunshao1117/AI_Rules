@@ -143,7 +143,7 @@ pair exists.
 | `Antigravity/` | Gemini/Antigravity source templates and installer |
 | `Claude/` | Claude Code source templates and installer |
 | `Codex/` | OpenAI Codex source templates and installer |
-| `Scripts/` | Deployment, sync, audit, and manager automation |
+| `Scripts/` | Deployment, sync, and manager automation |
 | `Extensions/vscode-ai-rules-manager/` | Optional VS Code management extension source |
 | `.agents/` | Runtime governance for this repository and protected project memory/context |
 | `.claude/` and `.codex/` | Runtime platform copies for this repository |
