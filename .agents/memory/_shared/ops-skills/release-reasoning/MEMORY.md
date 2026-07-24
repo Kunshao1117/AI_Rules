@@ -1,22 +1,22 @@
 ---
 name: _shared.ops-skills.release-reasoning
 scopePath: Shared/skills/
-description: >-
+description: >
   專案記憶：Shared 發布治理、結構化推理與技術堆疊協議技能。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-18T11:59:12+08:00'
+last_updated: '2026-07-24T16:19:46+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-09T22:07:58+08:00'
+last_verified: '2026-07-24T13:42:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
-cycle_id: 2026-06-15-001
-cycle_event_count: 8
+cycle_id: 2026-07-24-001
+cycle_event_count: 1
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,69 +32,54 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
-# _shared.ops-skills.release-reasoning — Release and Reasoning Skills Memory
+# _shared.ops-skills.release-reasoning — Release and Reasoning Memory
 
 ## Current Truth
-- This child card owns Shared plugin release governance, structured reasoning, and tech-stack protocol skills.
-- `coding-reflection-gate` carries `metadata.kind=workflow` and remains a read-only workflow route gate used after route selection and before execution_spec/build-plan to assess ambiguity, risk, retry, and governance-depth routing; it may recommend `design-reflection-gate` but grants no write or protected-action authority.
-- `design-reflection-gate` is a read-only workflow/design-shape gate for intent fit, definition clarity, complexity pressure, scope creep, smaller alternatives, and operator-intent drift; it does not replace coding retry routing, validation, review, memory mutation, protected authorization, or completion claims.
-- Tracked release/reasoning/tech-stack skill descriptions now start with Traditional Chinese task meaning and preserve exact release, version, and tool identifiers.
-- Release decisions and technology recommendations require current evidence when the external ecosystem may have changed.
-- The card records ownership, not the latest external platform facts.
-- Tech-stack protocol now treats [SUDO] as an override/risk-closure request only; `_system` memory, scoped authorization, Team-Native, validation, review, and protected gates remain active.
-- Plugin release governance treats version bumps, changelog writes, builds, commits, tag pushes, release updates, and artifact uploads as separate protected release phases, each requiring its own current scope-bound authorization.
-- Tech-stack protocol treats `_system` memory, dependency-file, install, MCP-config, and memory-commit mutations as separate protected phases requiring their own scope-bound authorization.
-- Structured reasoning is for complex architecture, debugging, and multi-option analysis; it can be escalated or rerouted from `coding-reflection-gate`, must invoke the physical MCP tool when used, and must not replace simple direct answers.
-- Commit/preflight overrides must be single-use, exact-file allowlists with current diff/hash binding where available, auditable reason, expiry, and responsible owner; wildcard, persistent, or policy-level overrides are forbidden.
-- Reflection, release, and tech-stack routes do not add a test scope; testing starts only when current acceptance and exact authorization identify a necessary minimal exception.
+
+- This card owns Shared plugin-release governance, structured reasoning, and technology-stack protocol skills.
+- coding-reflection-gate and design-reflection-gate are read-only route gates; neither grants write or protected-action authority.
+- Plugin release, dependency/config, install, MCP-config, system-memory, and memory-commit changes remain separately scoped protected phases.
+- Structured reasoning is reserved for complex, multi-option work and must invoke its real MCP tool when selected.
 
 ## Active Constraints
-- Do not skip current official-source verification for high-change stack, release, or platform guidance.
-- Keep release playbooks and protocol details in the tracked source files.
-- Do not batch staging, commit, branch push, tag push, Release update, or artifact upload into one GO; each phase must bind the action, target, command or tool, and expiry.
-- Do not batch system memory, dependency-file edits, installs, MCP config changes, or memory_commit into one tech-stack protocol approval.
-- Latest stable guidance is advisory when the project lockfile, manifest, config, or `_system` memory pins an older compatible version.
+
+- Verify high-change stack, release, and platform guidance from current primary sources before treating it as current.
+- A GO, SUDO, preflight override, or fix ID never combines protected phases; any override is single-use and exact-file scoped.
+- Keep procedural release and technology detail in the tracked source skills.
 
 ## Cycle Events
-- 07: Recorded TGDL release/reasoning boundaries: coding-reflection-gate is metadata.kind=workflow/read-only, and commit/preflight overrides are single-use exact-file exceptions only.
-- 08: Added design-reflection-gate ownership as a read-only design-shape route gate distinct from coding-reflection-gate.
-- 06: Added `coding-reflection-gate` ownership and structured-reasoning escalation routing while preserving read-only/no-protected-authority boundaries.
-- 05: Repaired stale release/reasoning memory for zh-TW trigger wording, release-phase separation, tech-stack protected phases, and structured-reasoning routing.
-- 04: Recorded Batch 4A tech-stack protocol hardening so system memory, dependency-file, install, MCP-config, and memory-commit mutations each require separate scope-bound protected authorization.
-- 03: Recorded release governance hardening so protected release phases require separate scope-bound authorization instead of one workflow GO.
-- 02: Recorded tech-stack protocol hardening so [SUDO] cannot bypass `_system` memory or protected-action gates.
-- 01: Split release, reasoning, and tech-stack protocol ownership out of the broad Shared operational skills card.
+
+- 01: Compacted prior release/reasoning history after re-verifying current source ownership and protected-phase boundaries.
 
 ## Archive Index
-- Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
+
+- archive-001.md — Compacted pre-2026-07-24 cycle events and split-era detail.
 
 ## Evidence Base
-- upstream_artifact:memory-docs-artifact-hp-tgdl-memory-docs-20260708 plus validation va-hp-tgdl-revalidation-20260708-01 and review ra-hp-tgdl-review-delta-20260708-01 — accepted TGDL coding-reflection/preflight facts for this memory update.
-- source:Shared/skills/design-reflection-gate/SKILL.md and Shared/skills/coding-reflection-gate/SKILL.md — Verified read-only design-shape routing and coding retry/ambiguity routing boundaries on 2026-07-09.
-- upstream_artifact:2026-07-08 — Reported new-file ownership for `Shared/skills/coding-reflection-gate/SKILL.md` and structured-reasoning escalation from coding-reflection-gate.
-- source:Shared/skills/plugin-release-governance/SKILL.md — Verified plugin/extension release trigger wording, phase-separated version/changelog/build/commit/tag/release/upload governance, and no silent install/download rule.
-- source:Shared/skills/tech-stack-protocol/SKILL.md — Verified latest-stable grounding, locked stack, `_system` memory, dependency-file, install, MCP config, and memory_commit protected phase boundaries.
-- source:Shared/skills/structured-reasoning/SKILL.md — Verified complex reasoning trigger wording and physical MCP invocation constraint.
-- source:.agents/memory/_shared/ops-skills/archive-001.md — Previous parent-card content preserved during migration.
-- tool:memory_audit — Granularity advisory identified this card as too broad by tracked-file count.
-- director:2026-06-15 — GO SPLIT authorized controlled child-card split.
+
+- source:Shared/skills/coding-reflection-gate/SKILL.md
+- source:Shared/skills/design-reflection-gate/SKILL.md
+- source:Shared/skills/plugin-release-governance/SKILL.md
+- source:Shared/skills/structured-reasoning/SKILL.md
+- source:Shared/skills/tech-stack-protocol/SKILL.md
 
 ## Read Contract
-- Read this card when working on owned source files or the named operational area.
-- Read the parent card only for Shared-level navigation; do not treat parent-child links as dependencies.
+
+- Read for release-governance, structured-reasoning, or technology-stack protocol work in the tracked scope.
+- Do not use for transient release output, raw preflight logs, or unverified external version claims.
 
 ## Conflicts and Supersession
-- No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
+
+- None.
 
 ## 中文摘要
-- 此子卡負責發布治理、結構化推理與技術堆疊協議。
-- 高變動外部事實仍需即時查證。
-- 發布流程已改為逐階段保護授權；一次 GO 不能串起 commit、push、tag、Release 或 artifact upload。
-- 技術堆疊更新、安裝、MCP 設定與 memory_commit 也是各自獨立 protected phase。
-- `coding-reflection-gate` 是 metadata.kind=workflow 的唯讀 route gate；commit/preflight override 只能是 single-use exact-file 例外。
-- `design-reflection-gate` 是唯讀 design-shape gate，處理 intent fit、complexity、scope creep 與 smaller alternative，不取代 coding retry、validation、review 或 protected gates。
+
+- 此卡負責 Shared 發布治理、結構化推理與技術堆疊協議。
+- 發布與系統變更均為逐 phase 的受保護操作。
+- 高變動外部事實必須重新查證。
 
 ## Tracked Files
+
 - Shared/skills/coding-reflection-gate/SKILL.md
 - Shared/skills/design-reflection-gate/SKILL.md
 - Shared/skills/plugin-release-governance/references/vsix-release-playbook.md
@@ -103,9 +88,11 @@ metadata:
 - Shared/skills/tech-stack-protocol/SKILL.md
 
 ## Relations
+
 - _shared.ops-skills (parent card: operational-skill family index)
 - _shared (Shared governance parent)
 
 ## Applicable Skills
-- memory-ops — Use when updating this child card.
-- memory-arch — Use when adjusting child-card topology.
+
+- memory-ops — Update and commit this child card.
+- memory-arch — Adjust card topology or archives.

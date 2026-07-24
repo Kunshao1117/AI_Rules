@@ -4,14 +4,14 @@ scopePath: Antigravity/.agents/
 description: >-
   專案記憶：Antigravity 支援檔案與工作流導覽父卡。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-03T13:21:30+08:00'
+last_updated: '2026-07-24T13:53:12+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T13:05:08+08:00'
+last_verified: '2026-07-24T13:53:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _ag_core.support — Antigravity Support Index Memory
 
 ## Current Truth

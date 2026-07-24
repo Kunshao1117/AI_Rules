@@ -22,11 +22,13 @@ metadata:
 
 Connect source delivery with memory and documentation accountability without giving specialists authority to mutate memory.
 Source changes must be checked for memory obligations.
-The memory/docs station owns read-only disposition and attribution evidence.
-Memory mutation remains on a separate protected authorization path or assigned owner station.
+The memory/docs station owns read-only disposition and attribution evidence, then explicitly hands
+the returned `completion_bundle` to the `memory-closure` role after validation and review.
+Memory mutation remains on a separate protected authorization path owned by that later role.
 The captain receives the station artifact and synthesizes the Director-facing report without authoring missing memory evidence.
-A `closeout_bundle` from change delivery is only an index/checklist for this station.
-It does not replace memory attribution, read-only evidence, owner-card selection, protected memory authorization, memory writes, or `memory_commit`.
+A `completion_bundle` from change delivery carries independent phase references for this station and
+later memory closure. It does not replace memory attribution, read-only evidence, owner-card
+selection, protected memory authorization, memory writes, `memory_commit`, or the closure receipt.
 
 ## Inputs
 
@@ -35,7 +37,9 @@ It does not replace memory attribution, read-only evidence, owner-card selection
 - Director authorization for memory work, if any.
 - Authorization source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode.
 - Read-only memory audit or status evidence, when available.
-- Closeout bundle reference, if present.
+- Completion bundle reference, including its memory/docs, protected-write, and protected-commit
+  phase references, if present.
+- Terminal validation and review artifact references before memory-closure handoff.
 
 ## Decision
 
@@ -54,16 +58,16 @@ It does not replace memory attribution, read-only evidence, owner-card selection
 1. Identify whether the source delivery changes behavior, workflow, public contract, governance, or operational instructions.
 2. Map the change to the likely memory card, existing attribution evidence, or state that the owner card is unknown.
 3. Use read-only memory tools only during diagnosis.
-4. Keep this artifact read-only and evidence-only.
-   `memory-required` opens a separate protected memory-write owner station.
-   `memory_commit` is a later protected memory-commit phase after active memory main-file content is updated.
+4. Keep this artifact read-only and evidence-only. Once validation and review are terminal, hand its
+   disposition plus the `completion_bundle` to `memory-closure`. That role consumes the already
+   pre-bound protected phases for `memory-required` and returns a no-write or committed receipt.
 5. Report blocked memory obligations as residual risk, not success.
 6. Tie the memory/docs decision to a delivery artifact ID, source input, and memory/docs state.
    The captain receives the ledger without inventing attribution.
 7. Treat missing or mismatched authorization fields as `memory-unverified` or `memory-blocked-by-scope`.
 8. Route `memory-card-missing`, owner-card conflicts, and topology ambiguity to memory-docs or memory-arch decision evidence.
    Do not let the captain author a card or attribution substitute.
-9. Do not copy `closeout_bundle` text into memory.
+9. Do not copy `completion_bundle` text into memory.
    Inspect the source delivery and memory evidence, then produce disposition.
 10. Treat these as forbidden memory content: secrets or credentials, sensitive personal data,
     unverified AI prior, stale recall, unsourced external claims, raw logs, raw test output,
@@ -97,7 +101,9 @@ authorization_expiry:
 authorization_resolution_state:
 platform_mode_observed:
 source_input:
-closeout_bundle_ref:
+completion_bundle_ref:
+memory_closure_role:
+memory_closure_handoff:
 memory_state:
 memory_impact:
 memory_delivery:
@@ -107,8 +113,8 @@ forbidden_memory_content_check:
 ## Forbidden Actions
 
 Do not edit memory cards, call memory commit, compact memory, create context cards, or use mutating memory tools.
-Do not treat source completion as final.
-That applies when required memory work is explicitly blocked or unverified.
+Do not issue a no-write or committed receipt, or treat source completion as final.
+That applies when required memory work is explicitly blocked, unverified, or awaiting `memory-closure`.
 This delivery artifact is read-only disposition evidence.
-Memory mutation belongs to a separate protected memory-write owner station.
-`memory_commit` belongs to a separate protected memory-commit phase.
+Memory mutation belongs to the separate protected owner phase consumed by `memory-closure`.
+`memory_commit` remains a separate protected phase after the active memory main-file write.

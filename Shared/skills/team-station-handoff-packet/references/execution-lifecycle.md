@@ -1,17 +1,18 @@
 # Execution Lifecycle Reference
 
 This reference is the canonical operational owner for the handoff packet's
-immutable wait baseline, mutable lifecycle ledger, deadline revisions,
-probe/resume behavior, replacement generations, cancellation boundary, and
-late-return decisions. Workload quantiles and deadline formulas are owned only
+channel-only immutable wait baseline, mutable lifecycle ledger, deadline
+revisions, probe/resume behavior, replacement generations, cancellation
+boundary, and late-return decisions. Workload quantiles and deadline formulas are owned only
 by `Shared/policies/references/workflow-execution-spec-contract.md`; this
 reference consumes them without redefining them.
 
 `Shared/skills/team-station-handoff-packet/SKILL.md` owns packet construction
-and returned artifact routing. The board field catalog owns canonical field
-values. Platform adapters may supply latency classes and multipliers, but they
-must not redefine this shared lifecycle or place internal governance fields in
-a tool payload.
+and returned artifact routing. The channel/receipt board reference owns
+canonical channel values; the slice/role board reference owns roster, finding,
+repair, and member-replacement values. Platform adapters may supply latency
+classes and multipliers, but they must not redefine this shared lifecycle or
+place internal governance fields in a tool payload.
 
 ## Anchor Shapes
 
@@ -71,8 +72,10 @@ The mutable lifecycle ledger contains:
   status_probe_state,
   status_probe_sent_at,
   status_probe_response_at,
+  status_probe_pause_report,
   status_probe_resume_state,
   status_probe_resume_sent_at,
+  status_probe_resume_decision_ref,
   channel_generation,
   replaces_channel_run_id,
   replacement_reason,
@@ -92,6 +95,28 @@ through its pre-bound reference without rewriting an initial budget.
 
 Changing sealed dispatch scope or any wait-baseline field requires a new packet.
 A legal lifecycle-ledger revision does not.
+
+The ledger has no authority to modify delivery_slice_id, slice packet baseline,
+station, member_assignment, role_instance_id, context visibility, finding
+state, repair loop, or member replacement. Those fields are owned by the
+slice/role reference. Channel events remain channel events.
+
+## Source Repair, Receipt Revision, And Resume Boundary
+
+An `artifact_receipt_revision` for a changed source return is owned by the
+packet routing contract. This lifecycle reference owns only its interaction
+with channel state: the repaired implementation channel may return normally,
+but that return does not refresh validation, review, memory/docs,
+memory-closure, or completion evidence. The packet route marks those dependent
+receipts stale and the slice route requires the appropriate explicit member
+resume before fresh evidence is produced.
+
+A channel resume restarts only the same channel generation after a probe. It is
+not a source-repair resume, receipt revision, member replacement, fresh packet
+baseline, or authorization change. Conversely, a finding-based source-repair
+resume uses the existing slice decision and packet route; it must not rewrite a
+wait baseline or lifecycle deadline merely because downstream evidence became
+stale.
 
 ## Baseline Materialization And Deadline Ledger
 
@@ -124,8 +149,9 @@ records its revision kind, trigger, previous deadline, new deadline,
 extension count, and the matching receipt evidence; only an actual
 `applied-rebase` sets `applied_rebase_used: true`.
 
-Timing never changes scope, authorization, station, role, review depth,
-validation obligations, protected gates, or delivery-slice boundaries.
+Timing never changes scope, authorization, station, member, role instance,
+context, review depth, validation obligations, protected gates, or
+delivery-slice boundaries.
 
 ## Shared Lifecycle States
 
@@ -166,21 +192,23 @@ failure. `probe-eligible` permits a decision but does not send a probe.
 | Faster or non-extending receipt | Complete acceptance or application evidence that does not produce a later deadline | Preserve all published deadlines; do not rewrite the baseline, increment the count, or consume the rebase. |
 | Any other extension request or ceiling overrun | A progress-only request, duplicate revision kind, count already two, or proposed deadline beyond the ceiling | Deny without changing scope; record blocked or unverified timing state. |
 | Probe sent | Probe eligibility evidence | Move to `probe-pending`. |
-| Probe response | Actual response with position, blocker, and safe-to-continue status | Move to `paused-for-probe`, then `resume-required`; the member waits. |
-| Explicit resume | Captain resume for the same role instance and channel | Record `resume-sent` and `resumed`; return the same generation to running state. |
-| Replacement | Hard-policy eligibility or concrete blocked/unresponsive evidence | Open a new generation, preserve the original, and record linkage without implicit cancellation. |
+| Probe response | Actual response with position, blocker, and safe-to-continue status | Record pause report; move to `paused-for-probe`, then `resume-required`; the channel waits. |
+| Explicit channel resume | Captain decision reference for the same role instance and channel run | Record `resume-sent` and `resumed`; return the same generation to running state. |
+| Channel replacement | Hard-policy eligibility or concrete blocked/unresponsive evidence | Open a new generation, preserve the original station member and identity, and record linkage without implicit cancellation. |
+| Changed source-repair return | Existing slice repair decision and returned source artifact | Record the channel return without a deadline revision; packet routing emits its receipt revision and stale-dependency routing. |
 | Late return | Artifact from an original or replaced generation after its normal window | Record `late-returned` and a neutral receipt decision; never discard or auto-prefer it. |
 
 The first-response deadline and soft timeout are monitoring thresholds, not
 failure declarations. A probe is prohibited inside the normal silence budget,
 while useful progress is recent, or while credible health exists. A probe
-receipt pauses the member. No work resumes before an explicit captain resume
-for the same role instance and channel.
+receipt pauses the channel. No channel work resumes before an explicit captain
+decision for the same role instance and channel run. This is distinct from a
+finding-based implementation resume.
 
-Soft overrun alone is not replacement eligibility. Replacement requires the
-hard policy condition or concrete blocked/unresponsive evidence. Replacement
-does not cancel the original channel. Cancellation requires an explicit
-request and acknowledgement.
+Soft overrun alone is not replacement eligibility. Channel replacement requires
+the hard policy condition or concrete blocked/unresponsive evidence. It does
+not cancel the original channel, replace a station member, or change the slice
+roster. Cancellation requires an explicit request and acknowledgement.
 
 Every generation keeps its packet and run identity. A late result is logged,
 compared with replacement output when present, and given a neutral decision

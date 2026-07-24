@@ -53,6 +53,9 @@ Before any complete claim, confirm all of the following:
 - Required validation, independent review, memory/docs disposition, sync or
   parity, authorization, trace, lifecycle, grounding, responsibility, and
   residual-risk evidence are present, or their non-complete status is named.
+- For normal formal source changes, `memory-closure` has consumed the returned
+  `completion_bundle` after validation and review and supplied either a no-write receipt or a
+  committed memory receipt. Source/deployed parity remains separately required when applicable.
 - The Director-facing body is Traditional Chinese and meaning-first; raw
   fields, paths, and governance labels are supporting evidence rather than the
   opening conclusion.
@@ -68,10 +71,11 @@ as done, source-level-ready, protected-follow-up-pending, or accepted-risk do
 not replace that state.
 
 Protected follow-up pending is a source-level disposition, not full
-completion. It may be reported only when delivered source is otherwise
-validated, independently reviewed, and synced, while an unrequested or
-unauthorized protected phase names its owner and smallest next step. It blocks
-process-complete and release-ready closeout.
+completion. It may be reported only when `completion_bundle` explicitly selects the
+`source-level-explicit` closeout target and delivered source is otherwise validated,
+independently reviewed, and synced, while the deferred protected phase names its owner and next
+step. It blocks process-complete and release-ready closeout; it is not the normal formal-source
+default.
 
 ## Reference Routes
 

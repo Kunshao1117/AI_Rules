@@ -29,7 +29,7 @@ external grounding, architecture significance, or multi-station depth.
 |---|---|---|
 | `tiny` | Pure conversation, stable small answers, or named-file micro-probes only after governed/guarded classification is negative. It MUST NOT include governed work, broad/deep read, source/governance/workflow/skill/policy/script/test/hook/fixture/support automation impact, implementation, validation, review, memory/docs attribution, completion evidence, public-contract impact, protected action, or external-state impact. | Direct answer or narrow local probe; record `not-applicable` for formal stages when surfaced. |
 | `light` | Bounded read-only clarification, generated/runtime copy inspection, or wording-drift inspection only when no guarded action exists. It MUST NOT close source-level writes or replace station-owned validation, review, memory/docs, or completion evidence. | Reduced station set is allowed only with explicit `stage_disposition`; source-level closeout requires escalation. |
-| `standard` | Bounded governed work, source, workflow, governance, skill, policy, matrix, script/module, test, fixture, support automation, memory/docs impact, public-contract changes, or invalid `tiny`/`light` work without `full` triggers. | Separate delivery, validation, review, memory/docs disposition, sync/parity, and closeout judgment unless a stage is explicitly non-complete or `not-applicable`. |
+| `standard` | Bounded governed work, source, workflow, governance, skill, policy, matrix, script/module, test, fixture, support automation, memory/docs impact, public-contract changes, or invalid `tiny`/`light` work without `full` triggers. | Separate delivery, validation, review, read-only memory/docs disposition, memory-closure receipt, sync/parity, and closeout judgment unless a stage is explicitly non-complete or `not-applicable`. |
 | `full` | Multi-area, high-blast-radius, architecture-significant, externally grounded, ambiguous governed work, cross-domain impact, unclear hook/runtime/test-harness impact, or multi-station depth. | The full formal lifecycle vocabulary must be considered and each stage gets a disposition. |
 | `release-grade` | Commit, tag, release, deployment, install, credentials, cloud or external mutation, operator readiness, or security-sensitive release work. | `full` plus protected action readiness and release/security evidence. |
 
@@ -38,11 +38,23 @@ The full formal lifecycle vocabulary is:
 ```text
 research, analysis, project review, problem confirmation, counter-evidence,
 discussion/decision, design, architecture, build planning, implementation,
-review, validation, validation judgment, memory/docs disposition, closeout
+review, validation, validation judgment, memory/docs disposition, memory closure, closeout
 ```
 
 Lanes do not force every stage to run.
 They require each applicable stage to be routed, or explicitly marked with a disposition.
+
+For normal formal source changes, process-complete requires the `memory-closure` no-write or
+committed receipt and applicable source/deployed parity. `protected-follow-up-pending` is available
+only when the `completion_bundle` explicitly selects `source-level-explicit`; it is not a standard
+lane default.
+
+A formal `delivery_slice` is at least a `standard` lane and cannot merge
+implementation, validation, and review into one station or member. The selected
+lane must preserve the retained role-distinct stations across repair and rerun;
+it promotes to `full` when a third-symptom diagnosis/module-split route or other
+multi-station depth is required. Lane choice never opens a new slice or changes
+its authorization boundary.
 
 ## Stage Disposition
 

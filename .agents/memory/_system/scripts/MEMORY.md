@@ -4,14 +4,14 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-18T12:00:22+08:00'
+last_updated: '2026-07-24T13:40:55+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-17T20:28:23+08:00'
+last_verified: '2026-07-24T13:41:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 
 # _system.scripts — Repository Script Governance Memory
 ## Current Truth
@@ -69,6 +70,19 @@ metadata:
 - Scripts/modules/Platform-Antigravity.psm1
 - Scripts/modules/Platform-Claude.psm1
 - Scripts/modules/Platform-Codex.psm1
+- Scripts/Audit-SourceSize.ps1
+- Scripts/Test-TeamNativeV2.ps1
+- Scripts/modules/Core.Cleanup.psm1
+- Scripts/modules/Core.Comparison.psm1
+- Scripts/modules/Core.Gitignore.psm1
+- Scripts/modules/Core.Infrastructure.psm1
+- Scripts/modules/Core.ProjectSkills.psm1
+- Scripts/modules/Core.Reporting.psm1
+- Scripts/modules/Core.Upgrade.psm1
+- Scripts/modules/Manager.Commands.psm1
+- Scripts/modules/Manager.Config.psm1
+- Scripts/modules/Manager.Deployment.psm1
+- Scripts/modules/SourceSize-Audit.psm1
 ## Relations
 - _system (parent governance); _shared (Shared policy); _codex_core (adapter contract).
 ## Applicable Skills

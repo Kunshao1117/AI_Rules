@@ -66,15 +66,17 @@ They must not copy these procedures back into the 00-12 entry bodies.
 12. Keep implementation, validation, validation judgment, review, memory/docs, and completion as separate delivery states. Missing states are blocked, unverified, or closed-with-director-risk, not complete.
     Do not use absolute "no error" or "無誤" language; validation judgment uses the states in `workflow-lane-routing.md`.
 13. Post-change flow is artifact-chain only:
-   - Implementation or authorized change-application returns a delivery handoff bundle with `validation_handoff`, `review_handoff`, and `memory_docs_handoff`.
-   - The bundle may also include `grounding_handoff`, `closeout_bundle`, `expected_dirty_files`, and `expected_untracked_files`.
+   - Implementation or authorized change-application returns a delivery artifact with `completion_bundle_ref`, `validation_handoff`, `review_handoff`, `memory_docs_handoff`, and `memory_closure_handoff`.
+   - Memory consumers use only `completion_bundle_ref` and the canonical Memory Closure Bundle Contract's resolved phase evidence; this procedure does not restate a candidate map, phase-field schema, authority, or owner.
+   - The delivery artifact may also include `grounding_handoff`, `expected_dirty_files`, and `expected_untracked_files`.
    - For source-bearing changes, the bundle includes `size_split_impact`, `size_split_disposition`, and the size-governance reference used.
    - `expected_dirty_files`, `expected_untracked_files`, and the compact alias `expected_untracked` are closeout/preflight comparison fields only; they are not authorization, source-sync permission, protected-action permission, or downstream evidence by themselves.
    - The captain records it in the ledger without rewriting it.
    - The next wave starts validation and review only from that delivery bundle.
-   - The memory/docs wave starts after validation and review reach terminal evidence states, using the delivery bundle plus the validation/review results.
-   - The implementation bundle may include a `memory_impact` hint, but the memory/docs branch is read-only disposition and attribution routing; it does not authorize memory mutation, memory commit, or direct card writes.
-   - `closeout_bundle` is an index/checklist only; completion consumes the resulting artifact chain, not the bundle by itself.
+   - The memory/docs wave starts after validation and review reach terminal evidence states, uses `completion_bundle_ref` plus validation/review results, and remains read-only.
+   - Memory/docs transfers `completion_bundle_ref` to `memory-closure`, which consumes the canonical contract's accepted evidence and returns a no-write or committed receipt. The implementation artifact may include a `memory_impact` hint, but neither implementation nor memory/docs can authorize memory mutation, memory commit, or direct card writes.
+   - Normal formal source changes reach process-complete only after that receipt and applicable source/deployed parity. Protected follow-up pending is allowed only when `completion_bundle_ref` resolves through the canonical contract to `source-level-explicit`.
+   - `completion_bundle_ref` is a consumer input only; completion consumes the resulting artifact chain and receipt, not the reference by itself.
 14. Separate source/document delivery, process completion, and release readiness using
     `Shared/policies/references/completion-state-machine.md`.
 15. When a source/deployed pair exists, record sync direction and parity evidence before any completion claim.
@@ -93,6 +95,13 @@ They must not copy these procedures back into the 00-12 entry bodies.
     lifecycle events trigger eligibility evaluation only; execution routes solely to
     `team-specialist-git-checkpoint` after separate `authorization_phase: git`. It does not add
     tests or satisfy validation, review, memory/docs, sync, completion, push, or release gates.
+21. A formal `delivery_slice` requires a reference to the current requirement contract; do not
+    reproduce that contract's fields in stage procedures. Keep its implementation, validation, and
+    review members role-distinct and retained through the slice. The captain restores/resumes the
+    original implementation member for either of the first two same-symptom repairs, then reruns
+    the original validation and review members. A third same-symptom route adds diagnosis or module
+    split inside the same slice and returns to the original implementation member. Only the
+    slice-boundary conditions in `workflow-orchestration.md` open a new slice.
 
 ## 00 Chat / 聊天
 
@@ -148,8 +157,8 @@ They must not copy these procedures back into the 00-12 entry bodies.
 - If the Director asks for sandbox or quick prototype work, route to `03-1` before production build handling.
 - Produce a design-to-build contract before writes: requirement trace, review state when required, architecture boundary, change intent, real validation path, file sets, memory/docs impact, and drift audit rule.
 - Treat that design-to-build contract as `build-plan`, not `plan-only`: it defines implementation boundaries and acceptance evidence but does not grant write authority, and Codex `update_plan` remains only a progress mirror.
-- A production `build-plan` may start only from a machine-readable `execution_spec`, exact file allowlist, and acceptance matrix. Mermaid, screenshots, or human flowcharts may explain sequence, but they are not enough to open implementation change delivery.
-- If the `execution_spec`, file allowlist, acceptance matrix, or applicable design reflection decision is missing, route back to `02`, `design-reflection-gate`, or the intent-alignment station before writing.
+- A production `build-plan` may start only from a machine-readable `execution_spec`, requirement-contract reference, exact file allowlist, and acceptance matrix. Mermaid, screenshots, or human flowcharts may explain sequence, but they are not enough to open implementation change delivery.
+- If the `execution_spec`, requirement-contract reference, file allowlist, acceptance matrix, or applicable design reflection decision is missing, route back to `02`, `design-reflection-gate`, or the intent-alignment station before writing.
 - Include source-document size/split impact in the build plan when the file set includes core, shared policy/reference, `SKILL.md`, memory card, PowerShell script/module, audit rule pack, or large general source files.
 - Classify grounding tier before writes:
   - `G0` for local source, lockfile, logs, tests, or tool output.
@@ -167,15 +176,19 @@ They must not copy these procedures back into the 00-12 entry bodies.
   - `grounding_handoff`;
   - `memory_impact`;
   - source/deployed pair and sync evidence when applicable;
-  - `closeout_bundle`;
-  - validation, review, and memory/docs handoff targets.
-- Route back to implementation only through a new scoped change-delivery or change-application station when a downstream station returns a concrete blocker; captain ledger entries are not fixes.
+  - `completion_bundle_ref` for the canonical contract's resolved phase evidence;
+  - validation, review, memory/docs, and memory-closure handoff targets.
+- For either of the first two numbered same-symptom findings, route back by restoring/resuming the retained implementation station inside the current delivery slice; do not automatically create a repair station or member. Captain ledger entries are not fixes.
 - Validation and review run after change delivery is returned, blocked, unverified, or risk-closed.
-- Memory/docs runs after validation and review reach terminal evidence states, and completion consumes only the resulting artifact chain.
-- If memory/docs returns `memory-required` or `memory-blocked-by-scope` after source delivery has passed validation, review, and sync:
-  - Close the current source-level build as delivered with protected follow-up pending.
-  - Route the memory-write and `memory_commit` work only when that protected phase is explicitly opened.
-  - Do not turn the current build closeout into repeated authorization friction.
+- Memory/docs runs after validation and review reach terminal evidence states, then transfers
+  `completion_bundle_ref` to memory closure. Normal formal builds reach process-complete only
+  after memory closure consumes the canonical contract's accepted evidence, returns a no-write or
+  committed receipt, and applicable parity evidence exists.
+- If memory closure returns `memory-required` or `memory-blocked-by-scope`:
+  - Consume only `completion_bundle_ref` and the canonical contract's current resolved phase
+    evidence; implementation remains neither the authority nor the evidence owner.
+  - Report protected follow-up pending only if the reference resolves through the canonical
+    contract to `source-level-explicit`; otherwise process-complete remains blocked or unverified.
 
 ## 04 Fix / 修復
 
@@ -186,7 +199,7 @@ They must not copy these procedures back into the 00-12 entry bodies.
 - Classify size/split impact before writes when the fix touches a large source document, `Scripts/modules/*.psm1`, audit rule pack, or governance source.
 - Route `G2` quick-check before repair when the symptom depends on current framework/API behavior, package documentation, or vendor status.
 - Route `G3` formal research when root-cause or repair choice depends on security guidance, deploy platform rules, laws, pricing, standards, or conflicting external sources.
-- After a scope-bound intent signal is resolved through authorization resolution, open a repair `change-delivery` station only for the named cause and route failed validation back to diagnosis or a new fix station.
+- After a scope-bound intent signal is resolved through authorization resolution, restore/resume the retained implementation station for either of the first two numbered same-symptom findings and route its returned artifact through the retained validation and review stations. On the third same-symptom finding, route independent diagnosis or module split, then return to the retained implementation station without opening a new slice unless its boundary changes.
 - Post-change checklist: attach:
   - repair delivery artifact ID;
   - symptom/cause `source_input`;
@@ -199,13 +212,15 @@ They must not copy these procedures back into the 00-12 entry bodies.
   - regression handoff;
   - review handoff;
   - memory/docs handoff;
-  - closeout bundle index;
+  - `completion_bundle_ref` and memory-closure handoff;
   - source/deployed sync evidence when relevant.
 - Route back from validation or review to diagnosis when cause evidence is incomplete; route back to a new fix station only when the blocker names a bounded repair surface. Do not let completion substitute for a missing repair artifact.
-- Memory/docs runs only after the fix delivery has terminal validation and review evidence.
-- If the fix itself is delivered, validated, reviewed, and synced, but memory mutation is outside the current scope:
-  - Report protected follow-up pending for memory instead of blocking the fixed source state.
-  - Commit or release readiness still waits for the protected memory path when required.
+- Memory/docs runs only after the fix delivery has terminal validation and review evidence, then
+  transfers `completion_bundle_ref` to memory closure.
+- A normal formal fix needs the memory-closure no-write or committed receipt for process-complete.
+  Protected follow-up pending is available only when the reference resolves through the canonical
+  contract to `source-level-explicit`; commit or release readiness still waits for the protected
+  memory path when required.
 
 ## 05 Condense / 濃縮
 
@@ -241,8 +256,8 @@ They must not copy these procedures back into the 00-12 entry bodies.
 - Distinguish final commit preparation from a previously authorized long-work Git checkpoint.
   A checkpoint receipt is stability evidence only and does not satisfy this route's downstream gates.
 - Scan dirty files, staged files, source/deployed parity, memory status, validation state, review state, and unresolved blockers.
-- Consume the latest implementation/change-application `closeout_bundle` only as an index to the artifact chain.
-  Re-check dirty files, expected dirty files, expected untracked files, grounding gaps, sync evidence, validation, review, and memory/docs disposition directly.
+- Consume the latest implementation/change-application `completion_bundle_ref` only as a consumer input to the artifact chain.
+  Re-check dirty files, expected dirty files, expected untracked files, grounding gaps, sync evidence, validation, review, read-only memory/docs disposition, canonical contract evidence, and the memory-closure no-write or committed receipt directly.
 - Run `commit_preflight` or equivalent source-memory consistency evidence only in this route or an explicit commit-prep/closeout station.
 - Commit, push, tag, release, deployment, and memory commit are separate protected phases with separate authorization.
 - If preflight needs to accept expected dirty or untracked state, the override must be single-use, exact file allowlist scoped, current diff/hash-bound where available, and auditable with reason, expiry, and responsible owner.
@@ -297,11 +312,13 @@ They must not copy these procedures back into the 00-12 entry bodies.
   - `size_split_impact`;
   - `size_split_disposition`;
   - grounding handoff;
-  - closeout bundle index;
+  - `completion_bundle_ref` and memory-closure handoff;
   - memory/docs handoff;
   - validation handoff;
   - independent review handoff.
 - Route back to skill forge through a new scoped station when metadata, boundary language, source/deployed parity, or reference placement fails downstream review. Skill source changes require memory/docs impact assessment before completion.
-- If skill source delivery is validated and reviewed but memory mutation is a protected follow-up:
-  - Report the skill source layer as delivered with protected follow-up pending.
-  - Full completion, commit, and release readiness still wait for the protected memory path when required.
+- If skill source delivery is validated and reviewed, memory closure consumes
+  `completion_bundle_ref` and the canonical contract's accepted evidence, then returns the no-write
+  or committed receipt required for process-complete. Protected follow-up pending is available only
+  when the reference resolves through the canonical contract to `source-level-explicit`. Full
+  completion, commit, and release readiness still wait for the protected memory path when required.

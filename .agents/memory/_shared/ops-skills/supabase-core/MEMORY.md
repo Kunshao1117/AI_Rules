@@ -4,14 +4,14 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared Supabase 核心操作技能與回饋資產。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-07T22:46:47+08:00'
+last_updated: '2026-07-24T13:40:24+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T20:50:00+08:00'
+last_verified: '2026-07-24T13:41:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.ops-skills.supabase-core — Supabase Core Skills Memory
 
 ## Current Truth

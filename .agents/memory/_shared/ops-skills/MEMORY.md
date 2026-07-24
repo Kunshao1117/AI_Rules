@@ -4,14 +4,14 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：跨平台共用操作型技能來源導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-03T13:21:49+08:00'
+last_updated: '2026-07-24T13:52:24+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T13:05:08+08:00'
+last_verified: '2026-07-24T13:52:09+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -46,6 +46,7 @@ metadata:
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
 - 02: Split broad operational skill ownership into focused child cards.
 - 03: Verified navigation-only parent state and kept Tracked Files empty.
+- 04: Reverified navigation after child-card memory organization and retained empty concrete ownership.
 
 ## Archive Index
 - archive-001.md: Pre-standardization active card snapshot created during MEMORY.md migration.

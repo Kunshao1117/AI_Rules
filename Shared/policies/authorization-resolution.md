@@ -20,6 +20,9 @@ Canonical value owners:
   `Shared/policies/references/status-ontology.md`.
 - Completion and risk-close boundaries:
   `Shared/policies/references/completion-state-machine.md`.
+- Completion-bundle schema, candidate mapping, receipt, revision, and
+  exception rules:
+  `Shared/policies/references/memory-closure-bundle-contract.md`.
 
 Protected-action categories and required phase mapping are governed by
 `Shared/policies/references/protected-action-registry.md`.
@@ -238,6 +241,27 @@ It also must not create authority for deployment, install, credentials, or exter
 
 It also must not authorize later phases.
 
+### Completion-Bundle Binding
+
+For newly resolved formal source work, the initial visible formal-write
+agreement selects `process-complete` unless it explicitly selects
+`source-level-explicit`. A `completion_bundle` may bind the same agreement to
+three separately resolved candidate phases: `memory-docs`,
+`protected-memory-write`, and `protected-memory-commit`.
+
+Those candidate bindings are direct, phase-specific resolutions from the
+initial agreement. They are not authority carried from
+`implementation-change-delivery`, and they do not make a later phase
+immediately executable. Each candidate still requires its own target, scope,
+station, expiry, current eligibility, and receipt chain before that phase can
+run.
+
+The canonical bundle schema, existing-owner-only constraint, candidate mapping,
+prohibited scope, receipt and slice-revision rules, source-level exception, and
+scope-expansion conditions are owned only by
+`memory-closure-bundle-contract.md`. Legacy execution specs gain no candidate
+binding or protected authority by this policy change.
+
 ## Scope Expansion Request
 
 `scope_expansion_request` is the canonical operator-decision trace for any intended action outside
@@ -283,8 +307,36 @@ does not imply approval, rejection of unrelated work, or permission to apply a s
 
 `approve-exact-delta` remains an intent signal until this policy resolves the exact target, scope,
 phase, station, file or resource set, expiry, and applicable protected gate. A delta that changes a
-public contract, migration, security posture, data boundary, data-integrity risk, or protected action
-must create a new `delivery_slice` after that resolution; it cannot be folded into the current slice.
+scope, allowlist, authorization, acceptance, risk, public contract, or protected
+action must create a new `delivery_slice` after that resolution; it cannot be
+folded into the current slice.
+
+### Delivery-Slice Continuation
+
+A formal `delivery_slice` must reference the current requirement contract before
+authorization resolution. This policy requires that reference but does not
+define or duplicate the requirement contract's fields.
+
+The first two numbered, acceptance-required repairs for the same symptom are
+continuations of the current slice when scope, allowlist, authorization,
+acceptance, risk, public contract, and protected-action exposure remain
+unchanged. They reuse the current resolved authorization and restore/resume the
+retained implementation station; they are not a scope expansion, a new repair
+station, or automatic authority for another member. Validation and review may
+consume the returned repair artifact only in their own retained roles and gain
+no write authority.
+
+On the third same-symptom occurrence, an independent diagnosis or module-split
+station may be opened within the same slice. Its output returns to the retained
+implementation member. A module split can write only when the unchanged exact
+allowlist and authorization already cover it. Otherwise, and whenever scope,
+allowlist, authorization, acceptance, risk, public contract, or protected action
+changes, stop the affected action and resolve a new slice.
+
+Replacing a retained member does not itself create a new slice, but only an
+explicit captain `replace` decision may do so. The authorization record must
+preserve the replacement reason and context transfer, bind the replacement to
+the same unchanged slice scope, and never permit a role boundary to be crossed.
 
 An `existing-hard-gate` cannot be bypassed, waived, or relabeled as a minimal enabling change. A
 new concrete security or data-integrity risk stops only the affected action and asks the operator for
@@ -477,22 +529,39 @@ Required field meanings:
 - `platform_mode_observed`
   - Observed platform mode or capability context.
   - This is recorded only as context and never as authorization.
+- `delivery_slice_ref` when a formal slice applies
+  - Reference to the fixed shared slice context and its requirement contract.
+  - The requirement contract's fields remain owned by its canonical contract.
+- `completion_bundle_ref` when a new formal source route selects
+  `process-complete`
+  - Reference to the independently phase-bound memory closure bundle.
+  - Its schema and exception rules remain owned by
+    `memory-closure-bundle-contract.md`.
 
 ## Resolution Rules
 
 1. Resolve authorization before any station starts work that can produce a write artifact.
    Resolve it before work can trigger a protected action.
+   - A formal delivery route is `unverified` or `blocked` without a current
+     requirement-contract reference.
 2. Prefer the narrowest safe interpretation.
    If target, scope, phase, or expiry is missing, resolve as `no-write`, `unverified`, or `blocked`.
    - Missing structured fields are missing authorization, not an invitation to infer them from transcript text.
 3. Treat natural-language continuations and approval buttons as non-expanding by default.
    - They can continue or narrow the current visible plan, station, file set, command, scope, phase, and expiry.
    - They cannot widen that scope without new explicit evidence.
+   - A captain-directed restore/resume of the retained implementation station
+     for a first or second numbered same-symptom repair continues the current
+     slice authorization only under the delivery-slice continuation rule.
 4. A phase authorization does not carry into another phase.
    - Implementation change delivery does not authorize change application.
    - Change application does not authorize memory writes.
    - Memory delivery does not authorize memory commit.
    - Git, release, deployment, install, and external mutation each require their own explicit authorization.
+   - A completion bundle may preserve separately resolved candidate bindings
+     from the same initial agreement; it never derives them from the
+     implementation phase or bypasses their current eligibility and receipt
+     requirements.
 5. Interface approval buttons are evidence for the exact operation presented to the Director.
    - They must be recorded with target, scope, phase, evidence, and expiry before being used.
 6. Platform mode and tool capability can affect whether a channel is available, conditional, unavailable, or unverified.

@@ -4,14 +4,14 @@ scopePath: Extensions/vscode-ai-rules-manager/src/
 description: >-
   專案記憶：VS Code 管理器外掛 runtime TypeScript 來源。Use when: task touches this split
   memory scope or its tracked files.
-last_updated: '2026-07-18T12:45:36+08:00'
+last_updated: '2026-07-24T13:40:56+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-04T21:36:13+08:00'
+last_verified: '2026-07-24T13:41:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 
 # _vscode_extension.runtime — VS Code Extension Runtime Memory
 

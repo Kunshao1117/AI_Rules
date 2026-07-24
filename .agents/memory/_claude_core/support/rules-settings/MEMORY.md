@@ -4,14 +4,14 @@ scopePath: Claude/.claude/
 description: >-
   專案記憶：Claude 規則、設定與支援專案檔。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-07T05:51:27+08:00'
+last_updated: '2026-07-24T13:40:02+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T05:51:27+08:00'
+last_verified: '2026-07-24T13:40:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 
 # _claude_core.support.rules-settings — Claude Rules and Settings Memory
 

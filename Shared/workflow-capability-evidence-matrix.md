@@ -55,7 +55,7 @@ Workflow rows below only name the minimum evidence expected for each route.
 
 - Director-facing output: `Shared/policies/language-governance.md`.
 - External grounding: `Shared/policies/grounding-governance.md`.
-- Grounding execution fields and closeout bundle shape:
+- Grounding execution fields and completion-bundle shape:
   `Shared/policies/references/workflow-execution-spec-contract.md`.
 - Intent envelope, overreach checks, and design reflection execution fields:
   `Shared/policies/workflow-orchestration.md`,
@@ -77,7 +77,7 @@ This matrix aligns workflow rows to the shared mainline without redefining the l
 | 3. Execution spec | Executable work has `execution_spec_state`, `lane_id`, `stage_disposition`, scope, authorization, station, and stop-condition fields, or a blocked/unverified reason. |
 | 4. Station handoff | Formal station has role, role instance, specialist skill, station mode, context visibility, handoff ownership, and allowed targets. |
 | 5. Delivery artifact | Assigned station returns the appropriate delivery artifact or terminal blocked/unverified/risk state. |
-| 6. Independent evidence | Validation, review, memory/docs, and completion consume the artifact chain through separate owner states. |
+| 6. Independent evidence | Validation, review, read-only memory/docs, memory closure, and completion consume the artifact chain through separate owner states. |
 | 7. Behavior counter-evidence | Requirement replay, neutral challenge, disconfirming local/external evidence, validation failure, review finding, or drift check is recorded with a status. |
 | 8. Source/deployed sync | Source/runtime or generated pair records `source_deployed_pair`, `sync_direction`, and hash/content parity evidence, or the missing parity state. |
 
@@ -200,7 +200,9 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 最低證據（Minimum evidence）:
   - Team board, blueprint carryover, review purpose/state, requirement-to-task trace, task acceptance matrix.
   - Intent envelope, overreach check, behavior counter-evidence state, applicable design reflection status, drift audit, real validation route, tool discovery, blockers, memory ownership/status evidence.
-  - Implementation delivery bundle with `grounding_handoff`, `closeout_bundle`, expected dirty files, and source/deployed sync evidence when source/runtime or generated pairs exist.
+  - Implementation `completion_bundle` with `grounding_handoff`, expected dirty files, source/deployed sync evidence when source/runtime or generated pairs exist, and independently pre-bound memory/docs, protected-memory-write, and protected-memory-commit phase references. The implementation station does not gain authority from those references.
+  - After terminal validation and review, read-only memory/docs hands the bundle to `memory-closure`; normal process-complete needs its no-write or committed receipt, while protected-follow-up-pending requires an explicitly `source-level-explicit` bundle.
+  - Formal `delivery_slice` reference to the requirement contract, with retained and role-distinct implementation, validation, and review stations. Numbered findings record the first two same-symptom restore/resume-and-rerun cycles; a third route records diagnosis or module split within the same slice.
   - When same-wave writers are proposed, a fresh canonical `parallel_dispatch_contract`; different
     write files alone are not parallel evidence.
 - 常見路由（Common route）: 04, 06, 09.
@@ -217,7 +219,8 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - Team board, symptom, cause, review purpose/state, fix evidence, regression evidence.
   - Design reflection is required when the fix changes public behavior, contracts, workflow/skill semantics, or governance rules.
   - Affected memory-card status and dependency evidence.
-  - Repair delivery bundle with grounding handoff, expected dirty files, validation/review/memory-docs handoffs, and closeout bundle index.
+  - Repair `completion_bundle` with grounding handoff, expected dirty files, validation/review/memory-docs/memory-closure handoffs, and independently pre-bound protected memory phase references.
+  - Same-slice repair evidence identifies the retained implementation member, the numbered finding, restored validation/review evidence, and any third-symptom diagnosis or module-split handoff. A new slice is required only for a recorded slice-boundary change.
 - 常見路由（Common route）: 06, 07, 09.
 
 ### 05 Condense / 濃縮
@@ -256,8 +259,9 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 接地依據（Grounding basis）:
   - Conventional Commits, Keep a Changelog, SemVer, status checks, engineering review governance.
   - Programming-team governance.
-  - Closeout bundle is an index only; commit readiness re-checks artifact chain, dirty state,
-    grounding gaps, sync, validation, review, and memory/docs disposition.
+  - Completion bundle is a route/index only; commit readiness re-checks artifact chain, dirty state,
+    grounding gaps, sync, validation, review, read-only memory/docs disposition, and the required
+    memory-closure no-write or committed receipt.
 - 最低證據（Minimum evidence）:
   - Commit board, explicit file list, review lifecycle risk, unverified/blocker list, memory status.
   - Memory preflight, change summary, version/artifact decision.
@@ -298,7 +302,8 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - Skill-forge board, layer choice, description quality, reference split, skill handoff package.
   - Full design reflection when adding or changing gates, matrices, roles, workflow rules, skill boundaries, or repeated governance fields.
   - Validation gate, affected memory and skill-index evidence.
-  - Source/deployed parity, grounding handoff, expected dirty files, and closeout bundle index.
+  - Source/deployed parity, grounding handoff, expected dirty files, completion bundle index, and
+    memory-closure handoff/receipt requirement.
 - 常見路由（Common route）: 03, 08, 10.
 
 ## Memory Evidence Reference

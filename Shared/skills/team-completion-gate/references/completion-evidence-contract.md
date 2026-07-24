@@ -30,9 +30,10 @@ Use the following only when applicable to the selected closeout target:
 Consume the Director request, approved plan, scope limits, selected closeout
 target, board row, and residual-risk notes. When source changed, consume the
 implementation or authorized change-application artifact and its chain to
-captain ledger, validation, independent review, memory/docs, sync or parity,
-and risk dispositions. Consume the closeout bundle only as an index; it never
-replaces downstream evidence. Include skill-route evidence and any applicable
+captain ledger, validation, independent review, read-only memory/docs, memory closure, sync or
+parity, and risk dispositions. `completion_bundle` pre-binds independent memory/docs,
+protected-memory-write, and protected-memory-commit phase references; it does not grant them to
+implementation or replace downstream evidence. Include skill-route evidence and any applicable
 memory/docs, grounding, generated/deployed parity, or protected-phase result.
 
 `responsibility_review_disposition` and `responsibility_findings` are
@@ -50,11 +51,11 @@ reference, not the root skill.
 | Scope | Actual changes match approved scope and exclusions. |
 | Lane negative contract | Tiny and light cannot close governed or guarded actions, source writes, captain-prohibited work, or missing station-owned evidence. |
 | Authorization | Each write or protected phase records source, target, scope, phase, evidence, expiry, resolution state, and observed platform mode. |
-| Artifact chain | Consume change delivery or change-application, captain ledger, validation, review, memory/docs, sync, and residual-risk artifacts only. |
-| Closeout bundle | May index artifacts, files, expected dirty state, grounding, sync, and risks; is never evidence by itself. |
+| Artifact chain | Consume change delivery or change-application, captain ledger, validation, review, read-only memory/docs, memory closure, sync, and residual-risk artifacts only. |
+| Completion bundle | Pre-binds independent memory/docs, protected-write, and protected-commit phase references; may index artifacts, files, expected dirty state, grounding, sync, and risks; is never evidence by itself. |
 | Skill route | Classify loaded or triggered skills as entry, station, or support when routing depends on it; a skill hit grants neither authority nor evidence. |
 | Change delivery | Require a returned delivery artifact, or explicitly leave the missing route non-complete. |
-| Memory/docs | Process-complete or release-ready needs disposition, required protected result, required memory commit result, or explicit non-complete state. Source-level delivery may leave protected memory follow-up pending only when other required source evidence is sufficient. |
+| Memory/docs and closure | Normal formal process-complete or release-ready needs read-only disposition plus a `memory_no_write_receipt` or `memory_committed_receipt` from `memory-closure`; the committed receipt contains distinct write and memory-commit results. Missing MCP/receipt is blocked or unverified. Protected follow-up pending is allowed only for an explicitly `source-level-explicit` bundle when other source evidence is sufficient. |
 | Validation | Require non-mutating evidence, or name the gap and smallest next validation path. |
 | Review | Require independent review from a role that did not author the change. |
 | Grounding | AI prior is not evidence; require G2/G3 artifacts by ID and keep G4 gaps visible. |
@@ -82,9 +83,9 @@ closeout blocked or unverified.
 
 ### State And Lane Classification
 
-Missing validation, independent review, memory/docs disposition, required
-sync/parity, or Traditional Chinese meaning-first synthesis keeps completion
-non-complete. Use only blocked, unverified, not-applicable, or
+Missing validation, independent review, memory/docs disposition, memory-closure no-write or
+committed receipt, required sync/parity, or Traditional Chinese meaning-first synthesis keeps
+completion non-complete. Use only blocked, unverified, not-applicable, or
 closed-with-director-risk as allowed by the completion state machine; do not
 invent a parallel completion state.
 
@@ -115,13 +116,15 @@ files:
 evidence:
 artifact_chain:
 grounding_handoff:
-closeout_bundle:
+completion_bundle:
 closeout_target:
 skill_route_gate:
 lane_id:
 stage_disposition:
 validation_judgment_state:
 memory_docs_disposition:
+memory_closure_handoff:
+memory_closure_receipt:
 size_split_impact:
 size_split_disposition:
 size_split_reference:

@@ -39,21 +39,16 @@ third-responsibility split gate. Do not restate or soften that contract here.
 
 For every source file written or modified:
 
-1. Declare `responsibility_inventory`, `responsibility_count`,
-   `second_responsibility_coupling`, `third_responsibility_split_gate`, and
-   `responsibility_split_delta_ref` before writing.
-2. Continue with one responsibility.
-3. With two responsibilities, provide the complete coupling evidence and route
-   it to independent review; change delivery cannot accept its own coupling.
-4. With three or more responsibilities, stop before writing and resolve the
-   exact split delta with the operator.
-5. Confirm that the surviving module has a clear public interface or owner
+1. Prepare the declaration and apply the disposition required by that policy
+   before writing.
+2. Treat coupling acceptance and any split gate as independent review work;
+   change delivery cannot grant an exception.
+3. Confirm that the surviving module has a clear public interface or owner
    boundary and an independent validation reference.
 
-Do not split merely to reduce line count, and do not keep mixed
-responsibilities merely because the file is short. Fragmentation without a
-functional boundary and broad labels that conceal independent change triggers
-are both quality regressions.
+This skill consumes the policy's responsibility contract unchanged. It does
+not define a local responsibility count, coupling allowance, or split
+exception.
 
 ## 2. SOLID Alignment Gate (SOLID 原則閘門)
 
@@ -71,37 +66,25 @@ are both quality regressions.
 ## 3. Source Document Size Classification (來源文件大小分類)
 
 Classify the target through `Shared/policies/source-document-size-governance.md`
-before size review. Its responsibility gate runs before every local line
-threshold.
+before size review. Its responsibility gate runs before each size evaluation.
 
-That policy owns core/platform core, shared policy/reference, `SKILL.md`, memory card, PowerShell scripts/modules, audit rule pack, and general source categories.
-Do not copy its threshold table into this skill.
-
-Local defaults for general source files remain:
-
-- Utils / services: 200 lines.
-- Components / pages: 500 lines.
-- Routes / DI configs: no line limit when the framework requires a single adapter boundary.
-
-For `Scripts/modules/*.psm1`, size is a split signal, not a line-count-only failure.
-Report size/split impact when touched, and split only when the policy's responsibility, public-interface, or test-isolation signals apply.
+That policy is the only owner of category classification, size limits,
+threshold actions, and split signals, including the `SKILL.md` limits. This
+skill only cites and applies that policy; do not copy, replace, or soften any
+size rule here.
 
 ## 4. Size Review Gate (大小複查閘門)
 
 ```
 [SIZE REVIEW GATE] AFTER writing or modifying ANY source file:
 ├── Count total lines of target file.
-├── Classify the target using source-document-size-governance or the local general-source defaults.
-├── If the category has no numeric threshold, evaluate the category rule and split signals.
-├── Compare:
-│   ├── lines ≤ threshold → Proceed silently. Zero output.
-│   └── lines > threshold →
-│       ├── Review cohesive large file allowance and required split criteria.
-│       ├── IF any required split criterion exists → Refactor by function/module boundary.
-│       ├── IF the file satisfies the allowance criteria → Keep it and record the reason in the plan or completion report.
-│       └── Output only when the size risk remains unresolved:
-│           「🟡 [QUALITY REVIEW] {filename} 超過建議行數，但拆分必須依功能邊界決定。」
-└── Gate cleared → Proceed.
+├── Classify the target through source-document-size-governance.
+├── Apply that policy's current threshold action and split signals unchanged.
+├── Do not substitute a local default, allowance, exemption, or line-count-only split.
+└── Policy risk unresolved?
+    ├── YES → Output:
+    │   「🟡 [QUALITY REVIEW] {filename} 的責任或大小風險尚未依來源文件大小治理規則解決。」
+    └── NO → Proceed.
 ```
 
 ## 5. Complexity Review Alignment (複雜度審查對齊)
@@ -110,7 +93,7 @@ Load `quality-review-governance` when the choice is between a simple direct impl
 
 - Keep the simple path when the requirement is stable, local, readable, testable, and already fits existing project patterns.
 - Accept more structure only when it isolates a real risk, protects a public contract, improves testability, reduces meaningful duplication, or matches an established local architecture.
-- Treat speculative abstraction, line-count-only splitting, and mixed responsibilities as quality regressions.
+- Treat speculative abstraction and mixed responsibilities as quality regressions.
 - Record the review state when boundary, coupling, testability, or future-maintenance risk remains unresolved.
 
 ## Constraints

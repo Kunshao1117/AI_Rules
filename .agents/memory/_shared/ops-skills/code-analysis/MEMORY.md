@@ -4,14 +4,14 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 程式掃描、診斷與品質操作技能。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-18T12:45:23+08:00'
+last_updated: '2026-07-24T13:40:04+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-17T20:08:47+08:00'
+last_verified: '2026-07-24T13:40:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 
 # _shared.ops-skills.code-analysis — Code Analysis Skills Memory
 

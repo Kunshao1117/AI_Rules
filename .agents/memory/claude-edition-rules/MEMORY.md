@@ -4,14 +4,14 @@ scopePath: .agents/memory/claude-edition-rules/
 description: >-
   專案記憶：舊 Claude 規則記憶的廢棄索引。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-03T13:21:27+08:00'
+last_updated: '2026-07-24T13:39:29+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: deprecated_index
 verification_status: verified
-last_verified: '2026-07-03T13:05:08+08:00'
+last_verified: '2026-07-24T13:39:30+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # claude-edition-rules — Deprecated Archive Index
 
 ## Current Truth

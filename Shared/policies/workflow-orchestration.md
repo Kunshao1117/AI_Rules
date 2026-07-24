@@ -90,6 +90,9 @@ Layer ownership, in order:
   authorization phase values.
 - `Shared/policies/references/protected-action-registry.md` owns protected
   action categories and required gates.
+- `Shared/policies/references/memory-closure-bundle-contract.md` owns the
+  completion-bundle schema, candidate memory-phase mapping, receipt freshness,
+  revision, and exception rules.
 - `Shared/policies/references/hook-event-matrix.md` owns repo-managed hook
   event support and disabled/source-active/runtime lifecycle.
 - `Shared/policies/references/exception-registry.md` owns direct and
@@ -254,11 +257,12 @@ Director instruction
    canonical observed state
 -> returned delivery artifact or blocked/unverified/standby state
 -> blocker/conflict/authorization handling
--> validation, evidence-based validation judgment, review, drift/sync evidence
--> memory/docs disposition after validation and review reach terminal evidence states
+-> accepted validation and review artifacts for the current delivery-slice revision, plus drift/sync evidence
+-> completion-bundle memory closure after that accepted validation/review evidence
+   memory/docs disposition, then only any independently bound and eligible protected memory phases
 -> applicable protected memory phases
-   protected-memory-write when the closeout target requires process-complete or release-ready and
-   memory is required, then protected-memory-commit when that mutation must be committed
+   protected-memory-write when the bundle's current memory/docs receipt requires it, then
+   protected-memory-commit when that current mutation must be committed
 -> completion audit and closeout-target completion judgment
 ```
 
@@ -493,23 +497,40 @@ scope or repair another station's contract. Keep one acceptance-sized delivery s
 than decomposing it into frequent per-file or micro-step assignments.
 
 Within one resolved authorization scope, ordered implementation steps and
-multiple files may stay in one delivery wave. The formal implementation, review, and validation unit is an
-acceptance-sized `delivery_slice`, not a micro-step or individual file. Do not restart formal review or
-validation after every micro-step or file.
+multiple files may stay in one delivery wave. The formal implementation,
+validation, and review unit is an acceptance-sized `delivery_slice`, not a
+micro-step or individual file. Do not restart formal validation or review after
+every micro-step or file.
 
-A `delivery_slice` groups one acceptance objective, its exact authorization and allowlist, the contract and
-risk posture that must remain stable, the implementation artifact, and the downstream review/validation handoff.
-Its canonical schema and state live in the execution spec contract and board field catalog. Legacy work with no
-explicit slice maps once to the current delivery artifact or current authorized acceptance unit and records
-`delivery_slice_legacy_fallback: inferred-current-acceptance`; the fallback does not widen scope.
+A `delivery_slice` is the fixed shared context and authorization container for
+one acceptance objective, its exact authorization and allowlist, stable risk
+posture, implementation artifact, and downstream handoffs. A formal slice must
+reference a requirement contract; this policy requires the reference but does
+not define or duplicate that contract's fields. Its canonical slice schema and
+state remain in the execution-spec contract and board field catalog. Legacy work
+with no explicit slice maps once to the current delivery artifact or current
+authorized acceptance unit and records
+`delivery_slice_legacy_fallback: inferred-current-acceptance`; the fallback
+does not widen scope.
 
-Keep an acceptance-required repair in the same slice only while acceptance, allowlist, public contract,
-authorization, security and data posture, protected-action exposure, and data-integrity risk remain stable. Add a
-slice-boundary checkpoint and open a newly authorized slice when scope or authorization changes; a public contract, migration,
-security posture, protected action, data boundary, or data-integrity risk changes; a repair crosses one of those
-boundaries; or a repeated symptom requires root-cause work. The slice-boundary checkpoint is a ledger boundary, not a Git commit, new
-workflow stage or completion state; it does not expand the lifecycle or silently add a safeguard. Any operator
-decision needed for that boundary uses
+The slice assigns separate implementation, validation, and review stations and
+members. They retain their original role instances, packet, context, and
+identity across the slice, moving to `standby` between rounds rather than
+closing. A validation or review finding returns the retained implementation
+member to a repair working state; it does not create an automatic repair station
+or member. The original validation and review members are then rerun from that
+artifact in dependency order. Detailed captain decisions and role limits are
+owned by Team-Native Core.
+
+Keep the first two acceptance-required repairs for the same symptom in the
+same slice and reuse its resolved authorization. On the third same-symptom
+occurrence, route an independent diagnosis or module-split station inside that
+same slice, then return its output to the retained implementation member. Add a
+slice-boundary checkpoint and open a newly authorized slice only when scope,
+allowlist, authorization, acceptance, risk, public contract, or protected action
+changes. The checkpoint is a ledger boundary, not a Git commit, workflow stage,
+or completion state; it does not expand the lifecycle or silently add a
+safeguard. Any operator decision needed for that boundary uses
 `scope_expansion_request` before execution.
 
 A long-work Git checkpoint is a separate protected `authorization_phase: git` route. Multi-slice
@@ -521,8 +542,12 @@ stability checkpoint, not final completion or final commit/release readiness.
 
 After the complete delivery artifact and any applicable source/deployed sync
 are ready, validation and independent review may start as sibling stations in
-the same dispatch wave. Independent checks may run in parallel; checks with a real dependency remain ordered. A finding routes one bounded repair pass before
-the affected evidence is rerun.
+the same dispatch wave. Independent checks may run in parallel; checks with a
+real dependency remain ordered. A finding returns the retained implementation
+station to repair, then restores the retained validation and review stations for
+the affected evidence. After two repairs for the same symptom, the next route is
+diagnosis or module split within the current slice unless a slice boundary
+change is recorded.
 
 Memory/docs that attributes source, workflow, skill, governance, or durable documentation impact
 waits for validation and review to reach terminal evidence states. The implementation artifact may
@@ -530,7 +555,12 @@ include a `memory_impact` hint and `memory_docs_handoff`, but the memory/docs st
 validated and reviewed artifact chain rather than pre-validating unfinished work. When that
 disposition says memory is required, the closeout branch either records protected follow-up pending
 for `source-level` or routes built-in `protected-memory-write` and `protected-memory-commit`
-phases for `process-complete` and `release-ready`.
+phases for `process-complete` and `release-ready`. For a completion-bundle
+route, the validation/review acceptance and every memory receipt must match the
+current delivery-slice revision. An accepted repair advances that revision and
+makes earlier memory receipts stale; the closure restarts from current
+validation/review evidence. The bundle reference owns the receipt shape,
+candidate bindings, and exception rules.
 
 ## Workflow Loop Contract
 
@@ -565,6 +595,12 @@ Target meanings, aliases, and transition values are not repeated here; use
 `Shared/policies/references/completion-state-machine.md`.
 This policy only places the closeout decision after source delivery, validation, review,
 memory/docs attribution, and any required protected follow-up phases.
+
+New formal source work defaults to `process-complete`. `source-level` is
+available only when the initial visible formal-write agreement is explicitly
+bound as `source-level-explicit`; a legacy execution spec is not retrospectively
+granted a completion bundle or protected memory authority. The completion-bundle
+reference owns the exception details and candidate-phase schema.
 
 Do not collapse the closeout layers:
 

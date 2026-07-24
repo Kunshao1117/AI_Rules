@@ -31,3 +31,6 @@
 # [啟用][執行狀態] 代理日誌與本地索引是執行期產物，不進版控
 /.agents/logs/
 /.cartridge/
+
+# [啟用][Team-Native V2] 可再生建構證據，不進版控
+/artifacts/team-native-v2/

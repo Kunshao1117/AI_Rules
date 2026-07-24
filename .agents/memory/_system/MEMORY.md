@@ -1,21 +1,21 @@
 ---
 name: _system
 scopePath: .
-description: >-
+description: >
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-18T14:50:12+08:00'
+last_updated: '2026-07-24T16:19:48+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-18T14:48:54+08:00'
+last_verified: '2026-07-24T13:44:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
-cycle_id: 2026-07-17-001
+cycle_id: 2026-07-24-001
 cycle_event_count: 1
 cycle_event_limit: 30
 size_limit_bytes: 16384
@@ -31,73 +31,64 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _system — Repository Governance Memory
 
 ## Current Truth
-- This card is a repository-level source/status pointer for ownership, release baseline, and memory/context boundaries; it is not a runtime governance rule source.
-- Canonical runtime governance lives in source files such as `README.md`, `CHANGELOG.md`, platform cores, and Shared policies/skills, with current source taking precedence over this memory card.
+
 - AI_Rules is the source repository for Antigravity, Claude Edition, and Codex Edition governance.
-- Root README and platform README skill counts now describe 62 shared operational skills; Codex deployed skills total 79 from 62 shared skills plus 17 workflow skills, excluding the `_shared` support directory.
-- Root `CLAUDE.md` is an ignored live/root file and now aligns Codex Edition to v0.1.3 plus 62 shared operational skills.
-- Antigravity source sentinel `Antigravity/.agents/rules/AGENTS.md` and deployed live sentinel `.agents/rules/AGENTS.md` both describe 62 shared operational skills.
-- Root documentation frames Team-Native Core as automatically activated by governed user requests or team/delegation dispatch; pure conversation, small stable answers, and no-impact work can stay ordinary/direct.
-- Root documentation forbids AI from self-starting Team mode or team work without a current governed user request, including from prior context, source impact, workflow names, prompts, or tool approvals alone.
-- Root documentation states the mainline/main agent automatically serves as Director-facing captain in active Team mode and stays within coordination only: station dispatch, board tracking, receipt, status synthesis, blocker routing, Director authorization request routing, and reporting.
-- Root documentation treats `03-1` experiment/sandbox prototype requests as governed workflow requests that auto-activate reduced/minimal experiment Team mode without production completion.
-- Pure 00 chat stays direct; evidence-bearing chat about files, screenshots, memory, rules, agent behavior, tool output, or governance impact enters formal-readonly with specialist evidence and captain coordination limited to receipt, board, blocker, or authorization needs.
-- GO, interface buttons, platform prompts, modes, and workflow commands resolve only to scoped authorization evidence; workflow routes and modes are not standalone authorization.
-- Repository-level governance uses delivery-artifact-driven Team-Native workflow: the captain coordinates station dispatch, receives station delivery, updates board state, routes blockers/Director authorization requests, and reports without authoring primary implementation, review, validation, broad-search evidence, memory attribution, or protected-action evidence.
-- Root documentation distinguishes station-owned main-worktree `change-delivery` primary, fallback `change-application`, platform route states, manual setup status, captain substitute authoring, and `closed-with-director-risk` from completion.
-- Root and platform documentation now describe the dual gates: Director-facing output uses Traditional Chinese meaning-first language governance, and high-change or external facts require grounded evidence before completion claims.
-- Root documentation describes shared matrix deployment paths, downstream project-local tools under `.agents/tools/`, and framework-source-only manager commands.
-- Root CHANGELOG now records AI Rules Manager v0.2.1 removing Doctor and sync-overlay inspection UI operations and reducing inspection to Git-only status.
-- Director-facing output must use Traditional Chinese unless a lower-level artifact explicitly requires another language.
-- Root repository work, git status, commit, tag, and push operations use `D:\AI_Rules` as the baseline.
-- Source memory lives in `.agents/memory/`; project context lives in `.agents/context/`; root PowerShell ownership moved to `_system.scripts`, and root documentation now describes Scripts as deployment, sync, and manager automation without an audit surface.
+- This card is a concise root source/status pointer; current source files and Shared policies remain runtime authority.
+- Root release documentation records AI Rules Manager v0.2.1 and its Git-only inspection surface.
+- Root PowerShell source ownership belongs to _system.scripts.
 
 ## Active Constraints
-- Runtime authority status: current governance behavior is sourced from canonical source files and Shared policies/skills; this card is a source/status pointer.
-- Do not commit, push, tag, publish, install, upgrade, or mutate external state without explicit Director approval.
-- Do not edit another repository, including `D:\cartridge_system`, unless the Director explicitly approves cross-repository work.
-- Keep root memory concise; move script-specific facts to `_system.scripts` and historical release details to archives.
+
+- Source memory and project context are separate stores.
+- Root governance, Git, releases, installs, deployments, and external changes need their respective scoped authority.
+- Keep script detail in _system.scripts and history in archive volumes.
 
 ## Cycle Events
-- 01: Updated the repository release baseline to AI Rules Manager v0.2.1; the root changelog records removal of Doctor and sync-overlay inspection operations and Git-only status reporting.
+
+- 01: Compacted root governance history after re-verifying the current release baseline and root ownership boundary.
 
 ## Archive Index
-- archive-001.md — Legacy _system card identity and decisions through D39.
+
+- archive-001.md — Legacy _system identity and decisions through D39.
 - archive-002.md — Continued legacy decisions, module lessons, and documentation history.
-- archive-003.md: Pre-standardization active card snapshot created during MEMORY.md migration.
+- archive-003.md — Pre-standardization active-card snapshot.
+- archive-004.md — Compacted pre-2026-07-24 root governance detail.
 
 ## Evidence Base
-- source:README.md — Root repository map now limits Scripts to deployment, sync, and manager automation; the removed audit surface is not documented as current.
-- source:CHANGELOG.md — AI Rules Manager v0.2.1 records removal of Doctor and sync-overlay inspection commands/panel operations and the Git-only inspection interface.
-- source:.agents/memory/_system/archive-003.md — Previous active card snapshot preserved.
-- tool:memory_audit — Granularity advisory identified root script ownership as a split candidate.
-- director:2026-06-15 — GO SPLIT authorized script child-card creation.
+
+- source:README.md
+- source:CHANGELOG.md
+- source:.gitignore
+- source:LICENSE
 
 ## Read Contract
-- Read this card for repository-level governance, release baseline, and memory/context boundaries.
-- Read `_system.scripts` before changing root PowerShell scripts.
+
+- Read for repository-level ownership, release baseline, and memory/context boundaries.
+- Read _system.scripts before changing root PowerShell scripts.
 
 ## Conflicts and Supersession
-- No unresolved root `CLAUDE.md` or Antigravity sentinel skill-count conflict remains after the 2026-07-03 documentation cleanup.
+
+- None.
 
 ## 中文摘要
-- AI_Rules 是三平台治理框架核心庫；根 README 現在只把 Scripts 描述為部署、同步與管理器自動化，不再宣稱 Audit/Doctor 健檢面。
-- 根 CHANGELOG 已記錄 AI Rules Manager v0.2.1：移除 Doctor 與同步覆蓋檢查操作，巡檢介面只回報 Git 狀態。
-- 根層 `CLAUDE.md` 是 ignored live/root file，已對齊 Codex v0.1.3 與 62 套共用技能；Antigravity source/live sentinel 也對齊 62 套。
-- 按鈕、`GO`、workflow 與 mode 只提供範圍化授權證據，不是授權本身。
-- 受治理請求會自動進 Team mode；沒有目前受治理請求時 AI 不能自行啟動團隊工作。
-- Team mode 主線只做 Director-facing captain 協調、派工、接收、彙整、阻塞/授權路由與回報；`03-1` sandbox 不等於 production completion。
+
+- 此卡只保留根層治理與版本基線，不是 runtime 規則來源。
+- 三平台核心與 Shared 政策以現行來源為準。
+- 根 PowerShell 由 _system.scripts 專責。
 
 ## Tracked Files
+
 - .gitignore
 - README.md
 - CHANGELOG.md
 - LICENSE
 
 ## Relations
+
 - _map (memory navigation index)
 - _shared (Shared governance source)
 - _codex_core (Codex platform source)
@@ -106,5 +97,6 @@ metadata:
 - _system.scripts (child card: root PowerShell scripts)
 
 ## Applicable Skills
+
 - memory-ops — Update and commit this root navigation card.
 - memory-arch — Use for parent/child topology or archive decisions.

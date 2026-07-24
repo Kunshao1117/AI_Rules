@@ -4,14 +4,14 @@ scopePath: Claude/.claude/commands/
 description: >-
   專案記憶：Claude 一般討論、探索、實驗、濃縮與測試指令。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-07T05:51:27+08:00'
+last_updated: '2026-07-24T13:40:01+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T05:51:27+08:00'
+last_verified: '2026-07-24T13:40:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core.support.commands-general — Claude General Commands Memory
 ## Current Truth
 - This child card owns Claude shared command gates and general command entries.

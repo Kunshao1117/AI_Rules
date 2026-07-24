@@ -27,6 +27,7 @@ metadata:
       - team-specialist-review
       - team-specialist-security-reliability
       - team-specialist-memory-docs
+      - team-specialist-memory-closure
       - team-specialist-release-completion
     trace_contracts:
       - team-trace-evidence
@@ -83,6 +84,7 @@ Director prompt contains [SUDO]?
 | Independent requirement fit and regression review | `review` | `team-specialist-review` | Review state and findings |
 | Secret, abuse, reliability, observability, rollback risk | `security-reliability` | `team-specialist-security-reliability` | Risk classification and safeguards |
 | Memory, docs, index, handoff, generated-copy attribution | `memory-docs` | `team-specialist-memory-docs` | Memory and documentation delivery status |
+| Pre-bound bundle's accepted-artifact memory closure | `memory-closure` | `team-specialist-memory-closure` | Minimal memory-card write and memory-commit receipt |
 | Completion, release readiness, residual risk, final delivery artifact check | `release-completion` | `team-specialist-release-completion` | Completion readiness evidence |
 
 Team-specialist return fields are internal evidence schema for board and trace
@@ -117,15 +119,20 @@ by the external-research station.
    more than one `role_id` or more than one substation task.
 6. Do not let the change-delivery specialist review, validate, or perform
    memory/docs attribution for the same deliverable.
-7. Keep implementation, review, validation, and memory/docs attribution on
-   different role instances for the same deliverable.
+7. Keep implementation, review, validation, memory/docs attribution,
+   memory-closure, and completion on different role instances for the same
+   deliverable. A memory-docs role or channel cannot cross into the protected
+   memory-closure role.
 8. Keep `git-checkpoint` separate from change delivery, validation, review,
    memory/docs, final commit, and release-completion roles. Its protected Git
    mutation is limited to its separately authorized exact-path checkpoint
    procedure and canonical receipt.
-9. Route memory mutation, other git mutation, release mutation, deployment, install,
-   and final completion readiness questions through the matching owner station
-   or Director authorization path. The captain coordinates and reports;
+9. Route memory mutation through `memory-closure` only when a pre-bound
+   completion bundle, accepted non-stale inputs, and separately resolved
+   `protected-memory-write` and `protected-memory-commit` phases exist. Route
+   other git mutation, release mutation, deployment, install, and final
+   completion readiness questions through the matching owner station or
+   Director authorization path. The captain coordinates and reports;
    acceptance is not captain-owned, and this registry does not assign protected
    execution or evidence ownership to the captain.
 10. Route external grounding through a separate `external-research` role
@@ -156,6 +163,8 @@ The registry assigns role identity; shared trace files define the full field set
 - Do not collapse validation and review into one role when the deliverable changed.
 - Do not collapse implementation, review, validation, and memory/docs
   attribution into one member assignment for the same deliverable.
+- Do not treat `memory-docs` as a protected mutation role, or reuse its role
+  instance or channel for `memory-closure`.
 - Do not treat a station family as a team member or an execution channel as a
   role source.
 - Do not treat this registry as permission to start a specialist before the board exists.
@@ -166,6 +175,6 @@ The registry assigns role identity; shared trace files define the full field set
 - This registry does not replace the Team-Native board, GO gate, memory gate, or review-state decision.
   It also does not replace final Director-facing synthesis or completion readiness evidence.
 - Child skills normally return a change delivery or evidence artifact. The only
-  registered protected mutation here is the scoped `git-checkpoint` procedure,
-  which returns its canonical receipt and grants no other Git or protected
-  authority.
+  registered protected mutations here are the scoped `git-checkpoint` procedure
+  and a pre-bound, separately authorized `memory-closure` procedure. Each
+  returns its canonical receipt and grants no other Git or protected authority.

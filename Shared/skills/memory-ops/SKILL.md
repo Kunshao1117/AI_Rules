@@ -32,8 +32,12 @@ Reference routing:
 
 Team memory/docs handoff fields are route inputs, not memory operation fields.
 `memory_docs_handoff` and `memory_docs_state` stay board/delivery-layer evidence owned by
-`team-task-board` and the memory/docs delivery artifact; this skill consumes them only after the
-memory/docs station opens a read-only disposition or a separately authorized protected memory phase.
+`team-task-board` and the memory/docs delivery artifact. For a normal formal source change,
+`completion_bundle` pre-binds independent memory/docs, protected memory-write, and protected
+memory-commit phase references; it does not give implementation authority over any of them. After
+validation and review return terminal evidence, `memory-closure` consumes those references without
+asking again for the same phase, but stops if a reference is absent, expired, out of scope, or lacks
+its protected gate.
 
 ## HITL Boundary
 
@@ -74,7 +78,9 @@ Disposition states open routes only; they do not authorize writes.
 
 - `memory-not-required` and `memory-attributed-no-write` do not open a memory mutation path.
 - `memory-required` opens a separate protected memory-write owner station only after authorization resolution.
-  The resolution must bind the visible plan, station, exact card or module, file set, phase, expiry, and protected gate.
+  A valid `protected_memory_write_phase_ref` already bound in `completion_bundle` is consumed as
+  that independent resolution, not re-requested. It must bind the visible plan, station, exact card
+  or module, file set, phase, expiry, and protected gate.
 - `memory-card-missing` is a topology decision request.
   Route to memory-docs or `memory-arch`; do not create a card from the attribution station.
 - `memory-blocked-by-scope` reports residual risk until the Director grants a scoped protected memory-write phase.
@@ -83,7 +89,10 @@ Disposition states open routes only; they do not authorize writes.
 
 A protected memory-write phase updates the active memory main file only.
 A separate protected memory-commit phase may open after that write.
-Authorization resolution must bind the exact module, project root, command/tool call, phase, expiry, and protected gate.
+`protected_memory_commit_phase_ref` may be consumed from the same `completion_bundle` without a
+repeat authorization request, but remains a separate phase that never starts during implementation.
+Each reference must bind the exact module, project root, command/tool call, phase, expiry, and
+protected gate.
 
 ## Quality Standard
 
@@ -100,9 +109,9 @@ timestamps are forbidden.
 
 All memory card writes and updates follow this hard sequence:
 
-1. Write the full active memory main file with native file tools (`SKILL.md`
-   during legacy compatibility; `MEMORY.md` after migration).
-2. In a separately authorized memory-commit phase, call
+1. The separately authorized memory-write owner writes the full active memory main file with native
+   file tools (`SKILL.md` during legacy compatibility; `MEMORY.md` after migration).
+2. In the separately authorized memory-commit phase, call
    `cartridge-system__memory_commit` to sync metadata, staleness, and index.
 
 **Commit Obligation (歸卡義務)**: Skipping step 2 after an authorized memory card write is FORBIDDEN.
@@ -112,6 +121,11 @@ A card written without `memory_commit` is incomplete and fails the Completion Ga
 It is FORBIDDEN during discussion, planning, testing, or read-only audit.
 Call it only after the active main file is updated.
 Authorization resolution must bind the memory-commit phase, exact module, project root, command/tool call, expiry, and protected gate.
+
+For normal process-complete closeout, `memory-closure` must return either a
+`memory_no_write_receipt` from the read-only disposition or a `memory_committed_receipt` containing
+the distinct write and commit receipts above. Missing MCP capability or receipt is `memory-unverified`
+or `blocked`; it cannot be rendered as process-complete.
 
 `memory_update(mode: replace)` is a fallback only. `patch` and `append` modes
 are deprecated because Markdown merge errors are common.
@@ -202,12 +216,11 @@ If warning blocks persist after commit, verify you are not using deprecated upda
 ## Updating Memory (更新記憶)
 
 After modifying tracked source files, route the corresponding disposition
-through memory/docs first. If the result is `memory-required`, route the
-memory-card update through a separate protected memory-write owner station and
-then a separate protected memory-commit phase. All paths under `## Tracked
-Files` are project-root relative. Parent/child ownership goes to the most
-specific child card that explicitly owns the file; navigation-only parents
-belong in `## Relations`, not broad tracked-file ownership.
+through memory/docs first. After validation and review, `memory-closure` consumes the
+`completion_bundle`: `memory-required` uses the separately pre-bound write and commit phases,
+while a no-write disposition returns its no-write receipt. All paths under `## Tracked Files` are
+project-root relative. Parent/child ownership goes to the most specific child card that explicitly
+owns the file; navigation-only parents belong in `## Relations`, not broad tracked-file ownership.
 
 If `memory_list` reports `indirectStaleness > 0`, call
 `memory_deps(moduleName)` and decide whether upstream changes actually affect
@@ -232,8 +245,8 @@ does not rewrite or compact content for the AI.
 
 ## Enforcement Gates
 
-- Completion Gate blocks workflow completion when modified files are not
-  reflected in memory cards or honestly reported as blocked/unverified.
+- Completion Gate blocks process-complete when modified files lack either a no-write receipt or a
+  committed memory receipt, or are honestly reported as blocked/unverified.
 - Commit staleness warning halts commit preparation when memory is stale; it
   does not halt non-commit implementation, validation, review, or handoff
   stations.

@@ -26,24 +26,24 @@ Use this skill to keep architecture and build work aligned with the Director's a
 The gate turns vague or agreeable planning into a traceable contract: understand the request, challenge risky assumptions,
 record decisions, map requirements to acceptance evidence, and audit drift before completion.
 
+Requirement field semantics are consumed from
+`Shared/policies/requirement-precision.md` and its schema reference. This skill
+does not define a second requirement field catalog.
+
 This skill is platform-neutral. It does not authorize writes, installs, memory commits, commits, pushes, deployments, or mutating MCP calls.
 
 ## Procedure
 
-### 1. Requirement Playback
+### 1. Requirement Precision Consumption
 
-Before producing an architecture blueprint or build plan, restate the request as a contract:
+Before producing an architecture blueprint or build plan, create or consume one
+`requirement_precision` record that conforms to
+`Shared/policies/references/requirement-precision-schema.md`.
 
-- Goal: what outcome the Director is trying to achieve.
-- Non-goals: what should not be changed or solved in this cycle.
-- User/operator scenario: who uses the result and when.
-- Constraints: technical, platform, safety, time, compatibility, and governance limits.
-- Success criteria: observable conditions that prove the work is acceptable.
-- Assumptions: items not yet proven; mark each as verified, partial, unverified, or blocked.
-
-If the request is underspecified and the missing fact materially changes architecture or acceptance,
-ask a targeted question before planning.
-If a reasonable default is safe, state the default and continue.
+Apply the no-guessing rule, mandatory-question conditions, and
+`assumption_trace` / `question_trace` / `acceptance_trace` handling from
+`Shared/policies/requirement-precision.md`. Do not replace them with local
+fields, a local defaults list, or an alternative acceptance taxonomy.
 
 ### 2. Neutral Challenge
 
@@ -73,15 +73,15 @@ or persistent governance must record:
 - Evidence level: sufficient, partial, unverified, blocked, or not applicable
 - Review state: required when `quality-review-governance` applies; otherwise not applicable
 
-### 4. Requirement Trace
+### 4. Requirement Trace Consumption
 
-Use a trace table whenever the work has more than one requirement or any cross-module impact.
+For work with more than one requirement or cross-module impact, use each
+canonical `requirement_id` and its `acceptance_trace` to link the blueprint,
+plan, implementation, validation, and completion report. Plan or task mapping
+may reference that ID, but must not define a second requirement field set.
 
-| Requirement | Source | Plan or task | Acceptance evidence | Status |
-|---|---|---|---|---|
-
-Requirements must not disappear between blueprint, build plan, implementation, validation, and completion report.
-If a requirement is intentionally dropped or narrowed, record the reason as a decision.
+If a requirement is intentionally dropped or narrowed, record the reason as a
+decision and preserve the canonical trace.
 
 ### 5. Drift Audit
 

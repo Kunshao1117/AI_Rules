@@ -32,8 +32,10 @@ Source of truth:
 | Scope-bound authorization, natural-language binding, protected phases, and expiry | `Shared/policies/authorization-resolution.md` |
 | Required task trace fields, invalid trace patterns, and trace audit semantics | `Shared/policies/team-trace-evidence.md` |
 | Board fields, station rows, delivery forms, and template-level checklists | `Shared/skills/team-task-board/SKILL.md` |
-| Accepted/application receipt values, lifecycle vocabulary, and delivery-slice ledger fields | `Shared/skills/team-task-board/references/board-field-catalog.md` |
-| Wait-policy behavior, workload classes, probe/resume, replacement generations, and receipt carrier shape | `Shared/skills/team-station-handoff-packet/SKILL.md` |
+| Board-wide values and parallel-dispatch contract | `Shared/skills/team-task-board/references/board-field-catalog.md` |
+| Fixed slice roster, finding resume, third-symptom escalation, and member replacement | `Shared/skills/team-task-board/references/board-field-slice-and-roles.md` |
+| Channel lifecycle, wait, requested/accepted/applied, and receipt values | `Shared/skills/team-task-board/references/board-field-channel-and-receipts.md` |
+| Packet routing and channel-only lifecycle transitions | `Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md` and `references/execution-lifecycle.md` |
 
 This skill adds operational sequence and editing hygiene only. If a hard rule is already in a
 policy, cite the policy instead of restating it here.
@@ -95,7 +97,7 @@ requirement, not duplicate the field list.
 
 Required station families stay visible on the board when applicable: requirement replay,
 counter-evidence, impact map, plan authorization, implementation change delivery, memory/docs
-delivery, validation, review, and completion. A station can close only as returned, blocked,
+delivery, memory closure, validation, review, and completion. A station can close only as returned, blocked,
 unverified, not-applicable, or closed-with-director-risk according to the trace and completion
 policies.
 
@@ -103,6 +105,35 @@ Use `team-station-handoff-packet` to turn one board row into one bounded assignm
 packet carries resolved board scope; it does not grant new authorization.
 
 ## Role And Delivery Boundaries
+
+## Fixed Slice Continuity
+
+When work uses a delivery slice, the board seals a fixed five-role roster:
+implementation, validation, review, memory-closure, and completion. All five
+are separate members with different role instances, contexts, and packets, and
+those identities remain fixed for the whole slice. Implementation, validation,
+and review are the primary repair/rerun members. Memory-closure and completion
+are reserved members of the same roster: they start only when their dependency
+conditions are met, without becoming a new slice or replacing a primary member.
+
+After each primary repair/rerun round, its member becomes standby. Reserved
+members remain standby until their dependency conditions are met; no member
+closes and silently acquires a replacement. A numbered finding is not automatic
+repair authority: the captain must explicitly resume the original implementation
+member for the cited finding. When repair returns, the captain explicitly
+resumes the original validation and review members.
+
+The first two same-symptom repairs retain the same slice, five-role roster,
+context, and packet baseline. A third same-symptom occurrence adds independent
+diagnosis or module-split evidence before work returns to the original
+implementation member. Timeout, probe, channel resume, and channel replacement
+affect only the channel. Only a captain explicit member-replacement record with
+a permitted reason and context transfer can change any roster member.
+
+Captain ledgering is routing only. It may receive and route a subagent artifact
+but cannot restate the reply as a conclusion, validation, review, acceptance,
+or completion evidence.
+
 
 Use `team-role-boundaries` plus `team-specialist-registry` for role identity. The captain
 coordinates request-to-station routing, dispatch, handoff, channel state, board status synthesis,
@@ -116,7 +147,8 @@ Specialists own bounded delivery artifacts only:
 | Work | Required delivery boundary |
 |---|---|
 | Implementation | Station-owned main-worktree `change-delivery` under `implementation-change-delivery`, or isolated change delivery / text change delivery artifact only when direct delegation is unavailable; no self-review, memory write, git, release, deploy, install, or external mutation. |
-| Memory/docs | Memory/docs delivery artifact with impact and proposed attribution; no memory mutation or final closeout decision. |
+| Memory/docs | Read-only memory/docs delivery artifact with impact and proposed attribution, then an explicit `completion_bundle` handoff to `memory-closure`; no memory mutation, receipt, or final closeout decision. |
+| Memory closure | After terminal validation and review, consume the pre-bound memory phase references and return a no-write or committed memory receipt; no implementation, validation, review, or final completion decision. |
 | Validation | Non-mutating validation evidence; no repair of the implementation under validation. |
 | Review | Independent review delivery artifact from a role that did not author the change. |
 | Completion | Completion audit evidence; no protected mutation or acceptance decision. |
@@ -143,7 +175,7 @@ worker and then claim full Team-Native completion.
    proves application. Probe/resume, timeout extensions, replacement generations, cancellation,
    and late returns follow those owners and retain neutral ledger decisions.
 7. Log returned station output into the synthesis ledger, update the board, and route formal
-   checking to validation, review, memory/docs, or completion stations as applicable.
+   checking to validation, review, read-only memory/docs, memory closure, or completion stations as applicable.
 8. Apply main-worktree implementation only through a station-owned `change-delivery` station held by
    a named role instance with authorization phase `implementation-change-delivery`, exact file
    allowlist, dirty-diff read, and forbidden protected actions. Use station-owned
@@ -152,8 +184,11 @@ worker and then claim full Team-Native completion.
    protected-action record only when the platform cannot delegate the physical write or protected
    tool call; the captain must not rewrite returned artifacts as captain-authored evidence or full
    completion.
-9. Run validation, independent review, memory/docs disposition, and completion gate as separate
-   states before claiming completion.
+9. Run validation, independent review, read-only memory/docs disposition, memory closure, and
+   completion gate as separate states before claiming completion. For a normal formal source
+   change, memory closure consumes the pre-bound `completion_bundle` and returns a no-write or
+   committed receipt before process-complete. A `source-level-explicit` bundle may instead report
+   protected follow-up pending; it is not process-complete.
 
 Implementation, formal review, and validation use the acceptance-sized `delivery_slice` owned by
 the execution spec and board catalog. Keep repairs in the same slice only while acceptance,

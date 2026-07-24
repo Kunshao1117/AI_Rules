@@ -24,9 +24,11 @@ metadata:
 Constrain implementation specialists to change delivery.
 The implementer changes only the assigned implementation surface.
 The implementer returns a change delivery artifact for captain receipt, board update, and the next validation/review/memory-docs wave.
-The artifact must include `validation_handoff`, `review_handoff`, and `memory_docs_handoff` so downstream stations start from the same delivery bundle.
+The artifact must include `validation_handoff`, `review_handoff`, `memory_docs_handoff`, and a
+`memory_closure_handoff` reference so downstream stations start from the same delivery bundle.
 When grounding affects the implementation, the artifact also includes `grounding_handoff`.
-For non-trivial source-impacting work, it may include a `closeout_bundle` index and
+For non-trivial source-impacting work, it may include a `completion_bundle` with independently
+pre-bound memory/docs, protected-memory-write, and protected-memory-commit phase references, plus
 `expected_dirty_files` plus `expected_untracked_files` / `expected_untracked` so later
 stations can compare actual dirty and untracked/generated state without inventing evidence.
 These fields are closeout/preflight comparison fields only, not authorization or allowlist overrides.
@@ -101,7 +103,10 @@ Confirm the implementation specialist role before any execution channel is used.
    Include `expected_dirty_files` for the exact files this station expects to leave dirty.
    Include `expected_untracked_files` or compact alias `expected_untracked` for exact generated/untracked paths this station expects to leave present.
    Treat expected dirty and untracked fields as closeout/preflight comparison only, not write authorization or allowlist override.
-   Treat `closeout_bundle` as an index/checklist only, not downstream evidence.
+   Include `completion_bundle` and `memory_closure_handoff` references when the approved plan
+   provides them. They route later read-only memory/docs and memory-closure work only; the
+   implementer does not author memory findings, receipts, or new authority. Treat the bundle as a
+   route/index contract, not downstream evidence.
 10. Stop after producing the change delivery artifact or change-application receipt for captain receipt.
 
 ## Output
@@ -114,8 +119,8 @@ handoff fields, not final validation, review, memory/docs, or completion states.
 Use canonical English keys in the artifact; Chinese labels are a Director-facing
 rendering concern only.
 `memory_docs_handoff` is a mandatory downstream handoff for source, workflow,
-skill, governance, or documentation changes. It routes read-only disposition
-and attribution evidence only; it does not authorize memory mutation,
+skill, governance, or documentation changes. Together with `memory_closure_handoff`, it routes
+read-only disposition and the later closure owner only; it does not authorize memory mutation,
 `memory_commit`, or direct memory-card writes.
 
 ```text
@@ -152,7 +157,7 @@ sync_evidence:
 expected_dirty_files:
 expected_untracked_files:
 grounding_handoff:
-closeout_bundle:
+completion_bundle:
 changes:
 files:
 evidence:
@@ -161,6 +166,7 @@ memory_impact:
 validation_handoff:
 review_handoff:
 memory_docs_handoff:
+memory_closure_handoff:
 size_split_handoff:
 next_wave_start_condition:
 captain_authored:
@@ -186,4 +192,6 @@ The captain may receive this artifact, maintain the board, handle blockers, reco
 Captain rewrite, reimplementation, hand-edited replacement, `apply_patch`, or any captain source write is substitute authoring risk.
 Do not fill `review_state`, `validation_state`, or `memory_docs_state` as an implementer.
 Provide handoff fields for those downstream stations.
+Do not issue memory-closure findings, a no-write receipt, a protected memory-write receipt, or a
+memory-commit receipt; those belong to their separate owner phases.
 Do not mark the task complete, and do not describe captain substitute authoring as a change delivery artifact or as full team completion.

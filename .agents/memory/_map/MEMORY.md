@@ -4,14 +4,14 @@ scopePath: .agents/memory/
 description: >-
   專案記憶：記憶拓樸索引與卡片導覽。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-07T22:46:34+08:00'
+last_updated: '2026-07-24T13:52:24+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T22:54:27+08:00'
+last_verified: '2026-07-24T13:52:09+08:00'
 verified_as_of: '2026-07-03T22:54:27+08:00'
 current_validity: owner_pointer_only
 valid_scope: current-project
@@ -33,6 +33,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _map — Memory Navigation Index
 
 ## Current Truth
@@ -77,6 +78,7 @@ metadata:
 - _codex_core (Codex platform memory)
 - _claude_core (Claude platform memory)
 - _ag_core (Antigravity platform memory)
+- team-native-tests (root Team-Native contract test memory)
 ## Applicable Skills
 - memory-ops — Use when updating this card.
 - memory-arch — Use when changing memory topology.

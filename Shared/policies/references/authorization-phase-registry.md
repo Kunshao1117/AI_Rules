@@ -37,6 +37,14 @@ Compatibility aliases:
 
 Authorization never carries from one phase to another.
 
+An initial visible formal-write agreement may independently bind candidates for
+`memory-docs`, `protected-memory-write`, and `protected-memory-commit` through
+`Shared/policies/references/memory-closure-bundle-contract.md`. These are
+separate phase bindings from the same agreement, not carryover from
+`implementation-change-delivery`. The bundle does not authorize execution
+until the candidate phase's scope, station, expiry, eligibility, and current
+receipt conditions are satisfied.
+
 - `implementation-change-delivery` does not authorize `change-application`.
 - `change-application` does not authorize memory mutation.
 - `memory-docs` does not authorize `protected-memory-write`.

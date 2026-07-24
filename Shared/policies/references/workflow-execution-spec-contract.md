@@ -14,6 +14,9 @@ these references instead of redefining them:
   `Shared/policies/references/completion-state-machine.md`.
 - Authorization phases:
   `Shared/policies/references/authorization-phase-registry.md`.
+- Completion-bundle schema, candidate phase mapping, receipt freshness,
+  revision, and exceptions:
+  `Shared/policies/references/memory-closure-bundle-contract.md`.
 - Protected actions:
   `Shared/policies/references/protected-action-registry.md`.
 - Source/runtime/generated copy roles:
@@ -21,6 +24,9 @@ these references instead of redefining them:
 - Lifecycle lanes, stage disposition, validation judgment, and size/split
   closeout disposition:
   `Shared/policies/references/workflow-lane-routing.md`.
+- Requirement precision schema:
+  `Shared/policies/references/requirement-precision-schema.md`, governed by
+  `Shared/policies/requirement-precision.md`.
 
 ## Human Flowchart Boundary
 
@@ -96,6 +102,10 @@ Required field meanings, in order:
   - Carries intent type, requested output, allowed evidence, forbidden actions, mutation scope, file scope,
     authorization state, grounding need, non-goals, ambiguities, escalation rule, and claim limit.
   - It prevents stale-task carryover and does not authorize writes or protected actions by itself.
+- `requirement_precision`
+  - One record conforming to `requirement-precision-schema.md` for the current requirement.
+  - Its field catalog, no-guessing gate, mandatory question conditions, and trace semantics are consumed from
+    `requirement-precision.md`; this execution contract does not redefine them.
 - `overreach_check`
   - Compact scope-expansion check before tool use, broad reads, external lookup, writes, validation,
     review, protected actions, or completion wording.
@@ -142,6 +152,13 @@ Required field meanings, in order:
 - `delivery_slice`
   - Acceptance-sized implementation/review/validation unit. Carries the slice schema below, or a
     legacy fallback that infers only the current authorized acceptance unit.
+- `completion_bundle_ref`
+  - Reference to the completion-bundle record for a new formal source route
+    targeting `process-complete`, or `not-applicable` for an explicitly
+    source-level route.
+  - The referenced contract owns candidate memory-phase bindings, receipt
+    freshness, delivery-slice revision, legacy handling, and exceptions. This
+    field neither authorizes a phase nor expands an allowlist.
 - `accepted_execution_request`
   - Adapter acceptance receipt for the requested snapshot, or canonical `pending`, `partial`,
     `missing`, `conflicting`, or `not-applicable` reconciliation state.
@@ -503,7 +520,8 @@ delivery_slice: {
   data_integrity_risk,
   included_repairs,
   slice_state,
-  legacy_fallback
+  legacy_fallback,
+  completion_bundle_ref
 }
 ```
 
@@ -511,6 +529,8 @@ delivery_slice: {
 `review-validation-pending`, `returned-for-repair`, `blocked`, `unverified`, or `closed`.
 `legacy_fallback` is `not-applicable` or `inferred-current-acceptance`. Legacy inference binds only
 the current delivery artifact or current authorized acceptance unit and cannot widen scope.
+`completion_bundle_ref` uses the memory-closure bundle contract and does not
+retroactively add candidate phases or protected authority to legacy specs.
 
 An acceptance-required repair remains in the same slice only when acceptance, allowlist, contract,
 authorization, migration boundary, security and data posture, protected-action exposure, and
@@ -713,6 +733,10 @@ Closeout target values are canonical in
 This execution spec carries the chosen `closeout_target` and transition
 decision. It does not redefine target meanings, legacy aliases, completion
 states, or transition values.
+
+It carries only `completion_bundle_ref` for bundle-backed source work. The
+referenced contract alone defines the bundle schema, phase candidates, receipts,
+revision behavior, and source-level exception.
 
 ## Workflow Loop And Minimal Reference Fields
 

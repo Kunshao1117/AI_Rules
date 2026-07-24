@@ -140,137 +140,18 @@ It also becomes operative when the request explicitly asks for a team, subagent,
 
 ### Captain Minimum Entry / 隊長最小入口
 
-The captain minimum entry is the thin intake layer required to decide whether the current request activates Team mode.
-It may create or reuse the first station path, dispatch bounded work, and refuse captain substitute labor.
-It reports missing station evidence as `blocked`, `unverified`, or `closed-with-director-risk`.
-It provides final Traditional Chinese synthesis from returned evidence.
-
-Complete board field catalogs, handoff packet field lists, trace ledgers, review records, and validation records are not first-entry gates.
-Memory/docs records and completion-audit fields are also not prerequisites for that first captain entry.
-They load conditionally when the matching station, write/read action, review, validation, or memory/docs phase begins.
-They also load when a protected action or completion phase begins.
-Each phase must satisfy its own gate before producing evidence or a completion claim.
-
-This minimum entry does not relax invariants for source writes, protected actions, validation, or independent review.
-It also does not relax invariants for memory/docs attribution.
-It also does not relax delivery artifact, source/deployed sync, or completion requirements.
-If a later phase needs absent evidence, the captain reports the missing evidence state.
-The captain must not do the station's work or claim completion.
+Captain entry only routes activation, opens the first station path, and reports
+missing evidence; it never performs station work or relaxes a later phase gate.
+The required intake, handoff, and evidence procedure is in [Team-Native Core
+Captain Boundary Reference](references/team-native-core-captain-boundary.md).
 
 ### Captain Boundary Anchor / 隊長邊界錨點
 
-This is the canonical captain-boundary anchor for team skills and subagent policy.
-The captain coordinates intake, board state, handoffs, blocker routing, station-output ledgering, and Director-facing synthesis only.
-Broad/deep reads, impact mapping, source/governance/workflow/skill/policy/script/test/hook/fixture/support automation implementation, validation, review, external research, and memory/docs attribution belong to stations.
-Protected execution, external mutation, completion audit, and completion evidence also belong to stations.
-
-Captain runtime self-check:
-
-- Before source writes, the captain must route work to an owner station or record a non-complete state.
-- Before broad/deep read evidence, impact mapping, external research, validation, review, or memory/docs attribution, route to an owner station or record a non-complete state.
-- Before completion audit/claim, completion evidence, protected execution, or external mutation, route to an owner station or record a non-complete state.
-- Valid non-complete states are `blocked`, `unverified`, and `closed-with-director-risk`.
-
-This self-check is a coordination guard only.
-It is not station-owned evidence, authorization, validation, review, memory/docs attribution, or completion proof.
-
-If route-or-state is sufficient, the captain must not ask the Director to repeat authorization only to satisfy internal vocabulary.
-That vocabulary includes board, handoff, and channel fields.
-
-The captain boundary pre-action guard is an advisory reminder before captain tools that could perform broad reads or source writes.
-It also applies before validation, review, memory/docs attribution, completion audit, or completion evidence.
-Micro-reads remain allowed only for route/location probes.
-Examples are named-file status, named-file diff, named-file hash, or searches constrained to explicitly named files.
-Broader actions still require matching station, handoff, role, channel, authorization, and lifecycle trace first.
-
-Any guard reminder or would-block risk is governance evidence for blocked/unverified/risk-closed reporting.
-It is not station-owned evidence, validation, review, memory/docs attribution, or completion proof.
-It does not authorize or stop execution by itself.
-
-Missing station evidence remains `blocked`, `unverified`, or `closed-with-director-risk`.
-`direct_exception` and platform-nondelegable records are explicit risk or coordination records.
-They are not execution routes, station evidence, or completion proof.
-
-Main-worktree writes require station-owned `change-delivery` with resolved `formal-write` authorization.
-They also require exact allowlist, dirty-diff read, forbidden protected actions, and `handoff_ownership: station-owned`.
-Fallback `change-application` is only for a returned artifact, explicit integration task, or assigned generated/deployed sync.
-Protected follow-on phases require their own scope-bound authorization.
-
-If any gate element is missing, the station or task can only be `blocked`, `unverified`, or `closed-with-director-risk`.
-The captain must not absorb the work into mainline direct execution.
-The captain also must not claim Team-Native mode, full team completion, or complete evidence from absorbed work.
-
-Root-cause guard:
-
-- If a platform cannot open a specialist channel, that is a station state to report.
-- Valid reported states include `standby`, `blocked`, `unverified`, `not-authorized`, and `unavailable`.
-- Missing channel capability is not permission for silent captain-direct work.
-
-The captain must keep the station blocked, unverified, standby, not-authorized, or unavailable unless the board records the gap.
-The board must name the missing route, replacement evidence, residual risk, and smallest unblock condition.
-Even then, captain-direct continuation is a recorded direct exception, not proof that team mode was off.
-
-Team-Native Core applies when the Director asks for governed work.
-When active, it covers source, workflow, fix, build, debug, test, audit, validation, review, memory/docs, commit, and release.
-It also covers deployment, install, project governance, generated copies, public contracts, and broad file inspection.
-It covers external research and impact analysis as well.
-This coverage applies when those actions can shape later source, workflow, validation, review, memory, release, or governance work.
-
-When Team mode is not active, pure conversation, small stable answers, and no-impact read-only work proceed under normal rules.
-Those rules include workflow, authorization, protected-gate, and read-before-write requirements.
-If the Director later requests governed work or team mode, create the board first.
-Do this before team evidence, specialist work, or team completion claims begin.
-
-The required delivery sequence is fixed:
-
-1. Director instruction -> captain intake -> translation.
-2. Board creation -> specialist station assignment -> station handoff packet.
-3. Execution-channel decision -> specialist startup attempt, standby, or blocked/unverified channel state.
-4. Specialist work -> returned change delivery artifacts or evidence delivery artifacts.
-5. Captain logs received station output in the synthesis ledger and updates the board.
-6. Independent validation, review, and memory/docs stations -> completion audit -> report.
-
-The captain remains the only Director-facing owner.
-The captain is an orchestration and summarization role, not the default worker.
-The captain turns Director requests into station tasks, coordinates dispatch, handoff, channels, blockers, and permission questions.
-The captain also maintains board state, the synthesis ledger, and Director-facing reporting.
-
-Authorization decisions, validation, review, memory/docs attribution, and quality disposition stay with their owners.
-Protected-action execution also stays with its owner.
-Completion audit evidence also stays with its governing policy or owner station.
-The captain must not call `apply_patch`, shell writes, editor tools, or any other source-writing tool.
-The captain must not label that diff as change delivery.
-
-All separable work belongs to team stations:
-
-- requirement replay, counter-evidence, impact mapping, and implementation change delivery.
-- memory delivery, validation, and review work.
-Completion audit work also belongs to team stations.
-
-Workflow and skill names are route hints.
-They are not write authorization and do not by themselves replace the team board or authorize pre-board dispatch.
-When the Director request itself is governed work, Team mode is triggered by that request even if no fixed Team-mode phrase is used.
-Director requests for subagents, team members, delegation, or Team-Native also activate the team route.
-
-Natural-language Director instructions are first-class route and intent signals, but they are not magic words.
-The authorization-resolution record binds everyday phrases to the current visible plan, station, blocker, diff, command, or file set.
-It also binds those phrases to scope, phase, or expiry.
-Examples include "continue", "fix that first", "go back and repair this", "so what now?", and `GO`.
-Interface approvals and permission buttons can also bind to the current visible protected action.
-The captain may surface the current visible scope and route unresolved questions.
-The captain does not become the authorization interpreter.
-
-If the current target, phase, scope, or expiry cannot be resolved, the station remains plan-only, no-write, blocked, or unverified.
-The captain must not force the Director to use artificial channel words when the visible context is enough.
-The captain must not infer hidden write, hidden cleanup, later-phase, or protected-state authority when the visible context is not enough.
-
-Before any station edits a file with existing worktree changes, the trace must show that the current diff and target section were read.
-If the requested change touches an already modified section, the station must merge or rewrite that section in place.
-The merge must preserve still-valid semantics.
-It must not create a duplicate policy block, append a bypass paragraph, stack a new patch layer, or invent a sidecar file.
-It must not overwrite another change.
-A new section is allowed only for a genuinely independent concept with no reasonable existing section.
-If the current diff conflicts with the authorized task, the station is blocked, unverified, or needs a narrower Director decision.
+The captain coordinates only; it never substitutes station implementation,
+validation, review, research, protected execution, or completion evidence.
+Missing owner evidence remains non-complete. The detailed boundary, direct
+exception, authorization, and dirty-diff procedure is in [Captain Boundary
+Reference](references/team-native-core-captain-boundary.md).
 
 ## Operation Mode Rule
 
@@ -413,96 +294,15 @@ The packet must include these fields when applicable:
 
 ## Deep-Read And Captain Context Rule
 
-Large or numerous files must not be fully loaded by the captain when a bounded specialist deep-read station can inspect them first.
-The required split is:
-
-1. Specialist deep-read: read the assigned files or references, summarize evidence, unresolved scope, and exact citations.
-2. Captain coordination read: inspect only the minimum snippets needed to receive the artifact or maintain the board.
-3. Captain coordination read may also resolve blocker/authorization conflicts or route disputed claims.
-4. Unread scope: list any relevant file, section, document, or external source not read by either party.
-
-If no specialist route can deep-read the whole scope, keep the station `blocked` or `unverified`.
-The record must include the smallest unblock condition.
-Director risk closure may only record `closed-with-director-risk` for the named gap.
-A captain direct read is coordination/direct-exception risk evidence only.
-It must not be treated as owner evidence for implementation, validation, review, memory/docs, or completion.
-
-While a member station is running, the captain must not perform context-expanding parallel reads, duplicate scans, or re-checks.
-The captain also must not perform substitute validation, substitute review, or memory/docs attribution.
-The captain must not rewrite member findings as captain-owned evidence.
-Allowed captain actions during member work are limited to unblocking the station, maintaining the board, and receiving returned artifacts.
-They also include resolving conflicts or authorization scope.
-Any broader captain context work is a direct exception and cannot support full Team-Native completion.
+The captain may perform only micro-read and coordination read; specialist stations
+own deep/repository-scale reads and their evidence. The detailed read split,
+channel, authorization, and station-assignment procedure is in [Captain Boundary
+Reference](references/team-native-core-captain-boundary.md).
 
 ### Captain-Lite Reading Model
 
-Hooks and workflow adapters must separate reading from completion evidence:
-
-- Micro-read scope permits bounded single-file reads, named-file status checks, named-file hashes, and small diff inspection.
-- Micro-read scope also permits narrow searches against explicitly named files as route/location probes.
-- Micro-read evidence does not authorize writes and does not become completion evidence by itself.
-- Micro-read excludes repository-wide grep, `git grep`, and `rg` against the repository root.
-- Micro-read also excludes recursive `Get-Content`, recursive file inventory, `rg --files`, `git ls-files`, and whole-repository file lists.
-- Station-owned repository-scale reads require a formal-readonly board and station trace before the read starts.
-- Repository-scale trace must name the specialist deep-read station, handoff packet, role identity, and assigned skill.
-- Repository-scale trace must also name channel state and lifecycle fields.
-- The captain's repository-scale role is limited to coordination/ledgering of returned artifacts and narrow cited-snippet checks.
-- Pre-trace broad context from a platform is only non-authorizing route context.
-- It stays non-authorizing until qualified station evidence or a residual direct exception exists.
-- The captain may perform only micro-read and coordination read by default.
-- Coordination read is limited to receiving artifacts, checking cited snippets, maintaining the board, and resolving blockers.
-- Coordination read also includes routing scope questions.
-- Coordination read must not become repository-wide grep, recursive reading, validation, review, or memory/docs attribution.
-- Coordination read must not become completion evidence.
-- Thin captain context is a hard cap, not a style preference.
-- Captain default context actions are micro-read, artifact format checks, synthesis-ledger logging, and board updates.
-- Captain default context actions also include blocker handling and scope routing.
-- Captain coordination read must not deep-read entire files, reconstruct missing specialist work, or fill implementation gaps.
-- Captain coordination read must not fill review, validation, or memory/docs gaps.
-- Specialist deep-read becomes qualified evidence only when the trace names `deep_read_scope`, handoff packet, and role identity.
-- It must also name the assigned skill.
-- Specialist deep-read trace must also name requested execution channel, channel capability, and channel invocation status.
-- Protected mutation requires protected authorization for the current phase, target, scope, and closure state.
-- Protected mutation includes git, memory commit, release, deploy, install, destructive file operations, and package publication.
-- Protected mutation also includes external-state mutation.
-- A general formal-write board is not enough for protected mutation.
-
-Authorization is resolved by `authorization-resolution.md` before any write or change application.
-The same rule applies before memory, git, release, deployment, install, MCP mutation, or external-state mutation.
-Workflow names are route hints only, not authorization.
-Interface approval buttons may be recorded as authorization evidence for the exact displayed target, scope, phase, and expiry.
-They do not authorize unbounded writes or later protected phases.
-Platform mode is capability context only and is not authorization.
-
-If authorization source, target, scope, phase, evidence, expiry, or resolution state is missing or inconsistent, the station cannot write.
-The affected station is `no-write`, `unverified`, or `blocked`.
-It must not proceed through direct captain work or channel availability alone.
-
-Specialist role authority comes from `team-specialist-registry` and the matching `team-specialist-*` specialist skill.
-The ten specialist `role_id` values are:
-
-- `intent-requirements`, `scope-impact`, `external-research`, and `architecture-contract`.
-- `change-delivery`, `validation`, `review`, and `security-reliability`.
-- `memory-docs` and `release-completion`.
-
-Subagents, browsers, CLI routes, MCP reads, main-worktree change delivery routes, and isolated workspaces are execution channels.
-Text-only routes are also execution channels.
-They are execution channels for specialist stations; they are not role definitions and do not own governance decisions.
-
-When external facts can affect a station, the board routes a formal-readonly `external-research` station before downstream reliance.
-External facts include current documentation, source freshness, security, compliance, cost, release, and deployment.
-They also include third-party platform behavior.
-Other stations request a narrow research question and preserve the returned artifact ID or missing-evidence state.
-They must not silently self-upgrade missing research into verified evidence.
-
-Specialist station assignment is not conditional on channel availability after Team mode is active.
-Every applicable active-Team station must be assigned to a specialist skill before channel selection.
-If the requested channel cannot be invoked, the station remains on the board with `blocked`, `unverified`, or `closed-with-director-risk`.
-It must not disappear and must not become routine captain work.
-
-Stations may be kept in `standby` when the specialist is assigned and the packet is ready but the dispatch wave has not opened.
-They may also be kept in `standby` when the platform channel is warming up or the station is waiting for previous-wave input.
-Standby is a formal lifecycle state, not a substitute for returned evidence.
+Micro-read, protected authorization, specialist assignment, research, and standby
+details are in [Captain Boundary Reference](references/team-native-core-captain-boundary.md).
 
 ## Station-First Rule
 
@@ -590,56 +390,11 @@ The only exceptions are current scope-bound evidence or Director risk close evid
 
 ## Specialist Lifecycle Rule
 
-Specialist stations are not disposable one-message helpers.
-A specialist channel may be retained only when the same `role_id`, `role_instance_id`, station, and delivery artifact remain.
-The same wave and role boundary must also remain.
-In the same task trace or Captain Team Board, one specialist channel or role instance must not hold more than one `role_id`.
-
-Reusing the same specialist channel is forbidden when the role changes.
-It is also forbidden when the station crosses from implementation to review.
-It is forbidden when validation failure turns into implementation, or memory/docs attribution turns into protected memory mutation.
-It is forbidden when completion audit turns into final closeout authority or a second independent opinion is required.
-
-Every formal station records the specialist lifecycle state.
-Valid values are `assigned`, `retained`, `reused`, `handoff-required`, `closed`, `replaced`, and `blocked`.
-The board also records retention reason, conversation health, reuse count, handoff summary, role-boundary check, and closure reason.
-
-Channel wait timeouts are observability signals, not delivery failure, cancellation, or rejection.
-Before a captain replaces a slow specialist channel, the trace must show a status probe or an explicit reason the probe cannot be sent.
-When a specialist receives a status probe, the specialist must pause the current action.
-The specialist reports where work stopped, whether it is blocked, and whether it is safe to continue.
-The specialist then waits.
-The specialist may resume only after the captain sends an explicit resume message for that channel.
-
-A channel that responds to the probe is non-terminal.
-It remains `status_probe_resume_state: awaiting-resume` until an explicit captain resume message changes the state.
-Valid next values are `resume-sent`, `resumed`, `blocked`, and `unavailable`.
-Ongoing work after resume is recorded in `station_state: running`.
-An extension request is recorded in `status_probe_state: responded-extension-requested`.
-A channel that does not respond is unresponsive or unobservable.
-It is not treated as failed unless a hard timeout, explicit cancellation, or returned failure artifact exists.
-
-Replacement does not cancel the original channel.
-The board must record the new channel generation, replacement reason, and whether the original channel was cancelled.
-It must also record the late-result policy.
-`ignore-after-cancelled` is valid only when cancellation is acknowledged and the late-result window closes with no artifact returned.
-If the original channel later returns an artifact, the captain logs it and compares it with any replacement artifact.
-The captain records `returned_at`, `return_timing`, `receipt_decision`, and `receipt_decision_reason`.
-Neutral ledger decisions include logged, included-in-synthesis-ledger, routed-to-owner-station, superseded-by-replacement, and duplicate.
-They also include conflict-review, blocked, and unverified.
-Completion claims require every opened channel to have a terminal closure, late-result disposition, or visible non-complete residual state.
-
-Every applicable formal station records `station_mode`, `context_visibility`, and `handoff_ownership`.
-These fields decide whether a station is read-only, owns change delivery, is under a protected gate, or has specialist deep-read evidence.
-They also decide whether a station has returned output for captain ledgering.
-Missing fields keep the station blocked or unverified and cannot support `complete`.
-
-Lifecycle decisions are soft-budgeted inside a single role instead of hard-closing every channel.
-If the same `role_id` and delivery artifact can continue with clear context, the station may be retained.
-If the captain or specialist must reconstruct too much prior context, the station becomes `handoff-required`.
-If the handoff summary is insufficient, the station is `replaced`.
-If a role boundary or `role_id` would be crossed, the old station is `closed`.
-A new independent role instance is opened in a later eligible wave.
+A `delivery_slice` is shared context and authorization, not a composite worker:
+roles stay separate, only implementation writes, and validation/review never
+repair. Open a new slice only when scope, allowlist, authorization, acceptance,
+risk, public contract, or protected action changes. The mandatory retained-member
+and finding procedure is [Team-Native Core Delivery Slice Reference](references/team-native-core-delivery-slice.md); it never replaces board, handoff, authorization, or trace contracts.
 
 ## Fast Closeout Rule
 
@@ -673,10 +428,7 @@ A Yellow finding must escalate when it affects the current completion claim, req
 It must also escalate when it affects memory/docs attribution, public contract, deployment sync, or release readiness.
 Escalation means blocked, unverified, or Red instead of harmless Yellow.
 
-The same Yellow finding must not create an unbounded repair loop.
-After two attempts on the same symptom family, file region, or operator path, the next action must change.
-Valid next actions are root-cause repair, structural refactor, blocked, unverified, or closed-with-director-risk.
-Validation and review stations report failures; they do not repair the core change they are validating or reviewing.
+The same Yellow finding must not create an unbounded repair loop; validation and review only report findings. Apply the bounded repair and third-symptom procedure in the [delivery-slice reference](references/team-native-core-delivery-slice.md).
 
 ## Strict State Machine And Delivery Semantics
 

@@ -1,22 +1,22 @@
 ---
 name: _shared.ops-skills.testing
 scopePath: Shared/skills/
-description: >-
+description: >
   專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-18T11:59:07+08:00'
+last_updated: '2026-07-24T16:19:47+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-07T05:52:39+08:00'
+last_verified: '2026-07-24T13:44:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
-cycle_id: 2026-06-15-001
-cycle_event_count: 9
+cycle_id: 2026-07-24-001
+cycle_event_count: 1
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,64 +32,55 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
-# _shared.ops-skills.testing — Testing Skills Memory
+# _shared.ops-skills.testing — Testing and Evidence Memory
 
 ## Current Truth
-- This child card owns Shared testing, browser evidence, accessibility, performance, test automation, test-pattern, Trunk, and regression strategy skills.
-- Tracked testing skill descriptions now use Traditional Chinese task meaning first and preserve canonical English for tool names, artifacts, and state values.
-- Browser evidence remains station-owned; visual validation includes detail observations, and screenshots or DOM snapshots prove only capture-time visible state—not persistence, business rules, real data, or integrations.
-- Real-information visual evidence is preferred: real pages, records, account state, responses, logs, or equivalent real paths. Mock, fixture, fake, seeded, static, or idealized data is fallback only and must state residual risk.
-- Test-pattern mocks validate scoped logic and contracts only; they cannot complete real-runtime, data-source, external-service, filesystem, browser, or operator-workflow claims without real execution evidence.
-- Tests and checks are opt-in: run only what the current acceptance directly proves or what a necessary lower-cost risk exception authorizes; never add test-of-test/check-of-check work, repair a test solely to repair it, or repair a checker solely to repair it.
-- Performance-audit and Trunk keep install, report-artifact writes, CI/deploy changes, uploads, remote settings, and generated source fixes as separate protected phases.
-- Trunk is native MCP, not Gateway; Trunk fixId or setup instructions are plan material until the matching phase is separately authorized.
+
+- This card owns Shared testing, browser evidence, accessibility, performance, test automation, test patterns, Trunk, and regression strategy skills.
+- Browser and visual evidence are station-owned; captured output proves only capture-time visible state.
+- Mocks and fixtures prove scoped logic or contracts, not real runtime, persistence, external-service, or operator-workflow claims.
+- Tests are opt-in and must be bound to the current acceptance or an explicitly authorized minimal exception.
+- Performance and Trunk mutations remain separate protected phases.
 
 ## Active Constraints
-- Do not turn one-time test output into permanent memory.
-- Use project-surface evidence requirements from the workflow matrix before declaring behavior verified.
-- Resolve each testing protected phase to its own scope, command or tool call, target, expiry, and gate before mutation.
-- Failed browser evidence may create a required-change item only; repairs return to `change-delivery` or authorized `change-application`.
-- Before marking real execution unavailable, record operator-tool discovery, retry/readiness checks, equivalent paths considered, and the remaining blocker.
+
+- Prefer real-information evidence; label mock or fallback evidence and its residual risk.
+- A failed check creates a change requirement only; repair returns to its authorized change owner.
+- Do not retain one-time test output as permanent memory.
 
 ## Cycle Events
-- 09: Repaired stale testing memory for zh-TW trigger semantics, browser/visual real-evidence rules, mock boundaries, and protected performance/Trunk phases.
-- 08: Recorded Batch 4A testing/performance/Trunk gate hardening: install, report writes, CI/deploy changes, uploads, remote settings, and source fixes are separate protected phases; fix IDs do not authorize writes.
-- 07: Recorded browser-testing governance alignment after push af501c6: required browser evidence remains station-owned unless a concrete direct exception is recorded.
-- 06: Recorded testing-skill hardening so [SUDO] cannot skip mock checks, authorize real network calls, or bypass validation.
-- 05: Recorded testing-skill hardening so browser and automation evidence cannot silently downgrade to captain direct work and real-information proof remains required before completion claims.
-- 04: Aligned testing and browser evidence memory with captain-led evidence station rules.
-- 03: Added browser-branch direct-exception boundaries for team-first evidence station governance.
-- 02: Added visual detail observation and real-information priority to browser and test automation evidence strategy.
-- 01: Split testing and evidence strategy ownership out of the broad Shared operational skills card.
+
+- 01: Compacted prior testing/evidence history after re-verifying source ownership and proof boundaries.
 
 ## Archive Index
-- Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
+
+- archive-001.md — Compacted pre-2026-07-24 cycle events and detailed evidence notes.
 
 ## Evidence Base
-- source:Shared/skills/browser-testing/SKILL.md — Verified browser branch scope, direct-exception boundary, detail-observation, real-information priority, retry/equivalent-path rules, and read-only evidence routing.
-- source:Shared/skills/test-automation-strategy/SKILL.md — Verified visual proof, screenshot boundary, real function proof, fallback-data classification, and Traditional Chinese UI assertion guidance.
-- source:Shared/skills/test-patterns/SKILL.md — Verified mock strategy boundaries, [SUDO] handling, and real-execution requirement for runtime-dependent claims.
-- source:Shared/skills/performance-audit/SKILL.md and Shared/skills/trunk-ops/SKILL.md — Verified separated protected phases for installs, report writes, CI/deploy mutation, uploads, source fixes, and remote Trunk settings.
-- source:Shared/skills/a11y-testing/SKILL.md and Shared/skills/impact-test-strategy/SKILL.md — Verified a11y trigger wording and regression scope requirements for real execution paths.
-- source:Shared/policies/language-governance.md — Verified Director-facing zh-TW and internal canonical English field boundary.
-- source:.agents/memory/_shared/ops-skills/archive-001.md — Previous parent-card content preserved during migration.
-- tool:memory_audit — Granularity advisory identified this card as too broad by tracked-file count.
-- director:2026-06-15 — GO SPLIT authorized controlled child-card split.
+
+- source:Shared/skills/browser-testing/SKILL.md
+- source:Shared/skills/test-automation-strategy/SKILL.md
+- source:Shared/skills/test-patterns/SKILL.md
+- source:Shared/skills/performance-audit/SKILL.md
+- source:Shared/skills/trunk-ops/SKILL.md
 
 ## Read Contract
-- Read this card when working on owned source files or the named operational area.
-- Read the parent card only for Shared-level navigation; do not treat parent-child links as dependencies.
+
+- Read for owned testing, browser, accessibility, performance, Trunk, or regression strategy work.
+- Do not use for raw test output or to claim a real execution path that has not been evidenced.
 
 ## Conflicts and Supersession
-- No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
+
+- None.
 
 ## 中文摘要
-- 此子卡負責 Shared 測試、瀏覽器、效能、無障礙與回歸策略。
-- 瀏覽器證據不可靜默退回主線工具；缺證據需標記 blocked、unverified 或具體 direct exception。
-- 截圖與 mock 只能證明有限狀態；資料、整合、持久化與操作者流程仍需真實或等效路徑。
-- 效能與 Trunk 的 install、報告寫入、CI/deploy、upload、remote setting 與 source fix 都是分離 protected phase。
+
+- 此卡負責 Shared 測試、瀏覽器、效能、無障礙與回歸策略。
+- 截圖與 mock 僅能證明有限狀態；真實行為需對應真實或等效路徑。
+- 測試與其受保護後續操作都必須有明確範圍。
 
 ## Tracked Files
+
 - Shared/skills/a11y-testing/SKILL.md
 - Shared/skills/browser-testing/SKILL.md
 - Shared/skills/impact-test-strategy/references/regression-test-examples.md
@@ -103,9 +94,11 @@ metadata:
 - Shared/skills/trunk-ops/SKILL.md
 
 ## Relations
+
 - _shared.ops-skills (parent card: operational-skill family index)
 - _shared (Shared governance parent)
 
 ## Applicable Skills
-- memory-ops — Use when updating this child card.
-- memory-arch — Use when adjusting child-card topology.
+
+- memory-ops — Update and commit this child card.
+- memory-arch — Adjust card topology or archives.

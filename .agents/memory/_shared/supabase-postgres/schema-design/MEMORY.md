@@ -4,14 +4,14 @@ scopePath: Shared/skills/supabase-postgres-best-practices/references/
 description: >-
   專案記憶：Supabase Postgres 結構設計參考主題。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-03T13:22:08+08:00'
+last_updated: '2026-07-24T13:40:26+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-03T13:05:08+08:00'
+last_verified: '2026-07-24T13:41:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.supabase-postgres.schema-design — Schema Design References Memory
 
 ## Current Truth

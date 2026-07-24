@@ -10,7 +10,12 @@ Memory writes, memory commits, and project context writes require their own prot
 
 ## Lifecycle Touchpoints
 
-Memory handling has four distinct touchpoints. They must not be collapsed into one task step.
+Memory handling has five distinct touchpoints. They must not be collapsed into one task step.
+
+For a normal formal source change, downstream memory consumers receive only a
+`completion_bundle_ref`. They consume the canonical Memory Closure Bundle Contract's already
+resolved phase evidence through that reference; this evidence reference does not restate a candidate
+map, phase-field schema, authority, or owner.
 
 1. Task-start memory read and clues:
    - Relevant memory summary, memory registry, project context, and prior rollout references are read-only clues.
@@ -20,12 +25,21 @@ Memory handling has four distinct touchpoints. They must not be collapsed into o
    - After source, workflow, skill, governance, or durable documentation changes, a memory/docs route must decide whether memory is not required, already attributed, required, missing, blocked by scope, conflicted, or unverified.
    - This disposition is read-only evidence and routing. It may cite changed files and delivery artifacts.
    - It does not mutate memory and does not authorize mutation.
-3. Protected memory write:
+3. Memory closure:
+   - After validation and review return terminal evidence, the read-only memory/docs station hands
+     the disposition and `completion_bundle_ref` to `memory-closure`.
+   - `memory-closure` consumes the canonical contract's accepted phase evidence and returns
+     `memory_no_write_receipt` or the required protected-phase receipts; it neither reuses
+     implementation authority nor invents a new authorization.
+4. Protected memory write:
    - A memory card write is a separate protected phase.
-   - It requires scoped authorization, an owner station, an owner card or approved topology decision, and current source evidence.
+   - It requires current canonical phase evidence reached through `completion_bundle_ref` and
+     current source evidence; this reference does not select a card, topology, or actor.
    - It cannot be performed by implementation, validation, review, or completion stations unless that exact protected phase is assigned.
-4. Protected `memory_commit`:
+5. Protected `memory_commit`:
    - `memory_commit` is a separate protected phase after an authorized memory write updates active memory content.
+   - It uses current canonical phase evidence reached through `completion_bundle_ref`; it is never
+     an automatic continuation of implementation or of the write phase.
    - It is not part of task-start reading, attribution, post-task disposition, source delivery, validation, or review.
    - It must not be used as a shortcut to reset stale memory state without a verified card edit.
 
@@ -59,8 +73,8 @@ The canonical disposition states are:
 - Meaning:
   - A durable source-memory update is required.
 - Next route:
-  - Open a separate protected memory-write owner station when memory mutation enters scope.
-  - This disposition is not write authority.
+  - `memory-closure` consumes `completion_bundle_ref` and the canonical contract's resolved phase
+    evidence. This disposition and reference are not new write authority.
   - Do not write from the attribution station.
 
 ### `memory-card-missing`
@@ -76,7 +90,9 @@ The canonical disposition states are:
 - Meaning:
   - Current scope forbids memory writes or protected memory phases.
 - Next route:
-  - For source-level delivery, report protected follow-up pending.
+  - A normal formal source change stays blocked or unverified for process-complete.
+  - Report protected follow-up pending only when `completion_bundle_ref` resolves through the
+    canonical contract to the `source-level-explicit` closeout target.
   - For full completion, commit, or release readiness, report the protected memory path as blocked.
   - That blocked state remains until scoped authorization exists.
   - This disposition is not complete.
@@ -101,28 +117,29 @@ It is not part of attribution, disposition, source delivery, validation, or revi
 
 `memory-required` and `memory-blocked-by-scope` are not completion states.
 
-Source-level delivery may report protected follow-up pending only when both conditions hold.
+Normal formal source changes target process-complete. After validation and review, memory closure
+must consume `completion_bundle_ref` and the canonical contract's accepted evidence, then return
+either `memory_no_write_receipt` or `memory_committed_receipt`; the latter proves the distinct
+protected write and `memory_commit` phases both ran. Missing MCP evidence or either receipt keeps
+process-complete unavailable.
 
-- Source implementation, validation, review, and sync are otherwise sufficient.
-- Memory mutation is outside current authorization.
-
-Full Team-Native completion, commit readiness, and release readiness require resolved memory/docs when memory mutation is required.
-
-Required protected memory phases must be completed before those readiness states can be claimed.
+Protected follow-up pending is allowed only when `completion_bundle_ref` resolves through the
+canonical contract to `source-level-explicit` and source implementation, validation, review, and
+sync are otherwise sufficient. It blocks process-complete, commit readiness, and release readiness.
 
 `memory_commit` runs only after an authorized memory card write updates active memory main-file content.
 
-## Closeout Bundle Boundary
+## Completion Bundle Boundary
 
-An implementation or change-application `closeout_bundle` may help the memory/docs station find
+An implementation or change-application delivers `completion_bundle_ref`. Memory/docs and
+memory-closure consume that reference and the canonical contract's resolved phase evidence to find
 delivery artifacts, changed files, expected dirty files, grounding handoff, validation/review
 handoffs, sync evidence, and residual risks.
 
-The bundle is an index/checklist only.
-It does not replace memory attribution, owner-card selection, read-only memory evidence, protected
-memory authorization, memory write, or `memory_commit`.
-Memory/docs stations must inspect the relevant source delivery and memory evidence instead of
-copying bundle text into a memory card.
+The reference is a consumer input, not evidence by itself. It does not replace memory attribution,
+read-only memory evidence, protected authorization, memory write, `memory_commit`, or the required
+no-write/committed receipt. Memory/docs stays read-only and hands `completion_bundle_ref` to
+`memory-closure`; neither station copies bundle text into a memory card.
 
 ## Forbidden Memory Content
 
@@ -214,6 +231,7 @@ The detailed tool contract lives in `.agents/skills/memory-ops/references/memory
 Workflows can use filesystem evidence when MCP is unavailable.
 
 Missing MCP evidence must be reported as `unverified` or `blocked` when it affects the decision.
+It cannot support `memory_no_write_receipt`, `memory_committed_receipt`, or process-complete.
 
 `commit_preflight` is scoped to `09 Commit`, explicit commit-prep, or closeout commit/push readiness.
 
@@ -235,11 +253,13 @@ It must not interrupt non-commit implementation, validation, review, routine, or
   - Relevant ownership and staleness from memory list/status/read.
   - Dependency evidence when indirect staleness is reported.
   - Context read evidence when acceptance preferences affect implementation.
-  - Disposition state before mutation.
+  - Disposition state before mutation and `completion_bundle_ref`.
 - Mutating MCP gate:
-  - Protected memory-write owner station only when disposition is `memory-required`.
+  - A protected memory-write phase only when disposition is `memory-required` and the current
+    canonical phase evidence reached through `completion_bundle_ref` permits it.
   - The disposition state is not write authority.
-  - Build completion cannot treat `memory-required` or `memory-blocked-by-scope` as complete.
+  - Build process-complete needs the memory-closure no-write or committed receipt; it cannot treat
+    `memory-required`, `memory-blocked-by-scope`, missing MCP, or a missing receipt as complete.
   - `memory_commit` only after an authorized memory card write updates active memory main-file content.
 
 ### 04 Fix

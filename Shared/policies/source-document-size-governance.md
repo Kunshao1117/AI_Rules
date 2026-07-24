@@ -8,8 +8,7 @@ Size is a second governance signal, not a line-count-only order to split a
 cohesive file.
 A file that exceeds the responsibility ceiling must split even when it is
 small. A large file may remain only when its responsibility boundary is
-cohesive and the category rule below permits a documented baseline or
-rationale.
+cohesive and the applicable fixed threshold action permits the change.
 
 ## Scope
 
@@ -28,6 +27,42 @@ This policy owns the size/split categories below:
 
 Other governance files and skills should cite this policy instead of copying
 its category rules.
+
+## Fixed Classification Thresholds
+
+This table is the only canonical source for source-document size thresholds.
+It applies to the current physical line count of a touched, hand-maintained
+source-bearing file. A category-specific threshold applies at or above the
+listed line count; it is not an estimate, a local default, or a discretionary
+replacement threshold.
+
+| Category | Responsibility review | Split plan | No new feature or responsibility |
+| --- | ---: | ---: | ---: |
+| General handwritten source | 401 | 601 | 801 |
+| Shared policy | 350 | 600 | 900 |
+| Reference document | 500 | 900 | 1,200 |
+| Platform core | 250 | 500 | 800 |
+| PowerShell module (`Scripts/modules/*.psm1`) | 800 | 1,500 | 2,500 |
+
+The three threshold actions are fixed:
+
+1. At the responsibility-review threshold, record and independently review the
+   responsibility classification before accepting further growth.
+2. At the split-plan threshold, maintain an exact split plan before accepting
+   further growth. The plan identifies the proposed ownership and boundary; it
+   does not require a line-count-only split.
+3. At the no-new-feature-or-responsibility threshold, reject any change that
+   adds a feature or responsibility. A change may maintain, reduce, or split
+   the existing responsibility only; an exact approved split delta is required
+   before new scope can proceed.
+
+Line count never by itself selects a split boundary. The Source Responsibility
+Contract remains the first gate, and a cohesive boundary may remain intact
+when the applicable fixed action permits it. A target not named in this table
+or the distinct `SKILL.md` rule below uses the General handwritten source
+category unless this policy declares a more specific category. Every
+hand-maintained non-module PowerShell script, including `.ps1` scripts, is
+General handwritten source and must not use the PowerShell module thresholds.
 
 ## Source Responsibility Contract
 
@@ -71,10 +106,14 @@ these strong-coupling conditions are present:
 Same folder, similar naming, shared helpers, convenience, or a claim that two
 areas are often edited together is not strong-coupling evidence.
 
-A third responsibility is always `split-required`. The change must stop before
-writing that responsibility and resolve an exact split delta through the
-operator-first scope-expansion gate. Existing oversized baselines do not allow
-a touched file to add or absorb a third responsibility.
+Do not split merely to reduce line count. A two-responsibility file may remain
+only with the strong-coupling evidence above, while a short file still splits
+when its actual responsibility boundary requires it.
+
+A third independent responsibility is always `split-required`. The change must
+stop before writing that responsibility and resolve an exact split delta
+through the operator-first scope-expansion gate. Existing oversized baselines
+do not allow a touched file to add or absorb a third responsibility.
 
 ### Required change declaration
 
@@ -121,9 +160,13 @@ Independent review decides the real responsibility count, detects broad labels
 that conceal multiple change triggers, judges strong coupling, and verifies
 that a proposed split improves ownership, dependency, and test boundaries.
 
-## Category Rules
+## Category Guidance And Split Signals
 
-### Core And Platform Core
+The fixed classification thresholds above own the required escalation. The
+guidance below identifies category boundaries and split signals; it does not
+create alternative numeric thresholds or exemptions.
+
+### Platform Core
 
 Core files keep always-on gates, source-of-truth references, and protected
 minimums.
@@ -132,13 +175,6 @@ Move long playbooks, field catalogs, examples, and tool recipes to shared
 policies, references, or skills.
 Do not use core files as a bypass when a shared policy or skill is the smaller
 durable home.
-
-Measurable signals:
-
-- Over 250 lines: report size/split impact when touched.
-- Over 500 lines: require a baseline note or split rationale.
-- Over 800 lines, or growth of more than 100 lines in one change: require a
-  split plan when any split signal below is present.
 
 Core split signals:
 
@@ -160,20 +196,6 @@ procedures.
 When a shared policy starts mixing a contract with a playbook, split the
 playbook into a reference file and keep the policy as the routing contract.
 
-Measurable signals for shared policies:
-
-- Over 350 lines: report size/split impact when touched.
-- Over 600 lines: require a baseline note or split rationale.
-- Over 900 lines, or growth of more than 150 lines in one change: require a
-  split plan when any split signal below is present.
-
-Measurable signals for reference files:
-
-- Over 500 lines: report size/split impact when touched.
-- Over 900 lines: require a baseline note or split rationale.
-- Over 1,200 lines, or growth of more than 200 lines in one change: require a
-  split plan when responsibilities mix.
-
 Shared policy/reference split signals:
 
 - A status ontology, completion state machine, authorization phase registry,
@@ -191,13 +213,15 @@ Shared policy/reference split signals:
 
 ### `SKILL.md`
 
-`SKILL.md` remains the L2 operational contract.
-Keep it under 500 lines and under a 5,000-token estimate.
+This policy is the sole owner of `SKILL.md` size limits. A hand-maintained
+`SKILL.md` must remain at or below 500 physical lines and approximately 5,000
+tokens. Consumer skills, including `code-quality`, cite this rule and must not
+restate, replace, or soften either limit.
 
 Move long examples, templates, lookup tables, scenario catalogs, and tool
-recipes into `references/`.
-The main `SKILL.md` must keep the trigger, procedure, gotchas, constraints, and
-reference load instructions.
+recipes into `references/` before either limit is exceeded. The main
+`SKILL.md` keeps the trigger, procedure, gotchas, constraints, and reference
+load instructions.
 
 ### Memory Cards
 
@@ -208,17 +232,11 @@ Use the memory-card counters, `needsCompaction`, and memory workflow rules for
 compaction, archive, or split decisions.
 Do not grow memory cards to host reusable policy or skill procedures.
 
-### PowerShell Scripts And Modules
+### PowerShell Modules
 
-This category covers `Scripts/*.ps1`, `Scripts/**/*.ps1`, and
-`Scripts/modules/*.psm1`.
-
-For `Scripts/modules/*.psm1`, line count is a split signal, not a hard failure:
-
-- Over 800 lines: report size/split impact when touched.
-- Over 1,500 lines: require a baseline note or split rationale.
-- Over 2,500 lines, or growth of more than 300 lines in one change: require a
-  split plan when any split signal below is present.
+This category covers `Scripts/modules/*.psm1` only. All hand-maintained
+non-module PowerShell scripts use the General handwritten source category and
+must not use this category's thresholds.
 
 Split signals:
 
@@ -231,18 +249,17 @@ Split signals:
   mixed without a stable boundary.
 - Recent or expected work repeatedly touches unrelated regions of the module.
 
-Existing oversized modules can be baselined during the first governance batch.
-The baseline is not a blocking failure by itself.
-It becomes blocking when a new change adds a second responsibility without
-accepted coupling, reaches a third responsibility, worsens public-interface
-mixing, or makes isolated testing harder.
+An existing oversized module is not exempt from the fixed threshold action.
+It may be maintained or reduced within that action, but it cannot add a feature
+or responsibility once it reaches the category's no-new-feature-or-
+responsibility threshold.
 
-### General Source Files
+### General Handwritten Source
 
-General source files follow the local `code-quality` skill thresholds and the
-project's established architecture.
+This category covers hand-maintained source-bearing files that do not have a
+more specific row in Fixed Classification Thresholds.
 
-Apply the Source Responsibility Contract before local line thresholds.
+Apply the Source Responsibility Contract before the fixed thresholds.
 Use size as a review trigger only after the responsibility gate clears.
 Split when the responsibility ceiling requires it or when a behavior, domain,
 adapter, public interface, or test boundary becomes clearer after the split.
@@ -261,7 +278,8 @@ Report these fields when applicable:
 - Independent `responsibility_review_disposition`.
 - Category: one of this policy's category names.
 - Current size and delta when line counts are available.
-- Baseline, no-impact, split-needed, split-plan-needed, or not-applicable.
+- Threshold action: no-impact, responsibility-review-needed,
+  split-plan-needed, new-scope-prohibited, or not-applicable.
 - Split signal, if any.
 - Source/deployed pair and parity evidence when a runtime copy exists.
 

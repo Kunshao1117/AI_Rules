@@ -14,7 +14,10 @@ skills and returned artifacts without re-owning execution lifecycle behavior.
 | Station-first rule, role separation, and completion boundary | Shared/policies/team-native-core.md |
 | Board fields and station row | Shared/skills/team-task-board/SKILL.md |
 | Workflow sequence, board state, and waves | Shared/policies/workflow-orchestration.md |
-| Parallel dispatch nested schema and eligibility values | Shared/skills/team-task-board/references/board-field-catalog.md |
+| Board-wide fields and parallel dispatch | Shared/skills/team-task-board/references/board-field-catalog.md |
+| Fixed slice roster, findings, repair resumes, and member replacement | Shared/skills/team-task-board/references/board-field-slice-and-roles.md |
+| Memory-closure candidate map, receipt freshness, and eligibility | Shared/policies/references/memory-closure-bundle-contract.md |
+| Channel values and receipt layers | Shared/skills/team-task-board/references/board-field-channel-and-receipts.md |
 | Authorization scope | Shared/policies/authorization-resolution.md |
 | Role boundary | Shared/skills/team-role-boundaries/SKILL.md |
 | Trace audit | Shared/policies/team-trace-evidence.md |
@@ -44,6 +47,11 @@ exclusive_task_scope:
 assigned_specialist_skill:
 loaded_skill_refs:
 handoff_ownership:
+delivery_slice_id:
+slice_baseline_packet_id:
+slice_station_roster_ref:
+slice_round:
+completion_bundle_ref:
 requested_execution_snapshot:
 accepted_execution_request:
 wait_baseline:
@@ -82,6 +90,8 @@ memory_docs_dependency:
 output_artifact_format:
 stop_condition:
 handoff_summary:
+finding_resume_overlay:
+replacement_assignment_overlay:
 minimal_reference_packet:
 ~~~
 
@@ -128,9 +138,10 @@ Before resolution, seal these projections on the same handoff_packet_id:
 context_scope_ref and wait_policy_ref bind to the sealed context projection and
 immutable wait baseline on that same packet. A changed sealed scope or baseline
 requires a new packet; a legal ledger revision does not. The lifecycle
-reference exclusively owns its field shapes, requested/accepted/applied
-provenance separation, deadline revision, probe/resume, replacement,
-cancellation, and late-return semantics.
+reference exclusively owns channel-only field shapes,
+requested/accepted/applied provenance separation, deadline revision,
+probe/channel-resume, channel replacement, cancellation, and late-return
+semantics.
 
 External grounding fields are conditional inputs. Record the exact question,
 whether outside evidence is required, current state, strongest accepted source
@@ -144,7 +155,55 @@ exact source allowlist, dirty-diff read, and forbidden protected actions. A
 change-application packet additionally proves its returned artifact, explicit
 integration task, or assigned generated/deployed sync input; it requires the
 change-application phase and the same safeguards unless the board records a
-platform-nondelegable direct exception.
+  platform-nondelegable direct exception.
+
+### Slice Continuity Overlays
+
+The implementation, validation, and review entries in a delivery slice are
+fixed, independent stations. Each keeps its original role_instance_id, member
+assignment, context, and handoff_packet_id after a round returns to standby.
+The three entries close only after whole-slice acceptance.
+
+A numbered validation/review finding may resume the original implementation
+station only through a captain decision. Record the cited finding IDs,
+implementation_resume_decision_ref, allowed existing-slice scope, and the next
+validation/review resume conditions in finding_resume_overlay. This resumes the
+existing packet and does not create a repair station, a new member, a new role
+instance, or a new packet baseline. Once repair returns, the captain explicitly
+resumes the original validation and review packets.
+
+Only a captain-approved member replacement may change a fixed member. Its
+replacement_assignment_overlay records prior and new member assignments, prior
+and new role instance IDs, reason, captain decision, and context-transfer
+reference. It preserves delivery_slice_id and slice_baseline_packet_id. A
+timeout, probe, channel resume, or channel replacement is not a member
+replacement.
+
+### Completion Bundle Transport And Receipt Revision
+
+The packet transports `completion_bundle_ref` unchanged. It does not parse a
+candidate binding or authorization. `Shared/policies/authorization-resolution.md`
+alone resolves each phase's scoped binding. `Shared/policies/references/
+memory-closure-bundle-contract.md` owns only the referenced candidate map,
+receipt freshness, and eligibility. This packet defines no additional
+completion-bundle field, phase binding, or authorization rule.
+
+Every artifact that consumes a source artifact records the immutable
+`consumed_source_artifact_revision`. The packet route emits an
+`artifact_receipt_revision` whenever a resumed implementation return changes
+the source artifact. The revision records the prior and replacement artifact
+references and marks dependent validation, review, memory/docs, memory-closure,
+and completion evidence `stale` until the original relevant station is
+explicitly resumed or a truthful terminal blocked/unverified state is recorded.
+It is not a new slice, member replacement, packet baseline, or authorization
+decision.
+
+The memory-closure packet consumes only the transported references; candidate
+and receipt freshness are determined by their canonical contract. A source
+repair may resume the original implementation packet only by the slice decision;
+the packet route then carries the receipt revision and stale dependencies
+forward. Channel timeout/resume behavior remains exclusively with
+`execution-lifecycle.md` and cannot itself refresh a source artifact.
 
 ### Same-Wave Parallel Overlay
 
@@ -160,7 +219,8 @@ type, output format, integration owner, stop condition, and escalation
 condition. A changed baseline, interface freeze, conflict domain, generated or
 source boundary, or integration owner invalidates the carried object and stops
 the affected member. The captain must issue a fresh packet or order the work
-after its upstream input.
+  after its upstream input. A fresh packet baseline is required for a new
+  delivery slice; a same-slice finding resume retains its existing packet.
 
 The packet is acceptance-slice sized. It must not turn one coherent slice into
 frequent per-file assignments. A member that discovers a required out-of-scope
@@ -177,9 +237,12 @@ Use concrete skill paths or names, not free-form role descriptions:
 |---|---|
 | Requirement | team-specialist-intent-requirements; team-role-boundaries |
 | Scope or impact | team-specialist-scope-impact; team-role-boundaries |
+| Third-symptom diagnosis | team-specialist-scope-impact or team-specialist-security-reliability; team-role-boundaries |
 | Architecture | team-specialist-architecture-contract; team-role-boundaries |
+| Third-symptom module split | team-specialist-architecture-contract; team-role-boundaries |
 | Change delivery | team-specialist-change-delivery; team-change-delivery-artifact; team-role-boundaries |
 | Memory/docs | team-specialist-memory-docs; team-memory-docs-delivery-artifact; memory-ops |
+| Memory closure | team-specialist-memory-closure; team-memory-closure-delivery-artifact; memory-ops; team-role-boundaries |
 | Validation | team-specialist-validation; team-validation-delivery-artifact |
 | Review | team-specialist-review; team-review-delivery-artifact; quality-review-governance |
 | Security/reliability | team-specialist-security-reliability; team-role-boundaries; security-sre |
@@ -224,6 +287,9 @@ specialist_deep_read_evidence:
 minimal_reference_packet:
 accepted_execution_request:
 applied_execution_receipt:
+consumed_source_artifact_revision:
+artifact_receipt_revision:
+stale_dependency_state:
 ~~~
 
 accepted_execution_request is pending, not-applicable, or the complete
@@ -281,7 +347,12 @@ needed read scope, deep-read evidence, canonical rule reference, unread scope,
 or missing-evidence field is absent, record the artifact unverified or return
 it to its owner. The captain must not manufacture those station-owned fields by
 repository-wide search, broad inventory, ad hoc external research, or
-substitute review or validation.
+  substitute review or validation.
+
+Captain ledgering may log and route a returned artifact but must not transform a
+subagent reply into a captain conclusion, validation, review, acceptance, or
+completion proof. A validation/review finding is an input to the slice
+continuity overlay, not automatic repair authority.
 
 Late artifacts remain artifacts. Ledger, include, route, supersede, mark
 out-of-scope or duplicate, or send them to conflict review only through a
@@ -298,9 +369,9 @@ Cross-thread continuation remains a separate semantic package using
 package in prompt text, but neither the package nor platform operation metadata
 becomes this station packet or reuses `handoff_packet_id`.
 
-Status probes pause the responding member until the captain records its
-position, blocker state, and safe-to-continue result, then sends explicit
-resume for that same role instance and channel. Replacement is not
-cancellation; an original late return still receives neutral handling. These
-statements route to execution-lifecycle.md for their exact transitions and
-field values.
+Status probes pause only the responding channel until the captain records its
+position, blocker state, safe-to-continue result, and explicit channel-resume
+decision for that same role instance and channel run. Channel replacement is
+not cancellation or member replacement; an original late return still receives
+neutral handling. These statements route to execution-lifecycle.md for their
+exact transitions and field values.

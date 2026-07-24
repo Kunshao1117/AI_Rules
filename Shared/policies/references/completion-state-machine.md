@@ -25,6 +25,13 @@ Compatibility aliases:
 - `commit-ready` is a release-readiness subtarget and cannot pass before
   `process-complete` is satisfied.
 
+New formal source work selects `process-complete` by default. It may select
+`source-level` only when the initial visible formal-write agreement records the
+`source-level-explicit` exception. Existing or legacy execution specs are not
+retrospectively given completion-bundle candidates, memory-phase authority, or
+protected authorization. The exception and candidate schema are owned by
+`Shared/policies/references/memory-closure-bundle-contract.md`.
+
 ## Completion States
 
 Use exactly one completion state for the same closeout target.
@@ -85,8 +92,11 @@ Allowed transition decisions for workflow loops:
 ## Artifact Chain Requirements
 
 `source-level` needs the artifact chain for source delivery. `process-complete`
-adds memory/docs and completion audit. `release-ready` adds release/security
-readiness and protected-action applicability.
+adds memory/docs, current completion-bundle receipt evidence when the bundle
+applies, and completion audit. `release-ready` adds release/security readiness
+and protected-action applicability. The bundle reference owns receipt fields,
+slice-revision freshness, and exceptions; this state machine does not redefine
+them.
 
 Missing artifacts do not disappear when a reduced station set is used. The
 trace must record each missing artifact as `blocked`, `unverified`,
@@ -104,6 +114,10 @@ Task-start memory reads, read-only memory/docs disposition, protected memory
 writes, and protected `memory_commit` are separate phases. A pending required
 memory phase keeps `process-complete` and `release-ready` non-complete until it
 is resolved or explicitly risk-closed for the exact scope.
+
+When a completion bundle applies, its candidate phases remain separate and are
+not implementation-phase carryover. A stale memory receipt cannot support the
+current closeout target.
 
 Director-facing reporting follows `Shared/policies/language-governance.md`.
 An unsynthesized, English-led, raw-field-led, or raw-artifact-led report body
