@@ -1,5 +1,8 @@
 ﻿# Upgrade scan and apply lifecycle functions.
 
+Import-Module -Name (Join-Path $PSScriptRoot 'Core.Comparison.psm1') -Force
+Import-Module -Name (Join-Path $PSScriptRoot 'Core.Reporting.psm1') -Force
+
 function Get-UpgradeReport {
     param(
         [string]$SourceRoot,

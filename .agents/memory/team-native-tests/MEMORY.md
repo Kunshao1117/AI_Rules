@@ -4,7 +4,7 @@ scopePath: Tests/TeamNative/
 description: >
   專案記憶：Team-Native PowerShell 契約測試。Use when: task touches Team-Native test
   fixtures, contract coverage, or source/deployment parity assertions.
-last_updated: '2026-07-24T18:27:56+08:00'
+last_updated: '2026-07-24T21:37:37+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -39,6 +39,7 @@ metadata:
 - This root card owns the Team-Native PowerShell contract test suite.
 - The suite covers captain decisions, delivery slices, memory-closure bundles, source-size budgets, oversize inventory, requirement precision, and source/deployment parity.
 - `Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1` owns the focused Windows PowerShell 5.1 parser/import regression route for Manager import-chain UTF-8 BOM compatibility.
+- The Windows PowerShell 5.1 regression now covers nested module-scope `Get-UpgradeReport` self-compare.
 
 ## Active Constraints
 

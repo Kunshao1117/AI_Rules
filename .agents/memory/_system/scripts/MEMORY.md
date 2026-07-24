@@ -4,7 +4,7 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-24T18:27:53+08:00'
+last_updated: '2026-07-24T21:37:17+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -40,6 +40,7 @@ metadata:
 - The former `Scripts/tests`, Doctor/Audit/Resolver, Audit engine, and fixture-test sources are removed; empty residual directories are not active functionality.
 - PowerShell changes preserve Windows PowerShell 5.1 compatibility.
 - Manager import-chain modules containing non-ASCII text must use UTF-8 BOM for Windows PowerShell 5.1 import compatibility: Core.Cleanup, Core.Gitignore, Core.Infrastructure, Core.Reporting, Core.Upgrade, and Manager.Commands.
+- The six Core consumer modules—Core.Cleanup, Core.Comparison, Core.Gitignore, Core.Infrastructure, Core.ProjectSkills, and Core.Upgrade—now declare their direct sibling module dependencies in their own module scopes.
 - `Scripts/Watch-CodexModelV1.ps1` remains experimental and replaces all exact V2 cache markers in its isolated fixture contract; it cannot prove platform capability or applied execution.
 ## Active Constraints
 - Removed test or audit artifacts must not be cited as validation, runtime-capability, or completion evidence.

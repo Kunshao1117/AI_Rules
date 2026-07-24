@@ -1,5 +1,7 @@
 # Version and rule-equivalence functions.
 
+Import-Module -Name (Join-Path $PSScriptRoot 'Core.Reporting.psm1') -Force
+
 function Get-VersionContent {
     param([string]$Path)
     if (Test-Path $Path) { return (Get-Content $Path -Raw).Trim() }

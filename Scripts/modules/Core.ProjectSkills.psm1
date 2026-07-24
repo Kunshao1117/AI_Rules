@@ -1,5 +1,7 @@
 # Project-skill discovery namespace backfill.
 
+Import-Module -Name (Join-Path $PSScriptRoot 'Core.Reporting.psm1') -Force
+
 function Invoke-ProjectSkillBackfill {
     param(
         [string]$AgentsRoot,

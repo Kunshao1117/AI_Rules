@@ -9,8 +9,8 @@ $windowsPowerShellPath = if ($env:WINDIR) {
 }
 $windowsPowerShellAvailable = $null -ne $windowsPowerShellPath -and (Test-Path -LiteralPath $windowsPowerShellPath -PathType Leaf)
 
-Describe 'Windows PowerShell 5.1 manager parser compatibility' {
-    It 'parses the manager entry chain and imports it without invoking SyncProjectRules' -Skip:(-not $windowsPowerShellAvailable) {
+Describe 'Windows PowerShell 5.1 manager parser and module composition compatibility' {
+    It 'parses the manager entry chain and composes consumer modules without invoking SyncProjectRules' -Skip:(-not $windowsPowerShellAvailable) {
         $childScript = @'
 $ErrorActionPreference = 'Stop'
 $repoRoot = '__REPO_ROOT__'
@@ -29,7 +29,8 @@ try {
         'Scripts\modules\Core.Upgrade.psm1',
         'Scripts\modules\Core.Infrastructure.psm1',
         'Scripts\modules\Core.Cleanup.psm1',
-        'Scripts\modules\Core.Gitignore.psm1'
+        'Scripts\modules\Core.Gitignore.psm1',
+        'Scripts\modules\Core.ProjectSkills.psm1'
     )
 
     foreach ($relativePath in $parseTargets) {
@@ -49,6 +50,60 @@ try {
             ) -join [Environment]::NewLine
             throw "Parser.ParseFile failed for ${relativePath}:`n$diagnostics"
         }
+    }
+
+    function Assert-ConsumerModuleComposition {
+        param(
+            [string]$RelativePath,
+            [string[]]$RequiredCommands
+        )
+
+        $module = Import-Module -Name (Join-Path $repoRoot $RelativePath) -Force -PassThru -ErrorAction Stop
+        if (-not $module) {
+            throw "Direct import did not return module information: $RelativePath"
+        }
+
+        $missingCommands = @(& $module {
+            param([string[]]$CommandNames)
+            foreach ($commandName in $CommandNames) {
+                if (-not (Get-Command -Name $commandName -ErrorAction SilentlyContinue)) {
+                    $commandName
+                }
+            }
+        } $RequiredCommands)
+
+        if ($missingCommands.Count -gt 0) {
+            throw "Direct import left required sibling commands unavailable in ${RelativePath}: $($missingCommands -join ', ')"
+        }
+
+        return $module
+    }
+
+    $upgradeModule = Assert-ConsumerModuleComposition -RelativePath 'Scripts\modules\Core.Upgrade.psm1' -RequiredCommands @('Compare-FrameworkFile', 'Write-Ok')
+    $upgradeReport = @(& $upgradeModule {
+        param(
+            [string]$SourceRoot,
+            [string]$TargetRoot
+        )
+
+        Get-UpgradeReport -SourceRoot $SourceRoot -TargetRoot $TargetRoot -ScanDirs @() -ProtectedDirs @() -ScanFiles @('Scripts\modules\Core.Upgrade.psm1')
+    } $repoRoot $repoRoot)
+
+    if ($upgradeReport.Count -ne 1 -or $upgradeReport[0].Status -ne 'SAME') {
+        $statuses = @($upgradeReport | ForEach-Object { $_.Status }) -join ', '
+        throw "Core.Upgrade module-scope Get-UpgradeReport did not return exactly one SAME result: $statuses"
+    }
+
+    $consumerModuleRequirements = @(
+        [PSCustomObject]@{ RelativePath = 'Scripts\modules\Core.Comparison.psm1'; RequiredCommands = @('Write-Ok', 'Write-Step', 'Write-Warn') },
+        [PSCustomObject]@{ RelativePath = 'Scripts\modules\Core.Cleanup.psm1'; RequiredCommands = @('Write-Ok', 'Write-Step', 'Write-Warn') },
+        [PSCustomObject]@{ RelativePath = 'Scripts\modules\Core.Gitignore.psm1'; RequiredCommands = @('Write-Ok', 'Write-Step', 'Write-AiRulesGitignoreReport') },
+        [PSCustomObject]@{ RelativePath = 'Scripts\modules\Core.Infrastructure.psm1'; RequiredCommands = @('Write-Ok', 'Write-Step') },
+        [PSCustomObject]@{ RelativePath = 'Scripts\modules\Core.ProjectSkills.psm1'; RequiredCommands = @('Write-Ok', 'Write-Step', 'Write-Warn') }
+    )
+
+    foreach ($consumerModuleRequirement in $consumerModuleRequirements) {
+        $null = Assert-ConsumerModuleComposition -RelativePath $consumerModuleRequirement.RelativePath -RequiredCommands $consumerModuleRequirement.RequiredCommands
     }
 
     $importErrors = @()

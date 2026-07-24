@@ -1,5 +1,7 @@
 ﻿# Protected directory lifecycle and agent infrastructure initialization.
 
+Import-Module -Name (Join-Path $PSScriptRoot 'Core.Reporting.psm1') -Force
+
 function Backup-ProtectedDirs {
     param([string]$AgentsRoot)
     $backup = @{ Memory = $null; Project = $null; Context = $null }

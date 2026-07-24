@@ -1,5 +1,7 @@
 ﻿# .gitignore configuration maintenance.
 
+Import-Module -Name (Join-Path $PSScriptRoot 'Core.Reporting.psm1') -Force
+
 function Get-AiRulesTextFileContent {
     param([string]$Path)
     if (-not (Test-Path -LiteralPath $Path)) { return "" }

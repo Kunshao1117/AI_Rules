@@ -1,5 +1,7 @@
 ﻿# Safe cleanup of orphaned framework files.
 
+Import-Module -Name (Join-Path $PSScriptRoot 'Core.Reporting.psm1') -Force
+
 function Remove-OrphanFiles {
     param(
         [array]$Report,
