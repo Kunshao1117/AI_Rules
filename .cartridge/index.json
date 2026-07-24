@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastScanned": "2026-07-24T16:46:28+08:00",
+  "lastScanned": "2026-07-24T18:27:57+08:00",
   "cartridges": {
     "claude-edition-rules": {
       "skillPath": ".agents/memory/claude-edition-rules/MEMORY.md",
@@ -173,11 +173,12 @@
         "Tests/TeamNative/MemoryClosureBundle.Tests.ps1",
         "Tests/TeamNative/ModuleBudget.Tests.ps1",
         "Tests/TeamNative/OversizeInventory.Tests.ps1",
+        "Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1",
         "Tests/TeamNative/RequirementPrecision.Tests.ps1",
         "Tests/TeamNative/SourceDeploymentParity.Tests.ps1"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T13:52:23+08:00",
+      "lastUpdated": "2026-07-24T18:27:56+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -192,13 +193,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2622,
-        "lineCount": 93,
+        "sizeBytes": 3383,
+        "lineCount": 99,
         "chineseCharCount": 0,
-        "bodyCharCount": 1091,
+        "bodyCharCount": 1602,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -5977,7 +5978,7 @@
         "Scripts/modules/SourceSize-Audit.psm1"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T13:40:55+08:00",
+      "lastUpdated": "2026-07-24T18:27:53+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5992,13 +5993,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 4453,
-        "lineCount": 90,
+        "sizeBytes": 5317,
+        "lineCount": 95,
         "chineseCharCount": 0,
-        "bodyCharCount": 2032,
+        "bodyCharCount": 2716,
         "chineseRatio": 0,
         "cycleId": "2026-07-17-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -6467,6 +6468,9 @@
       "team-native-tests"
     ],
     "Tests/TeamNative/OversizeInventory.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1": [
       "team-native-tests"
     ],
     "Tests/TeamNative/RequirementPrecision.Tests.ps1": [

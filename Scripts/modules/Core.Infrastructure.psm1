@@ -1,4 +1,4 @@
-# Protected directory lifecycle and agent infrastructure initialization.
+﻿# Protected directory lifecycle and agent infrastructure initialization.
 
 function Backup-ProtectedDirs {
     param([string]$AgentsRoot)

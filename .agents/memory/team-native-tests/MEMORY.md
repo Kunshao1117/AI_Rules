@@ -4,7 +4,7 @@ scopePath: Tests/TeamNative/
 description: >
   專案記憶：Team-Native PowerShell 契約測試。Use when: task touches Team-Native test
   fixtures, contract coverage, or source/deployment parity assertions.
-last_updated: '2026-07-24T13:52:23+08:00'
+last_updated: '2026-07-24T18:27:56+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -38,15 +38,18 @@ metadata:
 
 - This root card owns the Team-Native PowerShell contract test suite.
 - The suite covers captain decisions, delivery slices, memory-closure bundles, source-size budgets, oversize inventory, requirement precision, and source/deployment parity.
+- `Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1` owns the focused Windows PowerShell 5.1 parser/import regression route for Manager import-chain UTF-8 BOM compatibility.
 
 ## Active Constraints
 
 - Test files are source-owned here; runtime artifacts remain excluded from source memory.
 - Test execution, repair, and external effects require their own scoped workflow authority.
+- Known residual: `Test-TeamNativeV2` has one non-passing OversizeInventory test outside the focused PS 5.1 parser/import route.
 
 ## Cycle Events
 
 - 01: Created during the authorized memory organization to own the Team-Native test suite.
+- 02: Added ownership for the focused Windows PowerShell 5.1 parser/import compatibility regression test.
 
 ## Archive Index
 
@@ -56,6 +59,7 @@ metadata:
 
 - source:Tests/TeamNative/CaptainDecision.Tests.ps1
 - source:Tests/TeamNative/SourceDeploymentParity.Tests.ps1
+- source:Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1 — focused Windows PowerShell 5.1 parser/import compatibility regression coverage.
 - tool:memory_status — No existing root memory owner covered this test scope.
 
 ## Read Contract
@@ -71,6 +75,7 @@ metadata:
 
 - 此根卡負責 Team-Native 的 PowerShell 契約測試。
 - artifacts 不歸此卡；只追蹤測試原始碼。
+- PS 5.1 parser/import 相容性回歸測試由此卡負責；OversizeInventory 的既知殘餘風險不屬於該聚焦路徑。
 
 ## Tracked Files
 
@@ -79,6 +84,7 @@ metadata:
 - Tests/TeamNative/MemoryClosureBundle.Tests.ps1
 - Tests/TeamNative/ModuleBudget.Tests.ps1
 - Tests/TeamNative/OversizeInventory.Tests.ps1
+- Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1
 - Tests/TeamNative/RequirementPrecision.Tests.ps1
 - Tests/TeamNative/SourceDeploymentParity.Tests.ps1
 

@@ -1,4 +1,4 @@
-# .gitignore configuration maintenance.
+﻿# .gitignore configuration maintenance.
 
 function Get-AiRulesTextFileContent {
     param([string]$Path)

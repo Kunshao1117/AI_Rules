@@ -1,4 +1,4 @@
-# Upgrade scan and apply lifecycle functions.
+﻿# Upgrade scan and apply lifecycle functions.
 
 function Get-UpgradeReport {
     param(

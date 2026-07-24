@@ -1,4 +1,4 @@
-# Console and operator-facing reporting functions.
+﻿# Console and operator-facing reporting functions.
 
 function Write-Step { param([string]$Msg) Write-Host "  → $Msg" -ForegroundColor Cyan }
 function Write-Ok   { param([string]$Msg) Write-Host "  ✓ $Msg" -ForegroundColor Green }

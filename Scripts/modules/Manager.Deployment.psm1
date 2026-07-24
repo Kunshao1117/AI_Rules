@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 Import-Module (Join-Path $PSScriptRoot "Core.psm1") -Force
 Import-Module (Join-Path $PSScriptRoot "Skills-Sync.psm1") -Force

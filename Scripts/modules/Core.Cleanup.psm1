@@ -1,4 +1,4 @@
-# Safe cleanup of orphaned framework files.
+﻿# Safe cleanup of orphaned framework files.
 
 function Remove-OrphanFiles {
     param(
