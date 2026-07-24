@@ -11,4 +11,3 @@ Historical detail compacted from the active card on 2026-07-24.
 ## Historical Notes
 
 - Earlier migration referenced the parent operational-skill archive. Current ownership and active constraints are now kept in MEMORY.md.
-

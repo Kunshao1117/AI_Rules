@@ -35,4 +35,3 @@ Historical ownership compacted from the parent active card on 2026-07-24.
 ## Supersession
 
 - Concrete ownership moved to the child cards listed by the current parent MEMORY.md.
-

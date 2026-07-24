@@ -56,4 +56,3 @@ Historical ownership compacted from the parent active card on 2026-07-24.
 ## Supersession
 
 - Concrete ownership moved to the current child cards. Memory-closure contracts are now tracked by the dedicated memory-closure child.
-

@@ -10,4 +10,3 @@ Historical detail compacted from the active card on 2026-07-24.
 ## Prior Cycle
 
 - 01: Recorded AI Rules Manager v0.2.1 and the Git-only inspection surface.
-

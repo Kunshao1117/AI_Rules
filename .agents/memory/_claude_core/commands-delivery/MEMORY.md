@@ -4,7 +4,7 @@ scopePath: Claude/.claude/
 description: >
   專案記憶：Claude 平台核心、規則與交付指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-24T13:52:39+08:00'
+last_updated: '2026-07-24T16:46:23+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -96,4 +96,3 @@ metadata:
 
 - memory-ops — Update and commit this child card.
 - memory-arch — Adjust split topology or archive volumes.
-

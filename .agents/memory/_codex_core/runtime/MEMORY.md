@@ -4,7 +4,7 @@ scopePath: Codex/
 description: >
   專案記憶：Codex 平台啟動、設定與 runtime hook。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-24T13:52:40+08:00'
+last_updated: '2026-07-24T16:46:24+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -95,4 +95,3 @@ metadata:
 
 - memory-ops — Update and commit this child card.
 - memory-arch — Adjust split topology or archive volumes.
-

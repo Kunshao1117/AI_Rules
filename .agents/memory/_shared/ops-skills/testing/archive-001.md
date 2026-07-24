@@ -11,4 +11,3 @@ Historical detail compacted from the active card on 2026-07-24.
 ## Historical Notes
 
 - Current proof boundaries, source ownership, and active constraints are retained in MEMORY.md.
-
