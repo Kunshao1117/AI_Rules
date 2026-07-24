@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastScanned": "2026-07-24T21:37:38+08:00",
+  "lastScanned": "2026-07-25T00:57:12+08:00",
   "cartridges": {
     "claude-edition-rules": {
       "skillPath": ".agents/memory/claude-edition-rules/MEMORY.md",
@@ -156,7 +156,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:52:09+08:00",
+        "lastVerified": "2026-07-25T00:54:59+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -175,10 +175,15 @@
         "Tests/TeamNative/OversizeInventory.Tests.ps1",
         "Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1",
         "Tests/TeamNative/RequirementPrecision.Tests.ps1",
-        "Tests/TeamNative/SourceDeploymentParity.Tests.ps1"
+        "Tests/TeamNative/SourceDeploymentParity.Tests.ps1",
+        "Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1",
+        "Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1",
+        "Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1",
+        "Tests/TeamNative/PowerShell51ProjectSkillsEncoding.Tests.ps1",
+        "Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T21:37:37+08:00",
+      "lastUpdated": "2026-07-25T00:57:08+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -193,13 +198,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3488,
-        "lineCount": 100,
+        "sizeBytes": 4539,
+        "lineCount": 108,
         "chineseCharCount": 0,
-        "bodyCharCount": 1695,
+        "bodyCharCount": 2321,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 2,
+        "cycleEventCount": 3,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -1827,7 +1832,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:46:00+08:00",
+        "lastVerified": "2026-07-25T00:54:59+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -1853,7 +1858,7 @@
         "Codex/.gitignore"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T16:46:24+08:00",
+      "lastUpdated": "2026-07-25T00:57:11+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -1868,13 +1873,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2293,
-        "lineCount": 98,
+        "sizeBytes": 2989,
+        "lineCount": 102,
         "chineseCharCount": 0,
-        "bodyCharCount": 828,
+        "bodyCharCount": 1339,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -5943,7 +5948,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:41:00+08:00",
+        "lastVerified": "2026-07-25T00:54:59+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5975,10 +5980,11 @@
         "Scripts/modules/Manager.Commands.psm1",
         "Scripts/modules/Manager.Config.psm1",
         "Scripts/modules/Manager.Deployment.psm1",
+        "Scripts/modules/Manager.ProjectSync.psm1",
         "Scripts/modules/SourceSize-Audit.psm1"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T21:37:17+08:00",
+      "lastUpdated": "2026-07-25T00:57:05+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5993,13 +5999,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 5539,
-        "lineCount": 96,
+        "sizeBytes": 6875,
+        "lineCount": 103,
         "chineseCharCount": 0,
-        "bodyCharCount": 2911,
+        "bodyCharCount": 4033,
         "chineseRatio": 0,
         "cycleId": "2026-07-17-001",
-        "cycleEventCount": 2,
+        "cycleEventCount": 3,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -6477,6 +6483,21 @@
       "team-native-tests"
     ],
     "Tests/TeamNative/SourceDeploymentParity.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/PowerShell51ProjectSkillsEncoding.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1": [
       "team-native-tests"
     ],
     "Antigravity/.agents/VERSION": [
@@ -7395,6 +7416,9 @@
       "_system.scripts"
     ],
     "Scripts/modules/Manager.Deployment.psm1": [
+      "_system.scripts"
+    ],
+    "Scripts/modules/Manager.ProjectSync.psm1": [
       "_system.scripts"
     ],
     "Scripts/modules/SourceSize-Audit.psm1": [

@@ -8,8 +8,8 @@
     Codex 原生掃描 .agents/skills/，工作流技能合併至同一目錄。
 #>
 
-using module ".\Core.psm1"
-using module ".\Skills-Sync.psm1"
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -Force -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -Force -ErrorAction Stop
 
 function Merge-CodexConfigDefaults {
     param(
@@ -211,8 +211,10 @@ function Invoke-CodexFresh {
     $version         = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $projectToolsRoot = Join-Path $sharedRoot "project-tools"
-    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\codex-subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
+
+    $null = Get-SharedPolicyBlock -PolicyPath $sharedPolicyPath -Platform Codex
 
     Write-Banner "Codex v$version — Fresh 安裝 | 目標: $Target" "Magenta"
 
@@ -339,8 +341,10 @@ function Invoke-CodexUpgrade {
     $version         = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $projectToolsRoot = Join-Path $sharedRoot "project-tools"
-    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\codex-subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
+
+    $null = Get-SharedPolicyBlock -PolicyPath $sharedPolicyPath -Platform Codex
 
     if (-Not (Test-Path $dstDotCodex)) {
         Write-Warn "目標尚未安裝 Codex，切換為 Fresh 模式。"

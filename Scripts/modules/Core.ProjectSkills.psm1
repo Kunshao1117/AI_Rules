@@ -1,4 +1,4 @@
-# Project-skill discovery namespace backfill.
+﻿# Project-skill discovery namespace backfill.
 
 Import-Module -Name (Join-Path $PSScriptRoot 'Core.Reporting.psm1') -Force
 

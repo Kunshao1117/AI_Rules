@@ -8,8 +8,8 @@
     從 Deploy-Antigravity.ps1 遷移，邏輯完整保留。
 #>
 
-using module ".\Core.psm1"
-using module ".\Skills-Sync.psm1"
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -Force -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -Force -ErrorAction Stop
 
 function Invoke-AgFresh {
     <#
@@ -39,8 +39,10 @@ function Invoke-AgFresh {
     $agentsRoot = $targetDir
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $projectToolsRoot = Join-Path $sharedRoot "project-tools"
-    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\antigravity-subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
+
+    $null = Get-SharedPolicyBlock -PolicyPath $sharedPolicyPath -Platform Antigravity
 
     Write-Banner "Antigravity v$version — Fresh 安裝 | 目標: $Target" "Magenta"
 
@@ -157,8 +159,10 @@ function Invoke-AgUpgrade {
     $version    = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $projectToolsRoot = Join-Path $sharedRoot "project-tools"
-    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\antigravity-subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
+
+    $null = Get-SharedPolicyBlock -PolicyPath $sharedPolicyPath -Platform Antigravity
 
     if (-Not (Test-Path $targetDir)) {
         Write-Warn "目標尚未安裝 Antigravity，切換為 Fresh 模式。"

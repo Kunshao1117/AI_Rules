@@ -24,7 +24,9 @@ try {
         'Scripts\AI-RulesManager.ps1',
         'Scripts\modules\Manager.Commands.psm1',
         'Scripts\modules\Manager.Deployment.psm1',
+        'Scripts\modules\Manager.ProjectSync.psm1',
         'Scripts\modules\Manager.Config.psm1',
+        'Scripts\modules\Skills-Sync.psm1',
         'Scripts\modules\Core.Reporting.psm1',
         'Scripts\modules\Core.Upgrade.psm1',
         'Scripts\modules\Core.Infrastructure.psm1',
@@ -32,6 +34,17 @@ try {
         'Scripts\modules\Core.Gitignore.psm1',
         'Scripts\modules\Core.ProjectSkills.psm1'
     )
+
+    foreach ($relativePath in @(
+        'Scripts\modules\Manager.Deployment.psm1',
+        'Scripts\modules\Manager.ProjectSync.psm1'
+    )) {
+        $path = Join-Path $repoRoot $relativePath
+        $bytes = [System.IO.File]::ReadAllBytes($path)
+        if ($bytes.Length -lt 3 -or $bytes[0] -ne 0xEF -or $bytes[1] -ne 0xBB -or $bytes[2] -ne 0xBF) {
+            throw "Expected UTF-8 BOM for Windows PowerShell 5.1 manager source: $relativePath"
+        }
+    }
 
     foreach ($relativePath in $parseTargets) {
         $path = Join-Path $repoRoot $relativePath
@@ -99,11 +112,19 @@ try {
         [PSCustomObject]@{ RelativePath = 'Scripts\modules\Core.Cleanup.psm1'; RequiredCommands = @('Write-Ok', 'Write-Step', 'Write-Warn') },
         [PSCustomObject]@{ RelativePath = 'Scripts\modules\Core.Gitignore.psm1'; RequiredCommands = @('Write-Ok', 'Write-Step', 'Write-AiRulesGitignoreReport') },
         [PSCustomObject]@{ RelativePath = 'Scripts\modules\Core.Infrastructure.psm1'; RequiredCommands = @('Write-Ok', 'Write-Step') },
-        [PSCustomObject]@{ RelativePath = 'Scripts\modules\Core.ProjectSkills.psm1'; RequiredCommands = @('Write-Ok', 'Write-Step', 'Write-Warn') }
+        [PSCustomObject]@{ RelativePath = 'Scripts\modules\Core.ProjectSkills.psm1'; RequiredCommands = @('Write-Ok', 'Write-Step', 'Write-Warn') },
+        [PSCustomObject]@{ RelativePath = 'Scripts\modules\Skills-Sync.psm1'; RequiredCommands = @('Compare-FrameworkFile', 'Write-Ok', 'Write-Step', 'Write-Warn') },
+        [PSCustomObject]@{ RelativePath = 'Scripts\modules\Manager.ProjectSync.psm1'; RequiredCommands = @('Compare-FrameworkFile', 'Get-UpgradeReport', 'Merge-ManagerCodexProjectConfigDefaults', 'Write-Ok', 'Write-Step', 'Write-Warn') }
     )
 
     foreach ($consumerModuleRequirement in $consumerModuleRequirements) {
         $null = Assert-ConsumerModuleComposition -RelativePath $consumerModuleRequirement.RelativePath -RequiredCommands $consumerModuleRequirement.RequiredCommands
+    }
+
+    $projectSyncModule = Import-Module -Name (Join-Path $repoRoot 'Scripts\modules\Manager.ProjectSync.psm1') -Force -PassThru -ErrorAction Stop
+    $projectSyncExports = @($projectSyncModule.ExportedCommands.Keys | Sort-Object)
+    if ($projectSyncExports.Count -ne 1 -or $projectSyncExports[0] -ne 'Invoke-ManagerProjectRulesSync') {
+        throw "Manager.ProjectSync must export only Invoke-ManagerProjectRulesSync; received: $($projectSyncExports -join ', ')"
     }
 
     $importErrors = @()

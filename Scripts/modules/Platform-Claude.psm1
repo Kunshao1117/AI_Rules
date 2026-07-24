@@ -8,8 +8,8 @@
     從 Deploy-Claude.ps1 遷移，含 PROJECT IDENTITY 還原機制。
 #>
 
-using module ".\Core.psm1"
-using module ".\Skills-Sync.psm1"
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -Force -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -Force -ErrorAction Stop
 
 function Invoke-ClaudeFresh {
     <#
@@ -39,8 +39,10 @@ function Invoke-ClaudeFresh {
     $version       = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $projectToolsRoot = Join-Path $sharedRoot "project-tools"
-    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\claude-subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
+
+    $null = Get-SharedPolicyBlock -PolicyPath $sharedPolicyPath -Platform Claude
 
     Write-Banner "Claude Edition v$version — Fresh 安裝 | 目標: $Target" "Magenta"
 
@@ -151,8 +153,10 @@ function Invoke-ClaudeUpgrade {
     $version      = Get-VersionContent -Path (Join-Path $FrameworkRoot "VERSION")
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $projectToolsRoot = Join-Path $sharedRoot "project-tools"
-    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\claude-subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
+
+    $null = Get-SharedPolicyBlock -PolicyPath $sharedPolicyPath -Platform Claude
 
     if (-Not (Test-Path $dstDotClaude)) {
         Write-Warn "目標尚未安裝 Claude Edition，切換為 Fresh 模式。"

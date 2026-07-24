@@ -7,7 +7,32 @@
     支援全量覆蓋與增量 SHA256 差異注入兩種模式。
 #>
 
-using module ".\Core.psm1"
+Import-Module -Name (Join-Path $PSScriptRoot 'Core.Reporting.psm1') -Force
+Import-Module -Name (Join-Path $PSScriptRoot 'Core.Comparison.psm1') -Force
+
+function Throw-SharedPolicySyncFailure {
+    param(
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('PolicyFileMissing', 'PolicyReadFailed', 'PolicyBlockMissing', 'PolicyBlockEmpty', 'TargetFileMissing', 'TargetReadFailed', 'TargetWriteFailed')]
+        [string]$Code,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Path,
+
+        [string]$Detail = ''
+    )
+
+    $message = "Shared policy sync failed [$Code]: $Path"
+    if ($Detail) { $message += " ($Detail)" }
+    $exception = New-Object System.InvalidOperationException -ArgumentList $message
+    $category = if ($Code -in @('PolicyFileMissing', 'TargetFileMissing')) {
+        [System.Management.Automation.ErrorCategory]::ObjectNotFound
+    } else {
+        [System.Management.Automation.ErrorCategory]::InvalidData
+    }
+    $errorRecord = [System.Management.Automation.ErrorRecord]::new($exception, "SharedPolicy.$Code", $category, $Path)
+    throw $errorRecord
+}
 
 function Test-SharedSkillRelativePathIncluded {
     param([string]$RelativePath)
@@ -397,21 +422,28 @@ function Get-SharedPolicyBlock {
         [string]$Platform
     )
 
-    if (-not (Test-Path -LiteralPath $PolicyPath)) {
-        Write-Fail "Shared policy 不存在：$PolicyPath"
-        return ''
+    if (-not (Test-Path -LiteralPath $PolicyPath -PathType Leaf)) {
+        Throw-SharedPolicySyncFailure -Code PolicyFileMissing -Path $PolicyPath
     }
 
-    $content = Get-Content -LiteralPath $PolicyPath -Raw -Encoding UTF8
+    try {
+        $content = Get-Content -LiteralPath $PolicyPath -Raw -Encoding UTF8 -ErrorAction Stop
+    } catch {
+        Throw-SharedPolicySyncFailure -Code PolicyReadFailed -Path $PolicyPath -Detail $_.Exception.Message
+    }
     $platformKey = $Platform.ToUpperInvariant()
     $pattern = "(?ms)<!--\s*SUBAGENT_POLICY:$platformKey`_START\s*-->\s*(.*?)\s*<!--\s*SUBAGENT_POLICY:$platformKey`_END\s*-->"
     $match = [regex]::Match($content, $pattern)
     if (-not $match.Success) {
-        Write-Fail "Shared policy 缺少平台區塊：$Platform"
-        return ''
+        Throw-SharedPolicySyncFailure -Code PolicyBlockMissing -Path $PolicyPath -Detail $Platform
     }
 
-    return $match.Groups[1].Value.Trim()
+    $policyBlock = $match.Groups[1].Value.Trim()
+    if (-not $policyBlock) {
+        Throw-SharedPolicySyncFailure -Code PolicyBlockEmpty -Path $PolicyPath -Detail $Platform
+    }
+
+    return $policyBlock
 }
 
 function Get-CodexGeneratedPolicyPointer {
@@ -465,13 +497,11 @@ function Sync-SharedPolicyBlock {
         [string]$InsertAfterPattern = ''
     )
 
-    if (-not (Test-Path -LiteralPath $TargetPath)) {
-        Write-Warn "核心規則檔不存在，跳過 shared policy 注入：$TargetPath"
-        return 0
+    if (-not (Test-Path -LiteralPath $TargetPath -PathType Leaf)) {
+        Throw-SharedPolicySyncFailure -Code TargetFileMissing -Path $TargetPath
     }
 
     $policyBlock = Get-SharedPolicyBlock -PolicyPath $PolicyPath -Platform $Platform
-    if (-not $policyBlock) { return 0 }
 
     $startMarker = '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->'
     $endMarker = '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->'
@@ -479,24 +509,37 @@ function Sync-SharedPolicyBlock {
     if ($Platform -eq 'Codex') {
         $generatedBlock = Get-CodexGeneratedPolicyPointer -PolicyPath $PolicyPath
     }
-    $generated = "$startMarker`r`n$generatedBlock`r`n$endMarker"
-    $content = Get-Content -LiteralPath $TargetPath -Raw -Encoding UTF8
+    try {
+        $content = Get-Content -LiteralPath $TargetPath -Raw -Encoding UTF8 -ErrorAction Stop
+    } catch {
+        Throw-SharedPolicySyncFailure -Code TargetReadFailed -Path $TargetPath -Detail $_.Exception.Message
+    }
     $markerPattern = "(?ms)$([regex]::Escape($startMarker)).*?$([regex]::Escape($endMarker))"
+    $existingMarker = [regex]::Match($content, $markerPattern)
+    $lineEnding = if ($existingMarker.Success) {
+        if ($existingMarker.Value -match "`r`n") { "`r`n" } else { "`n" }
+    } elseif ($content -match "`r`n") {
+        "`r`n"
+    } else {
+        "`n"
+    }
+    $normalizedGeneratedBlock = $generatedBlock -replace "`r`n|`r|`n", $lineEnding
+    $generated = "$startMarker$lineEnding$normalizedGeneratedBlock$lineEnding$endMarker"
 
-    if ([regex]::IsMatch($content, $markerPattern)) {
+    if ($existingMarker.Success) {
         $newContent = [regex]::Replace($content, $markerPattern, [System.Text.RegularExpressions.MatchEvaluator]{ param($m) $generated }, 1)
     } elseif ($InsertBeforePattern -and [regex]::IsMatch($content, $InsertBeforePattern)) {
         $newContent = [regex]::Replace($content, $InsertBeforePattern, [System.Text.RegularExpressions.MatchEvaluator]{
             param($m)
-            return "$generated`r`n`r`n$($m.Value)"
+            return "$generated$lineEnding$lineEnding$($m.Value)"
         }, 1)
     } elseif ($InsertAfterPattern -and [regex]::IsMatch($content, $InsertAfterPattern)) {
         $newContent = [regex]::Replace($content, $InsertAfterPattern, [System.Text.RegularExpressions.MatchEvaluator]{
             param($m)
-            return "$($m.Value)`r`n`r`n$generated"
+            return "$($m.Value)$lineEnding$lineEnding$generated"
         }, 1)
     } else {
-        $newContent = $content.TrimEnd() + "`r`n`r`n" + $generated + "`r`n"
+        $newContent = $content.TrimEnd() + $lineEnding + $lineEnding + $generated + $lineEnding
     }
 
     if ($newContent -eq $content) {
@@ -504,9 +547,13 @@ function Sync-SharedPolicyBlock {
         return 0
     }
 
-    [System.IO.File]::WriteAllText($TargetPath, $newContent, (New-Object System.Text.UTF8Encoding $false))
+    try {
+        [System.IO.File]::WriteAllText($TargetPath, $newContent, (New-Object System.Text.UTF8Encoding $false))
+    } catch {
+        Throw-SharedPolicySyncFailure -Code TargetWriteFailed -Path $TargetPath -Detail $_.Exception.Message
+    }
     Write-Ok "Shared subagent policy 已注入：$TargetPath"
     return 1
 }
 
-Export-ModuleMember -Function Sync-SharedSkills, Sync-SharedGovernanceReferences, Sync-ProjectTools, Merge-WorkflowSkills, Get-SharedPolicyBlock, Sync-SharedPolicyBlock, Get-SharedGovernanceReferenceRelativePaths, Get-ProjectToolRelativePaths, Get-ProjectToolDiffs, Test-SharedSkillRelativePathIncluded, Test-CodexWorkflowRelativePathIncluded
+Export-ModuleMember -Function Sync-SharedSkills, Sync-SharedGovernanceReferences, Sync-ProjectTools, Merge-WorkflowSkills, Get-SharedPolicyBlock, Get-CodexGeneratedPolicyPointer, Sync-SharedPolicyBlock, Get-SharedGovernanceReferenceRelativePaths, Get-ProjectToolRelativePaths, Get-ProjectToolDiffs, Test-SharedSkillRelativePathIncluded, Test-CodexWorkflowRelativePathIncluded

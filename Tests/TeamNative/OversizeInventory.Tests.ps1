@@ -14,14 +14,40 @@ function New-InventoryFixtureFile {
 
 Describe 'Audit-SourceSize canonical inventory' {
     BeforeEach {
+        $script:fixtureOriginalLocation = Get-Location
+        $script:fixtureLocationPushed = $false
         $fixtureRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("AuditSourceSize-" + [guid]::NewGuid().ToString('N'))
         $outputPath = Join-Path $fixtureRoot 'artifacts\oversize-inventory.json'
-        New-Item -ItemType Directory -Path $fixtureRoot -Force | Out-Null
+        try {
+            New-Item -ItemType Directory -Path $fixtureRoot -Force | Out-Null
+            Push-Location -LiteralPath $fixtureRoot
+            $script:fixtureLocationPushed = $true
+            & git init | Out-Null
+            if ($LASTEXITCODE -ne 0) { throw 'Unable to initialize the isolated Git fixture.' }
+        } catch {
+            if ($script:fixtureLocationPushed) {
+                Pop-Location
+                $script:fixtureLocationPushed = $false
+            }
+            Set-Location -LiteralPath $script:fixtureOriginalLocation.Path
+            if (Test-Path -LiteralPath $fixtureRoot) {
+                Remove-Item -LiteralPath $fixtureRoot -Recurse -Force
+            }
+            throw
+        }
     }
 
     AfterEach {
-        if (Test-Path -LiteralPath $fixtureRoot) {
-            Remove-Item -LiteralPath $fixtureRoot -Recurse -Force
+        try {
+            if ($script:fixtureLocationPushed) {
+                Pop-Location
+                $script:fixtureLocationPushed = $false
+            }
+        } finally {
+            Set-Location -LiteralPath $script:fixtureOriginalLocation.Path
+            if (Test-Path -LiteralPath $fixtureRoot) {
+                Remove-Item -LiteralPath $fixtureRoot -Recurse -Force
+            }
         }
     }
 
@@ -79,28 +105,32 @@ Describe 'Audit-SourceSize canonical inventory' {
     }
 
     It 'retains Git-verified baseline candidates after an authorized split' {
-        $repoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-        $verificationRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("BaselineInventory-" + [guid]::NewGuid().ToString('N'))
-        $verificationOutput = Join-Path $verificationRoot 'oversize-inventory.json'
-        $verificationIndex = Join-Path $verificationRoot 'oversize-reading-index.md'
-        New-Item -ItemType Directory -Path $verificationRoot -Force | Out-Null
+        $managerPath = Join-Path $fixtureRoot 'Scripts\AI-RulesManager.ps1'
+        $managerTarget = 'Scripts/AI-RulesManager.ps1'
+        New-InventoryFixtureFile -Path $managerPath -LineCount 924
+        & git config user.email 'oversize-inventory-test@example.invalid'
+        if ($LASTEXITCODE -ne 0) { throw 'Unable to configure the isolated Git fixture email.' }
+        & git config user.name 'Oversize Inventory Test'
+        if ($LASTEXITCODE -ne 0) { throw 'Unable to configure the isolated Git fixture user.' }
+        & git add -- $managerTarget
+        if ($LASTEXITCODE -ne 0) { throw 'Unable to stage the isolated Git fixture baseline.' }
+        & git commit -m 'Add oversized manager baseline' | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw 'Unable to commit the isolated Git fixture baseline.' }
 
-        try {
-            $inventory = & $scriptPath -RepoRoot $repoRoot -OutputPath $verificationOutput -ReadingIndexPath $verificationIndex -PassThru
-            $manager = @($inventory.baselineCandidates | Where-Object { $_.path -eq 'Scripts/AI-RulesManager.ps1' })[0]
+        New-InventoryFixtureFile -Path $managerPath -LineCount 59
+        $inventory = & $scriptPath -RepoRoot $fixtureRoot -OutputPath $outputPath -KnownBaselineTarget @($managerTarget) -PassThru
+        $manager = @($inventory.baselineCandidates | Where-Object { $_.path -eq $managerTarget })[0]
 
-            $inventory.summary.baselineCandidateCount | Should BeGreaterThan $inventory.summary.currentCandidateCount
-            $inventory.summary.untrackedKnownTargetCount | Should Be 0
-            $manager.baseline_status | Should Be 'baseline_over_budget'
-            $manager.baseline_line_count | Should Be 924
-            $manager.current_line_count | Should Be 59
-            $manager.resolved_status | Should Be 'resolved-split'
-            $manager.split_evidence.baseline_source | Should Match '^git:'
-            $manager.type | Should Be 'general-source'
-        } finally {
-            if (Test-Path -LiteralPath $verificationRoot) {
-                Remove-Item -LiteralPath $verificationRoot -Recurse -Force
-            }
-        }
+        $inventory.summary.baselineCandidateCount | Should BeGreaterThan $inventory.summary.currentCandidateCount
+        $inventory.summary.baselineCandidateCount | Should Be 1
+        $inventory.summary.currentCandidateCount | Should Be 0
+        $inventory.summary.untrackedKnownTargetCount | Should Be 0
+        (@($inventory.baselineCandidates | Where-Object { $_.path -eq $managerTarget })).Count | Should Be 1
+        $manager.baseline_status | Should Be 'baseline_over_budget'
+        $manager.baseline_line_count | Should Be 924
+        $manager.current_line_count | Should Be 59
+        $manager.resolved_status | Should Be 'resolved-split'
+        $manager.split_evidence.baseline_source | Should Match '^git:'
+        $manager.type | Should Be 'general-source'
     }
 }

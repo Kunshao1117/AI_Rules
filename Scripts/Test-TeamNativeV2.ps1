@@ -8,10 +8,15 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$TestPath = (Join-Path (Split-Path -Parent $PSScriptRoot) 'Tests\TeamNative'),
+    [string]$TestPath,
 
     [switch]$PassThru
 )
+
+if ([string]::IsNullOrWhiteSpace($TestPath)) {
+    $repoRoot = Split-Path -Parent $PSScriptRoot
+    $TestPath = Join-Path $repoRoot 'Tests\TeamNative'
+}
 
 $invokePester = Get-Command -Name Invoke-Pester -ErrorAction SilentlyContinue
 if (-not $invokePester) {

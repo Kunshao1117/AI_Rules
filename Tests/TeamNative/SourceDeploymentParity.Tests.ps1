@@ -33,6 +33,20 @@ Describe 'Source deployment parity' {
         if ($adapterContent -notmatch 'Only an explicit captain `replace`') { throw 'Adapter lacks explicit replacement wording.' }
     }
 
+    It 'keeps the checked-in Codex source template idempotent with its generated pointer' {
+        $policyPath = Join-Path $repoRoot 'Shared\policies\adapters\codex-subagent-invocation.md'
+        $sourceTemplatePath = Join-Path $repoRoot 'Codex\.codex\AGENTS.md'
+        $targetPath = Join-Path $script:tempRoot '.codex\AGENTS.md'
+        New-Item -ItemType Directory -Force -Path (Split-Path $targetPath -Parent) | Out-Null
+        Copy-Item -LiteralPath $sourceTemplatePath -Destination $targetPath -Force
+        $before = Get-Content -LiteralPath $targetPath -Raw -Encoding UTF8
+
+        $updated = Sync-SharedPolicyBlock -PolicyPath $policyPath -TargetPath $targetPath -Platform Codex -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
+        if ($updated -ne 0) { throw "Expected the checked-in template to be unchanged; received $updated." }
+        $after = Get-Content -LiteralPath $targetPath -Raw -Encoding UTF8
+        if ($before -cne $after) { throw 'The checked-in Codex source template is not idempotent with its generated pointer.' }
+    }
+
     It 'syncs V2 policies, references, and skills as exact SHA256 copies' {
         $sharedRoot = Join-Path $script:tempRoot 'Shared'
         $skillsRoot = Join-Path $sharedRoot 'skills'
