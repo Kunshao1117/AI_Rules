@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台啟動、設定與 runtime hook。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T00:02:49+08:00'
+last_updated: '2026-07-27T02:15:33+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-26T16:36:58+08:00'
+last_verified: '2026-07-27T02:00:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 3
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,18 +36,20 @@ metadata:
 
 ## Current Truth
 
-- Owns Codex bootstrap, configuration, hook, and runtime adapter sources.
-- `Codex/.codex/AGENTS.md` is an always-on surface: it keeps Direct-first routing, delegated-only Team activation, protected-action boundaries, and a generated adapter pointer.
+- Owns Codex bootstrap, configuration, and runtime adapter sources.
+- `Codex/.codex/AGENTS.md` is an always-on surface. It retains Director-facing zh-TW, Direct-first routing, delegated positive triggers, read-before-write and dirty-work protection, protected-action and canonical-source pointers, V1 heterogeneous delegation availability, and lazy-load pointers.
+- Codex hooks remain a platform capability, but AI_Rules installs no repository-local hook configuration or Team-Native hook scripts by default. Direct/delegated routing remains owned by `Shared/policies/execution-routing.md`.
 - The complete Codex adapter and Shared contracts remain canonical under `Shared/policies`; generated markers are pointer-form and are not hand-edited.
 
 ## Active Constraints
 
 - Do not load long procedures, test recipes, or audit playbooks into the always-on surface.
+- A future hook needs a deterministic tool- or event-bound responsibility, documented payload and output semantics, and an exact matcher. It must not inject Team policy, infer topology from prose, or duplicate authorization policy.
 - Missing platform/model receipts remain unknown; runtime text must not claim applied configuration without evidence.
 
 ## Cycle Events
 
-- 03: Reconciled the Codex always-on contract with Direct-first routing and delegated-only Team activation.
+- 04: Slimmed the Codex always-on entry and retired unconditional repository-local Team hooks from the default deployment.
 
 ## Archive Index
 
@@ -55,8 +57,8 @@ metadata:
 
 ## Evidence Base
 
-- source:Codex/.codex/AGENTS.md — always-on routing and generated adapter pointer.
-- source:Shared/policies/execution-routing.md and Shared/policies/adapters/codex-subagent-invocation.md — canonical routing and adapter boundary.
+- source:Codex/.codex/AGENTS.md, Codex/.codex/config.toml, and Codex/global/config.toml — bounded always-on entry and no forced hook default.
+- source:Codex/README.md, Shared/platform-capability-matrix.md, and Shared/policies/adapters/codex-subagent-invocation.md — hook capability, deployment boundary, and canonical adapter.
 
 ## Read Contract
 
@@ -65,13 +67,13 @@ metadata:
 
 ## Conflicts and Supersession
 
-- superseded: Team-default or long-procedure interpretation of the Codex always-on surface.
+- superseded: Team-default or long-procedure interpretation of the Codex always-on surface, and unconditional repository-local Team-routing hooks.
 
 ## 中文摘要
 
-- Codex runtime 採 Direct-first，只有 delegated topology 才進入 Team。
-- `AGENTS.md` 保留必要不變量與 generated pointer，不承載長程序。
-- 沒有 receipt 時不得宣稱已套用 model 或 tool 設定。
+- Codex hooks 是平台能力，但 AI_Rules 預設不安裝 repository-local Team hook。
+- `AGENTS.md` 只保留 Direct-first、delegated 正向觸發、寫入/髒工作保護、受保護動作與 canonical pointer 等必要不變量。
+- 未來 hook 必須是精準、deterministic 且綁定正式 payload 的工具或事件守衛；沒有 receipt 不得宣稱已套用。
 
 ## Tracked Files
 
@@ -82,9 +84,6 @@ metadata:
 - Codex/global/config.toml
 - Codex/.codex/AGENTS.md
 - Codex/.codex/config.toml
-- Codex/.codex/hooks.json
-- Codex/.codex/hooks/team-native-gate.ps1
-- Codex/.codex/hooks/team-native-launcher.ps1
 - Codex/.codex/VERSION
 - Codex/.gitignore
 

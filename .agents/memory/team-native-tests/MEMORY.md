@@ -4,19 +4,19 @@ scopePath: Tests/TeamNative/
 description: >-
   專案記憶：Team-Native PowerShell 契約測試。Use when: task touches Team-Native test
   fixtures, contract coverage, or source/deployment parity assertions.
-last_updated: '2026-07-27T00:02:49+08:00'
+last_updated: '2026-07-27T02:15:34+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-26T16:36:58+08:00'
+last_verified: '2026-07-27T02:00:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -40,7 +40,8 @@ metadata:
 - `RequirementPrecision.Tests.ps1` protects semantic requirement provenance ownership and is newline-insensitive without reducing the explicit/inferred/unknown/conflict oracle.
 - `DeliverySlice.Tests.ps1` protects station boundaries without coupling the contract to legacy lane wording.
 - `ManagerSyncProjectRules.Tests.ps1` protects exact deployment, no result-object leakage, and version advancement only after required stages succeed.
-- Stable validation routes include the focused RequirementPrecision, DeliverySlice, PlatformPolicyPreflight, SourceDeploymentParity, and aggregate Team-Native suites.
+- `PlatformCodexFreshUpgrade.Tests.ps1` protects a fresh Codex install without legacy Team hooks, exact-hash managed legacy cleanup, and preservation of a user-modified hook set.
+- Stable validation routes include focused RequirementPrecision, DeliverySlice, PlatformCodexFreshUpgrade, PlatformPolicyPreflight, SourceDeploymentParity, and the aggregate Team-Native suite.
 
 ## Active Constraints
 
@@ -49,7 +50,7 @@ metadata:
 
 ## Cycle Events
 
-- 04: Reconciled the semantic requirement, delivery-slice, and manager-sync regression contracts with merged Progressive Assurance behavior.
+- 05: Added Codex fresh/upgrade and managed legacy-hook cleanup contract coverage.
 
 ## Archive Index
 
@@ -59,7 +60,7 @@ metadata:
 
 - source:Tests/TeamNative/RequirementPrecision.Tests.ps1
 - source:Tests/TeamNative/DeliverySlice.Tests.ps1
-- source:Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1
+- source:Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1 and Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1
 - source:Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1 and Tests/TeamNative/SourceDeploymentParity.Tests.ps1
 - source:Scripts/Test-TeamNativeV2.ps1
 
@@ -70,12 +71,12 @@ metadata:
 
 ## Conflicts and Supersession
 
-- superseded: formatting-coupled requirement assertions and legacy-lane-dependent delivery expectations.
+- superseded: formatting-coupled requirement assertions, legacy-lane-dependent delivery expectations, and cleanup tests that delete modified hook artifacts.
 
 ## 中文摘要
 
-- RequirementPrecision 保留四類 provenance 的語義 oracle，不再受 Markdown 換行影響。
-- DeliverySlice 不再耦合 legacy lane；ManagerSync 保護 VERSION 與 result aggregation 契約。
+- Team-Native 測試保護 requirement provenance、station boundary 與同步/版本契約。
+- `PlatformCodexFreshUpgrade` 保護 fresh install 不部署 legacy hook、exact-hash 受管清理，以及使用者修改整組的保留行為。
 - 測試失敗要先分類，不能為綠燈直接改 expectation。
 
 ## Tracked Files
