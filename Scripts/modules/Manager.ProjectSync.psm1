@@ -22,8 +22,8 @@ function Set-ManagerProjectVersionFile {
     }
 
     $parent = Split-Path $Path -Parent
-    if (-not (Test-Path -LiteralPath $parent)) { New-Item -ItemType Directory -Force -Path $parent | Out-Null }
-    Set-Content -LiteralPath $Path -Value $Version -NoNewline -Encoding UTF8
+    if (-not (Test-Path -LiteralPath $parent)) { New-Item -ItemType Directory -Force -Path $parent -ErrorAction Stop | Out-Null }
+    Set-Content -LiteralPath $Path -Value $Version -NoNewline -Encoding UTF8 -ErrorAction Stop
     Write-Ok "版本錨點已更新: $Path → $Version"
 }
 
@@ -356,8 +356,6 @@ function Invoke-ManagerSyncAntigravityProjectRules {
     Write-ManagerDiffSummary -Title "Antigravity Shared Governance References" -Diffs $governanceDiffs
     $toolDiffs = @(Get-ProjectToolDiffs -ProjectToolsRoot $projectToolsRoot -TargetAgentsRoot $agTargetRoot)
     Write-ManagerDiffSummary -Title "Antigravity Project Tools" -Diffs $toolDiffs
-    Set-ManagerProjectVersionFile -Path (Join-Path $agTargetRoot "VERSION") -Version $version -Apply:$Apply
-
     if (-not $Apply) { return }
 
     if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
@@ -408,8 +406,6 @@ function Invoke-ManagerSyncClaudeProjectRules {
     Write-ManagerDiffSummary -Title "Claude Shared Governance References" -Diffs $governanceDiffs
     $toolDiffs = @(Get-ProjectToolDiffs -ProjectToolsRoot $projectToolsRoot -TargetAgentsRoot (Join-Path $ProjectRoot ".agents"))
     Write-ManagerDiffSummary -Title "Claude Project Tools" -Diffs $toolDiffs
-    Set-ManagerProjectVersionFile -Path (Join-Path $claudeTargetRoot "VERSION") -Version $version -Apply:$Apply
-
     if (-not $Apply) { return }
 
     if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
@@ -461,7 +457,6 @@ function Invoke-ManagerSyncCodexProjectRules {
     Write-ManagerDiffSummary -Title "Codex Shared Governance References" -Diffs $governanceDiffs
     $toolDiffs = @(Get-ProjectToolDiffs -ProjectToolsRoot $projectToolsRoot -TargetAgentsRoot $agentsRoot)
     Write-ManagerDiffSummary -Title "Codex Project Tools" -Diffs $toolDiffs
-    Set-ManagerProjectVersionFile -Path (Join-Path $codexTargetRoot "VERSION") -Version $version -Apply:$Apply
     $null = Merge-ManagerCodexProjectConfigDefaults -SourcePath (Join-Path $sourceRoot "config.toml") -TargetPath (Join-Path $codexTargetRoot "config.toml") -Apply:$Apply
 
     if (-not $Apply) { return }
@@ -596,6 +591,19 @@ function Invoke-ManagerProjectRulesSync {
     }
 
     if ($Apply) {
+        foreach ($platform in $selected) {
+            switch ($platform) {
+                'Antigravity' {
+                    Set-ManagerProjectVersionFile -Path (Join-Path $targetRoot '.agents\VERSION') -Version (Get-VersionContent -Path (Join-Path $RepoRoot 'Antigravity\VERSION')) -Apply
+                }
+                'Claude' {
+                    Set-ManagerProjectVersionFile -Path (Join-Path $targetRoot '.claude\VERSION') -Version (Get-VersionContent -Path (Join-Path $RepoRoot 'Claude\VERSION')) -Apply
+                }
+                'Codex' {
+                    Set-ManagerProjectVersionFile -Path (Join-Path $targetRoot '.codex\VERSION') -Version (Get-VersionContent -Path (Join-Path $RepoRoot 'Codex\VERSION')) -Apply
+                }
+            }
+        }
         Write-Ok "目前專案規則同步完成：$($selected -join ', ')"
     }
     return [PSCustomObject]@{

@@ -38,10 +38,18 @@ function Assert-NotContains {
     }
 }
 
+function Normalize-Whitespace {
+    param([Parameter(Mandatory)][string]$Content)
+
+    return (($Content -replace '\s+', ' ').Trim())
+}
+
 $policy = Get-RequiredContent 'Shared/policies/requirement-precision.md'
 $schema = Get-RequiredContent 'Shared/policies/references/requirement-precision-schema.md'
 $executionSpec = Get-RequiredContent 'Shared/policies/references/workflow-execution-spec-contract.md'
 $intentSkill = Get-RequiredContent 'Shared/skills/intent-alignment-gate/SKILL.md'
+$normalizedPolicy = Normalize-Whitespace -Content $policy
+$normalizedExecutionSpec = Normalize-Whitespace -Content $executionSpec
 
 foreach ($requiredPolicyRule in @(
         '## Precision Gate',
@@ -73,7 +81,8 @@ foreach ($requiredField in @(
 
 Assert-Contains -Content $executionSpec -Expected 'Requirement precision schema:' -Label 'Workflow execution spec'
 Assert-Contains -Content $executionSpec -Expected '`requirement_precision`' -Label 'Workflow execution spec'
-Assert-Contains -Content $executionSpec -Expected '`requirement-precision.md`; this execution contract does not redefine them.' -Label 'Workflow execution spec'
+Assert-Contains -Content $normalizedPolicy -Expected 'Every material assertion is classified as `explicit`, `inferred`, `unknown`, or `conflict`.' -Label 'Requirement precision policy'
+Assert-Contains -Content $normalizedExecutionSpec -Expected 'Its field catalog, no-guessing gate, mandatory question conditions, and trace semantics are consumed from `requirement-precision.md`; this execution contract does not redefine them.' -Label 'Workflow execution spec'
 
 Assert-Contains -Content $intentSkill -Expected 'Shared/policies/requirement-precision.md' -Label 'Intent alignment skill'
 Assert-Contains -Content $intentSkill -Expected 'Shared/policies/references/requirement-precision-schema.md' -Label 'Intent alignment skill'

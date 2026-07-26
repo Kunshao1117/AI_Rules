@@ -146,9 +146,20 @@ When the Review Timing Gate returns YES, report these canonical fields:
 - disposition: required fix, accepted risk, non-issue, or blocker.
 - review_basis: tests, audits, real operation evidence, or stated limitation.
 
+## Terminal Rendering Boundary
+
+This skill owns the internal review lifecycle and procedure, not the generic
+verification decision. After one concentrated independent review,
+`verification-strategy.md` renders the Director-facing terminal decision as
+`pass`, `pass_with_followups`, or `block`. One blocker-only recheck may inspect
+only the blockers declared by that review; do not restart or widen the review
+without a new positive trigger.
+
 ## Evidence Branch Boundary
 
-Review evidence follows the active Programming Team Board.
+When delegated topology is active, review evidence follows the active
+Programming Team Board. Direct review uses its bounded evidence and lifecycle
+decision without a Team board, station, or formal trace.
 Evidence-oriented review stations default to read-only evidence branches unless the board records a concrete direct exception
 and replacement evidence.
 Parallelism is useful but not required; the review or completion station may wait for a review evidence packet
@@ -181,10 +192,10 @@ perform protected mutation, or replace owner-station readiness evidence.
 
 - This skill does not authorize source writes, memory writes, commits, pushes, installs, deployments, or external state changes.
 - This skill does not replace code-audit, pr-review-ops, security-sre, impact-test-strategy, or delegation-strategy.
-- Evidence branches are governed by the Programming Team Board.
+- In delegated topology, evidence branches are governed by the Programming Team Board.
   A review station that needs independent evidence must use an evidence branch, browser branch, CLI branch,
   or MCP direct path unless the board records a concrete direct exception.
-- All-direct review boards are invalid when multiple evidence-oriented stations are applicable,
+- All-direct delegated review boards are invalid when multiple evidence-oriented stations are applicable,
   and no concrete direct exceptions are recorded.
 - A review is not independent when the reviewer implemented the same deliverable, edited the reviewed code path,
   or owns the change delivery artifact being reviewed.

@@ -18,13 +18,11 @@ metadata:
 
 ## Test Scope Opt-In
 
-This skill supplies methods only after the canonical test-admission owner has
-found all three conditions true: a qualifying non-visual invariant, no suitable
-current-session non-destructive real-tool evidence, and acceptance-bound or
-precisely approved exact test scope. It does not itself admit unit,
+This skill supplies methods only after `verification-strategy.md` has admitted
+the bounded durable test and separately resolved scope permits it. It does not itself admit unit,
 API-contract, error-scenario, mock, regression tests, or a test project/runner.
 When a real tool can prove the acceptance, do not create a test. See
-`Shared/policies/authorization-resolution.md`.
+`Shared/policies/verification-strategy.md`.
 
 ## 1. Test Decision Tree (測試決策樹)
 
@@ -190,7 +188,7 @@ When an authorized test scope uses a target module's memory card, cross-referenc
 ## Constraints (限制與邊界)
 
 - Scope: unit tests and contract validation ONLY
-- No test creation, modification, or execution occurs without the canonical opt-in authorization.
+- No test creation, modification, or execution occurs without the canonical verification admission and separately resolved scope.
 - Mocked, fixture, or fake-time tests are partial evidence only.
 - They cannot complete a real-runtime-dependent feature by themselves.
 - E2E browser tests: `browser-testing` + `test-automation-strategy`

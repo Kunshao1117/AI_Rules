@@ -45,11 +45,11 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `01`.
 - Procedure reference: `01 Explore` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Define the research decision, gather current evidence, challenge assumptions, then route to blueprint, experiment, audit, or build only when evidence is sufficient.
+- Route summary: Define the research decision, gather current evidence, challenge assumptions, then route to blueprint, experiment, or build only when evidence is sufficient; use `deep-audit` only for the positive triggers in `verification-strategy.md`.
 - Define the research question, decision target, freshness need, and source quality bar.
 - Gather official, primary, or current sources when results can influence architecture, implementation, governance, release, or spend.
 - Return findings with dates, confidence, bias or coverage gaps, and counter-evidence.
-- Route to 02, 03-1, 03, or 08 only after evidence status is explicit.
+- Route to 02, 03-1, or 03 only after evidence status is explicit; use conditional `deep-audit` only under `verification-strategy.md`.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

@@ -13,9 +13,11 @@ sequence; this policy routes trace requirements to their canonical owners.
 
 Workflow names, approval controls, platform modes, and channel availability are
 context or evidence only. They never create unbounded write authority or a
-protected follow-on phase. When Team mode is inactive for pure conversation or
-no-impact read-only work, a Team-Native trace is not required and cannot be
-used as completion evidence.
+protected follow-on phase. Team trace applies only after
+`Shared/policies/execution-routing.md` resolves `execution_topology: delegated`.
+Direct work requires no Team trace regardless of `local`, `boundary`, or
+`systemic` impact, or `observe` or `local_write` risk; it uses Direct
+completion and evidence instead.
 
 ## Canonical Owners
 

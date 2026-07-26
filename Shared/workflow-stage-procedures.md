@@ -230,15 +230,16 @@ They must not copy these procedures back into the 00-12 entry bodies.
 - When a card reports `needsCompaction=true`, emits event 31, or lacks reliable counters, produce the normal compact packet and wait for the matching memory protected authorization before compacting, splitting, or archiving.
 - Memory or context mutation requires the matching protected authorization.
 
-## 06 Test / 測試
+## 06 Verify / 驗證（`06 Test` 相容別名）
 
-- Define the target surface, evidence level, environment, commands, browser or operator path, and expected pass/fail state.
-- Use non-mutating validation by default.
+- `06 Verify` is the canonical semantic label; `06 Test` is a compatibility alias only.
+- Define the target surface, selected evidence level, environment, commands, browser or operator path, and expected pass/fail state under `verification-strategy.md`.
+- Use non-mutating verification by default. Direct work records the minimum outcome without a Team board, station, or formal trace.
 - Distinguish unit, integration, regression, visual, performance, accessibility, real execution, blocked, and unverified evidence.
 - Return `validation_judgment_state` from `workflow-lane-routing.md`; never turn absence of observed failure into "no error" or "無誤" completion language.
 - Do not treat design reflection as validation evidence. It may clarify expected behavior or residual design risk, but validation still needs its own evidence.
 - Run a non-mutating size-governance check when a workflow asks for it or when touched files cross the source-document policy categories.
-- Failed validation routes to fix, debug, build, or audit. The validation station does not repair the implementation it validates.
+- Classify a failure before routing it to fix, debug, build, or explore. `deep-audit` is conditional on the positive triggers in `verification-strategy.md`, never the automatic result of a failure. The validation station does not repair the implementation it verifies.
 
 ## 07 Debug / 除錯
 

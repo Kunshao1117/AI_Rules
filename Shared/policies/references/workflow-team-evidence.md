@@ -11,7 +11,8 @@ Canonical sources remain authoritative:
 
 | Need | Authoritative source |
 |---|---|
-| Team-Native activation, station-first rule, `operation_mode`, captain boundary, and completion boundary | `Shared/policies/team-native-core.md` |
+| Direct/delegated topology and Team-Native activation | `Shared/policies/execution-routing.md` |
+| Delegated station-first rule, `operation_mode`, captain boundary, and completion boundary | `Shared/policies/team-native-core.md` |
 | Workflow sequence, authorization position, dispatch waves, and source/deployed sync | `Shared/policies/workflow-orchestration.md` |
 | Scope-bound authorization | `Shared/policies/authorization-resolution.md` |
 | Authorization phase values | `Shared/policies/references/authorization-phase-registry.md` |
@@ -31,7 +32,7 @@ values.
 
 | 中文任務語意 | Canonical task type / route | Use when | Station route meaning |
 |---|---|---|---|
-| 討論 | `discussion` | Pure conversation with no source, workflow, or review impact. | No coding station unless the request becomes governed work. |
+| 討論 | `discussion` | Pure conversation with no source, workflow, or review impact. | No Team station unless execution routing resolves `delegated`. |
 | 探索 | `exploration` | Research, feasibility, counter-evidence, or external evidence. | `formal-readonly` requirement, research, architecture, or counter-evidence. |
 | 架構 | `blueprint` | Architecture decisions, build handoff, or major technical direction. | `formal-readonly` requirement, architecture, impact, or review. |
 | 建構計畫 | `build-plan` | Implementation boundary exists but write authority is unresolved. | Standby implementation station only; no main-worktree implementation. |
@@ -44,7 +45,8 @@ values.
 ## Workflow Evidence Bridge
 
 Use this reference only after the workflow matrix points to Team-Native, board,
-delivery, or closeout evidence.
+delivery, or closeout evidence and `execution-routing.md` resolves
+`execution_topology: delegated`.
 
 The bridge requirements are:
 
@@ -58,6 +60,10 @@ The bridge requirements are:
 - Use the matching delivery artifact skill for each station-owned artifact.
 - Use `completion-state-machine.md` and `team-completion-gate` for closeout
   targets, completion states, and non-complete closure handling.
+
+Verify is acceptance evidence selected by `verification-strategy.md`. Ordinary
+Direct verification has no formal Team trace; `deep-audit` is only a positive
+trigger under that policy and is never an automatic upgrade from routine work.
 
 ## Artifact Chain Bridge
 

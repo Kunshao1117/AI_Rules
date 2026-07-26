@@ -14,7 +14,8 @@ Keep the full policy in `Shared/policies/` and the deployed readable copy at `.a
 
 Do not paste the full playbook into platform core.
 
-- Codex native subagents are execution channels only after Team mode is activated by a governed Director request.
+- Codex native subagents are execution channels only after
+  `execution-routing.md` resolves delegated Team topology.
 
   They also require recorded Team-Native board, station, role, handoff, dispatch wave, and channel state.
 

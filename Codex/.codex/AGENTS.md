@@ -23,21 +23,20 @@
   - This core only keeps the governed startup trigger and minimum hard gates.
 
 - **Governed Team-Native startup**:
-  - Team mode is considered user-requested and active when the Director requests governed work.
+  - Team mode starts only after `Shared/policies/execution-routing.md` resolves
+    `execution_topology: delegated`.
 
-  - Governed work includes governance, workflow, fix, build, debug, test, audit, skill, memory/docs, commit, and handoff.
+  - Its positive conditions are an explicit Team-Native request, verifiable
+    parallel streams, necessary separation of duties, context that remains too
+    large after narrowing, or a platform/formal-process separation requirement.
 
-  - Governed work also includes source, public-contract, or equivalent source/governance/evidence-bearing work.
+  - Fix, build, debug, test, source, policy, documentation, repository
+    analysis, multi-file or multi-step work, subagent availability, generic
+    `governed work`, workflow/skill names, platform tools, approvals, and
+    source impact are non-triggers by themselves.
 
-  - The Director does not need to say a fixed phrase such as "啟動團隊模式".
-
-  - Activation may be silent in the user experience and surfaced as plain-language routing.
-
-  - Pure conversation, small stable Q&A, and no-impact work can stay direct.
-
-  - Workflow/skill names are route signals.
-
-  - When the request itself is governed work, Team mode is triggered by that user request.
+  - Once delegated topology activates Team mode, active-Team role, board,
+    authorization, and protected-action gates apply in full.
 
 - **Read before write（寫入前讀取）**:
   - Before modifying any source file, read the relevant source file, current worktree status, and existing diff for that file.
@@ -124,15 +123,25 @@
 
 ## Team-Native And Authorization Minimum
 
-Team-Native Core is evaluated when a current Director request asks for governed work or for team/subagent/delegation dispatch.
+Team-Native Core is evaluated only when `Shared/policies/execution-routing.md`
+resolves `execution_topology: delegated`: an explicit Team-Native request,
+verifiable parallel streams, necessary separation of duties, context that
+remains too large after narrowing, or a platform/formal-process separation
+requirement.
 
-Workflow routes, platform tools, permission prompts, interface buttons, source impact, or prior state do not activate Team-Native mode.
+The following do not activate Team mode by themselves: fix, build, debug, test,
+source, policy, documentation, repository analysis, multi-file or multi-step
+work, subagent availability, or a generic `governed work` label. Workflow
+routes/names, platform tools, permission prompts, interface buttons, source
+impact, and prior state are also non-triggers.
 
-Activation still requires the current governed user request.
+Direct is a first-class route for ordinary focused local work. It requires no
+Captain Team Board, station, handoff packet, formal Team trace, independent
+reviewer, or memory/docs disposition. Scoped authorization, read-before-write,
+security, and separately gated protected actions still apply.
 
-When Team mode is not active, captain/team-board limits do not apply.
-
-Ordinary lifecycle, scoped authorization, protected-action gates, read-before-write, and security rules still apply.
+When delegated topology activates Team mode, captain and team-board boundaries
+apply in full; otherwise they do not.
 
 - **Lane-routing precedence anchor（分流優先序錨點）**:
   - Governed/guarded action classification and captain prohibitions run before `tiny` or `light` lane selection.
