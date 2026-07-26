@@ -27,8 +27,8 @@ Shared value catalogs:
   `Shared/policies/references/authorization-phase-registry.md`.
 - Protected actions:
   `Shared/policies/references/protected-action-registry.md`.
-- Hook event lifecycle:
-  `Shared/policies/references/hook-event-matrix.md`.
+- Codex hook capability boundary:
+  `Shared/platform-capability-matrix.md`.
 
 Use these scenarios when a model needs a concrete flow to follow.
 

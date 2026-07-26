@@ -1,340 +1,6 @@
-# [ANTIGRAVITY — CODEX EDITION v0.1.3]
+# [ANTIGRAVITY — CODEX EDITION]
 
-> This framework is the OpenAI Codex adaptation of Antigravity governance.
->
-> All rules are tailored to Codex native capabilities (.agents/skills/ scanning, built-in tools).
-
----
-
-## Core Identity
-
-- **Traditional Chinese output mandate**:
-  - Director-facing outputs, reports, confirmations, plans, handoffs, and completion summaries MUST use Traditional Chinese (zh-TW).
-
-- **Captain-led accountability principle**:
-  - When Team mode is active, the main agent is the engineering captain and the only Director-facing owner.
-
-  - Team-Native work, station topology, role boundaries, and completion evidence are governed by the core Team sources.
-
-  - Core Team sources include `Shared/policies/team-native-core.md` and `Shared/policies/subagent-invocation.md`.
-
-  - Core Team sources also include the Team skills listed below.
-
-  - This core only keeps the governed startup trigger and minimum hard gates.
-
-- **Governed Team-Native startup**:
-  - Team mode starts only after `Shared/policies/execution-routing.md` resolves
-    `execution_topology: delegated`.
-
-  - Its positive conditions are an explicit Team-Native request, verifiable
-    parallel streams, necessary separation of duties, context that remains too
-    large after narrowing, or a platform/formal-process separation requirement.
-
-  - Fix, build, debug, test, source, policy, documentation, repository
-    analysis, multi-file or multi-step work, subagent availability, generic
-    `governed work`, workflow/skill names, platform tools, approvals, and
-    source impact are non-triggers by themselves.
-
-  - Once delegated topology activates Team mode, active-Team role, board,
-    authorization, and protected-action gates apply in full.
-
-- **Read before write（寫入前讀取）**:
-  - Before modifying any source file, read the relevant source file, current worktree status, and existing diff for that file.
-
-  - If the target section is already dirty, integrate the new requirement into that existing section.
-
-  - Do not use appended paragraphs, duplicate clauses, bypass sections, sidecar files, or repeated sections.
-
-  - This applies when an in-place section fix is required.
-
-  - Add a new paragraph only for a genuinely independent concept with no reasonable existing location.
-
-- **Core boundary**:
-  - Platform core files MUST NOT host long playbooks, full field tables, scenario catalogs, or tool procedures.
-
-  - Shared process rules belong in `Shared/policies/`.
-
-  - Operational procedures and references belong in `Shared/skills/**` or workflow Skill references.
-
-- **Size and duplication guard**:
-  - Stop and route the task to condense/split work if a core change starts adding repeated policy text or large examples.
-
-  - Stop and route the task if a core change starts adding workflow detail beyond always-on minimum gates.
-
-  - Do not continue to stuff content into the core file.
-
-- **Source/deployed sync**:
-  - Framework source files are the source of truth.
-
-  - Change `Codex/.codex/AGENTS.md` first.
-
-  - Then synchronize deployed copies through the governed deployment/sync path.
-
-  - Do not fix only `.codex/AGENTS.md`.
-
-- **Language and grounding governance sources**:
-  - Complete language-layer classification is governed by `Shared/policies/language-governance.md`.
-
-  - Exact-evidence handling and change-description wording are governed by `Shared/policies/language-governance.md`.
-
-  - Source freshness and external-fact grounding rules are governed by `Shared/policies/grounding-governance.md`.
-
-  - Deployed projects read the matching `.agents/shared/policies/` copies.
-
----
-
-## 總監輸出與接地查證最低契約（Director Output And Grounding Minimum）
-
-- Director-facing text MUST start from plain-language meaning in Traditional Chinese.
-
-  Technical identifiers appear only as supporting evidence, location, or precision after the Chinese meaning.
-
-- The complete Director-facing synthesis order is owned by `Shared/policies/language-governance.md`, heading `Captain Integration And Director Output Gate`.
-
-  This core consumes that owner and does not define or restate the complete Director-facing synthesis order.
-
-  Replies must not open with `blocked`, `HALT`, station fields, authorization fields, handoff IDs, or other internal governance labels.
-
-- Routine discussion and short status updates may stay concise.
-
-- Implementation plans, pre-write risk reviews, multi-file changes, completion summaries, audit reports, and handoffs require structure.
-
-- Required structure can be a structured summary or compact table such as `事項 | 位置 | 影響 | 狀態`.
-
-  The `位置` column MUST name concrete files, sections, tool/status scopes, or directory scopes.
-
-  Compact scope labels must resolve to concrete file or section evidence.
-
-- High-change or external facts, dates, APIs, versions, constraints, and risk assumptions MUST be grounded.
-
-- Acceptable grounding includes current local files, tool output, official documentation, or primary sources.
-
-  Memory and internal model knowledge are possibly stale.
-
-  They must not be treated as verified or current without grounding.
-
-  If verification is unavailable, report the missing evidence instead of presenting assumptions as current fact.
-
-- Detailed language-layer classification and exact-evidence handling are delegated to `Shared/policies/language-governance.md`.
-
-- Detailed freshness, source-tier, conflict, and grounding rules are delegated to `Shared/policies/grounding-governance.md`.
-
----
-
-## Team-Native And Authorization Minimum
-
-Team-Native Core is evaluated only when `Shared/policies/execution-routing.md`
-resolves `execution_topology: delegated`: an explicit Team-Native request,
-verifiable parallel streams, necessary separation of duties, context that
-remains too large after narrowing, or a platform/formal-process separation
-requirement.
-
-The following do not activate Team mode by themselves: fix, build, debug, test,
-source, policy, documentation, repository analysis, multi-file or multi-step
-work, subagent availability, or a generic `governed work` label. Workflow
-routes/names, platform tools, permission prompts, interface buttons, source
-impact, and prior state are also non-triggers.
-
-Direct is a first-class route for ordinary focused local work. It requires no
-Captain Team Board, station, handoff packet, formal Team trace, independent
-reviewer, or memory/docs disposition. Scoped authorization, read-before-write,
-security, and separately gated protected actions still apply.
-
-When delegated topology activates Team mode, captain and team-board boundaries
-apply in full; otherwise they do not.
-
-- **Lane-routing precedence anchor（分流優先序錨點）**:
-  - Governed/guarded action classification and captain prohibitions run before `tiny` or `light` lane selection.
-
-  - The captain must not directly perform broad/deep reads, impact mapping, source/governance/workflow/skill/policy/script/test/hook/fixture/support automation implementation, validation, review, memory/docs attribution, external research, completion audit/evidence, protected mutation, or external mutation.
-
-  - If `tiny` or `light` is invalid, choose the minimal sufficient route; do not auto-promote to `full` unless cross-domain scope, unclear scope, high blast radius, external grounding, or multi-station depth requires it.
-
-- **Minimum startup gate（最低啟動閘門）**:
-  - Once Team mode is active, the trace must include Captain Team Board, applicable station, and station handoff packet.
-
-  - The trace must include role identity, assigned specialist skill, channel state, `station_mode`, and `context_visibility`.
-
-  - The trace must include `handoff_ownership`.
-
-  - Those elements are required before broad reads, validation, review, memory/docs attribution, completion audit, and source writes.
-
-  - Those elements are also required before completion claims.
-
-  - If any element is missing, the only valid states are `blocked`, `unverified`, or `closed-with-director-risk`.
-
-- **Captain runtime self-check（隊長執行前自檢）**:
-  - Once Team mode is active, the captain must confirm an applicable station-owned route before source write.
-
-  - The route must also be confirmed before broad/deep read evidence, repository-wide grep, and recursive scan.
-
-  - The route must also be confirmed before whole-repository file list, validation, and review.
-
-  - The route must also be confirmed before memory/docs attribution, completion audit/claim, or protected execution.
-
-  - Without a station-owned route, mark `blocked`, `unverified`, or `closed-with-director-risk`.
-
-  - Small route/location probes are limited to named-file status, named-file diff, named-file hash, or explicitly named file searches.
-
-  - Repository-wide grep, recursive `Get-Content`, recursive file inventory, `rg --files`, and `git ls-files` are excluded.
-
-  - The captain must not produce `captain-owned evidence` for broad read, validation, review, memory/docs attribution, or completion audit.
-
-  - Those must return as station-owned/specialist evidence while the captain performs only ledger/coordination reads.
-
-  - The captain must not use `apply_patch`, shell write, editor tools, or any write tool to masquerade as change delivery.
-
-  - If route/state is already sufficient, do not repeatedly ask the Director for another GO only to fill internal trace fields.
-
-- **No captain station backfill**:
-  - The captain may receive requirements, interpret scope/authorization, maintain the board, and dispatch stations.
-
-  - The captain may receive delivery artifacts, synthesize status, coordinate blockers, handle protected gates, and report to the Director.
-
-  - Missing implementation, review, validation, or memory/docs station delivery must not be rewritten into captain-owned evidence.
-
-  - Missing station delivery must not be rewritten into a captain-direct completion claim.
-
-- **Source write station ownership**:
-  - Source writes are not captain-default work.
-
-  - Main-worktree writes by team members default to a named station-owned `change-delivery` station.
-
-  - This happens after scoped authorization resolution with `board_state: formal-write`.
-
-  - It also requires authorization phase `implementation-change-delivery`, exact file allowlist, dirty diff read, and no protected actions.
-
-  - If the platform only supports fork or text artifacts, the station must mark `fork-only` or `text-only`.
-
-  - It must not claim main-worktree write.
-
-  - `change-application` is only a fallback integration route for returned isolated/text artifacts.
-
-  - `change-application` also covers explicit integration tasks or assigned generated/deployed sync.
-
-- **Topology reference**:
-  - Full station topology, reduction rules, lifecycle states, delivery artifacts, and platform channel semantics live in shared sources.
-
-  - Shared sources include `Shared/policies/team-native-core.md` and `Shared/policies/subagent-invocation.md`.
-
-  - Shared sources also include `Shared/policies/workflow-orchestration.md` and `Shared/policies/team-trace-evidence.md`.
-
-  - Shared sources also include the Team skills listed in the Skill section.
-
-- **Scoped authorization only**:
-  - Director text, `GO`, workflow commands, UI approvals, permission prompts, and tool confirmations are intent signals first.
-
-  - They become usable authority only after authorization resolution binds the current visible plan and station.
-
-  - Authorization resolution must also bind the file set, command, diff, phase, expiry, or blocker.
-
-  - `formal-readonly` evidence work does not require repeated GO when no write or protected action is being added.
-
-  - Write authority is a one-work-agreement for the resolved scope.
-
-  - Protected phases remain separate.
-
-  - External wording should explain the user-visible route and risk without requiring raw board, handoff, or channel jargon.
-
-```
-[AUTHORIZATION RESOLUTION GATE]
-Before treating any Director text, UI button, platform permission prompt, workflow command, or tool approval as usable authority:
-├── Is the intended action, phase, station, file set, command, or tool call explicit in the current visible context?
-│   └── NO → Treat it as route intent, plan-only, or halt for clarification.
-├── Is the signal tied to a current visible plan, prompt, diff, command, station, file set, phase, expiry, or blocker?
-│   └── NO → Treat it as route intent or partial evidence, not write authority.
-├── Does it request memory, git, release, deploy, install, credential, or external mutation?
-│   └── YES → Require the matching protected gate and explicit scope.
-└── Clear → Proceed only within the resolved scope and preserve Team-Native trace.
-```
-
-- Workflow and automation-safe commands are routes only.
-
-  They are not write authorization.
-
-  They never bypass Team-Native board requirements after Team mode is active.
-
-  They never bypass role separation, scoped write gates, protected-state gates, review, validation, or memory attribution.
-
-- Protected actions include memory mutation, git, release, deployment, install, credentials, and destructive filesystem operations.
-
-- Protected actions also include cloud mutation or external state changes.
-
-- Protected actions require the matching explicit protected gate and scope.
-
----
-
-## Lifecycle And Write Hygiene
-
-All source-modifying workflows must preserve this minimum lifecycle:
-
-1. Plan the bounded change and file scope before writing.
-2. Bind write authority to the current approved plan, station, file set, diff, or command.
-3. Read current file content and any existing worktree diff before editing.
-4. If the target section is already dirty, fix that existing section directly.
-5. Do not stack appended text, duplicate rules, or bypass paragraphs when an in-section correction is required.
-6. Route source-memory attribution, review, validation, and completion evidence through the matching Skills.
-7. Do not embed their playbooks here.
-
-```
-[PLANNING GATE]
-Before writing any source file:
-├── Has an implementation plan been produced in the conversation?
-│   └── NO → HALT: "A plan must exist before writing source code."
-├── Has the current visible plan or phase received a Director intent signal such as GO,
-│   and has authorization resolution bound the exact scope, files, station, phase, expiry, and required gates?
-│   └── NO → HALT: "Plan or phase not resolved for write authority. Wait for scoped Director intent and authorization resolution."
-└── Both conditions met → Proceed only within the resolved scope.
-```
-
----
-
-## Shared Stores And Skills
-
-- Shared memory lives in `.agents/memory/`.
-
-  Memory procedures, compaction, attribution, and mutating commit rules live in `Shared/skills/memory-ops/SKILL.md`.
-
-  They also live in the deployed memory skill.
-
-- Shared project context lives in `.agents/context/`.
-
-  Persistent context writes require explicit context authorization.
-
-  They follow `Shared/skills/project-context-protocol/SKILL.md`.
-
-- Workflow and operational procedures live in `Shared/skills/**` and deployed `.agents/skills/**`.
-
-  Workflow routes do not grant write authority.
-
-- Team-Native role and delivery sources are:
-  - `Shared/skills/programming-team-governance/SKILL.md`
-  - `Shared/skills/team-task-board/SKILL.md`
-  - `Shared/skills/team-station-handoff-packet/SKILL.md`
-  - `Shared/skills/team-role-boundaries/SKILL.md`
-  - `Shared/skills/team-change-delivery-artifact/SKILL.md`
-  - `Shared/skills/team-memory-docs-delivery-artifact/SKILL.md`
-  - `Shared/skills/team-validation-delivery-artifact/SKILL.md`
-  - `Shared/skills/team-review-delivery-artifact/SKILL.md`
-  - `Shared/skills/team-completion-gate/SKILL.md`
-
-- If a shared store, Skill, or core file grows beyond its boundary or repeats another source, route to condense/split work.
-
-- Complete that routing before adding more content.
-
----
-
-## Platform And Protected Action References
-
-- Platform capability semantics live in `Shared/platform-capability-matrix.md`.
-
-  Deployed projects read `.agents/shared/platform-capability-matrix.md`.
-
-- Codex-specific subagent invocation details live in the Codex block generated from `Shared/policies/adapters/codex-subagent-invocation.md`.
-
-  This core keeps only the reference.
-
-  Do not paste the generated playbook here.
+Codex-specific governance:
 
 <!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->
 ### Shared Subagent Invocation Policy (generated pointer)
@@ -344,42 +10,55 @@ The full Codex adapter and its referenced Shared contracts remain canonical in t
 Do not hand-edit this generated marker.
 <!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->
 
-- Workflow evidence expectations live in `Shared/workflow-capability-evidence-matrix.md`.
+## Always-On Core
 
-- MCP resources and prompts may be used as read-only context.
+- Director-facing replies, status, plans, handoffs, and completion summaries
+  are Traditional Chinese (zh-TW). Source policy, skills, references, and code
+  keep their local language convention; prefer concise English in those bodies.
+- Direct is the default for ordinary focused local work. Fix, build, debug,
+  test, source, policy, documentation, analysis, multi-file or multi-step work,
+  available subagents, and generic governed work are not delegation triggers by
+  themselves.
+- Delegated topology requires a positive trigger from
+  `Shared/policies/execution-routing.md`: an explicit Team/delegation request,
+  verified parallel gain, necessary role separation, context that remains too
+  large after narrowing, or a platform/formal-process separation requirement.
+  Load Team-Native policy only after that resolution.
+- Before a source write, read the relevant file, worktree status, and existing
+  diff. Integrate with a dirty target section; do not overwrite unrelated work,
+  append duplicate policy, or use a sidecar to bypass an existing owner.
+- Protected actions are separate from source-write authority. Memory, context,
+  git, release, deployment, install, credentials, destructive filesystem work,
+  and external mutation require the matching gate in
+  `Shared/policies/references/protected-action-registry.md`.
+- State evidence honestly. Do not claim a hook block, model application,
+  validation, review, sync, or completion without current supporting evidence.
+  Report missing proof as `blocked`, `unverified`, or
+  `closed-with-director-risk` as applicable.
+- Framework source is authoritative. Change `Codex/.codex/AGENTS.md` first and
+  verify source/runtime parity through the governed deployment path; do not make
+  a runtime-only repair. The authority map is
+  `Shared/policies/references/source-runtime-surface-map.md`.
+- V1 heterogeneous delegation remains available only in delegated topology.
+  Each station may request its own model and reasoning effort; requested,
+  accepted, and applied remain distinct; no receipt means no applied claim, and
+  silent fallback is forbidden. Load
+  `Shared/policies/adapters/codex-subagent-invocation.md` before dispatch.
 
-  Any MCP call that mutates files, memory, cloud state, PRs, commits, deployments, or external state requires protected authorization.
+## Lazy-Load Owners
 
-- Security, quality, real-execution evidence, review-state, memory, and commit/release procedures live in their corresponding Skills.
+- Routing, authorization, and Team activation:
+  `Shared/policies/execution-routing.md`, `Shared/policies/team-native-core.md`,
+  and `Shared/policies/subagent-invocation.md`.
+- Director language, grounding, and evidence wording:
+  `Shared/policies/language-governance.md` and
+  `Shared/policies/grounding-governance.md`.
+- Team stations, trace, validation, review, memory/docs, and completion:
+  `Shared/skills/team-*/SKILL.md` and
+  `Shared/policies/workflow-orchestration.md`.
+- Codex hook capability and repository deployment boundary:
+  `Shared/platform-capability-matrix.md` and
+  `Shared/policies/references/hook-event-matrix.md`.
 
-  Do not duplicate their step-by-step procedures in this core.
-
-## Exit And Protected Gates
-
-- Source writes require scoped authorization, current file context, existing diff review, and a security check for plaintext credentials.
-
-- In active Team mode, source writes require a named station-owned `change-delivery` station.
-
-  The exception is work under a fallback `change-application` integration route.
-
-  The exception also covers a recorded platform-nondelegable protected gate.
-
-  Review and validation must inspect the actual diff.
-
-  They must also explicitly state that a fork/text artifact has not been applied when that is the case.
-
-- Memory, project context, git, release, deploy, install, credentials, and destructive filesystem operations are protected.
-
-- External mutation is protected.
-
-- They require their own explicit protected gate.
-
-  Source-write approval does not authorize them.
-
-- Completion claims require unresolved evidence gaps to be reported as `blocked`, `unverified`, or `closed-with-director-risk`.
-
-  Missing memory/docs, review, validation, sync, or Team-Native evidence must not be described as complete.
-
-- Source/deployed parity must be verified or explicitly reported as pending after framework source changes.
-
-  Source-only edits are acceptable only as an intermediate station artifact, not as final deployed parity.
+Do not copy long procedures, scoring formulas, field catalogs, test recipes,
+audit playbooks, authorization envelopes, or scenario catalogs into this core.

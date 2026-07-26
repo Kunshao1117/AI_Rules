@@ -3,6 +3,7 @@
 Import-Module (Join-Path $PSScriptRoot "Core.psm1") -Force
 Import-Module (Join-Path $PSScriptRoot "Skills-Sync.psm1") -Force
 Import-Module (Join-Path $PSScriptRoot "Manager.Config.psm1") -Force
+Import-Module (Join-Path $PSScriptRoot "Platform-Codex.psm1") -Force
 
 function Set-ManagerProjectVersionFile {
     param(
@@ -448,6 +449,7 @@ function Invoke-ManagerSyncCodexProjectRules {
     $stats = Write-UpgradeReport -Report $report -CategoryMap ([ordered]@{
         "治理規則 (.codex/)" = { $true }
     }) -Platform "Codex"
+    $legacyHookPreview = Remove-CodexManagedLegacyTeamNativeHooks -TargetRoot $ProjectRoot
 
     $skillDiffs = @(Get-ManagerSharedSkillDiffs -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath)
     Write-ManagerDiffSummary -Title "Codex Shared Skills" -Diffs $skillDiffs
@@ -463,6 +465,9 @@ function Invoke-ManagerSyncCodexProjectRules {
 
     if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
         $null = Install-Upgrade -Report $report -SourceRoot $sourceRoot -TargetRoot $codexTargetRoot -PreserveProjectIdentity
+    }
+    if ($legacyHookPreview.WouldRemoveCount -gt 0) {
+        $null = Remove-CodexManagedLegacyTeamNativeHooks -TargetRoot $ProjectRoot -Apply
     }
     $null = Sync-SharedPolicyBlock -PolicyPath $sharedPolicyPath `
         -TargetPath (Join-Path $codexTargetRoot "AGENTS.md") `

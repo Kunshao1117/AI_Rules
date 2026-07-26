@@ -230,10 +230,6 @@ function Merge-CodexGlobalConfigDefaults {
     if ($merged -ne $before) { $actions += "set [features].multi_agent = true" }
 
     $before = $merged
-    $merged = Set-TomlSectionBooleanTrue -Text $merged -Section "features" -Key "hooks"
-    if ($merged -ne $before) { $actions += "set [features].hooks = true" }
-
-    $before = $merged
     $merged = Add-TomlSectionKeyIfMissing -Text $merged -Section "agents" -Key "max_threads" -Line $maxThreadsLine
     if ($merged -ne $before) { $actions += "add [agents].max_threads default" }
 

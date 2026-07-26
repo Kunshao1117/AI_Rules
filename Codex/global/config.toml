@@ -5,7 +5,6 @@ project_doc_fallback_filenames = [".codex/AGENTS.md"]
 
 [features]
 multi_agent = true
-hooks = true
 
 [agents]
 # Suggested default only. Global sync preserves operator changes.
