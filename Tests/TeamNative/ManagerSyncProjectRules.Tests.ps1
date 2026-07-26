@@ -77,6 +77,8 @@ function Initialize-ManagerSyncFixtureGitRepository {
     param([string]$RepositoryRoot)
 
     $null = Invoke-ManagerSyncFixtureGit -RepositoryRoot $RepositoryRoot -Arguments @('init')
+    $null = Invoke-ManagerSyncFixtureGit -RepositoryRoot $RepositoryRoot -Arguments @('config', '--local', 'core.autocrlf', 'false')
+    $null = Invoke-ManagerSyncFixtureGit -RepositoryRoot $RepositoryRoot -Arguments @('config', '--local', 'core.safecrlf', 'false')
     $null = Invoke-ManagerSyncFixtureGit -RepositoryRoot $RepositoryRoot -Arguments @('config', 'user.name', 'AI Rules Integration Fixture')
     $null = Invoke-ManagerSyncFixtureGit -RepositoryRoot $RepositoryRoot -Arguments @('config', 'user.email', 'ai-rules-fixture@example.test')
     $null = Invoke-ManagerSyncFixtureGit -RepositoryRoot $RepositoryRoot -Arguments @('add', '--all')
@@ -104,7 +106,14 @@ function Get-ManagerSyncFixtureTreeHash {
         if ($item.PSIsContainer) {
             $records.Add("directory|$relative")
         } else {
-            $fileHash = (Get-FileHash -LiteralPath $item.FullName -Algorithm SHA256).Hash
+            $algorithm = [System.Security.Cryptography.SHA256]::Create()
+            $stream = [System.IO.File]::OpenRead($item.FullName)
+            try {
+                $fileHash = ([System.BitConverter]::ToString($algorithm.ComputeHash($stream))).Replace('-', '').ToUpperInvariant()
+            } finally {
+                $stream.Dispose()
+                $algorithm.Dispose()
+            }
             $records.Add("file|$relative|$fileHash")
         }
     }
@@ -170,15 +179,13 @@ param(
 
 $ErrorActionPreference = 'Stop'
 try {
-    $result = & $ManagerScript -Action SyncProjectRules -RepoRoot $RepositoryRoot -Target $ProjectRoot -ProjectPlatform Codex -Apply
-    if ($null -eq $result) { throw 'AI-RulesManager did not return a SyncProjectRules result.' }
+    $successOutput = @(& $ManagerScript -Action SyncProjectRules -RepoRoot $RepositoryRoot -Target $ProjectRoot -ProjectPlatform Codex -Apply)
+    $requiredStageResultObjects = @($successOutput | Where-Object {
+        $null -ne $_ -and $null -ne $_.PSObject.Properties['RequiredStageResults']
+    })
     [PSCustomObject]@{
-        Succeeded = [bool]$result.Succeeded
-        Applied = [bool]$result.Applied
-        Platforms = @($result.Platforms)
-        RequiredStageResults = @($result.RequiredStageResults | ForEach-Object {
-            [PSCustomObject]@{ Stage = $_.Stage; Status = $_.Status; Succeeded = [bool]$_.Succeeded; Detail = $_.Detail }
-        })
+        Succeeded = $true
+        RequiredStageResultObjectCount = $requiredStageResultObjects.Count
     } | ConvertTo-Json -Depth 6 -Compress
     exit 0
 } catch {
@@ -193,7 +200,7 @@ try {
 '@
     Write-ManagerSyncFixtureFile -Path $runnerPath -Content $runnerContent
 
-    $powershellPath = (Get-Command -Name powershell.exe -ErrorAction Stop).Path
+    $powershellPath = (Get-Command -Name powershell.exe -CommandType Application -ErrorAction Stop | Select-Object -First 1).Path
     $previousErrorActionPreference = $ErrorActionPreference
     try {
         $ErrorActionPreference = 'Continue'
@@ -325,16 +332,11 @@ Describe 'Manager project rule sync real-path integration' {
         if ($process.ExitCode -ne 0) {
             throw "Valid real-path sync must exit zero; received $($process.ExitCode): $($process.Output | Out-String)"
         }
-        if (-not $process.Payload.Succeeded -or -not $process.Payload.Applied) {
-            throw 'Valid real-path sync must return a successful applied SyncProjectRules result.'
+        if (-not $process.Payload.Succeeded) {
+            throw 'Valid real-path sync did not complete successfully.'
         }
-        if (@($process.Payload.Platforms).Count -ne 1 -or @($process.Payload.Platforms)[0] -cne 'Codex') {
-            throw 'Valid real-path sync must select exactly the installed Codex platform.'
-        }
-        $stages = @($process.Payload.RequiredStageResults)
-        if ($stages.Count -ne 4) { throw "Valid real-path sync must return four required stages; received $($stages.Count)." }
-        if (@($stages | Where-Object { $_.Status -ne 'Succeeded' }).Count -ne 0) {
-            throw 'Valid real-path sync returned a failed or skipped required stage.'
+        if ($process.Payload.RequiredStageResultObjectCount -ne 0) {
+            throw "AI-RulesManager leaked $($process.Payload.RequiredStageResultObjectCount) required-stage result object(s) to the success stream."
         }
 
         $sourceCorePath = Join-Path $fixture.RepoRoot 'Codex\.codex\AGENTS.md'

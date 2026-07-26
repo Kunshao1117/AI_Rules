@@ -33,7 +33,7 @@ function Invoke-ManagerAction {
         "Plan"             { Invoke-ManagerPlan -RepoRoot $RepoRoot -ManagedSource:$ManagedSource }
         "Apply"            { Invoke-ManagerApplyUpdate -RepoRoot $RepoRoot -Apply:$Apply -ManagedSource:$ManagedSource -WhatIf:$WhatIf }
         "SyncGlobal"       { Invoke-ManagerSyncGlobal -RepoRoot $RepoRoot -ProfileRoot $ProfileRoot -Apply:$Apply }
-        "SyncProjectRules" { Invoke-ManagerSyncProjectRules -RepoRoot $RepoRoot -Target $Target -ProjectPlatform $ProjectPlatform -Apply:$Apply -ManagedSource:$ManagedSource }
+        "SyncProjectRules" { $null = Invoke-ManagerSyncProjectRules -RepoRoot $RepoRoot -Target $Target -ProjectPlatform $ProjectPlatform -Apply:$Apply -ManagedSource:$ManagedSource }
         "CleanupOrphans"   { Invoke-ManagerCleanupOrphans -RepoRoot $RepoRoot -Target $Target -Apply:$Apply -RemoveOrphans:$RemoveOrphans }
         "Gitignore"        { Invoke-ManagerGitignoreMaintenance -Target $Target -GitignoreMode $GitignoreMode -Apply:$Apply }
         "MemoryMigration"  { Invoke-ManagerMemoryMigration -Target $Target -Apply:$Apply -WhatIf:$WhatIf }

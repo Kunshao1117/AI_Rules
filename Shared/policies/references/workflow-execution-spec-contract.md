@@ -27,6 +27,10 @@ these references instead of redefining them:
 - Requirement precision schema:
   `Shared/policies/references/requirement-precision-schema.md`, governed by
   `Shared/policies/requirement-precision.md`.
+- Resolved Project Context:
+  `Shared/policies/project-context-resolution.md`.
+- Task capability assessment:
+  `Shared/policies/task-capability-assessment.md`.
 
 ## Human Flowchart Boundary
 
@@ -50,15 +54,17 @@ Allowed values are:
 `diagram_status` never grants execution authority.
 It never substitutes for required spec, packet, authorization, validation, review, or completion evidence.
 
-An executable route must consume one of these inputs before performing work:
+A formal delegated, station-owned, or tool-owned route consumes a
+machine-readable `execution_spec` before performing work. Direct work uses the
+Compact Task Contract and the Resolved Project Context without a full execution
+spec unless a later formal route needs one. A formal station handoff packet and
+the corresponding canonical policy fields support that execution spec; they do
+not replace it for a formal delegated, station-owned, or tool-owned route.
 
-- A machine-readable `execution_spec`.
-- A formal station handoff packet.
-- The corresponding canonical policy fields.
-
-This applies to agents, hooks, adapters, MCP tools, browser routes, CLI branches, and specialist stations.
-If only a flowchart exists, dependent executable work is `unverified` or `blocked`.
-That applies when exact station, scope, authorization, or grounding semantics are required.
+This applies to agents, hooks, adapters, MCP tools, browser routes, CLI
+branches, and specialist stations. If only a flowchart exists, a dependent
+formal route is `unverified` or `blocked` when exact station, scope,
+authorization, or grounding semantics are required.
 
 When a human flowchart conflicts with canonical execution sources, the canonical sources win.
 Those sources are `execution_spec`, Team-Native Core, Authorization Resolution, Grounding Governance, and Team Trace Evidence.
@@ -103,9 +109,20 @@ Required field meanings, in order:
     authorization state, grounding need, non-goals, ambiguities, escalation rule, and claim limit.
   - It prevents stale-task carryover and does not authorize writes or protected actions by itself.
 - `requirement_precision`
-  - One record conforming to `requirement-precision-schema.md` for the current requirement.
-  - Its field catalog, no-guessing gate, mandatory question conditions, and trace semantics are consumed from
-    `requirement-precision.md`; this execution contract does not redefine them.
+  - The current Compact Task Contract or Extended Contract from
+    `requirement-precision-schema.md`, backward-compatible with the legacy
+    `requirement_precision` 1.0 representation.
+  - Its field catalog, no-guessing gate, mandatory question conditions, and
+    trace semantics are consumed from `requirement-precision.md`; this
+    execution contract does not redefine them.
+- `resolved_project_context_ref`
+  - Pointer to the applicable ephemeral Resolved Project Context from
+    `project-context-resolution.md`.
+  - Its semantics remain owned by that policy.
+- `capability_assessment_ref`
+  - Pointer to the task capability assessment when its policy requires one, or
+    `not-applicable`.
+  - Its semantics remain owned by `task-capability-assessment.md`.
 - `overreach_check`
   - Compact scope-expansion check before tool use, broad reads, external lookup, writes, validation,
     review, protected actions, or completion wording.
@@ -355,10 +372,12 @@ defaults, or persistent profile presets.
 Requested, accepted, and applied execution state remain separate. This execution spec owns the
 requested intent and acceptance receipt shape; `Shared/skills/team-station-handoff-packet/SKILL.md`
 carries the immutable requested snapshot, accepted request provenance, and returned application
-receipt; and `Shared/skills/team-task-board/references/board-field-catalog.md` owns canonical
-accepted and observed state after ledgering. Missing, partial, or conflicting acceptance keeps
-dependent execution evidence unverified and never supplies applied values. Missing or partial
-application receipt remains unverified and never copies accepted values into the applied layer.
+receipt; and
+`Shared/skills/team-task-board/references/board-field-channel-and-receipts.md`
+owns canonical accepted and observed receipt ledger state. Missing, partial, or
+conflicting acceptance keeps dependent execution evidence unverified and never
+supplies applied values. Missing or partial application receipt remains
+unverified and never copies accepted values into the applied layer.
 
 ## Execution Evidence Provenance Boundary
 

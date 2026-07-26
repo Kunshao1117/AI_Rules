@@ -1,11 +1,65 @@
 # Requirement Precision Schema
 
-This reference defines the machine-readable shape of the canonical
-`requirement_precision` record. Semantic rules, no-guessing behavior, and
-mandatory question conditions are owned by
+This reference defines the Compact Task Contract, its Extended Contract, and
+the backward-compatible `requirement_precision` 1.0 representation. Semantic
+rules, no-guessing behavior, and mandatory question conditions are owned by
 `Shared/policies/requirement-precision.md`.
 
-## Canonical Record
+## Compact Task Contract
+
+The Compact Task Contract is the default for ordinary local Direct work. It is
+ephemeral and Director-facing unless another policy independently requires an
+artifact. It has exactly these four top-level keys:
+
+```text
+{
+  goal,
+  in_scope,
+  done_when,
+  must_preserve
+}
+```
+
+| Key | Meaning |
+|---|---|
+| `goal` | The requested observable outcome. |
+| `in_scope` | The included task boundary. |
+| `done_when` | The evidence or condition that establishes completion. |
+| `must_preserve` | Existing behavior, public interfaces or data, security, and worktree constraints that must remain intact. It is not excluded scope or non-goals. |
+
+Each material assertion in a compact key is `explicit`, `inferred`, `unknown`,
+or `conflict`. Preserve its basis in the assertion wording, source, or an
+available trace; no fifth compact top-level field is required.
+
+## Extended Contract
+
+Use the Extended Contract only for boundary, systemic, protected, or materially
+ambiguous or conflicting work. It retains the Compact Task Contract and adds
+exactly these keys:
+
+```text
+{
+  goal,
+  in_scope,
+  done_when,
+  must_preserve,
+  explicit_requirements,
+  inferred_requirements,
+  unknowns,
+  conflicts,
+  public_contracts,
+  persistent_state,
+  compatibility_expectation,
+  acceptance_evidence,
+  rollback_or_migration
+}
+```
+
+## Legacy Requirement Precision 1.0 Record
+
+The following record remains a backward-compatible Extended Contract
+representation only. New compact work does not create it merely to satisfy
+this schema.
 
 Every field below is required. Use an explicit unresolved state or an empty
 trace list where the schema permits it; do not omit a field.
@@ -27,7 +81,7 @@ requirement_precision: {
 }
 ```
 
-## Required Fields
+## Legacy Required Fields
 
 | Field | Required shape | Rule |
 |---|---|---|
@@ -49,7 +103,7 @@ trace entry. `acceptance_evidence` is never empty: when no acceptance target is
 known, create a `question_trace` entry and keep the associated acceptance item
 `unverified` rather than claiming acceptance.
 
-## Trace Shapes
+## Legacy Trace Shapes
 
 ```text
 assumption_trace: [
@@ -96,6 +150,8 @@ validation or review evidence.
 
 ## Consumer Rule
 
-Consumers may add a reference to this record, but must not redefine, rename,
-or locally supplement this field catalog. Use the policy for no-guessing and
-question escalation semantics.
+Consumers may reference the Compact Task Contract or the applicable Extended
+Contract, but must not redefine, rename, or locally supplement their field
+catalogs. `requirement_precision` 1.0 and its identifiers and traces remain
+available only as the backward-compatible Extended Contract representation.
+Use the policy for no-guessing and question escalation semantics.

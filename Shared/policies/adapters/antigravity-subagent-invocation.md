@@ -16,7 +16,9 @@ Do not paste the full playbook into platform core.
 
 - Antigravity / Gemini specialist routes are adapter or conditional execution channels.
 
-  They apply only after Team mode is activated by a governed Director request.
+  They apply only after `Shared/policies/execution-routing.md` resolves
+  `execution_topology: delegated`. Ordinary Direct work does not activate this
+  adapter Team route.
 
   They also require recorded Team-Native board, station, role, handoff, dispatch wave, and channel state.
 
@@ -31,5 +33,9 @@ Do not paste the full playbook into platform core.
 - Antigravity / Gemini adapters must not mutate source, memory, git, release, deploy, install, credentials, or external state.
 
 - Antigravity / Gemini adapters may mutate only when a scoped protected station explicitly owns that phase.
+
+- This adapter translates platform syntax, paths, capability, and receipts only.
+  Missing native receipt is `unknown` / `unverified`; do not fabricate one or
+  add shared invariant semantics here.
 
 <!-- SUBAGENT_POLICY:ANTIGRAVITY_END -->

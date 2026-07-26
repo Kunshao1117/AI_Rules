@@ -127,16 +127,16 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 
 | 工作流 | 中文任務語意 | 常見觸發 / route trigger | 常見下一路由（Common route） |
 |---|---|---|---|
-| `00 Chat` | 聊天、概念釐清、小型穩定問答 | 純對話、輕量 Q&A、無外部證據依賴 | `01` 探索、`02` 架構、`03` 建構、`04` 修復、`06` 測試、`09` 紀錄 |
+| `00 Chat` | 聊天、概念釐清、小型穩定問答 | 純對話、輕量 Q&A、無外部證據依賴 | `01` 探索、`02` 架構、`03` 建構、`04` 修復、`06 Verify`、`09` 紀錄 |
 | `01 Explore` | 探索、研究、可行性與反方分析 | 網路研究、競品分析、source freshness 問題 | `02` 架構、`03` 建構 |
 | `02 Blueprint` | 架構、系統藍圖、技術決策 | 架構設計、重大技術方向、build handoff | `03` 建構、`12` 技能鍛造 |
 | `03-1 Experiment` | 實驗、沙盒 spike、可丟棄原型 | 快速試作、sandbox prototype | `03` 建構、`11` 交接 |
-| `03 Build` | 正式建構、產品行為變更 | implementation、feature build、正式 source change | `04` 修復、`06` 測試、`09` 紀錄 |
-| `04 Fix` | 修復、bug fix、回歸修補 | defect、regression repair、root-cause repair | `06` 測試、`07` 除錯、`09` 紀錄 |
+| `03 Build` | 正式建構、產品行為變更 | implementation、feature build、正式 source change | `04` 修復、`06 Verify`、`09` 紀錄 |
+| `04 Fix` | 修復、bug fix、回歸修補 | defect、regression repair、root-cause repair | `06 Verify`、`07` 除錯、`09` 紀錄 |
 | `05 Condense` | 濃縮、專案身份與長期記憶初始化 | memory/context condensation、project identity | `02` 架構、`11` 交接、`12` 技能鍛造 |
-| `06 Test` | 測試、E2E、視覺、效能、無障礙與回歸驗證 | validation、browser/e2e/performance/a11y evidence | `03` 建構、`04` 修復 |
-| `07 Debug` | 除錯、log/stack trace 定位 | fault localization、observable signal、hypothesis | `04` 修復、`06` 測試 |
-| `09 Commit` | 紀錄、變更摘要、提交/發布前檢查 | changelog、commit prep、version/pre-release scan | `04` 修復、`06` 測試、`11` 交接 |
+| `06 Verify` | 驗證、E2E、視覺、效能、無障礙與回歸（`06 Test` 相容別名） | verification、browser/e2e/performance/a11y evidence | `03` 建構、`04` 修復 |
+| `07 Debug` | 除錯、log/stack trace 定位 | fault localization、observable signal、hypothesis | `04` 修復、`06 Verify` |
+| `09 Commit` | 紀錄、變更摘要、提交/發布前檢查 | changelog、commit prep、version/pre-release scan | `04` 修復、`06 Verify`、`11` 交接 |
 | `10 Routine` | Git 唯讀狀態回報 | Git 工作樹、HEAD、追蹤分支與 origin 狀態 | `09` 紀錄 |
 | `11 Handoff` | 交接、續跑提示、目前狀態整理 | handoff、continuation prompt、dirty state summary | `02` 架構、`03` 建構、`04` 修復、`09` 紀錄 |
 | `12 Skill Forge` | 技能鍛造、新增或修復 shared/project skill | skill creation、trigger quality、reference split | `03` 建構 |
@@ -164,7 +164,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - Formal-readonly board, specialist handoff, source tier, date, bias, coverage gap, unverified items.
   - Research-to-recommendation handoff records intent envelope, grounding state, and quick/full design reflection when findings can shape architecture, implementation, governance, spend, or release.
   - If no specialist opens, record unavailable channel and direct exception.
-- 常見路由（Common route）: 02, 03, 08.
+- 常見路由（Common route）: 02, 03；僅在 `verification-strategy.md` 的正向觸發成立時使用 `deep-audit`。
 
 ### 02 Blueprint / 架構
 
@@ -174,7 +174,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 最低證據（Minimum evidence）:
   - Formal-readonly board, requirement replay, counter-evidence, decision state, alternatives.
   - Review purpose/state, requirement-to-acceptance trace, assumptions, compatibility, design reflection decision, build handoff contract.
-- 常見路由（Common route）: 03, 08, 12.
+- 常見路由（Common route）: 03, 12；僅在 `verification-strategy.md` 的正向觸發成立時使用 `deep-audit`。
 
 ### 03-1 Experiment / 實驗
 
@@ -231,13 +231,14 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - Source basis, separation of durable fact from temporary observation, workspace/context inventory evidence.
 - 常見路由（Common route）: 02, 11, 12.
 
-### 06 Test / 測試
+### 06 Verify / 驗證（`06 Test` 相容別名）
 
-- 任務類型（Task type）: E2E, visual, performance, accessibility, regression.
+- 任務類型（Task type）: Verification, E2E, visual, performance, accessibility, regression.
 - 接地依據（Grounding basis）:
   - Playwright, Lighthouse, Web Vitals, WCAG, programming-team governance.
 - 最低證據（Minimum evidence）:
-  - Test station board, project type, test surface, evidence level, blocker reason.
+  - Target surface, existing-test classification when applicable, selected evidence level, operator path, and blocker reason.
+  - A Team board or validation station is required only after delegated topology resolves; Direct Verify has no formal trace requirement.
   - Validation may consume design reflection as expected-behavior context, but design reflection is not validation evidence.
 - 常見路由（Common route）: 03, 04.
 
@@ -304,7 +305,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - Validation gate, affected memory and skill-index evidence.
   - Source/deployed parity, grounding handoff, expected dirty files, completion bundle index, and
     memory-closure handoff/receipt requirement.
-- 常見路由（Common route）: 03, 08, 10.
+- 常見路由（Common route）: 03, 10；僅在 `verification-strategy.md` 的正向觸發成立時使用 `deep-audit`。
 
 ## Memory Evidence Reference
 

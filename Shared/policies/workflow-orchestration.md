@@ -22,6 +22,12 @@ Layer ownership, in order:
 
 - Owns: Scope-bound authorization fields and phase-specific write gates.
 
+### Execution routing pair
+
+- Source: `Shared/policies/execution-routing.md`.
+- Deployed: `.agents/shared/policies/execution-routing.md`.
+- Owns the independent topology, change-impact, and action-risk classification.
+
 ### `Shared/policies/language-governance.md`
 
 - Owns: Audience-layer language classification, Director-facing language rules, and exact-evidence preservation.
@@ -136,12 +142,13 @@ They are non-authorizing examples only.
 
 They show concrete cooperation flows, but do not grant authorization, create new completion states, or override this contract.
 
-## Team-Native Topology Map
+## Execution Topology Map
 
-Team-Native has one governed workflow mainline. This policy owns the route sequence and
-responsibility handoff for that mainline. Workflow entries, shared policies, matrices, skills,
-boards, handoff packets, and delivery artifacts are layers of the same route, not separate
-workflow, policy, or skill mechanisms.
+Every task has one mainline. `execution-routing.md` first selects Direct or
+delegated topology; this policy owns the sequence and responsibility handoff
+after that choice. Workflow entries, shared policies, matrices, skills, boards,
+handoff packets, and delivery artifacts are layers of the delegated branch,
+not separate workflow, policy, or skill mechanisms.
 
 - Team-Native Core plus Authorization Resolution own the hard gates and authorization boundaries.
   They decide whether work may enter Team mode, write, or protected phases.
@@ -167,13 +174,17 @@ playbooks to this map.
 
 ## Entry Sequence
 
-Canonical stage order:
+Canonical task mainline:
 
-This sequence is the only mainline a workflow entry may invoke.
+```text
+task intake -> compact task contract -> three-axis classification -> Direct or delegated execution -> proportional verification -> bounded review when required -> completion by acceptance and evidence
+```
 
-Both statements refer to the detailed Entry Sequence below. Non-normative orientation only: its
-concerns include request boundaries, station execution, receipt evidence, and governed closeout;
-this compact orientation is thematic and non-sequential.
+Team, protected, release, and deep-audit routes are conditional branches, not
+the default mainline. Direct uses the focused sequence in
+`execution-routing.md`. The detailed sequence below expands delegated topology
+only; it does not impose a board, handoff, independent review, or memory/docs
+disposition on ordinary Direct work.
 
 Mainline responsibility anchors:
 
@@ -363,37 +374,22 @@ Executable station or tool work uses the machine-readable `execution_spec` minim
 If executable work depends on a flowchart without a resolved `execution_spec`, the affected work is `unverified` or `blocked`.
 The same rule applies when the station handoff packet is missing.
 
-Team-Native / subagent team mode activates when the current Director request asks for governed work in any of these areas:
+Team-Native / subagent operation begins only after
+`Shared/policies/execution-routing.md` resolves `execution_topology: delegated`.
+That policy owns the five positive delegated conditions and generic
+non-triggers; generic `governed work`, named workflows/skills, source impact,
+platform mode, approval prompts, and available channels do not activate Team
+mode by themselves. Routing does not authorize writes or protected actions.
 
-- Governance, workflow, fix, build, debug, test, audit, skill, memory/docs, commit, or handoff.
-- Source, public-contract, or equivalent source/governance/evidence-bearing work.
-
-Requests for a team, team member, subagent, delegation, Team-Native, or equivalent dispatch also activate Team mode.
-
-Workflow names and skill names are route signals, not fixed passwords.
-If the request itself is governed work, Team mode is triggered by that user request.
-
-Workflow names, source impact, platform mode, approval prompts, or available channels do not activate Team mode by themselves.
-They require a current governed Director request.
-
-They also do not authorize writes or protected actions.
-
-When Team mode is not active, captain/team-board limits do not apply.
-
-Normal lifecycle, scoped authorization, protected-action gates, read-before-write, and source/deployed sync rules still apply.
-
-Pure conversation, small stable answers, and no-impact read-only work remain outside Team mode only when they have no relevant impact.
-
-Relevant impact includes source, workflow, validation, review, memory, release, governance, or evidence impact.
-
-After Team mode is active, the workflow route must create or promote the board-first path before these actions:
+Once delegated topology activates Team mode, the workflow route must create or
+promote the board-first path before these actions:
 
 - Governance, workflow, fix, build, or broad evidence.
 - Change delivery, validation, review, memory/docs, protected action, or completion work.
 
 Missing specialist channel capability becomes standby, blocked, unverified, unavailable, or closed-with-director-risk station state.
 
-It does not downgrade active Team mode to captain-direct execution.
+It does not downgrade active delegated Team mode to captain-direct execution.
 
 Director-facing workflow status describes the plain-language route, evidence state, residual risk, and next action.
 
@@ -593,10 +589,11 @@ shape lives in `Shared/policies/references/workflow-execution-spec-contract.md`.
 
 Target meanings, aliases, and transition values are not repeated here; use
 `Shared/policies/references/completion-state-machine.md`.
-This policy only places the closeout decision after source delivery, validation, review,
-memory/docs attribution, and any required protected follow-up phases.
+For delegated work, this policy places the closeout decision after source
+delivery, validation, review, memory/docs attribution, and any required
+protected follow-up phases. Direct completion is owned by execution routing.
 
-New formal source work defaults to `process-complete`. `source-level` is
+New formal delegated source work defaults to `process-complete`. `source-level` is
 available only when the initial visible formal-write agreement is explicitly
 bound as `source-level-explicit`; a legacy execution spec is not retrospectively
 granted a completion bundle or protected memory authority. The completion-bundle
@@ -673,25 +670,12 @@ It points workflow-specific evidence back to `Shared/workflow-capability-evidenc
 
 ## Lifecycle Lane Routing Rule
 
-Workflow entries select the smallest honest `lane_id` from
-`Shared/policies/references/workflow-lane-routing.md`.
-
-Allowed lanes are `tiny`, `light`, `standard`, `full`, and `release-grade`.
-Lane selection happens only after governed/guarded action classification and
-captain-prohibition checks.
-`tiny` and `light` are negative lanes; they are unavailable when any guarded
-action or captain-prohibited action exists.
-When a lower lane is invalid, choose the minimal sufficient route, usually
-`standard`.
-Reserve `full` for cross-domain work, unclear scope, high blast radius, external
-grounding, architecture significance, or multi-station depth.
-Lane choice controls which lifecycle stages must run and which may be recorded as
-`not-applicable` or `reduced-by-lane`.
-
-The full formal lifecycle vocabulary lives in the lane reference.
-This policy does not force every task through every stage.
-It requires an explicit disposition for each applicable stage and preserves
-blocked, unverified, no-evidence, conflicted, or risk-closed states when evidence is missing.
+Legacy lane names are compatibility aliases from
+`Shared/policies/references/workflow-lane-routing.md`. Classify topology,
+impact, and action risk first; no lane selects Team or protected work except
+that `release-grade` reflects protected risk. Direct execution has no formal
+stage disposition. Once topology is delegated, applicable stages and honest
+missing-evidence states remain governed by Team-Native Core.
 
 Validation closeout uses evidence-based `validation_judgment_state`.
 Do not use absolute "no error" or "無誤" wording as validation or completion evidence.

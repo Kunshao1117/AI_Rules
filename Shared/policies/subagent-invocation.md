@@ -3,11 +3,12 @@
 This file is the cross-platform source of truth for subagent execution-channel
 governance. It has exactly two responsibilities:
 
-1. Preserve the delegation invariant after Team-Native activation.
+1. Preserve the delegation invariant after execution routing selects delegated
+   topology.
 2. Define the platform-neutral invocation contract between a formal station and
    its adapter.
 
-It does not own Team activation, lifecycle timing, dispatch waves, role
+It does not own topology selection, lifecycle timing, dispatch waves, role
 catalogs, packet field schemas, delivery-artifact schemas, review state, or
 completion rules. Those topics remain with their canonical owners below.
 
@@ -15,7 +16,7 @@ completion rules. Those topics remain with their canonical owners below.
 
 | Need | Canonical owner |
 |---|---|
-| Team activation, captain boundary, station-first rule, and protected-action boundary | `Shared/policies/team-native-core.md` |
+| Delegated topology selection; Team activation, captain boundary, station-first rule, and protected-action boundary | `Shared/policies/execution-routing.md` and `Shared/policies/team-native-core.md` |
 | Workflow order, board state, dispatch waves, authorization resolution, and trace | `Shared/policies/workflow-orchestration.md`, `Shared/policies/authorization-resolution.md`, and `Shared/policies/team-trace-evidence.md` |
 | Formal board values and station delivery forms | `Shared/skills/team-task-board/SKILL.md` and its board-field catalog |
 | Role registry, one-role boundary, and specialist skill | `Shared/skills/team-specialist-registry/SKILL.md`, matching `team-specialist-*` skill, and `Shared/skills/team-role-boundaries/SKILL.md` |
@@ -28,8 +29,12 @@ completion rules. Those topics remain with their canonical owners below.
 
 ## Delegation Invariant
 
-A current governed Director request activates Team-Native through
-`team-native-core.md`. Before any execution channel starts, the formal board,
+A subagent execution channel may operate only after
+`Shared/policies/execution-routing.md` resolves `execution_topology: delegated`;
+only then does Team-Native Core apply. That policy owns the five positive
+delegated conditions. Generic `governed work`, named workflows/skills, source
+impact, platform mode, approval prompts, and available channels do not activate
+Team mode by themselves. Before any execution channel starts, the formal board,
 one eligible station, registered role, assigned specialist skill, handoff
 packet, dispatch-wave eligibility, channel state, task scope, output artifact,
 and stop condition must be resolved. A missing prerequisite leaves the station

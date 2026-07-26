@@ -19,11 +19,11 @@ metadata:
 
 ## Test Scope Opt-In
 
-`Shared/policies/authorization-resolution.md` owns test admission, direct-evidence
+`Shared/policies/verification-strategy.md` owns test admission, direct-evidence
 priority, failure classification, and the stop rule. This skill only supplies
-selector and interface-evidence methods after that owner has resolved an exact
-test scope; it does not admit tests, browser startup, screenshots, selectors,
-or a test project/runner.
+browser selector and interface-evidence methods after that owner selects an
+exact browser or visual scope; it does not admit tests, browser startup,
+screenshots, selectors, a test project/runner, or a full-suite route.
 
 ## 1. Interface Evidence Strategy (視覺化測試)
 
@@ -93,7 +93,7 @@ For each required surface, check:
 
 ## 3. Evidence Classification And Routing
 
-Apply the owner policy's failure classification and stop rule before changing
+Apply `verification-strategy.md` failure classification and stop rule before changing
 anything. This skill must not repair a selector, test, browser harness, or
 checker merely to make its own evidence pass. An explicitly accepted product
 repair needs its own resolved source-write scope; otherwise return the evidence

@@ -121,6 +121,12 @@ Do not use model memory as the source of truth for high-change or uncertain APIs
 
 ### 2.5 Real Execution Evidence Gate
 
+`Shared/policies/verification-strategy.md` selects the generic evidence level,
+test-admission boundary, verification budget, and failure classification first.
+This skill supplies only the specialized high-change, UI, and real-runtime
+method after that selection. It does not make a full suite, a new test, or
+`deep-audit` the default merely because a UI or runtime surface exists.
+
 Production build, fix, test, and audit work defaults to real verification.
 If behavior can be started, called, queried, observed, logged, or inspected, attempt that path before claiming completion.
 
@@ -249,6 +255,7 @@ reference downgrade, interface evidence, and remaining Director review points.
 ## Constraints
 
 - This skill does not authorize writes, installs, memory updates, commits, pushes, deployments, or mutating MCP calls.
+- This skill does not own ordinary evidence selection, durable test admission, focused-versus-full verification, or failure classification.
 - Project design DNA belongs in project context or project skills only after Director approval.
 - Missing interface adaptation evidence blocks layout, component, style, or interaction completion claims.
 - Missing real execution evidence blocks claims for real data, runtime state, persistence, integration, or operator-visible output.

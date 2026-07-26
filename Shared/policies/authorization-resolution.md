@@ -1,6 +1,8 @@
 # Authorization Resolution Policy
 
-This policy defines how Team-Native Core resolves authorization.
+This policy defines scope-bound authorization after execution routing has
+classified the task. It remains the authority owner for Direct and delegated
+work alike.
 
 It applies before these work types begin:
 
@@ -29,22 +31,21 @@ Protected-action categories and required phase mapping are governed by
 
 ## Priority Contract
 
-Team-Native Core has the highest governance priority after the current Director request asks for governed work touching these areas:
+Team-Native Core has the highest governance priority only after
+`execution-routing.md` resolves `execution_topology: delegated`.
 
-- Source, workflow, fix, build, debug, test, audit, validation, review, or memory/docs.
-- Commit, release, deployment, install, project governance, generated copies, or public contracts.
-
-Team-Native / subagent team mode activates at the authorization layer when the current Director request is governed work.
-
-It also activates when the request asks for a team, team member, subagent, delegation, Team-Native, or equivalent dispatch.
-
-The Director does not need to say a fixed phrase such as "啟動團隊模式"; workflow and skill names are route signals.
+`execution-routing.md` owns the independent topology, impact, and risk
+classification. Source, workflow, fix, build, debug, test, audit, policy,
+documentation, public-contract work, workflow names, and channel availability
+do not activate Team mode by themselves. An explicit team, delegation,
+subagent, role-split, or Team-Native request is a topology trigger, not write
+or protected-action authority.
 
 Authorization decides the allowed target, scope, phase, and expiry.
 
 It does not convert route hints, platform mode, tool capability, source impact, or prior conversation state into Team mode.
 
-That conversion requires a current governed Director request.
+That conversion requires delegated topology under `execution-routing.md`.
 
 Missing channel capability in active Team mode must be represented as station state.
 It is not authorization to skip Team-Native requirements.
@@ -270,6 +271,13 @@ gate. The affected action stops before execution while the request is unresolved
 remains the detection gate; it may identify a delta, but it never records or substitutes for the
 operator's decision.
 
+An acceptance-required repair stays in the current task when scope, risk, and
+public contract remain unchanged. A minimal enabling change stays only when it
+is necessary, reversible, same-risk, and adds no public contract; it still
+needs exact resolved write scope. An out-of-scope improvement becomes a
+follow-up. A new concrete security or data risk stops the affected action and
+asks the operator for a decision.
+
 Classify the proposed delta as exactly one of:
 
 - `acceptance-required-repair`: a repair needed to satisfy the current acceptance contract.
@@ -343,53 +351,21 @@ new concrete security or data-integrity risk stops only the affected action and 
 the exact decision. When evidence is unknown or incomplete, record `unverified` and ask; do not
 invent a risk, silently expand scope, or silently add a safeguard.
 
-### Test Actions And Validation Boundary
+### Test Actions And Protected Boundary
 
-This is the sole canonical owner of test admission. Validation is not testing,
-and creating, modifying, or executing a test is allowed only when all three
-conditions below are true:
+`Shared/policies/verification-strategy.md` is the sole canonical owner of
+ordinary evidence selection, test admission, focused-versus-full verification,
+and failure classification. This policy retains only the authorization and
+protected-action boundary for a selected test or check.
 
-1. The target is an endpoint, performance, concurrency, data-integrity, or
-   another non-visual invariant that a visual or interactive tool cannot
-   directly prove. Ordinary page appearance, interactive flows, policy text,
-   and static references do not qualify.
-2. A current-session, suitable, non-destructive real tool or interface still
-   cannot provide sufficient acceptance evidence. Use Browser, Chrome,
-   Computer Use, CLI static checks, or a real interface when one can
-   prove the acceptance; do not substitute a test.
-3. The acceptance explicitly binds a test artifact, or the operator precisely
-   approves the exact test scope. The resolved authorization must bind exact
-   files, commands, data or fixtures, phase, expiry, and acceptance references.
-
-Model capability or effort, best practice, review, validation, regression
-rationale, and workflow routing are not test authorization. An approved test
-delta remains intent evidence until this policy resolves those exact bindings.
-The existing hard gates remain in force.
-
-For text, policy, documentation, configuration, and static-data work, create
-no tests. When acceptance calls for validation, use the smallest accepted,
-non-mutating static check, such as syntax, schema, frontmatter,
-broken-reference, source/deployed-parity, or duplicate-canonical-owner checks.
-Those checks are acceptance evidence, not tests.
-
-Direct real-tool observation proves only what it can actually observe; visual
-evidence proves visible state or layout, not endpoint contracts, performance,
-concurrency, data integrity, or other non-visual invariants. When the first two
-conditions hold but the third does not, stop and obtain the operator's precise
-decision through `scope_expansion_request`.
-
-Do not create a complex, project-wide, full-suite, routine, or repeated
-regression run merely because validation is pending. A permitted exception is
-limited to its named acceptance objective and exact resolved scope.
-
-Every proposed test or check must directly prove the named acceptance, or a
-necessary risk that cannot be proved at lower cost. On failure, classify the
-result before changing anything as an outcome defect, checker outdated or
-inapplicable, incorrect assumption, or tool/environment problem. A failed
-check never authorizes repairing its test or checker. Unless an action is
-explicitly retained and necessary after that classification, stop, remove it,
-or use direct evidence instead. Do not create test-of-test, check-of-check, or
-self-repair loops.
+Test labels, validation obligations, regression rationale, and workflow routes
+never bypass an existing hard gate or protected gate. Classify existing tests
+under `verification-strategy.md`: a targeted `local_non_destructive` test is
+ordinary verification; `local_side_effectful` use requires an isolated or
+temporary target, cleanup, and dirty-worktree safety; `external_or_protected`
+requires its matching protected authorization; and `unknown` must be inspected
+before execution. Exact test file, command, data/fixture, phase, and expiry
+bindings remain required whenever this policy resolves an action.
 
 `formal-readonly` routing does not require repeated GO when the current route is already visible.
 
@@ -468,7 +444,8 @@ These signals route the work only; they do not authorize writes or protected act
   checkpoint commit. It does not inherit implementation or final-commit
   authority.
 - A request for subagents, a specialist, or a team mode is not authorization by itself.
-- A request for Team-Native / subagent team mode turns on the team route.
+- A request for Team-Native / subagent team mode is a delegated-topology
+  trigger under `execution-routing.md`.
 - That request still does not authorize writes, protected phases, hidden cleanup, or unscoped dispatch.
 - Platform mode is not authorization. It is recorded only as observed capability context.
 - Platform mode is capability context only.
@@ -503,7 +480,7 @@ These signals route the work only; they do not authorize writes or protected act
 
 ## Required Resolution Fields
 
-Every formal task trace, board station, and delivery ledger entry records these fields.
+Every formal delegated task trace, board station, and delivery ledger entry records these fields.
 This applies when the entry can lead to a write or protected action.
 
 Required field meanings:

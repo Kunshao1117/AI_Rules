@@ -60,8 +60,11 @@ These values must not appear in route or channel fields:
 - `not-applicable`
 - `direct`
 
-Use `direct` only inside `direct_exception` records. Use the route field for
-the attempted or selected mechanism, such as `CLI branch`, `MCP read/tool path`,
+Within active Team mode, use `direct` only inside `direct_exception` records.
+`direct_exception` and `direct` are Team-only exception semantics. Ordinary
+Direct is `execution_topology: direct`, owned by `execution-routing.md`; it is
+not a direct exception, route, channel, or status. Use the route field for the
+attempted or selected mechanism, such as `CLI branch`, `MCP read/tool path`,
 `station-owned main-worktree change delivery`, or
 `station-owned authorized change-application gate`.
 

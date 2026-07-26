@@ -29,7 +29,7 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 3. Read `.agents/shared/workflow-capability-evidence-matrix.md` and use workflow row `06` as the minimum evidence contract.
 4. Read `.agents/shared/platform-capability-matrix.md` and apply only Antigravity/Gemini adapter semantics.
 5. When editing workflow entries, skills, shared policies, or governance boundaries, read the deployed skill governance reference (`.agents/shared/skill-governance.md`) and framework source reference (`Shared/skill-governance.md`) before changing placement or wording.
-6. When a concrete phase checklist is needed, read the deployed stage procedure reference (`.agents/shared/workflow-stage-procedures.md`) and framework source reference (`Shared/workflow-stage-procedures.md`), then use section `06 Test`. Do not copy that procedure back into this entry.
+6. When selecting evidence, tests, failure routing, or review rendering, read `.agents/shared/policies/verification-strategy.md`; when a concrete phase checklist is needed, read the deployed stage procedure reference (`.agents/shared/workflow-stage-procedures.md`) and framework source reference (`Shared/workflow-stage-procedures.md`), then use section `06 Verify`. Do not copy that procedure back into this entry.
 7. For Team-Native work, load `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-station-handoff-packet/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, and `.agents/skills/team-completion-gate/SKILL.md`; load delivery-artifact skills only when their stations apply.
 8. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is 未驗證（`unverified`）或阻塞（`blocked`）。
 
@@ -44,12 +44,12 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 ## Phase Order
 
 - Workflow row: `06`.
-- Procedure reference: `06 Test` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Define the target surface and evidence level, run non-mutating validation, and route failures without repairing inside the test station.
+- Procedure reference: `06 Verify` (`06 Test` compatibility alias) in `.agents/shared/workflow-stage-procedures.md`.
+- Route summary: Select minimum-sufficient verification evidence, define the target surface and evidence level, run non-mutating verification, and route classified failures without repairing inside the validation station.
 - Define target surface, evidence level, environment, commands, browser/operator path, and expected pass/fail state.
 - Use non-mutating validation by default and preserve blocked or unverified evidence states.
 - Classify unit, integration, regression, visual, performance, accessibility, real execution, blocked, and unverified evidence separately.
-- Route failed validation to 04, 07, 03, or 08; the validation station does not repair the implementation it validates.
+- Route failed verification to 04, 07, or 03; use `deep-audit` only for the positive triggers in `verification-strategy.md`. The validation station does not repair the implementation it verifies.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

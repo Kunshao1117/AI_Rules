@@ -43,6 +43,9 @@ function Invoke-AgFresh {
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
     $null = Get-SharedPolicyBlock -PolicyPath $sharedPolicyPath -Platform Antigravity
+    if (-not (Test-Path -LiteralPath $SharedSkillsRoot -PathType Container)) {
+        throw "Shared skills source is missing: $SharedSkillsRoot"
+    }
 
     Write-Banner "Antigravity v$version — Fresh 安裝 | 目標: $Target" "Magenta"
 
@@ -220,11 +223,14 @@ function Invoke-AgUpgrade {
             Write-Step "正在套用變更..."
             $applied = Install-Upgrade -Report $report -SourceRoot $sourceDir -TargetRoot $targetDir
         } else {
-            Write-Warn "已跳過框架檔案更新。"
+            Write-Warn "已拒絕框架檔案更新；本次升級維持部分／未驗證狀態，未更新 VERSION，且不輸出完成訊息。"
+            return
         }
     } else {
         Write-Ok "框架檔案均已是最新版本，無需更新。"
     }
+
+    $ErrorActionPreference = 'Stop'
 
     # 技能差異注入
     Write-Step "同步技能差異（Shared/skills/）..."

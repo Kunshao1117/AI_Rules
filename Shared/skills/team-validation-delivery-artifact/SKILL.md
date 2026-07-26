@@ -23,8 +23,8 @@ Produce validation evidence without repairing the implementation.
 A validation specialist proves what was checked, what passed or failed, and what remains unverified.
 Validation evidence may be a static check, manual acceptance, tool output, or, when applicable, a
 test. Validation is not synonymous with testing.
-Tool-first sufficiency and any test exception are governed by
-`Shared/policies/authorization-resolution.md`.
+Generic evidence selection and any test admission are governed by
+`Shared/policies/verification-strategy.md`.
 
 ## Inputs
 
@@ -46,11 +46,9 @@ Tool-first sufficiency and any test exception are governed by
    If the artifact is missing, validate only the blocked/unverified/closed-with-director-risk state.
 8. Record the delivery artifact ID, source input, validation scope, and whether validation happened after change delivery.
 9. Treat missing or mismatched authorization fields as blocked or unverified validation evidence.
-10. A validation obligation does not authorize creating, modifying, or executing tests. Select tests only
-    when the current acceptance and exact authorization already permit them; otherwise use the allowed
-    non-test evidence or report the gap. Prefer the canonical tool-first route before requesting a test
-    exception. Test authorization is owned by
-    `Shared/policies/authorization-resolution.md`.
+10. A validation obligation does not authorize creating, modifying, or executing tests. This artifact
+    does not select generic evidence or test admission; consume the method selected by
+    `verification-strategy.md`, otherwise use allowed non-test evidence or report the gap.
 
 ## Artifact Schema
 

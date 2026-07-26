@@ -1,9 +1,9 @@
 ---
 name: programming-team-governance
 description: >
-  編程團隊治理（Infra）：Captain-led programming team governance. Use when: 編程、開發、修復、除錯、測試、
-  健檢、提交、交接、技能/規則治理，或 source/workflow tasks need captain trigger, team routing,
-  role-exclusive specialists, evidence branches, isolated/text change delivery, or execution-channel boundaries.
+  編程團隊治理（Infra）：Captain-led programming team governance. Use when: execution routing
+  has selected delegated Team-Native work needing captain routing, role-exclusive specialists,
+  evidence branches, isolated/text change delivery, or execution-channel boundaries.
   DO NOT use when: 純討論、非程式、或不涉及 source/workflow/governance 證據的任務；
   English: pure discussion or non-coding no-source tasks.
 metadata:
@@ -27,6 +27,7 @@ Source of truth:
 
 | Need | Read first |
 |---|---|
+| Direct versus delegated topology, change impact, action risk, and Direct boundaries | `Shared/policies/execution-routing.md` |
 | Team-Native priority, station-first rule, role separation, delivery sequence, direct exceptions, and completion boundary | `Shared/policies/team-native-core.md` |
 | Workflow route, operation mode, board state, dispatch waves, transition rules, and source/deployed sync | `Shared/policies/workflow-orchestration.md` |
 | Scope-bound authorization, natural-language binding, protected phases, and expiry | `Shared/policies/authorization-resolution.md` |
@@ -47,12 +48,15 @@ explanation.
 
 ## Trigger And Route
 
-Enter captain-led handling when the Director requests governed work: source, workflow, fix, build,
-debug, test, audit, validation, review, memory/docs, commit, handoff, release, deployment, install,
-generated copies, public contracts, governance rules, or broad evidence that can shape those areas.
-Requests for a team, team member, subagent, delegation, Team-Native, or equivalent dispatch also
-enter this path. The Director does not need to say a fixed Team-mode phrase. Workflow and skill
-names are route hints, not write or protected-action authorization.
+Enter captain-led handling only after `execution-routing.md` resolves delegated
+topology. An explicit team, team member, subagent, delegation, Team-Native, or
+equivalent dispatch request is a delegated-topology trigger. Source, workflow,
+fix, build, debug, test, audit, policy, documentation, multi-file work, and
+available subagents are not Team triggers by themselves. Workflow and skill
+names remain route hints, not write or protected-action authorization.
+
+When topology is Direct, do not open a board or manufacture a direct exception;
+follow the focused Direct route instead.
 
 After Team mode is active and before broad reading, evidence gathering, implementation, validation,
 review, memory/docs attribution, commit prep, release prep, or completion claims:

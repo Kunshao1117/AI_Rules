@@ -6,26 +6,26 @@ Director-facing reports, replies, confirmations, status summaries, handoffs, and
 Use Chinese here only for exact Director-facing examples, established localized labels, or explicit task requirements.
 Do not insert abrupt Traditional Chinese prose into the English policy body.
 
-Team-Native / subagent team mode activates only from the current Director request for governed work or equivalent dispatch.
+Team-Native / subagent team mode applies only after
+`Shared/policies/execution-routing.md` resolves `execution_topology: delegated`.
 It is not AI default-on, a single subagent feature, a single workflow, or a single skill.
 
 ## Core Contract
 
-Team-Native Core is the highest-priority governance spine after the current Director request asks for governed work.
+Team-Native Core is the highest-priority governance spine after delegated
+topology is selected.
 
-Governed work includes governance, workflow, fix, build, debug, test, audit, skill, memory/docs, commit, and handoff.
-It also includes source, public-contract, or equivalent source/governance/evidence-bearing work.
-Requests for a team, team member, subagent, delegation, or Team-Native also activate Team mode.
+`execution-routing.md` uniquely classifies topology, change impact, and action
+risk. Governed work, workflow names, source impact, and available tools are
+not Team triggers by themselves. Requests for a team, team member, subagent,
+delegation, or Team-Native are delegated-topology triggers; the Director does
+not need a fixed phrase such as "啟動團隊模式".
 
-The Director does not need to use a fixed phrase such as "啟動團隊模式".
-Workflow names, platform modes, approval UI, tool capability, prior conversation state, and source impact are not triggers by themselves.
-A current governed Director request is still required.
-
-Team mode can remain inactive when the Director request is pure conversation or a small stable answer.
-It can also remain inactive for work with no source/governance/evidence effect.
-In that case, captain/team-board limits do not apply and no Captain Team Board is required.
-Normal lifecycle, scoped authorization, protected-action gates, read-before-write, security, and source/deployed sync rules still apply.
-Non-team work must not claim Team-Native completion, separated station evidence, or team review.
+When topology is Direct, captain/team-board limits do not apply and no Captain
+Team Board is required. Normal lifecycle, scoped authorization,
+protected-action gates, read-before-write, security, and source/deployed sync
+rules still apply. Direct work must not claim Team-Native completion, separated
+station evidence, or team review.
 
 When Team mode is active, the valid runtime state is board-first station assignment, not captain-direct execution.
 A platform that lacks native subagents remains in Team-Native mode through adapters, evidence branches, or CLI/MCP/browser channels.
@@ -40,11 +40,11 @@ automation implementation, validation, review, memory/docs attribution,
 external research, completion audit or evidence, protected mutation, or external
 mutation.
 The captain must not perform commit preparation, release preparation, or completion claims first and only document the team route afterward.
-Lane routing cannot use `tiny` or `light` until governed/guarded action
-classification and these captain prohibitions have been evaluated.
+Legacy lane aliases do not select Team topology or weaken these captain
+prohibitions.
 
 Team activation may be silent in the Director experience.
-Silent activation still depends on the current governed Director request; it is not AI default-on.
+Silent activation still depends on delegated topology; it is not AI default-on.
 The captain should surface plain-language route, risk, and next action unless exact evidence is needed.
 The captain should not expose internal board, handoff, channel, or authorization field mechanics as the primary explanation.
 
@@ -53,7 +53,7 @@ Writes use one scope-bound work agreement for the named phase, station, and file
 Memory, git, release, deployment, install, credential, and external mutation phases remain separately authorized.
 
 The shared workflow sequence is defined by `Shared/policies/workflow-orchestration.md`.
-After a governed Director request activates Team mode, that Team-Native gate is authoritative.
+After delegated topology activates Team mode, that Team-Native gate is authoritative.
 Workflow orchestration defines the route -> authorization -> operation_mode -> board_state -> dispatch wave order.
 It also defines the delivery artifact -> closeout order used by workflow entries and stations.
 
@@ -109,7 +109,7 @@ Removing duplicate examples is good; deleting the guard that made a rule enforce
 
 ## Core Injection Hard Gate
 
-After a governed Director request activates Team mode, core injection rules enforce the shortest Team-Native gate first.
+After delegated topology activates Team mode, core injection rules enforce the shortest Team-Native gate first.
 No phase-owning skill, workflow, platform adapter, captain broad-work tool call, or evidence-producing read may soften that gate.
 When Team mode is not active, these captain/team-board gates are not evaluated.
 
@@ -135,8 +135,9 @@ They are not active Team mode by default.
 They may prime the Team-Native activation test, captain boundary, subagent opening prerequisites, and blocked/unverified vocabulary.
 They do not authorize broad reads, source writes, validation, review, memory/docs, protected actions, or completion evidence.
 They are not station-owned evidence, validation evidence, review evidence, memory/docs attribution, or completion proof.
-The dormant hook becomes operative only when the current Director request is governed work.
-It also becomes operative when the request explicitly asks for a team, subagent, delegation, Team-Native, or equivalent dispatch.
+The dormant hook becomes operative only when execution routing resolves delegated
+topology, including an explicit team, subagent, delegation, Team-Native, or
+equivalent-dispatch request.
 
 ### Captain Minimum Entry / 隊長最小入口
 
@@ -214,9 +215,10 @@ Speed, convenience, cost, small task size, lack of preference, or "the captain a
 Governance, workflow, hook, validation, memory, release, deployment, install, and protected-state work cannot become captain-direct work.
 Public-contract work cannot become captain-direct work.
 
-## Governed Team Activation Rule
+## Delegated Team Activation Rule
 
-When the Director asks for governed work or for Team-Native / subagent team mode, the captain must create or reuse a team board first.
+When `execution-routing.md` resolves delegated topology, the captain must
+create or reuse a team board first.
 The board comes before broad context-heavy work or any team-scoped station work.
 The minimum activation is a board row for each applicable station, a selected specialist skill, and an attempted execution channel.
 An explicit standby/block record may replace a channel attempt when the channel cannot run.
@@ -262,7 +264,7 @@ Allowed route examples include:
 They belong to station, evidence, authorization, or completion fields.
 They must not be stored as `execution_route`, `execution_channel`, platform route, or execution mode.
 
-`direct` is also not an execution route or station state.
+Within active Team mode, `direct` is not an execution route or station state.
 Record it only as a `direct_exception` / `direct_exceptions` entry.
 That entry must include station-specific reason, replacement evidence, and residual state.
 
@@ -307,7 +309,7 @@ details are in [Captain Boundary Reference](references/team-native-core-captain-
 ## Station-First Rule
 
 After Team mode activation, the captain must create the Captain Team Board before any specialist work starts.
-This applies after activation by a governed Director request.
+This applies after activation by delegated topology.
 It applies before any specialist, subagent execution channel, browser branch, CLI branch, or MCP read evidence.
 It also applies before any main-worktree change-delivery branch.
 It also applies before isolated change-delivery, text change-delivery, validation, review, and completion audit.
@@ -396,29 +398,13 @@ repair. Open a new slice only when scope, allowlist, authorization, acceptance,
 risk, public contract, or protected action changes. The mandatory retained-member
 and finding procedure is [Team-Native Core Delivery Slice Reference](references/team-native-core-delivery-slice.md); it never replaces board, handoff, authorization, or trace contracts.
 
-## Fast Closeout Rule
+## Team Closeout Branch
 
-Closeout is risk-tiered so Team-Native Core stays rigorous without mechanical all-agent relaunches.
-
-Closeout lane entries:
-
-- `light`
-  - Use when: the negative lane contract and guarded-action precedence leave only no-write, non-guarded documentation or status drift.
-  - Constraint: no source, workflow, governance, generated/runtime copy, evidence-surface, release, protected, or external-state mutation.
-  - Minimum stations: scope/impact, change delivery or sync delivery, validation, completion audit.
-- `standard`
-  - Use when: multi-file policies, skills, matrices, workflow semantics, or memory/docs impact.
-  - Minimum stations: scope/impact, change delivery, memory/docs, validation, independent review, completion audit.
-- `release-grade`
-  - Use when: commit, tag, release, deployment, install, external state, credentials, or public operator readiness.
-  - Minimum stations: standard lane plus release completion and security/reliability.
-
-Fast closeout never lowers the completion bar and does not replace `operation_mode`.
-It only reduces unnecessary station churn inside the selected mode after the negative lane contract is satisfied.
-A light lane uses fewer stations only when the board records why review or memory/docs is not applicable.
-It may also record the missing station as blocked, unverified, or closed-with-director-risk.
-Any source, workflow, governance, generated-copy, memory, or public-contract write promotes the lane to at least `standard`.
-It normally requires `operation_mode: full` unless the board records a concrete non-full reason and does not claim full team completion.
+Once Team mode is active, closeout remains risk-tiered and preserves required
+station evidence. Legacy lane aliases are compatibility labels only; they do
+not select topology, action risk, station sets, or a completion bar. Team
+closeout never lowers the active board, role, authorization, validation,
+review, memory/docs, sync, or protected-action boundary.
 
 ## Yellow Signal Rule
 
@@ -450,7 +436,7 @@ the central references:
 
 The core minimum remains:
 
-- `direct_exception`, `closed-with-director-risk`, main-worktree change
+- Team-only `direct_exception`, `closed-with-director-risk`, main-worktree change
   delivery, and text change delivery artifacts are not non-team shortcuts.
 - They are exception records, formal station states, or delivery forms with
   stricter evidence requirements.

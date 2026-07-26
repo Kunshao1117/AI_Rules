@@ -1,7 +1,8 @@
 # Source Document Size Governance
 
 This policy governs size and split decisions for source-bearing documents and
-code in AI_Rules.
+code in every governed repository. AI_Rules is one consumer of this shared
+contract.
 
 Responsibility is the first governance gate.
 Size is a second governance signal, not a line-count-only order to split a
@@ -28,13 +29,13 @@ This policy owns the size/split categories below:
 Other governance files and skills should cite this policy instead of copying
 its category rules.
 
-## Fixed Classification Thresholds
+## Shared Default Classification Thresholds
 
 This table is the only canonical source for source-document size thresholds.
 It applies to the current physical line count of a touched, hand-maintained
-source-bearing file. A category-specific threshold applies at or above the
-listed line count; it is not an estimate, a local default, or a discretionary
-replacement threshold.
+source-bearing file. When no approved local profile resolves for the scope, a
+category-specific shared-default threshold applies at or above the listed line
+count; it is not an estimate or a discretionary replacement threshold.
 
 | Category | Responsibility review | Split plan | No new feature or responsibility |
 | --- | ---: | ---: | ---: |
@@ -56,9 +57,17 @@ The three threshold actions are fixed:
    the existing responsibility only; an exact approved split delta is required
    before new scope can proceed.
 
+The same responsibility-first algorithm always applies. An explicitly approved
+project or module threshold discovered by Resolved Project Context may supply a
+`file_size_profile` for that resolved scope; otherwise these shared defaults
+apply. A local profile must cite its local rule source and may not weaken
+responsibility counting, the third-responsibility split rule, the required
+change declaration, or any threshold-action semantics. It is a resolved local
+value, not a second size-governance policy.
+
 Line count never by itself selects a split boundary. The Source Responsibility
 Contract remains the first gate, and a cohesive boundary may remain intact
-when the applicable fixed action permits it. A target not named in this table
+when the applicable threshold action permits it. A target not named in this table
 or the distinct `SKILL.md` rule below uses the General handwritten source
 category unless this policy declares a more specific category. Every
 hand-maintained non-module PowerShell script, including `.ps1` scripts, is
@@ -162,7 +171,7 @@ that a proposed split improves ownership, dependency, and test boundaries.
 
 ## Category Guidance And Split Signals
 
-The fixed classification thresholds above own the required escalation. The
+The shared default classification thresholds above own the required escalation. The
 guidance below identifies category boundaries and split signals; it does not
 create alternative numeric thresholds or exemptions.
 
@@ -257,7 +266,7 @@ responsibility threshold.
 ### General Handwritten Source
 
 This category covers hand-maintained source-bearing files that do not have a
-more specific row in Fixed Classification Thresholds.
+more specific row in Shared Default Classification Thresholds.
 
 Apply the Source Responsibility Contract before the fixed thresholds.
 Use size as a review trigger only after the responsibility gate clears.

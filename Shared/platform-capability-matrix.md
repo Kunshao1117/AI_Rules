@@ -17,6 +17,8 @@ Delivery artifacts are resolved by the same policy layer.
 | Concern | Source of truth |
 |---|---|
 | Team-Native gates, topology, operation mode, and completion boundary | `Shared/policies/team-native-core.md` |
+| Direct/delegated topology and Team-Native positive conditions | `Shared/policies/execution-routing.md` |
+| Acceptance evidence selection and deep-audit admission | `Shared/policies/verification-strategy.md` |
 | Workflow route, board state, dispatch waves, and source/deployed sync | `Shared/policies/workflow-orchestration.md` |
 | Platform plan surfaces, `plan-only` / `build-plan`, and progress mirrors | `Shared/policies/platform-plan-mapping.md` |
 | Scope-bound authorization and protected phase gates | `Shared/policies/authorization-resolution.md` |
@@ -88,10 +90,13 @@ It also does not own subagent invocation, workflow evidence, plan surfaces, memo
 Boundary details:
 
 - Team capability:
-  - Matrix boundary: Captain-led governance is `conditional` when the current Director request is governed work.
-  - Platform support alone does not activate or authorize Team mode.
-  - Detail source: `Shared/policies/team-native-core.md`.
+  - Matrix boundary: Team capability is `conditional` only when `execution-routing.md` resolves `execution_topology: delegated` through its positive conditions.
+  - Direct is the ordinary focused-work route; platform support, workflow names, and generic governed-work labels do not activate Team mode.
+  - Detail source: `Shared/policies/execution-routing.md`.
   - Detail source: `Shared/policies/references/workflow-team-evidence.md`.
+- Verification:
+  - Matrix boundary: Verify supplies acceptance evidence at the lowest sufficient level; ordinary Direct verification has no formal Team trace.
+  - Detail source: `Shared/policies/verification-strategy.md`.
 - Authorization:
   - Matrix boundary: Capability labels, platform modes, workflow routes, and progress mirrors are not authority.
   - The same boundary applies to write and protected-action authority.
