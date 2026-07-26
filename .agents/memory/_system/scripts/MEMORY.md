@@ -4,7 +4,7 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-26T17:20:29+08:00'
+last_updated: '2026-07-27T00:02:53+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
