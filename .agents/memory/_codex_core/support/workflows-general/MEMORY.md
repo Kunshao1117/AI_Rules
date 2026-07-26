@@ -2,21 +2,21 @@
 name: _codex_core.support.workflows-general
 scopePath: Codex/.agents/workflow-skills/
 description: >-
-  專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory
-  scope or its tracked files.
-last_updated: '2026-07-24T13:40:02+08:00'
+  專案記憶：Codex 一般工作流技能。Use when: task touches this split memory scope or its
+  tracked files.
+last_updated: '2026-07-26T17:20:26+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-24T13:40:00+08:00'
+last_verified: '2026-07-26T16:36:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-07-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -35,52 +35,47 @@ metadata:
 # _codex_core.support.workflows-general — Codex General Workflow Memory
 
 ## Current Truth
-- General workflow descriptions now start with Traditional Chinese semantic labels, then keep English `Use when` / `DO NOT use when` terms in parentheses for trigger precision.
-- `00`, `01`, `03-1`, `05`, and `06` remain thin Codex route entries: they select a workflow row, apply the platform adapter, and never grant write, memory, git, release, deployment, install, credential, or external-state authority.
-- Required References stay on-demand: captain entry loads the workflow row, route summary, evidence matrix row, workflow orchestration order, and minimum Team-Native gate; phase/station details load only when opened.
-- The Workflow Entry Slimming Guard is the entry boundary: entries own route selection and minimum gates only, put durable procedure in Shared sources, verify source/deployed pairs, and read/integrate dirty diffs instead of appending duplicate rule blocks.
-- `00` stays direct only for pure conversation; file, screenshot, memory, rule, tool-output, agent-behavior, source, or governance-impact questions route through read-only/authorization handling and formal evidence when Team mode is active.
-- `03-1` is governed experiment work: experiment/sandbox/spike/prototype requests activate Team mode, use a reduced/minimal experiment board, record sandbox boundary, and never claim production completion or promotion without a new scoped phase.
-- `05` separates source memory and project context; memory writes and `memory_commit` are separate protected phases, and context persistence needs its own authorization.
-- Shared `_completion_gate.md` is a thin reference only; missing change delivery, memory/docs, validation, review, sync, authorization, or trace evidence reports blocked/unverified/risk-closed states, not complete.
-- Shared `_security_footer.md` is localized with Chinese-first headings and role gates; `[SUDO]` is only an override/risk-closure request and cannot bypass role limits, Team-Native gates, validation, review, protected gates, or completion honesty.
+
+- Owns the listed Codex general workflow skill entries and shared workflow gates.
+- `06 Verify` is a thin verification route; it can collect Direct evidence without a Team board, station, handoff, formal trace, or independent reviewer.
+- Delegated artifacts load only when `execution-routing` resolves delegated topology.
+- Workflow routes never grant source-write, memory, Git, release, deployment, install, credential, or external-state authority.
 
 ## Active Constraints
-- Treat workflow names, skill triggers, workflow buttons, approval prompts, and `GO` as route or scope-bound intent signals only.
-- Do not write source or memory from read-only flows; formal-write and protected phases require resolved scope, station, file set, command, phase, expiry, and gate.
-- Keep general workflow entries below thin-entry boundaries; add durable rule detail to Shared policies, Shared skills, or workflow-stage references.
+
+- Keep entries thin and load detailed policy or procedure only when needed.
+- Preserve exact workflow identifiers while keeping Director-facing wording meaning-first zh-TW.
 
 ## Cycle Events
-- 04: Updated general workflow memory for Chinese-first descriptions, thin-entry wrapping, on-demand references, slimming guard wording, and dirty-diff integration.
-- 03: Recorded `03-1` experiment semantics as governed sandbox work with reduced/minimal boards and no production completion claim.
-- 02: Recorded shared completion gate as a thin reference and security footer as Chinese-localized role/protected-action gate text.
-- 01: Removed stale warning text after current file content and targeted workflow diffs were reviewed.
+
+- 05: Reconciled Codex general workflow ownership with canonical Verify and Direct-first evidence collection.
 
 ## Archive Index
+
 - Parent archive remains at .agents/memory/_codex_core/support/archive-001.md.
-- Earlier active cycle details were compacted into Current Truth on 2026-07-07 to keep this card within line limits.
 
 ## Evidence Base
-- source: `Codex/.agents/workflow-skills/00-chat-聊天/SKILL.md`, `01-explore-探索/SKILL.md`, `03-1-experiment-實驗/SKILL.md`, `05-condense-濃縮/SKILL.md`, and `06-test-測試/SKILL.md`.
-- source: `Codex/.agents/workflow-skills/_shared/_completion_gate.md` and `_shared/_security_footer.md`.
-- tool: targeted `git diff` and `rg` output reviewed on 2026-07-07 for description, thin-entry, dirty-diff, completion, and security footer changes.
-- director: 2026-07-07 station C instruction limited memory writes to `_codex_core` cards and excluded already-committed hook behavior.
+
+- source:Codex/.agents/workflow-skills/06-test-測試/SKILL.md — canonical Verify compatibility entry.
+- source:Shared/policies/execution-routing.md and Shared/policies/verification-strategy.md — routing and evidence ownership.
 
 ## Read Contract
-- Read this card when changing owned Codex general workflow files or shared workflow gate snippets.
-- Read `_codex_core.support` only for support-family navigation and platform context.
+
+- Read when changing owned Codex general workflow entries or shared gate snippets.
+- Do not use for temporary test output, Team-only artifact procedure, or protected-action authority.
 
 ## Conflicts and Supersession
-- superseded: stale warning blocks and older English-first workflow description facts were replaced by current dirty-source evidence.
+
+- superseded: interpreting ordinary `06` verification as Team-default or test creation.
 
 ## 中文摘要
-- 一般 workflow description 已改為繁中語義先行，英文 trigger 留在括號中輔助精準匹配。
-- 入口維持 thin route：只選 workflow row、平台 adapter 與最低載入，不授權寫入或 protected action。
-- Slimming Guard 要求讀 dirty diff，將仍有效要求併入既有段落，避免重複 rule block。
-- `03-1` 是受治理 sandbox/experiment，不等於 production complete。
-- `_security_footer.md` 已中文化並保留 `[SUDO]` 不可繞過授權、Team-Native、驗證、審查與 protected gate 的規則。
+
+- Codex `06 Verify` 可直接蒐集一般驗證證據，不需 Team artifact。
+- delegated topology 成立後才載入 station、handoff 與 formal trace。
+- workflow route 不授權任何寫入或 protected action。
 
 ## Tracked Files
+
 - Codex/.agents/workflow-skills/_shared/_completion_gate.md
 - Codex/.agents/workflow-skills/_shared/_security_footer.md
 - Codex/.agents/workflow-skills/00-chat-聊天/SKILL.md
@@ -90,10 +85,10 @@ metadata:
 - Codex/.agents/workflow-skills/06-test-測試/SKILL.md
 
 ## Relations
-- _codex_core.support (parent card: Codex support index)
-- _shared (shared workflow semantics)
+
+- _codex_core.support (parent card: navigation only)
+- _shared.ops-skills.testing (related verification memory)
 
 ## Applicable Skills
-- memory-ops — Use when updating this child card.
-- memory-arch — Use when adjusting Codex support topology.
-- impact-test-strategy — Use when workflow edits affect multiple entrypoints.
+
+- memory-ops — Update this card through separate protected write and commit phases.

@@ -1,22 +1,22 @@
 ---
 name: _shared.team-native-core.policy-evidence
 scopePath: Shared/
-description: >
-  專案記憶：Team-Native 能力與工作流證據矩陣。Use when: task touches this split memory scope or
-  its tracked files.
-last_updated: '2026-07-24T16:46:26+08:00'
+description: >-
+  專案記憶：平台能力與工作流證據矩陣。Use when: task touches this split memory scope or its
+  tracked files.
+last_updated: '2026-07-26T17:20:28+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-24T13:52:00+08:00'
+last_verified: '2026-07-26T16:36:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,17 +36,19 @@ metadata:
 
 ## Current Truth
 
-- Owns the Team-Native platform capability and workflow evidence matrices.
-- This child owns the listed concrete source files after the 2026-07-24 split.
+- Owns the platform capability and workflow evidence matrices.
+- Platform capability describes observable platform surfaces; task/model fit is a separate, task-specific assessment and does not infer brand capability.
+- Requested, accepted, and applied execution configurations are distinct; absent receipts remain unknown.
+- The evidence matrix supports Direct-first work, conditional delegated routing, and canonical Verify without requiring formal trace for ordinary Direct outcomes.
 
 ## Active Constraints
 
-- Team roles, authorization, validation, review, memory closure, and completion remain separate responsibilities.
-- Parent/child navigation is not a staleness dependency.
+- Do not claim an adapter surface proves platform execution or an applied model setting.
+- Protected actions remain protected regardless of topology or model fit.
 
 ## Cycle Events
 
-- 01: Created during the authorized memory split after current-source verification.
+- 02: Reconciled capability and evidence matrices with Direct-first routing, Verify, and receipt honesty.
 
 ## Archive Index
 
@@ -56,21 +58,22 @@ metadata:
 
 - source:Shared/platform-capability-matrix.md
 - source:Shared/workflow-capability-evidence-matrix.md
-- tool:memory_status — Existing owner scope verified before split.
+- source:Shared/policies/task-capability-assessment.md and Shared/policies/verification-strategy.md
 
 ## Read Contract
 
-- Read when working on the owned source files.
-- Do not use this card for sibling ownership or parent history.
+- Read when changing owned capability/evidence matrices or interpreting platform evidence limits.
+- Do not use as proof of a model, tool, or platform receipt that is not observed.
 
 ## Conflicts and Supersession
 
-- None.
+- superseded: treating platform matrix claims as model-intelligence or applied-configuration proof.
 
 ## 中文摘要
 
-- Team-Native 能力與工作流證據矩陣。
-- 具體檔案歸屬已由父卡移入此子卡。
+- 平台 capability 與 model/task fit 是不同概念。
+- requested、accepted、applied receipt 必須分開；沒有 receipt 就是 unknown。
+- Direct、delegated、Verify 都由矩陣提供相稱 evidence。
 
 ## Tracked Files
 
@@ -80,8 +83,8 @@ metadata:
 ## Relations
 
 - _shared.team-native-core (parent card: navigation only)
+- _shared.team-native-core.policy-core (related capability policy memory)
 
 ## Applicable Skills
 
-- memory-ops — Update and commit this child card.
-- memory-arch — Adjust split topology or archive volumes.
+- memory-ops — Update this card through separate protected write and commit phases.

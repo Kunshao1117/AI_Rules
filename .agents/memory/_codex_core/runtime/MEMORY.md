@@ -1,22 +1,22 @@
 ---
 name: _codex_core.runtime
 scopePath: Codex/
-description: >
+description: >-
   專案記憶：Codex 平台啟動、設定與 runtime hook。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-25T00:57:11+08:00'
+last_updated: '2026-07-26T17:20:25+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-25T00:54:59+08:00'
+last_verified: '2026-07-26T16:36:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 2
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,22 +31,23 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core.runtime — Module Memory
 
 ## Current Truth
 
 - Owns Codex bootstrap, configuration, hook, and runtime adapter sources.
-- `Codex/.codex/AGENTS.md` contains a generated pointer to the Codex shared adapter; the full adapter and referenced Shared contracts remain canonical under `Shared/policies` and deployed `.agents/shared/` sources.
+- `Codex/.codex/AGENTS.md` is an always-on surface: it keeps Direct-first routing, delegated-only Team activation, protected-action boundaries, and a generated adapter pointer.
+- The complete Codex adapter and Shared contracts remain canonical under `Shared/policies`; generated markers are pointer-form and are not hand-edited.
 
 ## Active Constraints
 
-- Current callable schema and protected-tool boundaries remain source-governed.
-- The generated policy marker must remain pointer-form and must not be hand-edited or expanded with the full adapter policy.
+- Do not load long procedures, test recipes, or audit playbooks into the always-on surface.
+- Missing platform/model receipts remain unknown; runtime text must not claim applied configuration without evidence.
 
 ## Cycle Events
 
-- 01: Created during the 2026-07-24 authorized memory split after current-source verification.
-- 02: Recorded the generated Codex shared-adapter pointer contract and canonical-policy boundary.
+- 03: Reconciled the Codex always-on contract with Direct-first routing and delegated-only Team activation.
 
 ## Archive Index
 
@@ -54,26 +55,23 @@ metadata:
 
 ## Evidence Base
 
-- source:Codex/VERSION
-- source:Codex/.gitignore
-- source:Codex/.codex/AGENTS.md and Shared/policies/adapters/codex-subagent-invocation.md — generated pointer and canonical adapter boundary.
-- tool:memory_status — Existing owner scope verified before split.
+- source:Codex/.codex/AGENTS.md — always-on routing and generated adapter pointer.
+- source:Shared/policies/execution-routing.md and Shared/policies/adapters/codex-subagent-invocation.md — canonical routing and adapter boundary.
 
 ## Read Contract
 
-- Read when working on the owned source files.
-- Do not use this card for sibling ownership or historical parent detail.
+- Read when working on owned Codex runtime files.
+- Do not use for user-local Codex settings, temporary task evidence, or consumer-project memory.
 
 ## Conflicts and Supersession
 
-- None.
+- superseded: Team-default or long-procedure interpretation of the Codex always-on surface.
 
 ## 中文摘要
 
-- Codex 平台啟動、設定與 runtime hook。
-- 具體檔案歸屬已由父卡移入此子卡。
-- 現行來源優先於本卡摘要。
-- `AGENTS.md` 只保留 generated shared adapter pointer；完整 adapter 仍以 Shared canonical policy 為準。
+- Codex runtime 採 Direct-first，只有 delegated topology 才進入 Team。
+- `AGENTS.md` 保留必要不變量與 generated pointer，不承載長程序。
+- 沒有 receipt 時不得宣稱已套用 model 或 tool 設定。
 
 ## Tracked Files
 
@@ -93,9 +91,8 @@ metadata:
 ## Relations
 
 - _codex_core (parent card: navigation only)
-- _codex_core.support (sibling support index)
+- _shared.adapters-workflow (related adapter memory)
 
 ## Applicable Skills
 
-- memory-ops — Update and commit this child card.
-- memory-arch — Adjust split topology or archive volumes.
+- memory-ops — Update this card through separate protected write and commit phases.

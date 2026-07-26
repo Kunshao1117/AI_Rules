@@ -1,22 +1,22 @@
 ---
 name: _shared.ops-skills.testing
 scopePath: Shared/skills/
-description: >
+description: >-
   專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-24T16:19:47+08:00'
+last_updated: '2026-07-26T17:20:27+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-24T13:44:00+08:00'
+last_verified: '2026-07-26T16:36:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,21 +36,19 @@ metadata:
 
 ## Current Truth
 
-- This card owns Shared testing, browser evidence, accessibility, performance, test automation, test patterns, Trunk, and regression strategy skills.
-- Browser and visual evidence are station-owned; captured output proves only capture-time visible state.
-- Mocks and fixtures prove scoped logic or contracts, not real runtime, persistence, external-service, or operator-workflow claims.
-- Tests are opt-in and must be bound to the current acceptance or an explicitly authorized minimal exception.
-- Performance and Trunk mutations remain separate protected phases.
+- Owns Shared testing, browser evidence, accessibility, performance, Trunk, and regression strategy skills.
+- Verification begins with the lowest-cost sufficient evidence: static checks, deterministic parity, existing targeted tests, smoke or real-tool observation, then focused regression or broader suites when warranted.
+- Permanent tests require a stable observable contract, independent oracle, material recurrence risk, insufficient existing evidence, and acceptable maintenance cost.
+- Existing local non-destructive targeted tests are ordinary evidence; side-effectful, external, or unknown tests are classified before execution.
 
 ## Active Constraints
 
-- Prefer real-information evidence; label mock or fallback evidence and its residual risk.
-- A failed check creates a change requirement only; repair returns to its authorized change owner.
-- Do not retain one-time test output as permanent memory.
+- Classify failure as product, test/checker, environment/tool, requirement ambiguity, or intentional migration before repair.
+- Do not preserve raw test output, mock-only proof, retry masking, or one-off probes as durable memory.
 
 ## Cycle Events
 
-- 01: Compacted prior testing/evidence history after re-verifying source ownership and proof boundaries.
+- 02: Reconciled testing skills with minimum-sufficient verification, independent-oracle admission, and bounded repair rules.
 
 ## Archive Index
 
@@ -58,26 +56,25 @@ metadata:
 
 ## Evidence Base
 
-- source:Shared/skills/browser-testing/SKILL.md
+- source:Shared/skills/impact-test-strategy/SKILL.md
 - source:Shared/skills/test-automation-strategy/SKILL.md
 - source:Shared/skills/test-patterns/SKILL.md
-- source:Shared/skills/performance-audit/SKILL.md
-- source:Shared/skills/trunk-ops/SKILL.md
+- source:Shared/policies/verification-strategy.md
 
 ## Read Contract
 
 - Read for owned testing, browser, accessibility, performance, Trunk, or regression strategy work.
-- Do not use for raw test output or to claim a real execution path that has not been evidenced.
+- Do not use for raw output or to claim a real integration path that has not been observed.
 
 ## Conflicts and Supersession
 
-- None.
+- superseded: treating Verify as test creation or executing every existing test through a protected gate.
 
 ## 中文摘要
 
-- 此卡負責 Shared 測試、瀏覽器、效能、無障礙與回歸策略。
-- 截圖與 mock 僅能證明有限狀態；真實行為需對應真實或等效路徑。
-- 測試與其受保護後續操作都必須有明確範圍。
+- 驗證由最低成本且足夠的 evidence 開始。
+- 新永久測試需要 stable contract 與 independent oracle。
+- 安全既有 targeted test 是一般 evidence；其他測試先分級。
 
 ## Tracked Files
 
@@ -96,9 +93,8 @@ metadata:
 ## Relations
 
 - _shared.ops-skills (parent card: operational-skill family index)
-- _shared (Shared governance parent)
+- _shared.team-native-core.policy-evidence (related evidence matrix)
 
 ## Applicable Skills
 
-- memory-ops — Update and commit this child card.
-- memory-arch — Adjust card topology or archives.
+- memory-ops — Update this card through separate protected write and commit phases.

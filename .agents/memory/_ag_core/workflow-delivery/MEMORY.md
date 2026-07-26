@@ -1,22 +1,22 @@
 ---
 name: _ag_core.workflow-delivery
 scopePath: Antigravity/
-description: >
+description: >-
   專案記憶：Antigravity 平台入口、核心規則與交付工作流。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-24T16:46:23+08:00'
+last_updated: '2026-07-26T17:20:25+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-24T13:46:00+08:00'
+last_verified: '2026-07-26T16:36:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,15 +36,18 @@ metadata:
 
 ## Current Truth
 
-- Owns the Antigravity adapter entrypoints, core rule sources, and governed delivery workflows.
+- Owns Antigravity adapter entrypoints, core rule sources, and delivery workflow files listed below.
+- `07_debug` narrows a failure and routes broad uncertainty to Explore or Blueprint; deep audit remains conditional.
+- Local writes remain distinct from protected actions such as release, deployment, installation, credential change, or destructive mutation.
 
 ## Active Constraints
 
-- Keep workflow entries thin routes; protected phases remain separately authorized.
+- Keep workflow entries thin and keep protected phases separately authorized.
+- Do not treat debugging activity as a Team trigger by itself.
 
 ## Cycle Events
 
-- 01: Created during the 2026-07-24 authorized memory split after current-source verification.
+- 02: Reconciled `07_debug` with Direct-first routing and conditional deep-audit semantics.
 
 ## Archive Index
 
@@ -52,24 +55,23 @@ metadata:
 
 ## Evidence Base
 
-- source:Antigravity/install.ps1
-- source:Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md
-- tool:memory_status — Existing owner scope verified before split.
+- source:Antigravity/.agents/workflows/07_debug(除錯).md
+- source:Shared/policies/execution-routing.md and Shared/policies/verification-strategy.md
 
 ## Read Contract
 
-- Read when working on the owned source files.
-- Do not use this card for sibling ownership or historical parent detail.
+- Read when working on the owned Antigravity source files.
+- Do not use for sibling ownership, temporary task state, or historical parent detail.
 
 ## Conflicts and Supersession
 
-- None.
+- superseded: broad audit as the ordinary continuation of debugging.
 
 ## 中文摘要
 
-- Antigravity 平台入口、核心規則與交付工作流。
-- 具體檔案歸屬已由父卡移入此子卡。
-- 現行來源優先於本卡摘要。
+- 此卡負責 Antigravity 平台與交付 workflow。
+- Debug 先縮小問題；大範圍不確定性轉向 Explore 或 Blueprint。
+- 受保護操作仍須獨立授權。
 
 ## Tracked Files
 
@@ -97,5 +99,4 @@ metadata:
 
 ## Applicable Skills
 
-- memory-ops — Update and commit this child card.
-- memory-arch — Adjust split topology or archive volumes.
+- memory-ops — Update this card through separate protected write and commit phases.
