@@ -4,7 +4,6 @@ $deliverySlice = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\
 $orchestration = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\workflow-orchestration.md') -Raw
 $authorization = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\authorization-resolution.md') -Raw
 $roleBoundaries = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\skills\team-role-boundaries\SKILL.md') -Raw
-$lane = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\references\workflow-lane-routing.md') -Raw
 $procedures = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\workflow-stage-procedures.md') -Raw
 $matrix = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\workflow-capability-evidence-matrix.md') -Raw
 
@@ -20,7 +19,6 @@ Describe 'Team-Native delivery slice contract' {
         $deliverySlice | Should Match 'three\s+role-distinct\s+primary\s+stations'
         $deliverySlice | Should Match '(?s)validation.*may\s+not\s+write,\s+repair,\s+or\s+review'
         $deliverySlice | Should Match '(?s)review.*may\s+not\s+write,\s+repair,\s+or\s+validate'
-        $lane | Should Match 'cannot\s+merge\s+implementation,\s+validation,\s+and\s+review'
         $deliverySlice | Should Match 'five\s+role-distinct\s+fixed\s+roster\s+stations\s+and\s+members'
         $deliverySlice | Should Match '`memory-closure`'
         $deliverySlice | Should Match '`completion`'

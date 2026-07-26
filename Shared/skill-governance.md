@@ -246,18 +246,44 @@ Shared skills must remain platform-neutral.
 Platform-specific workflow files may add a load gate pointing to the shared skill.
 They should not duplicate the full playbook.
 
-Coding workflows should route through `programming-team-governance` when they touch these areas:
+## Verification Ownership And Specialist Routing
 
-- Source, tests, debugging, commit preparation, handoff, or skill creation.
-- Workflow rules, source memory, or governance decisions.
+`Shared/policies/verification-strategy.md` is the generic owner for
+minimum-sufficient evidence selection, ordinary test admission, failure
+classification, focused-versus-full boundaries, verification budget, and
+Director-facing verification rendering. Load it whenever a route must choose
+evidence, admit a durable test, classify a verification failure, or decide
+whether a broader verification route is justified. It does not authorize a
+write, protected action, or Team trace.
 
-The shared skill defines the captain trigger gate, captain team board, role exclusivity, and station board.
-It also defines read-only evidence branch boundary, isolated change delivery boundary, and direct exception contract.
-It also defines evidence owner field and completion condition.
-It also defines the fake-team guard.
-Platform workflow entries only load the shared skill.
-They adapt station evidence or change delivery output to native tools.
-Platform entries must load the formal team child skills when applicable:
+After that policy selects a specialized method, use only its narrow owner:
+
+- `test-automation-strategy` for browser and visual evidence.
+- `test-patterns` for unit and contract-test patterns.
+- `impact-test-strategy` for regression impact and scoped regression design.
+- `code-audit` for an explicit `deep-audit` or scoped deterministic scan.
+- `quality-review-governance` for review lifecycle and procedure.
+- `ai-dev-quality-gate` for high-change, UI, or real-runtime specialized evidence.
+- `team-validation-delivery-artifact` and `team-review-delivery-artifact` only
+  after delegated topology resolves.
+
+These specialists do not become generic test-admission, evidence-budget,
+full-suite, or failure-classification owners. A test label, failed check,
+review obligation, or available tool alone does not select their method or
+authorize execution. `deep-audit` is limited to the positive triggers in
+`verification-strategy.md`; routine failure, lint, or regression does not
+activate it.
+
+`Shared/policies/execution-routing.md` resolves execution topology before any
+Team mechanics load. Generic engineering verbs; source, policy, documentation,
+multi-file, or multi-step work; skill availability; and generic governed labels
+do not activate Team. Only resolved `execution_topology: delegated` activates
+`programming-team-governance` Team mechanics and its child artifacts.
+
+After delegated topology resolves, the shared skill defines the Team board,
+role boundaries, evidence ownership, and delivery conditions. Platform workflow
+entries adapt the applicable station evidence or change-delivery output to
+native tools and load the applicable formal Team child skills:
 
 - `team-role-boundaries`.
 - `team-change-delivery-artifact`.
@@ -266,14 +292,12 @@ Platform entries must load the formal team child skills when applicable:
 - `team-review-delivery-artifact`.
 - `team-completion-gate`.
 
-Platform entries must also preserve governed Team startup semantics:
+All formal board, handoff, and `operation_mode` requirements in this section
+apply only after delegated topology resolves. Their detailed selection triggers
+remain owned by `Shared/policies/execution-routing.md`.
 
-- Governed Director requests activate Team mode without a fixed phrase.
-- No-write work uses a formal-readonly board when it can influence later source work.
-- Write work uses a formal-write board after authorization resolution binds a scope-bound Director intent signal.
-- Every formal station receives a handoff packet with loaded skill refs and startup monitoring fields.
-
-Platform entries must preserve `operation_mode`:
+After delegated topology resolves, platform entries must preserve
+`operation_mode`:
 
 - `daily` is reduced Team-Native mode for routine low-risk evidence.
 - `full` is required for implementation, repair, bottom-layer refactor, cross-file governance, and specialist skill rewrites.

@@ -23,15 +23,18 @@ This skill is the routing and hard-gate surface for Captain Team Board work. Kee
 catalogs, full templates, artifact formats, dispatch details, direct-exception rules, and closeout
 checklists in `references/`.
 
-Use it after the Director requests governed source, workflow, fix, build, debug, test, audit,
-skill, memory/docs, commit, handoff, public-contract, governance-impact, team, subagent,
-delegation, or Team-Native dispatch work. Do not cite these board fields as Team-Native evidence
-for pure conversation, small stable answers, or no-impact work where Team mode is inactive.
+Use it only after `execution-routing.md` resolves delegated topology, including
+an explicit team, subagent, delegation, or Team-Native request. Do not cite
+these board fields as Team-Native evidence for ordinary Direct work, including
+source, policy, documentation, multi-file, or multi-step work that has no
+delegated-topology trigger.
 
 ## Source Chain
 
 - `Shared/policies/team-native-core.md`: Team-Native priority, station-first rule, delivery
   sequence, and completion boundary.
+- `Shared/policies/execution-routing.md`: Direct/delegated topology and the
+  independent change-impact and action-risk axes.
 - `Shared/policies/workflow-orchestration.md`: Workflow route, operation mode, board state,
   dispatch waves, and source/deployed sync.
 - `Shared/policies/authorization-resolution.md`: Authorization fields and natural-language
@@ -150,8 +153,9 @@ policy. A raw board table, raw field catalog, or raw delivery artifact must not 
 - `source-level` approval alone does not authorize memory mutation. It may close the source layer
   with `protected-follow-up-pending`, while `protected-memory-write` and `protected-memory-commit`
   require their own scope-bound protected authorization.
-- `direct` is not a station state, execution route, execution channel, platform route, or execution
-  mode. Record exceptions only in `direct_exception` / `direct_exceptions`.
+- In active Team mode, `direct` is not a station state, execution route, execution channel,
+  platform route, or execution mode. Record Team exceptions only in
+  `direct_exception` / `direct_exceptions`; ordinary Direct work never uses them.
 
 ## Completion Boundary
 

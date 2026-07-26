@@ -45,11 +45,11 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `07`.
 - Procedure reference: `07 Debug` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Gather failure evidence, test hypotheses, identify root cause or missing evidence, then route to fix, build, or audit.
+- Route summary: Gather failure evidence, test hypotheses, identify root cause or missing evidence, then route to fix, build, explore, or conditional `deep-audit` under `verification-strategy.md`.
 - Gather logs, traces, stack frames, commands, inputs, recent changes, and environment signals without mutating source.
 - State hypotheses and disconfirming evidence instead of jumping to a patch.
 - Stop when root cause, missing evidence, or systemic uncertainty is clear.
-- Route confirmed repair to 04, missing implementation to 03, and broader uncertainty to 08.
+- Route confirmed repair to 04, missing implementation to 03, and broader uncertainty to 01 Explore or 02 Blueprint; use `deep-audit` only for the positive triggers in `verification-strategy.md`.
 - Treat workflow names, slash commands, skill triggers, workflow buttons, and natural-language requests as routing signals only.
 - Use `formal-readonly` for evidence and planning that can influence source, workflow, validation, review, memory, release, or governance decisions.
 - Use `formal-write` only after a Director intent signal is resolved to the visible plan, station, file set, command, phase, expiry, and required protected gate.

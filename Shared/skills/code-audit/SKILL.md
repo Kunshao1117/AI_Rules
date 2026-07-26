@@ -21,6 +21,11 @@ This skill is a deterministic/tool scan helper. It may run package-manager,
 compiler, linter, or audit commands only in an explicitly scoped non-routine
 scan phase; Git-only `/10_routine` must not require or invoke it.
 
+`Shared/policies/verification-strategy.md` selects this skill only for an
+explicit `deep-audit` or a scoped deterministic scan. This skill does not
+admit tests, select the generic evidence budget, classify verification failure,
+or turn an ordinary failed check into an audit route.
+
 ## 1. Scan Flow
 
 Multi-step scan, execute in order (see `references/scan-task-prompt.md` for full prompt):

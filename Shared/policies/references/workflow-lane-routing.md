@@ -1,64 +1,29 @@
 # Workflow Lane Routing Reference
 
-This reference defines workflow lifecycle lanes and stage disposition.
-It keeps orchestration lightweight by excluding invalid lower lanes first, then
-selecting the smallest lane that can honestly carry the work.
+This reference defines legacy workflow-lane compatibility aliases and delegated
+stage disposition. `Shared/policies/execution-routing.md` uniquely owns task
+topology, change impact, and action risk.
 
-## Exclusion-First Lane Contract
+## Legacy Alias Contract
 
-Lane selection is not the first governance gate.
-Workflow orchestration checks governed or guarded action first, then captain
-prohibitions, then lane exclusions, and only then chooses the smallest sufficient
-lane.
-
-Captain-prohibited guarded actions include broad or deep read, impact mapping,
-source/governance/workflow/skill/policy/script/test/hook/fixture/support
-automation implementation, validation, review, memory/docs attribution, external
-research, completion audit or evidence, and protected or external mutation.
-
-`tiny` and `light` are negative lanes.
-If either lane's exclusion list is hit, that lane is unavailable.
-An invalid lower lane does not automatically mean `full`; choose the minimal
-sufficient route, usually `standard`.
-Reserve `full` for cross-domain work, unclear scope, high blast radius,
-external grounding, architecture significance, or multi-station depth.
+Legacy lanes have no independent topology, risk, stage, or authorization
+semantics. They remain aliases until dependent workflow entries consume
+three-axis routing. Classification always starts with execution topology,
+change impact, and action risk.
 
 ## Lifecycle Lanes
 
-| lane_id | Use when | Stage expectation |
+| lane_id | Three-axis alias | Compatibility note |
 |---|---|---|
-| `tiny` | Pure conversation, stable small answers, or named-file micro-probes only after governed/guarded classification is negative. It MUST NOT include governed work, broad/deep read, source/governance/workflow/skill/policy/script/test/hook/fixture/support automation impact, implementation, validation, review, memory/docs attribution, completion evidence, public-contract impact, protected action, or external-state impact. | Direct answer or narrow local probe; record `not-applicable` for formal stages when surfaced. |
-| `light` | Bounded read-only clarification, generated/runtime copy inspection, or wording-drift inspection only when no guarded action exists. It MUST NOT close source-level writes or replace station-owned validation, review, memory/docs, or completion evidence. | Reduced station set is allowed only with explicit `stage_disposition`; source-level closeout requires escalation. |
-| `standard` | Bounded governed work, source, workflow, governance, skill, policy, matrix, script/module, test, fixture, support automation, memory/docs impact, public-contract changes, or invalid `tiny`/`light` work without `full` triggers. | Separate delivery, validation, review, read-only memory/docs disposition, memory-closure receipt, sync/parity, and closeout judgment unless a stage is explicitly non-complete or `not-applicable`. |
-| `full` | Multi-area, high-blast-radius, architecture-significant, externally grounded, ambiguous governed work, cross-domain impact, unclear hook/runtime/test-harness impact, or multi-station depth. | The full formal lifecycle vocabulary must be considered and each stage gets a disposition. |
-| `release-grade` | Commit, tag, release, deployment, install, credentials, cloud or external mutation, operator readiness, or security-sensitive release work. | `full` plus protected action readiness and release/security evidence. |
-
-The full formal lifecycle vocabulary is:
-
-```text
-research, analysis, project review, problem confirmation, counter-evidence,
-discussion/decision, design, architecture, build planning, implementation,
-review, validation, validation judgment, memory/docs disposition, memory closure, closeout
-```
-
-Lanes do not force every stage to run.
-They require each applicable stage to be routed, or explicitly marked with a disposition.
-
-For normal formal source changes, process-complete requires the `memory-closure` no-write or
-committed receipt and applicable source/deployed parity. `protected-follow-up-pending` is available
-only when the `completion_bundle` explicitly selects `source-level-explicit`; it is not a standard
-lane default.
-
-A formal `delivery_slice` is at least a `standard` lane and cannot merge
-implementation, validation, and review into one station or member. The selected
-lane must preserve the retained role-distinct stations across repair and rerun;
-it promotes to `full` when a third-symptom diagnosis/module-split route or other
-multi-station depth is required. Lane choice never opens a new slice or changes
-its authorization boundary.
+| `tiny` | `direct` + `local` + `observe` or `local_write` | No new semantics. |
+| `light` | `direct` + `local` + `observe` or `local_write` | No new semantics. |
+| `standard` | `direct` + `local` or `boundary` + `local_write` | No new semantics. |
+| `full` | `boundary` or `systemic`; topology and risk resolved separately | Does not imply Team or protected work. |
+| `release-grade` | `protected`; topology resolved separately | Reflects protected risk only. |
 
 ## Stage Disposition
 
-`stage_disposition` records the current stage map.
+For delegated work, `stage_disposition` records the current stage map.
 Allowed disposition values are:
 
 - `required`
@@ -75,16 +40,12 @@ Missing required stage evidence remains `blocked` or `unverified`, not complete.
 
 ## Escalation Triggers
 
-Escalate to at least `standard` for any source, governance, workflow, skill, policy, script/module, test, fixture, support automation, public-contract, generated/runtime copy, or memory/docs-impacting change.
-Escalate to `full` when the change crosses ownership boundaries, affects architecture, needs formal counter-evidence, depends on current external facts, has unclear blast radius, or requires multi-station depth.
-Escalate to `release-grade` for protected release, git, deploy, install, credential, cloud mutation, or external-state mutation work.
-
-Workflow names are not downgrade signals.
-Guarded action classification is authoritative across every workflow and route.
-If a next action is broad read, impact mapping, source implementation, change
-application, validation, review, memory/docs attribution, completion evidence,
-external research, or protected action, it MUST route to the matching station or
-stop as `blocked`, `unverified`, or `closed-with-director-risk`.
+Use three-axis classification for every escalation. A protected action remains
+protected; high impact or risk selects delegated topology only when an
+execution-routing condition is met. Workflow names, multi-file scope, and
+available subagents are not escalation signals. Once delegated topology is
+active, Team-Native Core governs the matching stations or honest non-complete
+state.
 
 Size/split signals from `Shared/policies/source-document-size-governance.md` may require a split route, a baseline disposition, or escalation.
 Existing oversized baseline may be recorded as `baseline` in `size_split_disposition`; it is not by itself a blocker and does not authorize unrelated refactor work.

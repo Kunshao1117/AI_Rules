@@ -71,9 +71,10 @@ These patterns must be treated as Red, blocked, unverified, or closed-with-direc
   - `not-authorized`.
   - `unavailable`.
   - `closed-with-director-risk`.
-- `direct` is used as `execution_route`, `execution_channel`, platform route, execution mode, or station state.
-- `direct` must instead be recorded as a station-specific `direct_exception` / `direct_exceptions` entry.
+- Within active Team mode, `direct` is used as `execution_route`, `execution_channel`, platform route, execution mode, or station state.
+- Within active Team mode, `direct` must instead be recorded as a station-specific `direct_exception` / `direct_exceptions` entry.
 - The direct-exception entry must include replacement evidence and residual state.
+- `direct_exception` and `direct` are Team-only exception semantics; ordinary Direct is `execution_topology: direct`, owned by `execution-routing.md`, not a direct exception.
 - Source/deployed pairs are changed without recorded sync direction and parity evidence.
 - Formal station work claims completion without `station_mode`, `context_visibility`, and `handoff_ownership`.
 

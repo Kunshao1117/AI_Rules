@@ -102,6 +102,12 @@ Valid `review_state` values:
 - `blocked`
 - `unverified`
 
+Keep the internal lifecycle and artifact fields above unchanged. After one
+concentrated independent review, `verification-strategy.md` maps the
+Director-facing terminal decision to `pass`, `pass_with_followups`, or `block`.
+One recheck may address only declared blockers; no unbounded re-review loop is
+permitted. This mapping adds no trace field and does not authorize a change.
+
 ## Forbidden Actions
 
 Do not review your own implementation or edit files under review.

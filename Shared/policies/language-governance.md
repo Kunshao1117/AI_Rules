@@ -1,6 +1,7 @@
 # Language Governance Policy
 
-This policy is the AI_Rules source of truth for language selection.
+This policy is the universal source of truth for language selection in every
+governed repository, including AI_Rules.
 It also governs audience layer classification, exact-evidence preservation, and cross-platform language references.
 
 External grounding, freshness checks, source ranking, and missing-evidence labels are governed by `Shared/policies/grounding-governance.md`.
@@ -22,6 +23,30 @@ This policy only governs how that evidence is expressed to each audience.
 - If a task requires exact quoted evidence, preserve the exact token text.
 - Exact tokens include command names, paths, code identifiers, API names, schema fields, and tool output.
 - Explain exact tokens in Traditional Chinese when the explanation is Director-facing.
+
+## Language Contract
+
+```text
+director_output: locked; zh-TW meaning-first
+governance_body: locked; English-led
+identifiers: locked; exact and never translated
+machine_fields: locked; exact and never translated
+internal_explanatory_comments: resolved; zh-TW by default, unless an explicit project-context convention overrides
+public_api_docs: resolved; from audience and the existing public contract
+user_visible_strings: resolved; from product i18n
+exact_external_text: locked; exact and never translated
+```
+
+Locked fields are invariants. Resolved fields use the applicable evidence in
+the listed order and do not alter any locked field.
+
+### Internal Explanatory Comments
+
+- These rules apply only to new or substantively modified explanatory comments.
+- Explain a non-obvious reason, constraint, risk, or invariant, not an obvious
+  line action.
+- Keep exact identifiers, commands, fields, and error text in English.
+- Do not mass-translate comments or alter generated or vendor comments.
 
 ## Audience And Artifact Layers
 
@@ -143,11 +168,14 @@ This policy only governs how that evidence is expressed to each audience.
 ## Captain Integration And Director Output Gate
 
 - This section is the sole owner of the complete Director-facing synthesis order and evidence-appendix boundary.
+- The same Director-facing gate applies to Direct and delegated work.
+- A Direct executor synthesizes its own direct evidence; an active Team captain
+  synthesizes returned station artifacts.
 - Team-member delivery artifacts are internal evidence artifacts.
 - Board fields, trace fields, handoff packets, channel states, and specialist output templates are also internal evidence artifacts.
 - They are not Director-facing reports.
-- Before any Director-facing status, plan, handoff, review, risk explanation, or completion report, the captain must synthesize.
-- The synthesis must turn received artifacts into Traditional Chinese meaning-first prose.
+- Before any Director-facing status, plan, handoff, review, risk explanation, or completion report, the reporting owner must synthesize.
+- The synthesis must turn direct evidence or received artifacts into Traditional Chinese meaning-first prose.
 - The required visible main-body order is: current conclusion/status -> next step -> authorization boundary -> evidence. For a progress, status, or completion update, expand `current conclusion/status` in this order: actual work completed since the previous visible report -> practical impact -> remaining work -> current blocker or risk.
 - If no work has actually completed since the previous visible report, say so directly. Started work, dispatch, board updates, station activity, identifiers, and internal routing are not completed progress by themselves.
 - After the plain-language progress sequence, name the smallest next step and any missing authorization or out-of-scope limit. Only then add evidence, paths, fields, hashes, or internal state.
@@ -170,12 +198,15 @@ This policy only governs how that evidence is expressed to each audience.
 - A report also fails when it is led by station artifacts, canonical field lists, or lacks captain synthesis.
 - A failed report must be rewritten or reported as non-complete by the relevant completion gate.
 - Team-member delivery must not be pasted as the Director-facing body.
-- The captain must synthesize a Traditional Chinese meaning-first Director-facing report from the artifact.
-- The synthesis uses the artifact's status, evidence, risk, and next-step conclusions.
+- The active Team captain must synthesize a Traditional Chinese meaning-first
+  Director-facing report from the artifact; a Direct executor synthesizes its
+  own evidence.
+- The synthesis uses the applicable evidence's status, evidence, risk, and
+  next-step conclusions.
 - Exact tokens remain only where they are evidence.
 - The internal artifact itself remains canonical English.
-- The captain may translate, summarize, and synthesize team-member delivery.
-- The captain must not rewrite evidence source, role ownership, validation, review, risk, or state conclusions.
+- The active Team captain may translate, summarize, and synthesize team-member delivery.
+- The reporting owner must not rewrite evidence source, role ownership, validation, review, risk, or state conclusions.
 - If a station reports `partial`, `blocked`, `unverified`, `not-applicable`, or a source conflict, preserve that canonical state.
 - Explain the preserved canonical state in Traditional Chinese.
 - Do not upgrade the preserved state to verified language.

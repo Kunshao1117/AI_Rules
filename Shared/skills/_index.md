@@ -389,3 +389,10 @@ Each item preserves `Keywords (EN)`, `關鍵字 (ZH)`, `Skill`, and `MCP Server`
 - 關鍵字 (ZH): Git 檢查點、長工作檢查點、本機檢查點提交、追加式復原
 - Skill: team-specialist-git-checkpoint
 - MCP Server: —
+
+## 66. verification-strategy (policy)
+- Keywords (EN): verification strategy, evidence ladder, test admission, failure classification, deep audit
+- 關鍵字 (ZH): 驗證策略、證據階梯、測試准入、失敗分類、深度稽核
+- Policy: Shared/policies/verification-strategy.md
+- Route: 06 Verify (`06 Test` compatibility alias)
+- MCP Server: —

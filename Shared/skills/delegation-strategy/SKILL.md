@@ -35,13 +35,12 @@ completion.
 
 ## Captain Trigger Gate
 
-Captain-led mode is active when the current Director request asks for governed
-work such as governance, workflow, fix, build, debug, test, audit, skill,
-memory/docs, commit, handoff, source, generated copies, public contract, or
-equivalent change-shaping work. Requests for team, team member, subagent,
-delegation, Team-Native, or equivalent dispatch also activate it. Pure
-conversation, small stable factual answers, and no-impact work may remain
-outside the Team-Native board flow.
+Captain-led Team mode is active only after
+`Shared/policies/execution-routing.md` resolves `execution_topology: delegated`.
+This skill operates only in that delegated topology; that policy owns its five
+positive conditions. Generic `governed work`, named workflows/skills, source
+impact, platform mode, approval prompts, and available channels are
+non-triggers by themselves.
 
 When Team mode is not active, ordinary lifecycle, scoped authorization, and
 protected gates still apply without Captain Team Board evidence. In active Team

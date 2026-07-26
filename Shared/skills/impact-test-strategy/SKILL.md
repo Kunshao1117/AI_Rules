@@ -19,12 +19,13 @@ metadata:
 
 ## Test Scope Opt-In
 
-This skill is a method for an already authorized test scope; it does not decide that tests are
-necessary. Do not create, modify, discover for execution, or run tests unless the current acceptance
-and exact authorization permit them. Validation, quality preference, regression rationale, workflow
-route, and impact level do not grant that permission. The canonical owner is
-`Shared/policies/authorization-resolution.md`; this skill applies only after that policy's tool-first
-gate establishes that a minimal test exception is necessary.
+This skill is a regression-impact method for a test scope already admitted by
+`Shared/policies/verification-strategy.md`; it does not decide that tests are
+necessary. Do not create, modify, discover for execution, or run tests unless
+the selected scope and separate authorization permit them. Validation, quality
+preference, regression rationale, workflow route, and impact level do not
+grant that permission. This skill does not select a full suite or replace the
+generic evidence budget.
 
 ## 1. Impact Analysis Flow (影響分析流程)
 
@@ -93,8 +94,8 @@ Include in `implementation_plan.md`:
 ## 2. Authorized Test Scope Selection (已授權測試範圍選擇)
 
 ```
-Does current acceptance and exact authorization name a test action?
-├── NO → Do not select, create, modify, or run a test. Return to the acceptance-bound validation route.
+Has `verification-strategy.md` admitted a bounded regression test and has separate scope been resolved?
+├── NO → Do not select, create, modify, or run a test. Return to the acceptance-bound verification route.
 └── YES → Select only the named behavior, files, commands, data/fixtures, phase, and expiry:
     ├── Authorized unit behavior → use the scoped unit-test method
     ├── Authorized browser behavior → use the scoped E2E or visual-test method
@@ -162,7 +163,7 @@ What type of bug was fixed?
 - Primary testing-context source: memory card `## Relations` section
 - `## Relations` is navigation context only. It does not equal frontmatter `dependencies` and must not be used for indirect staleness propagation.
 - No memory cards → fall back to `grep_search` for import/require analysis
-- This skill determines an already accepted test scope; it does not make testing a default or execute it.
+- This skill maps an already admitted regression scope; it does not make testing a default, select generic evidence, or execute it.
 - Test execution, when precisely authorized, uses the named terminal command.
 
 ## References (參考資源)
