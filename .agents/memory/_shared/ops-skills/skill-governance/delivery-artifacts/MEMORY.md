@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：團隊交付 artifact 與角色邊界。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-26T17:20:27+08:00'
+last_updated: '2026-07-27T00:02:51+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2

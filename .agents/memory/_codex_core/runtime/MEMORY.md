@@ -4,7 +4,7 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台啟動、設定與 runtime hook。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-26T17:20:25+08:00'
+last_updated: '2026-07-27T00:02:49+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2

@@ -4,7 +4,7 @@ scopePath: Tests/TeamNative/
 description: >-
   專案記憶：Team-Native PowerShell 契約測試。Use when: task touches Team-Native test
   fixtures, contract coverage, or source/deployment parity assertions.
-last_updated: '2026-07-26T17:20:29+08:00'
+last_updated: '2026-07-27T00:02:49+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
