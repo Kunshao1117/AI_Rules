@@ -99,8 +99,8 @@ Layer ownership, in order:
 - `Shared/policies/references/memory-closure-bundle-contract.md` owns the
   completion-bundle schema, candidate memory-phase mapping, receipt freshness,
   revision, and exception rules.
-- `Shared/policies/references/hook-event-matrix.md` owns repo-managed hook
-  event support and disabled/source-active/runtime lifecycle.
+- `Shared/platform-capability-matrix.md` owns the Codex hook capability and
+  enforceability boundary; AI_Rules default routing remains policy-owned.
 - `Shared/policies/references/exception-registry.md` owns direct and
   platform-nondelegable exception records.
 - `Shared/policies/references/platform-copy-map.md` owns source/runtime,
@@ -205,7 +205,6 @@ When Team mode is active, every workflow entry follows this team sequence before
 
 ```text
 Director instruction
--> dormant Team readiness injection when present, as no-write route context only
 -> workflow route
    including platform plan mapping when a platform plan surface, `plan-only`, or `build-plan` affects routing
    including Director-facing output gate when producing Director-visible text, governed by language-governance
@@ -256,8 +255,6 @@ Director instruction
    status probe pause, captain resume, timeout, replacement, cancellation, late result
 -> startup-complete gate
    verify required packet, snapshot, channel, scope, role, ownership, artifact, and stop fields before dispatch
--> explicitly scoped lifecycle context
-   apply repo-managed hook lifecycle context only when hooks are explicitly scoped
 -> dispatch the immutable requested snapshot to the selected channel
 -> channel adapter records `accepted_execution_request`
    missing or partial acceptance remains unverified; acceptance never proves application
@@ -294,13 +291,6 @@ Route signals include:
 - Platform mode.
 - Approval prompts.
 - Available channels.
-
-Dormant readiness injection and captain boundary pre-action guard output are also non-authorizing route context.
-
-They can prime no-write Team readiness, identify missing trace fields, or mark would-block boundary risk.
-
-They cannot create Team mode without a current governed Director request.
-They cannot replace scope-bound authorization or stop execution by themselves.
 
 Route-or-state principle:
 
@@ -420,7 +410,7 @@ The sequence must run before a station-owned broad-read or evidence station star
 It must also run before the captain may ledger returned evidence.
 
 Do not treat early broad context as evidence before that trace exists.
-This applies to hooks, dormant readiness injection, pre-action guards, and platform-supplied context.
+This applies to platform-supplied context and pre-action guard output.
 
 Treat it as non-authorizing route context.
 

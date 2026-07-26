@@ -61,6 +61,18 @@ deployment, credentials, destructive filesystem work, or external mutation.
 | Project memory | protected local project asset | `.agents/memory/` |
 | Project context | protected local project asset | `.agents/context/` |
 
+## Hooks
+
+Codex supports hooks as a platform capability. AI_Rules no longer installs
+unconditional repository-local Team-routing hooks by default: governance core
+resolves Direct or delegated topology. A future AI_Rules hook must be
+deterministic, tool-bound, matched only to its necessary event, and use the
+documented payload and deny/output semantics.
+
+Upgrade retires only the known hash-owned legacy Team hook set. Modified project
+hooks are preserved and reported for manual action. Repository deployment does
+not control user, global, plugin, or other externally managed hook sources.
+
 ## Rule Navigation
 
 | Need | Source |
@@ -72,6 +84,7 @@ deployment, credentials, destructive filesystem work, or external mutation.
 | Subagent execution-channel mapping | `Shared/policies/subagent-invocation.md` |
 | Completion targets and states | `Shared/policies/references/completion-state-machine.md` |
 | Protected action catalog | `Shared/policies/references/protected-action-registry.md` |
+| Codex hook capability boundary | `Shared/platform-capability-matrix.md` |
 | Memory write and commit procedure | `Shared/skills/memory-ops/SKILL.md` |
 | Source/runtime parity | `Shared/policies/references/source-runtime-surface-map.md` |
 

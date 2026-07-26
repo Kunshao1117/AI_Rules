@@ -35,7 +35,7 @@ customization as competing authorities.
 | `Antigravity/**` | `canonical-source` | Antigravity and Gemini platform source templates, workflow entries, or adapter materials. Runtime `.agents/**` copies must be synced from source. |
 | `Antigravity/.agents/rules/AGENTS.md` | `canonical-source` | Antigravity/Gemini rule sentinel source for the repo runtime pair. Sync to `.agents/rules/AGENTS.md` when semantic parity is expected. |
 | `Scripts/**` | `canonical-source` | Executable automation source. Scripts may encode checks and transforms, but the governance manual stays in `Shared/policies/**`, `Shared/skills/**`, or references. |
-| `hooks/**` | `canonical-source` or `generated` by hook type | Repo-managed hook source must cite hook governance. Installed or generated hook output is not policy authority. Disabled or isolated first-pass hooks stay non-authoritative until a scoped activation task says otherwise. |
+| `hooks/**` | `canonical-source` or `generated` by hook type | Repo-managed hook source must cite the platform capability boundary. The current Codex source ships no default hook artifacts; any later deterministic hook remains non-authoritative policy transport. |
 | `.agents/shared/**` | `managed-runtime` | Deployed shared policies, references, matrices, and platform maps for the current agent runtime. Sync from `Shared/**`; do not fix as final source. |
 | `.agents/skills/**` | `managed-runtime` | Deployed operational and workflow skills. Sync from `Shared/skills/**` or platform source entries unless explicitly scoped as emergency runtime repair. |
 | `.agents/workflows/**` | `managed-runtime` | Deployed Antigravity workflow entries. They route users and agents but do not replace `Shared/**` or platform source templates. |
@@ -45,7 +45,8 @@ customization as competing authorities.
 | `.agents/logs/**` | `generated` | Task evidence, traces, and runtime logs. Logs can support an audit but are not durable governance or source memory by themselves. |
 | `.claude/**` | `managed-runtime` | Deployed Claude command and skill runtime copies. Sync from `Claude/**` and shared source; do not make canonical policy edits here. |
 | `.claude/CLAUDE.md` | `managed-runtime` | Repo runtime Claude Code core paired with `Claude/.claude/CLAUDE.md`. Preserve as a local overlay only when a scoped task documents local-only behavior. |
-| `.codex/AGENTS.md`, `.codex/hooks.json`, `.codex/hooks/**`, and runtime version markers | `managed-runtime` | Instruction bodies and runtime hooks are managed runtime only when their source-to-runtime scope is explicitly confirmed. |
+| `.codex/AGENTS.md` and runtime version markers | `managed-runtime` | Instruction bodies and version markers are managed runtime only when their source-to-runtime scope is explicitly confirmed. |
+| Legacy `.codex/hooks.json` and `.codex/hooks/**` | `managed-runtime` or `local-or-protected` | AI_Rules safely retires only the exact hash-owned legacy Team hook set. Modified, user, global, plugin, or otherwise unowned hooks remain outside repository cleanup scope. |
 | `.codex/config.toml` and registered instruction blocks | `local-or-protected` | Configuration is a key-level overlay and registered blocks remain local; do not overwrite operator-tuned values or infer managed scope from them. |
 | `C:\Users\homeb\.codex\AGENTS.md` | `local-or-protected` | External global Codex configuration is outside repo write scope. Record drift only; do not write during repo-internal sync. |
 | `C:\Users\homeb\.claude\CLAUDE.md` | `local-or-protected` | External global Claude configuration is outside repo write scope. Record drift only; do not write during repo-internal sync. |

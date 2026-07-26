@@ -74,7 +74,7 @@ canonical value owners for shared terms:
 - Completion targets and completion states: `completion-state-machine.md`.
 - Authorization phases: `authorization-phase-registry.md`.
 - Protected actions: `protected-action-registry.md`.
-- Hook event lifecycle: `hook-event-matrix.md`.
+- Platform hook capability boundary: `Shared/platform-capability-matrix.md`.
 - Exception records: `exception-registry.md`.
 - Source/runtime/generated copy roles: `platform-copy-map.md`.
 
@@ -129,15 +129,6 @@ The required trace must include:
 This gate applies before the captain runs tools for those actions.
 Tool availability, fast local commands, workflow route names, and prior conversation context do not permit broad evidence gathering first.
 The captain must not gather broad evidence first and document the board afterward.
-
-Conversation-start and dormant Team readiness injection hooks are no-write readiness checks.
-They are not active Team mode by default.
-They may prime the Team-Native activation test, captain boundary, subagent opening prerequisites, and blocked/unverified vocabulary.
-They do not authorize broad reads, source writes, validation, review, memory/docs, protected actions, or completion evidence.
-They are not station-owned evidence, validation evidence, review evidence, memory/docs attribution, or completion proof.
-The dormant hook becomes operative only when execution routing resolves delegated
-topology, including an explicit team, subagent, delegation, Team-Native, or
-equivalent-dispatch request.
 
 ### Captain Minimum Entry / 隊長最小入口
 

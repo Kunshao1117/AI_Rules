@@ -31,10 +31,11 @@ Do not paste the full playbook into platform core.
 
 - Codex subagents may mutate only when a scoped protected station explicitly owns that phase.
 
-- For Codex, a current governed Director request together with a `SessionStart` or
-  `PreToolUse` Team/delegation reminder may satisfy the native explicitly-requested channel
-  precondition. It never substitutes for the board, station, role, handoff, dispatch-wave, channel
-  state, scoped authorization, or protected-action gates.
+- For Codex, an explicit current Director Team/delegation request resolves the
+  native requested-channel precondition only when `execution-routing.md` selects
+  delegated topology. No repository-local hook is required, and that request never
+  substitutes for the board, station, role, handoff, dispatch-wave, channel state,
+  scoped authorization, or protected-action gates.
 
 - Before every dispatch, inspect the current callable schema for `multi_agent_v1__spawn_agent`. Use only request fields explicitly listed by that current-session schema. A usable schema exposes `fork_context`, `model`, `reasoning_effort`, and at least one of `items` or `message`. If the tool, one of those required fields, or the expected field shape is absent or mismatched, emit `V1_NOT_AVAILABLE` and stop. Optional request fields do not become required merely because another session or public API documents them. Do not substitute collaboration, V2, the Responses API `responses_multi_agent=v1` parameter, or `multi_agent.enabled`.
 
