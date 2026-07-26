@@ -1,22 +1,22 @@
 ---
 name: _shared.governance-foundation
 scopePath: Shared/
-description: >
+description: >-
   專案記憶：Shared 語言、接地、尺寸與治理基礎。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-24T16:46:24+08:00'
+last_updated: '2026-07-26T17:20:26+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-24T13:49:00+08:00'
+last_verified: '2026-07-26T16:36:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,17 +36,19 @@ metadata:
 
 ## Current Truth
 
-- Owns Shared governance foundation, language, grounding, size, and skill-governance sources.
-- This child owns the listed concrete source files after the 2026-07-24 split.
+- Owns Shared language, grounding, document-size, workflow-stage, and skill-governance foundations.
+- Director-facing synthesis is meaning-first zh-TW for both Direct and delegated work; governance bodies remain English-led and machine fields, identifiers, commands, and paths remain exact.
+- Responsibility-first governance evaluates independent change triggers, owners, consumers, contracts, and lifecycle before using size as a signal; a size signal is not a mechanical split mandate.
+- Shared indexes point to canonical owners and do not duplicate detailed operational procedure.
 
 ## Active Constraints
 
-- Parent/child navigation is a relation, not a staleness dependency.
-- Keep current procedure detail in the tracked source files.
+- No repository-identity branch may create separate internal and consumer policy semantics.
+- Preserve exact external text and avoid mass comment translation or unrelated encoding churn.
 
 ## Cycle Events
 
-- 01: Created during the authorized memory split after current-source verification.
+- 02: Reconciled language, responsibility-first size, and canonical skill-routing foundations with Progressive Assurance.
 
 ## Archive Index
 
@@ -54,23 +56,24 @@ metadata:
 
 ## Evidence Base
 
-- source:Shared/workflow-stage-procedures.md
-- source:Shared/skill-governance.md
-- tool:memory_status — Existing owner scope verified before split.
+- source:Shared/policies/language-governance.md
+- source:Shared/policies/source-document-size-governance.md
+- source:Shared/skill-governance.md and Shared/workflow-stage-procedures.md
 
 ## Read Contract
 
-- Read when working on the owned source files.
-- Do not use this card for sibling ownership or parent history.
+- Read when changing owned Shared governance foundations.
+- Do not use for task-local conventions that the project-context resolver has not actually resolved.
 
 ## Conflicts and Supersession
 
-- None.
+- superseded: captain-only Director language handling and line-count-only splitting rules.
 
 ## 中文摘要
 
-- Shared 語言、接地、尺寸與治理基礎。
-- 具體檔案歸屬已由父卡移入此子卡。
+- Direct 與 Team 都使用相同的 Director-facing 繁中規則。
+- 行數只是 signal；責任、consumer 與 lifecycle 才決定是否拆分。
+- Shared index 指向 owner，不複製完整 procedure。
 
 ## Tracked Files
 
@@ -86,8 +89,8 @@ metadata:
 ## Relations
 
 - _shared (parent card: navigation only)
+- _shared.team-native-core.policy-core (related canonical policy memory)
 
 ## Applicable Skills
 
-- memory-ops — Update and commit this child card.
-- memory-arch — Adjust split topology or archive volumes.
+- memory-ops — Update this card through separate protected write and commit phases.

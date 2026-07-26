@@ -156,7 +156,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-25T00:54:59+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -183,7 +183,7 @@
         "Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-25T00:57:08+08:00",
+      "lastUpdated": "2026-07-26T17:20:29+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -198,13 +198,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 4539,
-        "lineCount": 108,
+        "sizeBytes": 3905,
+        "lineCount": 104,
         "chineseCharCount": 0,
-        "bodyCharCount": 2321,
+        "bodyCharCount": 1829,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 3,
+        "cycleEventCount": 4,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -212,9 +212,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_ag_core": {
@@ -687,7 +685,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:40:00+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -707,7 +705,7 @@
         "Antigravity/.agents/workflows/03-1_experiment(實驗).md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T13:40:00+08:00",
+      "lastUpdated": "2026-07-26T17:20:25+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -722,13 +720,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 7717,
-        "lineCount": 105,
-        "chineseCharCount": 15,
-        "bodyCharCount": 5016,
-        "chineseRatio": 0.003,
+        "sizeBytes": 3495,
+        "lineCount": 96,
+        "chineseCharCount": 2,
+        "bodyCharCount": 1788,
+        "chineseRatio": 0.0011,
         "cycleId": "2026-06-15-001",
-        "cycleEventCount": 10,
+        "cycleEventCount": 11,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -736,9 +734,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_ag_core.support.workflows-operations": {
@@ -783,7 +779,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:40:00+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -801,7 +797,7 @@
         "Antigravity/.agents/workflows/12_skill_forge(技能鍛造).md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T13:40:00+08:00",
+      "lastUpdated": "2026-07-26T17:20:25+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -816,11 +812,11 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 7291,
-        "lineCount": 107,
-        "chineseCharCount": 15,
-        "bodyCharCount": 4697,
-        "chineseRatio": 0.0032,
+        "sizeBytes": 3384,
+        "lineCount": 94,
+        "chineseCharCount": 2,
+        "bodyCharCount": 1758,
+        "chineseRatio": 0.0011,
         "cycleId": "2026-06-15-001",
         "cycleEventCount": 10,
         "cycleEventLimit": 30,
@@ -830,9 +826,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_ag_core.workflow-delivery": {
@@ -877,7 +871,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:46:00+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -907,7 +901,7 @@
         "Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T16:46:23+08:00",
+      "lastUpdated": "2026-07-26T17:20:25+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -922,13 +916,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2908,
-        "lineCount": 102,
-        "chineseCharCount": 4,
-        "bodyCharCount": 902,
-        "chineseRatio": 0.0044,
+        "sizeBytes": 3278,
+        "lineCount": 103,
+        "chineseCharCount": 2,
+        "bodyCharCount": 1214,
+        "chineseRatio": 0.0016,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -936,9 +930,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_claude_core": {
@@ -1832,7 +1824,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-25T00:54:59+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -1858,7 +1850,7 @@
         "Codex/.gitignore"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-25T00:57:11+08:00",
+      "lastUpdated": "2026-07-26T17:20:25+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -1873,13 +1865,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2989,
-        "lineCount": 102,
+        "sizeBytes": 3060,
+        "lineCount": 99,
         "chineseCharCount": 0,
-        "bodyCharCount": 1339,
+        "bodyCharCount": 1432,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 2,
+        "cycleEventCount": 3,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -1887,9 +1879,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_codex_core.support": {
@@ -2123,7 +2113,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:40:00+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -2144,7 +2134,7 @@
         "Codex/.agents/workflow-skills/06-test-測試/SKILL.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T13:40:02+08:00",
+      "lastUpdated": "2026-07-26T17:20:26+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -2159,13 +2149,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 6570,
-        "lineCount": 100,
-        "chineseCharCount": 10,
-        "bodyCharCount": 3992,
-        "chineseRatio": 0.0025,
+        "sizeBytes": 3286,
+        "lineCount": 95,
+        "chineseCharCount": 2,
+        "bodyCharCount": 1528,
+        "chineseRatio": 0.0013,
         "cycleId": "2026-07-07-001",
-        "cycleEventCount": 4,
+        "cycleEventCount": 5,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -2173,9 +2163,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_codex_core.support.workflows-release": {
@@ -2650,7 +2638,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:49:00+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -2668,7 +2656,7 @@
         "Shared/policies/adapters/codex-thread-handoff.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T16:46:24+08:00",
+      "lastUpdated": "2026-07-26T17:20:26+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -2683,13 +2671,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2313,
-        "lineCount": 90,
+        "sizeBytes": 3166,
+        "lineCount": 94,
         "chineseCharCount": 0,
-        "bodyCharCount": 947,
+        "bodyCharCount": 1610,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -2697,9 +2685,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_shared.context-tools": {
@@ -2837,7 +2823,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:49:00+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -2859,7 +2845,7 @@
         "Shared/skill-governance.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T16:46:24+08:00",
+      "lastUpdated": "2026-07-26T17:20:26+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -2874,13 +2860,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2435,
-        "lineCount": 94,
+        "sizeBytes": 3260,
+        "lineCount": 97,
         "chineseCharCount": 0,
-        "bodyCharCount": 926,
+        "bodyCharCount": 1582,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -2888,9 +2874,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_shared.memory-governance": {
@@ -3137,7 +3121,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:40:00+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -3159,7 +3143,7 @@
         "Shared/skills/code-quality/SKILL.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T13:40:04+08:00",
+      "lastUpdated": "2026-07-26T17:20:26+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -3174,13 +3158,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 5605,
-        "lineCount": 99,
+        "sizeBytes": 3285,
+        "lineCount": 97,
         "chineseCharCount": 0,
-        "bodyCharCount": 3148,
+        "bodyCharCount": 1524,
         "chineseRatio": 0,
         "cycleId": "2026-06-15-001",
-        "cycleEventCount": 5,
+        "cycleEventCount": 6,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -3188,9 +3172,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_shared.ops-skills.gitnexus": {
@@ -3429,7 +3411,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:41:00+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -3449,7 +3431,7 @@
         "Shared/skills/ui-ux-standards/SKILL.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T13:40:23+08:00",
+      "lastUpdated": "2026-07-26T17:20:27+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -3464,13 +3446,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 7911,
-        "lineCount": 111,
+        "sizeBytes": 3397,
+        "lineCount": 96,
         "chineseCharCount": 0,
-        "bodyCharCount": 5517,
+        "bodyCharCount": 1738,
         "chineseRatio": 0,
         "cycleId": "2026-06-15-001",
-        "cycleEventCount": 12,
+        "cycleEventCount": 13,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -3478,9 +3460,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_shared.ops-skills.release-reasoning": {
@@ -3825,7 +3805,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:50:00+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -3849,7 +3829,7 @@
         ".agents/skills/team-role-boundaries/SKILL.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T16:46:26+08:00",
+      "lastUpdated": "2026-07-26T17:20:27+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -3864,13 +3844,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2702,
-        "lineCount": 96,
+        "sizeBytes": 3316,
+        "lineCount": 98,
         "chineseCharCount": 0,
-        "bodyCharCount": 991,
+        "bodyCharCount": 1438,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -3878,9 +3858,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_shared.ops-skills.skill-governance.registry-sync": {
@@ -3925,7 +3903,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:50:00+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -3941,7 +3919,7 @@
         ".agents/skills/_index.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T16:46:26+08:00",
+      "lastUpdated": "2026-07-26T17:20:27+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -3956,13 +3934,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2120,
+        "sizeBytes": 2537,
         "lineCount": 88,
         "chineseCharCount": 0,
-        "bodyCharCount": 923,
+        "bodyCharCount": 1217,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -3970,9 +3948,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_shared.ops-skills.skill-governance.skill-factory": {
@@ -4206,7 +4182,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:44:00+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -4231,7 +4207,7 @@
         "Shared/skills/trunk-ops/SKILL.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T16:19:47+08:00",
+      "lastUpdated": "2026-07-26T17:20:27+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -4246,13 +4222,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3594,
-        "lineCount": 105,
+        "sizeBytes": 3705,
+        "lineCount": 101,
         "chineseCharCount": 0,
-        "bodyCharCount": 1635,
+        "bodyCharCount": 1783,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -4260,20 +4236,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [
-          {
-            "filePath": ".agents/memory/_shared/ops-skills/testing/archive-001.md",
-            "sizeBytes": 535,
-            "lineCount": 14,
-            "sizeLimitBytes": 32768,
-            "lineLimit": 200,
-            "needsCompaction": false,
-            "recommendedAction": "none",
-            "reasons": []
-          }
-        ],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_shared.supabase-postgres": {
@@ -5219,7 +5182,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:54:12+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5232,18 +5195,23 @@
       "description": "專案記憶：Team-Native 核心政策與 adapter 入口。Use when: task touches this split memory scope or its tracked files.\n",
       "trackedFiles": [
         "Shared/policies/authorization-resolution.md",
+        "Shared/policies/execution-routing.md",
+        "Shared/policies/implementation-stability.md",
+        "Shared/policies/project-context-resolution.md",
+        "Shared/policies/requirement-precision.md",
+        "Shared/policies/task-capability-assessment.md",
         "Shared/policies/team-native-core.md",
         "Shared/policies/team-trace-evidence.md",
+        "Shared/policies/verification-strategy.md",
         "Shared/policies/subagent-invocation.md",
         "Shared/policies/workflow-orchestration.md",
         "Shared/policies/workflow-orchestration-scenarios.md",
         "Shared/policies/platform-plan-mapping.md",
-        ".agents/shared/policies/subagent-invocation.md",
-        "Shared/policies/requirement-precision.md",
-        "Shared/policies/references/requirement-precision-schema.md"
+        "Shared/policies/references/requirement-precision-schema.md",
+        ".agents/shared/policies/subagent-invocation.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T13:54:43+08:00",
+      "lastUpdated": "2026-07-26T17:20:28+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5258,13 +5226,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2630,
-        "lineCount": 97,
+        "sizeBytes": 4904,
+        "lineCount": 111,
         "chineseCharCount": 0,
-        "bodyCharCount": 1011,
+        "bodyCharCount": 2676,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -5272,9 +5240,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_shared.team-native-core.policy-evidence": {
@@ -5319,7 +5285,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:52:00+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5335,7 +5301,7 @@
         "Shared/workflow-capability-evidence-matrix.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T16:46:26+08:00",
+      "lastUpdated": "2026-07-26T17:20:28+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5350,13 +5316,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2236,
-        "lineCount": 88,
+        "sizeBytes": 2932,
+        "lineCount": 91,
         "chineseCharCount": 0,
-        "bodyCharCount": 996,
+        "bodyCharCount": 1525,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -5364,9 +5330,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_shared.team-native-core.policy-execution": {
@@ -5411,7 +5375,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:54:12+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5441,10 +5405,11 @@
         "Shared/policies/references/team-native-core-captain-boundary.md",
         "Shared/policies/references/team-native-core-delivery-slice.md",
         "Shared/policies/references/team-trace-fields.md",
-        "Shared/policies/references/team-trace-invalid-patterns.md"
+        "Shared/policies/references/team-trace-invalid-patterns.md",
+        "Shared/policies/references/workspace-bootstrap-contract.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T13:54:43+08:00",
+      "lastUpdated": "2026-07-26T17:20:28+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5459,13 +5424,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3331,
-        "lineCount": 106,
+        "sizeBytes": 4284,
+        "lineCount": 110,
         "chineseCharCount": 0,
-        "bodyCharCount": 1059,
+        "bodyCharCount": 1748,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -5473,9 +5438,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_shared.team-native-core.specialists-analysis": {
@@ -5711,7 +5674,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:54:12+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5737,7 +5700,7 @@
         "Shared/skills/team-task-board/references/board-field-slice-and-roles.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T13:54:43+08:00",
+      "lastUpdated": "2026-07-26T17:20:28+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5752,13 +5715,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2943,
-        "lineCount": 99,
+        "sizeBytes": 3647,
+        "lineCount": 102,
         "chineseCharCount": 0,
-        "bodyCharCount": 1019,
+        "bodyCharCount": 1556,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 1,
+        "cycleEventCount": 2,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -5766,9 +5729,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_system": {
@@ -5948,7 +5909,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-25T00:54:59+08:00",
+        "lastVerified": "2026-07-26T16:36:58+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5984,7 +5945,7 @@
         "Scripts/modules/SourceSize-Audit.psm1"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-25T00:57:05+08:00",
+      "lastUpdated": "2026-07-26T17:20:29+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5999,13 +5960,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 6875,
-        "lineCount": 103,
+        "sizeBytes": 4067,
+        "lineCount": 114,
         "chineseCharCount": 0,
-        "bodyCharCount": 4033,
+        "bodyCharCount": 1867,
         "chineseRatio": 0,
         "cycleId": "2026-07-17-001",
-        "cycleEventCount": 3,
+        "cycleEventCount": 4,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -6013,40 +5974,7 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": [],
-        "archiveVolumes": [
-          {
-            "filePath": ".agents/memory/_system/scripts/archive-001.md",
-            "sizeBytes": 2225,
-            "lineCount": 22,
-            "sizeLimitBytes": 32768,
-            "lineLimit": 200,
-            "needsCompaction": false,
-            "recommendedAction": "none",
-            "reasons": []
-          },
-          {
-            "filePath": ".agents/memory/_system/scripts/archive-002.md",
-            "sizeBytes": 1897,
-            "lineCount": 17,
-            "sizeLimitBytes": 32768,
-            "lineLimit": 200,
-            "needsCompaction": false,
-            "recommendedAction": "none",
-            "reasons": []
-          },
-          {
-            "filePath": ".agents/memory/_system/scripts/archive-003.md",
-            "sizeBytes": 1281,
-            "lineCount": 19,
-            "sizeLimitBytes": 32768,
-            "lineLimit": 200,
-            "needsCompaction": false,
-            "recommendedAction": "none",
-            "reasons": []
-          }
-        ],
-        "archiveMigrationWarnings": []
+        "reasons": []
       }
     },
     "_vscode_extension": {
@@ -6461,45 +6389,6 @@
     ".agents/memory/claude-edition-rules/archive-001.md": [
       "claude-edition-rules"
     ],
-    "Tests/TeamNative/CaptainDecision.Tests.ps1": [
-      "team-native-tests"
-    ],
-    "Tests/TeamNative/DeliverySlice.Tests.ps1": [
-      "team-native-tests"
-    ],
-    "Tests/TeamNative/MemoryClosureBundle.Tests.ps1": [
-      "team-native-tests"
-    ],
-    "Tests/TeamNative/ModuleBudget.Tests.ps1": [
-      "team-native-tests"
-    ],
-    "Tests/TeamNative/OversizeInventory.Tests.ps1": [
-      "team-native-tests"
-    ],
-    "Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1": [
-      "team-native-tests"
-    ],
-    "Tests/TeamNative/RequirementPrecision.Tests.ps1": [
-      "team-native-tests"
-    ],
-    "Tests/TeamNative/SourceDeploymentParity.Tests.ps1": [
-      "team-native-tests"
-    ],
-    "Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1": [
-      "team-native-tests"
-    ],
-    "Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1": [
-      "team-native-tests"
-    ],
-    "Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1": [
-      "team-native-tests"
-    ],
-    "Tests/TeamNative/PowerShell51ProjectSkillsEncoding.Tests.ps1": [
-      "team-native-tests"
-    ],
-    "Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1": [
-      "team-native-tests"
-    ],
     "Antigravity/.agents/VERSION": [
       "_ag_core.support"
     ],
@@ -6523,84 +6412,6 @@
     ],
     "Antigravity/.agents/rules/AGENTS.md": [
       "_ag_core.support.rules"
-    ],
-    "Antigravity/.agents/workflows/_completion_gate.md": [
-      "_ag_core.support.workflows-foundation"
-    ],
-    "Antigravity/.agents/workflows/_security_footer.md": [
-      "_ag_core.support.workflows-foundation"
-    ],
-    "Antigravity/.agents/workflows/00_chat(討論).md": [
-      "_ag_core.support.workflows-foundation"
-    ],
-    "Antigravity/.agents/workflows/01_explore(搜索).md": [
-      "_ag_core.support.workflows-foundation"
-    ],
-    "Antigravity/.agents/workflows/03_build(建構計畫).md": [
-      "_ag_core.support.workflows-foundation"
-    ],
-    "Antigravity/.agents/workflows/03-1_experiment(實驗).md": [
-      "_ag_core.support.workflows-foundation"
-    ],
-    "Antigravity/.agents/workflows/06_test(測試).md": [
-      "_ag_core.support.workflows-operations"
-    ],
-    "Antigravity/.agents/workflows/10_routine(巡檢).md": [
-      "_ag_core.support.workflows-operations"
-    ],
-    "Antigravity/.agents/workflows/11_handoff(交接).md": [
-      "_ag_core.support.workflows-operations"
-    ],
-    "Antigravity/.agents/workflows/12_skill_forge(技能鍛造).md": [
-      "_ag_core.support.workflows-operations"
-    ],
-    "Antigravity/install.ps1": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/README.md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/VERSION": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/global/GEMINI.md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/rules/00_core_identity.md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/rules/03_memory_skill_contract.md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/rules/04_forbidden_vocab.md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/rules/07_mcp_guardrails.md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/02_blueprint(架構).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/03-2_build_execute(建構執行).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/04-1_fix_plan(修復計畫).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/04-2_fix_execute(修復執行).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/05_condense(濃縮).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/07_debug(除錯).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/09-1_commit_scan(紀錄掃描).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md": [
-      "_ag_core.workflow-delivery"
     ],
     "Claude/install.ps1": [
       "_claude_core.commands-delivery"
@@ -6692,63 +6503,6 @@
     "Claude/.vscode/settings.json": [
       "_claude_core.support.rules-settings"
     ],
-    "Codex/VERSION": [
-      "_codex_core.runtime"
-    ],
-    "Codex/README.md": [
-      "_codex_core.runtime"
-    ],
-    "Codex/install.ps1": [
-      "_codex_core.runtime"
-    ],
-    "Codex/global/AGENTS.md": [
-      "_codex_core.runtime"
-    ],
-    "Codex/global/config.toml": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/AGENTS.md": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/config.toml": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/hooks.json": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/hooks/team-native-gate.ps1": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/hooks/team-native-launcher.ps1": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/VERSION": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.gitignore": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.agents/workflow-skills/_shared/_completion_gate.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Codex/.agents/workflow-skills/_shared/_security_footer.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Codex/.agents/workflow-skills/00-chat-聊天/SKILL.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Codex/.agents/workflow-skills/01-explore-探索/SKILL.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Codex/.agents/workflow-skills/03-1-experiment-實驗/SKILL.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Codex/.agents/workflow-skills/05-condense-濃縮/SKILL.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Codex/.agents/workflow-skills/06-test-測試/SKILL.md": [
-      "_codex_core.support.workflows-general"
-    ],
     "Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md": [
       "_codex_core.support.workflows-release"
     ],
@@ -6776,18 +6530,6 @@
     ".agents/memory/_map/archive-001.md": [
       "_map"
     ],
-    "Shared/policies/adapters/antigravity-subagent-invocation.md": [
-      "_shared.adapters-workflow"
-    ],
-    "Shared/policies/adapters/claude-subagent-invocation.md": [
-      "_shared.adapters-workflow"
-    ],
-    "Shared/policies/adapters/codex-subagent-invocation.md": [
-      "_shared.adapters-workflow"
-    ],
-    "Shared/policies/adapters/codex-thread-handoff.md": [
-      "_shared.adapters-workflow"
-    ],
     "Shared/mcp-profiles/README.md": [
       "_shared.context-tools"
     ],
@@ -6796,30 +6538,6 @@
     ],
     "Shared/skills/team-specialist-git-checkpoint/SKILL.md": [
       "_shared.context-tools"
-    ],
-    "Shared/workflow-stage-procedures.md": [
-      "_shared.governance-foundation"
-    ],
-    "Shared/policies/language-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    ".agents/shared/policies/language-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    "Shared/policies/grounding-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    ".agents/shared/policies/grounding-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    "Shared/policies/source-document-size-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    ".agents/shared/policies/source-document-size-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    "Shared/skill-governance.md": [
-      "_shared.governance-foundation"
     ],
     "Shared/skills/memory-ops/SKILL.md": [
       "_shared.memory-governance"
@@ -6856,30 +6574,6 @@
     ],
     "Shared/project-tools/modules/Memory-Migration.psm1": [
       "_shared.memory-governance"
-    ],
-    "Shared/skills/code-audit/references/scan-report-template.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-audit/references/scan-task-prompt.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-audit/references/tool-command-reference.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-audit/SKILL.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-diagnosis/references/diagnosis-report-template.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-diagnosis/references/diagnosis-task-prompt.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-diagnosis/SKILL.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-quality/SKILL.md": [
-      "_shared.ops-skills.code-analysis"
     ],
     "Shared/skills/gitnexus-cli/SKILL.md": [
       "_shared.ops-skills.gitnexus"
@@ -6923,24 +6617,6 @@
     "Shared/skills/stitch-design/SKILL.md": [
       "_shared.ops-skills.mcp-ops"
     ],
-    "Shared/skills/ai-dev-quality-gate/SKILL.md": [
-      "_shared.ops-skills.quality-ui"
-    ],
-    "Shared/skills/intent-alignment-gate/SKILL.md": [
-      "_shared.ops-skills.quality-ui"
-    ],
-    "Shared/skills/quality-review-governance/SKILL.md": [
-      "_shared.ops-skills.quality-ui"
-    ],
-    "Shared/skills/security-sre/SKILL.md": [
-      "_shared.ops-skills.quality-ui"
-    ],
-    "Shared/skills/ui-design-exploration/SKILL.md": [
-      "_shared.ops-skills.quality-ui"
-    ],
-    "Shared/skills/ui-ux-standards/SKILL.md": [
-      "_shared.ops-skills.quality-ui"
-    ],
     "Shared/skills/coding-reflection-gate/SKILL.md": [
       "_shared.ops-skills.release-reasoning"
     ],
@@ -6968,42 +6644,6 @@
     "Shared/skills/delegation-strategy/references/cli-prompt-skeleton.md": [
       "_shared.ops-skills.skill-governance.delegation-cli"
     ],
-    "Shared/skills/team-review-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    "Shared/skills/team-validation-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    "Shared/skills/team-memory-docs-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    "Shared/skills/team-change-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    "Shared/skills/team-role-boundaries/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    ".agents/skills/team-review-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    ".agents/skills/team-validation-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    ".agents/skills/team-memory-docs-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    ".agents/skills/team-change-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    ".agents/skills/team-role-boundaries/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    "Shared/skills/_index.md": [
-      "_shared.ops-skills.skill-governance.registry-sync"
-    ],
-    ".agents/skills/_index.md": [
-      "_shared.ops-skills.skill-governance.registry-sync"
-    ],
     "Shared/skills/skill-factory/references/skill-quality-checklist.md": [
       "_shared.ops-skills.skill-governance.skill-factory"
     ],
@@ -7030,39 +6670,6 @@
     ],
     "Shared/skills/supabase/SKILL.md": [
       "_shared.ops-skills.supabase-core"
-    ],
-    "Shared/skills/a11y-testing/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/browser-testing/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/impact-test-strategy/references/regression-test-examples.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/impact-test-strategy/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/performance-audit/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/test-automation-strategy/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/test-patterns/references/api-route-test-template.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/test-patterns/references/hook-test-template.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/test-patterns/references/utility-test-template.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/test-patterns/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/trunk-ops/SKILL.md": [
-      "_shared.ops-skills.testing"
     ],
     "Shared/skills/supabase-postgres-best-practices/SKILL.md": [
       "_shared.supabase-postgres"
@@ -7184,13 +6791,406 @@
     "Shared/policies/references/memory-closure-bundle-contract.md": [
       "_shared.team-native-core.memory-closure"
     ],
+    "Shared/skills/team-specialist-registry/SKILL.md": [
+      "_shared.team-native-core.specialists-analysis"
+    ],
+    "Shared/skills/team-specialist-intent-requirements/SKILL.md": [
+      "_shared.team-native-core.specialists-analysis"
+    ],
+    "Shared/skills/team-specialist-scope-impact/SKILL.md": [
+      "_shared.team-native-core.specialists-analysis"
+    ],
+    "Shared/skills/team-specialist-architecture-contract/SKILL.md": [
+      "_shared.team-native-core.specialists-analysis"
+    ],
+    "Shared/skills/team-specialist-external-research/SKILL.md": [
+      "_shared.team-native-core.specialists-analysis"
+    ],
+    "Shared/skills/team-specialist-change-delivery/SKILL.md": [
+      "_shared.team-native-core.specialists-delivery"
+    ],
+    "Shared/skills/team-specialist-memory-docs/SKILL.md": [
+      "_shared.team-native-core.specialists-delivery"
+    ],
+    "Shared/skills/team-specialist-validation/SKILL.md": [
+      "_shared.team-native-core.specialists-delivery"
+    ],
+    "Shared/skills/team-specialist-review/SKILL.md": [
+      "_shared.team-native-core.specialists-delivery"
+    ],
+    "Shared/skills/team-specialist-security-reliability/SKILL.md": [
+      "_shared.team-native-core.specialists-delivery"
+    ],
+    "Shared/skills/team-specialist-release-completion/SKILL.md": [
+      "_shared.team-native-core.specialists-delivery"
+    ],
+    ".gitignore": [
+      "_system"
+    ],
+    "README.md": [
+      "_system"
+    ],
+    "CHANGELOG.md": [
+      "_system"
+    ],
+    "LICENSE": [
+      "_system"
+    ],
+    "Extensions/vscode-ai-rules-manager/.vscodeignore": [
+      "_vscode_extension.auxiliary"
+    ],
+    "Extensions/vscode-ai-rules-manager/LICENSE": [
+      "_vscode_extension.auxiliary"
+    ],
+    "Extensions/vscode-ai-rules-manager/tsconfig.json": [
+      "_vscode_extension.auxiliary"
+    ],
+    "Extensions/vscode-ai-rules-manager/package.json": [
+      "_vscode_extension.release"
+    ],
+    "Extensions/vscode-ai-rules-manager/package-lock.json": [
+      "_vscode_extension.release"
+    ],
+    "Extensions/vscode-ai-rules-manager/README.md": [
+      "_vscode_extension.release"
+    ],
+    "Extensions/vscode-ai-rules-manager/resources/ai-rules.svg": [
+      "_vscode_extension.release"
+    ],
+    "Extensions/vscode-ai-rules-manager/resources/icon.png": [
+      "_vscode_extension.release"
+    ],
+    ".github/workflows/release-vsix.yml": [
+      "_vscode_extension.release"
+    ],
+    "Scripts/AI-RulesManager.ps1": [
+      "_vscode_extension.release"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/extension.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/extensionUpdate.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/panel.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/commands.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/scriptRunner.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/status.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Antigravity/.agents/workflows/_completion_gate.md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/_security_footer.md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/00_chat(討論).md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/01_explore(搜索).md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/03_build(建構計畫).md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/03-1_experiment(實驗).md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/06_test(測試).md": [
+      "_ag_core.support.workflows-operations"
+    ],
+    "Antigravity/.agents/workflows/10_routine(巡檢).md": [
+      "_ag_core.support.workflows-operations"
+    ],
+    "Antigravity/.agents/workflows/11_handoff(交接).md": [
+      "_ag_core.support.workflows-operations"
+    ],
+    "Antigravity/.agents/workflows/12_skill_forge(技能鍛造).md": [
+      "_ag_core.support.workflows-operations"
+    ],
+    "Antigravity/install.ps1": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/README.md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/VERSION": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/global/GEMINI.md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/rules/00_core_identity.md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/rules/03_memory_skill_contract.md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/rules/04_forbidden_vocab.md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/rules/07_mcp_guardrails.md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/02_blueprint(架構).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/03-2_build_execute(建構執行).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/04-1_fix_plan(修復計畫).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/04-2_fix_execute(修復執行).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/05_condense(濃縮).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/07_debug(除錯).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/09-1_commit_scan(紀錄掃描).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Codex/VERSION": [
+      "_codex_core.runtime"
+    ],
+    "Codex/README.md": [
+      "_codex_core.runtime"
+    ],
+    "Codex/install.ps1": [
+      "_codex_core.runtime"
+    ],
+    "Codex/global/AGENTS.md": [
+      "_codex_core.runtime"
+    ],
+    "Codex/global/config.toml": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/AGENTS.md": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/config.toml": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/hooks.json": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/hooks/team-native-gate.ps1": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/hooks/team-native-launcher.ps1": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/VERSION": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.gitignore": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.agents/workflow-skills/_shared/_completion_gate.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/_shared/_security_footer.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/00-chat-聊天/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/01-explore-探索/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/03-1-experiment-實驗/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/05-condense-濃縮/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/06-test-測試/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Shared/policies/adapters/antigravity-subagent-invocation.md": [
+      "_shared.adapters-workflow"
+    ],
+    "Shared/policies/adapters/claude-subagent-invocation.md": [
+      "_shared.adapters-workflow"
+    ],
+    "Shared/policies/adapters/codex-subagent-invocation.md": [
+      "_shared.adapters-workflow"
+    ],
+    "Shared/policies/adapters/codex-thread-handoff.md": [
+      "_shared.adapters-workflow"
+    ],
+    "Shared/workflow-stage-procedures.md": [
+      "_shared.governance-foundation"
+    ],
+    "Shared/policies/language-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    ".agents/shared/policies/language-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    "Shared/policies/grounding-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    ".agents/shared/policies/grounding-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    "Shared/policies/source-document-size-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    ".agents/shared/policies/source-document-size-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    "Shared/skill-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    "Shared/skills/code-audit/references/scan-report-template.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-audit/references/scan-task-prompt.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-audit/references/tool-command-reference.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-audit/SKILL.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-diagnosis/references/diagnosis-report-template.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-diagnosis/references/diagnosis-task-prompt.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-diagnosis/SKILL.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-quality/SKILL.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/ai-dev-quality-gate/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/intent-alignment-gate/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/quality-review-governance/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/security-sre/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/ui-design-exploration/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/ui-ux-standards/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/team-review-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    "Shared/skills/team-validation-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    "Shared/skills/team-memory-docs-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    "Shared/skills/team-change-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    "Shared/skills/team-role-boundaries/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    ".agents/skills/team-review-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    ".agents/skills/team-validation-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    ".agents/skills/team-memory-docs-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    ".agents/skills/team-change-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    ".agents/skills/team-role-boundaries/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    "Shared/skills/_index.md": [
+      "_shared.ops-skills.skill-governance.registry-sync"
+    ],
+    ".agents/skills/_index.md": [
+      "_shared.ops-skills.skill-governance.registry-sync"
+    ],
+    "Shared/skills/a11y-testing/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/browser-testing/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/impact-test-strategy/references/regression-test-examples.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/impact-test-strategy/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/performance-audit/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-automation-strategy/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-patterns/references/api-route-test-template.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-patterns/references/hook-test-template.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-patterns/references/utility-test-template.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-patterns/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/trunk-ops/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
     "Shared/policies/authorization-resolution.md": [
+      "_shared.team-native-core.policy-core"
+    ],
+    "Shared/policies/execution-routing.md": [
+      "_shared.team-native-core.policy-core"
+    ],
+    "Shared/policies/implementation-stability.md": [
+      "_shared.team-native-core.policy-core"
+    ],
+    "Shared/policies/project-context-resolution.md": [
+      "_shared.team-native-core.policy-core"
+    ],
+    "Shared/policies/requirement-precision.md": [
+      "_shared.team-native-core.policy-core"
+    ],
+    "Shared/policies/task-capability-assessment.md": [
       "_shared.team-native-core.policy-core"
     ],
     "Shared/policies/team-native-core.md": [
       "_shared.team-native-core.policy-core"
     ],
     "Shared/policies/team-trace-evidence.md": [
+      "_shared.team-native-core.policy-core"
+    ],
+    "Shared/policies/verification-strategy.md": [
       "_shared.team-native-core.policy-core"
     ],
     "Shared/policies/subagent-invocation.md": [
@@ -7205,13 +7205,10 @@
     "Shared/policies/platform-plan-mapping.md": [
       "_shared.team-native-core.policy-core"
     ],
-    ".agents/shared/policies/subagent-invocation.md": [
-      "_shared.team-native-core.policy-core"
-    ],
-    "Shared/policies/requirement-precision.md": [
-      "_shared.team-native-core.policy-core"
-    ],
     "Shared/policies/references/requirement-precision-schema.md": [
+      "_shared.team-native-core.policy-core"
+    ],
+    ".agents/shared/policies/subagent-invocation.md": [
       "_shared.team-native-core.policy-core"
     ],
     "Shared/platform-capability-matrix.md": [
@@ -7277,38 +7274,8 @@
     "Shared/policies/references/team-trace-invalid-patterns.md": [
       "_shared.team-native-core.policy-execution"
     ],
-    "Shared/skills/team-specialist-registry/SKILL.md": [
-      "_shared.team-native-core.specialists-analysis"
-    ],
-    "Shared/skills/team-specialist-intent-requirements/SKILL.md": [
-      "_shared.team-native-core.specialists-analysis"
-    ],
-    "Shared/skills/team-specialist-scope-impact/SKILL.md": [
-      "_shared.team-native-core.specialists-analysis"
-    ],
-    "Shared/skills/team-specialist-architecture-contract/SKILL.md": [
-      "_shared.team-native-core.specialists-analysis"
-    ],
-    "Shared/skills/team-specialist-external-research/SKILL.md": [
-      "_shared.team-native-core.specialists-analysis"
-    ],
-    "Shared/skills/team-specialist-change-delivery/SKILL.md": [
-      "_shared.team-native-core.specialists-delivery"
-    ],
-    "Shared/skills/team-specialist-memory-docs/SKILL.md": [
-      "_shared.team-native-core.specialists-delivery"
-    ],
-    "Shared/skills/team-specialist-validation/SKILL.md": [
-      "_shared.team-native-core.specialists-delivery"
-    ],
-    "Shared/skills/team-specialist-review/SKILL.md": [
-      "_shared.team-native-core.specialists-delivery"
-    ],
-    "Shared/skills/team-specialist-security-reliability/SKILL.md": [
-      "_shared.team-native-core.specialists-delivery"
-    ],
-    "Shared/skills/team-specialist-release-completion/SKILL.md": [
-      "_shared.team-native-core.specialists-delivery"
+    "Shared/policies/references/workspace-bootstrap-contract.md": [
+      "_shared.team-native-core.policy-execution"
     ],
     "Shared/skills/programming-team-governance/SKILL.md": [
       "_shared.team-native-core.station-entry"
@@ -7345,18 +7312,6 @@
     ],
     "Shared/skills/team-task-board/references/board-field-slice-and-roles.md": [
       "_shared.team-native-core.station-entry"
-    ],
-    ".gitignore": [
-      "_system"
-    ],
-    "README.md": [
-      "_system"
-    ],
-    "CHANGELOG.md": [
-      "_system"
-    ],
-    "LICENSE": [
-      "_system"
     ],
     "Scripts/Deploy.ps1": [
       "_system.scripts"
@@ -7424,53 +7379,44 @@
     "Scripts/modules/SourceSize-Audit.psm1": [
       "_system.scripts"
     ],
-    "Extensions/vscode-ai-rules-manager/.vscodeignore": [
-      "_vscode_extension.auxiliary"
+    "Tests/TeamNative/CaptainDecision.Tests.ps1": [
+      "team-native-tests"
     ],
-    "Extensions/vscode-ai-rules-manager/LICENSE": [
-      "_vscode_extension.auxiliary"
+    "Tests/TeamNative/DeliverySlice.Tests.ps1": [
+      "team-native-tests"
     ],
-    "Extensions/vscode-ai-rules-manager/tsconfig.json": [
-      "_vscode_extension.auxiliary"
+    "Tests/TeamNative/MemoryClosureBundle.Tests.ps1": [
+      "team-native-tests"
     ],
-    "Extensions/vscode-ai-rules-manager/package.json": [
-      "_vscode_extension.release"
+    "Tests/TeamNative/ModuleBudget.Tests.ps1": [
+      "team-native-tests"
     ],
-    "Extensions/vscode-ai-rules-manager/package-lock.json": [
-      "_vscode_extension.release"
+    "Tests/TeamNative/OversizeInventory.Tests.ps1": [
+      "team-native-tests"
     ],
-    "Extensions/vscode-ai-rules-manager/README.md": [
-      "_vscode_extension.release"
+    "Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1": [
+      "team-native-tests"
     ],
-    "Extensions/vscode-ai-rules-manager/resources/ai-rules.svg": [
-      "_vscode_extension.release"
+    "Tests/TeamNative/RequirementPrecision.Tests.ps1": [
+      "team-native-tests"
     ],
-    "Extensions/vscode-ai-rules-manager/resources/icon.png": [
-      "_vscode_extension.release"
+    "Tests/TeamNative/SourceDeploymentParity.Tests.ps1": [
+      "team-native-tests"
     ],
-    ".github/workflows/release-vsix.yml": [
-      "_vscode_extension.release"
+    "Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1": [
+      "team-native-tests"
     ],
-    "Scripts/AI-RulesManager.ps1": [
-      "_vscode_extension.release"
+    "Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1": [
+      "team-native-tests"
     ],
-    "Extensions/vscode-ai-rules-manager/src/extension.ts": [
-      "_vscode_extension.runtime"
+    "Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1": [
+      "team-native-tests"
     ],
-    "Extensions/vscode-ai-rules-manager/src/extensionUpdate.ts": [
-      "_vscode_extension.runtime"
+    "Tests/TeamNative/PowerShell51ProjectSkillsEncoding.Tests.ps1": [
+      "team-native-tests"
     ],
-    "Extensions/vscode-ai-rules-manager/src/panel.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/commands.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/scriptRunner.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/status.ts": [
-      "_vscode_extension.runtime"
+    "Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1": [
+      "team-native-tests"
     ]
   },
   "untrackedFiles": []

@@ -1,22 +1,22 @@
 ---
 name: _shared.adapters-workflow
 scopePath: Shared/policies/adapters/
-description: >
-  專案記憶：跨平台 adapter 與 workflow 交接。Use when: task touches this split memory scope
+description: >-
+  專案記憶：跨平台 adapter 與 workflow 轉譯。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-24T16:46:24+08:00'
+last_updated: '2026-07-26T17:20:26+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-24T13:49:00+08:00'
+last_verified: '2026-07-26T16:36:58+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,17 +36,19 @@ metadata:
 
 ## Current Truth
 
-- Owns platform subagent invocation and Codex thread-handoff adapters.
-- This child owns the listed concrete source files after the 2026-07-24 split.
+- Owns the listed platform subagent invocation and thread-handoff adapters.
+- Adapters translate syntax, paths, invocation surfaces, runtime locations, and observable platform capability only; they do not redefine core governance.
+- Direct execution never activates Team subagents by itself. Delegated behavior begins only after the canonical routing condition resolves delegated topology.
+- Requested, accepted, and applied execution states remain distinct; an absent platform receipt is unknown, not proof of application.
 
 ## Active Constraints
 
-- Parent/child navigation is a relation, not a staleness dependency.
-- Keep current procedure detail in the tracked source files.
+- Preserve the canonical-to-adapter-to-runtime direction; do not make runtime a source of truth.
+- Do not weaken protected-action, verification, review, or completion semantics in an adapter.
 
 ## Cycle Events
 
-- 01: Created during the authorized memory split after current-source verification.
+- 02: Reconciled all platform invocation adapters with Direct-first routing, delegated-only subagent activation, and receipt honesty.
 
 ## Archive Index
 
@@ -55,22 +57,24 @@ metadata:
 ## Evidence Base
 
 - source:Shared/policies/adapters/antigravity-subagent-invocation.md
-- source:Shared/policies/adapters/codex-thread-handoff.md
-- tool:memory_status — Existing owner scope verified before split.
+- source:Shared/policies/adapters/claude-subagent-invocation.md
+- source:Shared/policies/adapters/codex-subagent-invocation.md
+- source:Shared/policies/execution-routing.md and Shared/policies/task-capability-assessment.md
 
 ## Read Contract
 
-- Read when working on the owned source files.
-- Do not use this card for sibling ownership or parent history.
+- Read when working on the owned platform adapter sources.
+- Do not use for platform capability claims not supported by an observable receipt.
 
 ## Conflicts and Supersession
 
-- None.
+- superseded: adapter-local Team-default routing or fabricated applied-configuration claims.
 
 ## 中文摘要
 
-- 跨平台 adapter 與 workflow 交接。
-- 具體檔案歸屬已由父卡移入此子卡。
+- Adapter 只轉譯平台表面，不重新定義治理。
+- Direct 不會自行啟動 subagent；只有 delegated topology 才會。
+- requested、accepted、applied receipt 必須分開；缺 receipt 即為 unknown。
 
 ## Tracked Files
 
@@ -82,8 +86,8 @@ metadata:
 ## Relations
 
 - _shared (parent card: navigation only)
+- _codex_core.runtime (related Codex runtime memory)
 
 ## Applicable Skills
 
-- memory-ops — Update and commit this child card.
-- memory-arch — Adjust split topology or archive volumes.
+- memory-ops — Update this card through separate protected write and commit phases.
