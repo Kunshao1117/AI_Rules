@@ -4,7 +4,7 @@ scopePath: .
 description: >
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-24T16:19:48+08:00'
+last_updated: '2026-07-27T00:02:53+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2

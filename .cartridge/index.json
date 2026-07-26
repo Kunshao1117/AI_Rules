@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastScanned": "2026-07-25T00:57:12+08:00",
+  "lastScanned": "2026-07-27T00:02:54+08:00",
   "cartridges": {
     "claude-edition-rules": {
       "skillPath": ".agents/memory/claude-edition-rules/MEMORY.md",
@@ -166,7 +166,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Team-Native PowerShell 契約測試。Use when: task touches Team-Native test fixtures, contract coverage, or source/deployment parity assertions.\n",
+      "description": "專案記憶：Team-Native PowerShell 契約測試。Use when: task touches Team-Native test fixtures, contract coverage, or source/deployment parity assertions.",
       "trackedFiles": [
         "Tests/TeamNative/CaptainDecision.Tests.ps1",
         "Tests/TeamNative/DeliverySlice.Tests.ps1",
@@ -183,7 +183,7 @@
         "Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:29+08:00",
+      "lastUpdated": "2026-07-27T00:02:49+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -198,7 +198,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3905,
+        "sizeBytes": 3975,
         "lineCount": 104,
         "chineseCharCount": 0,
         "bodyCharCount": 1829,
@@ -212,7 +212,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_ag_core": {
@@ -695,7 +697,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Antigravity 基礎與討論建構工作流。Use when: task touches this split memory scope or its tracked files.",
+      "description": "專案記憶：Antigravity 基礎工作流與共享閘門。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Antigravity/.agents/workflows/_completion_gate.md",
         "Antigravity/.agents/workflows/_security_footer.md",
@@ -705,7 +707,7 @@
         "Antigravity/.agents/workflows/03-1_experiment(實驗).md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:25+08:00",
+      "lastUpdated": "2026-07-27T00:02:49+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -720,7 +722,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3495,
+        "sizeBytes": 3557,
         "lineCount": 96,
         "chineseCharCount": 2,
         "bodyCharCount": 1788,
@@ -734,7 +736,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_ag_core.support.workflows-operations": {
@@ -789,7 +793,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Antigravity 測試、巡檢、交接與技能鍛造工作流。Use when: task touches this split memory scope or its tracked files.",
+      "description": "專案記憶：Antigravity 驗證、巡檢、交接與技能鍛造工作流。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Antigravity/.agents/workflows/06_test(測試).md",
         "Antigravity/.agents/workflows/10_routine(巡檢).md",
@@ -797,7 +801,7 @@
         "Antigravity/.agents/workflows/12_skill_forge(技能鍛造).md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:25+08:00",
+      "lastUpdated": "2026-07-27T00:02:49+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -812,7 +816,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3384,
+        "sizeBytes": 3444,
         "lineCount": 94,
         "chineseCharCount": 2,
         "bodyCharCount": 1758,
@@ -826,7 +830,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_ag_core.workflow-delivery": {
@@ -881,7 +887,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Antigravity 平台入口、核心規則與交付工作流。Use when: task touches this split memory scope or its tracked files.\n",
+      "description": "專案記憶：Antigravity 平台入口、核心規則與交付工作流。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Antigravity/install.ps1",
         "Antigravity/README.md",
@@ -901,7 +907,7 @@
         "Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:25+08:00",
+      "lastUpdated": "2026-07-27T00:02:49+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -916,7 +922,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3278,
+        "sizeBytes": 3347,
         "lineCount": 103,
         "chineseCharCount": 2,
         "bodyCharCount": 1214,
@@ -930,7 +936,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_claude_core": {
@@ -1834,7 +1842,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Codex 平台啟動、設定與 runtime hook。Use when: task touches this split memory scope or its tracked files.\n",
+      "description": "專案記憶：Codex 平台啟動、設定與 runtime hook。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Codex/VERSION",
         "Codex/README.md",
@@ -1850,7 +1858,7 @@
         "Codex/.gitignore"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:25+08:00",
+      "lastUpdated": "2026-07-27T00:02:49+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -1865,7 +1873,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3060,
+        "sizeBytes": 3125,
         "lineCount": 99,
         "chineseCharCount": 0,
         "bodyCharCount": 1432,
@@ -1879,7 +1887,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_codex_core.support": {
@@ -2123,7 +2133,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Codex 一般討論、探索、實驗、濃縮與測試工作流技能。Use when: task touches this split memory scope or its tracked files.",
+      "description": "專案記憶：Codex 一般工作流技能。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Codex/.agents/workflow-skills/_shared/_completion_gate.md",
         "Codex/.agents/workflow-skills/_shared/_security_footer.md",
@@ -2134,7 +2144,7 @@
         "Codex/.agents/workflow-skills/06-test-測試/SKILL.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:26+08:00",
+      "lastUpdated": "2026-07-27T00:02:49+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -2149,7 +2159,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3286,
+        "sizeBytes": 3347,
         "lineCount": 95,
         "chineseCharCount": 2,
         "bodyCharCount": 1528,
@@ -2163,7 +2173,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_codex_core.support.workflows-release": {
@@ -2648,7 +2660,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：跨平台 adapter 與 workflow 交接。Use when: task touches this split memory scope or its tracked files.\n",
+      "description": "專案記憶：跨平台 adapter 與 workflow 轉譯。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Shared/policies/adapters/antigravity-subagent-invocation.md",
         "Shared/policies/adapters/claude-subagent-invocation.md",
@@ -2656,7 +2668,7 @@
         "Shared/policies/adapters/codex-thread-handoff.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:26+08:00",
+      "lastUpdated": "2026-07-27T00:02:49+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -2671,7 +2683,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3166,
+        "sizeBytes": 3226,
         "lineCount": 94,
         "chineseCharCount": 0,
         "bodyCharCount": 1610,
@@ -2685,7 +2697,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_shared.context-tools": {
@@ -2833,7 +2847,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Shared 語言、接地、尺寸與治理基礎。Use when: task touches this split memory scope or its tracked files.\n",
+      "description": "專案記憶：Shared 語言、接地、尺寸與治理基礎。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Shared/workflow-stage-procedures.md",
         "Shared/policies/language-governance.md",
@@ -2845,7 +2859,7 @@
         "Shared/skill-governance.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:26+08:00",
+      "lastUpdated": "2026-07-27T00:02:51+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -2860,7 +2874,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3260,
+        "sizeBytes": 3323,
         "lineCount": 97,
         "chineseCharCount": 0,
         "bodyCharCount": 1582,
@@ -2874,7 +2888,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_shared.memory-governance": {
@@ -3143,7 +3159,7 @@
         "Shared/skills/code-quality/SKILL.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:26+08:00",
+      "lastUpdated": "2026-07-27T00:02:51+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -3158,7 +3174,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3285,
+        "sizeBytes": 3348,
         "lineCount": 97,
         "chineseCharCount": 0,
         "bodyCharCount": 1524,
@@ -3172,7 +3188,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_shared.ops-skills.gitnexus": {
@@ -3431,7 +3449,7 @@
         "Shared/skills/ui-ux-standards/SKILL.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:27+08:00",
+      "lastUpdated": "2026-07-27T00:02:51+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -3446,7 +3464,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3397,
+        "sizeBytes": 3459,
         "lineCount": 96,
         "chineseCharCount": 0,
         "bodyCharCount": 1738,
@@ -3460,7 +3478,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_shared.ops-skills.release-reasoning": {
@@ -3815,7 +3835,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：團隊交付 artifact 與角色邊界。Use when: task touches this split memory scope or its tracked files.\n",
+      "description": "專案記憶：團隊交付 artifact 與角色邊界。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Shared/skills/team-review-delivery-artifact/SKILL.md",
         "Shared/skills/team-validation-delivery-artifact/SKILL.md",
@@ -3829,7 +3849,7 @@
         ".agents/skills/team-role-boundaries/SKILL.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:27+08:00",
+      "lastUpdated": "2026-07-27T00:02:51+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -3844,7 +3864,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3316,
+        "sizeBytes": 3380,
         "lineCount": 98,
         "chineseCharCount": 0,
         "bodyCharCount": 1438,
@@ -3858,7 +3878,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_shared.ops-skills.skill-governance.registry-sync": {
@@ -3913,13 +3935,13 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Shared 技能登錄與部署同步。Use when: task touches this split memory scope or its tracked files.\n",
+      "description": "專案記憶：Shared 技能登錄與部署同步。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Shared/skills/_index.md",
         ".agents/skills/_index.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:27+08:00",
+      "lastUpdated": "2026-07-27T00:02:51+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -3934,7 +3956,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2537,
+        "sizeBytes": 2591,
         "lineCount": 88,
         "chineseCharCount": 0,
         "bodyCharCount": 1217,
@@ -3948,7 +3970,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_shared.ops-skills.skill-governance.skill-factory": {
@@ -4192,7 +4216,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory scope or its tracked files.\n",
+      "description": "專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Shared/skills/a11y-testing/SKILL.md",
         "Shared/skills/browser-testing/SKILL.md",
@@ -4207,7 +4231,7 @@
         "Shared/skills/trunk-ops/SKILL.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:27+08:00",
+      "lastUpdated": "2026-07-27T00:02:51+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -4222,7 +4246,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3705,
+        "sizeBytes": 3772,
         "lineCount": 101,
         "chineseCharCount": 0,
         "bodyCharCount": 1783,
@@ -4236,7 +4260,20 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_shared/ops-skills/testing/archive-001.md",
+            "sizeBytes": 535,
+            "lineCount": 14,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
       }
     },
     "_shared.supabase-postgres": {
@@ -5192,7 +5229,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Team-Native 核心政策與 adapter 入口。Use when: task touches this split memory scope or its tracked files.\n",
+      "description": "專案記憶：Progressive Assurance 核心政策與 Team-Native 邊界。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Shared/policies/authorization-resolution.md",
         "Shared/policies/execution-routing.md",
@@ -5211,7 +5248,7 @@
         ".agents/shared/policies/subagent-invocation.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:28+08:00",
+      "lastUpdated": "2026-07-27T00:02:51+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5226,7 +5263,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 4904,
+        "sizeBytes": 4981,
         "lineCount": 111,
         "chineseCharCount": 0,
         "bodyCharCount": 2676,
@@ -5240,7 +5277,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_shared.team-native-core.policy-evidence": {
@@ -5295,13 +5334,13 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Team-Native 能力與工作流證據矩陣。Use when: task touches this split memory scope or its tracked files.\n",
+      "description": "專案記憶：平台能力與工作流證據矩陣。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Shared/platform-capability-matrix.md",
         "Shared/workflow-capability-evidence-matrix.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:28+08:00",
+      "lastUpdated": "2026-07-27T00:02:51+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5316,7 +5355,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2932,
+        "sizeBytes": 2989,
         "lineCount": 91,
         "chineseCharCount": 0,
         "bodyCharCount": 1525,
@@ -5330,7 +5369,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_shared.team-native-core.policy-execution": {
@@ -5385,7 +5426,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Team-Native 執行、phase 與狀態參考。Use when: task touches this split memory scope or its tracked files.\n",
+      "description": "專案記憶：執行、相容性與 workspace bootstrap 參考契約。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Shared/policies/references/workflow-execution-spec-contract.md",
         "Shared/policies/references/workflow-lane-routing.md",
@@ -5409,7 +5450,7 @@
         "Shared/policies/references/workspace-bootstrap-contract.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:28+08:00",
+      "lastUpdated": "2026-07-27T00:02:53+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5424,7 +5465,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 4284,
+        "sizeBytes": 4360,
         "lineCount": 110,
         "chineseCharCount": 0,
         "bodyCharCount": 1748,
@@ -5438,7 +5479,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_shared.team-native-core.specialists-analysis": {
@@ -5684,7 +5727,7 @@
       "contentQualityStatus": "complete",
       "migrationRequired": false,
       "legacyCompatibility": false,
-      "description": "專案記憶：Team-Native board、派工與 station entry。Use when: task touches this split memory scope or its tracked files.\n",
+      "description": "專案記憶：Team board、派工與 station entry。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Shared/skills/programming-team-governance/SKILL.md",
         "Shared/skills/team-task-board/SKILL.md",
@@ -5700,7 +5743,7 @@
         "Shared/skills/team-task-board/references/board-field-slice-and-roles.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:28+08:00",
+      "lastUpdated": "2026-07-27T00:02:53+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5715,7 +5758,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3647,
+        "sizeBytes": 3715,
         "lineCount": 102,
         "chineseCharCount": 0,
         "bodyCharCount": 1556,
@@ -5729,7 +5772,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_system": {
@@ -5792,7 +5837,7 @@
         "LICENSE"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T16:19:48+08:00",
+      "lastUpdated": "2026-07-27T00:02:53+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5807,7 +5852,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2963,
+        "sizeBytes": 3032,
         "lineCount": 103,
         "chineseCharCount": 0,
         "bodyCharCount": 1602,
@@ -5945,7 +5990,7 @@
         "Scripts/modules/SourceSize-Audit.psm1"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-26T17:20:29+08:00",
+      "lastUpdated": "2026-07-27T00:02:53+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5960,7 +6005,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 4067,
+        "sizeBytes": 4147,
         "lineCount": 114,
         "chineseCharCount": 0,
         "bodyCharCount": 1867,
@@ -5974,7 +6019,40 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_system/scripts/archive-001.md",
+            "sizeBytes": 2225,
+            "lineCount": 22,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_system/scripts/archive-002.md",
+            "sizeBytes": 1897,
+            "lineCount": 17,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_system/scripts/archive-003.md",
+            "sizeBytes": 1281,
+            "lineCount": 19,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
       }
     },
     "_vscode_extension": {
@@ -6389,6 +6467,45 @@
     ".agents/memory/claude-edition-rules/archive-001.md": [
       "claude-edition-rules"
     ],
+    "Tests/TeamNative/CaptainDecision.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/DeliverySlice.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/MemoryClosureBundle.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/ModuleBudget.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/OversizeInventory.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/RequirementPrecision.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/SourceDeploymentParity.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/PowerShell51ProjectSkillsEncoding.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1": [
+      "team-native-tests"
+    ],
     "Antigravity/.agents/VERSION": [
       "_ag_core.support"
     ],
@@ -6412,6 +6529,84 @@
     ],
     "Antigravity/.agents/rules/AGENTS.md": [
       "_ag_core.support.rules"
+    ],
+    "Antigravity/.agents/workflows/_completion_gate.md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/_security_footer.md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/00_chat(討論).md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/01_explore(搜索).md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/03_build(建構計畫).md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/03-1_experiment(實驗).md": [
+      "_ag_core.support.workflows-foundation"
+    ],
+    "Antigravity/.agents/workflows/06_test(測試).md": [
+      "_ag_core.support.workflows-operations"
+    ],
+    "Antigravity/.agents/workflows/10_routine(巡檢).md": [
+      "_ag_core.support.workflows-operations"
+    ],
+    "Antigravity/.agents/workflows/11_handoff(交接).md": [
+      "_ag_core.support.workflows-operations"
+    ],
+    "Antigravity/.agents/workflows/12_skill_forge(技能鍛造).md": [
+      "_ag_core.support.workflows-operations"
+    ],
+    "Antigravity/install.ps1": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/README.md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/VERSION": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/global/GEMINI.md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/rules/00_core_identity.md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/rules/03_memory_skill_contract.md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/rules/04_forbidden_vocab.md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/rules/07_mcp_guardrails.md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/02_blueprint(架構).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/03-2_build_execute(建構執行).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/04-1_fix_plan(修復計畫).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/04-2_fix_execute(修復執行).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/05_condense(濃縮).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/07_debug(除錯).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/09-1_commit_scan(紀錄掃描).md": [
+      "_ag_core.workflow-delivery"
+    ],
+    "Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md": [
+      "_ag_core.workflow-delivery"
     ],
     "Claude/install.ps1": [
       "_claude_core.commands-delivery"
@@ -6503,6 +6698,63 @@
     "Claude/.vscode/settings.json": [
       "_claude_core.support.rules-settings"
     ],
+    "Codex/VERSION": [
+      "_codex_core.runtime"
+    ],
+    "Codex/README.md": [
+      "_codex_core.runtime"
+    ],
+    "Codex/install.ps1": [
+      "_codex_core.runtime"
+    ],
+    "Codex/global/AGENTS.md": [
+      "_codex_core.runtime"
+    ],
+    "Codex/global/config.toml": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/AGENTS.md": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/config.toml": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/hooks.json": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/hooks/team-native-gate.ps1": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/hooks/team-native-launcher.ps1": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/VERSION": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.gitignore": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.agents/workflow-skills/_shared/_completion_gate.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/_shared/_security_footer.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/00-chat-聊天/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/01-explore-探索/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/03-1-experiment-實驗/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/05-condense-濃縮/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
+    "Codex/.agents/workflow-skills/06-test-測試/SKILL.md": [
+      "_codex_core.support.workflows-general"
+    ],
     "Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md": [
       "_codex_core.support.workflows-release"
     ],
@@ -6530,6 +6782,18 @@
     ".agents/memory/_map/archive-001.md": [
       "_map"
     ],
+    "Shared/policies/adapters/antigravity-subagent-invocation.md": [
+      "_shared.adapters-workflow"
+    ],
+    "Shared/policies/adapters/claude-subagent-invocation.md": [
+      "_shared.adapters-workflow"
+    ],
+    "Shared/policies/adapters/codex-subagent-invocation.md": [
+      "_shared.adapters-workflow"
+    ],
+    "Shared/policies/adapters/codex-thread-handoff.md": [
+      "_shared.adapters-workflow"
+    ],
     "Shared/mcp-profiles/README.md": [
       "_shared.context-tools"
     ],
@@ -6538,6 +6802,30 @@
     ],
     "Shared/skills/team-specialist-git-checkpoint/SKILL.md": [
       "_shared.context-tools"
+    ],
+    "Shared/workflow-stage-procedures.md": [
+      "_shared.governance-foundation"
+    ],
+    "Shared/policies/language-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    ".agents/shared/policies/language-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    "Shared/policies/grounding-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    ".agents/shared/policies/grounding-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    "Shared/policies/source-document-size-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    ".agents/shared/policies/source-document-size-governance.md": [
+      "_shared.governance-foundation"
+    ],
+    "Shared/skill-governance.md": [
+      "_shared.governance-foundation"
     ],
     "Shared/skills/memory-ops/SKILL.md": [
       "_shared.memory-governance"
@@ -6574,6 +6862,30 @@
     ],
     "Shared/project-tools/modules/Memory-Migration.psm1": [
       "_shared.memory-governance"
+    ],
+    "Shared/skills/code-audit/references/scan-report-template.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-audit/references/scan-task-prompt.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-audit/references/tool-command-reference.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-audit/SKILL.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-diagnosis/references/diagnosis-report-template.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-diagnosis/references/diagnosis-task-prompt.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-diagnosis/SKILL.md": [
+      "_shared.ops-skills.code-analysis"
+    ],
+    "Shared/skills/code-quality/SKILL.md": [
+      "_shared.ops-skills.code-analysis"
     ],
     "Shared/skills/gitnexus-cli/SKILL.md": [
       "_shared.ops-skills.gitnexus"
@@ -6617,6 +6929,24 @@
     "Shared/skills/stitch-design/SKILL.md": [
       "_shared.ops-skills.mcp-ops"
     ],
+    "Shared/skills/ai-dev-quality-gate/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/intent-alignment-gate/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/quality-review-governance/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/security-sre/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/ui-design-exploration/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    "Shared/skills/ui-ux-standards/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
     "Shared/skills/coding-reflection-gate/SKILL.md": [
       "_shared.ops-skills.release-reasoning"
     ],
@@ -6644,6 +6974,42 @@
     "Shared/skills/delegation-strategy/references/cli-prompt-skeleton.md": [
       "_shared.ops-skills.skill-governance.delegation-cli"
     ],
+    "Shared/skills/team-review-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    "Shared/skills/team-validation-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    "Shared/skills/team-memory-docs-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    "Shared/skills/team-change-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    "Shared/skills/team-role-boundaries/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    ".agents/skills/team-review-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    ".agents/skills/team-validation-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    ".agents/skills/team-memory-docs-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    ".agents/skills/team-change-delivery-artifact/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    ".agents/skills/team-role-boundaries/SKILL.md": [
+      "_shared.ops-skills.skill-governance.delivery-artifacts"
+    ],
+    "Shared/skills/_index.md": [
+      "_shared.ops-skills.skill-governance.registry-sync"
+    ],
+    ".agents/skills/_index.md": [
+      "_shared.ops-skills.skill-governance.registry-sync"
+    ],
     "Shared/skills/skill-factory/references/skill-quality-checklist.md": [
       "_shared.ops-skills.skill-governance.skill-factory"
     ],
@@ -6670,6 +7036,39 @@
     ],
     "Shared/skills/supabase/SKILL.md": [
       "_shared.ops-skills.supabase-core"
+    ],
+    "Shared/skills/a11y-testing/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/browser-testing/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/impact-test-strategy/references/regression-test-examples.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/impact-test-strategy/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/performance-audit/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-automation-strategy/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-patterns/references/api-route-test-template.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-patterns/references/hook-test-template.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-patterns/references/utility-test-template.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/test-patterns/SKILL.md": [
+      "_shared.ops-skills.testing"
+    ],
+    "Shared/skills/trunk-ops/SKILL.md": [
+      "_shared.ops-skills.testing"
     ],
     "Shared/skills/supabase-postgres-best-practices/SKILL.md": [
       "_shared.supabase-postgres"
@@ -6791,381 +7190,6 @@
     "Shared/policies/references/memory-closure-bundle-contract.md": [
       "_shared.team-native-core.memory-closure"
     ],
-    "Shared/skills/team-specialist-registry/SKILL.md": [
-      "_shared.team-native-core.specialists-analysis"
-    ],
-    "Shared/skills/team-specialist-intent-requirements/SKILL.md": [
-      "_shared.team-native-core.specialists-analysis"
-    ],
-    "Shared/skills/team-specialist-scope-impact/SKILL.md": [
-      "_shared.team-native-core.specialists-analysis"
-    ],
-    "Shared/skills/team-specialist-architecture-contract/SKILL.md": [
-      "_shared.team-native-core.specialists-analysis"
-    ],
-    "Shared/skills/team-specialist-external-research/SKILL.md": [
-      "_shared.team-native-core.specialists-analysis"
-    ],
-    "Shared/skills/team-specialist-change-delivery/SKILL.md": [
-      "_shared.team-native-core.specialists-delivery"
-    ],
-    "Shared/skills/team-specialist-memory-docs/SKILL.md": [
-      "_shared.team-native-core.specialists-delivery"
-    ],
-    "Shared/skills/team-specialist-validation/SKILL.md": [
-      "_shared.team-native-core.specialists-delivery"
-    ],
-    "Shared/skills/team-specialist-review/SKILL.md": [
-      "_shared.team-native-core.specialists-delivery"
-    ],
-    "Shared/skills/team-specialist-security-reliability/SKILL.md": [
-      "_shared.team-native-core.specialists-delivery"
-    ],
-    "Shared/skills/team-specialist-release-completion/SKILL.md": [
-      "_shared.team-native-core.specialists-delivery"
-    ],
-    ".gitignore": [
-      "_system"
-    ],
-    "README.md": [
-      "_system"
-    ],
-    "CHANGELOG.md": [
-      "_system"
-    ],
-    "LICENSE": [
-      "_system"
-    ],
-    "Extensions/vscode-ai-rules-manager/.vscodeignore": [
-      "_vscode_extension.auxiliary"
-    ],
-    "Extensions/vscode-ai-rules-manager/LICENSE": [
-      "_vscode_extension.auxiliary"
-    ],
-    "Extensions/vscode-ai-rules-manager/tsconfig.json": [
-      "_vscode_extension.auxiliary"
-    ],
-    "Extensions/vscode-ai-rules-manager/package.json": [
-      "_vscode_extension.release"
-    ],
-    "Extensions/vscode-ai-rules-manager/package-lock.json": [
-      "_vscode_extension.release"
-    ],
-    "Extensions/vscode-ai-rules-manager/README.md": [
-      "_vscode_extension.release"
-    ],
-    "Extensions/vscode-ai-rules-manager/resources/ai-rules.svg": [
-      "_vscode_extension.release"
-    ],
-    "Extensions/vscode-ai-rules-manager/resources/icon.png": [
-      "_vscode_extension.release"
-    ],
-    ".github/workflows/release-vsix.yml": [
-      "_vscode_extension.release"
-    ],
-    "Scripts/AI-RulesManager.ps1": [
-      "_vscode_extension.release"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/extension.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/extensionUpdate.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/panel.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/commands.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/scriptRunner.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/status.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Antigravity/.agents/workflows/_completion_gate.md": [
-      "_ag_core.support.workflows-foundation"
-    ],
-    "Antigravity/.agents/workflows/_security_footer.md": [
-      "_ag_core.support.workflows-foundation"
-    ],
-    "Antigravity/.agents/workflows/00_chat(討論).md": [
-      "_ag_core.support.workflows-foundation"
-    ],
-    "Antigravity/.agents/workflows/01_explore(搜索).md": [
-      "_ag_core.support.workflows-foundation"
-    ],
-    "Antigravity/.agents/workflows/03_build(建構計畫).md": [
-      "_ag_core.support.workflows-foundation"
-    ],
-    "Antigravity/.agents/workflows/03-1_experiment(實驗).md": [
-      "_ag_core.support.workflows-foundation"
-    ],
-    "Antigravity/.agents/workflows/06_test(測試).md": [
-      "_ag_core.support.workflows-operations"
-    ],
-    "Antigravity/.agents/workflows/10_routine(巡檢).md": [
-      "_ag_core.support.workflows-operations"
-    ],
-    "Antigravity/.agents/workflows/11_handoff(交接).md": [
-      "_ag_core.support.workflows-operations"
-    ],
-    "Antigravity/.agents/workflows/12_skill_forge(技能鍛造).md": [
-      "_ag_core.support.workflows-operations"
-    ],
-    "Antigravity/install.ps1": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/README.md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/VERSION": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/global/GEMINI.md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/rules/00_core_identity.md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/rules/03_memory_skill_contract.md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/rules/04_forbidden_vocab.md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/rules/07_mcp_guardrails.md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/02_blueprint(架構).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/03-2_build_execute(建構執行).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/04-1_fix_plan(修復計畫).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/04-2_fix_execute(修復執行).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/05_condense(濃縮).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/07_debug(除錯).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/09-1_commit_scan(紀錄掃描).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md": [
-      "_ag_core.workflow-delivery"
-    ],
-    "Codex/VERSION": [
-      "_codex_core.runtime"
-    ],
-    "Codex/README.md": [
-      "_codex_core.runtime"
-    ],
-    "Codex/install.ps1": [
-      "_codex_core.runtime"
-    ],
-    "Codex/global/AGENTS.md": [
-      "_codex_core.runtime"
-    ],
-    "Codex/global/config.toml": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/AGENTS.md": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/config.toml": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/hooks.json": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/hooks/team-native-gate.ps1": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/hooks/team-native-launcher.ps1": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/VERSION": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.gitignore": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.agents/workflow-skills/_shared/_completion_gate.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Codex/.agents/workflow-skills/_shared/_security_footer.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Codex/.agents/workflow-skills/00-chat-聊天/SKILL.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Codex/.agents/workflow-skills/01-explore-探索/SKILL.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Codex/.agents/workflow-skills/03-1-experiment-實驗/SKILL.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Codex/.agents/workflow-skills/05-condense-濃縮/SKILL.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Codex/.agents/workflow-skills/06-test-測試/SKILL.md": [
-      "_codex_core.support.workflows-general"
-    ],
-    "Shared/policies/adapters/antigravity-subagent-invocation.md": [
-      "_shared.adapters-workflow"
-    ],
-    "Shared/policies/adapters/claude-subagent-invocation.md": [
-      "_shared.adapters-workflow"
-    ],
-    "Shared/policies/adapters/codex-subagent-invocation.md": [
-      "_shared.adapters-workflow"
-    ],
-    "Shared/policies/adapters/codex-thread-handoff.md": [
-      "_shared.adapters-workflow"
-    ],
-    "Shared/workflow-stage-procedures.md": [
-      "_shared.governance-foundation"
-    ],
-    "Shared/policies/language-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    ".agents/shared/policies/language-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    "Shared/policies/grounding-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    ".agents/shared/policies/grounding-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    "Shared/policies/source-document-size-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    ".agents/shared/policies/source-document-size-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    "Shared/skill-governance.md": [
-      "_shared.governance-foundation"
-    ],
-    "Shared/skills/code-audit/references/scan-report-template.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-audit/references/scan-task-prompt.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-audit/references/tool-command-reference.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-audit/SKILL.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-diagnosis/references/diagnosis-report-template.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-diagnosis/references/diagnosis-task-prompt.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-diagnosis/SKILL.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/code-quality/SKILL.md": [
-      "_shared.ops-skills.code-analysis"
-    ],
-    "Shared/skills/ai-dev-quality-gate/SKILL.md": [
-      "_shared.ops-skills.quality-ui"
-    ],
-    "Shared/skills/intent-alignment-gate/SKILL.md": [
-      "_shared.ops-skills.quality-ui"
-    ],
-    "Shared/skills/quality-review-governance/SKILL.md": [
-      "_shared.ops-skills.quality-ui"
-    ],
-    "Shared/skills/security-sre/SKILL.md": [
-      "_shared.ops-skills.quality-ui"
-    ],
-    "Shared/skills/ui-design-exploration/SKILL.md": [
-      "_shared.ops-skills.quality-ui"
-    ],
-    "Shared/skills/ui-ux-standards/SKILL.md": [
-      "_shared.ops-skills.quality-ui"
-    ],
-    "Shared/skills/team-review-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    "Shared/skills/team-validation-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    "Shared/skills/team-memory-docs-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    "Shared/skills/team-change-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    "Shared/skills/team-role-boundaries/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    ".agents/skills/team-review-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    ".agents/skills/team-validation-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    ".agents/skills/team-memory-docs-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    ".agents/skills/team-change-delivery-artifact/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    ".agents/skills/team-role-boundaries/SKILL.md": [
-      "_shared.ops-skills.skill-governance.delivery-artifacts"
-    ],
-    "Shared/skills/_index.md": [
-      "_shared.ops-skills.skill-governance.registry-sync"
-    ],
-    ".agents/skills/_index.md": [
-      "_shared.ops-skills.skill-governance.registry-sync"
-    ],
-    "Shared/skills/a11y-testing/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/browser-testing/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/impact-test-strategy/references/regression-test-examples.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/impact-test-strategy/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/performance-audit/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/test-automation-strategy/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/test-patterns/references/api-route-test-template.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/test-patterns/references/hook-test-template.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/test-patterns/references/utility-test-template.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/test-patterns/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
-    "Shared/skills/trunk-ops/SKILL.md": [
-      "_shared.ops-skills.testing"
-    ],
     "Shared/policies/authorization-resolution.md": [
       "_shared.team-native-core.policy-core"
     ],
@@ -7277,6 +7301,39 @@
     "Shared/policies/references/workspace-bootstrap-contract.md": [
       "_shared.team-native-core.policy-execution"
     ],
+    "Shared/skills/team-specialist-registry/SKILL.md": [
+      "_shared.team-native-core.specialists-analysis"
+    ],
+    "Shared/skills/team-specialist-intent-requirements/SKILL.md": [
+      "_shared.team-native-core.specialists-analysis"
+    ],
+    "Shared/skills/team-specialist-scope-impact/SKILL.md": [
+      "_shared.team-native-core.specialists-analysis"
+    ],
+    "Shared/skills/team-specialist-architecture-contract/SKILL.md": [
+      "_shared.team-native-core.specialists-analysis"
+    ],
+    "Shared/skills/team-specialist-external-research/SKILL.md": [
+      "_shared.team-native-core.specialists-analysis"
+    ],
+    "Shared/skills/team-specialist-change-delivery/SKILL.md": [
+      "_shared.team-native-core.specialists-delivery"
+    ],
+    "Shared/skills/team-specialist-memory-docs/SKILL.md": [
+      "_shared.team-native-core.specialists-delivery"
+    ],
+    "Shared/skills/team-specialist-validation/SKILL.md": [
+      "_shared.team-native-core.specialists-delivery"
+    ],
+    "Shared/skills/team-specialist-review/SKILL.md": [
+      "_shared.team-native-core.specialists-delivery"
+    ],
+    "Shared/skills/team-specialist-security-reliability/SKILL.md": [
+      "_shared.team-native-core.specialists-delivery"
+    ],
+    "Shared/skills/team-specialist-release-completion/SKILL.md": [
+      "_shared.team-native-core.specialists-delivery"
+    ],
     "Shared/skills/programming-team-governance/SKILL.md": [
       "_shared.team-native-core.station-entry"
     ],
@@ -7312,6 +7369,18 @@
     ],
     "Shared/skills/team-task-board/references/board-field-slice-and-roles.md": [
       "_shared.team-native-core.station-entry"
+    ],
+    ".gitignore": [
+      "_system"
+    ],
+    "README.md": [
+      "_system"
+    ],
+    "CHANGELOG.md": [
+      "_system"
+    ],
+    "LICENSE": [
+      "_system"
     ],
     "Scripts/Deploy.ps1": [
       "_system.scripts"
@@ -7379,44 +7448,53 @@
     "Scripts/modules/SourceSize-Audit.psm1": [
       "_system.scripts"
     ],
-    "Tests/TeamNative/CaptainDecision.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/.vscodeignore": [
+      "_vscode_extension.auxiliary"
     ],
-    "Tests/TeamNative/DeliverySlice.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/LICENSE": [
+      "_vscode_extension.auxiliary"
     ],
-    "Tests/TeamNative/MemoryClosureBundle.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/tsconfig.json": [
+      "_vscode_extension.auxiliary"
     ],
-    "Tests/TeamNative/ModuleBudget.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/package.json": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/OversizeInventory.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/package-lock.json": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/README.md": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/RequirementPrecision.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/resources/ai-rules.svg": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/SourceDeploymentParity.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/resources/icon.png": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1": [
-      "team-native-tests"
+    ".github/workflows/release-vsix.yml": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1": [
-      "team-native-tests"
+    "Scripts/AI-RulesManager.ps1": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/src/extension.ts": [
+      "_vscode_extension.runtime"
     ],
-    "Tests/TeamNative/PowerShell51ProjectSkillsEncoding.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/src/extensionUpdate.ts": [
+      "_vscode_extension.runtime"
     ],
-    "Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/src/panel.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/commands.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/scriptRunner.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/status.ts": [
+      "_vscode_extension.runtime"
     ]
   },
   "untrackedFiles": []

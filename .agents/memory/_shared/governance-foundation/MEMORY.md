@@ -4,7 +4,7 @@ scopePath: Shared/
 description: >-
   專案記憶：Shared 語言、接地、尺寸與治理基礎。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-26T17:20:26+08:00'
+last_updated: '2026-07-27T00:02:51+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
