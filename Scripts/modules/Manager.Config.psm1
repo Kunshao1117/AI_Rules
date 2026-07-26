@@ -149,10 +149,6 @@ function Merge-ManagerCodexProjectConfigDefaults {
     if ($text -ne $before) { $actions += "set [features].multi_agent = true" }
 
     $before = $text
-    $text = Set-TomlSectionBooleanTrue -Text $text -Section "features" -Key "hooks"
-    if ($text -ne $before) { $actions += "set [features].hooks = true" }
-
-    $before = $text
     $text = Add-TomlSectionKeyIfMissing -Text $text -Section "agents" -Key "max_threads" -Line $maxThreadsLine
     if ($text -ne $before) { $actions += "add [agents].max_threads default" }
 

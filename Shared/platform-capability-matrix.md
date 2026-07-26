@@ -126,8 +126,9 @@ This matrix records only the enforceable Codex hook boundary.
 | Tool path / claim | Coverage boundary | Governing state |
 |---|---|---|
 | Codex runtime lifecycle/tool events | Codex hooks only cover Codex runtime lifecycle and supported tool events. | Hook-enforced only when the runtime emits a supported event. |
-| Codex `PreToolUse` supported tools | Codex `PreToolUse` can be used for supported `Bash`, `apply_patch`, and MCP tool calls. | Hard blocking requires supported deny semantics on that supported tool path. |
-| Uncovered or partial tool paths | Do not assume coverage for `WebSearch`, partial/non-shell/non-MCP tools, OpenAI API/developer tools, or this API environment tools such as `functions.exec_command`, `web.run`, and `multi_agent_v1`. | Keep governed by authorization, Team-Native trace, protected gates, tool availability, sandbox/permission systems, and evidence state; do not report as hook-enforced. |
+| Codex `PreToolUse` supported tools | Codex documents `PreToolUse` for supported local function tools such as `Bash`, `apply_patch`, and configured MCP tools; the hook receives the formal tool payload. | Hard blocking requires the documented deny output or exit-code semantics on that supported tool path. |
+| AI_Rules default Codex deployment | Codex hook capability remains available, but AI_Rules installs no repository-local Team-routing hook by default. Direct/delegated routing remains owned by governance core. | No default hook-enforced Team mode; any future hook needs a deterministic, tool-bound responsibility and exact matcher. |
+| Uncovered or partial tool paths | Do not assume coverage for hosted tools, partial/non-local tool paths, OpenAI API/developer tools, or this API environment tools such as `functions.exec`, `web.run`, and `multi_agent_v1`. Repository deployment also cannot control user, global, or plugin hooks. | Keep governed by authorization, Team-Native trace, protected gates, tool availability, sandbox/permission systems, and evidence state; do not report as hook-enforced. |
 | Advisory context | `additionalContext` or advisory text can inform routing, but it is not a hard stop. | Hard blocking requires supported `PreToolUse` deny semantics on a supported tool path. |
 
 ### Antigravity / Gemini

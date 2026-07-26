@@ -11,6 +11,93 @@
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -Force -ErrorAction Stop
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -Force -ErrorAction Stop
 
+function Get-CodexLegacyTeamNativeHookManifest {
+    return @(
+        [PSCustomObject]@{ RelativePath = 'hooks.json'; Sha256 = 'EDC59D0C6F61A28541DDD8DF9E2DAB4F1ACB96BA6E894098214FADADCE9B7CB7' }
+        [PSCustomObject]@{ RelativePath = 'hooks/team-native-gate.ps1'; Sha256 = 'FA6C13FAE1913528D145C985509F45E949C8B79F14942382A8E2BA7BCA3C5B53' }
+        [PSCustomObject]@{ RelativePath = 'hooks/team-native-launcher.ps1'; Sha256 = '56FB87F99C0697B8998314AE97CF0E691C39179C1EE60D9C49CCCC9F30B104EC' }
+    )
+}
+
+function Remove-CodexManagedLegacyTeamNativeHooks {
+    <#
+    .SYNOPSIS
+        Retires only the hash-owned legacy Team-Native hook set.
+    .DESCRIPTION
+        The config and scripts are treated as one managed transaction. Any
+        modified member preserves the full existing set so an upgrade never
+        deletes a script still referenced by a user-owned config.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$TargetRoot,
+
+        [object[]]$ManagedArtifacts,
+
+        [switch]$Apply
+    )
+
+    if (-not $PSBoundParameters.ContainsKey('ManagedArtifacts')) {
+        $ManagedArtifacts = @(Get-CodexLegacyTeamNativeHookManifest)
+    }
+
+    $codexRoot = Join-Path $TargetRoot '.codex'
+    $present = @()
+    foreach ($artifact in @($ManagedArtifacts)) {
+        $relativePath = [string]$artifact.RelativePath
+        $expectedHash = [string]$artifact.Sha256
+        if ([string]::IsNullOrWhiteSpace($relativePath) -or
+            [string]::IsNullOrWhiteSpace($expectedHash) -or
+            $relativePath -match '(^|[\\/])\.\.([\\/]|$)' -or
+            [System.IO.Path]::IsPathRooted($relativePath)) {
+            throw "Invalid managed Codex legacy hook artifact declaration: $relativePath"
+        }
+
+        $path = Join-Path $codexRoot ($relativePath -replace '/', '\\')
+        if (Test-Path -LiteralPath $path -PathType Leaf) {
+            $present += [PSCustomObject]@{
+                RelativePath = $relativePath
+                Path         = $path
+                ExpectedHash = $expectedHash.ToUpperInvariant()
+                ActualHash   = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToUpperInvariant()
+            }
+        }
+    }
+
+    $conflicts = @($present | Where-Object { $_.ActualHash -ne $_.ExpectedHash })
+    if ($conflicts.Count -gt 0) {
+        $messagePrefix = if ($Apply) { 'preserved_user_modified_hook' } else { 'would_preserve_user_modified_hook' }
+        foreach ($artifact in $present) {
+            Write-Warn "${messagePrefix}: $($artifact.RelativePath); manual action required."
+        }
+        return [PSCustomObject]@{
+            WouldRemoveCount   = 0
+            WouldPreserveCount = $present.Count
+            WouldRemove        = @()
+            WouldPreserve      = @($present.RelativePath)
+            Applied            = $Apply.IsPresent
+        }
+    }
+
+    $ordered = @($present | Sort-Object @{ Expression = { if ($_.RelativePath -eq 'hooks.json') { 0 } else { 1 } } }, RelativePath)
+    foreach ($artifact in $ordered) {
+        if ($Apply) {
+            Remove-Item -LiteralPath $artifact.Path -Force -ErrorAction Stop
+            Write-Ok "removed_managed_legacy_hook: $($artifact.RelativePath)"
+        } else {
+            Write-Step "would_remove_managed_legacy_hook: $($artifact.RelativePath)"
+        }
+    }
+
+    return [PSCustomObject]@{
+        WouldRemoveCount   = $ordered.Count
+        WouldPreserveCount = 0
+        WouldRemove        = @($ordered.RelativePath)
+        WouldPreserve      = @()
+        Applied            = $Apply.IsPresent
+    }
+}
+
 function Merge-CodexConfigDefaults {
     param(
         [Parameter(Mandatory = $true)]
@@ -156,10 +243,6 @@ function Merge-CodexConfigDefaults {
     if ($text -ne $before) { $actions += "set [features].multi_agent = true" }
 
     $before = $text
-    $text = Set-TomlSectionBooleanTrue -Text $text -Section "features" -Key "hooks"
-    if ($text -ne $before) { $actions += "set [features].hooks = true" }
-
-    $before = $text
     $text = Add-TomlSectionKeyIfMissing -Text $text -Section "agents" -Key "max_threads" -Line $maxThreadsLine
     if ($text -ne $before) { $actions += "add [agents].max_threads default" }
 
@@ -239,6 +322,7 @@ function Invoke-CodexFresh {
                 Copy-Item $_.FullName $dst -Force
             }
             $null = Merge-CodexConfigDefaults -SourcePath (Join-Path $srcDotCodex "config.toml") -TargetPath (Join-Path $dstDotCodex "config.toml") -Apply
+            $null = Remove-CodexManagedLegacyTeamNativeHooks -TargetRoot $Target -Apply
             Write-Ok ".codex/ 治理規則已部署"
 
             Write-Step "注入共用子代理政策（Shared/policies/ → .codex/AGENTS.md）..."
@@ -371,6 +455,7 @@ function Invoke-CodexUpgrade {
         "治理規則 (.codex/)" = { $true }
     }
     $stats = Write-UpgradeReport -Report $report -CategoryMap $categoryMap -Platform "Codex"
+    $legacyHookPreview = Remove-CodexManagedLegacyTeamNativeHooks -TargetRoot $Target
 
     # CHANGELOG
     $notesPath = Join-Path $FrameworkRoot "CHANGELOG.md"
@@ -395,11 +480,16 @@ function Invoke-CodexUpgrade {
     # 確認閘門
     $applied = 0
     $applyCodexChanges = $true
-    if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
-        if (Invoke-ConfirmGate -Message "是否套用 .codex/ 變更？(Y/N)") {
-            $applied = Install-Upgrade -Report $report -SourceRoot $srcDotCodex -TargetRoot $dstDotCodex
+    if ($stats.New -gt 0 -or $stats.Changed -gt 0 -or $legacyHookPreview.WouldRemoveCount -gt 0) {
+        if (Invoke-ConfirmGate -Message "是否套用 .codex/ 變更與受管 legacy hook 清理？(Y/N)") {
+            if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
+                $applied = Install-Upgrade -Report $report -SourceRoot $srcDotCodex -TargetRoot $dstDotCodex
+            }
+            if ($legacyHookPreview.WouldRemoveCount -gt 0) {
+                $null = Remove-CodexManagedLegacyTeamNativeHooks -TargetRoot $Target -Apply
+            }
         } else {
-            Write-Warn "已跳過 .codex/ 更新；本次不會寫入 .codex/config.toml、.codex/AGENTS.md 或 .codex/VERSION。"
+            Write-Warn "已跳過 .codex/ 更新與受管 legacy hook 清理；本次不會寫入 .codex/config.toml、.codex/AGENTS.md 或 .codex/VERSION。"
             $applyCodexChanges = $false
         }
     } else {
@@ -482,4 +572,4 @@ function Invoke-CodexUpgrade {
     }
 }
 
-Export-ModuleMember -Function Invoke-CodexFresh, Invoke-CodexUpgrade
+Export-ModuleMember -Function Invoke-CodexFresh, Invoke-CodexUpgrade, Remove-CodexManagedLegacyTeamNativeHooks

@@ -35,12 +35,28 @@ function Get-ManagerSyncResultFromOutput {
     return $results[0]
 }
 
+function Invoke-CodexModuleCommand {
+    param(
+        [Parameter(Mandatory = $true)]
+        [scriptblock]$Command,
+        [object[]]$ArgumentList
+    )
+
+    & $script:codexModule $Command @ArgumentList
+}
+
 Describe 'Codex Fresh, Upgrade, and Manager adapter policy regression' {
     BeforeEach {
         $script:tempTarget = Join-Path ([System.IO.Path]::GetTempPath()) ("ai-rules-codex-platform-" + [guid]::NewGuid())
         New-Item -ItemType Directory -Force -Path $script:tempTarget | Out-Null
         Mock -CommandName Assert-ManagerSourceSyncedForProjectSync -ModuleName $script:managerModule.Name -MockWith { }
-        Mock -CommandName Invoke-ConfirmGate -ModuleName $script:codexModule.Name -MockWith { return $true }
+        $global:aiRulesCodexConfirmGateCalls = 0
+        & $script:codexModule {
+            Set-Item -Path Function:Invoke-ConfirmGate -Value {
+                $global:aiRulesCodexConfirmGateCalls += 1
+                return $true
+            }
+        }
     }
 
     AfterEach {
@@ -49,6 +65,7 @@ Describe 'Codex Fresh, Upgrade, and Manager adapter policy regression' {
                 Remove-Item -LiteralPath $script:tempTarget -Recurse -Force
             }
         } finally {
+            Remove-Variable -Name aiRulesCodexConfirmGateCalls -Scope Global -ErrorAction SilentlyContinue
             if (Test-Path -LiteralPath $script:tempTarget) {
                 throw "Temporary Codex fixture was not removed: $script:tempTarget"
             }
@@ -82,22 +99,42 @@ Describe 'Codex Fresh, Upgrade, and Manager adapter policy regression' {
             throw 'The Codex adapter source must expose its platform marker.'
         }
 
-        $null = Invoke-CodexFresh -FrameworkRoot $frameworkRoot -Target $script:tempTarget -SharedSkillsRoot $sharedSkillsRoot
+        $null = Invoke-CodexModuleCommand -Command {
+            param($FrameworkRoot, $Target, $SharedSkillsRoot)
+            Invoke-CodexFresh -FrameworkRoot $FrameworkRoot -Target $Target -SharedSkillsRoot $SharedSkillsRoot
+        } -ArgumentList @($frameworkRoot, $script:tempTarget, $sharedSkillsRoot)
         Assert-CodexGeneratedPolicyPointer -Path $agentsPath -Stage 'Fresh'
+        foreach ($legacyHookPath in @(
+            '.codex\hooks.json',
+            '.codex\hooks\team-native-gate.ps1',
+            '.codex\hooks\team-native-launcher.ps1'
+        )) {
+            if (Test-Path -LiteralPath (Join-Path $script:tempTarget $legacyHookPath)) {
+                throw "Fresh installed a legacy Team-Native hook artifact: $legacyHookPath"
+            }
+        }
 
-        $null = Invoke-CodexUpgrade -FrameworkRoot $frameworkRoot -Target $script:tempTarget -SharedSkillsRoot $sharedSkillsRoot
+        $null = Invoke-CodexModuleCommand -Command {
+            param($FrameworkRoot, $Target, $SharedSkillsRoot)
+            Invoke-CodexUpgrade -FrameworkRoot $FrameworkRoot -Target $Target -SharedSkillsRoot $SharedSkillsRoot
+        } -ArgumentList @($frameworkRoot, $script:tempTarget, $sharedSkillsRoot)
         Assert-CodexGeneratedPolicyPointer -Path $agentsPath -Stage 'First Upgrade'
         $firstUpgradeContent = Get-Content -LiteralPath $agentsPath -Raw -Encoding UTF8
         $firstUpgradeHash = (Get-FileHash -LiteralPath $agentsPath -Algorithm SHA256).Hash
 
-        $null = Invoke-CodexUpgrade -FrameworkRoot $frameworkRoot -Target $script:tempTarget -SharedSkillsRoot $sharedSkillsRoot
+        $null = Invoke-CodexModuleCommand -Command {
+            param($FrameworkRoot, $Target, $SharedSkillsRoot)
+            Invoke-CodexUpgrade -FrameworkRoot $FrameworkRoot -Target $Target -SharedSkillsRoot $SharedSkillsRoot
+        } -ArgumentList @($frameworkRoot, $script:tempTarget, $sharedSkillsRoot)
         Assert-CodexGeneratedPolicyPointer -Path $agentsPath -Stage 'Second Upgrade'
         $secondUpgradeContent = Get-Content -LiteralPath $agentsPath -Raw -Encoding UTF8
         $secondUpgradeHash = (Get-FileHash -LiteralPath $agentsPath -Algorithm SHA256).Hash
         if ($firstUpgradeContent -cne $secondUpgradeContent -or $firstUpgradeHash -ne $secondUpgradeHash) {
             throw 'The second Codex Upgrade materially changed AGENTS.md.'
         }
-        Assert-MockCalled -CommandName Invoke-ConfirmGate -ModuleName $script:codexModule.Name -Times 2 -Exactly
+        if ($global:aiRulesCodexConfirmGateCalls -ne 2) {
+            throw "Expected two Codex upgrade confirmation checks; received $global:aiRulesCodexConfirmGateCalls."
+        }
 
         $firstManagerOutput = @(Invoke-ManagerSyncProjectRules -RepoRoot $repoRoot -Target $script:tempTarget -ProjectPlatform Codex -Apply 6>&1)
         $firstManagerResult = Get-ManagerSyncResultFromOutput -Output $firstManagerOutput
@@ -114,6 +151,85 @@ Describe 'Codex Fresh, Upgrade, and Manager adapter policy regression' {
         $secondManagerHash = (Get-FileHash -LiteralPath $agentsPath -Algorithm SHA256).Hash
         if ($firstManagerContent -cne $secondManagerContent -or $firstManagerHash -ne $secondManagerHash) {
             throw 'The second Manager SyncProjectRules run materially changed AGENTS.md.'
+        }
+    }
+
+    It 'retires only hash-owned legacy Team hooks and preserves a modified set' {
+        $artifactContent = [ordered]@{
+            'hooks.json' = '{"hooks":{}}'
+            'hooks/team-native-gate.ps1' = 'Write-Output gate'
+            'hooks/team-native-launcher.ps1' = 'Write-Output launcher'
+        }
+
+        function New-LegacyHookFixture {
+            param([string]$Root)
+
+            $codexRoot = Join-Path $Root '.codex'
+            foreach ($entry in $artifactContent.GetEnumerator()) {
+                $path = Join-Path $codexRoot ($entry.Key -replace '/', '\\')
+                $parent = Split-Path $path -Parent
+                New-Item -ItemType Directory -Force -Path $parent | Out-Null
+                [System.IO.File]::WriteAllText($path, $entry.Value, [System.Text.UTF8Encoding]::new($false))
+            }
+
+            return @($artifactContent.Keys | ForEach-Object {
+                $path = Join-Path $codexRoot ($_ -replace '/', '\\')
+                [PSCustomObject]@{
+                    RelativePath = $_
+                    Sha256 = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash
+                }
+            })
+        }
+
+        $managedRoot = Join-Path $script:tempTarget 'managed-legacy-hooks'
+        $managedArtifacts = New-LegacyHookFixture -Root $managedRoot
+        $previewOutput = @(Invoke-CodexModuleCommand -Command {
+            param($TargetRoot, $ManagedArtifacts)
+            Remove-CodexManagedLegacyTeamNativeHooks -TargetRoot $TargetRoot -ManagedArtifacts $ManagedArtifacts
+        } -ArgumentList @($managedRoot, $managedArtifacts) 6>&1)
+        $preview = @($previewOutput | Where-Object { $null -ne $_ -and $null -ne $_.PSObject.Properties['WouldRemoveCount'] })
+        if ($preview.Count -ne 1 -or $preview[0].WouldRemoveCount -ne 3) {
+            throw 'Managed legacy hook preview did not identify the complete set.'
+        }
+        if (($previewOutput | Out-String) -notmatch 'would_remove_managed_legacy_hook') {
+            throw 'Managed legacy hook dry-run did not report planned removal.'
+        }
+        $applied = Invoke-CodexModuleCommand -Command {
+            param($TargetRoot, $ManagedArtifacts)
+            Remove-CodexManagedLegacyTeamNativeHooks -TargetRoot $TargetRoot -ManagedArtifacts $ManagedArtifacts -Apply
+        } -ArgumentList @($managedRoot, $managedArtifacts)
+        if ($applied.WouldRemoveCount -ne 3) {
+            throw 'Managed legacy hook cleanup did not report the complete removed set.'
+        }
+        foreach ($relativePath in $artifactContent.Keys) {
+            if (Test-Path -LiteralPath (Join-Path $managedRoot ('.codex\\' + ($relativePath -replace '/', '\\')))) {
+                throw "Managed legacy hook cleanup left an artifact behind: $relativePath"
+            }
+        }
+
+        $modifiedRoot = Join-Path $script:tempTarget 'modified-legacy-hooks'
+        $modifiedArtifacts = New-LegacyHookFixture -Root $modifiedRoot
+        $modifiedGatePath = Join-Path $modifiedRoot '.codex\hooks\team-native-gate.ps1'
+        [System.IO.File]::AppendAllText($modifiedGatePath, "`n# user change", [System.Text.UTF8Encoding]::new($false))
+        $modifiedPreviewOutput = @(Invoke-CodexModuleCommand -Command {
+            param($TargetRoot, $ManagedArtifacts)
+            Remove-CodexManagedLegacyTeamNativeHooks -TargetRoot $TargetRoot -ManagedArtifacts $ManagedArtifacts
+        } -ArgumentList @($modifiedRoot, $modifiedArtifacts) 6>&1)
+        $modifiedPreview = @($modifiedPreviewOutput | Where-Object { $null -ne $_ -and $null -ne $_.PSObject.Properties['WouldPreserveCount'] })
+        if ($modifiedPreview.Count -ne 1 -or $modifiedPreview[0].WouldPreserveCount -ne 3) {
+            throw 'Modified legacy hook set was not preserved as a single transaction.'
+        }
+        if (($modifiedPreviewOutput | Out-String) -notmatch 'would_preserve_user_modified_hook') {
+            throw 'Modified legacy hook dry-run did not report manual action.'
+        }
+        $null = Invoke-CodexModuleCommand -Command {
+            param($TargetRoot, $ManagedArtifacts)
+            Remove-CodexManagedLegacyTeamNativeHooks -TargetRoot $TargetRoot -ManagedArtifacts $ManagedArtifacts -Apply
+        } -ArgumentList @($modifiedRoot, $modifiedArtifacts)
+        foreach ($relativePath in $artifactContent.Keys) {
+            if (-not (Test-Path -LiteralPath (Join-Path $modifiedRoot ('.codex\\' + ($relativePath -replace '/', '\\'))))) {
+                throw "Modified legacy hook cleanup removed a user-owned artifact: $relativePath"
+            }
         }
     }
 }
