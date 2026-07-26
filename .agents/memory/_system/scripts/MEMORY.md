@@ -4,19 +4,19 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T00:02:53+08:00'
+last_updated: '2026-07-27T02:15:34+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-26T16:36:58+08:00'
+last_verified: '2026-07-27T02:00:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-17-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -38,6 +38,8 @@ metadata:
 
 - Owns root PowerShell deployment, synchronization, platform-adapter, migration, and Team-Native runner sources listed below.
 - `Manager.ProjectSync` advances a target `VERSION` only after every required synchronization stage succeeds.
+- `Remove-CodexManagedLegacyTeamNativeHooks` retires legacy Codex Team hook artifacts only when the complete known hash-owned set matches. Its dry-run emits planned removal or user-modified preservation; any modified artifact preserves the full set for manual action.
+- Codex fresh install deploys no legacy Team hook artifacts, and Codex upgrade/project sync wires the managed cleanup into its confirmed update path without treating cleanup failure as success.
 - Antigravity and Claude preflight failure or a declined managed update returns without writing `VERSION` and does not report success.
 - `Manager.Commands` removes command-entry result-object leakage without swallowing real errors.
 - PowerShell compatibility evidence must name the executed shell; a `pwsh` pass alone does not prove Windows PowerShell 5.1 compatibility.
@@ -45,11 +47,12 @@ metadata:
 ## Active Constraints
 
 - Do not perform real install, upgrade, or target mutation for ordinary verification.
+- Managed Codex cleanup must not remove filename-matching user-owned, global, plugin, or modified hook artifacts.
 - Preserve UTF-8 BOM requirements for tracked non-ASCII Windows PowerShell 5.1 import-chain modules.
 
 ## Cycle Events
 
-- 04: Reconciled project-sync version safety, platform preflight/decline behavior, and command-result error handling with the merged source contract.
+- 05: Added exact-hash Codex legacy Team-hook cleanup with fresh-install, upgrade, and user-modification safety.
 
 ## Archive Index
 
@@ -58,10 +61,9 @@ metadata:
 
 ## Evidence Base
 
-- source:Scripts/modules/Manager.Commands.psm1
-- source:Scripts/modules/Manager.ProjectSync.psm1
-- source:Scripts/modules/Platform-Antigravity.psm1 and Scripts/modules/Platform-Claude.psm1
-- source:Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1 and Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1
+- source:Scripts/modules/Platform-Codex.psm1, Scripts/modules/Manager.ProjectSync.psm1, Scripts/modules/Manager.Config.psm1, and Scripts/Deploy.ps1 — Codex deployment and managed cleanup.
+- source:Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1 — fresh install and managed/user-modified cleanup contract.
+- source:Scripts/modules/Manager.Commands.psm1, Scripts/modules/Platform-Antigravity.psm1, and Scripts/modules/Platform-Claude.psm1 — existing version and command handling contracts.
 
 ## Read Contract
 
@@ -70,13 +72,13 @@ metadata:
 
 ## Conflicts and Supersession
 
-- superseded: writing `VERSION` before required sync success, or treating declined update as successful mutation.
+- superseded: writing `VERSION` before required sync success, treating declined update as successful mutation, or deleting hook artifacts solely by filename.
 
 ## 中文摘要
 
-- required stage 全數成功後才可更新 `VERSION`。
-- Antigravity/Claude 的 preflight failure 或使用者拒絕 update 都不寫入 `VERSION`。
-- `Manager.Commands` 不再洩漏 result object，也不吞掉真實錯誤。
+- `VERSION` 只會在必要同步階段全數成功後更新。
+- Codex legacy Team hook 只在完整 exact-hash 受管集合吻合時清理；使用者修改任一檔案就保留整組並要求手動處理。
+- fresh install 不部署 legacy hook；upgrade/project sync 不得把 cleanup 失敗包裝成成功。
 
 ## Tracked Files
 
