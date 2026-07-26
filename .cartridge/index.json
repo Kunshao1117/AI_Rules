@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastScanned": "2026-07-27T00:02:54+08:00",
+  "lastScanned": "2026-07-27T03:08:42+08:00",
   "cartridges": {
     "claude-edition-rules": {
       "skillPath": ".agents/memory/claude-edition-rules/MEMORY.md",
@@ -156,7 +156,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-27T02:00:00+08:00",
+        "lastVerified": "2026-07-27T03:07:18+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -183,7 +183,7 @@
         "Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T02:15:34+08:00",
+      "lastUpdated": "2026-07-27T03:08:41+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -198,8 +198,8 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 4199,
-        "lineCount": 105,
+        "sizeBytes": 4268,
+        "lineCount": 104,
         "chineseCharCount": 0,
         "bodyCharCount": 2058,
         "chineseRatio": 0,
@@ -212,7 +212,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_ag_core": {
@@ -720,7 +722,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3557,
+        "sizeBytes": 3590,
         "lineCount": 96,
         "chineseCharCount": 2,
         "bodyCharCount": 1788,
@@ -814,7 +816,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3444,
+        "sizeBytes": 3477,
         "lineCount": 94,
         "chineseCharCount": 2,
         "bodyCharCount": 1758,
@@ -920,7 +922,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3347,
+        "sizeBytes": 3380,
         "lineCount": 103,
         "chineseCharCount": 2,
         "bodyCharCount": 1214,
@@ -1830,7 +1832,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-27T02:00:00+08:00",
+        "lastVerified": "2026-07-27T03:07:18+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -1853,7 +1855,7 @@
         "Codex/.gitignore"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T02:15:33+08:00",
+      "lastUpdated": "2026-07-27T03:08:39+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -1868,8 +1870,8 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3835,
-        "lineCount": 98,
+        "sizeBytes": 3897,
+        "lineCount": 97,
         "chineseCharCount": 0,
         "bodyCharCount": 2087,
         "chineseRatio": 0,
@@ -1882,7 +1884,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_codex_core.support": {
@@ -2152,7 +2156,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3347,
+        "sizeBytes": 3380,
         "lineCount": 95,
         "chineseCharCount": 2,
         "bodyCharCount": 1528,
@@ -2643,7 +2647,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-26T16:36:58+08:00",
+        "lastVerified": "2026-07-27T03:07:18+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -2661,7 +2665,7 @@
         "Shared/policies/adapters/codex-thread-handoff.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T00:02:49+08:00",
+      "lastUpdated": "2026-07-27T03:08:39+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -2676,8 +2680,8 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3226,
-        "lineCount": 94,
+        "sizeBytes": 3224,
+        "lineCount": 93,
         "chineseCharCount": 0,
         "bodyCharCount": 1610,
         "chineseRatio": 0,
@@ -2867,7 +2871,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3323,
+        "sizeBytes": 3356,
         "lineCount": 97,
         "chineseCharCount": 0,
         "bodyCharCount": 1582,
@@ -3167,7 +3171,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3348,
+        "sizeBytes": 3381,
         "lineCount": 97,
         "chineseCharCount": 0,
         "bodyCharCount": 1524,
@@ -3457,7 +3461,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3459,
+        "sizeBytes": 3492,
         "lineCount": 96,
         "chineseCharCount": 0,
         "bodyCharCount": 1738,
@@ -3857,7 +3861,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3380,
+        "sizeBytes": 3413,
         "lineCount": 98,
         "chineseCharCount": 0,
         "bodyCharCount": 1438,
@@ -3949,7 +3953,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2591,
+        "sizeBytes": 2624,
         "lineCount": 88,
         "chineseCharCount": 0,
         "bodyCharCount": 1217,
@@ -4239,7 +4243,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3772,
+        "sizeBytes": 3805,
         "lineCount": 101,
         "chineseCharCount": 0,
         "bodyCharCount": 1783,
@@ -5212,7 +5216,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-26T16:36:58+08:00",
+        "lastVerified": "2026-07-27T03:07:18+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5241,7 +5245,7 @@
         ".agents/shared/policies/subagent-invocation.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T00:02:51+08:00",
+      "lastUpdated": "2026-07-27T03:08:39+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5256,8 +5260,8 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 4981,
-        "lineCount": 111,
+        "sizeBytes": 4979,
+        "lineCount": 110,
         "chineseCharCount": 0,
         "bodyCharCount": 2676,
         "chineseRatio": 0,
@@ -5317,7 +5321,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-27T02:00:00+08:00",
+        "lastVerified": "2026-07-27T03:07:18+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5333,7 +5337,7 @@
         "Shared/workflow-capability-evidence-matrix.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T02:15:34+08:00",
+      "lastUpdated": "2026-07-27T03:08:39+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5348,8 +5352,8 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3758,
-        "lineCount": 94,
+        "sizeBytes": 3816,
+        "lineCount": 93,
         "chineseCharCount": 0,
         "bodyCharCount": 2087,
         "chineseRatio": 0,
@@ -5362,7 +5366,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_shared.team-native-core.policy-execution": {
@@ -5407,7 +5413,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-27T02:00:00+08:00",
+        "lastVerified": "2026-07-27T03:07:18+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5441,7 +5447,7 @@
         "Shared/policies/references/workspace-bootstrap-contract.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T02:15:34+08:00",
+      "lastUpdated": "2026-07-27T03:08:39+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5456,8 +5462,8 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 5239,
-        "lineCount": 112,
+        "sizeBytes": 5315,
+        "lineCount": 111,
         "chineseCharCount": 0,
         "bodyCharCount": 2423,
         "chineseRatio": 0,
@@ -5470,7 +5476,9 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [],
+        "archiveMigrationWarnings": []
       }
     },
     "_shared.team-native-core.specialists-analysis": {
@@ -5747,7 +5755,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3715,
+        "sizeBytes": 3748,
         "lineCount": 102,
         "chineseCharCount": 0,
         "bodyCharCount": 1556,
@@ -5808,7 +5816,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:44:00+08:00",
+        "lastVerified": "2026-07-27T03:07:18+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5826,7 +5834,7 @@
         "LICENSE"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T00:02:53+08:00",
+      "lastUpdated": "2026-07-27T03:08:39+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5841,8 +5849,8 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3032,
-        "lineCount": 103,
+        "sizeBytes": 3030,
+        "lineCount": 102,
         "chineseCharCount": 0,
         "bodyCharCount": 1602,
         "chineseRatio": 0,
@@ -5943,7 +5951,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-27T02:00:00+08:00",
+        "lastVerified": "2026-07-27T03:07:18+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5979,7 +5987,7 @@
         "Scripts/modules/SourceSize-Audit.psm1"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T02:15:34+08:00",
+      "lastUpdated": "2026-07-27T03:08:39+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5994,7 +6002,7 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 4928,
+        "sizeBytes": 5010,
         "lineCount": 116,
         "chineseCharCount": 0,
         "bodyCharCount": 2538,
@@ -6008,7 +6016,40 @@
         "compactionStatus": "ready",
         "needsCompaction": false,
         "recommendedAction": "none",
-        "reasons": []
+        "reasons": [],
+        "archiveVolumes": [
+          {
+            "filePath": ".agents/memory/_system/scripts/archive-001.md",
+            "sizeBytes": 2225,
+            "lineCount": 22,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_system/scripts/archive-002.md",
+            "sizeBytes": 1897,
+            "lineCount": 17,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          },
+          {
+            "filePath": ".agents/memory/_system/scripts/archive-003.md",
+            "sizeBytes": 1281,
+            "lineCount": 19,
+            "sizeLimitBytes": 32768,
+            "lineLimit": 200,
+            "needsCompaction": false,
+            "recommendedAction": "none",
+            "reasons": []
+          }
+        ],
+        "archiveMigrationWarnings": []
       }
     },
     "_vscode_extension": {
@@ -6267,7 +6308,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:41:00+08:00",
+        "lastVerified": "2026-07-27T03:07:18+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -6288,7 +6329,7 @@
         "Scripts/AI-RulesManager.ps1"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-24T13:40:56+08:00",
+      "lastUpdated": "2026-07-27T03:08:41+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -6303,8 +6344,8 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 6774,
-        "lineCount": 109,
+        "sizeBytes": 6773,
+        "lineCount": 108,
         "chineseCharCount": 0,
         "bodyCharCount": 3981,
         "chineseRatio": 0,
@@ -6422,6 +6463,45 @@
   "fileMap": {
     ".agents/memory/claude-edition-rules/archive-001.md": [
       "claude-edition-rules"
+    ],
+    "Tests/TeamNative/CaptainDecision.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/DeliverySlice.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/MemoryClosureBundle.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/ModuleBudget.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/OversizeInventory.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/RequirementPrecision.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/SourceDeploymentParity.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/PowerShell51ProjectSkillsEncoding.Tests.ps1": [
+      "team-native-tests"
+    ],
+    "Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1": [
+      "team-native-tests"
     ],
     "Antigravity/.agents/VERSION": [
       "_ag_core.support"
@@ -6614,6 +6694,33 @@
     ],
     "Claude/.vscode/settings.json": [
       "_claude_core.support.rules-settings"
+    ],
+    "Codex/VERSION": [
+      "_codex_core.runtime"
+    ],
+    "Codex/README.md": [
+      "_codex_core.runtime"
+    ],
+    "Codex/install.ps1": [
+      "_codex_core.runtime"
+    ],
+    "Codex/global/AGENTS.md": [
+      "_codex_core.runtime"
+    ],
+    "Codex/global/config.toml": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/AGENTS.md": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/config.toml": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.codex/VERSION": [
+      "_codex_core.runtime"
+    ],
+    "Codex/.gitignore": [
+      "_codex_core.runtime"
     ],
     "Codex/.agents/workflow-skills/_shared/_completion_gate.md": [
       "_codex_core.support.workflows-general"
@@ -7116,6 +7223,72 @@
     ".agents/shared/policies/subagent-invocation.md": [
       "_shared.team-native-core.policy-core"
     ],
+    "Shared/platform-capability-matrix.md": [
+      "_shared.team-native-core.policy-evidence"
+    ],
+    "Shared/workflow-capability-evidence-matrix.md": [
+      "_shared.team-native-core.policy-evidence"
+    ],
+    "Shared/policies/references/workflow-execution-spec-contract.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/workflow-lane-routing.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/workflow-memory-evidence.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/workflow-orchestration-boundaries.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/workflow-review-visual-evidence.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/workflow-team-evidence.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/authorization-phase-registry.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/completion-state-machine.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/exception-registry.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/hook-event-matrix.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/platform-copy-map.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/protected-action-registry.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/source-runtime-surface-map.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/status-ontology.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/cross-thread-handoff-contract.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/team-native-core-captain-boundary.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/team-native-core-delivery-slice.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/team-trace-fields.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/team-trace-invalid-patterns.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    "Shared/policies/references/workspace-bootstrap-contract.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
     "Shared/skills/team-specialist-registry/SKILL.md": [
       "_shared.team-native-core.specialists-analysis"
     ],
@@ -7197,147 +7370,6 @@
     "LICENSE": [
       "_system"
     ],
-    "Extensions/vscode-ai-rules-manager/.vscodeignore": [
-      "_vscode_extension.auxiliary"
-    ],
-    "Extensions/vscode-ai-rules-manager/LICENSE": [
-      "_vscode_extension.auxiliary"
-    ],
-    "Extensions/vscode-ai-rules-manager/tsconfig.json": [
-      "_vscode_extension.auxiliary"
-    ],
-    "Extensions/vscode-ai-rules-manager/package.json": [
-      "_vscode_extension.release"
-    ],
-    "Extensions/vscode-ai-rules-manager/package-lock.json": [
-      "_vscode_extension.release"
-    ],
-    "Extensions/vscode-ai-rules-manager/README.md": [
-      "_vscode_extension.release"
-    ],
-    "Extensions/vscode-ai-rules-manager/resources/ai-rules.svg": [
-      "_vscode_extension.release"
-    ],
-    "Extensions/vscode-ai-rules-manager/resources/icon.png": [
-      "_vscode_extension.release"
-    ],
-    ".github/workflows/release-vsix.yml": [
-      "_vscode_extension.release"
-    ],
-    "Scripts/AI-RulesManager.ps1": [
-      "_vscode_extension.release"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/extension.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/extensionUpdate.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/panel.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/commands.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/scriptRunner.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Extensions/vscode-ai-rules-manager/src/status.ts": [
-      "_vscode_extension.runtime"
-    ],
-    "Codex/VERSION": [
-      "_codex_core.runtime"
-    ],
-    "Codex/README.md": [
-      "_codex_core.runtime"
-    ],
-    "Codex/install.ps1": [
-      "_codex_core.runtime"
-    ],
-    "Codex/global/AGENTS.md": [
-      "_codex_core.runtime"
-    ],
-    "Codex/global/config.toml": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/AGENTS.md": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/config.toml": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.codex/VERSION": [
-      "_codex_core.runtime"
-    ],
-    "Codex/.gitignore": [
-      "_codex_core.runtime"
-    ],
-    "Shared/policies/references/workflow-execution-spec-contract.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/workflow-lane-routing.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/workflow-memory-evidence.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/workflow-orchestration-boundaries.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/workflow-review-visual-evidence.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/workflow-team-evidence.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/authorization-phase-registry.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/completion-state-machine.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/exception-registry.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/hook-event-matrix.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/platform-copy-map.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/protected-action-registry.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/source-runtime-surface-map.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/status-ontology.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/cross-thread-handoff-contract.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/team-native-core-captain-boundary.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/team-native-core-delivery-slice.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/team-trace-fields.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/team-trace-invalid-patterns.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/policies/references/workspace-bootstrap-contract.md": [
-      "_shared.team-native-core.policy-execution"
-    ],
-    "Shared/platform-capability-matrix.md": [
-      "_shared.team-native-core.policy-evidence"
-    ],
-    "Shared/workflow-capability-evidence-matrix.md": [
-      "_shared.team-native-core.policy-evidence"
-    ],
     "Scripts/Deploy.ps1": [
       "_system.scripts"
     ],
@@ -7404,44 +7436,53 @@
     "Scripts/modules/SourceSize-Audit.psm1": [
       "_system.scripts"
     ],
-    "Tests/TeamNative/CaptainDecision.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/.vscodeignore": [
+      "_vscode_extension.auxiliary"
     ],
-    "Tests/TeamNative/DeliverySlice.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/LICENSE": [
+      "_vscode_extension.auxiliary"
     ],
-    "Tests/TeamNative/MemoryClosureBundle.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/tsconfig.json": [
+      "_vscode_extension.auxiliary"
     ],
-    "Tests/TeamNative/ModuleBudget.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/package.json": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/OversizeInventory.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/package-lock.json": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/README.md": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/RequirementPrecision.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/resources/ai-rules.svg": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/SourceDeploymentParity.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/resources/icon.png": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1": [
-      "team-native-tests"
+    ".github/workflows/release-vsix.yml": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1": [
-      "team-native-tests"
+    "Scripts/AI-RulesManager.ps1": [
+      "_vscode_extension.release"
     ],
-    "Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/src/extension.ts": [
+      "_vscode_extension.runtime"
     ],
-    "Tests/TeamNative/PowerShell51ProjectSkillsEncoding.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/src/extensionUpdate.ts": [
+      "_vscode_extension.runtime"
     ],
-    "Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1": [
-      "team-native-tests"
+    "Extensions/vscode-ai-rules-manager/src/panel.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/commands.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/scriptRunner.ts": [
+      "_vscode_extension.runtime"
+    ],
+    "Extensions/vscode-ai-rules-manager/src/status.ts": [
+      "_vscode_extension.runtime"
     ]
   },
   "untrackedFiles": []

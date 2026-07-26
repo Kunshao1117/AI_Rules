@@ -4,14 +4,14 @@ scopePath: Shared/policies/adapters/
 description: >-
   專案記憶：跨平台 adapter 與 workflow 轉譯。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-27T00:02:49+08:00'
+last_updated: '2026-07-27T03:08:39+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-26T16:36:58+08:00'
+last_verified: '2026-07-27T03:07:18+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared.adapters-workflow — Module Memory
 
 ## Current Truth

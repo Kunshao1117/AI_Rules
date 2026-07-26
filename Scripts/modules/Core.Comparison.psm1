@@ -1,4 +1,4 @@
-# Version and rule-equivalence functions.
+﻿# Version and rule-equivalence functions.
 
 Import-Module -Name (Join-Path $PSScriptRoot 'Core.Reporting.psm1') -Force
 

@@ -4,14 +4,14 @@ scopePath: Shared/policies/
 description: >-
   專案記憶：Progressive Assurance 核心政策與 Team-Native 邊界。Use when: task touches this
   split memory scope or its tracked files.
-last_updated: '2026-07-27T00:02:51+08:00'
+last_updated: '2026-07-27T03:08:39+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-26T16:36:58+08:00'
+last_verified: '2026-07-27T03:07:18+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared.team-native-core.policy-core — Module Memory
 
 ## Current Truth

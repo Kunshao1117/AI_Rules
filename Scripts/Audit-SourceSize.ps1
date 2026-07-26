@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <##
 .SYNOPSIS
     盤點 AI_Rules canonical source 中超過文件大小治理門檻的檔案。

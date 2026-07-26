@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 function Write-ManagerConfigStep { param([string]$Message) Write-Host "  → $Message" -ForegroundColor Cyan }
 function Write-ManagerConfigOk { param([string]$Message) Write-Host "  ✓ $Message" -ForegroundColor Green }

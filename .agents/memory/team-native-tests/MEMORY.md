@@ -4,14 +4,14 @@ scopePath: Tests/TeamNative/
 description: >-
   專案記憶：Team-Native PowerShell 契約測試。Use when: task touches Team-Native test
   fixtures, contract coverage, or source/deployment parity assertions.
-last_updated: '2026-07-27T02:15:34+08:00'
+last_updated: '2026-07-27T03:08:41+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T02:00:00+08:00'
+last_verified: '2026-07-27T03:07:18+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # team-native-tests — Team-Native Test Memory
 
 ## Current Truth

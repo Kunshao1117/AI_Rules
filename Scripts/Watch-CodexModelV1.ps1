@@ -1,4 +1,4 @@
-# Local experimental workaround only; not a formal Codex adapter capability and not a platform guarantee.
+﻿# Local experimental workaround only; not a formal Codex adapter capability and not a platform guarantee.
 [CmdletBinding()]
 param(
     [Parameter()]
