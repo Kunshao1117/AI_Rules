@@ -5,6 +5,17 @@
 > 語彙說明：本文件保留歷史版本語境；舊條目中的 patch、packet、補丁、封包、隊長代工與 accepted-risk 不得解讀為現行正向規範。
 > 現行正向規範只使用交付件、任務軌跡帳本、逐波派工、隊長接收站點交付與彙整狀態、授權後變更由變更站或明確授權 gate 套用，以及缺交付件即阻塞、未驗證或總監風險關閉但非完整。
 
+## [2026-07-27] Team-Native 第一階段遷移 checkpoint
+
+### checkpoint
+- **可重現提交** — `88587edadf736652954c4ecc480c80140db46cd5`（`feat(team-native): harden phase one governance migration`）。完整異動清單可用 `git show --name-status 88587edadf736652954c4ecc480c80140db46cd5` 重現。
+- **修改檔案** — `Codex/.agents/workflow-skills/{03-build-建構,04-fix-修復,07-debug-除錯}/SKILL.md`、`Codex/.codex/AGENTS.md`；`Scripts/modules/{Platform-Antigravity,Platform-Claude,Platform-Codex,Skills-Sync}.psm1`；`Shared/policies/{team-native-core,team-trace-evidence,workflow-orchestration}.md` 與 `Shared/policies/references/{team-native-core-captain-boundary,team-native-core-delivery-slice,team-trace-fields,workflow-execution-spec-contract}.md`；`Shared/skills/_index.md`、`Shared/skills/{ai-dev-quality-gate,intent-alignment-gate,programming-team-governance,structured-reasoning,team-role-boundaries,team-station-handoff-packet}/SKILL.md`、`Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md`、`Shared/skills/team-task-board/references/{board-field-catalog,board-field-slice-and-roles}.md`；`Shared/{workflow-capability-evidence-matrix,workflow-stage-procedures}.md`；以及 TeamNative 回歸測試。
+- **刪除檔案** — `Shared/skills/coding-reflection-gate/SKILL.md`、`Shared/skills/design-reflection-gate/SKILL.md`。Upgrade 僅在舊檔符合已知官方 SHA256 時移除；雜湊不符時保留並警告，絕不掃除其他使用者技能。
+- **驗證結果** — `Invoke-Pester -Script Tests/TeamNative -PassThru`：73/73 通過；包含 Fresh／Upgrade／重複 Upgrade、三平台退休一致性、Claude 公開 `Deploy -Mode Sync`、Manager 錯誤衛生、來源／runtime SHA256 parity 與 Windows PowerShell 5.1 相容性。
+- **來源／runtime parity** — TeamNative 的 `ContextGovernanceMigration` 與 `SourceDeploymentParity` 測試通過；已刪除的兩個 runtime Skill 不存在，受影響 canonical owner 與受管副本保持一致。
+- **已知邊界** — 只驗證本機治理契約與 PowerShell 部署流程；尚未驗證平台實際 Context 行為、Token 用量或速度，也不據此宣稱公開 main 已完成。
+- **回退** — 使用 `git revert 88587edadf736652954c4ecc480c80140db46cd5`，再執行上述 TeamNative 測試；對已升級專案，回退來源後以正式 Upgrade 重新同步，勿手動刪除 runtime 檔案。
+
 ## [2026-07-27] AI Rules Manager v0.2.2
 
 ### feat
