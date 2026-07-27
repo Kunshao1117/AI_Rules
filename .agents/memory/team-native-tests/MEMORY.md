@@ -4,7 +4,7 @@ scopePath: Tests/TeamNative/
 description: >-
   專案記憶：Team-Native PowerShell 契約測試。Use when: task touches Team-Native test
   fixtures, contract coverage, or source/deployment parity assertions.
-last_updated: '2026-07-27T03:08:41+08:00'
+last_updated: '2026-07-27T08:21:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # team-native-tests — Team-Native Test Memory
 
 ## Current Truth
@@ -41,6 +42,7 @@ metadata:
 - `ManagerSyncProjectRules.Tests.ps1` protects exact deployment, no result-object leakage, and version advancement only after required stages succeed.
 - `PlatformCodexFreshUpgrade.Tests.ps1` protects a fresh Codex install without legacy Team hooks, exact-hash managed legacy cleanup, and preservation of a user-modified hook set.
 - Stable validation routes include focused RequirementPrecision, DeliverySlice, PlatformCodexFreshUpgrade, PlatformPolicyPreflight, SourceDeploymentParity, and the aggregate Team-Native suite.
+- `SourceDeploymentParity.Tests.ps1` also protects centralized beginner-facing reporting rules, source/runtime copy parity, status display labels, and platform-policy pointers.
 
 ## Active Constraints
 
@@ -50,6 +52,7 @@ metadata:
 ## Cycle Events
 
 - 05: Added Codex fresh/upgrade and managed legacy-hook cleanup contract coverage.
+- 06: Added deterministic reporting-policy and source/runtime parity checks without text snapshots.
 
 ## Archive Index
 
@@ -77,6 +80,7 @@ metadata:
 - Team-Native 測試保護 requirement provenance、station boundary 與同步/版本契約。
 - `PlatformCodexFreshUpgrade` 保護 fresh install 不部署 legacy hook、exact-hash 受管清理，以及使用者修改整組的保留行為。
 - 測試失敗要先分類，不能為綠燈直接改 expectation。
+- SourceDeploymentParity 也檢查白話回報規則、狀態顯示與必要副本一致性。
 
 ## Tracked Files
 

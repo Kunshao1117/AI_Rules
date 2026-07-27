@@ -58,7 +58,9 @@ Before any complete claim, confirm all of the following:
   committed memory receipt. Source/deployed parity remains separately required when applicable.
 - The Director-facing body is Traditional Chinese and meaning-first; raw
   fields, paths, and governance labels are supporting evidence rather than the
-  opening conclusion.
+  opening conclusion. Its wording follows the beginner-facing report boundary
+  in `Shared/policies/language-governance.md`; this gate does not define a
+  second display format.
 
 A missing required artifact keeps the result blocked, unverified, or
 closed-with-director-risk. It is not complete.
@@ -96,3 +98,7 @@ This skill is read-only. It must not repair evidence gaps, alter review or
 validation results, mutate memory, call memory commit, or stage, commit, push,
 tag, release, deploy, install, or hide missing authorization behind a
 completion claim.
+
+Its required fields and closeout evidence are internal artifacts. They must be
+synthesized before any user-visible reply. Direct work that does not use this
+Team gate still follows the same language-governance display rule.

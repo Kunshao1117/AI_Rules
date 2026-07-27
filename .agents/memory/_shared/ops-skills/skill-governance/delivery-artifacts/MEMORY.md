@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：團隊交付 artifact 與角色邊界。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-27T00:02:51+08:00'
+last_updated: '2026-07-27T08:21:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -32,13 +32,14 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
+
 # _shared.ops-skills.skill-governance.delivery-artifacts — Module Memory
 
 ## Current Truth
 
 - Owns Team delivery-artifact contracts and their deployed copies.
 - Team change, validation, review, role-boundary, and memory/docs artifacts load only when execution topology is delegated.
-- Ordinary Direct completion uses a concise outcome with goal, changed scope, evidence, decision, follow-ups, and residual risk; it does not require formal Team artifacts.
+- Ordinary Direct completion does not require formal Team artifacts, but it uses the same beginner-facing response boundary as delegated work and does not expose raw delivery fields.
 
 ## Active Constraints
 
@@ -48,6 +49,7 @@ metadata:
 ## Cycle Events
 
 - 02: Reconciled delivery artifacts with delegated-only activation and concise Direct outcomes.
+- 03: Confirmed delivery, review, and validation artifacts remain internal while all user-visible summaries use the shared beginner-facing rule.
 
 ## Archive Index
 
@@ -72,7 +74,7 @@ metadata:
 ## 中文摘要
 
 - Team artifact 只在 delegated topology 下需要。
-- Direct 以簡潔結果完成，不需 board、handoff、formal trace 或獨立 reviewer。
+- Direct 不需 Team artifact，但對外一樣先用白話說明結果、影響、注意事項與下一步。
 - Artifact skill 不重複擁有 verification、review 或 completion policy。
 
 ## Tracked Files

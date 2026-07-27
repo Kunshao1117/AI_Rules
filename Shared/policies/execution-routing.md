@@ -70,9 +70,10 @@ understand -> focused read -> implement -> focused verify -> aggregate
 It may read task files and direct dependencies, modify exact ordinary local
 policy, documentation, configuration, or source files, run non-destructive
 focused verification, inspect the resulting diff, and aggregate the result.
-Its Director reply follows the Director-facing contract in
-`Shared/policies/language-governance.md` and reports goal, changed items,
-evidence, decision, follow-ups, and residual risk.
+Its user-visible reply follows the beginner-facing contract in
+`Shared/policies/language-governance.md`. Direct evidence may retain goal,
+changed items, evidence, decision, follow-ups, and residual risk internally,
+but the reply must synthesize those facts instead of exposing their raw fields.
 
 Direct work requires no Team board, station, handoff packet, formal trace,
 independent reviewer, memory/docs disposition, or large formal task artifact.

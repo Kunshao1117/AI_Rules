@@ -55,9 +55,31 @@ the listed order and do not alter any locked field.
 - Applies to: replies, status updates, plans, reviews, handoff reports, completion reports, risk explanations, and task summaries.
 - Visibility: visible to the Director.
 - Language rule: use Traditional Chinese (zh-TW).
-- Director-facing 繁中（Traditional Chinese）output is meaning-first: write the plain 中文 meaning before technical identifiers.
-- Start from plain-language business meaning.
-- Put technical identifiers only where they add evidence, location, or precision.
+- Default reader: a Traditional Chinese reader with no programming, Git,
+  YAML/JSON, English technical vocabulary, or internal-workflow knowledge.
+- Director-facing output is meaning-first: start with the practical result in
+  plain Traditional Chinese, then add a technical identifier only when it
+  helps the reader act, search, diagnose, or confirm evidence.
+
+### User-Visible Response Boundary
+
+- Internal artifacts, traces, tool output, schemas, and machine fields remain
+  canonical English evidence. They are inputs to a response, never its default
+  body, and Chinese display words must not be written back into them.
+- Every ordinary user-visible report answers these four questions in this
+  order when applicable: what is the result now; what changes for the reader;
+  what remains incomplete or needs attention; and what the reader should do
+  next.
+- A small completed task normally needs three to six sentences and no fixed
+  heading. A normal report may use only these headings, omitting empty ones:
+  `目前結果`, `對你的影響`, `尚未完成或需要注意`, and `你現在要做什麼`.
+- When no reader action is needed, say plainly: `你現在不用做任何事。`
+- Long analysis, a complete comparison, a technical audit, or all changed
+  files is opt-in: expand only when the Director explicitly asks for that
+  depth. The conclusion and practical impact still come first.
+- This boundary applies equally to Direct and delegated work. A missing
+  captain, board, or delivery artifact never permits raw internal output to be
+  shown as the user-visible reply.
 
 ### Agent-Internal Instruction
 
@@ -137,11 +159,9 @@ the listed order and do not alter any locked field.
 - For Director-facing field display, write the Traditional Chinese meaning first.
 - Keep the canonical identifier in parentheses, such as `任務板狀態（board_state）`.
 - Do not translate or rename canonical machine fields.
-- Director-facing governance and process terms with stable Traditional Chinese
-  translations must be introduced as `繁體中文(English)`, such as
-  `任務板(board)`, `站點(station)`, `證據(evidence)`, and `驗證(validation)`.
-- After the term is established in the same report or section, later uses may
-  use Traditional Chinese alone if no precision is lost.
+- Do not automatically append English to a Chinese term. Show the exact
+  English name only when it is necessary for an instruction, file search,
+  version check, error lookup, or other concrete reader action.
 - Exact identifiers remain exact and must not be translated or written back as
   Chinese. Examples include `tokens`, `Codex`, paths, commands, schema keys,
   canonical field names, API names, package names, hook event names, status
@@ -165,6 +185,24 @@ the listed order and do not alter any locked field.
 - English-led summaries fail the Director-readable gate even when the facts are otherwise correct.
 - Column-list-led, path-only, or canonical-field-list summaries fail the same gate.
 
+### Technical Detail Boundary
+
+- The primary response uses no unnecessary English technical vocabulary. Keep
+  a paragraph to at most one necessary English precision token and the primary
+  response to at most three; move additional exact names to the appendix.
+- Do not begin a general reply with a canonical state, field name, path, hash,
+  command result, stage, board, station, handoff, trace, YAML, or JSON.
+- Never paste a complete internal artifact, raw YAML/JSON, a raw field list,
+  complete test output, or a path list as the main explanation.
+- Include `## 技術資料（需要時再看）` only when the Director asks for detail,
+  needs exact operating information, an error needs precise text, a protected
+  action is imminent, or omitting evidence would mislead. Keep it to five
+  relevant items by default and place it after the plain-language result.
+- Canonical status display labels are owned by
+  `Shared/policies/references/status-ontology.md`. Use the Chinese meaning by
+  default; include the canonical English status only when that exact token is
+  needed for diagnosis or evidence.
+
 ## Captain Integration And Director Output Gate
 
 - This section is the sole owner of the complete Director-facing synthesis order and evidence-appendix boundary.
@@ -176,12 +214,20 @@ the listed order and do not alter any locked field.
 - They are not Director-facing reports.
 - Before any Director-facing status, plan, handoff, review, risk explanation, or completion report, the reporting owner must synthesize.
 - The synthesis must turn direct evidence or received artifacts into Traditional Chinese meaning-first prose.
-- The required visible main-body order is: current conclusion/status -> next step -> authorization boundary -> evidence. For a progress, status, or completion update, expand `current conclusion/status` in this order: actual work completed since the previous visible report -> practical impact -> remaining work -> current blocker or risk.
+- The required visible main-body order is: current result -> practical impact
+  -> remaining issue or risk -> reader action. For a progress, status, or
+  completion update, state actual completed work before its effect, then name
+  the remaining work, blocker, or risk without exposing the internal artifact.
 - If no work has actually completed since the previous visible report, say so directly. Started work, dispatch, board updates, station activity, identifiers, and internal routing are not completed progress by themselves.
-- After the plain-language progress sequence, name the smallest next step and any missing authorization or out-of-scope limit. Only then add evidence, paths, fields, hashes, or internal state.
+- After the plain-language progress sequence, name the smallest next step and
+  any missing authorization or out-of-scope limit. Only then add evidence,
+  paths, fields, hashes, or internal state when the Technical Detail Boundary
+  permits it.
 - The visible main body must start with Traditional Chinese plain meaning about outcome, impact, risk, and next action.
 - Internal fields, exact identifiers, paths, hashes, canonical states, and tool output may appear only as supporting precision after that explanation or in a clearly labeled evidence appendix.
-- Each appendix table or list must use a Traditional Chinese label first; canonical identifiers may follow as precision, such as `授權階段（authorization_phase）`.
+- Each appendix table or list must use a Traditional Chinese label first;
+  canonical identifiers may follow as precision, such as
+  `授權階段（authorization_phase）`.
 - Engineering labels such as `blocked`, `HALT`, `station_mode`, `authorization_phase`, or handoff IDs must not lead the report.
 - Do not paste or lightly wrap internal artifacts as the main body.
 - Do not paste or lightly wrap English field tables, English workflow phrases, or specialist raw output as the main body.
@@ -221,6 +267,15 @@ the listed order and do not alter any locked field.
 - This gate affects reporting readiness only; it does not alter source truth, validation results, review results, memory/docs disposition, or protected-action authorization.
 - Completion, review, validation, memory/docs, and change-delivery skills may return raw artifact fields to the captain.
 - Those fields are not the Director-facing body and must be synthesized before being shown to the Director.
+
+### Beginner Readability Check
+
+- Before sending a user-visible response, confirm internally that the result,
+  practical impact, remaining issue, and reader action are clear; raw internal
+  fields and YAML/JSON do not lead the body; unnecessary English and internal
+  role terms are absent; and uncertainty and risks remain visible.
+- If any check fails, rewrite the response before sending it. This check is
+  internal behavior, not a user-visible artifact or a new machine field.
 
 ### Plain-Language Precision Contract
 

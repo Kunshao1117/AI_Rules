@@ -118,6 +118,9 @@ rendering and evidence appendix handling are governed by
 handoff fields, not final validation, review, memory/docs, or completion states.
 Use canonical English keys in the artifact; Chinese labels are a Director-facing
 rendering concern only.
+The same separation applies when a Direct route supplies its own implementation
+evidence: raw delivery fields remain internal and the user-visible reply still
+uses the language-governance beginner-facing contract.
 `memory_docs_handoff` is a mandatory downstream handoff for source, workflow,
 skill, governance, or documentation changes. Together with `memory_closure_handoff`, it routes
 read-only disposition and the later closure owner only; it does not authorize memory mutation,

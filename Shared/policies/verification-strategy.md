@@ -99,11 +99,14 @@ classified issue to the existing fix, debug, build, or explore path.
 
 ## Review Rendering
 
-One concentrated independent review covers the selected scope. Its
-Director-facing terminal rendering is exactly `pass`, `pass_with_followups`,
-or `block`. A single recheck is permitted only for the declared blockers from
-that review; do not start an unbounded re-review loop. Review lifecycle fields
-and delivery artifacts stay with their specialist owners.
+One concentrated independent review covers the selected scope. Its internal
+terminal decision is exactly `pass`, `pass_with_followups`, or `block`.
+User-visible wording is synthesized through
+`Shared/policies/language-governance.md` and the status display labels in
+`status-ontology.md`; never lead a general reply with those raw values. A
+single recheck is permitted only for the declared blockers from that review;
+do not start an unbounded re-review loop. Review lifecycle fields and delivery
+artifacts stay with their specialist owners.
 
 ## Direct And Formal Trace Boundaries
 

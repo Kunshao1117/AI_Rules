@@ -4,7 +4,7 @@ scopePath: Shared/skills/team-completion-gate/
 description: >
   專案記憶：Team-Native completion evidence 與收尾。Use when: task touches this split
   memory scope or its tracked files.
-last_updated: '2026-07-24T16:46:26+08:00'
+last_updated: '2026-07-27T08:21:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -38,6 +38,7 @@ metadata:
 
 - Owns Team-Native completion gate and its evidence contract.
 - This child owns the listed concrete source files after the 2026-07-24 split.
+- Closeout fields remain internal evidence; user-visible completion wording is owned by shared language governance and applies even when Direct work does not use this Team gate.
 
 ## Active Constraints
 
@@ -47,6 +48,7 @@ metadata:
 ## Cycle Events
 
 - 01: Created during the authorized memory split after current-source verification.
+- 02: Kept Team closeout evidence internal and centralized beginner-facing completion wording in language governance.
 
 ## Archive Index
 
@@ -71,6 +73,7 @@ metadata:
 
 - Team-Native completion evidence 與收尾。
 - 具體檔案歸屬已由父卡移入此子卡。
+- 對外完成回覆不直接貼收尾欄位，並與 Direct 使用相同白話規則。
 
 ## Tracked Files
 

@@ -34,22 +34,13 @@ trigger: always_on
 
 ## 2. Director Output And Grounding Minimum（總監輸出與接地查證最低契約）
 
-- Director-facing text MUST start from plain-language meaning in Traditional Chinese.
-- Technical identifiers appear only as supporting evidence, location, or precision after the Chinese meaning.
-- Routine discussion and short status updates may stay concise.
-- Structured summaries or compact tables are required for implementation plans, pre-write risk reviews, and multi-file changes.
-- Structured summaries or compact tables are also required for completion summaries, audit reports, and handoffs.
-- Example compact table: `事項 | 位置 | 影響 | 狀態`.
-- The `位置` column MUST name concrete files, sections, tool/status scopes, or directory scopes.
-- Compact scope labels must resolve to concrete file or section evidence.
-- High-change or external facts MUST be grounded in current local files, tool output, official documentation, or primary sources.
-- This includes dates, APIs, versions, constraints, and risk assumptions.
-- Memory and internal model knowledge are possibly stale.
-- Do not treat memory or internal model knowledge as verified or current without grounding.
-- If verification is unavailable, report the missing evidence instead of presenting assumptions as current fact.
-- Detailed language-layer classification and exact-evidence handling are governed by `Shared/policies/language-governance.md`.
-- Detailed freshness, source-tier, conflict, and grounding rules are governed by `Shared/policies/grounding-governance.md`.
-- Deployed projects read the matching `.agents/shared/policies/` copies.
+- All user-visible wording, reading level, technical-detail boundaries, and
+  report structure are governed only by
+  `Shared/policies/language-governance.md`. This core does not define a second
+  report format; internal artifacts are synthesized before they are shown.
+- Freshness, source-tier, conflict, and grounding rules are governed by
+  `Shared/policies/grounding-governance.md`. Deployed projects read the
+  matching `.agents/shared/policies/` copies.
 
 ## 3. Team-Native And Authorization Minimum
 

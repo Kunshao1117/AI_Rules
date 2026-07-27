@@ -58,10 +58,12 @@ The reviewer checks whether the change delivery fits the request and project rul
 
 The structure below is an internal review delivery artifact for captain receipt
 and trace evidence. It is not the Director-facing report body. When its content
-is surfaced to the Director, synthesize a Traditional Chinese meaning-first
-summary and place exact canonical fields only in a clearly labeled evidence
-appendix. Use canonical English keys in the artifact; Chinese labels are a
-Director-facing rendering concern only.
+is surfaced to the Director, synthesize it through the beginner-facing rules in
+`Shared/policies/language-governance.md`; exact canonical fields belong only in
+a clearly labeled technical appendix when needed. Use canonical English keys in
+the artifact; Chinese labels are a Director-facing rendering concern only. A
+Direct route uses the same display rule without pretending its evidence is this
+Team artifact.
 
 ```text
 findings:

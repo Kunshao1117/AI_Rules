@@ -81,4 +81,40 @@ Describe 'Source deployment parity' {
             if ($sourceHash -ne $targetHash) { throw "SHA256 mismatch after sync: $($pair.Source)" }
         }
     }
+
+    It 'keeps beginner-facing reporting centralized while runtime copies remain exact' {
+        $pairs = @(
+            @{ Source = 'Shared\policies\language-governance.md'; Runtime = '.agents\shared\policies\language-governance.md' },
+            @{ Source = 'Shared\policies\references\status-ontology.md'; Runtime = '.agents\shared\policies\references\status-ontology.md' },
+            @{ Source = 'Shared\skills\quality-review-governance\SKILL.md'; Runtime = '.agents\skills\quality-review-governance\SKILL.md' },
+            @{ Source = 'Shared\skills\team-completion-gate\SKILL.md'; Runtime = '.agents\skills\team-completion-gate\SKILL.md' },
+            @{ Source = 'Shared\skills\team-change-delivery-artifact\SKILL.md'; Runtime = '.agents\skills\team-change-delivery-artifact\SKILL.md' },
+            @{ Source = 'Shared\skills\team-review-delivery-artifact\SKILL.md'; Runtime = '.agents\skills\team-review-delivery-artifact\SKILL.md' },
+            @{ Source = 'Shared\skills\team-validation-delivery-artifact\SKILL.md'; Runtime = '.agents\skills\team-validation-delivery-artifact\SKILL.md' }
+        )
+
+        foreach ($pair in $pairs) {
+            $sourcePath = Join-Path $repoRoot $pair.Source
+            $runtimePath = Join-Path $repoRoot $pair.Runtime
+            if ((Get-FileHash -LiteralPath $sourcePath -Algorithm SHA256).Hash -ne (Get-FileHash -LiteralPath $runtimePath -Algorithm SHA256).Hash) {
+                throw "Source/runtime reporting parity failed: $($pair.Source)"
+            }
+        }
+
+        $languagePolicy = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\language-governance.md') -Raw
+        foreach ($requiredRule in @('### User-Visible Response Boundary', '### Technical Detail Boundary', '### Beginner Readability Check', 'This boundary applies equally to Direct and delegated work.')) {
+            if (-not $languagePolicy.Contains($requiredRule)) { throw "Language governance is missing: $requiredRule" }
+        }
+        if ($languagePolicy.Contains('must be introduced as `繁體中文(English)`')) { throw 'Language governance still requires automatic English parentheticals.' }
+
+        $statusOntology = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\references\status-ontology.md') -Raw
+        foreach ($requiredLabel in @('`pass_with_followups` | 已完成，另有不影響目前結果的後續建議', '`block` | 目前無法繼續')) {
+            if (-not $statusOntology.Contains($requiredLabel)) { throw "Status display label is missing: $requiredLabel" }
+        }
+
+        foreach ($platformCore in @('Codex\.codex\AGENTS.md', 'Claude\.claude\rules\core-identity.md', 'Antigravity\.agents\rules\00_core_identity.md')) {
+            $content = Get-Content -LiteralPath (Join-Path $repoRoot $platformCore) -Raw
+            if (-not $content.Contains('Shared/policies/language-governance.md')) { throw "Platform core is missing the language-policy pointer: $platformCore" }
+        }
+    }
 }

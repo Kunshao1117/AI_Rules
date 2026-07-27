@@ -4,7 +4,7 @@ scopePath: Shared/policies/references/
 description: >-
   專案記憶：執行、相容性與 workspace bootstrap 參考契約。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T03:08:39+08:00'
+last_updated: '2026-07-27T08:21:14+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.team-native-core.policy-execution — Module Memory
 
 ## Current Truth
@@ -41,6 +42,7 @@ metadata:
 - Managed upgrade cleanup may retire only the complete exact-hash legacy Team hook set; a modified artifact preserves the full set and requires manual action.
 - Formal trace and deep audit are conditional routes for delegated, protected, release, migration, or explicit audit contexts, not ordinary Direct completion requirements.
 - The workspace bootstrap reference resolves existing instructions, module boundaries, path classes, contracts, and commands uniformly for AI_Rules and other repositories.
+- Status ontology preserves canonical English values while providing Chinese user-visible labels; a display label never changes the underlying state.
 
 ## Active Constraints
 
@@ -51,6 +53,7 @@ metadata:
 ## Cycle Events
 
 - 03: Replaced the legacy active-hook lifecycle catalog with the default-hook boundary and managed legacy-cleanup contract.
+- 04: Added beginner-facing Chinese status labels without changing canonical machine values or completion honesty.
 
 ## Archive Index
 
@@ -76,6 +79,7 @@ metadata:
 - Codex hook capability 仍存在，但 AI_Rules 預設不部署 repository-local Team hook；Direct/delegated 由 canonical policy 決定。
 - legacy hook 只可在完整 exact-hash set 符合時清理；任一使用者修改即保留整組並要求手動處理。
 - lifecycle/advisory 輸出不會授權或啟動 Team；正式 trace 仍只適用於對應的 delegated/protected 路徑。
+- 對外顯示狀態先用白話中文；英文 machine value 只在查錯或確認證據時補充。
 
 ## Tracked Files
 

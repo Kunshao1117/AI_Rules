@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 品質閘門、安全可靠性與 UI/UX 標準技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T00:02:51+08:00'
+last_updated: '2026-07-27T08:21:15+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -32,12 +32,13 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
+
 # _shared.ops-skills.quality-ui — Quality and UI Skills Memory
 
 ## Current Truth
 
 - Owns Shared quality, intent-alignment, review, security/SRE, UI exploration, and UI/UX skills.
-- Quality and review skills provide conditional procedure; terminal review decisions are canonical policy states: `pass`, `pass_with_followups`, or `block`.
+- Quality and review skills provide conditional procedure; terminal review decisions remain canonical internal policy states and are synthesized into beginner-facing zh-TW before user display.
 - Review is bounded to one consolidated pass and one blocker recheck; Direct work does not require a Team board or independent review unless impact, risk, or topology activates it.
 - UI and security claims require surface-appropriate real evidence; mock, fixture, static, or generated-reference evidence remains limited.
 
@@ -49,6 +50,7 @@ metadata:
 ## Cycle Events
 
 - 13: Reconciled quality and review skills with bounded decisions, Direct-first completion, and conditional specialist evidence.
+- 14: Made review fields internal evidence and routed both Direct and delegated review wording through language governance.
 
 ## Archive Index
 
@@ -72,7 +74,7 @@ metadata:
 
 ## 中文摘要
 
-- Quality/review skill 提供 procedure；完成決定仍由 policy 的三種結果擁有。
+- Quality/review skill 的欄位是內部依據；對外先用白話中文說結果與影響。
 - Review 僅一輪加一次 blocker recheck。
 - UI 與安全主張要使用對應真實 evidence，mock 或 screenshot 有明確限制。
 

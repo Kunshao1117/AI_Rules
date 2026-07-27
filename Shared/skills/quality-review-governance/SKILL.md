@@ -146,6 +146,12 @@ When the Review Timing Gate returns YES, report these canonical fields:
 - disposition: required fix, accepted risk, non-issue, or blocker.
 - review_basis: tests, audits, real operation evidence, or stated limitation.
 
+These fields are an internal review artifact. They must not be copied into a
+user-visible report. The reporting owner uses
+`Shared/policies/language-governance.md` to explain the practical result,
+impact, remaining concern, and next action in beginner-friendly Traditional
+Chinese. This applies to both Direct evidence and delegated review.
+
 ## Terminal Rendering Boundary
 
 This skill owns the internal review lifecycle and procedure, not the generic
@@ -184,8 +190,9 @@ The review station remains responsible for:
 
 The completion or release station remains responsible for readiness checks
 against returned review, validation, memory/docs, sync, and authorization
-evidence. The captain synthesizes the Director-facing report and routes
-blockers; captain/orchestration-channel synthesis does not upgrade review disposition,
+evidence. The reporting owner synthesizes the user-visible report and routes
+blockers; in delegated work this is the captain, while Direct work synthesizes
+its own bounded evidence. Synthesis does not upgrade review disposition,
 perform protected mutation, or replace owner-station readiness evidence.
 
 ## Constraints

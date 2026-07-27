@@ -46,6 +46,38 @@ with a same-scope completion claim.
 `not-applicable` is not success. It removes a field or station from the current
 scope only when the reason is concrete and traceable.
 
+## User-Visible Status Labels
+
+Canonical status values remain English in machine fields, artifacts, and
+traces. The following Chinese labels are for user-visible synthesis only; do
+not write them back into any machine value.
+
+| Canonical value | Default user-visible meaning |
+|---|---|
+| `complete` | 已完成 |
+| `sufficient` | 已有足夠資料確認 |
+| `partial` | 已完成一部分 |
+| `blocked` | 目前無法繼續 |
+| `unverified` | 尚未確認 |
+| `no-evidence` | 沒有找到足夠資料 |
+| `conflicted` | 目前資料互相矛盾 |
+| `closed-with-director-risk` | 已在清楚說明已知風險後結束 |
+| `not-applicable` | 這次不需要 |
+| `pending` | 等待處理 |
+| `running` | 處理中 |
+| `returned` | 已取得結果，正在整理 |
+| `not-authorized` | 尚未取得操作同意 |
+| `unavailable` | 目前無法使用 |
+| `pass` | 已確認沒有阻擋問題 |
+| `pass_with_followups` | 已完成，另有不影響目前結果的後續建議 |
+| `block` | 目前無法繼續 |
+
+Do not show both languages by default. The exact English token belongs after
+the Chinese explanation only when it helps the reader diagnose or verify an
+issue. A non-complete value, including `pass_with_followups` when its named
+follow-up affects the current result, must never be presented as unconditional
+completion.
+
 ## Route And State Separation
 
 These values must not appear in route or channel fields:
@@ -75,5 +107,5 @@ They may narrow, reroute, verify, or risk-close the gap. They must not silently
 upgrade `partial`, `blocked`, `unverified`, `no-evidence`, or `conflicted` to
 verified language.
 
-Director-facing reports explain the meaning in Traditional Chinese first, then
-include the canonical status in parentheses only when precision is needed.
+Director-facing reports explain the meaning in plain Traditional Chinese first,
+then include the canonical status only when its exact token is needed.

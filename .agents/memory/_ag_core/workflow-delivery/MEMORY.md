@@ -4,7 +4,7 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台入口、核心規則與交付工作流。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T00:02:49+08:00'
+last_updated: '2026-07-27T08:21:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -32,6 +32,7 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
+
 # _ag_core.workflow-delivery — Module Memory
 
 ## Current Truth
@@ -39,6 +40,7 @@ metadata:
 - Owns Antigravity adapter entrypoints, core rule sources, and delivery workflow files listed below.
 - `07_debug` narrows a failure and routes broad uncertainty to Explore or Blueprint; deep audit remains conditional.
 - Local writes remain distinct from protected actions such as release, deployment, installation, credential change, or destructive mutation.
+- The Antigravity core points to shared language governance for all user-visible reporting instead of defining its own report format.
 
 ## Active Constraints
 
@@ -48,6 +50,7 @@ metadata:
 ## Cycle Events
 
 - 02: Reconciled `07_debug` with Direct-first routing and conditional deep-audit semantics.
+- 03: Reduced the Antigravity core to the shared beginner-facing reporting pointer and kept internal artifacts out of user replies.
 
 ## Archive Index
 
@@ -72,6 +75,7 @@ metadata:
 - 此卡負責 Antigravity 平台與交付 workflow。
 - Debug 先縮小問題；大範圍不確定性轉向 Explore 或 Blueprint。
 - 受保護操作仍須獨立授權。
+- Antigravity 對外回覆以 Shared 的初學者白話規則為準。
 
 ## Tracked Files
 

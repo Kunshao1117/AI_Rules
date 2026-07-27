@@ -4,7 +4,7 @@ scopePath: Claude/.claude/
 description: >
   專案記憶：Claude 平台核心、規則與交付指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-24T16:46:23+08:00'
+last_updated: '2026-07-27T08:21:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -36,7 +36,7 @@ metadata:
 
 ## Current Truth
 
-- Owns the Claude adapter bootstrap, core rules, and governed delivery commands.
+- Owns the Claude adapter bootstrap, core rules, and governed delivery commands; its core keeps only a pointer to the shared user-visible reporting policy.
 
 ## Active Constraints
 
@@ -45,6 +45,7 @@ metadata:
 ## Cycle Events
 
 - 01: Created during the 2026-07-24 authorized memory split after current-source verification.
+- 02: Reduced the Claude core to the shared beginner-facing reporting pointer so it does not define a competing format.
 
 ## Archive Index
 
@@ -69,6 +70,7 @@ metadata:
 
 - Claude 平台核心、規則與交付指令。
 - 具體檔案歸屬已由父卡移入此子卡。
+- Claude 的對外回覆格式以 Shared 語言規則為唯一來源。
 - 現行來源優先於本卡摘要。
 
 ## Tracked Files
