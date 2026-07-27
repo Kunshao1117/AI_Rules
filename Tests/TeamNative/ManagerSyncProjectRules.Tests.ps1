@@ -166,20 +166,44 @@ function New-ManagerSyncIntegrationFixture {
     }
 }
 
+function New-ManagerAutoSyncFixture {
+    param([string]$Root)
+
+    $fixture = New-ManagerSyncIntegrationFixture -Root $Root
+    foreach ($sourceName in @('Antigravity', 'Claude')) {
+        $sourcePath = Join-Path $repoRoot $sourceName
+        if (-not (Test-Path -LiteralPath $sourcePath)) { throw "Auto-sync integration source fixture is missing: $sourcePath" }
+        Copy-Item -LiteralPath $sourcePath -Destination $fixture.RepoRoot -Recurse -Force
+    }
+
+    New-Item -ItemType Directory -Force -Path `
+        (Join-Path $fixture.ProjectRoot '.agents\rules'), `
+        (Join-Path $fixture.ProjectRoot '.claude\rules') | Out-Null
+
+    $null = Invoke-ManagerSyncFixtureGit -RepositoryRoot $fixture.RepoRoot -Arguments @('add', '--all')
+    $null = Invoke-ManagerSyncFixtureGit -RepositoryRoot $fixture.RepoRoot -Arguments @('commit', '--quiet', '-m', 'enable all platform sync fixture')
+    return $fixture
+}
+
 function Invoke-ManagerSyncIntegrationFixture {
-    param([object]$Fixture)
+    param(
+        [object]$Fixture,
+        [ValidateSet('Auto', 'Codex', 'Claude', 'Antigravity')]
+        [string]$ProjectPlatform = 'Codex'
+    )
 
     $runnerPath = Join-Path (Split-Path $Fixture.RepoRoot -Parent) 'run-manager-sync.ps1'
     $runnerContent = @'
 param(
     [string]$ManagerScript,
     [string]$RepositoryRoot,
-    [string]$ProjectRoot
+    [string]$ProjectRoot,
+    [string]$ProjectPlatform
 )
 
 $ErrorActionPreference = 'Stop'
 try {
-    $successOutput = @(& $ManagerScript -Action SyncProjectRules -RepoRoot $RepositoryRoot -Target $ProjectRoot -ProjectPlatform Codex -Apply)
+    $successOutput = @(& $ManagerScript -Action SyncProjectRules -RepoRoot $RepositoryRoot -Target $ProjectRoot -ProjectPlatform $ProjectPlatform -Apply)
     $requiredStageResultObjects = @($successOutput | Where-Object {
         $null -ne $_ -and $null -ne $_.PSObject.Properties['RequiredStageResults']
     })
@@ -207,7 +231,8 @@ try {
         $output = @(& $powershellPath -NoProfile -ExecutionPolicy Bypass -File $runnerPath `
             -ManagerScript (Join-Path $Fixture.RepoRoot 'Scripts\AI-RulesManager.ps1') `
             -RepositoryRoot $Fixture.RepoRoot `
-            -ProjectRoot $Fixture.ProjectRoot 2>&1)
+            -ProjectRoot $Fixture.ProjectRoot `
+            -ProjectPlatform $ProjectPlatform 2>&1)
         $exitCode = $LASTEXITCODE
     } finally {
         $ErrorActionPreference = $previousErrorActionPreference
@@ -355,6 +380,48 @@ Describe 'Manager project rule sync real-path integration' {
         $normalizedTargetCore = $targetCore -replace "`r`n|`r", "`n"
         if ($normalizedTargetCore.IndexOf($generatedPointer, [System.StringComparison]::Ordinal) -lt 0) {
             throw 'Real-path Codex sync did not retain the generated policy pointer.'
+        }
+    }
+
+    It 'syncs every installed platform through its adapter during Auto selection' {
+        $fixture = New-ManagerAutoSyncFixture -Root $script:realTempRoot
+
+        $process = Invoke-ManagerSyncIntegrationFixture -Fixture $fixture -ProjectPlatform Auto
+        if ($process.ExitCode -ne 0) {
+            throw "Valid Auto sync must exit zero; received $($process.ExitCode): $($process.Output | Out-String)"
+        }
+        if (-not $process.Payload.Succeeded) {
+            throw 'Valid Auto sync did not complete successfully.'
+        }
+
+        $adapterTargets = @(
+            [PSCustomObject]@{
+                Platform = 'Antigravity'
+                Path = Join-Path $fixture.ProjectRoot '.agents\rules\00_core_identity.md'
+                ExpectedText = '### Shared Subagent Invocation Policy (Antigravity / Gemini adapters)'
+            },
+            [PSCustomObject]@{
+                Platform = 'Claude'
+                Path = Join-Path $fixture.ProjectRoot '.claude\rules\core-identity.md'
+                ExpectedText = '### Shared Subagent Invocation Policy (Claude Code subagents)'
+            },
+            [PSCustomObject]@{
+                Platform = 'Codex'
+                Path = Join-Path $fixture.ProjectRoot '.codex\AGENTS.md'
+                ExpectedText = 'Shared/policies/adapters/codex-subagent-invocation.md'
+            }
+        )
+        foreach ($adapterTarget in $adapterTargets) {
+            if (-not (Test-Path -LiteralPath $adapterTarget.Path -PathType Leaf)) {
+                throw "$($adapterTarget.Platform) Auto sync did not produce its policy target: $($adapterTarget.Path)"
+            }
+            $content = Get-Content -LiteralPath $adapterTarget.Path -Raw -Encoding UTF8
+            if ($content -notmatch '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->') {
+                throw "$($adapterTarget.Platform) Auto sync did not retain the shared policy marker."
+            }
+            if ($content.IndexOf($adapterTarget.ExpectedText, [System.StringComparison]::Ordinal) -lt 0) {
+                throw "$($adapterTarget.Platform) Auto sync did not use its platform adapter."
+            }
         }
     }
 

@@ -280,16 +280,18 @@ function Assert-ManagerProjectSyncPreflight {
     foreach ($platform in $Platforms) {
         $sourceRoot = ''
         $versionPath = ''
-        $policyPath = Join-Path $RepoRoot 'Shared\policies\subagent-invocation.md'
+        $policyPath = ''
 
         switch ($platform) {
             'Antigravity' {
                 $sourceRoot = Join-Path $RepoRoot 'Antigravity\.agents'
                 $versionPath = Join-Path $RepoRoot 'Antigravity\VERSION'
+                $policyPath = Join-Path $RepoRoot 'Shared\policies\adapters\antigravity-subagent-invocation.md'
             }
             'Claude' {
                 $sourceRoot = Join-Path $RepoRoot 'Claude\.claude'
                 $versionPath = Join-Path $RepoRoot 'Claude\VERSION'
+                $policyPath = Join-Path $RepoRoot 'Shared\policies\adapters\claude-subagent-invocation.md'
             }
             'Codex' {
                 $sourceRoot = Join-Path $RepoRoot 'Codex\.codex'
@@ -333,7 +335,7 @@ function Invoke-ManagerSyncAntigravityProjectRules {
     $version = Get-VersionContent -Path (Join-Path $RepoRoot "Antigravity\VERSION")
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $projectToolsRoot = Join-Path $sharedRoot "project-tools"
-    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\antigravity-subagent-invocation.md"
     $report = @(Get-UpgradeReport `
         -SourceRoot $sourceRoot `
         -TargetRoot $agTargetRoot `
@@ -384,7 +386,7 @@ function Invoke-ManagerSyncClaudeProjectRules {
     $version = Get-VersionContent -Path (Join-Path $RepoRoot "Claude\VERSION")
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $projectToolsRoot = Join-Path $sharedRoot "project-tools"
-    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\subagent-invocation.md"
+    $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\claude-subagent-invocation.md"
     $report = @(Get-UpgradeReport `
         -SourceRoot $sourceRoot `
         -TargetRoot $claudeTargetRoot `
