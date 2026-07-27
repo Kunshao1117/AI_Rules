@@ -50,6 +50,15 @@ function Get-NormalizedPlatformCore {
     return ($content -replace "`r`n", "`n").Trim()
 }
 
+function Get-NormalizedText {
+    param([Parameter(Mandatory = $true)][string]$RelativePath)
+
+    # Deployment can preserve a source file while normalizing its line endings.
+    # Compare text after that transport-only normalization; all other characters
+    # must still match exactly.
+    return ((Get-RequiredText $RelativePath) -replace "`r`n", "`n")
+}
+
 Describe 'Non-engineer UX contract' {
     BeforeAll {
         $script:readme = Get-RequiredText 'README.md'
@@ -156,15 +165,11 @@ Describe 'Non-engineer UX contract' {
             }
         }
 
-        $sourcePolicy = Join-Path $repoRoot 'Shared\policies\language-governance.md'
-        $runtimePolicy = Join-Path $repoRoot '.agents\shared\policies\language-governance.md'
-        if ((Get-FileHash -LiteralPath $sourcePolicy -Algorithm SHA256).Hash -ne (Get-FileHash -LiteralPath $runtimePolicy -Algorithm SHA256).Hash) {
+        if ((Get-NormalizedText 'Shared\policies\language-governance.md') -cne (Get-NormalizedText '.agents\shared\policies\language-governance.md')) {
             throw 'Source/runtime UX parity failed: Shared language-governance policy.'
         }
 
-        $sourceExamples = Join-Path $repoRoot 'Shared\policies\references\user-facing-output-examples.md'
-        $runtimeExamples = Join-Path $repoRoot '.agents\shared\policies\references\user-facing-output-examples.md'
-        if ((Get-FileHash -LiteralPath $sourceExamples -Algorithm SHA256).Hash -ne (Get-FileHash -LiteralPath $runtimeExamples -Algorithm SHA256).Hash) {
+        if ((Get-NormalizedText 'Shared\policies\references\user-facing-output-examples.md') -cne (Get-NormalizedText '.agents\shared\policies\references\user-facing-output-examples.md')) {
             throw 'Source/runtime UX parity failed: representative user-facing examples.'
         }
     }
@@ -188,6 +193,7 @@ Describe 'Non-engineer UX contract' {
                 'pull_request:',
                 'push:',
                 'windows-latest',
+                'shell: pwsh',
                 'fetch-depth: 0',
                 'Test-TeamNativeV2.ps1',
                 'git diff --check',

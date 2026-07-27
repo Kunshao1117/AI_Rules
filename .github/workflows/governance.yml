@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest
     defaults:
       run:
-        shell: powershell
+        shell: pwsh
 
     steps:
       - name: Checkout complete history
