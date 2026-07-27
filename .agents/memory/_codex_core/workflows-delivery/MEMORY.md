@@ -4,14 +4,14 @@ scopePath: Codex/.agents/workflow-skills/
 description: >
   專案記憶：Codex 交付、修復與交接工作流。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-24T16:46:24+08:00'
+last_updated: '2026-07-27T20:49:28+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-24T13:46:00+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -41,10 +41,12 @@ metadata:
 ## Active Constraints
 
 - Workflow entries remain route selectors and never grant protected authority.
+- Build, fix, and debug entries use existing intent, overreach, drift, and retry controls; they do not retain generic reflection gates.
 
 ## Cycle Events
 
 - 01: Created during the 2026-07-24 authorized memory split after current-source verification.
+- 02: Verified Codex build, fix, and debug routing after the Phase 1 governance migration.
 
 ## Archive Index
 
@@ -54,6 +56,7 @@ metadata:
 
 - source:Codex/.agents/workflow-skills/02-blueprint-架構/SKILL.md
 - source:Codex/.agents/workflow-skills/11-handoff-交接/SKILL.md
+- source:Codex/.agents/workflow-skills/03-build-建構/SKILL.md, Codex/.agents/workflow-skills/04-fix-修復/SKILL.md, and Codex/.agents/workflow-skills/07-debug-除錯/SKILL.md
 - tool:memory_status — Existing owner scope verified before split.
 
 ## Read Contract

@@ -4,14 +4,14 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台入口、核心規則與交付工作流。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T08:21:16+08:00'
+last_updated: '2026-07-27T20:49:28+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-26T16:36:58+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -41,6 +41,7 @@ metadata:
 - `07_debug` narrows a failure and routes broad uncertainty to Explore or Blueprint; deep audit remains conditional.
 - Local writes remain distinct from protected actions such as release, deployment, installation, credential change, or destructive mutation.
 - The Antigravity core points to shared language governance for all user-visible reporting instead of defining its own report format.
+- Its always-on user-facing rule keeps plain zh-TW and distinct work states, while detailed wording remains in the shared policy.
 
 ## Active Constraints
 
@@ -51,6 +52,7 @@ metadata:
 
 - 02: Reconciled `07_debug` with Direct-first routing and conditional deep-audit semantics.
 - 03: Reduced the Antigravity core to the shared beginner-facing reporting pointer and kept internal artifacts out of user replies.
+- 04: Verified the minimal always-on reporting rule after the non-engineer UX update.
 
 ## Archive Index
 
@@ -60,6 +62,7 @@ metadata:
 
 - source:Antigravity/.agents/workflows/07_debug(除錯).md
 - source:Shared/policies/execution-routing.md and Shared/policies/verification-strategy.md
+- source:Antigravity/.agents/rules/00_core_identity.md and Shared/policies/language-governance.md
 
 ## Read Contract
 

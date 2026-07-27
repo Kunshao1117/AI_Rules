@@ -4,14 +4,14 @@ scopePath: Shared/policies/
 description: >-
   專案記憶：Progressive Assurance 核心政策與 Team-Native 邊界。Use when: task touches this
   split memory scope or its tracked files.
-last_updated: '2026-07-27T08:21:15+08:00'
+last_updated: '2026-07-27T20:49:31+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-27T03:07:18+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -43,6 +43,7 @@ metadata:
 - Requirement provenance distinguishes explicit, inferred, unknown, and conflict. Project context is resolved uniformly for AI_Rules and consumer repositories without an identity branch.
 - Task capability assessment separates platform capability, model/task fit, tool availability, requested configuration, accepted configuration, and observed applied receipts.
 - `verification-strategy` owns test admission and minimum-sufficient evidence; `implementation-stability` owns compatibility and coherent-patch boundaries; authorization owns protected actions.
+- A captain may synthesize existing evidence for the Director, but may not author, replace, or upgrade station-owned completion evidence.
 
 ## Active Constraints
 
@@ -54,6 +55,7 @@ metadata:
 
 - 02: Reconciled the canonical policy core with merged Direct-first Progressive Assurance and uniquely attributed six new source files.
 - 03: Routed Direct and review-result display through the shared beginner-facing language contract without changing canonical evidence values.
+- 04: Clarified captain reporting, evidence ownership, and claim-driven progressive Team activation.
 
 ## Archive Index
 
@@ -66,6 +68,7 @@ metadata:
 - source:Shared/policies/project-context-resolution.md and Shared/policies/task-capability-assessment.md
 - source:Shared/policies/verification-strategy.md and Shared/policies/implementation-stability.md
 - source:Shared/policies/authorization-resolution.md, Shared/policies/team-native-core.md, Shared/policies/team-trace-evidence.md, Shared/policies/subagent-invocation.md, and Shared/policies/workflow-orchestration.md
+- source:Shared/policies/references/team-native-core-captain-boundary.md and Shared/policies/references/team-native-core-delivery-slice.md
 
 ## Read Contract
 

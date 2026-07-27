@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >
   專案記憶：Team-Native 受保護記憶收尾契約。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-24T13:54:43+08:00'
+last_updated: '2026-07-27T20:52:33+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -38,6 +38,7 @@ metadata:
 
 - Owns memory-closure delivery and specialist contracts, distinct from read-only memory-docs.
 - This child owns the listed concrete source files after the 2026-07-24 split.
+- User-facing output examples preserve a plain-language first layer while retaining status meaning and optional technical evidence.
 
 ## Active Constraints
 
@@ -47,6 +48,7 @@ metadata:
 ## Cycle Events
 
 - 01: Created during the authorized memory split after current-source verification.
+- 02: Recorded the user-facing output examples reference as an owned memory-closure source.
 
 ## Archive Index
 
@@ -56,6 +58,7 @@ metadata:
 
 - source:Shared/skills/team-memory-closure-delivery-artifact/SKILL.md
 - source:Shared/skills/team-specialist-memory-closure/SKILL.md
+- source:Shared/policies/references/user-facing-output-examples.md
 - tool:memory_status — Existing owner scope verified before split.
 
 ## Read Contract
@@ -78,6 +81,7 @@ metadata:
 - Shared/skills/team-specialist-memory-closure/SKILL.md
 
 - Shared/policies/references/memory-closure-bundle-contract.md
+- Shared/policies/references/user-facing-output-examples.md
 
 ## Relations
 

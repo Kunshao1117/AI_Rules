@@ -4,14 +4,14 @@ scopePath: Shared/skills/
 description: >
   專案記憶：Shared 發布治理、結構化推理與技術堆疊協議技能。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-24T16:19:46+08:00'
+last_updated: '2026-07-27T20:52:33+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-24T13:42:00+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -37,7 +37,7 @@ metadata:
 ## Current Truth
 
 - This card owns Shared plugin-release governance, structured reasoning, and technology-stack protocol skills.
-- coding-reflection-gate and design-reflection-gate are read-only route gates; neither grants write or protected-action authority.
+- Standalone coding-reflection-gate and design-reflection-gate skills are retired; existing intent alignment, overreach, drift, and retry controls own their former checks.
 - Plugin release, dependency/config, install, MCP-config, system-memory, and memory-commit changes remain separately scoped protected phases.
 - Structured reasoning is reserved for complex, multi-option work and must invoke its real MCP tool when selected.
 
@@ -50,6 +50,7 @@ metadata:
 ## Cycle Events
 
 - 01: Compacted prior release/reasoning history after re-verifying current source ownership and protected-phase boundaries.
+- 02: Removed retired reflection-skill references after the Phase 1 governance migration.
 
 ## Archive Index
 
@@ -57,8 +58,7 @@ metadata:
 
 ## Evidence Base
 
-- source:Shared/skills/coding-reflection-gate/SKILL.md
-- source:Shared/skills/design-reflection-gate/SKILL.md
+- source:Shared/skills/intent-alignment-gate/SKILL.md and Shared/policies/workflow-orchestration.md
 - source:Shared/skills/plugin-release-governance/SKILL.md
 - source:Shared/skills/structured-reasoning/SKILL.md
 - source:Shared/skills/tech-stack-protocol/SKILL.md
@@ -80,8 +80,6 @@ metadata:
 
 ## Tracked Files
 
-- Shared/skills/coding-reflection-gate/SKILL.md
-- Shared/skills/design-reflection-gate/SKILL.md
 - Shared/skills/plugin-release-governance/references/vsix-release-playbook.md
 - Shared/skills/plugin-release-governance/SKILL.md
 - Shared/skills/structured-reasoning/SKILL.md

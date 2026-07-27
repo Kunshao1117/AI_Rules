@@ -4,14 +4,14 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：團隊交付 artifact 與角色邊界。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-27T08:21:16+08:00'
+last_updated: '2026-07-27T20:49:30+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-26T16:36:58+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -50,6 +50,7 @@ metadata:
 
 - 02: Reconciled delivery artifacts with delegated-only activation and concise Direct outcomes.
 - 03: Confirmed delivery, review, and validation artifacts remain internal while all user-visible summaries use the shared beginner-facing rule.
+- 04: Kept minimal_reference_packet as the single station-to-captain reference packet and left completion evidence with its original owner.
 
 ## Archive Index
 
@@ -61,6 +62,7 @@ metadata:
 - source:Shared/skills/team-validation-delivery-artifact/SKILL.md
 - source:Shared/skills/team-review-delivery-artifact/SKILL.md and Shared/skills/team-role-boundaries/SKILL.md
 - source:Shared/policies/execution-routing.md and Shared/policies/verification-strategy.md
+- source:Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md and Shared/skills/team-role-boundaries/SKILL.md
 
 ## Read Contract
 

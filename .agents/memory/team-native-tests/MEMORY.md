@@ -4,14 +4,14 @@ scopePath: Tests/TeamNative/
 description: >-
   專案記憶：Team-Native PowerShell 契約測試。Use when: task touches Team-Native test
   fixtures, contract coverage, or source/deployment parity assertions.
-last_updated: '2026-07-27T08:52:43+08:00'
+last_updated: '2026-07-27T20:52:33+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T08:52:14+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # team-native-tests — Team-Native Test Memory
 
 ## Current Truth
@@ -43,6 +44,8 @@ metadata:
 - `PlatformCodexFreshUpgrade.Tests.ps1` protects a fresh Codex install without legacy Team hooks, exact-hash managed legacy cleanup, and preservation of a user-modified hook set.
 - Stable validation routes include focused RequirementPrecision, DeliverySlice, PlatformCodexFreshUpgrade, PlatformPolicyPreflight, SourceDeploymentParity, and the aggregate Team-Native suite.
 - `SourceDeploymentParity.Tests.ps1` also protects centralized beginner-facing reporting rules, source/runtime copy parity, status display labels, and platform-policy pointers.
+- `NonEngineerUx.Tests.ps1` validates the README first layer, minimal zh-TW core, distinct user-visible states, and Fresh runtime parity without assuming ignored runtime files exist in a clean clone.
+- `ClaudeDeploySyncEntry.Tests.ps1`, `ContextGovernanceMigration.Tests.ps1`, and `RetiredReflectionSkills.Tests.ps1` cover the public Claude sync entry, Phase 1 context-governance contract, and retirement of the two reflection skills.
 
 ## Active Constraints
 
@@ -54,6 +57,7 @@ metadata:
 - 05: Added Codex fresh/upgrade and managed legacy-hook cleanup contract coverage.
 - 06: Added deterministic reporting-policy and source/runtime parity checks without text snapshots.
 - 07: Added real-path Auto-selection coverage for Antigravity, Claude, and Codex policy adapters.
+- 08: Added non-engineer UX coverage that deploys a temporary Fresh runtime before checking source/runtime parity.
 
 ## Archive Index
 
@@ -66,6 +70,8 @@ metadata:
 - source:Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1 and Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1
 - source:Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1 and Tests/TeamNative/SourceDeploymentParity.Tests.ps1
 - source:Scripts/Test-TeamNativeV2.ps1
+- source:Tests/TeamNative/NonEngineerUx.Tests.ps1 and .github/workflows/governance.yml
+- source:Tests/TeamNative/ClaudeDeploySyncEntry.Tests.ps1, Tests/TeamNative/ContextGovernanceMigration.Tests.ps1, and Tests/TeamNative/RetiredReflectionSkills.Tests.ps1
 
 ## Read Contract
 
@@ -99,6 +105,10 @@ metadata:
 - Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1
 - Tests/TeamNative/PowerShell51ProjectSkillsEncoding.Tests.ps1
 - Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1
+- Tests/TeamNative/ClaudeDeploySyncEntry.Tests.ps1
+- Tests/TeamNative/ContextGovernanceMigration.Tests.ps1
+- Tests/TeamNative/NonEngineerUx.Tests.ps1
+- Tests/TeamNative/RetiredReflectionSkills.Tests.ps1
 
 ## Relations
 

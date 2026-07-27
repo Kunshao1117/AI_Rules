@@ -4,14 +4,14 @@ scopePath: Shared/policies/references/
 description: >-
   專案記憶：執行、相容性與 workspace bootstrap 參考契約。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T08:21:14+08:00'
+last_updated: '2026-07-27T20:49:32+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-27T03:07:18+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -43,6 +43,7 @@ metadata:
 - Formal trace and deep audit are conditional routes for delegated, protected, release, migration, or explicit audit contexts, not ordinary Direct completion requirements.
 - The workspace bootstrap reference resolves existing instructions, module boundaries, path classes, contracts, and commands uniformly for AI_Rules and other repositories.
 - Status ontology preserves canonical English values while providing Chinese user-visible labels; a display label never changes the underlying state.
+- Reserved responsibility slots bind no member, packet, or live context until activation; source evidence is revision-bound before a formal claim is made.
 
 ## Active Constraints
 
@@ -54,6 +55,7 @@ metadata:
 
 - 03: Replaced the legacy active-hook lifecycle catalog with the default-hook boundary and managed legacy-cleanup contract.
 - 04: Added beginner-facing Chinese status labels without changing canonical machine values or completion honesty.
+- 05: Bound activated slots, requested scope, and versioned evidence without treating observed context behavior as requested scope.
 
 ## Archive Index
 
@@ -64,6 +66,7 @@ metadata:
 - source:Shared/policies/references/hook-event-matrix.md and Shared/platform-capability-matrix.md — Codex capability, default deployment, and future-hook boundary.
 - source:Shared/policies/references/source-runtime-surface-map.md — legacy hook ownership and cleanup scope.
 - source:Shared/policies/references/workflow-execution-spec-contract.md, Shared/policies/references/workflow-lane-routing.md, and Shared/policies/references/workspace-bootstrap-contract.md — execution and bootstrap reference boundaries.
+- source:Shared/policies/references/team-trace-fields.md and Shared/policies/references/team-native-core-delivery-slice.md
 
 ## Read Contract
 

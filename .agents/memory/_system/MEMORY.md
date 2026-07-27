@@ -4,14 +4,14 @@ scopePath: .
 description: >
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-27T09:36:15+08:00'
+last_updated: '2026-07-27T20:49:32+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T03:07:18+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _system — Repository Governance Memory
 
 ## Current Truth
@@ -39,6 +40,7 @@ metadata:
 - This card is a concise root source/status pointer; current source files and Shared policies remain runtime authority.
 - Root release documentation records AI Rules Manager v0.2.2, including its beginner-facing Traditional Chinese interface and opt-in technical details.
 - Root PowerShell source ownership belongs to _system.scripts.
+- The root README now leads with a plain zh-TW explanation for non-engineers, clear safety boundaries, a five-minute start path, and a separate technical-information layer.
 
 ## Active Constraints
 
@@ -50,6 +52,7 @@ metadata:
 
 - 01: Compacted root governance history after re-verifying the current release baseline and root ownership boundary.
 - 02: Reconciled the root release baseline with AI Rules Manager v0.2.2 after its main-branch commit; detailed extension ownership remains in the child cards.
+- 03: Verified the non-engineer README and user-visible status boundary without claiming model-wide compliance.
 
 ## Archive Index
 
@@ -64,6 +67,7 @@ metadata:
 - source:CHANGELOG.md
 - source:.gitignore
 - source:LICENSE
+- source:README.md, CHANGELOG.md, and Tests/TeamNative/NonEngineerUx.Tests.ps1
 
 ## Read Contract
 

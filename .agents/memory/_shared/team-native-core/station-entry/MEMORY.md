@@ -4,14 +4,14 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Team board、派工與 station entry。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T00:02:53+08:00'
+last_updated: '2026-07-27T20:49:32+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-26T16:36:58+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -32,6 +32,7 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
+
 # _shared.team-native-core.station-entry — Module Memory
 
 ## Current Truth
@@ -40,6 +41,7 @@ metadata:
 - Board, station, handoff, role separation, and Team delivery artifacts activate only when `execution-routing` resolves delegated topology.
 - Explicit delegation, independent parallel streams, necessary separation of duties, unresolved context after narrowing, or a formal platform/process requirement can activate delegated topology.
 - Fix, build, debug, test, source or policy edits, repository analysis, multi-file work, multi-step work, and subagent availability are non-triggers by themselves.
+- Delivery slices keep responsibility slots and evidence boundaries fixed, but activate only the stations needed by the claims being made.
 
 ## Active Constraints
 
@@ -49,6 +51,7 @@ metadata:
 ## Cycle Events
 
 - 02: Reconciled Team station-entry skills with delegated-only activation and explicit non-trigger boundaries.
+- 03: Bound slot activation to completion claims without requiring reserved slots to create live contexts or packets.
 
 ## Archive Index
 
@@ -60,6 +63,7 @@ metadata:
 - source:Shared/skills/team-task-board/SKILL.md
 - source:Shared/skills/delegation-strategy/SKILL.md
 - source:Shared/policies/execution-routing.md
+- source:Shared/skills/team-task-board/references/board-field-slice-and-roles.md, Shared/skills/programming-team-governance/SKILL.md, and Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md
 
 ## Read Contract
 

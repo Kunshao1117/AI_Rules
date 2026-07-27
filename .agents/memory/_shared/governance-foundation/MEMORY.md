@@ -4,14 +4,14 @@ scopePath: Shared/
 description: >-
   專案記憶：Shared 語言、接地、尺寸與治理基礎。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-27T09:22:31+08:00'
+last_updated: '2026-07-27T20:49:30+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-26T16:36:58+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.governance-foundation — Module Memory
 
 ## Current Truth
@@ -40,6 +41,7 @@ metadata:
 - The language policy also governs product interfaces: their primary surface uses the same beginner-facing result, impact, safety, and next-action order, while technical evidence remains in an opt-in detail surface.
 - Responsibility-first governance evaluates independent change triggers, owners, consumers, contracts, and lifecycle before using size as a signal; a size signal is not a mechanical split mandate.
 - Shared indexes point to canonical owners and do not duplicate detailed operational procedure.
+- User-visible status distinguishes named-check verification, failed verification, Git commit, release availability, and runtime deployment; no later state is inferred from an earlier one.
 
 ## Active Constraints
 
@@ -51,6 +53,7 @@ metadata:
 - 02: Reconciled language, responsibility-first size, and canonical skill-routing foundations with Progressive Assurance.
 - 03: Centralized beginner-facing reporting, technical-detail limits, and internal-to-user-visible synthesis in the language policy.
 - 04: Extended the same single language policy to VS Code product surfaces without creating a parallel reporting policy.
+- 05: Defined passed and failed verification wording separately from commit, release, and deployment states.
 
 ## Archive Index
 
@@ -61,6 +64,7 @@ metadata:
 - source:Shared/policies/language-governance.md
 - source:Shared/policies/source-document-size-governance.md
 - source:Shared/skill-governance.md and Shared/workflow-stage-procedures.md
+- source:Shared/policies/language-governance.md and Shared/policies/references/user-facing-output-examples.md
 
 ## Read Contract
 

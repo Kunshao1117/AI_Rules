@@ -4,14 +4,14 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台啟動、設定與 runtime hook。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T03:08:39+08:00'
+last_updated: '2026-07-27T20:49:28+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T03:07:18+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _codex_core.runtime — Module Memory
 
 ## Current Truth
@@ -49,6 +50,7 @@ metadata:
 ## Cycle Events
 
 - 04: Slimmed the Codex always-on entry and retired unconditional repository-local Team hooks from the default deployment.
+- 05: Kept the non-engineer zh-TW reporting core minimal and delegated detailed wording to Shared language governance.
 
 ## Archive Index
 
@@ -58,6 +60,7 @@ metadata:
 
 - source:Codex/.codex/AGENTS.md, Codex/.codex/config.toml, and Codex/global/config.toml — bounded always-on entry and no forced hook default.
 - source:Codex/README.md, Shared/platform-capability-matrix.md, and Shared/policies/adapters/codex-subagent-invocation.md — hook capability, deployment boundary, and canonical adapter.
+- source:Shared/policies/language-governance.md and Tests/TeamNative/NonEngineerUx.Tests.ps1 — user-facing core and deployed parity coverage.
 
 ## Read Contract
 

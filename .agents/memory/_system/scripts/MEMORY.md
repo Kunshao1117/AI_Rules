@@ -4,14 +4,14 @@ scopePath: Scripts/
 description: >-
   專案記憶：根層 PowerShell 部署、巡檢、技能同步與平台同步腳本。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T08:52:43+08:00'
+last_updated: '2026-07-27T20:51:16+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T08:52:14+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,18 +31,18 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _system.scripts — Repository Script Governance Memory
 
 ## Current Truth
 
 - Owns root PowerShell deployment, synchronization, platform-adapter, migration, and Team-Native runner sources listed below.
-- `Manager.ProjectSync` advances a target `VERSION` only after every required synchronization stage succeeds.
+- `Manager.ProjectSync` resolves each platform adapter in preflight and applied sync, and advances a target `VERSION` only after every required stage succeeds.
 - `Remove-CodexManagedLegacyTeamNativeHooks` retires legacy Codex Team hook artifacts only when the complete known hash-owned set matches. Its dry-run emits planned removal or user-modified preservation; any modified artifact preserves the full set for manual action.
 - Codex fresh install deploys no legacy Team hook artifacts, and Codex upgrade/project sync wires the managed cleanup into its confirmed update path without treating cleanup failure as success.
 - Antigravity and Claude preflight failure or a declined managed update returns without writing `VERSION` and does not report success.
-- `Manager.ProjectSync` resolves Antigravity, Claude, and Codex policy blocks from their platform-specific adapter files in both preflight and applied project sync.
 - `Manager.Commands` removes command-entry result-object leakage without swallowing real errors.
-- PowerShell compatibility evidence must name the executed shell; a `pwsh` pass alone does not prove Windows PowerShell 5.1 compatibility.
+- PowerShell compatibility evidence names the executed shell, and the Team-Native runner classifies only known fail-closed Pester fixture records while surfacing every unexpected PowerShell error record.
 
 ## Active Constraints
 
@@ -54,6 +54,7 @@ metadata:
 
 - 05: Added exact-hash Codex legacy Team-hook cleanup with fresh-install, upgrade, and user-modification safety.
 - 06: Corrected Antigravity and Claude project-sync adapter paths and verified Auto selection across all installed platforms.
+- 07: Preserved strict unexpected-error handling in the Team-Native runner after the governance CI adopted its verified `pwsh` host.
 
 ## Archive Index
 
@@ -62,9 +63,9 @@ metadata:
 
 ## Evidence Base
 
-- source:Scripts/modules/Platform-Codex.psm1, Scripts/modules/Manager.ProjectSync.psm1, Scripts/modules/Manager.Config.psm1, and Scripts/Deploy.ps1 — Codex deployment and managed cleanup.
-- source:Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1 — fresh install and managed/user-modified cleanup contract.
+- source:Scripts/modules/Platform-Codex.psm1, Scripts/modules/Manager.ProjectSync.psm1, Scripts/modules/Manager.Config.psm1, Scripts/Deploy.ps1, and Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1 — Codex deployment plus fresh-install and managed/user-modified cleanup contract.
 - source:Scripts/modules/Manager.Commands.psm1, Scripts/modules/Platform-Antigravity.psm1, and Scripts/modules/Platform-Claude.psm1 — existing version and command handling contracts.
+- source:Scripts/Test-TeamNativeV2.ps1 and .github/workflows/governance.yml — test-runner error handling and CI host.
 
 ## Read Contract
 

@@ -4,14 +4,14 @@ scopePath: Claude/.claude/
 description: >
   專案記憶：Claude 平台核心、規則與交付指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-27T08:21:16+08:00'
+last_updated: '2026-07-27T20:49:28+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-24T13:46:00+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -46,6 +46,7 @@ metadata:
 
 - 01: Created during the 2026-07-24 authorized memory split after current-source verification.
 - 02: Reduced the Claude core to the shared beginner-facing reporting pointer so it does not define a competing format.
+- 03: Verified the minimal zh-TW reporting rule and its shared-policy pointer after the non-engineer UX update.
 
 ## Archive Index
 
@@ -55,6 +56,7 @@ metadata:
 
 - source:Claude/install.ps1
 - source:Claude/.claude/commands/11_handoff(交接)/SKILL.md
+- source:Claude/.claude/rules/core-identity.md and Shared/policies/language-governance.md
 - tool:memory_status — Existing owner scope verified before split.
 
 ## Read Contract

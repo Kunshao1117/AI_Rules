@@ -4,14 +4,14 @@ scopePath: Shared/
 description: >-
   專案記憶：平台能力與工作流證據矩陣。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-27T03:08:39+08:00'
+last_updated: '2026-07-27T20:49:32+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-27T03:07:18+08:00'
+last_verified: '2026-07-27T20:47:17+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.team-native-core.policy-evidence — Module Memory
 
 ## Current Truth
@@ -41,6 +42,7 @@ metadata:
 - AI_Rules installs no repository-local Team-routing hook by default. Governance core resolves Direct/delegated topology; user, global, and plugin hooks remain outside repository control.
 - Requested, accepted, and applied execution configurations are distinct; absent receipts remain unknown.
 - The evidence matrix supports Direct-first work, conditional delegated routing, and canonical Verify without requiring formal trace for ordinary Direct outcomes.
+- Context-scope requests and observed delivery evidence are separate: requested visibility does not prove later inheritance or isolation without a trace or delivery artifact.
 
 ## Active Constraints
 
@@ -51,6 +53,7 @@ metadata:
 ## Cycle Events
 
 - 03: Reconciled Codex hook capability evidence with the no-default AI_Rules Team-routing hook boundary.
+- 04: Recorded the requested-scope versus observed-context evidence boundary without claiming unmeasured platform isolation.
 
 ## Archive Index
 
@@ -61,6 +64,7 @@ metadata:
 - source:Shared/platform-capability-matrix.md
 - source:Shared/workflow-capability-evidence-matrix.md
 - source:Shared/policies/task-capability-assessment.md and Shared/policies/verification-strategy.md
+- source:Shared/workflow-capability-evidence-matrix.md and Shared/policies/team-trace-evidence.md
 
 ## Read Contract
 
