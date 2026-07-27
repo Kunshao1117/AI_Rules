@@ -174,6 +174,84 @@ Describe 'Non-engineer UX contract' {
         }
     }
 
+    It 'keeps the product decision boundary in each platform core without treating advice as authorization' {
+        $platformCores = @(
+            'Antigravity\\.agents\\rules\\00_core_identity.md',
+            'Claude\\.claude\\rules\\core-identity.md',
+            'Codex\\.codex\\AGENTS.md'
+        )
+
+        foreach ($relativePath in $platformCores) {
+            $content = Get-RequiredText $relativePath
+            Assert-Contains -Content $content -Expected 'Users decide product goals, behavior, and policies; AI chooses only implementation methods within authorized scope.' -Label $relativePath
+            Assert-Contains -Content $content -Expected 'Unrequested additions are not implemented, and advice or risk findings never authorize expansion' -Label $relativePath
+            Assert-Contains -Content $content -Expected 'raise material issues but do not add them silently.' -Label $relativePath
+            if ([regex]::Matches($content, '(?m)^\s*-\s+(?:\*\*)?Product decision boundary').Count -ne 1) {
+                throw "Platform core must keep exactly one product-decision-boundary rule: $relativePath"
+            }
+            $content | Should Not Match 'No implicit expansion'
+        }
+    }
+
+    It 'keeps suggestion-only non-blocking and separate from completed work' {
+        foreach ($requiredText in @(
+                '## 範圍外建議不阻塞目前工作',
+                '已實作：',
+                '額外功能、產品政策、權限、監控、持久化、外部服務與企業級架構',
+                '尚未加入，也不屬於目前範圍',
+                '目前工作會繼續，你現在不用決定',
+                '只有這項建議確實影響你正在要的結果時，我才會在完成時簡短提醒'
+            )) {
+            Assert-Contains -Content $script:outputExamples -Expected $requiredText -Label 'Suggestion-only example'
+        }
+    }
+
+    It 'allows a necessary local implementation detail without a new product behavior' {
+        foreach ($requiredText in @(
+                '## 局部且必要的內部實作細節',
+                '避免同一請求被執行兩次',
+                '不改變使用者看得到的產品行為',
+                '不增加明顯依賴、成本或長期維護負擔',
+                '不是新的產品規則或功能'
+            )) {
+            Assert-Contains -Content $script:outputExamples -Expected $requiredText -Label 'Minimal implementation detail example'
+        }
+    }
+
+    It 'asks only for the affected part when the requested result needs a product decision' {
+        foreach ($requiredText in @(
+                '## 需要產品決策時，只停止受影響部分',
+                '要完成你明確要求的這一部分，需要先決定兩種產品行為中的哪一種',
+                '我已只暫停這個受影響部分；其他已授權工作會繼續',
+                '我還沒有加入任何新規則',
+                '不採用則維持目前已要求的行為'
+            )) {
+            Assert-Contains -Content $script:outputExamples -Expected $requiredText -Label 'Approval-required expansion example'
+        }
+    }
+
+    It 'stops for a major risk instead of silently adding a product policy or feature' {
+        foreach ($requiredText in @(
+                '## 發現重大風險時停止並請使用者決定',
+                '我已停止受影響的相關動作，其他可以安全進行的已授權工作會繼續',
+                '沒有暗中加入新的產品政策或功能',
+                '若不決定，受影響部分會停在這裡'
+            )) {
+            Assert-Contains -Content $script:outputExamples -Expected $requiredText -Label 'Major-risk decision example'
+        }
+    }
+
+    It 'requires concrete scope after an explicit production-ready request' {
+        foreach ($requiredText in @(
+                '## 使用者明確要求 production-ready，仍要界定具體範圍',
+                '你明確要求較高成熟度',
+                '沒有把企業級設計或額外服務直接加進去',
+                '只開啟成熟度範圍的討論'
+            )) {
+            Assert-Contains -Content $script:outputExamples -Expected $requiredText -Label 'Production-ready scope example'
+        }
+    }
+
     It 'keeps passed validation and source, release, and deployment states distinct for readers' {
         foreach ($requiredText in @(
                 '**已驗證**：指定檢查已通過',

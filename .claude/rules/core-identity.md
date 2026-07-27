@@ -86,7 +86,9 @@ Keep the full policy in `Shared/policies/` and the deployed readable copy at `.a
 
 Do not paste the full playbook into platform core.
 
-- Claude subagents are execution channels only after Team mode is activated by a governed Director request.
+- Claude subagents are execution channels only after
+  `Shared/policies/execution-routing.md` resolves `execution_topology: delegated`.
+  Ordinary Direct work does not activate this adapter Team route.
 
   They also require recorded Team-Native board, station, role, handoff, dispatch wave, and channel state.
 
@@ -101,6 +103,10 @@ Do not paste the full playbook into platform core.
 - Claude subagents must not mutate source, memory, git, release, deploy, install, credentials, or external state.
 
 - Claude subagents may mutate only when a scoped protected station explicitly owns that phase.
+
+- This adapter translates platform syntax, paths, capability, and receipts only.
+  Missing native receipt is `unknown` / `unverified`; do not fabricate one or
+  add shared invariant semantics here.
 <!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->
 
 ## 6. Exit And Protected Gates
