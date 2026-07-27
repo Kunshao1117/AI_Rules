@@ -1,4 +1,5 @@
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+Import-Module (Join-Path $repoRoot 'Scripts\modules\Skills-Sync.psm1') -Force
 
 function Get-CanonicalText {
     param([Parameter(Mandatory = $true)][string]$RelativePath)
@@ -91,6 +92,19 @@ Describe 'Context governance migration' {
     }
 
     It 'keeps changed canonical owners byte-identical to managed runtime copies' {
+        $runtimeRoot = Join-Path ([System.IO.Path]::GetTempPath()) ('ai-rules-context-parity-' + [guid]::NewGuid())
+        $agentsRoot = Join-Path $runtimeRoot '.agents'
+        $skillsRoot = Join-Path $agentsRoot 'skills'
+        try {
+            New-Item -ItemType Directory -Force -Path $runtimeRoot | Out-Null
+            $null = Sync-SharedSkills -SharedSkillsRoot (Join-Path $repoRoot 'Shared\skills') -TargetSkillsPath $skillsRoot -Mode Full
+            $null = Merge-WorkflowSkills -WorkflowSkillsPath (Join-Path $repoRoot 'Codex\.agents\workflow-skills') -TargetSkillsPath $skillsRoot
+            $null = Sync-SharedGovernanceReferences -SharedRoot (Join-Path $repoRoot 'Shared') -TargetAgentsRoot $agentsRoot -Mode Full
+            $coreTarget = Join-Path $runtimeRoot '.codex\AGENTS.md'
+            New-Item -ItemType Directory -Force -Path (Split-Path $coreTarget -Parent) | Out-Null
+            Copy-Item -LiteralPath (Join-Path $repoRoot 'Codex\.codex\AGENTS.md') -Destination $coreTarget -Force -ErrorAction Stop
+            $null = Sync-SharedPolicyBlock -PolicyPath (Join-Path $repoRoot 'Shared\policies\adapters\codex-subagent-invocation.md') -TargetPath $coreTarget -Platform Codex -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
+
         $pairs = @(
             @{ Source = 'Shared\skills\team-task-board\references\board-field-slice-and-roles.md'; Runtime = '.agents\skills\team-task-board\references\board-field-slice-and-roles.md' },
             @{ Source = 'Shared\skills\team-task-board\references\board-field-catalog.md'; Runtime = '.agents\skills\team-task-board\references\board-field-catalog.md' },
@@ -119,8 +133,13 @@ Describe 'Context governance migration' {
 
         foreach ($pair in $pairs) {
             $sourcePath = Join-Path $repoRoot $pair.Source
-            $runtimePath = Join-Path $repoRoot $pair.Runtime
+            $runtimePath = Join-Path $runtimeRoot $pair.Runtime
             (Get-FileHash -LiteralPath $sourcePath -Algorithm SHA256).Hash | Should Be (Get-FileHash -LiteralPath $runtimePath -Algorithm SHA256).Hash
+        }
+        } finally {
+            if (Test-Path -LiteralPath $runtimeRoot) {
+                Remove-Item -LiteralPath $runtimeRoot -Recurse -Force
+            }
         }
     }
 }

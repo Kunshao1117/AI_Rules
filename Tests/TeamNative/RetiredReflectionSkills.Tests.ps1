@@ -190,19 +190,23 @@ Describe 'Retired Reflection Skill deployment migration' {
     }
 
     It 'leaves no formal Reflection references in indexes, workflow or policy owners, or runtime copies' {
+        $runtimeRoot = Join-Path $script:tempRoot 'runtime'
+        $runtimeAgentsRoot = Join-Path $runtimeRoot '.agents'
+        $null = Sync-SharedSkills -SharedSkillsRoot (Join-Path $repoRoot 'Shared\skills') -TargetSkillsPath (Join-Path $runtimeAgentsRoot 'skills') -Mode Full
+        $null = Sync-SharedGovernanceReferences -SharedRoot (Join-Path $repoRoot 'Shared') -TargetAgentsRoot $runtimeAgentsRoot -Mode Full
         $paths = @(
-            'Shared\skills\_index.md',
-            'Shared\policies\workflow-orchestration.md',
-            'Shared\policies\team-native-core.md',
-            '.agents\skills\_index.md',
-            '.agents\shared\policies\workflow-orchestration.md',
-            '.agents\shared\policies\team-native-core.md'
+            @{ Root = $repoRoot; RelativePath = 'Shared\skills\_index.md' },
+            @{ Root = $repoRoot; RelativePath = 'Shared\policies\workflow-orchestration.md' },
+            @{ Root = $repoRoot; RelativePath = 'Shared\policies\team-native-core.md' },
+            @{ Root = $runtimeRoot; RelativePath = '.agents\skills\_index.md' },
+            @{ Root = $runtimeRoot; RelativePath = '.agents\shared\policies\workflow-orchestration.md' },
+            @{ Root = $runtimeRoot; RelativePath = '.agents\shared\policies\team-native-core.md' }
         )
-        foreach ($relativePath in $paths) {
-            $path = Join-Path $repoRoot $relativePath
+        foreach ($entry in $paths) {
+            $path = Join-Path $entry.Root $entry.RelativePath
             $content = Get-Content -LiteralPath $path -Raw -Encoding UTF8
             if ($content -match 'coding-reflection-gate|design-reflection-gate') {
-                throw "Formal Reflection reference remained after retirement: $relativePath"
+                throw "Formal Reflection reference remained after retirement: $($entry.RelativePath)"
             }
         }
     }

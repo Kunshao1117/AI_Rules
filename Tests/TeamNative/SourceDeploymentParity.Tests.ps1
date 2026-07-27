@@ -83,6 +83,12 @@ Describe 'Source deployment parity' {
     }
 
     It 'keeps beginner-facing reporting centralized while runtime copies remain exact' {
+        $runtimeRoot = Join-Path $script:tempRoot 'runtime'
+        $agentsRoot = Join-Path $runtimeRoot '.agents'
+        $skillsRoot = Join-Path $agentsRoot 'skills'
+        $null = Sync-SharedSkills -SharedSkillsRoot (Join-Path $repoRoot 'Shared\skills') -TargetSkillsPath $skillsRoot -Mode Full
+        $null = Sync-SharedGovernanceReferences -SharedRoot (Join-Path $repoRoot 'Shared') -TargetAgentsRoot $agentsRoot -Mode Full
+
         $pairs = @(
             @{ Source = 'Shared\policies\language-governance.md'; Runtime = '.agents\shared\policies\language-governance.md' },
             @{ Source = 'Shared\policies\references\status-ontology.md'; Runtime = '.agents\shared\policies\references\status-ontology.md' },
@@ -95,7 +101,7 @@ Describe 'Source deployment parity' {
 
         foreach ($pair in $pairs) {
             $sourcePath = Join-Path $repoRoot $pair.Source
-            $runtimePath = Join-Path $repoRoot $pair.Runtime
+            $runtimePath = Join-Path $runtimeRoot $pair.Runtime
             if ((Get-FileHash -LiteralPath $sourcePath -Algorithm SHA256).Hash -ne (Get-FileHash -LiteralPath $runtimePath -Algorithm SHA256).Hash) {
                 throw "Source/runtime reporting parity failed: $($pair.Source)"
             }
