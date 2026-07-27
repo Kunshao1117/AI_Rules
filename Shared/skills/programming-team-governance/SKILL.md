@@ -112,31 +112,33 @@ packet carries resolved board scope; it does not grant new authorization.
 
 ## Fixed Slice Continuity
 
-When work uses a delivery slice, the board seals a fixed five-role roster:
-implementation, validation, review, memory-closure, and completion. All five
-are separate members with different role instances, contexts, and packets, and
-those identities remain fixed for the whole slice. Implementation, validation,
-and review are the primary repair/rerun members. Memory-closure and completion
-are reserved members of the same roster: they start only when their dependency
+When work uses a delivery slice, the board seals five responsibility slots:
+implementation, validation, review, memory-closure, and completion. The slots
+fix activation conditions, required artifacts, and independence requirements;
+they do not pre-create five live members, contexts, or packets. A slot binds its
+member, role instance, packet, context scope, and channel only when it activates.
+Implementation, validation, and review are the primary repair/rerun roles.
+Memory-closure and completion remain reserved slots until their dependency
 conditions are met, without becoming a new slice or replacing a primary member.
 
-After each primary repair/rerun round, its member becomes standby. Reserved
-members remain standby until their dependency conditions are met; no member
-closes and silently acquires a replacement. A numbered finding is not automatic
-repair authority: the captain must explicitly resume the original implementation
-member for the cited finding. When repair returns, the captain explicitly
-resumes the original validation and review members.
+After each primary repair/rerun round, its activated member becomes standby.
+Reserved slots remain unbound until their dependency conditions are met; no
+activated member closes and silently acquires a replacement. A numbered finding
+is not automatic repair authority: the captain must explicitly resume the
+original implementation member for the cited finding. When repair returns, the
+captain explicitly resumes the original validation and review members.
 
-The first two same-symptom repairs retain the same slice, five-role roster,
+The first two same-symptom repairs retain the same slice, activated bindings,
 context, and packet baseline. A third same-symptom occurrence adds independent
 diagnosis or module-split evidence before work returns to the original
 implementation member. Timeout, probe, channel resume, and channel replacement
 affect only the channel. Only a captain explicit member-replacement record with
 a permitted reason and context transfer can change any roster member.
 
-Captain ledgering is routing only. It may receive and route a subagent artifact
-but cannot restate the reply as a conclusion, validation, review, acceptance,
-or completion evidence.
+Captain ledgering is routing only. It may receive and route a subagent artifact,
+and may synthesize and report the selected closeout target's completion state
+from current, traceable required station artifacts. It cannot turn a reply into
+a conclusion, validation, review, acceptance, or completion evidence.
 
 
 Use `team-role-boundaries` plus `team-specialist-registry` for role identity. The captain

@@ -8,8 +8,8 @@
     從 Deploy-Claude.ps1 遷移，含 PROJECT IDENTITY 還原機制。
 #>
 
-Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -Force -ErrorAction Stop
-Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -Force -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -ErrorAction Stop
 
 function Invoke-ClaudeFresh {
     <#

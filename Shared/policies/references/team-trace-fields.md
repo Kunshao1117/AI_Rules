@@ -48,14 +48,15 @@ never validation, review, memory/docs attribution, or completion evidence.
   and forbidden protected actions. `change-application` is limited to a
   returned isolated/text artifact, explicit integration task, or assigned
   generated/deployed sync under its own phase.
-- A slice fixes five independent station rows. `implementation`, `validation`,
-  and `review` are the primary repair/rerun members; `memory-closure` and
-  `completion` are preconfigured reserved members of the same delivery slice
-  and start only when their dependencies are satisfied. Their
-  `member_assignment` and `role_instance_id` values must differ. Each original
-  context and packet remains bound across slice rounds.
+- A slice fixes five independent responsibility slots. `implementation`,
+  `validation`, and `review` are primary repair/rerun slots; `memory-closure`
+  and `completion` are reserved until their dependencies are satisfied. A
+  reserved slot has no `member_assignment`, `role_instance_id`, Context, or
+  packet. When a slot activates, its member assignment and role instance bind
+  distinctly where required, and its Context and packet remain bound across its
+  slice rounds.
 - A returned primary or activated reserved station transitions to `standby`,
-  not terminal closure, until the slice is accepted. A reserved member is not a
+  not terminal closure, until the slice is accepted. A reserved slot is not a
   new slice or replacement. A finding does not authorize repair on its own: an
   explicit captain decision must resume the original implementation member.
   After that returned repair, the captain explicitly resumes the original

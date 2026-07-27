@@ -1,13 +1,13 @@
 # Board Fields: Slice, Role, And Finding Continuity
 
-This reference is the sole owner of `delivery_slice`, fixed station roster,
+This reference is the sole owner of `delivery_slice`, fixed responsibility slots,
 role separation, numbered finding, implementation resume, repair loop,
 diagnosis/module-split, member-replacement fields, and the board's
 `completion_bundle_ref` attachment. It consumes generic board values from
 `board-field-catalog.md` and channel values from
 `board-field-channel-and-receipts.md`.
 
-## Slice Identity And Fixed Roster
+## Slice Identity And Fixed Responsibility Slots
 
 `delivery_slice` is one acceptance-sized unit. It is not a person, channel, or
 per-file dispatch. Each slice records:
@@ -22,37 +22,50 @@ replaces_role_instance_id, context_transfer_ref,
 completion_bundle_ref
 ```
 
-`slice_station_roster` is sealed when the slice enters `authorized` state:
+`slice_station_roster` is sealed when the slice enters `authorized` state. It
+fixes the responsibility slots, their activation conditions, independence
+requirements, and required artifacts; it does not pre-create live members or
+contexts:
 
 ```text
 slice_station_roster: {
   implementation: {
-    formal_station_id, role_id: change-delivery, role_instance_id,
-    member_assignment, handoff_packet_id, context_scope_ref
+    role_id: change-delivery, activation_condition, independence_requirement,
+    required_artifacts, formal_station_id?, role_instance_id?,
+    member_assignment?, handoff_packet_id?, context_scope_ref?, channel?
   },
   validation: {
-    formal_station_id, role_id: validation, role_instance_id,
-    member_assignment, handoff_packet_id, context_scope_ref
+    role_id: validation, activation_condition, independence_requirement,
+    required_artifacts, formal_station_id?, role_instance_id?,
+    member_assignment?, handoff_packet_id?, context_scope_ref?, channel?
   },
   review: {
-    formal_station_id, role_id: review, role_instance_id,
-    member_assignment, handoff_packet_id, context_scope_ref
+    role_id: review, activation_condition, independence_requirement,
+    required_artifacts, formal_station_id?, role_instance_id?,
+    member_assignment?, handoff_packet_id?, context_scope_ref?, channel?
   },
   memory_closure: {
-    formal_station_id, role_id: memory-closure, role_instance_id,
-    member_assignment, handoff_packet_id, context_scope_ref
+    role_id: memory-closure, activation_condition, independence_requirement,
+    required_artifacts, formal_station_id?, role_instance_id?,
+    member_assignment?, handoff_packet_id?, context_scope_ref?, channel?
   },
   completion: {
-    formal_station_id, role_id: release-completion, role_instance_id,
-    member_assignment, handoff_packet_id, context_scope_ref
+    role_id: release-completion, activation_condition, independence_requirement,
+    required_artifacts, formal_station_id?, role_instance_id?,
+    member_assignment?, handoff_packet_id?, context_scope_ref?, channel?
   }
 }
 ```
 
-The five entries must have distinct `formal_station_id`, `member_assignment`,
-and `role_instance_id` values. The role instances do not change between rounds:
-each retains its original context and packet. `slice_baseline_packet_id` names
-the accepted slice baseline; a resumed round does not create another baseline.
+`reserved` means a fixed responsibility slot whose activation condition is not
+yet met. A reserved slot need not have a member assignment, handoff packet, or
+live context. When its activation condition is met, only then bind its formal station,
+member assignment, role instance, handoff packet, context scope, and channel
+before the station starts. Activated entries must have distinct
+`formal_station_id`, `member_assignment`, and `role_instance_id` values where
+independence is required. Once activated, a role instance retains its original
+context and packet between rounds. `slice_baseline_packet_id` names the accepted
+slice baseline; a resumed round does not create another baseline.
 
 `delivery_slice_state` is `draft`, `authorized`, `in-delivery`,
 `review-validation-pending`, `memory-closure-pending`,
@@ -63,10 +76,10 @@ the accepted slice baseline; a resumed round does not create another baseline.
 
 `close-eligible` is reached only after the whole slice acceptance chain. A
 returned activated station becomes `standby`; it must not close or auto-open a
-new member for the next round. `reserved` is pre-assignment only: it is not a
-new slice, a repair station, or a member replacement. An activated member may
-advance only through `standby` and explicit `resume-required` / `resumed`
-handling.
+new member for the next round. `reserved` is an unbound responsibility slot: it
+is not a new slice, repair station, channel, or member replacement. An activated
+member may advance only through `standby` and explicit `resume-required` /
+`resumed` handling.
 
 ## Completion Bundle Attachment
 
@@ -76,10 +89,11 @@ memory-closure-bundle-contract.md` is the sole owner of the completion-bundle
 schema, candidate map, closeout target, phase bindings, receipt chain, and
 bundle state.
 
-The board continues to own only roster state: `memory-closure` remains a fixed
-`reserved` entry until its canonical bundle route permits the station to start,
-and `completion` remains a fixed independent non-mutating audit entry. Neither
-roster state substitutes for a candidate phase reference or authorization.
+The board continues to own only responsibility-slot state: `memory-closure`
+remains a fixed `reserved` slot until its canonical bundle route permits the
+station to start, and `completion` remains a fixed independent non-mutating
+audit slot. Neither slot state substitutes for a candidate phase reference or
+authorization.
 
 ## Finding And Repair Loop
 
@@ -98,7 +112,8 @@ station, original member, finding IDs, allowed existing-slice scope, and next
 validation/review order. It records routing only; it is not a quality,
 validation, review, or completion conclusion.
 
-The only normal sequence is:
+The following normal sequence applies after the relevant responsibility slots
+have been activated:
 
 1. The implementation station returns and enters `standby`.
 2. The original validation and review stations run independently and enter
@@ -126,8 +141,9 @@ authorization actually changes.
 
 ## Explicit Member Replacement
 
-Channel replacement is not member replacement. The fixed roster may change
-only when the captain records `member_replacement_state: captain-approved`
+Channel replacement is not member replacement. An activated responsibility slot
+may change member only when the captain records
+`member_replacement_state: captain-approved`
 with all of:
 
 ```text

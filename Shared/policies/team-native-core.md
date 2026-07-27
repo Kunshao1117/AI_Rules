@@ -120,7 +120,7 @@ Once Team-Native Core applies, the following actions are forbidden until the req
 
 The required trace must include:
 
-- a Captain Team Board, applicable stations, and a station handoff packet.
+- a Captain Team Board, applicable activated stations, and each activated station's handoff packet.
 - role identity through `role_id`, `role_instance_id`, and assigned specialist skill.
 - channel state through `requested_execution_channel`, `channel_capability`, and `channel_invocation_status`.
 - an explicit standby/block state when a channel state cannot be produced.
@@ -211,8 +211,11 @@ Public-contract work cannot become captain-direct work.
 When `execution-routing.md` resolves delegated topology, the captain must
 create or reuse a team board first.
 The board comes before broad context-heavy work or any team-scoped station work.
-The minimum activation is a board row for each applicable station, a selected specialist skill, and an attempted execution channel.
-An explicit standby/block record may replace a channel attempt when the channel cannot run.
+The minimum activation is a board row for each applicable responsibility slot.
+Only an eligible activated slot binds a selected specialist skill and attempted
+execution channel. A reserved slot has no live member, Context, or packet.
+An explicit standby/block record may replace a channel attempt when an activated
+slot's channel cannot run.
 
 Board states are:
 
@@ -383,10 +386,11 @@ The only exceptions are current scope-bound evidence or Director risk close evid
 
 ## Specialist Lifecycle Rule
 
-A `delivery_slice` is shared context and authorization, not a composite worker:
-roles stay separate, only implementation writes, and validation/review never
-repair. Open a new slice only when scope, allowlist, authorization, acceptance,
-risk, public contract, or protected action changes. The mandatory retained-member
+A `delivery_slice` fixes responsibility slots and authorization, not a composite
+worker or shared Context. Roles stay separate, only implementation writes, and
+validation/review never repair. Open a new slice only when scope, allowlist,
+authorization, acceptance, risk, public contract, or protected action changes.
+The mandatory retained-member
 and finding procedure is [Team-Native Core Delivery Slice Reference](references/team-native-core-delivery-slice.md); it never replaces board, handoff, authorization, or trace contracts.
 
 ## Team Closeout Branch
@@ -463,8 +467,12 @@ or text artifacts must not be reported as applied source.
 
 The captain may ledger station output and synthesize status, but must not turn
 ledgering into implementation, validation, review, memory/docs attribution, or
-completion evidence. Captain substitute authoring remains blocked or
-risk-closed, never `complete`, under the exception registry.
+completion evidence. The captain may synthesize and report the selected closeout
+target's completion state only from current, traceable required station
+artifacts; that report is not new completion evidence. Missing, stale,
+conflicted, or unverified required artifacts remain visible as a non-complete
+state. Captain substitute authoring remains blocked or risk-closed, never
+`complete`, under the exception registry.
 
 Review and validation remain independent and inspect the actual applied diff
 when source is applied. Missing required artifacts, independent review, or

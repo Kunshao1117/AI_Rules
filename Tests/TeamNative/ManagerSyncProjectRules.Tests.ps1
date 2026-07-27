@@ -332,6 +332,10 @@ Describe 'Manager project rule sync preflight and outcome aggregation' {
         if ($outputText -match $managerSyncSuccessPrefix) {
             throw 'Manager emitted its final success message after a required stage failed.'
         }
+        $escapedErrorRecords = @($output | Where-Object { $_ -is [System.Management.Automation.ErrorRecord] })
+        if ($escapedErrorRecords.Count -ne 0) {
+            throw "Manager leaked $($escapedErrorRecords.Count) PowerShell error record(s) after aggregating a required-stage failure."
+        }
     }
 }
 

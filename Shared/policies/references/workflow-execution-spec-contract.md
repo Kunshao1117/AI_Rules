@@ -98,11 +98,6 @@ Required field meanings, in order:
 - `stage_procedure_ref`
   - Matching section in `Shared/workflow-stage-procedures.md`, or `not-applicable`.
   - It points to the shared procedure checklist instead of copying workflow-entry text.
-- `reflection_routing_decision`
-  - Optional route context returned by `coding-reflection-gate`.
-  - It may shape retry, reroute, ambiguity, and governance-depth decisions.
-  - It never replaces `execution_spec`, station handoff, scoped authorization, validation evidence, or review evidence.
-  - It never authorizes writes, review, validation, memory mutation, protected actions, or completion claims.
 - `intent_envelope`
   - Compact request boundary for the latest Director request.
   - Carries intent type, requested output, allowed evidence, forbidden actions, mutation scope, file scope,
@@ -134,14 +129,6 @@ Required field meanings, in order:
     existing hard gate.
   - Records the exact delta, classification, operator options and decision, or `not-required`.
   - It never creates authorization; unresolved requests stop only the affected action.
-- `design_reflection`
-  - Optional design-shape decision returned by `design-reflection-gate`.
-  - It checks intent fit, definition clarity, complexity pressure, scope creep, smaller alternatives,
-    residual risk, and design claim limits.
-  - It may shape blueprint, build-plan, workflow, skill, governance, public-contract, and completion
-    wording boundaries.
-  - It never replaces `execution_spec`, station handoff, scoped authorization, validation evidence,
-    review evidence, memory/docs attribution, or completion evidence.
 - `behavior_counterevidence`
   - Compact Stage 7 link to counter-evidence that can change behavior, governance, workflow, or
     completion wording.
@@ -262,9 +249,9 @@ Required field meanings, in order:
     anchor used to compare external evidence to the project state.
 - `missing_external_evidence`
   - Concrete missing source, version, access, conflict, or research gap.
-- `intent_grounding_and_reflection_handoff`
-  - Short downstream pointer to `intent_envelope`, `overreach_check`, grounding fields,
-    and `design_reflection` when those affect execution, validation, review, or completion wording.
+- `intent_grounding_handoff`
+  - Short downstream pointer to `intent_envelope`, `overreach_check`, `drift_check`, and grounding fields
+    when they affect execution, validation, review, or completion wording.
   - It is an index only and does not replace the underlying artifacts or policy fields.
 - `minimal_reference_packet`
   - Station-returned minimal evidence index for captain ledgering and downstream routing.
@@ -410,6 +397,19 @@ uses the existing missing, unreported, and unverified owner semantics; do not in
 
 Wait policy and lifecycle values are framework-planned internal policy. They do not project to a
 platform timeout, scheduler, or native lifecycle receipt.
+
+### Evidence Carrier And Source-State Binding
+
+Formal source, validation, review, and completion claims require a minimal
+sufficient, traceable evidence carrier. A temporary agent Context, an
+unpreserved tool screen, or an unrelated raw log is not a sufficient carrier.
+For committed source, bind the claim to its immutable revision. For uncommitted
+source, bind the claim to base HEAD, relevant paths, worktree state, index state,
+and diff fingerprint; HEAD alone never represents a dirty worktree. Validation
+and review bind to the actual delivery artifact revision they inspected. Artifact
+ID, path, and line are locators only unless accompanied by the applicable
+revision or fingerprint. Retain only evidence relevant to the claim and do not
+retain secrets, credentials, personal data, or unrelated raw output.
 
 ## Platform-Neutral Execution Resolution
 
@@ -691,59 +691,6 @@ governance, source, validation, review, memory, release, or evidence claims.
 
 Overreach checks are hard gates for scope expansion. They never create authorization.
 
-## Design Reflection Fields
-
-Use `design_reflection` when a design, architecture, workflow, skill, governance rule, public contract,
-build handoff, fix strategy, or completion claim can become durable behavior.
-
-Low-risk daily work may use quick mode. Governance, blueprint, workflow/skill/source-impacting, public-contract,
-multi-area, high-risk, or completion-affecting work uses full mode.
-
-`design_reflection` records:
-
-- `required`
-  - `auto`, `yes`, or `no`.
-- `status`
-  - `sufficient`, `partial`, `unverified`, `blocked`, or `not-applicable`.
-- `matrix_mode`
-  - `quick` or `full`.
-- `trigger`
-  - The reason design reflection was needed.
-- `intent_envelope_ref`
-  - Reference to the request boundary consumed by the reflection.
-- `operator_intent`
-  - Concise statement of the Director's goal being preserved.
-- `selected_design`
-  - The chosen design shape or `not-applicable`.
-- `alternatives_considered`
-  - Smaller, rejected, or deferred options.
-- `preserved_invariants`
-  - Constraints that must survive implementation.
-- `non_goals`
-  - Work intentionally excluded from the design.
-- `scope_delta`
-  - `none`, `minor`, `material`, `unauthorized`, or `unknown`.
-- `overreach_result`
-  - `pass`, `revise`, `split`, `ask`, or `blocked`.
-- `complexity_pressure`
-  - `keep`, `light`, `simplify`, or `split/condense`.
-- `evidence_fit`
-  - `sufficient`, `named-read-needed`, `external-needed`, or `missing/conflict`.
-- `grounding_tier`
-  - `G0`, `G1`, `G2`, `G3`, or `G4`.
-- `external_research_question`
-  - Narrow question when design reflection needs external grounding.
-- `residual_risks`
-  - Disclosed design risks, missing evidence, or blocked claims.
-- `recommended_action`
-  - `keep`, `simplify`, `split`, `ask`, `external-research`, `blocked`, or `unverified`.
-- `next_station`
-  - Downstream route or `not-applicable`.
-
-`design_reflection` is not validation, review, memory/docs attribution, protected authorization,
-or completion evidence. A sufficient design reflection can support a clearer build handoff, but
-downstream stations still need their own evidence.
-
 ## Closeout Target Contract
 
 Closeout target values are canonical in
@@ -789,7 +736,9 @@ Two normal retries for the same `attempt_family_key` are the maximum default. A 
 change route to root-cause, architecture, scope-impact, external-research, blocked, unverified, or
 Director risk closure.
 
-`minimal_reference_packet` records the station-owned evidence index returned to the captain:
+`minimal_reference_packet` is the only canonical station-to-captain reference
+packet. It records the station-owned evidence index returned to the captain; no
+decision receipt or alternate captain-return schema is allowed:
 
 - `minimal_reference_packet_id`
 - `handoff_packet_id`

@@ -21,8 +21,8 @@ Describe 'Captain delivery-slice decisions' {
         $orchestration | Should Match 'does\s+not\s+create\s+an\s+automatic\s+repair\s+station\s+or\s+member'
     }
 
-    It 'retains slice members on standby until slice acceptance closes them' {
-        $deliverySlice | Should Match '(?s)retain\s+their\s+original\s+`role_instance_id`,\s+context,\s+handoff\s+packet,\s+and\s+member\s+identity'
+    It 'retains activated slice members on standby while reserved slots remain unbound' {
+        $deliverySlice | Should Match '(?s)once activated.*retain.*original\s+`role_instance_id`,\s+context,\s+handoff\s+packet,\s+and\s+member\s+identity'
         foreach ($primaryRole in 'implementation', 'validation', 'review') {
             $deliverySlice | Should Match $primaryRole
         }
@@ -30,7 +30,8 @@ Describe 'Captain delivery-slice decisions' {
         foreach ($rosterRole in 'implementation', 'validation', 'review', 'memory-closure', 'completion') {
             $boardSlice | Should Match $rosterRole
         }
-        $boardSlice | Should Match 'fixed\s+roster'
+        $boardSlice | Should Match 'fixed\s+responsibility\s+slots'
+        $boardSlice | Should Match '(?s)reserved.*need not.*member assignment.*handoff packet.*live context'
         $boardSlice | Should Match 'whole-slice\s+acceptance'
         $packet | Should Match 'whole-slice\s+acceptance'
     }

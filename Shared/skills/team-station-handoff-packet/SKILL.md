@@ -37,8 +37,9 @@ completion decisions.
 
 ## When To Issue A Packet
 
-Issue a packet after a Captain Team Board exists and before opening, retaining,
-replacing, or resuming a formal specialist station.
+Issue a packet after a Captain Team Board exists and when a responsibility slot
+activates, is retained, replaced, or resumed as a formal specialist station. A
+reserved slot has no handoff packet until its activation condition is met.
 
 Do not issue one when no formal station exists; applicability, wave, or role
 boundary is unresolved; a required mutation lacks matching formal-write

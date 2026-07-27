@@ -8,8 +8,8 @@
     從 Deploy-Antigravity.ps1 遷移，邏輯完整保留。
 #>
 
-Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -Force -ErrorAction Stop
-Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -Force -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -ErrorAction Stop
 
 function Invoke-AgFresh {
     <#

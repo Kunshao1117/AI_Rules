@@ -15,7 +15,9 @@ Captain intake decides whether the current request activates Team mode, creates
 or reuses the first station path, dispatches bounded work, refuses captain
 substitute labor, reports missing station evidence as `blocked`, `unverified`,
 or `closed-with-director-risk`, and provides Traditional Chinese synthesis from
-returned evidence.
+returned evidence. The captain may report a completion state only from existing
+current station artifacts and must not produce, replace, or upgrade station
+evidence.
 
 Board catalogs, handoff field lists, trace ledgers, review/validation records,
 memory/docs records, and completion-audit fields load only when their matching

@@ -57,10 +57,10 @@ Workflow rows below only name the minimum evidence expected for each route.
 - External grounding: `Shared/policies/grounding-governance.md`.
 - Grounding execution fields and completion-bundle shape:
   `Shared/policies/references/workflow-execution-spec-contract.md`.
-- Intent envelope, overreach checks, and design reflection execution fields:
+- Intent envelope, overreach checks, and drift-check execution fields:
   `Shared/policies/workflow-orchestration.md`,
   `Shared/policies/references/workflow-execution-spec-contract.md`, and
-  `Shared/skills/design-reflection-gate/SKILL.md`.
+  `Shared/skills/intent-alignment-gate/SKILL.md`.
 - Formal orchestration and completion: `Shared/policies/workflow-orchestration.md`
   plus `team-completion-gate`.
 - Platform capability translation: `Shared/platform-capability-matrix.md`.
@@ -162,7 +162,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 接地依據（Grounding basis）: Research source quality, freshness, governed Team formal-readonly.
 - 最低證據（Minimum evidence）:
   - Formal-readonly board, specialist handoff, source tier, date, bias, coverage gap, unverified items.
-  - Research-to-recommendation handoff records intent envelope, grounding state, and quick/full design reflection when findings can shape architecture, implementation, governance, spend, or release.
+  - Research-to-recommendation handoff records intent envelope, grounding state, overreach checks, and drift findings when findings can shape architecture, implementation, governance, spend, or release.
   - If no specialist opens, record unavailable channel and direct exception.
 - 常見路由（Common route）: 02, 03；僅在 `verification-strategy.md` 的正向觸發成立時使用 `deep-audit`。
 
@@ -173,7 +173,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - ADR, C4, arc42, official framework docs, intent-alignment gate, programming-team governance.
 - 最低證據（Minimum evidence）:
   - Formal-readonly board, requirement replay, counter-evidence, decision state, alternatives.
-  - Review purpose/state, requirement-to-acceptance trace, assumptions, compatibility, design reflection decision, build handoff contract.
+  - Review purpose/state, requirement-to-acceptance trace, assumptions, compatibility, intent-alignment and drift findings, build handoff contract.
 - 常見路由（Common route）: 03, 12；僅在 `verification-strategy.md` 的正向觸發成立時使用 `deep-audit`。
 
 ### 03-1 Experiment / 實驗
@@ -199,7 +199,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
     standards, release-readiness, or cross-source risk.
 - 最低證據（Minimum evidence）:
   - Team board, blueprint carryover, review purpose/state, requirement-to-task trace, task acceptance matrix.
-  - Intent envelope, overreach check, behavior counter-evidence state, applicable design reflection status, drift audit, real validation route, tool discovery, blockers, memory ownership/status evidence.
+  - Intent envelope, overreach check, behavior counter-evidence state, applicable drift findings, real validation route, tool discovery, blockers, memory ownership/status evidence.
   - Implementation `completion_bundle` with `grounding_handoff`, expected dirty files, source/deployed sync evidence when source/runtime or generated pairs exist, and independently pre-bound memory/docs, protected-memory-write, and protected-memory-commit phase references. The implementation station does not gain authority from those references.
   - After terminal validation and review, read-only memory/docs hands the bundle to `memory-closure`; normal process-complete needs its no-write or committed receipt, while protected-follow-up-pending requires an explicitly `source-level-explicit` bundle.
   - Formal `delivery_slice` reference to the requirement contract, with retained and role-distinct implementation, validation, and review stations. Numbered findings record the first two same-symptom restore/resume-and-rerun cycles; a third route records diagnosis or module split within the same slice.
@@ -217,7 +217,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
     `G3` formal research for security, deployment, legal, pricing, standards, or conflicting outside facts.
 - 最低證據（Minimum evidence）:
   - Team board, symptom, cause, review purpose/state, fix evidence, regression evidence.
-  - Design reflection is required when the fix changes public behavior, contracts, workflow/skill semantics, or governance rules.
+  - Intent alignment, overreach, and drift checks are required when the fix changes public behavior, contracts, workflow/skill semantics, or governance rules.
   - Affected memory-card status and dependency evidence.
   - Repair `completion_bundle` with grounding handoff, expected dirty files, validation/review/memory-docs/memory-closure handoffs, and independently pre-bound protected memory phase references.
   - Same-slice repair evidence identifies the retained implementation member, the numbered finding, restored validation/review evidence, and any third-symptom diagnosis or module-split handoff. A new slice is required only for a recorded slice-boundary change.
@@ -239,7 +239,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 最低證據（Minimum evidence）:
   - Target surface, existing-test classification when applicable, selected evidence level, operator path, and blocker reason.
   - A Team board or validation station is required only after delegated topology resolves; Direct Verify has no formal trace requirement.
-  - Validation may consume design reflection as expected-behavior context, but design reflection is not validation evidence.
+  - Validation may consume documented expected-behavior context, but planning context is not validation evidence.
 - 常見路由（Common route）: 03, 04.
 
 ### 07 Debug / 除錯
@@ -266,7 +266,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 最低證據（Minimum evidence）:
   - Commit board, explicit file list, review lifecycle risk, unverified/blocker list, memory status.
   - Memory preflight, change summary, version/artifact decision.
-  - Expected dirty-file comparison, unresolved `G4` grounding gaps, and unresolved design reflection blockers reported as blockers or residual risk.
+  - Expected dirty-file comparison, unresolved `G4` grounding gaps, and unresolved intent, overreach, or drift blockers reported as blockers or residual risk.
   - Any long-work `git_checkpoint_receipt` is intermediate stability evidence only; it does not
     satisfy final commit, validation, review, memory/docs, sync, push, release, or completion gates.
 - 常見路由（Common route）: 04, 06, 11.
@@ -301,7 +301,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
     governance, security, deployment, legal/pricing, external mutation, or cross-source conflict.
 - 最低證據（Minimum evidence）:
   - Skill-forge board, layer choice, description quality, reference split, skill handoff package.
-  - Full design reflection when adding or changing gates, matrices, roles, workflow rules, skill boundaries, or repeated governance fields.
+  - Intent alignment, overreach, and drift checks when adding or changing gates, matrices, roles, workflow rules, skill boundaries, or repeated governance fields.
   - Validation gate, affected memory and skill-index evidence.
   - Source/deployed parity, grounding handoff, expected dirty files, completion bundle index, and
     memory-closure handoff/receipt requirement.

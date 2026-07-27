@@ -64,14 +64,14 @@ use `replaced` when the handoff is insufficient. Close the old station and open
 a new independent role instance in a later eligible wave when the role boundary
 would be crossed.
 
-## Fixed Slice Members
+## Fixed Slice Responsibility Slots
 
-A formal `delivery_slice` is the shared context and authorization container for
-one acceptance objective. It references the current requirement contract without
-redefining its fields; the execution specification and board catalog remain the
-schema owners.
+A formal `delivery_slice` is the fixed responsibility and authorization
+container for one acceptance objective, not a shared Context. It references the
+current requirement contract without redefining its fields; the execution
+specification and board catalog remain the schema owners.
 
-Each slice starts with five role-distinct fixed roster stations and members:
+Each slice starts with five role-distinct fixed responsibility slots:
 
 - `implementation` is the only primary station that may write in its exact
   resolved scope.
@@ -86,25 +86,28 @@ Each slice starts with five role-distinct fixed roster stations and members:
 - `completion` independently audits the returned evidence chain. It may not
   mutate source, context, memory, Git, deployment, or external state.
 
-The five entries retain their original `role_instance_id`, context, handoff
-packet, and member identity for the entire slice. `implementation` may begin
-active; later entries begin `reserved` until their declared dependency is
-ready. A reserved entry is a pre-assigned roster position, not another slice,
-repair station, channel replacement, or member replacement. Once an entry has
-started, a returned round makes it `standby`; it may proceed again only by an
-explicit resume of that same member and packet.
+`implementation` may begin active; later entries begin `reserved` until their
+declared dependency is ready. A reserved responsibility slot need not have a
+member assignment, handoff packet, or live context. Activation binds the role
+instance, member, packet, context scope, and channel before the station starts.
+Once activated, an entry retains its original `role_instance_id`, context,
+handoff packet, and member identity for the rest of the slice unless the
+explicit replacement rule applies. A reserved entry is not another slice, repair
+station, channel replacement, or member replacement. A returned active round
+makes the entry `standby`; it may proceed again only by an explicit resume of
+that same member and packet.
 
 After the three role-distinct primary stations—`implementation`, `validation`,
 and `review`—have each completed one round, they become `standby`, not
-`closed`. Their original members, contexts, and packets remain fixed for any
-later finding-driven resume; this primary-station rule coexists with, and does
-not replace, the reserved `memory-closure` and `completion` fixed-roster
-entries.
+`closed`. Their original activated members, contexts, and packets remain fixed
+for any later finding-driven resume; this primary-station rule coexists with,
+and does not replace, the reserved `memory-closure` and `completion`
+responsibility slots.
 
-Close the fixed roster only after all required slice acceptance conditions have
-terminal evidence. A `memory-docs` station is a separately bound, read-only
-input to memory closure; it is never a substitute for the `memory-closure`
-roster entry and may not cross into that protected role or channel.
+Close the fixed responsibility slots only after all required slice acceptance
+conditions have terminal evidence. A `memory-docs` station is a separately
+bound, read-only input to memory closure; it is never a substitute for the
+`memory-closure` slot and may not cross into that protected role or channel.
 
 ## Completion Bundle And Default Closeout
 
@@ -112,7 +115,7 @@ For a formal source-bearing delivery, the default `closeout_target` is
 `process-complete`. Before implementation starts, the slice records one
 `completion_bundle` that independently binds the later `memory-docs`,
 `protected-memory-write`, and `protected-memory-commit` branches, together
-with the fixed `memory-closure` and `completion` roster entries. The bundle
+with the fixed `memory-closure` and `completion` responsibility slots. The bundle
 names the expected inputs, accountable owner, and canonical binding reference
 for each branch; it does not restate the authorization schema.
 

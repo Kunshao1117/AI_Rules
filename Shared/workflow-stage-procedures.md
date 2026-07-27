@@ -32,7 +32,7 @@ They must not copy these procedures back into the 00-12 entry bodies.
 - Stage 2 workflow entry: each entry names its workflow row, this stage-procedure section, the
   workflow evidence matrix row, and any required `execution_spec` or handoff input.
 - Stage 7 behavior counter-evidence: use requirement replay, neutral challenge, overreach check,
-  design reflection, station evidence, validation/review findings, and `drift_check` as the shared
+  station evidence, validation/review findings, and `drift_check` as the shared
   counter-evidence surface.
 - Stage 8 source/deployed sync: when a runtime or generated pair exists, record the pair, sync
   direction, and hash or content parity evidence before source-level closeout. Missing parity stays
@@ -56,9 +56,9 @@ They must not copy these procedures back into the 00-12 entry bodies.
    Use `G2` quick-check for narrow low-blast-radius questions answerable by one to three official or primary sources.
    Use `G3` formal external research for architecture, governance, security, deployment, pricing, law, standards, release readiness, cross-source conflict, or high-blast-radius implementation decisions.
    Treat AI prior as a hypothesis only; it is never verified evidence without a matching local, official, primary, or returned research artifact.
-8. Use `design-reflection-gate` when a design, architecture, workflow, skill, governance rule, public contract, build handoff, fix strategy, or completion claim can become durable behavior.
-   Daily low-risk decisions use a quick matrix; governance, blueprint, workflow/skill/source-impacting, public-contract, multi-area, high-risk, or completion-affecting decisions use a full matrix.
-   Design reflection is a read-only route gate; it is not validation, review, memory/docs attribution, protected authorization, or completion evidence.
+8. Use the existing intent alignment, overreach, and drift checks when a design, architecture, workflow, skill, governance rule, public contract, build handoff, fix strategy, or completion claim can become durable behavior.
+   Apply the smallest check that can expose an intent mismatch, scope expansion, or unverified assumption.
+   These checks do not replace validation, review, memory/docs attribution, protected authorization, or completion evidence.
 9. Ask the Director only when the next step expands scope, cost, external tool/state access, protected action exposure, or residual risk.
    Do not pause mechanically after a fixed number of modules, batches, or files while the current route and scope remain unchanged.
 10. Use `formal-readonly` for evidence, research, impact mapping, validation planning, review evidence, memory/docs attribution, and broad reads.
@@ -114,7 +114,7 @@ They must not copy these procedures back into the 00-12 entry bodies.
 ## 01 Explore / 探索
 
 - Define the research question, decision to support, freshness needs, and source quality bar.
-- Before turning research into a recommendation, run the quick or full design reflection matrix according to impact scope.
+- Before turning research into a recommendation, record the applicable intent alignment, overreach, and drift findings according to impact scope.
 - Prefer official, primary, or current sources when the result can influence architecture, implementation, governance, release, or spend.
 - Return findings with source dates, confidence, bias or coverage gaps, and route recommendations.
 - Route buildable architecture decisions to `02`, experiments to `03-1`, and implementation-ready work to `03` only after evidence is sufficient.
@@ -124,7 +124,7 @@ They must not copy these procedures back into the 00-12 entry bodies.
 - Replay requirements, non-goals, constraints, assumptions, and acceptance criteria.
 - Run neutral challenge against current files, tool output, memory/context, and official sources when relevant.
 - Record architecture decisions, rejected alternatives, compatibility impact, and migration or rollback path.
-- Run full design reflection after option comparison and before a build handoff when the blueprint will shape durable architecture, workflow, skill, governance, public contract, or source behavior.
+- Run intent alignment, overreach, and drift checks after option comparison and before a build handoff when the blueprint will shape durable architecture, workflow, skill, governance, public contract, or source behavior.
 - Produce a build handoff contract only when implementation boundaries, validation expectations, memory/docs impact, and unresolved risks are clear.
 - When the blueprint becomes a handoff to `03`, produce a dual-format contract: a human-readable flowchart or narrative for Director and reviewer context, and a machine-readable `execution_spec` for downstream routing.
 - The `execution_spec` must name:
@@ -137,7 +137,7 @@ They must not copy these procedures back into the 00-12 entry bodies.
   - validation route;
   - memory/docs impact;
   - external research inputs;
-  - design reflection status and residual risks when applicable;
+  - intent, overreach, and drift findings with residual risks when applicable;
   - size/split gate when source-bearing files are in scope;
   - hooks scope as excluded unless explicitly scoped;
   - unresolved risks;
@@ -158,7 +158,7 @@ They must not copy these procedures back into the 00-12 entry bodies.
 - Produce a design-to-build contract before writes: requirement trace, review state when required, architecture boundary, change intent, real validation path, file sets, memory/docs impact, and drift audit rule.
 - Treat that design-to-build contract as `build-plan`, not `plan-only`: it defines implementation boundaries and acceptance evidence but does not grant write authority, and Codex `update_plan` remains only a progress mirror.
 - A production `build-plan` may start only from a machine-readable `execution_spec`, requirement-contract reference, exact file allowlist, and acceptance matrix. Mermaid, screenshots, or human flowcharts may explain sequence, but they are not enough to open implementation change delivery.
-- If the `execution_spec`, requirement-contract reference, file allowlist, acceptance matrix, or applicable design reflection decision is missing, route back to `02`, `design-reflection-gate`, or the intent-alignment station before writing.
+- If the `execution_spec`, requirement-contract reference, file allowlist, acceptance matrix, or applicable intent-alignment findings are missing, route back to `02` or the intent-alignment station before writing.
 - Include source-document size/split impact in the build plan when the file set includes core, shared policy/reference, `SKILL.md`, memory card, PowerShell script/module, audit rule pack, or large general source files.
 - Classify grounding tier before writes:
   - `G0` for local source, lockfile, logs, tests, or tool output.
@@ -195,7 +195,7 @@ They must not copy these procedures back into the 00-12 entry bodies.
 - Start with symptom, reproduction or observed failure, affected scope, and candidate root causes.
 - Classify whether the work is emergency temporary fix, root-cause repair, local refinement, or structural refactor.
 - Plan regression evidence before writes, including real-path validation when behavior depends on runtime state, external systems, persistence, UI, or operator-visible output.
-- Run design reflection before a fix when the repair would change public behavior, API/data contracts, workflow semantics, skill behavior, governance rules, or the repair starts acting like a redesign.
+- Run intent alignment, overreach, and drift checks before a fix when the repair would change public behavior, API/data contracts, workflow semantics, skill behavior, governance rules, or the repair starts acting like a redesign.
 - Classify size/split impact before writes when the fix touches a large source document, `Scripts/modules/*.psm1`, audit rule pack, or governance source.
 - Route `G2` quick-check before repair when the symptom depends on current framework/API behavior, package documentation, or vendor status.
 - Route `G3` formal research when root-cause or repair choice depends on security guidance, deploy platform rules, laws, pricing, standards, or conflicting external sources.
@@ -237,7 +237,7 @@ They must not copy these procedures back into the 00-12 entry bodies.
 - Use non-mutating verification by default. Direct work records the minimum outcome without a Team board, station, or formal trace.
 - Distinguish unit, integration, regression, visual, performance, accessibility, real execution, blocked, and unverified evidence.
 - Return `validation_judgment_state` from `workflow-lane-routing.md`; never turn absence of observed failure into "no error" or "無誤" completion language.
-- Do not treat design reflection as validation evidence. It may clarify expected behavior or residual design risk, but validation still needs its own evidence.
+- Do not treat intent, overreach, or drift findings as validation evidence. They may clarify expected behavior or residual design risk, but validation still needs its own evidence.
 - Run a non-mutating size-governance check when a workflow asks for it or when touched files cross the source-document policy categories.
 - Classify a failure before routing it to fix, debug, build, or explore. `deep-audit` is conditional on the positive triggers in `verification-strategy.md`, never the automatic result of a failure. The validation station does not repair the implementation it verifies.
 
@@ -298,7 +298,7 @@ They must not copy these procedures back into the 00-12 entry bodies.
 ## 12 Skill Forge / 技能鍛造
 
 - Decide whether the content belongs in core, shared policy, workflow entry, operational skill, reference file, memory, or project context.
-- Use full design reflection when adding a new gate, matrix, role, workflow rule, skill boundary, or repeated governance field.
+- Use intent alignment, overreach, and drift checks when adding a new gate, matrix, role, workflow rule, skill boundary, or repeated governance field.
 - Keep trigger language in frontmatter description; put long examples, templates, and procedures in references.
 - Validate naming, description specificity, boundary language, required metadata, and source/deployed sync.
 - Use `G2` quick-check for narrow live skill/tool documentation questions that affect trigger or tool usage.

@@ -45,10 +45,21 @@ Durable source facts remain subject to the separate memory phase.
 
 ### Captain runtime minimum trace
 
-The captain records only task, station, role, channel/status, authorization
-boundary, blocker, and reportability needed for coordination before a
-specialist claim. The captain does not preload or author the full catalog to
-simulate station work.
+The captain records only the reconstructible control state needed for
+coordination: goal and non-goals; current scope; topology and closeout target;
+authorization source, target, scope, phase, evidence, expiry, and resolution;
+slot and channel status; claim and artifact references; unresolved risk and
+Director decisions; and the next legal action. The captain does not preload or
+author the full catalog to simulate station work. A bare `authorized` or
+`complete` label without its source, scope, validity, and artifact references is
+not a reconstructible control state.
+
+Observed Context delivery evidence is post-dispatch evidence only. It may be
+`locally-verified`, `officially-documented-unverified`,
+`known-inherited-or-shared`, or `unknown`, and must cite the applicable trace or
+delivery artifact. A local marker test supports only the tested run and scope;
+it never proves absolute isolation. Do not copy observed Context evidence into a
+sealed requested context scope.
 
 ### Extended audit trace
 
@@ -59,15 +70,16 @@ proves implementation, validation, review, or completion.
 
 ## Slice Continuity Boundary
 
-One `delivery_slice` fixes an acceptance boundary and a five-role roster.
-`implementation`, `validation`, and `review` are the distinct primary
-repair/rerun members; `memory-closure` and `completion` are preconfigured
-reserved members of that same slice and start only when their declared
-dependencies are satisfied. The five members retain distinct station, member
-assignment, role instance, context, and packet identities for the whole slice.
+One `delivery_slice` fixes an acceptance boundary and five responsibility slots.
+`implementation`, `validation`, and `review` are distinct primary repair/rerun
+slots; `memory-closure` and `completion` remain reserved until their declared
+dependencies are satisfied. A reserved slot has no live member, role instance,
+Context, or packet. When a slot activates, its station, member assignment, role
+instance, Context, and packet bindings are recorded and retained for that slot's
+rounds in the slice.
 
 After a primary round returns, its station is `standby`; it does not close or
-silently acquire a new member on the next round. A reserved member is neither a
+silently acquire a new member on the next round. A reserved slot is neither a
 new slice nor a replacement. A numbered finding requires an explicit captain
 resume of the original implementation station, followed by explicit resume of
 the original validation and review stations. See the slice/role owner for the

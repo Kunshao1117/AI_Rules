@@ -51,7 +51,7 @@ must be narrowed before formal acceptance.
 
 `station_state` is `assigned`, `standby`, `running`, `returned`, `blocked`,
 `unverified`, `closed-with-director-risk`, or `not-applicable`. `standby` is
-non-terminal and preserves the fixed slice roster.
+non-terminal and preserves an activated responsibility-slot binding.
 
 `evidence_state` is `pending`, `returned`, `logged`, `routed-to-owner-station`,
 `blocked`, `unverified`, `closed-with-director-risk`, or `not-applicable`.
@@ -68,7 +68,11 @@ does not change this station lifecycle by itself.
 `unverified`, or `not-applicable`.
 
 `context_visibility` is `specialist-deep-read`, `captain-coordination-only`,
-`shared-visible`, `unread`, or `not-applicable`. `external_grounding_required`
+`shared-visible`, `unread`, or `not-applicable`. It records allowed or expected
+read visibility only; it is not a claim of Context isolation, inheritance,
+filtering, or platform application. Observed Context delivery must be supported
+by a post-dispatch trace or delivery-artifact reference, never by this value.
+`external_grounding_required`
 is `true`, `false`, or `unknown`; outcome belongs in
 `external_grounding_state`, whose values are `not-required`, `required`,
 `requested`, `sufficient`, `partial`, `no-evidence`, `conflicted`, `blocked`,

@@ -78,33 +78,33 @@ validation, memory/docs, or completion evidence.
 
 ## Fixed Slice Continuity
 
-Each delivery slice fixes five independent roster entries: implementation,
-validation, review, memory-closure, and completion. The entries must have
-different formal stations, member assignments, and role instances. For the
-entire slice, each entry keeps its original role instance, context, and packet.
-`memory-docs` remains a separately bound, read-only input role; it must use a
-different role instance and channel from `memory-closure`.
+Each delivery slice fixes five independent responsibility slots:
+implementation, validation, review, memory-closure, and completion. The slots
+fix their role, activation condition, required artifacts, and independence
+requirements. A reserved slot need not have a formal station, member assignment,
+role instance, context, or packet. When a slot activates, those bindings become
+required and must remain distinct where independence is required. `memory-docs`
+remains a separately bound, read-only input role; it must use a different role
+instance and channel from an activated `memory-closure` slot.
 
-Later fixed entries may be `reserved` before their dependencies are ready.
-Reserved is a pre-assigned roster state, not a new slice, repair station, or
-member replacement. After every active round, a roster entry becomes standby.
-It does not close or automatically acquire a new member in the next round. A
-numbered validation/review finding requires an explicit captain decision to
-resume the original implementation member for the cited finding. After that
-repair returns, the captain explicitly resumes the original validation and
-review members.
+After every active round, an activated slot becomes standby. It does not close
+or automatically acquire a new member in the next round. A numbered
+validation/review finding requires an explicit captain decision to resume the
+original activated implementation member for the cited finding. After that
+repair returns, the captain explicitly resumes the original activated validation
+and review members.
 
 Repair is a resumed implementation work state, not a fourth repair station or
-a new member. The first two same-symptom cycles retain the same slice roster
-and packet baseline. A third same-symptom cycle may add independent diagnosis
+a new member. The first two same-symptom cycles retain the same activated
+bindings and packet baseline. A third same-symptom cycle may add independent diagnosis
 or module-split evidence, but its result returns to the original implementation
 member. Validation and review remain non-mutating and cannot author repair.
 
 Timeout, probe, channel resume, and channel replacement affect only a channel.
-They cannot change a roster member, role instance, context, or packet. Only an
-explicit captain member-replacement decision with an allowed reason, prior and
-new role instances, and context-transfer evidence may change a fixed roster
-entry.
+They cannot change an activated slot's member, role instance, context, or
+packet. Only an explicit captain member-replacement decision with an allowed
+reason, prior and new role instances, and context-transfer evidence may change
+an activated responsibility-slot binding.
 
 For formal source-bearing work, the pre-bound completion bundle keeps
 memory-docs, protected-memory-write, and protected-memory-commit as separate
@@ -139,8 +139,9 @@ Keep these separations intact even when a task is small:
 - A validation/review finding is evidence, not automatic repair authority.
   Captain resume returns work to the original implementation member; later
   captain resumes return checking to the original validation/review members.
-- Captain ledgering may route a subagent artifact but cannot turn its reply into
-  a conclusion, quality disposition, acceptance, or completion evidence.
+- Captain ledgering may route a subagent artifact and report the selected closeout
+  target's completion state from current, traceable required artifacts, but cannot
+  turn its reply into a conclusion, quality disposition, acceptance, or completion evidence.
 
 - Implementation returns change delivery only; it does not review itself.
 - Validation checks without repairing the implementation under validation.
@@ -203,10 +204,10 @@ Before logging a station output into the synthesis ledger:
 
 ## Output
 
-15. Confirm the fixed slice roster has distinct implementation, validation,
-    review, memory-closure, and completion members/role instances. Confirm a
-    reserved entry did not create a slice or replacement, and each activated
-    round is standby rather than an automatic close/reassignment.
+15. Confirm the fixed slice responsibility slots cover implementation,
+    validation, review, memory-closure, and completion. Confirm a reserved slot
+    did not create a member, packet, context, slice, or replacement, and each
+    activated round is standby rather than an automatic close/reassignment.
 16. Confirm first/second same-symptom repairs resumed the original
     implementation member; a third has independent diagnosis/module-split
     evidence before repair resumes.

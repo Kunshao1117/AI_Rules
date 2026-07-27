@@ -14,15 +14,15 @@ Describe 'Team-Native delivery slice contract' {
         $procedures | Should Match 'do\s+not\s+reproduce\s+that\s+contract'
     }
 
-    It 'keeps primary roles isolated inside the complete fixed roster' {
+    It 'keeps primary roles isolated inside fixed responsibility slots' {
         $core | Should Match 'team-native-core-delivery-slice\.md'
         $deliverySlice | Should Match 'three\s+role-distinct\s+primary\s+stations'
         $deliverySlice | Should Match '(?s)validation.*may\s+not\s+write,\s+repair,\s+or\s+review'
         $deliverySlice | Should Match '(?s)review.*may\s+not\s+write,\s+repair,\s+or\s+validate'
-        $deliverySlice | Should Match 'five\s+role-distinct\s+fixed\s+roster\s+stations\s+and\s+members'
+        $deliverySlice | Should Match 'five\s+role-distinct\s+fixed\s+responsibility\s+slots'
         $deliverySlice | Should Match '`memory-closure`'
         $deliverySlice | Should Match '`completion`'
-        $roleBoundaries | Should Match '(?s)fixed slice roster has distinct implementation, validation,\s*review, memory-closure, and completion members/role instances'
+        $roleBoundaries | Should Match '(?s)five independent responsibility slots.*implementation, validation,\s*review, memory-closure, and completion'
     }
 
     It 'keeps the first two same-symptom repairs in the original slice' {

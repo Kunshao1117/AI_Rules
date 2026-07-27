@@ -15,7 +15,7 @@ skills and returned artifacts without re-owning execution lifecycle behavior.
 | Board fields and station row | Shared/skills/team-task-board/SKILL.md |
 | Workflow sequence, board state, and waves | Shared/policies/workflow-orchestration.md |
 | Board-wide fields and parallel dispatch | Shared/skills/team-task-board/references/board-field-catalog.md |
-| Fixed slice roster, findings, repair resumes, and member replacement | Shared/skills/team-task-board/references/board-field-slice-and-roles.md |
+| Fixed responsibility slots, findings, repair resumes, and member replacement | Shared/skills/team-task-board/references/board-field-slice-and-roles.md |
 | Memory-closure candidate map, receipt freshness, and eligibility | Shared/policies/references/memory-closure-bundle-contract.md |
 | Channel values and receipt layers | Shared/skills/team-task-board/references/board-field-channel-and-receipts.md |
 | Authorization scope | Shared/policies/authorization-resolution.md |
@@ -135,9 +135,12 @@ Before resolution, seal these projections on the same handoff_packet_id:
 #lifecycle-ledger: execution-lifecycle reference shape
 ~~~
 
-context_scope_ref and wait_policy_ref bind to the sealed context projection and
-immutable wait baseline on that same packet. A changed sealed scope or baseline
-requires a new packet; a legal ledger revision does not. The lifecycle
+context_scope_ref binds only to the requested, sealed scope projection before
+dispatch and wait_policy_ref binds to the immutable wait baseline on that same
+packet. A changed sealed scope or baseline requires a new packet; a legal ledger
+revision does not. Post-dispatch observed Context inheritance, filtering, or
+isolation evidence must not be written into context_scope_ref; it belongs only
+in a trace or delivery artifact that cites the observed run. The lifecycle
 reference exclusively owns channel-only field shapes,
 requested/accepted/applied provenance separation, deadline revision,
 probe/channel-resume, channel replacement, cancellation, and late-return
@@ -159,10 +162,11 @@ change-application phase and the same safeguards unless the board records a
 
 ### Slice Continuity Overlays
 
-The implementation, validation, and review entries in a delivery slice are
-fixed, independent stations. Each keeps its original role_instance_id, member
-assignment, context, and handoff_packet_id after a round returns to standby.
-The three entries close only after whole-slice acceptance.
+The implementation, validation, and review entries are fixed, independent
+responsibility slots. Once activated, each keeps its original role_instance_id,
+member assignment, context, and handoff_packet_id after a round returns to
+standby. A reserved slot has no live packet or context until its activation
+condition is met. Activated entries close only after whole-slice acceptance.
 
 A numbered validation/review finding may resume the original implementation
 station only through a captain decision. Record the cited finding IDs,
@@ -204,6 +208,14 @@ repair may resume the original implementation packet only by the slice decision;
 the packet route then carries the receipt revision and stale dependencies
 forward. Channel timeout/resume behavior remains exclusively with
 `execution-lifecycle.md` and cannot itself refresh a source artifact.
+
+Every formal source, validation, review, or completion claim cites a minimal
+sufficient durable carrier. A delivery artifact revision binds the claim to the
+actual consumed artifact. For committed source, bind the immutable revision. For
+uncommitted source, bind base HEAD, relevant paths, worktree and index state,
+and a diff fingerprint. A path or line locator is useful for navigation but is
+not sufficient evidence identity on its own. Do not retain all raw logs: retain
+only the non-secret, relevant carrier needed for the claim.
 
 ### Same-Wave Parallel Overlay
 
@@ -318,8 +330,10 @@ A `git-checkpoint` station returns the canonical `git_checkpoint_receipt`
 owned by the board field catalog. It does not return implementation,
 validation, review, memory/docs, or completion evidence.
 
-Every formal station returns this minimal reference packet so ledgering does
-not require broad substitute search:
+`minimal_reference_packet` is the only canonical station-to-captain reference
+packet. Every formal station returns it so ledgering does not require broad
+substitute search. Do not create a decision receipt or another captain-return
+schema:
 
 ~~~text
 minimal_reference_packet_id:

@@ -54,12 +54,12 @@ Describe 'Memory closure bundle contract' {
         $protectedActions | Should Match '(?s)Deployment mutation.*`deployment`'
     }
 
-    It 'keeps a fixed five-entry roster where reserved standby and resume are not replacements' {
-        $roleBoundaries | Should Match '(?s)five independent roster entries: implementation,\s*validation, review, memory-closure, and completion'
-        $roleBoundaries | Should Match '(?s)Reserved is a pre-assigned roster state, not a new slice, repair station, or\s*member replacement'
-        $roleBoundaries | Should Match '(?s)After every active round, a roster entry becomes standby'
+    It 'keeps fixed responsibility slots where reserved standby and resume are not replacements' {
+        $roleBoundaries | Should Match '(?s)five independent responsibility slots:\s*implementation,\s*validation, review, memory-closure, and completion'
+        $roleBoundaries | Should Match '(?s)A reserved slot need not have a formal station, member assignment,\s*role instance, context, or packet'
+        $roleBoundaries | Should Match '(?s)After every active round, an activated slot becomes standby'
         $roleBoundaries | Should Match '(?s)Timeout, probe, channel resume, and channel replacement affect only a channel'
-        $roleBoundaries | Should Match '(?s)Only an\s*explicit captain member-replacement decision.*context-transfer evidence may change a fixed roster'
+        $roleBoundaries | Should Match '(?s)Only an\s*explicit captain member-replacement decision.*context-transfer evidence may change\s*an activated responsibility-slot binding'
     }
 
     It 'requires current no-write or committed memory receipts and stales prior slice revisions' {
@@ -127,7 +127,7 @@ Describe 'Memory closure bundle contract' {
         $bundle | Should Not Match '(?m)^\s*(authorization_source|authorization_target|authorization_scope|authorization_phase|authorization_evidence|authorization_expiry|authorization_resolution_state|canonical_phase_resolution_ref)\s*:'
     }
 
-    It 'keeps packet phase resolution canonical and separates primary from reserved roster roles' {
+    It 'keeps packet phase resolution canonical and separates primary from reserved responsibility slots' {
         $packet | Should Match 'completion_bundle_ref'
         $packet | Should Not Match '(?m)^\s*completion_bundle\s*:'
         $packet | Should Not Match '(?m)^\s*canonical_phase_resolution_ref\s*:'
@@ -143,7 +143,7 @@ Describe 'Memory closure bundle contract' {
         $allRosterRoles.Count | Should Be 5
         $roleOverlap.Count | Should Be 0
 
-        $fiveRoleSignal = '(?i)\b(?:five|5)(?:\s*-\s*|\s+)(?:role\s+|independent\s+)?(?:roster|station\s+rows?)\b'
+        $fiveRoleSignal = '(?i)\b(?:five|5)\s+(?:independent\s+)?responsibility\s+slots?\b'
         foreach ($rosterOwner in @($teamGovernance, $teamTraceEvidence, $teamTraceFields)) {
             foreach ($role in $allRosterRoles) {
                 $rosterOwner | Should Match ([regex]::Escape($role))

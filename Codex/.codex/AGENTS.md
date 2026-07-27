@@ -13,8 +13,8 @@ Do not hand-edit this generated marker.
 ## Always-On Core
 
 - Director-facing replies, status, plans, handoffs, and completion summaries
-  are Traditional Chinese (zh-TW). Source policy, skills, references, and code
-  keep their local language convention; prefer concise English in those bodies.
+  use plain Traditional Chinese (zh-TW): lead with result, impact, risk, and
+  next step; do not lead with English, commands, paths, or raw technical output.
 - Direct is the default for ordinary focused local work. Fix, build, debug,
   test, source, policy, documentation, analysis, multi-file or multi-step work,
   available subagents, and generic governed work are not delegation triggers by
@@ -35,15 +35,6 @@ Do not hand-edit this generated marker.
   validation, review, sync, or completion without current supporting evidence.
   Report missing proof as `blocked`, `unverified`, or
   `closed-with-director-risk` as applicable.
-- Framework source is authoritative. Change `Codex/.codex/AGENTS.md` first and
-  verify source/runtime parity through the governed deployment path; do not make
-  a runtime-only repair. The authority map is
-  `Shared/policies/references/source-runtime-surface-map.md`.
-- V1 heterogeneous delegation remains available only in delegated topology.
-  Each station may request its own model and reasoning effort; requested,
-  accepted, and applied remain distinct; no receipt means no applied claim, and
-  silent fallback is forbidden. Load
-  `Shared/policies/adapters/codex-subagent-invocation.md` before dispatch.
 
 ## Lazy-Load Owners
 
@@ -56,6 +47,9 @@ Do not hand-edit this generated marker.
 - Team stations, trace, validation, review, memory/docs, and completion:
   `Shared/skills/team-*/SKILL.md` and
   `Shared/policies/workflow-orchestration.md`.
+- Source/runtime deployment and delegated Codex execution intent:
+  `Shared/policies/references/source-runtime-surface-map.md` and
+  `Shared/policies/adapters/codex-subagent-invocation.md`.
 - Codex hook capability and repository deployment boundary:
   `Shared/platform-capability-matrix.md` and
   `Shared/policies/references/hook-event-matrix.md`.

@@ -60,6 +60,95 @@ function Test-CodexWorkflowRelativePathIncluded {
     return $firstSegment -notmatch '^_'
 }
 
+function Get-RetiredSharedSkillManifest {
+    <#
+    .SYNOPSIS
+        Lists legacy Shared Skills that may be retired only after an exact
+        historical official SHA256 match.
+    .DESCRIPTION
+        This is intentionally an allowlist, not an orphan scan. Unknown files
+        and user Skills are outside this migration and are never candidates for
+        removal.
+    #>
+    return @(
+        [PSCustomObject]@{
+            RelativePath = 'coding-reflection-gate/SKILL.md'
+            KnownSha256 = @(
+                '21BD3E11A914F01F623DA6ABF08F42F5397F09733307B5D112CE787211A6757C',
+                '71BC2F789C33B9AB3062FA82AE4832F339748D2ED09EB27DC4B6D87A90664772'
+            )
+        }
+        [PSCustomObject]@{
+            RelativePath = 'design-reflection-gate/SKILL.md'
+            KnownSha256 = @(
+                '43879A1801CC0891EEFD675FB029E753F38970CDFAD65BBBFEBE2BBF23A1863D',
+                '663D686BC85B2DC5F90171A420489692156090948F6015F530C095E998548D34'
+            )
+        }
+    )
+}
+
+function Remove-RetiredSharedSkills {
+    <#
+    .SYNOPSIS
+        Safely retires hash-owned Shared Skills removed from the canonical tree.
+    .DESCRIPTION
+        Each candidate is an explicit historical path and SHA256 allowlist.
+        A mismatch, unreadable file, or unknown path is preserved with a clear
+        warning. No general skill-directory cleanup is performed.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$TargetSkillsPath
+    )
+
+    $removed = New-Object System.Collections.Generic.List[string]
+    $preserved = New-Object System.Collections.Generic.List[string]
+    foreach ($artifact in @(Get-RetiredSharedSkillManifest)) {
+        $relativePath = [string]$artifact.RelativePath
+        if ([string]::IsNullOrWhiteSpace($relativePath) -or
+            $relativePath -match '(^|[\\/])\.\.([\\/]|$)' -or
+            [System.IO.Path]::IsPathRooted($relativePath)) {
+            throw "Invalid retired Shared Skill declaration: $relativePath"
+        }
+
+        $targetPath = Join-Path $TargetSkillsPath ($relativePath -replace '/', '\\')
+        if (-not (Test-Path -LiteralPath $targetPath -PathType Leaf)) { continue }
+
+        try {
+            $actualHash = (Get-FileHash -LiteralPath $targetPath -Algorithm SHA256 -ErrorAction Stop).Hash.ToUpperInvariant()
+        } catch {
+            $preserved.Add($relativePath)
+            Write-Warn "preserved_unconfirmed_retired_skill: $relativePath; SHA256 could not be read; manual action required."
+            continue
+        }
+
+        $knownHashes = @($artifact.KnownSha256 | ForEach-Object { ([string]$_).ToUpperInvariant() })
+        if ($knownHashes -notcontains $actualHash) {
+            $preserved.Add($relativePath)
+            Write-Warn "preserved_user_modified_retired_skill: $relativePath; known official hash did not match; manual action required."
+            continue
+        }
+
+        Remove-Item -LiteralPath $targetPath -Force -ErrorAction Stop
+        $removed.Add($relativePath)
+        Write-Ok "removed_managed_retired_skill: $relativePath"
+
+        $directory = Split-Path -Path $targetPath -Parent
+        while ($directory -and (Test-Path -LiteralPath $directory -PathType Container) -and
+               -not [string]::Equals($directory.TrimEnd('\\'), $TargetSkillsPath.TrimEnd('\\'), [System.StringComparison]::OrdinalIgnoreCase)) {
+            if (@(Get-ChildItem -LiteralPath $directory -Force -ErrorAction Stop).Count -ne 0) { break }
+            Remove-Item -LiteralPath $directory -Force -ErrorAction Stop
+            $directory = Split-Path -Path $directory -Parent
+        }
+    }
+
+    return [PSCustomObject]@{
+        Removed = @($removed.ToArray())
+        Preserved = @($preserved.ToArray())
+    }
+}
+
 function Assert-ExactDeploymentHash {
     <#
     .SYNOPSIS
@@ -267,7 +356,7 @@ function Sync-SharedSkills {
             # 排除符號連結目錄（_memory、_project、project-*），但保留正式索引與 project-context-protocol。
             Test-SharedSkillRelativePathIncluded -RelativePath $_.Name
         } | ForEach-Object {
-            Copy-Item $_.FullName $TargetSkillsPath -Recurse -Force
+            Copy-Item $_.FullName $TargetSkillsPath -Recurse -Force -ErrorAction Stop
         }
         Get-ChildItem -LiteralPath $SharedSkillsRoot -Recurse -File | Where-Object {
             $relPath = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
@@ -276,6 +365,7 @@ function Sync-SharedSkills {
             $rel = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
             Assert-ExactDeploymentHash -SourcePath $_.FullName -TargetPath (Join-Path $TargetSkillsPath $rel) -RelativePath $rel
         }
+        $null = Remove-RetiredSharedSkills -TargetSkillsPath $TargetSkillsPath
         $count = (Get-ChildItem $TargetSkillsPath -Directory | Where-Object {
             (Test-Path (Join-Path $_.FullName "SKILL.md"))
         }).Count
@@ -295,11 +385,12 @@ function Sync-SharedSkills {
         if ($result.Status -in @("NEW", "CHANGED")) {
             $tgtDir = Split-Path $tgtFile -Parent
             if (-not (Test-Path $tgtDir)) { New-Item -ItemType Directory $tgtDir -Force | Out-Null }
-            Copy-Item $_.FullName $tgtFile -Force
+            Copy-Item $_.FullName $tgtFile -Force -ErrorAction Stop
             $updated++
         }
         Assert-ExactDeploymentHash -SourcePath $_.FullName -TargetPath $tgtFile -RelativePath $rel
     }
+    $null = Remove-RetiredSharedSkills -TargetSkillsPath $TargetSkillsPath
     Write-Ok "技能差異注入完成：更新 $updated 個檔案"
     return $updated
 }
@@ -356,7 +447,7 @@ function Sync-SharedGovernanceReferences {
             if (-not (Test-Path -LiteralPath $tgtDir -PathType Container)) {
                 New-Item -ItemType Directory -Force -Path $tgtDir | Out-Null
             }
-            Copy-Item -LiteralPath $srcFile -Destination $tgtFile -Force
+            Copy-Item -LiteralPath $srcFile -Destination $tgtFile -Force -ErrorAction Stop
             $updated++
         }
         Assert-ExactDeploymentHash -SourcePath $srcFile -TargetPath $tgtFile -RelativePath $rel

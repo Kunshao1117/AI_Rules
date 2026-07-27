@@ -37,10 +37,10 @@ Layer ownership, in order:
 
 - Owns: External grounding gate for source type, freshness sensitivity, and no-evidence claim boundaries.
 
-### `Shared/skills/design-reflection-gate/SKILL.md`
+### `Shared/skills/intent-alignment-gate/SKILL.md`
 
-- Owns: Design-shape reflection for intent fit, definition clarity, complexity pressure, scope creep, and smaller alternatives.
-- It is a read-only route gate. It does not authorize source writes, validation, review, memory/docs attribution, protected actions, or completion claims.
+- Owns: Intent alignment, overreach checks, and drift checks for design-shaping decisions.
+- These checks do not authorize source writes, validation, review, memory/docs attribution, protected actions, or completion claims.
 
 ### `Shared/policies/source-document-size-governance.md`
 
@@ -163,8 +163,8 @@ not separate workflow, policy, or skill mechanisms.
 - Skills, Team Task Board, Handoff Packet, and delivery artifacts form the operation and evidence
   execution layer. They carry assigned work, returned artifacts, and downstream handoffs without
   redefining the gates above.
-- Behavior counter-evidence enters the mainline through intent envelope, overreach check, design
-  reflection, station evidence, drift check, validation, and review. It is evidence routing, not a
+- Behavior counter-evidence enters the mainline through intent envelope, overreach check, station
+  evidence, drift check, validation, and review. It is evidence routing, not a
   separate workflow.
 - Source/deployed sync enters the mainline through `source_deployed_pair`, `sync_direction`, and
   `sync_evidence` before source-level closeout when a runtime or generated pair exists.
@@ -193,7 +193,7 @@ Mainline responsibility anchors:
 - Stage 2 workflow entry: entry files and workflow skills keep route selection, row references,
   stage-procedure pointers, and load gates only.
 - Stage 7 behavior counter-evidence: disconfirming evidence is recorded in the existing intent,
-  reflection, station, drift, validation, and review fields instead of opening a parallel
+  overreach, station, drift, validation, and review fields instead of opening a parallel
   counter-evidence flow.
 - Stage 8 source/deployed sync: source/runtime or generated-copy parity is recorded with the
   paired sync fields and remains blocked or unverified when hash or content parity is missing.
@@ -218,7 +218,7 @@ Director instruction
 -> external grounding trigger
    when external facts, sources, or freshness affect formal evidence; if external
    grounding is not required, record the local, provided, or stable-semantics basis
--> design reflection gate
+-> intent alignment, overreach, and drift checks
    when a response, plan, blueprint, workflow, skill, governance change, build handoff,
    fix strategy, or completion claim can solidify a design decision or introduce
    complexity, scope drift, or operator-intent drift
@@ -243,9 +243,9 @@ Director instruction
    using the execution spec contract and delegation strategy; requested intent is not applied state,
    and executable context/wait references remain unresolved until handoff anchors exist
 -> board_template and board_state
--> station set and dispatch wave
--> draft station handoff packet
-   create its handoff packet ID and record station mode, context visibility, handoff ownership,
+-> fixed responsibility slots and current dispatch wave
+-> activate each eligible slot, then draft its station handoff packet
+   create a handoff packet only for the activated slot and record station mode, context visibility, handoff ownership,
    loaded skill refs, scope, forbidden actions, output format, and stop condition
 -> materialize and seal the packet's `#context-scope` and `#wait-policy` anchors
 -> bind `context_scope_ref` and `wait_policy_ref` to those anchors on the same handoff packet ID
@@ -320,12 +320,11 @@ Director-facing text uses the output gate in `language-governance`.
 
 External claims, outside sources, and freshness-sensitive facts use the grounding gate in `grounding-governance`.
 
-Design-shape decisions use the read-only design reflection gate in `design-reflection-gate`.
-That gate checks whether a proposed design still matches the Director's intent, has clear definitions,
-uses the smallest sufficient complexity, avoids scope creep, names smaller alternatives, and preserves
-unverified or blocked evidence honestly.
+Design-shape decisions use the existing intent alignment, overreach, and drift checks.
+They check whether a proposed design still matches the Director's intent, uses the smallest sufficient
+complexity, avoids scope creep, names unverified assumptions, and preserves blocked evidence honestly.
 
-This orchestration contract only records gate placement and does not copy the verification or reflection procedure from those policies and skills.
+This orchestration contract only records gate placement and does not copy the verification procedure from those policies and skills.
 
 Intent envelope and overreach checks are lightweight by default:
 
@@ -346,10 +345,8 @@ Intent envelope and overreach checks are lightweight by default:
   available in the current session; the canonical tool-first and test-exception decision is owned solely by
   `authorization-resolution.md`.
 
-Design reflection is not mandatory full-process work for every chat turn.
-Use a quick matrix for ordinary low-risk routing, and a full matrix only when governance, architecture,
-workflow/skill/source-impacting work, public contracts, cross-area decisions, or completion claims are affected.
-The matrix is a route and design-quality tool only; it is not authorization, validation, review, or completion evidence.
+Intent alignment, overreach, and drift checks are not mandatory full-process work for every chat turn.
+Apply the smallest check that can expose a material intent mismatch, scope expansion, or unverified assumption.
 
 Flowcharts, diagrams, checklists, and visual plan mirrors are human navigation only.
 
@@ -488,9 +485,9 @@ validation, and review unit is an acceptance-sized `delivery_slice`, not a
 micro-step or individual file. Do not restart formal validation or review after
 every micro-step or file.
 
-A `delivery_slice` is the fixed shared context and authorization container for
+A `delivery_slice` is the fixed responsibility and authorization container for
 one acceptance objective, its exact authorization and allowlist, stable risk
-posture, implementation artifact, and downstream handoffs. A formal slice must
+posture, required artifacts, independence requirements, and downstream handoffs. A formal slice must
 reference a requirement contract; this policy requires the reference but does
 not define or duplicate that contract's fields. Its canonical slice schema and
 state remain in the execution-spec contract and board field catalog. Legacy work
@@ -499,14 +496,15 @@ authorized acceptance unit and records
 `delivery_slice_legacy_fallback: inferred-current-acceptance`; the fallback
 does not widen scope.
 
-The slice assigns separate implementation, validation, and review stations and
-members. They retain their original role instances, packet, context, and
-identity across the slice, moving to `standby` between rounds rather than
-closing. A validation or review finding returns the retained implementation
-member to a repair working state; it does not create an automatic repair station
-or member. The original validation and review members are then rerun from that
-artifact in dependency order. Detailed captain decisions and role limits are
-owned by Team-Native Core.
+The slice fixes separate implementation, validation, and review responsibility
+slots; their members, role instances, packets, channels, and Context scopes bind
+only when each slot activates. Reserved slots need no live Context or packet.
+An activated station retains its original bindings across the slice, moving to
+`standby` between rounds rather than closing. A validation or review finding
+returns the retained implementation member to a repair working state; it does
+not create an automatic repair station or member. The original validation and
+review members are then rerun from that artifact in dependency order. Detailed
+captain decisions and role limits are owned by Team-Native Core.
 
 Keep the first two acceptance-required repairs for the same symptom in the
 same slice and reuse its resolved authorization. On the third same-symptom
