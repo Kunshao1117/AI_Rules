@@ -7,8 +7,17 @@ function Get-RequiredText {
     param([Parameter(Mandatory = $true)][string]$RelativePath)
 
     $path = Join-Path $repoRoot $RelativePath
+    return Get-Text -Path $path -Label $RelativePath
+}
+
+function Get-Text {
+    param(
+        [Parameter(Mandatory = $true)][string]$Path,
+        [Parameter(Mandatory = $true)][string]$Label
+    )
+
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
-        throw "Expected file is missing: $RelativePath"
+        throw "Expected file is missing: $Label"
     }
 
     return Get-Content -LiteralPath $path -Raw -Encoding UTF8
@@ -27,22 +36,25 @@ function Assert-Contains {
 }
 
 function Get-NormalizedPlatformCore {
-    param([Parameter(Mandatory = $true)][string]$RelativePath)
+    param(
+        [Parameter(Mandatory = $true)][string]$Path,
+        [Parameter(Mandatory = $true)][string]$Label
+    )
 
-    $content = Get-RequiredText $RelativePath
+    $content = Get-Text -Path $Path -Label $Label
     # The platform deployment flow refreshes exactly one bounded generated
     # adapter block. Compare every source-owned character outside that block.
     $startMarker = '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->'
     $endMarker = '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->'
     if ([regex]::Matches($content, [regex]::Escape($startMarker)).Count -ne 1 -or
         [regex]::Matches($content, [regex]::Escape($endMarker)).Count -ne 1) {
-        throw "Platform core must contain one explicit generated-policy marker range: $RelativePath"
+        throw "Platform core must contain one explicit generated-policy marker range: $Label"
     }
 
     $start = $content.IndexOf($startMarker, [System.StringComparison]::Ordinal)
     $end = $content.IndexOf($endMarker, $start, [System.StringComparison]::Ordinal)
     if ($start -lt 0 -or $end -lt $start) {
-        throw "Platform core has an invalid generated-policy marker range: $RelativePath"
+        throw "Platform core has an invalid generated-policy marker range: $Label"
     }
 
     $end += $endMarker.Length
@@ -51,12 +63,15 @@ function Get-NormalizedPlatformCore {
 }
 
 function Get-NormalizedText {
-    param([Parameter(Mandatory = $true)][string]$RelativePath)
+    param(
+        [Parameter(Mandatory = $true)][string]$Path,
+        [Parameter(Mandatory = $true)][string]$Label
+    )
 
     # Deployment can preserve a source file while normalizing its line endings.
     # Compare text after that transport-only normalization; all other characters
     # must still match exactly.
-    return ((Get-RequiredText $RelativePath) -replace "`r`n", "`n")
+    return ((Get-Text -Path $Path -Label $Label) -replace "`r`n", "`n")
 }
 
 Describe 'Non-engineer UX contract' {
@@ -65,6 +80,23 @@ Describe 'Non-engineer UX contract' {
         $script:languagePolicy = Get-RequiredText 'Shared\policies\language-governance.md'
         $script:outputExamples = Get-RequiredText 'Shared\policies\references\user-facing-output-examples.md'
         $script:changelog = Get-RequiredText 'CHANGELOG.md'
+        $script:runtimeTarget = Join-Path ([System.IO.Path]::GetTempPath()) ("ai-rules-non-engineer-ux-" + [guid]::NewGuid().ToString())
+        $Error.Clear()
+        $global:LASTEXITCODE = 0
+        & (Join-Path $repoRoot 'Scripts\Deploy.ps1') -Platform All -Mode Fresh -Target $script:runtimeTarget
+        if ($LASTEXITCODE -ne 0) {
+            throw "Fresh runtime deployment for UX parity exited with code $LASTEXITCODE."
+        }
+        if ($Error.Count -ne 0) {
+            $messages = $Error | ForEach-Object { $_.ToString() }
+            throw "Fresh runtime deployment for UX parity produced uncaught error records: $($messages -join ' | ')"
+        }
+    }
+
+    AfterAll {
+        if ($script:runtimeTarget -and (Test-Path -LiteralPath $script:runtimeTarget)) {
+            Remove-Item -LiteralPath $script:runtimeTarget -Recurse -Force -ErrorAction Stop
+        }
     }
 
     It 'keeps the README first layer focused on non-engineers before technical detail' {
@@ -154,22 +186,28 @@ Describe 'Non-engineer UX contract' {
         }
     }
 
-    It 'keeps source and checked-in runtime copies equal for the affected always-on surfaces' {
+    It 'keeps source and freshly deployed runtime copies equal for the affected always-on surfaces' {
         foreach ($pair in @(
                 @{ Source = 'Antigravity\.agents\rules\00_core_identity.md'; Runtime = '.agents\rules\00_core_identity.md' },
                 @{ Source = 'Claude\.claude\rules\core-identity.md'; Runtime = '.claude\rules\core-identity.md' },
                 @{ Source = 'Codex\.codex\AGENTS.md'; Runtime = '.codex\AGENTS.md' }
             )) {
-            if ((Get-NormalizedPlatformCore $pair.Source) -cne (Get-NormalizedPlatformCore $pair.Runtime)) {
+            $sourcePath = Join-Path $repoRoot $pair.Source
+            $runtimePath = Join-Path $script:runtimeTarget $pair.Runtime
+            if ((Get-NormalizedPlatformCore -Path $sourcePath -Label $pair.Source) -cne (Get-NormalizedPlatformCore -Path $runtimePath -Label $pair.Runtime)) {
                 throw "Source/runtime UX parity failed outside the generated adapter block: $($pair.Source)"
             }
         }
 
-        if ((Get-NormalizedText 'Shared\policies\language-governance.md') -cne (Get-NormalizedText '.agents\shared\policies\language-governance.md')) {
+        $sourcePolicy = Join-Path $repoRoot 'Shared\policies\language-governance.md'
+        $runtimePolicy = Join-Path $script:runtimeTarget '.agents\shared\policies\language-governance.md'
+        if ((Get-NormalizedText -Path $sourcePolicy -Label 'Shared\policies\language-governance.md') -cne (Get-NormalizedText -Path $runtimePolicy -Label '.agents\shared\policies\language-governance.md')) {
             throw 'Source/runtime UX parity failed: Shared language-governance policy.'
         }
 
-        if ((Get-NormalizedText 'Shared\policies\references\user-facing-output-examples.md') -cne (Get-NormalizedText '.agents\shared\policies\references\user-facing-output-examples.md')) {
+        $sourceExamples = Join-Path $repoRoot 'Shared\policies\references\user-facing-output-examples.md'
+        $runtimeExamples = Join-Path $script:runtimeTarget '.agents\shared\policies\references\user-facing-output-examples.md'
+        if ((Get-NormalizedText -Path $sourceExamples -Label 'Shared\policies\references\user-facing-output-examples.md') -cne (Get-NormalizedText -Path $runtimeExamples -Label '.agents\shared\policies\references\user-facing-output-examples.md')) {
             throw 'Source/runtime UX parity failed: representative user-facing examples.'
         }
     }
