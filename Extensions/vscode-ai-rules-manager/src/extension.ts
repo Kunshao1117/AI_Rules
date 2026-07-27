@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext): void {
     vscode.window.registerWebviewViewProvider(AiRulesPanelProvider.viewType, panel)
   );
   registerAiRulesCommands(context, runner, status, panel, updateChecker);
-  status.setIdle("AI Rules: ready");
+  status.setState("normal");
   void updateChecker.checkForUpdates({ manual: false });
 }
 

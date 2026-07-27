@@ -2,6 +2,7 @@ import * as cp from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
+import { confirmationFor, operationLabel } from "./userFacing";
 
 const DEFAULT_REPO_URL = "https://github.com/Kunshao1117/AI_Rules.git";
 const MANAGED_REPO_DIR = "AI_Rules";
@@ -31,6 +32,13 @@ export interface RunOptions {
   whatIf?: boolean;
 }
 
+export class UserCancelledError extends Error {
+  constructor(message = "使用者已取消操作。") {
+    super(message);
+    this.name = "UserCancelledError";
+  }
+}
+
 interface RepoResolution {
   repoRoot: string;
   managed: boolean;
@@ -53,6 +61,7 @@ export class ScriptRunner {
   ) {}
 
   async run(action: ManagerAction, options: RunOptions = {}): Promise<string> {
+    this.startOperation(action, options);
     const source = await this.resolveRepoRoot();
     const repoRoot = source.repoRoot;
     const script = this.resolveManagerScript(repoRoot);
@@ -80,7 +89,6 @@ export class ScriptRunner {
     if (options.gitignoreMode) args.push("-GitignoreMode", options.gitignoreMode);
     if (options.whatIf) args.push("-WhatIf");
 
-    this.output.show(true);
     this.output.appendLine(`> ${ps} ${args.map(quoteArg).join(" ")}`);
 
     return new Promise((resolve, reject) => {
@@ -102,6 +110,26 @@ export class ScriptRunner {
         else reject(new Error(`AI_Rules script exited with code ${code}`));
       });
     });
+  }
+
+  showTechnicalDetails(): void {
+    this.output.show(true);
+  }
+
+  appendResult(label: string): void {
+    this.output.appendLine(`結果：${label}`);
+  }
+
+  recordFailure(error: unknown): void {
+    const message = error instanceof Error ? error.stack || error.message : String(error);
+    this.output.appendLine("錯誤原文：");
+    this.output.appendLine(message);
+  }
+
+  private startOperation(action: ManagerAction, options: RunOptions): void {
+    this.output.appendLine("");
+    this.output.appendLine(`操作：${operationLabel(action, options)}`);
+    this.output.appendLine(`時間：${new Date().toLocaleString("zh-TW")}`);
   }
 
   private async resolveRepoRoot(): Promise<RepoResolution> {
@@ -175,20 +203,26 @@ export class ScriptRunner {
 
     if (fs.existsSync(managedRoot) && !(await this.isVerifiableManagedRepo(managedRoot, trustedRepoUrl))) {
       this.assertManagedPath(storageRoot, managedRoot);
-      this.output.show(true);
-      this.output.appendLine(`AI_Rules 管理快取無法驗證，將重新建立：${managedRoot}`);
+      const confirmation = confirmationFor("rebuildCache");
+      const answer = await vscode.window.showWarningMessage(
+        confirmation.message,
+        { modal: true },
+        confirmation.confirmLabel,
+        "取消"
+      );
+      if (answer !== confirmation.confirmLabel) throw new UserCancelledError();
+      this.output.appendLine(`AI_Rules 管理快取無法驗證，重新建立：${managedRoot}`);
       fs.rmSync(managedRoot, { recursive: true, force: true });
     }
 
     if (!fs.existsSync(managedRoot)) {
       const answer = await vscode.window.showWarningMessage(
-        `目前專案不是 AI_Rules repo。是否要從 ${trustedRepoUrl} 建立 AI_Rules 管理快取？`,
+        "目前專案不是 AI Rules 的來源資料夾。是否建立插件專用的管理快取？這只會使用插件管理的資料夾，不會修改目前專案。",
         { modal: true },
-        "建立快取"
+        "建立管理快取",
+        "取消"
       );
-      if (answer !== "建立快取") {
-        throw new Error("尚未建立 AI_Rules 管理快取，無法執行管理腳本。");
-      }
+      if (answer !== "建立管理快取") throw new UserCancelledError();
 
       fs.mkdirSync(storageRoot, { recursive: true });
       await this.runGit(["clone", trustedRepoUrl, managedRoot], storageRoot);
@@ -211,14 +245,16 @@ export class ScriptRunner {
     const trusted = this.context.globalState.get<string[]>(TRUSTED_REPO_URLS_KEY, []);
     if (trusted.includes(normalized)) return normalized;
 
+    const confirmation = confirmationFor("trustSource");
     const answer = await vscode.window.showWarningMessage(
-      `aiRules.repoUrl 指向非預設來源：${normalized}。信任後才會允許 extension 對此來源的管理快取執行 clone/fetch/reset/clean。`,
+      confirmation.message,
       { modal: true },
-      "信任此來源"
+      confirmation.confirmLabel,
+      "取消",
+      "查看技術資料"
     );
-    if (answer !== "信任此來源") {
-      throw new Error(`尚未信任 AI_Rules 來源，已停止管理快取 Git 操作：${normalized}`);
-    }
+    if (answer === "查看技術資料") this.showTechnicalDetails();
+    if (answer !== confirmation.confirmLabel) throw new UserCancelledError("尚未信任 AI_Rules 來源。");
 
     await this.context.globalState.update(TRUSTED_REPO_URLS_KEY, [...trusted, normalized]);
     return normalized;
@@ -447,7 +483,6 @@ export class ScriptRunner {
     }
     await this.assertGitRepoIdentity(managedRoot, repoUrl);
 
-    this.output.show(true);
     this.output.appendLine(`→ AI_Rules 管理快取會自動對齊遠端版本庫：${repoUrl}#${MANAGED_BRANCH}`);
     try {
       await this.runGit(["remote", "set-url", "origin", repoUrl], managedRoot);
@@ -473,7 +508,6 @@ export class ScriptRunner {
   }
 
   private runGit(args: string[], cwd: string): Promise<void> {
-    this.output.show(true);
     this.output.appendLine(`> git ${args.map(quoteArg).join(" ")}`);
 
     return new Promise((resolve, reject) => {

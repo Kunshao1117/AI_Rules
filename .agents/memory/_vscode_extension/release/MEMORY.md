@@ -4,7 +4,7 @@ scopePath: Extensions/vscode-ai-rules-manager/
 description: >-
   專案記憶：VS Code 管理器外掛封裝、資源、發布與後端入口。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-27T03:08:41+08:00'
+last_updated: '2026-07-27T09:23:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -34,7 +34,8 @@ metadata:
 # _vscode_extension.release — VS Code Extension Release Memory
 
 ## Current Truth
-- AI Rules Manager v0.2.1 updates the extension manifest and lockfile to version `0.2.1`.
+- AI Rules Manager v0.2.2 updates the extension manifest and lockfile to version `0.2.2`.
+- The extension README is beginner-first: it explains the five main actions, preserved content, cancellation, technical details, and update behavior before developer and release details.
 - The v0.2.1 release notes record removal of Doctor and sync-overlay inspection commands/panel operations; the inspection UI reports Git-only status.
 - Extension packaging uses `@vscode/vsce` `^3.9.2`; the VSIX release workflow uses Node 24, satisfying the `@vscode/vsce` 3.x Node `>=20` packaging requirement, and package audit currently reports total 0.
 - The VSIX release workflow validates release refs before checkout and accepts only explicit tags shaped like `vX.Y.Z`.
@@ -45,6 +46,7 @@ metadata:
 - Manager entrypoint changes in this cycle preserve Codex config operator settings through section-aware merge for `multi_agent`, `hooks`, and `max_threads`, do not add `max_depth`, and do not imply a VSIX version bump, tag, release, install, or publication without a separate Director gate.
 - This child card owns VS Code extension package metadata, lockfile, README, resources, release workflow, and manager backend entrypoint.
 - Lockfile-only transitive dev dependency security patches do not change extension behavior or product version by default.
+- Packaged VSIX files exclude runtime message tests while retaining the compiled user-facing transformation used by the extension.
 
 ## Active Constraints
 - Keep extension versioning separate from Codex, Claude, and Antigravity framework versions.
@@ -55,14 +57,15 @@ metadata:
 
 ## Cycle Events
 - 01: Updated the release baseline to v0.2.1 after removing Doctor and sync-overlay inspection operations and reducing the inspection interface to Git-only status.
+- 02: Prepared v0.2.2 for the beginner-facing interface and documentation update; the package keeps technical logs available without placing them in the primary interface.
 
 ## Archive Index
 - Parent archives remain at .agents/memory/_vscode_extension/archive-001.md and archive-002.md.
 
 ## Evidence Base
-- source:Extensions/vscode-ai-rules-manager/package.json — Extension manifest version is `0.2.1`.
-- source:Extensions/vscode-ai-rules-manager/package-lock.json — Root package lock version is `0.2.1`.
-- source:Extensions/vscode-ai-rules-manager/README.md — Extension release docs name tag `v0.2.1` and the matching VSIX install example.
+- source:Extensions/vscode-ai-rules-manager/package.json — Extension manifest version is `0.2.2`.
+- source:Extensions/vscode-ai-rules-manager/package-lock.json — Root package lock version is `0.2.2`.
+- source:Extensions/vscode-ai-rules-manager/README.md — Extension release docs name tag `v0.2.2` and the matching VSIX install example.
 - source:CHANGELOG.md — AI Rules Manager v0.2.1 records removal of Doctor and sync-overlay inspection commands/panel operations and Git-only inspection status.
 - source:.agents/memory/_vscode_extension/archive-002.md — Previous active card snapshot preserved.
 - source:Scripts/AI-RulesManager.ps1 and extension manifest/README — Verified Git-only Check/Plan/Apply behavior and the retained sync, cleanup, gitignore, and memory-migration actions.
@@ -78,7 +81,8 @@ metadata:
 
 ## 中文摘要
 - 此子卡負責 VS Code 外掛封裝、資源、發布流程與管理器入口。
-- AI Rules Manager 發布基線已更新到 v0.2.1，manifest 與 lockfile 版本均為 `0.2.1`。
+- AI Rules Manager 發布基線已更新到 v0.2.2，manifest 與 lockfile 版本均為 `0.2.2`。
+- README 先用白話說明主要操作與安全影響，再提供開發與發布資料。
 - VSIX 封裝工具已升級到 `@vscode/vsce` 3.9.2；發布 workflow 使用 Node 24，npm audit 目前為 0。
 - release tag 需符合 `vX.Y.Z` 才會 checkout。
 - 同名 VSIX asset 已存在時，補跑會拒絕或失敗；需改新版本/tag 或先人工刪除舊 asset。

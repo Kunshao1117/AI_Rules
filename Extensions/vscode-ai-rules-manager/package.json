@@ -1,9 +1,9 @@
 {
   "name": "ai-rules-manager",
   "displayName": "AI Rules Manager",
-  "description": "Point-and-click VS Code manager for AI_Rules source updates, rule sync, and orphan cleanup.",
+  "description": "用繁體中文協助你檢查、更新與同步 AI Rules 的 VS Code 管理工具。",
   "icon": "resources/icon.png",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "publisher": "kunshao",
   "license": "MIT",
   "repository": {
@@ -21,6 +21,7 @@
     "onView:aiRules.panel",
     "onCommand:aiRules.checkUpdate",
     "onCommand:aiRules.checkExtensionUpdate",
+    "onCommand:aiRules.showTechnicalDetails",
     "onCommand:aiRules.planUpdate",
     "onCommand:aiRules.applyUpdate",
     "onCommand:aiRules.syncGlobalRules",
@@ -34,76 +35,80 @@
   ],
   "contributes": {
     "configuration": {
-      "title": "AI Rules",
+      "title": "AI Rules 設定",
       "properties": {
         "aiRules.repoRoot": {
           "type": "string",
           "scope": "application",
           "default": "",
-          "description": "User setting only. Optional local AI_Rules repository root. When set, this path must contain Scripts/AI-RulesManager.ps1."
+          "description": "指定 AI Rules 的本機資料夾。一般使用者不需要設定；只有自行下載或維護 AI Rules 時才使用。設定名稱：aiRules.repoRoot。"
         },
         "aiRules.repoUrl": {
           "type": "string",
           "scope": "application",
           "default": "https://github.com/Kunshao1117/AI_Rules.git",
-          "description": "User setting only. Git URL used to create the managed AI_Rules cache when the current workspace is not the AI_Rules repository."
+          "description": "指定下載 AI Rules 時使用的來源網址。一般使用者不需要設定；使用自訂來源前，插件會請你確認信任。設定名稱：aiRules.repoUrl。"
         },
         "aiRules.powerShellPath": {
           "type": "string",
           "scope": "application",
           "default": "powershell.exe",
-          "description": "User setting only. PowerShell executable used to run AI_Rules scripts."
+          "description": "指定執行 AI Rules 管理工具的 PowerShell。一般使用者不需要設定；只有電腦使用不同 PowerShell 時才調整。設定名稱：aiRules.powerShellPath。"
         }
       }
     },
     "commands": [
       {
         "command": "aiRules.checkUpdate",
-        "title": "AI Rules: 檢查來源狀態"
+        "title": "AI Rules：檢查目前狀態"
       },
       {
         "command": "aiRules.checkExtensionUpdate",
-        "title": "AI Rules: 檢查 VSIX 安裝包新版"
+        "title": "AI Rules：檢查插件更新"
+      },
+      {
+        "command": "aiRules.showTechnicalDetails",
+        "title": "AI Rules：查看技術資料"
       },
       {
         "command": "aiRules.planUpdate",
-        "title": "AI Rules: 查看來源更新影響"
+        "title": "AI Rules：查看可更新內容"
       },
       {
         "command": "aiRules.applyUpdate",
-        "title": "AI Rules: 更新 AI_Rules 來源庫"
+        "title": "AI Rules：更新 AI Rules"
       },
       {
         "command": "aiRules.syncGlobalRules",
-        "title": "AI Rules: 同步使用者層規則"
+        "title": "AI Rules：更新個人共用規則"
       },
       {
         "command": "aiRules.syncProjectRules",
-        "title": "AI Rules: 同步已安裝平台規則"
+        "title": "AI Rules：同步到目前專案"
       },
       {
         "command": "aiRules.syncProjectRulesCodex",
-        "title": "AI Rules: 同步 Codex 專案規則"
+        "title": "AI Rules：只同步 Codex"
       },
       {
         "command": "aiRules.syncProjectRulesClaude",
-        "title": "AI Rules: 同步 Claude 專案規則"
+        "title": "AI Rules：只同步 Claude"
       },
       {
         "command": "aiRules.syncProjectRulesAntigravity",
-        "title": "AI Rules: 同步 Antigravity 專案規則"
+        "title": "AI Rules：只同步 Antigravity"
       },
       {
         "command": "aiRules.cleanupOrphans",
-        "title": "AI Rules: 清理孤兒檔案"
+        "title": "AI Rules：檢查可清理的舊檔案"
       },
       {
         "command": "aiRules.memoryMigration",
-        "title": "AI Rules: 記憶主檔遷移"
+        "title": "AI Rules：整理舊版記憶檔"
       },
       {
         "command": "aiRules.gitignoreMaintenance",
-        "title": "AI Rules: 版控排除規則健檢"
+        "title": "AI Rules：整理不需要上傳的檔案規則"
       }
     ],
     "viewsContainers": {
@@ -119,7 +124,7 @@
       "aiRules": [
         {
           "id": "aiRules.panel",
-          "name": "AI Rules",
+          "name": "AI Rules 狀態",
           "type": "webview"
         }
       ]
@@ -129,6 +134,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "audit": "npm audit --audit-level=high",
+    "test:messages": "node ./out/userFacing.test.js",
     "verify:runtime": "node -e \"const fs=require('fs');const path=require('path');const pkg=require('./package.json');const fail=(message)=>{console.error(message);process.exit(1);};const main=String(pkg.main||'');if(main!=='./out/extension.js'&&main!=='out/extension.js')fail('package.json main must point to out/extension.js');for(const file of [main,'out/scriptRunner.js']){if(!fs.existsSync(path.resolve(file)))fail('Missing runtime file: '+file);}const runtime=fs.readFileSync(path.resolve('out/scriptRunner.js'),'utf8');const need=(needle,label)=>{if(!runtime.includes(needle))fail('Missing runtime sentinel: '+label);};const order=(first,second,label)=>{const a=runtime.indexOf(first);const b=runtime.indexOf(second);if(a<0||b<0||a>=b)fail('Runtime sentinel order failed: '+label);};[['vscode.workspace.isTrusted','workspace trust'],['assertGitRepoIdentity','repo identity guard'],['assertManagedPath','managed path guard'],['assertTrackedCleanManagerScript','tracked clean manager script'],['ls-files','tracked manager script check'],['status','clean manager script check'],['+refs/heads/','explicit fetch refspec source'],[':refs/remotes/origin/','explicit fetch refspec destination'],['assertReadyToRun(source, script, target)','readiness gate'],['cp.spawn(ps, args','manager spawn']].forEach(([needle,label])=>need(needle,label));order('assertReadyToRun(source, script, target)','cp.spawn(ps, args','readiness before spawn');order('assertGitRepoIdentity(managedRoot, repoUrl)','--hard','identity before destructive reset');order('assertManagedPath(storageRoot, managedRoot);','--hard','managed path before destructive reset');console.log('Runtime verification passed.');\"",
     "package": "vsce package",
     "vscode:prepublish": "npm run compile && npm run verify:runtime"

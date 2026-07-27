@@ -3,6 +3,18 @@ import { ExtensionUpdateChecker } from "./extensionUpdate";
 import { AiRulesPanelProvider } from "./panel";
 import { GitignoreMode, ManagerAction, ProjectPlatform, RunOptions, ScriptRunner } from "./scriptRunner";
 import { AiRulesStatus } from "./status";
+import {
+  cancelledResult,
+  confirmationFor,
+  describeManagerOutput,
+  describeRunError,
+  busyResult,
+  resultMessage,
+  technicalResultLabel,
+  UserFacingResult
+} from "./userFacing";
+
+const VIEW_TECHNICAL_DETAILS = "查看技術資料";
 
 export function registerAiRulesCommands(
   context: vscode.ExtensionContext,
@@ -11,139 +23,154 @@ export function registerAiRulesCommands(
   panel: AiRulesPanelProvider,
   updateChecker: ExtensionUpdateChecker
 ): void {
-  const runReadOnly = (commandId: string, label: string, action: ManagerAction) => {
+  const runReadOnly = (commandId: string, action: ManagerAction) => {
     context.subscriptions.push(vscode.commands.registerCommand(commandId, async () => {
-      await run(label, action, runner, status, panel);
+      await run(action, runner, status, panel);
     }));
   };
 
-  runReadOnly("aiRules.checkUpdate", "檢查來源狀態", "Check");
+  runReadOnly("aiRules.checkUpdate", "Check");
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.checkExtensionUpdate", async () => {
     await updateChecker.checkForUpdates({ manual: true });
   }));
-  runReadOnly("aiRules.planUpdate", "查看來源更新影響", "Plan");
+  context.subscriptions.push(vscode.commands.registerCommand("aiRules.showTechnicalDetails", () => runner.showTechnicalDetails()));
+  runReadOnly("aiRules.planUpdate", "Plan");
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.applyUpdate", async () => {
-    const ok = await confirm("這會對齊 AI_Rules 遠端來源庫。不會安裝新版 VSIX，也不會同步目前專案的 .agents / .claude / .codex。明確設定的本機來源只檢查 Git 狀態，不會被自動重設。");
-    if (ok) await run("對齊 AI_Rules 遠端來源", "Apply", runner, status, panel, { apply: true });
+    if (await confirm("updateRules", runner, status, panel)) await run("Apply", runner, status, panel, { apply: true });
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncGlobalRules", async () => {
-    const previewOk = await run("同步使用者層規則預覽", "SyncGlobal", runner, status, panel);
-    if (!previewOk) return;
-    const ok = await confirm("要寫入使用者層規則並備份舊檔嗎？這不會更新目前專案的 .codex/ 或 .agents/skills。");
-    if (ok) await run("同步使用者層規則", "SyncGlobal", runner, status, panel, { apply: true });
+    const preview = await run("SyncGlobal", runner, status, panel);
+    if (!canContinueAfterPreview(preview)) return;
+    if (await confirm("syncGlobal", runner, status, panel)) await run("SyncGlobal", runner, status, panel, { apply: true });
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncProjectRules", async () => {
-    await runProjectSync("同步已安裝平台規則", "Auto", runner, status, panel);
+    await runProjectSync("Auto", runner, status, panel);
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncProjectRulesCodex", async () => {
-    await runProjectSync("同步 Codex 專案規則", "Codex", runner, status, panel);
+    await runProjectSync("Codex", runner, status, panel);
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncProjectRulesClaude", async () => {
-    await runProjectSync("同步 Claude 專案規則", "Claude", runner, status, panel);
+    await runProjectSync("Claude", runner, status, panel);
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.syncProjectRulesAntigravity", async () => {
-    await runProjectSync("同步 Antigravity 專案規則", "Antigravity", runner, status, panel);
+    await runProjectSync("Antigravity", runner, status, panel);
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.cleanupOrphans", async () => {
-    const previewOk = await run("孤兒檔案預覽", "CleanupOrphans", runner, status, panel);
-    if (!previewOk) return;
-    const ok = await confirm("要刪除上方列出的孤兒檔案嗎？memory / project_skills / context 不會被清理。");
-    if (ok) await run("清理孤兒檔案", "CleanupOrphans", runner, status, panel, { apply: true, removeOrphans: true });
+    const preview = await run("CleanupOrphans", runner, status, panel);
+    if (!canContinueAfterPreview(preview)) return;
+    if (await confirm("cleanup", runner, status, panel)) await run("CleanupOrphans", runner, status, panel, { apply: true, removeOrphans: true });
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.memoryMigration", async () => {
-    const previewOk = await run("記憶主檔遷移乾跑", "MemoryMigration", runner, status, panel);
-    if (!previewOk) return;
-    const ok = await confirm("要套用上方列出的記憶主檔更名嗎？若同一資料夾同時存在舊主檔與新主檔，管理器會停止；歸檔卷不會被更名。");
-    if (ok) await run("記憶主檔遷移", "MemoryMigration", runner, status, panel, { apply: true });
+    const preview = await run("MemoryMigration", runner, status, panel);
+    if (!canContinueAfterPreview(preview)) return;
+    if (await confirm("memoryMigration", runner, status, panel)) await run("MemoryMigration", runner, status, panel, { apply: true });
   }));
 
   context.subscriptions.push(vscode.commands.registerCommand("aiRules.gitignoreMaintenance", async () => {
-    const previewOk = await run("版控排除規則健檢", "Gitignore", runner, status, panel);
-    if (!previewOk) return;
+    const preview = await run("Gitignore", runner, status, panel);
+    if (!canContinueAfterPreview(preview)) return;
+    const confirmation = confirmationFor("gitignore");
     const choice = await vscode.window.showWarningMessage(
-      "要如何處理目前專案的 .gitignore？系統會補入 AI Rules 精準標準規則。若上方列出相似規則，只有在你同意時才會刪除清單中的具體行；不會刪註解、上下文或整段區塊。",
+      confirmation.message,
       { modal: true },
       "只補標準規則",
-      "刪除相似規則清單"
+      "刪除列出的相似規則"
     );
-    if (!choice) return;
-    const mode: GitignoreMode = choice === "刪除相似規則清單" ? "CleanSimilar" : "Append";
-    await run("版控排除規則整理", "Gitignore", runner, status, panel, { apply: true, gitignoreMode: mode });
+    if (!choice) {
+      await present(cancelledResult(), runner, status, panel);
+      return;
+    }
+    const mode: GitignoreMode = choice === "刪除列出的相似規則" ? "CleanSimilar" : "Append";
+    await run("Gitignore", runner, status, panel, { apply: true, gitignoreMode: mode });
   }));
 }
 
 async function run(
-  label: string,
   action: ManagerAction,
   runner: ScriptRunner,
   status: AiRulesStatus,
   panel: AiRulesPanelProvider,
   options: RunOptions = {}
-): Promise<boolean> {
+): Promise<UserFacingResult> {
+  const busy = busyResult(action, options);
+  status.setState(busy.status);
+  panel.setResult(busy);
+
   try {
-    status.setBusy(`AI Rules: ${label}`);
-    panel.setStatus(`${label}執行中...`);
     const output = await runner.run(action, options);
-    if (needsAttention(output)) {
-      status.setWarning("AI Rules: 需要處理");
-      panel.setStatus(`${label}完成：需要處理`);
-    } else {
-      status.setIdle("AI Rules: OK");
-      panel.setStatus(`${label}完成`);
-    }
-    return true;
+    const result = describeManagerOutput(action, output, options);
+    runner.appendResult(technicalResultLabel(result));
+    await present(result, runner, status, panel);
+    return result;
   } catch (error) {
-    status.setWarning("AI Rules: 失敗");
-    panel.setStatus(`${label}失敗`);
-    const message = error instanceof Error ? error.message : String(error);
-    void vscode.window.showErrorMessage(message);
-    return false;
+    runner.recordFailure(error);
+    const result = describeRunError(error);
+    runner.appendResult(technicalResultLabel(result));
+    await present(result, runner, status, panel, result.state === "error");
+    return result;
   }
 }
 
 async function runProjectSync(
-  label: string,
   projectPlatform: ProjectPlatform,
   runner: ScriptRunner,
   status: AiRulesStatus,
   panel: AiRulesPanelProvider
 ): Promise<void> {
-  const previewOk = await run(`${label}預覽`, "SyncProjectRules", runner, status, panel, { projectPlatform });
-  if (!previewOk) return;
-  const ok = await confirm("要先確認 AI_Rules 遠端來源已對齊，再把規則、Shared Skills、平台入口與 .agents/tools 專案本地工具同步到目前專案已安裝的平台嗎？未安裝平台不會被建立，memory / project_skills / context 不會被覆寫。");
-  if (ok) await run(label, "SyncProjectRules", runner, status, panel, { apply: true, projectPlatform });
-}
-
-async function confirm(message: string): Promise<boolean> {
-  const answer = await vscode.window.showWarningMessage(message, { modal: true }, "確認執行");
-  return answer === "確認執行";
-}
-
-function needsAttention(output: string): boolean {
-  return /狀態：偵測到遠端更新|狀態：可快轉更新|狀態：來源庫分叉|狀態：本機領先遠端|工作樹有變更/.test(output)
-    || hasPositiveCounter(output, "Yellow")
-    || hasPositiveCounter(output, "Red")
-    || /規則與 source 不同|待授權|有差異|來源庫更新失敗|無法快轉/.test(output)
-    || /缺少標準根目錄規則：\s*[1-9]/.test(output)
-    || /寬鬆規則：\s*[1-9]/.test(output)
-    || /舊主檔（SKILL\.md）：\s*[1-9]/.test(output)
-    || /雙主檔衝突：\s*[1-9]/.test(output)
-    || /文內舊路徑引用：\s*[1-9]/.test(output);
-}
-
-function hasPositiveCounter(output: string, label: "Yellow" | "Red"): boolean {
-  const pattern = new RegExp(`${label}[：:]\\s*(\\d+)`, "g");
-  let match: RegExpExecArray | null;
-  while ((match = pattern.exec(output)) !== null) {
-    if (Number.parseInt(match[1], 10) > 0) return true;
+  const preview = await run("SyncProjectRules", runner, status, panel, { projectPlatform });
+  if (!canContinueAfterPreview(preview)) return;
+  if (await confirm("syncProject", runner, status, panel)) {
+    await run("SyncProjectRules", runner, status, panel, { apply: true, projectPlatform });
   }
+}
+
+async function confirm(
+  kind: Parameters<typeof confirmationFor>[0],
+  runner: ScriptRunner,
+  status: AiRulesStatus,
+  panel: AiRulesPanelProvider
+): Promise<boolean> {
+  const confirmation = confirmationFor(kind);
+  const answer = await vscode.window.showWarningMessage(
+    confirmation.message,
+    { modal: true },
+    confirmation.confirmLabel,
+    "取消"
+  );
+  if (answer === confirmation.confirmLabel) return true;
+  await present(cancelledResult(), runner, status, panel);
   return false;
+}
+
+function canContinueAfterPreview(result: UserFacingResult): boolean {
+  return result.state === "success" || result.state === "attention";
+}
+
+async function present(
+  result: UserFacingResult,
+  runner: ScriptRunner,
+  status: AiRulesStatus,
+  panel: AiRulesPanelProvider,
+  showTechnicalDetails = false
+): Promise<void> {
+  status.setState(result.status);
+  panel.setResult(result);
+  if (showTechnicalDetails) runner.showTechnicalDetails();
+
+  const message = `${result.title}\n${resultMessage(result)}`;
+  const actions = result.technicalDetailsAvailable ? [VIEW_TECHNICAL_DETAILS] : [];
+  const selected = result.state === "error"
+    ? await vscode.window.showErrorMessage(message, ...actions)
+    : result.state === "attention"
+      ? await vscode.window.showWarningMessage(message, ...actions)
+      : await vscode.window.showInformationMessage(message, ...actions);
+  if (selected === VIEW_TECHNICAL_DETAILS) runner.showTechnicalDetails();
 }

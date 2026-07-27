@@ -1,81 +1,63 @@
 # AI Rules Manager for VS Code
 
-AI Rules Manager 是 AI_Rules 的 VS Code 側邊欄操作面板。第一版設計給本機安裝與 GitHub Release asset 分享使用，之後可再上架 Marketplace。手動安裝 VSIX 不會取得 Marketplace 原生自動更新，因此延伸模組啟動時會查 GitHub Release；只有發現新版安裝檔時才通知，沒有新版或暫時無法連線時只寫入 Output Channel，不打擾操作者。
+AI Rules Manager 讓你在 VS Code 內用按鈕檢查、更新及同步 AI Rules，不需要先熟悉指令或版本管理工具。主要畫面會先告訴你目前結果、是否安全，以及下一步該做什麼；完整操作紀錄則保留在「查看技術資料」。
 
-## 功能
+## 適合誰
 
-- 檢查來源狀態：讀取 AI_Rules 遠端來源狀態；使用者層管理快取會先對齊遠端版本庫，不寫入目前專案。
-- 檢查 VSIX 新版：手動查 GitHub Release 是否有新版 VSIX 可下載；沒有新版時也會明確回報已是最新版。
-- 查看來源更新影響：顯示 AI_Rules 來源的 Git 狀態與對齊關係。
-- 對齊 AI_Rules 遠端來源：確認後才對齊遠端來源；不安裝 VSIX，也不同步目前專案規則。
-- 同步使用者層規則：先預覽，確認後才寫入 `~/.codex`、`~/.claude`、`~/.gemini`。
-- 同步已安裝平台規則：先偵測目前 workspace 已安裝的平台，確認後才同步 `.agents` / `.claude` / `.codex` 對應規則、技能與 project skill discovery 連結。
-- 單平台同步：可分別同步 Codex、Claude 或 Antigravity；未安裝的平台只回報 Yellow，不自動建立。
-- 版控排除規則健檢：先預覽 `.gitignore` 的 AI Rules 根目錄標準規則與相似規則清單；確認後可選擇只補帶繁中註解的標準規則，或刪除清單中的相似規則行後再補標準規則。舊版註解與專案自訂註解不會被自動刪除。
-- 記憶主檔遷移：先乾跑盤點 `.agents/memory/` 的舊主檔、新主檔、雙主檔衝突、歸檔卷與舊路徑引用；確認後才套用更名。同步後的下游專案也會有 `.agents/tools/Memory-Migration.ps1`，供專案 AI 直接乾跑盤點。
-- 清理孤兒檔案：先預覽，預覽成功後才會詢問是否刪除。
+- 想確認 AI Rules 是否可以正常使用的人。
+- 想把最新規則套用到目前專案，但不想手動整理檔案的人。
+- 想保留完整技術紀錄，同時只在需要時才查看細節的人。
 
-## 本機開發
+## 五個主要操作
+
+1. **檢查目前狀態**：確認 AI Rules 是否正常，以及是否有新規則。
+2. **更新 AI Rules**：下載最新規則；不會修改目前專案或更新插件本身。
+3. **同步到目前專案**：更新已安裝 AI 工具的規則，並保留專案記憶、專案設定與尚未提交的修改。
+4. **檢查插件更新**：確認是否有新版可下載。插件不會自行下載或安裝。
+5. **查看技術資料**：開啟完整操作紀錄、原始錯誤與診斷資訊。
+
+## 第一次使用
+
+1. 在 VS Code 開啟你的專案資料夾。
+2. 從左側的 **AI Rules 狀態** 開啟面板。
+3. 先按 **檢查目前狀態**。
+4. 依面板顯示的建議進行下一步；每個會修改內容的操作都會先說明影響並要求確認。
+
+## 哪些內容會被保留
+
+- 專案記憶、專案設定與你尚未提交的修改。
+- 未安裝 AI 工具的現有狀態；同步不會自動新增工具。
+- 完整技術紀錄，包括實際命令、路徑與原始錯誤。
+
+## 常見問題
+
+### 為什麼插件停止執行？
+
+若專案尚未被 VS Code 設為信任、來源設定不安全，或目前修改無法安全覆蓋，插件會停止以保護你的內容。畫面會說明原因與下一步；需要更多資訊時按 **查看技術資料**。
+
+### 我按了取消，是否有內容被改掉？
+
+沒有。正常取消會顯示「已取消，沒有修改任何內容」。
+
+### 有新版插件時會自動安裝嗎？
+
+不會。插件只會提供前往下載頁的選項；安裝後需要重新啟動 VS Code。
+
+## 進階說明
+
+進階工具可單獨同步某個 AI 工具、更新個人共用規則、整理不需要上傳的檔案規則、整理舊版記憶檔，或先檢查可清理的舊檔案。所有寫入或刪除動作都會先預先檢查，再由你確認。
+
+來源位置、來源網址與 PowerShell 執行檔只能設定在 VS Code 的使用者設定，不能由目前專案自行改寫。這可避免開啟陌生專案時，被不可信的設定改變來源或執行工具。
+
+## 開發者資料
 
 ```powershell
 cd Extensions/vscode-ai-rules-manager
-npm install
+npm ci
 npm run compile
-```
-
-在 VS Code 按 `F5` 啟動 Extension Development Host，左側會出現 `AI Rules`。
-
-## 打包 VSIX
-
-```powershell
-cd Extensions/vscode-ai-rules-manager
+npm run test:messages
+npm run verify:runtime
 npm run package
 ```
 
-產出的 `.vsix` 可在 VS Code 的 Extensions 視窗中用 `Install from VSIX...` 安裝。
-
-## GitHub Release
-
-推送 tag `v0.2.1` 後，GitHub Actions 會自動執行：
-
-1. `npm ci`
-2. `npm run package`
-3. 建立 GitHub Release
-4. 從 `CHANGELOG.md` 的對應 `AI Rules Manager v<version>` 段落產生 Release 簡介
-5. 將 `ai-rules-manager-0.2.1.vsix` 上傳到該 release 的 Assets
-
-Release workflow 使用 Node 24 與支援 Node 24 runtime 的官方 GitHub Actions。若 tag 與 `package.json` 版本不一致，workflow 會失敗，不會建立或更新 Release。需要補跑時，可在 GitHub Actions 頁面手動執行 workflow 並輸入 tag；若同名 VSIX asset 已存在，workflow 會拒絕或失敗，需改用新版本/tag，或先人工刪除舊 asset 後再重跑。
-
-## 設定
-
-延伸模組會依序尋找 AI_Rules 來源：
-
-1. 明確設定的 `aiRules.repoRoot`。
-2. 目前開啟的 workspace 若本身就是 AI_Rules repo。
-3. VS Code / Antigravity 類相容 IDE 全域儲存目錄中的 AI_Rules 管理快取。
-
-在其他專案第一次使用時，若尚未建立管理快取，延伸模組會詢問是否從 `aiRules.repoUrl` clone 一份 AI_Rules repo。之後會把這份快取視為遠端版本庫鏡像：每次執行管理動作前自動對齊 `aiRules.repoUrl` 的 `main` 分支，再把目前開啟的專案作為治理目標。
-
-不同 workspace 可能分別使用本機 AI_Rules repo 或 IDE globalStorage 內的管理快取；管理快取會自動對齊遠端，本機 AI_Rules repo 則只檢查 Git 狀態、不自動重設。同步目前專案規則時，05 濃縮寫入的 `PROJECT IDENTITY` 會被視為專案資訊區，不會因框架更新被覆蓋。
-
-來源位置、遠端網址與 PowerShell 執行檔設定只能放在 VS Code 使用者設定；若放在專案工作區設定，延伸模組會停止。這避免開啟陌生專案時，專案設定把 AI_Rules 來源或執行檔改到不可信位置。
-
-所有會寫入的同步與清理動作都會先跑預覽；如果預覽本身失敗，延伸模組不會再跳出確認視窗，也不會進入實際寫入。
-
-若要固定使用已存在的本機 AI_Rules repo，請設定：
-
-```json
-{
-  "aiRules.repoRoot": "D:\\AI_Rules"
-}
-```
-
-若要改用 fork 或內部鏡像來源，請設定：
-
-```json
-{
-  "aiRules.repoUrl": "https://github.com/Kunshao1117/AI_Rules.git"
-}
-```
-
-預設會使用 `powershell.exe` 執行 `Scripts/AI-RulesManager.ps1`。
+打包後會產生 `ai-rules-manager-0.2.2.vsix`。以 `v0.2.2` 建立正式標籤後，GitHub Actions 會驗證標籤與版本一致、重新打包，並建立對應的 Release 資產。相同名稱的安裝檔不會被覆蓋；需要重跑時請使用新版本。

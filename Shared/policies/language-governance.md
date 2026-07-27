@@ -81,6 +81,29 @@ the listed order and do not alter any locked field.
   captain, board, or delivery artifact never permits raw internal output to be
   shown as the user-visible reply.
 
+### Product Interface Boundary
+
+- Applies to product surfaces that present governed work to an ordinary user,
+  including VS Code panels, command titles, status bars, confirmations,
+  notifications, update reminders, and primary error messages.
+- Use the same beginner-facing reader and result -> impact -> remaining issue
+  -> next action order as the User-Visible Response Boundary. A product
+  surface must not define a separate reporting policy.
+- The primary interface shows a short Traditional Chinese explanation of the
+  result, its effect, safety or remaining concern, and one clear next action.
+  It does not lead with raw output, paths, commands, counters, internal states,
+  or error text.
+- Technical output, exact commands, paths, versions, hashes, and original
+  errors remain available in the product's technical-details surface, such as
+  an Output Channel. Do not remove that evidence merely to simplify the
+  primary interface.
+- Each write, delete, update, or source-trust confirmation explains what will
+  change, what remains preserved, what cancelling does, and the exact
+  affirmative action. A normal cancellation is not a failure.
+- Product code may centralize its presentation transformation, but that module
+  consumes this policy and status-ontology labels; it must not create a second
+  language, readability, or technical-detail policy.
+
 ### Agent-Internal Instruction
 
 - Applies to: skill procedures, workflow steps, gates, metadata, schema fields, command examples, and code identifiers.

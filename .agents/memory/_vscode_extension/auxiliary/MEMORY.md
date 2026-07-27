@@ -4,7 +4,7 @@ scopePath: Extensions/vscode-ai-rules-manager/
 description: >-
   專案記憶：VS Code 管理器輔助來源。Use when: task touches this card tracked files or
   governed scope.
-last_updated: '2026-07-24T13:40:55+08:00'
+last_updated: '2026-07-27T09:23:13+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -39,6 +39,7 @@ metadata:
 - Packaging ignore rules, license text, and TypeScript project settings affect VSIX build quality.
 - Release workflow ownership belongs to `_vscode_extension.release`; the parent `_vscode_extension` card is navigation-only.
 - Primary TypeScript runtime ownership belongs to `_vscode_extension.runtime`.
+- VSIX packaging excludes compiled message-test files so the installable extension contains only production runtime code.
 ## Active Constraints
 - Do not duplicate release or update-reminder decisions from `_vscode_extension.release`.
 - Keep package support file changes aligned with VSIX packaging checks.
@@ -47,6 +48,7 @@ metadata:
 - 03: Verified auxiliary quality after B-batch review; current tool and source-file evidence show healthy packaging-support ownership.
 - 02: Corrected release and runtime ownership references to child-card ownership.
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
+- 04: Excluded compiled message tests from VSIX packaging while retaining source-level test execution.
 ## Archive Index
 - archive-001.md: Pre-standardization active card snapshot created during MEMORY.md migration.
 ## Evidence Base
@@ -65,6 +67,7 @@ metadata:
 - 發布工作流由 release 子卡管理；父卡只做導覽。
 - 主要 TypeScript 程式由 runtime 子卡管理。
 - 修改打包支援檔時要注意 VSIX 產物。
+- 安裝包不包含測試檔，但來源測試仍可在打包前執行。
 ## Tracked Files
 - Extensions/vscode-ai-rules-manager/.vscodeignore
 - Extensions/vscode-ai-rules-manager/LICENSE
