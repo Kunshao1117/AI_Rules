@@ -4,7 +4,7 @@ scopePath: .
 description: >
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-27T03:08:39+08:00'
+last_updated: '2026-07-27T09:36:15+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -37,7 +37,7 @@ metadata:
 
 - AI_Rules is the source repository for Antigravity, Claude Edition, and Codex Edition governance.
 - This card is a concise root source/status pointer; current source files and Shared policies remain runtime authority.
-- Root release documentation records AI Rules Manager v0.2.1 and its Git-only inspection surface.
+- Root release documentation records AI Rules Manager v0.2.2, including its beginner-facing Traditional Chinese interface and opt-in technical details.
 - Root PowerShell source ownership belongs to _system.scripts.
 
 ## Active Constraints
@@ -49,6 +49,7 @@ metadata:
 ## Cycle Events
 
 - 01: Compacted root governance history after re-verifying the current release baseline and root ownership boundary.
+- 02: Reconciled the root release baseline with AI Rules Manager v0.2.2 after its main-branch commit; detailed extension ownership remains in the child cards.
 
 ## Archive Index
 
@@ -76,6 +77,7 @@ metadata:
 ## 中文摘要
 
 - 此卡只保留根層治理與版本基線，不是 runtime 規則來源。
+- AI Rules Manager 的根層發布基線為 v0.2.2；插件細節由 _vscode_extension 子卡維護。
 - 三平台核心與 Shared 政策以現行來源為準。
 - 根 PowerShell 由 _system.scripts 專責。
 
