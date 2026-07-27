@@ -4,7 +4,7 @@ scopePath: Extensions/vscode-ai-rules-manager/
 description: >-
   專案記憶：VS Code 管理器外掛封裝、資源、發布與後端入口。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-27T09:23:00+08:00'
+last_updated: '2026-07-27T09:39:15+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -35,6 +35,7 @@ metadata:
 
 ## Current Truth
 - AI Rules Manager v0.2.2 updates the extension manifest and lockfile to version `0.2.2`.
+- GitHub Release `v0.2.2` is published with `ai-rules-manager-0.2.2.vsix`; the tag-triggered workflow completed its audit, compile, package, and runtime-sentinel checks.
 - The extension README is beginner-first: it explains the five main actions, preserved content, cancellation, technical details, and update behavior before developer and release details.
 - The v0.2.1 release notes record removal of Doctor and sync-overlay inspection commands/panel operations; the inspection UI reports Git-only status.
 - Extension packaging uses `@vscode/vsce` `^3.9.2`; the VSIX release workflow uses Node 24, satisfying the `@vscode/vsce` 3.x Node `>=20` packaging requirement, and package audit currently reports total 0.
@@ -58,6 +59,7 @@ metadata:
 ## Cycle Events
 - 01: Updated the release baseline to v0.2.1 after removing Doctor and sync-overlay inspection operations and reducing the inspection interface to Git-only status.
 - 02: Prepared v0.2.2 for the beginner-facing interface and documentation update; the package keeps technical logs available without placing them in the primary interface.
+- 03: Published v0.2.2 from the matching tag after the Release VSIX workflow completed successfully.
 
 ## Archive Index
 - Parent archives remain at .agents/memory/_vscode_extension/archive-001.md and archive-002.md.
@@ -66,7 +68,8 @@ metadata:
 - source:Extensions/vscode-ai-rules-manager/package.json — Extension manifest version is `0.2.2`.
 - source:Extensions/vscode-ai-rules-manager/package-lock.json — Root package lock version is `0.2.2`.
 - source:Extensions/vscode-ai-rules-manager/README.md — Extension release docs name tag `v0.2.2` and the matching VSIX install example.
-- source:CHANGELOG.md — AI Rules Manager v0.2.1 records removal of Doctor and sync-overlay inspection commands/panel operations and Git-only inspection status.
+- source:CHANGELOG.md — AI Rules Manager v0.2.2 records the beginner-facing interface and technical-detail boundary.
+- release:https://github.com/Kunshao1117/AI_Rules/releases/tag/v0.2.2 — Published VSIX asset and successful tag-driven release.
 - source:.agents/memory/_vscode_extension/archive-002.md — Previous active card snapshot preserved.
 - source:Scripts/AI-RulesManager.ps1 and extension manifest/README — Verified Git-only Check/Plan/Apply behavior and the retained sync, cleanup, gitignore, and memory-migration actions.
 - tool:memory_audit — Granularity advisory identified extension ownership as a split candidate.
@@ -82,6 +85,7 @@ metadata:
 ## 中文摘要
 - 此子卡負責 VS Code 外掛封裝、資源、發布流程與管理器入口。
 - AI Rules Manager 發布基線已更新到 v0.2.2，manifest 與 lockfile 版本均為 `0.2.2`。
+- `v0.2.2` 已正式發布，安裝檔為 `ai-rules-manager-0.2.2.vsix`。
 - README 先用白話說明主要操作與安全影響，再提供開發與發布資料。
 - VSIX 封裝工具已升級到 `@vscode/vsce` 3.9.2；發布 workflow 使用 Node 24，npm audit 目前為 0。
 - release tag 需符合 `vX.Y.Z` 才會 checkout。
