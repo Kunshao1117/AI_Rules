@@ -61,6 +61,19 @@ the listed order and do not alter any locked field.
   plain Traditional Chinese, then add a technical identifier only when it
   helps the reader act, search, diagnose, or confirm evidence.
 
+### Minimum Traditional Chinese User-Facing Core
+
+This is the only user-facing language text that platform always-on cores retain.
+It survives context reduction without creating a second language policy:
+
+> 所有使用者可見內容預設使用白話繁體中文。先清楚說明目前結果；只有實際存在時，才補充影響、風險、未完成事項與下一步。不得以英文、指令、路徑、錯誤碼、欄位名稱或原始工具輸出作為第一層說明。必要技術名稱應先以中文說明用途，再保留原文。已開始、已派工、已修改、已驗證、已完成與已發布必須分開表達，不得互相代替。
+
+Detailed terminology, report-type templates, technical-detail presentation,
+error/log rendering, component rules, README writing guidance, memory/document
+language, platform-specific limits, and examples remain on-demand content in
+this policy or its references. They must not be copied into platform cores,
+specialist skills, or ordinary replies.
+
 ### User-Visible Response Boundary
 
 - Internal artifacts, traces, tool output, schemas, and machine fields remain
@@ -80,6 +93,10 @@ the listed order and do not alter any locked field.
 - This boundary applies equally to Direct and delegated work. A missing
   captain, board, or delivery artifact never permits raw internal output to be
   shown as the user-visible reply.
+- For human review examples of this boundary, load
+  `Shared/policies/references/user-facing-output-examples.md`. The examples do
+  not replace evidence, authorization, validation, review, or completion
+  contracts.
 
 ### Product Interface Boundary
 
@@ -293,10 +310,15 @@ the listed order and do not alter any locked field.
 
 ### Beginner Readability Check
 
-- Before sending a user-visible response, confirm internally that the result,
-  practical impact, remaining issue, and reader action are clear; raw internal
-  fields and YAML/JSON do not lead the body; unnecessary English and internal
-  role terms are absent; and uncertainty and risks remain visible.
+- Before sending a user-visible response, confirm internally that a person who
+  does not program can tell: `現在是否完成？`, `實際改變了什麼？`,
+  `是否有需要知道的風險或未完成事項？`, and `現在是否需要自己做決定或採取行動？`.
+- Small work may answer in three to six natural sentences without headings.
+  Use `目前結果／影響／注意事項／下一步` only when more structure helps. Do
+  not invent an empty risk section or unnecessary reader choices.
+- Raw internal fields and YAML/JSON do not lead the body; unnecessary English
+  and internal role terms are absent; and uncertainty and risks remain visible.
+  Technical evidence may follow as a second layer when it helps the reader act.
 - If any check fails, rewrite the response before sending it. This check is
   internal behavior, not a user-visible artifact or a new machine field.
 
@@ -312,6 +334,28 @@ the listed order and do not alter any locked field.
 - State remaining work and its practical impact, including a real user, source, governance, or delivery consequence; do not label an item as a todo without explaining why it matters.
 - State the next step as applicable: required decision, affected file or scope, concrete action, and explicit exclusions. Do not imply that an excluded, unapproved, or later-phase action will occur.
 - This is a reporting contract only. It does not change a canonical state, authorization fact, validation fact, review fact, or canonical token. Chinese display wording must not upgrade, downgrade, infer, or overwrite those facts.
+
+### User-Visible State Distinctions
+
+- `已開始` means work has begun; it does not establish that a result exists.
+- `已派工` means a task was sent to an applicable execution route; it does not
+  establish that the route returned, changed anything, or proved a result.
+- `已修改` means the named change was applied. It does not establish validation,
+  review, completion, commit, release, or deployment.
+- `已驗證` means the named check passed with observed evidence and stated
+  coverage. If the check ran but did not pass, write `驗證未通過`, name the
+  failed check, practical impact, and next step. Neither state establishes
+  untested behavior or a later completion/release phase.
+- `已完成` means the stated in-scope result has been delivered with the evidence
+  required for that claim. It does not imply later protected actions.
+- `已提交` means the named source state was recorded in Git at the stated
+  immutable revision. It does not establish release or deployment.
+- `已發布` means the named version or package became available at the stated
+  release destination with separate authorization and platform evidence. It
+  does not establish deployment to a runtime environment.
+- `已部署` means the named version or revision reached the stated runtime
+  environment with separate authorization and platform delivery evidence. It
+  does not establish release availability or untested behavior.
 
 #### Completion（已完成）
 

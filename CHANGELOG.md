@@ -14,7 +14,7 @@
 - **驗證結果** — `Invoke-Pester -Script Tests/TeamNative -PassThru`：73/73 通過；包含 Fresh／Upgrade／重複 Upgrade、三平台退休一致性、Claude 公開 `Deploy -Mode Sync`、Manager 錯誤衛生、來源／runtime SHA256 parity 與 Windows PowerShell 5.1 相容性。
 - **來源／runtime parity** — TeamNative 的 `ContextGovernanceMigration` 與 `SourceDeploymentParity` 測試通過；已刪除的兩個 runtime Skill 不存在，受影響 canonical owner 與受管副本保持一致。
 - **已知邊界** — 只驗證本機治理契約與 PowerShell 部署流程；尚未驗證平台實際 Context 行為、Token 用量或速度，也不據此宣稱公開 main 已完成。
-- **回退** — 使用 `git revert 88587edadf736652954c4ecc480c80140db46cd5`，再執行上述 TeamNative 測試；對已升級專案，回退來源後以正式 Upgrade 重新同步，勿手動刪除 runtime 檔案。
+- **回退** — 第一階段的測試與 checkpoint 都依賴核心治理語義，必須由新到舊依序回退：先執行 `git revert --no-edit 2c0b313f`，再執行 `git revert --no-edit 7c48f8c3`，最後執行 `git revert --no-edit 88587eda`。之後執行 `Invoke-Pester -Script Tests/TeamNative -PassThru`；對已升級專案，回退來源後以正式 Upgrade 重新同步，勿手動刪除 runtime 檔案。
 
 ## [2026-07-27] AI Rules Manager v0.2.2
 

@@ -34,6 +34,7 @@ trigger: always_on
 
 ## 2. Director Output And Grounding Minimum（總監輸出與接地查證最低契約）
 
+- **User-facing language core**: 所有使用者可見內容預設使用白話繁體中文。先清楚說明目前結果；只有實際存在時，才補充影響、風險、未完成事項與下一步。不得以英文、指令、路徑、錯誤碼、欄位名稱或原始工具輸出作為第一層說明。必要技術名稱應先以中文說明用途，再保留原文。已開始、已派工、已修改、已驗證、已完成與已發布必須分開表達，不得互相代替。
 - All user-visible wording, reading level, technical-detail boundaries, and
   report structure are governed only by
   `Shared/policies/language-governance.md`. This core does not define a second

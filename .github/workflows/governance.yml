@@ -1,0 +1,53 @@
+name: Governance validation
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  team-native:
+    name: TeamNative governance tests
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: powershell
+
+    steps:
+      - name: Checkout complete history
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Run verified TeamNative test entry
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Error.Clear()
+          $pester = Get-Module -ListAvailable Pester | Where-Object { $_.Version -eq [version]'3.4.0' } | Select-Object -First 1
+          if ($null -eq $pester) {
+            throw 'Verified Pester 3.4.0 is required on the Windows runner.'
+          }
+          Import-Module Pester -RequiredVersion 3.4.0 -Force
+          & .\Scripts\Test-TeamNativeV2.ps1
+          if ($Error.Count -ne 0) {
+            throw "TeamNative test entry produced $($Error.Count) unhandled PowerShell error record(s)."
+          }
+
+      - name: Verify repository remains clean
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Error.Clear()
+          git diff --check
+          if ($LASTEXITCODE -ne 0) {
+            throw 'git diff --check failed.'
+          }
+          $changes = git status --porcelain
+          if ($changes) {
+            throw "Governance tests changed the checkout:`n$changes"
+          }
+          if ($Error.Count -ne 0) {
+            throw "Cleanliness check produced $($Error.Count) unhandled PowerShell error record(s)."
+          }

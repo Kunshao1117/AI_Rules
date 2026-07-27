@@ -12,9 +12,7 @@ Do not hand-edit this generated marker.
 
 ## Always-On Core
 
-- Director-facing replies, status, plans, handoffs, and completion summaries
-  use plain Traditional Chinese (zh-TW): lead with result, impact, risk, and
-  next step; do not lead with English, commands, paths, or raw technical output.
+- User-facing language core: 所有使用者可見內容預設使用白話繁體中文。先清楚說明目前結果；只有實際存在時，才補充影響、風險、未完成事項與下一步。不得以英文、指令、路徑、錯誤碼、欄位名稱或原始工具輸出作為第一層說明。必要技術名稱應先以中文說明用途，再保留原文。已開始、已派工、已修改、已驗證、已完成與已發布必須分開表達，不得互相代替。
 - Direct is the default for ordinary focused local work. Fix, build, debug,
   test, source, policy, documentation, analysis, multi-file or multi-step work,
   available subagents, and generic governed work are not delegation triggers by
