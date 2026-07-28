@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastScanned": "2026-07-27T20:52:34+08:00",
+  "lastScanned": "2026-07-28T14:51:57+08:00",
   "cartridges": {
     "claude-edition-rules": {
       "skillPath": ".agents/memory/claude-edition-rules/MEMORY.md",
@@ -156,7 +156,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-27T20:47:17+08:00",
+        "lastVerified": "2026-07-28T14:50:00+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -187,7 +187,7 @@
         "Tests/TeamNative/RetiredReflectionSkills.Tests.ps1"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T20:52:33+08:00",
+      "lastUpdated": "2026-07-28T14:50:00+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -202,10 +202,10 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 5985,
-        "lineCount": 120,
+        "sizeBytes": 6118,
+        "lineCount": 119,
         "chineseCharCount": 0,
-        "bodyCharCount": 3267,
+        "bodyCharCount": 3393,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
         "cycleEventCount": 5,
@@ -881,7 +881,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-27T20:47:17+08:00",
+        "lastVerified": "2026-07-28T14:50:00+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -898,6 +898,7 @@
         "Antigravity/VERSION",
         "Antigravity/global/GEMINI.md",
         "Antigravity/.agents/rules/00_core_identity.md",
+        ".agents/rules/00_core_identity.md",
         "Antigravity/.agents/rules/03_memory_skill_contract.md",
         "Antigravity/.agents/rules/04_forbidden_vocab.md",
         "Antigravity/.agents/rules/07_mcp_guardrails.md",
@@ -911,7 +912,7 @@
         "Antigravity/.agents/workflows/09-2_commit_execute(授權備份).md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T20:49:28+08:00",
+      "lastUpdated": "2026-07-28T14:50:00+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -926,13 +927,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3993,
-        "lineCount": 110,
+        "sizeBytes": 4281,
+        "lineCount": 111,
         "chineseCharCount": 2,
-        "bodyCharCount": 1717,
-        "chineseRatio": 0.0012,
+        "bodyCharCount": 1937,
+        "chineseRatio": 0.001,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 3,
+        "cycleEventCount": 4,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -1127,7 +1128,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-27T20:47:17+08:00",
+        "lastVerified": "2026-07-28T14:50:00+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -1145,6 +1146,8 @@
         "Claude/global/CLAUDE.md",
         "Claude/.claude/CLAUDE.md",
         "Claude/.claude/rules/core-identity.md",
+        ".claude/rules/core-identity.md",
+        ".claude/skills/intent-alignment-gate/SKILL.md",
         "Claude/.claude/rules/memory-contract.md",
         "Claude/.claude/rules/forbidden-vocab.md",
         "Claude/.claude/commands/02_blueprint(架構)/SKILL.md",
@@ -1154,7 +1157,7 @@
         "Claude/.claude/commands/11_handoff(交接)/SKILL.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T20:49:28+08:00",
+      "lastUpdated": "2026-07-28T14:50:00+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -1169,13 +1172,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3013,
-        "lineCount": 103,
+        "sizeBytes": 3284,
+        "lineCount": 105,
         "chineseCharCount": 2,
-        "bodyCharCount": 1212,
-        "chineseRatio": 0.0017,
+        "bodyCharCount": 1380,
+        "chineseRatio": 0.0014,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 3,
+        "cycleEventCount": 4,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -1836,7 +1839,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-27T20:47:17+08:00",
+        "lastVerified": "2026-07-28T14:50:00+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -1854,12 +1857,13 @@
         "Codex/global/AGENTS.md",
         "Codex/global/config.toml",
         "Codex/.codex/AGENTS.md",
+        ".codex/AGENTS.md",
         "Codex/.codex/config.toml",
         "Codex/.codex/VERSION",
         "Codex/.gitignore"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T20:49:28+08:00",
+      "lastUpdated": "2026-07-28T14:50:00+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -1874,13 +1878,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 4158,
-        "lineCount": 100,
+        "sizeBytes": 4339,
+        "lineCount": 101,
         "chineseCharCount": 0,
-        "bodyCharCount": 2320,
+        "bodyCharCount": 2466,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 4,
+        "cycleEventCount": 5,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -3430,7 +3434,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-27T20:47:17+08:00",
+        "lastVerified": "2026-07-28T14:50:00+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -3444,13 +3448,14 @@
       "trackedFiles": [
         "Shared/skills/ai-dev-quality-gate/SKILL.md",
         "Shared/skills/intent-alignment-gate/SKILL.md",
+        ".agents/skills/intent-alignment-gate/SKILL.md",
         "Shared/skills/quality-review-governance/SKILL.md",
         "Shared/skills/security-sre/SKILL.md",
         "Shared/skills/ui-design-exploration/SKILL.md",
         "Shared/skills/ui-ux-standards/SKILL.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T20:49:30+08:00",
+      "lastUpdated": "2026-07-28T14:50:00+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -3465,13 +3470,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 3957,
-        "lineCount": 101,
+        "sizeBytes": 4268,
+        "lineCount": 102,
         "chineseCharCount": 0,
-        "bodyCharCount": 2178,
+        "bodyCharCount": 2415,
         "chineseRatio": 0,
         "cycleId": "2026-06-15-001",
-        "cycleEventCount": 13,
+        "cycleEventCount": 14,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -5125,7 +5130,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-24T13:54:12+08:00",
+        "lastVerified": "2026-07-28T14:50:00+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5140,10 +5145,11 @@
         "Shared/skills/team-memory-closure-delivery-artifact/SKILL.md",
         "Shared/skills/team-specialist-memory-closure/SKILL.md",
         "Shared/policies/references/memory-closure-bundle-contract.md",
-        "Shared/policies/references/user-facing-output-examples.md"
+        "Shared/policies/references/user-facing-output-examples.md",
+        ".agents/shared/policies/references/user-facing-output-examples.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T20:52:33+08:00",
+      "lastUpdated": "2026-07-28T14:50:00+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5158,13 +5164,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 2733,
-        "lineCount": 94,
+        "sizeBytes": 2932,
+        "lineCount": 95,
         "chineseCharCount": 0,
-        "bodyCharCount": 1304,
+        "bodyCharCount": 1421,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 2,
+        "cycleEventCount": 3,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -5219,7 +5225,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-27T20:47:17+08:00",
+        "lastVerified": "2026-07-28T14:50:00+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5245,10 +5251,12 @@
         "Shared/policies/workflow-orchestration-scenarios.md",
         "Shared/policies/platform-plan-mapping.md",
         "Shared/policies/references/requirement-precision-schema.md",
-        ".agents/shared/policies/subagent-invocation.md"
+        ".agents/shared/policies/subagent-invocation.md",
+        ".agents/shared/policies/requirement-precision.md",
+        ".agents/shared/policies/workflow-orchestration.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T20:49:31+08:00",
+      "lastUpdated": "2026-07-28T14:50:00+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5263,13 +5271,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 5787,
-        "lineCount": 117,
+        "sizeBytes": 6083,
+        "lineCount": 119,
         "chineseCharCount": 0,
-        "bodyCharCount": 3303,
+        "bodyCharCount": 3477,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 3,
+        "cycleEventCount": 4,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -5416,7 +5424,7 @@
         "missingFields": [],
         "missingSections": [],
         "verificationStatus": "verified",
-        "lastVerified": "2026-07-27T20:47:17+08:00",
+        "lastVerified": "2026-07-28T14:50:00+08:00",
         "validScope": "current-project",
         "evidenceBaseStatus": "present",
         "evidenceWarnings": [],
@@ -5429,6 +5437,7 @@
       "description": "專案記憶：執行、相容性與 workspace bootstrap 參考契約。Use when: task touches this split memory scope or its tracked files.",
       "trackedFiles": [
         "Shared/policies/references/workflow-execution-spec-contract.md",
+        ".agents/shared/policies/references/workflow-execution-spec-contract.md",
         "Shared/policies/references/workflow-lane-routing.md",
         "Shared/policies/references/workflow-memory-evidence.md",
         "Shared/policies/references/workflow-orchestration-boundaries.md",
@@ -5450,7 +5459,7 @@
         "Shared/policies/references/workspace-bootstrap-contract.md"
       ],
       "staleness": 0,
-      "lastUpdated": "2026-07-27T20:49:32+08:00",
+      "lastUpdated": "2026-07-28T14:50:00+08:00",
       "pendingChanges": [],
       "ghostFiles": [],
       "dependencies": [],
@@ -5465,13 +5474,13 @@
         "isLegacy": false,
         "contentLanguage": "en",
         "humanLanguage": "zh-TW",
-        "sizeBytes": 6088,
-        "lineCount": 118,
+        "sizeBytes": 6324,
+        "lineCount": 119,
         "chineseCharCount": 0,
-        "bodyCharCount": 3018,
+        "bodyCharCount": 3167,
         "chineseRatio": 0,
         "cycleId": "2026-07-24-001",
-        "cycleEventCount": 3,
+        "cycleEventCount": 4,
         "cycleEventLimit": 30,
         "sizeLimitBytes": 16384,
         "lineLimit": 120,
@@ -6589,6 +6598,9 @@
     "Antigravity/.agents/rules/00_core_identity.md": [
       "_ag_core.workflow-delivery"
     ],
+    ".agents/rules/00_core_identity.md": [
+      "_ag_core.workflow-delivery"
+    ],
     "Antigravity/.agents/rules/03_memory_skill_contract.md": [
       "_ag_core.workflow-delivery"
     ],
@@ -6638,6 +6650,12 @@
       "_claude_core.commands-delivery"
     ],
     "Claude/.claude/rules/core-identity.md": [
+      "_claude_core.commands-delivery"
+    ],
+    ".claude/rules/core-identity.md": [
+      "_claude_core.commands-delivery"
+    ],
+    ".claude/skills/intent-alignment-gate/SKILL.md": [
       "_claude_core.commands-delivery"
     ],
     "Claude/.claude/rules/memory-contract.md": [
@@ -6728,6 +6746,9 @@
       "_codex_core.runtime"
     ],
     "Codex/.codex/AGENTS.md": [
+      "_codex_core.runtime"
+    ],
+    ".codex/AGENTS.md": [
       "_codex_core.runtime"
     ],
     "Codex/.codex/config.toml": [
@@ -6938,6 +6959,9 @@
       "_shared.ops-skills.quality-ui"
     ],
     "Shared/skills/intent-alignment-gate/SKILL.md": [
+      "_shared.ops-skills.quality-ui"
+    ],
+    ".agents/skills/intent-alignment-gate/SKILL.md": [
       "_shared.ops-skills.quality-ui"
     ],
     "Shared/skills/quality-review-governance/SKILL.md": [
@@ -7192,6 +7216,9 @@
     "Shared/policies/references/user-facing-output-examples.md": [
       "_shared.team-native-core.memory-closure"
     ],
+    ".agents/shared/policies/references/user-facing-output-examples.md": [
+      "_shared.team-native-core.memory-closure"
+    ],
     "Shared/policies/authorization-resolution.md": [
       "_shared.team-native-core.policy-core"
     ],
@@ -7237,6 +7264,12 @@
     ".agents/shared/policies/subagent-invocation.md": [
       "_shared.team-native-core.policy-core"
     ],
+    ".agents/shared/policies/requirement-precision.md": [
+      "_shared.team-native-core.policy-core"
+    ],
+    ".agents/shared/policies/workflow-orchestration.md": [
+      "_shared.team-native-core.policy-core"
+    ],
     "Shared/platform-capability-matrix.md": [
       "_shared.team-native-core.policy-evidence"
     ],
@@ -7244,6 +7277,9 @@
       "_shared.team-native-core.policy-evidence"
     ],
     "Shared/policies/references/workflow-execution-spec-contract.md": [
+      "_shared.team-native-core.policy-execution"
+    ],
+    ".agents/shared/policies/references/workflow-execution-spec-contract.md": [
       "_shared.team-native-core.policy-execution"
     ],
     "Shared/policies/references/workflow-lane-routing.md": [

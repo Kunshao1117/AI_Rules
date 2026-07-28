@@ -4,19 +4,19 @@ scopePath: Claude/.claude/
 description: >
   專案記憶：Claude 平台核心、規則與交付指令。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-27T20:49:28+08:00'
+last_updated: '2026-07-28T14:50:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T20:47:17+08:00'
+last_verified: '2026-07-28T14:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,12 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _claude_core.commands-delivery — Module Memory
 
 ## Current Truth
 
-- Owns the Claude adapter bootstrap, core rules, and governed delivery commands; its core keeps only a pointer to the shared user-visible reporting policy.
+- Owns the Claude adapter bootstrap, core rules, governed delivery commands, and their managed runtime copies; its core keeps only a pointer to the shared user-visible reporting policy and one short product-decision boundary.
 
 ## Active Constraints
 
@@ -47,6 +46,7 @@ metadata:
 - 01: Created during the 2026-07-24 authorized memory split after current-source verification.
 - 02: Reduced the Claude core to the shared beginner-facing reporting pointer so it does not define a competing format.
 - 03: Verified the minimal zh-TW reporting rule and its shared-policy pointer after the non-engineer UX update.
+- 04: Synced the Claude product-decision boundary and intent-alignment runtime copies after scope-governance validation.
 
 ## Archive Index
 
@@ -83,6 +83,8 @@ metadata:
 - Claude/global/CLAUDE.md
 - Claude/.claude/CLAUDE.md
 - Claude/.claude/rules/core-identity.md
+- .claude/rules/core-identity.md
+- .claude/skills/intent-alignment-gate/SKILL.md
 - Claude/.claude/rules/memory-contract.md
 - Claude/.claude/rules/forbidden-vocab.md
 - Claude/.claude/commands/02_blueprint(架構)/SKILL.md

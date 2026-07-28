@@ -4,14 +4,14 @@ scopePath: Tests/TeamNative/
 description: >-
   專案記憶：Team-Native PowerShell 契約測試。Use when: task touches Team-Native test
   fixtures, contract coverage, or source/deployment parity assertions.
-last_updated: '2026-07-27T20:52:33+08:00'
+last_updated: '2026-07-28T14:50:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T20:47:17+08:00'
+last_verified: '2026-07-28T14:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,20 +31,19 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # team-native-tests — Team-Native Test Memory
 
 ## Current Truth
 
 - Owns the Team-Native PowerShell contract test suite listed below.
-- `RequirementPrecision.Tests.ps1` protects semantic requirement provenance ownership and is newline-insensitive without reducing the explicit/inferred/unknown/conflict oracle.
+- `RequirementPrecision.Tests.ps1` protects semantic requirement provenance, classification/disposition separation, minimum-detail exclusions, and is newline-insensitive without reducing the explicit/inferred/unknown/conflict oracle.
 - `DeliverySlice.Tests.ps1` protects station boundaries without coupling the contract to legacy lane wording.
 - `ManagerSyncProjectRules.Tests.ps1` protects exact deployment, no result-object leakage, and version advancement only after required stages succeed.
 - `ManagerSyncProjectRules.Tests.ps1` also runs Auto selection through all installed platforms and verifies each target uses its platform-specific policy adapter.
 - `PlatformCodexFreshUpgrade.Tests.ps1` protects a fresh Codex install without legacy Team hooks, exact-hash managed legacy cleanup, and preservation of a user-modified hook set.
 - Stable validation routes include focused RequirementPrecision, DeliverySlice, PlatformCodexFreshUpgrade, PlatformPolicyPreflight, SourceDeploymentParity, and the aggregate Team-Native suite.
 - `SourceDeploymentParity.Tests.ps1` also protects centralized beginner-facing reporting rules, source/runtime copy parity, status display labels, and platform-policy pointers.
-- `NonEngineerUx.Tests.ps1` validates the README first layer, minimal zh-TW core, distinct user-visible states, and Fresh runtime parity without assuming ignored runtime files exist in a clean clone.
+- `NonEngineerUx.Tests.ps1` validates the README first layer, minimal zh-TW core, distinct user-visible states, nonblocking suggestions, affected-action stopping, and Fresh runtime parity without assuming ignored runtime files exist in a clean clone.
 - `ClaudeDeploySyncEntry.Tests.ps1`, `ContextGovernanceMigration.Tests.ps1`, and `RetiredReflectionSkills.Tests.ps1` cover the public Claude sync entry, Phase 1 context-governance contract, and retirement of the two reflection skills.
 
 ## Active Constraints
@@ -57,7 +56,7 @@ metadata:
 - 05: Added Codex fresh/upgrade and managed legacy-hook cleanup contract coverage.
 - 06: Added deterministic reporting-policy and source/runtime parity checks without text snapshots.
 - 07: Added real-path Auto-selection coverage for Antigravity, Claude, and Codex policy adapters.
-- 08: Added non-engineer UX coverage that deploys a temporary Fresh runtime before checking source/runtime parity.
+- 08: Extended non-engineer UX and requirement-precision coverage for scope governance while retaining temporary Fresh runtime parity checks.
 
 ## Archive Index
 

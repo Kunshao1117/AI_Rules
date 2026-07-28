@@ -4,19 +4,19 @@ scopePath: Shared/policies/references/
 description: >-
   專案記憶：執行、相容性與 workspace bootstrap 參考契約。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T20:49:32+08:00'
+last_updated: '2026-07-28T14:50:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-27T20:47:17+08:00'
+last_verified: '2026-07-28T14:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 3
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,12 +31,11 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared.team-native-core.policy-execution — Module Memory
 
 ## Current Truth
 
-- Owns execution, compatibility, status, source/runtime, workspace-bootstrap, and Codex hook-capability reference contracts listed below.
+- Owns execution, compatibility, status, source/runtime, workspace-bootstrap, and Codex hook-capability reference contracts listed below, including the scope-classification contract surface.
 - Legacy lanes are compatibility aliases only; the canonical decision model is independent topology, impact, and risk.
 - AI_Rules installs no repository-local Codex hook configuration or Team-Native scripts by default. Direct/delegated routing remains policy-owned, and user, global, plugin, or otherwise unowned hooks are outside repository cleanup scope.
 - Managed upgrade cleanup may retire only the complete exact-hash legacy Team hook set; a modified artifact preserves the full set and requires manual action.
@@ -56,6 +55,7 @@ metadata:
 - 03: Replaced the legacy active-hook lifecycle catalog with the default-hook boundary and managed legacy-cleanup contract.
 - 04: Added beginner-facing Chinese status labels without changing canonical machine values or completion honesty.
 - 05: Bound activated slots, requested scope, and versioned evidence without treating observed context behavior as requested scope.
+- 06: Recorded independent overreach classification/disposition and the managed execution-contract runtime copy.
 
 ## Archive Index
 
@@ -87,6 +87,7 @@ metadata:
 ## Tracked Files
 
 - Shared/policies/references/workflow-execution-spec-contract.md
+- .agents/shared/policies/references/workflow-execution-spec-contract.md
 - Shared/policies/references/workflow-lane-routing.md
 - Shared/policies/references/workflow-memory-evidence.md
 - Shared/policies/references/workflow-orchestration-boundaries.md

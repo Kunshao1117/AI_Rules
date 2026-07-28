@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：Shared 品質閘門、安全可靠性與 UI/UX 標準技能。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T20:49:30+08:00'
+last_updated: '2026-07-28T14:50:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T20:47:17+08:00'
+last_verified: '2026-07-28T14:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 13
+cycle_event_count: 14
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,8 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
-
 # _shared.ops-skills.quality-ui — Quality and UI Skills Memory
 
 ## Current Truth
@@ -42,6 +40,7 @@ metadata:
 - Review is bounded to one consolidated pass and one blocker recheck; Direct work does not require a Team board or independent review unless impact, risk, or topology activates it.
 - UI and security claims require surface-appropriate real evidence; mock, fixture, static, or generated-reference evidence remains limited.
 - Design deviation checks use intent alignment, overreach, and drift controls with explicit conclusions; they are not a separate reflection skill.
+- Intent alignment keeps content classification separate from the existing disposition and leaves nonblocking suggestions outside implementation.
 
 ## Active Constraints
 
@@ -53,6 +52,7 @@ metadata:
 - 13: Reconciled quality and review skills with bounded decisions, Direct-first completion, and conditional specialist evidence.
 - 14: Made review fields internal evidence and routed both Direct and delegated review wording through language governance.
 - 15: Replaced generic reflection-gate references with existing design-deviation controls.
+- 16: Recorded scope-governance classification, affected-action stopping, and the managed intent-alignment runtime copy.
 
 ## Archive Index
 
@@ -85,6 +85,7 @@ metadata:
 
 - Shared/skills/ai-dev-quality-gate/SKILL.md
 - Shared/skills/intent-alignment-gate/SKILL.md
+- .agents/skills/intent-alignment-gate/SKILL.md
 - Shared/skills/quality-review-governance/SKILL.md
 - Shared/skills/security-sre/SKILL.md
 - Shared/skills/ui-design-exploration/SKILL.md

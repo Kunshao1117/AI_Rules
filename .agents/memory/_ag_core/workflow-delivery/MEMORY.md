@@ -4,19 +4,19 @@ scopePath: Antigravity/
 description: >-
   專案記憶：Antigravity 平台入口、核心規則與交付工作流。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T20:49:28+08:00'
+last_updated: '2026-07-28T14:50:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T20:47:17+08:00'
+last_verified: '2026-07-28T14:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 2
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,8 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
-
 # _ag_core.workflow-delivery — Module Memory
 
 ## Current Truth
@@ -42,6 +40,7 @@ metadata:
 - Local writes remain distinct from protected actions such as release, deployment, installation, credential change, or destructive mutation.
 - The Antigravity core points to shared language governance for all user-visible reporting instead of defining its own report format.
 - Its always-on user-facing rule keeps plain zh-TW and distinct work states, while detailed wording remains in the shared policy.
+- Its platform core carries one short product-decision boundary; detailed scope classification and user questions remain owned by Shared policy.
 
 ## Active Constraints
 
@@ -53,6 +52,7 @@ metadata:
 - 02: Reconciled `07_debug` with Direct-first routing and conditional deep-audit semantics.
 - 03: Reduced the Antigravity core to the shared beginner-facing reporting pointer and kept internal artifacts out of user replies.
 - 04: Verified the minimal always-on reporting rule after the non-engineer UX update.
+- 05: Synced the platform core with the domain-neutral product-decision boundary and its managed runtime copy.
 
 ## Archive Index
 
@@ -87,6 +87,7 @@ metadata:
 - Antigravity/VERSION
 - Antigravity/global/GEMINI.md
 - Antigravity/.agents/rules/00_core_identity.md
+- .agents/rules/00_core_identity.md
 - Antigravity/.agents/rules/03_memory_skill_contract.md
 - Antigravity/.agents/rules/04_forbidden_vocab.md
 - Antigravity/.agents/rules/07_mcp_guardrails.md

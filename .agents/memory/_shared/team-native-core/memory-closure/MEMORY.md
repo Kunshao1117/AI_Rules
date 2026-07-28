@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >
   專案記憶：Team-Native 受保護記憶收尾契約。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-27T20:52:33+08:00'
+last_updated: '2026-07-28T14:50:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-24T13:54:12+08:00'
+last_verified: '2026-07-28T14:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,14 +31,13 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared.team-native-core.memory-closure — Module Memory
 
 ## Current Truth
 
 - Owns memory-closure delivery and specialist contracts, distinct from read-only memory-docs.
 - This child owns the listed concrete source files after the 2026-07-24 split.
-- User-facing output examples preserve a plain-language first layer while retaining status meaning and optional technical evidence.
+- User-facing output examples preserve a plain-language first layer while retaining status meaning, nonblocking suggestions, affected-action stopping, and optional technical evidence.
 
 ## Active Constraints
 
@@ -49,6 +48,7 @@ metadata:
 
 - 01: Created during the authorized memory split after current-source verification.
 - 02: Recorded the user-facing output examples reference as an owned memory-closure source.
+- 03: Recorded scope-governance output examples and their managed runtime copy.
 
 ## Archive Index
 
@@ -82,6 +82,7 @@ metadata:
 
 - Shared/policies/references/memory-closure-bundle-contract.md
 - Shared/policies/references/user-facing-output-examples.md
+- .agents/shared/policies/references/user-facing-output-examples.md
 
 ## Relations
 

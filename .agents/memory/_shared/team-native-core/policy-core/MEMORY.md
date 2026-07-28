@@ -4,19 +4,19 @@ scopePath: Shared/policies/
 description: >-
   專案記憶：Progressive Assurance 核心政策與 Team-Native 邊界。Use when: task touches this
   split memory scope or its tracked files.
-last_updated: '2026-07-27T20:49:31+08:00'
+last_updated: '2026-07-28T14:50:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-27T20:47:17+08:00'
+last_verified: '2026-07-28T14:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 2
+cycle_event_count: 3
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,7 +31,6 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _shared.team-native-core.policy-core — Module Memory
 
 ## Current Truth
@@ -40,7 +39,7 @@ metadata:
 - `execution-routing` is the unique policy owner of independent `execution_topology`, `change_impact`, and `action_risk`; ordinary work is Direct-first.
 - Direct and delegated user-visible replies use the language policy's beginner-facing synthesis; raw evidence and terminal review tokens stay internal unless exact precision is needed.
 - Team controls activate only for delegated topology: explicit delegation, real parallel benefit, necessary separation of duties, unresolved context after narrowing, or a formal platform/process requirement.
-- Requirement provenance distinguishes explicit, inferred, unknown, and conflict. Project context is resolved uniformly for AI_Rules and consumer repositories without an identity branch.
+- Requirement provenance distinguishes explicit, inferred, unknown, and conflict; scope-governance content classification remains separate from overreach disposition. Project context is resolved uniformly for AI_Rules and consumer repositories without an identity branch.
 - Task capability assessment separates platform capability, model/task fit, tool availability, requested configuration, accepted configuration, and observed applied receipts.
 - `verification-strategy` owns test admission and minimum-sufficient evidence; `implementation-stability` owns compatibility and coherent-patch boundaries; authorization owns protected actions.
 - A captain may synthesize existing evidence for the Director, but may not author, replace, or upgrade station-owned completion evidence.
@@ -56,6 +55,7 @@ metadata:
 - 02: Reconciled the canonical policy core with merged Direct-first Progressive Assurance and uniquely attributed six new source files.
 - 03: Routed Direct and review-result display through the shared beginner-facing language contract without changing canonical evidence values.
 - 04: Clarified captain reporting, evidence ownership, and claim-driven progressive Team activation.
+- 05: Recorded the user product-decision boundary, nonblocking suggestions, and managed policy runtime copies.
 
 ## Archive Index
 
@@ -104,6 +104,8 @@ metadata:
 - Shared/policies/platform-plan-mapping.md
 - Shared/policies/references/requirement-precision-schema.md
 - .agents/shared/policies/subagent-invocation.md
+- .agents/shared/policies/requirement-precision.md
+- .agents/shared/policies/workflow-orchestration.md
 
 ## Relations
 

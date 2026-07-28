@@ -4,19 +4,19 @@ scopePath: Codex/
 description: >-
   專案記憶：Codex 平台啟動、設定與 runtime hook。Use when: task touches this split memory
   scope or its tracked files.
-last_updated: '2026-07-27T20:49:28+08:00'
+last_updated: '2026-07-28T14:50:00+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T20:47:17+08:00'
+last_verified: '2026-07-28T14:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 4
+cycle_event_count: 5
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,13 +31,12 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-
 # _codex_core.runtime — Module Memory
 
 ## Current Truth
 
 - Owns Codex bootstrap, configuration, and runtime adapter sources.
-- `Codex/.codex/AGENTS.md` is an always-on surface. It retains Director-facing zh-TW, Direct-first routing, delegated positive triggers, read-before-write and dirty-work protection, protected-action and canonical-source pointers, V1 heterogeneous delegation availability, and lazy-load pointers.
+- `Codex/.codex/AGENTS.md` is an always-on surface. It retains Director-facing zh-TW, Direct-first routing, delegated positive triggers, read-before-write and dirty-work protection, protected-action and canonical-source pointers, one short product-decision boundary, V1 heterogeneous delegation availability, and lazy-load pointers.
 - Codex hooks remain a platform capability, but AI_Rules installs no repository-local hook configuration or Team-Native hook scripts by default. Direct/delegated routing remains owned by `Shared/policies/execution-routing.md`.
 - The complete Codex adapter and Shared contracts remain canonical under `Shared/policies`; generated markers are pointer-form and are not hand-edited.
 
@@ -51,6 +50,7 @@ metadata:
 
 - 04: Slimmed the Codex always-on entry and retired unconditional repository-local Team hooks from the default deployment.
 - 05: Kept the non-engineer zh-TW reporting core minimal and delegated detailed wording to Shared language governance.
+- 06: Synced the Codex product-decision boundary and managed `.codex/AGENTS.md` runtime copy after scope-governance validation.
 
 ## Archive Index
 
@@ -85,6 +85,7 @@ metadata:
 - Codex/global/AGENTS.md
 - Codex/global/config.toml
 - Codex/.codex/AGENTS.md
+- .codex/AGENTS.md
 - Codex/.codex/config.toml
 - Codex/.codex/VERSION
 - Codex/.gitignore
