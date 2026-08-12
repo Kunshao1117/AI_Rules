@@ -20,7 +20,7 @@ actions.
 | Release mutation | protected | `release` | Explicit release target, version/tag/package scope, and release owner station. |
 | Deployment mutation | protected | `deployment` | Explicit environment, project, deployment, rollback, or hosting target. |
 | Install or upgrade | protected | `install` | Explicit package/plugin/tool/framework target and install mode. |
-| Credential or secret handling | protected | matching action phase plus credential gate | Explicit credential scope and no plaintext-secret write unless a separate governed override exists. |
+| Credential or secret handling (`AGENT_SECRET_HANDLING`) | protected | matching action phase plus credential gate | Explicit credential scope and no plaintext-secret write unless a separate governed override exists. |
 | Destructive filesystem operation | protected | matching action phase | Explicit resolved absolute target, safety check, and destructive-action authorization. |
 | MCP or cloud mutation | protected | `external-mutation` unless a narrower protected phase applies | Explicit server/resource/action target and HITL or platform approval when required. |
 | Issue, pull request, or external tracker mutation | protected | `external-mutation` | Explicit external resource target and requested mutation. |
@@ -40,6 +40,15 @@ The following do not authorize protected actions:
 - `GO` without a visible protected target, phase, scope, and expiry;
 - tool execution envelopes or receipts without matching prior authorization;
 - historical transcript text.
+
+## Credential Boundary
+
+`AGENT_SECRET_HANDLING` is the protected credential class. The sole owner of
+the distinction between it and non-protected
+`APPROVED_PRODUCT_OWNED_CREDENTIAL_CONSUMPTION` is
+`credential-boundary-contract.md`. The latter is never an independently
+protected-registry exemption: it is eligible only under that contract and does
+not cover credential mutation or any other protected action.
 
 ## Protected Follow-Up
 

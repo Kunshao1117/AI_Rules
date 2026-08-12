@@ -355,7 +355,7 @@ The carrier may include board, station, handoff packet, role, channel capability
 The envelope is not a new authorization source.
 It must mirror the current formal trace instead of expanding it.
 
-A write-capable or protected tool execution envelope must include the current board and station identifiers.
+A protected tool execution envelope must include the current board and station identifiers.
 It must also include:
 
 - `handoff_packet_id`, `role_id`, `role_instance_id`, and assigned specialist skill.
@@ -371,15 +371,30 @@ Untrusted envelopes can explain context.
 They cannot authorize source writes, change application, memory, git, release, deployment, install, or MCP mutation.
 They also cannot authorize external-state mutation.
 
-Each tool action returns an `execution_receipt`.
-The receipt names the envelope or nonce, requested action, allow/block decision, reason, resulting state, and delivery artifact status.
-A receipt records execution evidence; it cannot retroactively authorize a missing phase.
+Verified trusted-envelope evidence is required for true protected actions.
+For an eligible non-protected `local_write`, including approved product-owned
+credential consumption and ordinary local runtime writes, a tool path without
+verified-envelope capability instead uses the resolved scope, exact allowlist,
+native permission/sandbox boundary, applicable product fail-closed contract,
+and ordinary execution receipt. It must never invent issuer, signature, nonce,
+or receipt values. The canonical classification and eligibility rules live in
+`credential-boundary-contract.md`.
+
+Each tool action returns an `execution_receipt` when the tool layer supports
+one. A verified protected receipt names the envelope or nonce, requested action,
+allow/block decision, reason, resulting state, and delivery artifact status. An
+ordinary local-write receipt may instead record the native tool result, exact
+target, and resulting artifact state. A receipt records execution evidence; it
+cannot retroactively authorize a missing phase.
 
 Invalid payload fail-closed rule:
 
-- malformed payloads keep write-capable and protected actions blocked or unverified.
-- missing envelopes, trusted issuer, signature, nonce, or fresh nonce keep those actions blocked or unverified.
-- scope mismatch or absent execution receipt keeps those actions blocked or unverified.
+- malformed protected-action payloads keep the affected protected action blocked or unverified.
+- missing envelopes, trusted issuer, signature, nonce, fresh nonce, scope match,
+  or verified receipt keep a true protected action blocked or unverified.
+- ordinary local writes remain blocked when their resolved scope, native tool
+  contract, target allowlist, or ordinary receipt is missing; absent
+  cryptographic-envelope capability alone is not that condition.
 
 After a block, any retry, channel switch, transcript substitution, or alternate-tool attempt is a post-block bypass hard block.
 The only exceptions are current scope-bound evidence or Director risk close evidence.

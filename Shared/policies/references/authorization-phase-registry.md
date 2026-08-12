@@ -14,6 +14,7 @@ scope, station, file set, command, protected action, and expiry.
 | `plan-only` | none | no | Planning, route shaping, or non-executable proposal. No source or protected mutation. |
 | `implementation-change-delivery` | source write | no | A station-owned `change-delivery` role writes the exact main-worktree source allowlist. |
 | `change-application` | source write | no | A station-owned gate applies a returned isolated/text artifact, explicit integration task, or assigned generated/deployed sync. |
+| `product-runtime-execution` | external observation plus scoped local runtime write | no | An allowlisted product performs approved observation and creates exact non-destructive local runtime artifacts. It does not authorize agent secret handling, source write, Git, account/order action, deployment, or external mutation. |
 | `validation` | read/execute check | no | Non-mutating validation or test evidence. Validation does not repair the implementation under validation. |
 | `review` | read judgment | no | Independent review evidence from a role that did not author the deliverable. |
 | `memory-docs` | read/disposition | no | Memory/docs impact attribution and proposed disposition. This does not mutate memory. |
@@ -67,3 +68,8 @@ Every write-capable or protected phase records:
 
 Missing or inconsistent phase evidence resolves to `blocked`, `unverified`, or
 `not-authorized` according to the consuming schema.
+
+For `product-runtime-execution`, phase evidence is scope evidence, not a
+cryptographic envelope requirement. The credential boundary and envelope
+capability rules are owned by `credential-boundary-contract.md` and
+`authorization-resolution.md`.

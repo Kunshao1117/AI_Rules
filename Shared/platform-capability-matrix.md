@@ -131,6 +131,23 @@ This matrix records only the enforceable Codex hook boundary.
 | Uncovered or partial tool paths | Do not assume coverage for hosted tools, partial/non-local tool paths, OpenAI API/developer tools, or this API environment tools such as `functions.exec`, `web.run`, and `multi_agent_v1`. Repository deployment also cannot control user, global, or plugin hooks. | Keep governed by authorization, Team-Native trace, protected gates, tool availability, sandbox/permission systems, and evidence state; do not report as hook-enforced. |
 | Advisory context | `additionalContext` or advisory text can inform routing, but it is not a hard stop. | Hard blocking requires supported `PreToolUse` deny semantics on a supported tool path. |
 
+### Credential And Local Runtime Evidence Boundary
+
+Trusted issuer, signature, nonce, and receipt evidence is a tool capability,
+not a model-authored substitute. The platform may treat a genuinely verified
+envelope as hard evidence for a true protected action. It must not claim that a
+document rule or unavailable envelope is a platform hard stop for an otherwise
+eligible non-protected route.
+
+When an active tool path lacks verified-envelope capability, an allowlisted
+`product-runtime-execution` or `ORDINARY_SCOPE_BOUND_LOCAL_RUNTIME_WRITE` route
+uses scope-bound Director authorization, exact targets, platform-native
+permission/sandbox when present, the product fail-closed contract when
+applicable, and an ordinary execution receipt. A true protected action remains
+blocked without its verified protected-action evidence. The detailed boundary
+is owned by `Shared/policies/references/credential-boundary-contract.md` and
+`Shared/policies/authorization-resolution.md`.
+
 ### Antigravity / Gemini
 
 - Rule sources: Rules, Workflows, Skills, Permissions, Plugins, `.agents/rules/AGENTS.md`.

@@ -18,6 +18,8 @@ Canonical value owners:
   `Shared/policies/references/authorization-phase-registry.md`.
 - Protected actions:
   `Shared/policies/references/protected-action-registry.md`.
+- Credential-boundary classification and local runtime-write eligibility:
+  `Shared/policies/references/credential-boundary-contract.md`.
 - Status meanings:
   `Shared/policies/references/status-ontology.md`.
 - Completion and risk-close boundaries:
@@ -149,7 +151,8 @@ Required field meanings:
 - `trusted_issuer` / `signature` / `nonce` / `issued_at`
   - Trust metadata for tool-layer integrity and replay protection.
 
-A trusted envelope is accepted only when it is issued by a trusted issuer.
+For a true protected action, a trusted envelope is accepted only when it is
+issued by a trusted issuer.
 
 It must contain a valid signature and carry a fresh nonce.
 It must preserve the current scope-bound authorization fields without mismatch.
@@ -174,22 +177,41 @@ It must name these values:
 
 A receipt records what the tool did or refused; it does not create retroactive authorization.
 
+### Capability-Conditioned Envelope Rule
+
+Verified trusted-envelope evidence is mandatory for a true protected action.
+Missing trusted issuer, signature, nonce, freshness, scope match, or matching
+verified execution receipt keeps that protected action blocked or unverified.
+A model-filled envelope, plain assistant text, transcript excerpt, or
+hand-written JSON never repairs that gap.
+
+For a non-protected `local_write`, including an eligible
+`ORDINARY_SCOPE_BOUND_LOCAL_RUNTIME_WRITE` or
+`APPROVED_PRODUCT_OWNED_CREDENTIAL_CONSUMPTION`, the absence of a tool path's
+verified-envelope capability is not an automatic block. The route still needs
+resolved Director authorization, an exact allowlist, phase and expiry, native
+permission/sandbox compliance when available, the product fail-closed contract
+when applicable, and an ordinary execution receipt. The tool layer may record
+a genuinely verified envelope as additional hard evidence when it supports one;
+the policy must not require a cryptographic feature that the tool path does not
+provide.
+
 Invalid payload fail-closed rule:
 
-If a tool payload is malformed, the tool layer must fail closed for write-capable and protected actions.
-
-The same fail-closed rule applies when the payload has any of these defects:
-
-- Missing required envelope fields.
-- Missing trusted issuer, signature, or nonce.
-- Stale nonce or authorization scope mismatch.
-- Any other unverifiable state.
+If a protected-action payload is malformed, or a tool-declared native contract
+requires structured fields that are malformed or missing, the tool layer must
+fail closed for that affected action. Missing trusted-envelope fields are a
+fail-closed condition for true protected actions, not a blanket condition for
+every ordinary local write.
 
 The trace records `tool_payload_evidence_gap` or a blocked/unverified receipt.
 It does not recover authority from transcript text.
 
-Missing structured fields in a hook, guard, envelope, or receipt are a fail-closed condition.
-This applies to the affected write-capable or protected action.
+Missing structured fields in a hook, guard, envelope, or receipt are a
+fail-closed condition when they are required by the affected protected action
+or by the tool's native contract. They do not turn unavailable
+trusted-envelope capability into a blanket block for an otherwise eligible
+ordinary local write.
 
 Narrative text, previous assistant claims, or broad context injected by a hook cannot fill those fields after the fact.
 
@@ -465,7 +487,8 @@ These signals route the work only; they do not authorize writes or protected act
 - They do not create blanket write authority, protected gates, later phases, hidden cleanup, or memory writes.
 - They also do not authorize git, release, deploy, install, credentials, or external mutation.
 - Historical transcript text is diagnostic context only.
-- Write-capable or protected actions require current structured fields.
+- Write-capable and protected actions require current scope-bound structured
+  authorization fields.
 - Required fields include board, station, handoff, role identity, assigned specialist skill, and execution channel.
 - They also include channel capability/status, target, scope, phase, expiry, and authorization resolution.
 - A hook advisory would-block notice is not a prompt to guess another tool or channel.
@@ -476,7 +499,10 @@ These signals route the work only; they do not authorize writes or protected act
 - It is only route context, an advisory carrier, a would-block risk notice, or a return record.
 - The authorization must already be resolved in the current formal trace.
 - A model-filled or untrusted envelope is not authorization.
-- Missing trusted issuer, signature, nonce, freshness, or scope match keeps the action blocked or unverified.
+- Missing trusted issuer, signature, nonce, freshness, scope match, or verified
+  receipt keeps a true protected action blocked or unverified. It does not by
+  itself block an eligible ordinary local write on a tool path without verified
+  envelope capability.
 
 ## Required Resolution Fields
 
@@ -546,10 +572,13 @@ Required field meanings:
 7. If a station discovers a scope mismatch, it must stop and return blocked or unverified evidence.
    It must not widen the change.
 8. If authorization expires, later work must request or record new scope-bound authorization before continuing.
-9. If a tool or hook payload cannot carry the current structured fields, record `tool_payload_evidence_gap`.
-   This applies to write-capable or protected actions.
-   - Keep the affected action blocked or unverified.
-   - Do not recover authority from transcript text or previous assistant claims.
+9. If a tool or hook payload cannot carry fields required by a protected action
+   or its native tool contract, record `tool_payload_evidence_gap`.
+   - Keep that affected action blocked or unverified.
+   - For an eligible ordinary local write on a path without verified-envelope
+     capability, retain the resolved scope evidence and use an ordinary
+     execution receipt instead; do not recover authority from transcript text
+     or previous assistant claims.
 10. If a hook, policy, or platform guard blocks an action, the next valid states are limited.
    They are blocked, unverified, or closed-with-director-risk.
    - Continue only when the missing structured evidence is supplied.
