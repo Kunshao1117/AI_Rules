@@ -2,6 +2,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+Import-Module (Join-Path $repoRoot 'Scripts\modules\Skills-Sync.psm1') -Force
 
 function Get-CredentialBoundaryContent {
     param([Parameter(Mandatory = $true)][string]$RelativePath)
@@ -109,6 +110,8 @@ Describe 'Credential boundary contract' {
     }
 
     It 'keeps all changed Shared governance files byte-identical with managed runtime copies' {
+        $runtimeRoot = Join-Path ([System.IO.Path]::GetTempPath()) ('ai-rules-credential-boundary-' + [guid]::NewGuid())
+        $agentsRoot = Join-Path $runtimeRoot '.agents'
         $pairs = @(
             @{ Source = 'Shared\policies\references\credential-boundary-contract.md'; Runtime = '.agents\shared\policies\references\credential-boundary-contract.md' },
             @{ Source = 'Shared\policies\references\protected-action-registry.md'; Runtime = '.agents\shared\policies\references\protected-action-registry.md' },
@@ -117,14 +120,22 @@ Describe 'Credential boundary contract' {
             @{ Source = 'Shared\platform-capability-matrix.md'; Runtime = '.agents\shared\platform-capability-matrix.md' },
             @{ Source = 'Shared\policies\references\authorization-phase-registry.md'; Runtime = '.agents\shared\policies\references\authorization-phase-registry.md' }
         )
-        foreach ($pair in $pairs) {
-            $sourcePath = Join-Path $repoRoot $pair.Source
-            $runtimePath = Join-Path $repoRoot $pair.Runtime
-            if (-not (Test-Path -LiteralPath $runtimePath -PathType Leaf)) {
-                throw "Managed runtime copy is missing: $($pair.Runtime)"
+        try {
+            New-Item -ItemType Directory -Force -Path $runtimeRoot | Out-Null
+            $null = Sync-SharedGovernanceReferences -SharedRoot (Join-Path $repoRoot 'Shared') -TargetAgentsRoot $agentsRoot -Mode Full
+            foreach ($pair in $pairs) {
+                $sourcePath = Join-Path $repoRoot $pair.Source
+                $runtimePath = Join-Path $runtimeRoot $pair.Runtime
+                if (-not (Test-Path -LiteralPath $runtimePath -PathType Leaf)) {
+                    throw "Managed runtime copy is missing after sync: $($pair.Runtime)"
+                }
+                if ((Get-FileHash -LiteralPath $sourcePath -Algorithm SHA256).Hash -ne (Get-FileHash -LiteralPath $runtimePath -Algorithm SHA256).Hash) {
+                    throw "Source/runtime parity failed: $($pair.Source)"
+                }
             }
-            if ((Get-FileHash -LiteralPath $sourcePath -Algorithm SHA256).Hash -ne (Get-FileHash -LiteralPath $runtimePath -Algorithm SHA256).Hash) {
-                throw "Source/runtime parity failed: $($pair.Source)"
+        } finally {
+            if (Test-Path -LiteralPath $runtimeRoot) {
+                Remove-Item -LiteralPath $runtimeRoot -Recurse -Force
             }
         }
     }

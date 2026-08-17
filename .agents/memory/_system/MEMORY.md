@@ -4,7 +4,7 @@ scopePath: .
 description: >
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-08-17T21:44:35+08:00'
+last_updated: '2026-08-17T22:07:11+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 6
+cycle_event_count: 7
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,6 +31,7 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 
 
 # _system — Repository Governance Memory
@@ -49,6 +50,7 @@ metadata:
 
 ## Cycle Events
 
+- 07: Noted that credential-boundary parity tests use a temporary deployed copy.
 - 03: Verified the non-engineer README and user-visible status boundary without claiming model-wide compliance.
 - 04: Recorded Cursor Edition as the fourth peer platform in root docs and gitignore.
 - 05: Ignored repo-root `/logs/` after deleting generated credential-boundary evidence.

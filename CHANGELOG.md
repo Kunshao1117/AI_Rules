@@ -14,7 +14,7 @@
 
 ### test
 - **Cursor Fresh／Upgrade** — 新增 `Tests/TeamNative/PlatformCursorFreshUpgrade.Tests.ps1`，並延伸既有對等、預檢、UX 與退休技能測試。
-- **憑證邊界契約** — 新增 `Tests/TeamNative/CredentialBoundary.Tests.ps1`，覆蓋代理秘密處理與產品自主管理憑證的分類測試。
+- **憑證邊界契約** — 新增 `Tests/TeamNative/CredentialBoundary.Tests.ps1`，覆蓋代理秘密處理與產品自主管理憑證的分類測試。來源／runtime 對等改在臨時部署目錄驗證，不依賴母機已忽略的 `.agents/shared` 副本。
 
 ### chore
 - **來源記憶卡拆分** — 將檔案偏多的平台、政策、測試與技能記憶卡拆成導覽父卡與聚焦子卡。

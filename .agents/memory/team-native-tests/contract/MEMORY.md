@@ -4,19 +4,19 @@ scopePath: Tests/TeamNative/
 description: >
   專案記憶：需求、交付與憑證邊界契約測試。Use when: task touches requirement, delivery, or
   credential-boundary tests.
-last_updated: '2026-08-17T20:56:12+08:00'
+last_updated: '2026-08-17T22:07:11+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-08-17T20:50:00+08:00'
+last_verified: '2026-08-17T22:00:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-08-17-002
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,12 +32,14 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
+
+
 # team-native-tests.contract — Module Memory
 
 ## Current Truth
 
 - Owns requirement-precision, delivery-slice, memory-closure-bundle, captain-decision, and credential-boundary tests.
-- Credential-boundary tests protect contract classes; `logs/` receipts remain generated evidence.
+- Credential-boundary source/runtime parity is verified through a temporary deployed copy, not the gitignored mother-repo `.agents/shared/` tree.
 
 ## Active Constraints
 
@@ -45,6 +47,7 @@ metadata:
 
 ## Cycle Events
 
+- 02: Moved credential-boundary source/runtime parity onto a temporary Sync-SharedGovernanceReferences copy.
 - 01: Created during the tests split and attributed CredentialBoundary.Tests.ps1.
 
 ## Archive Index
