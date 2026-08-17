@@ -1,22 +1,22 @@
 ---
 name: _shared.ops-skills.skill-governance.delivery-artifacts
 scopePath: Shared/skills/
-description: >-
-  專案記憶：團隊交付 artifact 與角色邊界。Use when: task touches this split memory scope or its
-  tracked files.
-last_updated: '2026-07-27T20:49:30+08:00'
+description: >
+  專案記憶：團隊交付 artifact 來源技能。Use when: task touches team review, validation,
+  memory-docs, change-delivery, or role-boundary artifact sources.
+last_updated: '2026-08-17T21:12:50+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T20:47:17+08:00'
+last_verified: '2026-08-17T21:20:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
-cycle_id: 2026-07-24-001
-cycle_event_count: 2
+cycle_id: 2026-08-17-003
+cycle_event_count: 1
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,42 +32,34 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
-
 # _shared.ops-skills.skill-governance.delivery-artifacts — Module Memory
 
 ## Current Truth
 
-- Owns Team delivery-artifact contracts and their deployed copies.
-- Team change, validation, review, role-boundary, and memory/docs artifacts load only when execution topology is delegated.
-- Ordinary Direct completion does not require formal Team artifacts, but it uses the same beginner-facing response boundary as delegated work and does not expose raw delivery fields.
+- Owns canonical Team delivery-artifact and role-boundary skills.
+- Deployed `.agents/skills/` copies belong to `_shared.ops-skills.skill-governance.delivery-runtime`.
+- Team artifacts load only when execution topology is delegated.
 
 ## Active Constraints
 
-- Keep source/deployed ownership paired where both are tracked.
 - Do not allow an artifact procedure to redefine verification, terminal review, or completion policy.
+- Max depth is 4; deployed copies are a sibling card, not a nested child.
 
 ## Cycle Events
 
-- 02: Reconciled delivery artifacts with delegated-only activation and concise Direct outcomes.
-- 03: Confirmed delivery, review, and validation artifacts remain internal while all user-visible summaries use the shared beginner-facing rule.
-- 04: Kept minimal_reference_packet as the single station-to-captain reference packet and left completion evidence with its original owner.
+- 01: Split deployed copies into `_shared.ops-skills.skill-governance.delivery-runtime`.
 
 ## Archive Index
 
-- Parent archive preserves the pre-split ownership history.
+- archive-001.md — Pre-split 2026-08-17 paired source and deployed ownership.
 
 ## Evidence Base
 
-- source:Shared/skills/team-change-delivery-artifact/SKILL.md
-- source:Shared/skills/team-validation-delivery-artifact/SKILL.md
-- source:Shared/skills/team-review-delivery-artifact/SKILL.md and Shared/skills/team-role-boundaries/SKILL.md
-- source:Shared/policies/execution-routing.md and Shared/policies/verification-strategy.md
-- source:Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md and Shared/skills/team-role-boundaries/SKILL.md
+- source:Shared/skills/team-change-delivery-artifact/SKILL.md, Shared/skills/team-role-boundaries/SKILL.md
 
 ## Read Contract
 
-- Read when changing owned Team delivery-artifact contracts.
-- Do not use for ordinary Direct completion or as protected-action authorization.
+- Read when changing owned Team delivery-artifact sources.
 
 ## Conflicts and Supersession
 
@@ -75,9 +67,8 @@ metadata:
 
 ## 中文摘要
 
-- Team artifact 只在 delegated topology 下需要。
-- Direct 不需 Team artifact，但對外一樣先用白話說明結果、影響、注意事項與下一步。
-- Artifact skill 不重複擁有 verification、review 或 completion policy。
+- 此卡負責團隊交付 artifact 來源技能。
+- 部署副本已拆到 delivery-runtime。
 
 ## Tracked Files
 
@@ -86,15 +77,11 @@ metadata:
 - Shared/skills/team-memory-docs-delivery-artifact/SKILL.md
 - Shared/skills/team-change-delivery-artifact/SKILL.md
 - Shared/skills/team-role-boundaries/SKILL.md
-- .agents/skills/team-review-delivery-artifact/SKILL.md
-- .agents/skills/team-validation-delivery-artifact/SKILL.md
-- .agents/skills/team-memory-docs-delivery-artifact/SKILL.md
-- .agents/skills/team-change-delivery-artifact/SKILL.md
-- .agents/skills/team-role-boundaries/SKILL.md
 
 ## Relations
 
 - _shared.ops-skills.skill-governance (parent card: navigation only)
+- _shared.ops-skills.skill-governance.delivery-runtime (sibling card: deployed copies)
 
 ## Applicable Skills
 

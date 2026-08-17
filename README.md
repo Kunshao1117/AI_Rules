@@ -74,6 +74,7 @@ Antigravity Runtime Context 行為目前只有官方文件描述，尚未在本�
 | Antigravity / Gemini | [Antigravity 起步說明](Antigravity/README.md) |
 | Claude Code | [Claude Code 起步說明](Claude/README.md) |
 | OpenAI Codex | [Codex 起步說明](Codex/README.md) |
+| Cursor | [Cursor 起步說明](Cursor/README.md) |
 
 ## 進階資料（需要時再看）
 
@@ -81,7 +82,7 @@ Antigravity Runtime Context 行為目前只有官方文件描述，尚未在本�
 
 ### 安裝與升級
 
-根目錄提供三個平台的安裝與升級入口。這些指令會從公開來源下載當前分支的安裝程式；它們不是無風險的一鍵操作。請先閱讀對應平台說明與確認提示，再決定是否執行。
+根目錄提供四個平台的安裝與升級入口。這些指令會從公開來源下載當前分支的安裝程式；它們不是無風險的一鍵操作。請先閱讀對應平台說明與確認提示，再決定是否執行。
 
 #### Antigravity / Gemini
 
@@ -129,7 +130,23 @@ $text = [Text.Encoding]::UTF8.GetString($bytes).TrimStart([char]0xFEFF)
 Remove-Item $f
 ```
 
-將最後一行改為 `& $f -Mode Upgrade` 可進行升級。三個平台都可加上 `-Target "D:\path\to\project"` 指定其他專案目錄。PowerShell 5.1+ 與 PowerShell 7 均受支援。
+將最後一行改為 `& $f -Mode Upgrade` 可進行升級。
+
+#### Cursor
+
+```powershell
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$u = 'https://raw.githubusercontent.com/Kunshao1117/AI_Rules/main/Cursor/install.ps1'
+$f = Join-Path $env:TEMP 'ag_cursor_install.ps1'
+$wc = New-Object Net.WebClient
+$bytes = $wc.DownloadData($u)
+$text = [Text.Encoding]::UTF8.GetString($bytes).TrimStart([char]0xFEFF)
+[IO.File]::WriteAllText($f, $text, (New-Object Text.UTF8Encoding $true))
+& $f
+Remove-Item $f
+```
+
+將最後一行改為 `& $f -Mode Upgrade` 可進行升級。四個平台都可加上 `-Target "D:\path\to\project"` 指定其他專案目錄。PowerShell 5.1+ 與 PowerShell 7 均受支援。
 
 ### 受控確認提示
 
@@ -142,6 +159,7 @@ Remove-Item $f
 | Antigravity / Gemini | `Antigravity/README.md` | `.agents/` | v8.0.3 |
 | Claude Code | `Claude/README.md` | `.claude/` 與共用 `.agents/` | v1.2.3 |
 | OpenAI Codex | `Codex/README.md` | `.codex/` 與共用 `.agents/` | v0.1.3 |
+| Cursor | `Cursor/README.md` | `.cursor/` 與共用 `.agents/` | v0.1.0 |
 
 ### 架構與開發者文件
 
@@ -154,4 +172,4 @@ Remove-Item $f
 | 來源與部署副本的對照 | `Shared/policies/references/source-runtime-surface-map.md` |
 | 專案目錄與腳本 | `Shared/`、`Scripts/`、`Extensions/vscode-ai-rules-manager/` |
 
-部署副本位於 `.agents/`、`.claude/` 與 `.codex/`。它們由來源模板與共用政策同步產生；修正框架時應先改來源，再用既有部署流程更新副本。
+部署副本位於 `.agents/`、`.claude/`、`.codex/` 與 `.cursor/`。它們由來源模板與共用政策同步產生；修正框架時應先改來源，再用既有部署流程更新副本。

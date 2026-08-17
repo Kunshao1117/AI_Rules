@@ -4,21 +4,21 @@ scopePath: .agents/memory/
 description: >-
   專案記憶：記憶拓樸索引與卡片導覽。Use when: task touches this card tracked files or governed
   scope.
-last_updated: '2026-07-24T13:52:24+08:00'
+last_updated: '2026-08-17T21:13:41+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-24T13:52:09+08:00'
+last_verified: '2026-08-17T20:50:00+08:00'
 verified_as_of: '2026-07-03T22:54:27+08:00'
 current_validity: owner_pointer_only
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-06-15-001
-cycle_event_count: 3
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -48,7 +48,11 @@ metadata:
 - Keep this card under 8 KB.
 - Do not add detailed history here.
 - Update Relations when Layer 1 memory cards are added, deprecated, or renamed.
+- Repo-root `logs/` is generated evidence, gitignored, and must not be attributed as source memory.
 ## Cycle Events
+- 06: Deleted repo-root `logs/` and recorded remaining granularity splits.
+- 05: Completed Layer 1 navigation, excluded `logs/**`, and recorded the scripts/tests/execution splits.
+- 04: Added `_cursor_core` as the Cursor Edition Layer 1 navigation card.
 - 03: Verified navigation quality after B-batch review; current tool and path evidence show healthy root-index state.
 - 02: Aligned navigation wording with Relations-based card discovery.
 - 01: Migrated active main file to MEMORY.md and added content-quality metadata.
@@ -78,7 +82,10 @@ metadata:
 - _codex_core (Codex platform memory)
 - _claude_core (Claude platform memory)
 - _ag_core (Antigravity platform memory)
+- _cursor_core (Cursor platform memory)
+- _vscode_extension (VS Code manager memory)
 - team-native-tests (root Team-Native contract test memory)
+- claude-edition-rules (deprecated Claude archive index)
 ## Applicable Skills
 - memory-ops — Use when updating this card.
 - memory-arch — Use when changing memory topology.

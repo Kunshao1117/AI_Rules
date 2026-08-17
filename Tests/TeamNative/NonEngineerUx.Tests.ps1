@@ -162,7 +162,8 @@ Describe 'Non-engineer UX contract' {
         $platformCores = @(
             'Antigravity\.agents\rules\00_core_identity.md',
             'Claude\.claude\rules\core-identity.md',
-            'Codex\.codex\AGENTS.md'
+            'Codex\.codex\AGENTS.md',
+            'Cursor\.cursor\rules\00-core.mdc'
         )
 
         foreach ($relativePath in $platformCores) {
@@ -178,7 +179,8 @@ Describe 'Non-engineer UX contract' {
         $platformCores = @(
             'Antigravity\\.agents\\rules\\00_core_identity.md',
             'Claude\\.claude\\rules\\core-identity.md',
-            'Codex\\.codex\\AGENTS.md'
+            'Codex\\.codex\\AGENTS.md',
+            'Cursor\\.cursor\\rules\\00-core.mdc'
         )
 
         foreach ($relativePath in $platformCores) {
@@ -268,7 +270,8 @@ Describe 'Non-engineer UX contract' {
         foreach ($pair in @(
                 @{ Source = 'Antigravity\.agents\rules\00_core_identity.md'; Runtime = '.agents\rules\00_core_identity.md' },
                 @{ Source = 'Claude\.claude\rules\core-identity.md'; Runtime = '.claude\rules\core-identity.md' },
-                @{ Source = 'Codex\.codex\AGENTS.md'; Runtime = '.codex\AGENTS.md' }
+                @{ Source = 'Codex\.codex\AGENTS.md'; Runtime = '.codex\AGENTS.md' },
+                @{ Source = 'Cursor\.cursor\rules\00-core.mdc'; Runtime = '.cursor\rules\00-core.mdc' }
             )) {
             $sourcePath = Join-Path $repoRoot $pair.Source
             $runtimePath = Join-Path $script:runtimeTarget $pair.Runtime

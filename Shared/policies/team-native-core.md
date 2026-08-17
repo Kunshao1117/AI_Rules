@@ -538,6 +538,9 @@ Once Team mode is active, platform capability only chooses a station channel or 
 - Antigravity / Gemini maps stations through Gemini/Antigravity adapters, browser-capable agents, CLI evidence, and plugin adapters.
 - Antigravity / Gemini also maps stations to station-owned main-worktree change delivery or text change delivery artifacts.
 - Antigravity / Gemini unavailable channels become standby, blocked, or unverified station states.
+- Cursor maps stations to Task subagents such as `explore`, `generalPurpose`, and `shell`, plus browser/terminal/MCP evidence and station-owned change delivery.
+- Cursor also maps stations to isolated workspaces or text change delivery artifacts.
+- Cursor unavailable channels become standby, blocked, or unverified station states.
 
 Missing platform capability in active Team mode is not normal direct work.
 It is blocked, unverified, or closed-with-director-risk with evidence.

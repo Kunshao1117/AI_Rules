@@ -1,4 +1,4 @@
-# 三平台工作流能力與證據矩陣（Three-Platform Workflow Capability And Evidence Matrix）
+# 工作流能力與證據矩陣（Workflow Capability And Evidence Matrix）
 
 本文件是 00-12 工作流共用的外部接地與證據期待矩陣，不取代各工作流本體。
 各工作流引用本矩陣後，仍需套用自身的 task boundary、platform capability 與 evidence state。

@@ -4,14 +4,14 @@ scopePath: Shared/policies/adapters/
 description: >-
   專案記憶：跨平台 adapter 與 workflow 轉譯。Use when: task touches this split memory scope
   or its tracked files.
-last_updated: '2026-07-27T03:08:39+08:00'
+last_updated: '2026-08-17T18:57:09+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T03:07:18+08:00'
+last_verified: '2026-08-17T18:55:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -31,14 +31,15 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _shared.adapters-workflow — Module Memory
 
 ## Current Truth
 
 - Owns the listed platform subagent invocation and thread-handoff adapters.
 - Adapters translate syntax, paths, invocation surfaces, runtime locations, and observable platform capability only; they do not redefine core governance.
-- Direct execution never activates Team subagents by itself. Delegated behavior begins only after the canonical routing condition resolves delegated topology.
-- Requested, accepted, and applied execution states remain distinct; an absent platform receipt is unknown, not proof of application.
+- The Cursor adapter is thin and Claude-like: Cursor Task types (`explore`, `generalPurpose`, `shell`, `bugbot`, `security-review`) are transport only.
+- Direct execution never activates Team subagents by itself.
 
 ## Active Constraints
 
@@ -48,6 +49,7 @@ metadata:
 ## Cycle Events
 
 - 02: Reconciled all platform invocation adapters with Direct-first routing, delegated-only subagent activation, and receipt honesty.
+- 03: Attributed the Cursor subagent-invocation adapter after Cursor Edition v0.1.0.
 
 ## Archive Index
 
@@ -55,15 +57,13 @@ metadata:
 
 ## Evidence Base
 
-- source:Shared/policies/adapters/antigravity-subagent-invocation.md
-- source:Shared/policies/adapters/claude-subagent-invocation.md
+- source:Shared/policies/adapters/cursor-subagent-invocation.md
 - source:Shared/policies/adapters/codex-subagent-invocation.md
-- source:Shared/policies/execution-routing.md and Shared/policies/task-capability-assessment.md
+- source:Shared/policies/execution-routing.md
 
 ## Read Contract
 
 - Read when working on the owned platform adapter sources.
-- Do not use for platform capability claims not supported by an observable receipt.
 
 ## Conflicts and Supersession
 
@@ -72,20 +72,21 @@ metadata:
 ## 中文摘要
 
 - Adapter 只轉譯平台表面，不重新定義治理。
-- Direct 不會自行啟動 subagent；只有 delegated topology 才會。
-- requested、accepted、applied receipt 必須分開；缺 receipt 即為 unknown。
+- Cursor Task 類型只是運輸通道，不會自己啟動 Team。
 
 ## Tracked Files
 
 - Shared/policies/adapters/antigravity-subagent-invocation.md
 - Shared/policies/adapters/claude-subagent-invocation.md
 - Shared/policies/adapters/codex-subagent-invocation.md
+- Shared/policies/adapters/cursor-subagent-invocation.md
 - Shared/policies/adapters/codex-thread-handoff.md
 
 ## Relations
 
 - _shared (parent card: navigation only)
 - _codex_core.runtime (related Codex runtime memory)
+- _cursor_core.runtime (related Cursor runtime memory)
 
 ## Applicable Skills
 

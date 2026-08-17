@@ -3,7 +3,7 @@
 This policy is the shared workflow orchestration layer for AI_Rules.
 
 It defines how workflow entries start, hand off, wait, route back, and close.
-The supported platforms are Codex, Claude, and Antigravity.
+The supported platforms are Codex, Claude, Antigravity, and Cursor.
 
 It does not replace Team-Native Core, the workflow evidence matrix, platform adapters, or team task boards.
 It also does not replace specialist role skills or authorization policy.
@@ -122,7 +122,7 @@ Layer ownership, in order:
 
 ### `Shared/platform-capability-matrix.md`
 
-- Owns platform capability translation for Codex, Claude, and Antigravity.
+- Owns platform capability translation for Codex, Claude, Antigravity, and Cursor.
 
 ### `Shared/skills/team-task-board/SKILL.md`
 
@@ -286,6 +286,7 @@ Route signals include:
 - Workflow names.
 - Slash commands.
 - Codex skill triggers.
+- Cursor skill triggers.
 - Antigravity workflow buttons.
 - Claude commands.
 - Platform mode.

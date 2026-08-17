@@ -33,7 +33,7 @@ function Get-InventoryCategory {
     if ($RelativePath -match '^Shared/(policies/|.+\.md$)') {
         return 'shared-policy'
     }
-    if ($RelativePath -match '^(Antigravity/\.agents/rules/AGENTS\.md|Claude/\.claude/CLAUDE\.md|Codex/\.codex/AGENTS\.md)$') {
+    if ($RelativePath -match '^(Antigravity/\.agents/rules/AGENTS\.md|Claude/\.claude/CLAUDE\.md|Codex/\.codex/AGENTS\.md|Cursor/\.cursor/rules/00-core\.mdc)$') {
         return 'platform-core'
     }
     if ($RelativePath -match '^Scripts/modules/.+\.psm1$') {
@@ -276,6 +276,7 @@ function Get-SourceDeployedPair {
     if ($RelativePath.StartsWith('Shared/skills/', [StringComparison]::OrdinalIgnoreCase)) { $deployedPath = '.agents/skills/' + $RelativePath.Substring('Shared/skills/'.Length) }
     elseif ($RelativePath.StartsWith('Shared/', [StringComparison]::OrdinalIgnoreCase)) { $deployedPath = '.agents/shared/' + $RelativePath.Substring('Shared/'.Length) }
     elseif ($RelativePath.StartsWith('Codex/.codex/', [StringComparison]::OrdinalIgnoreCase)) { $deployedPath = '.codex/' + $RelativePath.Substring('Codex/.codex/'.Length) }
+    elseif ($RelativePath.StartsWith('Cursor/.cursor/', [StringComparison]::OrdinalIgnoreCase)) { $deployedPath = '.cursor/' + $RelativePath.Substring('Cursor/.cursor/'.Length) }
     elseif ($RelativePath.StartsWith('Claude/.claude/', [StringComparison]::OrdinalIgnoreCase)) { $deployedPath = '.claude/' + $RelativePath.Substring('Claude/.claude/'.Length) }
     elseif ($RelativePath.StartsWith('Antigravity/.agents/rules/', [StringComparison]::OrdinalIgnoreCase)) { $deployedPath = '.agents/rules/' + $RelativePath.Substring('Antigravity/.agents/rules/'.Length) }
     if (-not $deployedPath) { return [ordered]@{ sourcePath = $RelativePath; deployedPath = $null; state = 'not-applicable' } }
@@ -344,7 +345,7 @@ function Invoke-SourceSizeAudit {
     $ReadingIndexPath = [System.IO.Path]::GetFullPath($ReadingIndexPath)
     $readingIndexReference = Get-PathReference -Path $ReadingIndexPath -RootPath $resolvedRepoRoot
 
-    $canonicalRoots = @('Antigravity', 'Claude', 'Codex', 'Extensions', 'Scripts', 'Shared')
+    $canonicalRoots = @('Antigravity', 'Claude', 'Codex', 'Cursor', 'Extensions', 'Scripts', 'Shared')
     $sourceFiles = @(
         foreach ($canonicalRoot in $canonicalRoots) {
             $canonicalPath = Join-Path $resolvedRepoRoot $canonicalRoot

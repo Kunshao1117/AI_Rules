@@ -3,10 +3,10 @@
 .SYNOPSIS
     Antigravity Framework Manager — 統一部署主入口
 .DESCRIPTION
-    管理 Antigravity、Claude Edition、Codex 三個平台的部署。
+    管理 Antigravity、Claude Edition、Codex、Cursor 四個平台的部署。
     支援選單模式（無參數互動）與參數模式（自動化呼叫）兩用。
 .PARAMETER Platform
-    目標平台：Antigravity / Claude / Codex / All
+    目標平台：Antigravity / Claude / Codex / Cursor / All
 .PARAMETER Mode
     操作模式：Fresh / Upgrade / Sync
 .PARAMETER Target
@@ -27,12 +27,13 @@
     .\Deploy.ps1 -Platform Antigravity -Mode Fresh -Target "D:\MyProject"
     .\Deploy.ps1 -Platform Claude -Mode Upgrade
     .\Deploy.ps1 -Platform Codex -Mode Fresh -Target "D:\MyProject"
+    .\Deploy.ps1 -Platform Cursor -Mode Fresh -Target "D:\MyProject"
     .\Deploy.ps1 -Platform All -Mode Sync
     .\Deploy.ps1 -Action Global
     .\Deploy.ps1 -Action Global -Apply
 #>
 param(
-    [ValidateSet("Antigravity", "Claude", "Codex", "All")]
+    [ValidateSet("Antigravity", "Claude", "Codex", "Cursor", "All")]
     [string]$Platform,
 
     [ValidateSet("Fresh", "Upgrade", "Sync")]
@@ -66,10 +67,12 @@ $SharedAdapterPaths = @{
     Antigravity = Join-Path $SharedAdapterRoot "antigravity-subagent-invocation.md"
     Claude      = Join-Path $SharedAdapterRoot "claude-subagent-invocation.md"
     Codex       = Join-Path $SharedAdapterRoot "codex-subagent-invocation.md"
+    Cursor      = Join-Path $SharedAdapterRoot "cursor-subagent-invocation.md"
 }
 $AgRoot           = Join-Path $RepoRoot "Antigravity"
 $ClaudeRoot       = Join-Path $RepoRoot "Claude"
 $CodexRoot        = Join-Path $RepoRoot "Codex"
+$CursorRoot       = Join-Path $RepoRoot "Cursor"
 
 # ── 模組載入 ──────────────────────────────────────────────────────────────────
 Import-Module (Join-Path $ModulesDir "Core.psm1")            -Force
@@ -77,6 +80,7 @@ Import-Module (Join-Path $ModulesDir "Skills-Sync.psm1")     -Force
 Import-Module (Join-Path $ModulesDir "Platform-Antigravity.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Platform-Claude.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Platform-Codex.psm1")  -Force
+Import-Module (Join-Path $ModulesDir "Platform-Cursor.psm1") -Force
 
 # ══════════════════════════════════════════════════════════
 # Global 動作：安裝/更新全局觸發器
@@ -351,6 +355,21 @@ function Invoke-PlatformDeploy {
                 }
             }
         }
+        "Cursor" {
+            switch ($DeployMode) {
+                "Fresh"   { Invoke-CursorFresh   -FrameworkRoot $CursorRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot }
+                "Upgrade" { Invoke-CursorUpgrade -FrameworkRoot $CursorRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot -RemoveOrphans:$RemoveOrphans }
+                "Sync"    {
+                    Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".cursor\skills") -Mode Diff
+                    Sync-SharedGovernanceReferences -SharedRoot $SharedRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
+                    Sync-ProjectTools -ProjectToolsRoot $ProjectToolsRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
+                    Sync-SharedPolicyBlock -PolicyPath $SharedAdapterPaths.Cursor `
+                        -TargetPath (Join-Path $TargetPath ".cursor\rules\00-core.mdc") `
+                        -Platform Cursor `
+                        -InsertAfterPattern '(?m)^Cursor-specific governance:\s*$'
+                }
+            }
+        }
     }
 }
 
@@ -368,7 +387,8 @@ function Show-Menu {
     Write-Host "    [1] Antigravity (Gemini)" -ForegroundColor DarkCyan
     Write-Host "    [2] Claude Edition" -ForegroundColor DarkCyan
     Write-Host "    [3] Codex" -ForegroundColor DarkCyan
-    Write-Host "    [4] 全部平台 (All)" -ForegroundColor DarkCyan
+    Write-Host "    [4] Cursor" -ForegroundColor DarkCyan
+    Write-Host "    [5] 全部平台 (All)" -ForegroundColor DarkCyan
     Write-Host ""
     Write-Host "  操作選擇:" -ForegroundColor White
     Write-Host "    [F] Fresh   全新安裝（目標目錄由下一步指定）" -ForegroundColor Green
@@ -378,7 +398,7 @@ function Show-Menu {
     Write-Host "    [Q] 退出" -ForegroundColor DarkGray
     Write-Host ""
 
-    $platInput = Read-Host "  選擇平台 [1/2/3/4]"
+    $platInput = Read-Host "  選擇平台 [1/2/3/4/5]"
     $modeInput = Read-Host "  選擇操作 [F/U/S/G/Q]"
 
     if ($modeInput -match "^[Qq]$") { Write-Host "已退出。"; return }
@@ -388,7 +408,8 @@ function Show-Menu {
         "1" { "Antigravity" }
         "2" { "Claude" }
         "3" { "Codex" }
-        "4" { "All" }
+        "4" { "Cursor" }
+        "5" { "All" }
         default { Write-Fail "無效平台選擇"; return }
     }
 
@@ -406,7 +427,7 @@ function Show-Menu {
     }
 
     if ($selectedPlatform -eq "All") {
-        foreach ($p in @("Antigravity", "Claude", "Codex")) {
+        foreach ($p in @("Antigravity", "Claude", "Codex", "Cursor")) {
             Invoke-PlatformDeploy -PlatformName $p -DeployMode $selectedMode -TargetPath $selectedTarget
         }
     } else {
@@ -426,7 +447,7 @@ if ($Action -eq "Global") {
 if ($Platform -and $Mode) {
     # 參數模式
     if ($Platform -eq "All") {
-        foreach ($p in @("Antigravity", "Claude", "Codex")) {
+        foreach ($p in @("Antigravity", "Claude", "Codex", "Cursor")) {
             Invoke-PlatformDeploy -PlatformName $p -DeployMode $Mode -TargetPath $Target
         }
     } else {

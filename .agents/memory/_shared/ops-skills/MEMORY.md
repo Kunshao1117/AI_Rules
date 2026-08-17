@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >-
   專案記憶：跨平台共用操作型技能來源導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-24T13:52:24+08:00'
+last_updated: '2026-08-17T21:13:37+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -75,7 +75,7 @@ metadata:
 ## Relations
 - _shared (parent Shared governance memory)
 - _shared.ops-skills.code-analysis (child card: code scanning and diagnosis)
-- _shared.ops-skills.testing (child card: testing and evidence strategy)
+- _shared.ops-skills.testing (child card: testing-family navigation)
 - _shared.ops-skills.quality-ui (child card: quality, security, and UI/UX standards)
 - _shared.ops-skills.mcp-ops (child card: MCP and external service operations)
 - _shared.ops-skills.supabase-core (child card: Supabase core operations)

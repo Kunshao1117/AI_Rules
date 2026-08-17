@@ -1,22 +1,22 @@
 ---
 name: _shared.ops-skills.testing
 scopePath: Shared/skills/
-description: >-
-  專案記憶：Shared 測試、瀏覽器、效能、無障礙與回歸策略技能。Use when: task touches this split memory
-  scope or its tracked files.
-last_updated: '2026-07-27T00:02:51+08:00'
+description: >
+  專案記憶：Shared 測試技能導覽父卡。Use when: task needs navigation to this split testing
+  memory family.
+last_updated: '2026-08-17T21:13:35+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-26T16:36:58+08:00'
+last_verified: '2026-08-17T21:20:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
-cycle_id: 2026-07-24-001
-cycle_event_count: 2
+cycle_id: 2026-08-17-003
+cycle_event_count: 1
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,69 +32,52 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
-# _shared.ops-skills.testing — Testing and Evidence Memory
+# _shared.ops-skills.testing — Navigation Memory
 
 ## Current Truth
 
-- Owns Shared testing, browser evidence, accessibility, performance, Trunk, and regression strategy skills.
-- Verification begins with the lowest-cost sufficient evidence: static checks, deterministic parity, existing targeted tests, smoke or real-tool observation, then focused regression or broader suites when warranted.
-- Permanent tests require a stable observable contract, independent oracle, material recurrence risk, insufficient existing evidence, and acceptable maintenance cost.
-- Existing local non-destructive targeted tests are ordinary evidence; side-effectful, external, or unknown tests are classified before execution.
+- This parent is navigation-only. Concrete testing-skill ownership belongs to its child cards.
 
 ## Active Constraints
 
-- Classify failure as product, test/checker, environment/tool, requirement ambiguity, or intentional migration before repair.
-- Do not preserve raw test output, mock-only proof, retry masking, or one-off probes as durable memory.
+- Do not add concrete tracked files back to this parent.
 
 ## Cycle Events
 
-- 02: Reconciled testing skills with minimum-sufficient verification, independent-oracle admission, and bounded repair rules.
+- 01: Split strategy and pattern ownership into child cards.
 
 ## Archive Index
 
+- archive-002.md — Pre-split 2026-08-17 mixed testing ownership.
 - archive-001.md — Compacted pre-2026-07-24 cycle events and detailed evidence notes.
 
 ## Evidence Base
 
-- source:Shared/skills/impact-test-strategy/SKILL.md
-- source:Shared/skills/test-automation-strategy/SKILL.md
-- source:Shared/skills/test-patterns/SKILL.md
-- source:Shared/policies/verification-strategy.md
+- source:Shared/skills/impact-test-strategy/SKILL.md, Shared/skills/test-patterns/SKILL.md
 
 ## Read Contract
 
-- Read for owned testing, browser, accessibility, performance, Trunk, or regression strategy work.
-- Do not use for raw output or to claim a real integration path that has not been observed.
+- Read only to select the child card that owns the concrete testing files.
 
 ## Conflicts and Supersession
 
-- superseded: treating Verify as test creation or executing every existing test through a protected gate.
+- superseded: a single testing card owning strategy skills and unit-test templates.
 
 ## 中文摘要
 
-- 驗證由最低成本且足夠的 evidence 開始。
-- 新永久測試需要 stable contract 與 independent oracle。
-- 安全既有 targeted test 是一般 evidence；其他測試先分級。
+- 此父卡只保留測試技能導覽。
+- 策略與模板已拆到子卡。
 
 ## Tracked Files
-
-- Shared/skills/a11y-testing/SKILL.md
-- Shared/skills/browser-testing/SKILL.md
-- Shared/skills/impact-test-strategy/references/regression-test-examples.md
-- Shared/skills/impact-test-strategy/SKILL.md
-- Shared/skills/performance-audit/SKILL.md
-- Shared/skills/test-automation-strategy/SKILL.md
-- Shared/skills/test-patterns/references/api-route-test-template.md
-- Shared/skills/test-patterns/references/hook-test-template.md
-- Shared/skills/test-patterns/references/utility-test-template.md
-- Shared/skills/test-patterns/SKILL.md
-- Shared/skills/trunk-ops/SKILL.md
 
 ## Relations
 
 - _shared.ops-skills (parent card: operational-skill family index)
-- _shared.team-native-core.policy-evidence (related evidence matrix)
+- _shared.ops-skills.testing.strategy (child card: strategy, browser, and evidence skills)
+- _shared.ops-skills.testing.patterns (child card: unit-test templates)
+- _shared.team-native-core.policy-core.verification-runtime (related verification policy)
 
 ## Applicable Skills
 
-- memory-ops — Update this card through separate protected write and commit phases.
+- memory-ops — Update and commit this navigation card.
+- memory-arch — Adjust child topology or archive volumes.

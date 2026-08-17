@@ -47,6 +47,35 @@ Describe 'Source deployment parity' {
         if ($before -cne $after) { throw 'The checked-in Codex source template is not idempotent with its generated pointer.' }
     }
 
+    It 'keeps the Cursor generated marker as a pointer while the adapter owns the full policy' {
+        $policyPath = Join-Path $repoRoot 'Shared\policies\adapters\cursor-subagent-invocation.md'
+        $targetPath = Join-Path $script:tempRoot '.cursor\rules\00-core.mdc'
+        New-Item -ItemType Directory -Force -Path (Split-Path $targetPath -Parent) | Out-Null
+        [System.IO.File]::WriteAllText($targetPath, "# Test core`r`n`r`nCursor-specific governance:`r`n", [System.Text.UTF8Encoding]::new($false))
+
+        $updated = Sync-SharedPolicyBlock -PolicyPath $policyPath -TargetPath $targetPath -Platform Cursor -InsertAfterPattern '(?m)^Cursor-specific governance:\s*$'
+        if ($updated -ne 1) { throw "Expected one generated-marker update; received $updated." }
+
+        $targetContent = Get-Content -LiteralPath $targetPath -Raw -Encoding UTF8
+        if ($targetContent -notmatch 'Shared Subagent Invocation Policy \(generated pointer\)') { throw 'Generated Cursor marker is not a pointer.' }
+        if ($targetContent -notmatch 'Shared/policies/adapters/cursor-subagent-invocation\.md') { throw 'Generated Cursor marker does not identify the canonical adapter.' }
+        if ($targetContent -match 'Current Cursor channel names include') { throw 'Generated Cursor marker copied the full adapter policy.' }
+    }
+
+    It 'keeps the checked-in Cursor source template idempotent with its generated pointer' {
+        $policyPath = Join-Path $repoRoot 'Shared\policies\adapters\cursor-subagent-invocation.md'
+        $sourceTemplatePath = Join-Path $repoRoot 'Cursor\.cursor\rules\00-core.mdc'
+        $targetPath = Join-Path $script:tempRoot '.cursor\rules\00-core.mdc'
+        New-Item -ItemType Directory -Force -Path (Split-Path $targetPath -Parent) | Out-Null
+        Copy-Item -LiteralPath $sourceTemplatePath -Destination $targetPath -Force
+        $before = Get-Content -LiteralPath $targetPath -Raw -Encoding UTF8
+
+        $updated = Sync-SharedPolicyBlock -PolicyPath $policyPath -TargetPath $targetPath -Platform Cursor -InsertAfterPattern '(?m)^Cursor-specific governance:\s*$'
+        if ($updated -ne 0) { throw "Expected the checked-in Cursor template to be unchanged; received $updated." }
+        $after = Get-Content -LiteralPath $targetPath -Raw -Encoding UTF8
+        if ($before -cne $after) { throw 'The checked-in Cursor source template is not idempotent with its generated pointer.' }
+    }
+
     It 'syncs V2 policies, references, and skills as exact SHA256 copies' {
         $sharedRoot = Join-Path $script:tempRoot 'Shared'
         $skillsRoot = Join-Path $sharedRoot 'skills'
@@ -118,7 +147,7 @@ Describe 'Source deployment parity' {
             if (-not $statusOntology.Contains($requiredLabel)) { throw "Status display label is missing: $requiredLabel" }
         }
 
-        foreach ($platformCore in @('Codex\.codex\AGENTS.md', 'Claude\.claude\rules\core-identity.md', 'Antigravity\.agents\rules\00_core_identity.md')) {
+        foreach ($platformCore in @('Codex\.codex\AGENTS.md', 'Claude\.claude\rules\core-identity.md', 'Antigravity\.agents\rules\00_core_identity.md', 'Cursor\.cursor\rules\00-core.mdc')) {
             $content = Get-Content -LiteralPath (Join-Path $repoRoot $platformCore) -Raw
             if (-not $content.Contains('Shared/policies/language-governance.md')) { throw "Platform core is missing the language-policy pointer: $platformCore" }
         }

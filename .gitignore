@@ -13,6 +13,7 @@ AI_Rules_Hooks_Slimming_Prompt_Pack
 
 # [啟用][AI Rules 框架] 由框架初始化或升級產生，可重建，不進版控
 /.codex/
+/.cursor/
 /.claude/
 /CLAUDE.md
 /antigravity_export/
@@ -33,5 +34,6 @@ AI_Rules_Hooks_Slimming_Prompt_Pack
 !/.agents/project_skills/**
 
 # [啟用][執行狀態] 代理日誌與本地索引是執行期產物，不進版控
+/logs/
 /.agents/logs/
 /.cartridge/

@@ -1,22 +1,22 @@
 ---
 name: _shared.team-native-core.station-entry
 scopePath: Shared/skills/
-description: >-
-  專案記憶：Team board、派工與 station entry。Use when: task touches this split memory
-  scope or its tracked files.
-last_updated: '2026-07-27T20:49:32+08:00'
+description: >
+  專案記憶：Team board 與派工入口導覽父卡。Use when: task needs navigation to this split
+  station-entry memory family.
+last_updated: '2026-08-17T21:13:39+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-27T20:47:17+08:00'
+last_verified: '2026-08-17T21:20:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
-cycle_id: 2026-07-24-001
-cycle_event_count: 2
+cycle_id: 2026-08-17-003
+cycle_event_count: 1
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,74 +32,51 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
-
-# _shared.team-native-core.station-entry — Module Memory
+# _shared.team-native-core.station-entry — Navigation Memory
 
 ## Current Truth
 
-- Owns programming-team governance, Team board, station handoff, and delegation entry sources.
-- Board, station, handoff, role separation, and Team delivery artifacts activate only when `execution-routing` resolves delegated topology.
-- Explicit delegation, independent parallel streams, necessary separation of duties, unresolved context after narrowing, or a formal platform/process requirement can activate delegated topology.
-- Fix, build, debug, test, source or policy edits, repository analysis, multi-file work, multi-step work, and subagent availability are non-triggers by themselves.
-- Delivery slices keep responsibility slots and evidence boundaries fixed, but activate only the stations needed by the claims being made.
+- This parent is navigation-only. Concrete station-entry ownership belongs to its child cards.
 
 ## Active Constraints
 
-- Preserve full Team role boundaries when delegated mode is active.
-- Do not turn station entry skills into a generic Direct workflow requirement.
+- Do not add concrete tracked files back to this parent.
 
 ## Cycle Events
 
-- 02: Reconciled Team station-entry skills with delegated-only activation and explicit non-trigger boundaries.
-- 03: Bound slot activation to completion claims without requiring reserved slots to create live contexts or packets.
+- 01: Split board and packet-delegation ownership into child cards.
 
 ## Archive Index
 
-- Parent archive preserves the pre-split ownership history.
+- archive-001.md — Pre-split 2026-08-17 mixed station-entry ownership.
 
 ## Evidence Base
 
-- source:Shared/skills/programming-team-governance/SKILL.md
-- source:Shared/skills/team-task-board/SKILL.md
-- source:Shared/skills/delegation-strategy/SKILL.md
-- source:Shared/policies/execution-routing.md
-- source:Shared/skills/team-task-board/references/board-field-slice-and-roles.md, Shared/skills/programming-team-governance/SKILL.md, and Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md
+- source:Shared/skills/team-task-board/SKILL.md, Shared/skills/delegation-strategy/SKILL.md
 
 ## Read Contract
 
-- Read when changing owned Team entry or delegation sources.
-- Do not use for ordinary Direct work that has not resolved delegated topology.
+- Read only to select the child card that owns the concrete station-entry files.
 
 ## Conflicts and Supersession
 
-- superseded: generic engineering activity as sufficient Team activation.
+- superseded: a single station-entry card owning board, packet, and delegation files.
 
 ## 中文摘要
 
-- Team board、station 與 handoff 僅在 delegated topology 下啟動。
-- 多檔、多步、build、debug、test 或 source edit 本身不是 Team trigger。
-- delegated 後既有的角色邊界仍完整保留。
+- 此父卡只保留站點入口導覽。
+- Board 與派工封包已拆到子卡。
 
 ## Tracked Files
-
-- Shared/skills/programming-team-governance/SKILL.md
-- Shared/skills/team-task-board/SKILL.md
-- Shared/skills/team-task-board/references/board-field-catalog.md
-- Shared/skills/team-task-board/references/board-templates-and-delivery.md
-- Shared/skills/team-station-handoff-packet/SKILL.md
-- Shared/skills/team-station-handoff-packet/references/execution-lifecycle.md
-- Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md
-- Shared/skills/delegation-strategy/SKILL.md
-- Shared/skills/delegation-strategy/references/team-dispatch-gates.md
-- .agents/skills/delegation-strategy/SKILL.md
-- Shared/skills/team-task-board/references/board-field-channel-and-receipts.md
-- Shared/skills/team-task-board/references/board-field-slice-and-roles.md
 
 ## Relations
 
 - _shared.team-native-core (parent card: navigation only)
-- _shared.team-native-core.policy-core (related routing policy memory)
+- _shared.team-native-core.station-entry.board (child card: board and programming-team)
+- _shared.team-native-core.station-entry.packet-delegation (child card: packet and dispatch)
+- _shared.team-native-core.policy-core.routing (related routing policy)
 
 ## Applicable Skills
 
-- memory-ops — Update this card through separate protected write and commit phases.
+- memory-ops — Update and commit this navigation card.
+- memory-arch — Adjust child topology or archive volumes.

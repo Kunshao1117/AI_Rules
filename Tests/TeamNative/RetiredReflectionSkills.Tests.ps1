@@ -6,6 +6,7 @@ Import-Module (Join-Path $repoRoot 'Scripts\modules\Skills-Sync.psm1') -Force
 $script:codexModule = Import-Module (Join-Path $repoRoot 'Scripts\modules\Platform-Codex.psm1') -Force -PassThru
 $script:claudeModule = Import-Module (Join-Path $repoRoot 'Scripts\modules\Platform-Claude.psm1') -Force -PassThru
 $script:antigravityModule = Import-Module (Join-Path $repoRoot 'Scripts\modules\Platform-Antigravity.psm1') -Force -PassThru
+$script:cursorModule = Import-Module (Join-Path $repoRoot 'Scripts\modules\Platform-Cursor.psm1') -Force -PassThru
 
 function Get-RetiredReflectionSkillBytes {
     param([string]$RelativePath)
@@ -86,6 +87,7 @@ function Invoke-PlatformFresh {
             'Codex' { Invoke-CodexFresh -FrameworkRoot $FrameworkRoot -Target $TargetRoot -SharedSkillsRoot $SharedSkillsRoot }
             'Claude' { Invoke-ClaudeFresh -FrameworkRoot $FrameworkRoot -Target $TargetRoot -SharedSkillsRoot $SharedSkillsRoot }
             'Antigravity' { Invoke-AgFresh -FrameworkRoot $FrameworkRoot -Target $TargetRoot -SharedSkillsRoot $SharedSkillsRoot }
+            'Cursor' { Invoke-CursorFresh -FrameworkRoot $FrameworkRoot -Target $TargetRoot -SharedSkillsRoot $SharedSkillsRoot }
         }
     } $Platform.Name $Platform.FrameworkRoot $Target (Join-Path $repoRoot 'Shared\skills')
 }
@@ -99,6 +101,7 @@ function Invoke-PlatformUpgrade {
             'Codex' { Invoke-CodexUpgrade -FrameworkRoot $FrameworkRoot -Target $TargetRoot -SharedSkillsRoot $SharedSkillsRoot }
             'Claude' { Invoke-ClaudeUpgrade -FrameworkRoot $FrameworkRoot -Target $TargetRoot -SharedSkillsRoot $SharedSkillsRoot }
             'Antigravity' { Invoke-AgUpgrade -FrameworkRoot $FrameworkRoot -Target $TargetRoot -SharedSkillsRoot $SharedSkillsRoot }
+            'Cursor' { Invoke-CursorUpgrade -FrameworkRoot $FrameworkRoot -Target $TargetRoot -SharedSkillsRoot $SharedSkillsRoot }
         }
     } $Platform.Name $Platform.FrameworkRoot $Target (Join-Path $repoRoot 'Shared\skills')
 }
@@ -110,7 +113,8 @@ Describe 'Retired Reflection Skill deployment migration' {
         $script:platforms = @(
             [PSCustomObject]@{ Name = 'Codex'; Module = $script:codexModule; FrameworkRoot = Join-Path $repoRoot 'Codex'; SkillsRelativePath = '.agents\skills' },
             [PSCustomObject]@{ Name = 'Claude'; Module = $script:claudeModule; FrameworkRoot = Join-Path $repoRoot 'Claude'; SkillsRelativePath = '.claude\skills' },
-            [PSCustomObject]@{ Name = 'Antigravity'; Module = $script:antigravityModule; FrameworkRoot = Join-Path $repoRoot 'Antigravity'; SkillsRelativePath = '.agents\skills' }
+            [PSCustomObject]@{ Name = 'Antigravity'; Module = $script:antigravityModule; FrameworkRoot = Join-Path $repoRoot 'Antigravity'; SkillsRelativePath = '.agents\skills' },
+            [PSCustomObject]@{ Name = 'Cursor'; Module = $script:cursorModule; FrameworkRoot = Join-Path $repoRoot 'Cursor'; SkillsRelativePath = '.cursor\skills' }
         )
         foreach ($platform in $script:platforms) {
             & $platform.Module {

@@ -4,19 +4,19 @@ scopePath: .
 description: >
   專案記憶：框架系統層、根文件與部署治理導覽父卡。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-27T20:49:32+08:00'
+last_updated: '2026-08-17T21:44:35+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-27T20:47:17+08:00'
+last_verified: '2026-08-17T21:20:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 1
+cycle_event_count: 6
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -32,27 +32,27 @@ metadata:
     - 'mcp:cartridge-system'
 ---
 
+
 # _system — Repository Governance Memory
 
 ## Current Truth
 
-- AI_Rules is the source repository for Antigravity, Claude Edition, and Codex Edition governance.
+- AI_Rules is the source repository for Antigravity, Claude Edition, Codex Edition, and Cursor Edition.
 - This card is a concise root source/status pointer; current source files and Shared policies remain runtime authority.
-- Root release documentation records AI Rules Manager v0.2.2, including its beginner-facing Traditional Chinese interface and opt-in technical details.
-- Root PowerShell source ownership belongs to _system.scripts.
-- The root README now leads with a plain zh-TW explanation for non-engineers, clear safety boundaries, a five-minute start path, and a separate technical-information layer.
+- Root README and CHANGELOG record Cursor Edition v0.1.0. Root `.gitignore` ignores repo-root `/.cursor/` runtime and `/logs/` generated evidence; it does not ignore `Cursor/.cursor/` source.
+- Root PowerShell source ownership belongs to `_system.scripts`.
 
 ## Active Constraints
 
 - Source memory and project context are separate stores.
 - Root governance, Git, releases, installs, deployments, and external changes need their respective scoped authority.
-- Keep script detail in _system.scripts and history in archive volumes.
 
 ## Cycle Events
 
-- 01: Compacted root governance history after re-verifying the current release baseline and root ownership boundary.
-- 02: Reconciled the root release baseline with AI Rules Manager v0.2.2 after its main-branch commit; detailed extension ownership remains in the child cards.
 - 03: Verified the non-engineer README and user-visible status boundary without claiming model-wide compliance.
+- 04: Recorded Cursor Edition as the fourth peer platform in root docs and gitignore.
+- 05: Ignored repo-root `/logs/` after deleting generated credential-boundary evidence.
+- 06: Recorded Cursor Edition v0.1.0 changelog with 13 workflow entries and memory-card split notes.
 
 ## Archive Index
 
@@ -63,16 +63,12 @@ metadata:
 
 ## Evidence Base
 
-- source:README.md
-- source:CHANGELOG.md
-- source:.gitignore
-- source:LICENSE
-- source:README.md, CHANGELOG.md, and Tests/TeamNative/NonEngineerUx.Tests.ps1
+- source:README.md, CHANGELOG.md, .gitignore
 
 ## Read Contract
 
 - Read for repository-level ownership, release baseline, and memory/context boundaries.
-- Read _system.scripts before changing root PowerShell scripts.
+- Read `_system.scripts` before changing root PowerShell scripts.
 
 ## Conflicts and Supersession
 
@@ -81,9 +77,8 @@ metadata:
 ## 中文摘要
 
 - 此卡只保留根層治理與版本基線，不是 runtime 規則來源。
-- AI Rules Manager 的根層發布基線為 v0.2.2；插件細節由 _vscode_extension 子卡維護。
-- 三平台核心與 Shared 政策以現行來源為準。
-- 根 PowerShell 由 _system.scripts 專責。
+- 現有四個對等平台：Antigravity、Claude、Codex、Cursor。
+- 根 PowerShell 由 `_system.scripts` 專責。
 
 ## Tracked Files
 
@@ -99,7 +94,8 @@ metadata:
 - _codex_core (Codex platform source)
 - _claude_core (Claude platform source)
 - _ag_core (Antigravity platform source)
-- _system.scripts (child card: root PowerShell scripts)
+- _cursor_core (Cursor platform source)
+- _system.scripts (child card: root PowerShell script navigation)
 
 ## Applicable Skills
 

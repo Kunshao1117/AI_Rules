@@ -1,4 +1,4 @@
-# Three-Platform Capability Matrix
+# Four-Platform Capability Matrix
 
 This file is the AI_Rules baseline for translating platform capabilities into governed routes.
 Those routes are used by framework docs, workflow metadata, auditors, MCP profiles, and platform agents.
@@ -181,11 +181,22 @@ is owned by `Shared/policies/references/credential-boundary-contract.md` and
 - Evidence state: `external-research-artifact`.
 - Evidence note: citation refresh is required before treating this row as grounded.
 
+### Cursor Edition
+
+- Rule sources: `.cursor/rules/*.mdc`, project skills, Task subagents, optional hooks.
+- Known load / precedence: `alwaysApply` rules load every session; other rules use `globs` or description.
+- Known load / precedence: project skills live in `.cursor/skills/`.
+- Known load / precedence: explicit injection precedence beyond those surfaces is `unverified`.
+- Hard enforcement source: Cursor permission prompts, sandbox/approval, and hooks when configured.
+- Hard enforcement boundary: document context alone is not hard enforcement.
+- Evidence state: `unverified`.
+- Evidence note: local matrix uses Cursor built-in skill docs; official citation refresh is required before treating this row as grounded.
+
 Large-file burden evidence is platform-specific and citation-dependent.
-Treat Claude, Antigravity, and Codex burden statements as `requires citation refresh`.
+Treat Claude, Antigravity, Codex, and Cursor burden statements as `requires citation refresh`.
 Only a current external-research artifact can ground those statements.
 Direct adherence loss from large governance files remains `unverified`.
-Do not generalize one platform's burden model across all three platforms.
+Do not generalize one platform's burden model across all supported platforms.
 
 ## Platform Matrix
 
@@ -194,48 +205,56 @@ Do not generalize one platform's burden model across all three platforms.
 - Antigravity / Gemini: `adapter`; `Shared/skills/` -> `.agents/skills/`.
 - Claude Edition: `adapter`; `Shared/skills/` -> `.claude/skills/`.
 - Codex Edition: `native`; scans `.agents/skills/**/SKILL.md`.
+- Cursor Edition: `adapter`; `Shared/skills/` -> `.cursor/skills/`.
 
 ### Workflow Entry
 
 - Antigravity / Gemini: `native`; `.agents/workflows/*.md`, route only.
 - Claude Edition: `native`; `.claude/commands/*/SKILL.md`, route only.
 - Codex Edition: `adapter`; workflow skills merge into `.agents/skills/`, route only.
+- Cursor Edition: `adapter`; workflow skills merge into `.cursor/skills/`, route only.
 
 ### Instruction Load
 
 - Antigravity / Gemini: `native`; `.agents/rules/AGENTS.md` and IDE injection.
 - Claude Edition: `native`; `.claude/CLAUDE.md` and `@import`.
 - Codex Edition: `native`; `.codex/AGENTS.md` plus config fallback.
+- Cursor Edition: `native`; `.cursor/rules/*.mdc`.
 
 ### MCP Resources / Prompts
 
 - Antigravity / Gemini: `adapter`; Multi-MCP Gateway discovery.
 - Claude Edition: `native` + Gateway constraints.
 - Codex Edition: `native`; Codex MCP config and approval model.
+- Cursor Edition: `native`; Cursor MCP config when present; otherwise `unverified`.
 
 ### MCP Transports
 
 - Antigravity / Gemini: `adapter`; Gateway wraps downstream transports.
 - Claude Edition: `native`; MCP profile supports transports.
 - Codex Edition: `native`; governed MCP server profiles.
+- Cursor Edition: `native`; governed MCP server profiles when configured.
 
 ### Operator Path Evidence
 
 - Antigravity / Gemini: `adapter`; IDE, browser-capable agent, Gemini CLI, Gateway, and logs.
 - Claude Edition: `native` + `adapter`; shell, hooks, browser, MCP, and plugin host.
 - Codex Edition: `native` + `adapter`; terminal, browser, MCP, plugin host, and preview/deploy tools.
+- Cursor Edition: `native` + `adapter`; terminal, browser, MCP, and Cursor application-control tools.
 
 ### Captain-Led Governance
 
 - Antigravity / Gemini: `adapter` + `conditional`; board-first through IDE/workflow adapters.
 - Claude Edition: `native` + `adapter` + `conditional`; board-first through commands, subagents, and hooks.
 - Codex Edition: `native` + `adapter` + `conditional`; board-first through skills, subagents, terminal, browser, and MCP.
+- Cursor Edition: `native` + `adapter` + `conditional`; board-first through skills, Task subagents, terminal, browser, and MCP.
 
 ### Subagents / Channels
 
 - Antigravity / Gemini: `adapter` + `conditional`; Gemini or Antigravity adapters after board creation.
 - Claude Edition: `native` + `conditional`; built-in, custom, or plugin subagents after board creation.
 - Codex Edition: `native` + `conditional`; Codex native or project agents after board creation.
+- Cursor Edition: `native` + `conditional`; Task types such as `explore`, `generalPurpose`, and `shell` after board creation.
 
 ### Cross-Thread Handoff Transport
 
@@ -247,7 +266,7 @@ Do not generalize one platform's burden model across all three platforms.
 - Codex transport metadata and successful invocation do not prove semantic
   target confirmation or transfer authorization.
 - This Codex row does not define thread-tool schemas or capability claims for
-  Claude or Antigravity / Gemini.
+  Claude, Antigravity / Gemini, or Cursor.
 
 ### Automation-Safe Workflow
 
@@ -255,12 +274,16 @@ Do not generalize one platform's burden model across all three platforms.
 - Claude Edition: `adapter`; metadata and slash-command gate.
 - Codex Edition: `native`; automations are read-only routes.
 - Codex Edition: writes require scoped authorization resolution.
+- Cursor Edition: `adapter`; metadata and skill-route gate.
+- Cursor Edition: writes require scoped authorization resolution.
 
 ### Permission Model
 
 - Antigravity / Gemini: `adapter`; Role Lock Gate, intent signal, `[SUDO]` record.
 - Claude Edition: `native` + `adapter`; permission prompts plus framework gates.
 - Codex Edition: `native` + `adapter`; approval/sandbox prompts plus framework gates.
+- Cursor Edition: `native` + `adapter`; permission prompts plus framework gates.
+- Cursor Edition: hooks exist as a platform capability but AI_Rules installs no Team-routing hooks by default.
 
 ### Plan / Progress Surface
 
@@ -268,12 +291,15 @@ Do not generalize one platform's burden model across all three platforms.
 - Claude Edition: `native` + `adapter`; plan mode or checklist is route/progress display only.
 - Codex Edition: `native` + `adapter`; `update_plan` is a visual mirror only.
 - Codex Edition: `update_plan` is not authorization, delivery, or completion evidence.
+- Cursor Edition: `native` + `adapter`; plan/todo surfaces are route/progress display only.
+- Cursor Edition: plan UI is not authorization, delivery, or completion evidence.
 
 ### Memory System
 
 - Antigravity / Gemini: `adapter`; shared `.agents/memory/` semantics.
 - Claude Edition: `adapter`; shared `.agents/memory/` semantics.
 - Codex Edition: `adapter`; shared `.agents/memory/` semantics.
+- Cursor Edition: `adapter`; shared `.agents/memory/` semantics.
 
 Memory semantics do not fork by platform.
 This matrix only names the shared memory route.

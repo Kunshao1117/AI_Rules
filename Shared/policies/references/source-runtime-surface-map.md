@@ -34,6 +34,8 @@ customization as competing authorities.
 | `Claude/.claude/CLAUDE.md` | `canonical-source` | Claude Code platform core source for the repo runtime pair. Sync to `.claude/CLAUDE.md` unless a scoped task records documented local customization. |
 | `Antigravity/**` | `canonical-source` | Antigravity and Gemini platform source templates, workflow entries, or adapter materials. Runtime `.agents/**` copies must be synced from source. |
 | `Antigravity/.agents/rules/AGENTS.md` | `canonical-source` | Antigravity/Gemini rule sentinel source for the repo runtime pair. Sync to `.agents/rules/AGENTS.md` when semantic parity is expected. |
+| `Cursor/**` | `canonical-source` | Cursor platform source templates and bootstrap materials. `Cursor/.cursor/**` is the source side for deployed `.cursor/**` copies. |
+| `Cursor/.cursor/rules/**` | `canonical-source` | Cursor always-on and lazy-load rule templates. Runtime `.cursor/rules/**` copies must be synced from here. |
 | `Scripts/**` | `canonical-source` | Executable automation source. Scripts may encode checks and transforms, but the governance manual stays in `Shared/policies/**`, `Shared/skills/**`, or references. |
 | `hooks/**` | `canonical-source` or `generated` by hook type | Repo-managed hook source must cite the platform capability boundary. The current Codex source ships no default hook artifacts; any later deterministic hook remains non-authoritative policy transport. |
 | `.agents/shared/**` | `managed-runtime` | Deployed shared policies, references, matrices, and platform maps for the current agent runtime. Sync from `Shared/**`; do not fix as final source. |
@@ -45,6 +47,9 @@ customization as competing authorities.
 | `.agents/logs/**` | `generated` | Task evidence, traces, and runtime logs. Logs can support an audit but are not durable governance or source memory by themselves. |
 | `.claude/**` | `managed-runtime` | Deployed Claude command and skill runtime copies. Sync from `Claude/**` and shared source; do not make canonical policy edits here. |
 | `.claude/CLAUDE.md` | `managed-runtime` | Repo runtime Claude Code core paired with `Claude/.claude/CLAUDE.md`. Preserve as a local overlay only when a scoped task documents local-only behavior. |
+| `.cursor/**` | `managed-runtime` | Deployed Cursor rules and skills. Sync from `Cursor/**` and shared source; do not make canonical policy edits here. |
+| `.cursor/rules/00-core.mdc` | `managed-runtime` | Cursor always-on core paired with `Cursor/.cursor/rules/00-core.mdc`. Preserve as a local overlay only when a scoped task documents local-only behavior. |
+| `.cursor/rules/02-platform-identity.mdc` | `managed-runtime` | Cursor mixed-repo session identity paired with `Cursor/.cursor/rules/02-platform-identity.mdc`. Other platform cores remain source templates; do not treat them as this session's bootstrap. |
 | `.codex/AGENTS.md` and runtime version markers | `managed-runtime` | Instruction bodies and version markers are managed runtime only when their source-to-runtime scope is explicitly confirmed. |
 | Legacy `.codex/hooks.json` and `.codex/hooks/**` | `managed-runtime` or `local-or-protected` | AI_Rules safely retires only the exact hash-owned legacy Team hook set. Modified, user, global, plugin, or otherwise unowned hooks remain outside repository cleanup scope. |
 | `.codex/config.toml` and registered instruction blocks | `local-or-protected` | Configuration is a key-level overlay and registered blocks remain local; do not overwrite operator-tuned values or infer managed scope from them. |

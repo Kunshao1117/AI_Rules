@@ -58,6 +58,15 @@ $platforms = @(
         FrameworkRoot = Join-Path $repoRoot 'Codex'
         PolicyRelativePath = 'policies\adapters\codex-subagent-invocation.md'
         PolicyTargetRelativePath = '.codex\AGENTS.md'
+    },
+    [PSCustomObject]@{
+        Platform = 'Cursor'
+        ModuleName = (Import-Module (Join-Path $repoRoot 'Scripts\modules\Platform-Cursor.psm1') -Force -PassThru).Name
+        FreshCommand = 'Invoke-CursorFresh'
+        UpgradeCommand = 'Invoke-CursorUpgrade'
+        FrameworkRoot = Join-Path $repoRoot 'Cursor'
+        PolicyRelativePath = 'policies\adapters\cursor-subagent-invocation.md'
+        PolicyTargetRelativePath = '.cursor\rules\00-core.mdc'
     }
 )
 

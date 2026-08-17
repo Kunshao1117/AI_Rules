@@ -5,6 +5,25 @@
 > 語彙說明：本文件保留歷史版本語境；舊條目中的 patch、packet、補丁、封包、隊長代工與 accepted-risk 不得解讀為現行正向規範。
 > 現行正向規範只使用交付件、任務軌跡帳本、逐波派工、隊長接收站點交付與彙整狀態、授權後變更由變更站或明確授權 gate 套用，以及缺交付件即阻塞、未驗證或總監風險關閉但非完整。
 
+## [2026-08-17] Cursor Edition v0.1.0
+
+### feat
+- **新增 Cursor Edition** — 下游專案可部署 `.cursor/rules`、`.cursor/skills`（共用技能與 13 個工作流入口）以及共用 `.agents/shared` / `.agents/memory`。
+- **部署入口** — `Scripts/Deploy.ps1 -Platform Cursor` 支援 Fresh、Upgrade、Sync；遠端啟動器為 `Cursor/install.ps1`。
+- **子代理接法** — 新增 `Shared/policies/adapters/cursor-subagent-invocation.md`；常駐規則只保留短指標。
+
+### test
+- **Cursor Fresh／Upgrade** — 新增 `Tests/TeamNative/PlatformCursorFreshUpgrade.Tests.ps1`，並延伸既有對等、預檢、UX 與退休技能測試。
+- **憑證邊界契約** — 新增 `Tests/TeamNative/CredentialBoundary.Tests.ps1`，覆蓋代理秘密處理與產品自主管理憑證的分類測試。
+
+### chore
+- **來源記憶卡拆分** — 將檔案偏多的平台、政策、測試與技能記憶卡拆成導覽父卡與聚焦子卡。
+- **忽略產出目錄** — 根 `.gitignore` 忽略下游 runtime `/.cursor/` 與根目錄 `/logs/` 產出；不忽略 `Cursor/.cursor/` 來源。
+
+### notes
+- 本版不安裝全域 Cursor bootstrapper、VS Code 管理器同步或團隊路由 hooks。
+- 母機混倉身份：新增 `Cursor/.cursor/rules/02-platform-identity.mdc`。Cursor 工作階段以 Cursor Edition 為準，另外三平台檔案視為來源模板。Cursor 仍可能注入那些檔案；本規則要求模型不要服從其啟動器。
+
 ## [2026-07-27] Team-Native 第一階段遷移 checkpoint
 
 ### checkpoint

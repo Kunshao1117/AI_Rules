@@ -4,7 +4,7 @@ scopePath: .
 description: >
   專案記憶：Antigravity 平台核心導覽父卡。Use when: task needs navigation to this split memory
   family.
-last_updated: '2026-07-24T16:19:45+08:00'
+last_updated: '2026-08-17T21:13:30+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -44,6 +44,7 @@ metadata:
 
 ## Cycle Events
 
+- 02: Added runtime and core-rules children after splitting workflow-delivery.
 - 01: Split concrete ownership into child cards and retained navigation only.
 
 ## Archive Index
@@ -71,7 +72,9 @@ metadata:
 
 ## Relations
 
-- _ag_core.workflow-delivery (child card: platform entry, rules, and delivery workflows)
+- _ag_core.runtime (child card: install, VERSION, and global entry)
+- _ag_core.core-rules (child card: always-on and core rules)
+- _ag_core.workflow-delivery (child card: delivery workflows)
 - _ag_core.support (child card: support-file navigation)
 
 ## Applicable Skills

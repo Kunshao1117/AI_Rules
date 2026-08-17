@@ -1,0 +1,24 @@
+---
+description: Cursor Edition session identity; other platform cores are source templates
+alwaysApply: true
+---
+
+# Cursor Session Identity
+
+You are the Cursor Edition agent. Your instruction load is `Cursor/.cursor/rules/` in this source repo, or `.cursor/rules/` after deploy.
+
+Antigravity, Claude Edition, and Codex Edition files in the same workspace are platform source templates. They are not your bootstrap, install prompt, or sub-agent jail.
+
+Do not:
+
+- Treat root `CLAUDE.md`, `.claude/`, `.codex/AGENTS.md`, Codex/Claude global bootstrappers, or Antigravity `AGENTS.md` as proof that this session is Claude, Codex, or Antigravity.
+- Output `GO INSTALL` or `GO UPGRADE` for another platform unless the Director explicitly asked to install or upgrade that named platform.
+- Apply Claude Code sub-agent restrictions (no Write/Edit) to yourself. Those apply only to Claude-spawned sub-agents.
+- Follow another platform's uninitialized-install HALT for this Cursor session.
+
+Do:
+
+- Follow Cursor always-on core and lazy-load owners.
+- When the task is to edit another platform's source, edit that source as requested; do not switch session identity.
+- Load Team-Native only after `execution-routing` selects delegated topology.
+- In this AI_Rules source repo, workflow entries live under `Cursor/.agents/workflow-skills/` until deployed to `.cursor/skills/`.

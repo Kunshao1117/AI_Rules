@@ -4,7 +4,7 @@ scopePath: Shared/skills/
 description: >
   專案記憶：Shared 技能治理導覽父卡。Use when: task needs navigation to this split memory
   family.
-last_updated: '2026-07-24T16:19:46+08:00'
+last_updated: '2026-08-17T21:13:35+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -44,6 +44,7 @@ metadata:
 
 ## Cycle Events
 
+- 02: Added delivery-runtime sibling after splitting deployed artifact copies.
 - 01: Split concrete ownership into child cards and retained navigation only.
 
 ## Archive Index
@@ -72,7 +73,8 @@ metadata:
 ## Relations
 
 - _shared.ops-skills.skill-governance.registry-sync (child card: skill registry source/deployed pair)
-- _shared.ops-skills.skill-governance.delivery-artifacts (child card: team delivery artifacts and role boundaries)
+- _shared.ops-skills.skill-governance.delivery-artifacts (child card: canonical team delivery artifacts)
+- _shared.ops-skills.skill-governance.delivery-runtime (child card: deployed delivery-artifact copies)
 - _shared.ops-skills.skill-governance.delegation-cli (child card: delegation CLI references)
 - _shared.ops-skills.skill-governance.skill-factory (child card: skill generation templates and deployed skill)
 

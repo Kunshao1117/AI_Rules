@@ -4,7 +4,7 @@ scopePath: Shared/
 description: >
   專案記憶：Team-Native 治理與站點交付導覽父卡。Use when: task needs navigation to the split
   Team-Native memory family.
-last_updated: '2026-07-24T16:19:47+08:00'
+last_updated: '2026-08-17T21:13:40+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
@@ -16,7 +16,7 @@ valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -44,6 +44,7 @@ metadata:
 
 ## Cycle Events
 
+- 02: Split policy-core and station-entry into focused grandchildren.
 - 01: Split Team-Native contracts into focused child cards and retained navigation only.
 
 ## Archive Index
@@ -71,10 +72,10 @@ metadata:
 
 ## Relations
 
-- _shared.team-native-core.policy-core (child card: core policies and adapter entry)
+- _shared.team-native-core.policy-core (child card: core-policy navigation)
 - _shared.team-native-core.policy-execution (child card: execution, phase, and status references)
 - _shared.team-native-core.policy-evidence (child card: capability and workflow evidence matrices)
-- _shared.team-native-core.station-entry (child card: board, packet, and dispatch entry)
+- _shared.team-native-core.station-entry (child card: station-entry navigation)
 - _shared.team-native-core.delivery-closeout (child card: completion evidence and closeout)
 - _shared.team-native-core.specialists-analysis (child card: analysis specialist contracts)
 - _shared.team-native-core.specialists-delivery (child card: delivery specialist contracts)

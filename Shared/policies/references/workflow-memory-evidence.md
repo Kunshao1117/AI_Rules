@@ -247,6 +247,7 @@ It must not interrupt non-commit implementation, validation, review, routine, or
 
 - Entry locations:
   - Codex: `.agents/skills/03-build-建構/SKILL.md`
+  - Cursor: `.cursor/skills/03-build-建構/SKILL.md`
   - Claude: `.claude/commands/03_build(建構)/SKILL.md`
   - Antigravity: `.agents/workflows/03_build(建構計畫).md`
 - Minimum MCP memory evidence:
@@ -266,6 +267,7 @@ It must not interrupt non-commit implementation, validation, review, routine, or
 
 - Entry locations:
   - Codex: `.agents/skills/04-fix-修復/SKILL.md`
+  - Cursor: `.cursor/skills/04-fix-修復/SKILL.md`
   - Claude: `.claude/commands/04_fix(修復)/SKILL.md`
   - Antigravity: `.agents/workflows/04-1_fix_plan(修復計畫).md`
 - Minimum MCP memory evidence:
@@ -279,6 +281,7 @@ It must not interrupt non-commit implementation, validation, review, routine, or
 
 - Entry locations:
   - Codex: `.agents/skills/05-condense-濃縮/SKILL.md`
+  - Cursor: `.cursor/skills/05-condense-濃縮/SKILL.md`
   - Claude: `.claude/commands/05_condense（濃縮）/SKILL.md`
   - Antigravity: `.agents/workflows/05_condense(濃縮).md`
 - Minimum MCP memory evidence:
@@ -293,6 +296,7 @@ It must not interrupt non-commit implementation, validation, review, routine, or
 
 - Entry locations:
   - Codex: `.agents/skills/09-commit-紀錄總結/SKILL.md`
+  - Cursor: `.cursor/skills/09-commit-紀錄總結/SKILL.md`
   - Claude: `.claude/commands/09_commit(紀錄)/SKILL.md`
   - Antigravity: `.agents/workflows/09-1_commit_scan(紀錄掃描).md`
 - Minimum MCP memory evidence:
@@ -306,6 +310,7 @@ It must not interrupt non-commit implementation, validation, review, routine, or
 
 - Entry locations:
   - Codex: `.agents/skills/10-routine-巡檢/SKILL.md`
+  - Cursor: `.cursor/skills/10-routine-巡檢/SKILL.md`
   - Claude: `.claude/commands/10_routine(巡檢)/SKILL.md`
   - Antigravity: `.agents/workflows/10_routine(巡檢).md`
 - Memory boundary: This Git-only route does not inspect memory, context, MCP, or sync-integrity content.
@@ -315,6 +320,7 @@ It must not interrupt non-commit implementation, validation, review, routine, or
 
 - Entry locations:
   - Codex: `.agents/skills/11-handoff-交接/SKILL.md`
+  - Cursor: `.cursor/skills/11-handoff-交接/SKILL.md`
   - Claude: `.claude/commands/11_handoff(交接)/SKILL.md`
   - Antigravity: `.agents/workflows/11_handoff(交接).md`
 - Minimum MCP memory evidence:
@@ -328,6 +334,7 @@ It must not interrupt non-commit implementation, validation, review, routine, or
 
 - Entry locations:
   - Codex: `.agents/skills/12-skill-forge-技能鍛造/SKILL.md`
+  - Cursor: `.cursor/skills/12-skill-forge-技能鍛造/SKILL.md`
   - Claude: `.claude/commands/12_skill_forge(技能鍛造)/SKILL.md`
   - Antigravity: `.agents/workflows/12_skill_forge(技能鍛造).md`
 - Minimum MCP memory evidence:

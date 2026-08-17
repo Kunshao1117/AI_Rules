@@ -1,22 +1,22 @@
 ---
 name: team-native-tests
 scopePath: Tests/TeamNative/
-description: >-
-  專案記憶：Team-Native PowerShell 契約測試。Use when: task touches Team-Native test
-  fixtures, contract coverage, or source/deployment parity assertions.
-last_updated: '2026-07-28T14:50:00+08:00'
+description: >
+  專案記憶：Team-Native 測試導覽父卡。Use when: task needs navigation to this split test
+  memory family.
+last_updated: '2026-08-17T20:56:43+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-28T14:50:00+08:00'
+last_verified: '2026-08-17T20:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
-cycle_id: 2026-07-24-001
-cycle_event_count: 5
+cycle_id: 2026-08-17-002
+cycle_event_count: 1
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,88 +31,58 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
-# team-native-tests — Team-Native Test Memory
+
+# team-native-tests — Navigation Memory
 
 ## Current Truth
 
-- Owns the Team-Native PowerShell contract test suite listed below.
-- `RequirementPrecision.Tests.ps1` protects semantic requirement provenance, classification/disposition separation, minimum-detail exclusions, and is newline-insensitive without reducing the explicit/inferred/unknown/conflict oracle.
-- `DeliverySlice.Tests.ps1` protects station boundaries without coupling the contract to legacy lane wording.
-- `ManagerSyncProjectRules.Tests.ps1` protects exact deployment, no result-object leakage, and version advancement only after required stages succeed.
-- `ManagerSyncProjectRules.Tests.ps1` also runs Auto selection through all installed platforms and verifies each target uses its platform-specific policy adapter.
-- `PlatformCodexFreshUpgrade.Tests.ps1` protects a fresh Codex install without legacy Team hooks, exact-hash managed legacy cleanup, and preservation of a user-modified hook set.
-- Stable validation routes include focused RequirementPrecision, DeliverySlice, PlatformCodexFreshUpgrade, PlatformPolicyPreflight, SourceDeploymentParity, and the aggregate Team-Native suite.
-- `SourceDeploymentParity.Tests.ps1` also protects centralized beginner-facing reporting rules, source/runtime copy parity, status display labels, and platform-policy pointers.
-- `NonEngineerUx.Tests.ps1` validates the README first layer, minimal zh-TW core, distinct user-visible states, nonblocking suggestions, affected-action stopping, and Fresh runtime parity without assuming ignored runtime files exist in a clean clone.
-- `ClaudeDeploySyncEntry.Tests.ps1`, `ContextGovernanceMigration.Tests.ps1`, and `RetiredReflectionSkills.Tests.ps1` cover the public Claude sync entry, Phase 1 context-governance contract, and retirement of the two reflection skills.
+- This parent is navigation-only. Concrete test ownership belongs to its child cards.
+- Failure classification precedes product, test, or checker repair.
+- `logs/` runtime artifacts are generated evidence, not source memory.
 
 ## Active Constraints
 
-- Tests remain source-owned here; runtime artifacts and one-run fixture output do not enter source memory.
-- Failure classification precedes product, test, or checker repair; expectation changes require an independent oracle.
+- Do not add concrete tracked files back to this parent.
+- Expectation changes require an independent oracle.
 
 ## Cycle Events
 
-- 05: Added Codex fresh/upgrade and managed legacy-hook cleanup contract coverage.
-- 06: Added deterministic reporting-policy and source/runtime parity checks without text snapshots.
-- 07: Added real-path Auto-selection coverage for Antigravity, Claude, and Codex policy adapters.
-- 08: Extended non-engineer UX and requirement-precision coverage for scope governance while retaining temporary Fresh runtime parity checks.
+- 01: Split test ownership into platform-deploy, parity-ux, contract, and compat child cards.
 
 ## Archive Index
 
-- None yet.
+- archive-002.md — Pre-split 2026-08-17 test ownership.
+- archive-001.md — Pre-2026-08-17 cycle events and long-form coverage notes.
 
 ## Evidence Base
 
-- source:Tests/TeamNative/RequirementPrecision.Tests.ps1
-- source:Tests/TeamNative/DeliverySlice.Tests.ps1
-- source:Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1 and Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1
-- source:Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1 and Tests/TeamNative/SourceDeploymentParity.Tests.ps1
-- source:Scripts/Test-TeamNativeV2.ps1
-- source:Tests/TeamNative/NonEngineerUx.Tests.ps1 and .github/workflows/governance.yml
-- source:Tests/TeamNative/ClaudeDeploySyncEntry.Tests.ps1, Tests/TeamNative/ContextGovernanceMigration.Tests.ps1, and Tests/TeamNative/RetiredReflectionSkills.Tests.ps1
+- source:Tests/TeamNative/PlatformCursorFreshUpgrade.Tests.ps1
 
 ## Read Contract
 
-- Read when changing Team-Native PowerShell test contracts or their tracked sources.
-- Do not use for generated artifacts, raw run output, or a temporary fixture message that does not alter asserted coverage.
+- Read only to select the child card that owns the concrete test files.
 
 ## Conflicts and Supersession
 
-- superseded: formatting-coupled requirement assertions, legacy-lane-dependent delivery expectations, and cleanup tests that delete modified hook artifacts.
+- superseded: a single tests card owning the full Team-Native suite.
 
 ## 中文摘要
 
-- Team-Native 測試保護 requirement provenance、station boundary 與同步/版本契約。
-- `PlatformCodexFreshUpgrade` 保護 fresh install 不部署 legacy hook、exact-hash 受管清理，以及使用者修改整組的保留行為。
-- 測試失敗要先分類，不能為綠燈直接改 expectation。
-- SourceDeploymentParity 也檢查白話回報規則、狀態顯示與必要副本一致性。
-- ManagerSyncProjectRules 也保護 Auto 三平台各自 adapter 的同步契約。
+- 此父卡只保留測試導覽。
+- `logs/` 不是來源記憶。測試失敗要先分類。
 
 ## Tracked Files
 
-- Tests/TeamNative/CaptainDecision.Tests.ps1
-- Tests/TeamNative/DeliverySlice.Tests.ps1
-- Tests/TeamNative/MemoryClosureBundle.Tests.ps1
-- Tests/TeamNative/ModuleBudget.Tests.ps1
-- Tests/TeamNative/OversizeInventory.Tests.ps1
-- Tests/TeamNative/PowerShell51ParserCompatibility.Tests.ps1
-- Tests/TeamNative/RequirementPrecision.Tests.ps1
-- Tests/TeamNative/SourceDeploymentParity.Tests.ps1
-- Tests/TeamNative/ManagerSyncProjectRules.Tests.ps1
-- Tests/TeamNative/PlatformCodexFreshUpgrade.Tests.ps1
-- Tests/TeamNative/PlatformPolicyPreflight.Tests.ps1
-- Tests/TeamNative/PowerShell51ProjectSkillsEncoding.Tests.ps1
-- Tests/TeamNative/SkillsSync.PolicyFailure.Tests.ps1
-- Tests/TeamNative/ClaudeDeploySyncEntry.Tests.ps1
-- Tests/TeamNative/ContextGovernanceMigration.Tests.ps1
-- Tests/TeamNative/NonEngineerUx.Tests.ps1
-- Tests/TeamNative/RetiredReflectionSkills.Tests.ps1
-
 ## Relations
 
+- team-native-tests.platform-deploy (child card: platform Fresh/Upgrade and sync tests)
+- team-native-tests.parity-ux (child card: source/runtime parity and UX tests)
+- team-native-tests.contract (child card: requirement, delivery, and credential-boundary tests)
+- team-native-tests.compat (child card: size, encoding, and parser tests)
 - _shared.team-native-core.policy-core (related governance memory)
+- _cursor_core.runtime (related Cursor runtime memory)
 
 ## Applicable Skills
 
-- memory-ops — Update this card through separate protected write and commit phases.
+- memory-ops — Update and commit this navigation card.
+- memory-arch — Adjust child topology or archive volumes.

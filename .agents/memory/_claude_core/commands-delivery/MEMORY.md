@@ -1,22 +1,22 @@
 ---
 name: _claude_core.commands-delivery
-scopePath: Claude/.claude/
+scopePath: Claude/.claude/commands/
 description: >
-  專案記憶：Claude 平台核心、規則與交付指令。Use when: task touches this split memory scope or its
-  tracked files.
-last_updated: '2026-07-28T14:50:00+08:00'
+  專案記憶：Claude 交付指令。Use when: task touches Claude blueprint, build, fix, debug,
+  or handoff commands.
+last_updated: '2026-08-17T21:12:32+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-28T14:50:00+08:00'
+last_verified: '2026-08-17T21:20:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
-cycle_id: 2026-07-24-001
-cycle_event_count: 2
+cycle_id: 2026-08-17-003
+cycle_event_count: 1
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -31,62 +31,45 @@ metadata:
     - 'filesystem:write'
     - 'mcp:cartridge-system'
 ---
+
 # _claude_core.commands-delivery — Module Memory
 
 ## Current Truth
 
-- Owns the Claude adapter bootstrap, core rules, governed delivery commands, and their managed runtime copies; its core keeps only a pointer to the shared user-visible reporting policy and one short product-decision boundary.
+- Owns the Claude governed delivery commands listed below.
+- Command routes do not grant write or protected-action authority.
 
 ## Active Constraints
 
-- Command routes do not grant write or protected-action authority.
+- Keep user-visible reporting pointers in Shared language governance.
 
 ## Cycle Events
 
-- 01: Created during the 2026-07-24 authorized memory split after current-source verification.
-- 02: Reduced the Claude core to the shared beginner-facing reporting pointer so it does not define a competing format.
-- 03: Verified the minimal zh-TW reporting rule and its shared-policy pointer after the non-engineer UX update.
-- 04: Synced the Claude product-decision boundary and intent-alignment runtime copies after scope-governance validation.
+- 01: Split install/rules ownership into `_claude_core.runtime` and `_claude_core.core-rules`.
 
 ## Archive Index
 
-- Parent archive records the pre-split parent ownership history.
+- archive-001.md — Pre-split 2026-08-17 mixed bootstrap, rules, and command ownership.
 
 ## Evidence Base
 
-- source:Claude/install.ps1
-- source:Claude/.claude/commands/11_handoff(交接)/SKILL.md
-- source:Claude/.claude/rules/core-identity.md and Shared/policies/language-governance.md
-- tool:memory_status — Existing owner scope verified before split.
+- source:Claude/.claude/commands/03_build(建構)/SKILL.md
 
 ## Read Contract
 
-- Read when working on the owned source files.
-- Do not use this card for sibling ownership or historical parent detail.
+- Read when working on the owned Claude delivery commands.
 
 ## Conflicts and Supersession
 
-- None.
+- superseded: mixing install and core-rule ownership into this command card.
 
 ## 中文摘要
 
-- Claude 平台核心、規則與交付指令。
-- 具體檔案歸屬已由父卡移入此子卡。
-- Claude 的對外回覆格式以 Shared 語言規則為唯一來源。
-- 現行來源優先於本卡摘要。
+- 此卡負責 Claude 交付指令。
+- 安裝入口與核心規則已拆到其他子卡。
 
 ## Tracked Files
 
-- Claude/install.ps1
-- Claude/README.md
-- Claude/VERSION
-- Claude/global/CLAUDE.md
-- Claude/.claude/CLAUDE.md
-- Claude/.claude/rules/core-identity.md
-- .claude/rules/core-identity.md
-- .claude/skills/intent-alignment-gate/SKILL.md
-- Claude/.claude/rules/memory-contract.md
-- Claude/.claude/rules/forbidden-vocab.md
 - Claude/.claude/commands/02_blueprint(架構)/SKILL.md
 - Claude/.claude/commands/03_build(建構)/SKILL.md
 - Claude/.claude/commands/04_fix(修復)/SKILL.md
@@ -96,9 +79,10 @@ metadata:
 ## Relations
 
 - _claude_core (parent card: navigation only)
+- _claude_core.runtime (sibling card: install and bootstrap)
+- _claude_core.core-rules (sibling card: core rules)
 - _claude_core.support (sibling support index)
 
 ## Applicable Skills
 
-- memory-ops — Update and commit this child card.
-- memory-arch — Adjust split topology or archive volumes.
+- memory-ops — Update this card through separate protected write and commit phases.

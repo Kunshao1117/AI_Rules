@@ -4,19 +4,19 @@ scopePath: Shared/
 description: >
   專案記憶：Shared 治理與工具導覽父卡。Use when: task needs navigation to this split memory
   family.
-last_updated: '2026-07-24T16:19:46+08:00'
+last_updated: '2026-08-17T20:56:46+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
 verification_status: verified
-last_verified: '2026-07-24T13:49:00+08:00'
+last_verified: '2026-08-17T20:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 1
+cycle_event_count: 2
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -44,6 +44,7 @@ metadata:
 
 ## Cycle Events
 
+- 02: Added `_shared.supabase-postgres` to parent navigation during complete memory organization.
 - 01: Split concrete ownership into child cards and retained navigation only.
 
 ## Archive Index
@@ -77,6 +78,7 @@ metadata:
 - _shared.context-tools (child card: context and tool support)
 - _shared.team-native-core (child card: Team-Native contracts)
 - _shared.ops-skills (child card: operational-skill navigation)
+- _shared.supabase-postgres (child card: Postgres best-practices references)
 
 ## Applicable Skills
 

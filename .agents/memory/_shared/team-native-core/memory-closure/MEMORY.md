@@ -4,19 +4,19 @@ scopePath: Shared/skills/
 description: >
   專案記憶：Team-Native 受保護記憶收尾契約。Use when: task touches this split memory scope or
   its tracked files.
-last_updated: '2026-07-28T14:50:00+08:00'
+last_updated: '2026-08-17T20:56:45+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-28T14:50:00+08:00'
+last_verified: '2026-08-17T20:50:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
 cycle_id: 2026-07-24-001
-cycle_event_count: 2
+cycle_event_count: 4
 cycle_event_limit: 30
 size_limit_bytes: 16384
 line_limit: 120
@@ -36,6 +36,7 @@ metadata:
 ## Current Truth
 
 - Owns memory-closure delivery and specialist contracts, distinct from read-only memory-docs.
+- Owns the credential-boundary contract: `AGENT_SECRET_HANDLING` is protected; approved product-owned credential consumption is a classification, not a protected-action exemption.
 - This child owns the listed concrete source files after the 2026-07-24 split.
 - User-facing output examples preserve a plain-language first layer while retaining status meaning, nonblocking suggestions, affected-action stopping, and optional technical evidence.
 
@@ -46,6 +47,7 @@ metadata:
 
 ## Cycle Events
 
+- 04: Attributed the credential-boundary contract during complete memory organization.
 - 01: Created during the authorized memory split after current-source verification.
 - 02: Recorded the user-facing output examples reference as an owned memory-closure source.
 - 03: Recorded scope-governance output examples and their managed runtime copy.
@@ -58,7 +60,7 @@ metadata:
 
 - source:Shared/skills/team-memory-closure-delivery-artifact/SKILL.md
 - source:Shared/skills/team-specialist-memory-closure/SKILL.md
-- source:Shared/policies/references/user-facing-output-examples.md
+- source:Shared/policies/references/credential-boundary-contract.md
 - tool:memory_status — Existing owner scope verified before split.
 
 ## Read Contract
@@ -79,14 +81,15 @@ metadata:
 
 - Shared/skills/team-memory-closure-delivery-artifact/SKILL.md
 - Shared/skills/team-specialist-memory-closure/SKILL.md
-
 - Shared/policies/references/memory-closure-bundle-contract.md
+- Shared/policies/references/credential-boundary-contract.md
 - Shared/policies/references/user-facing-output-examples.md
 - .agents/shared/policies/references/user-facing-output-examples.md
 
 ## Relations
 
 - _shared.team-native-core (parent card: navigation only)
+- team-native-tests.contract (related credential-boundary tests)
 
 ## Applicable Skills
 

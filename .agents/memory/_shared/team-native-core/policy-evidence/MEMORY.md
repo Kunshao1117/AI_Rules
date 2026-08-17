@@ -4,14 +4,14 @@ scopePath: Shared/
 description: >-
   專案記憶：平台能力與工作流證據矩陣。Use when: task touches this split memory scope or its
   tracked files.
-last_updated: '2026-07-27T20:49:32+08:00'
+last_updated: '2026-08-17T18:57:07+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
 verification_status: verified
-last_verified: '2026-07-27T20:47:17+08:00'
+last_verified: '2026-08-17T18:55:00+08:00'
 valid_scope: current-project
 content_language: en
 human_language: zh-TW
@@ -37,23 +37,20 @@ metadata:
 ## Current Truth
 
 - Owns the platform capability and workflow evidence matrices.
-- Platform capability describes observable platform surfaces; task/model fit is a separate, task-specific assessment and does not infer brand capability.
-- Codex documents lifecycle and supported local-function-tool hooks, including documented `PreToolUse` payload and deny/exit semantics on supported paths. That capability does not make an AI_Rules hook a default deployment or prove coverage of other hook sources.
-- AI_Rules installs no repository-local Team-routing hook by default. Governance core resolves Direct/delegated topology; user, global, and plugin hooks remain outside repository control.
+- Platform capability describes observable platform surfaces; task/model fit is a separate assessment.
+- Cursor is listed as a peer platform surface. Cursor hooks remain a capability, not a default AI_Rules Team-routing deployment.
 - Requested, accepted, and applied execution configurations are distinct; absent receipts remain unknown.
-- The evidence matrix supports Direct-first work, conditional delegated routing, and canonical Verify without requiring formal trace for ordinary Direct outcomes.
-- Context-scope requests and observed delivery evidence are separate: requested visibility does not prove later inheritance or isolation without a trace or delivery artifact.
 
 ## Active Constraints
 
 - Do not claim an adapter surface proves platform execution or an applied model setting.
-- Hook hard-block claims require documented deny or exit-code evidence on the supported tool path; advisory context is not hard enforcement.
 - Protected actions remain protected regardless of topology or model fit.
 
 ## Cycle Events
 
 - 03: Reconciled Codex hook capability evidence with the no-default AI_Rules Team-routing hook boundary.
 - 04: Recorded the requested-scope versus observed-context evidence boundary without claiming unmeasured platform isolation.
+- 05: Recorded Cursor as a peer platform in the capability and workflow evidence matrices.
 
 ## Archive Index
 
@@ -63,23 +60,19 @@ metadata:
 
 - source:Shared/platform-capability-matrix.md
 - source:Shared/workflow-capability-evidence-matrix.md
-- source:Shared/policies/task-capability-assessment.md and Shared/policies/verification-strategy.md
-- source:Shared/workflow-capability-evidence-matrix.md and Shared/policies/team-trace-evidence.md
 
 ## Read Contract
 
 - Read when changing owned capability/evidence matrices or interpreting platform evidence limits.
-- Do not use as proof of a model, tool, or platform receipt that is not observed.
 
 ## Conflicts and Supersession
 
-- superseded: treating platform matrix claims as model-intelligence or applied-configuration proof, or treating hook availability as default Team activation.
+- superseded: treating platform matrix claims as model-intelligence or applied-configuration proof.
 
 ## 中文摘要
 
-- Codex hooks 為可觀測的平台能力；正式 payload 與 deny/exit 行為只適用於支援的路徑。
-- AI_Rules 預設不安裝 repository-local Team-routing hook，Direct/delegated 仍由治理核心決定，無法控制 user/global/plugin hooks。
-- 沒有 receipt 時 requested、accepted、applied 仍必須分開，protected action 也不因 topology 改變而失去保護。
+- Cursor 已列入平台能力與工作流證據矩陣。
+- 預設仍不安裝 Team-routing hook；沒有 receipt 不得宣稱已套用。
 
 ## Tracked Files
 
@@ -90,6 +83,7 @@ metadata:
 
 - _shared.team-native-core (parent card: navigation only)
 - _shared.team-native-core.policy-core (related capability policy memory)
+- _cursor_core.runtime (related Cursor runtime memory)
 
 ## Applicable Skills
 

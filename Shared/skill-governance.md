@@ -2,7 +2,7 @@
 
 AI_Rules uses skills as an on-demand knowledge compression layer.
 This file defines where governance content belongs.
-That lets three platforms share semantics without forcing every rule into always-on context.
+That lets supported platforms share semantics without forcing every rule into always-on context.
 
 Workflow entries and team skills reference `Shared/policies/workflow-orchestration.md` for sequence semantics.
 They do not copy the full board, wave, channel, and completion playbook into every skill.
@@ -232,7 +232,7 @@ Required description behavior:
 
 ## Platform Entry Contract
 
-Antigravity, Claude, and Codex keep different entry shapes:
+Antigravity, Claude, Codex, and Cursor keep different entry shapes:
 
 - Antigravity uses `.agents/workflows/*.md` as the user-facing entry.
 - Antigravity uses `.agents/skills/` as operational knowledge.
@@ -240,6 +240,9 @@ Antigravity, Claude, and Codex keep different entry shapes:
 - Claude uses `.claude/skills/` as operational knowledge.
 - Codex uses `.agents/skills/` for workflow skills.
 - Codex also uses `.agents/skills/` for operational skills.
+- Cursor uses `.cursor/skills/` for workflow skills.
+- Cursor also uses `.cursor/skills/` for operational skills.
+- Cursor uses `.cursor/rules/*.mdc` as the instruction-load entry.
 - Descriptions must distinguish entry skills from helper skills.
 
 Shared skills must remain platform-neutral.

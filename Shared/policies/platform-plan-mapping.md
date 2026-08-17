@@ -26,6 +26,7 @@ Platform plan surfaces include these progress mirrors:
 - Codex `update_plan`.
 - Claude plan/checklist surfaces.
 - Antigravity workflow planning UI.
+- Cursor plan or todo surfaces.
 - Equivalent progress mirrors.
 
 They may show intended steps, progress, blockers, or next routing.
@@ -135,7 +136,7 @@ It does not replace the `03` authorization boundary or the later delivery, valid
 
 These are blocked, unverified, or closed-with-director-risk patterns, not complete work:
 
-- Treating Codex `update_plan`, a checklist, or a UI planning surface as write authorization.
+- Treating Codex `update_plan`, a checklist, a Cursor plan surface, or a UI planning surface as write authorization.
 - Treating a plan item marked `completed` as validation, review, memory/docs, source/deployed parity, or completion evidence.
 - Starting implementation from `plan-only` without a `build-plan` boundary when workflow `03` needs one.
 - Expanding file scope because a plan surface is broad or ambiguous.
