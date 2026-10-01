@@ -15,9 +15,19 @@ function Get-RecoveryFingerprint {
     } | Sort-Object) -join "`n")
 }
 
+function Test-RecoveryExpectedCopyError {
+    param([Management.Automation.ErrorRecord]$Record, [string]$TargetRoot)
+    $sharedRoot = [IO.Path]::GetFullPath((Join-Path $TargetRoot '.agents/shared')).TrimEnd('\','/') + [IO.Path]::DirectorySeparatorChar
+    return (
+        $Record.FullyQualifiedErrorId -in @('CopyFileInfoItemIOError,Microsoft.PowerShell.Commands.CopyItemCommand', 'System.IO.DirectoryNotFoundException,Microsoft.PowerShell.Commands.CopyItemCommand') -and
+        $Record.Exception -is [IO.DirectoryNotFoundException] -and
+        $Record.Exception.Message.Contains($sharedRoot)
+    )
+}
+
 Describe 'vNext foundation Manager apply recovery and preview' {
     BeforeEach {
-        $fixture = Join-Path $TestDrive ([guid]::NewGuid().ToString('N'))
+        $fixture = [IO.Path]::GetFullPath((Join-Path $TestDrive ([guid]::NewGuid().ToString('N'))))
         $source = Join-Path $fixture 'source'
         $target = Join-Path $fixture 'project'
         $modulePath = [IO.Path]::GetFullPath((Join-Path $sourceRepo 'Scripts/modules/Manager.ProjectSync.psm1'))
@@ -45,12 +55,27 @@ Describe 'vNext foundation Manager apply recovery and preview' {
         foreach ($record in @($Error)) {
             $message = $record.Exception.Message
             $expected = $message -ceq 'synthetic version write failure'
-            $expected = $expected -or (
-                $record.FullyQualifiedErrorId -in @('CopyFileInfoItemIOError,Microsoft.PowerShell.Commands.CopyItemCommand', 'System.IO.DirectoryNotFoundException,Microsoft.PowerShell.Commands.CopyItemCommand') -and
-                $record.Exception -is [IO.DirectoryNotFoundException] -and $message.Contains((Join-Path $target '.agents/shared'))
-            )
+            $expected = $expected -or (Test-RecoveryExpectedCopyError -Record $record -TargetRoot $target)
             if ($expected) { $Error.Remove($record) }
         }
+    }
+
+    It 'matches only the expected copy failure under the same canonical target across an actual short path alias' {
+        $longRoot = [IO.Path]::GetFullPath((Split-Path (Get-Module Pester).Path -Parent))
+        $fso = New-Object -ComObject Scripting.FileSystemObject
+        $shortRoot = $fso.GetFolder($longRoot).ShortPath
+        $path = Join-Path $longRoot 'project/.agents/shared/policies/adapters/codex-subagent-invocation.md'
+        $message = "Could not find a part of the path '$path'."
+        $record = [Management.Automation.ErrorRecord]::new(
+            [IO.DirectoryNotFoundException]::new($message),
+            'CopyFileInfoItemIOError,Microsoft.PowerShell.Commands.CopyItemCommand',
+            [Management.Automation.ErrorCategory]::WriteError, $path)
+        (Test-RecoveryExpectedCopyError -Record $record -TargetRoot (Join-Path $shortRoot 'project')) | Should Be $true
+        (Test-RecoveryExpectedCopyError -Record $record -TargetRoot (Join-Path $shortRoot 'other-project')) | Should Be $false
+        $unexpected = [Management.Automation.ErrorRecord]::new(
+            [IO.DirectoryNotFoundException]::new($message), 'UnrelatedCopyFailure',
+            [Management.Automation.ErrorCategory]::WriteError, $path)
+        (Test-RecoveryExpectedCopyError -Record $unexpected -TargetRoot (Join-Path $shortRoot 'project')) | Should Be $false
     }
 
     It 'uses the existing no-Apply preview without creating or changing any project file' {
