@@ -114,3 +114,9 @@ if ($unexpectedPesterErrors.Count -gt 0) {
 }
 
 foreach ($record in $expectedPesterErrors) { $Error.Remove($record) }
+
+# Native negative-path probes may leave a nonzero child exit code after Pester
+# has verified that failure. Report this entry's successful verdict only after
+# every assertion and unexpected-error guard has passed. Do not let a caller's
+# native-exit propagation mistake the verified probe for this runner failing.
+$global:LASTEXITCODE = 0

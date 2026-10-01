@@ -31,6 +31,40 @@ function Remove-FoundationExpectedErrorRecords {
 }
 
 Describe 'Official TeamNative runner error record precision' {
+    It 'reports its own native success only after verified negative assertions and still rejects a failed assertion' {
+        $entry = Join-Path $TestDrive 'run-native-verdict.ps1'
+        Write-FoundationFixture $entry @'
+param([string]$Runner,[string]$Tests)
+$ErrorActionPreference='Stop'
+Import-Module Pester -RequiredVersion 3.4.0 -Force
+& $Runner -TestPath $Tests
+if($Error.Count){throw 'Runner left error records'}
+if ((Test-Path -LiteralPath variable:\LASTEXITCODE)) { exit $LASTEXITCODE }
+'@
+        foreach ($scenario in @('verified-native-negative', 'failed-native-assertion')) {
+            $probe = Join-Path $TestDrive $scenario
+            $expected = if ($scenario -eq 'verified-native-negative') { '7' } else { '0' }
+            $body = @'
+Describe 'Native verdict probe' {
+    It 'checks the native child result' {
+        & (Join-Path $PSHOME 'pwsh.exe') -NoProfile -Command 'exit 7'
+        $LASTEXITCODE | Should Be EXPECTED_NATIVE_RESULT
+    }
+}
+'@.Replace('EXPECTED_NATIVE_RESULT', $expected)
+            Write-FoundationFixture (Join-Path $probe 'Probe.Tests.ps1') $body
+            $log = Join-Path $TestDrive ($scenario + '.log')
+            & (Join-Path $PSHOME 'pwsh.exe') -NoProfile -File $entry -Runner (Join-Path $sourceRepo 'Scripts/Test-TeamNativeV2.ps1') -Tests $probe *> $log
+            if ($scenario -eq 'verified-native-negative') {
+                $LASTEXITCODE | Should Be 0
+                (Get-Content -LiteralPath $log -Raw) | Should Match 'Passed: 1 Failed: 0'
+            } else {
+                ($LASTEXITCODE -ne 0) | Should Be $true
+                (Get-Content -LiteralPath $log -Raw) | Should Match 'Team-Native tests failed'
+            }
+        }
+    }
+
     It 'removes only a passed literal negative assertion from the isolated child error collection' {
         $probe=Join-Path $TestDrive 'expected-negative'
         $body=@'
