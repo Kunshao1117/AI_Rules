@@ -2,6 +2,7 @@
 
 Import-Module -Name (Join-Path $PSScriptRoot 'Core.Comparison.psm1') -Force
 Import-Module -Name (Join-Path $PSScriptRoot 'Core.Reporting.psm1') -Force
+Import-Module -Name (Join-Path $PSScriptRoot 'Deployment.Transaction.psm1')
 
 function Get-UpgradeReport {
     param(
@@ -31,7 +32,7 @@ function Get-UpgradeReport {
 
         Get-ChildItem $srcPath -File -Recurse | ForEach-Object {
             if ($_.Name -in $ExcludeFiles) { return }
-            $rel     = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/').Replace("\", "/")
+            $rel     = (Get-DeploymentRelativePath -Root $SourceRoot -Path $_.FullName).Replace("\", "/")
             $tgtFile = Join-Path $TargetRoot $rel
             $results += Compare-FrameworkFile -SourcePath $_.FullName -TargetPath $tgtFile -RelativePath $rel -IgnoreProjectIdentity:$PreserveProjectIdentity
         }
@@ -52,7 +53,7 @@ function Get-UpgradeReport {
         if (-Not (Test-Path $tgtPath)) { continue }
 
         Get-ChildItem $tgtPath -File -Recurse | ForEach-Object {
-            $rel     = $_.FullName.Substring($TargetRoot.Length).TrimStart('\', '/').Replace("\", "/")
+            $rel     = (Get-DeploymentRelativePath -Root $TargetRoot -Path $_.FullName).Replace("\", "/")
             if ($_.Name -in $ExcludeFiles) { return }
             $srcFile = Join-Path $SourceRoot $rel
             if (-Not (Test-Path $srcFile)) {
@@ -69,7 +70,7 @@ function Get-UpgradeReport {
             (Test-Path (Join-Path $_.FullName "MEMORY.md")) -or
             (Test-Path (Join-Path $_.FullName "CONTEXT.md"))
         } | ForEach-Object {
-            $rel = $_.FullName.Substring($tgtProt.Length).TrimStart('\', '/').Replace("\", "/")
+            $rel = (Get-DeploymentRelativePath -Root $tgtProt -Path $_.FullName).Replace("\", "/")
             $results += [PSCustomObject]@{ Status = "KEEP"; Path = "$protDir/$rel/" }
         }
     }

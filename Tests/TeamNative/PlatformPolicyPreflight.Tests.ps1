@@ -13,7 +13,7 @@ function Get-TargetFingerprint {
         Get-ChildItem -LiteralPath $Path -Force -Recurse |
             Sort-Object FullName |
             ForEach-Object {
-                $relative = $_.FullName.Substring($root.Length).TrimStart('\')
+                $relative = [IO.Path]::GetRelativePath($root, $_.FullName).TrimStart('\')
                 if ($_.PSIsContainer) { return "D|$relative" }
                 return "F|$relative|$((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
             }

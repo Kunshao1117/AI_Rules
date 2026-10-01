@@ -11,7 +11,7 @@ function Write-FoundationFixture {
 function Get-FoundationFingerprint {
     param([string]$Root)
     (@(Get-ChildItem -LiteralPath $Root -File -Recurse -Force | ForEach-Object {
-        $_.FullName.Substring($Root.Length) + ':' + (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash
+        [IO.Path]::GetRelativePath($Root, $_.FullName) + ':' + (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash
     } | Sort-Object) -join "`n")
 }
 
@@ -27,6 +27,74 @@ function Remove-FoundationExpectedErrorRecords {
         $expected = $expected -or ($message -like 'Deployment.LinkedPath:*' -and $message.Contains($TargetRoot))
         $expected = $expected -or ($record.FullyQualifiedErrorId -match '^SharedPolicy.TargetFileMissing' -and $message.Contains($TargetRoot))
         if ($expected) { $Error.Remove($record) }
+    }
+}
+
+Describe 'Official TeamNative runner error record precision' {
+    It 'removes only a passed literal negative assertion from the isolated child error collection' {
+        $probe=Join-Path $TestDrive 'expected-negative'
+        $body=@'
+Describe 'Runner precision probe' {
+    It 'verifies the exact negative' {
+        { throw 'exact runner negative identity' } | Should Throw 'exact runner negative identity'
+    }
+}
+'@
+        Write-FoundationFixture (Join-Path $probe 'Probe.Tests.ps1') $body
+        $entry=Join-Path $TestDrive 'run-precision.ps1'
+        Write-FoundationFixture $entry @'
+param([string]$Runner,[string]$Tests,[switch]$Preexisting)
+$ErrorActionPreference='Stop'
+Import-Module Pester -RequiredVersion 3.4.0 -Force
+if($Preexisting){try{throw 'preexisting runner probe error'}catch{}}
+& $Runner -TestPath $Tests
+if($Error.Count){throw 'Runner left error records'}
+'@
+        $log=Join-Path $TestDrive 'expected-negative.log'
+        & (Join-Path $PSHOME 'pwsh.exe') -NoProfile -File $entry -Runner (Join-Path $sourceRepo 'Scripts/Test-TeamNativeV2.ps1') -Tests $probe *> $log
+        $LASTEXITCODE | Should Be 0
+        (Get-Content -LiteralPath $log -Raw) | Should Match 'Passed: 1 Failed: 0'
+    }
+
+    It 'rejects unhandled caught errors a matching error outside the negative block and pre-existing records' {
+        $entry=Join-Path $TestDrive 'run-precision.ps1'
+        Write-FoundationFixture $entry @'
+param([string]$Runner,[string]$Tests,[switch]$Preexisting)
+$ErrorActionPreference='Stop'
+Import-Module Pester -RequiredVersion 3.4.0 -Force
+if($Preexisting){try{throw 'preexisting runner probe error'}catch{}}
+& $Runner -TestPath $Tests
+if($Error.Count){throw 'Runner left error records'}
+'@
+        foreach($mode in @('unknown','same-message-outside-block','preexisting')) {
+            $probe=Join-Path $TestDrive $mode
+            $body=if($mode -eq 'same-message-outside-block') {
+@'
+Describe 'Runner precision probe' {
+    It 'verifies the exact negative' {
+        { throw 'exact runner negative identity' } | Should Throw 'exact runner negative identity'
+        try { throw 'exact runner negative identity' } catch {}
+    }
+}
+'@
+            } else {
+@'
+Describe 'Runner precision probe' {
+    It 'verifies the exact negative' {
+        try { throw 'unhandled runner probe error' } catch {}
+        $true | Should Be $true
+    }
+}
+'@
+            }
+            Write-FoundationFixture (Join-Path $probe 'Probe.Tests.ps1') $body
+            $log=Join-Path $TestDrive ($mode+'.log')
+            $argsMap=@{Runner=(Join-Path $sourceRepo 'Scripts/Test-TeamNativeV2.ps1');Tests=$probe;Preexisting=($mode -eq 'preexisting')}
+            & (Join-Path $PSHOME 'pwsh.exe') -NoProfile -File $entry @argsMap *> $log
+            ($LASTEXITCODE -ne 0) | Should Be $true
+            $expected=if($mode -eq 'preexisting'){'pre-existing PowerShell error records'}else{'unexpected PowerShell error record'}
+            (Get-Content -LiteralPath $log -Raw) | Should Match $expected
+        }
     }
 }
 

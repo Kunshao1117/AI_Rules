@@ -81,14 +81,15 @@ Describe 'Non-engineer UX contract' {
         $script:outputExamples = Get-RequiredText 'Shared\policies\references\user-facing-output-examples.md'
         $script:changelog = Get-RequiredText 'CHANGELOG.md'
         $script:runtimeTarget = Join-Path ([System.IO.Path]::GetTempPath()) ("ai-rules-non-engineer-ux-" + [guid]::NewGuid().ToString())
-        $Error.Clear()
+        $priorErrors = @($Error)
         $global:LASTEXITCODE = 0
         & (Join-Path $repoRoot 'Scripts\Deploy.ps1') -Platform All -Mode Fresh -Target $script:runtimeTarget
         if ($LASTEXITCODE -ne 0) {
             throw "Fresh runtime deployment for UX parity exited with code $LASTEXITCODE."
         }
-        if ($Error.Count -ne 0) {
-            $messages = $Error | ForEach-Object { $_.ToString() }
+        $deploymentErrors = @($Error | Where-Object { $_ -notin $priorErrors })
+        if ($deploymentErrors.Count -ne 0) {
+            $messages = $deploymentErrors | ForEach-Object { $_.ToString() }
             throw "Fresh runtime deployment for UX parity produced uncaught error records: $($messages -join ' | ')"
         }
     }

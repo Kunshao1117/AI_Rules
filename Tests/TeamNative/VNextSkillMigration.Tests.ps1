@@ -9,7 +9,7 @@ function Write-A1Fixture([string]$Path, [string]$Text) {
 }
 function Get-A1Fingerprint([string]$Root) {
     (@(Get-ChildItem -LiteralPath $Root -Recurse -File -Force | ForEach-Object {
-        $_.FullName.Substring($Root.Length) + ':' + (Get-FileHash -LiteralPath $_.FullName).Hash
+        [IO.Path]::GetRelativePath($Root, $_.FullName) + ':' + (Get-FileHash -LiteralPath $_.FullName).Hash
     } | Sort-Object) -join "`n")
 }
 function Add-A1OfficialCopy([object]$Artifact, [string]$SkillsRoot) {

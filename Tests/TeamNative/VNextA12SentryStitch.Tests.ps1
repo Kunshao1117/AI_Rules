@@ -38,7 +38,7 @@ Describe 'A12 retained Sentry Stitch isolated projection' {
             $null = Sync-SharedSkills -SharedSkillsRoot (Join-Path $a12Repo 'Shared/skills') -TargetSkillsPath $skills -Mode Full
             $otherHashes = @{}
             foreach ($file in Get-ChildItem -LiteralPath $skills -Recurse -File) {
-                $relative = $file.FullName.Substring($skills.Length + 1).Replace('\', '/')
+                $relative = [IO.Path]::GetRelativePath($skills, $file.FullName).Replace('\', '/')
                 if ($a12Names -notcontains $relative.Split('/')[0]) {
                     $otherHashes[$file.FullName] = (Get-FileHash -LiteralPath $file.FullName).Hash
                 }

@@ -9,8 +9,8 @@ function Write-PreflightFixture([string]$Path, [string]$Content) {
 
 function Get-PreflightFixtureFingerprint([string]$Root) {
     return (@(Get-ChildItem -LiteralPath $Root -Recurse -Force | ForEach-Object {
-        if ($_.PSIsContainer) { 'D:' + $_.FullName.Substring($Root.Length) }
-        else { 'F:' + $_.FullName.Substring($Root.Length) + ':' + (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash }
+        if ($_.PSIsContainer) { 'D:' + [IO.Path]::GetRelativePath($Root, $_.FullName) }
+        else { 'F:' + [IO.Path]::GetRelativePath($Root, $_.FullName) + ':' + (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash }
     } | Sort-Object) -join "`n")
 }
 

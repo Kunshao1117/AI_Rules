@@ -3,6 +3,7 @@ $ErrorActionPreference = 'Stop'
 $m5bRepo = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $m5bShared = Join-Path $m5bRepo 'Shared'
 $m5bRoot = if ($env:M5B_REPORT_ROOT) { [IO.Path]::GetFullPath($env:M5B_REPORT_ROOT) } else { Join-Path $env:TEMP ('AI_Rules_M5B_tests_' + [guid]::NewGuid().ToString('N')) }
+$m5bRoot = [IO.Path]::GetFullPath($m5bRoot)
 if ($m5bRoot -eq $m5bRepo -or $m5bRoot.StartsWith($m5bRepo + '\', [StringComparison]::OrdinalIgnoreCase)) { throw 'M5B fixture must be outside the source repo' }
 $null = New-Item -ItemType Directory -Path $m5bRoot -Force
 function Reset-M5BProjectionModules {
@@ -81,7 +82,7 @@ function Set-M5BText([string]$Root,[string]$Relative,[string]$Text) {
 function Get-M5BInventory([string]$Root) {
     $map = @{}
     Get-ChildItem -LiteralPath $Root -Recurse -Force -File | ForEach-Object {
-        $rel = $_.FullName.Substring($Root.Length+1).Replace('\','/')
+        $rel = [IO.Path]::GetRelativePath($Root, $_.FullName).Replace('\','/')
         if ($rel -match '^(\.agents/(shared|skills|tools|rules|workflows|agents)/|\.agents/VERSION|\.(codex|claude|cursor)/|\.gitignore$)') {
             $map[$rel] = Get-M5BHash $_.FullName
         }

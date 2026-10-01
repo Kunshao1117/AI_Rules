@@ -105,7 +105,7 @@ Describe 'Shared Skill policy reference projection regression' {
         foreach ($id in @('memory-ops','memory-arch')) {
             foreach ($file in Get-ChildItem -LiteralPath (Join-Path $repoRoot ('Shared/skills/'+$id)) -Recurse -File -Filter '*.md') {
                 if ($file.FullName -match '[\\/](legacy|archive)[\\/]') { continue }
-                $rel=$file.FullName.Substring((Join-Path $repoRoot 'Shared/skills').Length).TrimStart('\','/')
+                $rel=[IO.Path]::GetRelativePath((Join-Path $repoRoot 'Shared/skills'), $file.FullName).TrimStart('\','/')
                 $source=Join-Path $projectionSource $rel
                 $null=New-Item -ItemType Directory -Force -Path (Split-Path $source -Parent)
                 Copy-Item -LiteralPath $file.FullName -Destination $source

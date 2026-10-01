@@ -2,6 +2,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $m5cRepo = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $m5cRoot = if ($env:M5C_REPORT_ROOT) { [IO.Path]::GetFullPath($env:M5C_REPORT_ROOT) } else { Join-Path $env:TEMP ('AI_Rules_M5C_tests_' + [guid]::NewGuid().ToString('N')) }
+$m5cRoot = [IO.Path]::GetFullPath($m5cRoot)
 if ($m5cRoot -eq $m5cRepo -or $m5cRoot.StartsWith($m5cRepo + '\',[StringComparison]::OrdinalIgnoreCase)) { throw 'M5C fixture must be external' }
 $null = New-Item -ItemType Directory -Path $m5cRoot -Force
 Import-Module (Join-Path $m5cRepo 'Scripts/modules/Deployment.Cohort.psm1') -Force -DisableNameChecking

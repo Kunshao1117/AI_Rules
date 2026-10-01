@@ -39,13 +39,18 @@ Describe 'M5C preserved consumer and prepared plan guards' {
         (Get-FileHash $file).Hash | Should Be $before
     }
     It 'binds official target, source, scope and bytes without creating a rollback point' {
-        $plan=Get-SharedCodexDeploymentCohortPreflight -RepoRoot $guardRepo -TargetRoot $guardRepo
-        Assert-DeploymentCohortCurrent -RepoRoot $guardRepo -TargetRoot $guardRepo -Plan $plan | Should Be $true
+        # A source checkout is not an approved installed runtime preimage.
+        # Bind a fresh isolated target; keep all real cohort boundary checks.
+        $root=Join-Path $TestDrive 'prepared-target'
+        $null=New-Item -ItemType Directory -Path $root -Force
+        $plan=Get-SharedCodexDeploymentCohortPreflight -RepoRoot $guardRepo -TargetRoot $root
+        $plan.Ready | Should Be $true
+        Assert-DeploymentCohortCurrent -RepoRoot $guardRepo -TargetRoot $root -Plan $plan | Should Be $true
         $original=$plan.ExactEntries[0].ProjectedBytesBase64
         $plan.ExactEntries[0].ProjectedBytesBase64='YWJj'
-        {Assert-DeploymentCohortCurrent -RepoRoot $guardRepo -TargetRoot $guardRepo -Plan $plan} | Should Throw 'Cohort.PlanBytesOrScopeDrift'
+        {Assert-DeploymentCohortCurrent -RepoRoot $guardRepo -TargetRoot $root -Plan $plan} | Should Throw 'Cohort.PlanBytesOrScopeDrift'
         $plan.ExactEntries[0].ProjectedBytesBase64=$original
         $plan.SourceFingerprint='a'*64
-        {Assert-DeploymentCohortCurrent -RepoRoot $guardRepo -TargetRoot $guardRepo -Plan $plan} | Should Throw 'Cohort.SourceDrift'
+        {Assert-DeploymentCohortCurrent -RepoRoot $guardRepo -TargetRoot $root -Plan $plan} | Should Throw 'Cohort.SourceDrift'
     }
 }

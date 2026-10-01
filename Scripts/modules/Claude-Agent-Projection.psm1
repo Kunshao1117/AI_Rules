@@ -38,7 +38,7 @@ function Get-ClaudeAgentSourceFiles {
     $allSourceItems = @(Get-ChildItem -LiteralPath $sourceRoot -Recurse -Force -ErrorAction Stop)
     foreach ($item in $allSourceItems) { Assert-DeploymentPathUnlinked -Path $item.FullName }
     $actual = @($allSourceItems | Where-Object { -not $_.PSIsContainer } | ForEach-Object {
-        'agents/' + $_.FullName.Substring($sourceRoot.Length).TrimStart('\','/').Replace('\','/')
+        'agents/' + (Get-DeploymentRelativePath -Root $sourceRoot -Path $_.FullName).Replace('\','/')
     })
     if (@($actual | Where-Object { $_ -cnotin $expected }).Count -gt 0) { throw 'Claude Agent source contains a non-canonical template.' }
     return $items

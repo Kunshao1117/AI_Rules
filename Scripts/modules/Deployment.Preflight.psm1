@@ -27,7 +27,7 @@ function Add-PreflightRecord {
         [string]$ProvenanceStatus = ''
     )
     $full = [IO.Path]::GetFullPath($TargetPath)
-    $relative = $full.Substring($Root.Length).TrimStart('\','/').Replace('\','/')
+    $relative = (Get-DeploymentRelativePath -Root $Root -Path $full).Replace('\','/')
     $key = $relative.ToLowerInvariant()
     $existing = $Records[$key]
     if ($existing) {
@@ -73,7 +73,8 @@ function Add-PreflightCopy {
             $action = 'ADD'; $blocking = $false
         } else {
             $result = if ($SharedSkillsRoot) {
-                $rel = [IO.Path]::GetFullPath($SourcePath).Substring([IO.Path]::GetFullPath($SharedSkillsRoot).TrimEnd('\','/').Length).TrimStart('\','/')
+                $rel = (Get-DeploymentRelativePath -Root $SharedSkillsRoot -Path $SourcePath)
+                $TargetPath = [IO.Path]::GetFullPath($TargetPath)
                 $targetSkills = $TargetPath.Substring(0,$TargetPath.Length-$rel.Length).TrimEnd('\','/')
                 Compare-SharedSkillProjection -SourcePath $SourcePath -TargetPath $TargetPath -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkills -RelativePath $rel
             } else { Compare-FrameworkFile -SourcePath $SourcePath -TargetPath $TargetPath -RelativePath (Split-Path $TargetPath -Leaf) -RequireExactHash:(!$TextEquivalent) }

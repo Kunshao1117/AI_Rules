@@ -102,7 +102,7 @@ function Get-ManagerSyncFixtureTreeHash {
 
     $records = New-Object System.Collections.Generic.List[string]
     foreach ($item in @(Get-ChildItem -LiteralPath $Root -Force -Recurse | Sort-Object FullName)) {
-        $relative = $item.FullName.Substring($Root.Length).TrimStart('\', '/') -replace '\\', '/'
+        $relative = [IO.Path]::GetRelativePath($Root, $item.FullName).TrimStart('\', '/') -replace '\\', '/'
         if ($item.PSIsContainer) {
             $records.Add("directory|$relative")
         } else {

@@ -7,7 +7,7 @@ $m3Ids = @('team-specialist-memory-docs', 'team-memory-docs-delivery-artifact',
 
 function Get-M3Fingerprint([string]$Root) {
     return (@(Get-ChildItem -LiteralPath $Root -Recurse -File -Force | ForEach-Object {
-        $_.FullName.Substring($Root.Length) + ':' + (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash
+        [IO.Path]::GetRelativePath($Root, $_.FullName) + ':' + (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash
     } | Sort-Object) -join "`n")
 }
 function Add-M3OldCopy([string]$Root, [string]$Id) {

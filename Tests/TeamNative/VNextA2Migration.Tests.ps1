@@ -15,7 +15,7 @@ function Get-A2Fingerprint([string]$Root, [string]$TargetSkillsPath = '') {
             $bytes = Get-SharedSkillProjectedBytes -SharedSkillsRoot (Join-Path $a2Shared 'skills') -SourcePath $_.FullName -TargetSkillsPath $TargetSkillsPath
             [BitConverter]::ToString([Security.Cryptography.SHA256]::Create().ComputeHash($bytes)).Replace('-','')
         } else { (Get-FileHash -LiteralPath $_.FullName).Hash }
-        $_.FullName.Substring($Root.Length) + ':' + $digest
+        [IO.Path]::GetRelativePath($Root, $_.FullName) + ':' + $digest
     } | Sort-Object) -join "`n")
 }
 function Add-A2OfficialCopy([object]$Artifact, [string]$SkillsRoot) {
@@ -31,6 +31,33 @@ function Add-A2OfficialCopy([object]$Artifact, [string]$SkillsRoot) {
     $null = New-Item -ItemType Directory -Path (Split-Path $path -Parent) -Force
     [IO.File]::WriteAllBytes($path, $bytes)
     (Get-FileHash -LiteralPath $path).Hash.ToLowerInvariant() | Should Be $Artifact.known_versions[0].sha256
+}
+
+Describe 'Windows relative-path representation regression' {
+    It 'keeps fingerprints and deployment paths independent of root length and spelling' {
+        Import-Module (Join-Path $a2Repo 'Scripts/modules/Deployment.Transaction.psm1') -Force
+        $shortRoot=Join-Path $TestDrive 'a'
+        $longRoot=Join-Path $TestDrive 'GitHub-style-temp-root-with-a-different-length'
+        foreach($root in @($shortRoot,$longRoot)) {
+            Write-A2Fixture (Join-Path $root 'skill/references/name with space #.md') 'same bytes'
+        }
+        (Get-A2Fingerprint $shortRoot) | Should Be (Get-A2Fingerprint $longRoot)
+        $alternate=Join-Path $longRoot '.\skill\..'
+        (Get-A2Fingerprint $alternate) | Should Be (Get-A2Fingerprint $longRoot)
+        (Get-DeploymentRelativePath -Root $alternate -Path (Join-Path $longRoot 'skill/references/name with space #.md')) | Should Be 'skill\references\name with space #.md'
+    }
+
+    It 'keeps a real Windows 8.3 alias and its long Pester directory equivalent when available' {
+        Import-Module (Join-Path $a2Repo 'Scripts/modules/Deployment.Transaction.psm1') -Force
+        # The workflow already requires Pester. Inspect that public test tool,
+        # without creating files in Program Files or requiring private runtime.
+        $modulePath=(Get-Module Pester).Path
+        $longRoot=[IO.Path]::GetFullPath((Split-Path $modulePath -Parent))
+        $fso=New-Object -ComObject Scripting.FileSystemObject
+        $alias=$fso.GetFolder($longRoot).ShortPath
+        (Get-A2Fingerprint $alias) | Should Be (Get-A2Fingerprint $longRoot)
+        (Get-DeploymentRelativePath -Root $alias -Path $modulePath) | Should Be (Split-Path $modulePath -Leaf)
+    }
 }
 
 Describe 'A2 workflow policy reference migration' {

@@ -2,6 +2,19 @@
 # Exception recovery for current project deployment consumers.
 # Owner: Shared/policies/references/source-runtime-surface-map.md
 
+function Get-DeploymentRelativePath {
+    param([string]$Root, [string]$Path)
+    # GetFullPath expands Windows 8.3 aliases in both supported PowerShell
+    # runtimes. Compare canonical roots before deriving a URI-relative path;
+    # never slice a long FullName using the length of a short input spelling.
+    $rootPath = [IO.Path]::GetFullPath($Root).TrimEnd('\','/') + [IO.Path]::DirectorySeparatorChar
+    $fullPath = [IO.Path]::GetFullPath($Path)
+    if (-not $fullPath.StartsWith($rootPath, [StringComparison]::OrdinalIgnoreCase)) {
+        throw "Deployment.PathOutsideRoot: $Path is outside $Root"
+    }
+    return [Uri]::UnescapeDataString(([Uri]$rootPath).MakeRelativeUri([Uri]$fullPath).ToString()).Replace('/', [IO.Path]::DirectorySeparatorChar)
+}
+
 function Get-DeploymentManagedPaths {
     param([string]$TargetRoot)
     # Never snapshot or restore Memory, context, project-skill sources, Cartridge,
@@ -320,4 +333,4 @@ function Restore-DeploymentRollbackPoint {
     [pscustomobject]@{ EvidenceId=$m.evidence_id; Restored=$true; ManagedPathCount=@($m.entries).Count; ActivationGranted=$false }
 }
 
-Export-ModuleMember -Function Invoke-DeploymentTransaction, Assert-DeploymentPathUnlinked, Resolve-DeploymentRecoveryPath, New-DeploymentRollbackPoint, Complete-DeploymentRollbackPoint, Restore-DeploymentRollbackPoint
+Export-ModuleMember -Function Get-DeploymentRelativePath, Invoke-DeploymentTransaction, Assert-DeploymentPathUnlinked, Resolve-DeploymentRecoveryPath, New-DeploymentRollbackPoint, Complete-DeploymentRollbackPoint, Restore-DeploymentRollbackPoint

@@ -64,7 +64,7 @@ function Get-TreeFingerprint {
 
     $records = @(
         Get-ChildItem -LiteralPath $Root -Force -Recurse | Sort-Object FullName | ForEach-Object {
-            $relative = $_.FullName.Substring($Root.Length).TrimStart('\', '/') -replace '\\', '/'
+            $relative = [IO.Path]::GetRelativePath($Root, $_.FullName).TrimStart('\', '/') -replace '\\', '/'
             if ($_.PSIsContainer) { "D|$relative" }
             else { "F|$relative|$((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)" }
         }

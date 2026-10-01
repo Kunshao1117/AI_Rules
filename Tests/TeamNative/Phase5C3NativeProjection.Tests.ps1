@@ -99,10 +99,11 @@ Describe 'Phase 5C3 native Agent and procedure source projection' {
             [IO.File]::AppendAllText($collision, "`nuser customization")
             $blocked = @(Get-NativeAgentProjectionDecisions -Platform $platform -SourceAgentsRoot $source -CanonicalAgentsRoot (Join-Path $repo 'Shared/agents') -TargetAgentsRoot $target)
             @($blocked | Where-Object Action -eq 'BLOCK').Count | Should Be 1
-            $stopped = $false
-            try { $null = Sync-NativeAgentProjection -Platform $platform -SourceAgentsRoot $source -CanonicalAgentsRoot (Join-Path $repo 'Shared/agents') -TargetAgentsRoot $target }
-            catch { $stopped = $true }
-            $stopped | Should Be $true
+            if ($platform -eq 'Cursor') {
+                { Sync-NativeAgentProjection -Platform $platform -SourceAgentsRoot $source -CanonicalAgentsRoot (Join-Path $repo 'Shared/agents') -TargetAgentsRoot $target } | Should Throw 'Cursor native Agent projection stopped at an existing unconfirmed target copy.'
+            } else {
+                { Sync-NativeAgentProjection -Platform $platform -SourceAgentsRoot $source -CanonicalAgentsRoot (Join-Path $repo 'Shared/agents') -TargetAgentsRoot $target } | Should Throw 'Antigravity native Agent projection stopped at an existing unconfirmed target copy.'
+            }
             (Get-Content -LiteralPath $collision -Raw) | Should Match 'user customization'
         }
     }
@@ -143,13 +144,7 @@ Describe 'Phase 5C3 native Agent and procedure source projection' {
         [IO.File]::WriteAllText($collision, 'user-authored skill')
         $decisions = @(Get-AntigravityProcedureSkillDecisions -ProcedureSkillsRoot $source -CanonicalWorkflowsRoot $workflows -SharedSkillsRoot $skills -TargetSkillsPath $targetSkills)
         @($decisions | Where-Object Action -eq 'BLOCK').Count | Should Be 1
-        $blocked = $false
-        try {
-            $null = Sync-AntigravityProcedureSkills -ProcedureSkillsRoot $source -CanonicalWorkflowsRoot $workflows -SharedSkillsRoot $skills -TargetSkillsPath $targetSkills
-        } catch {
-            $blocked = $true
-        }
-        $blocked | Should Be $true
+        { Sync-AntigravityProcedureSkills -ProcedureSkillsRoot $source -CanonicalWorkflowsRoot $workflows -SharedSkillsRoot $skills -TargetSkillsPath $targetSkills } | Should Throw 'Antigravity procedure Skill projection stopped at an existing unconfirmed target copy.'
         (Get-Content -LiteralPath $collision -Raw) | Should Be 'user-authored skill'
         Test-Path -LiteralPath (Join-Path $targetSkills 'git-checkpoint/SKILL.md') | Should Be $false
     }

@@ -12,7 +12,7 @@ function Get-A5TreeHash([string]$Root, [string]$TargetSkillsPath = '') {
             $bytes = Get-SharedSkillProjectedBytes -SharedSkillsRoot (Join-Path $a5Shared 'skills') -SourcePath $_.FullName -TargetSkillsPath $TargetSkillsPath
             [BitConverter]::ToString([Security.Cryptography.SHA256]::Create().ComputeHash($bytes)).Replace('-','')
         } else { (Get-FileHash -LiteralPath $_.FullName).Hash }
-        $_.FullName.Substring($Root.Length) + ':' + $digest
+        [IO.Path]::GetRelativePath($Root, $_.FullName) + ':' + $digest
     } | Sort-Object) -join "`n")
 }
 

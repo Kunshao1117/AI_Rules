@@ -57,11 +57,7 @@ function New-FixtureResolution([object]$Candidate) {
     }
 }
 
-function Assert-ResolutionThrows([scriptblock]$Action, [string]$Pattern) {
-    $caught = $false
-    try { $null = & $Action } catch { $caught = $_.Exception.Message -like $Pattern }
-    if (-not $caught) { throw "Expected failure: $Pattern" }
-}
+
 
 Describe 'Gate 4B invocation-scoped runtime copy resolution' {
     It 'rejects resolution inputs before a Global profile action can write' {
@@ -96,15 +92,15 @@ Describe 'Gate 4B invocation-scoped runtime copy resolution' {
         $f = New-ResolutionFixture
         $r = New-FixtureResolution $f.candidate
         Assert-RuntimeCopyResolution -Candidate $f.candidate -Resolution $r -SelectedPlatform All
-        Assert-ResolutionThrows { Assert-RuntimeCopyResolution -Candidate $f.candidate -Resolution $r -SelectedPlatform Claude } '*WholeCohortRequiresAllPlatforms*'
+        { Assert-RuntimeCopyResolution -Candidate $f.candidate -Resolution $r -SelectedPlatform Claude } | Should Throw 'RuntimeCopyResolution.WholeCohortRequiresAllPlatforms'
         $r.entries = @($r.entries | Select-Object -Skip 1)
-        Assert-ResolutionThrows { Assert-RuntimeCopyResolution -Candidate $f.candidate -Resolution $r -SelectedPlatform All } '*IncompleteResolution*'
+        { Assert-RuntimeCopyResolution -Candidate $f.candidate -Resolution $r -SelectedPlatform All } | Should Throw 'RuntimeCopyResolution.IncompleteResolution'
         $r = New-FixtureResolution $f.candidate
         $r.entries = @($r.entries) + $r.entries[0]
-        Assert-ResolutionThrows { Assert-RuntimeCopyResolution -Candidate $f.candidate -Resolution $r -SelectedPlatform All } '*IncompleteResolution*'
+        { Assert-RuntimeCopyResolution -Candidate $f.candidate -Resolution $r -SelectedPlatform All } | Should Throw 'RuntimeCopyResolution.IncompleteResolution'
         $r = New-FixtureResolution $f.candidate
         $r.entries[1].path = $r.entries[0].path
-        Assert-ResolutionThrows { Assert-RuntimeCopyResolution -Candidate $f.candidate -Resolution $r -SelectedPlatform All } '*EntryMismatch*'
+        { Assert-RuntimeCopyResolution -Candidate $f.candidate -Resolution $r -SelectedPlatform All } | Should Throw 'RuntimeCopyResolution.EntryMismatch:'
     }
 
     It 'rejects hash, source, plan, evidence, digest and target-root drift' {
@@ -113,10 +109,10 @@ Describe 'Gate 4B invocation-scoped runtime copy resolution' {
         foreach ($field in @('source_fingerprint','base_preflight_plan_hash','gate3a_evidence_hash','target_set_digest','target_root')) {
             $changed = New-FixtureResolution $f.candidate
             $changed.$field = 'drift'
-            Assert-ResolutionThrows { Assert-RuntimeCopyResolution -Candidate $f.candidate -Resolution $changed -SelectedPlatform All } '*IdentityMismatch*'
+            { Assert-RuntimeCopyResolution -Candidate $f.candidate -Resolution $changed -SelectedPlatform All } | Should Throw 'RuntimeCopyResolution.IdentityMismatch:'
         }
         [IO.File]::AppendAllText((Join-Path $f.target $f.candidate.targets[0].path), 'user edit')
-        Assert-ResolutionThrows { Assert-RuntimeCopyTargetsCurrent -Candidate $f.candidate } '*TargetHashDrift*'
+        { Assert-RuntimeCopyTargetsCurrent -Candidate $f.candidate } | Should Throw 'RuntimeCopyResolution.TargetHashDrift:'
     }
 
     It 'rejects changed file type and linked target paths' {
@@ -124,14 +120,14 @@ Describe 'Gate 4B invocation-scoped runtime copy resolution' {
         $path = Join-Path $f.target $f.candidate.targets[0].path
         Remove-Item -LiteralPath $path -Force
         $null = New-Item -ItemType Directory -Path $path
-        Assert-ResolutionThrows { Assert-RuntimeCopyTargetsCurrent -Candidate $f.candidate } '*TargetTypeDrift*'
+        { Assert-RuntimeCopyTargetsCurrent -Candidate $f.candidate } | Should Throw 'RuntimeCopyResolution.TargetTypeDrift:'
         $f = New-ResolutionFixture
         $path = Join-Path $f.target $f.candidate.targets[0].path
         $other = Join-Path $f.root 'other.txt'
         [IO.File]::WriteAllText($other, 'outside fixture target')
         Remove-Item -LiteralPath $path -Force
         $null = New-Item -ItemType SymbolicLink -Path $path -Target $other -ErrorAction Stop
-        Assert-ResolutionThrows { Assert-RuntimeCopyTargetsCurrent -Candidate $f.candidate } '*Deployment.LinkedPath*'
+        { Assert-RuntimeCopyTargetsCurrent -Candidate $f.candidate } | Should Throw 'Deployment.LinkedPath:'
 
         $f = New-ResolutionFixture
         $path = Join-Path $f.target $f.candidate.targets[0].path
@@ -141,7 +137,7 @@ Describe 'Gate 4B invocation-scoped runtime copy resolution' {
         Copy-Item -LiteralPath $path -Destination (Join-Path $otherParent 'SKILL.md')
         Remove-Item -LiteralPath $parent -Recurse -Force
         $null = New-Item -ItemType SymbolicLink -Path $parent -Target $otherParent -ErrorAction Stop
-        Assert-ResolutionThrows { Assert-RuntimeCopyTargetsCurrent -Candidate $f.candidate } '*Deployment.LinkedPath*'
+        { Assert-RuntimeCopyTargetsCurrent -Candidate $f.candidate } | Should Throw 'Deployment.LinkedPath:'
     }
 
     It 'captures all 58 outside the loader and rejects archive conflicts and partial failure' {
@@ -150,10 +146,10 @@ Describe 'Gate 4B invocation-scoped runtime copy resolution' {
         $archive = New-RuntimeCopyArchive -Candidate $f.candidate -Resolution $r -RepoRoot $resolutionRepo -ArchiveRoot $f.archive_root
         (Assert-RuntimeCopyArchive -Candidate $f.candidate -Resolution $r -ArchivePath $archive) | Should Be $true
         $archive.StartsWith($f.target,[StringComparison]::OrdinalIgnoreCase) | Should Be $false
-        Assert-ResolutionThrows { New-RuntimeCopyArchive -Candidate $f.candidate -Resolution $r -RepoRoot $resolutionRepo -ArchiveRoot $f.archive_root } '*ArchiveAlreadyExists*'
+        { New-RuntimeCopyArchive -Candidate $f.candidate -Resolution $r -RepoRoot $resolutionRepo -ArchiveRoot $f.archive_root } | Should Throw 'RuntimeCopyResolution.ArchiveAlreadyExists'
         $f = New-ResolutionFixture
         $r = New-FixtureResolution $f.candidate
-        Assert-ResolutionThrows { New-RuntimeCopyArchive -Candidate $f.candidate -Resolution $r -RepoRoot $resolutionRepo -ArchiveRoot $f.archive_root -TestFailAfterCopies 7 } '*TestPartialArchiveFailure*'
+        { New-RuntimeCopyArchive -Candidate $f.candidate -Resolution $r -RepoRoot $resolutionRepo -ArchiveRoot $f.archive_root -TestFailAfterCopies 7 } | Should Throw 'RuntimeCopyResolution.TestPartialArchiveFailure'
         Assert-RuntimeCopyTargetsCurrent -Candidate $f.candidate
         @((Get-ChildItem -LiteralPath $f.archive_root -Recurse -Filter 'archive-manifest.json' -File -ErrorAction SilentlyContinue)).Count | Should Be 0
     }
@@ -162,7 +158,7 @@ Describe 'Gate 4B invocation-scoped runtime copy resolution' {
         $f = New-ResolutionFixture
         $r = New-FixtureResolution $f.candidate
         $archive = New-RuntimeCopyArchive -Candidate $f.candidate -Resolution $r -RepoRoot $resolutionRepo -ArchiveRoot $f.archive_root
-        Assert-ResolutionThrows {
+        {
             Invoke-DeploymentTransaction -TargetRoot $f.target -Action {
                 Remove-ResolvedRuntimeCopies -Candidate $f.candidate -Resolution $r -ArchivePath $archive
                 $newPath = Join-Path $f.target '.agents/shared/vnext-fixture.md'
@@ -170,7 +166,7 @@ Describe 'Gate 4B invocation-scoped runtime copy resolution' {
                 [IO.File]::WriteAllText($newPath, 'new projection')
                 throw 'synthetic later deployment failure'
             }
-        } '*synthetic later deployment failure*'
+        } | Should Throw 'synthetic later deployment failure'
         Assert-RuntimeCopyTargetsCurrent -Candidate $f.candidate
         (Test-Path -LiteralPath (Join-Path $f.target '.agents/shared/vnext-fixture.md')) | Should Be $false
         (Assert-RuntimeCopyArchive -Candidate $f.candidate -Resolution $r -ArchivePath $archive) | Should Be $true

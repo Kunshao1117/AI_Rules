@@ -72,7 +72,8 @@ function Get-CohortProjectedBytes {
     switch ($Record.content_type) {
         'Skill' {
             $skillsRoot = Join-Path $RepoRoot 'Shared/skills'
-            $rel = [IO.Path]::GetFullPath($source).Substring([IO.Path]::GetFullPath($skillsRoot).TrimEnd('\','/').Length).TrimStart('\','/')
+            $rel = Get-DeploymentRelativePath -Root $skillsRoot -Path $source
+            $target = [IO.Path]::GetFullPath($target)
             $targetSkills = $target.Substring(0,$target.Length-$rel.Length).TrimEnd('\','/')
             $bytes = Get-SharedSkillProjectedBytes -SourcePath $source -SharedSkillsRoot $skillsRoot -TargetSkillsPath $targetSkills
             $generator = 'Get-SharedSkillProjectedBytes: source-valid active policy references + exact bytes'

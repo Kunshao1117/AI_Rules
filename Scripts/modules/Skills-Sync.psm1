@@ -226,7 +226,7 @@ function Get-SharedGovernanceReferenceRelativePaths {
         Get-ChildItem -LiteralPath $dir -Recurse -File -ErrorAction SilentlyContinue |
             Sort-Object FullName |
             ForEach-Object {
-                $rel = $_.FullName.Substring($SharedRoot.Length).TrimStart('\', '/')
+                $rel = (Get-DeploymentRelativePath -Root $SharedRoot -Path $_.FullName)
                 if (-not $references.Contains($rel)) {
                     $references.Add($rel)
                 }
@@ -252,7 +252,7 @@ function Get-ProjectToolRelativePaths {
 
     return @(Get-ChildItem -LiteralPath $ProjectToolsRoot -Recurse -File -ErrorAction SilentlyContinue |
         Sort-Object FullName |
-        ForEach-Object { $_.FullName.Substring($ProjectToolsRoot.Length).TrimStart('\', '/') })
+        ForEach-Object { (Get-DeploymentRelativePath -Root $ProjectToolsRoot -Path $_.FullName) })
 }
 
 function Get-ProjectToolDiffs {
@@ -450,10 +450,10 @@ function Sync-SharedSkills {
 
     $updated = 0
     Get-ChildItem -LiteralPath $SharedSkillsRoot -Recurse -File | Where-Object {
-        $relPath = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
+        $relPath = (Get-DeploymentRelativePath -Root $SharedSkillsRoot -Path $_.FullName)
         Test-SharedSkillRelativePathIncluded -RelativePath $relPath
     } | ForEach-Object {
-        $rel = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
+        $rel = (Get-DeploymentRelativePath -Root $SharedSkillsRoot -Path $_.FullName)
         $tgtFile = Join-Path $TargetSkillsPath $rel
         $bytes = Get-SharedSkillProjectedBytes -SourcePath $_.FullName -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $TargetSkillsPath
         $result = Compare-SharedSkillProjection -SourcePath $_.FullName -TargetPath $tgtFile -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $TargetSkillsPath -RelativePath $rel

@@ -93,11 +93,11 @@ function Get-ManagerSharedSkillDiffs {
 
     Get-ChildItem -LiteralPath $SharedSkillsRoot -Recurse -File -ErrorAction SilentlyContinue |
         Where-Object {
-            $relPath = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
+            $relPath = (Get-DeploymentRelativePath -Root $SharedSkillsRoot -Path $_.FullName)
             Test-SharedSkillRelativePathIncluded -RelativePath $relPath
         } |
         ForEach-Object {
-            $rel = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
+            $rel = (Get-DeploymentRelativePath -Root $SharedSkillsRoot -Path $_.FullName)
             $targetFile = Join-Path $TargetSkillsPath $rel
             $diff = Compare-SharedSkillProjection -SourcePath $_.FullName -TargetPath $targetFile -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $TargetSkillsPath -RelativePath $rel
             if ($diff.Status -in @("NEW", "CHANGED")) { $diffs += $diff }
@@ -117,11 +117,11 @@ function Get-ManagerCodexWorkflowDiffs {
 
     Get-ChildItem -LiteralPath $WorkflowSkillsPath -Recurse -File -ErrorAction SilentlyContinue |
         Where-Object {
-            $rel = $_.FullName.Substring($WorkflowSkillsPath.Length).TrimStart('\', '/')
+            $rel = (Get-DeploymentRelativePath -Root $WorkflowSkillsPath -Path $_.FullName)
             Test-CodexWorkflowRelativePathIncluded -RelativePath $rel
         } |
         ForEach-Object {
-            $rel = $_.FullName.Substring($WorkflowSkillsPath.Length).TrimStart('\', '/')
+            $rel = (Get-DeploymentRelativePath -Root $WorkflowSkillsPath -Path $_.FullName)
             $targetFile = Join-Path $TargetSkillsPath $rel
             $diff = Compare-FrameworkFile -SourcePath $_.FullName -TargetPath $targetFile -RelativePath $rel
             if ($diff.Status -in @("NEW", "CHANGED")) { $diffs += $diff }

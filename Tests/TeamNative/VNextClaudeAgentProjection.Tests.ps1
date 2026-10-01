@@ -70,10 +70,7 @@ Describe 'Gate 3B Claude Agent projection' {
         }
         [IO.File]::WriteAllText((Join-Path $dest 'extra/explorer.md'), 'not a canonical role', [Text.UTF8Encoding]::new($false))
         (Test-Path -LiteralPath (Join-Path $dest 'extra/explorer.md') -PathType Leaf) | Should Be $true
-        $blocked = $false
-        try { $null = @(Get-ClaudeAgentSourceFiles -FrameworkRoot $framework -SharedRoot (Join-Path $agentRepo 'Shared')) }
-        catch { $blocked = $_.Exception.Message -like '*non-canonical template*' }
-        $blocked | Should Be $true
+        { $null = @(Get-ClaudeAgentSourceFiles -FrameworkRoot $framework -SharedRoot (Join-Path $agentRepo 'Shared')) } | Should Throw 'Claude Agent source contains a non-canonical template.'
     }
 
     It 'plans all six as ADD for an existing Upgrade target with no Agents' {

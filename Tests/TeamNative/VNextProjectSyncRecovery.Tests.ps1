@@ -11,7 +11,7 @@ function Write-RecoveryFixture {
 function Get-RecoveryFingerprint {
     param([string]$Root)
     (@(Get-ChildItem -LiteralPath $Root -Recurse -File -Force | ForEach-Object {
-        $_.FullName.Substring($Root.Length) + ':' + (Get-FileHash -LiteralPath $_.FullName).Hash
+        [IO.Path]::GetRelativePath($Root, $_.FullName) + ':' + (Get-FileHash -LiteralPath $_.FullName).Hash
     } | Sort-Object) -join "`n")
 }
 
@@ -20,7 +20,11 @@ Describe 'vNext foundation Manager apply recovery and preview' {
         $fixture = Join-Path $TestDrive ([guid]::NewGuid().ToString('N'))
         $source = Join-Path $fixture 'source'
         $target = Join-Path $fixture 'project'
-        $module = Import-Module (Join-Path $sourceRepo 'Scripts/modules/Manager.ProjectSync.psm1') -Force -PassThru
+        $modulePath = [IO.Path]::GetFullPath((Join-Path $sourceRepo 'Scripts/modules/Manager.ProjectSync.psm1'))
+        Import-Module $modulePath -Force
+        $owners = @(Get-Module -All | Where-Object { $_.Path -eq $modulePath })
+        if ($owners.Count -ne 1) { throw "Ambiguous Manager recovery module identity: $modulePath" }
+        $module = $owners[0]
         Write-RecoveryFixture (Join-Path $source 'Codex/.codex/AGENTS.md') ([IO.File]::ReadAllText((Join-Path $sourceRepo 'Codex/.codex/AGENTS.md')))
         Write-RecoveryFixture (Join-Path $source 'Shared/policies/adapters/codex-subagent-invocation.md') ([IO.File]::ReadAllText((Join-Path $sourceRepo 'Shared/policies/adapters/codex-subagent-invocation.md')))
         Write-RecoveryFixture (Join-Path $source 'Shared/skills/sample/SKILL.md') 'new shared skill'
@@ -68,12 +72,22 @@ Describe 'vNext foundation Manager apply recovery and preview' {
     }
 
     It 'restores the previous version and every copied file when the final marker write fails' {
-        Mock -CommandName Set-ManagerProjectVersionFile -ModuleName $module.Name -MockWith {
-            [IO.File]::WriteAllText($Path, 'partial version write')
-            throw 'synthetic version write failure'
+        # Pester 3 selects ModuleName ambiguously when earlier tests loaded a
+        # copied framework. Inject and restore in the exact source instance.
+        $original = & $module { (Get-Command Set-ManagerProjectVersionFile).ScriptBlock }
+        & $module {
+            function script:Set-ManagerProjectVersionFile {
+                param([string]$Path,[string]$Version,[switch]$Apply)
+                [IO.File]::WriteAllText($Path, 'partial version write')
+                throw 'synthetic version write failure'
+            }
         }
         $before = Get-RecoveryFingerprint $target
-        { Invoke-ManagerProjectRulesSync @arguments -Apply } | Should Throw 'synthetic version write failure'
-        (Get-RecoveryFingerprint $target) | Should Be $before
+        try {
+            { & $module { param($argsMap) Invoke-ManagerProjectRulesSync @argsMap -Apply } $arguments } | Should Throw 'synthetic version write failure'
+            (Get-RecoveryFingerprint $target) | Should Be $before
+        } finally {
+            & $module { param($body) $null=$ExecutionContext.InvokeProvider.Item.Set('Function:\script:Set-ManagerProjectVersionFile',$body,$true,$true) } $original
+        }
     }
 }
