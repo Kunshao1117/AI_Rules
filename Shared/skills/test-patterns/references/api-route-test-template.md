@@ -1,109 +1,29 @@
-# API Route Test Template
+# API and Contract Test Design Template
 
-> Use this template when writing tests for API route handlers.
-> Adapt the framework-specific syntax based on `_system` memory card's tech stack.
+Use the actual project client/server/schema and existing test harness. Read
+scripts/configuration directly; no Memory or Node runner prerequisite.
 
-## Template Structure
+1. State the boundary: in-process handler, serialized request/response, middleware,
+   actual service/store integration or consumer compatibility. Name bypassed layers.
+2. Arrange the relevant identity, payload, resource and failure state using
+   controlled fixtures or the authorized integration environment.
+3. Send the operation through that boundary and assert the contract's response,
+   required/optional fields, types, errors and relevant observable side effects.
+4. Restore test-owned state even on failure without touching unrelated resources.
 
-```typescript
-import { describe, it, expect, beforeEach, afterEach } from '{test-framework}';
-// Import the route handler or test client
+| Candidate scenario | Contract question |
+|---|---|
+| Valid request | Correct status/result, response shape and relevant state change? |
+| Missing/invalid input | Is the actual validation contract enforced before effects? |
+| Missing/expired identity | Is the operation rejected or handled as specified? |
+| Insufficient permission | Is access denied without leaking protected data? |
+| Missing resource/duplicate creation | Does the API preserve its declared semantics? |
+| Dependency failure | Safe response and diagnostic behavior, no stack/query/secret leak? |
+| Offline/timeout/corrupt response | Does the consumer reach its accepted failure/retry state? |
 
-describe('{HTTP_METHOD} {route_path}', () => {
-  // ── Setup ──
-  beforeEach(() => {
-    // Initialize test database state or mock services
-  });
-
-  afterEach(() => {
-    // Clean up test state
-  });
-
-  // ── Happy Path ──
-  describe('正常請求 (Happy Path)', () => {
-    it('should return {expected_status} with valid payload', async () => {
-      const response = await request({
-        method: '{HTTP_METHOD}',
-        url: '{route_path}',
-        body: { /* valid payload */ },
-        headers: { Authorization: 'Bearer {valid_token}' },
-      });
-      expect(response.status).toBe({expected_status});
-      expect(response.body).toMatchObject({ /* expected shape */ });
-    });
-  });
-
-  // ── Validation Errors (400) ──
-  describe('格式錯誤 (Validation)', () => {
-    it('should return 400 when required fields are missing', async () => {
-      const response = await request({
-        method: '{HTTP_METHOD}',
-        url: '{route_path}',
-        body: { /* incomplete payload */ },
-      });
-      expect(response.status).toBe(400);
-    });
-
-    it('should return 400 when field types are invalid', async () => {
-      const response = await request({
-        method: '{HTTP_METHOD}',
-        url: '{route_path}',
-        body: { /* wrong types */ },
-      });
-      expect(response.status).toBe(400);
-    });
-  });
-
-  // ── Authentication (401) ──
-  describe('未登入 (Unauthenticated)', () => {
-    it('should return 401 without auth token', async () => {
-      const response = await request({
-        method: '{HTTP_METHOD}',
-        url: '{route_path}',
-        body: { /* valid payload */ },
-        // No Authorization header
-      });
-      expect(response.status).toBe(401);
-    });
-  });
-
-  // ── Authorization (403) ──
-  describe('無權限 (Unauthorized)', () => {
-    it('should return 403 with insufficient permissions', async () => {
-      const response = await request({
-        method: '{HTTP_METHOD}',
-        url: '{route_path}',
-        body: { /* valid payload */ },
-        headers: { Authorization: 'Bearer {limited_token}' },
-      });
-      expect(response.status).toBe(403);
-    });
-  });
-
-  // ── Not Found (404) ──
-  describe('資源不存在 (Not Found)', () => {
-    it('should return 404 for non-existent resource', async () => {
-      const response = await request({
-        method: '{HTTP_METHOD}',
-        url: '{route_path}/non-existent-id',
-      });
-      expect(response.status).toBe(404);
-    });
-  });
-
-  // ── Server Error Isolation (500) ──
-  describe('伺服器錯誤隔離 (Error Isolation)', () => {
-    it('should return 500 without leaking internals on DB failure', async () => {
-      // Mock database to throw
-      const response = await request({
-        method: '{HTTP_METHOD}',
-        url: '{route_path}',
-        body: { /* valid payload */ },
-      });
-      expect(response.status).toBe(500);
-      expect(response.body).not.toHaveProperty('stack');
-      expect(response.body).not.toHaveProperty('query');
-    });
-  });
-});
-```
+HTTP 200/201/400/401/403/404/409/500 are possible contract-specific examples,
+not universal expected codes. Expired auth need not always redirect; forbidden
+responses need not share one retry UI. Follow the product's real contract.
+Compare consumer and producer fields, serialization, defaults and error shape.
+A mocked repository tests its consumer assumptions, not real database behavior.
+Do not require a mock when the selected claim is an authorized real integration.

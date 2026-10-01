@@ -10,10 +10,12 @@ alwaysApply: false
 
 Load these deployed copies on demand. Do not copy long procedures into always-on rules.
 
-- Routing, authorization, and Team activation: `.agents/shared/policies/execution-routing.md`, `.agents/shared/policies/team-native-core.md`, `.agents/shared/policies/subagent-invocation.md`
+- Routing, authorization, and Team activation: `.agents/shared/policies/execution-routing.md`, `.agents/shared/policies/authorization-resolution.md`, `.agents/shared/policies/subagent-invocation.md`
 - Director language, grounding, and evidence wording: `.agents/shared/policies/language-governance.md`, `.agents/shared/policies/grounding-governance.md`
-- Team stations, validation, review, memory/docs, and completion: `.agents/skills/team-*/SKILL.md` and `.agents/shared/policies/workflow-orchestration.md` (operational copies also exist under `.cursor/skills/team-*`)
+- General Team roles: `.agents/shared/policies/agent-governance.md`, `.agents/shared/agents/_registry.md`; model intent: `.agents/shared/policies/model-profile-routing.md`.
+- Project Memory methods: `.agents/skills/memory-ops/SKILL.md` only when relevant history, recall, or Memory Impact Review applies; `.agents/skills/memory-arch/SKILL.md` only for owner/topology ambiguity. Legacy Team Memory aliases are reference-only, never active Skill or Agent routes.
+- Frozen compatibility evidence: `.agents/shared/policies/references/legacy-memory-team-transition.md` only for an existing legacy consumer; ordinary work uses `.agents/shared/policies/memory-governance.md` and the canonical authorization/completion owners.
 - Cursor adapter and capability boundary: `.agents/shared/policies/adapters/cursor-subagent-invocation.md`, `.agents/shared/platform-capability-matrix.md`
 - Source/runtime surfaces: `.agents/shared/policies/references/source-runtime-surface-map.md`
 
-Workflow entries live in `.cursor/skills/`. Shared governance references live in `.agents/shared/`. Project memory lives in `.agents/memory/`.
+Workflow entries live in `.cursor/skills/`. Shared governance references live in `.agents/shared/`. AI_Rules project Memory cards live in `.agents/memory/`, separate from Project Context under `.agents/context/`. Source preparation does not prove this Cursor runtime was deployed or M5C cut over.

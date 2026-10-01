@@ -65,9 +65,10 @@ external mutation.
 | Antigravity platform entry | `Antigravity/.agents/rules/AGENTS.md` |
 | Workflow route evidence | `Shared/workflow-capability-evidence-matrix.md` |
 | Workflow sequence | `Shared/policies/workflow-orchestration.md` |
-| Team-Native role and station governance | `Shared/policies/team-native-core.md` and `Shared/skills/team-*` |
+| General Agent roles and assignments | `Shared/policies/agent-governance.md` and `Shared/agents/_registry.md` |
 | Subagent execution-channel mapping | `Shared/policies/subagent-invocation.md` |
-| Completion targets and states | `Shared/policies/references/completion-state-machine.md` |
+| General work completion | `Shared/policies/completion-policy.md` |
+| Frozen Memory / legacy completion targets | `Shared/policies/references/completion-state-machine.md` |
 | Protected action catalog | `Shared/policies/references/protected-action-registry.md` |
 | Memory write and commit procedure | `Shared/skills/memory-ops/SKILL.md` |
 | Source/runtime parity | `Shared/policies/references/source-runtime-surface-map.md` |

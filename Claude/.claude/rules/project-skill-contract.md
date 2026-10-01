@@ -1,22 +1,13 @@
-# [PROJECT SKILL CONTRACT]
+# [PROJECT SKILL COMPATIBILITY]
 
-> Load when:
-> - Creating or modifying derived skills under `.agents/project_skills/`.
-> - Running `/12_skill_forge`.
-
-## Project Skill Gate
-
-```text
-[PROJECT SKILL GATE] Before creating a derived project skill:
-├── Has the skill draft been submitted to the Director through an artifact or conversation output?
-│   └── NO -> [HALT]「🔴 [FORGE HALT] 衍生技能草稿未送審，不得寫入磁碟。」
-├── Does YAML frontmatter contain `name`, `description`, and `metadata(origin: project)`?
-│   └── NO -> Auto-fix, retry at most twice, then HALT if still failing.
-├── Is the storage path `.agents/project_skills/<name>/SKILL.md`?
-│   └── NO -> Correct the path, then continue.
-└── Does the skill name conflict with an existing `.agents/skills/` index entry?
-    └── YES -> HALT and ask the Director to choose overwrite or rename.
-```
+This Rule remains auto-loaded to preserve the existing project-skill deployment
+and frozen `memory_awareness` field below. It does not activate skill creation,
+select an Agent role, require a new approval phrase, or authorize a write.
+When project-skill creation is actually selected, use `Shared/skill-governance.md`
+and the task-relevant `Shared/skills/skill-factory/SKILL.md` for Skill decisions;
+`Shared/policies/authorization-resolution.md` owns action authority and
+`Shared/agents/_registry.md` owns formal roles. Deployed projects read their
+`.agents/shared/` copies. No legacy Writer/SRE role is created here.
 
 ## Upgrade Protection Statement
 
@@ -33,9 +24,3 @@ metadata:
   memory_awareness: none|read|full
   tool_scope: [...]
 ```
-
-## Security And Compliance Mandate
-
-> Inherits: `.claude/commands/_shared/_security_footer.md` (Role Lock Gate)
-
-- **Role**: `Writer/SRE`. Creating a derived project skill is a write operation and requires the Writer role.

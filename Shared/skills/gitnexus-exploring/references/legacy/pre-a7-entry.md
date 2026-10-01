@@ -1,0 +1,102 @@
+# Historical A7 compatibility reference
+
+Original provider recipes and governance below are historical data only, not active
+methods, triggers, authorization or a reason to load another Skill. Read only for
+compatibility investigation. Current methods use Shared/policies/references/gitnexus-guide.md.
+
+<!-- PRE_A7_ORIGINAL_START -->
+---
+name: gitnexus-exploring
+description: >
+  程式碼庫探索與架構走查：GitNexus 程式碼庫探索、架構走查、執行流程理解與陌生模組檢視；codebase exploration.
+  Use when: 想了解程式碼怎麼運作、what calls this function、auth flow、
+  專案結構、陌生模組或 execution flow。
+  DO NOT use when: 已有明確 bug 要追蹤（用 gitnexus-debugging），
+  或要安全重構、改名、搬移檔案（用 gitnexus-refactoring）。
+metadata:
+  author: gitnexus
+  version: "0.1.0"
+  origin: framework
+  kind: operational
+---
+
+# Exploring Codebases with GitNexus
+
+GitNexus Optional Pack method/reference; retain this skill in place. Use only
+when this task needs GitNexus graph capability selected under
+`Shared/policies/capability-resolution.md`. Provider/tool names below are
+recipes, not current-session availability evidence. Missing provider does not
+authorize installation/login; consider existing alternatives and disclose gaps.
+A selected provider never creates a worker, execution mode or independent review.
+
+## When to Use
+
+- "How does authentication work?"
+- "What's the project structure?"
+- "Show me the main components"
+- "Where is the database logic?"
+- Understanding code you haven't seen before
+
+## Workflow
+
+```
+1. READ gitnexus://repos                          → Discover indexed repos
+2. READ gitnexus://repo/{name}/context             → Codebase overview, check staleness
+3. gitnexus_query({query: "<what you want to understand>"})  → Find related execution flows
+4. gitnexus_context({name: "<symbol>"})            → Deep dive on specific symbol
+5. READ gitnexus://repo/{name}/process/{name}      → Trace full execution flow
+```
+
+> A stale index limits graph evidence. Do not automatically analyze; use existing alternative evidence or follow the separately authorized refresh boundary in `gitnexus-cli`.
+
+## Checklist
+
+```
+- [ ] READ gitnexus://repo/{name}/context
+- [ ] gitnexus_query for the concept you want to understand
+- [ ] Review returned processes (execution flows)
+- [ ] gitnexus_context on key symbols for callers/callees
+- [ ] READ process resource for full execution traces
+- [ ] Read source files for implementation details
+```
+
+## Resources
+
+| Resource                                | What you get                                            |
+| --------------------------------------- | ------------------------------------------------------- |
+| `gitnexus://repo/{name}/context`        | Stats, staleness warning (~150 tokens)                  |
+| `gitnexus://repo/{name}/clusters`       | All functional areas with cohesion scores (~300 tokens) |
+| `gitnexus://repo/{name}/cluster/{name}` | Area members with file paths (~500 tokens)              |
+| `gitnexus://repo/{name}/process/{name}` | Step-by-step execution trace (~200 tokens)              |
+
+## Tools
+
+**gitnexus_query** — find execution flows related to a concept:
+
+```
+gitnexus_query({query: "payment processing"})
+→ Processes: CheckoutFlow, RefundFlow, WebhookHandler
+→ Symbols grouped by flow with file locations
+```
+
+**gitnexus_context** — 360-degree view of a symbol:
+
+```
+gitnexus_context({name: "validateUser"})
+→ Incoming calls: loginHandler, apiMiddleware
+→ Outgoing calls: checkToken, getUserById
+→ Processes: LoginFlow (step 2/5), TokenRefresh (step 1/3)
+```
+
+## Example: "How does payment processing work?"
+
+```
+1. READ gitnexus://repo/my-app/context       → 918 symbols, 45 processes
+2. gitnexus_query({query: "payment processing"})
+   → CheckoutFlow: processPayment → validateCard → chargeStripe
+   → RefundFlow: initiateRefund → calculateRefund → processRefund
+3. gitnexus_context({name: "processPayment"})
+   → Incoming: checkoutHandler, webhookHandler
+   → Outgoing: validateCard, chargeStripe, saveTransaction
+4. Read src/payments/processor.ts for implementation details
+```

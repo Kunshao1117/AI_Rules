@@ -1,0 +1,192 @@
+# Compatibility reference — team-task-board
+
+This is a non-invocable Reference, not an active Skill or general governance gate.
+This document retains the original field/schema owner for legacy consumers; general work uses `Shared/policies/agent-governance.md`.
+Original metadata and trigger text below are compatibility data only. Resolve
+old IDs/paths through `Shared/policies/references/legacy-skill-migration.md`;
+retain frozen roles, context approval, bundle and receipt semantics.
+
+<!-- ARCHIVED_SKILL_BODY_START -->
+---
+name: team-task-board
+description: >
+  團隊任務板與交付件模板（Infra）：Task board and specialist artifact templates for
+  captain-led programming work. Use when: 編程團隊治理已觸發，需要建立隊長任務板、
+  專家站點、證據/變更交付件、隔離或文字交付、隊長受限例外紀錄或收尾檢查表。
+  DO NOT use when: 純討論、非程式答覆，或 Team mode 尚未啟動；
+  English: pure discussion, non-coding answers, or inactive team mode.
+metadata:
+  author: antigravity
+  version: "1.2"
+  origin: framework
+  kind: operational
+  memory_awareness: none
+  tool_scope: ["filesystem:read"]
+---
+
+General Agent roles and bounded assignments are owned by
+`Shared/agents/_registry.md` and `Shared/policies/agent-governance.md`.
+Model intent belongs to `Shared/policies/model-profile-routing.md`;
+the platform owns worker lifecycle. This retained Skill/reference is not a
+formal vNext Agent definition or a general Team prerequisite.
+
+## Legacy compatibility boundary
+
+The delimited body below is legacy, compatibility-only, and not required for
+general vNext work, including Team. Its original paths, anchors and meanings
+remain available to frozen Memory consumers. Do not derive Memory records,
+authority or completion from a vNext assignment. Do not load this body merely
+because execution mode is Team.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_START -->
+
+# Team Task Board
+
+## Purpose
+
+This skill is the routing and hard-gate surface for Captain Team Board work. Keep canonical field
+catalogs, full templates, artifact formats, dispatch details, direct-exception rules, and closeout
+checklists in `references/`.
+
+Use it only after `execution-routing.md` resolves delegated topology, including
+an explicit team, subagent, delegation, or Team-Native request. Do not cite
+these board fields as Team-Native evidence for ordinary Direct work, including
+source, policy, documentation, multi-file, or multi-step work that has no
+delegated-topology trigger.
+
+## Source Chain
+
+- `Shared/policies/team-native-core.md`: Team-Native priority, station-first rule, delivery
+  sequence, and completion boundary.
+- `Shared/policies/execution-routing.md`: Direct/delegated topology and the
+  independent change-impact and action-risk axes.
+- `Shared/policies/workflow-orchestration.md`: Workflow route, operation mode, board state,
+  dispatch waves, and source/deployed sync.
+- `Shared/policies/authorization-resolution.md`: Authorization fields and natural-language
+  binding.
+- `Shared/policies/team-trace-evidence.md`: Full trace field audit and invalid trace patterns.
+- `Shared/policies/references/legacy-skills/team-role-boundaries/REFERENCE.md`: Role boundary checks.
+- `Shared/skills/team-station-handoff-packet/SKILL.md`: Station handoff payloads.
+- `Shared/policies/references/legacy-skills/team-completion-gate/REFERENCE.md`: Completion gate.
+- `references/board-field-catalog.md`: Canonical board fields and value catalog.
+- `references/board-templates-and-delivery.md`: Board templates, assignment payloads, delivery
+  forms, dispatch rules, direct exceptions, and closeout checklist.
+
+## Team Object Model
+
+Record `station_family`, `formal_station`, `substation_task`, `member_assignment`,
+`execution_channel`, and `delivery_artifact` separately. Stations are containers, members are role
+instances, channels are execution routes, and artifacts are evidence. Do not collapse them.
+
+The board owns board-facing canonical fields and value sets through
+`references/board-field-catalog.md`. Handoff packets consume those fields for startup payloads,
+completion consumes them as artifact-chain evidence, and `Shared/policies/team-trace-evidence.md`
+audits trace completeness. If the same field appears in multiple files, keep the catalog value here
+and add only layer-specific use notes elsewhere.
+
+Reduction is allowed only at substation task or member count while preserving station families,
+roles, artifact types, evidence ownership, and completion honesty. Use
+`references/board-templates-and-delivery.md#full-board-table` for valid execution channels and
+delivery forms.
+
+## Board Selection
+
+After Team mode is active, choose operation mode first.
+
+Use a lightweight board for low-risk explanation or read-only inspection, a full board for
+source/workflow/public-contract impact, and an experiment board for sandbox/prototype work. All
+shapes still record operation mode, reduced station reason, and blocked/unverified/not-applicable
+states when applicable.
+
+In active Team mode, canonical `board_state` values are `draft`, `formal-readonly`, and
+`formal-write`. `draft` cannot dispatch formal specialists or satisfy formal evidence.
+`formal-readonly` can run no-write evidence, deep-read, research, validation planning, review
+evidence, and standby stations. `formal-write` requires scope-bound authorization for the named
+phase, file set, station, command, or protected action. Display labels such as "draft board" or
+"formal board" must not be written back into machine trace values; legacy `formal` must be narrowed
+to either `formal-readonly` or `formal-write`.
+
+## Required Board References
+
+Use references instead of copying long lists or templates into this file:
+
+- Field set and values: `references/board-field-catalog.md#canonical-board-fields` and
+  `references/board-field-catalog.md#field-value-catalog`.
+- Board header and station table: `references/board-templates-and-delivery.md#board-header-template`
+  and `references/board-templates-and-delivery.md#full-board-table`.
+- Specialist assignment payload:
+  `references/board-templates-and-delivery.md#specialist-assignment-template`.
+- Delivery forms and artifact formats:
+  `references/board-templates-and-delivery.md#delivery-forms`.
+- Dispatch, timeout, replacement, and late-result handling:
+  `references/board-templates-and-delivery.md#dispatch-rules`.
+- Direct exception register:
+  `references/board-templates-and-delivery.md#direct-exception-register`.
+- Closeout checklist:
+  `references/board-templates-and-delivery.md#board-closeout-checklist`.
+
+Director-facing board rendering consumes `Shared/policies/language-governance.md`, heading
+`Captain Integration And Director Output Gate`.
+This skill does not define or restate the complete Director-facing synthesis order.
+Board-facing machine keys stay canonical English and must not be translated, renamed, or derived
+locally.
+Team-member delivery artifacts, board-facing payloads, field catalogs, and board tables are
+internal evidence, not the Director-facing report body.
+Director-facing display uses Traditional Chinese meaning first; board fields, technical
+identifiers, paths, commands, and canonical state values appear only as supporting evidence,
+location, or precision after the Chinese explanation.
+Director-facing tables use Traditional Chinese column labels first and keep canonical identifiers in
+parentheses only when precision is needed.
+Before Director-facing display, synthesize board and artifact evidence according to that owner
+policy. A raw board table, raw field catalog, or raw delivery artifact must not be the main body.
+
+## Hard Gates
+
+- Every applicable formal station records the canonical board field set from
+  `references/board-field-catalog.md`; missing required fields keeps the station blocked or
+  unverified and cannot support `complete`.
+- `station_mode`, `context_visibility`, and `handoff_ownership` are mandatory on applicable formal
+  stations.
+- Current external evidence is requested through board grounding fields and routed to a formal
+  `external-research` station; the captain may log and route the request but does not become the
+  evidence owner. Downstream stations consume `external_research_artifact_id` and preserve
+  `partial`, `no-evidence`, `conflicted`, `blocked`, and `unverified` states instead of upgrading
+  them to verified evidence.
+- Returned formal station artifacts include a `minimal_reference_packet` with read scope,
+  specialist evidence, canonical rule references, unread scope, missing evidence, and recommended
+  transition. Missing required packet fields keep the artifact unverified or routed back to the
+  owner station; captain broad search cannot repair station-owned evidence.
+- Main-worktree implementation defaults to a station-owned `change-delivery` station under
+  `formal-write`, authorization phase `implementation-change-delivery`, exact file allowlist, dirty
+  diff read, `handoff_ownership: station-owned`, and `captain_authored: false`.
+- `change-application` is a station-owned fallback for returned isolated/text artifacts, explicit
+  integration work, or assigned generated/deployed-copy sync.
+- `platform-nondelegable-gate` is valid only when the platform cannot delegate the physical write or
+  protected tool call; it records scope and direct-exception evidence without transferring
+  protected-action authority to the captain.
+- Open only the current dispatch wave. Later waves wait for returned output or an honest
+  blocked/unverified/risk state.
+- Review and validation start only after the implementation or change-application handoff bundle
+  exists or is honestly blocked, unverified, or risk-closed.
+- Memory/docs starts only after validation and review reach terminal evidence states. An
+  implementation artifact may provide `memory_impact` and `memory_docs_handoff`, but memory/docs
+  disposition consumes the validated and reviewed artifact chain.
+- Closeout planning must bind canonical `closeout_target` from
+  `Shared/policies/references/completion-state-machine.md`, protected memory phase applicability,
+  memory card scope, and the `memory_commit` phase before those protected phases become eligible.
+  This is an in-flow protected branch, not an ad hoc tail authorization.
+- `source-level` approval alone does not authorize memory mutation. It may close the source layer
+  with `protected-follow-up-pending`, while `protected-memory-write` and `protected-memory-commit`
+  require their own scope-bound protected authorization.
+- In active Team mode, `direct` is not a station state, execution route, execution channel,
+  platform route, or execution mode. Record Team exceptions only in
+  `direct_exception` / `direct_exceptions`; ordinary Direct work never uses them.
+
+## Completion Boundary
+
+Before any completion claim, apply
+`references/board-templates-and-delivery.md#board-closeout-checklist`,
+`Shared/policies/references/legacy-skills/team-completion-gate/REFERENCE.md`, and `Shared/policies/team-trace-evidence.md`.
+Report unresolved evidence gaps as `blocked`, `unverified`, or `closed-with-director-risk`.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_END -->

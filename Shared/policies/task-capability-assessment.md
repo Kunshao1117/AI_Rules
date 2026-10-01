@@ -1,3 +1,19 @@
+
+# Retired model assessment owner
+
+`Shared/policies/model-profile-routing.md` is the sole active Shared profile
+owner. Its fast/balanced/deep semantics replace legacy scoring for general work.
+The following historical scoring is not an active selection fallback.
+
+## Legacy compatibility boundary
+
+The delimited body below is legacy, compatibility-only, and not required for
+general vNext work, including Team. Its original paths, anchors and meanings
+remain available to frozen Memory consumers. Do not derive Memory records,
+authority or completion from a vNext assignment. Do not load this body merely
+because execution mode is Team.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_START -->
 # Task Capability Assessment Policy
 
 This policy is the unique generic owner of task-specific model and task fit.
@@ -50,7 +66,7 @@ Requested execution, accepted execution, and the applied execution receipt are
 separate layers. Their execution-spec semantics remain in
 `Shared/policies/references/workflow-execution-spec-contract.md`; their
 accepted and observed ledger fields remain in
-`Shared/skills/team-task-board/references/board-field-channel-and-receipts.md`.
+`Shared/policies/references/legacy-skills/team-task-board/references/board-field-channel-and-receipts.md`.
 
 ## Degradation Order
 
@@ -69,3 +85,5 @@ This assessment cannot choose a model or vendor configuration, edit receipt
 layers, enter a platform payload, auto-select Team execution, or grant
 authorization or protected action. It reports task fit and capability gaps
 only.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_END -->

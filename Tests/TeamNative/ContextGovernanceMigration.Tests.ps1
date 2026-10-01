@@ -1,10 +1,13 @@
-$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+﻿$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 Import-Module (Join-Path $repoRoot 'Scripts\modules\Skills-Sync.psm1') -Force
+Import-Module (Join-Path $repoRoot 'Scripts\modules\Skill-Migration.psm1') -Force
 
 function Get-CanonicalText {
     param([Parameter(Mandatory = $true)][string]$RelativePath)
 
-    Get-Content -LiteralPath (Join-Path $repoRoot $RelativePath) -Raw
+    $resolved = Resolve-LegacySharedSkillReference -SharedRoot (Join-Path $repoRoot 'Shared') -Reference $RelativePath
+    $path = if ($resolved) { $resolved.Path } else { Join-Path $repoRoot $RelativePath }
+    Get-Content -LiteralPath $path -Raw
 }
 
 Describe 'Context governance migration' {
@@ -134,6 +137,10 @@ Describe 'Context governance migration' {
         foreach ($pair in $pairs) {
             $sourcePath = Join-Path $repoRoot $pair.Source
             $runtimePath = Join-Path $runtimeRoot $pair.Runtime
+            $sourceAlias = Resolve-LegacySharedSkillReference -SharedRoot (Join-Path $repoRoot 'Shared') -Reference $pair.Source
+            $runtimeAlias = Resolve-LegacySharedSkillReference -SharedRoot (Join-Path $runtimeRoot '.agents/shared') -Reference $pair.Runtime
+            if ($sourceAlias) { $sourcePath = $sourceAlias.Path }
+            if ($runtimeAlias) { $runtimePath = $runtimeAlias.Path }
             (Get-FileHash -LiteralPath $sourcePath -Algorithm SHA256).Hash | Should Be (Get-FileHash -LiteralPath $runtimePath -Algorithm SHA256).Hash
         }
         } finally {

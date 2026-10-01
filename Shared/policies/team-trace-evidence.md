@@ -1,3 +1,19 @@
+
+General Agent roles and bounded assignments are owned by
+`Shared/agents/_registry.md` and `Shared/policies/agent-governance.md`.
+Model intent belongs to `Shared/policies/model-profile-routing.md`;
+the platform owns worker lifecycle. This retained Skill/reference is not a
+formal vNext Agent definition or a general Team prerequisite.
+
+## Legacy compatibility boundary
+
+The delimited body below is legacy, compatibility-only, and not required for
+general vNext work, including Team. Its original paths, anchors and meanings
+remain available to frozen Memory consumers. Do not derive Memory records,
+authority or completion from a vNext assignment. Do not load this body merely
+because execution mode is Team.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_START -->
 # Team Trace Evidence Contract
 
 This policy is the routing contract for Team-Native trace evidence. It is a
@@ -14,10 +30,10 @@ sequence; this policy routes trace requirements to their canonical owners.
 Workflow names, approval controls, platform modes, and channel availability are
 context or evidence only. They never create unbounded write authority or a
 protected follow-on phase. Team trace applies only after
-`Shared/policies/execution-routing.md` resolves `execution_topology: delegated`.
-Direct work requires no Team trace regardless of `local`, `boundary`, or
-`systemic` impact, or `observe` or `local_write` risk; it uses Direct
-completion and evidence instead.
+`Shared/policies/execution-routing.md` resolves `execution_mode: team`.
+Direct and Assisted require no Team trace regardless of `local`, `boundary`, or
+`systemic` impact, or `observe` or `local_work` authorization; it uses the existing focused
+verification and completion policy instead; Memory semantics remain frozen.
 
 ## Canonical Owners
 
@@ -25,11 +41,11 @@ completion and evidence instead.
 |---|---|
 | Trace-only field groups, hard gates, and audit results | `references/team-trace-fields.md` |
 | Invalid trace patterns | `references/team-trace-invalid-patterns.md` |
-| Shared board fields and generic values | `Shared/skills/team-task-board/references/board-field-catalog.md` |
-| Slice roster, role separation, findings, and repair rounds | `Shared/skills/team-task-board/references/board-field-slice-and-roles.md` |
-| Channel lifecycle, requested/accepted/applied receipts, and late returns | `Shared/skills/team-task-board/references/board-field-channel-and-receipts.md` |
-| Packet overlay and routing | `Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md` |
-| Channel-only wait and lifecycle transitions | `Shared/skills/team-station-handoff-packet/references/execution-lifecycle.md` |
+| Shared board fields and generic values | `Shared/policies/references/legacy-skills/team-task-board/references/board-field-catalog.md` |
+| Slice roster, role separation, findings, and repair rounds | `Shared/policies/references/legacy-skills/team-task-board/references/board-field-slice-and-roles.md` |
+| Channel lifecycle, requested/accepted/applied receipts, and late returns | `Shared/policies/references/legacy-skills/team-task-board/references/board-field-channel-and-receipts.md` |
+| Packet overlay and routing | `Shared/policies/references/legacy-skills/team-station-handoff-packet/references/packet-schema-and-routing.md` |
+| Channel-only wait and lifecycle transitions | `Shared/policies/references/legacy-skills/team-station-handoff-packet/references/execution-lifecycle.md` |
 | Status, completion, authorization, protected action, hook, exception, and copy-map values | Their respective files under `Shared/policies/references/` |
 
 Consumers must cite the owner above instead of copying its field table or
@@ -95,3 +111,5 @@ replacement record defined by the slice/role owner.
 Do not copy raw task traces into source memory. Source memory may record a
 stable validation route, durable governance fact, or short cycle event only
 after the source change lands and the memory phase is separately authorized.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_END -->

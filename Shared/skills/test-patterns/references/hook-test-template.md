@@ -1,116 +1,25 @@
-# Hook / State Machine Test Template
+# State Machine, Store and Hook Test Design
 
-> Use this template when writing tests for React Hooks, state machines, or state management logic.
-> Covers: initial state, state transitions, and error states.
+Use the project's existing state-test utilities only when relevant. This method
+does not require React or a particular hook-testing package.
 
-## Template Structure
-
-```typescript
-import { describe, it, expect } from '{test-framework}';
-import { renderHook, act } from '@testing-library/react-hooks';
-import { {hookName} } from '{module-path}';
-
-describe('{hookName}', () => {
-  // ── Initial State (初始狀態) ──
-  describe('初始狀態', () => {
-    it('should initialize with default values', () => {
-      const { result } = renderHook(() => {hookName}());
-      expect(result.current.state).toBe(/* initial state */);
-      expect(result.current.data).toBeNull();
-      expect(result.current.error).toBeNull();
-      expect(result.current.isLoading).toBe(false);
-    });
-
-    it('should accept initial parameters', () => {
-      const { result } = renderHook(() => {hookName}(/* params */));
-      expect(result.current.state).toBe(/* expected initial */);
-    });
-  });
-
-  // ── State Transitions (狀態轉換) ──
-  describe('狀態轉換', () => {
-    it('should transition to loading state on trigger', async () => {
-      const { result } = renderHook(() => {hookName}());
-      act(() => {
-        result.current.trigger();
-      });
-      expect(result.current.isLoading).toBe(true);
-    });
-
-    it('should transition to success state with data', async () => {
-      const { result, waitForNextUpdate } = renderHook(() => {hookName}());
-      act(() => {
-        result.current.trigger();
-      });
-      await waitForNextUpdate();
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.data).toEqual(/* expected data */);
-    });
-
-    it('should handle sequential state changes correctly', async () => {
-      const { result } = renderHook(() => {hookName}());
-      // First action
-      act(() => { result.current.actionA(); });
-      expect(result.current.state).toBe('stateA');
-      // Second action
-      act(() => { result.current.actionB(); });
-      expect(result.current.state).toBe('stateB');
-    });
-  });
-
-  // ── Error States (錯誤狀態) ──
-  describe('錯誤狀態', () => {
-    it('should transition to error state on failure', async () => {
-      // Mock API to fail
-      const { result, waitForNextUpdate } = renderHook(() => {hookName}());
-      act(() => {
-        result.current.trigger();
-      });
-      await waitForNextUpdate();
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.error).toBeTruthy();
-      expect(result.current.data).toBeNull();
-    });
-
-    it('should allow recovery from error state', async () => {
-      const { result } = renderHook(() => {hookName}());
-      // Enter error state
-      act(() => { result.current.reset(); });
-      expect(result.current.error).toBeNull();
-      expect(result.current.state).toBe(/* initial state */);
-    });
-  });
-
-  // ── Cleanup (清理) ──
-  describe('清理', () => {
-    it('should clean up on unmount', () => {
-      const { unmount } = renderHook(() => {hookName}());
-      // Ensure no errors or memory leaks on unmount
-      expect(() => unmount()).not.toThrow();
-    });
-  });
-});
+```text
+construct state with known parameters
+assert the specified initial state
+send the relevant event/action
+observe the intended transition or observable output
+assert the next state and applicable invariant
+dispose/reset the test-owned instance
 ```
 
-## For Non-React State Machines (非 React 狀態機)
+Cover selected initial parameters, valid sequences, invalid events, async
+loading/success/error, recovery and cleanup. An invalid event may be ignored or
+rejected depending on the contract. A reset should assert the actual restored
+state. Cleanup should inspect relevant released subscriptions/timers/resources,
+not merely assert that dispose did not throw.
 
-```typescript
-describe('{stateMachineName}', () => {
-  it('should start in initial state', () => {
-    const machine = create{StateMachine}();
-    expect(machine.currentState).toBe('idle');
-  });
-
-  it('should transition on valid event', () => {
-    const machine = create{StateMachine}();
-    machine.send('START');
-    expect(machine.currentState).toBe('running');
-  });
-
-  it('should ignore invalid events in current state', () => {
-    const machine = create{StateMachine}();
-    machine.send('INVALID_EVENT');
-    expect(machine.currentState).toBe('idle'); // unchanged
-  });
-});
-```
+For async transitions, wait for a contract-relevant observable condition; do not
+depend on an incidental render count or the next arbitrary update. For races,
+control ordering where feasible, then check the accepted winner/cancellation or
+consistency rule. Concurrent requests need not both succeed. Use fake time only
+if it preserves the timing behavior under test; report what remains unexercised.

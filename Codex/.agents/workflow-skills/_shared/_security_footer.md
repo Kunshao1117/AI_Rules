@@ -1,5 +1,13 @@
 # [共用閘門：安全頁尾（SHARED GATE: Security Footer）]
 
+一般動作只依 `Shared/policies/authorization-resolution.md` 判斷 observe、local_work 與 protected；
+執行方式只依 `Shared/policies/execution-routing.md` 判斷 Direct、Assisted、Team。
+工具種類或工作流角色不會授權動作，也不會強制 Team；一般本機工作不需站點或 magic GO。
+明確動作與目標已被授權時，不重複要求口令；平台拒絕仍須停止該動作，禁止換工具繞過。
+下列角色矩陣與站點條款只適用 legacy Team internals；Memory 欄位及原契約保持凍結。
+安全與破壞性動作檢查仍適用一般工作，但不得把已有授權當成尚未授權。
+
+
 ## 角色權限矩陣（Role Permission Matrix）
 
 各工作流在 `[SECURITY & COMPLIANCE MANDATE]` 區段宣告角色。
@@ -48,7 +56,7 @@
 
 ## 破壞性命令攔截閘門（Turbo Safety Gate）
 
-如果 Bash 指令包含下列任一破壞性模式，必須輸出 justification block，並等待總監明確授權。
+如果 Bash 指令包含下列任一破壞性模式，必須輸出 justification block，僅在具體動作或目標尚未授權時詢問。
 即使 automation 或 todo 標記要求自動繼續，也適用此規則。
 
 | 危險模式 | 風險說明 |

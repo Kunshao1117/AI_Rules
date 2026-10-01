@@ -23,7 +23,7 @@
     可選的下載 receipt JSON 輸出路徑。未指定時寫入暫存目錄。
 
 .PARAMETER RemoveOrphans
-    是否移除目標中已不存在於源碼的孤兒檔案（僅 Upgrade 模式有效）
+    Upgrade 模式列報並保留未知所有權的孤兒檔案；退休只採明確雜湊名單
 
 .EXAMPLE
     # 安全遠端啟動；可將 $installerArgs 改為 @('-Target','D:\MyProject') 或 @('-Mode','Upgrade')

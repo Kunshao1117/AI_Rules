@@ -1,20 +1,115 @@
 # Grounding Governance Policy
 
-This policy is the AI_Rules source of truth for external grounding, freshness checks, source ranking, and missing-evidence reporting.
+
+## General verification/review/completion ownership
+
+General verification scope/independence, evidence selection and failure
+classification belong only to `Shared/policies/verification-strategy.md`.
+Review applicability and judgment belong to `Shared/policies/review-governance.md`;
+general task completion belongs to `Shared/policies/completion-policy.md`.
+These policies supersede old escalation, review-trigger and completion clauses
+in this method/consumer. No Skill hit requires a role, full suite or Memory chain.
+Task methods remain here; frozen Memory/legacy release retain their own contracts.
+
+## General Agent applicability
+
+`Shared/policies/agent-governance.md` and `Shared/agents/_registry.md` own
+general Team assignments. Main is the ordinary implementer. In this mixed
+domain reference, every station, fixed roster, board, handoff, delivery-slice,
+dispatch-wave, retained-member, timing or execution-spec lifecycle prescription
+is legacy compatibility-only, not required for general vNext work, including
+Team. Read those prescriptions only for a frozen consumer that requires them.
+Domain procedures, grounding/evidence quality and protected gates remain.
+General Verification/Review/Completion now use their canonical policy owners;
+frozen Memory semantics remain in force. Old completion targets, status ladders
+and fixed evidence chains below are compatibility-only for frozen consumers.
+No vNext assignment is a substitute for a Memory bundle or receipt.
+
+This policy is the AI_Rules owner of general factual-judgment grounding:
+whether evidence supports a factual claim, how strong that claim may be, and
+how to handle missing or conflicting evidence. It also owns external grounding,
+freshness checks, contextual source preference, and missing-evidence reporting.
+It does not select verification scope, method or independence
+(`verification-strategy.md`), define requirements (`requirement-precision.md`),
+authorize actions (`authorization-resolution.md`), decide task completion
+(`completion-policy.md`), or own Director-facing wording
+(`language-governance.md`).
 Workflow entries, skills, matrices, and platform adapters must reference this policy.
 They must not copy external-research rules into local playbooks.
+
+`memory-governance.md` applies this source-freshness boundary to Memory Impact
+Review: its conclusion identifies current relevant source evidence and card
+version/scope. A later change that may affect a reviewed claim, owner, tracking
+relationship or valid scope requires reassessment of that conclusion. Review
+and Verification retain their independent freshness owners.
+
+## General Factual Judgment Boundary
+
+- A user sets the goal and may constrain scope, tools, browsing, login, external
+  access, and evidence sources. Those constraints limit what can be established;
+  they do not change what the available evidence means. If required evidence is
+  excluded or unavailable, lower the conclusion's strength and name the gap.
+  Do not fill it with model recall and call the result confirmed.
+- Model-internal knowledge can explain stable concepts, help understand a
+  request, form hypotheses, and plan a search. It is not, by itself, evidence
+  of current external, project-specific, version-specific, runtime, deployed,
+  security-sensitive, or other verifiable factual state. Ordinary conceptual
+  explanations need no external search when no current factual claim depends
+  on one. Model knowledge is not proof.
+- A canonical governance source establishes the applicable specification:
+  what should be done. Whether an action happened or a system currently
+  conforms is an empirical question requiring current evidence. A policy that
+  requires authorization for a push does not prove that no push occurred.
+- Source labels alone do not confer empirical truth. Memory, project context,
+  database records, README/docs, policies, tool output, logs, tests, Agent or
+  Reviewer/Verifier reports, user statements, prior AI answers, and external
+  documents may supply relevant context or evidence; assess what each actually
+  observed and can support. Memory can point to source-backed knowledge, but
+  does not override newer or more direct current evidence merely because a
+  card says `Current Truth`. Check its scope, date, environment, staleness, and
+  whether referenced source was deployed. This does not alter Memory contracts.
+- A user's direct account can establish their stated goal or reported
+  experience; it is not automatically proof of a separate external or deployed
+  state. A database row such as `status = completed` establishes what that
+  database currently records, not that the underlying work satisfies
+  `completion-policy.md`. A test supports only the behavior, environment, and
+  conditions it actually covered; verification selection stays with
+  `verification-strategy.md`.
+- Judge a factual source for directness, recency, applicable scope, and
+  verifiability for the exact question. If credible evidence conflicts, check
+  whether time, environment, scope, or version explains the difference; seek
+  the smallest more direct, current, repeatable check when permitted. Revise
+  the conclusion if resolved; otherwise preserve the conflict or uncertainty.
+  Do not select a convenient side merely to provide one answer.
+- Earlier assistant conclusions, summaries, recommendations, and Agent reports
+  are revisable when better relevant evidence arrives, even if repeated or
+  previously accepted. Correctness takes priority over consistency; do not
+  reopen unrelated history during ordinary work.
+- Hypotheses, scenarios, proposals, and requested advocacy may adopt stated
+  assumptions or a viewpoint, but those do not become verified facts in a
+  later report. User-defined acceptance may establish that the user's named
+  threshold was met; it does not erase underlying factual failures or replace
+  the completion owner's judgment.
+- Neutral judgment neither agrees with nor opposes the user by default. Match
+  conclusion strength to evidence. For consequential decisions, contested
+  claims, or high uncertainty, consider contradictory evidence and alternative
+  explanations; do not impose a Team, Reviewer, or red-team step on every
+  ordinary task.
 
 ## Source Of Truth And Precedence
 
 - Framework source: `Shared/policies/grounding-governance.md`.
 - Deployed runtime copy: `.agents/shared/policies/grounding-governance.md`.
 - The source file is authoritative.
-- The deployed copy must remain content-identical after any grounding-governance change.
+- After an authorized runtime sync or deployment, the deployed copy must match
+  the authoritative source. A source-only change does not itself update runtime.
 - Machine-readable station fields and the detailed external-research request contract live in:
   - source: `Shared/policies/references/workflow-execution-spec-contract.md`;
   - deployed: `.agents/shared/policies/references/workflow-execution-spec-contract.md`.
-- Local project files, lockfiles, and tool output govern the installed project state.
-- Official or primary external sources govern current external facts.
+- Local project files, lockfiles, and tool output are evidence candidates for
+  the installed project state within their observed scope.
+- Official or primary external sources are preferred evidence candidates for
+  current external facts within their applicable date, version, and scope.
 - If this policy conflicts with a workflow-local checklist, keep this policy as the external-grounding source.
 - Move task-specific procedure back to the workflow or skill.
 
@@ -36,7 +131,7 @@ It must not be reported as verified.
 ## No-Search Exceptions
 
 External grounding may be skipped only when no current external fact is needed.
-The decision must be fully supported by current conversation, provided snippets, local source files, or stable general knowledge.
+The decision must be fully supported by current conversation, provided snippets, local source files, or stable general knowledge for the exact claim each can support.
 Non-mutating local tool output can also support the no-search exception.
 
 When skipping is material to the conclusion, record `external_grounding_state: not-required`.
@@ -56,16 +151,25 @@ Use the lightest grounding tier that can support the decision:
 | `G0` | local-grounded | Current local source, lockfile, log, test, non-mutating tool output, or provided artifact supports the claim. |
 | `G1` | stable model knowledge | Low-risk stable concept only; mark as assumption or general reasoning, not verified fact. |
 | `G2` | quick-check | One to three official or primary sources, with `checked_at`, source tier, and a short evidence artifact. |
-| `G3` | formal external research | Architecture, governance, security, deploy, pricing, law, standards, cross-source conflict, or other decision-impacting freshness risk; requires `external_research_artifact_id`. |
+| `G3` | formal external research | Architecture, governance, security, deploy, pricing, law, standards, cross-source conflict, or other decision-impacting freshness risk; record dated sources, conflicts and evidence limits. Legacy Team traces retain `external_research_artifact_id` where their contract requires it. |
 | `G4` | unverified/blocked | Required evidence cannot be checked, is inaccessible, conflicts, or remains stale but affects a decision. |
 
-`G2` may be produced as a concise quick-check artifact by an external-research station or a tool-specific docs lookup that feeds external-research artifact semantics.
-`G3` remains formal station-owned external research.
-Other stations may consume the returned artifact ID and gaps, but they do not become owners of external evidence.
+`G2` may be a concise check by Main, a bounded helper, an assigned Researcher,
+or a fitting documentation tool. `G3` requires a sufficiently attributable
+research result, not a Team or station. Main may gather it directly; a formal
+Researcher is assigned only when execution and Agent governance justify that
+separation. Legacy Team consumers retain their existing station artifact ID
+and handoff contract; another station's use of that artifact does not make it
+the external-grounding owner.
 
 ## Source Ranking
 
-Use the strongest available source tier and label weaker evidence honestly.
+Use the most relevant, sufficiently strong available evidence for the exact
+question and label weaker evidence honestly. Source tiers guide external
+research; they are not a universal ranking or numerical score of empirical
+truth. Directness, recency, scope, and verifiability may make local version or
+observed runtime evidence more probative for an installed environment than
+newer general documentation.
 
 Source tiers:
 
@@ -84,7 +188,9 @@ Source tiers:
   - Use boundary: use as leads only.
   - Verification boundary: do not claim verification from them alone.
 
-Official and primary sources take precedence over summaries, memory, and model knowledge.
+For matching external rules, APIs, and versions, prefer applicable official or
+primary sources over summaries, memory, and model knowledge. This preference
+does not prove a different environment's current behavior.
 If sources disagree, report the conflict.
 Use the evidence that best matches the local version, date, and authority.
 
@@ -102,7 +208,15 @@ If latest documentation conflicts with the project-locked version:
 - mark unsupported or unconfirmed version behavior as `partial` or `unverified`;
 - do not upgrade dependencies, regenerate clients, or change platform state without a separate scoped authorization gate.
 
-## Team Mode Grounding Responsibilities
+## General research ownership
+
+Main may obtain external facts directly in any mode. A bounded research helper
+is Assisted; a separately responsible Researcher uses the formal role when Team
+is justified. Evidence tier and freshness never require a station or provider.
+Researcher supplies current facts and checked-at sources, not final architecture
+ownership. Existing source ranking and missing-evidence rules below still apply.
+
+## Legacy Team Mode Grounding Responsibilities
 
 When Team mode is active, the captain coordinates routing, board/channel state, station artifact receipt, blockers, and synthesis.
 Authorization binding stays with `authorization-resolution.md` and scoped Director evidence.

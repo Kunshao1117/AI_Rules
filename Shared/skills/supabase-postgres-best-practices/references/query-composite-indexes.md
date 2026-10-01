@@ -1,44 +1,16 @@
----
-title: Create Composite Indexes for Multi-Column Queries
-impact: HIGH
-impactDescription: 5-10x faster multi-column queries
-tags: indexes, composite-index, multi-column, query-optimization
----
+# Compare composite indexes against the query workload
 
-## Create Composite Indexes for Multi-Column Queries
+For equality plus range predicates, equality columns before the range column are a useful
+candidate, not a universal ordering rule. Compare selectivity, ordering, joins, other queries
+and index maintenance/storage cost. Separate indexes with bitmap combination may be suitable.
 
-When queries filter on multiple columns, a composite index is more efficient than separate single-column indexes.
-
-**Incorrect (separate indexes require bitmap scan):**
-
+Illustrative candidate for an existing query filtering status and created_at:
 ```sql
--- Two separate indexes
-create index orders_status_idx on orders (status);
-create index orders_created_idx on orders (created_at);
-
--- Query must combine both indexes (slower)
-select * from orders where status = 'pending' and created_at > '2024-01-01';
+create index orders_status_created_idx on public.orders (status, created_at);
 ```
+This is a proposed schema change, not an instruction to execute. Leading-column constraints
+often narrow a B-tree scan best; a non-leading-column query is not categorically unsupported.
+Planner/version/workload may allow skip scan or another index scan. Check the actual plan
+before choosing or removing indexes; no guaranteed speedup is implied.
 
-**Correct (composite index):**
-
-```sql
--- Single composite index (leftmost column first for equality checks)
-create index orders_status_created_idx on orders (status, created_at);
-
--- Query uses one efficient index scan
-select * from orders where status = 'pending' and created_at > '2024-01-01';
-```
-
-**Column order matters** - place equality columns first, range columns last:
-
-```sql
--- Good: status (=) before created_at (>)
-create index idx on orders (status, created_at);
-
--- Works for: WHERE status = 'pending'
--- Works for: WHERE status = 'pending' AND created_at > '2024-01-01'
--- Does NOT work for: WHERE created_at > '2024-01-01' (leftmost prefix rule)
-```
-
-Reference: [Multicolumn Indexes](https://www.postgresql.org/docs/current/indexes-multicolumn.html)
+Source: [Multicolumn indexes](https://www.postgresql.org/docs/current/indexes-multicolumn.html).

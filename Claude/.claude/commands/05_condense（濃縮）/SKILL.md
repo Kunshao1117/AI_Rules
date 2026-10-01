@@ -1,7 +1,7 @@
 ---
 name: 05_condense
 description: "專案濃縮初始化、萃取 PROJECT IDENTITY、掃描代碼庫並寫入永久上下文（使用時機：永久上下文 / permanent context）。不適用：只要讀取既有記憶或一般架構說明（DO NOT use when）。"
-required_skills: [memory-ops, memory-arch, tech-stack-protocol, project-context-protocol, programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
+required_skills: [tech-stack-protocol]
 memory_awareness: full
 user-invocable: true
 metadata:
@@ -18,6 +18,16 @@ metadata:
   automation_safe: false
 ---
 
+A2 owner references: `Shared/policies/project-context-protocol.md`, `Shared/policies/references/legacy-skills/team-task-board/REFERENCE.md`, `Shared/policies/references/legacy-skills/team-change-delivery-artifact/REFERENCE.md`, `Shared/policies/references/legacy-skills/team-validation-delivery-artifact/REFERENCE.md`, `Shared/policies/references/legacy-skills/team-review-delivery-artifact/REFERENCE.md`.
+Frozen relation IDs still use `Shared/policies/references/legacy-skill-migration.md`; read documents without Skill invocation or changed Memory semantics. Relevant Memory methods are discovered on demand; the old delivery artifact is not an ordinary command dependency.
+
+
+Governance references: `Shared/policies/agent-governance.md`, `Shared/policies/agent-governance.md`, `Shared/policies/completion-policy.md`, `Shared/agents/_registry.md`.
+Frozen legacy dependencies use `Shared/policies/references/legacy-skill-migration.md`
+as document references for existing frozen consumers only; do not activate
+Memory roles, bundles, or the old artifact Skill in ordinary work.
+
+
 ## Workflow Entry Contract
 
 This Claude command entry is a thin route entry. It selects workflow row `05`, applies the platform adapter, and points to shared procedures when details are needed. It does not grant write, memory, git, release, deployment, install, credential, or external-state authority.
@@ -32,8 +42,8 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 4. Read `.agents/shared/platform-capability-matrix.md` and apply only this platform's adapter semantics.
 5. When editing workflow entries, skills, shared policies, or governance boundaries, read `.agents/shared/skill-governance.md` before changing placement or wording.
 6. When a concrete phase checklist is needed, read `.agents/shared/workflow-stage-procedures.md` and use section `05 Condense`. Do not copy that procedure back into this entry.
-7. For Team-Native work, load `.claude/skills/programming-team-governance/SKILL.md`, `.claude/skills/team-task-board/SKILL.md`, `.claude/skills/team-station-handoff-packet/SKILL.md`, `.claude/skills/team-role-boundaries/SKILL.md`, and `.claude/skills/team-completion-gate/SKILL.md`; load delivery-artifact skills only when their stations apply.
-8. When memory evidence applies, use `.claude/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is `unverified` or `blocked`.
+7. For ordinary work, use `.agents/shared/policies/memory-governance.md` for relevant Memory Impact Review, `.agents/shared/policies/authorization-resolution.md` for writes, and `.agents/shared/policies/completion-policy.md` for completion. Team selection uses the formal Agent owner, not old governance Skills.
+8. Discover `memory-ops` when Memory evidence or card method is relevant; discover `memory-arch` only for owner/topology ambiguity. Existing frozen consumers may resolve legacy board, bundle, and receipt references through `.agents/shared/policies/references/legacy-memory-team-transition.md`, never as an ordinary command dependency.
 
 ## Workflow Entry Slimming Guard
 
@@ -55,6 +65,6 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 ## Completion Boundary
 
 - Report evidence status as `sufficient`, `partial`, `unverified`, `blocked`, or `not-applicable` whenever the result depends on files, tools, runtime behavior, platform capability, external state, or memory evidence.
-- Full team completion requires separated implementation change delivery, memory/docs delivery, validation delivery, review delivery, source/deployed parity when relevant, and completion audit evidence.
+- Ordinary completion follows `.agents/shared/policies/completion-policy.md`; a no-write Memory review needs no invented receipt or fixed memory/docs delivery. Frozen legacy consumers retain their own completion contract only when applicable.
 - Missing delivery artifacts, missing parity, unavailable channels, or Director-accepted residual risk must be reported as `blocked`, `unverified`, or `closed-with-director-risk`, not `complete`.
 - This entry must stay thin. If more procedure detail is needed, add or update the shared reference instead of expanding this file.

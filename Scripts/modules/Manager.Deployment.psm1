@@ -3,6 +3,7 @@
 Import-Module (Join-Path $PSScriptRoot "Core.psm1") -Force
 Import-Module (Join-Path $PSScriptRoot "Memory-Migration.psm1") -Force
 Import-Module (Join-Path $PSScriptRoot "Manager.ProjectSync.psm1") -Force
+Import-Module (Join-Path $PSScriptRoot "Antigravity-Legacy-Workflow-Projection.psm1") -Force
 function Write-ManagerHeader {
     param([string]$Title)
     Write-Host ""
@@ -295,12 +296,16 @@ function Get-ManagerOrphanReports {
     )
 
     $reports = @()
+    $legacyWorkflow = Get-AntigravityLegacyWorkflowProjection `
+        -ManifestPath (Join-Path $RepoRoot 'Antigravity/legacy-workflow-projection.json') `
+        -SourceWorkflowsRoot (Join-Path $RepoRoot 'Antigravity/.agents/workflows')
+    $legacyScanDirs = if ($legacyWorkflow.Project) { @('rules', 'workflows') } else { @('rules') }
     $platforms = @(
         [PSCustomObject]@{
             Name = 'Antigravity'
             Source = Join-Path $RepoRoot 'Antigravity\.agents'
             Target = Join-Path $TargetRoot '.agents'
-            ScanDirs = @('rules', 'workflows')
+            ScanDirs = $legacyScanDirs
             ProtectedDirs = @('memory', 'project_skills', 'context')
         },
         [PSCustomObject]@{
@@ -347,7 +352,7 @@ function Invoke-ManagerCleanupOrphans {
         [switch]$RemoveOrphans
     )
 
-    Write-ManagerHeader "清理孤兒檔案"
+    Write-ManagerHeader "檢查並保留未知所有權的孤兒檔案"
     $targetRoot = (Resolve-Path $Target).Path
     $reports = Get-ManagerOrphanReports -RepoRoot $RepoRoot -TargetRoot $targetRoot
     $total = 0
@@ -365,7 +370,7 @@ function Invoke-ManagerCleanupOrphans {
         return
     }
     if (-not $Apply -or -not $RemoveOrphans) {
-        Write-Host "Dry-run：未指定 -Apply -RemoveOrphans，不會刪除檔案。" -ForegroundColor Yellow
+        Write-Host "預覽完成：未知所有權檔案一律保留；-Apply -RemoveOrphans 僅列報保留原因，退休須有明確雜湊名單。" -ForegroundColor Yellow
         return
     }
 

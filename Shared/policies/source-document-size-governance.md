@@ -224,7 +224,7 @@ Shared policy/reference split signals:
 
 This policy is the sole owner of `SKILL.md` size limits. A hand-maintained
 `SKILL.md` must remain at or below 500 physical lines and approximately 5,000
-tokens. Consumer skills, including `code-quality`, cite this rule and must not
+tokens. Consumers, including `Shared/policies/code-quality.md`, cite this rule and must not
 restate, replace, or soften either limit.
 
 Move long examples, templates, lookup tables, scenario catalogs, and tool

@@ -1,4 +1,29 @@
+
+General Agent roles and bounded assignments are owned by
+`Shared/agents/_registry.md` and `Shared/policies/agent-governance.md`.
+Model intent belongs to `Shared/policies/model-profile-routing.md`;
+the platform owns worker lifecycle. This retained Skill/reference is not a
+formal vNext Agent definition or a general Team prerequisite.
+
+## Legacy compatibility boundary
+
+The delimited body below is legacy, compatibility-only, and not required for
+general vNext work, including Team. Its original paths, anchors and meanings
+remain available to frozen Memory consumers. Do not derive Memory records,
+authority or completion from a vNext assignment. Do not load this body merely
+because execution mode is Team.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_START -->
 # Workflow Execution Spec Contract
+
+Execution mode comes only from `Shared/policies/execution-routing.md`;
+action authority comes independently from `Shared/policies/authorization-resolution.md`.
+Direct is default; bounded helper use is Assisted, without Team machinery.
+Workflow names determine phase sequence only, never mode or authorization.
+Board, station, role-instance, handoff, wave, formal-readonly/formal-write,
+and Team artifact requirements below apply only to resolved Team internals.
+Frozen Memory consumers retain their original contract, phase and evidence;
+this scope boundary neither grants Memory authority nor decides its completion.
 
 This reference defines the machine-readable `execution_spec` contract for workflow execution.
 It is the canonical place for executable workflow fields.
@@ -157,9 +182,9 @@ Required field meanings, in order:
   - Acceptance-sized implementation/review/validation unit. Carries the slice schema below, or a
     legacy fallback that infers only the current authorized acceptance unit.
 - `completion_bundle_ref`
-  - Reference to the completion-bundle record for a new formal source route
-    targeting `process-complete`, or `not-applicable` for an explicitly
-    source-level route.
+  - Reference to the completion-bundle record for a legacy bundle-backed
+    formal source route targeting `process-complete`, or `not-applicable` for
+    an ordinary vNext route or an explicitly source-level legacy route.
   - The referenced contract owns candidate memory-phase bindings, receipt
     freshness, delivery-slice revision, legacy handling, and exceptions. This
     field neither authorizes a phase nor expands an allowlist.
@@ -357,10 +382,10 @@ or execution evidence. Do not place named models in profile tables, policy
 defaults, or persistent profile presets.
 
 Requested, accepted, and applied execution state remain separate. This execution spec owns the
-requested intent and acceptance receipt shape; `Shared/skills/team-station-handoff-packet/SKILL.md`
+requested intent and acceptance receipt shape; `Shared/policies/references/legacy-skills/team-station-handoff-packet/REFERENCE.md`
 carries the immutable requested snapshot, accepted request provenance, and returned application
 receipt; and
-`Shared/skills/team-task-board/references/board-field-channel-and-receipts.md`
+`Shared/policies/references/legacy-skills/team-task-board/references/board-field-channel-and-receipts.md`
 owns canonical accepted and observed receipt ledger state. Missing, partial, or
 conflicting acceptance keeps dependent execution evidence unverified and never
 supplies applied values. Missing or partial application receipt remains
@@ -513,7 +538,7 @@ extension_ceiling = 2 * initial_hard_budget
 ```
 
 This reference owns only the workload quantiles and formulas above.
-`Shared/skills/team-station-handoff-packet/references/execution-lifecycle.md` consumes them to
+`Shared/policies/references/legacy-skills/team-station-handoff-packet/references/execution-lifecycle.md` consumes them to
 materialize the immutable wait baseline and owns all deadline revisions, health/progress,
 extension counting, applied-receipt rebase, probe/resume, replacement, cancellation, and late
 return. `initial_wait_budget` remains the compatibility alias for `initial_hard_budget`; the
@@ -561,7 +586,7 @@ must pass `scope_expansion_request` and scoped authorization resolution when the
 
 The slice-boundary checkpoint above is a ledger checkpoint, not a Git commit.
 A long-work Git checkpoint is a separate protected route owned by
-`Shared/skills/team-specialist-git-checkpoint/SKILL.md`.
+`Shared/policies/references/legacy-skills/team-specialist-git-checkpoint/REFERENCE.md`.
 
 Multi-slice work, context compaction, cross-thread handoff, agent replacement,
 phase transition, or a risk-bearing next action may set checkpoint eligibility
@@ -894,3 +919,5 @@ Only `external_grounding_state: sufficient` can support verified language for th
 claim. `partial`, `no-evidence`, `conflicted`, `blocked`, and `unverified` remain visible loop
 states and must route to a conservative decision, a narrower research question, a downstream owner
 station, or `closed-with-director-risk`.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_END -->

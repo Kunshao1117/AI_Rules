@@ -6,6 +6,12 @@ instead of defining local phase lists.
 
 Authorization phases are not workflow names. They bind one visible target,
 scope, station, file set, command, protected action, and expiry.
+The Memory phases below remain canonical for current physical Memory mutation
+and unmigrated frozen consumers. The post-M5 ordinary same-scope target in
+`authorization-resolution.md` adds no new phase; it does not inherit one of
+these legacy phase bindings or use them as a second authorization owner.
+Before evidenced cutover for the exact project/runtime, the first-true frozen
+rule keeps all real Memory mutation on this legacy phase path.
 
 ## Canonical Phases
 
@@ -17,9 +23,9 @@ scope, station, file set, command, protected action, and expiry.
 | `product-runtime-execution` | external observation plus scoped local runtime write | no | An allowlisted product performs approved observation and creates exact non-destructive local runtime artifacts. It does not authorize agent secret handling, source write, Git, account/order action, deployment, or external mutation. |
 | `validation` | read/execute check | no | Non-mutating validation or test evidence. Validation does not repair the implementation under validation. |
 | `review` | read judgment | no | Independent review evidence from a role that did not author the deliverable. |
-| `memory-docs` | read/disposition | no | Memory/docs impact attribution and proposed disposition. This does not mutate memory. |
-| `protected-memory-write` | memory mutation | yes | Authorized memory-card write or project context mutation. |
-| `protected-memory-commit` | memory commit | yes | Authorized durable memory commit after protected memory write when required. |
+| `memory-docs` | read/disposition | no | Legacy/frozen Memory/docs attribution only; ordinary Memory Impact Review has no mandatory phase. |
+| `protected-memory-write` | memory mutation | yes | Current frozen or unmigrated legacy card/context write; not the post-cutover ordinary same-scope class. |
+| `protected-memory-commit` | memory commit | yes | Current frozen or unmigrated legacy commit after its separately authorized write; not a second human approval for post-cutover ordinary same-scope commit. |
 | `git` | version-control mutation | yes | Stage, commit, branch, tag, push, or other repository state mutation. |
 | `release` | release mutation | yes | Release notes, package release, tag/release publication, or release-state mutation. |
 | `deployment` | deployment mutation | yes | Deployment, rollback, environment mutation, or hosting state mutation. |
@@ -36,7 +42,10 @@ Compatibility aliases:
 
 ## Phase Carryover Rule
 
-Authorization never carries from one phase to another.
+Authorization never carries from one legacy phase to another. The ordinary
+post-cutover same-scope Memory edit and its necessary commit are evaluated as
+one bounded `local_work` task under Authorization Resolution, not as phase
+carryover. The legacy rules below remain unchanged for frozen consumers.
 
 An initial visible formal-write agreement may independently bind candidates for
 `memory-docs`, `protected-memory-write`, and `protected-memory-commit` through

@@ -1,50 +1,21 @@
----
-title: Enable Row Level Security for Multi-Tenant Data
-impact: CRITICAL
-impactDescription: Database-enforced tenant isolation, prevent data leaks
-tags: rls, row-level-security, multi-tenant, security
----
+# Design RLS from the access model
 
-## Enable Row Level Security for Multi-Tenant Data
+Map anonymous, authenticated, tenant member, owner and privileged service access per operation.
+On exposed Supabase tables, evaluate both table grants and RLS; enabling RLS alone does not
+grant access. SELECT/DELETE use visibility predicates; INSERT needs WITH CHECK and UPDATE
+usually needs both visibility and proposed-row checks. UPDATE may also require SELECT visibility.
+Anon role and an anonymous Auth user are different concepts. Null identity should fail closed.
 
-Row Level Security (RLS) enforces data access at the database level, ensuring users only see their own data.
-
-**Incorrect (application-level filtering only):**
-
+Illustrative SELECT-only policy for an existing schema with UUID user_id:
 ```sql
--- Relying only on application to filter
-select * from orders where user_id = $current_user_id;
-
--- Bug or bypass means all data is exposed!
-select * from orders;  -- Returns ALL orders
+create policy own_orders_read on public.orders
+for select to authenticated
+using ((select auth.uid()) is not null and (select auth.uid()) = user_id);
 ```
+This is a design example, not authorization to execute. Tenant membership, sharing and
+service operations require their own model; do not reuse this for every table or operation.
+Do not trust a client-set custom session variable as proof of identity. FORCE ROW LEVEL
+SECURITY subjects table owners to RLS but does not constrain superuser/BYPASSRLS roles.
+Review view/function owner privileges and test both allowed and denied access paths.
 
-**Correct (database-enforced RLS):**
-
-```sql
--- Enable RLS on the table
-alter table orders enable row level security;
-
--- Create policy for users to see only their orders
-create policy orders_user_policy on orders
-  for all
-  using (user_id = current_setting('app.current_user_id')::bigint);
-
--- Force RLS even for table owners
-alter table orders force row level security;
-
--- Set user context and query
-set app.current_user_id = '123';
-select * from orders;  -- Only returns orders for user 123
-```
-
-Policy for authenticated role:
-
-```sql
-create policy orders_user_policy on orders
-  for all
-  to authenticated
-  using (user_id = auth.uid());
-```
-
-Reference: [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security)
+Source: [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).

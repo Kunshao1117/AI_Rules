@@ -46,102 +46,99 @@ trigger: always_on
 
 ## 3. Team-Native And Authorization Minimum
 
-- Team-Native Core is evaluated when a current Director request asks for governed work.
-- Covered governed work includes governance, workflow, fix, build, debug, test, audit, skill, memory/docs, commit, and handoff.
-- It also includes source, public-contract, or equivalent source/governance/evidence-bearing work.
-- Requests for a team, team member, subagent, delegation, Team-Native, or equivalent dispatch also activate Team mode.
-- The Director does not need a fixed phrase.
-- Source impact, mode switches, platform tools, adapter prompts, permission prompts, and tool confirmations are not enough alone.
-- They do not activate Team-Native mode without a current governed user request.
-- They do not authorize writes by themselves.
+Direct is the default. `Shared/policies/execution-routing.md` alone resolves
+Direct / Assisted / Team. Bounded helper/subagent use is Assisted without
+Team machinery. Team uses agent-governance.md and only needed Shared/agents roles;
+  Main remains the ordinary implementer. The platform owns worker lifecycle.
+`Shared/policies/authorization-resolution.md` independently resolves observe,
+local_work, and protected authority. Neither route nor platform capability
+authorizes an action. Ordinary local_work needs no board, station, or magic GO.
+Frozen Memory compatibility remains unchanged.
 
-- **Minimum startup gate**: When Team mode is active, the trace must have a Captain Team Board before gated work starts.
-- Gated work includes broad reading, validation, review, memory/docs attribution, completion audit, source writes, and completion claims.
-- The trace must also have applicable station, station handoff packet, role identity, assigned specialist skill, and channel state.
-- It must also have `station_mode`, `context_visibility`, and `handoff_ownership`.
-- Missing elements produce only `blocked`, `unverified`, or `closed-with-director-risk`.
-- **No Master-Agent station backfill**: The Master Agent may route, maintain the board, receive delivery artifacts, and synthesize status.
-- The Master Agent may also handle blockers or authorization boundaries.
-- Missing implementation, review, validation, or memory/docs station delivery must not become Master-Agent-owned evidence.
-- Missing station delivery must not become a Master-Agent-direct completion claim.
-- **Source write station ownership**: In active Team mode, main-worktree implementation requires a named station-owned station.
-- The station mode is `change-delivery`.
-- It requires authorization phase `implementation-change-delivery`, exact file allowlist, dirty diff read, and no protected actions.
-- `change-application` is only a fallback integration route for returned isolated/text artifacts, explicit integration tasks, or sync.
-- The same fallback applies to assigned generated/deployed sync.
-- **Scoped authorization only**: Director text, `GO`, workflow entries, UI approvals, mode switches, and adapter prompts are scoped.
-- Tool confirmations and permission prompts are scoped in the same way.
-- They authorize only the current visible plan, station, workflow step, file set, command, diff, or blocker.
-- They are not blanket permission for unrelated writes or protected actions.
-- **Protected actions**: Memory mutation, git, release, deployment, install, credentials, and destructive filesystem operations need gates.
-- Cloud mutation, MCP mutation, and external state changes also require their own explicit protected gate and scope.
+Project Memory may contain durable technical history. When a task depends on
+prior decisions, operator recall, important module behavior, or may affect a
+card, discover `memory-ops` on demand; use `memory-arch` only for owner or
+topology ambiguity. `.agents/memory/` cards are data, not Skills or sole
+current-truth evidence. Do not probe or load all cards at startup. Memory
+Impact Review belongs to `.agents/shared/policies/memory-governance.md`; authorization
+and completion remain canonical. This platform source change does not establish
+M5C runtime cutover; physical Memory writes and sync stay
+`frozen_memory_action` for an uncut project/runtime. Context writes retain
+their separate owner.
+
+- **Bounded roles**: Main owns ordinary implementation; use only required independent roles.
+  Role assignment supplies no source-write or protected authority. Legacy Team
+  schemas remain available only to frozen consumers at their existing owners.
+- **Protected actions**: Use `Shared/policies/authorization-resolution.md` and
+  `Shared/policies/references/protected-action-registry.md` for the four general
+  protected classes, explicit local Git scope, and dependency boundaries.
+  Explicit action + target needs no second magic phrase; native denial stops
+  the affected action. Memory and project context retain frozen legacy gates.
+
 
 ## 4. Lifecycle And Write Hygiene
 
 All source-modifying workflows must preserve this minimum lifecycle:
 
 1. Plan the bounded change and file scope before writing.
-2. Bind write authority to the current approved plan, station, file set, diff, or command.
+2. Resolve source authority from the current task scope through `authorization-resolution.md`; station records apply only in legacy Team or frozen Memory.
 3. Read current file content and any existing worktree diff before editing.
 4. If the target section is already modified, integrate the requested change in that section.
 5. Do not stack appended patch text, duplicate rules, or bypass sections when integration is required.
-6. Route source-memory attribution, review, validation, and completion evidence through the matching Skills.
+6. Route general verification, review, and completion evidence through the canonical policies listed below; Memory Impact Review belongs to `.agents/shared/policies/memory-governance.md`, with methods loaded on demand.
 7. Do not embed their playbooks here.
 
 ## 5. Shared Policy And Skill References
 
-- Team-Native core semantics: `Shared/policies/team-native-core.md` and deployed `.agents/shared/policies/team-native-core.md`.
+- Execution routing: `Shared/policies/execution-routing.md`.
+- General role and model owners: `Shared/agents/_registry.md`, `Shared/policies/agent-governance.md`, `Shared/policies/model-profile-routing.md`.
 - Authorization resolution: `Shared/policies/authorization-resolution.md`.
 - Workflow orchestration: `Shared/policies/workflow-orchestration.md` and deployed `.agents/shared/policies/**`.
 - Subagent invocation policy: `Shared/policies/subagent-invocation.md` and deployed `.agents/shared/policies/subagent-invocation.md`.
 - Platform capability matrix: `Shared/platform-capability-matrix.md`.
 - Workflow evidence matrix: `Shared/workflow-capability-evidence-matrix.md` and deployed `.agents/shared/**`.
 - Operational procedures: `Shared/skills/**`, deployed `.agents/skills/**`, and workflow Skill references.
-- Team delivery source: `Shared/skills/programming-team-governance/SKILL.md`.
-- Team delivery source: `Shared/skills/team-task-board/SKILL.md`.
-- Team delivery source: `Shared/skills/team-station-handoff-packet/SKILL.md`.
-- Team delivery source: `Shared/skills/team-role-boundaries/SKILL.md`.
-- Team delivery source: `Shared/skills/team-change-delivery-artifact/SKILL.md`.
-- Team delivery source: `Shared/skills/team-memory-docs-delivery-artifact/SKILL.md`.
-- Team delivery source: `Shared/skills/team-validation-delivery-artifact/SKILL.md`.
-- Team delivery source: `Shared/skills/team-review-delivery-artifact/SKILL.md`.
-- Team delivery source: `Shared/skills/team-completion-gate/SKILL.md`.
+- Team delivery source: `Shared/policies/agent-governance.md`.
+- Team delivery source: `Shared/policies/references/legacy-skills/team-task-board/REFERENCE.md`.
+- Team delivery source: `Shared/policies/references/legacy-skills/team-station-handoff-packet/REFERENCE.md`.
+- Team delivery source: `Shared/policies/agent-governance.md`.
+- Team delivery source: `Shared/policies/references/legacy-skills/team-change-delivery-artifact/REFERENCE.md`.
+- Legacy Memory delivery lookup only: `.agents/shared/policies/references/legacy-skills/team-memory-docs-delivery-artifact/REFERENCE.md`; ordinary work uses `.agents/shared/policies/memory-governance.md` and its evidence reference, without invoking that legacy Skill.
+- Team delivery source: `Shared/policies/references/legacy-skills/team-validation-delivery-artifact/REFERENCE.md`.
+- Team delivery source: `Shared/policies/references/legacy-skills/team-review-delivery-artifact/REFERENCE.md`.
+- Team delivery source: `Shared/policies/completion-policy.md`.
 
 <!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->
-### Shared Subagent Invocation Policy (Antigravity / Gemini adapters)
+### Shared Subagent Invocation Policy (Antigravity)
 
-This core marker is generated from `Shared/policies/adapters/antigravity-subagent-invocation.md`, which translates the canonical shared policy in `Shared/policies/subagent-invocation.md`.
+`Shared/policies/execution-routing.md` selects Direct / Assisted / Team.
+Direct is default; bounded helper use is Assisted. Main is owner and ordinary
+implementer. Team selects only needed roles from `Shared/agents/_registry.md`
+under `Shared/policies/agent-governance.md`, without a fixed roster or legacy
+station/board/lifecycle prerequisite. Frozen Memory contracts remain unchanged.
+`Shared/policies/authorization-resolution.md` separately resolves observe,
+local_work and protected actions. `capability-resolution.md` owns provider
+readiness; this adapter maps actual tools, never grants authority.
 
-Keep the full policy in `Shared/policies/` and the deployed readable copy at `.agents/shared/policies/subagent-invocation.md`.
-
-Do not paste the full playbook into platform core.
-
-- Antigravity / Gemini specialist routes are adapter or conditional execution channels.
-
-  They apply only after Team mode is activated by a governed Director request.
-
-  They also require recorded Team-Native board, station, role, handoff, dispatch wave, and channel state.
-
-- Required evidence and change-delivery reports follow the formats in `programming-team-governance` and `team-task-board`.
-
-  They also follow delivery artifact skills.
-
-- Missing adapter capability is `blocked`, `unverified`, `standby`, `unavailable`, or `closed-with-director-risk`.
-
-  It is not master-agent direct completion.
-
-- Antigravity / Gemini adapters must not mutate source, memory, git, release, deploy, install, credentials, or external state.
-
-- Antigravity / Gemini adapters may mutate only when a scoped protected station explicitly owns that phase.
+Load this platform's full adapter for native schema and permission details.
+Model intent follows `Shared/policies/model-profile-routing.md`. Preserve exact
+requests; an agent ID alone is unreported model application. Native mechanisms
+own worker lifecycle. Report assignment-bound source version, evidence and limits.
 <!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->
+
+General verification/review/completion use `Shared/policies/verification-strategy.md`,
+`Shared/policies/review-governance.md` and `Shared/policies/completion-policy.md`.
+Risk acceptance records a decision and does not satisfy missing acceptance.
 
 ## 6. Exit And Protected Gates
 
 - Source writes require scoped authorization, current file context, existing diff review, and a security check for plaintext credentials.
-- Memory, project context, git, release, deploy, install, credentials, and destructive filesystem operations require protected gates.
-- MCP mutation and external mutation also require their own explicit protected gate.
-- Source-write approval does not authorize protected actions.
-- Completion claims require unresolved evidence gaps to be reported as `blocked`, `unverified`, or `closed-with-director-risk`.
-- Missing memory/docs, review, validation, sync, or Team-Native evidence must not be described as complete.
+- **Protected actions**: Use `Shared/policies/authorization-resolution.md` and
+  `Shared/policies/references/protected-action-registry.md` for the four general
+  protected classes, explicit local Git scope, and dependency boundaries.
+  Explicit action + target needs no second magic phrase; native denial stops
+  the affected action. Memory and project context retain frozen legacy gates.
+- General completion follows `Shared/policies/completion-policy.md`; unresolved required gaps remain `blocked`, `unverified`, or `partial`. Risk acceptance does not supply missing acceptance.
+- Legacy Team artifacts apply only to frozen consumers; Memory completion semantics remain unchanged.
 - Source/deployed parity must be verified or explicitly reported as pending after framework source changes.
-- Source-only edits are acceptable only as an intermediate station artifact, not as final deployed parity.
+- Authorized source-only delivery may finish with deployment explicitly pending; it never proves deployed parity.

@@ -4,13 +4,27 @@
 
 If you are running as a Claude Code sub-agent (spawned via `Agent` tool by a Master Agent):
 - Your role is **Sub-Agent (子代理人)**, NOT Master Agent.
-- You are FORBIDDEN from modifying source files (`Write`/`Edit` on project code).
-- You MAY use `Read`, `Glob`, `Grep`, `WebSearch`, `WebFetch` for analysis.
-- All proposed code changes MUST be returned as text output to the Master Agent.
+- Use only the assigned role and exact task scope. The formal role and write
+  boundary come from `Shared/agents/_registry.md`, the selected Shared Agent
+  contract, and `Shared/policies/agent-governance.md` in the framework source;
+  an installed project reads their `.agents/shared/agents/` and
+  `.agents/shared/policies/` copies. This global bootstrapper grants neither a
+  blanket read-only restriction nor general write permission.
+- `Shared/policies/authorization-resolution.md` independently decides whether
+  the assigned local action is authorized. Native tool permissions remain in
+  force; a denied or unavailable tool does not become usable through this file.
+- Return the assignment result and evidence to the Master Agent. Do not claim
+  independent review of work owned by the same implementer.
 - Director-facing reports, replies, confirmations, status summaries, handoffs,
   and completion summaries MUST be in **Traditional Chinese (繁體中文, zh-TW)**.
   Internal source docs, policies, references, skills, schemas, and code keep their local convention.
   Prefer concise English unless explicitly Director-facing.
+
+General work uses Direct by default; bounded helper use is Assisted and Team
+requires a positive trigger from `Shared/policies/execution-routing.md`.
+`Shared/policies/authorization-resolution.md` owns observe / local_work / protected
+authority independently of route and platform capability. Ordinary local work
+requires no Team machinery or magic GO. Frozen Memory gates remain unchanged.
 
 ## 1. Initialization Environment Check (初始化探測防線)
 
@@ -22,15 +36,18 @@ Before answering ANY queries in ANY new conversation, silently check the current
 **If YES to either** → The project is initialized. Proceed normally with the Director's request.
 
 **If NO to both** → The project is uninitialized.
-Do not install automatically. Output the governed install prompt in §2 and wait for Director approval.
+Do not install automatically. Resolve explicit install action + target under §2; ask only when that scope is missing.
 
 ## 2. Governed Bootstrapping (授權式全域武裝機制)
 
-If the project is uninitialized, output this Director-facing Traditional Chinese prompt:
+If the project is uninitialized and explicit install action + target is missing, ask:
 
-「此專案尚未安裝 Antigravity Claude Edition。若要安裝，請輸入 `GO INSTALL`。我將下載並執行 Claude/install.ps1，目標路徑為目前工作目錄。」
+「此專案尚未安裝 Antigravity Claude Edition。若要安裝，請明確指定安裝動作與目標；目前尚未執行安裝。我將下載並執行 Claude/install.ps1，目標路徑為目前工作目錄。」
 
-HALT. Execute the following command only after the Director explicitly inputs `GO INSTALL`:
+Execute the following recipe only when the Director has explicitly authorized install + target.
+An already explicit request needs no second magic phrase. Honor native permission
+denial and current exclusions; do not infer installation from a source-edit task.
+Resolve the target before executing, and use that authorized target in the recipe.
 
 ```powershell
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -53,9 +70,12 @@ After successful deployment, output this Director-facing Traditional Chinese com
 When the Director explicitly requests an upgrade, output this Director-facing Traditional Chinese prompt.
 Examples include "升級框架", "更新 Antigravity", and "upgrade".
 
-「即將升級 Antigravity Claude Edition。Upgrade 會比對並更新框架檔案，且保護 `.agents/memory/` 與 `.agents/project_skills/`。若要繼續，請輸入 `GO UPGRADE`。」
+「即將升級 Antigravity Claude Edition。Upgrade 會比對並更新框架檔案，且保護 `.agents/memory/` 與 `.agents/project_skills/`。我會依已明確指定的升級動作與目標處理；若目標不明則先釐清。」
 
-HALT. Execute the following command only after the Director explicitly inputs `GO UPGRADE`:
+Execute the following recipe only when the Director has explicitly authorized upgrade + target.
+An already explicit request needs no second magic phrase. Honor native permission
+denial and current exclusions; do not infer installation from a source-edit task.
+Resolve the target before executing, and use that authorized target in the recipe.
 
 ```powershell
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12

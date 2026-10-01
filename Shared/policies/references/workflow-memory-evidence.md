@@ -1,18 +1,33 @@
 # Workflow Memory Evidence Reference
 
-This reference holds memory admission and MCP memory evidence details.
+This is the sole vNext canonical definition owner of the seven Memory
+disposition values and their V2 evidence meaning. `../memory-governance.md`
+owns the Memory Impact Review trigger, staleness, and admission policy; this reference also
+retains evidence detail needed by frozen consumers.
 
 Those details are too large for `Shared/workflow-capability-evidence-matrix.md`.
 
-It is evidence guidance only.
+Its disposition result is evidence and routing, never mutation authority or a
+second completion state.
 
-Memory writes, memory commits, and project context writes require their own protected authorization gates.
+Before a project/runtime passes the M5 cutover checks in
+`../authorization-resolution.md`, actual Memory mutation remains frozen. The
+ordinary vNext evidence path does not require `completion_bundle_ref`, a
+`memory-docs` station, or a closure receipt: use the current source/card
+comparison in `memory-review-evidence.md`, actual update and sync results in
+`memory-update-sync-evidence.md`, and `../completion-policy.md`. These owners
+cover disposition, freshness, conditional Verification/Review and completion;
+Authorization Resolution and `memory-arch` cover owner, scope and topology.
+The legacy bundle remains applicable to an unmigrated frozen consumer.
+Project Context writes keep their own authorization boundary.
 
 ## Lifecycle Touchpoints
 
-Memory handling has five distinct touchpoints. They must not be collapsed into one task step.
+The five touchpoints below describe the frozen Memory workflow/bundle consumer.
+They are not a required stage chain for every ordinary vNext task and do not
+override `../memory-governance.md` or general authorization/completion policy.
 
-For a normal formal source change, downstream memory consumers receive only a
+For a bundle-backed legacy formal source change, downstream memory consumers receive only a
 `completion_bundle_ref`. They consume the canonical Memory Closure Bundle Contract's already
 resolved phase evidence through that reference; this evidence reference does not restate a candidate
 map, phase-field schema, authority, or owner.
@@ -45,7 +60,15 @@ map, phase-field schema, authority, or owner.
 
 ## Disposition Before Mutation
 
-Every source-changing workflow must produce or receive read-only memory/docs disposition evidence.
+When Memory Impact Review applies, return exactly one of the seven values below
+with evidence for the current source/card scope. Frozen workflows retain their
+existing read-only memory/docs disposition requirement and unchanged same-named
+legacy judgment/receipt conditions. The V2 meanings below govern ordinary
+vNext results; they do not retrospectively reinterpret a frozen bundle or its
+receipt. A legacy no-write receipt is not V2 no-write evidence without a new
+current-source/card comparison. Conversely, M1 does not invalidate a receipt
+for its unchanged legacy closeout target. No operation may combine a legacy
+receipt's lower evidence threshold with the ordinary vNext authorization path.
 
 This evidence is required before opening any memory mutation path.
 
@@ -56,68 +79,90 @@ The canonical disposition states are:
 ### `memory-not-required`
 
 - Meaning:
-  - No durable source behavior, workflow rule, public contract, governance, or operational instruction changed.
+  - The reviewed change and scope have no relevant durable Memory knowledge to
+    maintain. State the examined scope and reason; a missing card is not evidence
+    that Memory is unnecessary.
 - Next route:
   - No memory mutation path.
 
 ### `memory-attributed-no-write`
 
 - Meaning:
-  - Existing memory attribution already covers the change.
-  - Read-only evidence may also be sufficient without editing a card.
+  - This is a completed Memory Impact Review: current source evidence and
+    relevant Memory evidence were compared for the affected durable claims;
+    the owner and valid scope match, the comparison result shows those claims
+    remain correct, and no Memory content change required for this change.
+  - Record source/card versions and the compared claims. An existing owner alone
+    is insufficient. No-write does not prove that stale or index state is cleared
+    or that a tool sync ran. If tracking/metadata repair is required for this
+    scope, return `memory-required` with `tracking-only` reason instead; a
+    derived stale/index warning alone is not proof of a content change.
 - Next route:
-  - No memory mutation path; preserve evidence in the delivery ledger.
+  - No content mutation path; preserve the comparison evidence for completion.
 
 ### `memory-required`
 
 - Meaning:
-  - A durable source-memory update is required.
+  - A durable Memory change is required for current content or necessary
+    tracking/owner/dependency/metadata alignment. Record `content` or
+    `tracking-only` as a reason/evidence value, not another disposition.
 - Next route:
-  - `memory-closure` consumes `completion_bundle_ref` and the canonical contract's resolved phase
-    evidence. This disposition and reference are not new write authority.
-  - Do not write from the attribution station.
+  - Resolve the exact owner, authorization, operation and necessary sync under
+    their canonical owners; this result grants no write or commit authority.
+  - Frozen consumer: `memory-closure` consumes `completion_bundle_ref` and the
+    canonical contract's separate phase evidence. Attribution remains read-only.
 
 ### `memory-card-missing`
 
 - Meaning:
-  - No matching owner card can be identified.
+  - Durable knowledge needs an owner card, but none can be identified safely;
+    name nearby candidates and the unresolved ownership question.
 - Next route:
-  - Route a memory-docs or memory-arch topology decision.
-  - This is not authorization to create a card.
+  - Route the smallest `memory-arch` topology decision; this is not authority to
+    create a card. Frozen consumers keep their memory-docs station route.
 
 ### `memory-blocked-by-scope`
 
 - Meaning:
-  - Current scope forbids memory writes or protected memory phases.
+  - A necessary Memory operation is known, but observe-only, explicit no-write,
+    scope limits, or the applicable legacy protected phase forbids it.
 - Next route:
-  - A normal formal source change stays blocked or unverified for process-complete.
-  - Report protected follow-up pending only when `completion_bundle_ref` resolves through the
-    canonical contract to the `source-level-explicit` closeout target.
-  - For full completion, commit, or release readiness, report the protected memory path as blocked.
-  - That blocked state remains until scoped authorization exists.
-  - This disposition is not complete.
+  - Stop only the affected operation and ask for the missing scope decision when
+    required. General task completion is decided by `../completion-policy.md`.
+  - Frozen consumer: preserve the bundle's `source-level-explicit` exception,
+    protected-follow-up rule, and process-complete/release blockers.
 
 ### `memory-conflict-or-compaction-blocked`
 
 - Meaning:
-  - Memory evidence conflicts, or compaction/split is required before a safe write.
+  - Relevant evidence conflicts, or compaction/split is required before the
+    necessary write can be made safely; name the conflict or limit.
 - Next route:
-  - Route the smallest memory-ops or memory-arch decision needed before mutation.
+  - Route the smallest evidence or `memory-arch` decision before mutation; do not
+    silently choose a convenient fact.
 
 ### `memory-unverified`
 
 - Meaning:
-  - Memory evidence was unavailable or not checked.
+  - Relevant source/card/version evidence is missing, inaccessible, stale for
+    the claim, or not yet compared; state exactly what remains unknown.
 - Next route:
   - Report unverified memory impact; do not infer attribution.
 
-`memory_commit` is a separate protected phase.
+## Frozen Memory Consumer Compatibility
+
+The following closure, receipt, and protected-phase statements apply only to
+unmigrated frozen consumers. They remain in force until verified M5 cutover
+retires their active runtime path and are not the general meaning of the seven
+dispositions.
+
+For this frozen route, `memory_commit` is a separate protected phase.
 
 It is not part of attribution, disposition, source delivery, validation, or review.
 
 `memory-required` and `memory-blocked-by-scope` are not completion states.
 
-Normal formal source changes target process-complete. After validation and review, memory closure
+Legacy bundle-backed formal source changes target process-complete. After validation and review, memory closure
 must consume `completion_bundle_ref` and the canonical contract's accepted evidence, then return
 either `memory_no_write_receipt` or `memory_committed_receipt`; the latter proves the distinct
 protected write and `memory_commit` phases both ran. Missing MCP evidence or either receipt keeps
@@ -131,7 +176,7 @@ sync are otherwise sufficient. It blocks process-complete, commit readiness, and
 
 ## Completion Bundle Boundary
 
-An implementation or change-application delivers `completion_bundle_ref`. Memory/docs and
+In the legacy bundle-backed route, an implementation or change-application delivers `completion_bundle_ref`. Memory/docs and
 memory-closure consume that reference and the canonical contract's resolved phase evidence to find
 delivery artifacts, changed files, expected dirty files, grounding handoff, validation/review
 handoffs, sync evidence, and residual risks.
@@ -150,14 +195,19 @@ Do not write these into source memory cards:
 - raw external research transcripts, raw tool logs, raw test output, screenshots, or one-run traces;
 - short-lived task status, dirty-file lists, temporary blockers, or handoff prose;
 - pricing, legal, regulatory, security, deployment, or API claims without current accepted evidence;
-- rejected alternatives, brainstorming, failed attempts, or review comments without durable source impact.
+- ordinary rejected alternatives, brainstorming, failed attempts, or review
+  comments without durable source impact; a formally evaluated alternative
+  meeting `../memory-governance.md` admission criteria is not forbidden merely
+  because it was rejected.
 
 If such content appears in a delivery bundle, keep it in the task artifact or report as residual
 risk. Do not promote it to durable memory.
 
 ## Memory Admission Matrix
 
-Source memory writes are allowed only when the workflow has a durable, source-backed fact or active constraint to preserve.
+`../memory-governance.md` owns admission. The examples below illustrate
+durable source-backed facts, constraints, and admitted technical rationale;
+they do not narrow or redefine its rule.
 
 Task evidence, screenshots, raw test output, temporary observations, and preference candidates stay elsewhere.
 
@@ -218,7 +268,7 @@ They stay in reports, logs, or project context.
 - Admissible source memory:
   - Stable skill ownership, trigger semantics, generated skill source facts, and validation route summaries.
 - Not source memory:
-  - Brainstorming notes, rejected skill drafts, raw lint/test output.
+  - Brainstorming notes, low-value rejected skill drafts, raw lint/test output.
 
 Memory cards must record incomplete evidence as partial, pending review, conflict, or superseded.
 
@@ -231,7 +281,9 @@ The detailed tool contract lives in `.agents/skills/memory-ops/references/memory
 Workflows can use filesystem evidence when MCP is unavailable.
 
 Missing MCP evidence must be reported as `unverified` or `blocked` when it affects the decision.
-It cannot support `memory_no_write_receipt`, `memory_committed_receipt`, or process-complete.
+For a legacy bundle-backed target it cannot support `memory_no_write_receipt`,
+`memory_committed_receipt`, or process-complete. Ordinary vNext evaluates the
+actual required evidence under Completion Policy without inventing a receipt.
 
 `commit_preflight` is scoped to `09 Commit`, explicit commit-prep, or closeout commit/push readiness.
 
@@ -254,13 +306,14 @@ It must not interrupt non-commit implementation, validation, review, routine, or
   - Relevant ownership and staleness from memory list/status/read.
   - Dependency evidence when indirect staleness is reported.
   - Context read evidence when acceptance preferences affect implementation.
-  - Disposition state before mutation and `completion_bundle_ref`.
+  - Disposition state before mutation; `completion_bundle_ref` only for a legacy bundle-backed consumer.
 - Mutating MCP gate:
-  - A protected memory-write phase only when disposition is `memory-required` and the current
+  - Before verified M5 cutover, a protected memory-write phase only when disposition is `memory-required` and the current
     canonical phase evidence reached through `completion_bundle_ref` permits it.
   - The disposition state is not write authority.
-  - Build process-complete needs the memory-closure no-write or committed receipt; it cannot treat
+  - Legacy bundle-backed Build process-complete needs the memory-closure no-write or committed receipt; it cannot treat
     `memory-required`, `memory-blocked-by-scope`, missing MCP, or a missing receipt as complete.
+  - Ordinary vNext Build uses Authorization Resolution and Completion Policy; a bundle or receipt is not required.
   - `memory_commit` only after an authorized memory card write updates active memory main-file content.
 
 ### 04 Fix
@@ -275,7 +328,7 @@ It must not interrupt non-commit implementation, validation, review, routine, or
   - Unresolved memory conflicts are repair blockers.
 - Mutating MCP gate:
   - Memory commit cannot be used as a staleness reset shortcut.
-  - It follows verified card edits in a separate protected phase.
+  - Before verified M5 cutover it follows verified card edits in a separate frozen protected phase; post-cutover ordinary same-scope commit is classified by Authorization Resolution.
 
 ### 05 Condense
 
@@ -288,7 +341,7 @@ It must not interrupt non-commit implementation, validation, review, routine, or
   - Workspace brief, memory list/read, and context inventory/status evidence.
   - This evidence separates source facts from preferences.
 - Mutating MCP gate:
-  - `_system` source-memory write requires authorization resolution plus the matching memory protected gate.
+  - `_system` source-memory write requires authorization resolution plus the matching frozen Memory protected gate before verified M5 cutover; later action classification remains operation/scope specific.
   - Project context write preserves `GO CONTEXT`.
   - It still binds `GO CONTEXT` to the visible context scope.
 

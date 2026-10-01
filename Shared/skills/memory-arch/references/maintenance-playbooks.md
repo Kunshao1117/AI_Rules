@@ -1,8 +1,11 @@
 # Memory Maintenance Playbooks
 
 This reference keeps procedural detail out of the `memory-arch` main skill file.
-All memory card creation, splitting, moving, rewriting, and `memory_commit`
-calls remain protected phases that require scoped authorization resolution.
+This reference describes structural methods, not a general completion route.
+Current physical Memory writes and `memory_commit` use the frozen contract
+until an evidenced M5 cutover for this project/runtime. After cutover,
+`../../../policies/authorization-resolution.md` classifies each exact edit,
+commit and reindex independently; these methods grant no authority.
 
 ## Splitting Memory Cards
 
@@ -13,21 +16,17 @@ maintenance difficulty is discovered during routine work.
 Need to split a memory card?
 ├── Step 1: Call memory_read to get the full content of the old card
 │   ⇒ Analyze trackedFiles distribution, Current Truth, Cycle Events, and Archive Index
-├── Step 2: Propose split strategy to Director
+├── Step 2: Record split strategy and any owner/scope ambiguity
 │   ⇒ Explain which current truths stay in the parent, which move to child cards, and which history moves to archive volumes
-├── Step 3: Execute after authorization resolution binds the approved split plan, file set, phase, expiry, and protected gates
+├── Step 3: Execute only after authorization resolution permits the actual files and operation under the currently active contract
 │   ├── Promote the original card to parent (retain shared current truth + scopePath)
 │   ├── Create child card subdirectories under parent (each with scopePath + specific decisions)
 │   ├── Add parent/child navigation under ## Relations
 │   ├── Move concrete ## Tracked Files ownership to the child cards when the parent becomes navigation-only
 │   ├── Move superseded or verbose history into archive volumes
 │   └── write_to_file to update the parent active memory main file (trim to current shared portions only)
-├── Step 4: Plugin auto scan + refresh
-│   ⇒ Index and file watchers update automatically
-├── Step 5: In the authorized memory-commit phase, call memory_commit for EACH new child card
-│   ⇒ Each child card must be individually committed
-└── Step 6: In the authorized memory-commit phase, call memory_commit for the parent card
-    ⇒ Parent card's trimmed content must also be committed
+├── Step 4: Run applicable authorized commit/sync for changed cards
+└── Step 5: Inspect each card and index/derived result independently; report partial failures
 ```
 
 Splitting a card does not automatically create `dependencies` between the
@@ -48,13 +47,13 @@ Compaction due?
 ├── Step 5: Move historical cycle detail into archive-001.md / archive-002.md / ...
 ├── Step 6: Update ## Archive Index with volume path and scope
 ├── Step 7: Reset ## Cycle Events for the next cycle
-└── Step 8: Call memory_commit after the active memory main file is updated and the memory-commit phase is authorized
+└── Step 8: Call memory_commit after the active memory main file is updated and that operation is authorized (separate phase for frozen consumers)
     ⇒ If the split also changed main-file naming or index topology, verify with read-only memory audit or workspace brief after any authorized reindex
 ```
 
 Do not add event 31. If the card is too contradictory to summarize safely,
-stop at a compaction plan and ask for scoped Director intent; execution still
-requires authorization resolution.
+stop at a compaction plan and identify the missing evidence or topology
+decision. Execution still requires authorization resolution.
 
 ## Static Container Cards
 
@@ -65,9 +64,10 @@ This prevents ghost-file pollution in semantic memory cards.
 Static container card names must start with an underscore, such as `_assets`,
 `_ghost_bin`, or `_config_locks`, to mark them as non-business-logic memory.
 
-When underscore-prefixed container cards become stale only because lockfiles or
-static assets changed, the AI may use a narrow green channel:
-
-- **Skip verbose inspection**: after confirming the diff has no visibility or safety risk, the station may skip the original `memory-ops` six-step retrieval flow.
-- **Single-step reconciliation**: during a resolved `memory-commit` phase, call `memory_commit` once to clear the staleness warning.
-- **Risk boundary**: this privilege applies only to static container-card reconciliation after module, command, phase, expiry, and protected gate are bound. `memory_commit` is still a high-risk write tool and must not run during discussion, planning, or read-only inventory.
+When an underscore-prefixed container card is stale only because lockfiles or
+static assets changed, inspect the relevant diff and safety implications with
+the smallest evidence needed. The result may be no content change, a
+tracking-only change, or another canonical disposition. Static status does not
+create a green channel or permit `memory_commit` merely to clear a warning.
+Any needed physical edit/sync follows the currently active authorization
+contract. Ordinary review is not a split/compaction procedure.

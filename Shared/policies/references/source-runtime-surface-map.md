@@ -26,6 +26,7 @@ customization as competing authorities.
 |---|---|---|
 | `Shared/**` | `canonical-source` | Canonical source for shared policies, references, skills, workflow matrices, platform-neutral governance, and shared capability maps. Edit here before runtime copies. |
 | `Shared/policies/references/**` | `canonical-source` | Canonical home for long catalogs, maps, scenario lists, field tables, state machines, and surface maps that would bloat policies or skills. |
+| `Shared/workflows/**` | `canonical-source` | Non-Skill phase procedures copied to `.agents/shared/workflows/` by shared governance projection; never copied to a Skill discovery directory. |
 | `Shared/skills/**` | `canonical-source` | Canonical source for reusable operational skill bodies and references. Deployed skill copies consume these, not the reverse. |
 | `Shared/skill-governance.md` | `canonical-source` | Canonical placement contract for policies, skills, workflows, memory cards, scripts, and source/runtime map references. |
 | `Codex/**` | `canonical-source` | Codex platform source templates and bootstrap materials. `Codex/.codex/**` is the source side for deployed `.codex/**` copies. |
@@ -34,20 +35,23 @@ customization as competing authorities.
 | `Claude/.claude/CLAUDE.md` | `canonical-source` | Claude Code platform core source for the repo runtime pair. Sync to `.claude/CLAUDE.md` unless a scoped task records documented local customization. |
 | `Antigravity/**` | `canonical-source` | Antigravity and Gemini platform source templates, workflow entries, or adapter materials. Runtime `.agents/**` copies must be synced from source. |
 | `Antigravity/.agents/rules/AGENTS.md` | `canonical-source` | Antigravity/Gemini rule sentinel source for the repo runtime pair. Sync to `.agents/rules/AGENTS.md` when semantic parity is expected. |
+| `Antigravity/.agents/agents/**` | `canonical-source` | Six thin native delegated Agent projections; `Shared/agents/**` retains role ownership. Target is `.agents/agents/**`. |
+| `Antigravity/.agents/procedure-skills/**` | `canonical-source` | Four platform Skill wrappers for the canonical `Shared/workflows/**` procedures. Target is `.agents/skills/**`; wrappers do not reclassify Shared procedures. |
 | `Cursor/**` | `canonical-source` | Cursor platform source templates and bootstrap materials. `Cursor/.cursor/**` is the source side for deployed `.cursor/**` copies. |
 | `Cursor/.cursor/rules/**` | `canonical-source` | Cursor always-on and lazy-load rule templates. Runtime `.cursor/rules/**` copies must be synced from here. |
+| `Cursor/.cursor/agents/**` | `canonical-source` | Six thin native delegated Agent projections; `Shared/agents/**` retains role ownership. Target is `.cursor/agents/**`. |
 | `Scripts/**` | `canonical-source` | Executable automation source. Scripts may encode checks and transforms, but the governance manual stays in `Shared/policies/**`, `Shared/skills/**`, or references. |
 | `hooks/**` | `canonical-source` or `generated` by hook type | Repo-managed hook source must cite the platform capability boundary. The current Codex source ships no default hook artifacts; any later deterministic hook remains non-authoritative policy transport. |
 | `.agents/shared/**` | `managed-runtime` | Deployed shared policies, references, matrices, and platform maps for the current agent runtime. Sync from `Shared/**`; do not fix as final source. |
 | `.agents/skills/**` | `managed-runtime` | Deployed operational and workflow skills. Sync from `Shared/skills/**` or platform source entries unless explicitly scoped as emergency runtime repair. |
-| `.agents/workflows/**` | `managed-runtime` | Deployed Antigravity workflow entries. They route users and agents but do not replace `Shared/**` or platform source templates. |
+| `.agents/workflows/**` | `managed-runtime` | Legacy Antigravity Workflow copies remain compatibility during deprecation; the four canonical procedures use platform Skill wrappers for future delivery. Unknown or user-modified copies need separate provenance before retirement. |
 | `.agents/rules/AGENTS.md` | `managed-runtime` | Repo runtime Antigravity/Gemini rule sentinel paired with `Antigravity/.agents/rules/AGENTS.md`. Preserve as `platform-diff` only when a scoped task records a platform-specific difference. |
 | `.agents/memory/**` | `local-or-protected` | Source-backed project facts, decisions, and lessons. Memory cards must not carry reusable governance rules, workflow gates, or script manuals. |
 | `.agents/context/**` | `local-or-protected` | Project preferences and design or acceptance DNA. Context does not own source, runtime parity, or executable governance. |
 | `.agents/logs/**` | `generated` | Task evidence, traces, and runtime logs. Logs can support an audit but are not durable governance or source memory by themselves. |
 | `.claude/**` | `managed-runtime` | Deployed Claude command and skill runtime copies. Sync from `Claude/**` and shared source; do not make canonical policy edits here. |
 | `.claude/CLAUDE.md` | `managed-runtime` | Repo runtime Claude Code core paired with `Claude/.claude/CLAUDE.md`. Preserve as a local overlay only when a scoped task documents local-only behavior. |
-| `.cursor/**` | `managed-runtime` | Deployed Cursor rules and skills. Sync from `Cursor/**` and shared source; do not make canonical policy edits here. |
+| `.cursor/**` | `managed-runtime` | Deployed Cursor rules, skills and native Agents. Sync from `Cursor/**` and shared source; do not make canonical policy edits here. |
 | `.cursor/rules/00-core.mdc` | `managed-runtime` | Cursor always-on core paired with `Cursor/.cursor/rules/00-core.mdc`. Preserve as a local overlay only when a scoped task documents local-only behavior. |
 | `.cursor/rules/02-platform-identity.mdc` | `managed-runtime` | Cursor mixed-repo session identity paired with `Cursor/.cursor/rules/02-platform-identity.mdc`. Other platform cores remain source templates; do not treat them as this session's bootstrap. |
 | `.codex/AGENTS.md` and runtime version markers | `managed-runtime` | Instruction bodies and version markers are managed runtime only when their source-to-runtime scope is explicitly confirmed. |
@@ -63,20 +67,103 @@ customization as competing authorities.
 | `out/**` | `generated` | Build or packaging output. Regenerate from source; do not hand-edit as authority. |
 | `vsix/**` and `*.vsix` | `generated` | Extension packages or package staging output. Rebuild from source and record hash/parity evidence when needed. |
 
-## Five-Layer Placement Guard
+## Content Classification and Placement Guard
 
-Reusable governance belongs in one of five operational homes:
+Content kind and surface class are separate axes. A generated policy pointer is
+still generated output even inside a canonical template. These five content
+kinds do not change current routing or execution:
 
 - Policies own contracts, precedence, invalid states, authority, and source/runtime repair order.
 - Skills own task-loaded procedures, artifact shapes, and tool recipes.
 - Workflow entries own routing, phase order, and load gates.
-- Memory cards own project-specific facts and decisions only.
-- Scripts own executable mechanics that consume policy or skill rules.
+- Agent roles have one canonical source at `Shared/agents/`, discovered through
+  `_registry.md`; they are not Skills. The existing Shared reference enumerator
+  carries this class to `.agents/shared/agents/` only during authorized deployment.
+  `Codex/.codex/agents/`, `Claude/.claude/agents/`, `Cursor/.cursor/agents/` and
+  `Antigravity/.agents/agents/` are native source templates whose prompts consume
+  those Shared role files. Source creation proves no deployment or runtime
+  loading. Preserve project overrides under existing sync rules.
+- References own detailed catalogs, maps, field tables, and examples consumed
+  by an identified policy, workflow, role, or skill owner.
 
+Memory cards independently own project-specific facts and decisions only.
+Scripts own executable mechanics consuming the above contracts.
 Memory cards must not carry governance rules.
 Scripts must not embed large governance manuals, long field catalogs, or workflow handbooks.
 Workflow entries must not copy full policy manuals or team playbooks.
 Generated and runtime copies may carry synchronized text, but they are not a new placement layer.
+
+## Phase 1 Memory Compatibility Boundary
+
+`general_work_vnext != memory_subsystem_vnext`.
+`product/work completion state != memory subsystem completion state`.
+These boundaries do not replace Memory semantics. Future general routing and
+local-work authorization cannot imply Memory authorization, phase transitions,
+or completion.
+
+| General compatibility owner | Frozen consumer / obligation |
+|---|---|
+| `Shared/policies/references/legacy-skills/team-task-board/REFERENCE.md` slice and role references | Memory closure consumes existing delivery slice/revision and owner scope; preserve their meaning. |
+| `Shared/policies/references/legacy-skills/team-station-handoff-packet/REFERENCE.md` packet schema and routing | Memory consumes station, phase, target scope, and authorization bindings. Never fabricate a vNext station or receipt for the old contract. |
+| `authorization-resolution.md` and protected-action registry | Memory authority remains separately resolved. General local work does not authorize protected Memory mutation. |
+| `team-trace-evidence.md` and its field references | Preserve Memory receipt chains, acceptance evidence, and invalidation semantics. |
+| `memory-closure-bundle-contract.md` | Canonical frozen consumer for bundle eligibility, candidate phases, receipts, and Memory completion. Reference it; do not duplicate its schema. |
+
+The frozen subsystem includes the complete `memory-ops`, `memory-arch`,
+`team-specialist-memory-closure`, and `team-memory-closure-delivery-artifact`
+skill trees; Memory schemas/topology, Cartridge integration, staleness,
+compaction/indexing, `memory_commit`, plugin contracts, update timing,
+authorization, and Memory completion-bundle semantics. Existing
+`.agents/memory/**`, `.agents/context/**`, and `.cartridge/**` remain protected.
+Known inventory defect: `Shared/skills/_index.md` omits the two Memory closure
+skills. Phase 1 records this without repairing the index. Sync enumerates
+physical files, so the index is not its copy or retirement denominator.
+
+M3 supersedes this Phase 1 Skill inventory only for four Legacy Team Memory
+entries: `team-specialist-memory-docs`, `team-memory-docs-delivery-artifact`,
+`team-specialist-memory-closure`, and
+`team-memory-closure-delivery-artifact`. Their source `SKILL.md` files move to
+non-invocable historical references, the first two registry entries retire,
+and exact M3 migration records prevent fresh Skill projection. The old IDs
+resolve through `legacy-skill-migration.md`; frozen continuation uses
+`legacy-memory-team-transition.md`. The current runtime copies remain until a
+separately authorized upgrade, and tracked Memory-card paths require
+`POST_M3_MEMORY_IMPACT_REVIEW`. `memory-ops`, `memory-arch`, Memory data,
+Context data, Cartridge and the M4 authorization/bundle contract remain
+protected. This M3 note does not rewrite the Phase 1 historical snapshot.
+
+## Retirement and Synchronization Boundary
+
+Source absence is not ownership evidence. Generic orphan reports preserve
+unknown files and directories. Explicit historical path plus exact SHA256
+allowlists remain the retirement owners in `Skills-Sync.psm1` and
+`Platform-Codex.psm1`. Modified or unreadable candidates remain with a residual
+warning. Memory skills and protected data were not Phase 1 retirement candidates.
+M3 adds only the four named Legacy Team Memory entries to the exact-path/hash
+allowlist; unknown or modified old entry copies block a successful cutover.
+No Team skill, empty source skill directory, or model watcher is retired here.
+Preserved conflicting legacy rules require resolution before a future semantic
+cutover; successful file transport alone cannot establish vNext activation.
+
+`Sync-SharedPolicyBlock` owns generated policy markers, including those embedded
+in source templates. Change the adapter/generator, not the marker as authority.
+`Sync-SharedSkills -Mode Diff` writes files. Manager sync without `-Apply` is the
+existing preview; do not describe Diff as a dry-run.
+
+Project deployment batches and Manager apply use `Deployment.Transaction.psm1`
+to restore managed instructions, skills, tools, configuration, and version files
+after a caught failure across every selected platform. Protected Memory,
+context, project-skill source, Cartridge, and external globals are outside its
+restore scope. Existing links in managed trees fail preflight rather than being
+followed during snapshot/restore. This is exception recovery, not crash-atomic
+deployment or a concurrency lock; process interruption, concurrent writers,
+and restore I/O failure cannot establish a completed cutover. Low-level copy
+helpers are not standalone transactional entry points.
+Declining any selected platform upgrade stops the batch and restores preceding
+platform writes. Existing infrastructure initialization can seed missing
+protected context/project-skill indexes; these are retained on failure rather
+than being deleted by managed-file recovery. Existing protected bytes remain
+unchanged. This does not mark any instruction or version cutover successful.
 
 ## Repair Order
 

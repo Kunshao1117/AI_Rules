@@ -1,71 +1,52 @@
 ---
 name: supabase-postgres-best-practices
-description: >
-  資料庫效能最佳實務：Postgres performance optimization and Supabase-maintained database best
-  practices. Use when: 撰寫/審查/最佳化 SQL query、index、schema design、
-  connection pooling、RLS performance、database configuration、資料庫 schema
-  最佳化。DO NOT use when: 任務涉及 Supabase Auth、Edge Functions、Storage、
-  Realtime、CLI/MCP 或產品整合（用 supabase）。
-license: MIT
+description: >-
+  Postgres 資料庫設計與效能方法。Use when: designing, reviewing or optimizing Postgres schema, queries, indexes, RLS, functions, transactions or connections. DO NOT use when: merely configuring Supabase clients or requesting hosted operations without a database-method question.
 metadata:
-  author: supabase
-  version: "1.1.1"
-  origin: framework
-  kind: operational
-  organization: Supabase
-  date: January 2026
-  abstract: Comprehensive Postgres performance optimization guide for developers using Supabase and Postgres. Contains performance rules across 8 categories, prioritized by impact from critical (query performance, connection management) to incremental (advanced features). Each rule includes detailed explanations, incorrect vs. correct SQL examples, query plan analysis, and specific performance metrics to guide automated optimization and code generation.
+  version: "8.0"
+  memory_awareness: none
 ---
 
-# Supabase Postgres Best Practices
+# supabase-postgres-best-practices
 
-Comprehensive performance optimization guide for Postgres, maintained by Supabase. Contains rules across 8 categories, prioritized by impact to guide automated query optimization and schema design.
+Invocation: restricted; provider-specific: no.
 
-## When to Apply
+## Database method selection
 
-Reference these guidelines when:
-- Writing SQL queries or designing schemas
-- Implementing indexes or query optimization
-- Reviewing database performance issues
-- Configuring connection pooling or scaling
-- Optimizing for Postgres-specific features
-- Working with Row-Level Security (RLS)
+1. Identify PostgreSQL version, schema/access model, workload and the specific uncertainty.
+   Supabase MCP is not required; provider-neutral Postgres methods remain usable.
+2. Select only relevant references: `schema-*` for types/keys/constraints/partitioning;
+   `query-*` for query shape/indexes; `security-*` for privileges/RLS/definer boundaries;
+   `conn-*` for pooling and session behavior; `lock-*` for transactions/concurrency;
+   `data-*` for batching/upsert/pagination; `monitor-*` for evidence; `advanced-*` for JSONB/search.
+3. Compare alternatives against actual cardinality, selectivity, write/storage cost,
+   concurrency and deployment. Reference impact labels/numerical gains are illustrative
+   prioritization hints, not measured results, universal guarantees or verification gates.
+4. Design RLS from access model, anon/authenticated/service usage, ownership, tenant
+   boundary and operation type. Table grants and policies both matter; no universal policy.
+   Prefer invoker functions; definer helpers need explicit owner, qualified objects,
+   controlled search_path and least-privilege EXECUTE access.
+5. Preserve transaction invariants as well as short lock duration. Connection and pooling
+   choices depend on process lifetime, driver and session features. Inspect plans and
+   workload evidence before recommending indexes or configuration changes.
 
-## Rule Categories by Priority
+All SQL and administrative examples in references are design examples, not instructions
+to execute remotely. CREATE/ALTER/GRANT/VACUUM/ANALYZE/ALTER SYSTEM and extensions have
+effects. EXPLAIN ANALYZE actually executes its statement; SELECT can call mutating functions
+or take locks. No automatic SQL execution, migration application or Security Reviewer spawn.
+Return proposed method, assumptions and relevant evidence; the workflow owns next actions.
 
-| Priority | Category | Impact | Prefix |
-|----------|----------|--------|--------|
-| 1 | Query Performance | CRITICAL | `query-` |
-| 2 | Connection Management | CRITICAL | `conn-` |
-| 3 | Security & RLS | CRITICAL | `security-` |
-| 4 | Schema Design | HIGH | `schema-` |
-| 5 | Concurrency & Locking | MEDIUM-HIGH | `lock-` |
-| 6 | Data Access Patterns | MEDIUM | `data-` |
-| 7 | Monitoring & Diagnostics | LOW-MEDIUM | `monitor-` |
-| 8 | Advanced Features | LOW | `advanced-` |
+Templates and contribution material are authoring references, not additional task triggers.
+Upstream method references retain their attribution; adapted material remains under MIT.
 
-## How to Use
+## Loading and responsibility
 
-Read individual rule files for detailed explanations and SQL examples:
-
-```
-references/query-missing-indexes.md
-references/query-partial-indexes.md
-references/_sections.md
-```
-
-Each rule file contains:
-- Brief explanation of why it matters
-- Incorrect SQL example with explanation
-- Correct SQL example with explanation
-- Optional EXPLAIN output or metrics
-- Additional context and references
-- Supabase-specific notes (when applicable)
-
-## References
-
-- https://www.postgresql.org/docs/current/
-- https://supabase.com/docs
-- https://wiki.postgresql.org/wiki/Performance_Optimization
-- https://supabase.com/docs/guides/database/overview
-- https://supabase.com/docs/guides/auth/row-level-security
+This is one method in the Supabase Optional Pack, not a pack activation engine.
+Load only task-relevant references, never the entire pack. No relations or automatic sibling loading.
+Read `Shared/policies/references/supabase-guide.md` for current provider facts and canonical owner pointers.
+Provider presence is required for provider operations, not for reading methods or editing source.
+Missing provider/authentication means unavailable/blocked or an already authorized suitable alternative;
+no implicit install, upgrade, login, PAT creation, initialization or MCP configuration.
+This Skill does not own execution, authorization, capability readiness, Agent activation,
+verification scope, review triggers, completion or Memory lifecycle. Invocation classification
+below is a method contract, not invented platform metadata or permission to execute tools.

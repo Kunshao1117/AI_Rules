@@ -1,99 +1,75 @@
 ---
 name: tech-stack-protocol
 description: >
-  技術堆疊盤點與版本接地（Infra）：Tech stack discovery, latest-stable grounding, lock-in, and self-mutation protocols.
-  References Memory Skill System for state storage.
-  Use when: 進入新專案、執行 /02_blueprint 架構設計、
-  或任何涉及 技術堆疊/框架/依賴/tech stack/初始化/最新穩定版/API 新鮮度 的決策。
-  DO NOT use when: 系統記憶卡已鎖定且無新依賴引入、純程式碼實作不涉及堆疊變更。
+  技術棧探索與版本相容性判讀。Use when: 任務需要辨識指定模組的未知技術棧、分析依賴或框架版本衝突，或評估已提出的技術遷移。
+  DO NOT use when: 只是開啟專案、例行實作、修改文案，或僅出現 framework 一詞而沒有技術棧判斷需求。
 metadata:
   author: antigravity
-  version: "5.1"
+  version: "6.0"
   origin: framework
   kind: operational
-  memory_awareness: full
-  tool_scope: ["filesystem:read", "mcp:cartridge-system"]
+  style: guided
+  memory_awareness: none
+  tool_scope: ["filesystem:read"]
 ---
 
-# Dynamic Tech Stack Protocol — Full Operating Protocol
+# Technology Stack Discovery and Compatibility Methods
 
-## HITL Boundary
+## When to use / when not to use
 
-- Read-only tech stack discovery, dependency inspection, and MCP schema discovery may proceed silently.
-- Writing `_system` memory, changing dependency files, installing packages, changing MCP config, or calling `memory_commit` is a protected phase. A `GO` phrase is only a scope-bound Director intent signal; before mutation, authorization resolution must bind the visible plan, station, file set, exact command/tool call, phase, expiry, and required protected gate.
-- `[MCP HITL GATE]` records justification and human-in-the-loop evidence. It does not replace authorization resolution, and install, dependency-file write, MCP config mutation, and memory commit are separate protected phases.
-- Discovery of memory or MCP tool schemas is not permission to execute mutating tools.
+Use for an actual unknown-stack, dependency compatibility or requested migration
+question. Do not run an inventory whenever a project opens or routine coding starts.
+Invocation classification: restricted. Loading this method grants no mutation,
+installation, provider selection or persistence authority.
 
-## 1. Project Exploration (探勘狀態)
+## Lazy discovery
 
-```
-Project state?
-├── No active `_system` memory main file exists → Execute Phase 1/2/3 discovery below; write `_system` only after authorization resolution
-└── `_system` exists with populated tech stack → Skip to §2 Locked State
-```
+1. Bound the affected project/package and the question. Read its manifest,
+   lockfile, source imports, configuration, repository scripts and CI as needed.
+   Reuse `Shared/policies/references/project-derived-verification.md` section 1
+   for evidence paths; it is not a mandatory verifier or extra Skill bundle.
+2. Derive the relevant runtime/framework/dependency/test setup from actual content.
+   Keep declared ranges, resolved lockfile versions and observed configuration
+   distinct. Resolve conflicts before treating an inference as a project fact.
+3. Only if execution/version evidence is needed, identify the relevant toolchain
+   and consult `Shared/policies/capability-resolution.md`. Check that executable
+   safely; do not probe unrelated languages, host inventory or all MCP schemas.
+   A Python package does not imply probing Node/Go/.NET; inspect only the affected
+   package in a mixed monorepo. Without a manifest, follow scoped source/config
+   clues gradually instead of trying every language command.
+4. Separate project facts (declared runtime, resolved dependencies, architecture)
+   from session facts (current PATH, executable presence, permissions, readiness).
+   Session readiness is not part of the long-term project matrix. An absent
+   binary is not a new project fact and does not authorize installation.
+5. When uncertain or fast-changing APIs affect the task, identify the locked
+   project version and read applicable official versioned documentation under
+   `Shared/policies/grounding-governance.md`. Consult latest guidance only when
+   the compatibility/migration question needs it. Do not upgrade to latest just
+   because it exists; use the supported project version unless scope changes.
+6. For a proposed dependency, compare existing facilities, compatibility, license
+   constraints and maintenance cost relevant to the task. Distinguish a utility
+   addition from a runtime/framework/language/ORM replacement. This distinction
+   informs impact analysis; it grants neither silent installation nor a sandbox
+   exemption. Follow task scope, architecture and the existing authorization owner.
+7. Return source paths, version evidence, uncertainty, relevant compatibility
+   findings and session limitations. Do not automatically persist the result.
 
-### Phase 1: Pre-Flight Capability Discovery
+## Owners and reference selection
 
-1. Run `Get-CimInstance` (Windows) or `uname` (Unix) → Host OS
-2. Run `node -v`, `python --version`, `go version` → Available toolchains
-3. Detect shell type (PowerShell / Bash)
-4. Save matrix to the active `_system` memory main file
+Read references/discovery-evidence.md for version conflicts or mixed-root evidence.
+Project-native verification choices remain under the existing verification owner;
+this method cannot choose focused/broad, independence, review or completion.
+`Shared/policies/authorization-resolution.md` owns dependency/configuration and
+install action authority; `Shared/policies/capability-resolution.md` owns readiness.
+Provider-specific: no. Needed documentation/tool capabilities may use an available
+legal equivalent or leave an explicit evidence gap. No implicit install, login,
+downloading presence probe or mandatory Context7/provider is introduced.
 
-### Phase 2: Architecture Scan
+## Frozen persistence compatibility
 
-1. Read `package.json`, `requirements.txt`, `go.mod`, `Cargo.toml` etc.
-2. Record findings in the active `_system` memory main file
-
-### Phase 3: Framework Derivation
-
-1. Derive primary framework (e.g., Next.js, Django) and testing environment (e.g., Jest, PyTest)
-2. Record in the active `_system` memory main file
-
-### Phase 3.5: Latest-Stable Grounding
-
-Before coding against any external framework, MCP server, VS Code extension API, browser API, or package with high-change behavior:
-
-1. Identify the exact project version from lockfiles, package manifests, config files, or memory.
-2. Prefer current stable guidance, but only if it is compatible with the project version.
-3. Verify uncertain APIs through official documentation, Context7, or primary sources.
-4. If the latest stable API conflicts with the locked project version, follow the locked project version and record the mismatch in the plan.
-
-Do not introduce a new core dependency, framework replacement, or API migration just because latest documentation recommends it. Core stack changes still require the Locked State gate.
-
-## 2. Locked State (鎖定狀態)
-
-Once the active `_system` memory main file is generated:
-
-```
-[STACK FREEZE GATE] Before ANY new dependency introduction:
-├── [SUDO] detected? → Record override/risk-closure request; continue this gate and all scoped authorization, Team-Native, validation, review, and protected-action gates.
-├── Active workflow is /03-1_experiment? → Allow. Sandbox exemption.
-├── Is this a core framework, language, or ORM replacement?
-│   ├── NO (utility packages, dev tools, minor libs) → Proceed silently.
-│   └── YES →
-│       [HALT] 「🔴 [STACK HALT] 偵測到核心技術堆疊變更。需 /02_blueprint 授權。」
-│       DO NOT proceed. DO NOT install. Stop current task.
-└── Gate cleared.
-```
-
-> Core stack = runtime framework (Next.js, Django), language (TypeScript→Python), ORM/DB driver (Prisma→Drizzle), primary CSS approach (Tailwind→Vanilla).
-> Utility packages (lodash, dayjs, zod) are NOT core stack.
-
-## 3. Self-Mutation Protocol (自體突變)
-
-Triggered by a confirmed `/02_blueprint` pivot with authorization resolution for the self-mutation phase, file set, commands, expiry, and required protected gates:
-
-1. Rewrite the active `_system` memory main file
-2. Generate new initialization scripts (`package.json` etc.)
-
-## 4. MCP Registry (MCP 登錄簿)
-
-When the active `_system` memory main file contains an `## MCP Servers` section:
-
-- Treat listed MCP servers as part of the locked tech stack
-- Adding/removing follows the same governance as framework changes:
-  - Routine additions: require an explicitly scoped change workflow
-  - Architectural pivots (replacing core MCP): Requires `/02_blueprint`
-- Record changes in the active `_system` memory main file under `## MCP Servers` only within the authorized `_system` memory-write and memory-commit phases
-- Config location: `~/.gemini/antigravity/mcp_config.json` (global) or `.gemini/settings.json` (project)
-- **Operational procedures**: Each MCP has its own skill (see `_index.md` routing table)
+Active discovery does not read or write Memory as a prerequisite, save `_system`,
+call `memory_commit`, mutate MCP configuration or generate initialization scripts.
+Existing Memory/Project Context contracts remain frozen with their own owners.
+Only a specific legacy compatibility investigation may read
+`references/legacy/pre-a5-entry.md`, which preserves the original persistence
+clauses and anchors. Do not execute that archive as the active discovery flow.

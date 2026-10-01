@@ -1,4 +1,4 @@
-Set-StrictMode -Version Latest
+﻿Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
@@ -47,7 +47,7 @@ Describe 'Credential boundary contract' {
         $contract | Should Match '`APPROVED_PRODUCT_OWNED_CREDENTIAL_CONSUMPTION` \| no, when eligible'
         $contract | Should Match 'All conditions below are required'
         $contract | Should Match 'reclassifies the action to `AGENT_SECRET_HANDLING`'
-        $registry | Should Match 'Credential or secret handling \(`AGENT_SECRET_HANDLING`\) \| protected'
+        $registry | Should Match 'Agent secret read/reveal/create/modify, permission mutation, privilege escalation \| `protected.credential_privilege`'
         $registry | Should Match 'credential-boundary-contract\.md'
     }
 
@@ -71,23 +71,22 @@ Describe 'Credential boundary contract' {
         }
     }
 
-    It 'makes the tool-envelope rule capability-conditioned without weakening true protected actions' {
-        $authorization | Should Match 'Verified trusted-envelope evidence is mandatory for a true protected action'
-        $authorization | Should Match 'absence of a tool path''s\s+verified-envelope capability is not an automatic block'
-        $authorization | Should Match 'exact allowlist, phase and expiry, native\s+permission/sandbox compliance'
-        $authorization | Should Match 'hand-written JSON never repairs that gap'
-        $authorization | Should Match 'A protected mutation requires a trusted tool execution envelope'
-        $teamCore | Should Match 'A protected tool execution envelope must include the current board and station identifiers'
-        $teamCore | Should Match 'absent\s+cryptographic-envelope capability alone is not that condition'
-        $matrix | Should Match 'Credential And Local Runtime Evidence Boundary'
-        $matrix | Should Match 'true protected action remains\s+blocked without its verified protected-action evidence'
+    It 'separates general native evidence from frozen Memory cryptographic compatibility' {
+        $general = ($authorization -split '## Legacy Memory Compatibility')[0]
+        $general | Should Match 'General observe/local_work/protected actions do not universally require'
+        $general | Should Match 'Platform denial stops the affected action'
+        $general | Should Not Match 'A protected mutation requires a trusted tool execution envelope'
+        $authorization | Should Match 'LEGACY_MEMORY_AUTHORIZATION_START'
+        $teamCore | Should Match 'Legacy Memory Compatibility . Frozen Envelope Consumer Only'
+        $matrix | Should Match 'only an actually required native evidence contract can require cryptographic proof'
     }
 
-    It 'adds the reachable product runtime phase and preserves local_write routing semantics' {
+    It 'preserves the legacy product runtime phase without requiring it for general local_work' {
         $phases | Should Match '`product-runtime-execution` \| external observation plus scoped local runtime write \| no'
         $phases | Should Match 'It does not authorize agent secret handling, source write, Git, account/order action, deployment, or external mutation'
-        $routing | Should Match '`local_write` does not require Team mode'
-        $routing | Should Match 'Direct never authorizes git mutation, release, publish, deployment, install'
+        $contract | Should Match 'General local_work does not require that\s+phase'
+        $routing | Should Match 'It can read relevant scope and perform authorized `local_work`'
+        $authorization | Should Match 'Local commit, branch create/switch, staging and stash\s+require explicit inclusion'
     }
 
     It 'does not store a realistic secret-shaped value in the changed credential-boundary sources' {
@@ -109,6 +108,10 @@ Describe 'Credential boundary contract' {
         }
     }
 
+}
+
+# Explicitly opt in only when isolated sync/deployment is authorized.
+Describe 'Credential boundary isolated deployment' -Tag 'Deployment' {
     It 'keeps all changed Shared governance files byte-identical with managed runtime copies' {
         $runtimeRoot = Join-Path ([System.IO.Path]::GetTempPath()) ('ai-rules-credential-boundary-' + [guid]::NewGuid())
         $agentsRoot = Join-Path $runtimeRoot '.agents'

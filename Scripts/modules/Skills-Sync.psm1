@@ -9,6 +9,7 @@
 
 Import-Module -Name (Join-Path $PSScriptRoot 'Core.Reporting.psm1') -Force
 Import-Module -Name (Join-Path $PSScriptRoot 'Core.Comparison.psm1') -Force
+Import-Module -Name (Join-Path $PSScriptRoot 'Deployment.Transaction.psm1') -Force
 
 function Throw-SharedPolicySyncFailure {
     param(
@@ -34,6 +35,8 @@ function Throw-SharedPolicySyncFailure {
     throw $errorRecord
 }
 
+Import-Module (Join-Path $PSScriptRoot 'Skill-Migration.psm1') -Force -DisableNameChecking
+
 function Test-SharedSkillRelativePathIncluded {
     param([string]$RelativePath)
 
@@ -41,6 +44,8 @@ function Test-SharedSkillRelativePathIncluded {
     $normalized = $RelativePath.TrimStart('\', '/')
     $firstSegment = ($normalized -split '[\\/]')[0]
     $isProjectContextProtocol = $normalized -match '^project-context-protocol([\\\/]|$)'
+
+    if ($firstSegment -in @(Get-LegacySkillMigrationArtifacts | Select-Object -ExpandProperty skill -Unique)) { return $false }
 
     if ($normalized -match '^_memory([\\\/]|$)') { return $false }
     if ($normalized -match '^_project([\\\/]|$)') { return $false }
@@ -85,7 +90,12 @@ function Get-RetiredSharedSkillManifest {
                 '663D686BC85B2DC5F90171A420489692156090948F6015F530C095E998548D34'
             )
         }
-    )
+    ) + @(Get-LegacySkillMigrationArtifacts | ForEach-Object {
+        [PSCustomObject]@{
+            RelativePath = $_.old_relative_path
+            KnownSha256 = @(@($_.known_versions.sha256) + @($_.ApprovedCheckoutSha256))
+        }
+    })
 }
 
 function Remove-RetiredSharedSkills {
@@ -107,26 +117,30 @@ function Remove-RetiredSharedSkills {
     foreach ($artifact in @(Get-RetiredSharedSkillManifest)) {
         $relativePath = [string]$artifact.RelativePath
         if ([string]::IsNullOrWhiteSpace($relativePath) -or
-            $relativePath -match '(^|[\\/])\.\.([\\/]|$)' -or
+            $relativePath -match '(^|[\\/])\.{1,2}([\\/]|$)|:|[. ]([\\/]|$)' -or
             [System.IO.Path]::IsPathRooted($relativePath)) {
             throw "Invalid retired Shared Skill declaration: $relativePath"
         }
 
-        $targetPath = Join-Path $TargetSkillsPath ($relativePath -replace '/', '\\')
-        if (-not (Test-Path -LiteralPath $targetPath -PathType Leaf)) { continue }
-
-        try {
-            $actualHash = (Get-FileHash -LiteralPath $targetPath -Algorithm SHA256 -ErrorAction Stop).Hash.ToUpperInvariant()
-        } catch {
-            $preserved.Add($relativePath)
-            Write-Warn "preserved_unconfirmed_retired_skill: $relativePath; SHA256 could not be read; manual action required."
-            continue
+        $firstSegment = ($relativePath -split '[\\/]')[0]
+        if ($firstSegment -in @('memory-ops', 'memory-arch', 'memory', 'context', '.cartridge')) {
+            throw "Frozen Memory path is not a Shared Skill retirement candidate: $relativePath"
         }
-
-        $knownHashes = @($artifact.KnownSha256 | ForEach-Object { ([string]$_).ToUpperInvariant() })
-        if ($knownHashes -notcontains $actualHash) {
+        if ($firstSegment -in @('team-specialist-memory-closure',
+            'team-memory-closure-delivery-artifact', 'team-specialist-memory-docs',
+            'team-memory-docs-delivery-artifact') -and
+            @((Get-LegacySkillMigrationArtifacts -Batch M3) | Where-Object {
+                $_.old_relative_path -ceq $relativePath -and $_.skill -ceq $firstSegment
+            }).Count -ne 1) {
+            throw "Unmapped frozen Memory retirement path: $relativePath"
+        }
+        $targetPath = Join-Path $TargetSkillsPath ($relativePath -replace '/', '\\')
+        $decision = Get-ManagedSkillRetirementDecision -TargetPath $targetPath -KnownSha256 @($artifact.KnownSha256)
+        if ($decision.Action -eq 'SKIP') { continue }
+        if ($decision.Action -ne 'RETIRE') {
             $preserved.Add($relativePath)
-            Write-Warn "preserved_user_modified_retired_skill: $relativePath; known official hash did not match; manual action required."
+            $diagnostic = if ($decision.Action -eq 'PRESERVE') { 'preserved_user_modified_retired_skill' } else { 'preserved_unconfirmed_retired_skill' }
+            Write-Warn "${diagnostic}: $relativePath; $($decision.Reason); manual action required."
             continue
         }
 
@@ -143,6 +157,9 @@ function Remove-RetiredSharedSkills {
         }
     }
 
+    # A source change/race after preflight must not become a successful mixed
+    # active surface. Preserve the entry and let the existing transaction fail.
+    Assert-LegacySkillMigrationReady -TargetSkillsPath $TargetSkillsPath
     return [PSCustomObject]@{
         Removed = @($removed.ToArray())
         Preserved = @($preserved.ToArray())
@@ -203,7 +220,7 @@ function Get-SharedGovernanceReferenceRelativePaths {
         }
     }
 
-    foreach ($dirRel in @("mcp-profiles", "policies")) {
+    foreach ($dirRel in @("mcp-profiles", "policies", "agents", "workflows")) {
         $dir = Join-Path $SharedRoot $dirRel
         if (-not (Test-Path -LiteralPath $dir -PathType Container)) { continue }
         Get-ChildItem -LiteralPath $dir -Recurse -File -ErrorAction SilentlyContinue |
@@ -321,6 +338,86 @@ function Sync-ProjectTools {
     return $updated
 }
 
+function Get-SharedSkillProjectedBytes {
+    # Preserve raw bytes unless an active, explicit source-valid policy path
+    # requires relocation. No mirror, universal string replacement, or Skill edit.
+    param([string]$SourcePath, [string]$SharedSkillsRoot, [string]$TargetSkillsPath)
+    $raw = [IO.File]::ReadAllBytes($SourcePath)
+    $root = [IO.Path]::GetFullPath($SharedSkillsRoot).TrimEnd('\','/')
+    $source = [IO.Path]::GetFullPath($SourcePath)
+    if (-not $source.StartsWith($root + '\',[StringComparison]::OrdinalIgnoreCase)) { throw 'SkillProjection.SourceOutsideRoot' }
+    $relative = $source.Substring($root.Length).TrimStart('\','/').Replace('\','/')
+    $targetParent = Split-Path (Split-Path $TargetSkillsPath -Parent) -Leaf
+    if ($source -notmatch '\.md$' -or $relative -match '(^|/)(legacy|archive|archives)(/|$)' -or
+        $relative -eq '_index.md' -or $targetParent -notin @('.agents','.claude','.cursor')) { return ,$raw }
+    $sharedRoot = Split-Path $root -Parent
+    $policyRoot = [IO.Path]::GetFullPath((Join-Path $sharedRoot 'policies')).TrimEnd('\','/')
+    $depth = @($relative.Split('/')).Count - 1
+    $up = (@('..') * ($depth + $(if ($targetParent -eq '.agents') { 1 } else { 2 }))) -join '/'
+    $runtimePrefix = if ($targetParent -eq '.agents') { 'shared/policies/' } else { '.agents/shared/policies/' }
+    $text = [Text.Encoding]::UTF8.GetString($raw)
+    $parts = [regex]::Split($text, '(\r\n|\n|\r)')
+    $fence = ''; $legacyDepth = 0; $legacyBlock = $false; $compatParagraph = $false
+    $pattern = '`(?<path>(?:\.\./)+[^`\s]+)`|\]\(<?(?<path>(?:\.\./)+[^\s)>]+)|^\s{0,3}\[[^\]\r\n]+\]:\s*<?(?<path>(?:\.\./)+[^\s>]+)'
+    for ($i=0; $i -lt $parts.Length; $i+=2) {
+        $line = $parts[$i]
+        $fm = [regex]::Match($line, '^\s{0,3}(?<f>`{3,}|~{3,})')
+        if ($fm.Success) {
+            if (-not $fence) { $fence=$fm.Groups['f'].Value }
+            elseif ($fm.Groups['f'].Value[0] -eq $fence[0] -and $fm.Groups['f'].Value.Length -ge $fence.Length) { $fence='' }
+            continue
+        }
+        if ($fence) { continue }
+        if ($line -match '<!--\s*\w*LEGACY\w*_START\s*-->') { $legacyBlock=$true }
+        if ($line -match '<!--\s*\w*LEGACY\w*_END\s*-->') { $legacyBlock=$false; continue }
+        $heading = [regex]::Match($line, '^(?<h>#{1,6})\s+(?<title>.+)$')
+        if ($heading.Success) {
+            $level=$heading.Groups['h'].Value.Length
+            if ($legacyDepth -and $level -le $legacyDepth) { $legacyDepth=0 }
+            if ($heading.Groups['title'].Value -match '(?i)\blegacy\b|\barchive\b|\bhistorical\b') { $legacyDepth=$level }
+        }
+        if ($legacyDepth -or $legacyBlock) { continue }
+        if (-not $line.Trim()) { $compatParagraph=$false }
+        $compat = [regex]::Match($line, '(?i)\b(?:an? unmigrated|compatibility-only|historical (?:reference|citation))\b')
+        $limit = if ($compatParagraph) { 0 } elseif ($compat.Success) { $compat.Index } else { [int]::MaxValue }
+        # Replace from the right so match offsets stay exact. Plain unquoted text
+        # and inactive compatibility tails are not dependencies.
+        $matches = @([regex]::Matches($line,$pattern))
+        for ($j=$matches.Count-1; $j -ge 0; $j--) {
+            $group=$matches[$j].Groups['path']
+            if ($group.Index -ge $limit) { continue }
+            $path=$group.Value; $base=($path -split '#',2)[0]
+            $resolved=[IO.Path]::GetFullPath((Join-Path (Split-Path $source -Parent) $base))
+            if (-not $resolved.StartsWith($policyRoot + '\',[StringComparison]::OrdinalIgnoreCase) -or
+                -not (Test-Path -LiteralPath $resolved -PathType Leaf)) { continue }
+            $suffix=$resolved.Substring($policyRoot.Length).TrimStart('\','/').Replace('\','/')
+            $anchor=$path.Substring($base.Length)
+            $replacement=$up+'/'+$runtimePrefix+$suffix+$anchor
+            $line=$line.Remove($group.Index,$group.Length).Insert($group.Index,$replacement)
+        }
+        $parts[$i]=$line
+        if ($compat.Success) { $compatParagraph=$true }
+    }
+    $projected=$parts -join ''
+    if ($projected -ceq $text) { return ,$raw }
+    return ,([Text.Encoding]::UTF8.GetBytes($projected))
+}
+
+function Compare-SharedSkillProjection {
+    param([string]$SourcePath,[string]$TargetPath,[string]$SharedSkillsRoot,[string]$TargetSkillsPath,[string]$RelativePath)
+    $bytes=Get-SharedSkillProjectedBytes -SourcePath $SourcePath -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $TargetSkillsPath
+    $status='NEW'
+    if (Test-Path -LiteralPath $TargetPath -PathType Leaf) {
+        $sha=[Security.Cryptography.SHA256]::Create()
+        try {
+            $expected=[BitConverter]::ToString($sha.ComputeHash($bytes))
+            $actual=[BitConverter]::ToString($sha.ComputeHash([IO.File]::ReadAllBytes($TargetPath)))
+            $status=if ($expected -ceq $actual) { 'SAME' } else { 'CHANGED' }
+        } finally { $sha.Dispose() }
+    }
+    [pscustomobject]@{Status=$status;Path=$RelativePath}
+}
+
 function Sync-SharedSkills {
     <#
     .SYNOPSIS
@@ -348,49 +445,33 @@ function Sync-SharedSkills {
         return 0
     }
 
+    Assert-LegacySkillMigrationReady -TargetSkillsPath $TargetSkillsPath
     New-Item -ItemType Directory -Force -Path $TargetSkillsPath | Out-Null
 
-    if ($Mode -eq "Full") {
-        # 全量複製（Fresh 模式使用）
-        Get-ChildItem $SharedSkillsRoot | Where-Object {
-            # 排除符號連結目錄（_memory、_project、project-*），但保留正式索引與 project-context-protocol。
-            Test-SharedSkillRelativePathIncluded -RelativePath $_.Name
-        } | ForEach-Object {
-            Copy-Item $_.FullName $TargetSkillsPath -Recurse -Force -ErrorAction Stop
-        }
-        Get-ChildItem -LiteralPath $SharedSkillsRoot -Recurse -File | Where-Object {
-            $relPath = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
-            Test-SharedSkillRelativePathIncluded -RelativePath $relPath
-        } | ForEach-Object {
-            $rel = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
-            Assert-ExactDeploymentHash -SourcePath $_.FullName -TargetPath (Join-Path $TargetSkillsPath $rel) -RelativePath $rel
-        }
-        $null = Remove-RetiredSharedSkills -TargetSkillsPath $TargetSkillsPath
-        $count = (Get-ChildItem $TargetSkillsPath -Directory | Where-Object {
-            (Test-Path (Join-Path $_.FullName "SKILL.md"))
-        }).Count
-        Write-Ok "技能注入完成：$count 套技能 → $TargetSkillsPath"
-        return $count
-    }
-
-    # Diff 模式（Upgrade 使用）
     $updated = 0
-    Get-ChildItem $SharedSkillsRoot -Recurse -File | Where-Object {
+    Get-ChildItem -LiteralPath $SharedSkillsRoot -Recurse -File | Where-Object {
         $relPath = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
         Test-SharedSkillRelativePathIncluded -RelativePath $relPath
     } | ForEach-Object {
-        $rel     = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
+        $rel = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
         $tgtFile = Join-Path $TargetSkillsPath $rel
-        $result  = Compare-FrameworkFile -SourcePath $_.FullName -TargetPath $tgtFile -RelativePath $rel -RequireExactHash
-        if ($result.Status -in @("NEW", "CHANGED")) {
+        $bytes = Get-SharedSkillProjectedBytes -SourcePath $_.FullName -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $TargetSkillsPath
+        $result = Compare-SharedSkillProjection -SourcePath $_.FullName -TargetPath $tgtFile -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $TargetSkillsPath -RelativePath $rel
+        if ($Mode -eq 'Full' -or $result.Status -in @('NEW','CHANGED')) {
             $tgtDir = Split-Path $tgtFile -Parent
-            if (-not (Test-Path $tgtDir)) { New-Item -ItemType Directory $tgtDir -Force | Out-Null }
-            Copy-Item $_.FullName $tgtFile -Force -ErrorAction Stop
+            if (-not (Test-Path -LiteralPath $tgtDir)) { New-Item -ItemType Directory -Path $tgtDir -Force | Out-Null }
+            [IO.File]::WriteAllBytes($tgtFile,$bytes)
             $updated++
         }
-        Assert-ExactDeploymentHash -SourcePath $_.FullName -TargetPath $tgtFile -RelativePath $rel
+        $verified = Compare-SharedSkillProjection -SourcePath $_.FullName -TargetPath $tgtFile -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $TargetSkillsPath -RelativePath $rel
+        if ($verified.Status -ne 'SAME') { throw "SkillProjection.FinalBytesMismatch: $rel" }
     }
     $null = Remove-RetiredSharedSkills -TargetSkillsPath $TargetSkillsPath
+    if ($Mode -eq 'Full') {
+        $count = @(Get-ChildItem -LiteralPath $TargetSkillsPath -Directory | Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md') }).Count
+        Write-Ok "技能注入完成：$count 套技能 → $TargetSkillsPath"
+        return $count
+    }
     Write-Ok "技能差異注入完成：更新 $updated 個檔案"
     return $updated
 }
@@ -574,6 +655,43 @@ function Get-CodexGeneratedPolicyPointer {
     return Get-GeneratedPolicyPointer -PolicyPath $PolicyPath -Platform Codex
 }
 
+function Get-SharedPolicyBlockProjectedText {
+    param(
+        [Parameter(Mandatory = $true)][string]$PolicyPath,
+        [Parameter(Mandatory = $true)][string]$Content,
+        [Parameter(Mandatory = $true)][ValidateSet('Codex', 'Claude', 'Antigravity', 'Cursor')][string]$Platform,
+        [string]$InsertBeforePattern = '',
+        [string]$InsertAfterPattern = ''
+    )
+    $policyBlock = Get-SharedPolicyBlock -PolicyPath $PolicyPath -Platform $Platform
+    $generatedBlock = if ($Platform -in @('Codex', 'Cursor')) {
+        Get-GeneratedPolicyPointer -PolicyPath $PolicyPath -Platform $Platform
+    } else { $policyBlock }
+    $startMarker = '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->'
+    $endMarker = '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->'
+    $markerPattern = "(?ms)$([regex]::Escape($startMarker)).*?$([regex]::Escape($endMarker))"
+    $existingMarker = [regex]::Match($Content, $markerPattern)
+    $lineEnding = if ($existingMarker.Success) {
+        if ($existingMarker.Value -match "`r`n") { "`r`n" } else { "`n" }
+    } elseif ($Content -match "`r`n") { "`r`n" } else { "`n" }
+    $normalizedGeneratedBlock = $generatedBlock -replace "`r`n|`r|`n", $lineEnding
+    $generated = "$startMarker$lineEnding$normalizedGeneratedBlock$lineEnding$endMarker"
+    if ($existingMarker.Success) {
+        return [regex]::Replace($Content, $markerPattern, [System.Text.RegularExpressions.MatchEvaluator]{ param($m) $generated }, 1)
+    }
+    if ($InsertBeforePattern -and [regex]::IsMatch($Content, $InsertBeforePattern)) {
+        return [regex]::Replace($Content, $InsertBeforePattern, [System.Text.RegularExpressions.MatchEvaluator]{
+            param($m) "$generated$lineEnding$lineEnding$($m.Value)"
+        }, 1)
+    }
+    if ($InsertAfterPattern -and [regex]::IsMatch($Content, $InsertAfterPattern)) {
+        return [regex]::Replace($Content, $InsertAfterPattern, [System.Text.RegularExpressions.MatchEvaluator]{
+            param($m) "$($m.Value)$lineEnding$lineEnding$generated"
+        }, 1)
+    }
+    return $Content.TrimEnd() + $lineEnding + $lineEnding + $generated + $lineEnding
+}
+
 function Sync-SharedPolicyBlock {
     <#
     .SYNOPSIS
@@ -609,46 +727,13 @@ function Sync-SharedPolicyBlock {
         Throw-SharedPolicySyncFailure -Code TargetFileMissing -Path $TargetPath
     }
 
-    $policyBlock = Get-SharedPolicyBlock -PolicyPath $PolicyPath -Platform $Platform
-
-    $startMarker = '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->'
-    $endMarker = '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->'
-    $generatedBlock = $policyBlock
-    if ($Platform -eq 'Codex' -or $Platform -eq 'Cursor') {
-        $generatedBlock = Get-GeneratedPolicyPointer -PolicyPath $PolicyPath -Platform $Platform
-    }
     try {
         $content = Get-Content -LiteralPath $TargetPath -Raw -Encoding UTF8 -ErrorAction Stop
     } catch {
         Throw-SharedPolicySyncFailure -Code TargetReadFailed -Path $TargetPath -Detail $_.Exception.Message
     }
-    $markerPattern = "(?ms)$([regex]::Escape($startMarker)).*?$([regex]::Escape($endMarker))"
-    $existingMarker = [regex]::Match($content, $markerPattern)
-    $lineEnding = if ($existingMarker.Success) {
-        if ($existingMarker.Value -match "`r`n") { "`r`n" } else { "`n" }
-    } elseif ($content -match "`r`n") {
-        "`r`n"
-    } else {
-        "`n"
-    }
-    $normalizedGeneratedBlock = $generatedBlock -replace "`r`n|`r|`n", $lineEnding
-    $generated = "$startMarker$lineEnding$normalizedGeneratedBlock$lineEnding$endMarker"
-
-    if ($existingMarker.Success) {
-        $newContent = [regex]::Replace($content, $markerPattern, [System.Text.RegularExpressions.MatchEvaluator]{ param($m) $generated }, 1)
-    } elseif ($InsertBeforePattern -and [regex]::IsMatch($content, $InsertBeforePattern)) {
-        $newContent = [regex]::Replace($content, $InsertBeforePattern, [System.Text.RegularExpressions.MatchEvaluator]{
-            param($m)
-            return "$generated$lineEnding$lineEnding$($m.Value)"
-        }, 1)
-    } elseif ($InsertAfterPattern -and [regex]::IsMatch($content, $InsertAfterPattern)) {
-        $newContent = [regex]::Replace($content, $InsertAfterPattern, [System.Text.RegularExpressions.MatchEvaluator]{
-            param($m)
-            return "$($m.Value)$lineEnding$lineEnding$generated"
-        }, 1)
-    } else {
-        $newContent = $content.TrimEnd() + $lineEnding + $lineEnding + $generated + $lineEnding
-    }
+    $newContent = Get-SharedPolicyBlockProjectedText -PolicyPath $PolicyPath -Content $content -Platform $Platform `
+        -InsertBeforePattern $InsertBeforePattern -InsertAfterPattern $InsertAfterPattern
 
     if ($newContent -eq $content) {
         Write-Step "Shared subagent policy 已同步：$TargetPath"
@@ -664,4 +749,4 @@ function Sync-SharedPolicyBlock {
     return 1
 }
 
-Export-ModuleMember -Function Sync-SharedSkills, Sync-SharedGovernanceReferences, Sync-ProjectTools, Merge-WorkflowSkills, Get-SharedPolicyBlock, Get-GeneratedPolicyPointer, Get-CodexGeneratedPolicyPointer, Sync-SharedPolicyBlock, Get-SharedGovernanceReferenceRelativePaths, Get-ProjectToolRelativePaths, Get-ProjectToolDiffs, Test-SharedSkillRelativePathIncluded, Test-CodexWorkflowRelativePathIncluded
+Export-ModuleMember -Function Get-SharedSkillProjectedBytes, Compare-SharedSkillProjection, Sync-SharedSkills, Sync-SharedGovernanceReferences, Sync-ProjectTools, Merge-WorkflowSkills, Get-SharedPolicyBlock, Get-GeneratedPolicyPointer, Get-CodexGeneratedPolicyPointer, Get-SharedPolicyBlockProjectedText, Sync-SharedPolicyBlock, Get-SharedGovernanceReferenceRelativePaths, Get-ProjectToolRelativePaths, Get-ProjectToolDiffs, Test-SharedSkillRelativePathIncluded, Test-CodexWorkflowRelativePathIncluded, Get-RetiredSharedSkillManifest

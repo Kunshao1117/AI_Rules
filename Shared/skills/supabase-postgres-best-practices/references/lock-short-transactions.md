@@ -1,50 +1,15 @@
----
-title: Keep Transactions Short to Reduce Lock Contention
-impact: MEDIUM-HIGH
-impactDescription: 3-5x throughput improvement, fewer deadlocks
-tags: transactions, locking, contention, performance
----
+# Short transactions with preserved business invariants
 
-## Keep Transactions Short to Reduce Lock Contention
+Keep lock-holding work bounded and avoid slow network calls inside a transaction when the
+business contract permits. Moving a payment call outside a transaction alone is not enough:
+use idempotency, durable state/outbox or reconciliation for charge-success/database-failure
+and concurrent updates. Check affected rows before treating a conditional update as success.
 
-Long-running transactions hold locks that block other queries. Keep transactions as short as possible.
+Prepare inputs before opening the transaction, perform the required atomic database work,
+and commit promptly. Define retry behavior for serialization failures/deadlocks without
+repeating non-idempotent external effects. statement_timeout limits individual statements,
+not the whole transaction lifetime; evaluate idle-in-transaction/transaction limits supported
+by the actual version. SET LOCAL belongs inside a transaction. Timeout changes are proposed
+configuration actions, not automatic remote operations.
 
-**Incorrect (long transaction with external calls):**
-
-```sql
-begin;
-select * from orders where id = 1 for update;  -- Lock acquired
-
--- Application makes HTTP call to payment API (2-5 seconds)
--- Other queries on this row are blocked!
-
-update orders set status = 'paid' where id = 1;
-commit;  -- Lock held for entire duration
-```
-
-**Correct (minimal transaction scope):**
-
-```sql
--- Validate data and call APIs outside transaction
--- Application: response = await paymentAPI.charge(...)
-
--- Only hold lock for the actual update
-begin;
-update orders
-set status = 'paid', payment_id = $1
-where id = $2 and status = 'pending'
-returning *;
-commit;  -- Lock held for milliseconds
-```
-
-Use `statement_timeout` to prevent runaway transactions:
-
-```sql
--- Abort queries running longer than 30 seconds
-set statement_timeout = '30s';
-
--- Or per-session
-set local statement_timeout = '5s';
-```
-
-Reference: [Transaction Management](https://www.postgresql.org/docs/current/tutorial-transactions.html)
+Source: [Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html).

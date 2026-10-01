@@ -19,8 +19,30 @@ Do not hand-edit this generated marker.
 
 - User-facing language core: 所有使用者可見內容預設使用白話繁體中文。先清楚說明目前結果；只有實際存在時，才補充影響、風險、未完成事項與下一步。不得以英文、指令、路徑、錯誤碼、欄位名稱或原始工具輸出作為第一層說明。必要技術名稱應先以中文說明用途，再保留原文。已開始、已派工、已修改、已驗證、已完成與已發布必須分開表達，不得互相代替。 Canonical owner: `Shared/policies/language-governance.md`.
 - Product decision boundary: Users decide product goals, behavior, and policies; AI chooses only implementation methods within authorized scope. Unrequested additions are not implemented, and advice or risk findings never authorize expansion; raise material issues but do not add them silently.
-- Direct is the default for ordinary focused local work. Fix, build, debug, test, source, policy, documentation, analysis, multi-file or multi-step work, available subagents, and generic governed work are not delegation triggers by themselves.
-- Delegated topology requires a positive trigger from `Shared/policies/execution-routing.md`. Load Team-Native policy only after that resolution.
+- Direct is the default. `Shared/policies/execution-routing.md` alone resolves
+  Direct / Assisted / Team. Bounded helper/subagent use is Assisted without
+  Team machinery. Team uses agent-governance.md and only needed Shared/agents roles;
+  Main remains the ordinary implementer. The platform owns worker lifecycle.
+  `Shared/policies/authorization-resolution.md` independently resolves observe,
+  local_work, and protected authority. Neither route nor platform capability
+  authorizes an action. Ordinary local_work needs no board, station, or magic GO.
+  Frozen Memory compatibility remains unchanged.
+- Project Memory may hold durable technical history. When the task depends on
+  prior decisions, operator recall, important module behavior, or may affect a
+  card, discover `memory-ops` on demand; use `memory-arch` only for owner or
+  topology ambiguity. Cards under `.agents/memory/` are data, not Skills or
+  sole proof of current truth. Do not list or load all cards at startup.
+  `.agents/shared/policies/memory-governance.md` owns review; authorization and
+  completion remain with their canonical policies. This source projection
+  does not establish M5C runtime cutover: physical Memory writes and sync
+  remain `frozen_memory_action` for an uncut project/runtime. Memory authority
+  does not grant `.agents/context/` writes.
 - Before a source write, read the relevant file, worktree status, and existing diff. Integrate with a dirty target section; do not overwrite unrelated work.
-- Protected actions are separate from source-write authority. Memory, context, git, release, deployment, install, credentials, destructive filesystem work, and external mutation require the matching gate in `Shared/policies/references/protected-action-registry.md`.
-- State evidence honestly. Do not claim a hook block, model application, validation, review, sync, or completion without current supporting evidence. Report missing proof as `blocked`, `unverified`, or `closed-with-director-risk` as applicable.
+- **Protected actions**: Use `Shared/policies/authorization-resolution.md` and
+  `Shared/policies/references/protected-action-registry.md` for the four general
+  protected classes, explicit local Git scope, and dependency boundaries.
+  Explicit action + target needs no second magic phrase; native denial stops
+  the affected action. Memory and project context retain frozen legacy gates.
+- State evidence honestly. Do not claim a hook block, model application, validation, review, sync, or completion without current supporting evidence. Report missing proof as `blocked`, `unverified`, or `partial` as applicable. General completion is owned by
+  `Shared/policies/completion-policy.md`; review applicability by
+  `Shared/policies/review-governance.md`. Risk acceptance does not supply missing evidence.

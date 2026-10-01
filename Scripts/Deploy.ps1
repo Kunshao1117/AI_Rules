@@ -14,11 +14,15 @@
 .PARAMETER Action
     特殊動作：Global（安裝/更新全局觸發器）
 .PARAMETER RemoveOrphans
-    Upgrade 模式：是否自動清除孤兒檔案
+    Upgrade 模式：列報並保留未知所有權的孤兒檔案；退休只採明確雜湊名單
 .PARAMETER Apply
     Global 動作：實際寫入使用者層全域規則；未指定時只報告差異
 .PARAMETER ProfileRoot
     使用者層全域規則根目錄。預設為目前使用者 Profile，可用於 temp profile 測試
+.PARAMETER RuntimeCopyResolutionPath
+    An invocation-scoped, exact 58-path resolution supplied only after a separate user decision.
+.PARAMETER Gate3AEvidencePath
+    The exact Gate 3A individual-records evidence bound by that resolution.
 .EXAMPLE
     # 選單模式
     .\Deploy.ps1
@@ -48,7 +52,11 @@ param(
 
     [switch]$Apply,
 
-    [string]$ProfileRoot = $env:USERPROFILE
+    [string]$ProfileRoot = $env:USERPROFILE,
+
+    [string]$RuntimeCopyResolutionPath = '',
+
+    [string]$Gate3AEvidencePath = ''
 )
 
 $ErrorActionPreference = "Stop"
@@ -81,6 +89,8 @@ Import-Module (Join-Path $ModulesDir "Platform-Antigravity.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Platform-Claude.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Platform-Codex.psm1")  -Force
 Import-Module (Join-Path $ModulesDir "Platform-Cursor.psm1") -Force
+Import-Module (Join-Path $ModulesDir "Deployment.Transaction.psm1") -Force
+Import-Module (Join-Path $ModulesDir "Runtime-Copy-Resolution.psm1") -Force
 
 # ══════════════════════════════════════════════════════════
 # Global 動作：安裝/更新全局觸發器
@@ -377,6 +387,74 @@ function Invoke-PlatformDeploy {
 # 選單模式（無參數時啟動）
 # ══════════════════════════════════════════════════════════
 
+function Invoke-ProjectDeployBatch {
+    param([string]$SelectedPlatform, [string]$SelectedMode, [string]$SelectedTarget,
+          [object]$ResolutionInput = $null, [string]$EvidencePath = '')
+    $platforms = if ($SelectedPlatform -eq 'All') {
+        @('Antigravity', 'Claude', 'Codex', 'Cursor')
+    } else { @($SelectedPlatform) }
+    $candidate = $null; $archive = $null; $receipts = @()
+    if ($null -ne $ResolutionInput) {
+        if ($SelectedPlatform -cne 'All' -or $SelectedMode -cne 'Upgrade') {
+            throw 'RuntimeCopyResolution.RequiresAllPlatformUpgrade'
+        }
+        if (-not $EvidencePath) { throw 'RuntimeCopyResolution.EvidencePathRequired' }
+        Import-Module (Join-Path $ModulesDir 'Deployment.Preflight.psm1') -Force
+        Import-Module (Join-Path $ModulesDir 'Deployment.Transaction.psm1') -Force
+        $receipts = @(Get-Content -LiteralPath $EvidencePath -Raw -Encoding UTF8 -ErrorAction Stop | ConvertFrom-Json)
+        $basePlan = @(Get-DeploymentUpgradePreflight -RepoRoot $RepoRoot -TargetRoot $SelectedTarget -ProvenanceReceipts $receipts)
+        $candidate = Get-RuntimeCopyResolutionCandidate -RepoRoot $RepoRoot -TargetRoot $SelectedTarget -Gate3AEvidencePath $EvidencePath -BasePlan $basePlan
+        Assert-RuntimeCopyResolution -Candidate $candidate -Resolution $ResolutionInput -SelectedPlatform $SelectedPlatform
+        $otherBlockers = @($basePlan | Where-Object { $_.blocking -and $_.target_path -cnotin @($candidate.targets | ForEach-Object path) })
+        if ($otherBlockers.Count -gt 0) { throw 'RuntimeCopyResolution.OtherDeploymentBlockersRemain' }
+        $resolvedPlan = @(Get-DeploymentUpgradePreflight -RepoRoot $RepoRoot -TargetRoot $SelectedTarget -ProvenanceReceipts $receipts -RuntimeCopyResolution $ResolutionInput -Gate3AEvidencePath $EvidencePath -SelectedPlatform $SelectedPlatform)
+        if (@($resolvedPlan | Where-Object { $_.resolution_basis -eq 'invocation_scoped_user_decision' -and $_.planned_action -eq 'RETIRE' }).Count -ne 58) {
+            throw 'RuntimeCopyResolution.PreflightApplyMismatch'
+        }
+        $archiveRoot = Join-Path $ProfileRoot '.ai_rules/deployment-archives'
+        $archive = New-RuntimeCopyArchive -Candidate $candidate -Resolution $ResolutionInput -RepoRoot $RepoRoot -ArchiveRoot $archiveRoot
+    }
+    $batchOutput = @(Invoke-DeploymentTransaction -TargetRoot $SelectedTarget -Action {
+        if ($null -ne $ResolutionInput) {
+            $freshPlan = @(Get-DeploymentUpgradePreflight -RepoRoot $RepoRoot -TargetRoot $SelectedTarget -ProvenanceReceipts $receipts)
+            $freshCandidate = Get-RuntimeCopyResolutionCandidate -RepoRoot $RepoRoot -TargetRoot $SelectedTarget -Gate3AEvidencePath $EvidencePath -BasePlan $freshPlan
+            Assert-RuntimeCopyResolution -Candidate $freshCandidate -Resolution $ResolutionInput -SelectedPlatform $SelectedPlatform
+            $null = Assert-RuntimeCopyArchive -Candidate $freshCandidate -Resolution $ResolutionInput -ArchivePath $archive
+            Remove-ResolvedRuntimeCopies -Candidate $freshCandidate -Resolution $ResolutionInput -ArchivePath $archive
+        }
+        foreach ($p in $platforms) {
+            $platformOutput = @(Invoke-PlatformDeploy -PlatformName $p -DeployMode $SelectedMode -TargetPath $SelectedTarget)
+            $platformOutput
+            if (@($platformOutput | Where-Object {
+                $null -ne $_ -and $null -ne $_.PSObject.Properties['Succeeded'] -and -not $_.Succeeded
+            }).Count -gt 0) { return }
+        }
+        if ($null -ne $ResolutionInput) {
+            foreach ($entry in $candidate.targets) {
+                if (Test-Path -LiteralPath (Join-Path $SelectedTarget $entry.path)) {
+                    throw "RuntimeCopyResolution.RetiredEntryStillActive: $($entry.path)"
+                }
+            }
+            Import-Module (Join-Path $ModulesDir 'Claude-Agent-Projection.psm1') -Force
+            foreach ($agent in @(Get-ClaudeAgentSourceFiles -FrameworkRoot $ClaudeRoot -SharedRoot $SharedRoot)) {
+                $targetAgent = Join-Path $SelectedTarget $agent.TargetRelativePath
+                if (-not (Test-Path -LiteralPath $targetAgent -PathType Leaf) -or
+                    (Get-FileHash -LiteralPath $targetAgent -Algorithm SHA256).Hash -ne
+                    (Get-FileHash -LiteralPath $agent.SourcePath -Algorithm SHA256).Hash) {
+                    throw "RuntimeCopyResolution.AgentProjectionSmokeFailed: $($agent.TargetRelativePath)"
+                }
+            }
+            $null = Assert-RuntimeCopyArchive -Candidate $candidate -Resolution $ResolutionInput -ArchivePath $archive
+        }
+    })
+    $batchOutput
+    if ($null -ne $ResolutionInput -and @($batchOutput | Where-Object {
+        $null -ne $_ -and $null -ne $_.PSObject.Properties['Succeeded'] -and -not $_.Succeeded
+    }).Count -gt 0) {
+        throw 'RuntimeCopyResolution.DeploymentRolledBack'
+    }
+}
+
 function Show-Menu {
     Write-Host ""
     Write-Host "╔══════════════════════════════════════════════════╗" -ForegroundColor Cyan
@@ -426,18 +504,16 @@ function Show-Menu {
         if ($inputTarget -and $inputTarget.Trim()) { $selectedTarget = $inputTarget.Trim() }
     }
 
-    if ($selectedPlatform -eq "All") {
-        foreach ($p in @("Antigravity", "Claude", "Codex", "Cursor")) {
-            Invoke-PlatformDeploy -PlatformName $p -DeployMode $selectedMode -TargetPath $selectedTarget
-        }
-    } else {
-        Invoke-PlatformDeploy -PlatformName $selectedPlatform -DeployMode $selectedMode -TargetPath $selectedTarget
-    }
+    Invoke-ProjectDeployBatch -SelectedPlatform $selectedPlatform -SelectedMode $selectedMode -SelectedTarget $selectedTarget
 }
 
 # ══════════════════════════════════════════════════════════
 # 主流程：判斷參數模式或選單模式
 # ══════════════════════════════════════════════════════════
+
+if ($Action -eq "Global" -and ($RuntimeCopyResolutionPath -or $Gate3AEvidencePath)) {
+    throw 'RuntimeCopyResolution.NotSupportedForGlobalAction'
+}
 
 if ($Action -eq "Global") {
     Invoke-GlobalInstall
@@ -446,14 +522,14 @@ if ($Action -eq "Global") {
 
 if ($Platform -and $Mode) {
     # 參數模式
-    if ($Platform -eq "All") {
-        foreach ($p in @("Antigravity", "Claude", "Codex", "Cursor")) {
-            Invoke-PlatformDeploy -PlatformName $p -DeployMode $Mode -TargetPath $Target
-        }
-    } else {
-        Invoke-PlatformDeploy -PlatformName $Platform -DeployMode $Mode -TargetPath $Target
+    $resolution = $null
+    if ($RuntimeCopyResolutionPath) {
+        Assert-DeploymentPathUnlinked -Path $RuntimeCopyResolutionPath
+        $resolution = Get-Content -LiteralPath $RuntimeCopyResolutionPath -Raw -Encoding UTF8 -ErrorAction Stop | ConvertFrom-Json
     }
+    Invoke-ProjectDeployBatch -SelectedPlatform $Platform -SelectedMode $Mode -SelectedTarget $Target -ResolutionInput $resolution -EvidencePath $Gate3AEvidencePath
 } else {
+    if ($RuntimeCopyResolutionPath) { throw 'RuntimeCopyResolution.RequiresExplicitPlatformAndMode' }
     # 選單模式
     Show-Menu
 }

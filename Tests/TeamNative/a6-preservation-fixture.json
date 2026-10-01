@@ -1,0 +1,16 @@
+{
+  "original_files": {
+    "Shared/skills/a11y-testing/SKILL.md": "591b4027e72050c2ff2a62f5d64aaf72eca8b214d430d4ad2abcea7ef619895a",
+    "Shared/skills/browser-testing/SKILL.md": "a82647c844846b1036465345e91b75f4019a94c85f0b98cf19893cbabff0938f",
+    "Shared/skills/impact-test-strategy/SKILL.md": "a0a288d440519980e1966ecd2844a930b8d83e8cb649e303d3b60d9c5439290c",
+    "Shared/skills/impact-test-strategy/references/regression-test-examples.md": "0e57bfa22d2fb0cdadd5bd5d95eb2f59b948318bc2c1aab7fc95a74d42fb63d4",
+    "Shared/skills/performance-audit/SKILL.md": "8d3b36a2de9179d1102496f615db5fe93fb7c822fddfff425bd095e9c1a4a079",
+    "Shared/skills/test-automation-strategy/SKILL.md": "03e5bae1945ecd8322bd2573c523daa101bfa12988757fecba3d429d06c2fc40",
+    "Shared/skills/test-patterns/SKILL.md": "261b41102effb1c45e00e2183fded3f328b75a8b721f3bba90411f954e52ffde",
+    "Shared/skills/test-patterns/references/api-route-test-template.md": "0048cdfad68263bf7a29cf834d1b82f7a774e04c300c105ae7b11fb12f7eec39",
+    "Shared/skills/test-patterns/references/hook-test-template.md": "d92afa90ae5666cbaefd0c1b4c182bc926f7dfd6ab46c3c8909265ace02f49bb",
+    "Shared/skills/test-patterns/references/utility-test-template.md": "94dff941ae53b2ffe6064382acf8f479ab47f6fdc6082fc4eafe593649a7c581"
+  },
+  "protected_shared_sha256": "eb44a178fcfc5ceeb4d517b8f2ab927b1965cddfb6e63d8c62db45738b91f67e",
+  "cartridge": "2db2d21f196206237c5dde039f45bd3a86e142df9e6283f0353aadf50c407409"
+}

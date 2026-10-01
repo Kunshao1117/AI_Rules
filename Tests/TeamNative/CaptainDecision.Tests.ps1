@@ -3,10 +3,19 @@ $core = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\team-nati
 $deliverySlice = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\references\team-native-core-delivery-slice.md') -Raw
 $orchestration = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\workflow-orchestration.md') -Raw
 $authorization = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\authorization-resolution.md') -Raw
-$boardSlice = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\skills\team-task-board\references\board-field-slice-and-roles.md') -Raw
-$packet = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\skills\team-station-handoff-packet\references\packet-schema-and-routing.md') -Raw
+# These field contracts remain frozen references after Skill retirement.
+$boardSlice = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\references\legacy-skills\team-task-board\references\board-field-slice-and-roles.md') -Raw
+$packet = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\references\legacy-skills\team-station-handoff-packet\references\packet-schema-and-routing.md') -Raw
 
-Describe 'Captain delivery-slice decisions' {
+Describe 'Frozen captain delivery-slice decisions' {
+    It 'retains frozen field owners without making the legacy slice a general Team prerequisite' {
+        $core | Should Match 'LEGACY_TEAM_COMPATIBILITY_START'
+        $deliverySlice | Should Match 'not required for\s+general vNext work'
+        $core | Should Match 'Shared/agents/_registry\.md'
+        $trace = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared/policies/references/team-trace-fields.md') -Raw
+        $trace | Should Match 'legacy-skills/team-task-board/references/board-field-slice-and-roles\.md'
+        Test-Path -LiteralPath (Join-Path $repoRoot 'Shared/skills/team-task-board/SKILL.md') | Should Be $false
+    }
     It 'assigns the captain route decisions without assigning station work' {
         $core | Should Match 'team-native-core-delivery-slice\.md'
         $deliverySlice | Should Match 'captain\s+records\s+it\s+and\s+selects\s+the\s+route'

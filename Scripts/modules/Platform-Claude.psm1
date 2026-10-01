@@ -10,6 +10,7 @@
 
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -ErrorAction Stop
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Claude-Agent-Projection.psm1') -ErrorAction Stop
 
 function Invoke-ClaudeFresh {
     <#
@@ -45,6 +46,14 @@ function Invoke-ClaudeFresh {
     $null = Get-SharedPolicyBlock -PolicyPath $sharedPolicyPath -Platform Claude
     if (-not (Test-Path -LiteralPath $SharedSkillsRoot -PathType Container)) {
         throw "Shared skills source is missing: $SharedSkillsRoot"
+    }
+    $agentDecisions = @(Get-ClaudeAgentProjectionDecisions -FrameworkRoot $FrameworkRoot -SharedRoot $sharedRoot -TargetRoot $Target)
+    $agentConflicts = @($agentDecisions | Where-Object Blocking)
+    if ($agentConflicts.Count -gt 0) {
+        foreach ($conflict in $agentConflicts) {
+            Write-Warn "Claude Agent 保留並阻擋 Fresh：$($conflict.TargetRelativePath) ($($conflict.Reason))"
+        }
+        return [PSCustomObject]@{ Succeeded = $false; Platform = 'Claude'; Reason = 'AgentProvenanceUnconfirmed'; BlockedAgents = @($agentConflicts.TargetRelativePath) }
     }
 
     Write-Banner "Claude Edition v$version — Fresh 安裝 | 目標: $Target" "Magenta"
@@ -135,7 +144,7 @@ function Invoke-ClaudeUpgrade {
     .PARAMETER SharedSkillsRoot
         Shared/skills/ 的絕對路徑
     .PARAMETER RemoveOrphans
-        是否自動清除孤兒檔案
+        列報並保留未知所有權的孤兒檔案；退休只採明確雜湊名單
     #>
     param(
         [Parameter(Mandatory = $true)]
@@ -171,17 +180,27 @@ function Invoke-ClaudeUpgrade {
     $targetVersion  = Get-VersionContent -Path $dstVersionFile
     Write-Banner "Claude Edition Upgrade v$targetVersion → v$version | 目標: $Target" "DarkCyan"
 
-    Write-Step "正在掃描 .claude/ 差異（CLAUDE.md/commands/rules）..."
+    $agentDecisions = @(Get-ClaudeAgentProjectionDecisions -FrameworkRoot $FrameworkRoot -SharedRoot $sharedRoot -TargetRoot $Target)
+    $agentConflicts = @($agentDecisions | Where-Object Blocking)
+    if ($agentConflicts.Count -gt 0) {
+        foreach ($conflict in $agentConflicts) {
+            Write-Warn "Claude Agent 保留並阻擋升級：$($conflict.TargetRelativePath) ($($conflict.Reason))"
+        }
+        return [PSCustomObject]@{ Succeeded = $false; Platform = 'Claude'; Reason = 'AgentProvenanceUnconfirmed'; BlockedAgents = @($agentConflicts.TargetRelativePath) }
+    }
+
+    Write-Step "正在掃描 .claude/ 差異（CLAUDE.md/commands/rules/agents）..."
 
     # 掃描框架結構（排除 skills/，由 Shared/ 獨立管理）
     $categoryMap = [ordered]@{
         "平台入口 (Entry)"       = { $_.Path -eq "CLAUDE.md" }
         "工作流指令 (Commands)" = { $_.Path -like "commands\*" -or $_.Path -like "commands/*" }
         "治理規範 (Rules)"      = { $_.Path -like "rules\*"    -or $_.Path -like "rules/*" }
+        "正式代理 (Agents)"     = { $_.Path -like "agents\*"   -or $_.Path -like "agents/*" }
     }
 
     $excludeFiles = @("settings.local.json")
-    # 從 srcDotClaude 掃描 commands/rules（跳過 skills/）
+    # Agent source set is validated against the canonical Shared registry above.
     $report = Get-UpgradeReport `
         -SourceRoot $srcDotClaude `
         -TargetRoot $dstDotClaude `
@@ -189,6 +208,15 @@ function Invoke-ClaudeUpgrade {
         -ScanFiles @("CLAUDE.md") `
         -ProtectedDirs @() `
         -ExcludeFiles $excludeFiles
+    $report = @($report) + @(Get-ClaudeAgentUpgradeReport -Decisions $agentDecisions)
+
+    foreach ($decision in $agentDecisions) {
+        $expected = switch ($decision.Action) { 'ADD' { 'NEW' } 'UPDATE' { 'CHANGED' } 'UNCHANGED' { 'SAME' } }
+        $matching = @($report | Where-Object { $_.Path -ceq $decision.RelativePath })
+        if ($matching.Count -ne 1 -or $matching[0].Status -ne $expected) {
+            throw "Claude Agent plan/apply mismatch: $($decision.RelativePath)"
+        }
+    }
 
     $stats = Write-UpgradeReport -Report $report -CategoryMap $categoryMap -Platform "Claude"
 
@@ -216,11 +244,20 @@ function Invoke-ClaudeUpgrade {
     $applied = 0
     if ($stats.New -gt 0 -or $stats.Changed -gt 0) {
         if (Invoke-ConfirmGate -Message "是否套用上述變更？(Y/N)") {
+            $freshDecisions = @(Get-ClaudeAgentProjectionDecisions -FrameworkRoot $FrameworkRoot -SharedRoot $sharedRoot -TargetRoot $Target)
+            foreach ($prior in $agentDecisions) {
+                $fresh = @($freshDecisions | Where-Object { $_.TargetRelativePath -ceq $prior.TargetRelativePath })
+                if ($fresh.Count -ne 1 -or $fresh[0].Blocking -or $fresh[0].Action -ne $prior.Action -or
+                    $fresh[0].CurrentSha256 -ne $prior.CurrentSha256 -or $fresh[0].SourceSha256 -ne $prior.SourceSha256) {
+                    Write-Warn "Claude Agent 在確認期間變更；未套用升級：$($prior.TargetRelativePath)"
+                    return [PSCustomObject]@{ Succeeded = $false; Platform = 'Claude'; Reason = 'AgentProjectionChangedBeforeApply' }
+                }
+            }
             Write-Step "正在套用變更..."
             $applied = Install-Upgrade -Report $report -SourceRoot $srcDotClaude -TargetRoot $dstDotClaude
         } else {
             Write-Warn "已拒絕框架檔案更新；本次升級維持部分／未驗證狀態，未更新 VERSION，且不輸出完成訊息。"
-            return
+            return [PSCustomObject]@{ Succeeded = $false; Platform = 'Claude'; Reason = 'UpgradeDeclined' }
         }
     } else {
         Write-Ok "所有 .claude/ 檔案均已是最新版本，無需更新。"
@@ -266,7 +303,7 @@ function Invoke-ClaudeUpgrade {
         if ($RemoveOrphans) {
             Remove-OrphanFiles -Report $report -TargetRoot $dstDotClaude
         } else {
-            Write-Warn "$($stats.Orphan) 個孤兒檔案。加入 -RemoveOrphans 可自動清除。"
+            Write-Warn "$($stats.Orphan) 個孤兒檔案已保留；來源不存在不代表可刪除。加入 -RemoveOrphans 可列報待確認項目。"
         }
     }
 

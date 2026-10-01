@@ -1,14 +1,17 @@
 # Memory Closure Bundle Contract
 
-This reference is the sole owner of the `completion_bundle` schema and its
-exceptions. It governs pre-bound candidate mapping for the post-source memory
-closure branch. It does not replace Authorization Resolution, the authorization
+This reference is the sole owner of the legacy `completion_bundle` schema and its
+exceptions. Its current disposition is `LEGACY_COMPAT_ONLY` for frozen or
+unmigrated consumers. Ordinary vNext Memory review, no-write, update/sync and
+completion do not require a bundle or its receipts. It governs pre-bound
+candidate mapping for the legacy post-source memory closure branch. It does
+not replace Authorization Resolution, the authorization
 phase registry, the protected-action registry, the memory evidence reference,
 or the completion state machine.
 
 ## Binding Model
 
-A new formal source route defaults to `process-complete`. Its initial visible
+A new legacy bundle-backed formal source route defaults to `process-complete`. Its initial visible
 formal-write agreement may create one `completion_bundle` that directly and
 independently binds candidates for these three phases:
 

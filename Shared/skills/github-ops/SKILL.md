@@ -1,65 +1,75 @@
 ---
 name: github-ops
 description: >
-  版本控制與倉庫操作（MCP: github）：GitHub 版本控制操作食譜：倉庫管理、Issue 追蹤、分支建立、程式碼搜尋、檔案推送。
-  Use when: 需要 倉庫管理/Issue 操作/分支建立/檔案推送/程式碼搜尋 的場景。
-  DO NOT use when: 執行 PR 程式碼審查或合併決策（用 pr-review-ops）。
-  MCP Server: github
+  GitHub repository and remote operation methods. Use when: a specific GitHub repository, issue, branch or remote operation is requested, or GitHub-specific remote evidence is needed.
+  DO NOT use when: ordinary local Git, general coding, local source review or PR quality analysis without a repository operation need.
 metadata:
   author: antigravity
-  version: "5.1"
+  version: "6.0"
   origin: framework
   kind: operational
   memory_awareness: none
-  mcp_servers: [github]
-  tool_scope: ["mcp:github"]
 ---
 
-# GitHub Ops — Version Control Recipes
+# GitHub Repository Operation Methods
 
-## HITL Boundary
+Invocation classification: restricted; provider-specific: yes.
+No automatic sibling loading. An issue update does not load pr-review-ops;
+this entry does not teach PR quality review or decide whether review is required.
+Read the relevant section of `Shared/policies/references/github-guide.md` for
+provider facts, effect classes and the existing canonical owners.
 
-- Read-only tools (`list`, `get`, `search`, `query`, status/health checks) may proceed silently.
-- State-mutating, external-state, write, deploy, push, delete, reset, or resolve operations require a scope-bound intent signal from the Director; authorization resolution must bind it to the visible plan, command/tool, phase, expiry, and target external state before the matching protected gate can pass.
-- `[MCP HITL GATE]` is an additional execution gate for MCP calls; it does not replace authorization resolution or authorize a separate protected phase.
-- Discovery of tool schemas is not permission to execute mutating tools.
+## Identify the operation and target
 
-## Recipe 1: Code Search & Reading
+1. Resolve the GitHub host, owner/repository, visibility and access context.
+   Match the requested URL/repository; a local remote name is only a clue.
+   Distinguish source and destination repositories for forks and cross-repo PRs.
+2. Bind the actual target: issue/PR number, branch/ref, file path, tag/release,
+   workflow ID and ref as applicable. Do not assume the default branch is main.
+   Read the necessary current state; paginate rather than assume one page is all.
+3. State the intended effect before selecting a provider operation: observation,
+   collaboration mutation, repository mutation or integration/publication.
+   These are effect descriptions, not a new authorization enum. Actual authority
+   comes from `Shared/policies/authorization-resolution.md` and provider permission.
+   Unknown action/target stops mutation; available tools do not supply intent.
 
-1. `search_code` — Search code snippets across repositories（跨倉庫搜尋）
-2. `get_file_contents` — Get specific file or directory contents（取得檔案/目錄內容）
-3. `search_repositories` — Search related repositories（搜尋倉庫）
+## Repository and issue methods
 
-## Recipe 2: Issue Management
+- **Read/search:** narrow repo/ref/path or issue filters to the question. Search
+  results identify candidates; inspect the actual file and commit for evidence.
+  Distinguish a file's blob SHA from a commit SHA; report missing/truncated/binary
+  content as a limitation. Reading a public repo does not require PR review.
+- **Issue changes:** inspect existing state/comments before proposing exact field
+  changes or a comment, avoiding duplicates. Read, create, edit, assign, close and
+  comment are separate effects; do not chain them because a tool returned success.
+- **Branch/file changes:** bind source ref and destination branch, intended paths
+  and existing file content. For an update, use the current blob SHA from the same
+  destination branch when required by the provider. Validate replacement content
+  and preserve concurrent edits. A multi-file push may make one remote commit;
+  it is not a local filesystem write. Never force or retry over changed state.
+- **PR creation/update:** confirm destination repo, exact head/base and scope of
+  the title/body before an authorized request. Existing commits and completed
+  local source work do not authorize creating a PR or updating its branch.
+- **Integration/publication:** a merge, release, dispatch or publish request must
+  identify its own action and target. For an authorized merge, recheck head SHA,
+  relevant required evidence and repository restrictions; use expected-head
+  protection where supported. Review approved or CI green never supplies merge
+  authority. A provider failure does not authorize bypassing branch protection.
 
-1. `list_issues` — Filter existing Issues (supports state/label filters)
-2. `create_issue` — Create new Issue
-3. `update_issue` — Update status or assignment
-4. `add_issue_comment` — Add comment
+## Execution result and freshness
 
-## Recipe 3: Pull Request Workflow
+For an authorized operation, use only the selected ready provider and exact
+in-scope payload. Refresh stale state rather than overwriting it. On a timeout
+or ambiguous response, inspect the affected remote state before any retry to
+avoid duplicate comments, PRs, commits, releases or workflow runs.
+Report proposed, attempted and confirmed changes separately; retain the returned
+identity/revision and read back material effects when needed. A successful call
+is not proof of application correctness, workflow completion or deployment.
 
-1. `create_branch` — Create feature branch from main
-2. `push_files` — Commit multiple file changes at once
-3. `create_pull_request` — Create PR
-4. `get_pull_request_status` — Confirm CI checks pass
-5. `create_pull_request_review` — Create review (approve/request_changes)
-6. `merge_pull_request` — Merge PR
-
-## Recipe 4: Single File Quick Update
-
-1. `create_or_update_file` — Create or update a single file (with commit message)
-
-> For multiple files, use `push_files` instead to avoid multiple commits（避免多次 commit）。
-
-## Gotchas (踩坑點)
-
-- `push_files` can push multiple files as a **single commit**（單一 commit） — cleaner than calling `create_or_update_file` repeatedly
-- `fork_repository` defaults to personal account; specify `organization` to fork to an org（預設 fork 到個人帳號）
-- Use `get_pull_request_status` before merging to confirm all CI passes（合併前先確認 CI）
-- `update_pull_request_branch` may trigger rebase conflicts（可能觸發衝突）
-
-## Interpretation (結果解讀)
-
-- `get_pull_request_files` returns `status` field: `added`/`modified`/`removed`
-- `get_pull_request_status` returns `state`: `success`/`pending`/`failure`
+“Fix the bug” permits the necessary local work, not remote push. “Fix it and push
+the branch” includes that remote action only for the resolved target and scope.
+Do not automatically push, create a PR, merge, release or dispatch a workflow.
+Do not automatically invoke Copilot or another external AI worker. Capability,
+review, verification, completion, Agent/model and Memory decisions remain with
+the canonical owners named in the provider reference; no readiness/auth state
+is written to Memory / Project Context.

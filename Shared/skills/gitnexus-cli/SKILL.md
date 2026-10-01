@@ -1,94 +1,50 @@
 ---
 name: gitnexus-cli
 description: >
-  程式碼索引與 Wiki 生成：GitNexus CLI repo 索引、重新分析、狀態檢查、清除 index、wiki 生成與 indexed repos 列表；
-  repository indexing and wiki generation commands.
-  Use when: 需要重新索引 repo、reanalyze codebase、執行 `npx gitnexus analyze`、
-  check status、clean index、generate wiki、或列出 indexed repos。
-  DO NOT use when: 只是程式碼流程探索（用 gitnexus-exploring）、追蹤錯誤來源
-  （用 gitnexus-debugging）、或評估改動影響（用 gitnexus-impact-analysis）。
+  已選用且可用的 GitNexus CLI 操作方法。
+  Use when: 此次明確需要 GitNexus 狀態、索引維護或 Wiki 操作，而且相應能力與作用範圍已確認。
+  DO NOT use when: 一般程式搜尋、普通除錯或重構，或只因找不到工具或索引過期。
 metadata:
   author: gitnexus
-  version: "0.1.0"
+  version: "7.0"
   origin: framework
   kind: operational
+  memory_awareness: none
 ---
 
-# GitNexus CLI Commands
+# gitnexus-cli
 
-All commands work via `npx` — no global install required.
+GitNexus Optional Pack. Invocation classification: restricted; provider-specific: yes.
+This classification is not platform invocation enforcement. Load this method
+only for the selected task, never the entire pack or a keyword-only match.
 
-## Commands
+## Shared prerequisite reference
 
-### analyze — Build or refresh the index
+Read `Shared/policies/references/gitnexus-guide.md` for common readiness, side effects, fallback and policy boundaries.
+`Shared/policies/capability-resolution.md` remains the readiness/selection owner.
+The guide is a document, not another Skill. No relations or automatic sibling
+loading is introduced. Missing GitNexus leaves ordinary work on native methods.
 
-```bash
-npx gitnexus analyze
-```
+## Specific method
 
-Run from the project root. This parses all source files, builds the knowledge graph, writes it to `.gitnexus/`, and generates CLAUDE.md / AGENTS.md context files.
+Disposition: KEEP_BUT_REWRITE. This remains a Tool Skill.
+1. Identify the requested command, exact repository/output targets and purpose.
+   Consult the Guide command effects before launch, including startup behavior.
+2. Match existing executable/package provenance and syntax to the installed
+   version. Passive discovery is sufficient when a probe cannot be safe.
+3. For status/list, distinguish registry presence from target applicability,
+   index coverage, content freshness and functional readiness. A status hint to
+   analyze is tool output, never permission to do so.
+4. For analyze, enumerate index, registry, context/skill injection and optional
+   model/network effects first. Missing/stale index does not auto-analyze.
+   A limited flag is not proof that every out-of-scope write is disabled.
+5. For clean, preview the exact intended index/registry removal using already
+   available metadata. Do not use --all, --force or corruption as authorization.
+6. For wiki, distinguish local output from LLM data egress and optional public
+   publication. Do not inspect secrets or configure another AI worker.
+7. After an authorized operation, inspect its actual result and relevant changed
+   targets. Report partial/stale evidence honestly; no automatic retry, reindex,
+   restart, follow-on Skill loading or completion claim follows success.
 
-| Flag           | Effect                                                           |
-| -------------- | ---------------------------------------------------------------- |
-| `--force`      | Force full re-index even if up to date                           |
-| `--embeddings` | Enable embedding generation for semantic search (off by default) |
-| `--drop-embeddings` | Drop existing embeddings on rebuild. By default, an `analyze` without `--embeddings` preserves them. |
-
-**When to run:** First time in a project, after major code changes, or when `gitnexus://repo/{name}/context` reports the index is stale. In Claude Code, a PostToolUse hook detects staleness after `git commit` and `git merge` and notifies the agent to run `analyze` — the hook does not run analyze itself, to avoid blocking the agent for up to 120s and risking KuzuDB corruption on timeout.
-
-### status — Check index freshness
-
-```bash
-npx gitnexus status
-```
-
-Shows whether the current repo has a GitNexus index, when it was last updated, and symbol/relationship counts. Use this to check if re-indexing is needed.
-
-### clean — Delete the index
-
-```bash
-npx gitnexus clean
-```
-
-Deletes the `.gitnexus/` directory and unregisters the repo from the global registry. Use before re-indexing if the index is corrupt or after removing GitNexus from a project.
-
-| Flag      | Effect                                            |
-| --------- | ------------------------------------------------- |
-| `--force` | Skip confirmation prompt                          |
-| `--all`   | Clean all indexed repos, not just the current one |
-
-### wiki — Generate documentation from the graph
-
-```bash
-npx gitnexus wiki
-```
-
-Generates repository documentation from the knowledge graph using an LLM. Requires an API key (saved to `~/.gitnexus/config.json` on first use).
-
-| Flag                | Effect                                    |
-| ------------------- | ----------------------------------------- |
-| `--force`           | Force full regeneration                   |
-| `--model <model>`   | LLM model (default: minimax/minimax-m2.5) |
-| `--base-url <url>`  | LLM API base URL                          |
-| `--api-key <key>`   | LLM API key                               |
-| `--concurrency <n>` | Parallel LLM calls (default: 3)           |
-| `--gist`            | Publish wiki as a public GitHub Gist      |
-
-### list — Show all indexed repos
-
-```bash
-npx gitnexus list
-```
-
-Lists all repositories registered in `~/.gitnexus/registry.json`. The MCP `list_repos` tool provides the same information.
-
-## After Indexing
-
-1. **Read `gitnexus://repo/{name}/context`** to verify the index loaded
-2. Use the other GitNexus skills (`exploring`, `debugging`, `impact-analysis`, `refactoring`) for your task
-
-## Troubleshooting
-
-- **"Not inside a git repository"**: Run from a directory inside a git repo
-- **Index is stale after re-analyzing**: Restart Claude Code to reload the MCP server
-- **Embeddings slow**: Omit `--embeddings` (it's off by default) or set `OPENAI_API_KEY` for faster API-based embedding
+Example: a requested status check may stop at present_unverified if startup
+effects cannot be bounded. Continue the original code task with native search.

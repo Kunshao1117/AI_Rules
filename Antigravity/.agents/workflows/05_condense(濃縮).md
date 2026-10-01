@@ -1,6 +1,6 @@
 ---
 description: "適用於專案濃縮初始化、萃取 PROJECT IDENTITY、掃描代碼庫並建立永久上下文；使用此工作流區分穩定 source-backed facts、偏好、暫時觀察與排除材料；觸發於需要 project condensation / durable context creation 時，執行記憶或 context 寫入前仍需對應 protected gate。不要用於只讀既有記憶或一般架構說明（DO NOT use when: only memory read or architecture explanation is needed）。"
-required_skills: [memory-ops, memory-arch, tech-stack-protocol, project-context-protocol, programming-team-governance, team-specialist-registry, team-task-board, team-role-boundaries, team-change-delivery-artifact, team-memory-docs-delivery-artifact, team-validation-delivery-artifact, team-review-delivery-artifact, team-completion-gate]
+required_skills: [tech-stack-protocol]
 metadata:
   author: antigravity
   version: "2.0"
@@ -14,6 +14,16 @@ metadata:
   human_gate: "Scope-bound intent signal plus authorization resolution required before memory/context writes"
   automation_safe: false
 ---
+
+A2 owner references: `Shared/policies/project-context-protocol.md`, `Shared/policies/references/legacy-skills/team-task-board/REFERENCE.md`, `Shared/policies/references/legacy-skills/team-change-delivery-artifact/REFERENCE.md`, `Shared/policies/references/legacy-skills/team-validation-delivery-artifact/REFERENCE.md`, `Shared/policies/references/legacy-skills/team-review-delivery-artifact/REFERENCE.md`.
+Frozen relation IDs still use `Shared/policies/references/legacy-skill-migration.md`; read documents without Skill invocation or changed Memory semantics.
+
+
+Governance references: `Shared/policies/agent-governance.md`, `Shared/policies/agent-governance.md`, `Shared/policies/completion-policy.md`, `Shared/agents/_registry.md`.
+Frozen legacy dependencies use `Shared/policies/references/legacy-skill-migration.md`
+as document references for frozen compatibility only; they do not activate
+Memory roles, bundles, or the old artifact Skill in ordinary work.
+
 
 ## Workflow Entry Contract
 
@@ -29,8 +39,8 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 4. Read `.agents/shared/platform-capability-matrix.md` and apply only Antigravity/Gemini adapter semantics.
 5. When editing workflow entries, skills, shared policies, or governance boundaries, read the deployed skill governance reference (`.agents/shared/skill-governance.md`) and framework source reference (`Shared/skill-governance.md`) before changing placement or wording.
 6. When a concrete phase checklist is needed, read the deployed stage procedure reference (`.agents/shared/workflow-stage-procedures.md`) and framework source reference (`Shared/workflow-stage-procedures.md`), then use section `05 Condense`. Do not copy that procedure back into this entry.
-7. For Team-Native work, load `.agents/skills/programming-team-governance/SKILL.md`, `.agents/skills/team-task-board/SKILL.md`, `.agents/skills/team-station-handoff-packet/SKILL.md`, `.agents/skills/team-role-boundaries/SKILL.md`, and `.agents/skills/team-completion-gate/SKILL.md`; load delivery-artifact skills only when their stations apply.
-8. When memory evidence applies, use `.agents/skills/memory-ops/references/memory-mcp-tool-contract.md` plus the MCP Memory Evidence Matrix. Missing memory evidence is 未驗證（`unverified`）或阻塞（`blocked`）。
+7. For ordinary work, use `.agents/shared/policies/memory-governance.md` for relevant Memory Impact Review, `.agents/shared/policies/authorization-resolution.md` for writes, and `.agents/shared/policies/completion-policy.md` for completion. Team selection uses the formal Agent owner, not old governance Skills.
+8. Discover `memory-ops` when Memory evidence or card method is relevant; discover `memory-arch` only for owner/topology ambiguity. Existing frozen consumers may resolve legacy board, bundle, and receipt references through `.agents/shared/policies/references/legacy-memory-team-transition.md`, never as an ordinary workflow dependency.
 
 ## 入口瘦身防線（Workflow Entry Slimming Guard）
 
@@ -44,7 +54,7 @@ Before broad reading, station work, validation, review, memory/docs, completion,
 
 - Workflow row: `05`.
 - Procedure reference: `05 Condense` in `.agents/shared/workflow-stage-procedures.md`.
-- Route summary: Separate durable source-backed facts from temporary observations, then write memory/context only under the matching protected gate.
+- Route summary: Separate durable source-backed facts from temporary observations; any necessary Memory or Context write follows its own owner and authorization boundary.
 - Read relevant memory/context inventory before proposing durable facts.
 - Separate stable source-backed facts from preferences, task evidence, raw logs, screenshots, failed attempts, and rejected ideas.
 - Present the candidate condensation for Director review with evidence status and excluded material.

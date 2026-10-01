@@ -2,8 +2,12 @@
 
 Import-Module (Join-Path $PSScriptRoot "Core.psm1") -Force
 Import-Module (Join-Path $PSScriptRoot "Skills-Sync.psm1") -Force
+Import-Module (Join-Path $PSScriptRoot "Native-Agent-Projection.psm1") -Force
+Import-Module (Join-Path $PSScriptRoot "Antigravity-Procedure-Projection.psm1") -Force
+Import-Module (Join-Path $PSScriptRoot "Antigravity-Legacy-Workflow-Projection.psm1") -Force
 Import-Module (Join-Path $PSScriptRoot "Manager.Config.psm1") -Force
 Import-Module (Join-Path $PSScriptRoot "Platform-Codex.psm1") -Force
+Import-Module (Join-Path $PSScriptRoot "Deployment.Transaction.psm1") -Force
 
 function Set-ManagerProjectVersionFile {
     param(
@@ -95,7 +99,7 @@ function Get-ManagerSharedSkillDiffs {
         ForEach-Object {
             $rel = $_.FullName.Substring($SharedSkillsRoot.Length).TrimStart('\', '/')
             $targetFile = Join-Path $TargetSkillsPath $rel
-            $diff = Compare-FrameworkFile -SourcePath $_.FullName -TargetPath $targetFile -RelativePath $rel
+            $diff = Compare-SharedSkillProjection -SourcePath $_.FullName -TargetPath $targetFile -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $TargetSkillsPath -RelativePath $rel
             if ($diff.Status -in @("NEW", "CHANGED")) { $diffs += $diff }
         }
 
@@ -336,10 +340,14 @@ function Invoke-ManagerSyncAntigravityProjectRules {
     $sharedRoot = Split-Path $SharedSkillsRoot -Parent
     $projectToolsRoot = Join-Path $sharedRoot "project-tools"
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\antigravity-subagent-invocation.md"
+    $legacyWorkflow = Get-AntigravityLegacyWorkflowProjection `
+        -ManifestPath (Join-Path $RepoRoot 'Antigravity/legacy-workflow-projection.json') `
+        -SourceWorkflowsRoot (Join-Path $sourceRoot 'workflows')
+    $legacyScanDirs = if ($legacyWorkflow.Project) { @('rules', 'workflows') } else { @('rules') }
     $report = @(Get-UpgradeReport `
         -SourceRoot $sourceRoot `
         -TargetRoot $agTargetRoot `
-        -ScanDirs @("rules", "workflows") `
+        -ScanDirs $legacyScanDirs `
         -ProtectedDirs @("memory", "project_skills", "context") `
         -ExcludeFiles @() `
         -PreserveProjectIdentity)
@@ -357,6 +365,16 @@ function Invoke-ManagerSyncAntigravityProjectRules {
     Write-ManagerDiffSummary -Title "Antigravity Shared Skills" -Diffs $skillDiffs
     $governanceDiffs = @(Get-ManagerSharedGovernanceReferenceDiffs -SharedRoot $sharedRoot -TargetAgentsRoot $agTargetRoot)
     Write-ManagerDiffSummary -Title "Antigravity Shared Governance References" -Diffs $governanceDiffs
+    $agentDecisions = @(Get-NativeAgentProjectionDecisions -Platform Antigravity `
+        -SourceAgentsRoot (Join-Path $sourceRoot 'agents') `
+        -CanonicalAgentsRoot (Join-Path $sharedRoot 'agents') `
+        -TargetAgentsRoot (Join-Path $agTargetRoot 'agents'))
+    Write-Host "Antigravity native Agents: $(@($agentDecisions | Where-Object Action -eq 'ADD').Count) add, $(@($agentDecisions | Where-Object Action -eq 'BLOCK').Count) blocked."
+    $procedureDecisions = @(Get-AntigravityProcedureSkillDecisions `
+        -ProcedureSkillsRoot (Join-Path $sourceRoot 'procedure-skills') `
+        -CanonicalWorkflowsRoot (Join-Path $sharedRoot 'workflows') `
+        -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath)
+    Write-Host "Antigravity Canonical Procedure wrappers: $(@($procedureDecisions | Where-Object Action -eq 'ADD').Count) add, $(@($procedureDecisions | Where-Object Action -eq 'BLOCK').Count) blocked."
     $toolDiffs = @(Get-ProjectToolDiffs -ProjectToolsRoot $projectToolsRoot -TargetAgentsRoot $agTargetRoot)
     Write-ManagerDiffSummary -Title "Antigravity Project Tools" -Diffs $toolDiffs
     if (-not $Apply) { return }
@@ -370,6 +388,14 @@ function Invoke-ManagerSyncAntigravityProjectRules {
         -InsertBeforePattern '(?m)^## 2\. Agentic Swarm UI Visibility'
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
     $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot -TargetAgentsRoot $agTargetRoot -Mode Diff
+    $null = Sync-NativeAgentProjection -Platform Antigravity `
+        -SourceAgentsRoot (Join-Path $sourceRoot 'agents') `
+        -CanonicalAgentsRoot (Join-Path $sharedRoot 'agents') `
+        -TargetAgentsRoot (Join-Path $agTargetRoot 'agents')
+    $null = Sync-AntigravityProcedureSkills `
+        -ProcedureSkillsRoot (Join-Path $sourceRoot 'procedure-skills') `
+        -CanonicalWorkflowsRoot (Join-Path $sharedRoot 'workflows') `
+        -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath
     $null = Sync-ProjectTools -ProjectToolsRoot $projectToolsRoot -TargetAgentsRoot $agTargetRoot -Mode Diff
 }
 
@@ -483,7 +509,7 @@ function Invoke-ManagerSyncCodexProjectRules {
     }
 }
 
-function Invoke-ManagerProjectRulesSync {
+function Invoke-ManagerProjectRulesSyncCore {
     param(
         [string]$RepoRoot,
         [string]$Target,
@@ -618,6 +644,27 @@ function Invoke-ManagerProjectRulesSync {
         Applied = [bool]$Apply
         Platforms = @($selected)
         RequiredStageResults = @($stageResults)
+    }
+}
+
+function Invoke-ManagerProjectRulesSync {
+    param(
+        [string]$RepoRoot,
+        [string]$Target,
+        [ValidateSet("Auto", "Codex", "Claude", "Antigravity")]
+        [string]$ProjectPlatform,
+        [switch]$Apply,
+        [switch]$ManagedSource,
+        [Parameter(Mandatory = $true)][scriptblock]$WriteHeaderAction,
+        [Parameter(Mandatory = $true)][scriptblock]$AssertSourceSyncedAction
+    )
+    $arguments = @{} + $PSBoundParameters
+    if (-not $Apply) {
+        Invoke-ManagerProjectRulesSyncCore @arguments
+        return
+    }
+    Invoke-DeploymentTransaction -TargetRoot $Target -Action {
+        Invoke-ManagerProjectRulesSyncCore @arguments
     }
 }
 

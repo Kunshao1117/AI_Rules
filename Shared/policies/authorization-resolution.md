@@ -1,5 +1,204 @@
 # Authorization Resolution Policy
 
+This is the semantic authorization owner for general vNext work in every
+execution mode. It answers whether the user requested or permitted an action.
+Platform permission/sandbox answers whether a tool may execute it. Both must
+hold: tool availability, auto-approval, or a disabled sandbox is not user intent.
+`execution-routing.md` alone selects Direct, Assisted, or Team.
+
+## General Authorization Classes
+
+| Class | Meaning |
+|---|---|
+| `observe` | Relevant non-mutating reads, searches, git status/diff/log/show, documentation, read-only API/MCP/browser inspection, analysis/review and diagnostics |
+| `local_work` | Necessary, reasonable, reversible local work inside the requested result and scope |
+| `protected` | An action in the four general classes owned by `references/protected-action-registry.md` |
+
+Observe needs no GO, Team, authorization phase, expiry, or execution envelope.
+Credentials, privacy, filesystem permission, platform denial, and user exclusions
+still apply. Secret access is classified by `credential-boundary-contract.md`,
+not treated as an ordinary read because its tool happens to be read-only.
+
+## Local Work And Scope
+
+"Fix this parser bug" authorizes necessary bounded source/configuration edits,
+acceptance-required repair, formatting, lint/type checks, relevant local tests,
+local build/browser verification, and non-destructive temporary verification
+artifacts. The current request and target context bind this scope; no separate
+formal-write, Board, station, handoff packet, per-command phase, expiry field,
+or magic GO WRITE is required. The main agent owns Direct/Assisted execution.
+
+This authority does not include unrelated cleanup, product expansion, major
+refactoring, framework replacement, remote mutation, destructive work, privilege
+changes, or host installation. Ask only for a material missing target or new
+scope decision; a recommendation does not authorize its implementation.
+Compatible dirty sections require reading current content and diff, then
+integration in place. Never overwrite valid existing work or bypass its owner
+with a sidecar/parallel policy. Record source-only pending runtime sync when
+runtime deployment is not authorized.
+
+## Memory Target Semantics And Frozen Applicability
+
+`memory-governance.md` owns whether Memory Impact Review found a relevant card
+and needed maintenance; its disposition is not authorization. For the ordinary
+vNext target path, an existing known-owner card update and necessary subsequent
+Memory sync may be `local_work` without another user approval only when they are
+necessary to the already authorized result, remain in the same concrete scope,
+and have no explicit no-write/observe-only exclusion, scope expansion,
+destructive rewrite, Project Context mutation, or other protected side effect.
+Source-write authority never extends to arbitrary Memory or Context targets.
+An ambiguous owner, unrelated card, or material topology choice needs a scope
+decision; classify actual destructive, external, system, or credential effects
+under the matching protected class. Platform/native permission still applies.
+
+For the post-cutover ordinary path, Memory Impact Review, read/list/status/deps/
+graph/audit, operator recall, topology inspection, and a supported no-write
+conclusion are `observe`. A disposition is evidence, never write authority.
+An existing-card content or tracking-only edit is target `local_work` only when
+the current user request covers the necessary bounded work, the exact existing
+owner and affected claims are known, the edit remains in the same scope, and
+there is no observe-only/no-write exclusion, unresolved owner or evidence
+conflict, Project Context mutation, or destructive/external/system/credential
+side effect. No Skill load, alias, Team station, provider availability, or
+`confirm:true` changes this classification.
+
+The necessary `memory_commit` after that actual authorized edit may share its
+`local_work` scope without a second user approval. Bind the exact module and
+project root to the current reviewed source/card revision and known write
+result. Cartridge commit also rewrites card metadata/warnings and updates the
+project index, fileMap, untracked set and derived dependency state. These
+foreseeable effects must fit the scope; a tool success label does not prove
+index synchronization or authorize an unexpected repair. Never commit solely
+to clear a stale indicator. A project-wide `memory_reindex` is separate: the
+single-card edit or commit does not authorize it. It can be target `local_work`
+only when current intent explicitly covers project-wide index maintenance,
+the state is safely reconstructible, and the actual scan/repair effects are
+understood. An invalid-index repair needs its own scope and risk decision;
+irreversible loss of unique state is `protected.destructive`.
+
+A new card for an already authorized source module is a target `local_work`
+candidate only if `memory-arch` finds one owner/location without competing
+topology or product choice and no scope expansion. Card creation does not
+authorize full reindex. Verify canonical index registration before relying on
+`memory_commit`: Cartridge may write the new card yet return partial index
+sync when the module is absent from the index. If registration requires a
+project-wide operation, resolve that scope separately. Single-card routine
+compaction may be local only with traceable history, no topology change or
+destructive deletion, and a concrete same-card scope. Split, merge or move
+needs a topology/scope decision first; destructive history rewrite remains
+`protected.destructive`. Memory scope never grants Context persistence:
+`project-context-protocol.md` keeps its own approval boundary.
+
+**Current activation is different from those target semantics.** M4 changes
+Shared source contracts only and activates no project/runtime. Until an exact
+project/runtime has evidenced M5 cutover, every attempted `.agents/memory/**`
+card write, creation, move or deletion, and every Memory `memory_commit`,
+`memory_reindex` or index sync normalizes to `frozen_memory_action`, regardless
+of caller, loaded Skill, alias, tool, or Team station. The ordered table's
+first-true frozen row sends it to `legacy_memory_contract`; omitting an old
+Skill or bundle cannot select `local_work`. Missing or uncertain cutover
+evidence means frozen, not a choice between contracts. M5 cutover requires
+canonical policy projection, removal of old Skill loader/required_skills
+routes, safe disposition of unknown/user-modified runtime copies, rollback
+readiness, and integration smoke for that project. Source edits, a planned
+deployment, or a self-declared flag are not cutover evidence. Legacy bundle,
+phase, receipt and separate worker conditions remain intact until then.
+Explicit exclusions, platform denial and any additional protected side effect
+retain priority.
+
+For a mutating Memory tool, `confirm:true` is tool confirmation that the caller
+understands the mutation; tool confirmation is not user authorization. It does
+not supply a target, widen scope, or replace a required native permission.
+
+## Local Git And Dependencies
+
+Git reads are observe. Local commit, branch create/switch, staging and stash
+require explicit inclusion of the Git action in the current user scope.
+"Fix and commit" authorizes that local commit without a second magic phrase;
+"Fix" alone does not. Remote push/merge/PR mutation is protected.external;
+history destruction is protected.destructive (and force push also crosses an
+external boundary). Each applicable boundary must be satisfied.
+
+Project-local/sandboxed restoration of already declared dependencies from an
+existing lockfile may be local_work when necessary for the task and without
+changing the declared dependency contract. A new dependency may remain in scope
+only when required and the smallest reasonable implementation detail, without
+changing core architecture or product behavior. Otherwise obtain a scope
+decision. Global packages, winget, PATH, host toolchains and machine settings
+are protected.system. A script's actual side effects, not its install label,
+determine the boundary; unexpected system/external/destructive effects stop it.
+
+## Protected Intent And Platform Permission
+
+The four general classes are external, destructive, credential_privilege, and
+system. Resolve the explicit action and target in current user intent; require
+material safety/rollback evidence for destructive actions where applicable.
+An explicit "發布 v1.3 到 GitHub Release" already authorizes that action/target;
+do not demand GO RELEASE as a second semantic authorization. Prior approval
+continues only within its valid scope and explicit exclusions/revocation.
+
+Platform denial stops the affected action. Do not switch tools or channels to
+bypass it. Missing user authority cannot be supplied by a platform allow, a
+workflow, an execution mode, a helper, a Board, or a generated receipt.
+
+## Native Evidence, Not Universal Cryptography
+
+General observe/local_work/protected actions do not universally require a
+trusted issuer, signature, nonce, tool_execution_envelope, or verified
+cryptographic receipt. Use an actual native contract when the platform/tool
+requires it and validate its required fields. Do not invent a receipt or block
+all authorized operations because a nonexistent platform feature is missing.
+Ordinary tool results support only observed execution claims; successful
+transport is not proof of authorization, applied model, or completion.
+The frozen Memory branch below retains its original contract unchanged.
+
+## Ordered Authorization Scenario Contract
+
+This table applies to normalized action facts after registry classification.
+It is a source contract consumed by tests, not another runtime authority.
+`explicit_action_target` means BOTH the particular action and its target are
+resolved. `current_scope_allows` means necessary bounded work is covered by the
+current task and exclusions. Native-contract absence is not native denial.
+
+<!-- AUTHORIZATION_DECISION_TABLE_START -->
+| Fact (first true wins) | Result |
+|---|---|
+| platform_denied | stop_affected_action |
+| user_excluded_or_revoked | not_authorized |
+| frozen_memory_action | legacy_memory_contract |
+| native_required_contract_invalid | stop_affected_action |
+| out_of_scope | scope_decision_required |
+| missing_explicit_action_target | not_authorized |
+| missing_material_destructive_safety | safety_evidence_required |
+| current_scope_allows | authorized |
+| otherwise | not_authorized |
+<!-- AUTHORIZATION_DECISION_TABLE_END -->
+
+Observe within requested evidence scope and ordinary necessary local_work can
+satisfy current_scope_allows without a new explicit per-command action request.
+Local Git mutation and protected actions require explicit_action_target first;
+they cannot borrow a source task's authority. Crypto capability is not a fact
+in this table unless a real native contract requires it.
+
+## Legacy Team Internal Records
+
+General Team uses the bounded assignment in `agent-governance.md`, without
+legacy board/station/phase/expiry or handoff records. Those records remain at
+their original compatibility owners solely when frozen consumers require them.
+They do not change the semantic classes above or re-authorize explicit actions.
+No general routing decision decides Memory eligibility or completion.
+
+## Legacy Memory Compatibility — Frozen Consumer Only
+
+The retained pre-vNext clauses below apply ONLY when a frozen Memory contract
+consumes them. They preserve its phases, station/bundle/receipt bindings,
+authorization and completion semantics; they are not general-work requirements
+and do not select execution mode. References to legacy values remain compatibility
+references. Do not manufacture vNext stations/receipts, infer memory complete or
+memory not required, or duplicate a replacement Memory schema.
+
+<!-- LEGACY_MEMORY_AUTHORIZATION_START -->
+
 This policy defines scope-bound authorization after execution routing has
 classified the task. It remains the authority owner for Direct and delegated
 work alike.
@@ -31,7 +230,7 @@ Canonical value owners:
 Protected-action categories and required phase mapping are governed by
 `Shared/policies/references/protected-action-registry.md`.
 
-## Priority Contract
+### Priority Contract
 
 Team-Native Core has the highest governance priority only after
 `execution-routing.md` resolves `execution_topology: delegated`.
@@ -68,33 +267,33 @@ Workflow routes follow `Shared/policies/workflow-orchestration.md` only after th
 
 A route can select the workflow and board path, but formal-write station work still needs scope-bound authorization.
 
-## Authorization Signals
+### Authorization Signals
 
 Valid authorization evidence must identify the smallest allowed target, scope, phase, and expiry.
 Those fields must be enough to satisfy the request.
 
 The ordered signal meanings are:
 
-### Explicit Director instruction
+#### Explicit Director instruction
 
 - Provides intent evidence only.
 - Becomes usable authorization only after authorization resolution binds the visible work.
 - Required bindings include plan, station, file set, command, phase, expiry, and action.
 - Ambiguous text is narrowed to the safest no-write or plan-only interpretation.
 
-### `GO` / `continue` / approval wording
+#### `GO` / `continue` / approval wording
 
 - Means agreement with the current visible contextual plan, scope, station, or phase.
 - Binds only that visible scope after authorization resolution.
 - Does not by itself grant write authority, protected gates, later phases, or hidden cleanup.
 - Does not grant unrelated files, memory, git, release, deployment, install, credentials, or external mutation.
 
-### Captain board authorization
+#### Captain board authorization
 
 - Authorizes station work only after authorization resolution.
 - The board must record target, scope, phase, evidence, and expiry.
 
-### Interface approval button
+#### Interface approval button
 
 - Is evidence only for the specific displayed operation.
 - The operation must stay inside its target, scope, phase, and expiry.
@@ -102,12 +301,12 @@ The ordered signal meanings are:
 - It does not authorize memory, git, release, deployment, install, or external mutation.
 - Those targets are allowed only when explicitly included and resolved.
 
-### Prior approved plan
+#### Prior approved plan
 
 - Supports execution only inside the exact approved scope and phase after current binding is confirmed.
 - Cannot expand the file allowlist, protected action set, or dispatch wave.
 
-## Tool Execution Envelope And Receipt
+### Tool Execution Envelope And Receipt
 
 A `tool_execution_envelope` is a structured carrier.
 It runs from the current Team-Native trace to a hook, command wrapper, MCP adapter, or other tool layer.
@@ -177,7 +376,7 @@ It must name these values:
 
 A receipt records what the tool did or refused; it does not create retroactive authorization.
 
-### Capability-Conditioned Envelope Rule
+#### Capability-Conditioned Envelope Rule
 
 Verified trusted-envelope evidence is mandatory for a true protected action.
 Missing trusted issuer, signature, nonce, freshness, scope match, or matching
@@ -215,7 +414,7 @@ ordinary local write.
 
 Narrative text, previous assistant claims, or broad context injected by a hook cannot fill those fields after the fact.
 
-## Natural-Language Binding
+### Natural-Language Binding
 
 Director instructions are expected to use normal language, not workflow jargon.
 
@@ -264,7 +463,7 @@ It also must not create authority for deployment, install, credentials, or exter
 
 It also must not authorize later phases.
 
-### Completion-Bundle Binding
+#### Completion-Bundle Binding
 
 For newly resolved formal source work, the initial visible formal-write
 agreement selects `process-complete` unless it explicitly selects
@@ -285,7 +484,7 @@ scope-expansion conditions are owned only by
 `memory-closure-bundle-contract.md`. Legacy execution specs gain no candidate
 binding or protected authority by this policy change.
 
-## Scope Expansion Request
+### Scope Expansion Request
 
 `scope_expansion_request` is the canonical operator-decision trace for any intended action outside
 the current acceptance, exact authorization, acceptance-sized `delivery_slice`, or an existing hard
@@ -341,7 +540,7 @@ scope, allowlist, authorization, acceptance, risk, public contract, or protected
 action must create a new `delivery_slice` after that resolution; it cannot be
 folded into the current slice.
 
-### Delivery-Slice Continuation
+#### Delivery-Slice Continuation
 
 A formal `delivery_slice` must reference the current requirement contract before
 authorization resolution. This policy requires that reference but does not
@@ -373,7 +572,7 @@ new concrete security or data-integrity risk stops only the affected action and 
 the exact decision. When evidence is unknown or incomplete, record `unverified` and ask; do not
 invent a risk, silently expand scope, or silently add a safeguard.
 
-### Test Actions And Protected Boundary
+#### Test Actions And Protected Boundary
 
 `Shared/policies/verification-strategy.md` is the sole canonical owner of
 ordinary evidence selection, test admission, focused-versus-full verification,
@@ -399,7 +598,7 @@ It applies to the named visible scope, phase, station, file set, and expiry.
 Protected phases remain separate.
 They need their own scope-bound authorization even when they are the obvious next workflow step.
 
-## Cross-Thread Authorization Boundary
+### Cross-Thread Authorization Boundary
 
 `Shared/policies/references/cross-thread-handoff-contract.md` owns the semantic
 handoff package. Its authorization snapshot is historical evidence at package
@@ -419,7 +618,7 @@ If target identity, package freshness, interruption risk, or current authority
 is missing, stop as blocked, stale, or unverified rather than recovering
 authority from the source thread.
 
-## Existing Worktree Change Gate
+### Existing Worktree Change Gate
 
 Existing dirty files are not write authorization.
 
@@ -450,7 +649,7 @@ That concept must have no reasonable existing section.
 
 The source/deployed pair strategy must also be recorded.
 
-## Non-Authorizing Signals
+### Non-Authorizing Signals
 
 These signals route the work only; they do not authorize writes or protected actions:
 
@@ -504,7 +703,7 @@ These signals route the work only; they do not authorize writes or protected act
   itself block an eligible ordinary local write on a tool path without verified
   envelope capability.
 
-## Required Resolution Fields
+### Required Resolution Fields
 
 Every formal delegated task trace, board station, and delivery ledger entry records these fields.
 This applies when the entry can lead to a write or protected action.
@@ -541,7 +740,7 @@ Required field meanings:
   - Its schema and exception rules remain owned by
     `memory-closure-bundle-contract.md`.
 
-## Resolution Rules
+### Resolution Rules
 
 1. Resolve authorization before any station starts work that can produce a write artifact.
    Resolve it before work can trigger a protected action.
@@ -590,7 +789,7 @@ Required field meanings:
    - It remains non-complete.
    - It cannot substitute for missing authorization, delivery, validation, review, memory/docs, or tool receipt evidence.
 
-## Audit Semantics
+### Audit Semantics
 
 Authorization audit is read-only.
 
@@ -601,3 +800,5 @@ Those fields must also be consistent with the actual work.
 
 Missing or inconsistent authorization fields make the affected claim `unverified` or `blocked`.
 This applies to write, change application, memory, git, release, deployment, install, or external mutation.
+
+<!-- LEGACY_MEMORY_AUTHORIZATION_END -->

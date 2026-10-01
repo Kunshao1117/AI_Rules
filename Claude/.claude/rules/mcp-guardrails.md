@@ -11,23 +11,18 @@ When tools are provided through Multi-MCP Gateway:
 - Every `gateway__call_tool` call MUST include an explicit `workspace` absolute path. For cartridge-system tools, `arguments.projectRoot` MUST also be explicit.
 - Do not rely on Gateway global workspace state. Do not guess argument names; inspect the schema first.
 
-## 1. MCP Human-In-The-Loop Gate
+## 1. MCP Semantic And Native Permission Gate
 
-```text
-[MCP HITL GATE] Before executing ANY state-mutating MCP tool:
-├── Is the action purely READ-ONLY (list, get, search, query)?
-│   └── YES -> Check §2 Permission Matrix. If LOW, proceed silently.
-├── Does the Director prompt contain [SUDO]?
-│   └── YES -> Record override/risk-closure request only; keep this gate, scoped authorization, Team-Native, validation, review, and protected gates active. [SUDO] does not authorize unconstrained execution.
-├── Is the action STATE-MUTATING (write, update, delete, deploy, push)?
-│   └── YES -> Output this Director-facing justification block first:
-│         【操作理由】為什麼需要執行此操作（商業語言描述）
-│         【影響範圍】此操作可能影響的系統或資料
-│         【回滾方案】若操作失敗的復原策略
-│         THEN -> [HALT]「🔴 [MCP HALT] 偵測到破壞性外部工具呼叫 ({ToolName})。請總監輸入 [SUDO] 或明確同意。」
-│         DO NOT execute. Stop current task.
-└── All clear -> Execute tool.
-```
+`Shared/policies/authorization-resolution.md` owns action authority;
+`Shared/policies/execution-routing.md` independently owns Direct / Assisted / Team.
+Classify actual side effects through the protected-action registry, not the MCP
+transport name. Read-only observation is observe; necessary reversible local
+work can be local_work. External mutation needs explicit action + target;
+destructive effects also need material safety evidence. Do not infer Git or
+protected authority from a source task. Existing explicit authorization needs
+no second magic phrase or SUDO. Native denial stops the affected action and
+cannot be bypassed by another tool. Use receipts only as actually supported.
+Memory tool rows below retain their original frozen contracts.
 
 ## 2. Tool-Level Permission Matrix
 
@@ -38,8 +33,8 @@ When tools are provided through Multi-MCP Gateway:
 | `mcp__claude_ai_Supabase__deploy_edge_function` | 🔴 HIGH | Director approval + Justification |
 | `mcp__claude_ai_Vercel__deploy_to_vercel` | 🔴 HIGH | Director approval + Justification |
 | `cartridge-system__memory_commit` | 🔴 HIGH | Only after the active memory main file has been written and memory commit phase is active |
-| Bash `git push` | 🟡 MEDIUM | Justification Block (auto-logged) |
-| Bash `git commit` | 🟡 MEDIUM | Justification Block (auto-logged) |
+| Bash `git push` | protected.external | Explicit push action + target and native permission |
+| Bash `git commit` | local Git | Explicit commit request; source work alone does not authorize it |
 | `gateway__search_tools` / `gateway__list_server_tools` | 🟢 LOW | Auto-proceed |
 | `cartridge-system__memory_list` / `memory_read` / `memory_status` / `memory_deps` | 🟢 LOW | Auto-proceed |
 | `cartridge-system__workspace_brief` / `memory_audit` / `commit_preflight` | 🟢 LOW | Auto-proceed |

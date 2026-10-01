@@ -1,4 +1,29 @@
+
+General Agent roles and bounded assignments are owned by
+`Shared/agents/_registry.md` and `Shared/policies/agent-governance.md`.
+Model intent belongs to `Shared/policies/model-profile-routing.md`;
+the platform owns worker lifecycle. This retained Skill/reference is not a
+formal vNext Agent definition or a general Team prerequisite.
+
+## Legacy compatibility boundary
+
+The delimited body below is legacy, compatibility-only, and not required for
+general vNext work, including Team. Its original paths, anchors and meanings
+remain available to frozen Memory consumers. Do not derive Memory records,
+authority or completion from a vNext assignment. Do not load this body merely
+because execution mode is Team.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_START -->
 # Workflow Team Evidence Reference
+
+Execution mode comes only from `Shared/policies/execution-routing.md`;
+action authority comes independently from `Shared/policies/authorization-resolution.md`.
+Direct is default; bounded helper use is Assisted, without Team machinery.
+Workflow names determine phase sequence only, never mode or authorization.
+Board, station, role-instance, handoff, wave, formal-readonly/formal-write,
+and Team artifact requirements below apply only to resolved Team internals.
+Frozen Memory consumers retain their original contract, phase and evidence;
+this scope boundary neither grants Memory authority nor decides its completion.
 
 This reference is the workflow-specific bridge from
 `Shared/workflow-capability-evidence-matrix.md` to Team-Native evidence sources.
@@ -11,7 +36,7 @@ Canonical sources remain authoritative:
 
 | Need | Authoritative source |
 |---|---|
-| Direct/delegated topology and Team-Native activation | `Shared/policies/execution-routing.md` |
+| Direct / Assisted / Team mode and Team-Native activation | `Shared/policies/execution-routing.md` |
 | Delegated station-first rule, `operation_mode`, captain boundary, and completion boundary | `Shared/policies/team-native-core.md` |
 | Workflow sequence, authorization position, dispatch waves, and source/deployed sync | `Shared/policies/workflow-orchestration.md` |
 | Scope-bound authorization | `Shared/policies/authorization-resolution.md` |
@@ -19,10 +44,10 @@ Canonical sources remain authoritative:
 | Status meanings and route/state separation | `Shared/policies/references/status-ontology.md` |
 | Completion targets, aliases, states, and transitions | `Shared/policies/references/completion-state-machine.md` |
 | Protected action catalog | `Shared/policies/references/protected-action-registry.md` |
-| Board fields, station rows, delivery forms, and checklist | `Shared/skills/team-task-board/SKILL.md` and `Shared/skills/team-task-board/references/board-field-catalog.md` |
+| Board fields, station rows, delivery forms, and checklist | `Shared/policies/references/legacy-skills/team-task-board/REFERENCE.md` and `Shared/policies/references/legacy-skills/team-task-board/references/board-field-catalog.md` |
 | Trace fields and invalid trace patterns | `Shared/policies/team-trace-evidence.md` |
-| Change delivery artifact rules | `Shared/skills/team-change-delivery-artifact/SKILL.md` |
-| Memory/docs, review, validation, and completion artifacts | Matching `Shared/skills/team-*-delivery-artifact/SKILL.md` and `Shared/skills/team-completion-gate/SKILL.md` |
+| Change delivery artifact rules | `Shared/policies/references/legacy-skills/team-change-delivery-artifact/REFERENCE.md` |
+| Memory/docs, review, validation, and completion artifacts | Matching `Shared/skills/team-*-delivery-artifact/SKILL.md` and `Shared/policies/references/legacy-skills/team-completion-gate/REFERENCE.md` |
 
 ## Director-Facing Route Bridge
 
@@ -101,3 +126,5 @@ They do not produce missing station evidence.
 When a workflow needs a concrete field, status value, artifact schema, invalid
 pattern, protected-action classification, or completion transition, load the
 canonical source named above instead of copying a local table into this file.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_END -->

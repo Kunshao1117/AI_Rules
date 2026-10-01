@@ -15,28 +15,28 @@ should have `.agents/tools/Memory-Migration.ps1`; if that tool is missing,
 treat the project as not fully synced and stop for resync instead of using ad
 hoc file moves.
 
-When a memory/docs disposition returns `memory-card-missing`, first produce a
-topology decision: identify the intended source ownership, nearest existing
-card candidates, conflict or compaction blockers, and the smallest protected
-phase needed. Do not create folders, write active memory main files, or call
-`memory_commit` from the disposition station or from captain-authored
-substitution.
+When the canonical disposition is `memory-card-missing`, first produce a
+topology decision: identify intended source ownership, nearest existing card
+candidates, overlap or compaction blockers, and the smallest target path. A
+disposition is not write authority. Current physical Memory mutation remains
+frozen under `../../../policies/authorization-resolution.md` until evidenced
+M5 cutover for the exact project/runtime.
+
+In vNext target semantics, a deterministic same-scope new module can use the
+smallest card location as an implementation detail when the authorized work
+already covers it and no product or architectural choice is introduced. If
+owner, location, split, or boundary is reasonably ambiguous, return
+`memory-card-missing` or the applicable conflict disposition and obtain a
+topology decision before any mutation.
 
 ```text
-New module identified by /02_blueprint?
-├── Step 1: Determine nesting level (see Nesting Decision Tree)
-├── Step 2: Create folder at resolved path → `.agents/memory/{module}/`
-├── Step 3: Create the active memory main file using template → see `../../memory-ops/references/memory-template.md`
-│   ⇒ frontmatter: name, description (MUST include Chinese keywords), scopePath
-│   ⇒ frontmatter: memory_schema_version=2, content_language=en, human_language=zh-TW
-│   ⇒ body: Current Truth, Active Constraints, Cycle Events, Archive Index, 中文摘要, Tracked Files
-├── Step 3.5: Dependency Assessment
-│   ⇒ Check whether this module's source files import files owned by other memory cards
-│   ⇒ If yes, add a `dependencies` field only for those upstream cards
-│   ⇒ Also add dependencies for direct technical decision coupling when upstream staleness requires review
-│   ⇒ Record the dependency reason in ## Current Truth or ## Active Constraints
-└── Step 4: In the separately authorized memory-commit phase, call memory_commit(moduleName, projectRoot)
-    ⇒ Registers card in index + validates structure. When routed through Gateway, use `gateway__call_tool` with explicit `workspace` and `projectRoot`.
+New module needs a card?
+├── Find plausible existing owners, scopePath, and child relations.
+├── Resolve unique owner and nesting level, or report topology ambiguity.
+├── Select card class and target path; use the existing memory template.
+├── Assess real dependencies separately from parent/child navigation.
+└── If a physical write is authorized under the current contract, verify the
+    resulting card and index separately after the applicable commit/sync.
 ```
 
 ## Dependency Semantics
@@ -124,13 +124,11 @@ staleness propagation is truly required.
 
 ## Loading Nested Cards
 
-```text
-Need to access a nested card (layer 3-4)?
-├── Step 1: Read parent card → check ## Relations for child card names
-├── Step 2: Call memory_read(childName)
-│   ⇒ resolveSkillPath handles path resolution automatically
-└── No manual path construction needed
-```
+When the child/module is known, use its `memory_status` or `memory_read`
+directly; depth alone does not require a parent read. If the owner or child name
+is unknown, read the plausible parent and follow `## Relations`, then read the
+identified child. Use direct active-file reads when the provider is absent;
+do not assume a particular resolver is available.
 
 Nested cards should list parent/child context in `## Relations`, for example:
 
@@ -140,24 +138,16 @@ Nested cards should list parent/child context in `## Relations`, for example:
 - api.auth.oauth（child card: OAuth-specific current truth and constraints）
 ```
 
-Do not mirror these navigation links into frontmatter `dependencies` unless the
-Dependency Write Gate in `memory-ops` passes.
+Do not mirror navigation into frontmatter `dependencies` unless the real
+staleness-propagation condition in **Dependency Semantics** above holds. Any
+physical change still requires the canonical authorization decision.
 
 ## Project Context Boundary
 
-Long-lived preferences, design DNA, product acceptance defaults, and
-communication style belong in `.agents/context/`, not `.agents/memory/`.
-
-Source memory cards should record source ownership, staleness, and Relations.
-They should also record Current Truth, Active Constraints, Cycle Events, and
-Archive Index. Historical detail belongs in archives or compacted summaries
-only when still relevant to current behavior.
-
-If a task discovers a reusable preference:
-
-1. Propose it as candidate project context.
-2. Wait for authorization resolution of a scope-bound `GO CONTEXT` persistent-write phase before writing `.agents/context/**/CONTEXT.md`.
-3. Do not call `memory_commit`; project context does not participate in source memory staleness.
+Use `../../../policies/memory-governance.md` and
+`../../../policies/project-context-protocol.md` for the Memory/Context
+boundary. This topology reference does not authorize Context persistence or
+promote a candidate into an approved product decision.
 
 ## Granularity And Hard Limits
 

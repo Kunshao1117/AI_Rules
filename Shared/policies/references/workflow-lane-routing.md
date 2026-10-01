@@ -1,23 +1,28 @@
 # Workflow Lane Routing Reference
 
 This reference defines legacy workflow-lane compatibility aliases and delegated
-stage disposition. `Shared/policies/execution-routing.md` uniquely owns task
-topology, change impact, and action risk.
+stage disposition. `Shared/policies/execution-routing.md` uniquely owns execution mode and optional impact;
+`authorization-resolution.md` owns action authorization.
+
+General verification scope/independence, review applicability and completion
+are owned by verification-strategy.md, review-governance.md and completion-policy.md.
+All stage/judgment/closeout values below remain legacy compatibility-only for
+frozen consumers; they do not select a general vNext status or force Team roles.
 
 ## Legacy Alias Contract
 
 Legacy lanes have no independent topology, risk, stage, or authorization
 semantics. They remain aliases until dependent workflow entries consume
-three-axis routing. Classification always starts with execution topology,
-change impact, and action risk.
+vNext routing. Execution mode and authorization are resolved independently
+by their respective owners. Assisted never needs a legacy Team lane.
 
 ## Lifecycle Lanes
 
 | lane_id | Three-axis alias | Compatibility note |
 |---|---|---|
-| `tiny` | `direct` + `local` + `observe` or `local_write` | No new semantics. |
-| `light` | `direct` + `local` + `observe` or `local_write` | No new semantics. |
-| `standard` | `direct` + `local` or `boundary` + `local_write` | No new semantics. |
+| `tiny` | `direct` + `local` + `observe` or `local_work` | No new semantics. |
+| `light` | `direct` + `local` + `observe` or `local_work` | No new semantics. |
+| `standard` | `direct` + `local` or `boundary` + `local_work` | No new semantics. |
 | `full` | `boundary` or `systemic`; topology and risk resolved separately | Does not imply Team or protected work. |
 | `release-grade` | `protected`; topology resolved separately | Reflects protected risk only. |
 

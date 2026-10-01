@@ -10,6 +10,9 @@
 
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -ErrorAction Stop
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Native-Agent-Projection.psm1') -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Antigravity-Procedure-Projection.psm1') -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Antigravity-Legacy-Workflow-Projection.psm1') -ErrorAction Stop
 
 function Invoke-AgFresh {
     <#
@@ -41,6 +44,9 @@ function Invoke-AgFresh {
     $projectToolsRoot = Join-Path $sharedRoot "project-tools"
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\antigravity-subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
+    $legacyWorkflow = Get-AntigravityLegacyWorkflowProjection `
+        -ManifestPath (Join-Path $FrameworkRoot 'legacy-workflow-projection.json') `
+        -SourceWorkflowsRoot (Join-Path $sourceDir 'workflows')
 
     $null = Get-SharedPolicyBlock -PolicyPath $sharedPolicyPath -Platform Antigravity
     if (-not (Test-Path -LiteralPath $SharedSkillsRoot -PathType Container)) {
@@ -63,7 +69,8 @@ function Invoke-AgFresh {
 
         # 複製 rules/workflows（排除受保護知識層與 skills/，由 Shared/ 注入）
         Get-ChildItem $sourceDir | Where-Object {
-            $_.Name -notin @("memory", "project_skills", "context", "skills")
+            $_.Name -notin @("memory", "project_skills", "context", "skills", "agents", "procedure-skills") -and
+            ($legacyWorkflow.Project -or $_.Name -ne 'workflows')
         } | ForEach-Object {
             Copy-Item $_.FullName $targetDir -Recurse -Force
         }
@@ -85,6 +92,18 @@ function Invoke-AgFresh {
         $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot `
                           -TargetAgentsRoot $agentsRoot `
                           -Mode Full
+
+        $null = Sync-NativeAgentProjection -Platform Antigravity `
+            -SourceAgentsRoot (Join-Path $sourceDir 'agents') `
+            -CanonicalAgentsRoot (Join-Path $sharedRoot 'agents') `
+            -TargetAgentsRoot (Join-Path $targetDir 'agents')
+
+        Write-Step "交付 Canonical Procedure 的 Antigravity Agent Skill wrapper..."
+        $null = Sync-AntigravityProcedureSkills `
+            -ProcedureSkillsRoot (Join-Path $sourceDir 'procedure-skills') `
+            -CanonicalWorkflowsRoot (Join-Path $sharedRoot 'workflows') `
+            -SharedSkillsRoot $SharedSkillsRoot `
+            -TargetSkillsPath $targetSkillsPath
 
         Write-Step "注入專案本地工具（Shared/project-tools/ → .agents/tools/）..."
         $null = Sync-ProjectTools -ProjectToolsRoot $projectToolsRoot `
@@ -142,7 +161,7 @@ function Invoke-AgUpgrade {
     .PARAMETER SharedSkillsRoot
         Shared/skills/ 的絕對路徑
     .PARAMETER RemoveOrphans
-        是否自動清除孤兒檔案
+        列報並保留未知所有權的孤兒檔案；退休只採明確雜湊名單
     #>
     param(
         [Parameter(Mandatory = $true)]
@@ -164,6 +183,9 @@ function Invoke-AgUpgrade {
     $projectToolsRoot = Join-Path $sharedRoot "project-tools"
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\antigravity-subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
+    $legacyWorkflow = Get-AntigravityLegacyWorkflowProjection `
+        -ManifestPath (Join-Path $FrameworkRoot 'legacy-workflow-projection.json') `
+        -SourceWorkflowsRoot (Join-Path $sourceDir 'workflows')
 
     $null = Get-SharedPolicyBlock -PolicyPath $sharedPolicyPath -Platform Antigravity
 
@@ -187,10 +209,11 @@ function Invoke-AgUpgrade {
         "專案脈絡 — 受保護"    = { $_.Path -like "context/*" -and $_.Status -eq "KEEP" }
     }
 
+    $legacyScanDirs = if ($legacyWorkflow.Project) { @('rules', 'workflows') } else { @('rules') }
     $report = Get-UpgradeReport `
         -SourceRoot $sourceDir `
         -TargetRoot $targetDir `
-        -ScanDirs @("rules", "workflows") `
+        -ScanDirs $legacyScanDirs `
         -ProtectedDirs @("memory", "project_skills", "context") `
         -ExcludeFiles @()
 
@@ -224,7 +247,7 @@ function Invoke-AgUpgrade {
             $applied = Install-Upgrade -Report $report -SourceRoot $sourceDir -TargetRoot $targetDir
         } else {
             Write-Warn "已拒絕框架檔案更新；本次升級維持部分／未驗證狀態，未更新 VERSION，且不輸出完成訊息。"
-            return
+            return [PSCustomObject]@{ Succeeded = $false; Platform = 'Antigravity'; Reason = 'UpgradeDeclined' }
         }
     } else {
         Write-Ok "框架檔案均已是最新版本，無需更新。"
@@ -243,6 +266,18 @@ function Invoke-AgUpgrade {
     $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot `
                       -TargetAgentsRoot $targetDir `
                       -Mode Diff
+
+    $null = Sync-NativeAgentProjection -Platform Antigravity `
+        -SourceAgentsRoot (Join-Path $sourceDir 'agents') `
+        -CanonicalAgentsRoot (Join-Path $sharedRoot 'agents') `
+        -TargetAgentsRoot (Join-Path $targetDir 'agents')
+
+    Write-Step "交付 Canonical Procedure 的 Antigravity Agent Skill wrapper..."
+    $null = Sync-AntigravityProcedureSkills `
+        -ProcedureSkillsRoot (Join-Path $sourceDir 'procedure-skills') `
+        -CanonicalWorkflowsRoot (Join-Path $sharedRoot 'workflows') `
+        -SharedSkillsRoot $SharedSkillsRoot `
+        -TargetSkillsPath $targetSkillsPath
 
     Write-Step "同步專案本地工具（Shared/project-tools/ → .agents/tools/）..."
     $null = Sync-ProjectTools -ProjectToolsRoot $projectToolsRoot `
@@ -270,7 +305,7 @@ function Invoke-AgUpgrade {
         if ($RemoveOrphans) {
             Remove-OrphanFiles -Report $report -TargetRoot $targetDir -ProtectedDirs @("memory", "project_skills", "context")
         } else {
-            Write-Warn "$($stats.Orphan) 個孤兒檔案。加入 -RemoveOrphans 可自動清除。"
+            Write-Warn "$($stats.Orphan) 個孤兒檔案已保留；來源不存在不代表可刪除。加入 -RemoveOrphans 可列報待確認項目。"
         }
     }
 

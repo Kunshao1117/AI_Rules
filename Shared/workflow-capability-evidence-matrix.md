@@ -1,5 +1,32 @@
 # 工作流能力與證據矩陣（Workflow Capability And Evidence Matrix）
 
+
+## General verification/review/completion ownership
+
+General verification scope/independence, evidence selection and failure
+classification belong only to `Shared/policies/verification-strategy.md`.
+Review applicability and judgment belong to `Shared/policies/review-governance.md`;
+general task completion belongs to `Shared/policies/completion-policy.md`.
+These policies supersede old escalation, review-trigger and completion clauses
+in this method/consumer. No Skill hit requires a role, full suite or Memory chain.
+Task methods remain here; frozen Memory/legacy release retain their own contracts.
+
+## General Agent applicability
+
+`Shared/policies/agent-governance.md` and `Shared/agents/_registry.md` own
+general Team assignments. Main is the ordinary implementer. In this mixed
+domain reference, every station, fixed roster, board, handoff, delivery-slice,
+dispatch-wave, retained-member, timing or execution-spec lifecycle prescription
+is legacy compatibility-only, not required for general vNext work, including
+Team. Read those prescriptions only for a frozen consumer that requires them.
+Domain procedures, grounding/evidence quality and protected gates remain.
+General Verification/Review/Completion now use their canonical policy owners;
+frozen Memory semantics remain in force. Old completion targets, status ladders
+and fixed evidence chains below are compatibility-only for frozen consumers.
+No vNext assignment substitutes for a required legacy Memory bundle or
+receipt. Ordinary vNext Memory evidence uses the canonical review/update
+references and does not require either artifact.
+
 本文件是 00-12 工作流共用的外部接地與證據期待矩陣，不取代各工作流本體。
 各工作流引用本矩陣後，仍需套用自身的 task boundary、platform capability 與 evidence state。
 
@@ -20,6 +47,15 @@ AI prior 只能作為假設起點。
 Grounding tier 使用 `G0` local-grounded、`G1` stable assumption、`G2` quick-check、`G3` formal external research、`G4` unverified/blocked。
 本矩陣只要求 route-level tier classification；詳細 field contract 留在 `workflow-execution-spec-contract.md`。
 
+Execution mode comes only from `Shared/policies/execution-routing.md`;
+action authority comes independently from `Shared/policies/authorization-resolution.md`.
+Direct is default; bounded helper use is Assisted, without Team machinery.
+Workflow names determine phase sequence only, never mode or authorization.
+Board, station, role-instance, handoff, wave, formal-readonly/formal-write,
+and Team artifact prescriptions below are legacy compatibility-only for frozen consumers.
+Frozen Memory consumers retain their original contract, phase and evidence;
+this scope boundary neither grants Memory authority nor decides its completion.
+
 ## Reference Index
 
 Long governance rules live in small references or their canonical policies.
@@ -38,14 +74,14 @@ This matrix keeps only route-level evidence expectations and the 00-12 workflow 
   - `Shared/policies/references/cross-thread-handoff-contract.md`
   - `Shared/policies/adapters/codex-thread-handoff.md`
 - Long-work local Git checkpoint procedure and receipt:
-  - `Shared/skills/team-specialist-git-checkpoint/SKILL.md`
-  - `Shared/skills/team-task-board/references/board-field-catalog.md`
+  - `Shared/workflows/git-checkpoint.md`
+  - `Shared/policies/references/legacy-skills/team-task-board/references/board-field-catalog.md`
 
 ## Evidence Status
 
 Status meanings live in `Shared/policies/references/status-ontology.md`.
-Closeout targets and completion states live in
-`Shared/policies/references/completion-state-machine.md`.
+General completion states live in `Shared/policies/completion-policy.md`.
+`Shared/policies/references/completion-state-machine.md` is frozen compatibility only.
 This matrix only names the minimum evidence expected per workflow route.
 
 ## Gate Profile References
@@ -60,9 +96,10 @@ Workflow rows below only name the minimum evidence expected for each route.
 - Intent envelope, overreach checks, and drift-check execution fields:
   `Shared/policies/workflow-orchestration.md`,
   `Shared/policies/references/workflow-execution-spec-contract.md`, and
-  `Shared/skills/intent-alignment-gate/SKILL.md`.
-- Formal orchestration and completion: `Shared/policies/workflow-orchestration.md`
-  plus `team-completion-gate`.
+  `Shared/policies/requirement-precision.md`.
+- General sequence, verification, review and completion: `Shared/policies/workflow-orchestration.md`,
+  `verification-strategy.md`, `review-governance.md` and `completion-policy.md`.
+  Legacy Team artifact references are frozen-consumer-only.
 - Platform capability translation: `Shared/platform-capability-matrix.md`.
   Load condition: workflow orchestration, language governance, and the workflow row are always required for broad evidence or source-impacting work; the platform capability matrix is conditional when platform behavior, tool capability, permission surface, evidence limits, protected phases, source-impacting work, or log-write capability affects the route.
 
@@ -74,7 +111,7 @@ This matrix aligns workflow rows to the shared mainline without redefining the l
 |---|---|
 | 1. Unique mainline | Route cites `Shared/policies/workflow-orchestration.md` as the order and responsibility owner; alternate lifecycle tracks are `unverified` or `blocked`. |
 | 2. Workflow entry | Entry names workflow row, stage-procedure reference, evidence-matrix row, and executable input requirement; route text is not authorization. |
-| 3. Execution spec | Executable work has `execution_spec_state`, `lane_id`, `stage_disposition`, scope, authorization, station, and stop-condition fields, or a blocked/unverified reason. |
+| 3. Execution spec | Formal Team work has `execution_spec_state`, `lane_id`, `stage_disposition`, scope, authorization, station, and stop-condition fields, or a blocked/unverified reason. |
 | 4. Station handoff | Formal station has role, role instance, specialist skill, station mode, context visibility, handoff ownership, and allowed targets. |
 | 5. Delivery artifact | Assigned station returns the appropriate delivery artifact or terminal blocked/unverified/risk state. |
 | 6. Independent evidence | Validation, review, read-only memory/docs, memory closure, and completion consume the artifact chain through separate owner states. |
@@ -146,7 +183,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 任務類型（Task type）:
   - Pure discussion, concept clarification, and lightweight Q&A without external evidence dependency.
   - Files, screenshots, memory/context, rules, agent behavior, evidence checks, or governance impact route normally.
-  - Use `formal-readonly` when a governed request activates Team mode.
+  - Use formal-readonly only after the execution owner resolves Team.
 - 接地依據（Grounding basis）:
   - Codex instruction layers, Claude context management, Agent Skills trigger semantics, governed Team formal-readonly.
 - 最低證據（Minimum evidence）:
@@ -180,7 +217,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 
 - 任務類型（Task type）: Sandbox spike, disposable prototype.
 - 接地依據（Grounding basis）:
-  - Technical spike practice, prototype isolation, governed experiment request triggers Team mode.
+  - Technical spike practice and prototype isolation do not select Team; execution-routing owns mode selection.
 - 最低證據（Minimum evidence）:
   - Reduced/minimal experiment station/board with sandbox scope, allowed changes, discard condition.
   - Escalation condition, allowed shortcuts, and experiment-only disposition.
@@ -200,8 +237,8 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
 - 最低證據（Minimum evidence）:
   - Team board, blueprint carryover, review purpose/state, requirement-to-task trace, task acceptance matrix.
   - Intent envelope, overreach check, behavior counter-evidence state, applicable drift findings, real validation route, tool discovery, blockers, memory ownership/status evidence.
-  - Implementation `completion_bundle` with `grounding_handoff`, expected dirty files, source/deployed sync evidence when source/runtime or generated pairs exist, and independently pre-bound memory/docs, protected-memory-write, and protected-memory-commit phase references. The implementation station does not gain authority from those references.
-  - After terminal validation and review, read-only memory/docs hands the bundle to `memory-closure`; normal process-complete needs its no-write or committed receipt, while protected-follow-up-pending requires an explicitly `source-level-explicit` bundle.
+  - Ordinary vNext delivery records grounding, expected dirty files, source/deployed sync evidence when source/runtime or generated pairs exist, and Memory Impact Review evidence when applicable; no `completion_bundle` is required. An unmigrated legacy consumer retains its implementation bundle with independently pre-bound memory/docs, protected-memory-write, and protected-memory-commit phase references. The implementation station does not gain authority from those references.
+  - Conditional validation/review and read-only Memory Impact Review record `Shared/policies/references/memory-review-evidence.md`, including docs/index/generated-copy impact. An unmigrated frozen consumer hands its bundle to the legacy `memory-closure` phase through `Shared/policies/references/legacy-memory-team-transition.md`; only that legacy process-complete needs its no-write or committed receipt, while protected-follow-up-pending requires an explicitly `source-level-explicit` bundle.
   - Formal `delivery_slice` reference to the requirement contract, with retained and role-distinct implementation, validation, and review stations. Numbered findings record the first two same-symptom restore/resume-and-rerun cycles; a third route records diagnosis or module split within the same slice.
   - When same-wave writers are proposed, a fresh canonical `parallel_dispatch_contract`; different
     write files alone are not parallel evidence.
@@ -219,7 +256,7 @@ Workflow rows below cite those rules by task type and keep only their minimum ev
   - Team board, symptom, cause, review purpose/state, fix evidence, regression evidence.
   - Intent alignment, overreach, and drift checks are required when the fix changes public behavior, contracts, workflow/skill semantics, or governance rules.
   - Affected memory-card status and dependency evidence.
-  - Repair `completion_bundle` with grounding handoff, expected dirty files, validation/review/memory-docs/memory-closure handoffs, and independently pre-bound protected memory phase references.
+  - Ordinary vNext repair records grounding, expected dirty files, applicable validation/review and Memory Impact Review evidence without a `completion_bundle`. An unmigrated legacy repair retains its bundle with memory-docs/memory-closure handoffs and independently pre-bound protected Memory phase references.
   - Same-slice repair evidence identifies the retained implementation member, the numbered finding, restored validation/review evidence, and any third-symptom diagnosis or module-split handoff. A new slice is required only for a recorded slice-boundary change.
 - 常見路由（Common route）: 06, 07, 09.
 

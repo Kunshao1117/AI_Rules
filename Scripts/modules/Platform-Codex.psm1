@@ -10,13 +10,30 @@
 
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -ErrorAction Stop
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Deployment.Transaction.psm1') -ErrorAction Stop
 
 function Get-CodexLegacyTeamNativeHookManifest {
-    return @(
+    $artifacts = @(
         [PSCustomObject]@{ RelativePath = 'hooks.json'; Sha256 = 'EDC59D0C6F61A28541DDD8DF9E2DAB4F1ACB96BA6E894098214FADADCE9B7CB7' }
         [PSCustomObject]@{ RelativePath = 'hooks/team-native-gate.ps1'; Sha256 = 'FA6C13FAE1913528D145C985509F45E949C8B79F14942382A8E2BA7BCA3C5B53' }
         [PSCustomObject]@{ RelativePath = 'hooks/team-native-launcher.ps1'; Sha256 = '56FB87F99C0697B8998314AE97CF0E691C39179C1EE60D9C49CCCC9F30B104EC' }
     )
+    $evidencePath = Join-Path $PSScriptRoot '../../Shared/policies/references/m5c-runtime-provenance.json'
+    if (Test-Path -LiteralPath $evidencePath -PathType Leaf) {
+        $evidence = Get-Content -LiteralPath $evidencePath -Raw -Encoding UTF8 | ConvertFrom-Json
+        foreach ($artifact in $artifacts) {
+            $record = @($evidence.records | Where-Object {
+                $_.path -ceq ('.codex/' + $artifact.RelativePath) -and
+                $_.classification -in @('FRAMEWORK_PROVEN_EXACT','FRAMEWORK_PROVEN_COMPATIBLE')
+            })
+            $hashes = @($artifact.Sha256)
+            if ($record.Count -eq 1 -and $record[0].known_sha256 -match '^[a-f0-9]{64}$') {
+                $hashes += $record[0].known_sha256
+            }
+            $artifact | Add-Member -NotePropertyName KnownSha256 -NotePropertyValue $hashes
+        }
+    }
+    return $artifacts
 }
 
 function Remove-CodexManagedLegacyTeamNativeHooks {
@@ -54,17 +71,21 @@ function Remove-CodexManagedLegacyTeamNativeHooks {
         }
 
         $path = Join-Path $codexRoot ($relativePath -replace '/', '\\')
+        $knownHashes = @($expectedHash)
+        if ($artifact.PSObject.Properties['KnownSha256']) { $knownHashes += @($artifact.KnownSha256) }
+        Assert-DeploymentPathUnlinked -Path $path
         if (Test-Path -LiteralPath $path -PathType Leaf) {
             $present += [PSCustomObject]@{
                 RelativePath = $relativePath
                 Path         = $path
                 ExpectedHash = $expectedHash.ToUpperInvariant()
+                KnownHashes  = $knownHashes
                 ActualHash   = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToUpperInvariant()
             }
         }
     }
 
-    $conflicts = @($present | Where-Object { $_.ActualHash -ne $_.ExpectedHash })
+    $conflicts = @($present | Where-Object { $_.ActualHash -notin $_.KnownHashes })
     if ($conflicts.Count -gt 0) {
         $messagePrefix = if ($Apply) { 'preserved_user_modified_hook' } else { 'would_preserve_user_modified_hook' }
         foreach ($artifact in $present) {
@@ -92,7 +113,7 @@ function Remove-CodexManagedLegacyTeamNativeHooks {
     return [PSCustomObject]@{
         WouldRemoveCount   = $ordered.Count
         WouldPreserveCount = 0
-        WouldRemove        = @($ordered.RelativePath)
+        WouldRemove        = @($ordered | ForEach-Object { $_.RelativePath })
         WouldPreserve      = @()
         Applied            = $Apply.IsPresent
     }
@@ -249,19 +270,19 @@ function Merge-CodexConfigDefaults {
     $merged = $text.TrimEnd() + "`n"
     if ($current -eq $merged) {
         Write-Step "Codex config.toml required keys already match section-aware defaults: $TargetPath"
-        return [PSCustomObject]@{ Changed = $false; Actions = @(); TargetPath = $TargetPath }
+        return [PSCustomObject]@{ Changed = $false; Actions = @(); TargetPath = $TargetPath; ProjectedText = $merged }
     }
 
     if (-not $Apply) {
         Write-Warn "Codex config.toml would be updated ($($actions -join '; ')): $TargetPath"
-        return [PSCustomObject]@{ Changed = $true; Actions = $actions; TargetPath = $TargetPath }
+        return [PSCustomObject]@{ Changed = $true; Actions = $actions; TargetPath = $TargetPath; ProjectedText = $merged }
     }
 
     $targetDir = Split-Path $TargetPath -Parent
     if (-not (Test-Path -LiteralPath $targetDir)) { New-Item -ItemType Directory -Force -Path $targetDir | Out-Null }
     [System.IO.File]::WriteAllText($TargetPath, $merged, [System.Text.UTF8Encoding]::new($false))
     Write-Ok "Codex config.toml defaults merged ($($actions -join '; ')): $TargetPath"
-    return [PSCustomObject]@{ Changed = $true; Actions = $actions; TargetPath = $TargetPath }
+    return [PSCustomObject]@{ Changed = $true; Actions = $actions; TargetPath = $TargetPath; ProjectedText = $merged }
 }
 
 function Invoke-CodexFresh {
@@ -491,6 +512,7 @@ function Invoke-CodexUpgrade {
         } else {
             Write-Warn "已跳過 .codex/ 更新與受管 legacy hook 清理；本次不會寫入 .codex/config.toml、.codex/AGENTS.md 或 .codex/VERSION。"
             $applyCodexChanges = $false
+            return [PSCustomObject]@{ Succeeded = $false; Platform = 'Codex'; Reason = 'UpgradeDeclined' }
         }
     } else {
         Write-Ok ".codex/ 檔案均已是最新版本，無需更新。"
@@ -572,4 +594,4 @@ function Invoke-CodexUpgrade {
     }
 }
 
-Export-ModuleMember -Function Invoke-CodexFresh, Invoke-CodexUpgrade, Remove-CodexManagedLegacyTeamNativeHooks
+Export-ModuleMember -Function Invoke-CodexFresh, Invoke-CodexUpgrade, Remove-CodexManagedLegacyTeamNativeHooks, Merge-CodexConfigDefaults

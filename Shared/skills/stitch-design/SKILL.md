@@ -1,95 +1,87 @@
 ---
 name: stitch-design
 description: >
-  介面設計產生與設計稿治理（MCP: stitch）：UI 設計產生、畫面變體、design spec 擷取、設計 DNA 與 generated-image downgrade；
-  StitchMCP UI design workflow.
-  Use when: 需要 generating/editing UI designs、variants、design spec extraction、
-  generated-image downgrade、或 design DNA work。
-  DO NOT use when: 任務不是 UI 設計工作，或程式碼實作不需要 design artifact。
+  Google Stitch provider design methods. Use when: the user explicitly chooses Stitch for design directions, or a task explicitly concerns an existing Stitch project.
+  DO NOT use when: ordinary UI bugs, new pages, redesign, generic design exploration or design-system discussion without a Stitch provider choice.
 metadata:
   author: antigravity
-  version: "5.4"
+  version: "6.0"
   origin: framework
   kind: operational
   memory_awareness: none
-  mcp_servers: [stitch]
-  tool_scope: ["mcp:stitch"]
 ---
 
-# Stitch Design
+# Stitch Design Candidate Methods
 
-## HITL Boundary
+Invocation classification: manual_only; provider-specific: yes.
+external_ai_provider_coupling: yes
+No automatic sibling loading: GitHub, UI workflow, Debug and Security are not
+entry dependencies. Provider facts and effect distinctions are in
+`Shared/policies/references/stitch-guide.md`. Ordinary design phase sequencing
+belongs to `Shared/workflows/ui-design-exploration.md`, not this provider method.
 
-- Read-only tools (`list`, `get`, `search`, `query`, status/health checks) may proceed silently.
-- State-mutating, external-state, write, deploy, push, delete, reset, or resolve operations require a scope-bound intent signal from the Director; authorization resolution must bind it to the visible plan, command/tool, phase, expiry, and target external state before the matching protected gate can pass.
-- `[MCP HITL GATE]` is an additional execution gate for MCP calls; it does not replace authorization resolution or authorize a separate protected phase.
-- Discovery of tool schemas is not permission to execute mutating tools.
+## Prepare a bounded design request
 
-## Trigger Conditions
+1. Confirm explicit Stitch use, the requested outcome and existing project/screen
+   identity. Existing project access does not authorize creation, edits or generation.
+   Do not create an account/project as a presence check or default first step.
+2. Prepare the business/user objective, target surface, constraints, relevant
+   existing components and useful design references. Include concrete interaction
+   and responsive needs, not only mood; distinguish fixed requirements from open
+   visual choices. Keep provider context to the permitted task minimum.
+3. Select only necessary text, image, code or design context. Never automatically
+   upload a repository, secrets, private logs, unrelated user data or an entire
+   Project Context. A design request does not authorize unrelated data sharing.
+4. For requested exploration, describe differentiated directions (for example
+   density, hierarchy or navigation), with the requested number and scope.
+   An existing selected direction needs no artificial variant quota.
 
-- 藍圖或建構流程（`/02_blueprint` 或 `/03_build`）期間需要 UI prototyping
-- 設計轉程式流程（Design-to-code workflow）：擷取 frontend implementation 所需 design specs
-- 為總監審閱產生 design variants
+## Inspect, compare and iterate
 
-## Procedure
+For authorized generation/editing, keep the selected project, screen and intended
+change explicit. The Stitch Agent can stream changes into a canvas; an intermediate
+frame is not a completed result. After relevant external edits, refresh selected
+project/screen state before comparing or applying a further edit.
+On timeout, inspect existing task/project state rather than duplicate generation;
+unknown completion stays unknown. Do not assume fixed latency or instant caching.
 
-### Step 1: Project Management
+Compare candidates by requirement fit, hierarchy, interaction clarity, component
+reuse, accessibility implications, implementation feasibility and product fit.
+Preserve useful rationale and extract reusable decisions as candidates, not
+approved context. Main and the user select through the existing UI workflow;
+the provider's preferred result is not the final product decision.
 
-1. Call `list_projects` to check existing Stitch projects
-2. Call `create_project` with descriptive title if new project needed
-3. Note the `projectId` for all subsequent operations
+## Translate candidates without promoting them
 
-### Step 2: Screen Generation
+Every generated screen, variant, layout, design system, DESIGN.md and code/export
+starts as a candidate. It is not approved DNA, an implementation acceptance
+standard, verified UI, production code or final design merely because it exists.
+Extract implementable constraints: density, color roles, typography, spacing,
+shape, component behavior and responsive strategy. Map them to existing project
+components; discard decorative or infeasible details instead of copying blindly.
+Use real rendered UI evidence for implementation claims under the existing
+verification owner; generated screenshots do not prove the product works.
 
-1. Call `generate_screen_from_text` with **intent-driven prompt** (describe mood/brand, NOT pixels)
-2. If `output_components` contains suggestions, present to Director for selection
-3. Use `edit_screens` for iterative refinement
-4. Use `generate_variants` for alternative explorations
+DESIGN.md is a portable design-rules artifact, not Project Context approval.
+An explicit request to import/apply it identifies proposed scope, not automatic
+persistence authority. Keep the existing `GO CONTEXT` / `GO DNA` semantics solely
+at `Shared/policies/project-context-protocol.md`; do not overwrite canonical
+design rules or promote candidate context here. Main separately checks generated
+code against repository conventions, target revision, scope and required evidence.
 
-### Step 3: Design System Management
+## Separate delivery effects
 
-Establish a unified visual language and apply it across all screens.
+A bounded artifact download, share-link creation, Antigravity handoff and web /
+Netlify publication have different destinations and effects. Design generation
+does not authorize any of these automatically. Resolve the requested artifact,
+destination, exposure and permitted action before performing that specific step.
+Export to Antigravity is not proof that implementation, backend integration or
+deployment has happened. A request for three directions may be satisfied by
+those candidates; product UI implementation cannot be completed by designs alone.
+`Shared/policies/completion-policy.md` owns completion judgment.
 
-1. `list_design_systems` - Check existing design systems
-2. `create_design_system` — Create new design system:
-   - **Color Palette**: Choose preset or define custom primary color + saturation
-   - **Typography**: Select font family (e.g., Inter, Roboto, Outfit)
-   - **Shape**: Set corner roundness for UI elements
-   - **Appearance**: Configure light/dark mode background colors
-   - **Design MD**: Free-form design instructions in markdown
-3. `update_design_system` — Immediately after creation to apply and display
-4. `apply_design_system` — Apply to selected screens:
-   - Pass list of screen IDs to apply the design system tokens
-   - This modifies screen appearance to align with the design system
-
-### Step 4: Design DNA Extraction
-
-1. Call `get_screen` to retrieve full screen details (colors, typography, layout)
-2. Document extracted design tokens as project reference
-3. Feed design tokens into frontend implementation
-4. Persist approved design DNA only through `project-context-protocol` after `GO CONTEXT` or `GO DNA`.
-
-### Step 4.5: Reference Downgrade Gate
-
-Generated screens and AI images are direction material, not implementation contracts.
-
-1. Extract implementable constraints: density, hierarchy, color roles, type scale, spacing rhythm, shape language, component behavior, and responsive strategy.
-2. Map constraints to existing project components before creating new components.
-3. Discard purely decorative or impossible details that cannot be reproduced in the project's frontend stack.
-4. Use real rendered screenshots, not generated images, as completion readiness evidence.
-
-### Step 5: Sync Checkpoint
-
-- After ANY modification in Stitch web UI, re-call `get_project` / `get_screen` to refresh context
-
-## Constraints
-
-- **Vibe Design**: Use business-level intent prompts, NOT pixel-level specifications
-- **Sync Required**: Always re-read after external Stitch edits to avoid stale design data
-- Generation can take a few minutes — DO NOT RETRY on timeout
-
-## Done When
-
-- Design screens generated and approved by Director
-- Design tokens extracted and documented
-- No stale design data in current context
+If Stitch is unavailable, ordinary UI work can continue with the existing design
+workflow/project system and eligible tools. Do not silently replace explicitly
+requested Stitch with another external AI, claim Stitch was used, or automatically
+install, login, run OAuth or create a project. Report the provider-specific gap.
+Memory and Project Context data stay untouched; no provider-state persistence.

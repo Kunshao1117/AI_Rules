@@ -402,17 +402,20 @@ Describe 'Manager project rule sync real-path integration' {
             [PSCustomObject]@{
                 Platform = 'Antigravity'
                 Path = Join-Path $fixture.ProjectRoot '.agents\rules\00_core_identity.md'
-                ExpectedText = '### Shared Subagent Invocation Policy (Antigravity / Gemini adapters)'
+                Adapter = 'antigravity-subagent-invocation.md'
+                Pointer = $false
             },
             [PSCustomObject]@{
                 Platform = 'Claude'
                 Path = Join-Path $fixture.ProjectRoot '.claude\rules\core-identity.md'
-                ExpectedText = '### Shared Subagent Invocation Policy (Claude Code subagents)'
+                Adapter = 'claude-subagent-invocation.md'
+                Pointer = $false
             },
             [PSCustomObject]@{
                 Platform = 'Codex'
                 Path = Join-Path $fixture.ProjectRoot '.codex\AGENTS.md'
-                ExpectedText = 'Shared/policies/adapters/codex-subagent-invocation.md'
+                Adapter = 'codex-subagent-invocation.md'
+                Pointer = $true
             }
         )
         foreach ($adapterTarget in $adapterTargets) {
@@ -423,8 +426,23 @@ Describe 'Manager project rule sync real-path integration' {
             if ($content -notmatch '<!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->') {
                 throw "$($adapterTarget.Platform) Auto sync did not retain the shared policy marker."
             }
-            if ($content.IndexOf($adapterTarget.ExpectedText, [System.StringComparison]::Ordinal) -lt 0) {
-                throw "$($adapterTarget.Platform) Auto sync did not use its platform adapter."
+            $blocks = [regex]::Matches($content, '(?s)<!-- AI_RULES_SHARED_SUBAGENT_POLICY_START -->\s*(.*?)\s*<!-- AI_RULES_SHARED_SUBAGENT_POLICY_END -->')
+            $blocks.Count | Should Be 1
+            $block = $blocks[0].Groups[1].Value.Trim() -replace "`r`n", "`n"
+            if ($adapterTarget.Pointer) {
+                $block | Should Match 'Shared Subagent Invocation Policy \(generated pointer\)'
+                $block | Should Match ([regex]::Escape('Shared/policies/adapters/' + $adapterTarget.Adapter))
+                $block | Should Match 'remain canonical.*deployed under'
+            } else {
+                # Full adapters remain full; the canonical source block owns
+                # their content. An old title or another platform cannot pass.
+                $adapter = Get-Content -LiteralPath (Join-Path $fixture.RepoRoot ('Shared/policies/adapters/' + $adapterTarget.Adapter)) -Raw -Encoding UTF8
+                $key = $adapterTarget.Platform.ToUpperInvariant()
+                $match = [regex]::Match($adapter, "(?s)<!-- SUBAGENT_POLICY:${key}_START -->\s*(.*?)\s*<!-- SUBAGENT_POLICY:${key}_END -->")
+                $match.Success | Should Be $true
+                $block | Should Be ($match.Groups[1].Value.Trim() -replace "`r`n", "`n")
+                $block | Should Match 'execution-routing\.md'
+                $block | Should Match 'authorization-resolution\.md'
             }
         }
     }

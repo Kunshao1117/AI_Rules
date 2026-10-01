@@ -1,140 +1,49 @@
 ---
 name: gitnexus-refactoring
 description: >
-  安全重構與依賴追蹤：GitNexus 輔助安全重構、改名、抽模組、拆 service、搬移檔案與依賴追蹤；
-  safe refactoring guidance.
-  Use when: 需要安全重構、rename function、extract module、split service、
-  move file、refactor class、或改名前後追蹤呼叫鏈與依賴。
-  DO NOT use when: 只想知道改動影響範圍（用 gitnexus-impact-analysis），
-  或只是理解程式碼結構（用 gitnexus-exploring）。
+  已選用 GitNexus 圖譜的重構依賴與修改預覽方法。
+  Use when: 此次已限定的 refactor 可從已確認可用的 GitNexus 關係與 rename 預覽受益。
+  DO NOT use when: 普通 refactor、尚未確認需求範圍，或 GitNexus 尚不可用。
 metadata:
   author: gitnexus
-  version: "0.1.0"
+  version: "7.0"
   origin: framework
   kind: operational
+  memory_awareness: none
 ---
 
-# Refactoring with GitNexus
+# gitnexus-refactoring
 
-## Test Scope Opt-In
+GitNexus Optional Pack. Invocation classification: restricted; provider-specific: yes.
+This classification is not platform invocation enforcement. Load this method
+only for the selected task, never the entire pack or a keyword-only match.
 
-GitNexus dependency mapping supports refactoring, but it does not make tests part of a refactor by
-default. Include test planning, creation, modification, or execution only when the current acceptance
-and exact authorization name it; regression rationale, quality practice, review, validation, or a
-workflow route do not grant that scope. See `Shared/policies/authorization-resolution.md`; test work
-starts only after its canonical tool-first gate identifies a necessary minimal exception.
+## Shared prerequisite reference
 
-## When to Use
+Read `Shared/policies/references/gitnexus-guide.md` for common readiness, side effects, fallback and policy boundaries.
+`Shared/policies/capability-resolution.md` remains the readiness/selection owner.
+The guide is a document, not another Skill. No relations or automatic sibling
+loading is introduced. Missing GitNexus leaves ordinary work on native methods.
 
-- "Rename this function safely"
-- "Extract this into a module"
-- "Split this service"
-- "Move this to a new file"
-- Any task involving renaming, extracting, splitting, or restructuring code
+## Specific method
 
-## Workflow
+1. Start from the authorized refactor goal and bounded file/contract surface.
+   Use query/context/impact only to clarify relevant dependents and responsibilities.
+2. For a rename, use the installed provider's supported dry-run/preview only if
+   its actual effects are in scope. Inspect every proposed file and edit; graph
+   confidence and AST/text matches do not make edits automatically safe.
+3. Check dynamic/string references, public contracts, generated files and any
+   consumers outside the graph. Query results do not prove their absence.
+4. For extraction/splitting, define the preserved interface and responsibility
+   boundary, then plan the smallest dependency-compatible update order. Do not
+   always impose interfaces-first or split extra modules to fit the graph.
+5. Applying a preview is a separate action under existing authorization. A
+   satisfactory dry run does not grant write authority. No automatic commit,
+   protected action, scope expansion or index rebuild follows.
+6. Inspect the resulting diff and relevant source; optional detect_changes adds
+   graph evidence but is not the sole validator. Existing Verification Policy
+   owns scope, test admission and evidence; do not reinstate an exact-test-GO gate.
 
-```
-1. gitnexus_impact({target: "X", direction: "upstream"})  → Map all dependents
-2. gitnexus_query({query: "X"})                            → Find execution flows involving X
-3. gitnexus_context({name: "X"})                           → See all incoming/outgoing refs
-4. Plan update order: interfaces → implementations → callers → authorized test work, if any
-```
-
-> If "Index is stale" → run `npx gitnexus analyze` in terminal.
-
-## Checklists
-
-### Rename Symbol
-
-```
-- [ ] gitnexus_rename({symbol_name: "oldName", new_name: "newName", dry_run: true}) — preview all edits
-- [ ] Review graph edits (high confidence) and ast_search edits (review carefully)
-- [ ] If satisfied: gitnexus_rename({..., dry_run: false}) — apply edits
-- [ ] gitnexus_detect_changes() — verify only expected files changed
-- [ ] If tests are explicitly authorized, run only the accepted commands for affected processes
-```
-
-### Extract Module
-
-```
-- [ ] gitnexus_context({name: target}) — see all incoming/outgoing refs
-- [ ] gitnexus_impact({target, direction: "upstream"}) — find all external callers
-- [ ] Define new module interface
-- [ ] Extract code, update imports
-- [ ] gitnexus_detect_changes() — verify affected scope
-- [ ] If tests are explicitly authorized, run only the accepted commands for affected processes
-```
-
-### Split Function/Service
-
-```
-- [ ] gitnexus_context({name: target}) — understand all callees
-- [ ] Group callees by responsibility
-- [ ] gitnexus_impact({target, direction: "upstream"}) — map callers to update
-- [ ] Create new functions/services
-- [ ] Update callers
-- [ ] gitnexus_detect_changes() — verify affected scope
-- [ ] If tests are explicitly authorized, run only the accepted commands for affected processes
-```
-
-## Tools
-
-**gitnexus_rename** — automated multi-file rename:
-
-```
-gitnexus_rename({symbol_name: "validateUser", new_name: "authenticateUser", dry_run: true})
-→ 12 edits across 8 files
-→ 10 graph edits (high confidence), 2 ast_search edits (review)
-→ Changes: [{file_path, edits: [{line, old_text, new_text, confidence}]}]
-```
-
-**gitnexus_impact** — map all dependents first:
-
-```
-gitnexus_impact({target: "validateUser", direction: "upstream"})
-→ d=1: loginHandler, apiMiddleware, testUtils
-→ Affected Processes: LoginFlow, TokenRefresh
-```
-
-**gitnexus_detect_changes** — verify your changes after refactoring:
-
-```
-gitnexus_detect_changes({scope: "all"})
-→ Changed: 8 files, 12 symbols
-→ Affected processes: LoginFlow, TokenRefresh
-→ Risk: MEDIUM
-```
-
-**gitnexus_cypher** — custom reference queries:
-
-```cypher
-MATCH (caller)-[:CodeRelation {type: 'CALLS'}]->(f:Function {name: "validateUser"})
-RETURN caller.name, caller.filePath ORDER BY caller.filePath
-```
-
-## Risk Rules
-
-| Risk Factor         | Mitigation                                |
-| ------------------- | ----------------------------------------- |
-| Many callers (>5)   | Use gitnexus_rename for automated updates |
-| Cross-area refs     | Use detect_changes after to verify scope  |
-| String/dynamic refs | gitnexus_query to find them               |
-| External/public API | Version and deprecate properly            |
-
-## Example: Rename `validateUser` to `authenticateUser`
-
-```
-1. gitnexus_rename({symbol_name: "validateUser", new_name: "authenticateUser", dry_run: true})
-   → 12 edits: 10 graph (safe), 2 ast_search (review)
-   → Files: validator.ts, login.ts, middleware.ts, config.json...
-
-2. Review ast_search edits (config.json: dynamic reference!)
-
-3. gitnexus_rename({symbol_name: "validateUser", new_name: "authenticateUser", dry_run: false})
-   → Applied 12 edits across 8 files
-
-4. gitnexus_detect_changes({scope: "all"})
-   → Affected: LoginFlow, TokenRefresh
-   → Risk: MEDIUM — request an exact test scope before testing these flows
-```
+Example: preview a symbol rename -> confirm ambiguous text matches and public
+consumers -> apply only within the authorized change -> inspect the actual diff.
+The number of callers never mandates an automated rename provider.

@@ -1,5 +1,30 @@
 # Platform Plan Mapping Contract
 
+
+## General verification/review/completion ownership
+
+General verification scope/independence, evidence selection and failure
+classification belong only to `Shared/policies/verification-strategy.md`.
+Review applicability and judgment belong to `Shared/policies/review-governance.md`;
+general task completion belongs to `Shared/policies/completion-policy.md`.
+These policies supersede old escalation, review-trigger and completion clauses
+in this method/consumer. No Skill hit requires a role, full suite or Memory chain.
+Task methods remain here; frozen Memory/legacy release retain their own contracts.
+
+## General Agent applicability
+
+`Shared/policies/agent-governance.md` and `Shared/agents/_registry.md` own
+general Team assignments. Main is the ordinary implementer. In this mixed
+domain reference, every station, fixed roster, board, handoff, delivery-slice,
+dispatch-wave, retained-member, timing or execution-spec lifecycle prescription
+is legacy compatibility-only, not required for general vNext work, including
+Team. Read those prescriptions only for a frozen consumer that requires them.
+Domain procedures, grounding/evidence quality and protected gates remain.
+General Verification/Review/Completion now use their canonical policy owners;
+frozen Memory semantics remain in force. Old completion targets, status ladders
+and fixed evidence chains below are compatibility-only for frozen consumers.
+No vNext assignment is a substitute for a Memory bundle or receipt.
+
 This policy maps platform-visible plan surfaces to AI_Rules workflow states.
 
 It does not replace these owner layers:
@@ -17,7 +42,17 @@ Source file: `Shared/policies/platform-plan-mapping.md`.
 
 Runtime copy: `.agents/shared/policies/platform-plan-mapping.md`.
 
-Normal sync direction is source-to-deployed; both files must remain content-identical when both exist.
+Normal sync direction is source-to-deployed. Verify content parity after
+authorized sync; source-only delivery records deployment pending.
+
+Execution mode comes only from `Shared/policies/execution-routing.md`;
+action authority comes independently from `Shared/policies/authorization-resolution.md`.
+Direct is default; bounded helper use is Assisted, without Team machinery.
+Workflow names determine phase sequence only, never mode or authorization.
+Board, station, role-instance, handoff, wave, formal-readonly/formal-write,
+and Team artifact prescriptions below are legacy compatibility-only for frozen consumers.
+Frozen Memory consumers retain their original contract, phase and evidence;
+this scope boundary neither grants Memory authority nor decides its completion.
 
 ## Plan Surface Boundary
 
@@ -45,13 +80,14 @@ Codex `update_plan` is a visual mirror only.
 
 A plan item marked `completed` means the mirror says the step is done; it does not prove the underlying workflow state is complete.
 
-Completion still requires the owning delivery artifact and validation/review/memory/docs disposition.
+Team completion still requires the owning delivery artifact and validation/review/memory/docs disposition.
 
 It also requires source/deployed parity and the completion gate.
 
 A Director response to a visible plan can become an authorization signal only after authorization resolution binds the current scope.
 
-The binding must identify the current station, phase, file allowlist, command, expiry, and required protected gate.
+General binding identifies the requested action, target, and current scope.
+Station, phase, and expiry fields remain only for legacy Team or frozen Memory.
 
 The plan surface itself must not be recorded as `authorization_source`, `authorization_evidence`, or a protected-action approval.
 
@@ -79,7 +115,7 @@ The plan surface itself must not be recorded as `authorization_source`, `authori
 
 ### `implementation`
 
-- Meaning: Authorized `formal-write` station-owned change delivery.
+- Meaning: Authorized local_work implementation; Team retains formal-write station-owned change delivery.
 - Allowed output:
   - Main-worktree change delivery.
   - Isolated/text change delivery.
@@ -124,7 +160,8 @@ The boundary also includes memory/docs impact and source/deployed sync expectati
 
 It is still not write authorization.
 
-Implementation begins only after a scope-bound intent signal resolves to `implementation-change-delivery` or the matching fallback phase.
+General implementation begins when the current task authorizes local_work.
+Legacy Team records use `implementation-change-delivery` or the matching fallback phase.
 
 When the same conversation moves from `02-blueprint` to `build-plan`, record the transition explicitly.
 

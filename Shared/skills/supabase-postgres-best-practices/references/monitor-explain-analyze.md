@@ -1,45 +1,16 @@
----
-title: Use EXPLAIN ANALYZE to Diagnose Slow Queries
-impact: LOW-MEDIUM
-impactDescription: Identify exact bottlenecks in query execution
-tags: explain, analyze, diagnostics, query-plan
----
+# Interpret plans with known execution effects
 
-## Use EXPLAIN ANALYZE to Diagnose Slow Queries
+Inspect statement semantics, parameters, functions and target before choosing a plan probe.
+EXPLAIN without ANALYZE can provide estimates without running the planned statement;
+EXPLAIN ANALYZE actually executes it, including DML and function side effects. SELECT can
+also take locks or call mutating functions. A rollback is not a universal undo for external
+effects or sequences. Use only the already authorized local/isolated or scoped environment.
 
-EXPLAIN ANALYZE executes the query and shows actual timings, revealing the true performance bottlenecks.
+Compare estimates to actual rows/loops, filters, join strategy, buffers and sort behavior.
+A sequential scan may be optimal; many filtered rows do not uniquely prove a missing index.
+Disk reads may reflect workload/cache state, not a mandate to add memory. Sort spills need
+query/cardinality/concurrency analysis before per-query memory or index proposals.
+Use representative data and parameters and account for instrumentation/cache effects;
+return hypotheses and measured limits, not automatic tuning or completion decisions.
 
-**Incorrect (guessing at performance issues):**
-
-```sql
--- Query is slow, but why?
-select * from orders where customer_id = 123 and status = 'pending';
--- "It must be missing an index" - but which one?
-```
-
-**Correct (use EXPLAIN ANALYZE):**
-
-```sql
-explain (analyze, buffers, format text)
-select * from orders where customer_id = 123 and status = 'pending';
-
--- Output reveals the issue:
--- Seq Scan on orders (cost=0.00..25000.00 rows=50 width=100) (actual time=0.015..450.123 rows=50 loops=1)
---   Filter: ((customer_id = 123) AND (status = 'pending'::text))
---   Rows Removed by Filter: 999950
---   Buffers: shared hit=5000 read=15000
--- Planning Time: 0.150 ms
--- Execution Time: 450.500 ms
-```
-
-Key things to look for:
-
-```sql
--- Seq Scan on large tables = missing index
--- Rows Removed by Filter = poor selectivity or missing index
--- Buffers: read >> hit = data not cached, needs more memory
--- Nested Loop with high loops = consider different join strategy
--- Sort Method: external merge = work_mem too low
-```
-
-Reference: [EXPLAIN](https://supabase.com/docs/guides/database/inspect)
+Source: [EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html).

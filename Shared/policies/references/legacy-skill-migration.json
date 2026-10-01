@@ -1,0 +1,2246 @@
+{
+  "batch": "4B2A1",
+  "artifacts": [
+    {
+      "skill": "delegation-strategy",
+      "old_relative_path": "delegation-strategy/references/cli-capability-matrix.md",
+      "reference_relative_path": "policies/references/legacy-skills/delegation-strategy/references/cli-capability-matrix.md",
+      "known_versions": [
+        {
+          "sha256": "df384993c40e772b4e73bdbfea55e3dd26ba7f5519fb7207c16de639f801e271",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "ac83bb234a92644342de17a717bace8d0eac2a0d5aca869f61a6a6334e580b25",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/delegation-strategy/references/cli-capability-matrix.md"
+        }
+      ]
+    },
+    {
+      "skill": "delegation-strategy",
+      "old_relative_path": "delegation-strategy/references/cli-delegation-sop.md",
+      "reference_relative_path": "policies/references/legacy-skills/delegation-strategy/references/cli-delegation-sop.md",
+      "known_versions": [
+        {
+          "sha256": "39f3fe6e69d8325e415eb3cfeb2e9fa323661be8f67ac79d011c107c7807cb51",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "ab387dc5926832d10cdb90165372afb5c87ac97d3cc066082906a185bb09144a",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/delegation-strategy/references/cli-delegation-sop.md"
+        }
+      ]
+    },
+    {
+      "skill": "delegation-strategy",
+      "old_relative_path": "delegation-strategy/references/cli-prompt-skeleton.md",
+      "reference_relative_path": "policies/references/legacy-skills/delegation-strategy/references/cli-prompt-skeleton.md",
+      "known_versions": [
+        {
+          "sha256": "fa96b712c5ee3db6374d869c296dc2eba8a54b4548f2ad6cfe5eed4bfe575a0e",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "6646b1fc62d132a27225ea903c92247cfd18848081cde0045844bf4e790363fd",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/delegation-strategy/references/cli-prompt-skeleton.md"
+        }
+      ]
+    },
+    {
+      "skill": "delegation-strategy",
+      "old_relative_path": "delegation-strategy/references/team-dispatch-gates.md",
+      "reference_relative_path": "policies/references/legacy-skills/delegation-strategy/references/team-dispatch-gates.md",
+      "known_versions": [
+        {
+          "sha256": "4210907bdf58602c45e94011a685e68542f2f6d0bb1adf914d0d1b57d2845fd4",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "580a99e8da6a9b6fa5cd2fffadb646e0deda6c043f6022877f47101acf640e00",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/delegation-strategy/references/team-dispatch-gates.md"
+        }
+      ]
+    },
+    {
+      "skill": "delegation-strategy",
+      "old_relative_path": "delegation-strategy/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/delegation-strategy/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "8e8f136f0cd6801d10eebdb7079905ba08520d9aad87d980324f757575ee2e7e",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "0b34cb3928bf5d7f759180502262c207801e62df1cfd818c7436b75c19d48eb6",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/delegation-strategy/SKILL.md"
+        },
+        {
+          "sha256": "1fc0732d806f8c251762d963f7a4faa0dad8b35160873cadc22c39df91a829de",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/delegation-strategy/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_COMPATIBLE",
+          "historical_evidence": [
+            {
+              "kind": "immutable_git_body_identity",
+              "revision": "ac654345ad0673a2eef013d83201adf09b30ba32",
+              "source": "Shared/skills/delegation-strategy/SKILL.md",
+              "historical_blob_sha256": "0b34cb3928bf5d7f759180502262c207801e62df1cfd818c7436b75c19d48eb6",
+              "normalized_sha256": "0b34cb3928bf5d7f759180502262c207801e62df1cfd818c7436b75c19d48eb6",
+              "allowed_difference": "LF/CRLF or UTF-8 BOM only; no whitespace/EOF/content normalization"
+            },
+            {
+              "kind": "preexisting_phase_raw_fingerprint",
+              "artifact": "deployment-gate1-evidence/baseline.json",
+              "artifact_sha256": "6563d3592a6b8f3042a4eaa1a9bc6839c3f65d6261a8103c3ebea8dcc250a0c8",
+              "field": "/hashes/.agents/skills/delegation-strategy/SKILL.md",
+              "sha256": "1fc0732d806f8c251762d963f7a4faa0dad8b35160873cadc22c39df91a829de"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "programming-team-governance",
+      "old_relative_path": "programming-team-governance/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/programming-team-governance/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "ef9f5a41d8b1b570256e558795c0dbc2c490cb18b5ee4040700b4f01b9556c3f",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "befe57ffd4cee99f4ba05b7bce2849e0d660d586521597d89d3efd3dfab9a952",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/programming-team-governance/SKILL.md"
+        },
+        {
+          "sha256": "0a1cc6b4d52120a9d0d73daee78a9eebf6778ce577f0eec9b0da2f2444f92867",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/programming-team-governance/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/programming-team-governance/SKILL.md",
+              "sha256": "0a1cc6b4d52120a9d0d73daee78a9eebf6778ce577f0eec9b0da2f2444f92867"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "team-role-boundaries",
+      "old_relative_path": "team-role-boundaries/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-role-boundaries/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "1e465f6b57481f832e04f2d2e0a423d2dce47a8eb56ce0aa7dbf5155afdf93de",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "302453146026d9cbe73a91b2c8a4e4574605687ce56114f764790a84b3d64c36",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-role-boundaries/SKILL.md"
+        },
+        {
+          "sha256": "34e387720b5fd1630b12fff2ea027dc0727519a18c31a3a0ae297300cc5c59ea",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-role-boundaries/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-role-boundaries/SKILL.md",
+              "sha256": "34e387720b5fd1630b12fff2ea027dc0727519a18c31a3a0ae297300cc5c59ea"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "team-completion-gate",
+      "old_relative_path": "team-completion-gate/references/completion-evidence-contract.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-completion-gate/references/completion-evidence-contract.md",
+      "known_versions": [
+        {
+          "sha256": "5f52887019206f2c97b1fe626500f760b0d227b80a8b4cb07fb383fb1cdf37ad",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "dc959f9ea0abcb3029815e3945636a40dce9ba1737a21694b524783d17c87e4c",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-completion-gate/references/completion-evidence-contract.md"
+        }
+      ]
+    },
+    {
+      "skill": "team-completion-gate",
+      "old_relative_path": "team-completion-gate/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-completion-gate/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "7d071ce888118e4f6da5bfa365efc484fc434731c540ded0fcd07af6ebb01ea7",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "d929af94c3481aed2c9e30f2c0fb925b8e4335bfe29850ac205d6c4686f09003",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-completion-gate/SKILL.md"
+        },
+        {
+          "sha256": "157eec82a7367ea6f26617820a3f4973fb3bec183196afd6825a63cb721f5027",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-completion-gate/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-completion-gate/SKILL.md",
+              "sha256": "157eec82a7367ea6f26617820a3f4973fb3bec183196afd6825a63cb721f5027"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "ai-dev-quality-gate",
+      "old_relative_path": "ai-dev-quality-gate/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/ai-dev-quality-gate/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "a2ed99210d7f2522254ed952f215242c78d752488bfd986a3149ab1b14dac7d5",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "d0bfb4db79c72587c5038e5c02e60e0a8bc583d3f78ac8ed7c9f3116595de7e1",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/ai-dev-quality-gate/SKILL.md"
+        },
+        {
+          "sha256": "26911078d11e1d5f4968cfb44805211365e37537e072a4cd7e3433a68c74350f",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/ai-dev-quality-gate/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/ai-dev-quality-gate/SKILL.md",
+              "sha256": "26911078d11e1d5f4968cfb44805211365e37537e072a4cd7e3433a68c74350f"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "intent-alignment-gate",
+      "old_relative_path": "intent-alignment-gate/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/intent-alignment-gate/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "68e126a32334270fe9a78ce8c4b5af446bdae16c4ce6372a78bf3516c6e95f37",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "3aaef3d03e8e3c9885973d3fb26698c2d61643a2b78b23a7b32ea8299fd4e98b",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/intent-alignment-gate/SKILL.md"
+        },
+        {
+          "sha256": "0f40ae59b00e991e62c52a07e7ae9ba8278afbf4202af7f60d8c40220d28354d",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/intent-alignment-gate/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/intent-alignment-gate/SKILL.md",
+              "sha256": "0f40ae59b00e991e62c52a07e7ae9ba8278afbf4202af7f60d8c40220d28354d"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "quality-review-governance",
+      "old_relative_path": "quality-review-governance/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/quality-review-governance/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "f8830c3e35691c86d4f15d3134aae9cfff62d01296949253666f482b0a346f89",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "77b0d1deed81f8e7fe82c0911fb445a08701678c59241306e8877b8a03b142b4",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/quality-review-governance/SKILL.md"
+        },
+        {
+          "sha256": "15f60574c5b07beedae13cd55040595da3356d662a2e5d13443462a4dad87d95",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/quality-review-governance/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_COMPATIBLE",
+          "historical_evidence": [
+            {
+              "kind": "immutable_git_body_identity",
+              "revision": "cd0000ac2c1a53f0420c19b220965494c19c2e6f",
+              "source": "Shared/skills/quality-review-governance/SKILL.md",
+              "historical_blob_sha256": "77b0d1deed81f8e7fe82c0911fb445a08701678c59241306e8877b8a03b142b4",
+              "normalized_sha256": "77b0d1deed81f8e7fe82c0911fb445a08701678c59241306e8877b8a03b142b4",
+              "allowed_difference": "LF/CRLF or UTF-8 BOM only; no whitespace/EOF/content normalization"
+            },
+            {
+              "kind": "preexisting_phase_raw_fingerprint",
+              "artifact": "deployment-gate1-evidence/baseline.json",
+              "artifact_sha256": "6563d3592a6b8f3042a4eaa1a9bc6839c3f65d6261a8103c3ebea8dcc250a0c8",
+              "field": "/hashes/.agents/skills/quality-review-governance/SKILL.md",
+              "sha256": "15f60574c5b07beedae13cd55040595da3356d662a2e5d13443462a4dad87d95"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "team-specialist-registry",
+      "old_relative_path": "team-specialist-registry/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-registry/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "cbccb0b8cf7ddbed6a4d09c1b568510267a852138dc1e146d254b732d6bdacfb",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "0820d4d867bbd6082bb48b0c53c08fac25bafb7ede5aea8b74d6f46598a8f14b",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-registry/SKILL.md"
+        },
+        {
+          "sha256": "17118410b82c2cfcb36a5380e77c0c6b407126f01671411dea46a010eabb48f0",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-specialist-registry/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-specialist-registry/SKILL.md",
+              "sha256": "17118410b82c2cfcb36a5380e77c0c6b407126f01671411dea46a010eabb48f0"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "team-specialist-intent-requirements",
+      "old_relative_path": "team-specialist-intent-requirements/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-intent-requirements/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "639ee07da1d266ec70420307009e4b36745cb6638ee6bf5b90c29d4cd2c95628",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "59c758fe929efe40413b47dc8a2b0efd9f9a112ea19932bbfbc5c3e2f00faff5",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-intent-requirements/SKILL.md"
+        },
+        {
+          "sha256": "a184805084badbe83d303add42077af413e952d4e2208b211ca6abc1527b8ec5",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-specialist-intent-requirements/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-specialist-intent-requirements/SKILL.md",
+              "sha256": "a184805084badbe83d303add42077af413e952d4e2208b211ca6abc1527b8ec5"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "team-specialist-scope-impact",
+      "old_relative_path": "team-specialist-scope-impact/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-scope-impact/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "89607ca3d6dfdaf2aada08f8b65a27535a8ef38a309c337c3904cc65f516b4cb",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "796356d2a0e88cd5a803997aa3e80461ce2c543da17f9edd9464ae12fe1ba148",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-scope-impact/SKILL.md"
+        },
+        {
+          "sha256": "7ee5658a96b497f28cf91050899c17406f34a2e611fba781e92e7dbbd400e02c",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-specialist-scope-impact/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-specialist-scope-impact/SKILL.md",
+              "sha256": "7ee5658a96b497f28cf91050899c17406f34a2e611fba781e92e7dbbd400e02c"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "team-specialist-architecture-contract",
+      "old_relative_path": "team-specialist-architecture-contract/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-architecture-contract/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "89e0e108b92bcbb2b7107d4870b12560edd63372c0bfe558cff2b6baecd4a543",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "e8c0e568985bb3f975cf44ee4fffc82709b0c0b7377d011063cdfa052a3f4cd7",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-architecture-contract/SKILL.md"
+        },
+        {
+          "sha256": "cf39c9b084471c70ea844fae8913d7def37dd3449bf7c6598b7cd49bac35f2e2",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-specialist-architecture-contract/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-specialist-architecture-contract/SKILL.md",
+              "sha256": "cf39c9b084471c70ea844fae8913d7def37dd3449bf7c6598b7cd49bac35f2e2"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "team-specialist-change-delivery",
+      "old_relative_path": "team-specialist-change-delivery/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-change-delivery/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "3201aa8b820376e6dd9a39afb1a0259620add67fc8333ebaf58a803f2fb7aa9a",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "29a4376bd98cfb5bf69e86a5b127e92830f280475b706543bd04903a039a1d6a",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-change-delivery/SKILL.md"
+        },
+        {
+          "sha256": "8e7b2500a2164dbe21cdfcc5963503a315d875027610ea06c9edfebb04cf7933",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-specialist-change-delivery/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-specialist-change-delivery/SKILL.md",
+              "sha256": "8e7b2500a2164dbe21cdfcc5963503a315d875027610ea06c9edfebb04cf7933"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "team-specialist-external-research",
+      "old_relative_path": "team-specialist-external-research/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-external-research/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "37dd221c7049611b8347536c0a247132971289cd1d1537bdf35716193d4974b9",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "a700d5e83a0568542329e336d6c9f69c060dbeb2abbbc91e6163da4dedaca7e7",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-external-research/SKILL.md"
+        },
+        {
+          "sha256": "c4d89381594b3abc5a8b70c30929774a4576ca9037c52084171597cf6c9a7e4a",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-specialist-external-research/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-specialist-external-research/SKILL.md",
+              "sha256": "c4d89381594b3abc5a8b70c30929774a4576ca9037c52084171597cf6c9a7e4a"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "team-specialist-review",
+      "old_relative_path": "team-specialist-review/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-review/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "22ad9a88fa45cc0043bee0bdf89831fad5f698520be1af1227521592a5912a12",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "658839f570da65fb4f03ee1fe95a71bc73207a2eda5a1ea270d01212efc99e59",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-review/SKILL.md"
+        },
+        {
+          "sha256": "7471c536ea6d0bb7e7dc032945458f81bda3492261e910e7c311a0755397c1a5",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-specialist-review/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-specialist-review/SKILL.md",
+              "sha256": "7471c536ea6d0bb7e7dc032945458f81bda3492261e910e7c311a0755397c1a5"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "team-specialist-security-reliability",
+      "old_relative_path": "team-specialist-security-reliability/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-security-reliability/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "6d0542e6eb2097b39eeffebd8ab261317eee08ad135cd39284498fc45b2756cc",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "9750f3e2f7bdd6fdc2dbe1616cea2e4925764755a5d244179e378422a71abb46",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-security-reliability/SKILL.md"
+        },
+        {
+          "sha256": "64792df87016c173f0d2b395ad819fa93823baed741beb607bdc0df59234e063",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-specialist-security-reliability/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-specialist-security-reliability/SKILL.md",
+              "sha256": "64792df87016c173f0d2b395ad819fa93823baed741beb607bdc0df59234e063"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "team-specialist-validation",
+      "old_relative_path": "team-specialist-validation/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-validation/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "1326fb1068d784b66553b928e27ec59a3be5d94a1b2095790e5da99f3eb7806c",
+          "provenance": "authorized pre-A1 working source"
+        },
+        {
+          "sha256": "c8e60814433c383b94ec1df6343b1afed55723dfe80c4cefd8c3705f0b451d85",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-validation/SKILL.md"
+        },
+        {
+          "sha256": "8fbc4f436fbfc544fd1883fe7417fd7b153832c1ad91e143b18c5017c0a92794",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-specialist-validation/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-specialist-validation/SKILL.md",
+              "sha256": "8fbc4f436fbfc544fd1883fe7417fd7b153832c1ad91e143b18c5017c0a92794"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ]
+    },
+    {
+      "skill": "code-quality",
+      "old_relative_path": "code-quality/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/code-quality/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "e6a7b43115ad09ab653fc30cc3cd9be8135d439d90949a6bf12ff3244de30bd8",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "ce9d83c454021bc6efe49c9cc77b84101eae2145b922ac4f9a926424f3c65ba9",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/code-quality/SKILL.md"
+        },
+        {
+          "sha256": "50913f06631d77a4426854c0c3da6ef307b336d08e8cfbfdbaa7ea726c814c1d",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/code-quality/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/code-quality/SKILL.md",
+              "sha256": "50913f06631d77a4426854c0c3da6ef307b336d08e8cfbfdbaa7ea726c814c1d"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "plugin-release-governance",
+      "old_relative_path": "plugin-release-governance/references/vsix-release-playbook.md",
+      "reference_relative_path": "policies/references/legacy-skills/plugin-release-governance/references/vsix-release-playbook.md",
+      "known_versions": [
+        {
+          "sha256": "3b61ca315955d8dc4e6c7aae4b7fa3f404412fb23647fb0af4ab912947d80383",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "429c268482fa8f812d65f47e9da77973d3da07a3a12093743326000a2849242f",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/plugin-release-governance/references/vsix-release-playbook.md"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "plugin-release-governance",
+      "old_relative_path": "plugin-release-governance/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/plugin-release-governance/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "2895d7ba120ffdd40ebe9cbed1356348595b1267fcdbe4f44df703fc5cf408a3",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "87fe0c15a0d509ae448a1c71a20b22268db05bf3d830a8667cbf124114f8b6d5",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/plugin-release-governance/SKILL.md"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "project-context-protocol",
+      "old_relative_path": "project-context-protocol/references/context-template.md",
+      "reference_relative_path": "policies/references/legacy-skills/project-context-protocol/references/context-template.md",
+      "known_versions": [
+        {
+          "sha256": "50731f0aa0087c7b7865a8b130d416eb7bd6eda723e2034bf74772653027521a",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "68a5774f21a3f5d87a185d0c4901364e9d45d33da433e5b2bed68a30a34d61d5",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/project-context-protocol/references/context-template.md"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "project-context-protocol",
+      "old_relative_path": "project-context-protocol/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/project-context-protocol/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "6ce5e85d42d6200f6a5321dabf0b6ff4ab4c6a46413be7cdf4ae7eff1e8615be",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "352fcf44f061f051bdcf4732622d5937f54a347d8f15e49156f7a9a39c60d7c7",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/project-context-protocol/SKILL.md"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-change-delivery-artifact",
+      "old_relative_path": "team-change-delivery-artifact/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-change-delivery-artifact/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "9d579bf74366c0db946970f0c7a3fd9c396989753931a114defd45409e583cdd",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "0cecfdfbfc97df88e6959bc7002675898ce57a88aa8b22ed7c6c0fec03c8e4bd",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-change-delivery-artifact/SKILL.md"
+        },
+        {
+          "sha256": "af3a7b4b5ab16d5af3e8a56f2c89dbdf87e5ec827520ef61dbbee771d0c5f7d3",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-change-delivery-artifact/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-change-delivery-artifact/SKILL.md",
+              "sha256": "af3a7b4b5ab16d5af3e8a56f2c89dbdf87e5ec827520ef61dbbee771d0c5f7d3"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-review-delivery-artifact",
+      "old_relative_path": "team-review-delivery-artifact/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-review-delivery-artifact/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "820b776af23770abfc8bc82159e248e9275ceff650f996caae493e9621340677",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "e8aca84dda99e03a8b718ef51e12790b8aa9344a62e14917350d0818143874cf",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-review-delivery-artifact/SKILL.md"
+        },
+        {
+          "sha256": "19a00a73bc82fec70fa7e768f26b40569b18f863a10fc2e548325c3b9e195ef4",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-review-delivery-artifact/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-review-delivery-artifact/SKILL.md",
+              "sha256": "19a00a73bc82fec70fa7e768f26b40569b18f863a10fc2e548325c3b9e195ef4"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-specialist-git-checkpoint",
+      "old_relative_path": "team-specialist-git-checkpoint/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-git-checkpoint/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "afdb417a945fc078da1a266cc5a1dad593dd5383b7677cbd25ed0cb88b2d06d2",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "173016d4fe46cd8322530c02b49e5234b8d88ff00ffd36b6ec9c6d721140b61f",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-git-checkpoint/SKILL.md"
+        },
+        {
+          "sha256": "e99e6917b1c4f18a0524df3b5a0805a5100744ceba1b9fe2a0d592a8249b5ad5",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-specialist-git-checkpoint/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-specialist-git-checkpoint/SKILL.md",
+              "sha256": "e99e6917b1c4f18a0524df3b5a0805a5100744ceba1b9fe2a0d592a8249b5ad5"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-specialist-release-completion",
+      "old_relative_path": "team-specialist-release-completion/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-release-completion/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "f601be320b71f8cdf210b821c6ff42353aa3c695a61fd56c08c982060ce2e7ce",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "83afdf00765f1ebfba1d3bd5c0bf7e308a59d9255394c572f8fc1a8cdad524da",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-release-completion/SKILL.md"
+        },
+        {
+          "sha256": "b1f33f15647987ee412d6edea09b632249bf3d20f69a3597c5912ded2b5295b2",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-specialist-release-completion/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-specialist-release-completion/SKILL.md",
+              "sha256": "b1f33f15647987ee412d6edea09b632249bf3d20f69a3597c5912ded2b5295b2"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-station-handoff-packet",
+      "old_relative_path": "team-station-handoff-packet/references/execution-lifecycle.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-station-handoff-packet/references/execution-lifecycle.md",
+      "known_versions": [
+        {
+          "sha256": "81e42032f4872fa1d22a166434fc82ef310c7a45aa3ac7d64ff1f3c0f1d0f3e4",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "58d8950dd2b77144f0a3a22f09d6ba063fe43c3a84940d7bc35d11853ef49db0",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-station-handoff-packet/references/execution-lifecycle.md"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-station-handoff-packet",
+      "old_relative_path": "team-station-handoff-packet/references/packet-schema-and-routing.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-station-handoff-packet/references/packet-schema-and-routing.md",
+      "known_versions": [
+        {
+          "sha256": "158d6277b981f3f26df319d8f1305d183a94d987bebd72b026394ed0dd77f5af",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "f59de852037e6c81be0213ff8229f389fa625f01ddea7124470fcc8dce5686f6",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-station-handoff-packet",
+      "old_relative_path": "team-station-handoff-packet/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-station-handoff-packet/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "477b8532cd5c1d8934fb8f0870395be89ac53a89a79f1917751604e3242bd3e4",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "f71c788fc030c97bc677df3112522e2a14de889f1a80f0d4b4a06008fe960c16",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-station-handoff-packet/SKILL.md"
+        },
+        {
+          "sha256": "e93534b9abd2a8120a23d1e5ad5bb57414abe0587573798ad8d6068f84988662",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-station-handoff-packet/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-station-handoff-packet/SKILL.md",
+              "sha256": "e93534b9abd2a8120a23d1e5ad5bb57414abe0587573798ad8d6068f84988662"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-task-board",
+      "old_relative_path": "team-task-board/references/board-field-catalog.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-task-board/references/board-field-catalog.md",
+      "known_versions": [
+        {
+          "sha256": "b9982f3fd4d318bcb846491db9fc3f45467164342a8a6acff5440c5e52f1cdd2",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "2a34caa584b0cbc73023f9c5e505c630ebc854277f381ed86c7995266139d1eb",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-task-board/references/board-field-catalog.md"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-task-board",
+      "old_relative_path": "team-task-board/references/board-field-channel-and-receipts.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-task-board/references/board-field-channel-and-receipts.md",
+      "known_versions": [
+        {
+          "sha256": "9820ce9f54017a7555d626df1a75e3f5db86dd0b4d2900a439801d2dfce5177d",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "3c17582b4568f6a38a309c5dac8bff5797f40900fb600337c2c21427b0f4007e",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-task-board/references/board-field-channel-and-receipts.md"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-task-board",
+      "old_relative_path": "team-task-board/references/board-field-slice-and-roles.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-task-board/references/board-field-slice-and-roles.md",
+      "known_versions": [
+        {
+          "sha256": "6eef6ad57ab3e9b53195c405f66688b5c89a698cc3715aa519fd9948be50bd53",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "bad5b58fb26742785f697146ee79e593d67809151c9c7ccdbb288fbc9358f567",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-task-board/references/board-field-slice-and-roles.md"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-task-board",
+      "old_relative_path": "team-task-board/references/board-templates-and-delivery.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-task-board/references/board-templates-and-delivery.md",
+      "known_versions": [
+        {
+          "sha256": "9e626d28e6d18999f7266dcfa5c75f466fc6cf0b6a5397cd5dd4f30223171237",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "cfd0340d20644991d111683cbb22c87126630bc96c79ca6a9a09fdeba2271089",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-task-board/references/board-templates-and-delivery.md"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-task-board",
+      "old_relative_path": "team-task-board/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-task-board/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "a40f0a3ee98491559d9e59de1bf93763cad48ec5fb653677ad31827cffbc0287",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "fbc2a5eeea4cda6f6517041c86448214351bf0cf7a305e71d57118237664104e",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-task-board/SKILL.md"
+        },
+        {
+          "sha256": "6e2d333d458cebddb2e625eb76e9ec2029b40e5fe45d14999b2d58ed2cfb38b3",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-task-board/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-task-board/SKILL.md",
+              "sha256": "6e2d333d458cebddb2e625eb76e9ec2029b40e5fe45d14999b2d58ed2cfb38b3"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "team-validation-delivery-artifact",
+      "old_relative_path": "team-validation-delivery-artifact/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-validation-delivery-artifact/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "cc4c613018efe52f9c9c588bae9a582059338913843026bc62dba5c61fa8dec0",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "eaada71af3e691ff8b8f90c504eeac926db6837b11d8a64a2dcf75b853d099d7",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-validation-delivery-artifact/SKILL.md"
+        },
+        {
+          "sha256": "99242da0883e6f5234cb751c4d735ad0edad4ac796a464a613347021068e904b",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/team-validation-delivery-artifact/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/team-validation-delivery-artifact/SKILL.md",
+              "sha256": "99242da0883e6f5234cb751c4d735ad0edad4ac796a464a613347021068e904b"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "ui-design-exploration",
+      "old_relative_path": "ui-design-exploration/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/ui-design-exploration/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "82c930f5a940fdd76fbeb164f183a57a7338f3f8c789822fc7fdf8c7dc9b4383",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "fe98c1cd4ebcb893bf7a1399d7a7a17a725edff0d4d19d05ba9e908ec0060aa7",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/ui-design-exploration/SKILL.md"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "ui-ux-standards",
+      "old_relative_path": "ui-ux-standards/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/ui-ux-standards/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "876f2f4fa190396fc056ff69f65581965e42be99f131eb3256780ec73072d750",
+          "provenance": "authorized pre-A2 working source"
+        },
+        {
+          "sha256": "0831b1cbbb0e0ef971c9ea86f005e57fa6ffd9696a93aa2771d08b3965313b95",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/ui-ux-standards/SKILL.md"
+        },
+        {
+          "sha256": "4f1ba6853eb4f0fba55cec09281857b36316bd86344186099f410e8215e33e4b",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/ui-ux-standards/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/ui-ux-standards/SKILL.md",
+              "sha256": "4f1ba6853eb4f0fba55cec09281857b36316bd86344186099f410e8215e33e4b"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A2"
+    },
+    {
+      "skill": "structured-reasoning",
+      "old_relative_path": "structured-reasoning/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/structured-reasoning/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "88336bf5885b2c9b72782cf7ea1318b054233c9e9c8ccebc348fdb4d3379118a",
+          "provenance": "authorized pre-A3 working source"
+        },
+        {
+          "sha256": "c0a6712f170e68549d6e2541f5a6a2e492e616ca3f22a7a1f2d8976494fe5dd8",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/structured-reasoning/SKILL.md"
+        },
+        {
+          "sha256": "713b0d19b2cc07a9a3d92a3c9c7fcda680cb6cb9c8af2330248e23d896e1c2aa",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/structured-reasoning/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_EXACT",
+          "historical_evidence": [
+            {
+              "kind": "trusted_phase_source_fingerprint",
+              "artifact": "phase3-evidence/baseline.json",
+              "artifact_sha256": "98c9878d7ac589c7e5729c14448fe9a2cfedf1950b673034d9670f9b50d10057",
+              "field": "/hashes/Shared/skills/structured-reasoning/SKILL.md",
+              "sha256": "713b0d19b2cc07a9a3d92a3c9c7fcda680cb6cb9c8af2330248e23d896e1c2aa"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A3"
+    },
+    {
+      "skill": "code-diagnosis",
+      "old_relative_path": "code-diagnosis/references/diagnosis-report-template.md",
+      "reference_relative_path": "policies/references/legacy-skills/code-diagnosis/references/diagnosis-report-template.md",
+      "known_versions": [
+        {
+          "sha256": "e158e9c75b3c597239702496d687a05bfade5bd8e8825ab76e40f9b23cc319c0",
+          "provenance": "authorized pre-A3 working source"
+        },
+        {
+          "sha256": "deb5bdf73c6ebee08c68808554f294102bddf05d584ccf46176a89d954343f6e",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/code-diagnosis/references/diagnosis-report-template.md"
+        }
+      ],
+      "batch": "4B2A3"
+    },
+    {
+      "skill": "code-diagnosis",
+      "old_relative_path": "code-diagnosis/references/diagnosis-task-prompt.md",
+      "reference_relative_path": "policies/references/legacy-skills/code-diagnosis/references/diagnosis-task-prompt.md",
+      "known_versions": [
+        {
+          "sha256": "e27c7713e28a02538b74d293d73499920099d22f9425144d55b124f7c548c63c",
+          "provenance": "authorized pre-A3 working source"
+        },
+        {
+          "sha256": "031400a616028397ebc91647c5a068a783c626f4226bac3004351d9db10f79c9",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/code-diagnosis/references/diagnosis-task-prompt.md"
+        }
+      ],
+      "batch": "4B2A3"
+    },
+    {
+      "skill": "code-diagnosis",
+      "old_relative_path": "code-diagnosis/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/code-diagnosis/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "42ab5567097f1974a2de7ffd03fa3551b8b66b8049e0e6d2551b7249a9ba611f",
+          "provenance": "authorized pre-A3 working source"
+        },
+        {
+          "sha256": "658344d4ae035cb70dde73c1492dd1615d8fc84bb09c8b502d242cfa3e9005f6",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/code-diagnosis/SKILL.md"
+        },
+        {
+          "sha256": "bc073f56a0e4e091c80e5c9023a59faa74169a5166e2bb563dd5a6cbf5778097",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/code-diagnosis/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_COMPATIBLE",
+          "historical_evidence": [
+            {
+              "kind": "immutable_git_body_identity",
+              "revision": "15dfa0f2387594b418ad47653d6b2794427512a8",
+              "source": "Shared/skills/code-diagnosis/SKILL.md",
+              "historical_blob_sha256": "658344d4ae035cb70dde73c1492dd1615d8fc84bb09c8b502d242cfa3e9005f6",
+              "normalized_sha256": "658344d4ae035cb70dde73c1492dd1615d8fc84bb09c8b502d242cfa3e9005f6",
+              "allowed_difference": "LF/CRLF or UTF-8 BOM only; no whitespace/EOF/content normalization"
+            },
+            {
+              "kind": "preexisting_phase_raw_fingerprint",
+              "artifact": "deployment-gate1-evidence/baseline.json",
+              "artifact_sha256": "6563d3592a6b8f3042a4eaa1a9bc6839c3f65d6261a8103c3ebea8dcc250a0c8",
+              "field": "/hashes/.agents/skills/code-diagnosis/SKILL.md",
+              "sha256": "bc073f56a0e4e091c80e5c9023a59faa74169a5166e2bb563dd5a6cbf5778097"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A3"
+    },
+    {
+      "skill": "code-audit",
+      "old_relative_path": "code-audit/references/scan-report-template.md",
+      "reference_relative_path": "policies/references/legacy-skills/code-audit/references/scan-report-template.md",
+      "known_versions": [
+        {
+          "sha256": "67c4bbd1aa503268ed7ed220ecfb4c1f4588a71ca46ed1b7a5b7da171c45329f",
+          "provenance": "authorized pre-A4 working source"
+        },
+        {
+          "sha256": "28b9cfc2e948ae6f08c3ca304d1b380e9d773db4bf3521a4907c369ba394c910",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/code-audit/references/scan-report-template.md"
+        }
+      ],
+      "batch": "4B2A4"
+    },
+    {
+      "skill": "code-audit",
+      "old_relative_path": "code-audit/references/scan-task-prompt.md",
+      "reference_relative_path": "policies/references/legacy-skills/code-audit/references/scan-task-prompt.md",
+      "known_versions": [
+        {
+          "sha256": "8be61a7ad93bdf6d7663cb0906928cf2049ca61ade7c667aee9c90f3cdd977f9",
+          "provenance": "authorized pre-A4 working source"
+        },
+        {
+          "sha256": "c3d3945dd72ec1593322734630006cd916c9010a40266110e22415602de00597",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/code-audit/references/scan-task-prompt.md"
+        }
+      ],
+      "batch": "4B2A4"
+    },
+    {
+      "skill": "code-audit",
+      "old_relative_path": "code-audit/references/tool-command-reference.md",
+      "reference_relative_path": "policies/references/legacy-skills/code-audit/references/tool-command-reference.md",
+      "known_versions": [
+        {
+          "sha256": "cc9dd2628be71a6899b42a033fb29c27221acbbc105c30f45818c04b857e8dc5",
+          "provenance": "authorized pre-A4 working source"
+        },
+        {
+          "sha256": "6ee1ea5e25df33f8a09d2426bbc0d1700bc4083af00a18c240d7361ee052757c",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/code-audit/references/tool-command-reference.md"
+        }
+      ],
+      "batch": "4B2A4"
+    },
+    {
+      "skill": "code-audit",
+      "old_relative_path": "code-audit/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/code-audit/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "a0b9fb873ac2affe8b29c210fd2e66efbc6c9e7b32d538a342067096912f024b",
+          "provenance": "authorized pre-A4 working source"
+        },
+        {
+          "sha256": "27fc116edb2a0e0b41e45175977d81a8af4af8d0b35c99775f25b2da96d2d5b2",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/code-audit/SKILL.md"
+        },
+        {
+          "sha256": "8bca42e38fa700738648822021c3796e4627b73b2d8f3b7f96a9df9ae6cbc95f",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/code-audit/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_COMPATIBLE",
+          "historical_evidence": [
+            {
+              "kind": "immutable_git_body_identity",
+              "revision": "ac654345ad0673a2eef013d83201adf09b30ba32",
+              "source": "Shared/skills/code-audit/SKILL.md",
+              "historical_blob_sha256": "27fc116edb2a0e0b41e45175977d81a8af4af8d0b35c99775f25b2da96d2d5b2",
+              "normalized_sha256": "27fc116edb2a0e0b41e45175977d81a8af4af8d0b35c99775f25b2da96d2d5b2",
+              "allowed_difference": "LF/CRLF or UTF-8 BOM only; no whitespace/EOF/content normalization"
+            },
+            {
+              "kind": "preexisting_phase_raw_fingerprint",
+              "artifact": "deployment-gate1-evidence/baseline.json",
+              "artifact_sha256": "6563d3592a6b8f3042a4eaa1a9bc6839c3f65d6261a8103c3ebea8dcc250a0c8",
+              "field": "/hashes/.agents/skills/code-audit/SKILL.md",
+              "sha256": "8bca42e38fa700738648822021c3796e4627b73b2d8f3b7f96a9df9ae6cbc95f"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A4"
+    },
+    {
+      "skill": "gitnexus-guide",
+      "old_relative_path": "gitnexus-guide/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/gitnexus-guide/REFERENCE.md",
+      "known_versions": [
+        {
+          "sha256": "e14875232b2058bf7fff927a1593a1d5aca1b4fde175db4da63d012d7b2c582e",
+          "provenance": "authorized pre-A7 working source"
+        },
+        {
+          "sha256": "7b9a85611cbc50f14e973150d67c5036e75178a8abc82360309e04b9768fe118",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/gitnexus-guide/SKILL.md"
+        },
+        {
+          "sha256": "d64259bed34c4f3aa6454e1e474c7b2264502b7bb11567e91f17e6f319bf5182",
+          "provenance": "M5C independently proven historical framework version",
+          "provenance_record": ".agents/skills/gitnexus-guide/SKILL.md",
+          "provenance_manifest": "m5c-runtime-provenance.json",
+          "classification": "FRAMEWORK_PROVEN_COMPATIBLE",
+          "historical_evidence": [
+            {
+              "kind": "immutable_git_body_identity",
+              "revision": "30127313f238e642224fc598c97019224ebe223b",
+              "source": "Shared/skills/gitnexus-guide/SKILL.md",
+              "historical_blob_sha256": "7b9a85611cbc50f14e973150d67c5036e75178a8abc82360309e04b9768fe118",
+              "normalized_sha256": "7b9a85611cbc50f14e973150d67c5036e75178a8abc82360309e04b9768fe118",
+              "allowed_difference": "LF/CRLF or UTF-8 BOM only; no whitespace/EOF/content normalization"
+            },
+            {
+              "kind": "preexisting_phase_raw_fingerprint",
+              "artifact": "deployment-gate1-evidence/baseline.json",
+              "artifact_sha256": "6563d3592a6b8f3042a4eaa1a9bc6839c3f65d6261a8103c3ebea8dcc250a0c8",
+              "field": "/hashes/.agents/skills/gitnexus-guide/SKILL.md",
+              "sha256": "d64259bed34c4f3aa6454e1e474c7b2264502b7bb11567e91f17e6f319bf5182"
+            }
+          ],
+          "target_disposition": "retire-active-skill-preserve-canonical-reference",
+          "surface_cohort": "shared-codex-antigravity; Claude private uses independent transaction"
+        }
+      ],
+      "batch": "4B2A7"
+    },
+    {
+      "skill": "team-specialist-memory-docs",
+      "old_relative_path": "team-specialist-memory-docs/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-memory-docs/REFERENCE.md",
+      "archive_relative_path": "policies/references/legacy-skills/team-specialist-memory-docs/pre-m3-original.md",
+      "runtime_relative_paths": [
+        ".agents/skills/team-specialist-memory-docs/SKILL.md",
+        ".claude/skills/team-specialist-memory-docs/SKILL.md",
+        ".cursor/skills/team-specialist-memory-docs/SKILL.md"
+      ],
+      "retirement_class": "exact_framework_owned_entry",
+      "compatibility_behavior": "alias to review evidence and frozen transition; no new Skill or worker",
+      "known_versions": [
+        {
+          "sha256": "e33ed4d69e5aa2d7d107f22fba5ebb85e7896b508cb3ef110c8ee22a42bb3f69",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-memory-docs/SKILL.md; identical authorized pre-M3 working source"
+        }
+      ],
+      "batch": "M3"
+    },
+    {
+      "skill": "team-memory-docs-delivery-artifact",
+      "old_relative_path": "team-memory-docs-delivery-artifact/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-memory-docs-delivery-artifact/REFERENCE.md",
+      "archive_relative_path": "policies/references/legacy-skills/team-memory-docs-delivery-artifact/pre-m3-original.md",
+      "runtime_relative_paths": [
+        ".agents/skills/team-memory-docs-delivery-artifact/SKILL.md",
+        ".claude/skills/team-memory-docs-delivery-artifact/SKILL.md",
+        ".cursor/skills/team-memory-docs-delivery-artifact/SKILL.md"
+      ],
+      "retirement_class": "exact_framework_owned_entry",
+      "compatibility_behavior": "alias to review evidence and frozen transition; no new Skill or worker",
+      "known_versions": [
+        {
+          "sha256": "9fedfbd6668de89d71571d6c774a6d9e6b12538c52267c2c7de47742d7f99a12",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-memory-docs-delivery-artifact/SKILL.md; identical authorized pre-M3 working source"
+        }
+      ],
+      "batch": "M3"
+    },
+    {
+      "skill": "team-specialist-memory-closure",
+      "old_relative_path": "team-specialist-memory-closure/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-specialist-memory-closure/REFERENCE.md",
+      "archive_relative_path": "policies/references/legacy-skills/team-specialist-memory-closure/pre-m3-original.md",
+      "runtime_relative_paths": [
+        ".agents/skills/team-specialist-memory-closure/SKILL.md",
+        ".claude/skills/team-specialist-memory-closure/SKILL.md",
+        ".cursor/skills/team-specialist-memory-closure/SKILL.md"
+      ],
+      "retirement_class": "exact_framework_owned_entry",
+      "compatibility_behavior": "alias to update/sync evidence and frozen transition; no new Skill or worker",
+      "known_versions": [
+        {
+          "sha256": "5a5f5f6ab7d3d94fb5ff4b94c9217865ffb436669b5e1016c10cae597d3277ff",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-specialist-memory-closure/SKILL.md; identical authorized pre-M3 working source"
+        }
+      ],
+      "batch": "M3"
+    },
+    {
+      "skill": "team-memory-closure-delivery-artifact",
+      "old_relative_path": "team-memory-closure-delivery-artifact/SKILL.md",
+      "reference_relative_path": "policies/references/legacy-skills/team-memory-closure-delivery-artifact/REFERENCE.md",
+      "archive_relative_path": "policies/references/legacy-skills/team-memory-closure-delivery-artifact/pre-m3-original.md",
+      "runtime_relative_paths": [
+        ".agents/skills/team-memory-closure-delivery-artifact/SKILL.md",
+        ".claude/skills/team-memory-closure-delivery-artifact/SKILL.md",
+        ".cursor/skills/team-memory-closure-delivery-artifact/SKILL.md"
+      ],
+      "retirement_class": "exact_framework_owned_entry",
+      "compatibility_behavior": "alias to update/sync evidence and frozen transition; no new Skill or worker",
+      "known_versions": [
+        {
+          "sha256": "ea8121daf9d523025498427a5c1410b9aaf880fd8368a46f6b44d108dd113046",
+          "provenance": "git 2914703211003ae8adad4f6e8522467b74908da6:Shared/skills/team-memory-closure-delivery-artifact/SKILL.md; identical authorized pre-M3 working source"
+        }
+      ],
+      "batch": "M3"
+    }
+  ],
+  "batches": [
+    "4B2A1",
+    "4B2A2",
+    "4B2A3",
+    "4B2A4",
+    "4B2A7",
+    "M3"
+  ],
+  "approved_checkout_representations": [
+    {
+      "old_relative_path": "delegation-strategy/references/cli-capability-matrix.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/delegation-strategy/references/cli-capability-matrix.md",
+      "git_blob_oid": "cf32994367b7c2603f7ee9f85132246b0444ae73",
+      "git_blob_sha256": "ac83bb234a92644342de17a717bace8d0eac2a0d5aca869f61a6a6334e580b25",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "ac83bb234a92644342de17a717bace8d0eac2a0d5aca869f61a6a6334e580b25",
+        "LF": "ac83bb234a92644342de17a717bace8d0eac2a0d5aca869f61a6a6334e580b25",
+        "CRLF": "730acfc129e8ddfc5964a54a0117e38e45ab5f2098ce606b78f8bff401c24308"
+      }
+    },
+    {
+      "old_relative_path": "delegation-strategy/references/cli-delegation-sop.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/delegation-strategy/references/cli-delegation-sop.md",
+      "git_blob_oid": "0357ce232b6985d890178e6552d18bd7b5c729db",
+      "git_blob_sha256": "ab387dc5926832d10cdb90165372afb5c87ac97d3cc066082906a185bb09144a",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "ab387dc5926832d10cdb90165372afb5c87ac97d3cc066082906a185bb09144a",
+        "LF": "ab387dc5926832d10cdb90165372afb5c87ac97d3cc066082906a185bb09144a",
+        "CRLF": "51a8dee6db360706ea4bd0bd317baa73babcfec5e19962e434515db397d8af2c"
+      }
+    },
+    {
+      "old_relative_path": "delegation-strategy/references/cli-prompt-skeleton.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/delegation-strategy/references/cli-prompt-skeleton.md",
+      "git_blob_oid": "e7926e886bf0c326058ce36154cea867d45e5b70",
+      "git_blob_sha256": "6646b1fc62d132a27225ea903c92247cfd18848081cde0045844bf4e790363fd",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "6646b1fc62d132a27225ea903c92247cfd18848081cde0045844bf4e790363fd",
+        "LF": "6646b1fc62d132a27225ea903c92247cfd18848081cde0045844bf4e790363fd",
+        "CRLF": "851dad475e0854e58823b1f931a07f1fb172b425012f6f99665a309ae511faae"
+      }
+    },
+    {
+      "old_relative_path": "delegation-strategy/references/team-dispatch-gates.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/delegation-strategy/references/team-dispatch-gates.md",
+      "git_blob_oid": "6914e118161c88fabb2d9a7be5796083c5cb268e",
+      "git_blob_sha256": "580a99e8da6a9b6fa5cd2fffadb646e0deda6c043f6022877f47101acf640e00",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "580a99e8da6a9b6fa5cd2fffadb646e0deda6c043f6022877f47101acf640e00",
+        "LF": "580a99e8da6a9b6fa5cd2fffadb646e0deda6c043f6022877f47101acf640e00",
+        "CRLF": "8e8803a08ccfbe01f3c2c2b4b873d11d56bf4e6d06a421dc7b247a6201e1a616"
+      }
+    },
+    {
+      "old_relative_path": "delegation-strategy/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/delegation-strategy/SKILL.md",
+      "git_blob_oid": "1d464ea8a8b6c763db84a3c88a41baf58fe60cdc",
+      "git_blob_sha256": "0b34cb3928bf5d7f759180502262c207801e62df1cfd818c7436b75c19d48eb6",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "0b34cb3928bf5d7f759180502262c207801e62df1cfd818c7436b75c19d48eb6",
+        "LF": "0b34cb3928bf5d7f759180502262c207801e62df1cfd818c7436b75c19d48eb6",
+        "CRLF": "1fc0732d806f8c251762d963f7a4faa0dad8b35160873cadc22c39df91a829de"
+      }
+    },
+    {
+      "old_relative_path": "programming-team-governance/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/programming-team-governance/SKILL.md",
+      "git_blob_oid": "237db313f1059e955d0165c9e886af411cc94c12",
+      "git_blob_sha256": "befe57ffd4cee99f4ba05b7bce2849e0d660d586521597d89d3efd3dfab9a952",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "befe57ffd4cee99f4ba05b7bce2849e0d660d586521597d89d3efd3dfab9a952",
+        "LF": "befe57ffd4cee99f4ba05b7bce2849e0d660d586521597d89d3efd3dfab9a952",
+        "CRLF": "fcb3fe1ca7c2d537297f098d10c07bd6d35054010ce57178f8d408594e91d309"
+      }
+    },
+    {
+      "old_relative_path": "team-role-boundaries/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-role-boundaries/SKILL.md",
+      "git_blob_oid": "d8a84480d05ae4aef1f9bce50847e53b98608d59",
+      "git_blob_sha256": "302453146026d9cbe73a91b2c8a4e4574605687ce56114f764790a84b3d64c36",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "302453146026d9cbe73a91b2c8a4e4574605687ce56114f764790a84b3d64c36",
+        "LF": "302453146026d9cbe73a91b2c8a4e4574605687ce56114f764790a84b3d64c36",
+        "CRLF": "e8acc44cc028bc8b1f006bbb47f912454547e7c4b83faeff50539d72e9b01627"
+      }
+    },
+    {
+      "old_relative_path": "team-completion-gate/references/completion-evidence-contract.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-completion-gate/references/completion-evidence-contract.md",
+      "git_blob_oid": "a71dea91073366c037cecc195abc183c8c58802a",
+      "git_blob_sha256": "dc959f9ea0abcb3029815e3945636a40dce9ba1737a21694b524783d17c87e4c",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "dc959f9ea0abcb3029815e3945636a40dce9ba1737a21694b524783d17c87e4c",
+        "LF": "dc959f9ea0abcb3029815e3945636a40dce9ba1737a21694b524783d17c87e4c",
+        "CRLF": "1e0d085330d77dc18088d319dce3912d2ab7a116d10ab02606971b7b6c280e4c"
+      }
+    },
+    {
+      "old_relative_path": "team-completion-gate/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-completion-gate/SKILL.md",
+      "git_blob_oid": "8fb912dc40922743fa025ddcf762381815fb80a6",
+      "git_blob_sha256": "d929af94c3481aed2c9e30f2c0fb925b8e4335bfe29850ac205d6c4686f09003",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "d929af94c3481aed2c9e30f2c0fb925b8e4335bfe29850ac205d6c4686f09003",
+        "LF": "d929af94c3481aed2c9e30f2c0fb925b8e4335bfe29850ac205d6c4686f09003",
+        "CRLF": "27dc521545b57a32bc9cbd3d4bc2a62973e84da440e54d0804fe9b752d9bd9ae"
+      }
+    },
+    {
+      "old_relative_path": "ai-dev-quality-gate/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/ai-dev-quality-gate/SKILL.md",
+      "git_blob_oid": "b510dce605a159fab1d202e6dc1c12602edb732e",
+      "git_blob_sha256": "d0bfb4db79c72587c5038e5c02e60e0a8bc583d3f78ac8ed7c9f3116595de7e1",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "d0bfb4db79c72587c5038e5c02e60e0a8bc583d3f78ac8ed7c9f3116595de7e1",
+        "LF": "d0bfb4db79c72587c5038e5c02e60e0a8bc583d3f78ac8ed7c9f3116595de7e1",
+        "CRLF": "0eac1980121e115328db0172a9d11e6ce5f6886f028b12c6c75a637244efe181"
+      }
+    },
+    {
+      "old_relative_path": "intent-alignment-gate/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/intent-alignment-gate/SKILL.md",
+      "git_blob_oid": "e21c30b82212b3eed5bba175aebbb02f849ead77",
+      "git_blob_sha256": "3aaef3d03e8e3c9885973d3fb26698c2d61643a2b78b23a7b32ea8299fd4e98b",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "3aaef3d03e8e3c9885973d3fb26698c2d61643a2b78b23a7b32ea8299fd4e98b",
+        "LF": "3aaef3d03e8e3c9885973d3fb26698c2d61643a2b78b23a7b32ea8299fd4e98b",
+        "CRLF": "04f0e936ec4f10ff11d445eb5b006779f9fd5afc3fe6cbf77cf1c92849f50d7a"
+      }
+    },
+    {
+      "old_relative_path": "quality-review-governance/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/quality-review-governance/SKILL.md",
+      "git_blob_oid": "a2769f662d4eaafb9ba0342687d97c8aa63a5d32",
+      "git_blob_sha256": "77b0d1deed81f8e7fe82c0911fb445a08701678c59241306e8877b8a03b142b4",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "77b0d1deed81f8e7fe82c0911fb445a08701678c59241306e8877b8a03b142b4",
+        "LF": "77b0d1deed81f8e7fe82c0911fb445a08701678c59241306e8877b8a03b142b4",
+        "CRLF": "02313c116d4bc768b675a333e0b8c50a4ca88d156206bc7b3b7508b7cfa00d6d"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-registry/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-registry/SKILL.md",
+      "git_blob_oid": "273343b5598959de241f210ec3cdbc020bebb03d",
+      "git_blob_sha256": "0820d4d867bbd6082bb48b0c53c08fac25bafb7ede5aea8b74d6f46598a8f14b",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "0820d4d867bbd6082bb48b0c53c08fac25bafb7ede5aea8b74d6f46598a8f14b",
+        "LF": "0820d4d867bbd6082bb48b0c53c08fac25bafb7ede5aea8b74d6f46598a8f14b",
+        "CRLF": "1e149f8a2ed0c499bc3d1a4f785027546fbfc97de3c295ecd2b8a270328303c9"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-intent-requirements/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-intent-requirements/SKILL.md",
+      "git_blob_oid": "932b2dccec5fce8fb7a00b10a7861fc93bf0a402",
+      "git_blob_sha256": "59c758fe929efe40413b47dc8a2b0efd9f9a112ea19932bbfbc5c3e2f00faff5",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "59c758fe929efe40413b47dc8a2b0efd9f9a112ea19932bbfbc5c3e2f00faff5",
+        "LF": "59c758fe929efe40413b47dc8a2b0efd9f9a112ea19932bbfbc5c3e2f00faff5",
+        "CRLF": "a184805084badbe83d303add42077af413e952d4e2208b211ca6abc1527b8ec5"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-scope-impact/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-scope-impact/SKILL.md",
+      "git_blob_oid": "79795ed0b712c5a23bfc5836c8c355a28d4ec681",
+      "git_blob_sha256": "796356d2a0e88cd5a803997aa3e80461ce2c543da17f9edd9464ae12fe1ba148",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "796356d2a0e88cd5a803997aa3e80461ce2c543da17f9edd9464ae12fe1ba148",
+        "LF": "796356d2a0e88cd5a803997aa3e80461ce2c543da17f9edd9464ae12fe1ba148",
+        "CRLF": "7ee5658a96b497f28cf91050899c17406f34a2e611fba781e92e7dbbd400e02c"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-architecture-contract/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-architecture-contract/SKILL.md",
+      "git_blob_oid": "a2678583daa72dbbabacaea96956c3d028ded7f5",
+      "git_blob_sha256": "e8c0e568985bb3f975cf44ee4fffc82709b0c0b7377d011063cdfa052a3f4cd7",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "e8c0e568985bb3f975cf44ee4fffc82709b0c0b7377d011063cdfa052a3f4cd7",
+        "LF": "e8c0e568985bb3f975cf44ee4fffc82709b0c0b7377d011063cdfa052a3f4cd7",
+        "CRLF": "cf39c9b084471c70ea844fae8913d7def37dd3449bf7c6598b7cd49bac35f2e2"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-change-delivery/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-change-delivery/SKILL.md",
+      "git_blob_oid": "14e7541f55468fe722557b3e1e8015716571e767",
+      "git_blob_sha256": "29a4376bd98cfb5bf69e86a5b127e92830f280475b706543bd04903a039a1d6a",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "29a4376bd98cfb5bf69e86a5b127e92830f280475b706543bd04903a039a1d6a",
+        "LF": "29a4376bd98cfb5bf69e86a5b127e92830f280475b706543bd04903a039a1d6a",
+        "CRLF": "8e7b2500a2164dbe21cdfcc5963503a315d875027610ea06c9edfebb04cf7933"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-external-research/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-external-research/SKILL.md",
+      "git_blob_oid": "7ce6e9fd59f1dad3ec35985ecb83adb9eef7fd9a",
+      "git_blob_sha256": "a700d5e83a0568542329e336d6c9f69c060dbeb2abbbc91e6163da4dedaca7e7",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "a700d5e83a0568542329e336d6c9f69c060dbeb2abbbc91e6163da4dedaca7e7",
+        "LF": "a700d5e83a0568542329e336d6c9f69c060dbeb2abbbc91e6163da4dedaca7e7",
+        "CRLF": "c4d89381594b3abc5a8b70c30929774a4576ca9037c52084171597cf6c9a7e4a"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-review/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-review/SKILL.md",
+      "git_blob_oid": "886417b046456746c4ab39680e6c8b2dcd1ff7f1",
+      "git_blob_sha256": "658839f570da65fb4f03ee1fe95a71bc73207a2eda5a1ea270d01212efc99e59",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "658839f570da65fb4f03ee1fe95a71bc73207a2eda5a1ea270d01212efc99e59",
+        "LF": "658839f570da65fb4f03ee1fe95a71bc73207a2eda5a1ea270d01212efc99e59",
+        "CRLF": "7471c536ea6d0bb7e7dc032945458f81bda3492261e910e7c311a0755397c1a5"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-security-reliability/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-security-reliability/SKILL.md",
+      "git_blob_oid": "e32bfe842dc157385706b2cee064bc754edcdea9",
+      "git_blob_sha256": "9750f3e2f7bdd6fdc2dbe1616cea2e4925764755a5d244179e378422a71abb46",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "9750f3e2f7bdd6fdc2dbe1616cea2e4925764755a5d244179e378422a71abb46",
+        "LF": "9750f3e2f7bdd6fdc2dbe1616cea2e4925764755a5d244179e378422a71abb46",
+        "CRLF": "64792df87016c173f0d2b395ad819fa93823baed741beb607bdc0df59234e063"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-validation/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-validation/SKILL.md",
+      "git_blob_oid": "fe926255f3a17daed0fc1bb826399da8dc51c65b",
+      "git_blob_sha256": "c8e60814433c383b94ec1df6343b1afed55723dfe80c4cefd8c3705f0b451d85",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "c8e60814433c383b94ec1df6343b1afed55723dfe80c4cefd8c3705f0b451d85",
+        "LF": "c8e60814433c383b94ec1df6343b1afed55723dfe80c4cefd8c3705f0b451d85",
+        "CRLF": "8fbc4f436fbfc544fd1883fe7417fd7b153832c1ad91e143b18c5017c0a92794"
+      }
+    },
+    {
+      "old_relative_path": "code-quality/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/code-quality/SKILL.md",
+      "git_blob_oid": "daaa409e0b0dffee6011848c30326c1b7b923426",
+      "git_blob_sha256": "ce9d83c454021bc6efe49c9cc77b84101eae2145b922ac4f9a926424f3c65ba9",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "ce9d83c454021bc6efe49c9cc77b84101eae2145b922ac4f9a926424f3c65ba9",
+        "LF": "ce9d83c454021bc6efe49c9cc77b84101eae2145b922ac4f9a926424f3c65ba9",
+        "CRLF": "529888c11c1e943b855811a8908ce301f6d4515e046734160aa3069cb06a3048"
+      }
+    },
+    {
+      "old_relative_path": "plugin-release-governance/references/vsix-release-playbook.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/plugin-release-governance/references/vsix-release-playbook.md",
+      "git_blob_oid": "07c6236373be94085c1cf498b9fd5d86546f4fbd",
+      "git_blob_sha256": "429c268482fa8f812d65f47e9da77973d3da07a3a12093743326000a2849242f",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "429c268482fa8f812d65f47e9da77973d3da07a3a12093743326000a2849242f",
+        "LF": "429c268482fa8f812d65f47e9da77973d3da07a3a12093743326000a2849242f",
+        "CRLF": "3b61ca315955d8dc4e6c7aae4b7fa3f404412fb23647fb0af4ab912947d80383"
+      }
+    },
+    {
+      "old_relative_path": "plugin-release-governance/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/plugin-release-governance/SKILL.md",
+      "git_blob_oid": "f38b7fc98da144f2dcc36703b52d3d2079897472",
+      "git_blob_sha256": "87fe0c15a0d509ae448a1c71a20b22268db05bf3d830a8667cbf124114f8b6d5",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "87fe0c15a0d509ae448a1c71a20b22268db05bf3d830a8667cbf124114f8b6d5",
+        "LF": "87fe0c15a0d509ae448a1c71a20b22268db05bf3d830a8667cbf124114f8b6d5",
+        "CRLF": "2895d7ba120ffdd40ebe9cbed1356348595b1267fcdbe4f44df703fc5cf408a3"
+      }
+    },
+    {
+      "old_relative_path": "project-context-protocol/references/context-template.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/project-context-protocol/references/context-template.md",
+      "git_blob_oid": "8c5b0e5c29f0cb83398b99381c971425b7e68724",
+      "git_blob_sha256": "68a5774f21a3f5d87a185d0c4901364e9d45d33da433e5b2bed68a30a34d61d5",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "68a5774f21a3f5d87a185d0c4901364e9d45d33da433e5b2bed68a30a34d61d5",
+        "LF": "68a5774f21a3f5d87a185d0c4901364e9d45d33da433e5b2bed68a30a34d61d5",
+        "CRLF": "50731f0aa0087c7b7865a8b130d416eb7bd6eda723e2034bf74772653027521a"
+      }
+    },
+    {
+      "old_relative_path": "project-context-protocol/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/project-context-protocol/SKILL.md",
+      "git_blob_oid": "40984e5ef62f0ed9f0e20c11ada778ff5c92afec",
+      "git_blob_sha256": "352fcf44f061f051bdcf4732622d5937f54a347d8f15e49156f7a9a39c60d7c7",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "352fcf44f061f051bdcf4732622d5937f54a347d8f15e49156f7a9a39c60d7c7",
+        "LF": "352fcf44f061f051bdcf4732622d5937f54a347d8f15e49156f7a9a39c60d7c7",
+        "CRLF": "6ce5e85d42d6200f6a5321dabf0b6ff4ab4c6a46413be7cdf4ae7eff1e8615be"
+      }
+    },
+    {
+      "old_relative_path": "team-change-delivery-artifact/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-change-delivery-artifact/SKILL.md",
+      "git_blob_oid": "e20f04542a53d90d4a324177e190a1d4d657f59d",
+      "git_blob_sha256": "0cecfdfbfc97df88e6959bc7002675898ce57a88aa8b22ed7c6c0fec03c8e4bd",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "0cecfdfbfc97df88e6959bc7002675898ce57a88aa8b22ed7c6c0fec03c8e4bd",
+        "LF": "0cecfdfbfc97df88e6959bc7002675898ce57a88aa8b22ed7c6c0fec03c8e4bd",
+        "CRLF": "65596c3f84714e436158a0ce0919487801c5d0ca27b26bfd75def4bae76803ba"
+      }
+    },
+    {
+      "old_relative_path": "team-review-delivery-artifact/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-review-delivery-artifact/SKILL.md",
+      "git_blob_oid": "231147f1003e73db43f6d04844a5f85dcbd5ad63",
+      "git_blob_sha256": "e8aca84dda99e03a8b718ef51e12790b8aa9344a62e14917350d0818143874cf",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "e8aca84dda99e03a8b718ef51e12790b8aa9344a62e14917350d0818143874cf",
+        "LF": "e8aca84dda99e03a8b718ef51e12790b8aa9344a62e14917350d0818143874cf",
+        "CRLF": "49f5a2df079d6d7d7b66035dfe3a1703f3489a72737be1051b957b46a2185e5b"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-git-checkpoint/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-git-checkpoint/SKILL.md",
+      "git_blob_oid": "980b0c3c28d6249b5d039b1525fb172473502770",
+      "git_blob_sha256": "173016d4fe46cd8322530c02b49e5234b8d88ff00ffd36b6ec9c6d721140b61f",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "173016d4fe46cd8322530c02b49e5234b8d88ff00ffd36b6ec9c6d721140b61f",
+        "LF": "173016d4fe46cd8322530c02b49e5234b8d88ff00ffd36b6ec9c6d721140b61f",
+        "CRLF": "e99e6917b1c4f18a0524df3b5a0805a5100744ceba1b9fe2a0d592a8249b5ad5"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-release-completion/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-release-completion/SKILL.md",
+      "git_blob_oid": "c222e11f65ca61ab20ecae44f36a96eb4c67f318",
+      "git_blob_sha256": "83afdf00765f1ebfba1d3bd5c0bf7e308a59d9255394c572f8fc1a8cdad524da",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "83afdf00765f1ebfba1d3bd5c0bf7e308a59d9255394c572f8fc1a8cdad524da",
+        "LF": "83afdf00765f1ebfba1d3bd5c0bf7e308a59d9255394c572f8fc1a8cdad524da",
+        "CRLF": "b1f33f15647987ee412d6edea09b632249bf3d20f69a3597c5912ded2b5295b2"
+      }
+    },
+    {
+      "old_relative_path": "team-station-handoff-packet/references/execution-lifecycle.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-station-handoff-packet/references/execution-lifecycle.md",
+      "git_blob_oid": "7b00305fe957aa11e603a3884bbb55be0ccbc74f",
+      "git_blob_sha256": "58d8950dd2b77144f0a3a22f09d6ba063fe43c3a84940d7bc35d11853ef49db0",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "58d8950dd2b77144f0a3a22f09d6ba063fe43c3a84940d7bc35d11853ef49db0",
+        "LF": "58d8950dd2b77144f0a3a22f09d6ba063fe43c3a84940d7bc35d11853ef49db0",
+        "CRLF": "906c0dd7c05edaad1c789a4b6e62c0455d08053a92ecb88c3d6478bbe7301b17"
+      }
+    },
+    {
+      "old_relative_path": "team-station-handoff-packet/references/packet-schema-and-routing.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md",
+      "git_blob_oid": "d54e27f07a4db7fcabf3565b6cd7974b22017823",
+      "git_blob_sha256": "f59de852037e6c81be0213ff8229f389fa625f01ddea7124470fcc8dce5686f6",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "f59de852037e6c81be0213ff8229f389fa625f01ddea7124470fcc8dce5686f6",
+        "LF": "f59de852037e6c81be0213ff8229f389fa625f01ddea7124470fcc8dce5686f6",
+        "CRLF": "9c87f4e3468f296fccb1bdcb721116985fcb35d1cca3231d17af68105096bb31"
+      }
+    },
+    {
+      "old_relative_path": "team-station-handoff-packet/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-station-handoff-packet/SKILL.md",
+      "git_blob_oid": "0f4f8fee25b5e9b3a67544f5c78b9722eff08da0",
+      "git_blob_sha256": "f71c788fc030c97bc677df3112522e2a14de889f1a80f0d4b4a06008fe960c16",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "f71c788fc030c97bc677df3112522e2a14de889f1a80f0d4b4a06008fe960c16",
+        "LF": "f71c788fc030c97bc677df3112522e2a14de889f1a80f0d4b4a06008fe960c16",
+        "CRLF": "02b18f9a8f36ee140bf6ef2bcc0574351d8f0a265039362fb50bc9b525209e6f"
+      }
+    },
+    {
+      "old_relative_path": "team-task-board/references/board-field-catalog.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-task-board/references/board-field-catalog.md",
+      "git_blob_oid": "36b4549d27b97280c80feb0c3218f7400dc87677",
+      "git_blob_sha256": "2a34caa584b0cbc73023f9c5e505c630ebc854277f381ed86c7995266139d1eb",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "2a34caa584b0cbc73023f9c5e505c630ebc854277f381ed86c7995266139d1eb",
+        "LF": "2a34caa584b0cbc73023f9c5e505c630ebc854277f381ed86c7995266139d1eb",
+        "CRLF": "890f0eded95f0befa6d71b6c2094c564b1b17b10859508b6d9d707d425be01b0"
+      }
+    },
+    {
+      "old_relative_path": "team-task-board/references/board-field-channel-and-receipts.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-task-board/references/board-field-channel-and-receipts.md",
+      "git_blob_oid": "4197dbdf3f317462a7f7ccad14d9faa578fac302",
+      "git_blob_sha256": "3c17582b4568f6a38a309c5dac8bff5797f40900fb600337c2c21427b0f4007e",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "3c17582b4568f6a38a309c5dac8bff5797f40900fb600337c2c21427b0f4007e",
+        "LF": "3c17582b4568f6a38a309c5dac8bff5797f40900fb600337c2c21427b0f4007e",
+        "CRLF": "408dbeeea0c59cf17376ed15b5fd5302213c35e4c661f6b375e4bc783c2e9238"
+      }
+    },
+    {
+      "old_relative_path": "team-task-board/references/board-field-slice-and-roles.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-task-board/references/board-field-slice-and-roles.md",
+      "git_blob_oid": "8b291b0c9afdaf099e3332b6edeb7ca2eb636bc5",
+      "git_blob_sha256": "bad5b58fb26742785f697146ee79e593d67809151c9c7ccdbb288fbc9358f567",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "bad5b58fb26742785f697146ee79e593d67809151c9c7ccdbb288fbc9358f567",
+        "LF": "bad5b58fb26742785f697146ee79e593d67809151c9c7ccdbb288fbc9358f567",
+        "CRLF": "fb7e41b4146dc03b20aa233b60d59fd976f4606c4876659c88fe77a3fb0fc6f0"
+      }
+    },
+    {
+      "old_relative_path": "team-task-board/references/board-templates-and-delivery.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-task-board/references/board-templates-and-delivery.md",
+      "git_blob_oid": "3c40f9d36a26a0e746762b7b05679f685275d86a",
+      "git_blob_sha256": "cfd0340d20644991d111683cbb22c87126630bc96c79ca6a9a09fdeba2271089",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "cfd0340d20644991d111683cbb22c87126630bc96c79ca6a9a09fdeba2271089",
+        "LF": "cfd0340d20644991d111683cbb22c87126630bc96c79ca6a9a09fdeba2271089",
+        "CRLF": "dc992f1370d95409746c1bf83a59b94e20a9aea4caea81e375dac06de7d10b79"
+      }
+    },
+    {
+      "old_relative_path": "team-task-board/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-task-board/SKILL.md",
+      "git_blob_oid": "d32cde83f13cd794678b47e4605ed04717e394a8",
+      "git_blob_sha256": "fbc2a5eeea4cda6f6517041c86448214351bf0cf7a305e71d57118237664104e",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "fbc2a5eeea4cda6f6517041c86448214351bf0cf7a305e71d57118237664104e",
+        "LF": "fbc2a5eeea4cda6f6517041c86448214351bf0cf7a305e71d57118237664104e",
+        "CRLF": "6e2d333d458cebddb2e625eb76e9ec2029b40e5fe45d14999b2d58ed2cfb38b3"
+      }
+    },
+    {
+      "old_relative_path": "team-validation-delivery-artifact/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-validation-delivery-artifact/SKILL.md",
+      "git_blob_oid": "03d0e27c9a48b90fb62811c88e1fe9f131cdbc04",
+      "git_blob_sha256": "eaada71af3e691ff8b8f90c504eeac926db6837b11d8a64a2dcf75b853d099d7",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "eaada71af3e691ff8b8f90c504eeac926db6837b11d8a64a2dcf75b853d099d7",
+        "LF": "eaada71af3e691ff8b8f90c504eeac926db6837b11d8a64a2dcf75b853d099d7",
+        "CRLF": "4e7a894811668b9b98e378b97f1f97a6fb8149c9d7249e845c621bd272b44720"
+      }
+    },
+    {
+      "old_relative_path": "ui-design-exploration/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/ui-design-exploration/SKILL.md",
+      "git_blob_oid": "bab9c2588d7674b1c58d9842f1f1fc307407fef0",
+      "git_blob_sha256": "fe98c1cd4ebcb893bf7a1399d7a7a17a725edff0d4d19d05ba9e908ec0060aa7",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "fe98c1cd4ebcb893bf7a1399d7a7a17a725edff0d4d19d05ba9e908ec0060aa7",
+        "LF": "fe98c1cd4ebcb893bf7a1399d7a7a17a725edff0d4d19d05ba9e908ec0060aa7",
+        "CRLF": "82c930f5a940fdd76fbeb164f183a57a7338f3f8c789822fc7fdf8c7dc9b4383"
+      }
+    },
+    {
+      "old_relative_path": "ui-ux-standards/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/ui-ux-standards/SKILL.md",
+      "git_blob_oid": "c0543233d187b737270540ebd372e1a93d30044f",
+      "git_blob_sha256": "0831b1cbbb0e0ef971c9ea86f005e57fa6ffd9696a93aa2771d08b3965313b95",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "0831b1cbbb0e0ef971c9ea86f005e57fa6ffd9696a93aa2771d08b3965313b95",
+        "LF": "0831b1cbbb0e0ef971c9ea86f005e57fa6ffd9696a93aa2771d08b3965313b95",
+        "CRLF": "4f1ba6853eb4f0fba55cec09281857b36316bd86344186099f410e8215e33e4b"
+      }
+    },
+    {
+      "old_relative_path": "structured-reasoning/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/structured-reasoning/SKILL.md",
+      "git_blob_oid": "e3ee8719629c13cc18d4093d9712ea92f1ff23f9",
+      "git_blob_sha256": "c0a6712f170e68549d6e2541f5a6a2e492e616ca3f22a7a1f2d8976494fe5dd8",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "c0a6712f170e68549d6e2541f5a6a2e492e616ca3f22a7a1f2d8976494fe5dd8",
+        "LF": "c0a6712f170e68549d6e2541f5a6a2e492e616ca3f22a7a1f2d8976494fe5dd8",
+        "CRLF": "4182735dcd947ab6f62ae62b330d7f2e9a3c8950dd795f74ccf61c1e3a418f5a"
+      }
+    },
+    {
+      "old_relative_path": "code-diagnosis/references/diagnosis-report-template.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/code-diagnosis/references/diagnosis-report-template.md",
+      "git_blob_oid": "4e61d75e293591d95c373bf16e32d2c583ae5cd7",
+      "git_blob_sha256": "deb5bdf73c6ebee08c68808554f294102bddf05d584ccf46176a89d954343f6e",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "deb5bdf73c6ebee08c68808554f294102bddf05d584ccf46176a89d954343f6e",
+        "LF": "deb5bdf73c6ebee08c68808554f294102bddf05d584ccf46176a89d954343f6e",
+        "CRLF": "e158e9c75b3c597239702496d687a05bfade5bd8e8825ab76e40f9b23cc319c0"
+      }
+    },
+    {
+      "old_relative_path": "code-diagnosis/references/diagnosis-task-prompt.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/code-diagnosis/references/diagnosis-task-prompt.md",
+      "git_blob_oid": "cf4f5759b846f897547ad2b3f189b4fd86622ddd",
+      "git_blob_sha256": "031400a616028397ebc91647c5a068a783c626f4226bac3004351d9db10f79c9",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "031400a616028397ebc91647c5a068a783c626f4226bac3004351d9db10f79c9",
+        "LF": "031400a616028397ebc91647c5a068a783c626f4226bac3004351d9db10f79c9",
+        "CRLF": "ad5ab7f4ea2deff01f6f91f8926d14885b17667b4c0fee5de574e72abbada5f5"
+      }
+    },
+    {
+      "old_relative_path": "code-diagnosis/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/code-diagnosis/SKILL.md",
+      "git_blob_oid": "559dc97ba3580c1087e68f6edace467229fe08a7",
+      "git_blob_sha256": "658344d4ae035cb70dde73c1492dd1615d8fc84bb09c8b502d242cfa3e9005f6",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "658344d4ae035cb70dde73c1492dd1615d8fc84bb09c8b502d242cfa3e9005f6",
+        "LF": "658344d4ae035cb70dde73c1492dd1615d8fc84bb09c8b502d242cfa3e9005f6",
+        "CRLF": "bc073f56a0e4e091c80e5c9023a59faa74169a5166e2bb563dd5a6cbf5778097"
+      }
+    },
+    {
+      "old_relative_path": "code-audit/references/scan-report-template.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/code-audit/references/scan-report-template.md",
+      "git_blob_oid": "4f2c47379110fcec58cf4d9969c39c0b50f77214",
+      "git_blob_sha256": "28b9cfc2e948ae6f08c3ca304d1b380e9d773db4bf3521a4907c369ba394c910",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "28b9cfc2e948ae6f08c3ca304d1b380e9d773db4bf3521a4907c369ba394c910",
+        "LF": "28b9cfc2e948ae6f08c3ca304d1b380e9d773db4bf3521a4907c369ba394c910",
+        "CRLF": "67c4bbd1aa503268ed7ed220ecfb4c1f4588a71ca46ed1b7a5b7da171c45329f"
+      }
+    },
+    {
+      "old_relative_path": "code-audit/references/scan-task-prompt.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/code-audit/references/scan-task-prompt.md",
+      "git_blob_oid": "07b62a64e708df9e483550a21612cb399b6cab68",
+      "git_blob_sha256": "c3d3945dd72ec1593322734630006cd916c9010a40266110e22415602de00597",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "c3d3945dd72ec1593322734630006cd916c9010a40266110e22415602de00597",
+        "LF": "c3d3945dd72ec1593322734630006cd916c9010a40266110e22415602de00597",
+        "CRLF": "7f69dbe4b0f81e6cce999bb46aa90f63e745b7dd238069e564f7a4bbcc75a98b"
+      }
+    },
+    {
+      "old_relative_path": "code-audit/references/tool-command-reference.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/code-audit/references/tool-command-reference.md",
+      "git_blob_oid": "87669867011e980c371e17f919c9e0da604bab70",
+      "git_blob_sha256": "6ee1ea5e25df33f8a09d2426bbc0d1700bc4083af00a18c240d7361ee052757c",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "6ee1ea5e25df33f8a09d2426bbc0d1700bc4083af00a18c240d7361ee052757c",
+        "LF": "6ee1ea5e25df33f8a09d2426bbc0d1700bc4083af00a18c240d7361ee052757c",
+        "CRLF": "b3e578b22ce62d9c1a739e777f7d81b202959396081e6c2df3dfe498eff9959a"
+      }
+    },
+    {
+      "old_relative_path": "code-audit/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/code-audit/SKILL.md",
+      "git_blob_oid": "6e5269252279067d0e40a2517328c5a09f34129d",
+      "git_blob_sha256": "27fc116edb2a0e0b41e45175977d81a8af4af8d0b35c99775f25b2da96d2d5b2",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "27fc116edb2a0e0b41e45175977d81a8af4af8d0b35c99775f25b2da96d2d5b2",
+        "LF": "27fc116edb2a0e0b41e45175977d81a8af4af8d0b35c99775f25b2da96d2d5b2",
+        "CRLF": "8bca42e38fa700738648822021c3796e4627b73b2d8f3b7f96a9df9ae6cbc95f"
+      }
+    },
+    {
+      "old_relative_path": "gitnexus-guide/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/gitnexus-guide/SKILL.md",
+      "git_blob_oid": "32ae579afcbf9e55225aab8bfacdee17e37aa140",
+      "git_blob_sha256": "7b9a85611cbc50f14e973150d67c5036e75178a8abc82360309e04b9768fe118",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "7b9a85611cbc50f14e973150d67c5036e75178a8abc82360309e04b9768fe118",
+        "LF": "7b9a85611cbc50f14e973150d67c5036e75178a8abc82360309e04b9768fe118",
+        "CRLF": "d64259bed34c4f3aa6454e1e474c7b2264502b7bb11567e91f17e6f319bf5182"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-memory-docs/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-memory-docs/SKILL.md",
+      "git_blob_oid": "988408a947609a92173da9874266d3b56e18cc83",
+      "git_blob_sha256": "2eda668ab2ddc698aeb79243bf82827d046fa2c1cdbf06177dd95c2e84d180b5",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "2eda668ab2ddc698aeb79243bf82827d046fa2c1cdbf06177dd95c2e84d180b5",
+        "LF": "2eda668ab2ddc698aeb79243bf82827d046fa2c1cdbf06177dd95c2e84d180b5",
+        "CRLF": "e33ed4d69e5aa2d7d107f22fba5ebb85e7896b508cb3ef110c8ee22a42bb3f69"
+      }
+    },
+    {
+      "old_relative_path": "team-memory-docs-delivery-artifact/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-memory-docs-delivery-artifact/SKILL.md",
+      "git_blob_oid": "816dedafc952d4d09b8b8ca022c542a87ebf6fd8",
+      "git_blob_sha256": "4163050e75447933dfd58d228a959df691e3404d024305633d86c180b6727abf",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "4163050e75447933dfd58d228a959df691e3404d024305633d86c180b6727abf",
+        "LF": "4163050e75447933dfd58d228a959df691e3404d024305633d86c180b6727abf",
+        "CRLF": "6f14cfdd983cbf28b0727168ca14f77ff88f3531fb268bdcebee9bc379e2b53f"
+      }
+    },
+    {
+      "old_relative_path": "team-specialist-memory-closure/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-specialist-memory-closure/SKILL.md",
+      "git_blob_oid": "ed5d00883a860abef9a1751b40e4787876a1f597",
+      "git_blob_sha256": "5a5f5f6ab7d3d94fb5ff4b94c9217865ffb436669b5e1016c10cae597d3277ff",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "5a5f5f6ab7d3d94fb5ff4b94c9217865ffb436669b5e1016c10cae597d3277ff",
+        "LF": "5a5f5f6ab7d3d94fb5ff4b94c9217865ffb436669b5e1016c10cae597d3277ff",
+        "CRLF": "9fd83ae6011663743d082c4e8c7a20e9e920092c353058dcedc86717b8ff6736"
+      }
+    },
+    {
+      "old_relative_path": "team-memory-closure-delivery-artifact/SKILL.md",
+      "revision": "2914703211003ae8adad4f6e8522467b74908da6",
+      "source": "Shared/skills/team-memory-closure-delivery-artifact/SKILL.md",
+      "git_blob_oid": "b8e29b934ae842029853c4640d4c65e70582a938",
+      "git_blob_sha256": "ea8121daf9d523025498427a5c1410b9aaf880fd8368a46f6b44d108dd113046",
+      "encoding": "UTF-8",
+      "bom": false,
+      "terminal_newline": true,
+      "representations": {
+        "git_blob": "ea8121daf9d523025498427a5c1410b9aaf880fd8368a46f6b44d108dd113046",
+        "LF": "ea8121daf9d523025498427a5c1410b9aaf880fd8368a46f6b44d108dd113046",
+        "CRLF": "2ad2162e63c5636a5ee9a27aecc5e584e1283e5de59e26931a094523b26a654b"
+      }
+    }
+  ]
+}

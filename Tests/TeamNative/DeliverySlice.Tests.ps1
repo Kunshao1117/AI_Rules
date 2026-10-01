@@ -3,11 +3,19 @@ $core = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\team-nati
 $deliverySlice = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\references\team-native-core-delivery-slice.md') -Raw
 $orchestration = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\workflow-orchestration.md') -Raw
 $authorization = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\authorization-resolution.md') -Raw
-$roleBoundaries = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\skills\team-role-boundaries\SKILL.md') -Raw
+# Frozen delivery-slice fields use the saved compatibility contract, not an active Skill.
+$roleBoundaries = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\policies\references\legacy-skills\team-role-boundaries\REFERENCE.md') -Raw
 $procedures = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\workflow-stage-procedures.md') -Raw
 $matrix = Get-Content -LiteralPath (Join-Path $repoRoot 'Shared\workflow-capability-evidence-matrix.md') -Raw
 
-Describe 'Team-Native delivery slice contract' {
+Describe 'Frozen Team-Native delivery slice contract' {
+    It 'keeps saved station fields behind compatibility boundaries and general roles with their current owner' {
+        $roleBoundaries | Should Match 'not an invocable Skill or active governance owner'
+        $roleBoundaries | Should Match 'General work uses `Shared/policies/agent-governance\.md`'
+        $core | Should Match 'LEGACY_TEAM_COMPATIBILITY_START'
+        $core | Should Match 'not required for\s+general vNext work'
+        Test-Path -LiteralPath (Join-Path $repoRoot 'Shared/skills/team-role-boundaries/SKILL.md') | Should Be $false
+    }
     It 'requires a requirement-contract reference without defining its fields' {
         $orchestration | Should Match 'must\s+reference\s+a\s+requirement\s+contract'
         $authorization | Should Match 'does\s+not\s+define\s+or\s+duplicate\s+the\s+requirement\s+contract'

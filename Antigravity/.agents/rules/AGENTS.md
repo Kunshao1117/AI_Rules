@@ -6,11 +6,11 @@ trigger: always_on
 
 This file confirms that the Antigravity `.agents/` ecosystem has been deployed to this project.
 
-The full bootstrapping protocol (Zero-Touch Environment Check, Silent Deployment, Post-Deployment Notification) is defined in the `user_global` system-level rule injected by Gemini IDE. This file serves as a sentinel — its presence tells the Agent that the workspace is already initialized and no deployment is needed.
+The full bootstrapping protocol (environment check, explicitly authorized deployment, post-deployment notification) is defined in the `user_global` system-level rule injected by Gemini IDE. This file serves as a sentinel — its presence tells the Agent that the workspace is already initialized and no deployment is needed.
 
 ## Framework Components
 
-- **Rules**: Core mandate and bootstrapper sentinel (00–07; 00/01 always-on, 02–07 on-demand). 07 includes tool-level permission matrix.
+- **Rules**: Core mandate and bootstrapper sentinel (00/01 and session-checkpoint recovery always-on; other 02–07 rules on demand). 07 includes the tool-level permission matrix.
 - **Workflows**: 20 lifecycle workflow files + 2 shared gates
   - 建構系列：現行公開入口 `03_build(建構計畫)` / `03-1_experiment`；legacy compatibility split-stage file（非現行公開入口）：`03-2_build_execute`
   - 修復系列：現行公開入口 `04_fix`；legacy compatibility split-stage files（非現行公開入口）：`04-1_fix_plan` / `04-2_fix_execute`
@@ -19,7 +19,7 @@ The full bootstrapping protocol (Zero-Touch Environment Check, Silent Deployment
   - 例行巡檢：`10_routine(巡檢)` — automation-safe read-only maintenance
   - 其他工作流：00–02、06–07、11–12 各一個 workflow
   - 共用閘門：`_completion_gate` / `_security_footer`
-- **Skills**: 62 shared operational skills + project memory cards + project context cards
+- **Skills**: Shared operational methods include `memory-ops` and `memory-arch`, both discovered only when relevant. Project Memory cards and Project Context cards are data, not Skills.
 - **Platform governance**: deployed project reference `.agents/shared/platform-capability-matrix.md` defines native/adapter/manual capability levels; the framework source repository keeps the original at `Shared/platform-capability-matrix.md`. Workflow frontmatter MUST carry metadata v2 (`kind`, `platforms`, `lifecycle_phase`, `role`, `memory_awareness`, `tool_scope`, `human_gate`, `automation_safe`).
 - **MCP profile policy**: external MCP servers are opt-in only. Use deployed snippets in `.agents/shared/mcp-profiles/`; the framework source repository keeps the originals under `Shared/mcp-profiles/`. Never install or modify global MCP config during Fresh/Upgrade/Audit.
 

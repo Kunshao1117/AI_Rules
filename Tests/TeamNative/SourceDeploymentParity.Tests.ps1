@@ -121,11 +121,11 @@ Describe 'Source deployment parity' {
         $pairs = @(
             @{ Source = 'Shared\policies\language-governance.md'; Runtime = '.agents\shared\policies\language-governance.md' },
             @{ Source = 'Shared\policies\references\status-ontology.md'; Runtime = '.agents\shared\policies\references\status-ontology.md' },
-            @{ Source = 'Shared\skills\quality-review-governance\SKILL.md'; Runtime = '.agents\skills\quality-review-governance\SKILL.md' },
-            @{ Source = 'Shared\skills\team-completion-gate\SKILL.md'; Runtime = '.agents\skills\team-completion-gate\SKILL.md' },
-            @{ Source = 'Shared\skills\team-change-delivery-artifact\SKILL.md'; Runtime = '.agents\skills\team-change-delivery-artifact\SKILL.md' },
-            @{ Source = 'Shared\skills\team-review-delivery-artifact\SKILL.md'; Runtime = '.agents\skills\team-review-delivery-artifact\SKILL.md' },
-            @{ Source = 'Shared\skills\team-validation-delivery-artifact\SKILL.md'; Runtime = '.agents\skills\team-validation-delivery-artifact\SKILL.md' }
+            @{ Source = 'Shared\policies\review-governance.md'; Runtime = '.agents\shared\policies\review-governance.md' },
+            @{ Source = 'Shared\policies\completion-policy.md'; Runtime = '.agents\shared\policies\completion-policy.md' },
+            @{ Source = 'Shared\agents\reviewer.md'; Runtime = '.agents\shared\agents\reviewer.md' },
+            @{ Source = 'Shared\skills\browser-testing\SKILL.md'; Runtime = '.agents\skills\browser-testing\SKILL.md' },
+            @{ Source = 'Shared\skills\security-sre\SKILL.md'; Runtime = '.agents\skills\security-sre\SKILL.md' }
         )
 
         foreach ($pair in $pairs) {

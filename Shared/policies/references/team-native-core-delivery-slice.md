@@ -1,3 +1,19 @@
+
+General Agent roles and bounded assignments are owned by
+`Shared/agents/_registry.md` and `Shared/policies/agent-governance.md`.
+Model intent belongs to `Shared/policies/model-profile-routing.md`;
+the platform owns worker lifecycle. This retained Skill/reference is not a
+formal vNext Agent definition or a general Team prerequisite.
+
+## Legacy compatibility boundary
+
+The delimited body below is legacy, compatibility-only, and not required for
+general vNext work, including Team. Its original paths, anchors and meanings
+remain available to frozen Memory consumers. Do not derive Memory records,
+authority or completion from a vNext assignment. Do not load this body merely
+because execution mode is Team.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_START -->
 # Team-Native Core Delivery Slice Reference
 
 This reference owns the expandable delivery-slice station procedure. It is
@@ -165,3 +181,5 @@ The same Yellow finding must not create an unbounded repair loop. After two
 repairs for the same symptom family, file region, or operator path, the captain
 chooses `diagnose` or module split under the decision table. Neither route alone
 opens a new slice.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_END -->

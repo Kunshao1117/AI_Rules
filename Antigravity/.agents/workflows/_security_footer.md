@@ -1,5 +1,13 @@
 <!-- 所有 workflows 共用的安全與合規條款（Shared Security & Compliance clauses） -->
 
+一般動作只依 `Shared/policies/authorization-resolution.md` 判斷 observe、local_work 與 protected；
+執行方式只依 `Shared/policies/execution-routing.md` 判斷 Direct、Assisted、Team。
+工具種類或工作流角色不會授權動作，也不會強制 Team；一般本機工作不需站點或 magic GO。
+明確動作與目標已被授權時，不重複要求口令；平台拒絕仍須停止該動作，禁止換工具繞過。
+下列角色矩陣與站點條款只適用 legacy Team internals；Memory 欄位及原契約保持凍結。
+安全與破壞性動作檢查仍適用一般工作，但不得把已有授權當成尚未授權。
+
+
 ```text
 [角色鎖閘門 / ROLE LOCK GATE] Workflow 入口：
 ├── 核對 agent 角色是否符合 workflow 宣告。
@@ -9,8 +17,8 @@
 │   └── 只記錄 override/risk-closure request；不得繞過角色、範圍授權、Team-Native、validation、review、protected gates，也不得支撐 complete claim。
 └── 只有必要 gate 仍獨立通過後才能繼續。
 ```
-- **瀏覽器閘門（Browser Gate）**：Browser evidence branch 的使用依 `delegation-strategy` Skill 與目前 platform adapter 處理。
-  - Reader 角色的 workflow 在啟動 browser branch 前需要明確的總監授權。
+- **瀏覽器閘門（Browser Gate）**：Browser evidence branch 的使用依 `Shared/policies/execution-routing.md` Skill 與目前 platform adapter 處理。
+  - 一般唯讀 browser inspection 使用 observe；Team 角色依已分配範圍執行。
   - **例外（Exemption）**：`/01_explore` 內建 autonomous research mandate，因此免除 Reader browser gate。
 - **角色宣告（Role Declaration）**：呼叫中的 workflow MUST 宣告 agent 角色與具體權限。
   - 宣告位置在 `Inherits` reference 下方的獨立 `[SECURITY & COMPLIANCE MANDATE]` 區段。
@@ -44,5 +52,5 @@
 | `Format-Volume` | 磁碟格式化 |
 | `git clean -fd` | 永久移除未追蹤檔案 |
 
-- 這些命令無論是否有 turbo annotation，都需要總監明確確認。
+- 這些動作須有明確動作、目標及必要安全證據；已有語意授權不再重複要求確認。
 - 即使在 `// turbo-all` 下，`SafeToAutoRun` 仍 MUST 維持 `false`。

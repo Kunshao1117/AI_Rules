@@ -1,41 +1,15 @@
----
-title: Use Connection Pooling for All Applications
-impact: CRITICAL
-impactDescription: Handle 10-100x more concurrent users
-tags: connection-pooling, pgbouncer, performance, scalability
----
+# Choose connections for the workload
 
-## Use Connection Pooling for All Applications
+Identify browser versus trusted server, process lifetime, concurrency, transaction duration,
+driver behavior and session features. Browser clients use the product API/client boundary,
+not a database credential. For trusted database clients compare direct, session pooling
+and transaction pooling using the current provider facts in
+`Shared/policies/references/supabase-guide.md`.
 
-Postgres connections are expensive (1-3MB RAM each). Without pooling, applications exhaust connections under load.
-
-**Incorrect (new connection per request):**
-
-```sql
--- Each request creates a new connection
--- Application code: db.connect() per request
--- Result: 500 concurrent users = 500 connections = crashed database
-
--- Check current connections
-select count(*) from pg_stat_activity;  -- 487 connections!
-```
-
-**Correct (connection pooling):**
-
-```sql
--- Use a pooler like PgBouncer between app and database
--- Application connects to pooler, pooler reuses a small pool to Postgres
-
--- Configure pool_size based on: (CPU cores * 2) + spindle_count
--- Example for 4 cores: pool_size = 10
-
--- Result: 500 concurrent users share 10 actual connections
-select count(*) from pg_stat_activity;  -- 10 connections
-```
-
-Pool modes:
-
-- **Transaction mode**: connection returned after each transaction (best for most apps)
-- **Session mode**: connection held for entire session (needed for prepared statements, temp tables)
-
-Reference: [Connection Pooling](https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pooler)
+Transaction pooling shares server connections between transactions; session pooling retains
+a connection for a client session. Session state, temporary tables, advisory locks and
+prepared statements need compatibility analysis. Direct connections can suit persistent
+services and single-session migration/backup tools; pooling is not mandatory for every task.
+Size pools from measured connection budgets, latency and concurrent work; reserve operational
+headroom. Avoid a universal CPU formula or a promised concurrency gain. Configuration changes
+are proposed actions, never automatic tuning or an excuse to read a connection secret.

@@ -1,125 +1,75 @@
 ---
 name: security-sre
 description: >
-  安全可靠性與憑證隔離治理（Quality）：Zero-trust validation, credential isolation, and structured logging standards.
-  Use when: 建構或修改後端 API 端點、設計認證/授權流程、處理機敏資訊（密碼/API key/環境變數）的場景。
-  DO NOT use when: 純前端 UI 開發（用 ui-ux-standards）、讀取或審查程式碼而不寫入。03-1 /
-  03-1-experiment-實驗 仍需本技能處理真實 API/DB/credential 風險，但不得宣稱 production-ready。
+  安全敏感邊界與失敗復原方法。Use when: 分析或修改認證授權邊界、不可信輸入入口、機密資料流，或有具體重試與復原風險的操作。
+  DO NOT use when: 只改前端文案、一般欄位格式、樣式，或沒有安全與可靠性問題的例行實作；不因單獨出現 validation 或 env 就載入。
 metadata:
   author: antigravity
-  version: "5.2"
+  version: "6.0"
   origin: framework
   kind: operational
+  style: guided
   memory_awareness: none
   tool_scope: ["filesystem:read"]
 ---
 
-# Security & Reliability Engineering — Full Operating Protocol
+# Security and Reliability Methods
 
-## 1. Zero-Trust Validation (實體驗證器)
+## When to use / when not to use
 
-```
-[VALIDATION GATE] For EVERY API route or DB write operation:
-├── [SUDO] detected? → Record override/risk-closure request; do not skip validation.
-├── Active workflow is 03-1 / 03-1-experiment-實驗? → Continue for real API/DB writes; mark output prototype-only and do not claim production security readiness.
-├── Zod/Joi schema defined for this endpoint's payload?
-│   ├── YES → Proceed silently.
-│   └── NO  → [HALT] 「🔴 [SEC HALT] 端點 {path} 缺少結構驗證（API schema validation）。」
-│             DO NOT proceed. Generate Zod schema first.
-└── Gate cleared.
-```
+Use for a concrete authentication/authorization boundary, untrusted input,
+secret exposure, or retry/recovery failure question, in implementation or analysis.
+Ordinary copy, presentation-only validation and unrelated coding do not match.
+Invocation classification: restricted. This is method applicability, not action
+permission, a Security Reviewer trigger or an independence/completion decision.
 
-- FORBIDDEN: relying on type casting or assuming runtime data matches TypeScript interfaces
-- **Example**:
-  ```typescript
-  const CreatePostSchema = z.object({
-    title: z.string().min(1).max(200),
-    content: z.string().min(1),
-    status: z.enum(["draft", "published"]),
-  });
-  ```
+## Core method
 
-## 2. Credential Isolation (機密隔離)
+1. Identify the trust boundary and relevant assets. Trace entry, caller identity,
+   authorization check, parsing, persistence and external effects. Distinguish
+   trusted internal values from untrusted request, queue, file or provider input.
+2. Validate untrusted input at the actual runtime boundary using the project's
+   schema validator, framework serializer, typed parser or equivalent runtime
+   mechanism. Check shape, bounds, encoding and domain constraints as applicable.
+   A static type assertion is not runtime validation. Do not require Zod/Joi or
+   any particular language. For stack examples read references/boundary-and-failure-methods.md.
+3. Trace secret consumption without reading secret values into unnecessary model
+   context. Never hard-code secrets in source or expose them in logs, errors or
+   artifacts. Prefer the existing credential/configuration mechanism and least
+   privilege. An application safely consuming a credential differs from an agent
+   reading or handling it; resolve the latter through the authorization owner.
+4. Separate safe user-facing failure messages from restricted internal diagnostics.
+   Preserve enough diagnostic evidence to locate a failure without returning
+   confidential payloads, stack traces or queries. Do not silently swallow errors.
+5. For material failure risks, inspect timeout boundaries, retry eligibility,
+   duplicate side effects, idempotency, partial success, rollback and recovery.
+   Make failure state observable. Do not retry uncertain external mutations until
+   their outcome and deduplication/reconciliation strategy are understood.
+6. Use the project's existing logging/observability system. Select evidence needed
+   to correlate the operation and explain failure; redact sensitive values.
+   No fixed JSON schema, library, storage path or timezone is required. Use
+   references/boundary-and-failure-methods.md for correlation and query examples.
+7. Report concrete risk, affected boundary, evidence and residual uncertainty.
+   Scale the method to the question; no compulsory full SRE infrastructure.
 
-- **Absolute Ban**: NEVER hard-code API keys, database URLs, JWT Secrets, or any sensitive credentials into source files.
-- You MUST force the architecture to extract these values via `process.env`.
-- Ensure a `.env.example` file is maintained outlining the required environment variables:
-  ```env
-  # .env.example
-  DATABASE_URI=
-  PAYLOAD_SECRET=
-  S3_BUCKET=
-  S3_ACCESS_KEY_ID=
-  S3_SECRET_ACCESS_KEY=
-  ```
+## Owners and tool needs
 
-## 3. Physical Error Handling & Logging (實體錯誤處理)
+Security Reviewer is the responsibility-bearing role; this Skill supplies methods.
+`Shared/agents/_registry.md` and `Shared/policies/agent-governance.md` own roles;
+`Shared/policies/review-governance.md` owns review applicability.
+`Shared/policies/verification-strategy.md` owns evidence need/scope/independence;
+`Shared/policies/completion-policy.md` owns completion.
+`Shared/policies/execution-routing.md` and `Shared/policies/authorization-resolution.md`
+remain execution and authorization owners. A Skill match does not spawn anyone.
 
-- NEVER expose internal stack traces or DB query strings to frontend/API responses
-- Return standardized HTTP status codes + human-readable JSON:
-  ```json
-  { "error": "Internal server error. Please try again later." }
-  ```
-- MUST write error details to log file (`/logs/error.log`) or stdout via logging library (Winston/Pino)
+Provider-specific: no. State a needed scanning/analysis capability when relevant;
+resolve presence/readiness/providers through `Shared/policies/capability-resolution.md`.
+Missing scanners permit a legal equivalent or an honest evidence limitation.
+Do not implicitly install, log in, use downloading probes or send source to an
+external provider. No provider is required merely to apply these methods.
 
-## 4. Structured Logging Standard (結構化日誌標準)
+## Reference selection
 
-### Log Format (日誌格式)
-
-All backend log entries MUST use JSON structured format:
-
-```json
-{
-  "timestamp": "2026-04-02T09:30:00+08:00",
-  "level": "error",
-  "module": "media-upload",
-  "message": "Failed to register uploaded file in CMS",
-  "traceId": "abc-123-def",
-  "details": { "fileName": "photo.jpg", "uploadId": "xyz" }
-}
-```
-
-### Required Fields (必填欄位)
-
-| Field       | Type              | Description                                       |
-| ----------- | ----------------- | ------------------------------------------------- |
-| `timestamp` | ISO 8601 (+08:00) | When the event occurred（事件發生時間）           |
-| `level`     | enum              | `error` / `warn` / `info` / `debug`（日誌等級）   |
-| `module`    | string            | Which module generated this log（產生日誌的模組） |
-| `message`   | string            | Human-readable description（人類可讀的描述）      |
-
-### Optional Fields (選填欄位)
-
-| Field        | Type   | Description                                                         |
-| ------------ | ------ | ------------------------------------------------------------------- |
-| `traceId`    | string | Distributed trace ID for cross-service correlation（分散式追蹤 ID） |
-| `details`    | object | Additional context-specific data（額外上下文資料）                  |
-| `userId`     | string | Requesting user ID, if applicable（請求的使用者 ID）                |
-| `statusCode` | number | HTTP status code, if applicable（HTTP 狀態碼）                      |
-
-### Log Level Guidelines (日誌等級指引)
-
-| Level   | When to Use                                          |
-| ------- | ---------------------------------------------------- |
-| `error` | Operation failed, requires attention                 |
-| `warn`  | Succeeded but unexpected conditions                  |
-| `info`  | Important business events (login, resource creation) |
-| `debug` | Diagnostic info — suppress in production             |
-
-### AI Log Query Templates (AI 日誌查詢模板)
-
-Grep patterns for log search:
-
-```bash
-# Find all errors in the last hour（搜尋最近一小時的錯誤）
-grep '"level":"error"' /logs/app.log | tail -50
-
-# Find logs for a specific module（搜尋特定模組的日誌）
-grep '"module":"media-upload"' /logs/app.log
-
-# Find logs for a specific trace（搜尋特定追蹤 ID 的日誌）
-grep '"traceId":"abc-123"' /logs/app.log
-
-# Find errors with specific status codes（搜尋特定狀態碼的錯誤）
-grep '"statusCode":500' /logs/app.log
-```
+Read the method reference only for the relevant boundary, failure or observability
+question. `references/legacy/pre-a5-entry.md` preserves historical source only;
+it is not a prerequisite, fallback instruction set or current governance.

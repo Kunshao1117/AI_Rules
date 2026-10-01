@@ -1,5 +1,16 @@
 # Workflow Review And Visual Evidence Reference
 
+
+## General verification/review/completion ownership
+
+General verification scope/independence, evidence selection and failure
+classification belong only to `Shared/policies/verification-strategy.md`.
+Review applicability and judgment belong to `Shared/policies/review-governance.md`;
+general task completion belongs to `Shared/policies/completion-policy.md`.
+These policies supersede old escalation, review-trigger and completion clauses
+in this method/consumer. No Skill hit requires a role, full suite or Memory chain.
+Task methods remain here; frozen Memory/legacy release retain their own contracts.
+
 This reference holds workflow evidence rules that are too detailed for `Shared/workflow-capability-evidence-matrix.md`.
 
 The matrix keeps the per-workflow rows; this file keeps the supporting review, intent, and visual evidence tables.
@@ -83,6 +94,21 @@ Architecture and build workflows must preserve Director intent as a traceable co
 - Required artifact: Aligned, justified deviation, unauthorized deviation, or unverified.
 - Minimum evidence: Original request, approved plan, actual changes, and validation evidence compared before completion.
 
+## Review policy reference
+
+`Shared/policies/review-governance.md` owns general review applicability,
+independence and judgment. Verification/Completion have separate policy owners.
+The following original lifecycle matrix is compatibility-only, not a general
+workflow prerequisite. Intent and visual methods remain in this reference.
+
+## Frozen verification/completion compatibility
+
+The following original body is legacy compatibility-only for frozen Memory or
+legacy release consumers. It is not a general vNext trigger, scope, roster,
+completion ladder or status owner. Preserve original anchors and meanings;
+never translate vNext states into its bundle, phases or receipts.
+
+<!-- LEGACY_COMPLETION_COMPATIBILITY_START -->
 ## Review Lifecycle Governance Matrix
 
 Engineering review is separate from evidence collection.
@@ -147,6 +173,8 @@ It is also mandatory for cross-module, data/state, repeated fragile-code, or hig
 
 Low-risk local edits may record targeted validation without a lifecycle review.
 
+
+<!-- LEGACY_COMPLETION_COMPATIBILITY_END -->
 ## Visual Evidence Governance Matrix
 
 Visual validation must inspect details and prefer real information.
@@ -217,3 +245,34 @@ They do not prove data correctness, persistence, business logic, permissions, sy
 
 - Minimum evidence: Before/after comparison, difference explanation, and acceptance rationale.
 - Additional requirement: Detail-level deltas must be named, not summarized as only overall direction.
+
+
+## Component reuse and reference interpretation methods
+
+Preserved from ai-dev-quality-gate during A1; these methods do not select
+review/verification applicability or completion. The UI workflow and its current
+context/persistence boundaries remain unchanged; further method cleanup is D.
+
+Inspect existing shared components, primitives, tokens, utilities and page
+patterns. With no existing UI, outline candidate primitives instead of inventing
+an inventory. Compare reuse, extension, new component and new primitive; explain
+why a similar existing component is unsuitable before adding another.
+
+For visual references, extract density, hierarchy, color roles, spacing, shapes,
+interaction behavior and adaptation strategy. Map them to actual components and
+technical limits; discard details the stack cannot reproduce reliably. Generated
+images and provider screens describe direction, not rendered acceptance evidence.
+
+Apply only already-approved design context through Shared/policies/project-context-protocol.md;
+candidate preferences remain advisory. Direction discovery remains owned by
+Shared/workflows/ui-design-exploration.md. This preservation neither changes persistence semantics
+nor authorizes creating context records.
+
+Match interface evidence to the product: desktop minimum/common windows, font
+scale, scroll/dialog/keyboard behavior; IDE narrow/expanded panels, themes,
+trust and confirmation states; terminal wrapping, narrow width, error readability,
+exit codes and non-interactive use; dashboards density, overflow, degraded state
+and update behavior. Use the applicable existing visual matrix, not an automatic
+web-responsive requirement for every interface. Version grounding remains in
+grounding-governance and tech-stack-protocol; actual evidence scope remains in
+verification-strategy.

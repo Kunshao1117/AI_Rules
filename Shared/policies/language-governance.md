@@ -12,7 +12,8 @@ This policy only governs how that evidence is expressed to each audience.
 - Framework source: `Shared/policies/language-governance.md`.
 - Deployed runtime copy: `.agents/shared/policies/language-governance.md`.
 - The source file is authoritative.
-- The deployed copy must remain content-identical after any language-governance change.
+- When an authorized sync or deployment occurs, the deployed copy must match
+  the authoritative source. A source-only change does not itself update runtime.
 - Platform core files may keep platform bootstrap language requirements and Director-facing Traditional Chinese mandates.
 - Complete language-layer classification belongs here.
 - Workflow entries, operational skills, matrices, and platform adapters must reference this policy.
@@ -60,6 +61,11 @@ the listed order and do not alter any locked field.
 - Director-facing output is meaning-first: start with the practical result in
   plain Traditional Chinese, then add a technical identifier only when it
   helps the reader act, search, diagnose, or confirm evidence.
+- Use natural Taiwan Traditional Chinese, not merely Traditional characters:
+  avoid bureaucratic phrasing, unnecessary mainland usage, and word-for-word
+  translation of English engineering prose.
+- Correct language and understandable language are separate requirements.
+  Check that a reader without technical background can grasp the result.
 
 ### Minimum Traditional Chinese User-Facing Core
 
@@ -83,8 +89,9 @@ specialist skills, or ordinary replies.
   order when applicable: what is the result now; what changes for the reader;
   what remains incomplete or needs attention; and what the reader should do
   next.
-- A small completed task normally needs three to six sentences and no fixed
-  heading. A normal report may use only these headings, omitting empty ones:
+- Match response length and structure to the work's complexity, risk, and
+  impact. A small completed task may take one natural sentence. A longer
+  report may use these headings when helpful, omitting empty ones:
   `目前結果`, `對你的影響`, `尚未完成或需要注意`, and `你現在要做什麼`.
 - When no reader action is needed, say plainly: `你現在不用做任何事。`
 - Long analysis, a complete comparison, a technical audit, or all changed
@@ -206,6 +213,19 @@ specialist skills, or ordinary replies.
   Chinese. Examples include `tokens`, `Codex`, paths, commands, schema keys,
   canonical field names, API names, package names, hook event names, status
   tokens, code identifiers, and exact evidence.
+- Translate meaning, not merely terminology. Prefer natural Chinese for the
+  main explanation: `runtime` may mean `實際運作環境`, `preflight` may mean
+  `部署前檢查`, `rollback` may mean `回復到原本狀態`, and `provenance` may mean
+  `來源證明` or `來源紀錄`. Explain a `blocker` as a `阻擋問題`, `archive` as
+  `封存`, and `restore` as `還原` when those are the actual actions. These are
+  contextual examples, not a fixed translation table. If `projection` means
+  making a platform-usable copy, say `同步成 Claude 使用的版本` in that context.
+- Preserve product and technical names such as Skill, Agent, MCP, API, Git,
+  GitHub, Codex, Claude, Cursor, and Antigravity. Clarify a name on first use
+  when helpful, for example `Agent（代理角色）`.
+- Preserve program identifiers such as `PROBABLE_FRAMEWORK_OWNED`,
+  `runtime_deployed`, and `AI_RULES_VNEXT_...` exactly, but explain their
+  human meaning before showing them in a Director-facing reply.
 - If a term has no stable Traditional Chinese definition, or is a
   product/brand/exact technical token, preserve the source token and explain
   around it in Traditional Chinese.
@@ -284,6 +304,8 @@ specialist skills, or ordinary replies.
 - A report also fails when it is led by station artifacts, canonical field lists, or lacks captain synthesis.
 - A failed report must be rewritten or reported as non-complete by the relevant completion gate.
 - Team-member delivery must not be pasted as the Director-facing body.
+- Do not forward a specialist's technical delivery verbatim when the reader
+  needs a human-readable summary; the Main Agent or active captain synthesizes it.
 - The active Team captain must synthesize a Traditional Chinese meaning-first
   Director-facing report from the artifact; a Direct executor synthesizes its
   own evidence.
@@ -313,7 +335,7 @@ specialist skills, or ordinary replies.
 - Before sending a user-visible response, confirm internally that a person who
   does not program can tell: `現在是否完成？`, `實際改變了什麼？`,
   `是否有需要知道的風險或未完成事項？`, and `現在是否需要自己做決定或採取行動？`.
-- Small work may answer in three to six natural sentences without headings.
+- Small work may answer in one natural sentence without headings.
   Use `目前結果／影響／注意事項／下一步` only when more structure helps. Do
   not invent an empty risk section or unnecessary reader choices.
 - Raw internal fields and YAML/JSON do not lead the body; unnecessary English

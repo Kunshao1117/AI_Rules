@@ -1,57 +1,17 @@
----
-title: Optimize RLS Policies for Performance
-impact: HIGH
-impactDescription: 5-10x faster RLS queries with proper patterns
-tags: rls, performance, security, optimization
----
+# Measure RLS cost without weakening isolation
 
-## Optimize RLS Policies for Performance
+Keep the intended role/tenant/operation access model while measuring representative plans.
+For a row-independent identity function, `(select auth.uid())` can allow an initPlan rather
+than repeated evaluation. This is not a universal cache: a helper taking the current row's
+team_id remains row-dependent. Do not claim fixed speedups or remove predicates for speed.
 
-Poorly written RLS policies can cause severe performance issues. Use subqueries and indexes strategically.
+Consider indexes on selective policy lookup/join columns, accounting for write/storage cost.
+Prefer invoker functions. If a definer helper is necessary, use a deliberately privileged
+owner, an unexposed/private schema, controlled (often empty) search_path, fully qualified
+objects, unambiguous prefixed parameters and least-privilege EXECUTE grants. Understand
+whether its owner bypasses RLS; definer is not itself a safe optimization.
+Compare allowed and denied paths and the actual plan before adopting a helper/index.
+SQL changes require the existing workflow and authorization; this method performs none.
 
-**Incorrect (function called for every row):**
-
-```sql
-create policy orders_policy on orders
-  using (auth.uid() = user_id);  -- auth.uid() called per row!
-
--- With 1M rows, auth.uid() is called 1M times
-```
-
-**Correct (wrap functions in SELECT):**
-
-```sql
-create policy orders_policy on orders
-  using ((select auth.uid()) = user_id);  -- Called once, cached
-
--- 100x+ faster on large tables
-```
-
-Use security definer functions for complex checks:
-
-```sql
--- Create helper function (runs as definer, bypasses RLS)
-create or replace function is_team_member(team_id bigint)
-returns boolean
-language sql
-security definer
-set search_path = ''
-as $$
-  select exists (
-    select 1 from public.team_members
-    where team_id = $1 and user_id = (select auth.uid())
-  );
-$$;
-
--- Use in policy (indexed lookup, not per-row check)
-create policy team_orders_policy on orders
-  using ((select is_team_member(team_id)));
-```
-
-Always add indexes on columns used in RLS policies:
-
-```sql
-create index orders_user_id_idx on orders (user_id);
-```
-
-Reference: [RLS Performance](https://supabase.com/docs/guides/database/postgres/row-level-security#rls-performance-recommendations)
+Sources: [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security),
+[functions](https://supabase.com/docs/guides/database/functions).

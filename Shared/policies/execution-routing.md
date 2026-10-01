@@ -1,100 +1,106 @@
 # Execution Routing Policy
 
-This policy is the unique owner of the task-routing axes below. It classifies
-ordinary Direct work and delegated Team work without redefining authorization,
-protected-action gates, lifecycle details, or Team-Native station contracts.
+This is the sole owner of `execution_mode: direct | assisted | team`.
+Workflow names select phase sequence, not execution mode or authorization.
+`authorization-resolution.md` independently owns permission semantics.
 
-## Three-Axis Classification
+## Independent Classification
 
-Every task records these independent axes before execution:
-
-| Axis | Values | Meaning |
+| Axis | Values | Owner |
 |---|---|---|
-| `execution_topology` | `direct`, `delegated` | Whether one ordinary focused route executes the work or Team-Native stations execute delegated work. |
-| `change_impact` | `local`, `boundary`, `systemic` | The reach of the expected change and its contracts. |
-| `action_risk` | `observe`, `local_write`, `protected` | The strongest action the current task or phase may take. |
+| `execution_mode` | `direct`, `assisted`, `team` | This policy |
+| `change_impact` | `local`, `boundary`, `systemic` | This policy; impact describes reach, not ownership |
+| `authorization_class` | `observe`, `local_work`, `protected` | `authorization-resolution.md` |
 
-The axes do not imply one another. `boundary` or `systemic` impact does not by
-itself select `delegated`; `local_write` does not require Team mode; and
-`delegated` does not authorize a protected action. `protected` does not by
-itself select Team mode, and a protected phase remains separately authorized.
-Multi-file scope, multi-step work, a workflow name, a generic governed-work
-label, or available subagents do not select `delegated` or `protected`.
+`systemic != team`. High risk alone does not select Team. `direct` with
+`protected.external` and `team` with `observe` are both valid. Execution never
+supplies authorization; authorization and platform capability never select Team.
 
-`Shared/policies/authorization-resolution.md` remains the authority owner for
-write scope and every protected action. Classification never grants authority.
+## Direct
 
-## Compact Task Contract And Scope
+Direct is the default for one coherent, focused task, including ordinary build,
+fix, debug, test, audit, documentation, policy/source work, local configuration,
+bounded features, focused refactors, and multi-file or multi-step repairs.
+The main agent owns scope, implementation, appropriate verification under the
+existing `verification-strategy.md`, final synthesis, and completion wording.
+It can read relevant scope and perform authorized `local_work`.
 
-Use the Compact Task Contract or, only when applicable, the Extended Contract
-defined by `Shared/policies/requirement-precision.md`. Record the three-axis
-classification independently. An acceptance-required repair stays in the
-current task. A minimal enabling change may stay only when it is necessary,
-reversible, within the same risk, and creates no public contract. An
-improvement becomes a follow-up. A new security or data risk stops the
-affected action and asks for a decision. Authorization Resolution still decides
-whether the exact write scope or protected phase is authorized.
+No Captain Board, station, handoff packet, role instance, dispatch wave, or Team
+completion artifact chain is required. Direct is not a Team exception.
+Build/fix/debug/test/source/policy/docs/audit labels, file or module counts,
+browser/MCP availability, and available subagents are not Team triggers.
 
-Resolve Project Context before classification. Load
-`Shared/policies/task-capability-assessment.md` only when its own trigger
-applies. Apply `Shared/policies/implementation-stability.md` proportionally to
-the resolved impact and risk. These inputs refine task understanding only; they
-do not authorize actions or change topology.
+## Assisted
 
-## Execution Topology
+Assisted keeps the main agent as the sole work owner while a separate bounded
+auxiliary worker/context performs investigation, search, analysis, research,
+evidence gathering or equivalent supporting work. Ordinary tool calls are not
+Assisted: the main agent directly using terminal, browser or MCP stays Direct.
+The separate helper may use those same tools; separation, not tool type, is the
+reason for Assisted. Provider discovery and selection belong exclusively to
+`capability-resolution.md`; capability never supplies action authorization.
 
-`direct` is the default for focused ordinary work. Select `delegated` only
-when at least one of these conditions is true:
+A request such as "請叫一個 subagent 幫我找這個錯誤從哪裡來" defaults to Assisted
+unless the request also establishes Team ownership or required role separation.
+A helper is not a formal Team member. It needs a bounded question, evidence
+scope, expected return, and stop condition, not a Board, station, handoff
+machinery, `role_instance_id`, dispatch wave, or Team artifact chain.
+It gains neither main-task ownership nor source-write/protected authority from
+being invoked. The main agent judges relevance, implements, verifies, and
+reports. Missing helper capability limits that branch; do not fabricate a
+helper result or turn the task into Team merely to obtain a channel.
 
-- The Director explicitly requests a team, delegation, subagent, role split,
-  or equivalent Team-Native execution.
-- Two independently deliverable and verifiable streams have a concrete
-  parallel-execution gain.
-- High-risk or high-impact work needs implementer/reviewer or security
-  separation.
-- Context remains too large after scope narrowing, lazy loading, and staging.
-- The platform or a formal process requires separation of duties.
+## Team Positive Triggers
 
-The following are explicit non-triggers: fix, build, debug, test, source,
-policy, documentation, repository analysis, multi-file work, multi-step work,
-subagent availability, and the generic `governed work` label.
+Team requires at least one evidenced positive trigger:
 
-## Direct Execution
+1. Explicit team execution, multi-agent role split, or multiple independently
+   responsible owners. A helper-only request does not satisfy this condition.
+2. At least two independently deliverable, verifiable streams with concrete
+   parallel benefit. Different files alone do not establish independence.
+3. A concrete requirement for implementer/reviewer, security reviewer, or other
+   duty separation. High impact/risk without that reason is insufficient.
+4. Context/workload still exceeds a reasonable single owner's capacity after
+   scope narrowing, lazy loading, and staging.
+5. An actual platform or formal-process requirement for duty separation.
 
-A Direct route for focused ordinary local work follows:
+Team loads `agent-governance.md` and only the needed roles from
+`Shared/agents/_registry.md`. Main remains the ordinary implementer; a separate
+Conditional Implementer needs a genuinely independent implementation stream.
+No fixed roster or legacy board/station/lifecycle is required in any general
+mode. Legacy `execution_topology: delegated` remains a frozen compatibility
+value, never a reason to load old runtime machinery or create helper records.
 
-```text
-understand -> focused read -> implement -> focused verify -> aggregate
-```
+## Ordered Scenario Contract
 
-It may read task files and direct dependencies, modify exact ordinary local
-policy, documentation, configuration, or source files, run non-destructive
-focused verification, inspect the resulting diff, and aggregate the result.
-Its user-visible reply follows the beginner-facing contract in
-`Shared/policies/language-governance.md`. Direct evidence may retain goal,
-changed items, evidence, decision, follow-ups, and residual risk internally,
-but the reply must synthesize those facts instead of exposing their raw fields.
+The following ordered table is the canonical deterministic decision contract
+for normalized, evidenced facts. It is consumed by source scenario tests, not
+an NLP classifier or a platform runtime engine. A true fact must have the
+meaning established above. An unresolved claimed Team trigger is narrowed or
+reported as an evidence gap; never manufacture a true fact. Availability and
+risk labels intentionally have no matching rule.
 
-Direct work requires no Team board, station, handoff packet, formal trace,
-independent reviewer, memory/docs disposition, or large formal task artifact.
-`direct_exception` is a Team-only exception record; it never describes
-ordinary Direct work.
+<!-- EXECUTION_DECISION_TABLE_START -->
+| Fact (first true wins) | Result |
+|---|---|
+| explicit_team_ownership | team |
+| independent_parallel_streams | team |
+| required_duty_separation | team |
+| unresolved_single_owner_overload | team |
+| platform_requires_separation | team |
+| bounded_helper_use | assisted |
+| otherwise | direct |
+<!-- EXECUTION_DECISION_TABLE_END -->
 
-Direct never authorizes git mutation, release, publish, deployment, install,
-destructive deletion, external mutation, credential changes, irreversible
-migration or history rewrite, or protected memory commit. Those actions remain
-`protected` and require the matching authorization gate.
+## Scope And Compatibility
 
-Direct completion is acceptance and evidence based: report only what focused
-verification and the inspected diff support, along with any follow-up or
-residual risk. It does not await Team-only artifacts.
+Use the compact requirement contract and existing scope/dirty-diff checks.
+Acceptance-required repairs and minimal reasonable implementation details may
+stay within the authorized task; unrelated cleanup, major refactoring, and
+framework replacement need a scope decision. A workflow is a sequence only.
+`workflow-lane-routing.md` retains legacy lane aliases without selecting Team.
 
-## Delegated Execution
-
-Once `execution_topology: delegated` is selected, Team-Native Core applies in
-full. Its board, station, handoff, trace, role separation, delivery, review,
-validation, memory/docs, completion, and protected-action boundaries remain
-unchanged. No Direct rule weakens an active Team requirement.
-
-`Shared/policies/references/workflow-lane-routing.md` keeps legacy lane names
-as compatibility aliases only. It does not own topology, impact, or risk.
+Memory is an independent frozen consumer. General work does not authorize a
+Memory write, set Memory completion, or infer that Memory is unnecessary.
+`source-runtime-surface-map.md` identifies the compatibility owners; the
+existing Memory contract, phases, bundle, and receipts remain authoritative.

@@ -19,7 +19,7 @@ param(
         'Scripts/AI-RulesManager.ps1',
         'Scripts/modules/Core.psm1',
         'Shared/policies/team-trace-evidence.md',
-        'Shared/skills/team-task-board/references/board-field-catalog.md'
+        'Shared/policies/references/legacy-skills/team-task-board/references/board-field-catalog.md'
     ),
 
     [switch]$PassThru

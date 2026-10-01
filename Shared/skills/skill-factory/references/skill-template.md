@@ -1,80 +1,48 @@
-# Skill Template
+# Candidate Skill Template
 
-> Reference template for `skill-factory` skill. Use when creating Shared framework skills, project-derived skills, or user Codex skills.
-
-## YAML Frontmatter (Required Fields)
+Use only after the prevention-first admission method accepts a candidate.
+This template does not activate, register, install or deploy it.
 
 ```yaml
 ---
-name: skill-name
+name: narrow-skill-name
 description: >
-  {繁體中文任務領域與觸發詞，必填且必須是第一個可讀內容}; [{Domain}] {English functional description}.
-  Use when: {繁體中文正向觸發條件，必填；English trigger may follow as supplemental}.
-  DO NOT use when: {繁體中文負向排除條件，必填；English exclusions may follow as supplemental}.
+  具體專業任務方法。Use when: 明確且狹窄的適用任務。
+  DO NOT use when: 具體容易混淆但不適用的任務。
 metadata:
   author: antigravity
   version: "1.0"
-  origin: project
-  style: imperative|guided|hybrid
-  memory_awareness: none|read|full
-  tool_scope: ["{category1}", "{category2}"]
+  origin: framework
+  style: guided
+  memory_awareness: none
+  tool_scope: ["filesystem:read"]
 ---
 ```
 
-Top-level YAML keys must remain Codex-compatible: `name`, `description`, optional `license`, optional `allowed-tools`, and `metadata`.
-`description` MUST start with Traditional Chinese trigger meaning as the first readable content.
-`[{Domain}]`, `Use when:`, `DO NOT use when:`, `when`, or any English label MUST NOT be the first readable content.
-In `Use when:` and `DO NOT use when:` lines, the text after the label MUST start with Traditional Chinese trigger or exclusion meaning; English may follow only as supplemental precision.
-English-only `Use when:` or `DO NOT use when:` text is non-compliant for AI_Rules skills.
+Keep name ASCII kebab-case, 1-64 characters, matching the eventual directory.
+Put Traditional Chinese task meaning first in description and after both trigger
+labels; keep description under 1024 characters, without angle brackets. Follow
+`Shared/policies/language-governance.md` for the body and audience language.
+Top-level keys: name, description, optional license/allowed-tools, metadata.
+Project/framework custom annotations belong under metadata; they are not native
+platform enforcement or action authority. Do not add obsolete role/lifecycle fields.
 
-Layer-specific origin:
+Body outline: purpose/single responsibility; when to use and when not to use;
+core method; relevant gotchas; reference selection; canonical owner boundaries.
+Record allowed/restricted/manual_only as the invocation recommendation in the
+candidate, plus provider-specific yes/no and presence/missing/no-install behavior.
+Do not invent a top-level invocation-control field unsupported by the platform.
 
-| Layer | Source path | `metadata.origin` |
-| --- | --- | --- |
-| Shared framework skill | `Shared/skills/{skill-name}/SKILL.md` in the AI_Rules framework source repository only | `framework` |
-| Project-derived skill | `.agents/project_skills/{project-code}-{skill-name}/SKILL.md` | `project` |
-| User Codex skill | user's Codex skills directory | optional local policy |
+## Eventual layer placement, only after applicable approval
 
-Put localized names, legacy aliases, required skills, lifecycle fields, and user visibility under `description` or `metadata`, not as extra top-level YAML keys.
+| Layer | Existing destination convention |
+|---|---|
+| Shared | Shared/skills/{name}/SKILL.md in the actual AI_Rules source repository; origin framework |
+| Project-derived | .agents/project_skills/{project-code}-{name}/SKILL.md; origin project; follow the existing project discovery contract |
+| Personal | User's chosen supported Skill directory; do not change project registries implicitly |
 
-## Markdown Body (Standard Sections)
-
-```markdown
-# {Skill Name} — {Subtitle}
-
-## 1. 觸發條件（Trigger Conditions）
-
-適用時機（When to load this skill）:
-
-- {繁體中文正向觸發條件}; optional English trigger token
-- {繁體中文任務語句}; optional canonical English term
-
-## 2. 操作步驟（Procedure）
-
-### 步驟 1：{繁中動作語意}（Step 1: {Action canonical}）
-
-- {繁中指令內容}; optional English canonical instruction
-
-### 步驟 2：{繁中動作語意}（Step 2: {Action canonical}）
-
-- {繁中指令內容}; optional English canonical instruction
-
-## 3. 限制與邊界（Constraints）
-
-- {繁中不涵蓋事項}; optional English canonical boundary
-- {繁中已知限制}; optional English canonical limitation
-
-## 4. 參考資源（References）- optional
-
-- {繁中參考資源說明}; optional English canonical reference note
-```
-
-## Optional Directories
-
-```
-{skill-name}/
-├── SKILL.md           ← Required
-└── references/        ← Optional: L3 resources
-    ├── REFERENCE.md   ← Detailed technical reference
-    └── {domain}.md    ← Domain-specific files
-```
+Before approval keep the candidate outside every loader/discovery root. Do not
+write Shared sources from a downstream project without an authorized framework
+source location. Do not automatically create a project link or edit an index.
+Determine the existing integration mechanism at activation time; generated copies
+remain outputs, not editable source owners. Release/deployment is a separate action.

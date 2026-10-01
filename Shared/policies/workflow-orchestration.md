@@ -1,8 +1,67 @@
+
+# Workflow Orchestration Contract
+
+This policy owns general phase sequence. It does not own mode, authorization,
+roles, provider selection, model profiles, or platform worker lifecycle.
+
+1. Identify the requested workflow row, bounded requirement and acceptance.
+   Consult `Shared/workflow-stage-procedures.md` and the matching evidence-matrix
+   row for domain procedures; their old station/lifecycle clauses are compatibility-only.
+2. Resolve Direct / Assisted / Team through `execution-routing.md` and authority
+   independently through `authorization-resolution.md`. Direct is default;
+   bounded helper use is Assisted. Main is owner and ordinary implementer.
+3. Resolve required capabilities through `capability-resolution.md`. Only Team
+   binds the roles actually needed through `agent-governance.md`; optional model
+   choice uses `model-profile-routing.md` and the platform adapter.
+4. Read current source/diff, implement authorized bounded work, then obtain
+   relevant validation and review evidence. Preserve requirement alignment,
+   grounding, source-size and protected-action gates through their existing owners.
+5. Judge evidence against the current deliverable version. A failed check returns
+   a finding to the implementation owner; changed source invalidates affected
+   older review/verification. The platform owns worker continuation and waiting.
+6. Use `verification-strategy.md` for scope/independence and evidence,
+   `review-governance.md` for applicable review, and `completion-policy.md`
+   for the overall request. Status ontology separates the six truth facts.
+   Report source-only delivery and deployment pending honestly; source authority
+   never implies sync, Git, Memory or protected mutation authority.
+
+## Frozen completion compatibility
+
+General Direct follows understand -> change -> verify -> report; Assisted adds
+bounded helper evidence before Main's change. Team uses bounded role work,
+required verification/review and Main synthesis. No fixed evidence/Memory chain
+or legacy completion ladder is required. When a frozen Memory consumer applies,
+use its unchanged bundle, eligibility, ownership and receipt contract; do not
+fabricate a legacy record from a vNext assignment or declare Memory unnecessary.
+The M3 source retirement resolves the four old Team Memory Skill IDs through
+`references/legacy-skill-migration.md`; frozen phase continuation uses
+`references/legacy-memory-team-transition.md`, not active Skill discovery.
+The historical implementation below retains those consumers' paths and anchors.
+
+## Legacy compatibility boundary
+
+The delimited body below is legacy, compatibility-only, and not required for
+general vNext work, including Team. Its original paths, anchors and meanings
+remain available to frozen Memory consumers. Do not derive Memory records,
+authority or completion from a vNext assignment. Do not load this body merely
+because execution mode is Team.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_START -->
 # Workflow Orchestration Contract
 
 This policy is the shared workflow orchestration layer for AI_Rules.
 
-It defines how workflow entries start, hand off, wait, route back, and close.
+It defines phase sequence: how workflow entries start, hand off, wait, route back, and close.
+
+Execution mode comes only from `Shared/policies/execution-routing.md`;
+action authority comes independently from `Shared/policies/authorization-resolution.md`.
+Direct is default; bounded helper use is Assisted, without Team machinery.
+Workflow names determine phase sequence only, never mode or authorization.
+Board, station, role-instance, handoff, wave, formal-readonly/formal-write,
+and Team artifact requirements below apply only to resolved Team internals.
+Frozen Memory consumers retain their original contract, phase and evidence;
+this scope boundary neither grants Memory authority nor decides its completion.
+
 The supported platforms are Codex, Claude, Antigravity, and Cursor.
 
 It does not replace Team-Native Core, the workflow evidence matrix, platform adapters, or team task boards.
@@ -16,11 +75,11 @@ Layer ownership, in order:
 
 ### `Shared/policies/team-native-core.md`
 
-- Owns: Highest-priority Team-Native gate, operation mode, station-first rule, and completion boundary.
+- Owns: Legacy Team internal operation mode, station-first rule, and completion boundary only after execution routing selects Team.
 
 ### `Shared/policies/authorization-resolution.md`
 
-- Owns: Scope-bound authorization fields and phase-specific write gates.
+- Owns: General observe / local_work / protected semantic authority, with frozen Memory compatibility.
 
 ### Execution routing pair
 
@@ -37,7 +96,7 @@ Layer ownership, in order:
 
 - Owns: External grounding gate for source type, freshness sensitivity, and no-evidence claim boundaries.
 
-### `Shared/skills/intent-alignment-gate/SKILL.md`
+### `Shared/policies/references/legacy-skills/intent-alignment-gate/REFERENCE.md`
 
 - Owns: Intent alignment, overreach checks, and drift checks for design-shaping decisions.
 - These checks do not authorize source writes, validation, review, memory/docs attribution, protected actions, or completion claims.
@@ -82,7 +141,7 @@ Layer ownership, in order:
 
 ### Long-work Git checkpoint
 
-- `Shared/skills/team-specialist-git-checkpoint/SKILL.md` owns the protected local checkpoint
+- `Shared/policies/references/legacy-skills/team-specialist-git-checkpoint/REFERENCE.md` owns the protected local checkpoint
   execution procedure.
 - The board field catalog owns `git_checkpoint_receipt`; this orchestration policy only places
   eligibility evaluation and the protected route in the workflow sequence.
@@ -124,7 +183,7 @@ Layer ownership, in order:
 
 - Owns platform capability translation for Codex, Claude, Antigravity, and Cursor.
 
-### `Shared/skills/team-task-board/SKILL.md`
+### `Shared/policies/references/legacy-skills/team-task-board/REFERENCE.md`
 
 - Owns board templates, station fields, delivery artifact formats, direct exceptions, and completion checklist.
 
@@ -177,14 +236,14 @@ playbooks to this map.
 Canonical task mainline:
 
 ```text
-task intake -> compact task contract -> three-axis classification -> Direct or delegated execution -> proportional verification -> bounded review when required -> completion by acceptance and evidence
+task intake -> compact task contract -> independent execution and authorization resolution -> Direct / Assisted / Team execution -> proportional verification -> bounded review when required -> completion by acceptance and evidence
 ```
 
 Team, protected, release, and deep-audit routes are conditional branches, not
-the default mainline. Direct uses the focused sequence in
+the default mainline. Direct and Assisted use the focused sequence in
 `execution-routing.md`. The detailed sequence below expands delegated topology
 only; it does not impose a board, handoff, independent review, or memory/docs
-disposition on ordinary Direct work.
+disposition on ordinary Direct or Assisted work.
 
 Mainline responsibility anchors:
 
@@ -359,16 +418,16 @@ Flowcharts, diagrams, checklists, and visual plan mirrors are human navigation o
 They can point to the route.
 They cannot act as AI execution specs, authorization, station handoff, validation evidence, review evidence, or completion evidence.
 
-Executable station or tool work uses the machine-readable `execution_spec` minimum in the paired reference files:
+Formal Team station work uses the machine-readable `execution_spec` minimum in the paired reference files:
 
 - `source: Shared/policies/references/workflow-execution-spec-contract.md`
 - `deployed: .agents/shared/policies/references/workflow-execution-spec-contract.md`
 
-If executable work depends on a flowchart without a resolved `execution_spec`, the affected work is `unverified` or `blocked`.
+If formal Team work depends on a flowchart without a resolved `execution_spec`, the affected work is `unverified` or `blocked`.
 The same rule applies when the station handoff packet is missing.
 
-Team-Native / subagent operation begins only after
-`Shared/policies/execution-routing.md` resolves `execution_topology: delegated`.
+Formal Team operation begins only after
+`Shared/policies/execution-routing.md` resolves `execution_mode: team`.
 That policy owns the five positive delegated conditions and generic
 non-triggers; generic `governed work`, named workflows/skills, source impact,
 platform mode, approval prompts, and available channels do not activate Team
@@ -429,7 +488,7 @@ This sequence layer uses `draft`, `formal-readonly`, and `formal-write` as route
 
 It leaves board fields, station rows, direct exceptions, and trace details to the dedicated board and trace sources:
 
-- `Shared/skills/team-task-board/SKILL.md`
+- `Shared/policies/references/legacy-skills/team-task-board/REFERENCE.md`
 - `Shared/policies/team-trace-evidence.md`
 
 `formal-readonly` can gather evidence.
@@ -587,7 +646,7 @@ For delegated work, this policy places the closeout decision after source
 delivery, validation, review, memory/docs attribution, and any required
 protected follow-up phases. Direct completion is owned by execution routing.
 
-New formal delegated source work defaults to `process-complete`. `source-level` is
+New legacy bundle-backed formal delegated source work defaults to `process-complete`. `source-level` is
 available only when the initial visible formal-write agreement is explicitly
 bound as `source-level-explicit`; a legacy execution spec is not retrospectively
 granted a completion bundle or protected memory authority. The completion-bundle
@@ -757,3 +816,5 @@ The complete entry minimum list is in the paired boundaries files:
 
 - `source: Shared/policies/references/workflow-orchestration-boundaries.md`
 - `deployed: .agents/shared/policies/references/workflow-orchestration-boundaries.md`
+
+<!-- LEGACY_TEAM_COMPATIBILITY_END -->

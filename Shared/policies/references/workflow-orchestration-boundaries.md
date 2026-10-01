@@ -1,4 +1,29 @@
+
+General Agent roles and bounded assignments are owned by
+`Shared/agents/_registry.md` and `Shared/policies/agent-governance.md`.
+Model intent belongs to `Shared/policies/model-profile-routing.md`;
+the platform owns worker lifecycle. This retained Skill/reference is not a
+formal vNext Agent definition or a general Team prerequisite.
+
+## Legacy compatibility boundary
+
+The delimited body below is legacy, compatibility-only, and not required for
+general vNext work, including Team. Its original paths, anchors and meanings
+remain available to frozen Memory consumers. Do not derive Memory records,
+authority or completion from a vNext assignment. Do not load this body merely
+because execution mode is Team.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_START -->
 # Workflow Orchestration Boundaries
+
+Execution mode comes only from `Shared/policies/execution-routing.md`;
+action authority comes independently from `Shared/policies/authorization-resolution.md`.
+Direct is default; bounded helper use is Assisted, without Team machinery.
+Workflow names determine phase sequence only, never mode or authorization.
+Board, station, role-instance, handoff, wave, formal-readonly/formal-write,
+and Team artifact requirements below apply only to resolved Team internals.
+Frozen Memory consumers retain their original contract, phase and evidence;
+this scope boundary neither grants Memory authority nor decides its completion.
 
 This reference holds invalid orchestration patterns and entry minimums for the workflow orchestration contract.
 
@@ -74,7 +99,7 @@ These patterns must be treated as Red, blocked, unverified, or closed-with-direc
 - Within active Team mode, `direct` is used as `execution_route`, `execution_channel`, platform route, execution mode, or station state.
 - Within active Team mode, `direct` must instead be recorded as a station-specific `direct_exception` / `direct_exceptions` entry.
 - The direct-exception entry must include replacement evidence and residual state.
-- `direct_exception` and `direct` are Team-only exception semantics; ordinary Direct is `execution_topology: direct`, owned by `execution-routing.md`, not a direct exception.
+- `direct_exception` and `direct` are Team-only exception semantics; ordinary Direct or Assisted uses `execution_mode`, owned by `execution-routing.md`, not a direct exception.
 - Source/deployed pairs are changed without recorded sync direction and parity evidence.
 - Formal station work claims completion without `station_mode`, `context_visibility`, and `handoff_ownership`.
 
@@ -85,7 +110,7 @@ When Team mode is active, workflow entries keep their matrix row and apply the m
 ### Intake and exploration
 
 - Workflows: 00, 01.
-- Default orchestration: Direct only for pure conversation, small stable answers, or no-impact read-only work.
+- Admission: this preset applies only after the execution owner has selected Team.
 - Evidence-bearing work uses `formal-readonly` with bounded source, research, or counter-evidence stations.
 
 ### Architecture and diagnosis
@@ -182,3 +207,5 @@ Detailed board field lists stay in `team-task-board`.
 Detailed trace fields stay in `team-trace-evidence`.
 
 Platform execution channel rules stay in `subagent-invocation`.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_END -->

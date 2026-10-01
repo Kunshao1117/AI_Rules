@@ -1,0 +1,12 @@
+{
+  "original_files": {
+    "Shared/skills/security-sre/SKILL.md": "f1d8951788bbe304d818c0e19292607a02b2b995783475bc8cd79c9a6870d299",
+    "Shared/skills/skill-factory/SKILL.md": "52eaa0693aed1a646161000c2e6016681ebaefff6ab905eaf17ede2bec39033d",
+    "Shared/skills/skill-factory/references/skill-quality-checklist.md": "8a016dbe8c08469050ac4f7f8b3ae80c6e1208f7a766ac0a19c764a7a7f9a594",
+    "Shared/skills/skill-factory/references/skill-style-guide.md": "97dc49ba0b3cb8f2498efa841ecf6c2c8725a30790bb5c23e14cb37770aac4f9",
+    "Shared/skills/skill-factory/references/skill-template.md": "ba17b22867b51f88011aaf1ffbbb4e9edb3d2523de31a0d093c590df9d994228",
+    "Shared/skills/tech-stack-protocol/SKILL.md": "37bc9291dd951ae37c76b5532b9aed656daada8cc1b486579666d6a573936309"
+  },
+  "protected_shared_sha256": "9ec3090816a619089ae80a541fed51acb8f3dc97d464869d0e2bbc6817e39b9b",
+  "cartridge": "2db2d21f196206237c5dde039f45bd3a86e142df9e6283f0353aadf50c407409"
+}

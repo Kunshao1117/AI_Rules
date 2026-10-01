@@ -1,9 +1,46 @@
 # 工作流階段程序（Workflow Stage Procedures）
 
+
+## General verification/review/completion ownership
+
+General verification scope/independence, evidence selection and failure
+classification belong only to `Shared/policies/verification-strategy.md`.
+Review applicability and judgment belong to `Shared/policies/review-governance.md`;
+general task completion belongs to `Shared/policies/completion-policy.md`.
+These policies supersede old escalation, review-trigger and completion clauses
+in this method/consumer. No Skill hit requires a role, full suite or Memory chain.
+Task methods remain here; frozen Memory/legacy release retain their own contracts.
+
+## General Agent applicability
+
+`Shared/policies/agent-governance.md` and `Shared/agents/_registry.md` own
+general Team assignments. Main is the ordinary implementer. In this mixed
+domain reference, every station, fixed roster, board, handoff, delivery-slice,
+dispatch-wave, retained-member, timing or execution-spec lifecycle prescription
+is legacy compatibility-only, not required for general vNext work, including
+Team. Read those prescriptions only for a frozen consumer that requires them.
+Domain procedures, grounding/evidence quality and protected gates remain.
+General Verification/Review/Completion now use their canonical policy owners;
+frozen Memory semantics remain in force. Old completion targets, status ladders
+and fixed evidence chains below are compatibility-only for frozen consumers.
+No vNext assignment substitutes for a required legacy Memory bundle or
+receipt. Ordinary vNext Memory evidence uses the canonical review/update
+references and does not require either artifact.
+
 本參考保存具體 workflow stage procedures；這些程序細節過長，不放在平台 workflow entries。
 Workflow entries 保持精簡：負責 route the task、標示 evidence-matrix row、載入 shared policies，只有需要具體 phase checklist 時才指向這裡。
 
 本文件不是 authorization。
+
+Execution mode comes only from `Shared/policies/execution-routing.md`;
+action authority comes independently from `Shared/policies/authorization-resolution.md`.
+Direct is default; bounded helper use is Assisted, without Team machinery.
+Workflow names determine phase sequence only, never mode or authorization.
+Board, station, role-instance, handoff, wave, formal-readonly/formal-write,
+and Team artifact prescriptions below are legacy compatibility-only for frozen consumers.
+Frozen Memory consumers retain their original contract, phase and evidence;
+this scope boundary neither grants Memory authority nor decides its completion.
+
 它不取代 Team-Native Core、Authorization Resolution、workflow evidence matrix、platform adapters、team task boards、specialist role skills、delivery artifacts、memory gates、validation、review、commit、release、deployment、install 或 external mutation gates。
 
 只使用符合 workflow route 的對應章節；不要把這些程序複製回 platform entries。
@@ -35,14 +72,14 @@ They must not copy these procedures back into the 00-12 entry bodies.
   station evidence, validation/review findings, and `drift_check` as the shared
   counter-evidence surface.
 - Stage 8 source/deployed sync: when a runtime or generated pair exists, record the pair, sync
-  direction, and hash or content parity evidence before source-level closeout. Missing parity stays
-  `blocked` or `unverified`.
+  direction, and verified parity after authorized sync, or explicit deployment-pending status
+  for source-only scope. Never infer deployment authority or deployed parity from source edits.
 
 ## 共同階段規則（Common Phase Rules）
 
-1. Bind the Director request to a current plan, station, file set, command, or protected phase before any write.
+1. Resolve the requested action and scope through `authorization-resolution.md` before a write; ordinary local_work needs no station or magic GO.
 2. Apply the canonical stage order from `workflow-orchestration.md`.
-3. Select the smallest honest lifecycle lane from `workflow-lane-routing.md` and record `lane_id`, `stage_disposition`, and any lane escalation trigger before broad evidence or source-impacting work.
+3. In Team, select the smallest honest lifecycle lane from `workflow-lane-routing.md` and record `lane_id`, `stage_disposition`, and any lane escalation trigger before broad evidence or source-impacting work.
 4. Always read `workflow-orchestration.md`, `language-governance.md`, and the workflow evidence matrix row before broad evidence or source-impacting work.
    Read the platform capability matrix conditionally when platform adapter behavior, tool capability, permission surface, evidence limits, protected phases, source-impacting work, or log-write capability affects the route.
 5. Read `platform-plan-mapping.md` when a platform plan/checklist/progress surface, `plan-only`, or `build-plan` affects routing, authorization interpretation, progress reporting, or completion language.
@@ -50,8 +87,8 @@ They must not copy these procedures back into the 00-12 entry bodies.
    The envelope names the current Director request, requested output, allowed evidence, forbidden actions, mutation scope, file/resource scope, non-goals, ambiguity, and claim limit.
    Use an overreach check before tool use, broad reads, external lookup, source writes, validation, review, protected actions, or completion wording when the next action could exceed the current request.
    Failed checks route to simplification, split work, a targeted Director question, external research, blocked, or unverified state.
-7. When current official, public, or internal-source evidence can affect a workflow decision, route an `external-research` station before the affected station.
-   Each consuming station must carry an `external_research_question` that names the question, source tier, freshness need, accepted evidence, and stop condition.
+7. When current official, public, or internal-source evidence can affect a workflow decision, gather the relevant evidence through Direct or Assisted; in Team, route an `external-research` station before the affected station.
+   Each Team consuming station must carry an `external_research_question` that names the question, source tier, freshness need, accepted evidence, and stop condition.
    Returned research is station input, not write authority.
    Use `G2` quick-check for narrow low-blast-radius questions answerable by one to three official or primary sources.
    Use `G3` formal external research for architecture, governance, security, deployment, pricing, law, standards, release readiness, cross-source conflict, or high-blast-radius implementation decisions.
@@ -61,11 +98,20 @@ They must not copy these procedures back into the 00-12 entry bodies.
    These checks do not replace validation, review, memory/docs attribution, protected authorization, or completion evidence.
 9. Ask the Director only when the next step expands scope, cost, external tool/state access, protected action exposure, or residual risk.
    Do not pause mechanically after a fixed number of modules, batches, or files while the current route and scope remain unchanged.
-10. Use `formal-readonly` for evidence, research, impact mapping, validation planning, review evidence, memory/docs attribution, and broad reads.
-11. Use `formal-write` only after a scope-bound intent signal is resolved through authorization resolution to the visible plan, file set, station, phase, expiry, and required protected gate.
-12. Keep implementation, validation, validation judgment, review, memory/docs, and completion as separate delivery states. Missing states are blocked, unverified, or closed-with-director-risk, not complete.
-    Do not use absolute "no error" or "無誤" language; validation judgment uses the states in `workflow-lane-routing.md`.
-13. Post-change flow is artifact-chain only:
+10. General non-mutating evidence uses observe. Legacy Team/Memory consumers retain formal-readonly where required.
+11. Necessary bounded source edits and local verification use current local_work authority. Legacy Team/Memory consumers retain formal-write records; general work needs no phase, station, expiry, or universal envelope.
+12. In a legacy bundle-backed route, keep implementation, validation,
+    validation judgment, review, memory/docs, and completion as separate
+    delivery states. Missing required legacy states are blocked, unverified,
+    or closed-with-director-risk, not complete. Ordinary vNext resolves
+    Verification, Review, Memory Impact Review and overall completion through
+    their canonical applicability owners rather than a fixed delivery chain.
+    Do not use absolute "no error" or "無誤" language; legacy validation
+    judgment uses the states in `workflow-lane-routing.md`.
+13. For an unmigrated legacy Team consumer, post-change flow retains the
+    bundle-backed artifact chain below. Ordinary vNext work uses conditional
+    Verification/Review, Memory Impact Review, and Completion Policy; it does
+    not need a `completion_bundle_ref`, Memory station or closure receipt.
    - Implementation or authorized change-application returns a delivery artifact with `completion_bundle_ref`, `validation_handoff`, `review_handoff`, `memory_docs_handoff`, and `memory_closure_handoff`.
    - Memory consumers use only `completion_bundle_ref` and the canonical Memory Closure Bundle Contract's resolved phase evidence; this procedure does not restate a candidate map, phase-field schema, authority, or owner.
    - The delivery artifact may also include `grounding_handoff`, `expected_dirty_files`, and `expected_untracked_files`.
@@ -73,27 +119,29 @@ They must not copy these procedures back into the 00-12 entry bodies.
    - `expected_dirty_files`, `expected_untracked_files`, and the compact alias `expected_untracked` are closeout/preflight comparison fields only; they are not authorization, source-sync permission, protected-action permission, or downstream evidence by themselves.
    - The captain records it in the ledger without rewriting it.
    - The next wave starts validation and review only from that delivery bundle.
-   - The memory/docs wave starts after validation and review reach terminal evidence states, uses `completion_bundle_ref` plus validation/review results, and remains read-only.
-   - Memory/docs transfers `completion_bundle_ref` to `memory-closure`, which consumes the canonical contract's accepted evidence and returns a no-write or committed receipt. The implementation artifact may include a `memory_impact` hint, but neither implementation nor memory/docs can authorize memory mutation, memory commit, or direct card writes.
-   - Normal formal source changes reach process-complete only after that receipt and applicable source/deployed parity. Protected follow-up pending is allowed only when `completion_bundle_ref` resolves through the canonical contract to `source-level-explicit`.
+   - The memory/docs wave starts after validation and review reach terminal evidence states, uses `completion_bundle_ref` plus validation/review results, and remains read-only. Its review evidence shape is `Shared/policies/references/memory-review-evidence.md`, including docs, index and generated-copy impact.
+   - For an unmigrated frozen consumer, Memory/docs transfers `completion_bundle_ref` to the legacy `memory-closure` phase through `Shared/policies/references/legacy-memory-team-transition.md`. It consumes the canonical contract's accepted evidence and returns a no-write or committed receipt. The implementation artifact may include a `memory_impact` hint, but neither implementation nor memory/docs can authorize memory mutation, memory commit, or direct card writes.
+   - Legacy bundle-backed formal source changes reach process-complete only after that receipt and applicable source/deployed parity. Protected follow-up pending is allowed only when `completion_bundle_ref` resolves through the canonical contract to `source-level-explicit`.
    - `completion_bundle_ref` is a consumer input only; completion consumes the resulting artifact chain and receipt, not the reference by itself.
-14. Separate source/document delivery, process completion, and release readiness using
-    `Shared/policies/references/completion-state-machine.md`.
-15. When a source/deployed pair exists, record sync direction and parity evidence before any completion claim.
+14. For legacy bundle-backed work, separate source/document delivery, process
+    completion, and release readiness using
+    `Shared/policies/references/completion-state-machine.md`. Ordinary vNext
+    completion uses `Shared/policies/completion-policy.md`.
+15. When a source/deployed pair exists, record its direction and verified parity or explicit deployment-pending state; source authority does not authorize deployment.
 16. Use `commit_preflight` only in `09 Commit`, explicit commit-prep, or closeout commit/push readiness. Other workflows use normal read-only memory evidence and compact packets without interrupting non-commit work.
     Any commit/preflight override for expected dirty or untracked state must be single-use, exact file allowlist scoped, current diff/hash-bound where available, and auditable with reason, expiry, and responsible owner.
     Wildcard, directory-wide, persistent, or policy-level overrides are forbidden; unexpected dirty or untracked files remain blockers.
 17. Read `source-document-size-governance.md` when source-bearing documents, scripts, modules, skills, policies, or rule packs are written, grown, reviewed, validated, or audited.
     Record `size_split_disposition`; an existing oversized baseline may be `baseline`, but missing disposition is `blocked` or `unverified` for source-level closeout.
 18. Hooks are excluded unless explicitly scoped; do not add hook procedures from this stage reference.
-19. Same-wave parallel dispatch consumes the canonical `parallel_dispatch_contract` and the wave
+19. In Team, same-wave parallel dispatch consumes the canonical `parallel_dispatch_contract` and the wave
     predicate in `workflow-orchestration.md`. Different write files alone are insufficient; stale
     baselines, unfrozen interfaces, producer/consumer contract changes, conflict-domain overlap,
     or generated/source overlap stop or order the affected dispatch. Keep the assignment
     acceptance-sized rather than micro-delegating each file.
 20. A long-work Git checkpoint is distinct from a delivery-slice boundary and final commit. Its
     lifecycle events trigger eligibility evaluation only; execution routes solely to
-    `team-specialist-git-checkpoint` after separate `authorization_phase: git`. It does not add
+    `Shared/workflows/git-checkpoint.md` after separate `authorization_phase: git`. It does not add
     tests or satisfy validation, review, memory/docs, sync, completion, push, or release gates.
 21. A formal `delivery_slice` requires a reference to the current requirement contract; do not
     reproduce that contract's fields in stage procedures. Keep its implementation, validation, and
@@ -120,6 +168,12 @@ They must not copy these procedures back into the 00-12 entry bodies.
 - Route buildable architecture decisions to `02`, experiments to `03-1`, and implementation-ready work to `03` only after evidence is sufficient.
 
 ## 02 Blueprint / 架構
+
+For uncertain architecture choices, Main/Architect can read
+`Shared/policies/references/task-assignment-methods.md#architecture-alternatives-and-evidence`
+on demand. It supplies comparison methods, not a reasoning tool prerequisite.
+
+UI design phase owner: `Shared/workflows/ui-design-exploration.md`; UI invariants: `Shared/policies/ui-ux-standards.md`.
 
 - Replay requirements, non-goals, constraints, assumptions, and acceptance criteria.
 - Run neutral challenge against current files, tool output, memory/context, and official sources when relevant.
@@ -176,12 +230,12 @@ They must not copy these procedures back into the 00-12 entry bodies.
   - `grounding_handoff`;
   - `memory_impact`;
   - source/deployed pair and sync evidence when applicable;
-  - `completion_bundle_ref` for the canonical contract's resolved phase evidence;
+  - `completion_bundle_ref` for the canonical contract's resolved phase evidence only in a legacy bundle-backed route;
   - validation, review, memory/docs, and memory-closure handoff targets.
 - For either of the first two numbered same-symptom findings, route back by restoring/resuming the retained implementation station inside the current delivery slice; do not automatically create a repair station or member. Captain ledger entries are not fixes.
 - Validation and review run after change delivery is returned, blocked, unverified, or risk-closed.
-- Memory/docs runs after validation and review reach terminal evidence states, then transfers
-  `completion_bundle_ref` to memory closure. Normal formal builds reach process-complete only
+- In a legacy bundle-backed build, Memory/docs runs after validation and review reach terminal evidence states, then transfers
+  `completion_bundle_ref` to memory closure. Legacy formal builds reach process-complete only
   after memory closure consumes the canonical contract's accepted evidence, returns a no-write or
   committed receipt, and applicable parity evidence exists.
 - If memory closure returns `memory-required` or `memory-blocked-by-scope`:
@@ -212,12 +266,12 @@ They must not copy these procedures back into the 00-12 entry bodies.
   - regression handoff;
   - review handoff;
   - memory/docs handoff;
-  - `completion_bundle_ref` and memory-closure handoff;
+  - `completion_bundle_ref` and memory-closure handoff only in a legacy bundle-backed route;
   - source/deployed sync evidence when relevant.
 - Route back from validation or review to diagnosis when cause evidence is incomplete; route back to a new fix station only when the blocker names a bounded repair surface. Do not let completion substitute for a missing repair artifact.
-- Memory/docs runs only after the fix delivery has terminal validation and review evidence, then
+- In a legacy bundle-backed fix, Memory/docs runs only after the fix delivery has terminal validation and review evidence, then
   transfers `completion_bundle_ref` to memory closure.
-- A normal formal fix needs the memory-closure no-write or committed receipt for process-complete.
+- A legacy bundle-backed formal fix needs the memory-closure no-write or committed receipt for process-complete.
   Protected follow-up pending is available only when the reference resolves through the canonical
   contract to `source-level-explicit`; commit or release readiness still waits for the protected
   memory path when required.
@@ -243,6 +297,11 @@ They must not copy these procedures back into the 00-12 entry bodies.
 
 ## 07 Debug / 除錯
 
+When fault investigation benefits from a method reference, Main reads
+`Shared/policies/references/debug-investigation-methods.md` on demand for
+reproduction, competing hypotheses, data-flow/state/boundary tracing and evidence.
+No retired reasoning/diagnosis Skill, CLI worker or optional provider is required.
+
 - Gather logs, traces, stack frames, commands, inputs, recent changes, and environment signals without mutating source.
 - State hypotheses and disconfirming evidence.
 - Treat model knowledge as AI prior only.
@@ -254,13 +313,15 @@ They must not copy these procedures back into the 00-12 entry bodies.
 
 ## 09 Commit / 紀錄
 
+Explicit checkpoint/release tasks use `Shared/workflows/git-checkpoint.md`, `Shared/workflows/plugin-release.md`, or `Shared/workflows/release-readiness.md`. These arrange phases only; canonical authorization and completion remain separate.
+
 - Distinguish final commit preparation from a previously authorized long-work Git checkpoint.
   A checkpoint receipt is stability evidence only and does not satisfy this route's downstream gates.
 - Scan dirty files, staged files, source/deployed parity, memory status, validation state, review state, and unresolved blockers.
-- Consume the latest implementation/change-application `completion_bundle_ref` only as a consumer input to the artifact chain.
+- In a legacy bundle-backed commit route, consume the latest implementation/change-application `completion_bundle_ref` only as a consumer input to the artifact chain.
   Re-check dirty files, expected dirty files, expected untracked files, grounding gaps, sync evidence, validation, review, read-only memory/docs disposition, canonical contract evidence, and the memory-closure no-write or committed receipt directly.
 - Run `commit_preflight` or equivalent source-memory consistency evidence only in this route or an explicit commit-prep/closeout station.
-- Commit, push, tag, release, deployment, and memory commit are separate protected phases with separate authorization.
+- Commit, push, tag, release, and deployment use their respective protected authorization. A legacy bundle-backed `memory_commit` retains its separate frozen phase; an ordinary post-cutover same-scope commit follows Authorization Resolution.
 - If preflight needs to accept expected dirty or untracked state, the override must be single-use, exact file allowlist scoped, current diff/hash-bound where available, and auditable with reason, expiry, and responsible owner.
   Wildcard, directory-wide, persistent, or policy-level overrides are forbidden.
 - If preflight finds stale memory, missing validation, missing review, missing sync, compact-packet blockers, unexpected dirty files, unexpected untracked files, or untracked required files, route back to the owner workflow.
@@ -313,12 +374,12 @@ They must not copy these procedures back into the 00-12 entry bodies.
   - `size_split_impact`;
   - `size_split_disposition`;
   - grounding handoff;
-  - `completion_bundle_ref` and memory-closure handoff;
+  - `completion_bundle_ref` and memory-closure handoff only in a legacy bundle-backed route;
   - memory/docs handoff;
   - validation handoff;
   - independent review handoff.
 - Route back to skill forge through a new scoped station when metadata, boundary language, source/deployed parity, or reference placement fails downstream review. Skill source changes require memory/docs impact assessment before completion.
-- If skill source delivery is validated and reviewed, memory closure consumes
+- For a legacy bundle-backed skill delivery that is validated and reviewed, memory closure consumes
   `completion_bundle_ref` and the canonical contract's accepted evidence, then returns the no-write
   or committed receipt required for process-complete. Protected follow-up pending is available only
   when the reference resolves through the canonical contract to `source-level-explicit`. Full

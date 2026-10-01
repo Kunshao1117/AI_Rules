@@ -1,9 +1,11 @@
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+Import-Module (Join-Path $repoRoot 'Scripts/modules/Skill-Migration.psm1') -Force
 
 function Get-RequiredContent {
     param([Parameter(Mandatory = $true)][string]$RelativePath)
 
-    $path = Join-Path $repoRoot $RelativePath
+    $legacy = Resolve-LegacySharedSkillReference -Reference $RelativePath -SharedRoot (Join-Path $repoRoot 'Shared')
+    $path = if ($legacy) { $legacy.Path } else { Join-Path $repoRoot $RelativePath }
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
         throw "Expected canonical file is missing: $RelativePath"
     }
@@ -18,8 +20,13 @@ $protectedActions = Get-RequiredContent 'Shared\policies\references\protected-ac
 $completionState = Get-RequiredContent 'Shared\policies\references\completion-state-machine.md'
 $roleBoundaries = Get-RequiredContent 'Shared\skills\team-role-boundaries\SKILL.md'
 $memoryOps = Get-RequiredContent 'Shared\skills\memory-ops\SKILL.md'
-$memoryClosure = Get-RequiredContent 'Shared\skills\team-specialist-memory-closure\SKILL.md'
-$closureArtifact = Get-RequiredContent 'Shared\skills\team-memory-closure-delivery-artifact\SKILL.md'
+$memoryClosureAlias = Get-RequiredContent 'Shared\skills\team-specialist-memory-closure\SKILL.md'
+$closureArtifactAlias = Get-RequiredContent 'Shared\skills\team-memory-closure-delivery-artifact\SKILL.md'
+$memoryClosure = Get-RequiredContent 'Shared\policies\references\legacy-skills\team-specialist-memory-closure\pre-m3-original.md'
+$closureArtifact = Get-RequiredContent 'Shared\policies\references\legacy-skills\team-memory-closure-delivery-artifact\pre-m3-original.md'
+$m3Transition = Get-RequiredContent 'Shared\policies\references\legacy-memory-team-transition.md'
+$m3ReviewEvidence = Get-RequiredContent 'Shared\policies\references\memory-review-evidence.md'
+$m3UpdateEvidence = Get-RequiredContent 'Shared\policies\references\memory-update-sync-evidence.md'
 $boardSlice = Get-RequiredContent 'Shared\skills\team-task-board\references\board-field-slice-and-roles.md'
 $packet = Get-RequiredContent 'Shared\skills\team-station-handoff-packet\references\packet-schema-and-routing.md'
 $workflowMemoryEvidence = Get-RequiredContent 'Shared\policies\references\workflow-memory-evidence.md'
@@ -29,10 +36,21 @@ $teamTraceEvidence = Get-RequiredContent 'Shared\policies\team-trace-evidence.md
 $teamTraceFields = Get-RequiredContent 'Shared\policies\references\team-trace-fields.md'
 
 Describe 'Memory closure bundle contract' {
+    It 'resolves retired Skill IDs as references while current frozen continuation stays phase-bound' {
+        $memoryClosureAlias | Should Match 'not an active Skill'
+        $closureArtifactAlias | Should Match 'not an active Skill'
+        $m3Transition | Should Match 'frozen_memory_action'
+        $m3Transition | Should Match 'distinct from `memory-docs`'
+        $m3Transition | Should Match 'blocked` or `unverified`'
+        $m3ReviewEvidence | Should Match 'generated_copy_impact'
+        $m3ReviewEvidence | Should Match 'required_target_or_no_change'
+        $m3UpdateEvidence | Should Match 'partial_failure'
+        $m3UpdateEvidence | Should Match 'memory_commit_result'
+    }
     It 'defaults to process-complete and permits source-level only by explicit exception' {
-        $bundle | Should Match 'A new formal source route defaults to `process-complete`'
+        $bundle | Should Match 'A new legacy bundle-backed formal source route defaults to `process-complete`'
         $bundle | Should Match '(?s)source-level.*only when.*source-level-explicit'
-        $completionState | Should Match '(?s)New formal source work selects `process-complete` by default.*source-level-explicit'
+        $completionState | Should Match '(?s)New legacy bundle-backed formal source work selects `process-complete` by default.*source-level-explicit'
     }
 
     It 'binds three independent memory phases without phase carryover' {
@@ -40,7 +58,7 @@ Describe 'Memory closure bundle contract' {
         $bundle | Should Match 'protected_memory_write:'
         $bundle | Should Match 'protected_memory_commit:'
         $bundle | Should Match 'No candidate derives from\s+`implementation-change-delivery`'
-        $phaseRegistry | Should Match 'Authorization never carries from one phase to another'
+        $phaseRegistry | Should Match 'Authorization never carries from one legacy phase to another'
         $phaseRegistry | Should Match '(?s)separate phase bindings.*not carryover from\s+`implementation-change-delivery`'
     }
 
@@ -50,11 +68,15 @@ Describe 'Memory closure bundle contract' {
         $bundle | Should Match 'resource outside `existing_owner_scope_ref`'
         $bundle | Should Match '(?s)must not:.*source writes.*validation.*review.*completion.*Git.*deployment'
         $protectedActions | Should Match '(?s)Memory card or project context write.*protected-memory-write'
-        $protectedActions | Should Match '(?s)Git mutation.*`git`'
-        $protectedActions | Should Match '(?s)Deployment mutation.*`deployment`'
+        # Phase 2 general action classes supersede the old Git/deployment rows;
+        # the frozen Memory bundle must still never supply either authority.
+        $protectedActions | Should Match 'Local stage/commit/branch/stash additionally require an explicit Git request'
+        $protectedActions | Should Match '(?s)external deployment.*`protected.external`.*Explicit action and target'
     }
 
-    It 'keeps fixed responsibility slots where reserved standby and resume are not replacements' {
+    It 'keeps frozen compatibility responsibility slots without making them general Team requirements' {
+        $roleBoundaries | Should Match 'compatibility-only, and not required for\s+general vNext work'
+        $roleBoundaries | Should Match 'LEGACY_TEAM_COMPATIBILITY_START'
         $roleBoundaries | Should Match '(?s)five independent responsibility slots:\s*implementation,\s*validation, review, memory-closure, and completion'
         $roleBoundaries | Should Match '(?s)A reserved slot need not have a formal station, member assignment,\s*role instance, context, or packet'
         $roleBoundaries | Should Match '(?s)After every active round, an activated slot becomes standby'
@@ -83,7 +105,7 @@ Describe 'Memory closure bundle contract' {
     It 'keeps missing owner conflict compaction sensitive action and absent MCP receipt non-complete' {
         $bundle | Should Match '(?s)`memory-card-missing`, owner conflict, compaction need.*blocked or unverified'
         $memoryOps | Should Match '(?s)`memory-conflict-or-compaction-blocked`.*before writing'
-        $protectedActions | Should Match '(?s)Credential or secret handling.*Explicit credential scope'
+        $protectedActions | Should Match '(?s)Agent secret read/reveal/create/modify.*`protected.credential_privilege`.*Explicit credential/privilege action and target'
         $memoryOps | Should Match '(?s)Missing MCP capability or receipt is `memory-unverified`\s*or `blocked`'
         $completionState | Should Match '(?s)If any required component.*cannot be `complete`'
     }
@@ -94,7 +116,7 @@ Describe 'Memory closure bundle contract' {
     }
 
     It 'keeps completion-bundle schema ownership and candidate mapping canonical' {
-        $bundle | Should Match '(?i)sole owner of the `completion_bundle` schema'
+        $bundle | Should Match '(?i)sole owner of the legacy `completion_bundle` schema'
         $bundle | Should Match '(?m)^\s*candidate_phase_map\s*:'
 
         $consumerReference = '(?i)memory-closure-bundle-contract\.md|completion_bundle_ref'

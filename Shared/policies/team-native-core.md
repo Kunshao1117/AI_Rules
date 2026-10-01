@@ -1,3 +1,19 @@
+
+General Agent roles and bounded assignments are owned by
+`Shared/agents/_registry.md` and `Shared/policies/agent-governance.md`.
+Model intent belongs to `Shared/policies/model-profile-routing.md`;
+the platform owns worker lifecycle. This retained Skill/reference is not a
+formal vNext Agent definition or a general Team prerequisite.
+
+## Legacy compatibility boundary
+
+The delimited body below is legacy, compatibility-only, and not required for
+general vNext work, including Team. Its original paths, anchors and meanings
+remain available to frozen Memory consumers. Do not derive Memory records,
+authority or completion from a vNext assignment. Do not load this body merely
+because execution mode is Team.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_START -->
 # Team-Native Core Policy
 
 This file defines the AI_Rules Team-Native Core.
@@ -6,26 +22,22 @@ Director-facing reports, replies, confirmations, status summaries, handoffs, and
 Use Chinese here only for exact Director-facing examples, established localized labels, or explicit task requirements.
 Do not insert abrupt Traditional Chinese prose into the English policy body.
 
-Team-Native / subagent team mode applies only after
-`Shared/policies/execution-routing.md` resolves `execution_topology: delegated`.
-It is not AI default-on, a single subagent feature, a single workflow, or a single skill.
+Team-Native applies only after `Shared/policies/execution-routing.md`
+resolves `execution_mode: team`. Direct and Assisted do not load this internal
+runtime or require its board, station, role, handoff, wave, or completion chain.
 
 ## Core Contract
 
-Team-Native Core is the highest-priority governance spine after delegated
-topology is selected.
+This file owns legacy Team internals until Phase 3; it does not own admission
+or semantic action authority. `execution-routing.md` alone selects the mode;
+`authorization-resolution.md` independently resolves observe, local_work, and
+protected actions. A helper request alone can be Assisted. Impact, workflow
+names, and available tools never select Team by themselves.
 
-`execution-routing.md` uniquely classifies topology, change impact, and action
-risk. Governed work, workflow names, source impact, and available tools are
-not Team triggers by themselves. Requests for a team, team member, subagent,
-delegation, or Team-Native are delegated-topology triggers; the Director does
-not need a fixed phrase such as "啟動團隊模式".
-
-When topology is Direct, captain/team-board limits do not apply and no Captain
-Team Board is required. Normal lifecycle, scoped authorization,
-protected-action gates, read-before-write, security, and source/deployed sync
-rules still apply. Direct work must not claim Team-Native completion, separated
-station evidence, or team review.
+Legacy phase, station, and expiry records below apply only inside resolved
+Team or their explicitly frozen Memory consumers. General authorization does
+not require a universal cryptographic envelope. The original Memory contract
+remains frozen and must not be inferred complete, unnecessary, or authorized.
 
 When Team mode is active, the valid runtime state is board-first station assignment, not captain-direct execution.
 A platform that lacks native subagents remains in Team-Native mode through adapters, evidence branches, or CLI/MCP/browser channels.
@@ -187,14 +199,16 @@ Captain Team Board -> station family -> formal station -> sub-station task -> me
 A station family groups related work such as scope, implementation, validation, review, memory/docs, or completion.
 A formal station is the authorized unit.
 A sub-station task is the smallest bounded piece that one member can perform without crossing role boundaries.
-Member allocation decides how many people or channels are assigned to that bounded task.
+Member allocation assigns responsibility-bearing workers/roles/contexts to that bounded task.
 Execution channels are only routes for assigned members.
 They do not create roles, authorization, or completion evidence by themselves.
 
-Multiple members does not mean multiple subagents.
-A member can be a native subagent, project custom agent, browser branch, CLI branch, or MCP read path.
-A member can also be a station-owned main-worktree change delivery route or isolated workspace.
-A member can also be a text change delivery path or other governed channel.
+Members are responsibility-bearing workers/roles/contexts, such as native
+subagents or project custom agents. CLI, terminal, browser, MCP and a tool
+invocation are never members or independent reviewers. A member can use these
+providers, a main worktree or isolated workspace, and return a text artifact.
+Provider resolution belongs to `capability-resolution.md`; an evidence branch
+requires genuinely separate worker/context isolation, not a tool label.
 The board records the member role, role instance, assigned specialist skill, sub-station task, and channel request.
 It also records channel capability, channel invocation status, delivery artifact type, and delivery artifact status.
 
@@ -304,7 +318,8 @@ details are in [Captain Boundary Reference](references/team-native-core-captain-
 
 After Team mode activation, the captain must create the Captain Team Board before any specialist work starts.
 This applies after activation by delegated topology.
-It applies before any specialist, subagent execution channel, browser branch, CLI branch, or MCP read evidence.
+It applies before formal specialist work or a genuinely separate evidence worker/context starts.
+Ordinary browser, terminal and MCP calls do not activate Team or create members.
 It also applies before any main-worktree change-delivery branch.
 It also applies before isolated change-delivery, text change-delivery, validation, review, and completion audit.
 It applies before commit preparation or release preparation.
@@ -348,7 +363,18 @@ Station family, formal station, sub-station task, member allocation, execution c
 Collapsing member count does not collapse station families.
 A one-member station can still be valid; a no-station captain shortcut is not valid for Team-Native completion.
 
-## Tool Execution Envelope Rule
+## Tool Execution Evidence
+
+General Team actions follow `authorization-resolution.md`: explicit action +
+target and native permission suffice unless a real native tool contract
+requires additional evidence. No universal issuer/signature/nonce is required;
+never fabricate a receipt or bypass a native denial.
+
+### Legacy Memory Compatibility — Frozen Envelope Consumer Only
+
+The original envelope clauses below are retained only for frozen Memory
+consumers. They do not gate non-Memory protected actions or local_work.
+
 
 Tool layers may receive a `tool_execution_envelope` only as a structured carrier for the current Team-Native trace.
 The carrier may include board, station, handoff packet, role, channel capability, authorization scope, and delivery status.
@@ -535,7 +561,7 @@ Once Team mode is active, platform capability only chooses a station channel or 
 - Claude maps stations to built-in/custom/plugin subagents, description-driven delegation, hooks/checkpoints, and command evidence.
 - Claude also maps stations to station-owned main-worktree change delivery, isolated workspaces, or text change delivery artifacts.
 - Claude unavailable channels become standby, blocked, or unverified station states.
-- Antigravity / Gemini maps stations through Gemini/Antigravity adapters, browser-capable agents, CLI evidence, and plugin adapters.
+- Antigravity / Gemini maps responsible workers through current adapters; those workers may use browser, terminal and integration providers.
 - Antigravity / Gemini also maps stations to station-owned main-worktree change delivery or text change delivery artifacts.
 - Antigravity / Gemini unavailable channels become standby, blocked, or unverified station states.
 - Cursor maps stations to Task subagents such as `explore`, `generalPurpose`, and `shell`, plus browser/terminal/MCP evidence and station-owned change delivery.
@@ -567,3 +593,5 @@ They include delivery artifact IDs, author roles, source inputs, integrable scop
 They include review/validation/memory-docs states, captain authoring state, role boundaries, direct exceptions, and completion state.
 
 When execution trace evidence is required and absent, validation is unverified or blocked.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_END -->

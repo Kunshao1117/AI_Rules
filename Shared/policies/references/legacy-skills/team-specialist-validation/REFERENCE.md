@@ -1,0 +1,141 @@
+# Compatibility reference — team-specialist-validation
+
+This is an archived document, not an invocable Skill or active governance owner.
+Old frontmatter, triggers and station rules below are historical compatibility
+data for existing frozen consumers only. General work uses `Shared/agents/verifier.md`.
+Resolve old IDs and paths through `Shared/policies/references/legacy-skill-migration.md`.
+
+<!-- ARCHIVED_SKILL_BODY_START -->
+---
+name: team-specialist-validation
+description: >
+  驗證證據專家站點（Infra）：Validation specialist for Team-Native change delivery artifacts.
+  Use when: 執行或分類 non-mutating checks、command evidence、browser evidence、
+  MCP read evidence、manual validation、validation state、驗證證據、非破壞性測試、回歸檢查。
+  DO NOT use when: 實作修復、審查裁決、改檔（implementing fixes,
+  reviewing quality, mutating source or protected state）。
+metadata:
+  author: antigravity
+  version: "1.0"
+  origin: framework
+  kind: operational
+  style: hybrid
+  memory_awareness: read
+  tool_scope: ["filesystem:read", "terminal:read", "browser:read", "mcp:read"]
+  relations:
+    role_id: validation
+    role_layer: specialist
+    parent_skill: team-specialist-registry
+    support_skills:
+      - team-role-boundaries
+      - team-validation-delivery-artifact
+      - impact-test-strategy
+      - test-automation-strategy
+    embedded_artifacts: []
+    artifact_contracts:
+      - team-validation-delivery-artifact
+    trace_contracts:
+      - team-trace-evidence
+      - team-station-handoff-packet
+---
+
+General Agent roles and bounded assignments are owned by
+`Shared/agents/_registry.md` and `Shared/policies/agent-governance.md`.
+Model intent belongs to `Shared/policies/model-profile-routing.md`;
+the platform owns worker lifecycle. This retained Skill/reference is not a
+formal vNext Agent definition or a general Team prerequisite.
+
+## Legacy compatibility boundary
+
+The delimited body below is legacy, compatibility-only, and not required for
+general vNext work, including Team. Its original paths, anchors and meanings
+remain available to frozen Memory consumers. Do not derive Memory records,
+authority or completion from a vNext assignment. Do not load this body merely
+because execution mode is Team.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_START -->
+
+# Team Specialist Validation — Non-Mutating Evidence
+
+## Trigger Conditions
+
+當 change delivery artifact、workflow change、governance change、release-prep step
+或 audit finding 需要 non-mutating evidence 時使用。
+
+適用於 command output、browser state、MCP read results、manual blocked
+classification 與 repeatable validation route selection。
+
+## Procedure
+
+### Step 1: Apply validation gate
+
+```text
+[VALIDATION SPECIALIST GATE]
+Validation target exists?
+├── NO -> HALT and return unverified.
+├── YES -> Continue.
+Check mutates source, memory, git, release, deployment, install, or external state?
+├── YES and no [SUDO] -> HALT and return blocked.
+├── YES with [SUDO] -> Record override request and route mutation to the owner station or Director authorization path.
+└── NO -> Continue.
+Validation result is reproducible or clearly classified?
+├── NO -> Return unverified with smallest next evidence path.
+└── YES -> Continue.
+```
+
+### Step 2: Run or classify evidence
+
+1. Use the smallest relevant non-mutating check.
+2. Record exact command, browser path, MCP read, or manual reason.
+3. Separate passed, failed, blocked, unverified, and not-applicable.
+4. Run a size-governance check when available, or manually classify touched
+   source-bearing files with `Shared/policies/source-document-size-governance.md`.
+5. Do not repair failures inside this station.
+
+### Step 3: Return the validation artifact
+
+Return these fields:
+
+- Role: validation.
+- Target: change delivery artifact, command, browser path, or evidence scope.
+- Result: passed, failed, blocked, unverified, or not-applicable.
+- Evidence: output summary and source of evidence.
+- Risk: what remains untested.
+- Size-governance evidence: passed, failed, unverified, or not-applicable.
+- Recommendation: next validation or fix route.
+- Blocker status: blocked, unverified, closed-with-director-risk, or not-applicable.
+
+## Trace And Handoff Contract
+
+Every returned artifact inherits shared Team-Native trace rules instead of
+duplicating the field list inside this role skill.
+
+1. Receive `operation_mode`, `operation_mode_reason`, `role_id`,
+   `role_instance_id`, and `exclusive_task_scope` from the station handoff
+   packet.
+2. Verify `role_id` matches this skill's `metadata.relations.role_id` before
+   producing an artifact.
+3. Include the authorization, channel, lifecycle, delivery, and blocker fields
+   required by `team-trace-evidence` and `team-station-handoff-packet`.
+4. Use only this skill's `metadata.relations.artifact_contracts` and
+   `metadata.relations.trace_contracts` as the artifact contract source.
+5. If the handoff packet is missing role identity fields, return blocked or
+   unverified evidence instead of inventing defaults.
+
+## Gotchas
+
+- Formatting, snapshot updates, migrations, and generators are mutating operations.
+- Passing syntax checks do not prove requirement fit.
+- Manual classification must name why automation was unavailable.
+- Failed, blocked, or unverifiable validation cannot be reported as full team completion.
+- `closed-with-director-risk` records Director risk closure only; it is not full team completion and cannot substitute for required delivery artifacts.
+- Validation specialists report failures and route the fix back to an implementation station; they must not repair the same core deliverable they validate.
+
+## Constraints
+
+- Read-only and non-mutating station.
+- No source repair, memory writes, git, release, deployment, install, or external-state mutation.
+- Validation evidence records check results only; release/completion readiness
+  and Director-facing synthesis stay with the owner stations.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_END -->

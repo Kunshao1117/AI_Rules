@@ -1,88 +1,44 @@
 ---
 name: gitnexus-exploring
 description: >
-  程式碼庫探索與架構走查：GitNexus 程式碼庫探索、架構走查、執行流程理解與陌生模組檢視；codebase exploration.
-  Use when: 想了解程式碼怎麼運作、what calls this function、auth flow、
-  專案結構、陌生模組或 execution flow。
-  DO NOT use when: 已有明確 bug 要追蹤（用 gitnexus-debugging），
-  或要安全重構、改名、搬移檔案（用 gitnexus-refactoring）。
+  已選用 GitNexus 圖譜的局部程式結構探索方法。
+  Use when: 此次探索可從已確認可用的 GitNexus symbol、dependency 或 process 證據受益。
+  DO NOT use when: 一般 repository search、已有足夠原始碼線索，或 GitNexus 尚不可用。
 metadata:
   author: gitnexus
-  version: "0.1.0"
+  version: "7.0"
   origin: framework
   kind: operational
+  memory_awareness: none
 ---
 
-# Exploring Codebases with GitNexus
+# gitnexus-exploring
 
-## When to Use
+GitNexus Optional Pack. Invocation classification: restricted; provider-specific: yes.
+This classification is not platform invocation enforcement. Load this method
+only for the selected task, never the entire pack or a keyword-only match.
 
-- "How does authentication work?"
-- "What's the project structure?"
-- "Show me the main components"
-- "Where is the database logic?"
-- Understanding code you haven't seen before
+## Shared prerequisite reference
 
-## Workflow
+Read `Shared/policies/references/gitnexus-guide.md` for common readiness, side effects, fallback and policy boundaries.
+`Shared/policies/capability-resolution.md` remains the readiness/selection owner.
+The guide is a document, not another Skill. No relations or automatic sibling
+loading is introduced. Missing GitNexus leaves ordinary work on native methods.
 
-```
-1. READ gitnexus://repos                          → Discover indexed repos
-2. READ gitnexus://repo/{name}/context             → Codebase overview, check staleness
-3. gitnexus_query({query: "<what you want to understand>"})  → Find related execution flows
-4. gitnexus_context({name: "<symbol>"})            → Deep dive on specific symbol
-5. READ gitnexus://repo/{name}/process/{name}      → Trace full execution flow
-```
+## Specific method
 
-> If step 2 says "Index is stale" → run `npx gitnexus analyze` in terminal.
+1. Bound the question to a feature, entry point or unfamiliar module. Reuse an
+   already identified repository; list repos only when disambiguation is needed.
+2. Inspect available context/coverage for that repository, then query the narrow
+   concept. Processes and clusters suggest where to read; no full graph tour.
+3. Resolve ambiguous symbols by file/ID and inspect incoming/outgoing relations.
+   Follow only relationships relevant to the question; stop once evidence suffices.
+4. Read current source for implementation detail, configuration and dynamic
+   connections. A missing edge does not establish no dependency.
+5. Explain the bounded entry-to-outcome path with source locations; distinguish
+   graph inference from inspected code and actual runtime evidence. Graph Process
+   paths are inferred structure, not proof a user flow actually ran.
 
-## Checklist
-
-```
-- [ ] READ gitnexus://repo/{name}/context
-- [ ] gitnexus_query for the concept you want to understand
-- [ ] Review returned processes (execution flows)
-- [ ] gitnexus_context on key symbols for callers/callees
-- [ ] READ process resource for full execution traces
-- [ ] Read source files for implementation details
-```
-
-## Resources
-
-| Resource                                | What you get                                            |
-| --------------------------------------- | ------------------------------------------------------- |
-| `gitnexus://repo/{name}/context`        | Stats, staleness warning (~150 tokens)                  |
-| `gitnexus://repo/{name}/clusters`       | All functional areas with cohesion scores (~300 tokens) |
-| `gitnexus://repo/{name}/cluster/{name}` | Area members with file paths (~500 tokens)              |
-| `gitnexus://repo/{name}/process/{name}` | Step-by-step execution trace (~200 tokens)              |
-
-## Tools
-
-**gitnexus_query** — find execution flows related to a concept:
-
-```
-gitnexus_query({query: "payment processing"})
-→ Processes: CheckoutFlow, RefundFlow, WebhookHandler
-→ Symbols grouped by flow with file locations
-```
-
-**gitnexus_context** — 360-degree view of a symbol:
-
-```
-gitnexus_context({name: "validateUser"})
-→ Incoming calls: loginHandler, apiMiddleware
-→ Outgoing calls: checkToken, getUserById
-→ Processes: LoginFlow (step 2/5), TokenRefresh (step 1/3)
-```
-
-## Example: "How does payment processing work?"
-
-```
-1. READ gitnexus://repo/my-app/context       → 918 symbols, 45 processes
-2. gitnexus_query({query: "payment processing"})
-   → CheckoutFlow: processPayment → validateCard → chargeStripe
-   → RefundFlow: initiateRefund → calculateRefund → processRefund
-3. gitnexus_context({name: "processPayment"})
-   → Incoming: checkoutHandler, webhookHandler
-   → Outgoing: validateCard, chargeStripe, saveTransaction
-4. Read src/payments/processor.ts for implementation details
-```
+Example: payment question -> query the concept -> context on the chosen handler
+-> inspect its relevant process -> confirm the actual source. This is a method
+choice, not a fixed five-tool pipeline or a final architecture decision.

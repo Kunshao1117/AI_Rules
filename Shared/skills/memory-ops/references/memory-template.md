@@ -138,12 +138,20 @@ If you manually add `dependencies`, document the reason in `## Current Truth` or
 - {skill-name} — {觸發條件描述}
 ```
 
+Keep concise technical rationale, important supersession or stop reasons,
+and revalidation conditions when they explain current design. A rejected
+alternative is retained only when it meets the durable-rationale admission
+in `../../../policies/memory-governance.md`; longer traceable history belongs
+in an archive, not an active-card changelog.
+
 ## Compaction Rules
 
 - Add at most one new `## Cycle Events` item per memory update.
 - Do not add event 31. Compact first.
 - During compaction, summarize still-valid facts into `## Current Truth`, move old detail to archive volume files such as `archive-001.md`, reset the next cycle to event 1, and update `## Archive Index`.
-- If old content is contradictory or too large to summarize safely, stop at a compaction plan and ask for Director approval.
+- If old content is contradictory or too large to summarize safely, stop at a
+  compaction plan and identify the missing evidence or topology decision;
+  authorization of any physical edit remains with Authorization Resolution.
 
 ### Compaction Status Schema
 

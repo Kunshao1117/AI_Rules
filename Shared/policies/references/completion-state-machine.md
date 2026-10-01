@@ -1,8 +1,12 @@
 # Completion State Machine Reference
 
-This reference owns closeout targets, completion states, and transition rules
-for Team-Native work. Workflow policies, board skills, trace evidence, and hook
-outputs must cite this file instead of defining local completion meanings.
+This reference owns legacy Team-Native closeout targets, states, and transition
+rules for frozen or unmigrated bundle consumers. Its schema and aliases remain
+valid for those consumers. Ordinary vNext work uses
+`../completion-policy.md` for the five general completion states and consumes
+Memory evidence without a mandatory bundle or receipt. Legacy workflow
+policies, board skills, trace evidence, and hook outputs cite this file rather
+than defining local legacy completion meanings.
 
 ## Closeout Targets
 
@@ -25,7 +29,7 @@ Compatibility aliases:
 - `commit-ready` is a release-readiness subtarget and cannot pass before
   `process-complete` is satisfied.
 
-New formal source work selects `process-complete` by default. It may select
+New legacy bundle-backed formal source work selects `process-complete` by default. It may select
 `source-level` only when the initial visible formal-write agreement records the
 `source-level-explicit` exception. Existing or legacy execution specs are not
 retrospectively given completion-bundle candidates, memory-phase authority, or

@@ -34,6 +34,10 @@ begin
 end $$;
 ```
 
+An existing name is not proof of an equivalent definition. Compare the actual definition,
+columns and validation state; do not silently accept a mismatched constraint. These are
+migration design examples, not automatically authorized SQL.
+
 For all constraint types:
 
 ```sql
@@ -43,8 +47,9 @@ begin
   if not exists (
     select 1 from pg_constraint
     where conname = 'check_age_positive'
+    and conrelid = 'public.users'::regclass
   ) then
-    alter table users add constraint check_age_positive check (age > 0);
+    alter table public.users add constraint check_age_positive check (age > 0);
   end if;
 end $$;
 
@@ -54,10 +59,11 @@ begin
   if not exists (
     select 1 from pg_constraint
     where conname = 'profiles_birthchart_id_fkey'
+    and conrelid = 'public.profiles'::regclass
   ) then
-    alter table profiles
+    alter table public.profiles
     add constraint profiles_birthchart_id_fkey
-    foreign key (birthchart_id) references birthcharts(id);
+    foreign key (birthchart_id) references public.birthcharts(id);
   end if;
 end $$;
 ```

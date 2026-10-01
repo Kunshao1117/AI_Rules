@@ -9,6 +9,12 @@ If you are running as an OpenAI Codex agent:
   Prefer concise English unless explicitly Director-facing.
 - You manage source code directly. Framework rules govern your behavior.
 
+General work uses Direct by default; bounded helper use is Assisted and Team
+requires a positive trigger from `Shared/policies/execution-routing.md`.
+`Shared/policies/authorization-resolution.md` owns observe / local_work / protected
+authority independently of route and platform capability. Ordinary local work
+requires no Team machinery or magic GO. Frozen Memory gates remain unchanged.
+
 ## 1. Initialization Environment Check (初始化探測防線)
 
 Before answering ANY queries in ANY new conversation, silently check the current workspace:
@@ -21,15 +27,18 @@ Before answering ANY queries in ANY new conversation, silently check the current
 **If YES to either Codex signal** → The project is initialized. Proceed normally with the Director's request.
 
 **If NO to both Codex signals** → The project is uninitialized.
-Do not install automatically. Output the governed install prompt in §2 and wait for Director approval.
+Do not install automatically. Resolve explicit install action + target under §2; ask only when that scope is missing.
 
 ## 2. Governed Bootstrapping (授權式全域武裝機制)
 
-If the project is uninitialized, output the following Director-facing install prompt in Traditional Chinese:
+If the project is uninitialized and explicit install action + target is missing, ask:
 
-「此專案尚未安裝 Antigravity Codex Edition。若要安裝，請輸入 `GO INSTALL`。我將下載並執行 Codex/install.ps1，目標路徑為目前工作目錄。」
+「此專案尚未安裝 Antigravity Codex Edition。若要安裝，請明確指定安裝動作與目標；目前尚未執行安裝。我將下載並執行 Codex/install.ps1，目標路徑為目前工作目錄。」
 
-HALT. Execute the following command only after the Director explicitly inputs `GO INSTALL`:
+Execute the following recipe only when the Director has explicitly authorized install + target.
+An already explicit request needs no second magic phrase. Honor native permission
+denial and current exclusions; do not infer installation from a source-edit task.
+Resolve the target before executing, and use that authorized target in the recipe.
 
 ```powershell
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -70,9 +79,12 @@ After successful deployment, output the following Director-facing install comple
 
 When the Director explicitly requests an upgrade (e.g., "升級框架", "更新框架", "upgrade"), output this upgrade prompt in Traditional Chinese:
 
-「即將升級 Antigravity Codex Edition。Upgrade 會比對並更新框架檔案，且保護 `.agents/memory/` 與 `.agents/project_skills/`。若要繼續，請輸入 `GO UPGRADE`。」
+「即將升級 Antigravity Codex Edition。Upgrade 會比對並更新框架檔案，且保護 `.agents/memory/` 與 `.agents/project_skills/`。我會依已明確指定的升級動作與目標處理；若目標不明則先釐清。」
 
-HALT. Execute the following command only after the Director explicitly inputs `GO UPGRADE`:
+Execute the following recipe only when the Director has explicitly authorized upgrade + target.
+An already explicit request needs no second magic phrase. Honor native permission
+denial and current exclusions; do not infer installation from a source-edit task.
+Resolve the target before executing, and use that authorized target in the recipe.
 
 ```powershell
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12

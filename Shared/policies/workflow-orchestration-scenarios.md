@@ -1,6 +1,36 @@
 # Workflow Orchestration Scenarios
 
-These scenarios are executable examples for the shared workflow orchestration contract.
+
+## General verification/review/completion ownership
+
+General verification scope/independence, evidence selection and failure
+classification belong only to `Shared/policies/verification-strategy.md`.
+Review applicability and judgment belong to `Shared/policies/review-governance.md`;
+general task completion belongs to `Shared/policies/completion-policy.md`.
+These policies supersede old escalation, review-trigger and completion clauses
+in this method/consumer. No Skill hit requires a role, full suite or Memory chain.
+Task methods remain here; frozen Memory/legacy release retain their own contracts.
+
+## General Agent applicability
+
+`Shared/policies/agent-governance.md` and `Shared/agents/_registry.md` own
+general Team assignments. Main is the ordinary implementer. In this mixed
+domain reference, every station, fixed roster, board, handoff, delivery-slice,
+dispatch-wave, retained-member, timing or execution-spec lifecycle prescription
+is legacy compatibility-only, not required for general vNext work, including
+Team. Read those prescriptions only for a frozen consumer that requires them.
+Domain procedures, grounding/evidence quality and protected gates remain.
+General Verification/Review/Completion now use their canonical policy owners;
+frozen Memory semantics remain in force. Old completion targets, status ladders
+and fixed evidence chains below are compatibility-only for frozen consumers.
+No vNext assignment is a substitute for a Memory bundle or receipt.
+
+These are illustrative legacy Team examples for the workflow sequence, not
+an executable evaluator or a second execution-mode owner. Use their station,
+board, handoff, wave, and formal phase fields only after `execution-routing.md`
+resolves Team. Direct and Assisted do not load Team machinery from examples.
+`authorization-resolution.md` independently owns general action authority;
+frozen Memory contracts retain their original meaning.
 
 They are not authorization.
 

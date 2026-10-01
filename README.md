@@ -165,9 +165,9 @@ Remove-Item $f
 
 | 需要查什麼 | 權威來源 |
 |---|---|
-| 任務如何分派與保留責任邊界 | `Shared/policies/team-native-core.md` |
+| 任務如何分派與保留責任邊界 | `Shared/policies/execution-routing.md`、`Shared/policies/agent-governance.md` |
 | 授權與受保護操作 | `Shared/policies/authorization-resolution.md`、`Shared/policies/references/protected-action-registry.md` |
-| 完成、驗證與審查證據 | `Shared/policies/references/completion-state-machine.md`、`Shared/policies/workflow-orchestration.md` |
+| 完成、驗證與審查證據 | `Shared/policies/completion-policy.md`、`Shared/policies/verification-strategy.md`、`Shared/policies/review-governance.md` |
 | 使用者語言、技術資料與輸出案例 | `Shared/policies/language-governance.md`、`Shared/policies/references/user-facing-output-examples.md` |
 | 來源與部署副本的對照 | `Shared/policies/references/source-runtime-surface-map.md` |
 | 專案目錄與腳本 | `Shared/`、`Scripts/`、`Extensions/vscode-ai-rules-manager/` |

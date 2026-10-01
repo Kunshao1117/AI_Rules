@@ -1,14 +1,50 @@
 # Four-Platform Capability Matrix
 
-This file is the AI_Rules baseline for translating platform capabilities into governed routes.
-Those routes are used by framework docs, workflow metadata, auditors, MCP profiles, and platform agents.
+
+## General verification/review/completion ownership
+
+General verification scope/independence, evidence selection and failure
+classification belong only to `Shared/policies/verification-strategy.md`.
+Review applicability and judgment belong to `Shared/policies/review-governance.md`;
+general task completion belongs to `Shared/policies/completion-policy.md`.
+These policies supersede old escalation, review-trigger and completion clauses
+in this method/consumer. No Skill hit requires a role, full suite or Memory chain.
+Task methods remain here; frozen Memory/legacy release retain their own contracts.
+
+## General Agent applicability
+
+`Shared/policies/agent-governance.md` and `Shared/agents/_registry.md` own
+general Team assignments. Main is the ordinary implementer. In this mixed
+domain reference, every station, fixed roster, board, handoff, delivery-slice,
+dispatch-wave, retained-member, timing or execution-spec lifecycle prescription
+is legacy compatibility-only, not required for general vNext work, including
+Team. Read those prescriptions only for a frozen consumer that requires them.
+Domain procedures, grounding/evidence quality and protected gates remain.
+General Verification/Review/Completion now use their canonical policy owners;
+frozen Memory semantics remain in force. Old completion targets, status ladders
+and fixed evidence chains below are compatibility-only for frozen consumers.
+No vNext assignment is a substitute for a Memory bundle or receipt.
+
+This file records platform-supported capability facts, limits and conditions.
+It stores no session readiness. Provider discovery and selection are owned by
+`Shared/policies/capability-resolution.md`, not by this matrix.
 
 Source file: `Shared/platform-capability-matrix.md`.
 Runtime copy: `.agents/shared/platform-capability-matrix.md`.
 Normal sync direction is source-to-deployed.
-Both files must remain content-identical after governance changes.
+After authorized sync both files must be content-identical; a source-only change reports deployment pending.
 
 This matrix does not authorize work.
+
+Execution mode comes only from `Shared/policies/execution-routing.md`;
+action authority comes independently from `Shared/policies/authorization-resolution.md`.
+Direct is default; bounded helper use is Assisted, without Team machinery.
+Workflow names determine phase sequence only, never mode or authorization.
+Board, station, role-instance, handoff, wave, formal-readonly/formal-write,
+and Team artifact prescriptions below are legacy compatibility-only for frozen consumers.
+Frozen Memory consumers retain their original contract, phase and evidence;
+this scope boundary neither grants Memory authority nor decides its completion.
+
 Authorization, board state, dispatch waves, handoff packets, and channel state are resolved by the shared policies below.
 Delivery artifacts are resolved by the same policy layer.
 
@@ -16,13 +52,15 @@ Delivery artifacts are resolved by the same policy layer.
 
 | Concern | Source of truth |
 |---|---|
-| Team-Native gates, topology, operation mode, and completion boundary | `Shared/policies/team-native-core.md` |
-| Direct/delegated topology and Team-Native positive conditions | `Shared/policies/execution-routing.md` |
+| General roles, independence and bounded assignment | `Shared/policies/agent-governance.md` |
+| Model profile semantics | `Shared/policies/model-profile-routing.md` |
+| Direct / Assisted / Team execution mode and Team-Native positive conditions | `Shared/policies/execution-routing.md` |
+| Provider types, discovery, readiness and selection | `Shared/policies/capability-resolution.md` |
 | Acceptance evidence selection and deep-audit admission | `Shared/policies/verification-strategy.md` |
 | Workflow route, board state, dispatch waves, and source/deployed sync | `Shared/policies/workflow-orchestration.md` |
 | Platform plan surfaces, `plan-only` / `build-plan`, and progress mirrors | `Shared/policies/platform-plan-mapping.md` |
 | Scope-bound authorization and protected phase gates | `Shared/policies/authorization-resolution.md` |
-| Board fields, station rows, and delivery forms | `Shared/skills/team-task-board/SKILL.md` |
+| Board fields, station rows, and delivery forms | `Shared/policies/references/legacy-skills/team-task-board/REFERENCE.md` |
 | Subagent and channel invocation semantics | `Shared/policies/subagent-invocation.md` |
 | Cross-thread semantic package, freshness, lifecycle, and confirmation | `Shared/policies/references/cross-thread-handoff-contract.md` |
 | Current Codex thread transport projection | `Shared/policies/adapters/codex-thread-handoff.md` |
@@ -36,16 +74,17 @@ Deployed projects read matching `.agents/shared/` and `.agents/skills/` copies w
 - `native`: The platform provides the capability directly.
   - AI_Rules governs usage.
 - `adapter`: AI_Rules fills platform gaps through rules, skills, profiles, or deployed copies.
-- `conditional`: Usable only when board evidence, adapter/tool evidence, and Team-Native trace all support it.
-  - Otherwise report `unverified`, `blocked`, or `closed-with-director-risk`.
-- `unavailable`: No route or evidence path is available for this task.
-  - Keep the station non-complete, not routine direct.
+- `conditional`: Platform support depends on the stated adapter/tool conditions; this label is not session readiness or authorization.
+  - Resolve current provider readiness through `capability-resolution.md`.
+- `unavailable`: The documented platform/adapter does not provide this capability.
+  - Current task/provider readiness and Team station disposition belong to their respective policy owners, not this support label.
 - `manual`: Human or project maintainer configuration is required.
   - AI_Rules can only provide guidance or snippets.
 
 ## Platform Capability Routing (`平台能力路由`)
 
-Route order:
+General route: resolve execution and authorization independently, then use the
+current channel and appropriate verification. Legacy Team route order only:
 
 ```text
 workflow route
@@ -75,8 +114,9 @@ Routing rules:
 - Plan surfaces are not completion evidence.
 - Missing channel capability is recorded as station or evidence state.
 - Missing channel capability does not become an execution route and does not authorize captain-direct completion.
-- Specialist role sources are `team-specialist-registry` and matching `team-specialist-*` skills.
-- Subagents, browser, CLI, MCP, isolated workspace, and text delivery are execution channels only.
+- General formal role source is `Shared/agents/_registry.md`; legacy specialist Skills serve frozen compatibility only.
+- Worker contexts are separate from their providers and delivery forms. Browser,
+  CLI, terminal and MCP do not select a mode, create a member or establish independence.
 - Director-facing reports use Traditional Chinese.
 - Internal matrix bodies prefer concise English.
 - Chinese appears only for Director-facing examples, bridge labels, or explicit requirements.
@@ -90,12 +130,12 @@ It also does not own subagent invocation, workflow evidence, plan surfaces, memo
 Boundary details:
 
 - Team capability:
-  - Matrix boundary: Team capability is `conditional` only when `execution-routing.md` resolves `execution_topology: delegated` through its positive conditions.
+  - Matrix boundary: Team capability is `conditional` only when `execution-routing.md` resolves `execution_mode: team` through its positive conditions.
   - Direct is the ordinary focused-work route; platform support, workflow names, and generic governed-work labels do not activate Team mode.
   - Detail source: `Shared/policies/execution-routing.md`.
   - Detail source: `Shared/policies/references/workflow-team-evidence.md`.
 - Verification:
-  - Matrix boundary: Verify supplies acceptance evidence at the lowest sufficient level; ordinary Direct verification has no formal Team trace.
+  - Matrix boundary: Verify supplies acceptance evidence at the lowest sufficient level; ordinary Direct and Assisted verification has no formal Team trace.
   - Detail source: `Shared/policies/verification-strategy.md`.
 - Authorization:
   - Matrix boundary: Capability labels, platform modes, workflow routes, and progress mirrors are not authority.
@@ -110,7 +150,7 @@ Boundary details:
 - Tool and skill vocabulary:
   - Matrix boundary: Metadata and `tool_scope` meanings stay with skill governance and role skills.
   - Detail source: `Shared/skill-governance.md`.
-  - Detail source: `Shared/skills/team-change-delivery-artifact/SKILL.md`.
+  - Detail source: `Shared/policies/references/legacy-skills/team-change-delivery-artifact/REFERENCE.md`.
 
 ## Platform Instruction / Rule Injection Boundary
 
@@ -137,14 +177,15 @@ Trusted issuer, signature, nonce, and receipt evidence is a tool capability,
 not a model-authored substitute. The platform may treat a genuinely verified
 envelope as hard evidence for a true protected action. It must not claim that a
 document rule or unavailable envelope is a platform hard stop for an otherwise
-eligible non-protected route.
+properly authorized general route, including protected actions.
 
 When an active tool path lacks verified-envelope capability, an allowlisted
 `product-runtime-execution` or `ORDINARY_SCOPE_BOUND_LOCAL_RUNTIME_WRITE` route
 uses scope-bound Director authorization, exact targets, platform-native
 permission/sandbox when present, the product fail-closed contract when
-applicable, and an ordinary execution receipt. A true protected action remains
-blocked without its verified protected-action evidence. The detailed boundary
+applicable, and an ordinary execution receipt. General protected actions require explicit action + target and native permission;
+only an actually required native evidence contract can require cryptographic proof.
+Frozen Memory retains its original evidence requirements. The detailed boundary
 is owned by `Shared/policies/references/credential-boundary-contract.md` and
 `Shared/policies/authorization-resolution.md`.
 
@@ -209,7 +250,10 @@ Do not generalize one platform's burden model across all supported platforms.
 
 ### Workflow Entry
 
-- Antigravity / Gemini: `native`; `.agents/workflows/*.md`, route only.
+- Antigravity / Gemini: canonical procedures are delivered on demand through
+  `.agents/skills/<procedure>/SKILL.md`; legacy `.agents/workflows/*.md` remains
+  compatibility-only during the platform deprecation window, not the future
+  delivery dependency for those procedures.
 - Claude Edition: `native`; `.claude/commands/*/SKILL.md`, route only.
 - Codex Edition: `adapter`; workflow skills merge into `.agents/skills/`, route only.
 - Cursor Edition: `adapter`; workflow skills merge into `.cursor/skills/`, route only.
@@ -237,19 +281,32 @@ Do not generalize one platform's burden model across all supported platforms.
 
 ### Operator Path Evidence
 
-- Antigravity / Gemini: `adapter`; IDE, browser-capable agent, Gemini CLI, Gateway, and logs.
+- Antigravity / Gemini: `adapter`; current IDE, browser, terminal, integration and log surfaces. Generic AI CLI worker fallback is retired; explicit external AI comparison follows `capability-resolution.md`.
 - Claude Edition: `native` + `adapter`; shell, hooks, browser, MCP, and plugin host.
 - Codex Edition: `native` + `adapter`; terminal, browser, MCP, plugin host, and preview/deploy tools.
 - Cursor Edition: `native` + `adapter`; terminal, browser, MCP, and Cursor application-control tools.
 
-### Captain-Led Governance
+### General Agent Source Projection
+
+| Platform | Canonical source support | Current evidence boundary |
+|---|---|---|
+| Codex | Native project TOML templates at `Codex/.codex/agents/`, consuming `Shared/agents/` | Source parsing and documented-field checks; actual loading/model/sandbox require later runtime evidence. See `policies/references/codex-model-resolution.md`. |
+| Claude | Native project Markdown/YAML templates at `Claude/.claude/agents/`, consuming `Shared/agents/` | Source parsing and documented-field checks; version, managed overrides and actual permission/model require later runtime evidence. See `policies/references/claude-model-resolution.md`. |
+| Antigravity / Gemini | Six native project Markdown subagents at `Antigravity/.agents/agents/`, derived from `Shared/agents/` | Official custom subagent schema and tool IDs checked; source/isolated projection only. Actual loading, tools and permission behavior still need runtime smoke. |
+| Cursor | Six native project Markdown subagents at `Cursor/.cursor/agents/`, derived from `Shared/agents/` | Official `model: inherit`, `readonly` and same-name precedence checked; source/isolated projection only. Actual multi-directory discovery and permission behavior still need runtime smoke. |
+
+All general modes use Agent Governance without board creation. Main remains
+ordinary implementer; native exploration is a bounded helper, not a formal role.
+The following two historical capability subsections are compatibility-only.
+
+### Legacy Captain-Led Governance
 
 - Antigravity / Gemini: `adapter` + `conditional`; board-first through IDE/workflow adapters.
 - Claude Edition: `native` + `adapter` + `conditional`; board-first through commands, subagents, and hooks.
 - Codex Edition: `native` + `adapter` + `conditional`; board-first through skills, subagents, terminal, browser, and MCP.
 - Cursor Edition: `native` + `adapter` + `conditional`; board-first through skills, Task subagents, terminal, browser, and MCP.
 
-### Subagents / Channels
+### Legacy Subagents / Channels
 
 - Antigravity / Gemini: `adapter` + `conditional`; Gemini or Antigravity adapters after board creation.
 - Claude Edition: `native` + `conditional`; built-in, custom, or plugin subagents after board creation.

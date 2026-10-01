@@ -4,8 +4,9 @@
     AI_Rules VS Code Manager backend.
 .DESCRIPTION
     Provides a stable, button-friendly PowerShell facade for the VS Code extension.
-    Read-only actions are safe by default. Mutating actions require -Apply and, for
-    orphan deletion, -RemoveOrphans.
+    Read-only actions are safe by default. Mutating actions require -Apply.
+    CleanupOrphans preserves unknown ownership even with -Apply -RemoveOrphans;
+    retirement is limited to explicit historical hash allowlists.
 #>
 param(
     [ValidateSet("Check", "Plan", "Apply", "SyncGlobal", "SyncProjectRules", "CleanupOrphans", "Gitignore", "MemoryMigration")]

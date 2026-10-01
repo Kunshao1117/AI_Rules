@@ -1,5 +1,16 @@
 # Skill Governance Contract
 
+
+## General verification/review/completion ownership
+
+General verification scope/independence, evidence selection and failure
+classification belong only to `Shared/policies/verification-strategy.md`.
+Review applicability and judgment belong to `Shared/policies/review-governance.md`;
+general task completion belongs to `Shared/policies/completion-policy.md`.
+These policies supersede old escalation, review-trigger and completion clauses
+in this method/consumer. No Skill hit requires a role, full suite or Memory chain.
+Task methods remain here; frozen Memory/legacy release retain their own contracts.
+
 AI_Rules uses skills as an on-demand knowledge compression layer.
 This file defines where governance content belongs.
 That lets supported platforms share semantics without forcing every rule into always-on context.
@@ -21,8 +32,18 @@ That reference expands the repository surface map while `Shared/policies/referen
 
 Layer meanings:
 
-Operational governance content has five durable homes: policies, skills, workflow entries, memory cards, and scripts.
+Content is classified as Policy, Workflow, Agent, Skill, or Reference by its
+actual responsibility, not its filename or current loader format. Memory
+Subsystem is an independently frozen subsystem, represented as Memory in the
+migration census; it is not a sixth general content type.
+Agent roles now have the sole canonical registry `Shared/agents/_registry.md`.
+They are not Skills. `agent-governance.md` owns assignment/independence and
+`model-profile-routing.md` owns profiles. Legacy station Skills are compatibility
+consumers, not general Team role definitions or required startup dependencies.
+Memory, project context, and scripts have independent ownership boundaries.
 Platform core, runtime copies, generated blocks, logs, and caches may cite or carry those homes, but they do not become competing governance sources.
+`Shared/policies/load-semantics.md` separately owns when each content type is
+loaded; this document still owns Skill identity and source classification.
 Memory cards must not carry governance rules.
 Scripts must not embed large governance manuals.
 Workflow entries must not copy full policy manuals.
@@ -47,13 +68,91 @@ Workflow entries must not copy full policy manuals.
 
 ### Shared skills
 
-- Purpose: On-demand operational knowledge.
-- Put here: Repeatable procedures, team-station governance, tool playbooks, release steps, and test recipes.
-- Do not put here: Non-negotiable safety rules that must apply before skill load.
-- Reflection-like skills are narrow route gates. They must not replace workflow entries, `execution_spec`,
-  implementation/change-delivery, review, validation, memory/docs, or completion gates.
+- Purpose: Additional reusable specialist methods, domain knowledge, tool
+  operation or procedures loaded on demand for a specific task.
+- Put here: Specialized browser, security, testing and tool/domain methods.
+- Do not put here: Global authorization, execution/Team routing, model choice,
+  review/verification applicability, completion decisions, Agent identity,
+  output-schema ownership or platform lifecycle. Cite the existing owner.
+- A task's stage sequence belongs to Workflow; schemas, templates, command
+  syntax and field catalogs belong to owner-linked Reference. A platform may
+  transport either as SKILL.md without changing its architectural identity.
+
+### Agent roles and references
+
+- Agent roles own role boundaries and constraints in `Shared/agents/`; native
+  Codex/Claude source projections consume them without fixing a model.
+- References hold owner-linked catalogs, field tables, examples, and platform
+  details; they are not independent authorization or activation gates.
+- Follow `source-runtime-surface-map.md` for concrete placement, future consumer
+  registration, and the frozen Memory compatibility consumers.
+
+### vNext migration ownership
+
+- Verification has independent axes: `verification_scope: focused | broad` and
+  `verification_independence: direct | independent`. All four combinations are
+  active in `Shared/policies/verification-strategy.md`; independence means
+  judgment separation, not more tests. Review and completion have separate owners.
+- `code-audit` has frozen disposition `PROJECT_DERIVED`, superseding
+  `KEEP_BUT_REWRITE`. A4 moves its general methods to
+  `Shared/policies/references/project-derived-verification.md`; its original
+  tool-specific recipes remain compatibility-only. Verification policy selects
+  evidence needs and scope; Capability Resolution selects eligible providers.
+  Project declarations supply candidates, not readiness or new Skill creation.
+
+### Classification freeze and migration reference
+
+`policies/references/skill-architecture-disposition.md` freezes the complete
+Phase 4B-1 migration map. It is a migration Reference, not a runtime registry
+or new routing engine. `Shared/skills/_index.md` remains the current Skill
+loader/routing registry, including retained compatibility entries until their
+consumers can migrate safely. A policy navigation pointer is not a Skill row.
+Count actual `Shared/skills/*/SKILL.md` files; report index omissions and empty
+directories separately. Classification never repairs the frozen Memory index.
+
+Every actual Skill has one disposition from this closed set:
+KEEP_AS_SKILL, KEEP_BUT_REWRITE, MOVE_TO_AGENT, MOVE_TO_POLICY,
+MOVE_TO_WORKFLOW, MOVE_TO_REFERENCE, MERGE_INTO_EXISTING, OPTIONAL_PACK,
+PROJECT_DERIVED, RETIRE, DEFER_MEMORY_SUBSYSTEM, UNDECIDED.
+Do not use a target Skill count as acceptance. UNDECIDED requires an explicit
+unresolved decision and blocks that item's physical migration.
+
+Classify the content question: rules/allowance => Policy; task stages =>
+Workflow; responsibility identity => one of the existing six Agents;
+specialized reusable method => Skill; schema/template/syntax => Reference.
+Mixed files name preserved content and its owners without making a new role.
+Frozen Memory Skills remain DEFER_MEMORY_SUBSYSTEM. High Memory/context
+coupling requires preserved paths/anchors and defer-sensitive-migration for
+persistent behavior, regardless of the non-Memory content's disposition.
+
+Invocation classification is allowed, restricted or manual_only. Allowed
+needs unambiguous task fit and low accidental cost; restricted needs narrow
+explicit task semantics; release, expensive/mutating operations and Skill
+creation default to manual_only. These are migration classifications, not
+new runtime metadata or action permission. Provider-specific recipes record
+presence needs, missing-provider behavior and no implicit install; provider
+absence never erases the domain or supplies permission to install/login.
+
+Before creating a Skill, check existing model competence, Policy, Workflow,
+Agent, Reference, then an existing Skill with an added reference. Only a
+remaining specialized reusable procedure with repeated demand or clear product
+value justifies a new Skill. skill-factory is KEEP_BUT_REWRITE to implement
+this admission order later; this phase does not rewrite its generation flow.
+
+The frozen map preserves gitnexus-cli as KEEP_BUT_REWRITE in its Optional Pack,
+code-audit as PROJECT_DERIVED, and structured-reasoning/code-diagnosis as RETIRE
+after valuable methods have replacement owners. No generic AI CLI delegation
+workaround returns. Phase 4B-1 performs no Skill move/delete/rename, Optional
+Pack construction, sync, deployment or Memory/Context behavior change.
 
 ### Skill route classification
+
+General entries select phase and task-specific methods; they do not mandate
+station dispatch. Main implements ordinary work; independent responsibilities
+use `agent-governance.md`. The station, board, handoff and artifact-chain clauses
+in this classification are legacy compatibility-only for frozen consumers.
+They cannot make a general skill hit create a Team, role or completion artifact.
+
 
 Skills are route and procedure carriers. A skill match is a candidate route signal only.
 It does not grant write authority, protected-action authority, station ownership, handoff completion,
@@ -66,13 +165,18 @@ artifact-chain completeness, or a completion state.
 - Required boundary:
   - They may open the governed route and name applicable stations.
   - They do not authorize source writes or protected actions by themselves.
-  - They must pass implementation, validation, review, memory/docs, and completion work to the matching station skills when those stages apply.
+  - Current stage ownership follows canonical Policies and Agents. A frozen
+    memory/docs packet resolves through its M3 legacy alias and transition
+    Reference; no active station Skill is loaded for that old ID.
 
 #### Station skills
 
+- Legacy taxonomy only: the following `REFERENCE.md` paths are non-invocable
+  compatibility documents, not current station Skills or routing entries.
 - Purpose: Own one Team-Native station role or delivery artifact contract.
-- Examples: `team-change-delivery-artifact`, `team-validation-delivery-artifact`,
-  `team-review-delivery-artifact`, `team-memory-docs-delivery-artifact`, and
+- Examples: `Shared/policies/references/legacy-skills/team-change-delivery-artifact/REFERENCE.md`, `Shared/policies/references/legacy-skills/team-validation-delivery-artifact/REFERENCE.md`,
+  `Shared/policies/references/legacy-skills/team-review-delivery-artifact/REFERENCE.md`,
+  `Shared/policies/references/legacy-skills/team-memory-docs-delivery-artifact/REFERENCE.md`, and
   `team-completion-gate`.
 - Required boundary:
   - They become actionable only after a board row, handoff packet, station ownership,
@@ -127,7 +231,8 @@ Workflow entries, skills, and matrices may name gate position, source type, fres
 They must not copy the full policy procedure.
 When a skill grows beyond the quality gate, split stable details into `references/`.
 Do the same when a skill begins compressing multiple role identities into one file.
-Pass the relevant reference paths through the station handoff packet.
+Pass relevant reference paths through the bounded assignment or task context;
+frozen consumers retain their existing station handoff packet.
 Do not keep shrinking text until role meaning changes.
 Use the source-document size policy for size thresholds, PowerShell module signals, and reference split decisions instead of copying those rules into each skill.
 Long-lived preferences should move into `.agents/context/**/CONTEXT.md`, not memory cards.
@@ -140,7 +245,8 @@ Governance content must use the smallest durable home that still preserves the e
 - Always-on core keeps short non-negotiable gates and cites shared policies for details.
 - Shared policies keep cross-workflow contracts, precedence, and invalid patterns.
 - Workflow entries keep route order, load gates, and task-specific evidence expectations.
-- Skills keep operational procedures, artifact formats, tool recipes, and references loaded on demand.
+- Skills keep specialized operational methods and tool recipes loaded on demand;
+  artifact formats and catalogs have owner-linked References.
 - Memory keeps source-backed project facts and active constraints.
 - Scripts keep executable mechanics only and cite their governance source instead of embedding the manual.
 - Project context keeps long-lived preferences and design or acceptance DNA.
@@ -171,8 +277,12 @@ Do not hide the conflict in another patch.
 ## Source/Deployed Pair Contract
 
 Shared governance sources live under `Shared/` in the framework source tree.
-Runtime copies under `.agents/`, `.claude/`, `Codex/.codex/`, or other deployed targets are deployment outputs.
-The exception is a task that explicitly names them as the source repair target.
+Root runtime copies under `.agents/`, `.claude/`, `.codex/`, `.cursor/`, or other
+deployed targets are deployment outputs. `Codex/.codex/**` and the other
+platform-prefixed templates are canonical source, not root runtime copies.
+Generated markers remain generator-owned even inside canonical templates.
+Local/user/global customization must not be overwritten from framework source.
+Explicit emergency runtime repair does not change that ownership.
 Governance, workflow, skill, and public-contract changes must record the source/deployed pair strategy before completion:
 
 - Source-first is the normal path.
@@ -209,7 +319,14 @@ metadata:
       - team-station-handoff-packet
 ```
 
-`support_skills` are skills a handoff packet may load with the role.
+`support_skills` are references a handoff packet may load with the role.
+For migrated A1/A2/A3/A4 IDs, `parent_skill`, `support_skills`, `required_skills` and
+`loaded_skill_refs` resolve through
+`Shared/policies/references/legacy-skill-migration.md` and its exact mapping
+before any Skill invocation. Read their compatibility documents, preserving
+original IDs and frozen packet/Memory semantics; never invoke them as Skills.
+Other IDs continue through the active Skill registry. This legacy relation
+example is not a second formal Agent registry.
 `embedded_artifacts` are role-owned evidence formats that do not need a separate artifact skill.
 `artifact_contracts` are external delivery or completion contracts.
 `trace_contracts` point to the shared trace and handoff evidence rules.
@@ -249,6 +366,23 @@ Shared skills must remain platform-neutral.
 Platform-specific workflow files may add a load gate pointing to the shared skill.
 They should not duplicate the full playbook.
 
+## Verification, Review and Completion ownership
+
+Use `Shared/policies/verification-strategy.md` for scope, independence, evidence
+selection and failure classification; `review-governance.md` for applicability
+and independent review responsibility; `completion-policy.md` for five task
+states. Truth facts live in status ontology. Methods remain in testing/browser/
+quality Skills without owning triggers or task status. Phase 4B owns relocation.
+Only frozen consumers use the original Team/Skill machinery below.
+
+## Frozen verification/completion compatibility
+
+The following original body is legacy compatibility-only for frozen Memory or
+legacy release consumers. It is not a general vNext trigger, scope, roster,
+completion ladder or status owner. Preserve original anchors and meanings;
+never translate vNext states into its bundle, phases or receipts.
+
+<!-- LEGACY_COMPLETION_COMPATIBILITY_START -->
 ## Verification Ownership And Specialist Routing
 
 `Shared/policies/verification-strategy.md` is the generic owner for
@@ -280,20 +414,24 @@ activate it.
 `Shared/policies/execution-routing.md` resolves execution topology before any
 Team mechanics load. Generic engineering verbs; source, policy, documentation,
 multi-file, or multi-step work; skill availability; and generic governed labels
-do not activate Team. Only resolved `execution_topology: delegated` activates
-`programming-team-governance` Team mechanics and its child artifacts.
+do not activate Team. For the frozen legacy contract only, resolved
+`execution_topology: delegated` allows interpretation of historical
+`programming-team-governance` mechanics and child artifacts. It does not load
+retired Skills for current work.
 
-After delegated topology resolves, the shared skill defines the Team board,
-role boundaries, evidence ownership, and delivery conditions. Platform workflow
-entries adapt the applicable station evidence or change-delivery output to
-native tools and load the applicable formal Team child skills:
+The following old child IDs identify frozen packet evidence after delegated
+topology resolves; they are compatibility lookups, not active Skill loads:
 
 - `team-role-boundaries`.
 - `team-change-delivery-artifact`.
-- `team-memory-docs-delivery-artifact`.
 - `team-validation-delivery-artifact`.
 - `team-review-delivery-artifact`.
 - `team-completion-gate`.
+
+Current Memory Review evidence uses
+`Shared/policies/references/memory-review-evidence.md`. The old
+`team-memory-docs-delivery-artifact` ID resolves only through its M3 legacy
+alias and `legacy-memory-team-transition.md` for frozen consumers.
 
 All formal board, handoff, and `operation_mode` requirements in this section
 apply only after delegated topology resolves. Their detailed selection triggers
@@ -316,11 +454,13 @@ Platform entries must not weaken the shared contract.
 They must not replace required delivery artifacts with generic main-thread handling.
 Those artifacts are implementation change delivery, memory delivery, review, and validation delivery artifacts.
 
+
+<!-- LEGACY_COMPLETION_COMPATIBILITY_END -->
 ## Team Field Ownership Contract
 
 Team board, handoff, trace, and completion files may repeat a field name only to show how that field is consumed in that layer.
-Canonical board-facing field names and value sets live in `Shared/skills/team-task-board/references/board-field-catalog.md`.
-Station startup payloads live in `Shared/skills/team-station-handoff-packet/SKILL.md`.
+Canonical board-facing field names and value sets live in `Shared/policies/references/legacy-skills/team-task-board/references/board-field-catalog.md`.
+Station startup payloads live in `Shared/policies/references/legacy-skills/team-station-handoff-packet/REFERENCE.md`.
 Trace audit expectations live in `Shared/policies/team-trace-evidence.md`.
 Completion consumes the artifact chain through `Shared/skills/team-completion-gate/SKILL.md`.
 When a field such as `station_mode`, `context_visibility`, or `handoff_ownership` appears in more than one file, the local file must cite or consume the canonical value instead of redefining a competing catalog.

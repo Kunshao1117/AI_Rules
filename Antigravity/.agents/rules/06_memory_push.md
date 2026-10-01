@@ -1,53 +1,25 @@
 ---
 trigger: model_decision
-description: 每次新對話首次回應前啟動；執行路徑由 `01_cross_lingual_guard.md` 系統準備清單中的 `Turn=1` 承諾行聯動觸發。
+description: 當任務需要既有專案知識、歷史決策、操作者回憶，或可能影響記憶卡時，按需發現 Memory 方法。
 ---
 
-# [記憶主動推播機制 — MEMORY PUSH MECHANISM]
+# Project Memory On-Demand Route
 
-## 觸發時機（Trigger Timing）
+This is an Antigravity delivery pointer, not a new Memory owner or an
+every-new-chat probe. Do not call `memory_list` or read `_map`, `_system`, or
+other cards merely because a conversation started.
 
-本規範在每次新對話首次回應前啟動。執行路徑由 `01_cross_lingual_guard.md` 系統準備清單中的 `Turn=1` 承諾行聯動觸發。
+When the task needs prior project knowledge, an important technical decision,
+operator recall, or Memory Impact Review, discover and load `memory-ops` on
+demand. Load `memory-arch` only for owner or topology ambiguity. The cards in
+project-root `.agents/memory/` are data, not Skills or sole evidence of current
+truth. Project Context under `.agents/context/` has separate persistence
+authority. `.agents/shared/policies/memory-governance.md` owns review; authorization
+and completion remain with their canonical policies. Until the exact
+project/runtime passes M5C cutover, physical Memory writes and sync remain
+`frozen_memory_action`.
 
-## 前置步驟：崩潰復原檢查點偵測（Crash Recovery Checkpoint Detection）
-
-```
-對話啟動 -> 檢查 .agents/logs/checkpoint.json 是否存在
-├── 存在且 status = "in_progress"
-│   └── -> 輸出「⚠️ 偵測到上次對話的未完成存檔點：
-│           工作流: {workflow}，階段: {phase}，時間: {timestamp}。
-│           是否從此處繼續？（輸入 GO 繼續 / SKIP 忽略）」
-│       -> 等待總監決定
-├── 存在且 status = "completed"
-│   └── -> 靜默刪除 checkpoint.json，然後繼續三路徑探測
-└── 不存在
-    └── -> 繼續三路徑探測
-```
-
-檢查點格式（Checkpoint format）：
-```json
-{
-  "session_id": "conversation-uuid",
-  "workflow": "/03_build",
-  "phase": "EXECUTION",
-  "status": "in_progress",
-  "timestamp": "ISO-8601",
-  "last_completed_step": "Step description",
-  "pending_steps": ["Step 4", "Step 5"]
-}
-```
-
-## 三路徑結構性探測流程（Three-Path Structural Probe Flow）
-
-```
-對話啟動 -> 呼叫 cartridge-system__memory_list()
-├── 清單中有 "_map"
-│   └── -> 呼叫 cartridge-system__memory_read("_map")
-│       -> 將地圖索引載入上下文，讓 AI 得知所有模組範圍
-├── 清單中沒有 "_map"，但清單非空
-│   └── -> 若清單包含 "_system"：呼叫 cartridge-system__memory_read("_system")
-│       -> 輸出「⚠️ _map 導航卡尚未建立，建議執行一次 /02_blueprint 初始化。」
-└── 清單為空
-    └── -> 輸出「📭 本專案尚無記憶卡，以純對話模式繼續。」
-        -> 不阻塞，繼續回應。
-```
+Session checkpoint recovery at startup is independent and remains in
+`02_session_checkpoint_recovery.md`, sourced from
+the deployed `.agents/shared/policies/references/session-checkpoint-recovery.md`
+(canonical source: `Shared/policies/references/session-checkpoint-recovery.md`).

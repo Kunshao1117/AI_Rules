@@ -47,7 +47,7 @@ function Normalize-Whitespace {
 $policy = Get-RequiredContent 'Shared/policies/requirement-precision.md'
 $schema = Get-RequiredContent 'Shared/policies/references/requirement-precision-schema.md'
 $executionSpec = Get-RequiredContent 'Shared/policies/references/workflow-execution-spec-contract.md'
-$intentSkill = Get-RequiredContent 'Shared/skills/intent-alignment-gate/SKILL.md'
+$intentSkill = Get-RequiredContent 'Shared/policies/references/legacy-skills/intent-alignment-gate/REFERENCE.md'
 $orchestration = Get-RequiredContent 'Shared/policies/workflow-orchestration.md'
 $normalizedPolicy = Normalize-Whitespace -Content $policy
 $normalizedExecutionSpec = Normalize-Whitespace -Content $executionSpec

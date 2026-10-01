@@ -1,85 +1,84 @@
 ---
 name: excel-ops
 description: >
-  試算表操作（MCP: excel）：Excel 試算表操作食譜：工作簿管理、資料寫入、格式化、圖表生成、樞紐分析表。
-  Use when: 呼叫 excel 相關工具、資料匯出/報告生成/試算表/圖表/樞紐分析 的場景。
-  DO NOT use when: 非試算表操作、純文字報告不需要 Excel 格式。
-  MCP Server: excel
+  Workbook-specific spreadsheet methods. Use when: explicitly editing or inspecting workbook formulas, worksheet/range identity, tables, charts or pivots that require workbook semantics.
+  DO NOT use when: CSV-only work, generic DataFrame analysis, generic tables, text reports or conversion without workbook semantics.
 metadata:
   author: antigravity
-  version: "5.3"
+  version: "6.0"
   origin: framework
   kind: operational
   memory_awareness: none
-  mcp_servers: [excel]
-  tool_scope: ["mcp:excel"]
 ---
 
-# Excel Ops — Spreadsheet Recipes
+# Workbook and Worksheet Methods
 
-> This skill covers 18 tools across workbook management, data operations, formatting, charts, and pivot tables.
+Invocation classification: restricted; provider-specific: no.
+Provider identity: provider_unspecified / capability-derived. The legacy `excel`
+label and recipe names do not establish a concrete implementation or version.
+No automatic sibling loading.
 
-## HITL Boundary
+## Capabilities and ownership
 
-- Read-only tools (`list`, `get`, `search`, `query`, status/health checks) may proceed silently.
-- State-mutating, external-state, write, deploy, push, delete, reset, or resolve operations require a scope-bound intent signal from the Director; authorization resolution must bind it to the visible plan, command/tool, phase, expiry, and target external state before the matching protected gate can pass.
-- `[MCP HITL GATE]` is an additional execution gate for MCP calls; it does not replace authorization resolution or authorize a separate protected phase.
-- Discovery of tool schemas is not permission to execute mutating tools.
+Describe needs such as workbook_read, workbook_write, formula_inspection and
+range_update; these are capability descriptions, not invented executable tools.
+`Shared/policies/capability-resolution.md` selects an existing suitable provider.
+Do not require Graph, openpyxl or MCP. Confirm the actual provider can preserve
+needed formulas, formatting, pivots and workbook features before using it.
+When unavailable or insufficient, use another authorized suitable capability or
+report the specific limitation. Do not automatically install libraries/integrations,
+configure Graph/MCP, connect an account or access credentials.
+`Shared/policies/authorization-resolution.md` owns actual read/write and protected
+operation authority; this Skill adds no Excel-specific authorization gate.
 
-## Recipe 1: Create & Populate Report (建立與填充報告)
+## Before any write
 
-1. `create_workbook` — Create new workbook（建立新工作簿，指定檔名）
-2. `write_data_to_excel` — Write structured data to worksheet（寫入結構化資料）
-   - Use `startCell: "A1"` for header row, data starts from A2
-   - Data format: 2D array `[["Header1","Header2"],["val1","val2"]]`
-3. `format_range` — Apply formatting to headers（格式化標題列：粗體、背景色）
-4. `validate_excel_range` — Verify range reference before operations（操作前驗證範圍）
+1. Confirm target workbook identity (resolved path for a local file, stable resource
+   identity for a remote workbook), existing/new status and requested result.
+2. Inspect the target worksheet, exact range/table and current contents. Check
+   headers, table boundaries, blank rows, merged cells, hidden rows/columns/sheets
+   and protected structures when they can affect the operation. A valid address
+   alone does not prove it is the intended sheet or range.
+3. Distinguish read, append, update cells, replace range, replace worksheet,
+   create worksheet, delete worksheet and overwrite workbook. Determine collision
+   and overwrite effects before mutation; unknown target/effect stops the write.
+4. Bind formula preservation versus intentional value replacement and whether
+   formatting is in scope. Inspect formula references/dependents and the provider's
+   feature/recalculation limits; do not silently flatten formulas or lose features.
+   For destructive replacement, identify recoverable original data and the exact
+   affected area before proceeding under the canonical authorization boundary.
 
-## Recipe 2: Formula & Calculation (公式與計算)
+## Bounded workbook recipes
 
-1. `apply_formula` — Apply formula to a cell（套用公式）
-   - Common formulas: `=SUM(B2:B100)`, `=AVERAGE(C2:C50)`, `=COUNTIF(D:D,"error")`
-2. `validate_formula_syntax` — Validate formula before applying（先驗證語法再套用）
-3. Use `copy_range` to replicate formulas across rows
+- **Populate a report:** establish destination and headers before creation/write;
+  for a 2D table, a header at A1 implies data starts at A2 only when that matches
+  the inspected layout. Append after the actual table boundary, not merely the
+  first blank cell. Preserve surrounding formulas and styles; format only in scope.
+- **Formula edit:** inspect formula versus stored/cached value; validate syntax,
+  target range and relative/absolute references before applying. For example,
+  `=SUM(B2:B100)` must match the intended table. Copy formulas only after checking
+  how references shift. A stored formula or cached value does not prove recalculation.
+- **Chart:** confirm populated source range, headers, data types and labels; choose
+  the chart type for the question (for example bar versus scatter). Place it in
+  an agreed location; creating another worksheet is a distinct operation.
+- **Pivot:** use a flat source table with explicit headers; inspect blanks/types,
+  select row/column/value fields and aggregation (sum/count/average). Confirm
+  provider support, source boundaries and refresh behavior; do not silently
+  substitute a static value table for a requested working pivot.
+- **Worksheet management:** create/rename/copy/delete and merge/unmerge are distinct
+  operations, not a cleanup chain. Check references and data loss before rename,
+  delete or merge; a temporary-looking sheet is not permission to delete it.
 
-## Recipe 3: Chart Generation (圖表生成)
+## Check the result
 
-1. Ensure data is populated in worksheet first
-2. `create_chart` — Generate chart from data range
-   - Types: `bar`, `line`, `pie`, `column`, `area`, `scatter`
-   - Specify `dataRange`, `chartTitle`, `xAxisLabel`, `yAxisLabel`
-3. Place chart on a separate worksheet for clean presentation
-
-## Recipe 4: Pivot Table Analysis (樞紐分析表)
-
-1. Ensure raw data is in a flat table format (headers + rows)
-2. `create_pivot_table` — Create pivot table
-   - Define `rows`, `columns`, `values`, `aggregation` (sum/count/average)
-3. Use for multi-dimensional data analysis（多維度資料分析）
-
-## Recipe 5: Worksheet Management (工作表管理)
-
-1. `create_worksheet` — Add new sheet to workbook
-2. `rename_worksheet` — Rename for clarity
-3. `copy_worksheet` — Duplicate existing sheet as template
-4. `delete_worksheet` — Clean up temporary sheets
-5. `merge_cells` / `unmerge_cells` — For report header formatting
-
-## Gotchas (踩坑點)
-
-- **`file_path` is REQUIRED for ALL 18 tools** — every Excel tool needs a workbook file path. Omitting it causes `Received undefined` error. Specify output path for new workbooks, source path for existing ones（所有 18 個工具皆須傳入 `file_path`，缺少會報錯）
-- **Use absolute paths** for `file_path` (e.g., `D:\\Projects\\reports\\audit.xlsx`). Relative paths may cause file-not-found errors（使用絕對路徑，避免找不到檔案）
-- Always call `validate_excel_range` before `write_data_to_excel` to confirm range is valid（寫入前驗證範圍）
-- Always call `validate_formula_syntax` before `apply_formula`（套用公式前驗證語法）
-- `write_data_to_excel` overwrites existing data in target range — check first（會覆寫既有資料）
-- Chart `dataRange` must reference populated cells with headers（圖表範圍需含標題列）
-
-## Common Use Cases (常見應用場景)
-
-| 場景               |   推薦 Recipe    |
-| ------------------ | :--------------: |
-| 審計報告匯出       |   Recipe 1 + 2   |
-| 測試結果比較表     |   Recipe 1 + 3   |
-| 效能指標追蹤       |   Recipe 1 + 3   |
-| 多維度資料分析     |   Recipe 1 + 4   |
-| 專案健康狀態儀表板 | Recipe 1 + 2 + 3 |
+Read back the intended sheet/range and compare intended changes with surrounding
+cells, formulas, formatting and dependent chart/pivot structure as relevant.
+Verify append did not replace existing rows and a replacement stayed in its target.
+Report what was actually written, calculated and checked separately; disclose
+unsupported features or stale cached results. Method checks supply evidence to
+`Shared/policies/verification-strategy.md`; it owns scope and independence.
+`review-governance.md` and `completion-policy.md` own review and completion.
+Execution, Agent/model decisions and Memory lifecycle remain with
+`execution-routing.md`, `agent-governance.md`, `model-profile-routing.md` and frozen
+Memory contracts. Do not persist provider readiness, credentials or workbook data
+in Memory / Project Context as a side effect of this method.

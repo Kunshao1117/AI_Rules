@@ -1,256 +1,103 @@
 ---
 name: skill-factory
 description: >
-  技能產生與技能治理 SOP：Skill generation SOP for creating shared framework skills, project-derived skills,
-  and user Codex skills. Enforces Codex SKILL.md compatibility, AI_Rules layer
-  placement, Director review gate, and project_skills/ isolation.
-  Use when: 需要建立新的專案衍生技能、從健檢建議萃取技能、
-  建立 Shared skill、建立 Codex skill、或任何涉及 技能產生/自動繁衍/
-  建立新技能/create skill/update skill 的場景。
-  DO NOT use when: 只是更新既有 Shared skill 的觸發描述或文件，不需要建立
-  新技能；或只是討論技能想法、不準備寫入。
+  技能建立必要性判斷與候選維護方法。Use when: 使用者明確要求評估、建立或實質維護一個具體 Skill，或已授權的技能鍛造流程交付此任務。
+  DO NOT use when: 只是稱讚方法可重用、Debug 發現新技巧、提出兩個假想用途、一般程式實作，或未要求技能工作的閒聊。
 metadata:
   author: antigravity
-  version: "5.1"
+  version: "6.0"
   origin: framework
   kind: operational
-  memory_awareness: full
-  tool_scope: ["filesystem:write"]
+  style: guided
+  memory_awareness: none
+  tool_scope: ["filesystem:read", "filesystem:write"]
 ---
 
-# Skill Factory — Skill Generation Protocol
+# Skill Factory — Necessity and Candidate Maintenance
 
-## 1. Trigger Conditions (觸發條件)
+## When to use / when not to use
 
-```
-Trigger?
-├── Director explicitly instructs skill creation → Proceed
-├── /04_fix or /07_debug identifies reusable methodology → Proceed
-└── None of above → Do NOT invoke this skill
-```
+Invocation classification: manual_only. Require an explicit Skill evaluation,
+creation or substantive maintenance request, or assignment from an already
+authorized forge workflow. Loading this Skill, discovering a useful technique
+or imagining future scenarios does not initiate creation, registration or deployment.
+This classification is a method contract, not invented platform enforcement metadata.
 
-## 2. Pre-Generation Checklist
+## First decide whether no new Skill is the right outcome
 
-- [ ] Target layer is classified: shared framework, project-derived, or user Codex
-- [ ] No existing framework skill covers this functionality
-- [ ] No existing project skill covers this functionality
-- [ ] Pattern is genuinely reusable (applies to 2+ future scenarios)
-- [ ] Skill name follows kebab-case convention (1-64 characters)
+Apply `Shared/skill-governance.md` as the canonical architecture taxonomy owner:
+Policy, Workflow, Agent, Skill, Reference. Memory is a separate frozen subsystem.
+The ordered table operationalizes that owner's admission method; it does not
+create a competing taxonomy or grant registry authority. Facts require actual
+evidence, not invented cases. First matching row supplies the method recommendation.
 
-## 3. Generation Procedure
+| Admission fact (first matching row) | Recommendation |
+|---|---|
+| ordinary_model_knowledge | no_skill |
+| policy_responsibility | existing_policy |
+| workflow_sequence | existing_workflow |
+| agent_identity | existing_agent |
+| reference_only | reference |
+| existing_skill_extension | extend_reference |
+| provider_syntax_only | pack_reference |
+| one_off_task | no_skill |
+| lacks_specialized_reusable_method | no_skill |
+| lacks_real_demand_or_value | no_skill |
+| specialized_reusable_method & real_demand_or_value & owner_search_complete | candidate |
+| otherwise | no_skill |
 
-### Step 0: Layer Selection
+Ask those questions in order before writing. For rows 9 and 10, identify the
+specialized method beyond ordinary model knowledge, actual repeated demand or
+clear product use, trigger cost, missing existing owner and maintenance value.
+Two hypothetical future uses alone do not satisfy admission. A repeated method
+still belongs in an existing owner if that owner fits. Release automation is
+normally Workflow with an explicitly initiated route, not an ordinary Skill.
+Unknown or missing admission evidence cannot be treated as a passed check;
+the candidate row requires positive evidence for all three facts.
+For maintenance, prefer removing duplicate rules or extending the existing
+reference over adding another active entry.
 
-```
-[LAYER GATE] Determine target layer before writing:
-├── Cross-project framework behavior AND current workspace is the AI_Rules framework source repository? → Shared framework skill
-│   ├── Source path: Shared/skills/{skill-name}/SKILL.md
-│   ├── Register: Shared/skills/_index.md
-│   └── Sync target: platform skills directories through the deployment sync path
-├── Cross-project framework behavior in a downstream project without framework source root? → stop and ask the Director to run from AI_Rules source or explicitly downgrade the target to project-derived scope
-├── Single project repeatable behavior? → Project-derived skill
-│   ├── Source path: .agents/project_skills/{project-code}-{skill-name}/SKILL.md
-│   ├── Register: .agents/project_skills/_index.md
-│   └── Discovery link: .agents/skills/project-{skill-name}
-├── Personal/global Codex behavior? → User Codex skill
-│   ├── Source path: user's Codex skills directory
-│   └── Register: no AI_Rules project index unless Director explicitly asks
-└── Lifecycle entry or command routing? → Workflow/command entry, not an operational skill
-```
+## Candidate procedure
 
-Do not create Shared framework skills from a downstream project unless the Director has provided and approved the AI_Rules framework source root.
-Do not route Shared framework skills through `.agents/project_skills/`.
-Do not add project prefixes to Shared framework skill names.
+1. Record the classification and existing-owner search result. A no-Skill outcome
+   is valid. Do not create files merely to demonstrate that the factory ran.
+2. If a candidate is justified, define one responsibility, narrow positive and
+   negative triggers, exclusions, preserved method and evidence of future value.
+   Read references/skill-template.md for format and eventual layer placement.
+3. Set an invocation recommendation: allowed for unambiguous low-cost methods;
+   restricted for a narrow domain need; manual_only for Skill creation, release,
+   destructive or provider-heavy operations. This does not grant action authority.
+   Use a platform disable mechanism only if actually supported and verified;
+   otherwise rely on explicit invocation procedure and candidate isolation.
+4. State provider-specific yes/no. If yes, name the method's genuine provider
+   need, required presence, missing-provider alternative/limitation and no implicit
+   install. Tool names or syntax tables alone belong in an existing pack Reference.
+5. Create only an authorized candidate: use an existing documented draft area
+   outside loader roots, or a reviewable text proposal outside discovery. Never
+   put an unapproved candidate SKILL.md under Shared/skills, deployed skills,
+   project discovery links or another scanner root. No new draft runtime is needed.
+6. Read references/skill-style-guide.md for concise method/reference separation.
+   Read references/skill-quality-checklist.md to check owners, duplication,
+   positive/negative trigger examples, format and provider effects.
+7. Present the concrete candidate for user/applicable-process approval. Existing
+   explicit approval for that candidate/scope counts; do not invent another magic
+   phrase. After approval, apply only the authorized activation step through the
+   existing layer/registry mechanism. Drafting does not imply registration,
+   symlink creation, installation, deployment or runtime sync.
 
-### Step 1: Name & Scope Definition
+## Ownership and persistence boundaries
 
-1. Choose a descriptive ASCII kebab-case name (lowercase letters, digits, and hyphens only; 1-64 characters).
-2. For new Codex-compatible skills, the directory name and frontmatter `name` MUST match.
-3. Put localized names, legacy aliases, and explicit trigger phrases in `description`, not in `name`.
-2. **Project skills MUST use a project-code prefix** to prevent collision with future framework skills:
-   - Format: `{project-code}-{skill-name}` (e.g., `bartendermap-booking-rules`, `myapp-auth-patterns`)
-   - Project code: short 2–12 char identifier matching the project (e.g., `bartendermap`, `myapp`)
-   - Framework core skills NEVER use a hyphenated project-code prefix — collision is impossible by design
-4. Define scope — what it covers and what it does NOT cover
+`Shared/policies/authorization-resolution.md` owns writing/activation authority;
+`Shared/policies/capability-resolution.md` owns actual providers/readiness.
+`Shared/workflow-stage-procedures.md` owns workflow sequence; roles, execution,
+model profiles, verification and review remain with their canonical owners.
+`Shared/policies/completion-policy.md` owns completion. Do not inject copies of
+governance gates, override machinery or old role/runtime fields into a candidate.
+Provider-specific: no for this factory method itself; no provider is required to
+decide classification and no implicit install is permitted.
 
-### Step 1.5: Style Determination (風格判定)
-
-```
-[STYLE GATE] Determine instruction style for the new skill:
-├── Consequence severity: wrong judgment → security breach / data corruption / memory pollution?
-│   └── YES → 🔴 Imperative
-├── Deterministic output: must produce precise PASS/FAIL?
-│   └── YES → 🔴 Imperative
-├── Cross-module consistency: must execute identically across all modules?
-│   └── YES → 🔴 Imperative
-├── Flow control node: sits at workflow decision point, result affects branching?
-│   └── YES → 🟡 Hybrid (gate at decision node + guided procedure)
-└── None of above → 🟢 Guided
-```
-
-Record the result in `metadata.style` field.
-
-### Step 2: Write SKILL.md
-
-1. Read references/skill-template.md → 取得標準模板
-2. Read references/skill-style-guide.md → 取得書寫風格規範（含 §6 風格密度對照表）
-3. Top-level frontmatter MUST stay Codex-compatible: only `name`, `description`, optional `license`, optional `allowed-tools`, and `metadata`.
-4. AI_Rules governance fields MUST live under `metadata`, not as extra top-level fields.
-5. Frontmatter MUST include `metadata.origin` (`framework` for Shared, `project` for project-derived) and `metadata.style` from Step 1.5.
-6. `description` 必須把繁中任務語意放在第一個可讀內容，英文 canonical trigger/discovery keywords 只作補充精準化。
-   繁中橋接邊界標籤必須保留：`Use when:` / `DO NOT use when:`。
-7. Read `.agents/shared/policies/language-governance.md` before choosing instruction, interface, bridge, trigger, handoff, or generated documentation language; do not copy platform core language paragraphs as the skill source.
-8. Apply `Shared/policies/source-document-size-governance.md` before adding long examples, tables, templates, or tool recipes; split stable details into `references/`.
-
-### Step 3: Create Directory Structure
-
-Shared framework skill:
-
-```
-Shared/skills/{skill-name}/
-├── SKILL.md           ← Core instruction file (required)
-└── references/        ← Optional L3 resources
-    └── ...
-```
-
-Project-derived skill:
-
-```
-.agents/project_skills/{skill-name}/
-├── SKILL.md           ← Core instruction file (required)
-└── references/        ← Optional L3 resources
-    └── ...
-```
-
-### Step 4: Register in Skill Index
-
-1. Shared framework skill: only inside the AI_Rules framework source repository, append one row to `Shared/skills/_index.md`, then sync into platform skills directories.
-2. Project-derived skill: append one row to `.agents/project_skills/_index.md`.
-3. User Codex skill: do not update AI_Rules project indexes unless Director explicitly requests project registration.
-4. Do NOT hand-edit generated platform copies as the source of truth.
-
-### Step 5: Project Skill Discovery Link (專案技能閉環掛載)
-
-Apply this step only to project-derived skills.
-
-1. After the skill directory is created under `.agents/project_skills/{skill-name}/`,
-   execute the following to create a flattened symlink under `skills/`:
-   ```powershell
-   $agentsRoot = Join-Path $workspace '.agents'
-   $linkPath   = Join-Path $agentsRoot "skills\project-${skillName}"
-   $targetPath = Join-Path $agentsRoot "project_skills\${skillName}"
-   if (-not (Test-Path $linkPath)) {
-       New-Item -ItemType SymbolicLink -Path $linkPath -Target $targetPath | Out-Null
-   }
-   ```
-2. Verify: `Test-Path` on `$linkPath\SKILL.md` must return `True`.
-3. This step is MANDATORY for project-derived skills. A project skill without a symlink is considered **invisible** to the IDE and MUST NOT be marked as complete.
-
-## 4. Format Compliance Rules
-
-### Frontmatter Standard
-
-```yaml
----
-name: skill-name
-description: >
-  {繁體中文任務語意與觸發詞}; [{Domain|Quality|Workflow}] {English canonical description}.
-  Use when: {繁體中文觸發條件描述}; {English canonical trigger keywords if needed}.
-  DO NOT use when: {繁體中文排除條件描述}; {English canonical exclusion keywords if needed}.
-metadata:
-  author: antigravity
-  version: "1.0"
-  origin: framework|project
-  style: imperative|guided|hybrid
-  memory_awareness: none|read|full
-  tool_scope: ["{scope}"]
----
-```
-
-Do not place AI_Rules-only fields such as required skills, memory awareness, user visibility, lifecycle phase, or human gates at the YAML top level. Put them under `metadata`.
-
-### Body Content Standard
-
-SKILL.md body MUST follow this section order:
-
-1. `# {Skill Name} — {Subtitle}`
-2. `## Trigger Conditions` — Decision tree or condition list
-3. `## Procedure` — Numbered steps with L3 references inline
-4. `## Gotchas` — warnings (if applicable)
-5. `## Constraints` — Boundaries and limitations
-
-### §4.5 Writing Style Rules (書寫風格規範)
-
-Read references/skill-style-guide.md for the complete guide. Summary:
-
-```
-Every sentence in SKILL.md:
-├── Directly affects AI's next action? → Keep
-│   ├── Numbered steps / decision trees / rule lists
-│   ├── Code examples / lookup tables / gotchas / interpretation
-│   └── L3 trigger: "Read references/{file}.md"
-└── Does NOT affect action? → Delete or rewrite
-    ├── FORBIDDEN: "This skill teaches/enables/provides/extends..."
-    ├── FORBIDDEN: "this is because...", "the purpose is..."
-    ├── FORBIDDEN: rationale inside decision trees ("→ because...")
-    └── Rewrite: narrative openings → decision trees
-```
-
-### §4.55 Style Enforcement Rules (風格落地指引)
-
-Read references/skill-style-guide.md §6 for the full density matrix. Summary:
-
-| Style           | Requirements                                                       |
-| --------------- | ------------------------------------------------------------------ |
-| 🔴 `imperative` | ≥1 code fence gate + HALT mechanism + `[SUDO]` risk-closure request path |
-| 🟡 `hybrid`     | Code fence gate ONLY at decision nodes, guided procedure elsewhere |
-| 🟢 `guided`     | Recipes + gotchas + interpretation. Code fence gates FORBIDDEN     |
-
-### §4.6 Token Budget (Token 預算約束)
-
-`Shared/policies/source-document-size-governance.md` owns SKILL.md size/split semantics.
-Keep these hard limits here for quick generation checks, and move overflow into `references/` by stable responsibility.
-
-| Constraint          | Limit                                         |
-| ------------------- | --------------------------------------------- |
-| SKILL.md line count | < 500 lines                                   |
-| L2 token estimate   | < 5,000 tokens (char count ÷ 3)               |
-| Overflow handling   | Move details to `references/` as L3 resources |
-
-### §4.8 Trinity DNA Inheritance (三位一體基因遺傳)
-
-```
-[INHERITANCE GATE] For EVERY generated project skill:
-├── metadata.style = imperative or hybrid?
-│   ├── YES → SKILL.md contains at least one [SILENT GATE] block?
-│   │   ├── YES → Proceed.
-│   │   └── NO  → Auto-inject Risk-Closure Request & Sandbox Detection template (from code-quality § 0).
-│   └── NO (guided) → Skip gate injection. Proceed.
-├── metadata.style = imperative or hybrid?
-│   ├── YES → SKILL.md records [SUDO] as override/risk-closure request only?
-│   │   ├── YES → Proceed.
-│   │   └── NO  → Auto-inject [SUDO] request-record clause; it must not bypass scoped authorization, Team-Native, validation, review, protected gates, or support complete claims.
-│   └── NO (guided) → Skip. Proceed.
-└── Gate cleared.
-```
-
-### §4.7 agentskills.io Compatibility
-
-| Field         | Rule                                             |
-| ------------- | ------------------------------------------------ |
-| `name`        | ASCII kebab-case, ≤ 64 characters                |
-| `description` | < 1024 characters, no angle brackets             |
-| Top-level YAML | only `name`, `description`, `license`, `allowed-tools`, `metadata` |
-| Directory     | `{skill-name}/SKILL.md` + optional `references/` |
-
-Run Codex's built-in validator before marking a generated skill as compatible:
-
-```powershell
-python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" "{skill-directory-path}"
-```
-
-## 5. Director Review Gate（總監審核閘門）
-
-1. Call `notify_user` with SKILL.md path in `PathsToReview`
-2. Prompt: `[技能鍛造] 新技能已建立：{技能功能名稱}。請總監審閱。`
-3. Skill is NOT active until Director approves
+Memory availability is not required for classification or candidate evaluation.
+No Memory promotion, Memory write gate or Project Context persistence is redefined.
+The original entry and three reference bodies are preserved under references/legacy/
+for explicit compatibility investigation only; do not load that directory as a
+creation checklist or execute its old registration, linking or persistence flow.

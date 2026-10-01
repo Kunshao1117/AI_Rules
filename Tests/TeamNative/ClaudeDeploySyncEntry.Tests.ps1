@@ -66,7 +66,7 @@ try {
         }
 
         $pairs = @(
-            @{ Source = 'Shared\skills\programming-team-governance\SKILL.md'; Target = '.claude\skills\programming-team-governance\SKILL.md' },
+            @{ Source = 'Shared\skills\browser-testing\SKILL.md'; Target = '.claude\skills\browser-testing\SKILL.md' },
             @{ Source = 'Shared\policies\team-native-core.md'; Target = '.agents\shared\policies\team-native-core.md' }
         )
         foreach ($pair in $pairs) {

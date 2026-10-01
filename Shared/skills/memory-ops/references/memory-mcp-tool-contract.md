@@ -1,48 +1,58 @@
-# Memory MCP Tool Contract
+# Memory Tool Method Reference
 
-This reference defines how AI_Rules workflows choose between project-local memory tools and cartridge-system MCP tools.
+This is a provider-neutral operation guide for `memory-ops`. Tool presence is
+checked in the current environment; absence never justifies inventing a tool
+or asserting an unverified sync result. The canonical Memory decision,
+authorization, and completion owners are respectively
+`../../../policies/memory-governance.md`,
+`../../../policies/authorization-resolution.md`, and
+`../../../policies/completion-policy.md`.
 
-## Tool Classes
+## Read-Only Evidence
 
-| 類別 | 工具或位置 | 安全邊界 | 使用時機 |
-|---|---|---|---|
-| Project-local migration tool | `.agents/tools/Memory-Migration.ps1` | Dry-run is read-only; apply mode requires authorization resolution bound to the migration scope, explicit apply flags, and the matching protected gate | Active memory main-file naming migration and conflict inventory inside downstream projects |
-| Framework source manager | `Scripts/AI-RulesManager.ps1` | Framework source repository only; do not assume downstream projects have this file | Source-maintenance checks, deployment, sync, and framework-owned migration entrypoints |
-| Read-only memory MCP | `workspace_brief`, `memory_list`, `memory_read`, `memory_status`, `memory_deps`, `memory_audit`, `memory_graph` | May be used for evidence without mutating memory | Startup, workflow evidence, stale diagnosis, audit, routine inspection, and handoff |
-| Commit preflight MCP | `commit_preflight` | Read-only, but closeout-scoped; use only when the active route is `09 Commit`, explicit commit-prep, or a closeout station preparing commit/push readiness | Commit readiness, dirty-file blockers, stale/unattributed memory blockers, and source-memory consistency before commit/push |
-| Read-only context MCP | `project_context_status`, `context_inventory`, `context_audit`, `context_diff`, `context_plan`, `project_context_list`, `project_context_read`, `project_context_validate` | Project context reads are evidence only; persistent context writes still require `GO CONTEXT` resolved to the context scope | Separating source memory from project preferences, design DNA, and acceptance defaults |
-| Mutating memory MCP | `memory_commit`, `memory_reindex` | Requires authorization resolution for the scope-bound Director intent signal, the matching memory protected gate, and an MCP HITL gate; MCP HITL is additional and never replaces authorization resolution | Commit a memory card after the active main file is already written; rebuild index after authorized migration |
+- Known card: use available `memory_status(moduleName)` and
+  `memory_read(moduleName)` directly, or direct active-file reads when the
+  provider is unavailable. Include source evidence for current claims.
+- Unknown owner: discover candidates with `memory_list`, `memory_graph`, or
+  `memory_deps`, then narrow the read. Do not load every card by default.
+- `workspace_brief` and `memory_audit` can add workspace/structural evidence.
+  Context read-only tools answer Context questions; they do not grant writes.
+- `commit_preflight` is a read-only but commit-preparation tool, not a general
+  startup or mid-task Memory trigger.
+- When routed through Multi-MCP Gateway, schema discovery is not tool
+  execution. Supply explicit `workspace` and downstream `projectRoot` where
+  the real tool schema requires them. Report an unexecuted call as unverified.
 
-## Gateway Execution Rule
+## Mutation And Result Inspection
 
-When cartridge-system is routed through Multi-MCP Gateway, schema discovery is not execution. Use the real downstream call path with explicit `workspace`, and pass explicit `projectRoot` in downstream cartridge-system arguments. If the schema is unknown, inspect it first and mark evidence as unverified until a real read-only call succeeds.
+The method is review, necessary authorized content/tracking edit, applicable
+`memory_commit` or index sync, then read-only inspection. The current
+pre-M5 runtime boundary still treats physical `.agents/memory/**` writes,
+`memory_commit`, `memory_reindex`, and index sync as `frozen_memory_action`
+under the legacy contract, regardless of which Skill or provider is used.
+`confirm:true`, where supported, is tool mutation acknowledgement, not user
+authorization or scope expansion permission. MCP HITL is additional evidence,
+not a replacement for authorization resolution.
 
-## Workflow Evidence Rules
+`memory_commit` follows a real authorized card edit. Never use it solely to
+clear staleness. `memory_reindex` belongs only to an authorized index or
+migration operation, not an ordinary Impact Review. `memory_update` is legacy
+compatibility only: Cartridge 5.5.4 does not expose it, so it is not a normal
+fallback. An older provider may use it only if the tool is actually present
+and the same authorization boundary is satisfied.
 
-| 工作流 | 最低 MCP 記憶證據 | 變更閘門 |
-|---|---|---|
-| 03 Build | Read relevant card status and ownership before writes; use dependency evidence when indirect staleness is reported | Memory writes happen only after source changes land and card content is updated |
-| 04 Fix | Read ownership, status, and dependency evidence before root-cause repair; record only verified durable facts | Do not use `memory_commit` as a staleness reset shortcut |
-| 05 Condense | Use workspace and context inventory evidence to separate source facts from preferences and temporary observations | `_system` or context writes require authorization resolution and the matching memory/context protected gate; context writes preserve `GO CONTEXT` or `GO DNA` when applicable |
-| 09 Commit | Run `commit_preflight` or equivalent memory status evidence before commit/push | Dirty memory or unattributed files block commit until resolved or explicitly overridden |
-| 10 Routine | No memory or context evidence: this Git-only route does not inspect MCP, memory, or source content | No MCP calls |
-| 11 Handoff | Include workspace brief, memory status, stale cards, blockers, and unresolved context evidence | Handoff does not mutate memory by itself |
-| 12 Skill Forge | Read ownership, memory status, and skill governance evidence before creating or changing shared skills | New or modified source skills require memory attribution before completion |
+After a partial failure, report four observations separately: Memory content
+update result, `memory_commit` result, index/derived-state result, and remaining
+warnings or risks. A file write does not prove commit or index consistency;
+missing provider evidence remains visibly unverified.
 
-## Main-File Migration Flow
+## Naming Migration Compatibility
 
-1. Use the project-local migration tool dry-run to inventory legacy main files, canonical main files, conflicts, archives, and old path references.
-2. Apply migration only after authorization resolution binds the migration scope and explicit apply flags.
-3. After authorized migration, run the MCP reindex path when available.
-4. Verify with read-only memory audit or workspace brief.
-5. If MCP support is missing, report migration as partially verified and list the missing engine evidence. Do not silently fall back to manual batch rename.
-
-## Failure Semantics
-
-- Missing project-local tool: framework sync gap or blocked state; do not hand-rename.
-- Missing MCP server: unverified evidence path; continue only with clearly labeled filesystem evidence.
-- MCP schema mismatch: inspect schema before calling; if still unclear, mark blocked.
-- Mutating MCP requested without authorization resolution or the matching protected gate: halt before MCP HITL; MCP HITL alone is insufficient.
-- `commit_preflight` requested outside `09 Commit`, explicit commit-prep, or
-  closeout commit/push readiness: mark the request unverified or route it to
-  `09`; do not let it interrupt non-commit tasks.
+`MEMORY.md` is the target active main filename. Existing `SKILL.md` card files
+are legacy compatibility. Do not rename them by hand. The downstream
+project-local `.agents/tools/Memory-Migration.ps1` supports a read-only dry
+run and separately authorized apply with explicit flags. The source manager
+entry in this repository is `Scripts/AI-RulesManager.ps1 -Action
+MemoryMigration -Target .`. If the project-local tool is absent, report a
+projection gap; do not improvise file moves. After authorized migration,
+inspect the index through read-only evidence. No migration runs in M2.

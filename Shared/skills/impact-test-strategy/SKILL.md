@@ -1,171 +1,81 @@
 ---
 name: impact-test-strategy
 description: >
-  變更影響與回歸測試策略（Testing）：Change impact analysis, test scope orchestration, and regression test generation.
-  Use when: 現有驗收已明確指名測試範圍，或操作員已精確核准測試差異，
-  適用於跨模組變更、核心工具/共用服務重構，或已授權的回歸測試。
-  DO NOT use when: 測試範圍未獲明確接受與授權，或僅為沒有已接受測試需求的局部樣式、文字、
-  設定或靜態資料工作。
+  改動依賴與回歸影響分析方法。Use when: 改動的實際 consumer、共用契約或 regression surface 不明，需要提供影響證據給驗證決策。
+  DO NOT use when: 已知且局部的變更無額外影響疑問，或只是要執行既定測試；不因檔案數、fix 或 build 字樣而載入。
 metadata:
   author: antigravity
-  version: "5.2"
+  version: "7.0"
   origin: framework
   kind: operational
-  memory_awareness: read
+  style: guided
+  memory_awareness: none
   tool_scope: ["filesystem:read"]
 ---
 
-# Impact & Test Strategy — 影響與測試策略
+# Change Impact Evidence Methods
 
-## Test Scope Opt-In
+## Purpose and fit
 
-This skill is a regression-impact method for a test scope already admitted by
-`Shared/policies/verification-strategy.md`; it does not decide that tests are
-necessary. Do not create, modify, discover for execution, or run tests unless
-the selected scope and separate authorization permit them. Validation, quality
-preference, regression rationale, workflow route, and impact level do not
-grant that permission. This skill does not select a full suite or replace the
-generic evidence budget.
+Map plausible affected behavior and uncertainty for the verification owner.
+This informs evidence-scope decisions without selecting focused/broad or requiring
+tests. A shared API contract change can justify inspecting actual consumers;
+a small isolated change can remain bounded when its boundary is established.
 
-## 1. Impact Analysis Flow (影響分析流程)
+## Core method
 
-Use this flow only when an accepted test scope needs impact mapping:
+1. Read the actual change and identify behavior, public contract, configuration
+   or data assumptions that changed. Start with affected source/package boundaries,
+   not all repository files, a compulsory graph or every Memory card.
+2. Follow relevant callers, imports, exports, routes, configuration consumers and
+   shared components. Distinguish direct calls, dynamic usage, generated consumers
+   and inferred relations. Trace dependency direction and where behavior escapes
+   a private implementation boundary. Record uncertainty in incomplete graphs.
+3. Inspect relevant public schema/API/default/configuration changes and likely
+   downstream behavior. A dependency change can affect callers transitively even
+   without a signature edit; inspect observable semantics rather than counts.
+   Include affected documentation when it describes the changed contract.
+4. Return changed surface, actual consumers, possible regression behavior, evidence
+   paths, boundaries checked and remaining uncertainty. Suggest evidence candidates
+   to verification-strategy; do not choose a suite, independence, role or completion.
+   File/module counts alone cannot select broad, and a shared component does not
+   activate Team. Stop expanding when relevant uncertainty is resolved or bounded.
+5. When a regression case is already selected, identify the defect's trigger,
+   faulty behavior and accepted result. Read references/regression-test-examples.md
+   for translating that evidence to candidate cases; test admission and design
+   ownership are not reassigned here. An empty consumer list can be legitimate
+   for an isolated private change; distinguish it from an incomplete search.
 
-### Step 1: Map File → Module (檔案→模組映射)
+## Source and evidence limits
 
-```
-Modified file identified?
-├── Read .agents/memory/ — scan all memory cards' ## Tracked Files
-├── Find which memory card(s) track this file
-└── Result: "This file belongs to module {X}"
-    └── If no memory card tracks this file → Flag as untracked, proceed with caution
-```
+Use source/configuration/docs as primary navigation. Project facts supplied by
+existing mechanisms may help, but no Memory lifecycle, full Memory scan, persisted
+impact array or fixed report filename is required. Graph tools are optional:
+presence or missing provider does not establish the impact, and search hits need
+semantic interpretation. A broader evidence candidate remains a recommendation
+for the verification owner, not an automatic broad decision.
 
-### Step 2: Map Module → Affected Modules (模組→受影響模組)
+## Canonical boundaries and reference loading
 
-```
-Source module identified?
-├── Read the source module's ## Relations section for navigation/testing context
-├── List all modules that DEPEND ON the source module
-│   └── These modules may break if the source module's interface changes
-├── List all modules that the source module DEPENDS ON
-│   └── Changes here should NOT affect dependents (unless interface changed)
-├── List all outward-facing documentation files related to this module's public interface (e.g., README.md, docs/)
-│   └── Documentation must be marked as an affected target if the module's behavior changes.
-└── Result: Affected module list + dependency direction + affected documentation
-```
+`Shared/policies/verification-strategy.md` alone owns evidence need, permanent
+test admission, focused/broad scope, direct/independent judgment and failure
+classification. `Shared/policies/review-governance.md` owns review applicability;
+`Shared/policies/completion-policy.md` owns completion. This method decides none
+of those outcomes and does not activate Reviewer, Verifier or Team.
+`Shared/policies/execution-routing.md` owns execution mode;
+`Shared/policies/authorization-resolution.md` owns action authority.
 
-### Step 3: Risk Classification (風險分級)
+Provider-specific: no. Describe the capability needed and resolve actual tools,
+presence and readiness through `Shared/policies/capability-resolution.md`.
+Project-native scripts/configuration supply candidates under
+`Shared/policies/references/project-derived-verification.md`; no runner, browser,
+scanner or MCP is presumed. Missing tools use a legal equivalent or a reported
+evidence gap. No implicit install, `npx` presence probe, automatic login, external
+upload or MCP server startup. Inspect the effects of any proposed operation.
 
-| Risk Level | Criteria                                                            | Examples                                    |
-| ---------- | ------------------------------------------------------------------- | ------------------------------------------- |
-| 🔴 High    | File is imported by 3+ modules, OR is a core utility/shared service | `utils.ts`, `auth-service.ts`, shared hooks |
-| 🟡 Medium  | File is internal to a module but affects module's public interface  | Module's main export, API route handler     |
-| 🟢 Low     | File is a leaf component used by only one parent                    | Single-use UI component, isolated helper    |
-
-### Step 4: Output Impact Report (輸出影響報告)
-
-Include in `implementation_plan.md`:
-
-```markdown
-【影響分析】
-
-- 修改檔案：{file path}
-- 所屬模組：{module name}
-- 風險等級：🔴/🟡/🟢
-- 受影響模組：{list of affected modules}
-- 關聯文件：{documentation files that require sync}
-- 已授權測試範圍：{see § 2}
-- 真實驗證路徑：{real operation surface, data source, executable path, and blocker status}
-```
-
-### Step 5: Impact Array Validation (影響陣列驗證)
-
-```
-[IMPACT GATE] Before proceeding to code modification:
-├── [SUDO] detected? → Record override/risk-closure request; do not allow blind edits or skip impact evidence.
-├── affected_modules[] array length > 0?
-│   ├── YES → Proceed with modification.
-│   └── NO  → [HALT] 「🔴 [IMPACT HALT] 影響範圍分析結果為空。請先確認波及模組。」
-│             DO NOT modify code without understanding blast radius.
-└── Gate cleared.
-```
-
-## 2. Authorized Test Scope Selection (已授權測試範圍選擇)
-
-```
-Has `verification-strategy.md` admitted a bounded regression test and has separate scope been resolved?
-├── NO → Do not select, create, modify, or run a test. Return to the acceptance-bound verification route.
-└── YES → Select only the named behavior, files, commands, data/fixtures, phase, and expiry:
-    ├── Authorized unit behavior → use the scoped unit-test method
-    ├── Authorized browser behavior → use the scoped E2E or visual-test method
-    ├── Authorized regression behavior → use the scoped regression-test method
-    └── Other authorized behavior → use only the explicitly approved test technique
-```
-
-Real-path scope rule:
-
-- When an authorized test scope requires a real execution path for user-visible behavior, data flow, persistence, network requests, files, scheduled jobs, CLI output, permissions, or external integrations, include that named path in the scope.
-- Before marking real execution unavailable, include operator-tool discovery in the scope: search project scripts, documented commands, routes, test harnesses, browser or desktop operation paths, plugin hosts, logs, databases, and direct request options.
-- Treat transient readiness, timeout, or tool-connection failures as retryable evidence gaps first. They do not remove the need for the real execution path.
-- If real execution is blocked, list the blocker and the closest controlled real-path alternative, such as preview branch, local service, dry-run, sandbox database, recorded real response, or read-only production check.
-- Unit tests, mocks, fixtures, and visual screenshots may support the regression scope, but cannot replace the real execution path for behavior-dependent completion.
-
-### Execution Protocol (執行協定)
-
-Follow the order in the exact authorized commands. Do not infer unit, E2E, full-suite, or regression
-execution from the change type alone.
-
-## 3. Authorized Regression Test Design (已授權回歸測試設計)
-
-When a bug-fix acceptance expressly authorizes a regression test, design it as follows:
-
-### Step 1: Analyze the Fix Diff (分析修復差異)
-
-From the code diff, extract:
-
-- **Root cause pattern**: Bug type
-- **Trigger condition**: Input/state that caused the bug
-- **Expected behavior**: Correct behavior
-
-### Step 2: Select Regression Template (選擇回歸模板)
-
-```
-What type of bug was fixed?
-├── Validation bypass (驗證繞過)
-│   └── Template: "Send the exact invalid input that previously bypassed validation"
-├── Null reference (空值引用)
-│   └── Template: "Pass null/undefined for the field that caused the crash"
-├── Race condition (競爭條件)
-│   └── Template: "Simulate concurrent operations that previously conflicted"
-├── Wrong status code (錯誤狀態碼)
-│   └── Template: "Verify the exact HTTP status code for the scenario"
-├── Missing data transformation (資料轉換遺漏)
-│   └── Template: "Verify data shape matches expected contract"
-└── UI state desync (UI 狀態失同步)
-    └── Template: "Reproduce the exact user action sequence that caused the desync"
-```
-
-### Step 3: Write and Register (撰寫並註冊)
-
-1. Create or change only the authorized test files, using `test-patterns` skill's § 1 placement method.
-2. Name the test descriptively: `it('should not regress: {bug description}')`.
-3. Route any memory update through its separate protected memory authorization; this test scope does not authorize it.
-
-### /04_fix Completion Gate Integration
-
-- [ ] The accepted regression test delta was delivered, if one was authorized.
-- [ ] The exact accepted test command produced its recorded evidence, if execution was authorized.
-- [ ] Any memory lesson follows a separately authorized memory route.
-
-## Constraints (限制與邊界)
-
-- Primary testing-context source: memory card `## Relations` section
-- `## Relations` is navigation context only. It does not equal frontmatter `dependencies` and must not be used for indirect staleness propagation.
-- No memory cards → fall back to `grep_search` for import/require analysis
-- This skill maps an already admitted regression scope; it does not make testing a default, select generic evidence, or execute it.
-- Test execution, when precisely authorized, uses the named terminal command.
-
-## References (參考資源)
-
-- `references/regression-test-examples.md` — Common regression test patterns with code examples
+Invocation classification: restricted, a method contract rather than invented
+native enforcement metadata. Load other methods only for a separately identified
+need; no required_skills/relations chain or preload-all references. No Memory
+read/write or Project Context persistence is required. Original text is preserved
+under references/legacy/ for explicit compatibility investigation only, never
+as active method instructions or a fallback governance flow.

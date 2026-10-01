@@ -1,0 +1,122 @@
+# Historical A7 compatibility reference
+
+Original provider recipes and governance below are historical data only, not active
+methods, triggers, authorization or a reason to load another Skill. Read only for
+compatibility investigation. Current methods use Shared/policies/references/gitnexus-guide.md.
+
+<!-- PRE_A7_ORIGINAL_START -->
+---
+name: gitnexus-impact-analysis
+description: >
+  改動影響與依賴風險分析：GitNexus 改動影響、依賴風險、blast radius 與修改前安全性分析；
+  change impact and dependency risk analysis.
+  Use when: 想知道改動會影響誰、what will break、what depends on this、
+  is it safe to change X、或修改前需要依賴追蹤。
+  DO NOT use when: 已決定要執行重構步驟（用 gitnexus-refactoring），
+  或只是一般程式碼探索（用 gitnexus-exploring）。
+metadata:
+  author: gitnexus
+  version: "0.1.0"
+  origin: framework
+  kind: operational
+---
+
+# Impact Analysis with GitNexus
+
+GitNexus Optional Pack method/reference; retain this skill in place. Use only
+when this task needs GitNexus graph capability selected under
+`Shared/policies/capability-resolution.md`. Provider/tool names below are
+recipes, not current-session availability evidence. Missing provider does not
+authorize installation/login; consider existing alternatives and disclose gaps.
+A selected provider never creates a worker, execution mode or independent review.
+
+## When to Use
+
+- "Is it safe to change this function?"
+- "What will break if I modify X?"
+- "Show me the blast radius"
+- "Who uses this code?"
+- Before making non-trivial code changes
+- Before committing — to understand what your changes affect
+
+## Workflow
+
+```
+1. gitnexus_impact({target: "X", direction: "upstream"})  → What depends on this
+2. READ gitnexus://repo/{name}/processes                   → Check affected execution flows
+3. gitnexus_detect_changes()                               → Map current git changes to affected flows
+4. Assess risk and report to user
+```
+
+> A stale index limits graph evidence. Do not automatically analyze; use existing alternative evidence or follow the separately authorized refresh boundary in `gitnexus-cli`.
+
+## Checklist
+
+```
+- [ ] gitnexus_impact({target, direction: "upstream"}) to find dependents
+- [ ] Review d=1 items first (these WILL BREAK)
+- [ ] Check high-confidence (>0.8) dependencies
+- [ ] READ processes to check affected execution flows
+- [ ] gitnexus_detect_changes() for pre-commit check
+- [ ] Assess risk level and report to user
+```
+
+## Understanding Output
+
+| Depth | Risk Level       | Meaning                  |
+| ----- | ---------------- | ------------------------ |
+| d=1   | **WILL BREAK**   | Direct callers/importers |
+| d=2   | LIKELY AFFECTED  | Indirect dependencies    |
+| d=3   | MAY NEED TESTING | Transitive effects       |
+
+## Risk Assessment
+
+| Affected                       | Risk     |
+| ------------------------------ | -------- |
+| <5 symbols, few processes      | LOW      |
+| 5-15 symbols, 2-5 processes    | MEDIUM   |
+| >15 symbols or many processes  | HIGH     |
+| Critical path (auth, payments) | CRITICAL |
+
+## Tools
+
+**gitnexus_impact** — the primary tool for symbol blast radius:
+
+```
+gitnexus_impact({
+  target: "validateUser",
+  direction: "upstream",
+  minConfidence: 0.8,
+  maxDepth: 3
+})
+
+→ d=1 (WILL BREAK):
+  - loginHandler (src/auth/login.ts:42) [CALLS, 100%]
+  - apiMiddleware (src/api/middleware.ts:15) [CALLS, 100%]
+
+→ d=2 (LIKELY AFFECTED):
+  - authRouter (src/routes/auth.ts:22) [CALLS, 95%]
+```
+
+**gitnexus_detect_changes** — git-diff based impact analysis:
+
+```
+gitnexus_detect_changes({scope: "staged"})
+
+→ Changed: 5 symbols in 3 files
+→ Affected: LoginFlow, TokenRefresh, APIMiddlewarePipeline
+→ Risk: MEDIUM
+```
+
+## Example: "What breaks if I change validateUser?"
+
+```
+1. gitnexus_impact({target: "validateUser", direction: "upstream"})
+   → d=1: loginHandler, apiMiddleware (WILL BREAK)
+   → d=2: authRouter, sessionManager (LIKELY AFFECTED)
+
+2. READ gitnexus://repo/my-app/processes
+   → LoginFlow and TokenRefresh touch validateUser
+
+3. Risk: 2 direct callers, 2 processes = MEDIUM
+```

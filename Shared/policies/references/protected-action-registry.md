@@ -1,56 +1,70 @@
 # Protected Action Registry
 
-This registry owns protected-action categories for AI_Rules. Policies,
-workflow entries, hooks, platform adapters, and skills must cite this file
-instead of redefining protected action lists.
+This registry owns the four general protected classes. Execution mode never
+selects a class or supplies authority. `authorization-resolution.md` owns
+semantic resolution and platform permission precedence. Local Git mutation
+is explicitly scoped local work, not a fifth protected class.
 
-Protected actions require explicit scope-bound authorization for the matching
-phase. Source-write actions are write-gated even when they are not protected
-actions.
+## General Action Catalog
 
-## Action Catalog
+| Action / boundary | Class | Required evidence |
+|---|---|---|
+| Push, remote merge, issue/PR/tracker mutation, release, package publication, external deployment, cloud/service/production DB or external MCP mutation | `protected.external` | Explicit action and target; native permission when required |
+| Important data deletion, database/table drop, reset --hard, destructive rebase/history rewrite, force push, irreversible migration | `protected.destructive` | Explicit destructive action and target; material safety/rollback evidence where applicable |
+| Agent secret read/reveal/create/modify, permission mutation, privilege escalation | `protected.credential_privilege` | Explicit credential/privilege action and target; credential isolation |
+| Global package/tool/framework install, host toolchain, PATH, OS/service or machine settings | `protected.system` | Explicit system action and target |
 
-| Action | Registry class | Required phase | Required gate |
-|---|---|---|---|
-| Main-worktree source write | write-gated | `implementation-change-delivery` | Formal-write board, station-owned change-delivery, exact file allowlist, dirty diff read, forbidden protected actions. |
-| Fallback change application | write-gated | `change-application` | Returned isolated/text artifact, explicit integration task, or assigned generated/deployed sync plus exact allowlist and dirty diff read. |
-| Memory card or project context write | protected | `protected-memory-write` | Explicit memory/context target, scope, evidence, expiry, and memory owner station; when a completion bundle applies, its independently bound candidate and current receipt conditions must also be met. |
-| Memory commit | protected | `protected-memory-commit` | Protected memory write completed or explicitly not required, then explicit memory commit scope; when a completion bundle applies, its independently bound candidate and current receipt conditions must also be met. |
-| Git mutation | protected | `git` | Explicit repository action such as stage, commit, branch, tag, or push. |
-| Release mutation | protected | `release` | Explicit release target, version/tag/package scope, and release owner station. |
-| Deployment mutation | protected | `deployment` | Explicit environment, project, deployment, rollback, or hosting target. |
-| Install or upgrade | protected | `install` | Explicit package/plugin/tool/framework target and install mode. |
-| Credential or secret handling (`AGENT_SECRET_HANDLING`) | protected | matching action phase plus credential gate | Explicit credential scope and no plaintext-secret write unless a separate governed override exists. |
-| Destructive filesystem operation | protected | matching action phase | Explicit resolved absolute target, safety check, and destructive-action authorization. |
-| MCP or cloud mutation | protected | `external-mutation` unless a narrower protected phase applies | Explicit server/resource/action target and HITL or platform approval when required. |
-| Issue, pull request, or external tracker mutation | protected | `external-mutation` | Explicit external resource target and requested mutation. |
-| Database or service mutation | protected | `external-mutation` | Explicit database/service, operation, scope, and rollback or safety evidence when applicable. |
-| Package publication | protected | `release` or `external-mutation` | Explicit package, version, registry, and publication authorization. |
+Multiple boundaries can apply: force push is destructive and external.
+A local source task never implies any of these actions. An already explicit
+user action/target needs no second AI_Rules magic phrase. Native permission
+denial still stops the affected action. Receipt/capability is not authorization.
 
-## Non-Authorizing Signals
+## Non-Protected Local Work
 
-The following do not authorize protected actions:
-
-- workflow names;
-- platform mode;
-- sandbox state;
-- local shell access;
-- channel availability;
-- source-write approval;
-- `GO` without a visible protected target, phase, scope, and expiry;
-- tool execution envelopes or receipts without matching prior authorization;
-- historical transcript text.
+Necessary bounded source edits, local configuration, local tests/builds/browser
+verification and non-destructive temporary evidence artifacts may be local_work.
+Restoring existing declared project-local dependencies is not system install;
+new dependencies require the minimal-implementation/scope test in the owner.
+Local stage/commit/branch/stash additionally require an explicit Git request.
+Observe includes read-only Git/API/MCP/browser work, subject to credentials,
+privacy, permission and user exclusions. No route or workflow label grants writes.
+`memory-governance.md` and `authorization-resolution.md` own the target for
+necessary same-scope maintenance of a known existing Memory owner. Memory is
+not a fifth protected class: ordinary card content/tracking edits and their
+necessary commit can be `local_work` after a verified M5 project/runtime
+cutover. Project-wide reindex requires its own explicit scope and repair-risk
+classification; new-card creation does not silently authorize that operation.
+Until that cutover, all physical `.agents/memory/**` mutation and Memory
+commit/reindex/index sync still use the legacy rows below regardless of caller,
+Skill loading or bundle presence. An uncertain activation state is frozen.
 
 ## Credential Boundary
 
-`AGENT_SECRET_HANDLING` is the protected credential class. The sole owner of
-the distinction between it and non-protected
-`APPROVED_PRODUCT_OWNED_CREDENTIAL_CONSUMPTION` is
-`credential-boundary-contract.md`. The latter is never an independently
-protected-registry exemption: it is eligible only under that contract and does
-not cover credential mutation or any other protected action.
+`credential-boundary-contract.md` is the sole owner of the distinction between
+`AGENT_SECRET_HANDLING` and eligible
+`APPROVED_PRODUCT_OWNED_CREDENTIAL_CONSUMPTION`. Preserve that distinction:
+application-owned credential consumption does not require exposing its secret
+to the agent. Other protected side effects still require their own authority.
+General protected actions use actual native contracts, not invented universal
+issuer/signature/nonce requirements.
 
-## Protected Follow-Up
+## Legacy Memory Compatibility (unchanged)
+
+These are frozen consumer rows, not additional general protected classes.
+They do not impose phases/stations/expiry on ordinary local_work.
+They remain applicable to all current physical Memory mutations and to retained
+Memory Skills, Team Memory stations, `completion_bundle`, protected Memory phases
+or receipts until the exact project/runtime passes M5 cutover. They also remain
+the legacy contract for an unmigrated consumer after an ordinary path cutover.
+Do not bypass them by calling a physical action ordinary.
+
+| Action | Registry class | Required phase | Required gate |
+|---|---|---|---|
+| Memory card or project context write | protected | `protected-memory-write` | Explicit memory/context target, scope, evidence, expiry, and memory owner station; when a completion bundle applies, its independently bound candidate and current receipt conditions must also be met. |
+| Memory commit | protected | `protected-memory-commit` | Protected memory write completed or explicitly not required, then explicit memory commit scope; when a completion bundle applies, its independently bound candidate and current receipt conditions must also be met. |
+
+### Protected Follow-Up — Memory consumer only
+
 
 Protected follow-up pending is valid only for an explicitly
 `source-level-explicit` closeout when the requested target does not include the

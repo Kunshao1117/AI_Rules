@@ -1,3 +1,19 @@
+
+General Agent roles and bounded assignments are owned by
+`Shared/agents/_registry.md` and `Shared/policies/agent-governance.md`.
+Model intent belongs to `Shared/policies/model-profile-routing.md`;
+the platform owns worker lifecycle. This retained Skill/reference is not a
+formal vNext Agent definition or a general Team prerequisite.
+
+## Legacy compatibility boundary
+
+The delimited body below is legacy, compatibility-only, and not required for
+general vNext work, including Team. Its original paths, anchors and meanings
+remain available to frozen Memory consumers. Do not derive Memory records,
+authority or completion from a vNext assignment. Do not load this body merely
+because execution mode is Team.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_START -->
 # Invalid Team Trace Patterns
 
 This reference is the sole owner of invalid Team-Native trace patterns. It
@@ -71,3 +87,5 @@ board field references; it does not redefine either.
 - Omitting required external-grounding fields when current external facts,
   versions, security, compliance, cost, deployment, or release facts affect the
   claim.
+
+<!-- LEGACY_TEAM_COMPATIBILITY_END -->

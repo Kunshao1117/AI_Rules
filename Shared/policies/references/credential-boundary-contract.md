@@ -8,8 +8,8 @@ lists.
 
 This contract does not authorize source writes, product execution, credentials,
 Git, release, deployment, install, memory mutation, destructive actions, or
-external mutation. Those actions still require their canonical phase, scope,
-and gate.
+external mutation. General actions follow `authorization-resolution.md` for scope, semantic
+authority, and native permission; Memory keeps its frozen phase and gate.
 
 ## Canonical Classes
 
@@ -17,7 +17,7 @@ and gate.
 |---|---|---|
 | `AGENT_SECRET_HANDLING` | yes | The agent, its tool, or its wrapper directly accesses, derives from, transports, or mutates a secret or credential file. It is protected credential handling. |
 | `APPROVED_PRODUCT_OWNED_CREDENTIAL_CONSUMPTION` | no, when eligible | An explicitly approved product, using its existing fail-closed loader, consumes its own credential settings while the agent carries only an opaque non-secret reference and never handles secret material. |
-| `ORDINARY_SCOPE_BOUND_LOCAL_RUNTIME_WRITE` | no, when eligible | An exact, non-destructive local runtime artifact write with no secret material and no protected target. It remains a `local_write`, not a cryptographic protected action. |
+| `ORDINARY_SCOPE_BOUND_LOCAL_RUNTIME_WRITE` | no, when eligible | An exact, non-destructive local runtime artifact write with no secret material and no protected target. It remains a `local_work`, not a cryptographic protected action. |
 
 `APPROVED_PRODUCT_OWNED_CREDENTIAL_CONSUMPTION` and
 `ORDINARY_SCOPE_BOUND_LOCAL_RUNTIME_WRITE` are not a credential, Git, memory,
@@ -56,7 +56,8 @@ protected class.
    delete the referred credential file.
 2. Director authorization names the exact product project root,
    executable/entry point, purpose, observation scope, runtime output targets,
-   forbidden actions, and expiry.
+   and forbidden actions. Legacy Team/Memory consumers retain expiry when their
+   original contract requires it; general observe/local_work needs no expiry field.
 3. The allowlisted product has an existing product-owned, read-only,
    fail-closed settings loader. The agent and wrapper do not add a parser,
    fallback search, disk scan, or alternate loader.
@@ -83,17 +84,19 @@ auditable ordinary execution receipt, and compliance with available native
 permissions or sandboxing. Examples include allowlisted capture data, analysis
 artifacts, receipts, logs, and state files with a known type and lifecycle.
 
-The canonical authorization phase for a product execution that combines
-approved external observation with those outputs is
-`product-runtime-execution` in `authorization-phase-registry.md`. It grants no
+Legacy Team/Memory records may retain `product-runtime-execution` from
+`authorization-phase-registry.md`. General local_work does not require that
+phase. This eligibility classification grants no
 agent secret handling, source write, Git, account/order action, deployment, or
 external mutation.
 
 ## Tool Execution Evidence Boundary
 
-True protected actions require the verified trusted-envelope evidence defined
-by `authorization-resolution.md`. A model-filled issuer, signature, nonce, or
-receipt is untrusted and never substitutes for it.
+General protected actions follow semantic action + target authorization and
+native permissions in `authorization-resolution.md`. A trusted envelope is
+required only when an actual native tool contract requires it; absent universal
+issuer/signature/nonce support is not a block. Model-filled receipts are never
+trusted evidence. Frozen Memory consumers keep their original evidence contract.
 
 For an eligible `ORDINARY_SCOPE_BOUND_LOCAL_RUNTIME_WRITE` or
 `APPROVED_PRODUCT_OWNED_CREDENTIAL_CONSUMPTION`, a tool path without verified
@@ -120,7 +123,7 @@ The following always fail closed and cannot borrow this exception:
 | Runtime target is outside allowlist, destructive, sealed, or a production database | Ordinary local-write eligibility failure; blocked. |
 | Product requests account, order, payment, deployment, cloud/database/service, or other external mutation | Matching protected gate; this contract does not cover it. |
 | Git, release, install, memory mutation, or destructive filesystem operation | Matching protected gate; this contract does not cover it. |
-| A true protected action lacks verified trusted-envelope evidence | Blocked or unverified; no model-generated replacement. |
+| An actually required native evidence contract fails or permission is denied | Stop the affected action; no fabricated receipt or alternate-tool bypass. |
 
 ## Contract Examples
 

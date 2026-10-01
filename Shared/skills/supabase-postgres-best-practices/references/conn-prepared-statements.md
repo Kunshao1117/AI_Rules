@@ -1,46 +1,13 @@
----
-title: Use Prepared Statements Correctly with Pooling
-impact: HIGH
-impactDescription: Avoid prepared statement conflicts in pooled environments
-tags: prepared-statements, connection-pooling, transaction-mode
----
+# Prepared statements and pool compatibility
 
-## Use Prepared Statements Correctly with Pooling
+Identify the actual pool implementation, mode, driver and prepared-statement behavior.
+Current Supabase/Supavisor facts belong to `Shared/policies/references/supabase-guide.md`
+and its connection documentation. For a pool mode without prepared-statement support,
+disable them only through the actual driver's documented option or select an already
+authorized compatible connection route. Do not invent a universal Node/ORM setting.
 
-Prepared statements are tied to individual database connections. In transaction-mode pooling, connections are shared, causing conflicts.
-
-**Incorrect (named prepared statements with transaction pooling):**
-
-```sql
--- Named prepared statement
-prepare get_user as select * from users where id = $1;
-
--- In transaction mode pooling, next request may get different connection
-execute get_user(123);
--- ERROR: prepared statement "get_user" does not exist
-```
-
-**Correct (use unnamed statements or session mode):**
-
-```sql
--- Option 1: Use unnamed prepared statements (most ORMs do this automatically)
--- The query is prepared and executed in a single protocol message
-
--- Option 2: Deallocate after use in transaction mode
-prepare get_user as select * from users where id = $1;
-execute get_user(123);
-deallocate get_user;
-
--- Option 3: Use session mode pooling (port 5432 vs 6543)
--- Connection is held for entire session, prepared statements persist
-```
-
-Check your driver settings:
-
-```sql
--- Many drivers use prepared statements by default
--- Node.js pg: { prepare: false } to disable
--- JDBC: prepareThreshold=0 to disable
-```
-
-Reference: [Prepared Statements with Pooling](https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pool-modes)
+Named PREPARE/EXECUTE across different transactions may land on different server sessions.
+DEALLOCATE after use does not fix that session-affinity problem. Session/direct mode may
+fit workloads that need session state. Do not infer mode from a port number alone or change
+provider/configuration automatically. Validate the deployed driver/mode combination with
+the project's admitted evidence method.

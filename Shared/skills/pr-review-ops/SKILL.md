@@ -1,90 +1,71 @@
 ---
 name: pr-review-ops
 description: >
-  程式碼審查與合併準備檢查（MCP: github）：PR 程式碼審查、結構化 review comments、CI 狀態檢查與 merge readiness 判定；
-  PR automated review recipes。
-  Use when: 需要 reviewing PR code、提交 structured review comments、檢查 CI status、
-  或判斷 PR merge readiness。
-  DO NOT use when: 需要建立 branch、push 檔案、issue 管理或一般 GitHub 操作；用 github-ops。
-  MCP Server: github
+  Specified GitHub PR evidence and finding methods. Use when: a specific GitHub PR needs diff, checks, comments or review evidence analysis.
+  DO NOT use when: ordinary source review, local diff, generic code review or repository/issue mutation without a specified PR analysis need.
 metadata:
   author: antigravity
-  version: "5.3"
+  version: "6.0"
   origin: framework
   kind: operational
-  memory_awareness: read
-  mcp_servers: [github]
-  tool_scope: ["mcp:github"]
+  memory_awareness: none
 ---
 
-# PR Review Ops — Automated Code Review Recipes
+# GitHub PR Evidence Methods
 
-## HITL Boundary
+Invocation classification: restricted; provider-specific: yes.
+No automatic sibling loading. PR analysis does not require github-ops or a
+mutation provider. Shared provider facts and effect boundaries live in
+`Shared/policies/references/github-guide.md`; read only the relevant sections.
 
-- Read-only tools (`list`, `get`, `search`, `query`, status/health checks) may proceed silently.
-- State-mutating, external-state, write, deploy, push, delete, reset, or resolve operations require a scope-bound intent signal from the Director; authorization resolution must bind it to the visible plan, command/tool, phase, expiry, and target external state before the matching protected gate can pass.
-- `[MCP HITL GATE]` is an additional execution gate for MCP calls; it does not replace authorization resolution or authorize a separate protected phase.
-- Discovery of tool schemas is not permission to execute mutating tools.
+## Understand the specified PR
 
-## Trigger Conditions
+1. Confirm host, owner/repo, PR number, base/head repositories and refs, head SHA,
+   and comparison base. Bind findings to this revision; a branch name alone moves.
+2. Read purpose/description and commit context, then changed files and diff.
+   Include pagination and truncation limits; added/modified/removed/renamed/binary
+   files can all matter. Select review effort by actual risk and affected behavior,
+   not a fixed file count or preference for modified files over added files.
+3. Read relevant surrounding source at the correct base/head revision. Compare
+   claimed intent with actual data flow, boundaries, error handling, dependency
+   effects and project-native conventions. Apply language-specific checks only
+   to the real stack; no universal TypeScript or new-test requirement. Where
+   applicable, use `Shared/policies/source-document-size-governance.md` thresholds.
+4. Inspect existing reviews, review threads and issue-style PR comments. Match
+   existing findings by defect, scope and location; do not publish duplicates.
+   An outdated thread's current coordinates may be absent: compare its original
+   revision/location with the new diff, and never invent a current line number.
+5. Inspect CI/check evidence for the reviewed head SHA. Combined commit status
+   and check runs are distinct; a success label may cover only one subset.
+   Distinguish pending, failed, skipped, stale and missing evidence. Do not rerun
+   Actions or modify checks merely to obtain evidence.
 
-- 總監要求審查特定 PR（code review on a specific PR）
-- 已接受的建構或修復流程發現待審 PR
-- 建構後工作流需要 peer review gate
+## Produce findings
 
-## Recipe 1: PR Content Analysis
+Anchor each substantive finding to the relevant file and revision, diff side
+and verified line/range when available. Explain the triggering condition,
+consequence, severity and bounded scope; separate a proven defect, inference,
+question and optional suggestion. Use project context to avoid generic checklists
+or irrelevant preferences. Missing evidence is a limitation, not a clean review.
+Before final findings or an authorized submission, compare the current head with
+the inspected SHA. If it changed, reassess affected evidence; do not silently
+approve a different revision. This is freshness of findings, not review admission.
 
-1. `get_pull_request` — Get PR metadata (title, description, author, base/head branch)
-2. `get_pull_request_files` — List all changed files with status
-   - `status` values: `added` / `modified` / `removed`
-   - Note `changes` count per file to prioritize review effort
-3. `get_pull_request_comments` — Read existing review comments to avoid duplicates
-4. For each significant changed file, use `get_file_contents` to read full context
+## Analysis versus publication
 
-## Recipe 2: Structured Review Submission
+“Review this PR” means read/analyze and return findings in chat; it does not
+by itself request publication. A local text draft needs no GitHub pending review.
+“Submit this review” identifies a remote collaboration request; exact repo/PR,
+revision, content and intended event must fit the user's authority and provider
+permission before execution. Publication, pending-review creation, adding a
+pending comment, submission, deleting a pending review and resolving a thread
+are separate server-side effects. Pending is not local or mutation-free.
 
-1. Analyze changes against the following review checklist:
-
-   **Quality checklist**:
-   - [ ] Naming conventions are consistent for functions, variables, and files.
-   - [ ] No hard-coded sensitive data, such as API keys or passwords.
-   - [ ] Error handling covers try/catch paths and boundary cases.
-   - [ ] TypeScript is type-safe, with no avoidable `any` and appropriate `unknown`.
-   - [ ] File length stays within the `code-quality` thresholds.
-   - [ ] No unused imports or variables.
-   - [ ] Non-business-logic changes, such as refactors, have test coverage.
-
-2. `create_pull_request_review` — Submit structured review
-   - `event`: `APPROVE` / `REQUEST_CHANGES` / `COMMENT`
-   - Include specific file + line references in `body`
-   - Use business-level language in review comments.
-
-## Recipe 3: Merge Decision Flow
-
-```
-[MERGE GATE] Approval decision:
-├── [SUDO] detected? → Record override/risk-closure request; do not approve, merge, or skip checks.
-├── CI status = success?
-│   ├── NO → [HALT] 「🔴 [PR HALT] 持續整合未通過（CI failed）。拒絕合併。」
-│   └── YES → Continue.
-├── Security checklist items from Recipe 2 ALL passed?
-│   ├── NO → Submit REQUEST_CHANGES. Block merge.
-│   └── YES → Continue.
-├── At least one APPROVE review exists?
-│   ├── NO → [HALT] 「🔴 [PR HALT] 尚無核准審查。」
-│   └── YES → Approve merge.
-└── Gate cleared → merge_pull_request.
-```
-
-## Gotchas
-
-- Always read existing comments before submitting review to avoid redundant feedback.
-- `create_pull_request_review` with `REQUEST_CHANGES` blocks merge; use it thoughtfully.
-- Review comments are visible to all collaborators; maintain a professional tone.
-- For large PRs with 20 or more files, prioritize reviewing `modified` files over `added` files.
-
-## Interpretation
-
-- `get_pull_request_files` — `additions` and `deletions` indicate change magnitude.
-- `get_pull_request_status` — `total_count` shows number of configured CI checks.
-- High-risk indicators include auth files, database migrations, and environment config changes.
+Neither review pass nor CI green authorizes merge. A request for review does not
+request merge, push or publication. This Skill has no MERGE GATE, magic phrase,
+Team activation, general Reviewer trigger or completion decision.
+`Shared/policies/review-governance.md` owns review applicability/independence;
+`verification-strategy.md`, `completion-policy.md` and `agent-governance.md` own
+their existing decisions. Remaining owners and provider/credential limits are
+linked from the shared reference. Keep evidence transient; no Memory / Project
+Context writes or automatic sibling loading.

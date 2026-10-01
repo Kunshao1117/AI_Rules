@@ -1,0 +1,23 @@
+{
+  "retire_on": "2026-11-01",
+  "source_files": [
+    "_completion_gate.md",
+    "_security_footer.md",
+    "00_chat(討論).md",
+    "01_explore(搜索).md",
+    "02_blueprint(架構).md",
+    "03_build(建構計畫).md",
+    "03-1_experiment(實驗).md",
+    "03-2_build_execute(建構執行).md",
+    "04-1_fix_plan(修復計畫).md",
+    "04-2_fix_execute(修復執行).md",
+    "05_condense(濃縮).md",
+    "06_test(測試).md",
+    "07_debug(除錯).md",
+    "09-1_commit_scan(紀錄掃描).md",
+    "09-2_commit_execute(授權備份).md",
+    "10_routine(巡檢).md",
+    "11_handoff(交接).md",
+    "12_skill_forge(技能鍛造).md"
+  ]
+}

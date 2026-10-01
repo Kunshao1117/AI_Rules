@@ -10,6 +10,7 @@
 
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -ErrorAction Stop
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -ErrorAction Stop
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Native-Agent-Projection.psm1') -ErrorAction Stop
 
 function Get-CursorSharedPolicyPath {
     param(
@@ -36,6 +37,7 @@ function Copy-CursorRuleTree {
     Get-ChildItem -LiteralPath $SourceRoot -Recurse -File | ForEach-Object {
         $rel = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/')
         if ($rel -like 'skills\*' -or $rel -like 'skills/*') { return }
+        if ($rel -like 'agents\*' -or $rel -like 'agents/*') { return }
         if ($rel -like 'hooks\*' -or $rel -like 'hooks/*') { return }
         if ((Split-Path $rel -Leaf) -eq 'hooks.json') { return }
         $dst = Join-Path $TargetRoot $rel
@@ -116,6 +118,11 @@ function Invoke-CursorFresh {
         $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot `
             -TargetAgentsRoot $agentsRoot `
             -Mode Full
+
+        $null = Sync-NativeAgentProjection -Platform Cursor `
+            -SourceAgentsRoot (Join-Path $srcDotCursor 'agents') `
+            -CanonicalAgentsRoot (Join-Path $sharedRoot 'agents') `
+            -TargetAgentsRoot (Join-Path $dstDotCursor 'agents')
 
         Write-Step '注入專案本地工具（Shared/project-tools/ → .agents/tools/）...'
         $null = Sync-ProjectTools -ProjectToolsRoot $projectToolsRoot `
@@ -220,7 +227,7 @@ function Invoke-CursorUpgrade {
         } else {
             Write-Warn '已拒絕框架檔案更新；本次升級維持部分／未驗證狀態，未更新 VERSION，且不輸出完成訊息。'
             $applyCursorChanges = $false
-            return
+            return [PSCustomObject]@{ Succeeded = $false; Platform = 'Cursor'; Reason = 'UpgradeDeclined' }
         }
     } else {
         Write-Ok '所有 .cursor/ 規則檔均已是最新版本，無需更新。'
@@ -244,6 +251,11 @@ function Invoke-CursorUpgrade {
         -TargetAgentsRoot $agentsRoot `
         -Mode Diff
 
+    $null = Sync-NativeAgentProjection -Platform Cursor `
+        -SourceAgentsRoot (Join-Path $srcDotCursor 'agents') `
+        -CanonicalAgentsRoot (Join-Path $sharedRoot 'agents') `
+        -TargetAgentsRoot (Join-Path $dstDotCursor 'agents')
+
     Write-Step '同步專案本地工具（Shared/project-tools/ → .agents/tools/）...'
     $null = Sync-ProjectTools -ProjectToolsRoot $projectToolsRoot `
         -TargetAgentsRoot $agentsRoot `
@@ -261,7 +273,7 @@ function Invoke-CursorUpgrade {
         if ($RemoveOrphans) {
             Remove-OrphanFiles -Report $report -TargetRoot $dstDotCursor
         } else {
-            Write-Warn "$($stats.Orphan) 個孤兒檔案。加入 -RemoveOrphans 可自動清除。"
+            Write-Warn "$($stats.Orphan) 個孤兒檔案已保留；來源不存在不代表可刪除。加入 -RemoveOrphans 可列報待確認項目。"
         }
     }
 

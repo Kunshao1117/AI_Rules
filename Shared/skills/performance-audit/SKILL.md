@@ -1,143 +1,75 @@
 ---
 name: performance-audit
 description: >
-  效能稽核與 Web Vitals 證據（Testing）：Lighthouse CLI 掃描、Web Vitals 量測、載入速度與 SEO 分數證據；
-  performance audit recipes.
-  Use when: 需要 performance measurement、Lighthouse、Web Vitals、load speed、
-  SEO score evidence、或效能報告。
-  DO NOT use when: 需要一般功能測試或非效能 UI 驗證；用 test-patterns 或 browser-testing。
+  效能量測與回歸解讀方法。Use when: 已選定頁面載入、互動延遲、執行效能回歸，或明確效能稽核，需要可比較的量測證據。
+  DO NOT use when: 普通視覺 UI bug、一般功能測試、SEO 評分或沒有效能問題的來源修改。
 metadata:
   author: antigravity
-  version: "5.3"
+  version: "7.0"
   origin: framework
   kind: operational
+  style: guided
   memory_awareness: none
-  tool_scope: ["terminal", "mcp:playwright"]
+  tool_scope: ["filesystem:read", "terminal", "browser"]
 ---
 
-# Performance Audit — Web Vitals Recipes
+# Performance Measurement and Interpretation
 
-## HITL Boundary
+## Purpose and fit
 
-- Running read-only performance scans with existing local tools may proceed silently.
-- `npx` is read-only only when it does not install or mutate project files.
-- Installing tooling is a protected phase.
-- Writing report artifacts into the project is a protected phase.
-- Changing CI/deployment settings is a protected phase.
-- Uploading performance data is also a protected phase.
-- A `GO` phrase is only a scope-bound Director intent signal.
-- Before mutation or upload, authorization resolution must bind the visible plan and station.
-- It must also bind the file set, exact command/tool call, phase, expiry, and required protected gate.
-- `[MCP HITL GATE]` records justification and human-in-the-loop evidence.
-- It does not replace authorization resolution.
-- Install, report-artifact write, CI/deploy mutation, and external upload are separate protected phases.
-- Discovery of browser or MCP tool schemas is not permission to execute mutating tools.
+Measure and interpret the selected loading/runtime performance question.
+Lighthouse is an optional measurement provider, not complete performance truth.
+SEO, accessibility and best-practice scores are separate questions; they do not
+become part of a performance audit or automatically load other Skills.
 
-## Trigger Conditions
+## Core method
 
-- 已接受的效能驗收需要 performance assessment
-- 部署前需要 performance gate
-- 總監要求 performance report
+1. Define the selected user operation, acceptance metric and affected environment.
+   Inspect project-native measurement scripts/configuration first. Choose loading,
+   interaction, rendering, network/resource or other runtime evidence that answers
+   the question; not every application needs Lighthouse or Web Vitals.
+2. Record build/source, provider/version, device/browser/runtime, network/CPU,
+   cache state, input/data and relevant workload. Lab results and real-user/field
+   data describe different conditions. Development-server results do not stand
+   in for production performance without an explicit comparability argument.
+3. Use an existing eligible measurement capability. Browser timing/resource
+   entries, traces, network observations or project-native profilers can help;
+   select only relevant instrumentation and avoid perturbing the measurement.
+   Read references/measurement-interpretation.md for web/provider examples.
+4. For before/after comparison, keep important conditions comparable. Repeat when
+   noise warrants it, retain sample distribution/variation and explain the chosen
+   summary. Do not make a regression claim from incomparable runs or a single
+   score fluctuation. Report a missing baseline as a limitation.
+5. Distinguish measured metrics, diagnostic opportunities, lab score and field
+   outcomes. A Lighthouse score is not all product performance; no fixed score
+   threshold or four-category traffic-light gate is imposed. Apply acceptance
+   and the relevant metric definitions, not an automatic completion decision.
+6. Return measured values, units, conditions, before/after differences, likely
+   bottlenecks, evidence paths and uncertainty. A missing Lighthouse executable
+   does not trigger installation; use an appropriate available alternative or
+   state the exact measurement that remains unavailable.
 
-## Recipe 1: Lighthouse CLI Scan
+## Canonical boundaries and reference loading
 
-### Prerequisites
+`Shared/policies/verification-strategy.md` alone owns evidence need, permanent
+test admission, focused/broad scope, direct/independent judgment and failure
+classification. `Shared/policies/review-governance.md` owns review applicability;
+`Shared/policies/completion-policy.md` owns completion. This method decides none
+of those outcomes and does not activate Reviewer, Verifier or Team.
+`Shared/policies/execution-routing.md` owns execution mode;
+`Shared/policies/authorization-resolution.md` owns action authority.
 
-```
-npx lighthouse
-# Global install, such as npm install -g lighthouse, requires separate install-phase authorization resolution.
-```
+Provider-specific: no. Describe the capability needed and resolve actual tools,
+presence and readiness through `Shared/policies/capability-resolution.md`.
+Project-native scripts/configuration supply candidates under
+`Shared/policies/references/project-derived-verification.md`; no runner, browser,
+scanner or MCP is presumed. Missing tools use a legal equivalent or a reported
+evidence gap. No implicit install, `npx` presence probe, automatic login, external
+upload or MCP server startup. Inspect the effects of any proposed operation.
 
-### Execution
-
-1. Start the development server and confirm it is running.
-2. Run Lighthouse via terminal.
-3. If `--output-path` writes inside the project, first resolve the report-artifact write phase:
-   ```powershell
-   npx lighthouse http://localhost:3000 --output=json --output-path=./lighthouse-report.json --chrome-flags="--headless"
-   ```
-4. For multiple pages, run sequentially:
-   ```powershell
-   npx lighthouse http://localhost:3000 --output=json --output-path=./report-home.json --chrome-flags="--headless"
-   npx lighthouse http://localhost:3000/about --output=json --output-path=./report-about.json --chrome-flags="--headless"
-   ```
-
-### Result Interpretation
-
-| Metric | Meaning | Target |
-| --- | --- | :---: |
-| Performance | Overall performance score | >= 90 |
-| Accessibility | Accessibility score | >= 90 |
-| Best Practices | Best practices score | >= 90 |
-| SEO | Search engine optimization score | >= 90 |
-
-### Key Metrics
-
-| Metric | Full name | Good threshold | Needs improvement |
-| --- | --- | :---: | :---: |
-| LCP  | Largest Contentful Paint  |  ≤ 2.5s  |  > 4.0s  |
-| FID  | First Input Delay         | ≤ 100ms  | > 300ms  |
-| CLS  | Cumulative Layout Shift   |  ≤ 0.1   |  > 0.25  |
-| TTFB | Time to First Byte        | ≤ 800ms  | > 1800ms |
-| INP  | Interaction to Next Paint | ≤ 200ms  | > 500ms  |
-
-### Score To Traffic Light Gate
-
-```
-[PERFORMANCE SCORE GATE] Lighthouse score → Traffic Light:
-├── ALL four categories ≥ 90 → 🟢 Green
-├── ANY category 50–89   → 🟡 Yellow
-├── ANY category < 50    → 🔴 Red
-└── Key Metrics breach?
-    ├── ANY metric exceeds the "Needs improvement" threshold → append 🟡 per metric
-    └── ALL metrics within the "Good" threshold → No additional flag
-```
-
-
-## Recipe 2: Browser Navigation Metrics
-
-Use Playwright MCP for real browser performance measurement:
-
-1. `browser_navigate` — Navigate to target page
-2. `browser_evaluate` — Extract Navigation Timing API data:
-   ```javascript
-   JSON.stringify(performance.getEntriesByType("navigation")[0]);
-   ```
-3. `browser_evaluate` — Extract Web Vitals:
-   ```javascript
-   JSON.stringify({
-     domContentLoaded:
-       performance.timing.domContentLoadedEventEnd -
-       performance.timing.navigationStart,
-     loadComplete:
-       performance.timing.loadEventEnd - performance.timing.navigationStart,
-     resourceCount: performance.getEntriesByType("resource").length,
-   });
-   ```
-4. `browser_network_requests` — Analyze total request count and payload sizes
-
-## Gotchas
-
-- Lighthouse requires Chrome or Chromium on the system.
-- Run in `--headless` mode for CI and automation.
-- Development server performance differs from production; treat results as relative, not absolute.
-- Run multiple times and average results for reliability.
-- Disable browser extensions and close other tabs during testing.
-
-## Output Format
-
-When reporting to Director, present as:
-
-```
-📊 效能稽核報告 — {頁面名稱}
-━━━━━━━━━━━━━━━━━━━━━━━
-✅ Performance: 95/100
-✅ Accessibility: 98/100
-✅ Best Practices: 92/100
-✅ SEO: 100/100
-
-關鍵指標：
-  LCP: 1.8s ✅ (目標 ≤ 2.5s)
-  CLS: 0.05 ✅ (目標 ≤ 0.1)
-  TTFB: 420ms ✅ (目標 ≤ 800ms)
-```
+Invocation classification: restricted, a method contract rather than invented
+native enforcement metadata. Load other methods only for a separately identified
+need; no required_skills/relations chain or preload-all references. No Memory
+read/write or Project Context persistence is required. Original text is preserved
+under references/legacy/ for explicit compatibility investigation only, never
+as active method instructions or a fallback governance flow.

@@ -14,26 +14,18 @@ description: 外部工具操作防護欄；高風險 MCP 呼叫前適用，例�
 - 每次 `gateway__call_tool` 呼叫都必須包含明確的 `workspace` absolute path。對 cartridge-system tools，`arguments.projectRoot` 也必須明確指定。
 - 不得依賴 Gateway global workspace state。不得猜測 argument names；必須先檢查 schema。
 
-## 1. MCP Human-In-The-Loop Gate
+## 1. MCP Semantic And Native Permission Gate
 
-```
-[MCP HITL GATE] 執行任何 state-mutating MCP tool 前：
-├── MCP action 是否純 READ-ONLY（例如 list, get, search, query docs）？
-│   └── YES → 先檢查 §2 Tool-Level Permission Matrix 是否覆寫；若為 🟢 LOW，略過此 gate 並靜默繼續。
-├── 總監提示是否包含 [SUDO]?
-│   └── YES → 只記錄覆寫/風險關閉請求；此 gate、scoped authorization、Team-Native、validation、review 與 protected gates 仍維持啟用；[SUDO] 不授權 unconstrained execution。
-├── action 是否為 STATE-MUTATING（例如 write, update, delete, deploy, push）？
-│   └── YES → Agent 必須先輸出 Justification Block:
-│         【操作理由】為什麼需要執行此操作（商業語言描述）
-│         【影響範圍】此操作可能影響的系統或資料
-│         【回滾方案】若操作失敗的復原策略
-│         接著 → [HALT] 「🔴 [MCP HALT] 偵測到破壞性外部工具呼叫 ({ToolName})。請總監輸入 [SUDO] 或明確同意。」
-│         不得執行該工具；立即停止目前任務（DO NOT execute the tool; stop current task）。
-└── 全部通過 → 執行 tool。
-```
-
-- **定義（Definition）**: state-mutating MCP tool 指任何會改變 remote infrastructure、database schemas/data 或 version control states 的工具（例如 `supabase__apply_migration`、`github__push`、`cloudflare-ops` container modifications）。
-- **執行約束（Enforcement）**: 這是防止 AI 意外執行破壞性動作的嚴格安全邊界。
+`Shared/policies/authorization-resolution.md` owns action authority;
+`Shared/policies/execution-routing.md` independently owns Direct / Assisted / Team.
+Classify actual side effects through the protected-action registry, not the MCP
+transport name. Read-only observation is observe; necessary reversible local
+work can be local_work. External mutation needs explicit action + target;
+destructive effects also need material safety evidence. Do not infer Git or
+protected authority from a source task. Existing explicit authorization needs
+no second magic phrase or SUDO. Native denial stops the affected action and
+cannot be bypassed by another tool. Use receipts only as actually supported.
+Memory tool rows below retain their original frozen contracts.
 
 ## 2. Tool-Level Permission Matrix
 
@@ -46,9 +38,9 @@ description: 外部工具操作防護欄；高風險 MCP 呼叫前適用，例�
 | `supabase.apply_migration` | 🔴 HIGH | 總監核准 + Justification Block（Director approval + Justification Block） |
 | `supabase.deploy_edge_function` | 🔴 HIGH | 總監核准 + Justification Block（Director approval + Justification Block） |
 | `cartridge-system__memory_commit` | 🔴 HIGH | 只能在 active memory main file 已寫入且 memory commit phase 啟用後執行 |
-| `github.create_or_update_file` | 🟡 MEDIUM | 需提供 Justification Block，並自動記錄（auto-logged） |
-| `github.push_files` | 🟡 MEDIUM | 需提供 Justification Block，並自動記錄（auto-logged） |
-| `cloudflare.container_*` (mutating) | 🟡 MEDIUM | 需提供 Justification Block，並自動記錄（auto-logged） |
+| `github.create_or_update_file` | 🟡 MEDIUM | 須有明確外部動作與目標及原生平台許可；已有授權不重複詢問 |
+| `github.push_files` | 🟡 MEDIUM | 須有明確外部動作與目標及原生平台許可；已有授權不重複詢問 |
+| `cloudflare.container_*` (mutating) | 🟡 MEDIUM | 須有明確外部動作與目標及原生平台許可；已有授權不重複詢問 |
 | `gateway__search_tools` / `gateway__list_server_tools` | 🟢 LOW | 自動放行（Auto-proceed） |
 | `cartridge-system__memory_list` / `memory_read` / `memory_status` / `memory_deps` | 🟢 LOW | 自動放行（Auto-proceed） |
 | `cartridge-system__workspace_brief` / `memory_audit` / `commit_preflight` | 🟢 LOW | 自動放行（Auto-proceed） |

@@ -3,6 +3,11 @@
 AI_Rules 只提供可選用的設定片段。
 Fresh、Upgrade、Sync 與 Audit 不會自動安裝外部 MCP server，也不會覆寫使用者的全域 MCP 設定。
 
+Provider discovery follows `Shared/policies/capability-resolution.md`. The opt-in
+wrapper snippets below may download packages when activated; they are not
+presence probes. Reading visible metadata and launching a server are different
+actions. Activation does not authorize installation, login or downstream mutation.
+
 ## Codex 設定片段（Codex Profile Snippet）
 
 ```toml

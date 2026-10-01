@@ -88,5 +88,5 @@ Requirement assertion and evidence-honesty rules remain owned by
 `Shared/policies/authorization-resolution.md`; source freshness remains owned
 by `Shared/policies/grounding-governance.md`; and persistence approval and
 long-lived project-context procedures remain owned by
-`Shared/skills/project-context-protocol/SKILL.md`. This policy does not copy
+`Shared/policies/project-context-protocol.md`. This policy does not copy
 their schemas, staleness rules, or source/deployed sync procedures.
