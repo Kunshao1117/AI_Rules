@@ -47,14 +47,21 @@ $ModulesDir = Join-Path $RepoRoot "Scripts\modules"
 # configuration and TOML merge → Manager.Config; deployment coordination → Manager.Deployment.
 Import-Module (Join-Path $ModulesDir "Manager.Commands.psm1") -Force
 
-Invoke-ManagerAction `
-    -Action $Action `
-    -RepoRoot $RepoRoot `
-    -Target $Target `
-    -ProfileRoot $ProfileRoot `
-    -Apply:$Apply `
-    -RemoveOrphans:$RemoveOrphans `
-    -ProjectPlatform $ProjectPlatform `
-    -GitignoreMode $GitignoreMode `
-    -WhatIf:$WhatIf `
-    -ManagedSource:$ManagedSource
+$arguments = @{
+    Action = $Action; RepoRoot = $RepoRoot; Target = $Target; ProfileRoot = $ProfileRoot
+    Apply = $Apply; RemoveOrphans = $RemoveOrphans; ProjectPlatform = $ProjectPlatform
+    GitignoreMode = $GitignoreMode; WhatIf = $WhatIf; ManagedSource = $ManagedSource
+}
+if ($Action -eq 'SyncProjectRules') {
+    $output = @(Invoke-ManagerAction @arguments)
+    $results = @($output | Where-Object {
+        $null -ne $_ -and $null -ne $_.PSObject.Properties['Succeeded']
+    })
+    $syncResult = if ($results.Count -eq 1) { $results[0] } else { $null }
+    $envelope = @{ Version = 1; Action = $Action; Result = $syncResult }
+    Write-Host ('AI_RULES_MANAGER_RESULT:' + ($envelope | ConvertTo-Json -Depth 10 -Compress))
+    if ($null -eq $syncResult -or $syncResult.Succeeded -isnot [bool]) { exit 2 }
+    if (-not $syncResult.Succeeded) { exit 1 }
+} else {
+    Invoke-ManagerAction @arguments
+}

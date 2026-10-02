@@ -17,8 +17,9 @@ field set:
 
 - `workflow-execution-spec-contract.md` consumes the applicable
   schema-conformant contract.
-- `intent-alignment-gate` consumes this policy and the schema for requirement
-  playback, traceability, and drift work.
+- Main and workflow intake consume this policy and the schema for requirement
+  playback, traceability and drift; methods are in
+  `Shared/policies/references/task-assignment-methods.md#requirement-replay-and-drift`.
 
 ## Precision Gate
 

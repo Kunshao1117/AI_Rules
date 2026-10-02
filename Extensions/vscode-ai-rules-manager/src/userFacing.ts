@@ -3,7 +3,7 @@ import type { ManagerAction, RunOptions } from "./scriptRunner";
 // User-visible wording follows Shared/policies/language-governance.md.
 export const LANGUAGE_GOVERNANCE_SOURCE = "Shared/policies/language-governance.md";
 
-export type UserResultState = "success" | "noChange" | "attention" | "cancelled" | "error";
+export type UserResultState = "success" | "preview" | "unknown" | "noChange" | "attention" | "cancelled" | "error";
 export type UserStatus = "normal" | "busy" | "update" | "attention" | "warning" | "error" | "unavailable";
 
 export interface UserFacingResult {
@@ -82,30 +82,44 @@ export function busyResult(action: ManagerAction, options: RunOptions = {}): Use
   return result("success", "busy", "AI Rules：處理中", `正在${operationLabel(action, options)}。`, undefined, "完成後會顯示結果。", false);
 }
 
-export function describeManagerOutput(action: ManagerAction, output: string, options: RunOptions = {}): UserFacingResult {
+export function describeManagerOutput(action: ManagerAction, output: string, options: RunOptions = {}, exitCode: number | null = 0, stdout: string = output): UserFacingResult {
+  const sync = action === "SyncProjectRules" ? readProjectSyncResult(stdout) : undefined;
+  if (sync?.Succeeded === false) return projectSyncFailure(sync.RequiredStageResults);
+  if (/狀態：來源庫分叉|來源庫更新失敗：來源庫分叉/.test(stdout)) {
+    return result("attention", "attention", "來源狀態需要確認", "本機與遠端來源已分叉，不能當成一般更新繼續套用。", "目前無法確認來源已對齊。", "請先確認要使用的來源版本，再重新檢查。", TECHNICAL_DETAILS);
+  }
+  if (exitCode === null) return unknownResult();
+  if (exitCode !== 0) {
+    return action === "SyncProjectRules" ? projectSyncFailure(sync?.RequiredStageResults) : describeRunError(new Error(output));
+  }
+  output = stdout;
+  if (action === "SyncProjectRules") return describeProjectSync(sync, options);
+  if (!output.trim() || /狀態：無法判斷來源庫狀態/.test(output)) return unknownResult();
+  if (/來源庫更新失敗|必要階段失敗|同步失敗/.test(output)) return projectSyncFailure();
+
   if (hasNoPlatform(output)) {
     return result("noChange", "normal", "目前沒有可同步的工具", "目前專案沒有找到可同步的 AI 工具規則，因此沒有修改任何內容。", undefined, "你現在不用做任何事。", TECHNICAL_DETAILS);
   }
 
+  if (/狀態：本機領先遠端|工作樹有變更/.test(output)) {
+    return result("attention", "attention", "來源狀態需要確認", "來源包含尚待確認的本機變更，不能直接視為可更新狀態。", undefined, "請先查看來源差異，再決定下一步。", TECHNICAL_DETAILS);
+  }
+  if (action === "Plan" || options.whatIf || (!options.apply && ["SyncGlobal", "CleanupOrphans", "MemoryMigration", "Gitignore"].includes(action))) {
+    if (!/狀態：|Dry-run|WhatIf|預覽|預先檢查|AI Rules Manager|缺少標準|有差異/.test(output)) return unknownResult();
+    return previewResult();
+  }
   if (needsAttention(output)) {
-    if (action === "Check" || action === "Plan") {
+    if (action === "Check" && /狀態：偵測到遠端更新|狀態：可快轉更新/.test(output)) {
       return result("attention", "update", "AI Rules：有更新", "有新版規則可以更新。更新只會下載 AI Rules，不會修改目前專案。", undefined, "你可以按「更新 AI Rules」，或先查看可更新內容。", TECHNICAL_DETAILS);
     }
-    return result("attention", "attention", "AI Rules：需要確認", "主要工作已完成，但還有一項需要你確認。插件沒有自動覆蓋可能影響你的內容。", undefined, "按「查看技術資料」可以了解下一步。", TECHNICAL_DETAILS);
+    return result("attention", "attention", "AI Rules：需要確認", "仍有項目需要確認，目前不能證明操作已完成。", undefined, "按「查看技術資料」可以了解下一步。", TECHNICAL_DETAILS);
   }
 
   if (action === "Check") {
+    if (!/狀態：已同步|Green[：:]\s*\d+/.test(output)) return unknownResult();
     return result("success", "normal", "AI Rules：正常", "AI Rules 可以正常使用，目前沒有需要處理的問題。", undefined, "你現在不用做任何事。", TECHNICAL_DETAILS);
   }
-  if (action === "Plan") {
-    return result("noChange", "normal", "已完成檢查", "目前沒有需要更新的內容。", "這次檢查沒有修改目前專案。", "你現在不用做任何事。", TECHNICAL_DETAILS);
-  }
-  if (action === "SyncProjectRules" && !options.apply) {
-    return result("success", "attention", "已完成預先檢查", "接下來可以更新目前專案中已安裝的 AI 工具規則，並保留專案記憶與現有修改。", undefined, "請確認是否繼續同步。", TECHNICAL_DETAILS);
-  }
-  if (action === "SyncProjectRules") {
-    return result("success", "normal", "同步完成", "已更新目前專案中已安裝的 AI 工具規則。", "專案記憶與尚未提交的修改已保留。", "你現在不用做任何事。", TECHNICAL_DETAILS);
-  }
+  if (!/完成|已更新|已同步|Already up.to.date|Fast-forward/i.test(output)) return unknownResult();
   if (action === "Apply") {
     return result("success", "normal", "更新完成", "AI Rules 已完成更新處理。", "目前專案與插件本身沒有被修改。", "你現在不用做任何事。", TECHNICAL_DETAILS);
   }
@@ -170,10 +184,62 @@ export function resultMessage(result: UserFacingResult): string {
 }
 
 export function technicalResultLabel(result: UserFacingResult): string {
+  if (result.state === "preview") return "預覽完成（未套用）";
+  if (result.state === "unknown") return "尚未確認";
+  if (result.state === "noChange") return "沒有變更";
   if (result.state === "error") return "失敗";
   if (result.state === "attention") return "需要處理";
   if (result.state === "cancelled") return "已取消";
   return "成功";
+}
+
+interface ProjectSyncResult {
+  Succeeded: boolean;
+  Applied?: unknown;
+  Platforms?: unknown;
+  RequiredStageResults?: unknown;
+}
+
+function readProjectSyncResult(output: string): ProjectSyncResult | undefined {
+  const frames = output.split(/\r?\n/).filter(line => line.startsWith("AI_RULES_MANAGER_RESULT:"));
+  if (frames.length !== 1) return undefined;
+  try {
+    const envelope = JSON.parse(frames[0].slice("AI_RULES_MANAGER_RESULT:".length));
+    if (envelope?.Version !== 1 || envelope.Action !== "SyncProjectRules" || typeof envelope.Result?.Succeeded !== "boolean") return undefined;
+    return envelope.Result;
+  } catch {
+    return undefined;
+  }
+}
+
+function describeProjectSync(sync: ProjectSyncResult | undefined, options: RunOptions): UserFacingResult {
+  if (!sync || typeof sync.Applied !== "boolean" || !Array.isArray(sync.Platforms) || !Array.isArray(sync.RequiredStageResults)) return unknownResult();
+  const platforms = sync.Platforms;
+  const stages = sync.RequiredStageResults;
+  if (platforms.some(platform => !["Codex", "Claude", "Antigravity"].includes(platform)) || new Set(platforms).size !== platforms.length) return unknownResult();
+  if (stages.some(stage => stage?.Succeeded === false || ["Failed", "Skipped"].includes(stage?.Status))) return projectSyncFailure(stages);
+  if (platforms.length === 0 && stages.length === 0 && !sync.Applied) {
+    return result("noChange", "normal", "目前沒有可同步的工具", "目前專案沒有找到可同步的 AI 工具規則，因此沒有修改任何內容。", undefined, "你現在不用做任何事。", TECHNICAL_DETAILS);
+  }
+  const expectedStages = platforms.length + (sync.Applied ? 3 : 0);
+  if (platforms.length === 0 || stages.length !== expectedStages || stages.some(stage => stage?.Required !== true || stage?.Succeeded !== true || stage?.Status !== "Succeeded" || typeof stage?.Stage !== "string" || !stage.Stage.trim()) || new Set(stages.map(stage => stage.Stage)).size !== stages.length) return unknownResult();
+  if (sync.Applied !== Boolean(options.apply) || options.whatIf) return unknownResult();
+  if (!sync.Applied) return previewResult();
+  return result("success", "normal", "同步完成", "已更新目前專案中已安裝的 AI 工具規則，所有必要同步階段均成功。", "專案記憶與尚未提交的修改已保留。", "你現在不用做任何事。", TECHNICAL_DETAILS);
+}
+
+function projectSyncFailure(stages?: unknown): UserFacingResult {
+  const failed = Array.isArray(stages) ? stages.filter(stage => stage?.Status === "Failed" && typeof stage.Stage === "string").map(stage => stage.Stage) : [];
+  const detail = failed.length ? `失敗階段：${failed.join("、")}。` : "必要同步流程沒有成功結束。";
+  return result("error", "error", "同步沒有完成", `同步沒有完成。${detail}`, "請勿把這次操作視為已套用完成。", "查看技術資料後處理失敗原因，再重新檢查。", TECHNICAL_DETAILS);
+}
+
+function previewResult(): UserFacingResult {
+  return result("preview", "attention", "已完成預先檢查", "這次只完成檢查／預覽，尚未套用任何更新。", "預覽結果不代表同步已完成。", "確認預覽內容後，再決定是否繼續套用。", TECHNICAL_DETAILS);
+}
+
+function unknownResult(): UserFacingResult {
+  return result("unknown", "warning", "結果尚未確認", "目前沒有足夠的完整結果，無法確認操作已完成。", undefined, "查看技術資料後重新檢查，暫時不要視為成功。", TECHNICAL_DETAILS);
 }
 
 function result(

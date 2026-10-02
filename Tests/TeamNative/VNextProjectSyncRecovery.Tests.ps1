@@ -116,3 +116,64 @@ Describe 'vNext foundation Manager apply recovery and preview' {
         }
     }
 }
+
+Describe 'Manager project sync result transport' {
+    It 'preserves a failed backend aggregate through the actual command facade' {
+        $commands = Import-Module (Join-Path $sourceRepo 'Scripts/modules/Manager.Commands.psm1') -Force -PassThru
+        $original = & $commands { (Get-Command Invoke-ManagerSyncProjectRules).ScriptBlock }
+        try {
+            & $commands {
+                function script:Invoke-ManagerSyncProjectRules {
+                    [pscustomobject]@{ Succeeded=$false; Applied=$true; Platforms=@('Codex'); RequiredStageResults=@([pscustomobject]@{ Stage='required-stage'; Status='Failed' }) }
+                }
+            }
+            $result = & $commands { Invoke-ManagerAction -Action SyncProjectRules -ProjectPlatform Codex -Apply }
+            $result.Succeeded | Should Be $false
+            $result.RequiredStageResults[0].Status | Should Be 'Failed'
+        } finally {
+            & $commands { param($body) $null=$ExecutionContext.InvokeProvider.Item.Set('Function:\script:Invoke-ManagerSyncProjectRules',$body,$true,$true) } $original
+        }
+    }
+
+    It 'emits structured results and accurate exit codes through the real script: <Name>' -TestCases @(
+        @{Name='success';Platform='Codex';Apply=$true;Exit=0;Succeeded=$true},
+        @{Name='preview';Platform='Codex';Apply=$false;Exit=0;Succeeded=$true},
+        @{Name='failure despite success-looking output';Platform='Claude';Apply=$true;Exit=1;Succeeded=$false},
+        @{Name='missing result';Platform='Antigravity';Apply=$true;Exit=2;Succeeded=$null}
+    ) {
+        param($Name,$Platform,$Apply,$Exit,$Succeeded)
+        $fixture = Join-Path $TestDrive ([guid]::NewGuid().ToString('N'))
+        $moduleFixture = @'
+function Invoke-ManagerAction {
+    param($Action,$ProjectPlatform,[switch]$Apply)
+    Write-Host 'sync completed'
+    if ($ProjectPlatform -eq 'Antigravity') { return }
+    [pscustomobject]@{
+        Succeeded=($ProjectPlatform -ne 'Claude'); Applied=[bool]$Apply; Platforms=@($ProjectPlatform)
+        RequiredStageResults=@([pscustomobject]@{Stage='required-stage';Required=$true;Status=$(if($ProjectPlatform -eq 'Claude'){'Failed'}else{'Succeeded'});Succeeded=($ProjectPlatform -ne 'Claude')})
+    }
+}
+Export-ModuleMember -Function Invoke-ManagerAction
+'@
+        Write-RecoveryFixture (Join-Path $fixture 'Scripts/modules/Manager.Commands.psm1') $moduleFixture
+        $scriptPath = Join-Path $fixture 'Scripts/AI-RulesManager.ps1'
+        Write-RecoveryFixture $scriptPath ([IO.File]::ReadAllText((Join-Path $sourceRepo 'Scripts/AI-RulesManager.ps1')))
+        $processArgs = @('-NoProfile','-File',$scriptPath,'-RepoRoot',$fixture,'-Target',$fixture,'-Action','SyncProjectRules','-ProjectPlatform',$Platform)
+        if ($Apply) { $processArgs += '-Apply' }
+        $output = @(& powershell.exe @processArgs)
+        $actualExit = $LASTEXITCODE
+        $actualExit | Should Be $Exit
+        $frames = @($output | Where-Object { $_ -like 'AI_RULES_MANAGER_RESULT:*' })
+        $frames.Count | Should Be 1
+        $envelope = $frames[0].Substring('AI_RULES_MANAGER_RESULT:'.Length) | ConvertFrom-Json
+        $envelope.Version | Should Be 1
+        $envelope.Action | Should Be 'SyncProjectRules'
+        if ($null -eq $Succeeded) {
+            ($null -eq $envelope.Result) | Should Be $true
+        } else {
+            $envelope.Result.Succeeded | Should Be $Succeeded
+            $envelope.Result.Applied | Should Be $Apply
+            $envelope.Result.RequiredStageResults.Count | Should Be 1
+        }
+    }
+}

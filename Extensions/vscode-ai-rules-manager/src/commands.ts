@@ -105,10 +105,10 @@ async function run(
   panel.setResult(busy);
 
   try {
-    const output = await runner.run(action, options);
-    const result = describeManagerOutput(action, output, options);
+    const execution = await runner.run(action, options);
+    const result = describeManagerOutput(action, execution.output, options, execution.exitCode, execution.stdout);
     runner.appendResult(technicalResultLabel(result));
-    await present(result, runner, status, panel);
+    await present(result, runner, status, panel, result.state === "error");
     return result;
   } catch (error) {
     runner.recordFailure(error);
@@ -151,7 +151,7 @@ async function confirm(
 }
 
 function canContinueAfterPreview(result: UserFacingResult): boolean {
-  return result.state === "success" || result.state === "attention";
+  return result.state === "preview";
 }
 
 async function present(

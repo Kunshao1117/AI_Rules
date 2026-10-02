@@ -32,6 +32,12 @@ export interface RunOptions {
   whatIf?: boolean;
 }
 
+export interface ManagerRunResult {
+  output: string;
+  stdout: string;
+  exitCode: number | null;
+}
+
 export class UserCancelledError extends Error {
   constructor(message = "使用者已取消操作。") {
     super(message);
@@ -60,7 +66,7 @@ export class ScriptRunner {
     private readonly output: vscode.OutputChannel
   ) {}
 
-  async run(action: ManagerAction, options: RunOptions = {}): Promise<string> {
+  async run(action: ManagerAction, options: RunOptions = {}): Promise<ManagerRunResult> {
     this.startOperation(action, options);
     const source = await this.resolveRepoRoot();
     const repoRoot = source.repoRoot;
@@ -94,9 +100,13 @@ export class ScriptRunner {
     return new Promise((resolve, reject) => {
       const child = cp.spawn(ps, args, { cwd: repoRoot, windowsHide: true });
       let buffer = "";
+      let stdout = "";
+      child.stdout.setEncoding("utf8");
+      child.stderr.setEncoding("utf8");
       child.stdout.on("data", (chunk) => {
         const text = chunk.toString();
         buffer += text;
+        stdout += text;
         this.output.append(text);
       });
       child.stderr.on("data", (chunk) => {
@@ -106,8 +116,7 @@ export class ScriptRunner {
       });
       child.on("error", reject);
       child.on("close", (code) => {
-        if (code === 0) resolve(buffer);
-        else reject(new Error(`AI_Rules script exited with code ${code}`));
+        resolve({ output: buffer, stdout, exitCode: code });
       });
     });
   }

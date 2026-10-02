@@ -548,12 +548,12 @@ function Invoke-ManagerProjectRulesSyncCore {
         $selected = @($ProjectPlatform)
     } else {
         Write-ManagerProjectSyncNoInstallWarning -TargetRoot $targetRoot -Platform $ProjectPlatform
-        return
+        return [PSCustomObject]@{ Succeeded = $true; Applied = $false; Platforms = @(); RequiredStageResults = @() }
     }
 
     if ($selected.Count -eq 0) {
         Write-ManagerProjectSyncNoInstallWarning -TargetRoot $targetRoot -Platform "任何支援平台"
-        return
+        return [PSCustomObject]@{ Succeeded = $true; Applied = $false; Platforms = @(); RequiredStageResults = @() }
     }
     Write-Host "同步平台：$($selected -join ', ')"
 
