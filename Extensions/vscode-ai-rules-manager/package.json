@@ -3,7 +3,7 @@
   "displayName": "AI Rules Manager",
   "description": "用繁體中文協助你檢查、更新與同步 AI Rules 的 VS Code 管理工具。",
   "icon": "resources/icon.png",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "publisher": "kunshao",
   "license": "MIT",
   "repository": {
@@ -142,7 +142,7 @@
   "devDependencies": {
     "@types/node": "^20.14.10",
     "@types/vscode": "^1.90.0",
-    "@vscode/vsce": "^3.9.2",
+    "@vscode/vsce": "4.0.0",
     "typescript": "^5.5.4"
   }
 }

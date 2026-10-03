@@ -60,4 +60,4 @@ npm run verify:runtime
 npm run package
 ```
 
-打包後會產生 `ai-rules-manager-0.2.3.vsix`。以 `v0.2.3` 建立正式標籤後，GitHub Actions 會驗證標籤與版本一致、重新打包，並建立對應的 Release 資產。相同名稱的安裝檔不會被覆蓋；需要重跑時請使用新版本。
+打包後會產生 `ai-rules-manager-0.2.4.vsix`。以 `v0.2.4` 建立正式標籤後，GitHub Actions 會驗證標籤與版本一致、重新打包，並建立對應的 Release 資產。相同名稱的安裝檔不會被覆蓋；需要重跑時請使用新版本。
