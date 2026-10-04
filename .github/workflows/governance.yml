@@ -53,3 +53,71 @@ jobs:
           if ($Error.Count -ne 0) {
             throw "Cleanliness check produced $($Error.Count) unhandled PowerShell error record(s)."
           }
+
+  deployment-paths:
+    name: Deployment paths (${{ matrix.os }}, ${{ matrix.shell }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            shell: pwsh
+            pester: '4.10.1'
+          - os: windows-latest
+            shell: powershell
+            pester: '3.4.0'
+          - os: windows-latest
+            shell: pwsh
+            pester: '3.4.0'
+    runs-on: ${{ matrix.os }}
+    env:
+      POWERSHELL_TELEMETRY_OPTOUT: '1'
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Load the platform-compatible Pester version
+        env:
+          PESTER_VERSION: ${{ matrix.pester }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if (-not (Get-Module -ListAvailable Pester | Where-Object { $_.Version -eq [version]$env:PESTER_VERSION })) {
+            Install-Module Pester -RequiredVersion $env:PESTER_VERSION -Scope CurrentUser -Force
+          }
+      - name: Test paths and real Codex Fresh rollback
+        env:
+          PESTER_VERSION: ${{ matrix.pester }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Import-Module Pester -RequiredVersion $env:PESTER_VERSION -Force
+          $PSVersionTable | Format-Table
+          $result = Invoke-Pester -Script ./Tests/TeamNative/DeploymentPaths.CrossPlatform.Tests.ps1 -PassThru
+          if ($result.FailedCount -gt 0) { throw "Deployment path tests failed: $($result.FailedCount)." }
+          git diff --check
+          if ($LASTEXITCODE -ne 0) { throw 'git diff --check failed.' }
+          if (git status --porcelain) { throw 'Deployment path tests changed the checkout.' }
+
+  extension-regression:
+    name: Extension compile, tests and package
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Extensions/vscode-ai-rules-manager
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: Extensions/vscode-ai-rules-manager/package-lock.json
+      - run: npm ci
+      - run: npm run audit
+      - run: npm run compile
+      - run: npm run test:messages
+      - run: npm run verify:runtime
+      - run: npm run package

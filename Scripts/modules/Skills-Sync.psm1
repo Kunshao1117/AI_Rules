@@ -343,15 +343,17 @@ function Get-SharedSkillProjectedBytes {
     # requires relocation. No mirror, universal string replacement, or Skill edit.
     param([string]$SourcePath, [string]$SharedSkillsRoot, [string]$TargetSkillsPath)
     $raw = [IO.File]::ReadAllBytes($SourcePath)
-    $root = [IO.Path]::GetFullPath($SharedSkillsRoot).TrimEnd('\','/')
+    $separator = [IO.Path]::DirectorySeparatorChar
+    $comparison = if ($separator -eq '\') { [StringComparison]::OrdinalIgnoreCase } else { [StringComparison]::Ordinal }
+    $root = [IO.Path]::GetFullPath($SharedSkillsRoot).TrimEnd($separator, [IO.Path]::AltDirectorySeparatorChar)
     $source = [IO.Path]::GetFullPath($SourcePath)
-    if (-not $source.StartsWith($root + '\',[StringComparison]::OrdinalIgnoreCase)) { throw 'SkillProjection.SourceOutsideRoot' }
-    $relative = $source.Substring($root.Length).TrimStart('\','/').Replace('\','/')
+    if (-not $source.StartsWith($root + $separator, $comparison)) { throw 'SkillProjection.SourceOutsideRoot' }
+    $relative = $source.Substring($root.Length + 1).Replace($separator, '/')
     $targetParent = Split-Path (Split-Path $TargetSkillsPath -Parent) -Leaf
     if ($source -notmatch '\.md$' -or $relative -match '(^|/)(legacy|archive|archives)(/|$)' -or
         $relative -eq '_index.md' -or $targetParent -notin @('.agents','.claude','.cursor')) { return ,$raw }
     $sharedRoot = Split-Path $root -Parent
-    $policyRoot = [IO.Path]::GetFullPath((Join-Path $sharedRoot 'policies')).TrimEnd('\','/')
+    $policyRoot = [IO.Path]::GetFullPath((Join-Path $sharedRoot 'policies')).TrimEnd($separator, [IO.Path]::AltDirectorySeparatorChar)
     $depth = @($relative.Split('/')).Count - 1
     $up = (@('..') * ($depth + $(if ($targetParent -eq '.agents') { 1 } else { 2 }))) -join '/'
     $runtimePrefix = if ($targetParent -eq '.agents') { 'shared/policies/' } else { '.agents/shared/policies/' }
@@ -388,9 +390,9 @@ function Get-SharedSkillProjectedBytes {
             if ($group.Index -ge $limit) { continue }
             $path=$group.Value; $base=($path -split '#',2)[0]
             $resolved=[IO.Path]::GetFullPath((Join-Path (Split-Path $source -Parent) $base))
-            if (-not $resolved.StartsWith($policyRoot + '\',[StringComparison]::OrdinalIgnoreCase) -or
+            if (-not $resolved.StartsWith($policyRoot + $separator, $comparison) -or
                 -not (Test-Path -LiteralPath $resolved -PathType Leaf)) { continue }
-            $suffix=$resolved.Substring($policyRoot.Length).TrimStart('\','/').Replace('\','/')
+            $suffix=$resolved.Substring($policyRoot.Length + 1).Replace($separator, '/')
             $anchor=$path.Substring($base.Length)
             $replacement=$up+'/'+$runtimePrefix+$suffix+$anchor
             $line=$line.Remove($group.Index,$group.Length).Insert($group.Index,$replacement)
