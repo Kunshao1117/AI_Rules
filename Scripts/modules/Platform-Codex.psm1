@@ -398,19 +398,19 @@ function Invoke-CodexFresh {
 
     } finally {
         Restore-ProtectedDirs -Backup $backup -AgentsRoot $agentsRoot
-
-        # 統計
-        $skillCount = @(Get-ChildItem $targetSkillsPath -Directory -ErrorAction SilentlyContinue |
-            Where-Object { (Test-Path (Join-Path $_.FullName "SKILL.md")) }).Count
-        $codexFiles = @(Get-ChildItem $dstDotCodex -File -Recurse -ErrorAction SilentlyContinue).Count
-
-        Write-Host ""
-        Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Magenta
-        Write-Host "  Codex v$version 框架已部署完成。" -ForegroundColor Green
-        Write-Host "  技能: $skillCount 套（共用 + 工作流）| .codex: $codexFiles 個治理檔案" -ForegroundColor Cyan
-        Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Magenta
-        Write-Host ""
     }
+
+    # 統計
+    $skillCount = @(Get-ChildItem $targetSkillsPath -Directory -ErrorAction SilentlyContinue |
+        Where-Object { (Test-Path (Join-Path $_.FullName "SKILL.md")) }).Count
+    $codexFiles = @(Get-ChildItem $dstDotCodex -File -Recurse -ErrorAction SilentlyContinue).Count
+
+    Write-Host ""
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Magenta
+    Write-Host "  Codex v$version 框架已部署完成。" -ForegroundColor Green
+    Write-Host "  技能: $skillCount 套（共用 + 工作流）| .codex: $codexFiles 個治理檔案" -ForegroundColor Cyan
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Magenta
+    Write-Host ""
 }
 
 function Invoke-CodexUpgrade {

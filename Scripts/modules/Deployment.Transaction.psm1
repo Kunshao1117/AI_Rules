@@ -4,15 +4,17 @@
 
 function Get-DeploymentRelativePath {
     param([string]$Root, [string]$Path)
-    # GetFullPath expands Windows 8.3 aliases in both supported PowerShell
-    # runtimes. Compare canonical roots before deriving a URI-relative path;
-    # never slice a long FullName using the length of a short input spelling.
-    $rootPath = [IO.Path]::GetFullPath($Root).TrimEnd('\','/') + [IO.Path]::DirectorySeparatorChar
+    # Normalize both spellings before checking the directory boundary or slicing
+    # (including Windows 8.3 aliases). Paths are not URIs: URI conversion can
+    # treat POSIX roots as relative and reinterpret literal # or % characters.
+    $separator = [IO.Path]::DirectorySeparatorChar
+    $rootPath = [IO.Path]::GetFullPath($Root).TrimEnd($separator, [IO.Path]::AltDirectorySeparatorChar) + $separator
     $fullPath = [IO.Path]::GetFullPath($Path)
-    if (-not $fullPath.StartsWith($rootPath, [StringComparison]::OrdinalIgnoreCase)) {
+    $comparison = if ($separator -eq '\') { [StringComparison]::OrdinalIgnoreCase } else { [StringComparison]::Ordinal }
+    if (-not $fullPath.StartsWith($rootPath, $comparison)) {
         throw "Deployment.PathOutsideRoot: $Path is outside $Root"
     }
-    return [Uri]::UnescapeDataString(([Uri]$rootPath).MakeRelativeUri([Uri]$fullPath).ToString()).Replace('/', [IO.Path]::DirectorySeparatorChar)
+    return $fullPath.Substring($rootPath.Length)
 }
 
 function Get-DeploymentManagedPaths {
@@ -63,8 +65,9 @@ function Get-DeploymentTreeItems {
 function New-DeploymentSnapshot {
     param([string]$TargetRoot, [string[]]$ManagedPaths = @())
     $root = [IO.Path]::GetFullPath($TargetRoot)
-    $files = @{}
-    $directories = @{}
+    $comparer = if ([IO.Path]::DirectorySeparatorChar -eq '\') { [StringComparer]::OrdinalIgnoreCase } else { [StringComparer]::Ordinal }
+    $files = [Collections.Hashtable]::new($comparer)
+    $directories = [Collections.Hashtable]::new($comparer)
     $paths = if ($ManagedPaths.Count) { @($ManagedPaths) } else { @(Get-DeploymentManagedPaths -TargetRoot $root) }
     foreach ($path in $paths) {
         foreach ($item in @(Get-DeploymentTreeItems -Path $path)) {

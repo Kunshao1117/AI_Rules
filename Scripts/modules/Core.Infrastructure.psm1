@@ -5,23 +5,24 @@ Import-Module -Name (Join-Path $PSScriptRoot 'Core.Reporting.psm1') -Force
 function Backup-ProtectedDirs {
     param([string]$AgentsRoot)
     $backup = @{ Memory = $null; Project = $null; Context = $null }
+    $tempRoot = [IO.Path]::GetTempPath()
     $memDir  = Join-Path $AgentsRoot "memory"
     $projDir = Join-Path $AgentsRoot "project_skills"
     $ctxDir  = Join-Path $AgentsRoot "context"
     if (Test-Path $memDir) {
-        $tmp = Join-Path $env:TEMP "ag_backup_memory_$(Get-Random)"
+        $tmp = Join-Path $tempRoot "ag_backup_memory_$(Get-Random)"
         Copy-Item $memDir $tmp -Recurse -Force
         $backup.Memory = $tmp
         Write-Step "已備份共用記憶卡（D06 安全防線）..."
     }
     if (Test-Path $projDir) {
-        $tmp = Join-Path $env:TEMP "ag_backup_project_$(Get-Random)"
+        $tmp = Join-Path $tempRoot "ag_backup_project_$(Get-Random)"
         Copy-Item $projDir $tmp -Recurse -Force
         $backup.Project = $tmp
         Write-Step "已備份衍生技能（D06 安全防線）..."
     }
     if (Test-Path $ctxDir) {
-        $tmp = Join-Path $env:TEMP "ag_backup_context_$(Get-Random)"
+        $tmp = Join-Path $tempRoot "ag_backup_context_$(Get-Random)"
         Copy-Item $ctxDir $tmp -Recurse -Force
         $backup.Context = $tmp
         Write-Step "已備份專案脈絡卡（D06 安全防線）..."
