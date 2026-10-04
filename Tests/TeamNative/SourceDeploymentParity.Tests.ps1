@@ -13,6 +13,73 @@ Describe 'Source deployment parity' {
         }
     }
 
+    It 'keeps rebuildable Shared runtime copies out of the repository index' {
+        $relativePaths = @(
+            'policies/references/user-facing-output-examples.md',
+            'policies/references/workflow-execution-spec-contract.md',
+            'policies/requirement-precision.md',
+            'policies/workflow-orchestration.md'
+        )
+        foreach ($relativePath in $relativePaths) {
+            $sourcePath = Join-Path $repoRoot ("Shared/" + $relativePath)
+            if (-not (Test-Path -LiteralPath $sourcePath -PathType Leaf)) { throw "Canonical source is missing: $relativePath" }
+            $runtimePath = ".agents/shared/" + $relativePath
+            $tracked = @(git -C $repoRoot ls-files -- $runtimePath)
+            if ($LASTEXITCODE -ne 0) { throw "Could not inspect Git tracking for: $runtimePath" }
+            if ($tracked.Count -ne 0) { throw "Rebuildable runtime copy is still tracked: $runtimePath" }
+            $ignored = @(git -C $repoRoot check-ignore --no-index -- $runtimePath)
+            if ($LASTEXITCODE -ne 0 -or $ignored.Count -ne 1) { throw "Runtime copy is not ignored: $runtimePath" }
+        }
+    }
+
+    It 'rebuilds the untracked Shared copies from source without touching protected data' {
+        $relativePaths = @(
+            'policies/references/user-facing-output-examples.md',
+            'policies/references/workflow-execution-spec-contract.md',
+            'policies/requirement-precision.md',
+            'policies/workflow-orchestration.md'
+        )
+        $sharedRoot = Join-Path $repoRoot 'Shared'
+        $runtimeRoot = Join-Path $script:tempRoot 'runtime'
+        $agentsRoot = Join-Path $runtimeRoot '.agents'
+        $protectedPaths = @('.agents/memory/keep/MEMORY.md', '.agents/context/keep.md', '.agents/project_skills/keep/SKILL.md', '.cartridge/index.json')
+        $protectedHashes = @{}
+        foreach ($relativePath in $protectedPaths) {
+            $path = Join-Path $runtimeRoot $relativePath
+            New-Item -ItemType Directory -Force -Path (Split-Path $path -Parent) | Out-Null
+            [System.IO.File]::WriteAllText($path, 'keep existing local bytes', [System.Text.UTF8Encoding]::new($false))
+            $protectedHashes[$relativePath] = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash
+        }
+        $sourceHashes = @{}
+        foreach ($relativePath in $relativePaths) {
+            $sourceHashes[$relativePath] = (Get-FileHash -LiteralPath (Join-Path $sharedRoot $relativePath) -Algorithm SHA256).Hash
+        }
+
+        $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot -TargetAgentsRoot $agentsRoot -Mode Full
+        foreach ($relativePath in $relativePaths) {
+            $runtimePath = Join-Path $agentsRoot ("shared/" + $relativePath)
+            if ((Get-FileHash -LiteralPath $runtimePath -Algorithm SHA256).Hash -ne $sourceHashes[$relativePath]) { throw "Rebuilt copy differs from source: $relativePath" }
+        }
+        $updated = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot -TargetAgentsRoot $agentsRoot -Mode Diff
+        if ($updated -ne 0) { throw "Unchanged Shared projection was not idempotent: $updated updates." }
+
+        # Remove only this test's generated files, then exercise missing-copy regeneration.
+        foreach ($relativePath in $relativePaths) {
+            Remove-Item -LiteralPath (Join-Path $agentsRoot ("shared/" + $relativePath)) -Force
+        }
+        $updated = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot -TargetAgentsRoot $agentsRoot -Mode Diff
+        if ($updated -ne $relativePaths.Count) { throw "Expected four missing copies to be rebuilt; received $updated." }
+        foreach ($relativePath in $relativePaths) {
+            $runtimePath = Join-Path $agentsRoot ("shared/" + $relativePath)
+            $sourcePath = Join-Path $sharedRoot $relativePath
+            if ((Get-FileHash -LiteralPath $runtimePath -Algorithm SHA256).Hash -ne $sourceHashes[$relativePath]) { throw "Regenerated copy differs from source: $relativePath" }
+            if ((Get-FileHash -LiteralPath $sourcePath -Algorithm SHA256).Hash -ne $sourceHashes[$relativePath]) { throw "Projection changed its source: $relativePath" }
+        }
+        foreach ($relativePath in $protectedPaths) {
+            if ((Get-FileHash -LiteralPath (Join-Path $runtimeRoot $relativePath) -Algorithm SHA256).Hash -ne $protectedHashes[$relativePath]) { throw "Projection changed protected data: $relativePath" }
+        }
+    }
+
     It 'keeps the Codex generated marker as a pointer while the adapter owns the full policy' {
         $policyPath = Join-Path $repoRoot 'Shared\policies\adapters\codex-subagent-invocation.md'
         $targetPath = Join-Path $script:tempRoot '.codex\AGENTS.md'
