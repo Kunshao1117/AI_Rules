@@ -234,11 +234,13 @@ Describe 'Deployment snapshot filesystem case semantics' {
         $file = Join-Path $target '.codex/A.md'
         $null = New-Item -ItemType Directory -Path (Split-Path $file -Parent) -Force
         [IO.File]::WriteAllText($file, 'existing')
-        $found = & (Get-Module Deployment.Transaction) {
-            param($root, $file)
-            $snapshot = New-DeploymentSnapshot -TargetRoot $root
-            $snapshot.Files.ContainsKey($file.ToLowerInvariant())
-        } $target $file
-        $found | Should Be $true
+        $snapshot = & (Get-Module Deployment.Transaction) {
+            param($root)
+            New-DeploymentSnapshot -TargetRoot $root
+        } $target
+        # The runner TEMP may contain an 8.3 alias; snapshot keys are canonical.
+        $canonicalFile = [IO.Path]::GetFullPath($file)
+        $snapshot.Files.ContainsKey($canonicalFile) | Should Be $true
+        $snapshot.Files.ContainsKey($canonicalFile.ToLowerInvariant()) | Should Be $true
     }
 }
