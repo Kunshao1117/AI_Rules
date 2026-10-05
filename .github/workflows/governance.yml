@@ -121,3 +121,21 @@ jobs:
       - run: npm run test:messages
       - run: npm run verify:runtime
       - run: npm run package
+
+  memory-source-contracts:
+    name: Memory source contract tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Verify source-only reconciliation and frozen runtime boundaries
+        run: |
+          python -B -m unittest discover -s Tests/TeamNative -p 'test_vnext_memory*.py'
+          python -B -m unittest discover -s Tests/TeamNative -p 'test_repository_memory_reconciliation.py'
+          git diff --check
+          test -z "$(git status --porcelain)"

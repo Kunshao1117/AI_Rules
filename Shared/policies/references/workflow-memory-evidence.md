@@ -11,7 +11,10 @@ Its disposition result is evidence and routing, never mutation authority or a
 second completion state.
 
 Before a project/runtime passes the M5 cutover checks in
-`../authorization-resolution.md`, actual Memory mutation remains frozen. The
+`../authorization-resolution.md`, runtime Memory mutation remains frozen.
+Only that owner's narrowly reviewed Repository Source Reconciliation boundary
+can classify a source-only existing-card patch separately. It does not satisfy
+runtime sync or change the frozen consumer evidence below. The
 ordinary vNext evidence path does not require `completion_bundle_ref`, a
 `memory-docs` station, or a closure receipt: use the current source/card
 comparison in `memory-review-evidence.md`, actual update and sync results in

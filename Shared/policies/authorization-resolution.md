@@ -91,10 +91,12 @@ needs a topology/scope decision first; destructive history rewrite remains
 
 **Current activation is different from those target semantics.** M4 changes
 Shared source contracts only and activates no project/runtime. Until an exact
-project/runtime has evidenced M5 cutover, every attempted `.agents/memory/**`
+project/runtime has evidenced M5 cutover, every runtime `.agents/memory/**`
 card write, creation, move or deletion, and every Memory `memory_commit`,
 `memory_reindex` or index sync normalizes to `frozen_memory_action`, regardless
-of caller, loaded Skill, alias, tool, or Team station. The ordered table's
+of caller, loaded Skill, alias, tool, or Team station. A version-controlled
+source-card edit also remains frozen unless it satisfies the complete
+Repository Source Reconciliation boundary below. The ordered table's
 first-true frozen row sends it to `legacy_memory_contract`; omitting an old
 Skill or bundle cannot select `local_work`. Missing or uncertain cutover
 evidence means frozen, not a choice between contracts. M5 cutover requires
@@ -105,6 +107,36 @@ deployment, or a self-declared flag are not cutover evidence. Legacy bundle,
 phase, receipt and separate worker conditions remain intact until then.
 Explicit exclusions, platform denial and any additional protected side effect
 retain priority.
+
+## Repository Source Reconciliation
+
+An explicitly requested governance migration may maintain existing tracked
+source cards without pretending that a project/runtime passed M5. This is a
+source-only classification, not runtime activation or an alternate tool route.
+All of these evidence requirements must hold before physical card edits:
+
+<!-- REPOSITORY_MEMORY_REQUIREMENTS_START -->
+| Requirement | Meaning |
+|---|---|
+| explicit_source_scope | Current authorization names the repository, source-only reconciliation, existing-card allowlist and exclusions |
+| isolated_source_target | Exact root and immutable Git base identify a non-runtime source checkout; no symlink/alias to an active runtime |
+| current_claim_evidence | Exact pre-images, proposed post-images and source-backed claims/tracking changes are bound in one patch manifest; unknown claims stay unverified |
+| independent_patch_review | A non-author reviewer accepted that exact manifest and policy revision with no unresolved blocker before application |
+| recoverable_history | All existing archive bytes remain unchanged; exact original card bytes/hashes and a conflict-safe restoration plan are available |
+| bounded_source_effects | Only reviewed existing source cards change; no new owner, split/move/delete, Context, runtime projection, provider mutation or derived index write |
+| truthful_validation | Current card/source checks and actual tool evidence are recorded; historical verification timestamps and warning state are not reset to imply sync |
+<!-- REPOSITORY_MEMORY_REQUIREMENTS_END -->
+
+The evidence method in `references/repository-memory-reconciliation.md` adds
+no authority. All requirements are conjunctive; missing, stale or conflicting
+evidence leaves the source edit `frozen_memory_action`. A self-declared mode,
+manifest field, test pass, review or this policy's presence cannot authorize
+it. Platform denial, explicit exclusions, native contracts and other protected
+side effects retain precedence. A qualifying source edit is bounded
+`local_work`; normal explicit Git/remote authorization remains separate.
+A live project/card, `memory_commit`, `memory_reindex`, index repair or runtime
+sync never qualifies through this boundary, even with an approved source patch.
+Do not retry an already denied runtime action using this source route.
 
 For a mutating Memory tool, `confirm:true` is tool confirmation that the caller
 understands the mutation; tool confirmation is not user authorization. It does
