@@ -2,15 +2,15 @@
 name: _shared.team-native-core.station-entry.packet-delegation
 scopePath: Shared/skills/
 description: >
-  專案記憶：站點派工封包與委派策略。Use when: task touches team-station-handoff-packet or
-  delegation-strategy sources.
+  專案記憶：handoff-packet 與 delegation-strategy 歷史參考。
+  Use when: task touches these owned source or historical reference identities.
 last_updated: '2026-08-17T21:12:59+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
-verification_status: verified
+verification_status: pending_review
 last_verified: '2026-08-17T21:20:00+08:00'
 valid_scope: current-project
 content_language: en
@@ -36,12 +36,13 @@ metadata:
 
 ## Current Truth
 
-- Owns station handoff-packet sources, delegation-strategy sources, and the deployed delegation-strategy copy.
-- Delivery slices keep responsibility slots fixed, but activate only stations needed by the claims being made.
+- Owns the historical station-handoff-packet and delegation-strategy references, with the old deployed strategy path retained only as unverified runtime tracking.
+- Legacy delivery-slice and handoff fields retain their original identities for frozen consumers. They do not impose station, wave, lifecycle or dispatch machinery on general vNext work.
+- Current bounded assignment, mode, authority and worker lifecycle remain with their canonical owners and native platform; a preserved CLI recipe is not permission to launch an AI CLI.
 
 ## Active Constraints
 
-- Preserve full Team role boundaries when delegated mode is active.
+- Preserve legacy role and packet boundaries for applicable frozen consumers; current general roles are owned by Agent Governance.
 
 ## Cycle Events
 
@@ -53,6 +54,8 @@ metadata:
 
 ## Evidence Base
 
+- Current source comparison: `Shared/policies/references/legacy-skill-migration.md`, `Shared/policies/references/legacy-skill-migration.json`, `Shared/policies/agent-governance.md`, `Shared/policies/execution-routing.md`, `Shared/policies/references/legacy-memory-team-transition.md`, `Shared/policies/references/source-runtime-surface-map.md`.
+- Earlier entries below retain historical evidence only; preserved timestamps do not certify current runtime or index state.
 - source:Shared/skills/team-station-handoff-packet/SKILL.md, Shared/skills/delegation-strategy/SKILL.md
 
 ## Read Contract
@@ -62,19 +65,22 @@ metadata:
 ## Conflicts and Supersession
 
 - superseded: generic engineering activity as sufficient Team activation.
+- Retired source identities are preserved at the exact current reference paths; those bodies do not reactivate Skills or general Team machinery.
+- Original content remains in the [immutable pre-image](https://github.com/Kunshao1117/AI_Rules/blob/098609bedac92bbe17776e4263d32c7383fe917d/.agents/memory/_shared/team-native-core/station-entry/packet-delegation/MEMORY.md); Cycle Events and existing archives are preserved.
+- This source-only comparison does not certify ignored runtime/editor paths or provider/index synchronization.
 
 ## 中文摘要
 
-- 此卡負責站點派工封包與委派策略。
-- Team board 歸 board 子卡。
+- 舊handoff-packet與delegation-strategy保留歷史reference
+- 一般工作不套舊站點/波次/固定生命週期；ignored runtime副本須另以實際觀測確認
 
 ## Tracked Files
 
-- Shared/skills/team-station-handoff-packet/SKILL.md
-- Shared/skills/team-station-handoff-packet/references/execution-lifecycle.md
-- Shared/skills/team-station-handoff-packet/references/packet-schema-and-routing.md
-- Shared/skills/delegation-strategy/SKILL.md
-- Shared/skills/delegation-strategy/references/team-dispatch-gates.md
+- Shared/policies/references/legacy-skills/team-station-handoff-packet/REFERENCE.md
+- Shared/policies/references/legacy-skills/team-station-handoff-packet/references/execution-lifecycle.md
+- Shared/policies/references/legacy-skills/team-station-handoff-packet/references/packet-schema-and-routing.md
+- Shared/policies/references/legacy-skills/delegation-strategy/REFERENCE.md
+- Shared/policies/references/legacy-skills/delegation-strategy/references/team-dispatch-gates.md
 - .agents/skills/delegation-strategy/SKILL.md
 
 ## Relations
@@ -85,4 +91,4 @@ metadata:
 
 ## Applicable Skills
 
-- memory-ops — Update this card through separate protected write and commit phases.
+- memory-ops — Use current source-only or runtime applicability; this card grants no mutation authority.

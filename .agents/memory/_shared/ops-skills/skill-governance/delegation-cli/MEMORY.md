@@ -2,15 +2,15 @@
 name: _shared.ops-skills.skill-governance.delegation-cli
 scopePath: Shared/skills/delegation-strategy/
 description: >
-  專案記憶：委派 CLI 能力與操作參考。Use when: task touches this split memory scope or its
-  tracked files.
+  專案記憶：CLI 委派歷史相容參考。
+  Use when: task touches these owned source or historical reference identities.
 last_updated: '2026-07-24T16:46:26+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: verified
+verification_status: pending_review
 last_verified: '2026-07-24T13:50:00+08:00'
 valid_scope: current-project
 content_language: en
@@ -36,8 +36,8 @@ metadata:
 
 ## Current Truth
 
-- Owns delegation CLI capability, SOP, and prompt-skeleton references.
-- This child owns the listed concrete source files after the 2026-07-24 split.
+- Owns the retained historical CLI capability matrix, delegation SOP and prompt-skeleton references from delegation-strategy.
+- These are non-invocable compatibility documents. Generic AI CLI workers remain inactive; a historical command recipe or matrix is not current availability or execution authority.
 
 ## Active Constraints
 
@@ -54,6 +54,8 @@ metadata:
 
 ## Evidence Base
 
+- Current source comparison: `Shared/policies/references/legacy-skill-migration.md`, `Shared/policies/references/legacy-skill-migration.json`, `Shared/policies/agent-governance.md`, `Shared/policies/execution-routing.md`.
+- Earlier entries below retain historical evidence only; preserved timestamps do not certify current runtime or index state.
 - source:Shared/skills/delegation-strategy/references/cli-capability-matrix.md
 - source:Shared/skills/delegation-strategy/references/cli-prompt-skeleton.md
 - tool:memory_status — Existing owner scope verified before split.
@@ -65,18 +67,20 @@ metadata:
 
 ## Conflicts and Supersession
 
-- None.
+- Retired source identities are preserved at the exact current reference paths; those bodies do not reactivate Skills or general Team machinery.
+- Original content remains in the [immutable pre-image](https://github.com/Kunshao1117/AI_Rules/blob/098609bedac92bbe17776e4263d32c7383fe917d/.agents/memory/_shared/ops-skills/skill-governance/delegation-cli/MEMORY.md); Cycle Events and existing archives are preserved.
+- This source-only comparison does not certify ignored runtime/editor paths or provider/index synchronization.
 
 ## 中文摘要
 
-- 委派 CLI 能力與操作參考。
-- 具體檔案歸屬已由父卡移入此子卡。
+- 保留CLI capability、SOP與prompt-skeleton歷史參考
+- generic AI CLI不因讀到舊文件而重新啟用，也不從舊表推定工具可用
 
 ## Tracked Files
 
-- Shared/skills/delegation-strategy/references/cli-capability-matrix.md
-- Shared/skills/delegation-strategy/references/cli-delegation-sop.md
-- Shared/skills/delegation-strategy/references/cli-prompt-skeleton.md
+- Shared/policies/references/legacy-skills/delegation-strategy/references/cli-capability-matrix.md
+- Shared/policies/references/legacy-skills/delegation-strategy/references/cli-delegation-sop.md
+- Shared/policies/references/legacy-skills/delegation-strategy/references/cli-prompt-skeleton.md
 
 ## Relations
 
@@ -84,5 +88,5 @@ metadata:
 
 ## Applicable Skills
 
-- memory-ops — Update and commit this child card.
+- memory-ops — Use current source-only or runtime applicability; this card grants no mutation authority.
 - memory-arch — Adjust split topology or archive volumes.

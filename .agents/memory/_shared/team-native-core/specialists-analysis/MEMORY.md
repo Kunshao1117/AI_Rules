@@ -2,15 +2,15 @@
 name: _shared.team-native-core.specialists-analysis
 scopePath: Shared/skills/
 description: >
-  專案記憶：Team-Native 分析型專家契約。Use when: task touches this split memory scope or its
-  tracked files.
+  專案記憶：Team-Native 舊分析型 specialist 參考。
+  Use when: task touches these owned source or historical reference identities.
 last_updated: '2026-07-24T16:46:28+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
-verification_status: verified
+verification_status: pending_review
 last_verified: '2026-07-24T13:52:00+08:00'
 valid_scope: current-project
 content_language: en
@@ -36,12 +36,12 @@ metadata:
 
 ## Current Truth
 
-- Owns registry, intent, scope, architecture, and external-research specialist contracts.
-- This child owns the listed concrete source files after the 2026-07-24 split.
+- Owns historical registry, intent/requirements, scope/impact, architecture/contract and external-research specialist references.
+- These legacy specialist identities are compatibility data, not the current formal Agent roster. The Shared agents registry and Agent Governance own current roles, independence and source-version binding.
 
 ## Active Constraints
 
-- Team roles, authorization, validation, review, memory closure, and completion remain separate responsibilities.
+- Preserve original phase, role and receipt separation for applicable frozen consumers; current general role independence follows Agent Governance.
 - Parent/child navigation is not a staleness dependency.
 
 ## Cycle Events
@@ -54,6 +54,8 @@ metadata:
 
 ## Evidence Base
 
+- Current source comparison: `Shared/policies/references/legacy-skill-migration.md`, `Shared/policies/references/legacy-skill-migration.json`, `Shared/policies/agent-governance.md`, `Shared/policies/execution-routing.md`, `Shared/agents/_registry.md`.
+- Earlier entries below retain historical evidence only; preserved timestamps do not certify current runtime or index state.
 - source:Shared/skills/team-specialist-registry/SKILL.md
 - source:Shared/skills/team-specialist-external-research/SKILL.md
 - tool:memory_status — Existing owner scope verified before split.
@@ -65,20 +67,22 @@ metadata:
 
 ## Conflicts and Supersession
 
-- None.
+- Retired source identities are preserved at the exact current reference paths; those bodies do not reactivate Skills or general Team machinery.
+- Original content remains in the [immutable pre-image](https://github.com/Kunshao1117/AI_Rules/blob/098609bedac92bbe17776e4263d32c7383fe917d/.agents/memory/_shared/team-native-core/specialists-analysis/MEMORY.md); Cycle Events and existing archives are preserved.
+- This source-only comparison does not certify ignored runtime/editor paths or provider/index synchronization.
 
 ## 中文摘要
 
-- Team-Native 分析型專家契約。
-- 具體檔案歸屬已由父卡移入此子卡。
+- 舊分析型specialist契約為歷史相容reference
+- 目前正式角色以Shared agents registry與Agent Governance為準，不重建舊固定名冊
 
 ## Tracked Files
 
-- Shared/skills/team-specialist-registry/SKILL.md
-- Shared/skills/team-specialist-intent-requirements/SKILL.md
-- Shared/skills/team-specialist-scope-impact/SKILL.md
-- Shared/skills/team-specialist-architecture-contract/SKILL.md
-- Shared/skills/team-specialist-external-research/SKILL.md
+- Shared/policies/references/legacy-skills/team-specialist-registry/REFERENCE.md
+- Shared/policies/references/legacy-skills/team-specialist-intent-requirements/REFERENCE.md
+- Shared/policies/references/legacy-skills/team-specialist-scope-impact/REFERENCE.md
+- Shared/policies/references/legacy-skills/team-specialist-architecture-contract/REFERENCE.md
+- Shared/policies/references/legacy-skills/team-specialist-external-research/REFERENCE.md
 
 ## Relations
 
@@ -86,5 +90,5 @@ metadata:
 
 ## Applicable Skills
 
-- memory-ops — Update and commit this child card.
+- memory-ops — Use current source-only or runtime applicability; this card grants no mutation authority.
 - memory-arch — Adjust split topology or archive volumes.

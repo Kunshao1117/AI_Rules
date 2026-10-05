@@ -2,15 +2,15 @@
 name: _shared.team-native-core.station-entry.board
 scopePath: Shared/skills/team-task-board/
 description: >
-  專案記憶：編程團隊治理與 Team board。Use when: task touches programming-team-governance or
-  team-task-board sources.
+  專案記憶：programming-team 與 task-board 歷史參考。
+  Use when: task touches these owned source or historical reference identities.
 last_updated: '2026-08-17T21:12:59+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
-verification_status: verified
+verification_status: pending_review
 last_verified: '2026-08-17T21:20:00+08:00'
 valid_scope: current-project
 content_language: en
@@ -36,8 +36,9 @@ metadata:
 
 ## Current Truth
 
-- Owns programming-team governance and Team board sources, including field catalogs and delivery templates.
-- Board activation requires delegated topology from `execution-routing`.
+- Owns historical programming-team governance and Team task-board references, including their original field catalogs and templates.
+- General Direct, Assisted and Team work does not require those legacy board or station schemas. Execution Routing selects the mode and Agent Governance owns bounded current role assignments.
+- Frozen consumers retain their original board/packet fields through exact legacy references; mode or workflow selection supplies no Memory authority.
 
 ## Active Constraints
 
@@ -53,6 +54,8 @@ metadata:
 
 ## Evidence Base
 
+- Current source comparison: `Shared/policies/references/legacy-skill-migration.md`, `Shared/policies/references/legacy-skill-migration.json`, `Shared/policies/agent-governance.md`, `Shared/policies/execution-routing.md`, `Shared/policies/references/legacy-memory-team-transition.md`.
+- Earlier entries below retain historical evidence only; preserved timestamps do not certify current runtime or index state.
 - source:Shared/skills/programming-team-governance/SKILL.md, Shared/skills/team-task-board/SKILL.md
 
 ## Read Contract
@@ -62,20 +65,23 @@ metadata:
 ## Conflicts and Supersession
 
 - superseded: generic engineering activity as sufficient Team activation.
+- Retired source identities are preserved at the exact current reference paths; those bodies do not reactivate Skills or general Team machinery.
+- Original content remains in the [immutable pre-image](https://github.com/Kunshao1117/AI_Rules/blob/098609bedac92bbe17776e4263d32c7383fe917d/.agents/memory/_shared/team-native-core/station-entry/board/MEMORY.md); Cycle Events and existing archives are preserved.
+- This source-only comparison does not certify ignored runtime/editor paths or provider/index synchronization.
 
 ## 中文摘要
 
-- 此卡負責編程團隊治理與 Team board。
-- 派工封包與委派策略歸 packet-delegation 子卡。
+- programming-team與task-board來源為歷史相容參考
+- 一般工作不以舊board作啟動前提；frozen消費者才保留原schema
 
 ## Tracked Files
 
-- Shared/skills/programming-team-governance/SKILL.md
-- Shared/skills/team-task-board/SKILL.md
-- Shared/skills/team-task-board/references/board-field-catalog.md
-- Shared/skills/team-task-board/references/board-templates-and-delivery.md
-- Shared/skills/team-task-board/references/board-field-channel-and-receipts.md
-- Shared/skills/team-task-board/references/board-field-slice-and-roles.md
+- Shared/policies/references/legacy-skills/programming-team-governance/REFERENCE.md
+- Shared/policies/references/legacy-skills/team-task-board/REFERENCE.md
+- Shared/policies/references/legacy-skills/team-task-board/references/board-field-catalog.md
+- Shared/policies/references/legacy-skills/team-task-board/references/board-templates-and-delivery.md
+- Shared/policies/references/legacy-skills/team-task-board/references/board-field-channel-and-receipts.md
+- Shared/policies/references/legacy-skills/team-task-board/references/board-field-slice-and-roles.md
 
 ## Relations
 
@@ -85,4 +91,4 @@ metadata:
 
 ## Applicable Skills
 
-- memory-ops — Update this card through separate protected write and commit phases.
+- memory-ops — Use current source-only or runtime applicability; this card grants no mutation authority.
