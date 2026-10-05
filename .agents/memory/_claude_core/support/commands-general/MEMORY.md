@@ -10,7 +10,7 @@ staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: verified
+verification_status: pending_review
 last_verified: '2026-07-24T13:40:00+08:00'
 valid_scope: current-project
 content_language: en
@@ -34,20 +34,21 @@ metadata:
 
 # _claude_core.support.commands-general — Claude General Commands Memory
 ## Current Truth
-- This child card owns Claude shared command gates and general command entries.
-- General command descriptions are normalized for Chinese meaning-first trigger text while preserving exact `Use when` and `DO NOT use when` tokens for routing.
-- Missing memory evidence and result evidence now use canonical English states: `sufficient`, `partial`, `unverified`, `blocked`, and `not-applicable`.
-- Workflow entries keep `Workflow Entry Slimming Guard`, `Phase Order`, and `Completion Boundary` as slim references to shared governance instead of embedded playbooks.
-- Claude `03-1` remains a governed experiment route: sandbox requests activate Team mode, use reduced/minimal experiment station or board, and cannot claim production completion without promotion authorization.
-- `03-1` currently uses YAML block-list `required_skills`; `05_condense` and `06_test` still show inline lists in current dirty source, so check source before making group-wide YAML-list claims.
-- Shared completion and security snippets were slimmed and normalized with explicit code fences, `->` arrows, and Director-readable Chinese-first labels.
-- Claude 00 chat is direct only for pure conversation with no external evidence dependency; Team mode starts from a current governed request or dispatch request, not from command names alone.
-- Claude command names and natural-language approvals are route intent plus scope-bound evidence only; write authority requires the matching formal write station, with authorization resolution binding the visible scope and protected phase.
-- Test commands must select evidence by interface surface rather than assuming browser-only proof.
+
+- This child card owns Claude general command entries and their shared command snippets.
+- Workflow names select phase sequence and do not grant authority. Execution Routing selects Direct, Assisted or Team; a helper alone does not require Team.
+- Claude 03-1 is an experiment workflow, not a Team trigger. Sandbox scope, discard and promotion conditions remain required; experiment output is not production completion.
+- Claude 00 permits bounded conversation and observe evidence gathering; tools or files alone do not mandate Team.
+- Necessary bounded source work inside the current user-authorized concrete scope is local_work, subject to exclusions and protected effects. Explicit local Git and protected follow-ups retain their own scope; formal-write stations are frozen compatibility only.
+- Required-skills metadata is entry-specific: 00 has an empty list, 03-1 has an empty block value, and 05/06 have inline method lists. Do not infer a command-wide conversion or load legacy Memory artifacts for ordinary work.
+- Test commands select evidence by the actual interface surface, using current Verification, Review and Completion policies.
+
 ## Active Constraints
-- Do not transfer main-agent responsibility to subagents.
-- Do not write source or memory from read-only command flows without the appropriate gate.
-- Do not present the entire general command set as YAML-list converted until `05_condense` and `06_test` are converted or explicitly exempted.
+
+- Main remains accountable for the result and required evidence.
+- Do not treat a workflow invocation as unrestricted source, Memory, Context, Git or external authority.
+- Inspect each command's current metadata; historical syntax is not a current load contract.
+
 ## Cycle Events
 - 26: Refreshed current dirty source: general command descriptions, canonical evidence states, slim entry headings, shared snippet formatting, and partial YAML-list conversion status.
 - 25: Corrected Claude `03-1` truth: governed experiment requests auto-activate Team mode, use reduced/minimal experiment boards, and keep sandbox writes separate from production completion.
@@ -62,6 +63,9 @@ metadata:
 ## Archive Index
 - Parent archive remains at .agents/memory/_claude_core/support/archive-001.md.
 ## Evidence Base
+
+- Source-only comparison: `Claude/.claude/commands/00_chat(討論)/SKILL.md`, `Claude/.claude/commands/03-1_experiment(實驗)/SKILL.md`, `Claude/.claude/commands/05_condense（濃縮）/SKILL.md`, `Claude/.claude/commands/06_test(測試)/SKILL.md`, `Shared/policies/authorization-resolution.md`, `Shared/policies/execution-routing.md`.
+- Earlier entries below are historical evidence; preserved timestamps do not certify current runtime or index state.
 - source:.agents/memory/_claude_core/support/archive-001.md — Previous support-card content preserved during migration.
 - source:Claude/.claude/commands/00_chat(討論)/SKILL.md, 01_explore(搜索), 03-1_experiment(實驗), 05_condense（濃縮）, 06_test(測試), and `_shared` snippets.
 - tool:`git diff -- Claude/.claude/commands/...` and `rg` reviewed descriptions, evidence states, headings, and `required_skills` shapes on 2026-07-07.
@@ -73,13 +77,17 @@ metadata:
 - Read `_claude_core.support` only for support-family navigation and platform context.
 
 ## Conflicts and Supersession
-- No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
+
+- Experiment-auto-Team, evidence-use-auto-Team, universal formal-write station and obsolete required-skills conversion statements are superseded.
+- Original card and prior claims remain in the [immutable pre-image](https://github.com/Kunshao1117/AI_Rules/blob/b61b27c2d0a6d65d08ded101d323d62cf06d2098/.agents/memory/_claude_core/support/commands-general/MEMORY.md); existing Cycle Events and archives are preserved.
+- Current review is bounded to the cited source semantics and tracking; provider/index/runtime synchronization and unreviewed historical assertions remain unverified.
+
 ## 中文摘要
-- 此子卡負責 Claude 一般指令與共用閘門。
-- 目前 dirty source 已把一般指令 description 改成中文語義先行，並把證據狀態改成 canonical English。
-- `03-1` 已用 YAML block-list `required_skills`；`05`、`06` 仍需看 source，不能概括為全組已轉。
-- 共用 completion/security snippet 已瘦身並正規化 heading、fence、arrow 與中文標籤。
-- `03-1` 仍是受治理實驗路由，不等於 production complete。
+
+- 此卡負責 Claude 一般命令與共用片段
+- 實驗名稱不強制 Team；sandbox、discard 與 promotion 範圍仍須明確
+- 一般工作依當前具體授權；Git 與受保護動作另有邊界
+- required_skills 必須逐入口確認，不宣稱已全數轉換
 
 ## Tracked Files
 - Claude/.claude/commands/_shared/_completion_gate.md

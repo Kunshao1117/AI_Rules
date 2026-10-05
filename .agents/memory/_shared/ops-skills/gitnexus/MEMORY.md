@@ -10,7 +10,7 @@ staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: verified
+verification_status: pending_review
 last_verified: '2026-07-24T13:41:00+08:00'
 valid_scope: current-project
 content_language: en
@@ -36,14 +36,13 @@ metadata:
 # _shared.ops-skills.gitnexus — GitNexus Skills Memory
 
 ## Current Truth
-- This child card owns Shared GitNexus CLI and repository graph workflow skills.
-- GitNexus skill descriptions now start with Traditional Chinese task meaning for repo indexing, debugging, exploration, impact analysis, refactoring, and guide lookups.
-- GitNexus remains an optional assistance path; graph, wiki, and query results do not replace direct source inspection or current local diffs.
-- Read `gitnexus://repo/{name}/context` before relying on graph answers; if the context reports stale index, refresh with `npx gitnexus analyze` before using the result as current evidence.
-- `gitnexus-cli` owns analyze/status/clean/wiki/list commands; exploration, debugging, impact, and refactoring skills own their narrower query routes.
-- Impact analysis and safe refactoring use graph dependency and blast-radius evidence before edits, but source writes still require the normal change-delivery route.
-- GitNexus refactoring does not include tests by default; test planning, edits, or execution require current acceptance and exact authorization, then only the accepted commands for the affected scope.
-- Repository indexing outputs are task evidence, not permanent memory by default.
+
+- This existing card owns the five Shared GitNexus method Skills and the historical guide identity; the current guide is a non-invocable reference.
+- GitNexus is optional assistance. Capability Resolution owns readiness and selection; missing providers or indexes do not block ordinary source-based analysis.
+- Read relevant available index/context evidence before relying on graph claims. Missing, stale or incomplete indexes do not authorize analyze, init, install or rebuild; inspect actual command effects and current scope, or continue with direct source evidence.
+- CLI, exploring, debugging, impact-analysis and refactoring Skills retain separate narrow methods; graph results do not replace direct source inspection or establish runtime behavior.
+- Refactor previews and graph consumers are evidence, not write authority. Verification Strategy owns test scope and admission; the current refactoring method explicitly rejects reinstating an exact-test-GO gate.
+- Repository indexing outputs are task evidence, not permanent Memory by default.
 
 ## Active Constraints
 - Do not claim repository graph facts as current unless the index or source files were checked in the current task.
@@ -59,6 +58,9 @@ metadata:
 - Parent archive remains at .agents/memory/_shared/ops-skills/archive-001.md.
 
 ## Evidence Base
+
+- Source-only comparison: `Shared/policies/references/gitnexus-guide.md`, `Shared/skills/gitnexus-cli/SKILL.md`, `Shared/skills/gitnexus-refactoring/SKILL.md`, `Shared/skills/gitnexus-impact-analysis/SKILL.md`.
+- Earlier entries below are historical evidence; preserved timestamps do not certify current runtime or index state.
 - source:.agents/memory/_shared/ops-skills/archive-001.md — Previous parent-card content preserved during migration.
 - source:Shared/skills/gitnexus-cli/SKILL.md — Verified analyze/status/clean/wiki/list trigger wording and stale-index handling.
 - source:Shared/skills/gitnexus-debugging/SKILL.md, Shared/skills/gitnexus-exploring/SKILL.md, Shared/skills/gitnexus-impact-analysis/SKILL.md, Shared/skills/gitnexus-refactoring/SKILL.md — Verified distinct routing for bug tracing, codebase exploration, blast-radius analysis, and safe refactoring.
@@ -71,19 +73,22 @@ metadata:
 - Read the parent card only for Shared-level navigation; do not treat parent-child links as dependencies.
 
 ## Conflicts and Supersession
-- No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
+
+- Automatic stale-index refresh and exact-test-GO statements are superseded by the current optional-pack methods.
+- Original card and prior claims remain in the [immutable pre-image](https://github.com/Kunshao1117/AI_Rules/blob/b61b27c2d0a6d65d08ded101d323d62cf06d2098/.agents/memory/_shared/ops-skills/gitnexus/MEMORY.md); existing Cycle Events and archives are preserved.
+- Current review is bounded to the cited source semantics and tracking; provider/index/runtime synchronization and unreviewed historical assertions remain unverified.
 
 ## 中文摘要
-- 此子卡負責 GitNexus 相關技能。
-- GitNexus 技能已改成繁中觸發語意，並區分索引、探索、除錯、影響分析與安全重構路由。
-- 索引輸出是任務證據，不預設寫入永久記憶。
-- 索引若過期，需先更新或改回直接讀取 source，不能把舊圖譜當成 current truth。
+
+- 此卡追蹤五項 GitNexus 方法技能與舊 guide 的歷史來源
+- 圖譜僅為選用證據；缺失或過期不授權自動 analyze、安裝或重建
+- 重構與測試依目前授權及驗證政策，不恢復 exact-test-GO 門檻
 
 ## Tracked Files
 - Shared/skills/gitnexus-cli/SKILL.md
 - Shared/skills/gitnexus-debugging/SKILL.md
 - Shared/skills/gitnexus-exploring/SKILL.md
-- Shared/skills/gitnexus-guide/SKILL.md
+- Shared/policies/references/legacy-skills/gitnexus-guide/REFERENCE.md
 - Shared/skills/gitnexus-impact-analysis/SKILL.md
 - Shared/skills/gitnexus-refactoring/SKILL.md
 

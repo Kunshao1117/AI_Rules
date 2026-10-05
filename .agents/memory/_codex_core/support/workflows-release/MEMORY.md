@@ -10,7 +10,7 @@ staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: verified
+verification_status: pending_review
 last_verified: '2026-07-24T13:40:00+08:00'
 valid_scope: current-project
 content_language: en
@@ -35,20 +35,21 @@ metadata:
 # _codex_core.support.workflows-release — Codex Release and Governance Workflow Memory
 
 ## Current Truth
-- Commit, routine, and skill-forge workflow descriptions now start with Traditional Chinese semantic labels and keep English trigger terms in parentheses for commit prep, changelog, health check, skill forge, and reusable methodology routing.
-- `09`, `10`, and `12` remain thin route entries: they select workflow rows, apply the platform adapter, and never grant source write, memory, git, release, deployment, install, credential, or external-state authority.
-- Required References load on demand: captain entry starts from route/evidence/minimum Team-Native gates; completion, protected closeout, language, grounding, platform, stage, station, review, validation, and memory references load only when needed.
-- The Workflow Entry Slimming Guard requires workflow entries to own only route selection, minimum load gates, evidence-matrix row, and platform adapter reference; dirty target files require current diff review and integration into existing sections.
-- `09` is commit-prep/change-summary routing, not unfinished implementation or git-status-only work; memory-write, memory index/staleness sync, git commit/push, tag/release, deploy, install, and external mutation are distinct protected phases.
-- `09` commit message subject/body and commit summaries must use Traditional Chinese meaning-first main text; this wording rule does not authorize git commit or any protected follow-on phase.
-- `10` and Manager Check are Git-only: report worktree, HEAD, tracking branch, and origin sync/ahead/behind/diverged/unconfirmable state; they do not inspect MCP, memory, source, health, review, or validation evidence.
-- `12` covers reusable skill/methodology creation and does not apply to discussion-only or description-only edits without a write scope.
-- Release-side evidence still requires team-task-board inheritance, role-bound delivery artifacts, review/validation separation, memory/docs disposition, source/deployed parity when relevant, and honest blocked/unverified/risk-closed states.
+
+- Owns Codex commit, Git-only routine and skill-forge workflow entries, whose descriptions use Traditional Chinese task meaning and exact route terms.
+- Workflow entries select sequence and reference shared policies; they do not themselves grant source, Memory, Git, release, deployment, install, credential or external authority.
+- 09 is commit preparation and change summary rather than unfinished implementation or Git-status-only work. Necessary source work uses current local_work scope; explicit Git and protected follow-ups remain separate.
+- 09 commit subject/body and summaries use Traditional Chinese meaning-first text while retaining necessary technical tokens.
+- 10 is Git-only: worktree, HEAD, tracking branch and origin relation; it does not inspect Memory, MCP, source content, health, review or validation.
+- 12 covers reusable Skill creation; discussion-only and description-only edits do not select it.
+- General work uses current completion, verification and review policies without mandatory board inheritance or a fixed station chain. Required duty separation and source-version freshness remain; frozen consumers keep their applicable compatibility contracts.
+- Read current dirty sections before integration. Source edits do not authorize runtime sync; report projection pending when it has not been authorized and verified.
 
 ## Active Constraints
-- Do not perform source write, changelog/source write, memory mutation, memory index/staleness sync, git commit/push, tag/release, deployment, install, credential, or external mutation without explicit protected-phase authorization.
-- Do not collapse memory write into `memory_commit`; active-card edits, index/staleness sync, git operations, and release/deploy/install operations each need their own protected gate.
-- Keep release workflow entries thin; durable release and closeout procedure belongs in Shared skills or workflow-stage references.
+
+- Do not infer Git, Memory provider, release, deployment, install, credential or external authority from workflow routing.
+- Classify actual effects with Authorization Resolution; applicable frozen Memory receipts remain separate from source-only reconciliation.
+- Keep durable procedures in Shared policies, workflows and references rather than duplicating them in platform entries.
 
 ## Cycle Events
 - 04: Recorded `09` commit subject/body/summary Traditional Chinese meaning-first wording governance while preserving separate authorization for git and protected follow-on phases.
@@ -61,6 +62,9 @@ metadata:
 - Earlier active cycle details were compacted into Current Truth on 2026-07-07 to keep this card within line limits.
 
 ## Evidence Base
+
+- Source-only comparison: `Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md`, `Codex/.agents/workflow-skills/10-routine-巡檢/SKILL.md`, `Codex/.agents/workflow-skills/12-skill-forge-技能鍛造/SKILL.md`, `Shared/policies/agent-governance.md`, `Shared/policies/authorization-resolution.md`, `Shared/policies/completion-policy.md`.
+- Earlier entries below are historical evidence; preserved timestamps do not certify current runtime or index state.
 - source: `Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md`, `10-routine-巡檢/SKILL.md`, and `12-skill-forge-技能鍛造/SKILL.md`.
 - source: `Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md` — Dirty diff adds Traditional Chinese meaning-first commit wording and explicit no protected follow-on authorization.
 - tool: targeted `git diff` and `rg` output reviewed on 2026-07-07 for release description, thin-entry, on-demand reference, and dirty-diff changes.
@@ -71,14 +75,17 @@ metadata:
 - Read `_codex_core.support` only for support-family navigation and platform context.
 
 ## Conflicts and Supersession
-- superseded: stale warning blocks and older English-first release workflow description facts were replaced by current dirty-source evidence.
+
+- Universal station/board and per-source-edit protected-phase wording is historical compatibility only.
+- Original card and prior claims remain in the [immutable pre-image](https://github.com/Kunshao1117/AI_Rules/blob/b61b27c2d0a6d65d08ded101d323d62cf06d2098/.agents/memory/_codex_core/support/workflows-release/MEMORY.md); existing Cycle Events and archives are preserved.
+- Current review is bounded to the cited source semantics and tracking; provider/index/runtime synchronization and unreviewed historical assertions remain unverified.
 
 ## 中文摘要
-- 提交、巡檢與技能鍛造 workflow description 已改為繁中語義先行。
-- 這些入口仍是 thin route，不授權 source write、memory、git、release、deploy、install 或外部變更。
-- `09` commit subject/body/summary 必須繁中語義先行，且不授權 git commit 或任何 protected follow-on phase。
-- `GO`、工作流名稱與工具確認只是路由或範圍訊號；各 protected phase 需要各自授權。
-- `10` 與 Manager Check 只回報 Git 狀態；不讀 MCP、記憶、來源或健康資訊。
+
+- 此卡負責 Codex 提交、Git-only巡檢與技能鍛造入口
+- 09 準備提交且採繁中摘要；實際Git及受保護動作需各自範圍
+- 一般工作無強制board或固定站點鏈；保留必要獨立審查與版本新鮮度
+- 來源更動不等於已同步runtime或Memory索引
 
 ## Tracked Files
 - Codex/.agents/workflow-skills/09-commit-紀錄總結/SKILL.md
