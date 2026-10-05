@@ -2,15 +2,15 @@
 name: _shared.team-native-core.specialists-delivery
 scopePath: Shared/skills/
 description: >
-  專案記憶：Team-Native 交付型專家契約。Use when: task touches this split memory scope or its
-  tracked files.
+  專案記憶：Team-Native 舊交付型 specialist 參考。
+  Use when: task touches these owned source or historical reference identities.
 last_updated: '2026-07-24T16:46:28+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
-verification_status: verified
+verification_status: pending_review
 last_verified: '2026-07-24T13:52:00+08:00'
 valid_scope: current-project
 content_language: en
@@ -36,12 +36,12 @@ metadata:
 
 ## Current Truth
 
-- Owns change, memory-docs, validation, review, security, and release-completion specialist contracts.
-- This child owns the listed concrete source files after the 2026-07-24 split.
+- Owns historical change-delivery, memory-docs, validation, review, security and release-completion specialist reference identities.
+- Current general work uses only needed roles from the formal Agent registry and preserves required independent judgment. The old specialist roster and fixed lifecycle are compatibility-only for applicable frozen consumers.
 
 ## Active Constraints
 
-- Team roles, authorization, validation, review, memory closure, and completion remain separate responsibilities.
+- Preserve original phase, role and receipt separation for applicable frozen consumers; current general role independence follows Agent Governance.
 - Parent/child navigation is not a staleness dependency.
 
 ## Cycle Events
@@ -54,6 +54,8 @@ metadata:
 
 ## Evidence Base
 
+- Current source comparison: `Shared/policies/references/legacy-skill-migration.md`, `Shared/policies/references/legacy-skill-migration.json`, `Shared/policies/agent-governance.md`, `Shared/policies/execution-routing.md`, `Shared/agents/_registry.md`, `Shared/policies/references/legacy-memory-team-transition.md`.
+- Earlier entries below retain historical evidence only; preserved timestamps do not certify current runtime or index state.
 - source:Shared/skills/team-specialist-change-delivery/SKILL.md
 - source:Shared/skills/team-specialist-release-completion/SKILL.md
 - tool:memory_status — Existing owner scope verified before split.
@@ -65,21 +67,23 @@ metadata:
 
 ## Conflicts and Supersession
 
-- None.
+- Retired source identities are preserved at the exact current reference paths; those bodies do not reactivate Skills or general Team machinery.
+- Original content remains in the [immutable pre-image](https://github.com/Kunshao1117/AI_Rules/blob/098609bedac92bbe17776e4263d32c7383fe917d/.agents/memory/_shared/team-native-core/specialists-delivery/MEMORY.md); Cycle Events and existing archives are preserved.
+- This source-only comparison does not certify ignored runtime/editor paths or provider/index synchronization.
 
 ## 中文摘要
 
-- Team-Native 交付型專家契約。
-- 具體檔案歸屬已由父卡移入此子卡。
+- 舊交付型specialist身分保留為相容reference
+- 一般工作只選必要正式角色並保留必要獨立性，不恢復固定站點鏈
 
 ## Tracked Files
 
-- Shared/skills/team-specialist-change-delivery/SKILL.md
-- Shared/skills/team-specialist-memory-docs/SKILL.md
-- Shared/skills/team-specialist-validation/SKILL.md
-- Shared/skills/team-specialist-review/SKILL.md
-- Shared/skills/team-specialist-security-reliability/SKILL.md
-- Shared/skills/team-specialist-release-completion/SKILL.md
+- Shared/policies/references/legacy-skills/team-specialist-change-delivery/REFERENCE.md
+- Shared/policies/references/legacy-skills/team-specialist-memory-docs/REFERENCE.md
+- Shared/policies/references/legacy-skills/team-specialist-validation/REFERENCE.md
+- Shared/policies/references/legacy-skills/team-specialist-review/REFERENCE.md
+- Shared/policies/references/legacy-skills/team-specialist-security-reliability/REFERENCE.md
+- Shared/policies/references/legacy-skills/team-specialist-release-completion/REFERENCE.md
 
 ## Relations
 
@@ -87,5 +91,5 @@ metadata:
 
 ## Applicable Skills
 
-- memory-ops — Update and commit this child card.
+- memory-ops — Use current source-only or runtime applicability; this card grants no mutation authority.
 - memory-arch — Adjust split topology or archive volumes.

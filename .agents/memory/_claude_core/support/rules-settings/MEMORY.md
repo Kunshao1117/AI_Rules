@@ -1,16 +1,16 @@
 ---
 name: _claude_core.support.rules-settings
 scopePath: Claude/.claude/
-description: >-
-  專案記憶：Claude 規則、設定與支援專案檔。Use when: task touches this split memory scope or its
-  tracked files.
+description: >
+  專案記憶：Claude 支援規則、設定與 code-quality 歷史參考。
+  Use when: task touches these owned source or historical reference identities.
 last_updated: '2026-07-24T13:40:02+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: verified
+verification_status: pending_review
 last_verified: '2026-07-24T13:40:00+08:00'
 valid_scope: current-project
 content_language: en
@@ -36,12 +36,13 @@ metadata:
 # _claude_core.support.rules-settings — Claude Rules and Settings Memory
 
 ## Current Truth
-- This child card owns Claude support rules, local settings template, gitignore, and VS Code settings.
-- Rules and settings are support artifacts and must remain compatible with shared governance.
-- Claude support rules now treat [SUDO] as an override/risk-closure request only; it cannot skip security, MCP, memory/source attribution, validation, review, or protected gates.
-- Tracked Claude support rules are being normalized toward concise English headings, explicit fenced code languages such as `text`, `yaml`, and `markdown`, ASCII `->` arrows inside procedural diagrams, and Director-readable Chinese labels only where needed.
-- `code-quality`, `mcp-guardrails`, and `project-skill-contract` currently show the heading/fence/arrow/style normalization in dirty source; `cross-lingual-guard` remains a tracked support rule and must be read directly before edits.
-- Deprecated `claude-edition-rules` remains historical and is not an active source owner.
+
+- Owns Claude support rule/template sources, including the historical code-quality rule reference and separately identified local-editor tracking.
+- code-quality.md is retired from the auto-loaded Claude Rule directory; its fixed-toolchain and SUDO-era body is historical. Current quality and verification policy owns those decisions.
+- cross-lingual-guard points to natural Traditional Chinese and on-demand project Memory; language does not impose a Memory startup probe.
+- mcp-guardrails separates semantic authorization, native permission and real Gateway execution; its actual Memory tool rows retain their applicable frozen contracts.
+- project-skill-contract preserves project-skill compatibility and upgrade protection without itself activating creation, granting writes or selecting a role.
+- Ignored VS Code settings are local-editor evidence, not a source-Git ghost or proof of current runtime state.
 
 ## Active Constraints
 - Do not treat deprecated historical Claude rules as current platform policy.
@@ -58,6 +59,9 @@ metadata:
 - Parent archive remains at .agents/memory/_claude_core/support/archive-001.md.
 
 ## Evidence Base
+
+- Current source comparison: `Shared/policies/references/legacy-skill-migration.md`, `Shared/policies/references/legacy-skill-migration.json`, `Shared/policies/agent-governance.md`, `Shared/policies/execution-routing.md`, `Claude/.claude/rules/cross-lingual-guard.md`, `Claude/.claude/rules/mcp-guardrails.md`, `Claude/.claude/rules/project-skill-contract.md`, `Shared/policies/code-quality.md`, `Shared/policies/verification-strategy.md`, `Shared/policies/references/claude-legacy-rules/code-quality.md`, `Tests/TeamNative/Phase5C2SemanticLoad.Tests.ps1`, `Shared/policies/references/source-runtime-surface-map.md`.
+- Earlier entries below retain historical evidence only; preserved timestamps do not certify current runtime or index state.
 - source:.agents/memory/_claude_core/support/archive-001.md — Previous support-card content preserved during migration.
 - source:Claude/.claude/rules/* and Claude support settings files — Listed tracked files exist in the current workspace.
 - source:Claude/.claude/rules/code-quality.md, cross-lingual-guard.md, mcp-guardrails.md, and project-skill-contract.md.
@@ -70,16 +74,20 @@ metadata:
 - Read `_claude_core.support` only for support-family navigation and platform context.
 
 ## Conflicts and Supersession
-- No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
+
+- Retired source identities are preserved at the exact current reference paths; those bodies do not reactivate Skills or general Team machinery.
+- Original content remains in the [immutable pre-image](https://github.com/Kunshao1117/AI_Rules/blob/098609bedac92bbe17776e4263d32c7383fe917d/.agents/memory/_claude_core/support/rules-settings/MEMORY.md); Cycle Events and existing archives are preserved.
+- This source-only comparison does not certify ignored runtime/editor paths or provider/index synchronization.
 
 ## 中文摘要
-- 此子卡負責 Claude 規則、設定與支援專案檔。
-- 目前 dirty source 重點是 tracked support rules 的 heading、fence、arrow 與文字風格正規化。
-- 舊 Claude 規則卡仍是歷史，不是 active owner。
-- `core-identity`、`memory-contract`、`forbidden-vocab` 的 dirty facts 由 parent Claude core 卡負責，不在本子卡擴張 ownership。
+
+- 支援規則、範本與歷史code-quality reference分清來源身分
+- 不把已退役規則的固定工具或SUDO文字當成現行政策
+- 語言、Gateway、project-skill規則各保留目前正式owner，ignored編輯器狀態待實機證據
 
 ## Tracked Files
-- Claude/.claude/rules/code-quality.md
+
+- Shared/policies/references/claude-legacy-rules/code-quality.md
 - Claude/.claude/rules/cross-lingual-guard.md
 - Claude/.claude/rules/mcp-guardrails.md
 - Claude/.claude/rules/project-skill-contract.md

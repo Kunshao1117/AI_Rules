@@ -2,15 +2,15 @@
 name: _claude_core.core-rules
 scopePath: Claude/.claude/rules/
 description: >
-  專案記憶：Claude 核心規則與對齊技能。Use when: task touches Claude core-identity,
-  memory-contract, forbidden-vocab, or intent-alignment-gate.
+  專案記憶：Claude 核心來源規則與歷史詞彙/對齊參考。
+  Use when: task touches these owned source or historical reference identities.
 last_updated: '2026-08-17T21:12:31+08:00'
 status: stable
 staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: verified
+verification_status: pending_review
 last_verified: '2026-08-17T21:20:00+08:00'
 valid_scope: current-project
 content_language: en
@@ -36,8 +36,10 @@ metadata:
 
 ## Current Truth
 
-- Owns Claude core-identity, its managed runtime copy, memory-contract, forbidden-vocab, and the intent-alignment-gate skill.
-- Support rules and settings remain owned by `_claude_core.support.rules-settings`.
+- Owns Claude core-identity and memory-contract source rules and retains their separately identified managed-runtime tracking.
+- forbidden-vocab is preserved as a historical reference, not an active always-on language gate; current user-facing wording belongs to language-governance.
+- The ignored .claude/skills/intent-alignment-gate/SKILL.md entry is a historical runtime projection identity; Git absence does not establish its installed presence, deletion or activation.
+- Support rules and settings retain their existing sibling owner.
 
 ## Active Constraints
 
@@ -54,20 +56,25 @@ metadata:
 
 ## Evidence Base
 
+- Current source comparison: `Shared/policies/references/legacy-skill-migration.md`, `Shared/policies/references/legacy-skill-migration.json`, `Shared/policies/agent-governance.md`, `Shared/policies/execution-routing.md`, `Claude/.claude/rules/core-identity.md`, `Claude/.claude/rules/memory-contract.md`, `Shared/policies/language-governance.md`, `Shared/policies/references/claude-legacy-rules/forbidden-vocab.md`, `Shared/policies/references/source-runtime-surface-map.md`, `Tests/TeamNative/Phase5C2SemanticLoad.Tests.ps1`.
+- Earlier entries below retain historical evidence only; preserved timestamps do not certify current runtime or index state.
 - source:Claude/.claude/rules/core-identity.md, Claude/.claude/rules/memory-contract.md
 
 ## Read Contract
 
-- Read when changing owned Claude core rules.
+- Read when reviewing owned Claude source rules or the historical vocabulary/intent identities.
 
 ## Conflicts and Supersession
 
 - superseded: mixing core-rule ownership into the delivery-command card.
+- Retired source identities are preserved at the exact current reference paths; those bodies do not reactivate Skills or general Team machinery.
+- Original content remains in the [immutable pre-image](https://github.com/Kunshao1117/AI_Rules/blob/098609bedac92bbe17776e4263d32c7383fe917d/.agents/memory/_claude_core/core-rules/MEMORY.md); Cycle Events and existing archives are preserved.
+- This source-only comparison does not certify ignored runtime/editor paths or provider/index synchronization.
 
 ## 中文摘要
 
-- 此卡負責 Claude 核心規則與對齊技能。
-- 支援規則仍由 `_claude_core.support.rules-settings` 擁有。
+- 核心身分與Memory入口仍為來源規則；舊詞彙規則已轉為歷史reference
+- 忽略的intent-alignment runtime路徑不能由Git快照判定是否仍安裝
 
 ## Tracked Files
 
@@ -75,7 +82,7 @@ metadata:
 - .claude/rules/core-identity.md
 - .claude/skills/intent-alignment-gate/SKILL.md
 - Claude/.claude/rules/memory-contract.md
-- Claude/.claude/rules/forbidden-vocab.md
+- Shared/policies/references/claude-legacy-rules/forbidden-vocab.md
 
 ## Relations
 
@@ -85,4 +92,4 @@ metadata:
 
 ## Applicable Skills
 
-- memory-ops — Update this card through separate protected write and commit phases.
+- memory-ops — Use current source-only or runtime applicability; this card grants no mutation authority.
