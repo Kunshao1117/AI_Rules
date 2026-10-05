@@ -10,7 +10,7 @@ staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: source_fact
-verification_status: verified
+verification_status: pending_review
 last_verified: '2026-07-24T13:40:00+08:00'
 valid_scope: current-project
 content_language: en
@@ -36,22 +36,20 @@ metadata:
 # _ag_core.support.rules — Antigravity Rules Memory
 
 ## Current Truth
-- This child card owns Antigravity support rule files.
-- Rule files bridge shared governance into the Antigravity platform packaging area.
-- Support rule descriptions now use Chinese semantic trigger text with exact English tokens only where they clarify load conditions.
-- `01_cross_lingual_guard.md` requires Director-facing Phase 0, 1, and 2 panel content to be Traditional Chinese while internal docs, artifacts, schemas, and canonical statuses keep their local convention.
-- `01_cross_lingual_guard.md` makes Turn-1 memory startup a read-only route probe for memory inventory or health summary only; it must not auto-read full cards, call `commit_preflight`, call `memory_commit`, or write context/memory.
-- Memory startup stale/compaction findings become compact packet or `memory_docs_state`; they block only dependent memory-writing, completion, commit-prep, or closeout commit/push readiness phases.
-- `02_code_quality_security.md` records `[SUDO]` as override/risk-closure intent only and keeps linter/tests, validation, review, protected gates, and secret-safety boundaries active.
-- `05_project_skill_contract.md` and `06_memory_push.md` now use normalized Chinese-first headings and trigger descriptions while preserving exact skill and workflow identifiers.
-- Antigravity source sentinel `Antigravity/.agents/rules/AGENTS.md` preserves the project identity protected block, omits the removed 08 audit workflow family, and keeps `10_routine` as the Git-only routine route.
-- Platform-specific wording must not override shared policy without an explicit source change.
+
+- This child card owns Antigravity support rule files; those files bridge shared governance into the platform packaging area.
+- `Shared/policies/language-governance.md` owns user-facing language. The cross-lingual guard defaults to natural Traditional Chinese and does not mandate panels, tool lists, turn counters or receipts for ordinary replies.
+- Chinese input or a first reply does not trigger Memory probing. Relevant history, operator recall or possible card impact triggers on-demand memory-ops; ordinary conversation has no memory_list prerequisite.
+- `02_code_quality_security.md` is a scoped delivery pointer to shared quality, verification, credentials and zero-trust boundaries; it does not define a universal toolchain or fixed repair count.
+- `05_project_skill_contract.md` governs project-derived skill activation and keeps Memory distinct from executable Skills. `06_memory_push.md` points to on-demand Memory methods and retains the real pre-M5 runtime freeze.
+- Antigravity source sentinel AGENTS.md preserves the project identity block convention and lists 10_routine; current Git-only routine scope is established by the routine workflow itself.
+- Platform-specific wording must not override canonical shared policy.
 
 ## Active Constraints
+
 - Do not duplicate full shared policy history here.
 - Check shared policy drift when editing these support rules.
-- Keep receipt-panel language requirements scoped to Director-facing content; canonical internal artifacts and status values remain local-convention content.
-- Report memory startup compaction findings as compact packet or `memory_docs_state`; block only dependent memory-writing, completion, commit-prep, or closeout commit/push readiness phases.
+- Do not infer Memory writes, provider sync or runtime cutover from a language rule or startup observation.
 
 ## Cycle Events
 - 07: Repaired support-rule memory and aligned the sentinel inventory after removal of the 08 audit workflow family; `10_routine` remains Git-only.
@@ -66,6 +64,9 @@ metadata:
 - Parent archive remains at .agents/memory/_ag_core/support/archive-001.md.
 
 ## Evidence Base
+
+- Source-only comparison: `Antigravity/.agents/rules/01_cross_lingual_guard.md`, `Antigravity/.agents/rules/02_code_quality_security.md`, `Antigravity/.agents/rules/05_project_skill_contract.md`, `Antigravity/.agents/rules/06_memory_push.md`, `Antigravity/.agents/rules/AGENTS.md`, `Antigravity/.agents/workflows/10_routine(巡檢).md`.
+- Earlier entries below are historical evidence; preserved timestamps do not certify current runtime or index state.
 - source:.agents/memory/_ag_core/support/archive-001.md — Previous support-card content preserved during migration.
 - source:Antigravity/.agents/rules/01_cross_lingual_guard.md — Director-facing panel language boundary and read-only memory startup boundary verified against dirty source on 2026-07-07.
 - source:Antigravity/.agents/rules/02_code_quality_security.md, `05_project_skill_contract.md`, `06_memory_push.md`, and `AGENTS.md` — Support-rule and current sentinel inventory wording verified against dirty source on 2026-07-18.
@@ -80,16 +81,17 @@ metadata:
 - Read `_ag_core.support` only for support-family navigation and platform context.
 
 ## Conflicts and Supersession
-- No unresolved conflict recorded during this split; newly found contradictions must be indexed here.
+
+- Turn-1 probing, mandatory receipt panels and the former SUDO clause are historical statements, not the current support-rule body.
+- Original card and prior claims remain in the [immutable pre-image](https://github.com/Kunshao1117/AI_Rules/blob/b61b27c2d0a6d65d08ded101d323d62cf06d2098/.agents/memory/_ag_core/support/rules/MEMORY.md); existing Cycle Events and archives are preserved.
+- Current review is bounded to the cited source semantics and tracking; provider/index/runtime synchronization and unreviewed historical assertions remain unverified.
 
 ## 中文摘要
-- 此子卡負責 Antigravity 支援規則檔。
-- Dirty source 已正規化支援規則 description 與標題，採繁中語義先行並保留必要英文精確 token。
-- `01_cross_lingual_guard.md` 區分總監可見繁中面板與內部本地慣例內容。
-- Turn-1 記憶啟動現在是唯讀路由探測，不得自動讀全卡、commit、寫入或把 stale/compaction 變成一般任務阻斷。
-- `[SUDO]` 只記錄覆寫/風險關閉請求，不跳過安全、驗證、review 或 protected gates。
-- `AGENTS.md` 的 project identity 保護區段仍有效；現行 workflow inventory 已移除 08 健檢系列，`10_routine` 為 Git-only。
-- 修改時要比對 Shared 共用政策是否漂移。
+
+- 此卡負責 Antigravity 支援規則檔
+- 一般回覆用自然繁中；首次中文對話不啟動記憶探測
+- 品質與安全規則引用 Shared 正式來源；project skills 與記憶卡分開
+- 實際 runtime Memory 寫入與同步仍需其適用授權和cutover證據
 
 ## Tracked Files
 - Antigravity/.agents/rules/01_cross_lingual_guard.md

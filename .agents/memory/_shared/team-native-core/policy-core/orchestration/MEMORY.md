@@ -11,7 +11,7 @@ staleness: 0
 memory_schema_version: 2
 memory_quality_version: 1
 memory_kind: governance_rule
-verification_status: verified
+verification_status: pending_review
 last_verified: '2026-08-17T21:20:00+08:00'
 valid_scope: current-project
 content_language: en
@@ -37,13 +37,17 @@ metadata:
 
 ## Current Truth
 
+
 - Owns Team-native-core, team-trace-evidence, subagent-invocation, workflow-orchestration, orchestration scenarios, and platform-plan-mapping.
-- Team controls activate only for delegated topology. Cursor is a peer platform; adapters do not redefine core governance.
-- A captain may synthesize existing evidence, but may not author or replace station-owned completion evidence.
+- Current execution_mode distinguishes Direct, Assisted and Team. Helper-only use defaults to Assisted unless an evidenced Team trigger applies. Cursor is a peer platform; adapters do not redefine core governance.
+- Main owns general work and may implement while a distinct reviewer/verifier supplies required independent judgment. Results are bound to the reviewed source revision.
+- Legacy captain, station, board and fixed-chain bodies are compatibility-only for applicable frozen consumers; they are not general Team prerequisites.
 
 ## Active Constraints
 
-- Team roles, verification, review, memory closure, and completion remain separate after delegated activation.
+
+- Implementation ownership cannot be relabeled as independent review/verification by changing tools or windows.
+- Keep frozen consumer fields and receipts in their original semantics; a vNext assignment does not manufacture them.
 
 ## Cycle Events
 
@@ -55,6 +59,9 @@ metadata:
 
 ## Evidence Base
 
+- Source-only comparison: `Shared/policies/execution-routing.md`, `Shared/policies/agent-governance.md`, `Shared/policies/team-native-core.md`, `Shared/policies/platform-plan-mapping.md`.
+- Earlier entries below are historical evidence; preserved timestamps do not certify current runtime or index state.
+
 - source:Shared/policies/team-native-core.md, Shared/policies/workflow-orchestration.md, Shared/policies/platform-plan-mapping.md
 
 ## Read Contract
@@ -63,12 +70,17 @@ metadata:
 
 ## Conflicts and Supersession
 
-- superseded: repository-identity-specific governance.
+
+- Delegated-topology-only activation and captain-only/no-implementation claims are legacy compatibility, not general-work rules.
+- Original card and prior claims remain in the [immutable pre-image](https://github.com/Kunshao1117/AI_Rules/blob/b61b27c2d0a6d65d08ded101d323d62cf06d2098/.agents/memory/_shared/team-native-core/policy-core/orchestration/MEMORY.md); existing Cycle Events and archives are preserved.
+- Current review is bounded to the cited source semantics and tracking; provider/index/runtime synchronization and unreviewed historical assertions remain unverified.
 
 ## 中文摘要
 
-- 此卡負責 Team-Native 編排、子代理與計畫對應。
-- Cursor 是對等平台，不改核心治理。
+
+- 此卡負責Team編排、子代理與計畫對應
+- Helper-only預設Assisted；Team需正向觸發條件
+- Main可實作，但必要獨立審查須由非作者負責；舊站點鏈僅適用frozen consumer
 
 ## Tracked Files
 
@@ -87,4 +99,4 @@ metadata:
 
 ## Applicable Skills
 
-- memory-ops — Update this card through separate protected write and commit phases.
+- memory-ops — Follow current source-only or runtime applicability; this card does not authorize mutation.
