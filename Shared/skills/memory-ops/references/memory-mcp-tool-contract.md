@@ -27,12 +27,15 @@ authorization, and completion owners are respectively
 
 The method is review, necessary authorized content/tracking edit, applicable
 `memory_commit` or index sync, then read-only inspection. The current
-pre-M5 runtime boundary still treats physical `.agents/memory/**` writes,
+pre-M5 runtime boundary still treats physical runtime `.agents/memory/**` writes,
 `memory_commit`, `memory_reindex`, and index sync as `frozen_memory_action`
 under the legacy contract, regardless of which Skill or provider is used.
 `confirm:true`, where supported, is tool mutation acknowledgement, not user
 authorization or scope expansion permission. MCP HITL is additional evidence,
-not a replacement for authorization resolution.
+not a replacement for authorization resolution. The narrowly reviewed
+repository-source reconciliation in Authorization Resolution does not call
+these mutation tools or produce a Memory receipt. It reports provider/index
+state as unchanged or unverified until separately authorized synchronization.
 
 `memory_commit` follows a real authorized card edit. Never use it solely to
 clear staleness. `memory_reindex` belongs only to an authorized index or

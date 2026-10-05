@@ -120,13 +120,18 @@ recorded in Memory is not an approved Context decision.
 
 The vNext target method permits ordinary same-scope maintenance only after
 the applicable authorization decision. **Current migration compatibility is
-stricter:** until the exact project/runtime passes evidenced M5 cutover, any physical
+stricter:** until the exact project/runtime passes evidenced M5 cutover, any physical runtime
 `.agents/memory/**` mutation, `memory_commit`, reindex, or index sync remains
 `frozen_memory_action` under `../../policies/authorization-resolution.md`,
 regardless of caller, tool, or whether this Skill was loaded. Loading this
 source Skill does not activate the target `local_work` route. Do not use
 `memory_commit` as a stale-counter reset or perform mutation during read-only
 work. Current platform runtime copies remain unchanged until M5 projection.
+For an explicitly requested source-only reconciliation, follow the complete
+Repository Source Reconciliation boundary in Authorization Resolution and its
+`../../policies/references/repository-memory-reconciliation.md` evidence method. An ordinary
+source edit request is not that migration authorization. This route cannot
+call Memory mutation tools or claim synchronized runtime state.
 
 ## Legacy Compatibility
 

@@ -34,9 +34,13 @@ not a fifth protected class: ordinary card content/tracking edits and their
 necessary commit can be `local_work` after a verified M5 project/runtime
 cutover. Project-wide reindex requires its own explicit scope and repair-risk
 classification; new-card creation does not silently authorize that operation.
-Until that cutover, all physical `.agents/memory/**` mutation and Memory
+Until that cutover, all physical runtime `.agents/memory/**` mutation and Memory
 commit/reindex/index sync still use the legacy rows below regardless of caller,
 Skill loading or bundle presence. An uncertain activation state is frozen.
+A source-only existing-card patch is local_work only when every Repository
+Source Reconciliation requirement in `../authorization-resolution.md` holds;
+otherwise that source edit remains frozen as well. This exception cannot
+classify a provider mutation, runtime card or derived index as source work.
 
 ## Credential Boundary
 
@@ -52,8 +56,8 @@ issuer/signature/nonce requirements.
 
 These are frozen consumer rows, not additional general protected classes.
 They do not impose phases/stations/expiry on ordinary local_work.
-They remain applicable to all current physical Memory mutations and to retained
-Memory Skills, Team Memory stations, `completion_bundle`, protected Memory phases
+They remain applicable to current runtime Memory mutations, non-qualifying
+source-card edits, and retained Memory Skills, Team Memory stations, `completion_bundle`, protected Memory phases
 or receipts until the exact project/runtime passes M5 cutover. They also remain
 the legacy contract for an unmigrated consumer after an ordinary path cutover.
 Do not bypass them by calling a physical action ordinary.

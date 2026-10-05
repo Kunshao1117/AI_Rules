@@ -6,12 +6,15 @@ instead of defining local phase lists.
 
 Authorization phases are not workflow names. They bind one visible target,
 scope, station, file set, command, protected action, and expiry.
-The Memory phases below remain canonical for current physical Memory mutation
-and unmigrated frozen consumers. The post-M5 ordinary same-scope target in
+The Memory phases below remain canonical for current runtime Memory mutation,
+non-qualifying source-card edits and unmigrated frozen consumers. The narrow
+Repository Source Reconciliation boundary in `../authorization-resolution.md`
+adds no phase, Memory receipt or runtime activation. The post-M5 ordinary same-scope target in
 `authorization-resolution.md` adds no new phase; it does not inherit one of
 these legacy phase bindings or use them as a second authorization owner.
 Before evidenced cutover for the exact project/runtime, the first-true frozen
-rule keeps all real Memory mutation on this legacy phase path.
+rule keeps runtime Memory mutation and non-qualifying source edits on this
+legacy phase path.
 
 ## Canonical Phases
 

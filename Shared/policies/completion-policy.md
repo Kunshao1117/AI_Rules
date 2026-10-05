@@ -76,6 +76,16 @@ block, conflict/compaction block, or unverified impact remains an item-level
 gap; it is not automatically a global blocked state or proof that the source
 deliverable failed.
 
+For a requested repository-source reconciliation under Authorization
+Resolution, evaluate the exact reviewed source patch, archive preservation,
+rollback evidence and source acceptance independently. Source-card acceptance
+may complete that explicitly source-only scope; it never claims
+`memory_commit`, index sync, a Memory receipt or M5 runtime cutover. Report
+untouched provider/index/runtime state and the normal required next operation.
+If the requested result includes live runtime consistency, that part remains
+partial, blocked or unverified until actual permitted sync evidence exists;
+do not silently narrow it to source-only or call necessary sync optional.
+
 For ordinary vNext, a supported no-write conclusion uses the current
 source/card comparison in `references/memory-review-evidence.md`; it needs no
 fabricated `memory_no_write_receipt`, `memory_committed_receipt`, or bundle.

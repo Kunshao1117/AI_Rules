@@ -80,10 +80,12 @@ persistence or card schema and grants no Context write authority.
 
 These are vNext target semantics for ordinary work, not an executable override
 of current Memory mutation. M4 source migration activates no project/runtime.
-Until the exact project/runtime has evidenced M5 cutover, any physical
+Until the exact project/runtime has evidenced M5 cutover, any physical runtime
 `.agents/memory/**` mutation or Memory commit/reindex/index sync remains
 `frozen_memory_action` under `authorization-resolution.md`, even when Main acts
 directly without loading a retained Skill or bundle. An uncertain cutover is
-frozen. Unmigrated legacy consumers retain their bundle, phase, worker and
+frozen. Version-controlled source-card reconciliation is a separate, narrowly
+reviewed source operation only under that owner's Repository Source
+Reconciliation boundary; it never establishes runtime activation or sync. Unmigrated legacy consumers retain their bundle, phase, worker and
 receipt contract. Do not apply the ordinary same-scope route to the same
 operation. This policy neither grants Context persistence nor runtime sync.
