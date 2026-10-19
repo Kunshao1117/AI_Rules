@@ -88,6 +88,7 @@ Import-Module (Join-Path $ModulesDir "Skills-Sync.psm1")     -Force
 Import-Module (Join-Path $ModulesDir "Platform-Antigravity.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Platform-Claude.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Platform-Codex.psm1")  -Force
+Import-Module (Join-Path $ModulesDir "Codex-Root-Projection.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Platform-Cursor.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Deployment.Transaction.psm1") -Force
 Import-Module (Join-Path $ModulesDir "Runtime-Copy-Resolution.psm1") -Force
@@ -222,8 +223,6 @@ function Merge-CodexGlobalConfigDefaults {
     }
 
     $sourceText = Get-Content -LiteralPath $SourcePath -Raw -Encoding UTF8
-    $fallbackLine = Get-TomlTopLevelKeyLine -Text $sourceText -Key "project_doc_fallback_filenames"
-    if (-not $fallbackLine) { $fallbackLine = 'project_doc_fallback_filenames = [".codex/AGENTS.md"]' }
     $maxThreadsLine = Get-TomlSectionKeyLine -Text $sourceText -Section "agents" -Key "max_threads"
     if (-not $maxThreadsLine) { $maxThreadsLine = "max_threads = 6" }
 
@@ -234,10 +233,6 @@ function Merge-CodexGlobalConfigDefaults {
 
     $merged = $current
     $actions = @()
-
-    $before = $merged
-    $merged = Add-TomlTopLevelKeyIfMissing -Text $merged -Key "project_doc_fallback_filenames" -Line $fallbackLine
-    if ($merged -ne $before) { $actions += "add top-level project_doc_fallback_filenames" }
 
     $before = $merged
     $merged = Set-TomlSectionBooleanTrue -Text $merged -Section "features" -Key "multi_agent"
@@ -355,6 +350,7 @@ function Invoke-PlatformDeploy {
                 "Fresh"   { Invoke-CodexFresh   -FrameworkRoot $CodexRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot }
                 "Upgrade" { Invoke-CodexUpgrade -FrameworkRoot $CodexRoot -Target $TargetPath -SharedSkillsRoot $SharedSkillsRoot -RemoveOrphans:$RemoveOrphans }
                 "Sync"    {
+                    Assert-CodexRootProjectionTarget -TargetRoot $TargetPath
                     Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath (Join-Path $TargetPath ".agents\skills") -Mode Diff
                     Sync-SharedGovernanceReferences -SharedRoot $SharedRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
                     Sync-ProjectTools -ProjectToolsRoot $ProjectToolsRoot -TargetAgentsRoot (Join-Path $TargetPath ".agents") -Mode Diff
@@ -362,6 +358,7 @@ function Invoke-PlatformDeploy {
                         -TargetPath (Join-Path $TargetPath ".codex\AGENTS.md") `
                         -Platform Codex `
                         -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
+                    Sync-CodexRootProjection -TargetRoot $TargetPath
                 }
             }
         }
@@ -393,6 +390,7 @@ function Invoke-ProjectDeployBatch {
     $platforms = if ($SelectedPlatform -eq 'All') {
         @('Antigravity', 'Claude', 'Codex', 'Cursor')
     } else { @($SelectedPlatform) }
+    if ($platforms -contains 'Codex') { Assert-CodexRootProjectionTarget -TargetRoot $SelectedTarget }
     $candidate = $null; $archive = $null; $receipts = @()
     if ($null -ne $ResolutionInput) {
         if ($SelectedPlatform -cne 'All' -or $SelectedMode -cne 'Upgrade') {
@@ -414,7 +412,8 @@ function Invoke-ProjectDeployBatch {
         $archiveRoot = Join-Path $ProfileRoot '.ai_rules/deployment-archives'
         $archive = New-RuntimeCopyArchive -Candidate $candidate -Resolution $ResolutionInput -RepoRoot $RepoRoot -ArchiveRoot $archiveRoot
     }
-    $batchOutput = @(Invoke-DeploymentTransaction -TargetRoot $SelectedTarget -Action {
+    $nativePaths = if ($platforms -contains 'Codex') { @('AGENTS.md') } else { @() }
+    $batchOutput = @(Invoke-DeploymentTransaction -TargetRoot $SelectedTarget -AdditionalManagedPaths $nativePaths -Action {
         if ($null -ne $ResolutionInput) {
             $freshPlan = @(Get-DeploymentUpgradePreflight -RepoRoot $RepoRoot -TargetRoot $SelectedTarget -ProvenanceReceipts $receipts)
             $freshCandidate = Get-RuntimeCopyResolutionCandidate -RepoRoot $RepoRoot -TargetRoot $SelectedTarget -Gate3AEvidencePath $EvidencePath -BasePlan $freshPlan

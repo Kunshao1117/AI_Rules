@@ -85,9 +85,18 @@ function Get-CohortProjectedBytes {
             $before = if ($platform -eq 'Antigravity') { '(?m)^## 2\. Agentic Swarm UI Visibility' } else { '' }
             $after = if ($platform -eq 'Codex') { '(?m)^Codex-specific governance:\s*$' } else { '' }
             $text = Get-SharedPolicyBlockProjectedText -PolicyPath $source -Content (Get-Content -LiteralPath $template -Raw -Encoding UTF8) -Platform $platform -InsertBeforePattern $before -InsertAfterPattern $after
+            if ($Record.PSObject.Properties['projected_core_text']) { $text = $Record.projected_core_text }
             $bytes = $encoding.GetBytes($text)
             $generator = 'template copy + Get-SharedPolicyBlockProjectedText + UTF8 without BOM (Sync-SharedPolicyBlock writer)'
             $inputs += $template
+        }
+        'CodexRootProjection' {
+            if (-not $Record.PSObject.Properties['projected_bytes_base64']) { throw 'Cohort.CodexRootBytesUnavailable' }
+            $bytes = [Convert]::FromBase64String($Record.projected_bytes_base64)
+            $generator = 'Get-CodexRootProjectionArtifacts after core policy projection; receipt-validated ownership'
+            $inputs += Join-Path $RepoRoot 'Shared/policies/adapters/codex-subagent-invocation.md'
+            $inputs += Join-Path $PSScriptRoot 'Codex-Root-Projection.psm1'
+            $inputs += Join-Path $PSScriptRoot 'Skills-Sync.psm1'
         }
         'Version' {
             $bytes = $encoding.GetBytes((Get-Content -LiteralPath $source -Raw -Encoding UTF8).Trim())
@@ -98,7 +107,7 @@ function Get-CohortProjectedBytes {
             if (-not $merge.PSObject.Properties['ProjectedText']) { throw 'Cohort.ConfigProjectedBytesUnavailable' }
             $bytes = $encoding.GetBytes([string]$merge.ProjectedText)
             $generator = 'Merge-CodexConfigDefaults: section-aware required key merge'
-            $owned = 'missing fallback/max_threads defaults; features.multi_agent boolean'
+            $owned = 'missing max_threads default; features.multi_agent boolean'
             $preserved = 'all other user keys, sections and comments; never full-file source replace'
         }
         'ProjectMetadata' {
@@ -131,7 +140,7 @@ function Get-SharedCodexDeploymentCohortPreflight {
     $sourceBefore = Get-RuntimeCopySourceFingerprint -RepoRoot $repo
     $base = @(Get-DeploymentUpgradePreflight -RepoRoot $repo -TargetRoot $root)
     $selected = @($base | Where-Object {
-        $_.target_path -match '^(\.agents/(shared|skills|tools|rules|workflows|agents)/|\.agents/VERSION$|\.codex/|\.gitignore$)'
+        $_.target_path -match '^(\.agents/(shared|skills|tools|rules|workflows|agents)/|\.agents/VERSION$|\.codex/|\.gitignore$|AGENTS\.md$)'
     })
     $entries = @(); $blockers = @(); $preserved = @()
     foreach ($record in $selected) {
@@ -156,6 +165,10 @@ function Get-SharedCodexDeploymentCohortPreflight {
         $projection = Get-CohortProjectedBytes -RepoRoot $repo -TargetRoot $root -Record $record
         $intended = if ($null -ne $projection.Bytes) { Get-CohortBytesHash -Bytes $projection.Bytes } else { $null }
         $provenance = Get-CohortFrameworkProvenance -RepoRoot $repo -RelativePath $record.target_path -CurrentSha256 $record.current_sha256
+        if ($record.content_type -eq 'CodexRootProjection' -and $record.current_sha256 -and $record.known_framework_hash_match) {
+            # The preflight validated both fixed-path files and their content hash.
+            $provenance = [pscustomobject]@{ Classification='FRAMEWORK_PROVEN_EXACT'; KnownSha256=@($record.current_sha256); Evidence=@('validated_root_receipt_pair') }
+        }
         $known = @($provenance.KnownSha256)
         if ($record.planned_action -eq 'RETIRE' -and $record.known_framework_hash_match -and
             $provenance.Classification -notin @('FRAMEWORK_PROVEN_EXACT','FRAMEWORK_PROVEN_COMPATIBLE')) {
@@ -181,6 +194,7 @@ function Get-SharedCodexDeploymentCohortPreflight {
             GeneratorSource=$(switch($record.content_type){
                 'GeneratedEntry' {'Scripts/modules/Skills-Sync.psm1'}
                 'Config' {'Scripts/modules/Platform-Codex.psm1'}
+                'CodexRootProjection' {'Scripts/modules/Codex-Root-Projection.psm1'}
                 'ProjectMetadata' {'Scripts/modules/Core.Gitignore.psm1'}
                 'Version' {'Scripts/modules/Platform-Codex.psm1 (NoNewline scalar); Deployment.Cohort.psm1 (exact UTF8 bytes)'}
                 default {'Scripts/modules/Deployment.Cohort.psm1 (exact copy or known-path retirement)'}

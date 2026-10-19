@@ -12,6 +12,9 @@ function Assert-CodexGeneratedPolicyPointer {
     )
 
     $content = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+    $nativePath = Join-Path (Split-Path (Split-Path $Path -Parent) -Parent) 'AGENTS.md'
+    $native = Get-Content -LiteralPath $nativePath -Raw -Encoding UTF8
+    if (-not $native.EndsWith($content)) { throw "$Stage native root projection differs from the managed core." }
     if ($content -notmatch 'Shared Subagent Invocation Policy \(generated pointer\)') {
         throw "$Stage did not retain the generated Codex policy pointer."
     }

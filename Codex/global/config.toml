@@ -1,7 +1,6 @@
 # Antigravity Codex Edition — Global Codex configuration
-# Enables native discovery of .codex/AGENTS.md across all projects on this machine.
+# Project rules are discovered from each project root AGENTS.md.
 # Installed via: Deploy.ps1 -Action Global
-project_doc_fallback_filenames = [".codex/AGENTS.md"]
 
 [features]
 multi_agent = true

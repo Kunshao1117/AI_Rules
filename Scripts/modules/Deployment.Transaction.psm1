@@ -135,7 +135,8 @@ function Invoke-DeploymentTransaction {
     param(
         [Parameter(Mandatory = $true)][string]$TargetRoot,
         [Parameter(Mandatory = $true)][scriptblock]$Action,
-        [string]$RollbackPointPath = ''
+        [string]$RollbackPointPath = '',
+        [string[]]$AdditionalManagedPaths = @()
     )
     $ErrorActionPreference = 'Stop'
     $managedPaths = @()
@@ -146,6 +147,12 @@ function Invoke-DeploymentTransaction {
             $path = Resolve-DeploymentRecoveryPath -TargetRoot $TargetRoot -RelativePath $entry.relative_path
             if ((Get-DeploymentRecoveryHash $path) -cne $entry.original_sha256) { throw 'Deployment.RecoveryPreimageChanged' }
             $managedPaths += $path
+        }
+    }
+    if (-not $RollbackPointPath -and $AdditionalManagedPaths.Count) {
+        $managedPaths = @(Get-DeploymentManagedPaths -TargetRoot $TargetRoot)
+        foreach ($relative in $AdditionalManagedPaths) {
+            $managedPaths += Resolve-DeploymentRecoveryPath -TargetRoot $TargetRoot -RelativePath $relative
         }
     }
     $snapshot = New-DeploymentSnapshot -TargetRoot $TargetRoot -ManagedPaths $managedPaths
@@ -179,7 +186,7 @@ function Invoke-DeploymentTransaction {
 function Resolve-DeploymentRecoveryPath {
     param([string]$TargetRoot, [string]$RelativePath)
     if ($RelativePath -match '\\|:|(^|/)\.{1,2}(/|$)' -or
-        $RelativePath -notmatch '^(\.agents/(shared|skills|tools|rules|workflows|agents)/.+|\.agents/VERSION|\.(codex|claude|cursor)/.+|\.gitignore)$' -or
+        $RelativePath -notmatch '^(\.agents/(shared|skills|tools|rules|workflows|agents)/.+|\.agents/VERSION|\.(codex|claude|cursor)/.+|\.gitignore|AGENTS\.md)$' -or
         $RelativePath -match '(^|/)(memory|context|project_skills|logs|projects)(/|$)' -or
         $RelativePath -match '(^|/)(settings\.local\.json|credentials[^/]*|auth\.json)$') {
         throw "Deployment.RecoveryUnsafePath: $RelativePath"
