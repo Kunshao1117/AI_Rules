@@ -11,6 +11,7 @@
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1') -ErrorAction Stop
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Skills-Sync.psm1') -ErrorAction Stop
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath 'Deployment.Transaction.psm1') -ErrorAction Stop
+Import-Module (Join-Path $PSScriptRoot 'Codex-Root-Projection.psm1') -ErrorAction Stop
 
 function Get-CodexLegacyTeamNativeHookManifest {
     $artifacts = @(
@@ -242,8 +243,6 @@ function Merge-CodexConfigDefaults {
     }
 
     $sourceText = Get-Content -LiteralPath $SourcePath -Raw -Encoding UTF8
-    $fallbackLine = Get-TomlTopLevelKeyLine -Text $sourceText -Key "project_doc_fallback_filenames"
-    if (-not $fallbackLine) { $fallbackLine = 'project_doc_fallback_filenames = [".codex/AGENTS.md"]' }
     $maxThreadsLine = Get-TomlSectionKeyLine -Text $sourceText -Section "agents" -Key "max_threads"
     if (-not $maxThreadsLine) { $maxThreadsLine = "max_threads = 8" }
 
@@ -254,10 +253,6 @@ function Merge-CodexConfigDefaults {
 
     $text = $current
     $actions = @()
-
-    $before = $text
-    $text = Add-TomlTopLevelKeyIfMissing -Text $text -Key "project_doc_fallback_filenames" -Line $fallbackLine
-    if ($text -ne $before) { $actions += "add top-level project_doc_fallback_filenames" }
 
     $before = $text
     $text = Set-TomlSectionBooleanTrue -Text $text -Section "features" -Key "multi_agent"
@@ -318,6 +313,7 @@ function Invoke-CodexFresh {
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\codex-subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
+    Assert-CodexRootProjectionTarget -TargetRoot $Target
     $null = Get-SharedPolicyBlock -PolicyPath $sharedPolicyPath -Platform Codex
 
     Write-Banner "Codex v$version — Fresh 安裝 | 目標: $Target" "Magenta"
@@ -351,6 +347,7 @@ function Invoke-CodexFresh {
                 -TargetPath (Join-Path $dstDotCodex "AGENTS.md") `
                 -Platform Codex `
                 -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
+            Sync-CodexRootProjection -TargetRoot $Target
         } else {
             Write-Warn ".codex/ 源碼不存在，跳過。"
         }
@@ -449,6 +446,7 @@ function Invoke-CodexUpgrade {
     $sharedPolicyPath = Join-Path (Split-Path $SharedSkillsRoot -Parent) "policies\adapters\codex-subagent-invocation.md"
     $contextTemplatesRoot = Join-Path (Split-Path $SharedSkillsRoot -Parent) "context"
 
+    Assert-CodexRootProjectionTarget -TargetRoot $Target
     $null = Get-SharedPolicyBlock -PolicyPath $sharedPolicyPath -Platform Codex
 
     if (-Not (Test-Path $dstDotCodex)) {
@@ -470,7 +468,7 @@ function Invoke-CodexUpgrade {
         -TargetRoot $dstDotCodex `
         -ScanDirs @(".") `
         -ProtectedDirs @() `
-        -ExcludeFiles @("config.toml")
+        -ExcludeFiles @("config.toml", "ai-rules-root-agents.json")
 
     $categoryMap = [ordered]@{
         "治理規則 (.codex/)" = { $true }
@@ -491,7 +489,7 @@ function Invoke-CodexUpgrade {
     $codexAgentsMdPath = Join-Path $dstDotCodex "AGENTS.md"
     $savedIdentity = $null
     if (Test-Path $codexAgentsMdPath) {
-        $codexContent = Get-Content $codexAgentsMdPath -Raw
+        $codexContent = Get-Content $codexAgentsMdPath -Raw -Encoding UTF8
         if ($codexContent -match '(?s)(## \[PROJECT IDENTITY[^\r\n]*\r?\n.*?<!-- /PROJECT_IDENTITY_END -->)') {
             $savedIdentity = $Matches[1]
             Write-Step "偵測到 PROJECT IDENTITY 保護區段；若本次套用 .codex/ 變更，升級後將自動還原。"
@@ -526,7 +524,7 @@ function Invoke-CodexUpgrade {
 
     # PROJECT IDENTITY 還原
     if ($applyCodexChanges -and $savedIdentity -and (Test-Path $codexAgentsMdPath)) {
-        $newContent = Get-Content $codexAgentsMdPath -Raw
+        $newContent = Get-Content $codexAgentsMdPath -Raw -Encoding UTF8
         if ($newContent -notmatch '## \[PROJECT IDENTITY') {
             $restored = $newContent.TrimEnd() + "`n`n" + $savedIdentity
             [System.IO.File]::WriteAllText($codexAgentsMdPath, $restored, [System.Text.Encoding]::UTF8)
@@ -540,6 +538,7 @@ function Invoke-CodexUpgrade {
             -TargetPath $codexAgentsMdPath `
             -Platform Codex `
             -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
+        Sync-CodexRootProjection -TargetRoot $Target
     } else {
         Write-Warn "已跳過共用子代理政策同步至 .codex/AGENTS.md；因本次 .codex/ 差異檔案更新未套用。"
     }

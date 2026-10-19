@@ -127,8 +127,6 @@ function Merge-ManagerCodexProjectConfigDefaults {
     if (-not (Test-Path -LiteralPath $SourcePath -PathType Leaf)) { return }
 
     $sourceText = Get-Content -LiteralPath $SourcePath -Raw -Encoding UTF8
-    $fallbackLine = Get-TomlTopLevelKeyLine -Text $sourceText -Key "project_doc_fallback_filenames"
-    if (-not $fallbackLine) { $fallbackLine = 'project_doc_fallback_filenames = [".codex/AGENTS.md"]' }
     $maxThreadsLine = Get-TomlSectionKeyLine -Text $sourceText -Section "agents" -Key "max_threads"
     if (-not $maxThreadsLine) { $maxThreadsLine = "max_threads = 8" }
 
@@ -139,10 +137,6 @@ function Merge-ManagerCodexProjectConfigDefaults {
 
     $text = $current
     $actions = @()
-
-    $before = $text
-    $text = Add-TomlTopLevelKeyIfMissing -Text $text -Key "project_doc_fallback_filenames" -Line $fallbackLine
-    if ($text -ne $before) { $actions += "add top-level project_doc_fallback_filenames" }
 
     $before = $text
     $text = Set-TomlSectionBooleanTrue -Text $text -Section "features" -Key "multi_agent"

@@ -6,6 +6,7 @@ Import-Module (Join-Path $PSScriptRoot 'Antigravity-Procedure-Projection.psm1') 
 Import-Module (Join-Path $PSScriptRoot 'Antigravity-Legacy-Workflow-Projection.psm1') -Force
 Import-Module (Join-Path $PSScriptRoot 'Skill-Migration.psm1') -Force
 Import-Module (Join-Path $PSScriptRoot 'Platform-Codex.psm1')
+Import-Module (Join-Path $PSScriptRoot 'Codex-Root-Projection.psm1')
 Import-Module (Join-Path $PSScriptRoot 'Deployment.Transaction.psm1') -Force
 Import-Module (Join-Path $PSScriptRoot 'Claude-Agent-Projection.psm1') -Force
 Import-Module (Join-Path $PSScriptRoot 'Runtime-Copy-Resolution.psm1')
@@ -138,7 +139,7 @@ function Get-DeploymentUpgradePreflight {
     $templates = @(
         @{ platform='Antigravity'; source='Antigravity/.agents'; target='.agents'; dirs=$legacyScanDirs; files=@(); exclude=@() },
         @{ platform='Claude'; source='Claude/.claude'; target='.claude'; dirs=@('commands','rules'); files=@('CLAUDE.md'); exclude=@('settings.local.json') },
-        @{ platform='Codex'; source='Codex/.codex'; target='.codex'; dirs=@('.'); files=@(); exclude=@('config.toml') },
+        @{ platform='Codex'; source='Codex/.codex'; target='.codex'; dirs=@('.'); files=@(); exclude=@('config.toml','ai-rules-root-agents.json') },
         @{ platform='Cursor'; source='Cursor/.cursor'; target='.cursor'; dirs=@('rules'); files=@(); exclude=@('hooks.json') }
     )
     foreach ($entry in $templates) {
@@ -169,6 +170,7 @@ function Get-DeploymentUpgradePreflight {
                 -Blocking ($decision.Action -eq 'BLOCK')
         }
     }
+    $codexProjectedCore = $null
     foreach ($entry in @(
         @{ platform='Antigravity'; target='.agents/rules/00_core_identity.md'; source='Antigravity/.agents/rules/00_core_identity.md'; adapter='antigravity-subagent-invocation.md'; before='(?m)^## 2\. Agentic Swarm UI Visibility'; after='' },
         @{ platform='Claude'; target='.claude/rules/core-identity.md'; source='Claude/.claude/rules/core-identity.md'; adapter='claude-subagent-invocation.md'; before='(?m)^## 2\. Multi-Agent Transparency'; after='' },
@@ -183,13 +185,46 @@ function Get-DeploymentUpgradePreflight {
         $basePath = if ($templateWillCopy) { $template } elseif (Test-Path -LiteralPath $path -PathType Leaf) { $path } else { $template }
         try {
             $baseText = Get-Content -LiteralPath $basePath -Raw -Encoding UTF8 -ErrorAction Stop
+            # Codex Upgrade restores this protected identity after copying a
+            # changed template, before policy and native root projection.
+            if ($entry.platform -eq 'Codex' -and $templateWillCopy -and (Test-Path -LiteralPath $path -PathType Leaf)) {
+                $currentCore = Get-Content -LiteralPath $path -Raw -Encoding UTF8 -ErrorAction Stop
+                if ($currentCore -match '(?s)(## \[PROJECT IDENTITY[^\r\n]*\r?\n.*?<!-- /PROJECT_IDENTITY_END -->)' -and $baseText -notmatch '## \[PROJECT IDENTITY') {
+                    $baseText = $baseText.TrimEnd() + "`n`n" + $Matches[1]
+                }
+            }
             $future = Get-SharedPolicyBlockProjectedText -PolicyPath $adapter -Content $baseText -Platform $entry.platform -InsertBeforePattern $entry.before -InsertAfterPattern $entry.after
+            if ($entry.platform -eq 'Codex') { $codexProjectedCore = $future }
             $present = Test-Path -LiteralPath $path -PathType Leaf
             $current = if ($present) { Get-Content -LiteralPath $path -Raw -Encoding UTF8 -ErrorAction Stop } else { $null }
             $action = if (-not $present) { 'ADD' } elseif ($current -ceq $future) { 'UNCHANGED' } else { 'UPDATE' }
             Add-PreflightRecord -Records $records -Root $target -Platform $entry.platform -TargetPath $path -SourcePath $adapter -ContentType 'GeneratedEntry' -Action $action -Reason 'shared_policy_block_projected_after_template_copy'
+            if ($entry.platform -eq 'Codex') {
+                $records[$key] | Add-Member -NotePropertyName projected_core_text -NotePropertyValue $future
+            }
         } catch {
             Add-PreflightRecord -Records $records -Root $target -Platform $entry.platform -TargetPath $path -SourcePath $adapter -ContentType 'GeneratedEntry' -Action 'BLOCK' -Reason "policy_projection_unresolved: $($_.Exception.Message)" -Blocking $true
+        }
+    }
+
+    # Native entry and receipt are one owned projection, never inferred from an
+    # existing arbitrary root file. The cohort consumes these exact planned bytes.
+    $rootProjectionPaths = @('AGENTS.md', '.codex/ai-rules-root-agents.json')
+    $rootProjectionSource = Join-Path $repo 'Codex/.codex/AGENTS.md'
+    try {
+        Assert-CodexRootProjectionTarget -TargetRoot $target
+        if ($null -eq $codexProjectedCore) { throw 'CodexRoot.CoreProjectionUnavailable' }
+        foreach ($artifact in @(Get-CodexRootProjectionArtifacts -Content $codexProjectedCore)) {
+            $path = Join-Path $target $artifact.RelativePath
+            $present = Test-Path -LiteralPath $path -PathType Leaf
+            $same = $present -and ([Convert]::ToBase64String([IO.File]::ReadAllBytes($path)) -ceq [Convert]::ToBase64String($artifact.Bytes))
+            $action = if (-not $present) { 'ADD' } elseif ($same) { 'UNCHANGED' } else { 'UPDATE' }
+            Add-PreflightRecord -Records $records -Root $target -Platform 'Codex' -TargetPath $path -SourcePath $rootProjectionSource -ContentType 'CodexRootProjection' -Action $action -Reason 'native_root_and_receipt_projection' -KnownFrameworkHashMatch $present -ProvenanceStatus 'validated_root_receipt_pair'
+            $records[$artifact.RelativePath.ToLowerInvariant()] | Add-Member -NotePropertyName projected_bytes_base64 -NotePropertyValue ([Convert]::ToBase64String($artifact.Bytes))
+        }
+    } catch {
+        foreach ($relative in $rootProjectionPaths) {
+            Add-PreflightRecord -Records $records -Root $target -Platform 'Codex' -TargetPath (Join-Path $target $relative) -SourcePath $rootProjectionSource -ContentType 'CodexRootProjection' -Action 'BLOCK' -Reason ("native_root_projection_conflict: " + $_.Exception.Message) -Blocking $true
         }
     }
 

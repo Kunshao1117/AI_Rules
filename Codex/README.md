@@ -1,7 +1,7 @@
 # Antigravity Codex Edition v0.1.3
 
-Codex Edition adapts AI_Rules to OpenAI Codex. It installs `.codex/AGENTS.md`
-as the project entry point and deploys workflow skills plus shared operational
+Codex Edition adapts AI_Rules to OpenAI Codex. It generates a standard root `AGENTS.md`
+as the native project entry point from the managed `.codex/AGENTS.md` body and deploys workflow skills plus shared operational
 skills into `.agents/skills/`.
 
 This README is an entry point only. Internal governance remains in
@@ -51,7 +51,8 @@ deployment, credentials, destructive filesystem work, or external mutation.
 
 | Surface | Source | Runtime |
 |---|---|---|
-| Codex entry | `Codex/.codex/AGENTS.md` | `.codex/AGENTS.md` |
+| Codex core | `Codex/.codex/AGENTS.md` | `.codex/AGENTS.md` (managed intermediate) |
+| Native Codex entry | `Scripts/modules/Codex-Root-Projection.psm1` | `AGENTS.md` + `.codex/ai-rules-root-agents.json` |
 | Codex config | `Codex/.codex/config.toml` | `.codex/config.toml` |
 | Workflow skills | `Codex/.agents/workflow-skills/` | `.agents/skills/` |
 | Shared skills | `Shared/skills/` | `.agents/skills/` |
@@ -108,3 +109,10 @@ come from the shared sources above.
 `Codex/VERSION` is the source version. `.codex/VERSION` is the deployed runtime
 version marker. The `PROJECT IDENTITY` section in `.codex/AGENTS.md` is
 preserved during upgrade.
+
+## Native Rule Discovery
+
+See [native-discovery.md](native-discovery.md) for ownership, conflicts, rollback,
+and the separately authorized same-revision local application contract. Existing
+operator config values are preserved; path-valued fallback filenames are no
+longer injected. A source-only change does not update any installed project.

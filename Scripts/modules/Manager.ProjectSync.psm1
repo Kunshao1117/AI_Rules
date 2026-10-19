@@ -7,6 +7,7 @@ Import-Module (Join-Path $PSScriptRoot "Antigravity-Procedure-Projection.psm1") 
 Import-Module (Join-Path $PSScriptRoot "Antigravity-Legacy-Workflow-Projection.psm1") -Force
 Import-Module (Join-Path $PSScriptRoot "Manager.Config.psm1") -Force
 Import-Module (Join-Path $PSScriptRoot "Platform-Codex.psm1") -Force
+Import-Module (Join-Path $PSScriptRoot "Codex-Root-Projection.psm1") -Force
 Import-Module (Join-Path $PSScriptRoot "Deployment.Transaction.psm1") -Force
 
 function Set-ManagerProjectVersionFile {
@@ -457,6 +458,7 @@ function Invoke-ManagerSyncCodexProjectRules {
         [switch]$Apply
     )
 
+    Assert-CodexRootProjectionTarget -TargetRoot $ProjectRoot
     $sourceRoot = Join-Path $RepoRoot "Codex\.codex"
     $codexTargetRoot = Join-Path $ProjectRoot ".codex"
     $workflowSkillsRoot = Join-Path $RepoRoot "Codex\.agents\workflow-skills"
@@ -472,7 +474,7 @@ function Invoke-ManagerSyncCodexProjectRules {
         -TargetRoot $codexTargetRoot `
         -ScanDirs @(".") `
         -ProtectedDirs @() `
-        -ExcludeFiles @("config.toml") `
+        -ExcludeFiles @("config.toml", "ai-rules-root-agents.json") `
         -PreserveProjectIdentity)
     $stats = Write-UpgradeReport -Report $report -CategoryMap ([ordered]@{
         "治理規則 (.codex/)" = { $true }
@@ -501,6 +503,7 @@ function Invoke-ManagerSyncCodexProjectRules {
         -TargetPath (Join-Path $codexTargetRoot "AGENTS.md") `
         -Platform Codex `
         -InsertAfterPattern '(?m)^Codex-specific governance:\s*$'
+    Sync-CodexRootProjection -TargetRoot $ProjectRoot
     $null = Sync-SharedSkills -SharedSkillsRoot $SharedSkillsRoot -TargetSkillsPath $targetSkillsPath -Mode Diff
     $null = Sync-SharedGovernanceReferences -SharedRoot $sharedRoot -TargetAgentsRoot $agentsRoot -Mode Diff
     $null = Sync-ProjectTools -ProjectToolsRoot $projectToolsRoot -TargetAgentsRoot $agentsRoot -Mode Diff
@@ -556,6 +559,8 @@ function Invoke-ManagerProjectRulesSyncCore {
         return [PSCustomObject]@{ Succeeded = $true; Applied = $false; Platforms = @(); RequiredStageResults = @() }
     }
     Write-Host "同步平台：$($selected -join ', ')"
+
+    if ($selected -contains 'Codex') { Assert-CodexRootProjectionTarget -TargetRoot $targetRoot }
 
     $preflight = @(Assert-ManagerProjectSyncPreflight -RepoRoot $RepoRoot -SharedSkillsRoot $sharedSkillsRoot -Platforms $selected)
     Write-Step "必要同步資料已預先驗證：$($preflight.Count) 個平台"
@@ -663,7 +668,8 @@ function Invoke-ManagerProjectRulesSync {
         Invoke-ManagerProjectRulesSyncCore @arguments
         return
     }
-    Invoke-DeploymentTransaction -TargetRoot $Target -Action {
+    $nativePaths = if ($ProjectPlatform -in @('Auto','Codex') -and (Test-ManagerProjectPlatformInstalled -TargetRoot $Target -Platform Codex)) { @('AGENTS.md') } else { @() }
+    Invoke-DeploymentTransaction -TargetRoot $Target -AdditionalManagedPaths $nativePaths -Action {
         Invoke-ManagerProjectRulesSyncCore @arguments
     }
 }
